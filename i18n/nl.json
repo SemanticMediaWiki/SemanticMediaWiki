@@ -500,6 +500,8 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|seconde|seconden}}",
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|seconde|seconden}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|seconde|seconden}}",
+	"smw-constraint-violation-uniqueness": "De beperking <code>unique_value_constraint</code> is toegewezen aan de eigenschap \"[[Property:$1|$1]]\" zodat deze alleen unieke waardetoewijzingen toestaat, maar de waardeannotatie ''$2'' bleek al te zijn geannoteerd in het onderwerp \"$3\".",
+	"smw-constraint-violation-uniqueness-isknown": "De beperking <code>unique_value_constraint</code> is toegewezen aan de eigenschap \"[[Property:$1|$1]]\" zodat deze alleen unieke waarde-annotaties toestaat, maar ''$2'' bevat al een geannoteerde waarde met \"$3\" die de uniciteitsbeperking voor het huidige onderwerp schendt.",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" is een ongeldige URL.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",

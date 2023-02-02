@@ -34,6 +34,7 @@
 			"Yamagata Yusuke",
 			"Yusuke1109",
 			"Zero 1 k",
+			"背番号4のエース",
 			"青子守歌",
 			"아라"
 		]
@@ -515,6 +516,8 @@
 	"smw-limitreport-intext-parsertime-value": "$1{{PLURAL:$1|秒}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1{{PLURAL:$1|秒}}",
 	"smw-property-predefined-long-pvuc": "2つの値が文による表現が等価ではない場合に重み付けをし、もしその制約に違反するとエラーに分類します。",
+	"smw-constraint-violation-uniqueness": "<code>unique_value_constraint</code>制約が \"[[Property:$1|$1]]\" プロパティに割り当てられ、一意の値の割り当てのみを許可し、'' $2 '' 値の注釈は既に \" $3 \" サブジェクトで注釈が付けられています。",
+	"smw-constraint-violation-uniqueness-isknown": "\"[[Property:$1|$1]]\" プロパティに<code>unique_value_constraint</code>制約が割り当てられた際に一意の値の注釈のみが許可されます。'' $2 '' には、現在のサブジェクトの一意性制約に違反する \" $3 \" の注釈付きの値が含まれています。",
 	"smw-datavalue-time-invalid-jd": "入力値「$1」に対して JD (Julian day＝ユリウス日 ) 「$2」が返されたため解釈ができませんでした。",
 	"smw-datavalue-time-invalid": "入力値「$1」の解釈を試みましたが「」Unable to interpret the \"$1\" input value as valid date or time component with \"$2\" being reported.",
 	"smw-datavalue-external-formatter-invalid-uri": "「$1」は無効な URL です。",

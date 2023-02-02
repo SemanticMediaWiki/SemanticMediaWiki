@@ -166,6 +166,7 @@
 	"smw-format-datatable-search": "Търсене:",
 	"smw-format-datatable-next": "Следваща",
 	"smw-help": "Помощ",
+	"smw-jsonview-search-label": "Търсене:",
 	"smw-listingcontinuesabbrev": "продълж.",
 	"smw-showingresults": "Показване на до {{PLURAL:$1|<strong>1</strong> резултат|<strong>$1</strong> резултата}}, като се започва от номер <strong>$2</strong>."
 }

@@ -307,6 +307,8 @@
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|sekunda|sekundi|sekunde|sekund}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Čas posodabljanja podatkovne zbirke (ob osvežitvi strani)",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sekunda|sekundi|sekunde|sekund}}",
+	"smw-constraint-violation-uniqueness": "Lastnosti »[[Property:$1|$1]]« je dodeljena omejitev <code>unique_value_constraint</code>, ki dovoljuje samo edinstvene dodelitve vrednosti, dodelitev vrednosti ''$2'' pa je bila že najdena v subjektu »$3«.",
+	"smw-constraint-violation-uniqueness-isknown": "Lastnosti »[[Property:$1|$1]]« je dodeljena omejitev <code>unique_value_constraint</code>, ki dovoljuje samo edinstvene dododelitve vrednosti, ''$2'' pa že vsebuje dodeljeno vrednost, pri čemer »$3« krši omejitev enoličnosti za trenutni subjekt.",
 	"smw-datavalue-time-invalid-prehistoric": "Ni mogoče interpretirati prazgodovinske vhodne vrednosti »$1«. Določitev več kot določenega števila let v modelu koledarja lahko na primer vrne nepričakovane rezultate v prazgodovinskem kontekstu.",
 	"smw-datavalue-wikipage-invalid-title": "Vhodna vrednost vrste strani »$1« vsebuje neveljavne znake ali je nepopolna in lahko zato med postopkom poizvedbe ali označevanja povzroči nepričakovane rezultate.",
 	"smw-datavalue-wikipage-property-invalid-title": "Lastnost »$1« z vhodno vrednostjo vrste »$2« vsebuje neveljavne znake ali je nepopolna in lahko zato med postopkom poizvedbe ali označevanja povzroči nepričakovane rezultate.",
