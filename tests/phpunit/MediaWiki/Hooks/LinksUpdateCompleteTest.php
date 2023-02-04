@@ -231,6 +231,7 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getParserOutput' )
 			->will( $this->returnValue( $parserOutput ) );
 
+		// TODO: Illegal dynamic property (#5421)
 		$linksUpdate->mTemplates = [ 'Foo' ];
 		$linksUpdate->mRecursive = false;
 

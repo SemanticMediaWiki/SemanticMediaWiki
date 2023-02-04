@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Utils\Mock;
 
+use SMW\Query\QueryResult;
 use SMW\QueryEngine;
 use SMW\Store;
 use SMW\StoreAware;
 use SMWQuery;
-use SMWQueryResult;
 
 /**
  * FIXME One would wish to have a FakeStore but instead SMWSQLStore3 is used in
@@ -26,8 +26,9 @@ use SMWQueryResult;
 class FakeQueryStore implements QueryEngine, StoreAware {
 
 	protected $store;
+	protected QueryResult $queryResult;
 
-	public function setQueryResult( SMWQueryResult $queryResult ) {
+	public function setQueryResult( QueryResult $queryResult ) {
 		$this->queryResult = $queryResult;
 	}
 

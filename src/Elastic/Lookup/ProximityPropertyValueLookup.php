@@ -32,6 +32,8 @@ class ProximityPropertyValueLookup {
 	 */
 	private $store;
 
+	private FieldMapper $fieldMapper;
+
 	/**
 	 * @since 3.0
 	 *

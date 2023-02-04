@@ -4,6 +4,8 @@ namespace SMW\Tests\Utils\JSONScript;
 
 use SMW\Query\Parser as QueryParser;
 use SMW\Store;
+use SMW\Tests\Utils\Validators\QueryResultValidator;
+use SMW\Tests\Utils\Validators\StringValidator;
 use SMWQuery as Query;
 use Title;
 
@@ -37,6 +39,10 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @var boolean
 	 */
 	private $debug = false;
+
+	private QueryResultValidator $queryResultValidator;
+	private StringValidator $stringValidator;
+	private QueryParser $queryParser;
 
 	/**
 	 * @since 2.2

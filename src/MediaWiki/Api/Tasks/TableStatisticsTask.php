@@ -26,6 +26,8 @@ class TableStatisticsTask extends Task {
 	 */
 	private $cacheUsage;
 
+	private Cache $cache;
+
 	/**
 	 * @since 3.1
 	 *

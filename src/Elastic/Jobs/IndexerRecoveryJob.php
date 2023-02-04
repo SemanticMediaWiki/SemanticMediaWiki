@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\Jobs;
 
+use SMW\Elastic\Indexer\Indexer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Elastic\ElasticStore;
@@ -33,6 +34,8 @@ class IndexerRecoveryJob extends Job {
 
 	const TTL_DAY = 86400; // 24 * 3600
 	const TTL_WEEK = 604800; // 7 * 24 * 3600
+
+	private Indexer $indexer;
 
 	/**
 	 * @since 3.0

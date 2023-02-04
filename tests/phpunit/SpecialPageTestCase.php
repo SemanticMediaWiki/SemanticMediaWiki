@@ -10,6 +10,7 @@ use MediaWiki\MediaWikiServices;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
 use WebRequest;
+use WebResponse;
 
 /**
  *
@@ -26,6 +27,8 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 
 	protected $obLevel;
 	protected $store = null;
+	protected string $text;
+	protected WebResponse $response;
 
 	protected function setUp() : void {
 		parent::setUp();

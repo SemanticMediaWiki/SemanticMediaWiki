@@ -5,6 +5,7 @@ namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 use SMW\DIProperty;
 use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
+use SMW\Tests\Utils\Runners\MaintenanceRunner;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
@@ -28,6 +29,8 @@ class RebuildDataMaintenanceTest extends DatabaseTestCase {
 	private $runnerFactory;
 	private $titleValidator;
 	private $semanticDataValidator;
+	private MaintenanceRunner $maintenanceRunner;
+	private ByPageSemanticDataFinder $semanticDataFinder;
 
 	protected function setUp() : void {
 		parent::setUp();

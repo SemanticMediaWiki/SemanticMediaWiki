@@ -63,6 +63,8 @@ class DIWikiPage extends SMWDataItem {
 	 */
 	private $id = 0;
 
+	public int $recdepth;
+
 	/**
 	 * Constructor. We do not bother with too much detailed validation here,
 	 * regarding the known namespaces, canonicity of the dbkey (namespace
