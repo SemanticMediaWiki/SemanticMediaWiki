@@ -30,6 +30,8 @@ class TableResultPrinter extends ResultPrinter {
 	 */
 	private $htmlTable;
 
+	private bool $isDataTable;
+
 	/**
 	 * @see ResultPrinter::getName
 	 *

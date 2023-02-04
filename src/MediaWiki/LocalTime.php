@@ -50,6 +50,7 @@ class LocalTime {
 		$data = explode( '|', $tz, 3 );
 
 		// DateTime is mutable, keep track of possible changes
+		// TODO: Illegal dynamic property (#5421)
 		$dateTime->hasLocalTimeCorrection = false;
 
 		if ( $data[0] == 'ZoneInfo' ) {

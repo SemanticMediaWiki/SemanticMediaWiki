@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Html;
+use Title;
 
 /**
  * Query class that provides content for the Special:WantedProperties page
@@ -27,6 +28,8 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @var ListLookup
 	 */
 	private $listLookup;
+
+	private Title $title;
 
 	/**
 	 * @since 1.9

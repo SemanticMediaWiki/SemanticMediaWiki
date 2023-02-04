@@ -47,6 +47,8 @@ class AutoRecovery {
 	 */
 	private $contents;
 
+	private string $dir;
+
 	/**
 	 * @since 3.1
 	 *

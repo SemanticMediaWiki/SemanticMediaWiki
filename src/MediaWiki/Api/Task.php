@@ -16,6 +16,8 @@ class Task extends ApiBase {
 
 	const CACHE_NAMESPACE = 'smw:api:task';
 
+	private TaskFactory $taskFactory;
+
 	/**
 	 * @since 3.0
 	 *

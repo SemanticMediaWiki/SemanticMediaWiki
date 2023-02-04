@@ -47,6 +47,8 @@ class HtmlTableRenderer {
 	 */
 	private $transpose = false;
 
+	private bool $htmlContext;
+
 	/**
 	 * @par Example:
 	 * @code

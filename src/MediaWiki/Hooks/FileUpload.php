@@ -111,6 +111,7 @@ class FileUpload implements HookListener {
 		);
 
 		$filePage->setFile( $file );
+		// TODO: Illegal dynamic property (#5421)
 		$filePage->smwFileReUploadStatus = $reUploadStatus;
 
 		return $filePage;

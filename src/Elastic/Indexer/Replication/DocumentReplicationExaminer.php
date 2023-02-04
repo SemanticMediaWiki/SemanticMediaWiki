@@ -43,6 +43,8 @@ class DocumentReplicationExaminer {
 	 */
 	private $replicationStatusResponse = [];
 
+	private ReplicationStatus $replicationStatus;
+
 	/**
 	 * @since 3.1
 	 *

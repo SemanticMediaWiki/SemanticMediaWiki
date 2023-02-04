@@ -39,6 +39,8 @@ class ApiQueryResultFormatter {
 	 */
 	protected $queryResult = null;
 
+	protected array $result;
+
 	/**
 	 * @since 1.9
 	 *
@@ -181,7 +183,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @return array
 	 */
-	protected function formatErrors( array $errors ) {
+	protected function formatErrors( array $errors ): array {
 
 		$this->type      = 'error';
 		$result['query'] = $errors;

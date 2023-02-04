@@ -53,6 +53,8 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 */
 	private $languageCode = '';
 
+	private TemplateEngine $templateEngine;
+
 	/**
 	 * @since 3.2
 	 *

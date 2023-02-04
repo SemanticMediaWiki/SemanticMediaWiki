@@ -27,6 +27,8 @@ class ReplicationStatus {
 	 */
 	private $fieldMapper;
 
+	private ElasticClient $connection;
+
 	/**
 	 * @since 3.0
 	 *

@@ -34,6 +34,9 @@ class SomeProperty extends Description {
 	 */
 	protected $hierarchyDepth;
 
+	public string $notConditionField;
+	public string $sourceChainMemberField;
+
 	/**
 	 * @since 1.6
 	 *
