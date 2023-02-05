@@ -336,7 +336,7 @@ class SetupCheck {
 			$content = $this->buildHTML( $error );
 			$this->header( 'Content-Type: text/html; charset=UTF-8' );
 			$this->header( 'Content-Length: ' . strlen( $content ) );
-			$this->header( 'Cache-control: none' );
+			$this->header( 'Cache-control: no-store' );
 			$this->header( 'Pragma: no-cache' );
 			$this->header( 'HTTP/1.1 503 Service Temporarily Unavailable' );
 			$this->header( 'Status: 503 Service Temporarily Unavailable' );
