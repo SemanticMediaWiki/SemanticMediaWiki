@@ -2,6 +2,7 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
+use ExtensionRegistry;
 use SMW\DIProperty;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\DataValues\TypesValue;
@@ -123,7 +124,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 
 	private function checkGeoProperty( DIProperty $property ) {
 
-		if ( $property->getKey() !== '_geo' || defined( 'SM_VERSION' ) ) {
+		if ( $property->getKey() !== '_geo' || ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 			return;
 		}
 
