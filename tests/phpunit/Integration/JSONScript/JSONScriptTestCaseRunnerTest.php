@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\JSONScript;
 
+use ExtensionRegistry;
 use SMW\Tests\JSONScriptServicesTestCaseRunner;
 
 /**
@@ -53,13 +54,13 @@ class JSONScriptTestCaseRunnerTest extends JSONScriptServicesTestCaseRunner {
 		return [
 			'Maps' => function( $val, &$reason ) {
 
-				if ( !defined( 'SM_VERSION' ) ) {
+				if ( !ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 					$reason = "Dependency: Maps (or Semantic Maps) as requirement for the test is not available!";
 					return false;
 				}
 
 				list( $compare, $requiredVersion ) = explode( ' ', $val );
-				$version = SM_VERSION;
+				$version = ExtensionRegistry::getInstance()->getAllThings()['Maps']['version'];
 
 				if ( !version_compare( $version, $requiredVersion, $compare ) ) {
 					$reason = "Dependency: Required version of Maps ($requiredVersion $compare $version) is not available!";
