@@ -191,7 +191,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		}
 		$text = '<p>' . 'Name of property to connect this template\'s fields to the rest of the page:' . ' ' . '(should only be used if this template can have multiple instances)' . ' ';
 		$propName = PageSchemas::getValueFromObject( $prop_array, 'name' );
-		$text .= Html::input( 'smw_connecting_property_num', $propName, [ 'size' => 15 ] ) . "\n";
+		$text .= Html::input( 'smw_connecting_property_num', $propName, 'text', [ 'size' => 15 ] ) . "\n";
 
 		return [ $text, $hasExistingValues ];
 	}
@@ -214,7 +214,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		}
 		$html_text = '<p>' . wfMessage( 'ps-optional-name' )->text() . ' ';
 		$propName = PageSchemas::getValueFromObject( $prop_array, 'name' );
-		$html_text .= Html::input( 'smw_property_name_num', $propName, [ 'size' => 15 ] ) . "\n";
+		$html_text .= Html::input( 'smw_property_name_num', $propName, 'text', [ 'size' => 15 ] ) . "\n";
 		$propType = PageSchemas::getValueFromObject( $prop_array, 'Type' );
 		$select_body = "";
 		$datatype_labels = $smwgContLang->getDatatypeLabels();
@@ -237,7 +237,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		if ( defined( 'SF_VERSION' ) ) {
 			$html_text .= '<p>' . wfMessage( 'sf_createproperty_linktoform' )->text() . ' ';
 			$linkedForm = PageSchemas::getValueFromObject( $prop_array, 'LinkedForm' );
-			$html_text .= Html::input( 'smw_linked_form_num', $linkedForm, [ 'size' => 15 ] ) . "\n";
+			$html_text .= Html::input( 'smw_linked_form_num', $linkedForm, 'text', [ 'size' => 15 ] ) . "\n";
 			$html_text .= "(for Page properties only)</p>\n";
 		}
 
