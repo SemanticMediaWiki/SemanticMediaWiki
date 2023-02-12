@@ -628,7 +628,7 @@
 	"smw-admin-maintenance-script-description-rebuilddata": "Recreates all the semantic data in the database, by cycling through all the pages that might have semantic data.",
 	"smw-admin-maintenance-script-description-rebuildelasticindex": "Rebuilds the Elasticsearch index (only for installations that use the <code>ElasticStore</code>), by cycling through all entities that have semantic data.",
 	"smw-admin-maintenance-script-description-rebuildelasticmissingdocuments": "Find missing entities in Elasticsearch (only for installations that use the <code>ElasticStore</code>) and schedule appropriate update jobs.",
-	"smw-admin-maintenance-script-description-rebuildfulltextsearchtable": "Rebuilds the <code>SQLStore</code> fulltext search index (for installations where the setting has been enabled.",
+	"smw-admin-maintenance-script-description-rebuildfulltextsearchtable": "Rebuilds the <code>SQLStore</code> fulltext search index (for installations where the setting has been enabled).",
 	"smw-admin-maintenance-script-description-rebuildpropertystatistics": "Rebuilds the usage statistics for all property entities.",
 	"smw-admin-maintenance-script-description-removeduplicateentities": "Removes duplicate entities found in selected tables that have no active references.",
 	"smw-admin-maintenance-script-description-setupstore": "Sets up the storage and query backend as defined in <code>LocalSettings.php</code>.",
