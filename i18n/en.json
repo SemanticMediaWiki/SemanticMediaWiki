@@ -484,7 +484,7 @@
 	"smw-admin-supplementary-elastic-status-last-active-replication": "Last active replication: $1",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Refresh interval: $1",
 	"smw-admin-supplementary-elastic-status-recovery-job-count": "Recovery job backlog: $1 (estimation)",
-	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "Injest (file) job backlog: $1 (estimation)",
+	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "Ingest (file) job backlog: $1 (estimation)",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Replication locked: $1 (rebuild in-progress)",
 	"smw-admin-supplementary-elastic-status-replication-monitoring": "Replication monitoring (active): $1",
 	"smw-admin-supplementary-elastic-replication-header-title": "Replication status",
