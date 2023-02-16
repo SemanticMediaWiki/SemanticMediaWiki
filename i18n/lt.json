@@ -191,7 +191,6 @@
 	"smw-datavalue-constraint-violation-single-value": "„[[Property:$1|$1]]“ ypatybė turi <code> single_value </code> apribojimą ir vertė „$2“ pažeidžia šį reikalavimą.",
 	"smw-datavalue-external-formatter-invalid-uri": "„$1“ yra negalimas URL.",
 	"smw-datavalue-parse-error": "Nurodyta reikšmė „$1“ nebuvo suprasta.",
-	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-clipboard-copy-link": "Kopijuoti nuorodą į iškarpinę",
 	"smw-data-lookup-with-wait": "Prašymas apdorojamas ir tai gali užtrukti.",
 	"smw-section-expand": "Išskleisti dalį",

@@ -23,7 +23,6 @@
 	"smw-ui-tooltip-title-warning": "Fähler",
 	"smw-livepreview-loading": "Läädt…",
 	"smw-sp-searchbyproperty-resultlist-header": "List vun Resultaten",
-	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-help": "Hülp",
 	"smw-listingcontinuesabbrev": "wieder",
 	"smw-showingresults": "Hier {{PLURAL:$1|is een Resultat|sünd '''$1''' Resultaten}}, anfungen mit #'''$2'''."

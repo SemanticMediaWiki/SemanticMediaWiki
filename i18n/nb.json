@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"Audun",
 			"Emilbk",
 			"Event",
@@ -67,7 +68,6 @@
 	"smw_noinvannot": "Inverse egenskaper kan ikke tildeles verdier.",
 	"version-semantic": "Semantiske utvidelser",
 	"smw_baduri": "Beklager, URI-er på formen «$1» er ikke tillatt.",
-	"smw_csv_link": "CSV",
 	"smw_dsv_link": "DSV",
 	"smw_printername_count": "Antall resultater",
 	"smw_printername_csv": "CSV-eksport",
@@ -413,7 +413,6 @@
 	"smw_smwadmin_datarefreshbutton": "Planlegg gjenoppbygging av data",
 	"smw_smwadmin_datarefreshstop": "Stopp denne oppdateringen",
 	"smw_smwadmin_datarefreshstopconfirm": "Ja, jeg er {{GENDER:$1|sikker}}.",
-	"smw-admin-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki",
 	"smw-admin-job-scheduler-note": "Oppgaver (som er slått på) i denne seksjonen utføres via jobbkøen for å unngå vranglåssituasjoner under kjøringen. [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue Jobbkøen] er ansvarlig for prosesseringen og det er kritisk at vedlikeholdsskriptet <code>runJobs.php</code> har riktig kapasitet (se også konfigurasjonsparameteren <code>$wgRunJobsAsync</code>).",
 	"smw-admin-outdateddisposal-title": "Forkasting av utdaterte elementer",
 	"smw-admin-outdateddisposal-intro": "Noen aktiviteter (som en endring av en egenskap sin type, fjerning av wiki-sider, eller verdikorreksjoner) resulterer i [https://www.semantic-mediawiki.org/wiki/Outdated_entities utdaterte elementer], og det anbefales å fjerne disse med jevne mellomrom for å frigjøre databaseplass.",
@@ -452,7 +451,6 @@
 	"smw-admin-supplementary-duplookup-title": "Dupliser elementoppslag",
 	"smw-admin-supplementary-duplookup-intro": "<u>$1</u> for å finne entiteter som er kategorisert som duplikater for den valgte tabellmatrisen",
 	"smw-admin-supplementary-duplookup-docu": "Denne siden angir elementer fra de valgte tabellene som har blitt kategorisert som [https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities duplikater]. Duplikatelementer bør, om noensinne, bare opptre i sjeldne tilfeller, ev. forårsaket av en avsluttet prosess under en databaseoppdatering eller en mislykket tilbakerulling fra sikkerhetskopi.",
-	"smw-admin-supplementary-duplookup-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities",
 	"smw-admin-supplementary-operational-statistics-cache-title": "Mellomlagerstatistikk",
 	"smw-admin-supplementary-operational-statistics-cache-intro": "<u>$1</u> viser et utvalgt sett av mellomlagerstatistikk",
 	"smw-admin-supplementary-operational-table-statistics-title": "Tabellstatistikk",
@@ -460,7 +458,7 @@
 	"smw-admin-supplementary-operational-table-statistics-intro": "Genererer <u>$1</u> for et valgt sett av tabeller",
 	"smw-admin-supplementary-operational-table-statistics-explain": "Denne seksjonen inneholder den vasgte tabellstatistikken for å hjelpe administratorer og andre datakuratorer med å gjøre informerte valg om statusen til bakstykket og lagringsmotoren.",
 	"smw-admin-supplementary-operational-table-statistics-legend": "Tegnforklaringen beskriver noen av nøklene som brukes for tabellstatistikken og inkluderer:",
-	"smw-admin-supplementary-operational-table-statistics-legend-general": "\n* <code>total_row_count</code> totalt antall rader i en tabell",
+	"smw-admin-supplementary-operational-table-statistics-legend-general": "* <code>total_row_count</code> totalt antall rader i en tabell",
 	"smw-admin-supplementary-operational-table-statistics-legend-id-table": "\n* <code>last_id</code> den siste ID-en som er i bruk for tiden\n* <code>duplicate_count</code> antall duplikater funnet i id_table (se også [[Special:SemanticMediaWiki/duplicate-lookup|Oppslag på duplikatentiteter]]) \n* <code>rows.rev_count</code> antall rader som har en revision_id tildelt som indikerer en direkte wikisidelenke \n* <code>rows.smw_namespace_group_by_count</code> antall aggregerte rader for navnerom brukt i tabellen\n* <code>rows.smw_proptable_hash.query_match_count</code>antall spørringsunderobjekter med en tilsvarende tabellreferanse\n* <code>rows.smw_proptable_hash.query_null_count</code> antall spørringsunderobjekter uten en tabellreferanse (ulenket, flytende referanse)",
 	"smw-admin-supplementary-operational-table-statistics-legend-blob-table": "\n* <code>unique_terms_occurrence_in_percent</code> prosentandel begreper som er unike (en lav prosent indikerer at repetetive begreper er i tabellinnholdet og indeksen)\n* <code>rows.terms_occurrence.single_occurrence_total_count</code> antall begreper som kun dukker opp én gang\n* <code>rows.terms_occurrence.multi_occurrence_total_count</code> antall begreper som dukker opp mer enn én gang",
 	"smw-admin-supplementary-elastic-title": "ElasticSearch",
@@ -887,7 +885,6 @@
 	"smw-datavalue-wikipage-property-invalid-title": "Egenskapen «$1» (som sidetype) med inndataverdien «$2» inneholder ugyldige tegn eller er ukompatibel og kan derfor forårsake uventede resultater i en spørrings- eller annoteringsprosess.",
 	"smw-datavalue-wikipage-empty": "Wikisidens inndataverdi er tom (f.eks. <code>[[SomeProperty::]], [[]]</code>) og kan derfor ikke brukes som navn på eller del av et spørringsvilkår.",
 	"smw-type-ref-rec": "«$1» er en [https://www.semantic-mediawiki.org/wiki/Container konteinertype] som gjør det mulig å tegne opp ekstra informasjon om en verditildeling.",
-	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-datavalue-reference-invalid-fields-definition": "Typen [[Special:Types/Reference|referanse]] forventer en liste over egenskaper som erklæres med egenskapen [https://www.semantic-mediawiki.org/wiki/Help:Special_properties_Has_fields Has fields].",
 	"smw-parser-invalid-json-format": "JSON-parseren returnerte med «$1».",
 	"smw-property-preferred-title-format": "$1 ($2)",

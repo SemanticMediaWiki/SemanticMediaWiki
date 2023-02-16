@@ -303,7 +303,6 @@
 	"smw-admin-supplementary-idlookup-intro": "Падтрымлівае простую функцыю <u>$1</u>",
 	"smw-admin-supplementary-duplookup-title": "Дубляваны прагляд элемэнтаў",
 	"smw-admin-supplementary-duplookup-intro": "<u>$1</span>, каб знайсьці элемэнты, якія класыфікуюцца як дублікаты ў абранай матрыцы табліцаў",
-	"smw-admin-supplementary-duplookup-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities",
 	"smw-admin-supplementary-operational-statistics-cache-title": "Статыстыка кэшу",
 	"smw-admin-supplementary-operational-statistics-cache-intro": "<u>$1</u> паказвае абраны набор статыстыкі кэшу",
 	"smw-admin-supplementary-elastic-title": "Elasticsearch",

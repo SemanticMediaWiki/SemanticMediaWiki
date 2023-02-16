@@ -47,7 +47,6 @@
 	"smw_iq_disabled": "استعلامات السيمانتيك تم تعطيلها فى هذا الويكى.",
 	"smw_iq_moreresults": "… مزيد من النتائج",
 	"smw_parseerror": "القيمه المعطاه لم يتم فهمها.",
-	"smw_decseparator": ".",
 	"smw_kiloseparator": "،",
 	"smw_notitle": "\"$1\" لا يمكن أن تستخدم مثل هذا الاسم فى صفحه ويكى.",
 	"smw_wrong_namespace": "فقط الصفحات فى النطاق \"$1\" مسموح بها هنا.",
