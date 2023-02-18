@@ -37,6 +37,8 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 */
 	protected $activityLog = [];
 
+	protected array $droppedTables;
+
 	/**
 	 * @since 2.5
 	 *
