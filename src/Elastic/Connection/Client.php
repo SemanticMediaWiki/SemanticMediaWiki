@@ -3,6 +3,8 @@
 namespace SMW\Elastic\Connection;
 
 use Elastic\Elasticsearch\Client as ElasticClient;
+use Elastic\Elasticsearch\Endpoints\Indices;
+use Elastic\Elasticsearch\Endpoints\Ingest;
 use Elastic\Transport\Exception\NoNodeAvailableException;
 use Exception;
 use Onoi\Cache\Cache;
@@ -221,7 +223,7 @@ class Client {
 		}
 
 		try {
-			$info = $this->client->info( [] );
+			$info = $this->client->info( [] )->asArray();
 		} catch( NoNodeAvailableException $e ) {
 			$info = [];
 		}
@@ -243,10 +245,10 @@ class Client {
 
 		switch ( $type ) {
 			case 'indices':
-				$res = $this->client->indices()->stats( [ 'index' => $indices ] + $params );
+				$res = $this->client->indices()->stats( [ 'index' => $indices ] + $params )->asArray();
 				break;
 			case 'nodes':
-				$res = $this->client->nodes()->stats( $params );
+				$res = $this->client->nodes()->stats( $params )->asArray();
 				break;
 			default:
 				$res = [];
@@ -279,7 +281,7 @@ class Client {
 		$res = [];
 
 		if ( $type === 'indices' ) {
-			$indices = $this->client->cat()->indices( $params );
+			$indices = $this->client->cat()->indices( $params )->asArray();
 
 			foreach ( $indices as $key => $value ) {
 				$res[$value['index']] = $indices[$key];
@@ -296,6 +298,7 @@ class Client {
 	 * @return Indices
 	 */
 	public function indices() {
+        // TODO: Do not expose the underlying ES client as this breaks the abstraction
 		return $this->client->indices();
 	}
 
@@ -305,6 +308,7 @@ class Client {
 	 * @return Ingest
 	 */
 	public function ingest() {
+        // TODO: Do not expose the underlying ES client as this breaks the abstraction
 		return $this->client->ingest();
 	}
 
@@ -327,7 +331,7 @@ class Client {
 			[
 				'index' => $index
 			]
-		);
+		)->asArray();
 
 		return self::$hasIndex[$type] = $ret;
 	}
@@ -344,10 +348,10 @@ class Client {
 
 		$version = 'v1';
 
-		if ( $indices->exists( [ 'index' => "$index-$version" ] ) ) {
+		if ( $indices->exists( [ 'index' => "$index-$version" ] )->asBool() ) {
 			$version = 'v2';
 
-			if ( $indices->exists( [ 'index' => "$index-$version" ] ) ) {
+			if ( $indices->exists( [ 'index' => "$index-$version" ] )->asBool() ) {
 				$indices->delete( [ 'index' => "$index-$version" ] );
 			}
 		}
@@ -385,7 +389,7 @@ class Client {
 		];
 
 		try {
-			$response = $this->client->indices()->delete( $params );
+			$response = $this->client->indices()->delete( $params )->asArray();
 		} catch ( Exception $e ) {
 			$response = $e->getMessage();
 		}
@@ -424,7 +428,7 @@ class Client {
 	 * @param array $params
 	 */
 	public function getMapping( array $params ) {
-		return $this->client->indices()->getMapping( $params );
+		return $this->client->indices()->getMapping( $params )->asArray();
 	}
 
 	/**
@@ -433,7 +437,7 @@ class Client {
 	 * @param array $params
 	 */
 	public function getSettings( array $params ) {
-		return $this->client->indices()->getSettings( $params );
+		return $this->client->indices()->getSettings( $params )->asArray();
 	}
 
 	/**
@@ -470,7 +474,7 @@ class Client {
 		unset( $params['body']['size'] );
 
 		try {
-			$results = $this->client->indices()->validateQuery( $params );
+			$results = $this->client->indices()->validateQuery( $params )->asArray();
 		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Failed the validate with: {exception}', $context );
@@ -495,7 +499,7 @@ class Client {
 			return self::$ping = $this->quick_ping();
 		}
 
-		return self::$ping = $this->client->ping( [] );
+		return self::$ping = $this->client->ping( [] )->asBool();
 	}
 
 	/**
@@ -534,7 +538,7 @@ class Client {
 	 * @return boolean
 	 */
 	public function exists( array $params ) {
-		return $this->client->exists( $params );
+		return $this->client->exists( $params )->asBool();
 	}
 
 	/**
@@ -546,7 +550,7 @@ class Client {
 	 * @return mixed
 	 */
 	public function get( array $params ) {
-		return $this->client->get( $params );
+		return $this->client->get( $params )->asArray();
 	}
 
 	/**
@@ -558,7 +562,7 @@ class Client {
 	 * @return mixed
 	 */
 	public function delete( array $params ) {
-		return $this->client->delete( $params );
+		return $this->client->delete( $params )->asArray();
 	}
 
 	/**
@@ -580,7 +584,7 @@ class Client {
 		];
 
 		try {
-			$context['response'] = $this->client->update( $params );
+			$context['response'] = $this->client->update( $params )->asArray();
 		} catch( Exception $e ) {
 			$context['response'] = $e->getMessage();
 			$this->logger->info( 'Updated failed for document {id} with: {response}, DOC: {doc}', $context );
@@ -608,7 +612,7 @@ class Client {
 		];
 
 		try {
-			$context['response'] = $this->client->index( $params );
+			$context['response'] = $this->client->index( $params )->asArray();
 		} catch( Exception $e ) {
 			$context['response'] = $e->getMessage();
 			$this->logger->info( 'Index failed for document {id} with: {response}', $context );
@@ -636,7 +640,7 @@ class Client {
 		];
 
 		try {
-			$response = $this->client->bulk( $params );
+			$response = $this->client->bulk( $params )->asArray();
 
 			// No errors, just log the head otherwise show the entire
 			// response
@@ -697,7 +701,7 @@ class Client {
 		unset( $params['body']['size'] );
 
 		try {
-			$results = $this->client->count( $params );
+			$results = $this->client->count( $params )->asArray();
 		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Failed the count with: {exception}', $context );
@@ -736,7 +740,7 @@ class Client {
 		$time = -microtime( true );
 
 		try {
-			$results = $this->client->search( $params );
+			$results = $this->client->search( $params )->asArray();
 		} catch ( NoNodeAvailableException $e ) {
 			$errors[] = 'Elasticsearch endpoint returned with "' . $e->getMessage() . '" .';
 		} catch ( Exception $e ) {
@@ -775,7 +779,7 @@ class Client {
 			return [];
 		}
 
-		return $this->client->explain( $params );
+		return $this->client->explain( $params )->asArray();
 	}
 
 	/**

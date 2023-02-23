@@ -485,7 +485,7 @@ class Rebuilder {
 		$indices = $this->client->indices();
 
 		// No Alias available, create one before the rollover
-		if ( !$indices->exists( [ 'index' => "$index" ] ) ) {
+		if ( !$indices->exists( [ 'index' => "$index" ] )->asBool() ) {
 			$actions = [
 				[ 'add' => [ 'index' => "$index-$version", 'alias' => $index ] ]
 			];
