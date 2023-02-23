@@ -201,6 +201,7 @@ class Settings extends Options {
 			'smwgElasticsearchConfig' => $GLOBALS['smwgElasticsearchConfig'],
 			'smwgElasticsearchProfile' => $GLOBALS['smwgElasticsearchProfile'],
 			'smwgElasticsearchEndpoints' => $GLOBALS['smwgElasticsearchEndpoints'],
+            'smwgElasticsearchCredentials' => $GLOBALS['smwgElasticsearchCredentials'],
 			'smwgPostEditUpdate' => $GLOBALS['smwgPostEditUpdate'],
 			'smwgSpecialAskFormSubmitMethod' => $GLOBALS['smwgSpecialAskFormSubmitMethod'],
 			'smwgSupportSectionTag' => $GLOBALS['smwgSupportSectionTag'],
