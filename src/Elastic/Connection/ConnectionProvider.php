@@ -90,6 +90,15 @@ class ConnectionProvider implements IConnectionProvider {
 			// 'handler' => ClientBuilder::singleHandler()
 		];
 
+        $authentication = $this->config->safeGet( Config::ELASTIC_CREDENTIALS );
+
+        if ( $authentication ) {
+            $user = $authentication['user'] ?? $authentication[0];
+            $pass = $authentication['pass'] ?? $authentication[1];
+
+            $params['basicAuthentication'] = [$user, $pass];
+        }
+
 		if ( $this->hasAvailableClientBuilder() ) {
 			$clientBuilder = ClientBuilder::fromConfig( $params, true );
 		}
@@ -176,13 +185,7 @@ class ConnectionProvider implements IConnectionProvider {
         $hostName = $host['host'] ?? 'localhost';
         $port = $host['port'] ?? 9200;
 
-        if ( isset( $host['user'] ) && isset( $host['pass'] ) ) {
-            // Basic authentication should be used
-            return $schema . '://' . $host['user'] . ':' . $host['pass'] . '@' . $hostName . ':' . $port;
-        } else {
-            // No authentication
-            return $schema . '://' . $hostName . ':' . $port;
-        }
+        return $schema . '://' . $hostName . ':' . $port;
     }
 
 }
