@@ -68,6 +68,8 @@ class ConnectionProvider implements IConnectionProvider {
 			throw new MissingEndpointConfigException();
 		}
 
+        $endpoints = array_map( [$this, 'buildHostString'], $endpoints );
+
 		$params = [
 			'hosts' => $endpoints,
 			'retries' => $this->config->dotGet( 'connection.retries', 1 ),
@@ -154,5 +156,33 @@ class ConnectionProvider implements IConnectionProvider {
 
 		return true;
 	}
+
+    /**
+     * ElasticSearch client 8.0 no longer supports the associative array syntax for hosts. This function acts as a
+     * B/C adapter, that transform a host in the old syntax to a host in the new syntax.
+     *
+     * @see https://github.com/elastic/elasticsearch-php/issues/1214
+     *
+     * @param array|string $host
+     * @return string
+     */
+    private function buildHostString( $host ): string {
+
+        if ( is_string( $host ) ) {
+            return $host;
+        }
+
+        $schema = $host['schema'] ?? 'https';
+        $hostName = $host['host'] ?? 'localhost';
+        $port = $host['port'] ?? 9200;
+
+        if ( isset( $host['username'] ) && isset( $host['password'] ) ) {
+            // Basic authentication should be used
+            return $schema . '://' . $host['username'] . ':' . $host['password'] . '@' . $hostName . ':' . $port;
+        } else {
+            // No authentication
+            return $schema . '://' . $hostName . ':' . $port;
+        }
+    }
 
 }
