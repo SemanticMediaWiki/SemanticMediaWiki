@@ -2,8 +2,8 @@
 
 namespace SMW\Elastic\Connection;
 
-use Elasticsearch\Client as ElasticClient;
-use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
+use Elastic\Elasticsearch\Client as ElasticClient;
+use Elastic\Transport\Exception\NoNodeAvailableException;
 use Exception;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
@@ -43,7 +43,7 @@ class Client {
 	const TYPE_LOOKUP = 'lookup';
 
 	/**
-	 * @var Client
+	 * @var ElasticClient
 	 */
 	private $client;
 
@@ -222,7 +222,7 @@ class Client {
 
 		try {
 			$info = $this->client->info( [] );
-		} catch( NoNodesAvailableException $e ) {
+		} catch( NoNodeAvailableException $e ) {
 			$info = [];
 		}
 
@@ -737,7 +737,7 @@ class Client {
 
 		try {
 			$results = $this->client->search( $params );
-		} catch ( NoNodesAvailableException $e ) {
+		} catch ( NoNodeAvailableException $e ) {
 			$errors[] = 'Elasticsearch endpoint returned with "' . $e->getMessage() . '" .';
 		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();

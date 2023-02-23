@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\Connection;
 
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\ClientBuilder;
 use SMW\Elastic\Exception\ClientBuilderNotFoundException;
 use SMW\Elastic\Exception\MissingEndpointConfigException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
