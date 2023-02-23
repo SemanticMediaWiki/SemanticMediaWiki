@@ -317,7 +317,7 @@
 	"smw-admin-statistics-job-title": "Στατιστικά εργασιών",
 	"smw-admin-statistics-job-docu": "Τα στατιστικά εργασιών παρουσιάζουν πληροφορίες σχετικά με προγραμματισμένες εργασίες του Σημασιολογικού MediaWiki που δεν έχουν ακόμη εκτελεστεί. Ο αριθμός των εργασιών μπορεί να είναι ελαφρώς ανακριβής ή να περιέχει αποτυχημένες προσπάθειες, παρακαλείσθε να συμβουλευτείτε το [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue εγχειρίδιο χρήσης] για περαιτέρω πληροφορίες.",
 	"smw-admin-statistics-querycache-title": "Προσωρινή μνήμη ερωτημάτων",
-	"smw-admin-statistics-querycache-disabled": "Η [https://www.semantic-mediawiki.org/wiki/QueryCache QueryCache] (προσωρινή μνήμη ερωτημάτων) δεν έχει ενεργοποιηθεί σε αυτό το wiki και δεν υπάρχουν εδώ διαθέσιμα στατιστικά στοιχεία.",
+	"smw-admin-statistics-querycache-disabled": "Η [https://www.semantic-mediawiki.org/wiki/QueryCache QueryCache] δεν έχει ενεργοποιηθεί σε αυτό το wiki και δεν προφανώς δεν υπάρχουν διαθέσιμα στατιστικά στοιχεία.",
 	"smw-admin-statistics-section-explain": "Η ενότητα παρέχει πρόσθετα στατιστικά στοιχεία για τους διαχειριστές.",
 	"smw-admin-statistics-semanticdata-overview": "Επισκόπηση",
 	"smw-admin-permission-missing": "Η πρόσβαση σε αυτήν τη σελίδα έχει αποκλειστεί λόγω έλλειψης αδειών. Για λεπτομέρειες σχετικά με τις απαραίτητες ρυθμίσεις, παρακαλούμε συμβουλευτείτε τη σελίδα βοήθειας για τις [https://www.semantic-mediawiki.org/wiki/Help:Permissions άδειες].",

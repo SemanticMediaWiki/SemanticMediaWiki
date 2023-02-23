@@ -4,7 +4,8 @@
 			"Les Meloures",
 			"McDutchie",
 			"Robby",
-			"Soued031"
+			"Soued031",
+			"Volvox"
 		]
 	},
 	"smw-desc": "Är Wiki méi accessibel machen - fir Maschinnen ''a'' Menschen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -69,7 +70,7 @@
 	"smw-paramdesc-export": "Export-Optiounen",
 	"smw-paramdesc-jsonsyntax": "JSON Syntax muss benotzt ginn",
 	"smw_iq_moreresults": "… weider Resultater",
-	"smw_parseerror": "De Wäert deen Dir aginn hutt gouf net verstan.",
+	"smw_parseerror": "De Wäert, deen Dir aginn hutt, gouf net verstanen.",
 	"smw_notitle": "\"$1\" kann net als Numm vun enger Säit op dëser Wiki benotzt ginn.",
 	"smw_wrong_namespace": "Nëmme Säiten aus dem Nummraum \"$1\" sinn hei erlaabt.",
 	"smw_emptystring": "Eidel Zeeche ginn net akzeptéiert.",
@@ -166,7 +167,7 @@
 	"browse": "Duerch d'Wiki goen",
 	"smw_browselink": "Proprietéite weisen",
 	"smw_browse_go": "Lass",
-	"smw_browse_show_incoming": "Eegenschafte weisen déi heihi linken",
+	"smw_browse_show_incoming": "Eegenschafte weisen, déi heihi linken",
 	"smw_browse_hide_incoming": "Eegeschaften verstoppen déi hei hi linken",
 	"smw_browse_no_outgoing": "Dës Säit huet keng Eegeschaften.",
 	"smw_browse_no_incoming": "Et linke keng Eegeschaften op dës Säit.",
