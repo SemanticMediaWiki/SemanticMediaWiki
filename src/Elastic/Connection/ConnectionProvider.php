@@ -176,9 +176,9 @@ class ConnectionProvider implements IConnectionProvider {
         $hostName = $host['host'] ?? 'localhost';
         $port = $host['port'] ?? 9200;
 
-        if ( isset( $host['username'] ) && isset( $host['password'] ) ) {
+        if ( isset( $host['user'] ) && isset( $host['pass'] ) ) {
             // Basic authentication should be used
-            return $schema . '://' . $host['username'] . ':' . $host['password'] . '@' . $hostName . ':' . $port;
+            return $schema . '://' . $host['user'] . ':' . $host['pass'] . '@' . $hostName . ':' . $port;
         } else {
             // No authentication
             return $schema . '://' . $hostName . ':' . $port;
