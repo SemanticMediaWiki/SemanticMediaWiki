@@ -148,7 +148,7 @@ class ConnectionProvider implements IConnectionProvider {
 
 		// Fail hard because someone selected the ElasticStore but forgot to install
 		// the elastic interface!
-		if ( !class_exists( '\Elasticsearch\ClientBuilder' ) ) {
+		if ( !class_exists( 'Elastic\Elasticsearch\ClientBuilder' ) ) {
 			throw new ClientBuilderNotFoundException();
 		}
 
