@@ -181,10 +181,10 @@ class ConnectionProvider implements IConnectionProvider {
 		}
 
 		$schema = $host['schema'] ?? 'https';
-        $hostName = $host['host'] ?? 'localhost';
-        $port = $host['port'] ?? 9200;
+		$hostName = $host['host'] ?? 'localhost';
+		$port = $host['port'] ?? 9200;
 
-        return $schema . '://' . $hostName . ':' . $port;
-    }
+		return $schema . '://' . $hostName . ':' . $port;
+	}
 
 }
