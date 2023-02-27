@@ -274,8 +274,11 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 
 		// Do not show credentials through special page
 		unset( $config['elastic/credentials'] );
-		unset( $endpoints['user'] );
-		unset( $endpoints['pass'] );
+
+		foreach ( $endpoints as &$endpoint ) {
+			unset( $endpoint['user'] );
+			unset( $endpoint['pass'] );
+		}
 
 		$config = ( new JsonView() )->create(
 			'elastic-config',
