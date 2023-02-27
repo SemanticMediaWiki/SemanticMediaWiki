@@ -94,10 +94,10 @@ class ElasticFactory {
 			$settings->get( 'smwgElasticsearchEndpoints' )
 		);
 
-        $config->set(
-            Config::ELASTIC_CREDENTIALS,
-            $settings->get( 'smwgElasticsearchCredentials' )
-        );
+		$config->set(
+			Config::ELASTIC_CREDENTIALS,
+			$settings->get( 'smwgElasticsearchCredentials' )
+		);
 
 		$config->loadFromJSON(
 			$config->readFile( $settings->get( 'smwgElasticsearchProfile' ) )

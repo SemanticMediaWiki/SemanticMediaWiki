@@ -244,7 +244,7 @@ class Indexer {
 
 		$params = [
 			'index' => $this->getIndexName( ElasticClient::TYPE_DATA ),
-            'id'    => $dataItem->getId()
+			'id'	=> $dataItem->getId()
 		];
 
 		$data['subject'] = $this->makeSubject( $dataItem );

@@ -67,7 +67,7 @@ class ConnectionProvider implements IConnectionProvider {
 			throw new MissingEndpointConfigException();
 		}
 
-        $endpoints = array_map( [$this, 'buildHostString'], $endpoints );
+		$endpoints = array_map( [$this, 'buildHostString'], $endpoints );
 
 		$params = [
 			'hosts' => $endpoints,
@@ -89,14 +89,14 @@ class ConnectionProvider implements IConnectionProvider {
 			// 'handler' => ClientBuilder::singleHandler()
 		];
 
-        $authentication = $this->config->safeGet( Config::ELASTIC_CREDENTIALS );
+		$authentication = $this->config->safeGet( Config::ELASTIC_CREDENTIALS );
 
-        if ( $authentication ) {
-            $user = $authentication['user'] ?? $authentication[0];
-            $pass = $authentication['pass'] ?? $authentication[1];
+		if ( $authentication ) {
+			$user = $authentication['user'] ?? $authentication[0];
+			$pass = $authentication['pass'] ?? $authentication[1];
 
-            $params['basicAuthentication'] = [$user, $pass];
-        }
+			$params['basicAuthentication'] = [$user, $pass];
+		}
 
 		if ( $this->hasAvailableClientBuilder() ) {
 			$clientBuilder = ClientBuilder::fromConfig( $params, true );
@@ -165,22 +165,22 @@ class ConnectionProvider implements IConnectionProvider {
 		return true;
 	}
 
-    /**
-     * ElasticSearch client 8.0 no longer supports the associative array syntax for hosts. This function acts as a
-     * B/C adapter, that transform a host in the old syntax to a host in the new syntax.
-     *
-     * @see https://github.com/elastic/elasticsearch-php/issues/1214
-     *
-     * @param array|string $host
-     * @return string
-     */
-    private function buildHostString( $host ): string {
+	/**
+	 * ElasticSearch client 8.0 no longer supports the associative array syntax for hosts. This function acts as a
+	 * B/C adapter, that transform a host in the old syntax to a host in the new syntax.
+	 *
+	 * @see https://github.com/elastic/elasticsearch-php/issues/1214
+	 *
+	 * @param array|string $host
+	 * @return string
+	 */
+	private function buildHostString( $host ): string {
 
-        if ( is_string( $host ) ) {
-            return $host;
-        }
+		if ( is_string( $host ) ) {
+			return $host;
+		}
 
-        $schema = $host['schema'] ?? 'https';
+		$schema = $host['schema'] ?? 'https';
         $hostName = $host['host'] ?? 'localhost';
         $port = $host['port'] ?? 9200;
 

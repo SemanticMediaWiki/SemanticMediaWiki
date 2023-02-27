@@ -23,10 +23,10 @@ class Config extends Options {
 	 */
 	const ELASTIC_ENDPOINTS = 'elastic/endpoints';
 
-    /**
-     * Describes ElasticSearch credentials
-     */
-    const ELASTIC_CREDENTIALS = 'elastic/credentials';
+	/**
+	 * Describes ElasticSearch credentials
+	 */
+	const ELASTIC_CREDENTIALS = 'elastic/credentials';
 
 	/**
 	 * Contains deprecated or renamed settings.
