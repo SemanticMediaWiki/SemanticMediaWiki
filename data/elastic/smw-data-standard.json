@@ -210,12 +210,10 @@
 					"type": "integer"
 				},
 				"text_copy": {
-					"type": "text",
-					"doc_values": false
+					"type": "text"
 				},
 				"text_raw": {
-					"type": "text",
-					"doc_values": false
+					"type": "text"
 				},
 				"subject.title": {
 					"type": "text",
