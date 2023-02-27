@@ -361,7 +361,7 @@ class Client {
 			'body'  => $this->getIndexDefByType( $type )
 		];
 
-		$response = $indices->create( $params );
+		$response = $indices->create( $params )->asArray();
 
 		$context = [
 			'method' => __METHOD__,

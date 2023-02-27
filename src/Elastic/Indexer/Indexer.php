@@ -176,13 +176,8 @@ class Indexer {
 			return IndexerRecoveryJob::pushFromParams( $title, [ 'delete' => $idList ] );
 		}
 
-		$index = $this->getIndexName(
-			ElasticClient::TYPE_DATA
-		);
-
 		$params = [
-			'_index' => $index,
-			'_type'  => ElasticClient::TYPE_DATA
+			'_index' => $this->getIndexName( ElasticClient::TYPE_DATA )
 		];
 
 		$this->bulk->clear();
@@ -198,7 +193,6 @@ class Indexer {
 				$this->bulk->delete(
 					[
 						'_index' => $this->getIndexName( ElasticClient::TYPE_LOOKUP ),
-						'_type' => ElasticClient::TYPE_LOOKUP,
 						'_id' => md5( $id )
 					]
 				);
@@ -250,8 +244,7 @@ class Indexer {
 
 		$params = [
 			'index' => $this->getIndexName( ElasticClient::TYPE_DATA ),
-			'type'  => ElasticClient::TYPE_DATA,
-			'id'    => $dataItem->getId()
+            'id'    => $dataItem->getId()
 		];
 
 		$data['subject'] = $this->makeSubject( $dataItem );
@@ -323,8 +316,7 @@ class Indexer {
 		}
 
 		$params = [
-			'_index' => $this->getIndexName( ElasticClient::TYPE_DATA ),
-			'_type'  => ElasticClient::TYPE_DATA
+			'_index' => $this->getIndexName( ElasticClient::TYPE_DATA )
 		];
 
 		$this->bulk->clear();

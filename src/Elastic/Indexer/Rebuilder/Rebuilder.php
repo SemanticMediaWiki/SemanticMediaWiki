@@ -205,15 +205,8 @@ class Rebuilder {
 	 */
 	public function hasIndices() {
 
-		if ( !$this->client->hasIndex( ElasticClient::TYPE_DATA ) ) {
-			return false;
-		}
-
-		if ( !$this->client->hasIndex( ElasticClient::TYPE_LOOKUP ) ) {
-			return false;
-		}
-
-		return true;
+		return $this->client->hasIndex( ElasticClient::TYPE_DATA ) &&
+            $this->client->hasIndex( ElasticClient::TYPE_LOOKUP );
 	}
 
 	/**
@@ -269,7 +262,6 @@ class Rebuilder {
 
 		$params = [
 			'index' => $index,
-			'type' => ElasticClient::TYPE_DATA,
 			'id' => $id
 		];
 
