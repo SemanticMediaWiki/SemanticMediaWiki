@@ -48,12 +48,11 @@ class Rollover {
 		$indices = $this->connection->indices();
 
 		$params = [];
-		$actions = [];
 
 		$old = $version === 'v2' ? 'v1' : 'v2';
 		$check = false;
 
-		if ( $indices->exists( [ 'index' => "$index-$old" ] )->asBool() ) {
+		if ( $this->connection->indexExists( "$index-$old" ) ) {
 			$actions = [
 				[ 'remove' => [ 'index' => "$index-$old", 'alias' => $index ] ],
 				[ 'add' => [ 'index' => "$index-$version", 'alias' => $index ] ]
@@ -73,7 +72,7 @@ class Rollover {
 
 		$indices->updateAliases( $params );
 
-		if ( $check && $indices->exists( [ 'index' => "$index-$old" ] )->asBool() ) {
+		if ( $check && $this->connection->indexExists( "$index-$old" ) ) {
 			$indices->delete( [ "index" => "$index-$old" ] );
 		}
 
@@ -104,21 +103,21 @@ class Rollover {
 
 		// Shouldn't happen but just in case where the root index is
 		// used as index but not an alias
-		if ( $indices->exists( [ 'index' => "$index" ] )->asBool() && !$indices->existsAlias( [ 'name' => "$index" ] )->asBool() ) {
+		if ( $this->connection->indexExists("$index" ) && !$indices->existsAlias( [ 'name' => "$index" ] )->asBool() ) {
 			$indices->delete( [ 'index' => "$index" ] );
 		}
 
 		// Check v1/v2 and if both exists (which shouldn't happen but most likely
 		// caused by an unfinshed rebuilder run) then use v1 as master
-		if ( $indices->exists( [ 'index' => "$index-v1" ] )->asBool() ) {
+		if ( $this->connection->indexExists( "$index-v1" ) ) {
 
 			// Just in case
-			if ( $indices->exists( [ 'index' => "$index-v2" ] )->asBool() ) {
+			if ( $this->connection->indexExists( "$index-v2" ) ) {
 				$indices->delete( [ 'index' => "$index-v2" ] );
 			}
 
 			$actions[] = [ 'add' => [ 'index' => "$index-v1", 'alias' => $index ] ];
-		} elseif ( $indices->exists( [ 'index' => "$index-v2" ] )->asBool() ) {
+		} elseif ( $this->connection->indexExists( "$index-v2" ) ) {
 			$actions[] = [ 'add' => [ 'index' => "$index-v2", 'alias' => $index ] ];
 		} else {
 			$version = $this->connection->createIndex( $type );
@@ -154,15 +153,15 @@ class Rollover {
 			$type
 		);
 
-		if ( $indices->exists( [ 'index' => "$index-v1" ] )->asBool() ) {
+		if ( $this->connection->indexExists( "$index-v1" ) ) {
 			$indices->delete( [ 'index' => "$index-v1" ] );
 		}
 
-		if ( $indices->exists( [ 'index' => "$index-v2" ] )->asBool() ) {
+		if ( $this->connection->indexExists( "$index-v2" ) ) {
 			$indices->delete( [ 'index' => "$index-v2" ] );
 		}
 
-		if ( $indices->exists( [ 'index' => "$index" ] )->asBool() && !$indices->existsAlias( [ 'name' => "$index" ] )->asBool() ) {
+		if ( $this->connection->indexExists( "$index" ) && !$indices->existsAlias( [ 'name' => "$index" ] )->asBool() ) {
 			$indices->delete( [ 'index' => "$index" ] );
 		}
 

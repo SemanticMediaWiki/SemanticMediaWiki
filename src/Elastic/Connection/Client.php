@@ -217,12 +217,12 @@ class Client {
 		}
 
 		try {
-			$info = $this->client->info( [] )->asArray();
+			$info = $this->client->info( [] );
 		} catch( NoNodeAvailableException $e ) {
 			$info = [];
 		}
 
-		return $info;
+		return $info->asArray();
 	}
 
 	/**
@@ -293,7 +293,7 @@ class Client {
 	 * @return Indices
 	 */
 	public function indices() {
-        // TODO: Do not expose the underlying ES client as this breaks the abstraction
+        // FIXME: Do not expose the underlying ES client as this breaks the abstraction
 		return $this->client->indices();
 	}
 
@@ -303,7 +303,7 @@ class Client {
 	 * @return Ingest
 	 */
 	public function ingest() {
-        // TODO: Do not expose the underlying ES client as this breaks the abstraction
+        // FIXME: Do not expose the underlying ES client as this breaks the abstraction
 		return $this->client->ingest();
 	}
 
@@ -321,14 +321,9 @@ class Client {
 		}
 
 		$index = $this->getIndexNameByType( $type );
+		$result = $this->indexExists( $index );
 
-		$ret = $this->client->indices()->exists(
-			[
-				'index' => $index
-			]
-		)->asBool();
-
-		return self::$hasIndex[$type] = $ret;
+		return self::$hasIndex[$type] = $result;
 	}
 
 	/**
@@ -339,15 +334,13 @@ class Client {
 	public function createIndex( $type ) {
 
 		$index = $this->getIndexNameByType( $type );
-		$indices = $this->client->indices();
-
 		$version = 'v1';
 
-		if ( $indices->exists( [ 'index' => "$index-$version" ] )->asBool() ) {
+		if ( $this->indexExists( "$index-$version" ) ) {
 			$version = 'v2';
 
-			if ( $indices->exists( [ 'index' => "$index-$version" ] )->asBool() ) {
-				$indices->delete( [ 'index' => "$index-$version" ] );
+			if ( $this->indexExists( "$index-$version" ) ) {
+				$this->client->indices()->delete( [ 'index' => "$index-$version" ] );
 			}
 		}
 
@@ -356,7 +349,7 @@ class Client {
 			'body'  => $this->getIndexDefByType( $type )
 		];
 
-		$response = $indices->create( $params )->asArray();
+		$response = $this->client->indices()->create( $params )->asArray();
 
 		$context = [
 			'method' => __METHOD__,
@@ -776,6 +769,20 @@ class Client {
 
 		return $this->client->explain( $params )->asArray();
 	}
+
+    /**
+     * @since 4.2.0
+     *
+     * @param string $index
+     *
+     * @return bool
+     */
+    public function indexExists( string $index ) {
+
+        return $this->client->indices()->exists( [
+            'index' => $index
+        ] )->asBool();
+    }
 
 	/**
 	 * @since 3.1
