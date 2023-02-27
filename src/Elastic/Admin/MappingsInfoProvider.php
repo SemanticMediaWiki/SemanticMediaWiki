@@ -3,6 +3,7 @@
 namespace SMW\Elastic\Admin;
 
 use Html;
+use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use WebRequest;
 use SMW\Utils\HtmlTabs;
@@ -158,19 +159,16 @@ class MappingsInfoProvider extends InfoProviderHandler {
 			]
 		];
 
-        // TODO: See what the structure of $mappings is without types and change these functions
-        //       to work with that new structure.
-		foreach ( $mappings as $inx ) {
-			foreach ( $inx as $key => $value ) {
-				$this->countFields( $value, $summary );
-				$this->countFields( $value,  $summary );
+		foreach ( $mappings as $type => $mapping ) {
+			foreach ( $mapping as $inx ) {
+				$this->countFields( $inx['mappings'], $type, $summary );
 			}
 		}
 
 		return $summary;
 	}
 
-	private function countFields( $mapping, &$count ) {
+	private function countFields( $mapping, $type, &$count ) {
 
 		foreach ( $mapping['properties'] as $k => $val ) {
 			foreach ( $val as $p => $v ) {
