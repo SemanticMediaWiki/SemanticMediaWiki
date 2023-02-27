@@ -807,6 +807,15 @@ class Client {
 		$this->client->indices()->close( [ 'index' => $index ] );
 	}
 
+    /**
+     * @since 4.2.0
+     *
+     * @param array $params
+     */
+    public function ingestPutPipeline( array $params ) {
+        $this->client->ingest()->putPipeline( $params );
+    }
+
 	/**
 	 * @since 3.1
 	 *
