@@ -146,9 +146,7 @@ class Indexer {
 	 */
 	public function getIndexName( $type ) {
 
-		$index = $this->store->getConnection( 'elastic' )->getIndexNameByType(
-			$type
-		);
+		$index = $this->store->getConnection( 'elastic' )->getIndexName( $type );
 
 		// If the rebuilder has set a specific version, use it to avoid writing to
 		// the alias of the index when running a rebuild.

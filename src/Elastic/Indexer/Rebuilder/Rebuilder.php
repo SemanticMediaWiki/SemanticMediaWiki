@@ -410,7 +410,7 @@ class Rebuilder {
 		// and reopen an index
 		$this->client->closeIndex( $index );
 
-		$indexDef = $this->client->getIndexDefByType( $type );
+		$indexDef = $this->client->getIndexDefinition( $type );
 
 		$indexDef = json_decode( $indexDef, true );
 

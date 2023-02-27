@@ -69,17 +69,15 @@ class SettingsInfoProvider extends InfoProviderHandler {
 
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
-		// TODO: See what the structure of $mappings is without types and change these functions
-		//	   to work with that new structure.
 		$settings = [
-			$connection->getSettings(
+			ElasticClient::TYPE_DATA => $connection->getSettings(
 				[
-					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_DATA )
+					'index' => $connection->getIndexName( ElasticClient::TYPE_DATA )
 				]
 			),
-			$connection->getSettings(
+			ElasticClient::TYPE_LOOKUP => $connection->getSettings(
 				[
-					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_LOOKUP )
+					'index' => $connection->getIndexName( ElasticClient::TYPE_LOOKUP )
 				]
 			)
 		];

@@ -63,13 +63,6 @@ class DummyClient extends Client {
 	}
 
 	/**
-	 * @see Client::getIndexNameByType
-	 */
-	public function getIndexNameByType( $type ) {
-		return $this->getIndexName( $type );
-	}
-
-	/**
 	 * @see Client::getIndexName
 	 */
 	public function getIndexName( $type ) {
@@ -77,9 +70,9 @@ class DummyClient extends Client {
 	}
 
 	/**
-	 * @see Client::getIndexDefByType
+	 * @see Client::getIndexDefinition
 	 */
-	public function getIndexDefByType( $type ) {
+	public function getIndexDefinition($type ) {
 		return '';
 	}
 
