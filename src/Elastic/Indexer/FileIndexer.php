@@ -215,7 +215,7 @@ class FileIndexer {
 		];
 
 		$connection = $this->store->getConnection( 'elastic' );
-		$connection->ingest()->putPipeline( $params );
+		$connection->ingestPutPipeline( $params );
 
 		if ( $file === null ) {
 			$file = $this->findFile( $title );
