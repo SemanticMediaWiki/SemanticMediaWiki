@@ -5,7 +5,6 @@ namespace SMW\Elastic\Connection;
 use Elastic\Elasticsearch\ClientBuilder;
 use SMW\Elastic\Exception\ClientBuilderNotFoundException;
 use SMW\Elastic\Exception\MissingEndpointConfigException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Elastic\Config;
 use Psr\Log\LoggerAwareTrait;
@@ -33,7 +32,7 @@ class ConnectionProvider implements IConnectionProvider {
 	private $config;
 
 	/**
-	 * @var ElasticClient
+	 * @var Client
 	 */
 	private $connection;
 
@@ -53,7 +52,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 3.0
 	 *
-	 * @return Connection
+	 * @return Client
 	 */
 	public function getConnection() {
 
