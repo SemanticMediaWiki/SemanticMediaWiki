@@ -238,7 +238,6 @@ class FileIndexer {
 
 		$params = [
 			'index' => $index,
-			'type'  => ElasticClient::TYPE_DATA,
 			'id'    => $id,
 		];
 
