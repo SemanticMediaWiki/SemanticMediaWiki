@@ -74,12 +74,12 @@ class MappingsInfoProvider extends InfoProviderHandler {
 		$mappings = [
 			ElasticClient::TYPE_DATA => $connection->getMapping(
 				[
-					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_DATA )
+					'index' => $connection->getIndexName( ElasticClient::TYPE_DATA )
 				]
 			),
 			ElasticClient::TYPE_LOOKUP => $connection->getMapping(
 				[
-					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_LOOKUP )
+					'index' => $connection->getIndexName( ElasticClient::TYPE_LOOKUP )
 				]
 			)
 		];

@@ -4,6 +4,8 @@ namespace SMW\Elastic\Connection;
 
 use Elastic\Elasticsearch\Client as ElasticClient;
 use Elastic\Elasticsearch\Endpoints\Indices;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Elastic\Transport\Exception\NoNodeAvailableException;
 use Exception;
 use Psr\Log\LoggerAwareTrait;
@@ -112,18 +114,7 @@ class Client {
 	 *
 	 * @return string
 	 */
-	public function getIndexNameByType( $type ) {
-		return $this->getIndexName( $type );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $type
-	 *
-	 * @return string
-	 */
-	public function getIndexName( $type ) {
+	public function getIndexName( string $type ): string {
 		return "smw-$type-" . $this->wikiid;
 	}
 
@@ -134,7 +125,7 @@ class Client {
 	 *
 	 * @return string
 	 */
-	public function getIndexDefByType( $type ) {
+	public function getIndexDefinition( string $type ): string {
 		static $indexDef = [];
 
 		if ( isset( $indexDef[$type] ) ) {
@@ -195,7 +186,7 @@ class Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return array
 	 */
 	public function getSoftwareInfo() {
 		return [
@@ -209,7 +200,7 @@ class Client {
 	 *
 	 * @param array
 	 */
-	public function info() {
+	public function info(): array {
 
 		if ( !$this->ping() ) {
 			return [];
@@ -217,19 +208,20 @@ class Client {
 
 		try {
 			$info = $this->client->info( [] );
-		} catch( NoNodeAvailableException $e ) {
-			$info = [];
-		}
+		} catch( NoNodeAvailableException|ClientResponseException|ServerResponseException $e ) {
+			return [];
+        }
 
-		return $info->asArray();
+        return $info->asArray();
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param array
+	 * @param string $type
+     * @param array $params
 	 */
-	public function stats( $type = 'indices', $params = [] ) {
+	public function stats( string $type = 'indices', array $params = [] ): array {
 
 		$indices = [
 			$this->getIndexName( self::TYPE_DATA ),
@@ -301,7 +293,7 @@ class Client {
 			return true;
 		}
 
-		$index = $this->getIndexNameByType( $type );
+		$index = $this->getIndexName( $type );
 		$result = $this->indexExists( $index );
 
 		return self::$hasIndex[$type] = $result;
@@ -314,7 +306,7 @@ class Client {
 	 */
 	public function createIndex( $type ) {
 
-		$index = $this->getIndexNameByType( $type );
+		$index = $this->getIndexName( $type );
 		$version = 'v1';
 
 		if ( $this->indexExists( "$index-$version" ) ) {
@@ -327,7 +319,7 @@ class Client {
 
 		$params = [
 			'index' => "$index-$version",
-			'body'  => $this->getIndexDefByType( $type )
+			'body'  => $this->getIndexDefinition( $type )
 		];
 
 		$response = $this->client->indices()->create( $params );
