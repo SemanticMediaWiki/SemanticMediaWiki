@@ -5,7 +5,6 @@ namespace SMW\Elastic\Connection;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
 use Psr\Log\NullLogger;
-use RuntimeException;
 use SMW\Elastic\Config;
 
 /**
@@ -21,7 +20,7 @@ class DummyClient extends Client {
 	/**
 	 * @var Client
 	 */
-	private $client;
+	protected $client;
 
 	/**
 	 * @var Cache
@@ -36,7 +35,7 @@ class DummyClient extends Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @param ElasticClient $client
+	 * @param \Elastic\Elasticsearch\Client $client
 	 * @param Cache|null $cache
 	 * @param Config|null $config
 	 */
@@ -137,7 +136,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::deleteIndex
 	 */
-	public function deleteIndex( $type ) {}
+	public function deleteIndex( $index ) {}
 
 	/**
 	 * @see Client::putSettings
@@ -245,6 +244,35 @@ class DummyClient extends Client {
 	public function explain( array $params ) {
 		return [];
 	}
+
+	/**
+	 * @see Client::updateAliases
+	 */
+	public function updateAliases( array $params ) {}
+
+	/**
+	 * @see Client::indexExists
+	 */
+	public function indexExists( string $index ): bool {
+		return true;
+	}
+
+	/**
+	 * @see Client::aliasExists
+	 */
+	public function aliasExists( string $index ): bool {
+		return true;
+	}
+
+	/**
+	 * @see Client::openIndex
+	 */
+	public function openIndex( string $index ) {}
+
+	/**
+	 * @see Client::closeIndex
+	 */
+	public function closeIndex( string $index ) {}
 
 	/**
 	 * @see Client::hasMaintenanceLock

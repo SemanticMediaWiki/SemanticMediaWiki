@@ -48,7 +48,7 @@ class TestClient extends Client {
 
 		// https://discuss.elastic.co/t/es-5-2-refresh-interval-doesnt-work-if-set-to-0/79248/2
 		// Make sure the replication/index lag doesn't hinder the search
-		$this->indices()->refresh( [ 'index' => $params['index'] ] );
+		$this->client->indices()->refresh( [ 'index' => $params['index'] ] );
 
 		return parent::count( $params );
 	}
@@ -67,7 +67,7 @@ class TestClient extends Client {
 			return [];
 		}
 
-		$this->indices()->refresh( [ 'index' => $params['index'] ] );
+		$this->client->indices()->refresh( [ 'index' => $params['index'] ] );
 
 		return parent::search( $params );
 	}
@@ -88,7 +88,7 @@ class TestClient extends Client {
 
 		// https://discuss.elastic.co/t/es-5-2-refresh-interval-doesnt-work-if-set-to-0/79248/2
 		// Make sure the replication/index lag doesn't hinder the search
-		$this->indices()->refresh( [ 'index' => $params['index'] ] );
+		$this->client->indices()->refresh( [ 'index' => $params['index'] ] );
 
 		return parent::explain( $params );
 	}
