@@ -228,16 +228,29 @@ class Client {
 			$this->getIndexName( self::TYPE_LOOKUP )
 		];
 
-		switch ( $type ) {
-			case 'indices':
-				$res = $this->client->indices()->stats( [ 'index' => $indices ] + $params );
-				break;
-			case 'nodes':
-				$res = $this->client->nodes()->stats( $params );
-				break;
-			default:
-				return [];
-		}
+        try {
+            switch ( $type ) {
+                case 'indices':
+                    $res = $this->client->indices()->stats( [ 'index' => $indices ] + $params );
+                    break;
+                case 'nodes':
+                    $res = $this->client->nodes()->stats( $params );
+                    break;
+                default:
+                    return [];
+            }
+        } catch ( NoNodeAvailableException|ClientResponseException|ServerResponseException $exception ) {
+            $context = [
+                'method' => __METHOD__,
+                'role' => 'user',
+                'type' => $type,
+                'exception' => $exception->getMessage()
+            ];
+
+            $this->logger->warning( 'Failed to get stats with: {exception}', $context );
+
+            return [];
+        }
 
 		$res = $res->asArray();
 
@@ -269,7 +282,21 @@ class Client {
 
 		if ( $type === 'indices' ) {
 			$params += [ 'format' => 'json' ];
-			$indices = $this->client->cat()->indices( $params );
+
+            try {
+                $indices = $this->client->cat()->indices( $params );
+            } catch ( NoNodeAvailableException|ClientResponseException|ServerResponseException $exception ) {
+                $context = [
+                    'method' => __METHOD__,
+                    'role' => 'user',
+                    'type' => $type,
+                    'exception' => $exception->getMessage()
+                ];
+
+                $this->logger->warning( 'Failed to get indices with: {exception}', $context );
+
+                return [];
+            }
 
 			foreach ( $indices->asArray() as $key => $value ) {
 				$res[$value['index']] = $indices[$key];
@@ -322,16 +349,14 @@ class Client {
 			'body'  => $this->getIndexDefinition( $type )
 		];
 
-		$response = $this->client->indices()->create( $params );
+        $context = [
+            'method' => __METHOD__,
+            'role' => 'user',
+            'index' => $index
+        ];
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'user',
-			'index' => $index,
-			'reponse' => $response->asArray()
-		];
-
-		$this->logger->info( 'Created index {index} with: {reponse}', $context );
+        $context['response'] = $this->client->indices()->create( $params );
+        $this->logger->info( 'Created index {index} with: {response}', $context );
 
 		return $version;
 	}
@@ -347,20 +372,14 @@ class Client {
 			'index' => $index,
 		];
 
-		try {
-			$response = $this->client->indices()->delete( $params )->asArray();
-		} catch ( Exception $e ) {
-			$response = $e->getMessage();
-		}
+        $context = [
+            'method' => __METHOD__,
+            'role' => 'user',
+            'index' => $index
+        ];
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'user',
-			'index' => $index,
-			'reponse' => $response
-		];
-
-		$this->logger->info( 'Deleted index {index} with: {reponse}', $context );
+        $context['response'] = $this->client->indices()->delete( $params )->asArray();
+        $this->logger->info( 'Deleted index {index} with: {response}', $context );
 	}
 
 	/**
@@ -530,7 +549,7 @@ class Client {
 	 *
 	 * @param array $params
 	 *
-	 * @return mixed
+	 * @return array|string
 	 */
 	public function update( array $params ) {
 
@@ -538,18 +557,17 @@ class Client {
 			'method' => __METHOD__,
 			'role' => 'production',
 			'index' => $params['index'],
-			'id' => $params['id'],
-			'response' => ''
+			'id' => $params['id']
 		];
 
 		try {
-			$context['response'] = $this->client->update( $params )->asArray();
+			return $this->client->update( $params )->asArray();
 		} catch( Exception $e ) {
-			$context['response'] = $e->getMessage();
-			$this->logger->info( 'Updated failed for document {id} with: {response}, DOC: {doc}', $context );
-		}
+			$context['exception'] = $e->getMessage();
+			$this->logger->info( 'Updated failed for document {id} with: {exception}, DOC: {doc}', $context );
 
-		return $context['response'];
+            return $context['exception'];
+		}
 	}
 
 	/**
@@ -558,7 +576,7 @@ class Client {
 	 *
 	 * @param array $params
 	 *
-	 * @return mixed
+	 * @return array|string
 	 */
 	public function index( array $params ) {
 
@@ -566,18 +584,17 @@ class Client {
 			'method' => __METHOD__,
 			'role' => 'production',
 			'index' => $params['index'],
-			'id' => $params['id'],
-			'response' => ''
+			'id' => $params['id']
 		];
 
 		try {
-			$context['response'] = $this->client->index( $params )->asArray();
+			return $this->client->index( $params )->asArray();
 		} catch( Exception $e ) {
-			$context['response'] = $e->getMessage();
-			$this->logger->info( 'Index failed for document {id} with: {response}', $context );
-		}
+			$context['exception'] = $e->getMessage();
+			$this->logger->info( 'Index failed for document {id} with: {exception}', $context );
 
-		return $context['response'];
+            return $context['exception'];
+		}
 	}
 
 	/**
@@ -589,13 +606,12 @@ class Client {
 	public function bulk( array $params ) {
 
 		if ( $params === [] ) {
-			return;
+			return [];
 		}
 
 		$context = [
 			'method' => __METHOD__,
-			'role' => 'production',
-			'response' => ''
+			'role' => 'production'
 		];
 
 		try {
@@ -623,15 +639,15 @@ class Client {
 				}
 			}
 
-			$context['response'] = $response;
+			return $response;
 		} catch( ReplicationException $e ) {
 			throw new ReplicationException( $e->getMessage() );
 		} catch( Exception $e ) {
-			$context['response'] = $e->getMessage();
-			$this->logger->info( 'Bulk update failed with {response}', $context );
-		}
+			$context['exception'] = $e->getMessage();
+			$this->logger->info( 'Bulk update failed with {exception}', $context );
 
-		return $context['response'];
+            return $context['exception'];
+		}
 	}
 
 	/**
