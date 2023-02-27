@@ -331,7 +331,7 @@ class Client {
 			[
 				'index' => $index
 			]
-		)->asArray();
+		)->asBool();
 
 		return self::$hasIndex[$type] = $ret;
 	}
