@@ -45,7 +45,6 @@ class Rollover {
 	public function rollover( $type, $version ) {
 
 		$index = $this->connection->getIndexNameByType( $type );
-		$indices = $this->connection->indices();
 
 		$params = [];
 
@@ -70,10 +69,10 @@ class Rollover {
 
 		$params['body'] = [ 'actions' => $actions ];
 
-		$indices->updateAliases( $params );
+		$this->connection->updateAliases( $params );
 
 		if ( $check && $this->connection->indexExists( "$index-$old" ) ) {
-			$indices->delete( [ "index" => "$index-$old" ] );
+			$this->connection->deleteIndex( "$index-$old" );
 		}
 
 		$this->connection->releaseLock( $type );
@@ -95,16 +94,14 @@ class Rollover {
 			throw new NoConnectionException();
 		}
 
-		$indices = $this->connection->indices();
-
 		$index = $this->connection->getIndexName(
 			$type
 		);
 
 		// Shouldn't happen but just in case where the root index is
 		// used as index but not an alias
-		if ( $this->connection->indexExists("$index" ) && !$indices->existsAlias( [ 'name' => "$index" ] )->asBool() ) {
-			$indices->delete( [ 'index' => "$index" ] );
+		if ( $this->connection->indexExists("$index" ) && !$this->connection->aliasExists( "$index" ) ) {
+			$this->connection->deleteIndex( "$index" );
 		}
 
 		// Check v1/v2 and if both exists (which shouldn't happen but most likely
@@ -113,7 +110,7 @@ class Rollover {
 
 			// Just in case
 			if ( $this->connection->indexExists( "$index-v2" ) ) {
-				$indices->delete( [ 'index' => "$index-v2" ] );
+				$this->connection->deleteIndex( "$index-v2" );
 			}
 
 			$actions[] = [ 'add' => [ 'index' => "$index-v1", 'alias' => $index ] ];
@@ -128,7 +125,7 @@ class Rollover {
 		}
 
 		$params['body'] = [ 'actions' => $actions ];
-		$indices->updateAliases( $params );
+		$this->connection->updateAliases( $params );
 
 		return $index;
 	}
@@ -147,22 +144,18 @@ class Rollover {
 			throw new NoConnectionException();
 		}
 
-		$indices = $this->connection->indices();
-
-		$index = $this->connection->getIndexName(
-			$type
-		);
+		$index = $this->connection->getIndexName( $type );
 
 		if ( $this->connection->indexExists( "$index-v1" ) ) {
-			$indices->delete( [ 'index' => "$index-v1" ] );
+			$this->connection->deleteIndex( "$index-v1" );
 		}
 
 		if ( $this->connection->indexExists( "$index-v2" ) ) {
-			$indices->delete( [ 'index' => "$index-v2" ] );
+			$this->connection->deleteIndex( "$index-v2" );
 		}
 
-		if ( $this->connection->indexExists( "$index" ) && !$indices->existsAlias( [ 'name' => "$index" ] )->asBool() ) {
-			$indices->delete( [ 'index' => "$index" ] );
+		if ( $this->connection->indexExists( "$index" ) && !$this->connection->aliasExists( "$index" ) ) {
+			$this->connection->deleteIndex( "$index" );
 		}
 
 		$this->connection->releaseLock( $type );

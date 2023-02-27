@@ -206,7 +206,7 @@ class Rebuilder {
 	public function hasIndices() {
 
 		return $this->client->hasIndex( ElasticClient::TYPE_DATA ) &&
-            $this->client->hasIndex( ElasticClient::TYPE_LOOKUP );
+			$this->client->hasIndex( ElasticClient::TYPE_LOOKUP );
 	}
 
 	/**
@@ -394,8 +394,6 @@ class Rebuilder {
 			$cliMsgFormatter->oneCol( "... $type index ...", 3 )
 		);
 
-		$indices = $this->client->indices();
-
 		$index = $this->client->getIndexName(
 			$type
 		);
@@ -410,11 +408,9 @@ class Rebuilder {
 
 		// Certain changes ( ... to define new analyzers ...) requires to close
 		// and reopen an index
-		$indices->close( [ 'index' => $index ] );
+		$this->client->closeIndex( $index );
 
-		$indexDef = $this->client->getIndexDefByType(
-			$type
-		);
+		$indexDef = $this->client->getIndexDefByType( $type );
 
 		$indexDef = json_decode( $indexDef, true );
 
@@ -447,8 +443,7 @@ class Rebuilder {
 		$this->client->putMapping( $params );
 
 		$this->messageReporter->reportMessage( ', reopening ...' );
-		$indices->open( [ 'index' => $index ] );
-
+		$this->client->openIndex( $index );
 
 		$this->client->releaseLock( $type );
 
@@ -474,7 +469,6 @@ class Rebuilder {
 		}
 
 		$index = $this->client->getIndexName( $type );
-		$indices = $this->client->indices();
 
 		// No Alias available, create one before the rollover
 		if ( !$this->client->indexExists( "$index" ) ) {
@@ -484,7 +478,7 @@ class Rebuilder {
 
 			$params['body'] = [ 'actions' => $actions ];
 
-			$indices->updateAliases( $params );
+			$this->client->updateAliases( $params );
 		}
 
 		$this->versions[$type] = $version;

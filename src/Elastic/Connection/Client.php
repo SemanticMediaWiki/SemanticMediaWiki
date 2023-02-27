@@ -4,7 +4,6 @@ namespace SMW\Elastic\Connection;
 
 use Elastic\Elasticsearch\Client as ElasticClient;
 use Elastic\Elasticsearch\Endpoints\Indices;
-use Elastic\Elasticsearch\Endpoints\Ingest;
 use Elastic\Transport\Exception\NoNodeAvailableException;
 use Exception;
 use Psr\Log\LoggerAwareTrait;
@@ -41,7 +40,7 @@ class Client {
 	/**
 	 * @var ElasticClient
 	 */
-	private $client;
+	protected $client;
 
 	/**
 	 * @var boolean
@@ -233,20 +232,22 @@ class Client {
 	public function stats( $type = 'indices', $params = [] ) {
 
 		$indices = [
-			$this->getIndexNameByType( self::TYPE_DATA ),
-			$this->getIndexNameByType( self::TYPE_LOOKUP )
+			$this->getIndexName( self::TYPE_DATA ),
+			$this->getIndexName( self::TYPE_LOOKUP )
 		];
 
 		switch ( $type ) {
 			case 'indices':
-				$res = $this->client->indices()->stats( [ 'index' => $indices ] + $params )->asArray();
+				$res = $this->client->indices()->stats( [ 'index' => $indices ] + $params );
 				break;
 			case 'nodes':
-				$res = $this->client->nodes()->stats( $params )->asArray();
+				$res = $this->client->nodes()->stats( $params );
 				break;
 			default:
-				$res = [];
+				return [];
 		}
+
+		$res = $res->asArray();
 
 		if ( $type === 'indices' && isset( $res['indices'] ) ) {
 			unset( $res['_all'] );
@@ -275,36 +276,16 @@ class Client {
 		$res = [];
 
 		if ( $type === 'indices' ) {
-            $params += [ 'format' => 'json' ];
-			$indices = $this->client->cat()->indices( $params )->asArray();
+			$params += [ 'format' => 'json' ];
+			$indices = $this->client->cat()->indices( $params );
 
-			foreach ( $indices as $key => $value ) {
+			foreach ( $indices->asArray() as $key => $value ) {
 				$res[$value['index']] = $indices[$key];
 				unset( $res[$value['index']]['index'] );
 			}
 		}
 
 		return $res;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return Indices
-	 */
-	public function indices() {
-        // FIXME: Do not expose the underlying ES client as this breaks the abstraction
-		return $this->client->indices();
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return Ingest
-	 */
-	public function ingest() {
-        // FIXME: Do not expose the underlying ES client as this breaks the abstraction
-		return $this->client->ingest();
 	}
 
 	/**
@@ -340,7 +321,7 @@ class Client {
 			$version = 'v2';
 
 			if ( $this->indexExists( "$index-$version" ) ) {
-				$this->client->indices()->delete( [ 'index' => "$index-$version" ] );
+				$this->deleteIndex( "$index-$version" );
 			}
 		}
 
@@ -349,13 +330,13 @@ class Client {
 			'body'  => $this->getIndexDefByType( $type )
 		];
 
-		$response = $this->client->indices()->create( $params )->asArray();
+		$response = $this->client->indices()->create( $params );
 
 		$context = [
 			'method' => __METHOD__,
 			'role' => 'user',
 			'index' => $index,
-			'reponse' => $response
+			'reponse' => $response->asArray()
 		];
 
 		$this->logger->info( 'Created index {index} with: {reponse}', $context );
@@ -366,11 +347,9 @@ class Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $type
+	 * @param string $index
 	 */
-	public function deleteIndex( $type ) {
-
-		$index = $this->getIndexNameByType( $type );
+	public function deleteIndex( string $index ) {
 
 		$params = [
 			'index' => $index,
@@ -770,19 +749,55 @@ class Client {
 		return $this->client->explain( $params )->asArray();
 	}
 
-    /**
-     * @since 4.2.0
-     *
-     * @param string $index
-     *
-     * @return bool
-     */
-    public function indexExists( string $index ) {
+	/**
+	 * @see Indices::updateAliases
+	 * @since 4.2.0
+	 *
+	 * @param array $params
+	 */
+	public function updateAliases( array $params ) {
+		$this->client->indices()->updateAliases( $params );
+	}
 
-        return $this->client->indices()->exists( [
-            'index' => $index
-        ] )->asBool();
-    }
+	/**
+	 * @since 4.2.0
+	 *
+	 * @param string $index
+	 *
+	 * @return bool
+	 */
+	public function indexExists( string $index ): bool {
+		return $this->client->indices()->exists( [ 'index' => $index ] )->asBool();
+	}
+
+	/**
+	 * @since 4.2.0
+	 *
+	 * @param string $index
+	 *
+	 * @return bool
+	 */
+	public function aliasExists( string $index ): bool {
+		return $this->client->indices()->existsAlias( [ 'index' => $index ] )->asBool();
+	}
+
+	/**
+	 * @since 4.2.0
+	 *
+	 * @param string $index
+	 */
+	public function openIndex( string $index ) {
+		$this->client->indices()->open( [ 'index' => $index ] );
+	}
+
+	/**
+	 * @since 4.2.0
+	 *
+	 * @param string $index
+	 */
+	public function closeIndex( string $index ) {
+		$this->client->indices()->close( [ 'index' => $index ] );
+	}
 
 	/**
 	 * @since 3.1
