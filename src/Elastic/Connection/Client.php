@@ -7,8 +7,6 @@ use Elastic\Elasticsearch\Endpoints\Indices;
 use Elastic\Elasticsearch\Endpoints\Ingest;
 use Elastic\Transport\Exception\NoNodeAvailableException;
 use Exception;
-use Onoi\Cache\Cache;
-use Onoi\Cache\NullCache;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use SMW\Elastic\Exception\InvalidJSONException;
@@ -30,11 +28,7 @@ class Client {
 	use LoggerAwareTrait;
 
 	/**
-	 * @see https://www.elastic.co/blog/index-vs-type
-	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/master/removal-of-types.html
-	 *
-	 * " ... Indices created in Elasticsearch 6.0.0 or later may only contain a
-	 * single mapping type ..."
+	 * Type for main data storage.
 	 */
 	const TYPE_DATA = 'data';
 
@@ -281,6 +275,7 @@ class Client {
 		$res = [];
 
 		if ( $type === 'indices' ) {
+            $params += [ 'format' => 'json' ];
 			$indices = $this->client->cat()->indices( $params )->asArray();
 
 			foreach ( $indices as $key => $value ) {
