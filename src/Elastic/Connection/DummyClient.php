@@ -65,14 +65,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getIndexName
 	 */
-	public function getIndexName( $type ) {
+	public function getIndexName( string $type ): string {
 		return '';
 	}
 
 	/**
 	 * @see Client::getIndexDefinition
 	 */
-	public function getIndexDefinition($type ) {
+	public function getIndexDefinition( string $type ): string {
 		return '';
 	}
 
@@ -96,14 +96,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::info
 	 */
-	public function info() {
+	public function info(): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::stats
 	 */
-	public function stats( $type = 'indices', $params = [] ) {
+	public function stats( string $type = 'indices', array $params = [] ): array {
 		return [];
 	}
 
