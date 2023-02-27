@@ -69,8 +69,8 @@ class SettingsInfoProvider extends InfoProviderHandler {
 
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
-        // TODO: See what the structure of $mappings is without types and change these functions
-        //       to work with that new structure.
+		// TODO: See what the structure of $mappings is without types and change these functions
+		//	   to work with that new structure.
 		$settings = [
 			$connection->getSettings(
 				[
