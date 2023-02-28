@@ -311,7 +311,7 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 
 ### ElasticStore support
 
-A 'minimun' supported version of ElasticSearch is followed by [CirrusSearch's requirements](https://www.mediawiki.org/wiki/Extension:CirrusSearch#Dependencies).
+
 
 <table class="compatibility">
 	<tr>
@@ -362,6 +362,9 @@ A 'minimun' supported version of ElasticSearch is followed by [CirrusSearch's re
 		<td>Obsolete</td>
 	</tr>
 </table>
+
+- A 'minimun' supported version of ElasticSearch is followed by [CirrusSearch's requirements](https://www.mediawiki.org/wiki/Extension:CirrusSearch#Dependencies).
+- [OpenSearch](https://opensearch.org/) is forked version of ElasticSearch OSS 7.10.2 by Amazon which is WikiMedia consider to migrate to it. It was created after [Elastic changed their license in 2021](https://www.elastic.co/pricing/faq/licensing). 
 
 ### Notes
 
