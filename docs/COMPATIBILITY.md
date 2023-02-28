@@ -364,8 +364,8 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 </table>
 
 - A 'minimum' supported version of ElasticSearch is followed by [CirrusSearch's requirements](https://www.mediawiki.org/wiki/Extension:CirrusSearch#Dependencies).
-- [OpenSearch](https://opensearch.org/) is a forked version of ElasticSearch OSS 7.10.2 by Amazon which Wikimedia is [considering](https://phabricator.wikimedia.org/T280482) migrating to.
-  - 
+- [OpenSearch](https://opensearch.org/) is a forked version of ElasticSearch OSS 7.10.2 by Amazon which Wikimedia is [considering migrating to](https://phabricator.wikimedia.org/T280482).
+
 ### Notes
 
 The information in brackets denotes the versions with which SMW is known to work. SMW might also work with different versions, especially more recent ones, though this is not guaranteed.
