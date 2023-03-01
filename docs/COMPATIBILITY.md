@@ -309,6 +309,63 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 - "Full support" means that all functionality has been verified to work and that it can be used in production
 - "Beta support" means that most functionality has been verified to work, though stability is still low, and things might be buggy
 
+### ElasticStore support
+
+
+
+<table class="compatibility">
+	<tr>
+		<th>SMW</th>
+		<th>ElasticSearch</th>
+		<th>OpenSearch</th>
+		<th>Notes</th>
+	</tr>
+	<tr>
+		<th>5.0.x</th>
+		<td>TBD</td>
+		<td>TBD</td>
+		<td></td>
+	</tr>
+	<tr>
+		<th>4.1.x</th>
+		<td>6.5.x - 6.8.23</td>
+		<td>Not supported (TBD)</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5328">Confirmed to not work with ElasticSearch 7.x (MW 1.39)</a></td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>
+		<td>6.5.x - 6.8.23</td>
+		<td>Not supported</td>
+		<td></td>
+	</tr>
+</table>
+
+<table class="compatibility">
+	<tr>
+		<th>SMW</th>
+		<th>ElasticSearch</th>
+		<th>Status</th>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.2.0">3.2.x</a></th>
+		<td>5.5.x - 6.8.23</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.1.0">3.1.x</a></th>
+		<td>5.5.x - 6.8.23</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.0.0">3.0.x</a></th>
+		<td>5.3.x - 6.8.23</td>
+		<td>Obsolete</td>
+	</tr>
+</table>
+
+- A 'minimum' supported version of ElasticSearch is followed by [CirrusSearch's requirements](https://www.mediawiki.org/wiki/Extension:CirrusSearch#Dependencies).
+- [OpenSearch](https://opensearch.org/) is a forked version of ElasticSearch OSS 7.10.2 by Amazon which Wikimedia is [considering migrating to](https://phabricator.wikimedia.org/T280482).
+
 ### Notes
 
 The information in brackets denotes the versions with which SMW is known to work. SMW might also work with different versions, especially more recent ones, though this is not guaranteed.
