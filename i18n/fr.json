@@ -389,7 +389,7 @@
 	"smw-browse-hide-group": "Masquer les groupes",
 	"smw-noscript": "Cette page ou cette action nécessite JavaScript pour fonctionner, veuillez l’activer dans votre navigateur ou utiliser un navigateur qui le prend en charge afin que cette fonctionnalité puisse être fournie comme demandé. Pour plus d’assistance, veuillez consulter la page d’aide [https://www.semantic-mediawiki.org/wiki/Help:Noscript Noscript].",
 	"smw_inverse_label_default": "$1 de",
-	"smw_inverse_label_property": "Label de la propriété inverse",
+	"smw_inverse_label_property": "Libellé de la propriété inverse",
 	"pageproperty": "Rechercher dans les propriétés de la page",
 	"pendingtasklist": "Liste des tâches en attente",
 	"smw_pp_docu": "Entrez soit une page et une propriété, soit seulement une propriété pour récupérer toutes les valeurs affectées.",
