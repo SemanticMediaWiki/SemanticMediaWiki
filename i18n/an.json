@@ -11,5 +11,6 @@
 	"browse": "Explorar o wiki",
 	"smw-livepreview-loading": "Cargando…",
 	"smw-help": "Aduya",
-	"smw-listingcontinuesabbrev": "cont."
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "Contino se bi {{PLURAL:$1|amuestra '''1''' resultau|amuestran '''$1''' resultaus}} prencipiando por o numero '''$2'''."
 }

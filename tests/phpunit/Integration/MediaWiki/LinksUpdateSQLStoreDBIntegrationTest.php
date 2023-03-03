@@ -12,7 +12,6 @@ use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\PageCreator;
 use Title;
 use UnexpectedValueException;
-use WikiPage;
 
 /**
  * @group semantic-mediawiki
@@ -32,11 +31,13 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	private $semanticDataValidator;
 	private $pageDeleter;
 	private $revisionGuard;
+	private $pageCreator;
 
 	protected function setUp() : void {
 		parent::setUp();
 
-		$this->revisionGuard = ServicesFactory::getInstance()->singleton( 'RevisionGuard' );
+		$serviceFactory = ServicesFactory::getInstance();
+		$this->revisionGuard = $serviceFactory->singleton( 'RevisionGuard' );
 
 		$this->testEnvironment->addConfiguration(
 			'smwgPageSpecialProperties',
@@ -50,6 +51,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageDeleter = $this->testEnvironment->getUtilityFactory()->newPageDeleter();
+		$this->pageCreator = $serviceFactory->newPageCreator();
 	}
 
 	public function tearDown() : void {
@@ -122,8 +124,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function assertSemanticDataBeforeContentAlteration() {
-
-		$wikiPage = WikiPage::factory( $this->title );
+		$wikiPage = $this->pageCreator->createPage( $this->title );
 		$revision = $this->revisionGuard->newRevisionFromPage( $wikiPage );
 
 		$parserData = $this->retrieveAndLoadData();

@@ -6,5 +6,6 @@
 	},
 	"browse": "Lasāis artīkelins",
 	"smw-livepreview-loading": "Krausnā...",
-	"smw-listingcontinuesabbrev": "ē.s."
+	"smw-listingcontinuesabbrev": "ē.s.",
+	"smw-showingresults": "Zemmais ast listi {{PLURAL:$1|stēisan <strong>$1</strong> rezultātan|sen <strong>1</strong> rezultātan|stēisan <strong>$1</strong> rezultātan}}, pagaūnintei ezze <strong>$2</strong>-asmu rezutātan."
 }

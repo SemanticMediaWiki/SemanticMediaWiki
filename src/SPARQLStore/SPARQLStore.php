@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWExpNsResource as ExpNsResource;
@@ -433,7 +434,7 @@ class SPARQLStore extends Store {
 	 * @see Store::refreshData()
 	 * @since 1.8
 	 */
-	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ) {
+	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ): Rebuilder {
 		return $this->baseStore->refreshData( $index, $count, $namespaces, $usejobs );
 	}
 

@@ -41,7 +41,14 @@ class TestDatabaseConnectionProvider implements ConnectionProvider {
 			return $this->connection;
 		}
 
-		return $this->connection = $this->getLoadBalancer()->getConnection( $this->id );
+		$loadBalancer = $this->getLoadBalancer();
+
+		// MW 1.39
+		if ( method_exists( $loadBalancer, 'getConnectionInternal' ) ) {
+			return $this->connection = $loadBalancer->getConnectionInternal( $this->id );
+		}
+
+		return $this->connection = $loadBalancer->getConnection( $this->id );
 	}
 
 	public function releaseConnection() {

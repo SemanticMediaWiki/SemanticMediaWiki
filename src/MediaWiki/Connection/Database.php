@@ -6,7 +6,6 @@ use DBError;
 use Exception;
 use ResultWrapper;
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
 use Wikimedia\Rdbms\IDatabase;
@@ -209,43 +208,6 @@ class Database {
 	 */
 	public function addQuotes( $value ) {
 		return $this->connRef->getConnection( 'read' )->addQuotes( $value );
-	}
-
-	/**
-	 * @see DatabaseBase::fetchObject
-	 *
-	 * @since 1.9
-	 *
-	 * @param ResultWrapper $res
-	 *
-	 * @return string
-	 */
-	public function fetchObject( $res ) {
-		return $this->connRef->getConnection( 'read' )->fetchObject( $res );
-	}
-
-	/**
-	 * @see DatabaseBase::numRows
-	 *
-	 * @since 1.9
-	 *
-	 * @param mixed $results
-	 *
-	 * @return integer
-	 */
-	public function numRows( $results ) {
-		return $this->connRef->getConnection( 'read' )->numRows( $results );
-	}
-
-	/**
-	 * @see DatabaseBase::freeResult
-	 *
-	 * @since 1.9
-	 *
-	 * @param ResultWrapper $res
-	 */
-	public function freeResult( $res ) {
-		$this->connRef->getConnection( 'read' )->freeResult( $res );
 	}
 
 	/**
@@ -500,7 +462,7 @@ class Database {
 		// https://github.com/wikimedia/mediawiki/commit/0a9c55bfd39e22828f2d152ab71789cef3b0897c#diff-278465351b7c14bbcadac82036080e9f
 		$safeseq = str_replace( "'", "''", $seqName );
 		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')" );
-		$row = $this->connRef->getConnection( 'read' )->fetchRow( $res );
+		$row = $res->fetchRow();
 
 		return $this->insertId = is_null( $row[0] ) ? null : (int)$row[0];
 	}

@@ -39,6 +39,8 @@ class ExpNsResource extends ExpResource {
 	 */
 	private $namespaceId;
 
+	public bool $isUserDefined;
+
 	/**
 	 * @note The given URI must not contain serialization-specific
 	 * abbreviations or escapings, such as XML entities.

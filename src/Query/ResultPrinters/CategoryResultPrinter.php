@@ -3,6 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use SMW\MediaWiki\Collator;
+use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMWDataItem as DataItem;
 use SMWQueryResult as QueryResult;
 use SMW\Utils\HtmlColumns;
@@ -41,6 +42,10 @@ class CategoryResultPrinter extends ResultPrinter {
 	 * @var integer
 	 */
 	private $numColumns;
+
+	private HtmlColumns $htmlColumns;
+	private WikitextTemplateRenderer $templateRenderer;
+	private Collator $collator;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -229,7 +234,8 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) ) {
-			$contents[$last_letter][] = $this->getFurtherResultsLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker );
+			$index = isset( $last_letter ) ? $last_letter : $first_letter;
+			$contents[$index][] = $this->getFurtherResultsLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker );
 		}
 
 		return $contents;

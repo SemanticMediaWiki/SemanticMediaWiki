@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Hooks;
 
 use Parser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\MediaWiki;
 use SMW\ParserData;
 use SMW\SemanticData;
 use Onoi\Cache\Cache;
@@ -13,6 +12,7 @@ use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use Psr\Log\LoggerAwareTrait;
+use SMW\MediaWiki\PageInfoProvider;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -138,9 +138,11 @@ class ParserAfterTidy implements HookListener {
 		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
 			// T301915
 			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
+			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
 		} else {
 			// MW < 1.38
 			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
+			$parserDefaultSort = $this->parser->getDefaultSort();
 		}
 
 		if ( $displayTitle ||
@@ -151,8 +153,8 @@ class ParserAfterTidy implements HookListener {
 		}
 
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
-			$title->isProtected( 'edit' ) ||
-			$this->parser->getDefaultSort() ) {
+			PageInfoProvider::isProtected( $title, 'edit ') ||
+			$parserDefaultSort ) {
 			return true;
 		}
 
@@ -227,20 +229,22 @@ class ParserAfterTidy implements HookListener {
 		if ( method_exists( $parserOutput, 'getPageProperty') ) {
 			// T301915
 			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
+			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
 		} else {
 			// MW < 1.38
 			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
+			$parserDefaultSort = $this->parser->getDefaultSort();
 		}
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newDisplayTitlePropertyAnnotator(
 			$propertyAnnotator,
 			$displayTitle,
-			$this->parser->getDefaultSort()
+			$parserDefaultSort
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newSortKeyPropertyAnnotator(
 			$propertyAnnotator,
-			$this->parser->getDefaultSort()
+			$parserDefaultSort
 		);
 
 		// #2300
@@ -262,7 +266,7 @@ class ParserAfterTidy implements HookListener {
 
 	/**
 	 * @note Article purge: In case an article was manually purged/moved
-	 * the store is updated as well; for all other cases LinksUpdateConstructed
+	 * the store is updated as well; for all other cases LinksUpdateComplete
 	 * will handle the store update
 	 *
 	 * @note The purge action is isolated from any other request therefore using

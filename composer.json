@@ -26,6 +26,12 @@
 			"name": "James Hong Kong",
 			"homepage": "https://www.semantic-mediawiki.org/wiki/User:MWJames",
 			"role": "Core developer"
+		},
+		{
+			"name": "Professional Wiki",
+			"email": "info@professional.wiki",
+			"homepage": "https://professional.wiki",
+			"role": "Developer"
 		}
 	],
 	"support": {
@@ -36,7 +42,7 @@
 		"source": "https://github.com/SemanticMediaWiki/SemanticMediaWiki"
 	},
 	"require": {
-		"php": ">=7.3",
+		"php": ">=7.4",
 		"ext-mbstring": "*",
 		"composer/installers": "1.*,>=1.0.1",
 		"psr/log": "~1.0",
@@ -47,7 +53,7 @@
 		"onoi/cache": "~1.2",
 		"onoi/event-dispatcher": "~1.0",
 		"onoi/blob-store": "~1.2",
-		"onoi/http-request": "~1.1",
+		"mediawiki/http-request": "~2.0|~1.1",
 		"onoi/callback-container": "~2.0",
 		"onoi/shared-resources": "~0.3",
 		"symfony/css-selector": "^5|^4|^3.3",
@@ -60,9 +66,6 @@
 	"require-dev": {
 		"squizlabs/php_codesniffer": "~3.5",
 		"phpmd/phpmd": "~2.1"
-	},
-	"replace": {
-		"mediawiki/semantic-mediawiki": "*"
 	},
 	"suggest": {
 		"mediawiki/semantic-result-formats": "Provides additional result formats for queries of structured data"
@@ -91,7 +94,10 @@
 		]
 	},
 	"config": {
-		"process-timeout": 0
+		"process-timeout": 0,
+		"allow-plugins": {
+			"composer/installers": true
+		}
 	},
 	"scripts": {
 		"test": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",

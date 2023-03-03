@@ -19,6 +19,7 @@ use SMW\Site;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use ParserHooks\HookRegistrant;
+use SkinTemplate;
 use SMW\DataTypeRegistry;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
@@ -39,7 +40,7 @@ use SMW\MediaWiki\Hooks\ExtensionTypes;
 use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
-use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
+use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\MediaWiki\Hooks\RevisionFromEditComplete;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
@@ -48,7 +49,7 @@ use SMW\MediaWiki\Hooks\RejectParserCacheValue;
 use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use SMW\MediaWiki\Hooks\SkinAfterContent;
-use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
+use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
 use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
@@ -270,14 +271,13 @@ class Hooks {
 			'ContentHandlerForModelID' => [ $this, 'onContentHandlerForModelID' ],
 
 			'RevisionFromEditComplete' => [ $this, 'onRevisionFromEditComplete' ],
-			'LinksUpdateConstructed' => [ $this, 'onLinksUpdateConstructed' ],
+			'LinksUpdateComplete' => [ $this, 'onLinksUpdateComplete' ],
 			'FileUpload' => [ $this, 'onFileUpload' ],
 			'MaintenanceUpdateAddParams' => [ $this, 'onMaintenanceUpdateAddParams' ],
 
 			'ResourceLoaderGetConfigVars' => [ $this, 'onResourceLoaderGetConfigVars' ],
 			'GetPreferences' => [ $this, 'onGetPreferences' ],
-			'PersonalUrls' => [ $this, 'onPersonalUrls' ],
-			'SkinTemplateNavigation' => [ $this, 'onSkinTemplateNavigation' ],
+			'SkinTemplateNavigation::Universal' => [ $this, 'onSkinTemplateNavigationUniversal' ],
 			'SidebarBeforeOutput' => [ $this, 'onSidebarBeforeOutput' ],
 			'LoadExtensionSchemaUpdates' => [ $this, 'onLoadExtensionSchemaUpdates' ],
 
@@ -323,6 +323,12 @@ class Hooks {
 			'AdminLinks' => [ $this, 'onAdminLinks' ],
 			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]
 		];
+
+		if ( version_compare( MW_VERSION, '1.37', '<' ) ) {
+			$this->handlers += [
+				'PersonalUrls' => [ $this, 'onPersonalUrls' ]
+			];
+		}
 	}
 
 	/**
@@ -427,11 +433,17 @@ class Hooks {
 
 		$outputPageParserOutput = new OutputPageParserOutput(
 			$applicationFactory->getNamespaceExaminer(),
-			$permissionExaminer
+			$permissionExaminer,
+			$applicationFactory->getFactboxText()
 		);
 
+		$preferenceExaminer = $applicationFactory->newPreferenceExaminer( $outputPage->getUser() );
+
 		$outputPageParserOutput->setIndicatorRegistry(
-			$applicationFactory->create( 'IndicatorRegistry' )
+			$applicationFactory->create(
+				'IndicatorRegistry',
+				$preferenceExaminer->hasPreferenceOf( GetPreferences::SHOW_ENTITY_ISSUE_PANEL )
+			)
 		);
 
 		$outputPageParserOutput->process( $outputPage, $parserOutput );
@@ -824,15 +836,15 @@ class Hooks {
 	}
 
 	/**
-	 * Hook: LinksUpdateConstructed called at the end of LinksUpdate() construction
+	 * Hook: LinksUpdateComplete called at the end of LinksUpdate() construction
 	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateComplete
 	 */
-	public function onLinksUpdateConstructed( $linksUpdate ) {
+	public function onLinksUpdateComplete( $linksUpdate ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$linksUpdateConstructed = new LinksUpdateConstructed(
+		$linksUpdateConstructed = new LinksUpdateComplete(
 			$applicationFactory->getNamespaceExaminer()
 		);
 
@@ -984,7 +996,6 @@ class Hooks {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
 	 */
 	public function onPersonalUrls( array &$personal_urls, $title, $skinTemplate ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$user = $skinTemplate->getUser();
 
@@ -1016,16 +1027,43 @@ class Hooks {
 	}
 
 	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
 	 */
-	public function onSkinTemplateNavigation( &$skinTemplate, &$links ) {
+	public function onSkinTemplateNavigationUniversal( &$skinTemplate, &$links ) {
+		if ( isset( $links['user-interface-preferences'] ) ) {
+			$applicationFactory = ApplicationFactory::getInstance();
+			$user = $skinTemplate->getUser();
 
-		$skinTemplateNavigation = new SkinTemplateNavigation(
+			$permissionExaminer = $applicationFactory->newPermissionExaminer(
+				$user
+			);
+
+			$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
+				$user
+			);
+
+			$personalUrls = new PersonalUrls(
+				$skinTemplate,
+				$applicationFactory->getJobQueue(),
+				$permissionExaminer,
+				$preferenceExaminer
+			);
+
+			$personalUrls->setOptions(
+				[
+					'smwgJobQueueWatchlist' => $applicationFactory->getSettings()
+																 ->get( 'smwgJobQueueWatchlist' )
+				]
+			);
+
+			$personalUrls->process( $links['user-interface-preferences'] );
+		}
+
+		$skinTemplateNavigationUniversal = new SkinTemplateNavigationUniversal(
 			$skinTemplate,
 			$links
 		);
-
-		return $skinTemplateNavigation->process();
+		return $skinTemplateNavigationUniversal->process();
 	}
 
 	/**

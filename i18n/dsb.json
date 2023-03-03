@@ -264,5 +264,6 @@
 	"smw-sp-properties-header-label": "Lisćina kakosćow",
 	"smw-sp-admin-settings-button": "Lisćinu nastajenjow napóraś",
 	"smw-livepreview-loading": "Lodowanje …",
-	"smw-listingcontinuesabbrev": "dalej"
+	"smw-listingcontinuesabbrev": "dalej",
+	"smw-showingresults": "How {{PLURAL:|jo '''1''' wuslědk|stej '''$1''' wuslědka|su '''$1''' wuslědki}} wót cysła '''$2'''."
 }

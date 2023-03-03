@@ -3,7 +3,8 @@
 		"authors": [
 			"GrigorGB",
 			"Kareyac",
-			"Xelgen"
+			"Xelgen",
+			"Սերգեյ Սաֆարյան"
 		]
 	},
 	"smw-error": "Սխալ",
@@ -14,10 +15,12 @@
 	"validator-type-class-SMWParamSource": "տեքստ",
 	"smw-propertylist-redirect-header": "Հոմանիշներ",
 	"properties": "Կարգավորումներ",
+	"smw-special-property-searchform-options": "Ընտրանքներ",
 	"smw-special-wantedproperties-filter-none": "Ոչ մեկը",
 	"smw_purge": "Թարմացնել",
 	"types": "Տեսակներ",
 	"smw-ask-delete": "Ջնջել",
+	"smw-ask-options": "Ընտրանքներ",
 	"smw-ask-search": "Որոնել",
 	"smw-ask-empty": "Դատարկ",
 	"browse": "Կատեգորիաներ",
@@ -33,9 +36,11 @@
 	"smw-ui-tooltip-title-warning": "Զգուշացում",
 	"smw-ui-tooltip-title-error": "Սխալ",
 	"smw-livepreview-loading": "Բեռնվում է…",
-	"smw-format-datatable-infothousands": ",",
+	"smw-format-datatable-loadingrecords": "Բեռնվում է...",
 	"smw-format-datatable-search": "Որոնել.",
 	"smw-format-datatable-last": "Վերջին",
 	"smw-help": "Օգնություն",
-	"smw-listingcontinuesabbrev": "շարունակելի"
+	"smw-loading": "Բեռնում ...",
+	"smw-listingcontinuesabbrev": "շարունակելի",
+	"smw-showingresults": "Ստորև բերված է մինչև {{PLURAL:$1|'''1''' արդյունք|'''$1''' արդյունք}}՝ սկսած №&nbsp;<strong>$2</strong>-ից։"
 }

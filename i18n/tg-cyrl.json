@@ -57,5 +57,6 @@
 	"smw-format-datatable-search": "Ҷустуҷӯ:",
 	"smw-format-datatable-toolbar-export": "Берунбарӣ",
 	"smw-schema-summary-title": "Хулоса",
-	"smw-listingcontinuesabbrev": "идома"
+	"smw-listingcontinuesabbrev": "идома",
+	"smw-showingresults": "Намоиши {{PLURAL:$1|'''1''' натиҷа|'''$1''' натоиҷ}} дар зер оғоз аз #'''$2'''."
 }

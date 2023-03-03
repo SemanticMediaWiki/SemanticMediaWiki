@@ -48,6 +48,8 @@ class JsonTestCaseContentHandler {
 	 */
 	private $testCaseLocation = '';
 
+	private LocalFileUpload $localFileUpload;
+
 	/**
 	 * @since 2.5
 	 *

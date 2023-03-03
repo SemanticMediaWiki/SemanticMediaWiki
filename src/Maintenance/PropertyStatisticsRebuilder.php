@@ -136,7 +136,7 @@ class PropertyStatisticsRebuilder {
 			);
 		}
 
-		$connection->freeResult( $res );
+		$res->free();
 
 		$this->reportMessage( "\n   ... done.\n" );
 	}

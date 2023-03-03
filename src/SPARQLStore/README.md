@@ -1,6 +1,6 @@
 # SPARQLStore
 
-The `SPARQLStore` is the name for the component that can establish a connection between a [RDF triple store][tdb] and Semantic MediaWiki (a more general introduction can be found [here](https://www.semantic-mediawiki.org/wiki/Help:Using SPARQL and RDF stores)).
+The `SPARQLStore` is the name for the component that can establish a connection between a [RDF triple store][tdb] and Semantic MediaWiki (a more general introduction can be found [here](https://www.semantic-mediawiki.org/wiki/Help:Using_SPARQL_and_RDF_stores)).
 
 The `SPARQLStore` is composed of a base store (by default using the existing `SQLStore`), a `QueryEngine`, and a connector to the RDF back-end. Currently, the base store takes the position of accumulating information about properties, value annotations, and statistics.
 

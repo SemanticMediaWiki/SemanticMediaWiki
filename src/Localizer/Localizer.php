@@ -5,6 +5,8 @@ namespace SMW\Localizer;
 use DateTime;
 use IContextSource;
 use Language;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserOptionsLookup;
 use RequestContext;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\DIWikiPage;
@@ -34,8 +36,13 @@ class Localizer {
 	 */
 	private $contentLanguage = null;
 
+	private NamespaceInfo $namespaceInfo;
+
 	/** @var IContextSource */
 	private $context = null;
+
+	/** @var UserOptionsLookup */
+	private $userOptionsLookup = null;
 
 	/**
 	 * @since 2.1
@@ -46,10 +53,12 @@ class Localizer {
 	public function __construct(
 		Language $contentLanguage,
 		NamespaceInfo $namespaceInfo,
+		UserOptionsLookup $userOptionsLookup,
 		IContextSource $context
 	) {
 		$this->contentLanguage = $contentLanguage;
 		$this->namespaceInfo = $namespaceInfo;
+		$this->userOptionsLookup = $userOptionsLookup;
 		$this->context = $context;
 	}
 
@@ -69,6 +78,7 @@ class Localizer {
 		self::$instance = new self(
 			$servicesFactory->singleton( 'ContentLanguage' ),
 			$servicesFactory->singleton( 'NamespaceInfo' ),
+			$servicesFactory->singleton( 'UserOptionsLookup' ),
 			RequestContext::getMain()
 		);
 
@@ -113,7 +123,7 @@ class Localizer {
 			$user = $this->context->getUser();
 		}
 
-		return $user->getOption( 'smw-prefs-general-options-time-correction' );
+		return $this->userOptionsLookup->getOption( $user, 'smw-prefs-general-options-time-correction' );
 	}
 
 	/**
@@ -134,7 +144,8 @@ class Localizer {
 			$GLOBALS['wgLocalTZoffset']
 		);
 
-		return LocalTime::getLocalizedTime( $dateTime, $user );
+		$timeCorrection = $this->userOptionsLookup->getOption( $user, 'timecorrection' );
+		return LocalTime::getLocalizedTime( $dateTime, $timeCorrection );
 	}
 
 	/**
@@ -200,7 +211,8 @@ class Localizer {
 			return $this->getContentLanguage();
 		}
 
-		return Language::factory( $languageCode );
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+		return $languageFactory->getLanguage( $languageCode );
 	}
 
 	/**
@@ -291,13 +303,9 @@ class Localizer {
 	public static function isKnownLanguageTag( $languageCode ) {
 
 		$languageCode = mb_strtolower( $languageCode );
+		$languageNameUtils = MediaWikiServices::getInstance()->getLanguageNameUtils();
 
-		// FIXME 1.19 doesn't know Language::isKnownLanguageTag
-		if ( !method_exists( '\Language', 'isKnownLanguageTag' ) ) {
-			return Language::isValidBuiltInCode( $languageCode );
-		}
-
-		return Language::isKnownLanguageTag( $languageCode );
+		return $languageNameUtils->isKnownLanguageTag( $languageCode );
 	}
 
 	/**

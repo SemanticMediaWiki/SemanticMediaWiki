@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestResult;
 use RuntimeException;
 use SMW\Services\ServicesFactory;
 use SMW\NamespaceExaminer;
@@ -107,6 +108,11 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->resetMediaWikiService( 'LocalServerObjectCache' );
 		$this->testEnvironment->resetMediaWikiService( 'MainWANObjectCache' );
 
+		// HACK: clear ActorStore cache to avoid failures in tests
+		// https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5199
+		$this->testEnvironment->resetMediaWikiService( 'ActorStore' );
+		$this->testEnvironment->resetMediaWikiService( 'ActorStoreFactory' );
+
 		$this->testEnvironment->clearPendingDeferredUpdates();
 
 		// #3916
@@ -152,7 +158,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * request a trear down so that the next test can rebuild the tables from
 	 * scratch
 	 */
-	public function run( ?\PHPUnit_Framework_TestResult $result = null ) : \PHPUnit_Framework_TestResult {
+	public function run( ?TestResult $result = null ) : TestResult {
 
 		$this->getStore()->clear();
 

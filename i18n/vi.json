@@ -3,6 +3,7 @@
 		"authors": [
 			"Ioe2015",
 			"Minh Nguyen",
+			"Nguyenphutrong2",
 			"Nhatminh01",
 			"Phjtieudoc",
 			"Thienhau2003",
@@ -186,6 +187,8 @@
 	"smw-createproperty-isproperty": "Nó là tính chất thuộc kiểu $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Giá trị|Các giá trị}} cho phép của thuộc tính này là:",
 	"prefs-smw": "MediaWiki Ngữ nghĩa",
+	"smw-prefs-general-options-show-entity-issue-panel": "Hiển thị bảng vấn đề thực thể",
+	"smw-prefs-help-general-options-show-entity-issue-panel": "Nếu được bật, hãy chạy kiểm tra tính toàn vẹn trên mỗi trang và hiển thị [https://www.semantic-mediawiki.org/wiki/Help:Entity_issue_panel Bảng vấn đề về thực thể].",
 	"smw_unknowntype": "Kiểu của thuộc tính này không hợp lệ.",
 	"smw_concept_header": "Trang về khái niệm “$1”",
 	"action-smw-patternedit": "sửa các biểu thức chính quy được Semantic MediaWiki sử dụng",
@@ -193,5 +196,6 @@
 	"smw-property-tab-usage": "Sử dụng",
 	"smw-concept-tab-list": "Danh sách",
 	"smw-concept-tab-errors": "Lỗi",
-	"smw-listingcontinuesabbrev": "(tiếp theo)"
+	"smw-listingcontinuesabbrev": "(tiếp theo)",
+	"smw-showingresults": "Bên dưới có cho đến <strong>1</strong> kết quả bắt đầu từ #<strong>$2</strong>."
 }

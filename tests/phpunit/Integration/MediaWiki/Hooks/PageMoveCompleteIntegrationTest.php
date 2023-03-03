@@ -53,7 +53,7 @@ class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 			false
 		);
 
-		$this->revisionGuard = ApplicationFactory::getInstance()->singleton( 'RevisionGuard' );
+		$this->revisionGuard = $this->applicationFactory->singleton( 'RevisionGuard' );
 	}
 
 	protected function tearDown() : void {
@@ -104,8 +104,8 @@ class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 		);
 
 		$this->mwHooksHandler->register(
-			'LinksUpdateConstructed',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateConstructed' )
+			'LinksUpdateComplete',
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateComplete' )
 		);
 
 		$title = Title::newFromText( __METHOD__ . '-old' );
@@ -197,6 +197,8 @@ class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function newRevisionFromTitle( $title ) {
-		return $this->revisionGuard->newRevisionFromPage( WikiPage::factory( $title ) );
+		return $this->revisionGuard->newRevisionFromPage(
+			$this->applicationFactory->newPageCreator()->createPage( $title )
+		);
 	}
 }

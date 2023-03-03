@@ -31,6 +31,8 @@ class CachingLookup {
 	 */
 	private $cacheTTL;
 
+	private Cache $cache;
+
 	/**
 	 * @since 3.0
 	 *

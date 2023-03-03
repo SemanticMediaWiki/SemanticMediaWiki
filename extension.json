@@ -1,11 +1,11 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "4.0.1",
+	"version": "4.1.0",
 	"author": [
 		"[https://korrekt.org Markus Krötzsch]",
 		"[https://EntropyWins.wtf/mediawiki Jeroen De Dauw]",
 		"James Hong Kong",
-		"[https://professional.wiki/ Professional.Wiki]",
+		"[https://professional.wiki/ Professional Wiki]",
 		"[https://www.semantic-mediawiki.org/wiki/Contributors ...]"
 	],
 	"url": "https://www.semantic-mediawiki.org",
@@ -89,6 +89,9 @@
 		"Properties": "SMW\\SpecialProperties",
 		"UnusedProperties": "SMW\\SpecialUnusedProperties",
 		"WantedProperties": "SMW\\SpecialWantedProperties"
+	},
+	"DefaultUserOptions": {
+		"smw-prefs-general-options-show-entity-issue-panel": true
 	},
 	"load_composer_autoloader": true,
 	"manifest_version": 1

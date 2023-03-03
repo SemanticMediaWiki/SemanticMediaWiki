@@ -10,7 +10,7 @@ class PHPUnitResultPrinter extends PHPUnit_TextUI_ResultPrinter {
 	/**
 	 * @see PHPUnit_TextUI_ResultPrinter::endTestSuite
 	 */
-	public function endTestSuite( PHPUnit_Framework_TestSuite $suite ) {
+	public function endTestSuite( PHPUnit_Framework_TestSuite $suite ): void {
 		parent::endTestSuite( $suite );
 
 		if ( !isset( $suite->_slowTestsReport ) ) {

@@ -9,5 +9,6 @@
 	"smw-ask-search": "Бул",
 	"browse": "Биикини көрүү",
 	"smw-livepreview-loading": "Киллэрии бара турар…",
-	"smw-listingcontinuesabbrev": "(салгыыта)"
+	"smw-listingcontinuesabbrev": "(салгыыта)",
+	"smw-showingresults": "Манна {{PLURAL:$1|түмүк|түмүктэр}} {{PLURAL:$1|көрдөрүлүннэ|көрдөрүлүннүлэр}} <strong>$1</strong> , мантан саҕалаан №&nbsp;<strong>$2</strong>."
 }

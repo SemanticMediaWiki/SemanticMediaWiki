@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use SMW\Services\ServicesFactory;
 use Title;
 use WikiFilePage;
 use WikiPage;
@@ -74,7 +75,7 @@ class TitleFactory {
 	 * @return WikiPage
 	 */
 	public function createPage( Title $title ) {
-		return WikiPage::factory( $title );
+		return ServicesFactory::getInstance()->newPageCreator()->createPage( $title );
 	}
 
 	/**

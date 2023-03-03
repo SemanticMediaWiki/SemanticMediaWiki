@@ -3,5 +3,6 @@
 		"authors": []
 	},
 	"smw-livepreview-loading": "Аноклакшни…",
-	"smw-listingcontinuesabbrev": "полатксоц"
+	"smw-listingcontinuesabbrev": "полатксоц",
+	"smw-showingresults": "Ала няфтеви {{PLURAL:$1|мувсь '''1'''|мувсть '''$1'''}} '''$2'''-ста ушедомс."
 }

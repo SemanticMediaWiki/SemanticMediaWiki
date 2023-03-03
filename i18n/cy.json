@@ -1,14 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
+			"Afalau",
 			"Ham II",
 			"Robin Owain"
 		]
 	},
+	"smw-error": "Gwall",
 	"smw_printername_table": "Tabl",
 	"smw_printername_category": "Categori",
 	"validator-type-class-SMWParamSource": "testun",
 	"browse": "Pori'r wici",
 	"smw-livepreview-loading": "Wrthi'n llwytho…",
-	"smw-listingcontinuesabbrev": "parh."
+	"smw-listingcontinuesabbrev": "parh.",
+	"smw-showingresults": "Yn dangos $1 {{PLURAL:$1|canlyniad|canlyniad|ganlyniad|chanlyniad|chanlyniad|canlyniad}} isod gan ddechrau gyda rhif '''$2'''."
 }

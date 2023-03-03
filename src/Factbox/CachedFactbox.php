@@ -66,13 +66,16 @@ class CachedFactbox {
 	 */
 	private $timestamp;
 
+	private FactboxText $factboxText;
+
 	/**
 	 * @since 1.9
 	 *
 	 * @param EntityCache $entityCache
 	 */
-	public function __construct( EntityCache $entityCache ) {
+	public function __construct( EntityCache $entityCache, FactboxText $factboxText ) {
 		$this->entityCache = $entityCache;
+		$this->factboxText = $factboxText;
 	}
 
 	/**
@@ -168,7 +171,7 @@ class CachedFactbox {
 	 */
 	public function prepare( OutputPage &$outputPage, ParserOutput $parserOutput ) {
 
-		$outputPage->mSMWFactboxText = null;
+		$this->factboxText->clear();
 		$time = -microtime( true );
 
 		$context = $outputPage->getContext();
@@ -208,7 +211,8 @@ class CachedFactbox {
 				[ 'rev_id' => $rev_id, 'lang' => $lang, 'procTime' => microtime( true ) + $time ]
 			);
 
-			return $outputPage->mSMWFactboxText = $content['text'];
+			$this->factboxText->setText( $content['text'] );
+			return;
 		}
 
 		$text = $this->rebuild(
@@ -217,7 +221,7 @@ class CachedFactbox {
 			$checkMagicWords
 		);
 
-		$outputPage->mSMWFactboxText = $text;
+		$this->factboxText->setText( $text );
 
 		if ( $isPreview ) {
 			return;
@@ -279,8 +283,8 @@ class CachedFactbox {
 			return $text;
 		}
 
-		if ( isset( $outputPage->mSMWFactboxText ) ) {
-			$text = $outputPage->mSMWFactboxText;
+		if ( $this->factboxText->hasText() ) {
+			$text = $this->factboxText->getText();
 		} elseif ( $title instanceof Title ) {
 
 			$context = $outputPage->getContext();

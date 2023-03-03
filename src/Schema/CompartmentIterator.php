@@ -71,6 +71,7 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 
 		$data = current( $this->container );

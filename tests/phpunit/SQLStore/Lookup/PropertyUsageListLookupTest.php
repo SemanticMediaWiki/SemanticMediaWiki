@@ -179,6 +179,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
+		// TODO: Illegal dynamic property (#5421)
 		$this->requestOptions->limit = 1001;
 
 		$instance = new PropertyUsageListLookup(

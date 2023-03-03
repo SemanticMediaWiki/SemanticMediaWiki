@@ -4,6 +4,7 @@
 			"Eitvys200",
 			"Hugo.arg",
 			"Manvydasz",
+			"McDutchie",
 			"Naktis",
 			"Nemo bis",
 			"Vpovilaitis",
@@ -190,7 +191,6 @@
 	"smw-datavalue-constraint-violation-single-value": "„[[Property:$1|$1]]“ ypatybė turi <code> single_value </code> apribojimą ir vertė „$2“ pažeidžia šį reikalavimą.",
 	"smw-datavalue-external-formatter-invalid-uri": "„$1“ yra negalimas URL.",
 	"smw-datavalue-parse-error": "Nurodyta reikšmė „$1“ nebuvo suprasta.",
-	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-clipboard-copy-link": "Kopijuoti nuorodą į iškarpinę",
 	"smw-data-lookup-with-wait": "Prašymas apdorojamas ir tai gali užtrukti.",
 	"smw-section-expand": "Išskleisti dalį",
@@ -198,5 +198,6 @@
 	"smw-help": "Pagalba",
 	"smw-es-replication-error-no-connection": "Replikacijos stebėjimas negali atlikti jokių patikrinimų, nes negali sukurti ryšio su Elasticsearch klusteriu.",
 	"smw-es-replication-error-suggestions-no-connection": "Siūloma kreiptis į „wiki“ administratorių ir pranešti apie „be ryšio“ problemą.",
-	"smw-listingcontinuesabbrev": "tęsti"
+	"smw-listingcontinuesabbrev": "tęsti",
+	"smw-showingresults": "Žemiau rodoma iki '''$1''' {{PLURAL:$1|rezultato|rezultatų|rezultatų}} pradedant #'''$2'''."
 }

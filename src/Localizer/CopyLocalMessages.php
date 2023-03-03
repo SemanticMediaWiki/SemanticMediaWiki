@@ -24,6 +24,8 @@ class CopyLocalMessages {
 	 */
 	private $languageFileDir = '';
 
+	private array $contents;
+
 	/**
 	 * @since 3.2
 	 *

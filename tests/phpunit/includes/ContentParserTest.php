@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Content\Renderer\ContentRenderer;
+use MediaWiki\MediaWikiServices;
 use SMW\ContentParser;
 use SMW\Tests\PHPUnitCompat;
 
@@ -23,6 +25,13 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 	private $parser;
 	private $parserOutput;
 
+	private TestEnvironment $testEnvironment;
+
+	/**
+	 * @var ?ContentRenderer
+	 */
+	private $contentRenderer = null;
+
 	protected function setUp() : void {
 		parent::setUp();
 
@@ -41,9 +50,19 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 		$this->parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->testEnvironment = new TestEnvironment();
+
+		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
+			$this->contentRenderer = MediaWikiServices::getInstance()->getContentRenderer();
+		}
 	}
 
 	protected function tearDown() : void {
+		if ( $this->contentRenderer !== null ) {
+			$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', fn() => $this->contentRenderer );
+		}
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -91,9 +110,23 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$content->expects( $this->any() )
-			->method( 'getParserOutput' )
-			->will( $this->returnValue( $this->parserOutput ) );
+		if ( version_compare( MW_VERSION, '1.38', '<' ) ) {
+			$content->expects( $this->any() )
+				->method( 'getParserOutput' )
+				->will( $this->returnValue( $this->parserOutput ) );
+		} else {
+			$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', function () {
+				$contentRenderer = $this->getMockBuilder( '\MediaWiki\Content\Renderer\ContentRenderer' )
+					->disableOriginalConstructor()
+					->getMock();
+
+				$contentRenderer->expects( $this->any() )
+					->method( 'getParserOutput' )
+					->will( $this->returnValue( $this->parserOutput ) );
+
+				return $contentRenderer;
+			} );
+		}
 
 		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()

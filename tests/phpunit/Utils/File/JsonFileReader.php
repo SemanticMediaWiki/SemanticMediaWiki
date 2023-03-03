@@ -27,8 +27,8 @@ class JsonFileReader {
 	 *
 	 * @param string|null $file
 	 */
-	public function __construct( $file = null ) {
-		$this->setFile( $file );
+	public function __construct( ?string $file = null ) {
+		$this->setFile( $file ?? '' );
 	}
 
 	/**
@@ -36,7 +36,7 @@ class JsonFileReader {
 	 *
 	 * @param string $file
 	 */
-	public function setFile( $file ) {
+	public function setFile( string $file ) {
 		$this->file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $file );
 		$this->contents = null;
 	}

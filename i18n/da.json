@@ -7,6 +7,7 @@
 			"Joedalton",
 			"Jon Harald Søby",
 			"Palnatoke",
+			"Peterleth",
 			"Saederup92"
 		]
 	},
@@ -77,6 +78,7 @@
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Koncept|Koncepter}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Koncept|Koncepter}}]]",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Datatype|Datatyper}}]]",
+	"smw-statistics-delete-count-info": "Enheder, der er blevet markeret til fjernelse, skal bortskaffes regelmæssigt ved hjælp af de medfølgende vedligeholdelsesscripts.",
 	"smw-ask-order-rand": "Tilfældig",
 	"smw_ask_submit": "Find resultater",
 	"smw_ask_editquery": "Rediger forespørgsel",
@@ -186,7 +188,6 @@
 	"smw-format-datatable-emptytable": "Ingen data tilgængelig i tabel",
 	"smw-format-datatable-info": "Viser _START_ til _END_ af _TOTAL_ opslag",
 	"smw-format-datatable-infoempty": "Viser 0 til 0 af 0 opslag",
-	"smw-format-datatable-infothousands": ",",
 	"smw-format-datatable-lengthmenu": "Vis _MENU_ opslag",
 	"smw-format-datatable-loadingrecords": "Indslæser...",
 	"smw-format-datatable-processing": "Bearbejder...",
@@ -197,7 +198,6 @@
 	"smw-format-datatable-previous": "Forrige",
 	"smw-format-datatable-toolbar-export": "Eksportér",
 	"smw-format-list-other-fields-open": "(",
-	"smw-format-list-other-fields-close": ")",
 	"smw-api-invalid-parameters": "Ugyldige parametre, \"$1\"",
 	"smw-property-reserved-category": "Kategori",
 	"smw-category": "Kategori",
@@ -229,5 +229,6 @@
 	"smw-ask-tab-result": "Resultat",
 	"smw-ask-tab-extra": "Ekstra",
 	"smw-ask-tab-code": "Kode",
-	"smw-listingcontinuesabbrev": "forts."
+	"smw-listingcontinuesabbrev": "forts.",
+	"smw-showingresults": "Nedenfor vises <b>$1</b> {{PLURAL:$1|resultat|resultater}} startende med nummer <b>$2</b>."
 }

@@ -2,6 +2,7 @@
 
 namespace SMW\ParserFunctions;
 
+use ParamProcessor\ProcessedParam;
 use Parser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
@@ -89,6 +90,11 @@ class AskParserFunction {
 	 * @var RecursiveTextProcessor
 	 */
 	private $recursiveTextProcessor;
+
+	/**
+	 * @var ProcessedParam[]
+	 */
+	private array $params;
 
 	/**
 	 * @since 1.9

@@ -1,0 +1,122 @@
+name: build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    continue-on-error: ${{ matrix.experimental }}
+
+    strategy:
+      matrix:
+        include:
+          - mediawiki_version: 1.35
+            database_type: mysql
+            experimental: false
+          - mediawiki_version: 1.36
+            database_type: mysql
+            experimental: true
+          - mediawiki_version: 1.37
+            database_type: mysql
+            experimental: true
+          - mediawiki_version: 1.38
+            database_type: mysql
+            experimental: true
+          - mediawiki_version: 1.39
+            database_type: mysql
+            experimental: true
+
+    container:
+      image: mediawiki:${{ matrix.mediawiki_version }}
+      options: --link some-${{ matrix.database_type }}:${{ matrix.database_type }}
+
+    env:
+      EXT_NAME: SemanticMediaWiki
+      COMPOSER_VERSION: 2.1.14
+      MW_INSTALL_PATH: /var/www/html
+      MW_EXT_PATH: /var/www/html/extensions
+      DB_ROOT_USER: root
+      DB_ROOT_PWD: database
+      MW_DB_TYPE: ${{ matrix.database_type }}
+      MW_DB_SERVER: ${{ matrix.database_type }}
+      MW_DB_PATH: /var/www/data
+      MW_DB_USER: wiki
+      MW_DB_PWD: wiki
+      MW_DB_NAME: wiki
+
+    services:
+      some-mysql:
+        image: mariadb:latest
+        env:
+          MARIADB_ROOT_PASSWORD: ${{ env.DB_ROOT_PWD }}
+
+    steps:
+      # https://getcomposer.org/download/
+      - name: Get Composer
+        run: |
+          apt update
+          apt install -y unzip
+          php -r "copy('https://getcomposer.org/installer', 'installer');"
+          php -r "copy('https://composer.github.io/installer.sig', 'expected');"
+          echo `cat expected` " installer" | sha384sum -c -
+          php installer --version=${{ env.COMPOSER_VERSION }}
+          rm -f installer expected
+          mv composer.phar /usr/local/bin/composer
+
+      - name: Checkout Extension
+        uses: actions/checkout@v3
+        with:
+          path: ${{ env.EXT_NAME }}
+
+      # Setting actions/checkout@v3 path to env.MW_EXT_PATH fails with "Repository path '/var/www/html/extensions' is not under ..."
+      # See also open PR https://github.com/actions/checkout/pull/388
+      - name: Move Extension
+        run: |
+          mkdir -p ${{ env.MW_EXT_PATH }}
+          mv ${{ env.EXT_NAME }} ${{ env.MW_EXT_PATH }}
+
+      - name: MediaWiki Composer Update
+        run: |
+          COMPOSER=composer.local.json composer require --no-update --working-dir ${{ env.MW_INSTALL_PATH }} mediawiki/semantic-media-wiki @dev
+          COMPOSER=composer.local.json composer config repositories.semantic-media-wiki '{"type": "path", "url": "extensions/SemanticMediaWiki"}' --working-dir ${{ env.MW_INSTALL_PATH }}
+          composer update --working-dir ${{ env.MW_INSTALL_PATH }}
+
+      - name: MediaWiki Install
+        run: >
+          php ${{ env.MW_INSTALL_PATH }}/maintenance/install.php
+          --pass=Password123456
+          --server="http://localhost:8000"
+          --scriptpath=""
+          --dbtype=${{ env.MW_DB_TYPE }}
+          --dbserver=${{ env.MW_DB_SERVER }}
+          --installdbuser=${{ env.DB_ROOT_USER }}
+          --installdbpass=${{ env.DB_ROOT_PWD }}
+          --dbname=${{ env.MW_DB_NAME }}
+          --dbuser=${{ env.MW_DB_USER }}
+          --dbpass=${{ env.MW_DB_PWD }}
+          --dbpath=${{ env.MW_DB_PATH }}
+          --extensions=SemanticMediaWiki
+          ${{ env.EXT_NAME }}-test WikiSysop
+
+      - name: Enable Debug Output
+        run: |
+          echo 'error_reporting(E_ALL| E_STRICT);' >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
+          echo 'ini_set("display_errors", 1);' >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
+          echo '$wgShowExceptionDetails = true;' >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
+          echo '$wgDevelopmentWarnings = true;' >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
+
+      - name: Install SemanticMediaWiki
+        run: |
+          echo "enableSemantics( 'localhost' );" >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
+          tail -n5 ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
+          php ${{ env.MW_INSTALL_PATH }}/maintenance/update.php --quick
+
+      - name: Run Tests
+        run: >
+          composer phpunit
+          --working-dir ${{ env.MW_INSTALL_PATH }}/extensions/SemanticMediaWiki

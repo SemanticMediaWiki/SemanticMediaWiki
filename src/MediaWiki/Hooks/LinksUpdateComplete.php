@@ -11,16 +11,16 @@ use SMW\MediaWiki\HookListener;
 use Psr\Log\LoggerAwareTrait;
 
 /**
- * LinksUpdateConstructed hook is called at the end of LinksUpdate()
+ * LinksUpdateComplete hook is called at the end of LinksUpdate()
  *
- * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateComplete
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class LinksUpdateConstructed implements HookListener {
+class LinksUpdateComplete implements HookListener {
 
 	use RevisionGuardAwareTrait;
 	use LoggerAwareTrait;
@@ -112,7 +112,7 @@ class LinksUpdateConstructed implements HookListener {
 
 		// Update incurred by a template change and is signaled through
 		// the following condition
-		if ( $linksUpdate->mTemplates !== [] && $linksUpdate->mRecursive === false ) {
+		if ( $linksUpdate->getParserOutput()->getTemplates() !== [] && $linksUpdate->isRecursive() === false ) {
 			$parserData->setOption( $parserData::OPT_FORCED_UPDATE, true );
 		}
 

@@ -57,6 +57,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 */
 	private $severityType = '';
 
+	private TemplateEngine $templateEngine;
+
 	/**
 	 * @since 3.2
 	 *

@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use OutputPage;
 use ParserOutput;
+use SMW\Factbox\FactboxText;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\NamespaceExaminer;
@@ -45,15 +46,19 @@ class OutputPageParserOutput implements HookListener {
 	 */
 	private $indicatorRegistry;
 
+	private FactboxText $factboxText;
+
 	/**
 	 * @since 1.9
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param PermissionExaminer $permissionExaminer
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer, PermissionExaminer $permissionExaminer ) {
+	public function __construct(
+		NamespaceExaminer $namespaceExaminer,
+		PermissionExaminer $permissionExaminer,
+		FactboxText $factboxText
+	) {
 		$this->namespaceExaminer = $namespaceExaminer;
 		$this->permissionExaminer = $permissionExaminer;
+		$this->factboxText = $factboxText;
 	}
 
 	/**
@@ -128,7 +133,7 @@ class OutputPageParserOutput implements HookListener {
 
 		$request = $outputPage->getContext()->getRequest();
 
-		if ( isset( $outputPage->mSMWFactboxText ) && $request->getCheck( 'wpPreview' ) ) {
+		if ( $this->factboxText->hasText() && $request->getCheck( 'wpPreview' ) ) {
 			return '';
 		}
 
@@ -146,7 +151,7 @@ class OutputPageParserOutput implements HookListener {
 		// Due to how MW started to move the `mw-data-after-content` out of the
 		// `bodyContent` we need a way to distinguish content from a top level
 		// to apply additional CSS rules
-		if ( isset( $outputPage->mSMWFactboxText ) && $outputPage->mSMWFactboxText !== '' ) {
+		if ( $this->factboxText->hasNonEmptyText() ) {
 			$outputPage->addBodyClasses( 'smw-factbox-view' );
 		}
 

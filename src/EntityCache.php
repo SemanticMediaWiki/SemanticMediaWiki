@@ -241,6 +241,7 @@ class EntityCache {
 
 		$k = $this->makeCacheKey( $subject );
 		$res = $this->cache->fetch( $k );
+		$res = $res === false ? [] : $res;
 
 		// Initialize the record that binds the "page" entity to all associated
 		// subkeys

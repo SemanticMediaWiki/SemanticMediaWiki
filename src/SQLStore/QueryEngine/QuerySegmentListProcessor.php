@@ -335,13 +335,13 @@ class QuerySegmentListProcessor {
 			[ 'LIMIT' => 1 ]
 		);
 
-		if ( !$this->connection->fetchObject( $res ) ) { // no subobjects, we are done!
-			$this->connection->freeResult( $res );
+		if ( !$res->fetchObject() ) { // no subobjects, we are done!
+			$res->free();
 			$query->type = QuerySegment::Q_VALUE;
 			return;
 		}
 
-		$this->connection->freeResult( $res );
+		$res->free();
 		$tablename = $this->connection->tableName( $query->alias );
 		$this->executedQueries[$query->alias] = [
 			"Recursively computed hierarchy for element(s) $values.",

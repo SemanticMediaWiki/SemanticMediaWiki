@@ -96,7 +96,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 			'p',
 			[ 'class' => 'smw-unusedproperties-docu' ],
 			$this->msg( 'smw-unusedproperties-docu' )->parse()
-		) . $this->getSearchForm( $this->getRequest()->getVal( 'property' ), $this->getCacheInfo() ) .
+		) . $this->getSearchForm( $this->getRequest()->getVal( 'property', '' ), $this->getCacheInfo() ) .
 		Html::element(
 			'h2',
 			[],

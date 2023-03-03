@@ -80,6 +80,9 @@ class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
+		if ( !$this->hasFeature( SMW_ADM_SETUP ) ) {
+			return '';
+		}
 
 		$this->htmlFormRenderer
 			->setName( 'buildtables' )
@@ -88,19 +91,15 @@ class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 			->addHeader( 'h3', $this->msg( 'smw-admin-db' ) )
 			->addParagraph( $this->msg( 'smw-admin-dbdocu' ) );
 
-		if ( $this->hasFeature( SMW_ADM_SETUP ) ) {
-			$this->htmlFormRenderer
-				->addHiddenField( 'udsure', 'yes' )
-				->addSubmitButton(
-					$this->msg( 'smw-admin-dbbutton' ),
-					[
-						'class' => ''
-					]
-				);
-		} else {
-			$this->htmlFormRenderer
-				->addParagraph( $this->msg( 'smw-admin-feature-disabled' ) );
-		}
+
+		$this->htmlFormRenderer
+			->addHiddenField( 'udsure', 'yes' )
+			->addSubmitButton(
+				$this->msg( 'smw-admin-dbbutton' ),
+				[
+					'class' => ''
+				]
+			);
 
 		return Html::rawElement( 'div', [], $this->htmlFormRenderer->getForm() );
 	}

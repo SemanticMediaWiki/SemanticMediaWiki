@@ -98,5 +98,6 @@
 	"smw-type-tab-properties": "Properti",
 	"smw-type-tab-types": "Jinis",
 	"smw-type-tab-errors": "Masalah",
-	"smw-listingcontinuesabbrev": "samb."
+	"smw-listingcontinuesabbrev": "samb.",
+	"smw-showingresults": "Ing ngisor iki dituduhaké {{PLURAL:$1|'''1''' kasil|'''$1''' kasil}}, wiwitané saking #<strong>$2</strong>."
 }

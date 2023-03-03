@@ -68,7 +68,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function count() {
+	public function count(): int {
 		return $this->numRows ? $this->res->numRows() : $this->res->count();
 	}
 
@@ -78,7 +78,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function seek( $position ) {
+	public function seek( $position ): void {
 		$this->res->seek( $position );
 		$this->setCurrent( $this->res->current() );
 		$this->position = $position;
@@ -89,6 +89,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 		return $this->current;
 	}
@@ -98,6 +99,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
+	#[\ReturnTypeWillChange]
 	public function key() {
 		return $this->position;
 	}
@@ -107,9 +109,9 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function next() {
-		$row = $this->res->next();
-		$this->setCurrent( $row );
+	public function next(): void {
+		$this->res->next();
+		$this->setCurrent( $this->res->current() );
 		$this->position++;
 	}
 
@@ -118,7 +120,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function rewind() {
+	public function rewind(): void {
 		$this->res->rewind();
 		$this->position = 0;
 		$this->setCurrent( $this->res->current() );
@@ -129,8 +131,8 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function valid() {
-		return $this->current !== false;
+	public function valid(): bool {
+		return $this->current !== false && $this->position < $this->count();
 	}
 
 	protected function setCurrent( $row ) {

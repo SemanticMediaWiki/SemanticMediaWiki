@@ -8,6 +8,7 @@ use JobQueueGroup;
 use LBFactory;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserOptionsLookup;
 use Psr\Log\NullLogger;
 use SMW\Utils\Logger;
 use SMW\MediaWiki\NamespaceInfo;
@@ -83,7 +84,7 @@ return [
 	 */
 	'WikiPage' => function( $containerBuilder, \Title $title ) {
 		$containerBuilder->registerExpectedReturnType( 'WikiPage', '\WikiPage' );
-		return \WikiPage::factory( $title );
+		return ServicesFactory::getInstance()->newPageCreator()->createPage( $title );
 	},
 
 	/**
@@ -274,7 +275,12 @@ return [
 
 		$containerBuilder->registerExpectedReturnType( 'JobQueueGroup', '\JobQueueGroup' );
 
-		return JobQueueGroup::singleton();
+		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
+			// MW 1.37+
+			return MediaWikiServices::getInstance()->getJobQueueGroup();
+		} else {
+			return JobQueueGroup::singleton();
+		}
 	},
 
 	/**
@@ -331,5 +337,9 @@ return [
 	'ParserCache' => function( $containerBuilder ) {
 		return MediaWikiServices::getInstance()->getParserCache();
 	},
+
+	'UserOptionsLookup' => function( $containerBuilder ): UserOptionsLookup {
+		return MediaWikiServices::getInstance()->getUserOptionsLookup();
+	}
 
 ];

@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Page;
 use Article;
 use SMW\DIWikiPage;
 use SMW\Options;
+use SMW\Services\ServicesFactory;
 use SMWOutputs as Outputs;
 
 /**
@@ -81,7 +82,8 @@ abstract class Page extends Article {
 		$request = $this->getContext()->getRequest();
 
 		$diff = $request->getVal( 'diff' );
-		$diffOnly = $request->getBool( 'diffonly', $user->getOption( 'diffonly' ) );
+		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
+		$diffOnly = $request->getBool( 'diffonly', $userOptionsLookup->getOption( $user, 'diffonly' ) );
 
 		if ( !isset( $diff ) || !$diffOnly ) {
 			// MW 1.25+

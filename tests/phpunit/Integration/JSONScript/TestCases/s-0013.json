@@ -14,7 +14,10 @@
 	"tests": [
 		{
 			"type": "special",
-			"about": "#0 verify preferred label display",
+			"about": "#0 (1.38-) verify preferred label display",
+			"skip-on": {
+				"mediawiki": [ ">1.37.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"special-page": {
 				"page": "Browse",
 				"query-parameters": "Example/S0013/1",
@@ -26,6 +29,26 @@
 			"assert-output": {
 				"to-contain": [
 					">Label with spaces</a>&nbsp;<span title=\"SomeProperty\"><sup>ᵖ</sup>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#0 (1.38+) verify preferred label display",
+			"skip-on": {
+				"mediawiki": [ "<1.37.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0013/1",
+				"request-parameters": {
+					"output": "legacy",
+					"lang": "es"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					">Label&#160;with&#160;spaces</a>&nbsp;<span title=\"SomeProperty\"><sup>ᵖ</sup>"
 				]
 			}
 		}

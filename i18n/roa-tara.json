@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Joetaras"
+			"Joetaras",
+			"McDutchie"
 		]
 	},
 	"smw-error": "Errore",
@@ -199,8 +200,8 @@
 	"smw-admin-tab-general": "Panorameche",
 	"smw-admin-configutation-tab-settings": "'Mbostaziune",
 	"smw-admin-configutation-tab-namespaces": "Namespace",
-	"smw-admin-maintenance-script-section-update": "Aggiorne le script",
-	"smw-admin-maintenance-script-section-rebuild": "Recombilazione de le script",
+	"smw-admin-maintenance-script-section-update": "Script di aggiornamento",
+	"smw-admin-maintenance-script-section-rebuild": "Script di ricostruzione",
 	"smw-livepreview-loading": "Stoche a careche…",
 	"smw-sp-searchbyproperty-resultlist-header": "Elenghe de le resultate",
 	"smw-search-profile-sort-title": "Titole",
@@ -215,11 +216,9 @@
 	"smw-type-primitive": "Nderre-nderre",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|seconde}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|seconde}}",
-	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-clipboard-copy-link": "Copie 'u collegamende jndr'à l'appunde",
 	"smw-no-data-available": "Nisciune date disponibbile.",
-	"smw-format-datatable-infothousands": ",",
 	"smw-format-datatable-loadingrecords": "Stoche a careche…",
 	"smw-format-datatable-processing": "Stoche a processe...",
 	"smw-format-datatable-search": "Cirche:",
@@ -234,7 +233,6 @@
 	"smw-copy": "Copie",
 	"smw-copy-clipboard-title": "Copie 'u condenute jndr'à le appunde",
 	"smw-schema-error-title": "{{PLURAL:$1|Errore}} de validazione",
-	"smw-schema-error-violation": "[\"$1\", \"$2\"]",
 	"smw-schema-error-json": "Errore JSON: \"$1\"",
 	"smw-schema-validation-schema-title": "Scheme JSON",
 	"smw-schema-summary-title": "Riepiloghe",
@@ -249,5 +247,6 @@
 	"smw-property-tab-constraint-schema-title": "Vingole d'u scheme combilate",
 	"smw-concept-tab-list": "Elenghe",
 	"smw-concept-tab-errors": "Errore",
-	"smw-listingcontinuesabbrev": "cond."
+	"smw-listingcontinuesabbrev": "cond.",
+	"smw-showingresults": "Stoche a fazze vedè aqquà sotte {{PLURAL:$1|'''1''' resultete|'''$1''' resultete}} ca accumenzene cu #'''$2'''."
 }

@@ -2,7 +2,9 @@
 	"@metadata": {
 		"authors": [
 			"BHARATHESHA ALASANDEMAJALU",
+			"Chidananda Kampa",
 			"Kiranpoojary",
+			"Mahaveer Indra",
 			"Ravi Mundkur",
 			"VASANTH S.N."
 		]
@@ -18,7 +20,7 @@
 	"unusedproperties": "ಗಲಸಂದಿನ ಗುಣಲಕ್ಷಣಲು",
 	"wantedproperties": "ಬೋಡಾಯಿನ ಗುಣಲಕ್ಷಣಲು",
 	"smw-statistics-property-total-info": "ನೋಂದಾಯಿನ ಗುಣಲಕ್ಷಣೊಲೆನ ಒಟ್ಟು ಸಂಖ್ಯೆ",
-	"smw-ask-delete": "[ಮಾಜಾಲೆ]",
+	"smw-ask-delete": "ದೆಪ್ಪುಲೆ",
 	"smw-ask-search": "ನಾಡ್‍ಲೆ",
 	"smw_sbv_value": "ಮೌಲ್ಯ:",
 	"browse": "ವಿಕಿನ್ ನಾಡ್‍ಲೆ",
@@ -40,5 +42,6 @@
 	"smw-copy-clipboard-title": "ವಿಷಯಾಂಶೊನು ಪತಿಪಲಯಿಗ್ ನಕಲುಂಡು",
 	"smw-jsonview-expand-title": "JSON ನೋಟನು ವಿಸ್ತಾರ ಮಲ್ಪುಂಡು.",
 	"smw-jsonview-collapse-title": "JSON ನೋಟನು ಪತನ ಮಲ್ಪುಂಡು",
-	"smw-listingcontinuesabbrev": "ದುಂಬು."
+	"smw-listingcontinuesabbrev": "ದುಂಬು.",
+	"smw-showingresults": "#<strong>$2</strong>ರ್ದ್ ಸುರುವಾಪಿನ,  {{PLURAL:$1|<strong>1</strong> ಫಲಿತಾಂಶ|<strong>$1</strong>ಫಲಿತಾಂಶೊಲು}} ಮುಟ್ಟದವೆನ್ ಈ  ತಿರ್ತ್ ತೋಜಾವುಂಡು ."
 }

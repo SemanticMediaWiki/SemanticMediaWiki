@@ -19,7 +19,6 @@
 	"smw_concept_cache_miss": "Pojem „$1” nemožno momentálne použiť, pretože konfigurácia wiki vyžaduje, aby sa vypočítal, keď wiki nebude pripojená. Ak problém po určitej dobe nezmizne, požiadajte správcu, aby tento pojem sprístupnil.",
 	"smw_noinvannot": "Hodnoty nemožno priradiť inverzným vlastnostiam.",
 	"smw_baduri": "Prepáčte, URI z rozsahu \"$1\" na tomto mieste nie sú dostupné.",
-	"smw_csv_link": "CSV",
 	"smw_printername_count": "Výsledky počítania",
 	"smw_printername_csv": "export CSV",
 	"smw_printername_debug": "Ladiaca požiadavka (pre expertov)",
@@ -179,5 +178,6 @@
 	"smw_conceptarticlecount": "Nižšie {{PLURAL:$1|zobrazená jedna stránka|zobrazené $1 stránky|zobrazených $1 stránkok}}.",
 	"smw-property-predefined-askpa": "„$1“ je predefinovaná vlastnosť popisujúca parametre, ktoré ovplyvňujú výsledok dopytu, a poskytuje ju [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-livepreview-loading": "Načítava sa…",
-	"smw-listingcontinuesabbrev": "pokrač."
+	"smw-listingcontinuesabbrev": "pokrač.",
+	"smw-showingresults": "Nižšie {{PLURAL:$1|je zobrazený jeden výsledok|sú zobrazené '''1''' výsledky|je zobrazených '''$1''' výsledkov}}, počnúc od  #<b>$2</b>."
 }

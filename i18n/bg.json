@@ -102,7 +102,7 @@
 	"smw_result_next": "Следващи",
 	"smw_result_results": "Резултати",
 	"smw_result_noresults": "Няма резултати.",
-	"smwadmin": "Табло (Семантично МедияУики)",
+	"smwadmin": "Табло на Семантично МедияУики",
 	"smw_smwadmin_return": "Връщане към $1",
 	"smw-admin-deprecation-notice-title-notice": "Непрепоръчителни настройки",
 	"smw-admin-statistics": "Статистика",
@@ -158,7 +158,6 @@
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|секунда|секунди}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|секунда|секунди}}",
 	"smw-datavalue-external-formatter-invalid-uri": "„$1“ е неправилен URL-адрес.",
-	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-clipboard-copy-link": "Копиране на линка в системния буфер",
 	"smw-format-datatable-loadingrecords": "Зареждане...",
@@ -166,5 +165,7 @@
 	"smw-format-datatable-search": "Търсене:",
 	"smw-format-datatable-next": "Следваща",
 	"smw-help": "Помощ",
-	"smw-listingcontinuesabbrev": "продълж."
+	"smw-jsonview-search-label": "Търсене:",
+	"smw-listingcontinuesabbrev": "продълж.",
+	"smw-showingresults": "Показване на до {{PLURAL:$1|<strong>1</strong> резултат|<strong>$1</strong> резултата}}, като се започва от номер <strong>$2</strong>."
 }

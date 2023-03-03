@@ -113,7 +113,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $config, '' );
+		$config = $instance->init( $config, '' );
 
 		$this->assertNotEmpty(
 			$config['wgResourceModules']
@@ -153,7 +153,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $config, 'Foo' );
+		$config = $instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
 			$config['wgAvailableRights']
@@ -189,7 +189,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $localConfig, 'Foo' );
+		$localConfig = $instance->init( $localConfig, 'Foo' );
 
 		$this->assertFalse(
 			$localConfig['wgGroupPermissions']['sysop']['smw-admin']
@@ -217,7 +217,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $config, 'Foo' );
+		$config = $instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
 			$config['wgParamDefinitions']['smwformat']
@@ -236,7 +236,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $config, 'Foo' );
+		$config = $instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
 			$config['wgFooterIcons']['poweredby']['semanticmediawiki']
@@ -296,7 +296,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $config, 'Foo' );
+		$config = $instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty( $config[$target][$entry] );
 

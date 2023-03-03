@@ -17,6 +17,7 @@ use SMW\DisplayTitleFinder;
 use SMW\Elastic\ElasticFactory;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
+use SMW\Factbox\FactboxText;
 use SMW\HierarchyLookup;
 use SMW\InMemoryPoolCache;
 use SMW\IteratorFactory;
@@ -129,9 +130,14 @@ class SharedServicesContainer implements CallbackContainer {
 	 *
 	 * @return IndicatorRegistry
 	 */
-	public function newIndicatorRegistry( ContainerBuilder $containerBuilder ) {
+	public function newIndicatorRegistry( ContainerBuilder $containerBuilder, bool $addEntityExaminer ) {
 
 		$indicatorRegistry = new IndicatorRegistry();
+
+		if ( !$addEntityExaminer ) {
+			return $indicatorRegistry;
+		}
+
 		$entityExaminerIndicatorsFactory = new EntityExaminerIndicatorsFactory();
 
 		$entityExaminerIndicatorProvider = $entityExaminerIndicatorsFactory->newEntityExaminerIndicatorProvider(
@@ -477,6 +483,15 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			return $paramListProcessor;
+		} );
+
+		/**
+		 * @var FactboxText
+		 */
+		$containerBuilder->registerCallback( 'FactboxText', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'FactboxText', FactboxText::class );
+
+			return new FactboxText();
 		} );
 	}
 
@@ -881,7 +896,8 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'PreferenceExaminer', '\SMW\MediaWiki\Preference\PreferenceExaminer' );
 
 			$preferenceExaminer = new PreferenceExaminer(
-				$user
+				$user,
+				ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' )
 			);
 
 			return $preferenceExaminer;

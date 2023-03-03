@@ -46,7 +46,7 @@ class AppendIterator extends \AppendIterator implements Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function count() {
+	public function count(): int {
 		return $this->count;
 	}
 
@@ -55,7 +55,7 @@ class AppendIterator extends \AppendIterator implements Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function append( Iterator $iterable ) {
+	public function append( Iterator $iterable ): void {
 
 		if ( $iterable instanceof Countable ) {
 			$this->count += $iterable->count();

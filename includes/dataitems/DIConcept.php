@@ -205,7 +205,7 @@ class DIConcept extends \SMWDataItem {
 	 *
 	 * @return array
 	 */
-	public function jsonSerialize() {
+	public function jsonSerialize(): array {
 		$json = parent::jsonSerialize();
 		$json['cacheStatus'] = $this->cacheStatus;
 		$json['cacheDate'] = $this->cacheDate;

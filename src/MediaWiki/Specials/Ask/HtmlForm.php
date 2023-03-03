@@ -3,9 +3,8 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
-use SMW\Message;
+use SMW\Query\QueryResult;
 use Title;
-use SMWQueryResult as QueryResult;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\UrlArgs;
 use SMW\Query\QueryLinker;
@@ -160,7 +159,7 @@ class HtmlForm {
 		return Html::rawElement( 'form', $params, $html );
 	}
 
-	private function buildHTML( $urlArgs, $queryResult, $queryLog ) {
+	private function buildHTML( $urlArgs, $queryResult, array $queryLog ) {
 
 		$navigation = '';
 		$queryLink = null;
@@ -344,7 +343,7 @@ class HtmlForm {
 			],
 			QueryInputWidget::table(
 				$this->queryString,
-				$urlArgs->get( 'po' )
+				$urlArgs->get( 'po', '' )
 			)
 		);
 

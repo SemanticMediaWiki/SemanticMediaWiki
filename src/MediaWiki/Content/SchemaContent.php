@@ -433,6 +433,7 @@ class SchemaContent extends JsonContent {
 
 		// Allow to use the schema validation against a possible
 		// required naming convention (aka title prefix)
+		// TODO: Illegal dynamic property (#5421)
 		$this->parse->title_prefix = $title_prefix;
 	}
 

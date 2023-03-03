@@ -23,5 +23,6 @@
 	"smw_result_prev": "Siar",
 	"smw_result_next": "Ar aghaidh",
 	"smw-livepreview-loading": "Ag lódáil…",
-	"smw-listingcontinuesabbrev": "ar lean."
+	"smw-listingcontinuesabbrev": "ar lean.",
+	"smw-showingresults": "Ag taispeáint thíos {{PLURAL:$1|'''toradh amháin'''|'''$1''' torthaí}}, ag tosú le #'''$2'''."
 }

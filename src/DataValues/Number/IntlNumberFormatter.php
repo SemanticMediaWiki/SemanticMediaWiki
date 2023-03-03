@@ -166,16 +166,10 @@ class IntlNumberFormatter {
 	 * precision settings, with some intelligence to produce readable output. Used
 	 * to format a number that was not hand-formatted by a user.
 	 *
-	 * @param mixed $value input number
 	 * @param integer|false $precision optional positive integer, controls how many digits after
 	 * the decimal point are shown
-	 *
-	 * @since 2.1
-	 *
-	 * @return string
 	 */
-	private function doFormatByHeuristicRuleWith( $value, $precision = false ) {
-
+	private function doFormatByHeuristicRuleWith( $value, $precision = false ): string {
 		// BC configuration to keep default behaviour
 		$precision = $this->defaultPrecision;
 
@@ -194,8 +188,8 @@ class IntlNumberFormatter {
 		// @todo: Don't do all this magic for integers, since the formatting does not fit there
 		//       correctly. E.g. one would have integers formatted as 1234e6, not as 1.234e9, right?
 		// The "$value!=0" is relevant: we want to scientify numbers that are close to 0, but never 0!
-		if ( ( $precision > 0 ) && ( $value != 0 ) ) {
-			$absValue = abs( $value );
+		if ( $precision > 0 && $value != 0 ) {
+			$absValue = abs( (float)$value );
 			if ( $absValue >= $this->maxNonExpNumber ) {
 				$doScientific = true;
 			} elseif ( $absValue < pow( 10, - $precision ) ) {

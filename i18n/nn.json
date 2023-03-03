@@ -173,5 +173,6 @@
 	"smw_conceptarticlecount": "Syner nedanfor {{PLURAL:$1|éi side|$1 sider}}",
 	"smw-livepreview-loading": "Lastar inn&nbsp;…",
 	"smw-type-tab-properties": "Eigenskapar",
-	"smw-listingcontinuesabbrev": "vidare"
+	"smw-listingcontinuesabbrev": "vidare",
+	"smw-showingresults": "Nedanfor er opp til {{PLURAL:$1|<strong>eitt</strong>|<strong>$1</strong>}} resultat som byrjar med nummer <strong>$2</strong> vist{{PLURAL:$1||e}}."
 }

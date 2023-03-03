@@ -6,5 +6,6 @@
 	},
 	"browse": "覽共筆",
 	"smw-livepreview-loading": "遺藏…",
-	"smw-listingcontinuesabbrev": "續"
+	"smw-listingcontinuesabbrev": "續",
+	"smw-showingresults": "見'''$1'''尋，自'''$2'''始："
 }

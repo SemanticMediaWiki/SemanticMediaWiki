@@ -93,7 +93,7 @@ class TaskHandlerRegistry {
 	 *
 	 * @return string $type;
 	 *
-	 * @return TaskHandler[]|[]
+	 * @return TaskHandler[]
 	 */
 	public function get( string $type ) : array {
 		$taskHandlers = [];

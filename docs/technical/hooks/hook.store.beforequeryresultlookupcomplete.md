@@ -7,7 +7,7 @@
 ```php
 use Hooks;
 
-Hooks::register( 'SMW::Store::AfterQueryResultLookupComplete', function( $store, $query, &$queryResult, $queryEngine ) {
+Hooks::register( 'SMW::Store::BeforeQueryResultLookupComplete', function( $store, $query, &$queryResult, $queryEngine ) {
 
 	// Allow default processing
 	return true;

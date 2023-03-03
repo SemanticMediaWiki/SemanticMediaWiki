@@ -48,6 +48,8 @@ class TurtleSerializer extends Serializer {
 	 */
 	protected $sparql_namespaces;
 
+	protected array $subExpData;
+
 	/**
 	 * @since 1.5.5
 	 *

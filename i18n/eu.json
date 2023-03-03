@@ -7,6 +7,7 @@
 			"Fitoschido",
 			"Joseba",
 			"Kobazulo",
+			"McDutchie",
 			"Mikel Ibaiba",
 			"Sator",
 			"Subi",
@@ -295,7 +296,6 @@
 	"smw-limitreport-pagepurge-storeupdatetime-value": "{{PLURAL:$1|segundo bat|$1 segundo}}",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" baliogabeko URLa da.",
 	"smw-datavalue-parse-error": "Emandako \"$1\" balioa ez da ulertu.",
-	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-data-lookup-with-wait": "Eskaera abian dago eta apur bat luza daiteke.",
 	"smw-no-data-available": "Data ez dago eskuragarri.",
@@ -303,7 +303,6 @@
 	"smw-query-reference-link-label": "Kontsulta erreferentzia",
 	"smw-format-datatable-emptytable": "Ez dago daturik eskuragarri taulan",
 	"smw-format-datatable-info": "_START_ to _END_ of _TOTAL_ sarrerak erakusten",
-	"smw-format-datatable-infothousands": ",",
 	"smw-format-datatable-lengthmenu": "_MENU_ sarrerak erakutsi",
 	"smw-format-datatable-loadingrecords": "Kargatzen...",
 	"smw-format-datatable-processing": "Prozesatzen...",
@@ -313,8 +312,6 @@
 	"smw-format-datatable-next": "Hurrengoa",
 	"smw-format-datatable-previous": "Aurrekoa",
 	"smw-format-datatable-toolbar-export": "Esportatu",
-	"smw-format-list-other-fields-open": " (",
-	"smw-format-list-other-fields-close": ")",
 	"smw-property-reserved-category": "Kategoria",
 	"smw-category": "Kategoria",
 	"smw-browse-property-group-title": "Propietate taldea",
@@ -325,5 +322,6 @@
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] formatua",
 	"smw-help": "Laguntza",
 	"smw-processing": "Prozesatzen...",
-	"smw-listingcontinuesabbrev": "jarr."
+	"smw-listingcontinuesabbrev": "jarr.",
+	"smw-showingresults": "Jarraian {{PLURAL:$1|emaitza <strong>bat</strong> ageri da.|<strong>$1</strong> emaitza ageri dira, #'''$2'''.etik hasita.}}"
 }

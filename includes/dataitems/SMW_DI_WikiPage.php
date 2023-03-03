@@ -63,6 +63,8 @@ class DIWikiPage extends SMWDataItem {
 	 */
 	private $id = 0;
 
+	public int $recdepth;
+
 	/**
 	 * Constructor. We do not bother with too much detailed validation here,
 	 * regarding the known namespaces, canonicity of the dbkey (namespace
@@ -344,7 +346,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @return array
 	 */
-	public function jsonSerialize() {
+	public function jsonSerialize(): array {
 		$json = parent::jsonSerialize();
 		$json['sortkey'] = $this->sortkey;
 		$json['contextReference'] = $this->contextReference;

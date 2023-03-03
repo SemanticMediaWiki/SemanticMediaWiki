@@ -15,7 +15,7 @@ above is not supported.
 * Improved compatibility with MediaWiki 1.38, though this version still has many issues
 * Improved support for MediaWiki 1.35
 * Dropped support for MediaWiki older than 1.35
-* Dropped support for PHP older than 7.4
+* Dropped support for PHP older than 7.3
 
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
@@ -42,10 +42,11 @@ maintenance script must be run (the collation sort key algorithm was changed).
 ## Enhancements
 
 * [Special properties of type Page are now displayed consistently](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5111)
-* [The maintenance page is no longer indexed my search engines](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4967)
+* [The maintenance page is no longer indexed by search engines](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4967)
 * [Improved performance on multi-database setups](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5002)
 * [Improved support for recent ElasticSearch versions](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4976)
 * [Updated the logo](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5013)
+* Localisation updates from the translatewiki.net community of translators
 
 ## Bug fixes
 

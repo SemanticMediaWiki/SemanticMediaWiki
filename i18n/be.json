@@ -2,7 +2,10 @@
 	"@metadata": {
 		"authors": [
 			"Artsiom91",
+			"Maksim L.",
 			"Mechanizatar",
+			"No Sleep till Krupki",
+			"Plaga med",
 			"Тест",
 			"Чаховіч Уладзіслаў"
 		]
@@ -11,7 +14,8 @@
 	"smw_printername_category": "Катэгорыя",
 	"validator-type-class-SMWParamSource": "тэкст",
 	"smw-paramdesc-limit": "Максімальная колькасць вынікаў",
-	"smw_querytoolarge": "$2 {{PLURAL:$2|наступная ўмова запыту не можа|наступныя ўмовы запыту не могуць|наступных умоваў запыту ня могуць}} улічвацца праз абмежаванні гэтай вікі на глыбіню і памер запыту: <code>$1</code>.",
+	"smw_querytoolarge": "$2 {{PLURAL:$2|наступная ўмова запыту не можа|наступныя ўмовы запыту не могуць|наступных умоваў запыту не могуць}} улічвацца праз абмежаванні гэтай вікі на глыбіню і памер запыту: <code>$1</code>.",
+	"smw_attributearticlecount": "{{PLURAL:$1|Паказваецца $1 старонка, якая выкарыстоўвае|Паказваюцца $1 старонкі, якія выкарыстоўваюць|Паказваюцца $1 старонак, якія выкарыстоўваюць}} гэту ўласцівасць.",
 	"properties": "Уласцівасці",
 	"smw_purge": "Абнавіць",
 	"types": "Тыпы",
@@ -23,11 +27,12 @@
 	"smw_smwadmin_updatenotstarted": "Працэс абнаўлення ўжо запушчаны.\nНе ствараем яшчэ адзін.",
 	"smw_smwadmin_updatestopped": "Усе працэсы абнаўлення былі спыненыя.",
 	"smw_smwadmin_updatenotstopped": "Каб спыніць працэс абнаўлення, пастаўце ў полі адзнаку каб пацвердзіць.",
-	"smw-admin-permissionswarn": "Калі адбываюцца SQL-памылкі падчас выканання аперацыі, гэта значыць, што рахунак базы дадзеных, які выкарыстоўвае Ваша вікі, магчыма, ня мае адпаведных правоў (праверце Ваш файл «LocalSettings.php»). Надайце рахунку дадатковыя правы на стварэнне і выдаленне табліцаў, часова ўвядзіце рахунак адміністратара базы дадзеных у файл «LocalSettings.php», ці карыстайцеся скрыптом падтрымкі setupStore.php, які можа выкарыстоўваць рахунак адміністратара.",
-	"smw-admin-supportdocu": "Розныя рэсурсы могуць дапамагчы Вам у выпадку ўзнікнення праблемаў:",
-	"smw-admin-installfile": "Калі ў Вас узнікнуць праблемы з усталяваннем, пачніце з рэкамендацыяў у <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">файле INSTALL</a>.",
+	"smw-admin-permissionswarn": "Калі адбываюцца SQL-памылкі падчас выканання аперацыі, гэта значыць, што ўліковы запіс базы даных, які выкарыстоўвае ваша вікі, магчыма, не мае адпаведных правоў (праверце ваш файл «LocalSettings.php»). Надайце ўліковаму запісу дадатковыя правы на стварэнне і выдаленне табліц, часова ўвядзіце імя карыстальніка для адміністратара базы даных у файл «LocalSettings.php», або скарыстайцеся скрыптам падтрымкі <code>setupStore.php</code>, які можа выкарыстоўваць уліковыя даныя адміністратара.",
+	"smw-admin-supportdocu": "Розныя рэсурсы могуць дапамагчы вам у выпадку ўзнікнення праблемаў:",
+	"smw-admin-installfile": "Калі ўзнікнуць праблемы з вашым усталяваннем, пачніце з рэкамэндацыяў у <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">файле INSTALL</a> і <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Installation\">на старонцы ўсталявання</a>.",
 	"smw-ui-tooltip-title-property": "Уласцівасць",
 	"smw-livepreview-loading": "Счытваем…",
 	"smw-help": "Даведка",
-	"smw-listingcontinuesabbrev": "працяг"
+	"smw-listingcontinuesabbrev": "працяг",
+	"smw-showingresults": "Ніжэй {{PLURAL:$1|паказаны|паказаны|паказана|}} <strong>$1</strong> {{PLURAL:$1|вынік|вынікі|вынікаў|}}, пачынаючы з нумара <strong>$2</strong>."
 }

@@ -17,5 +17,6 @@
 	"browse": "ۋىكىنى زىيارەت قىلىش",
 	"smw_browse_go": "كۆچۈش",
 	"smw-livepreview-loading": "يۈكلەۋاتىدۇ…",
-	"smw-listingcontinuesabbrev": "داۋاملاشتۇر"
+	"smw-listingcontinuesabbrev": "داۋاملاشتۇر",
+	"smw-showingresults": "تۆۋەندە '''$2''' - نەتىجىدىن باشلانغان {{PLURAL:$1|'''1''' نەتىجە|'''$1''' نەتىجە}} كۆرسىتىدۇ:"
 }

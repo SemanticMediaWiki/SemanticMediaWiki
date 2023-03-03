@@ -8,5 +8,6 @@
 	"browse": "Wikipi wamp'uy",
 	"smw_browselink": "Kaqninkunapi wamp'uy",
 	"smw-livepreview-loading": "Chaqnamuspa…",
-	"smw-listingcontinuesabbrev": "qatiy"
+	"smw-listingcontinuesabbrev": "qatiy",
+	"smw-showingresults": "Qhipanpiqa rikuchkanki {{PLURAL:$1|'''1''' tarisqatam|'''$1'''-kama tarisqakunatam}}, '''$2''' huchhawan qallarispa."
 }

@@ -68,7 +68,7 @@ class SpecialBrowse extends SpecialPage {
 
 		$dataValue = DataValueFactory::getInstance()->newTypeIDValue(
 			'_wpg',
-			$articletext
+			$articletext ?? false
 		);
 
 		$out = $this->getOutput();
@@ -115,7 +115,7 @@ class SpecialBrowse extends SpecialPage {
 			);
 
 			if ( !$this->including() ) {
-				$html .= FieldBuilder::createQueryForm( $webRequest->getVal( 'article' ) );
+				$html .= FieldBuilder::createQueryForm( $webRequest->getVal( 'article', '' ) );
 			}
 
 			return $html;

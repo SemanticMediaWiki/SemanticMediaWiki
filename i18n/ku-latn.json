@@ -17,7 +17,7 @@
 	"smw_true_words": "rast, r, erê, e",
 	"smw_false_words": "nerast, n, na, n",
 	"smw_nofloat": "\"$1\" ne hejmarek e.",
-	"smw_purge": "Nû bike",
+	"smw_purge": "Rojane bike",
 	"types": "Cure",
 	"smw-ask-delete": "Rake",
 	"smw-ask-parameters": "Parametre",
@@ -42,5 +42,6 @@
 	"smw-search-syntax": "Sentaks",
 	"smw-types-list": "Lîsteya cureyên daneyan",
 	"smw-format-datatable-next": "Pêşve",
-	"smw-listingcontinuesabbrev": "dewam"
+	"smw-listingcontinuesabbrev": "dewam",
+	"smw-showingresults": "{{PLURAL:$1|Encamek|'''$1''' encam}}, bi #'''$2''' dest pê dike."
 }

@@ -63,8 +63,8 @@ class FileUploadIntegrationTest extends DatabaseTestCase {
 		);
 
 		$this->mwHooksHandler->register(
-			'LinksUpdateConstructed',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateConstructed' )
+			'LinksUpdateComplete',
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateComplete' )
 		);
 
 		$this->getStore()->setup( false );

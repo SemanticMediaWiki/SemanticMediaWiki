@@ -30,7 +30,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * --individuals      Export only pages that are no categories, properties, or types
  * --namespace <namespacelist>
  *                    Export only namespaces included in <namespacelist>
- *                    Example: --namespace "NS_Example1|NS_Example3|SMW_CONCEPT" with | being used as separator.
+ *                    Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE|NS_CATEGORY|SMW_NS_CONCEPT|SMW_NS_PROPERTY|SMW_NS_RULE|SMW_NS_SCHEMA" with | being used as separator.
  *                    Uses constant namespace names.
  * --page <pagelist>  Export only pages included in the <pagelist> with | being used as a separator.
  *                    Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.
@@ -73,7 +73,7 @@ class dumpRDF extends \Maintenance {
 		$this->addOption( 'individuals', 'Export only individuals', false );
 
         $this->addOption('namespace','Export only namespaced included in the <namespacelist> with | being used as a separator. ' .
-            'Example: --namespace "NS_NS1|NS_NS2|NS_NS3"',false,true);
+            'Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE"',false,true);
 
 
         $this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .

@@ -52,6 +52,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 */
 	private $isDeferredMode = false;
 
+	private TemplateEngine $templateEngine;
+
 	/**
 	 * @since 3.2
 	 *

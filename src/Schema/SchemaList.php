@@ -147,7 +147,7 @@ class SchemaList implements JsonSerializable {
 	 *
 	 * @return string
 	 */
-	public function jsonSerialize() {
+	public function jsonSerialize(): string {
 		return json_encode( $this->list );
 	}
 

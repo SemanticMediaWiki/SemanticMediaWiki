@@ -74,7 +74,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$instance = new NamespaceManager( $this->localLanguage );
-		$instance->init( $vars );
+		$vars = $instance->init( $vars );
 
 		$this->assertNotEmpty(
 			$vars
@@ -138,7 +138,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'wgContentNamespaces' => []
 		];
 
-		NamespaceManager::initCustomNamespace( $vars );
+		$vars = NamespaceManager::initCustomNamespace( $vars )['newVars'];
 
 		$this->assertNotEmpty( $vars );
 
@@ -213,7 +213,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$instance = new NamespaceManager( $this->localLanguage );
-		$instance->init( $vars );
+		$vars = $instance->init( $vars );
 
 		$this->assertTrue(
 			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY]
@@ -240,7 +240,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$instance = new NamespaceManager( $this->localLanguage );
-		$instance->init( $vars );
+		$vars = $instance->init( $vars );
 
 		$this->assertFalse(
 			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY]
@@ -274,10 +274,10 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'wgNamespaceAliases' => '',
 		];
 
-		$instance = NamespaceManager::initCustomNamespace(
+		$vars = NamespaceManager::initCustomNamespace(
 			$vars,
 			$localLanguage
-		);
+		)['newVars'];
 
 		$this->assertArrayHasKey(
 			'Foo',
@@ -300,7 +300,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		] + $this->default;
 
 		$instance = new NamespaceManager( $this->localLanguage );
-		$instance->init( $vars );
+		$vars = $instance->init( $vars );
 
 		$this->assertFalse(
 			$vars['wgNamespacesWithSubpages'][SMW_NS_PROPERTY]
@@ -320,7 +320,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		$vars = $this->default;
 
 		$instance = new NamespaceManager( $this->localLanguage );
-		$instance->init( $vars );
+		$vars = $instance->init( $vars );
 
 		$this->assertEquals(
 			CONTENT_MODEL_SMW_SCHEMA,

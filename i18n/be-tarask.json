@@ -258,7 +258,7 @@
 	"smw-admin-setupsuccess": "Рухавік сховішча наладжаны.",
 	"smw_smwadmin_return": "Вярнуцца да $1",
 	"smw_smwadmin_updatestarted": "Быў распачаты новы працэс абнаўленьня сэмантычных зьвестак.\nУсе зьвесткі будуць пераўтвораны ці зьменены, калі гэта будзе неабходна.\nВы можаце назіраць за працэсам абнаўленьня на гэтай спэцыяльнай старонцы.",
-	"smw_smwadmin_updatenotstarted": "Працэс абнаўленьня ўжо распачаты.\nНе ствараем новы.",
+	"smw_smwadmin_updatenotstarted": "Працэс абнаўленьня ўжо распачаты.\nНовага не ствараем.",
 	"smw_smwadmin_updatestopped": "Усе працэсы абнаўленьня былі спыненыя.",
 	"smw_smwadmin_updatenotstopped": "Каб спыніць працэс абнаўленьня, пастаўце ў полі адзнаку дзеля пацьверджаньня вашых намераў.",
 	"smw-admin-docu": "Гэтая спэцыяльная старонка дапамагае вам падчас усталяваньня, абнаўленьня, абслугоўваньня і выкарыстаньня <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a>, а таксама забясьпечвае далейшыя адміністрацыйныя функцыі і задачы разам з статыстыкай.\nНе забывайце захоўваць каштоўныя зьвесткі перад выкананьнем адміністратарскіх функцыяў.",
@@ -303,7 +303,6 @@
 	"smw-admin-supplementary-idlookup-intro": "Падтрымлівае простую функцыю <u>$1</u>",
 	"smw-admin-supplementary-duplookup-title": "Дубляваны прагляд элемэнтаў",
 	"smw-admin-supplementary-duplookup-intro": "<u>$1</span>, каб знайсьці элемэнты, якія класыфікуюцца як дублікаты ў абранай матрыцы табліцаў",
-	"smw-admin-supplementary-duplookup-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities",
 	"smw-admin-supplementary-operational-statistics-cache-title": "Статыстыка кэшу",
 	"smw-admin-supplementary-operational-statistics-cache-intro": "<u>$1</u> паказвае абраны набор статыстыкі кэшу",
 	"smw-admin-supplementary-elastic-title": "Elasticsearch",
@@ -429,5 +428,6 @@
 	"smw-datavalue-parse-error": "Дадзенае значэньне «$1» не было распазнанае.",
 	"smw-no-data-available": "Няма даступных зьвестак.",
 	"smw-es-replication-error-no-connection": "Сачэньне за паўтарэньнем ня можа выканаць праверкі, бо ня можа ўсталяваць сувязь з клястэрам Elasticsearch.",
-	"smw-listingcontinuesabbrev": " (працяг)"
+	"smw-listingcontinuesabbrev": " (працяг)",
+	"smw-showingresults": "Ніжэй {{PLURAL:$1|паданы|паданыя|паданыя}} да '''$1''' {{PLURAL:$1|выніку|вынікаў|вынікаў}}, пачынаючы з #<b>$2</b>."
 }
