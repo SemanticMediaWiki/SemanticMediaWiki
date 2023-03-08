@@ -101,7 +101,7 @@
 	},
 	"scripts": {
 		"test": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
-		"phpunit": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist --testdox ${composerScriptArg}",
+		"phpunit": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"phpdbg": "phpdbg -qrr ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"unit": [
 			"composer dump-autoload",
