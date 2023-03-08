@@ -839,5 +839,74 @@ return [
 		]
 	],
 
+	'onoi.qtip' => $moduleTemplate + [
+		'styles' => [
+			'res/onoi/jquery.qtip/core/jquery.qtip.css',
+			'res/onoi/jquery.qtip/extended/jquery.qtip.css'
+		],
+		'scripts' => [
+			'res/onoi/jquery.qtip/core/jquery.qtip.js',
+			'res/onoi/jquery.qtip/extended/jquery.qtip.js'
+		],
+		'dependencies'  => [
+			'onoi.qtip.core'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
 
+	'onoi.rangeslider' => $moduleTemplate + [
+		'styles' => [
+			'res/onoi/jquery.rangeSlider/ion.rangeSlider.css',
+			'res/onoi/jquery.rangeSlider/ion.rangeSlider.skinFlat.css'
+		],
+		'scripts' => [
+			'res/onoi/jquery.rangeSlider/ion.rangeSlider.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'onoi.blobstore' => $moduleTemplate + [
+		'scripts' => [
+			'res/onoi/localForage/localforage.min.js',
+			'res/onoi/onoi.blobstore.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'onoi.clipboard' => $moduleTemplate + [
+		'scripts' => [
+			'res/onoi/clipboard/clipboard.js',
+			'res/onoi/onoi.clipboard.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'onoi.dataTables' => $moduleTemplate + [
+		'styles' => [
+			'res/onoi/jquery.dataTables/dataTables.searchHighlight.css',
+			'res/onoi/jquery.dataTables/jquery.dataTables.css'
+		],
+		'scripts' => [
+			'res/onoi/jquery.highlight/jquery.highlight.js',
+			'res/onoi/jquery.dataTables/dataTables.searchHighlight.js',
+			'res/onoi/jquery.dataTables/jquery.dataTables.min.js',
+			'res/onoi/jquery.dataTables/dataTables.search.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
 ];
