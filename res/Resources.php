@@ -841,12 +841,12 @@ return [
 
 	'onoi.qtip' => $moduleTemplate + [
 		'styles' => [
-			'res/onoi/jquery.qtip/core/jquery.qtip.css',
-			'res/onoi/jquery.qtip/extended/jquery.qtip.css'
+			'onoi/jquery.qtip/core/jquery.qtip.css',
+			'onoi/jquery.qtip/extended/jquery.qtip.css'
 		],
 		'scripts' => [
-			'res/onoi/jquery.qtip/core/jquery.qtip.js',
-			'res/onoi/jquery.qtip/extended/jquery.qtip.js'
+			'onoi/jquery.qtip/core/jquery.qtip.js',
+			'onoi/jquery.qtip/extended/jquery.qtip.js'
 		],
 		'dependencies'  => [
 			'onoi.qtip.core'
@@ -859,11 +859,11 @@ return [
 
 	'onoi.rangeslider' => $moduleTemplate + [
 		'styles' => [
-			'res/onoi/jquery.rangeSlider/ion.rangeSlider.css',
-			'res/onoi/jquery.rangeSlider/ion.rangeSlider.skinFlat.css'
+			'onoi/jquery.rangeSlider/ion.rangeSlider.css',
+			'onoi/jquery.rangeSlider/ion.rangeSlider.skinFlat.css'
 		],
 		'scripts' => [
-			'res/onoi/jquery.rangeSlider/ion.rangeSlider.js'
+			'onoi/jquery.rangeSlider/ion.rangeSlider.js'
 		],
 		'targets' => [
 			'mobile',
@@ -873,8 +873,8 @@ return [
 
 	'onoi.blobstore' => $moduleTemplate + [
 		'scripts' => [
-			'res/onoi/localForage/localforage.min.js',
-			'res/onoi/onoi.blobstore.js'
+			'onoi/localForage/localforage.min.js',
+			'onoi/onoi.blobstore.js'
 		],
 		'targets' => [
 			'mobile',
@@ -884,8 +884,8 @@ return [
 
 	'onoi.clipboard' => $moduleTemplate + [
 		'scripts' => [
-			'res/onoi/clipboard/clipboard.js',
-			'res/onoi/onoi.clipboard.js'
+			'onoi/clipboard/clipboard.js',
+			'onoi/onoi.clipboard.js'
 		],
 		'targets' => [
 			'mobile',
@@ -895,14 +895,14 @@ return [
 
 	'onoi.dataTables' => $moduleTemplate + [
 		'styles' => [
-			'res/onoi/jquery.dataTables/dataTables.searchHighlight.css',
-			'res/onoi/jquery.dataTables/jquery.dataTables.css'
+			'onoi/jquery.dataTables/dataTables.searchHighlight.css',
+			'onoi/jquery.dataTables/jquery.dataTables.css'
 		],
 		'scripts' => [
-			'res/onoi/jquery.highlight/jquery.highlight.js',
-			'res/onoi/jquery.dataTables/dataTables.searchHighlight.js',
-			'res/onoi/jquery.dataTables/jquery.dataTables.min.js',
-			'res/onoi/jquery.dataTables/dataTables.search.js'
+			'onoi/jquery.highlight/jquery.highlight.js',
+			'onoi/jquery.dataTables/dataTables.searchHighlight.js',
+			'onoi/jquery.dataTables/jquery.dataTables.min.js',
+			'onoi/jquery.dataTables/dataTables.search.js'
 		],
 		'targets' => [
 			'mobile',
