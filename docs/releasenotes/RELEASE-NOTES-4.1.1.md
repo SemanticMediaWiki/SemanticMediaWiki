@@ -1,6 +1,6 @@
 # Semantic MediaWiki 4.1.1
 
-Released on March TODO, 2023.
+Released on March 9, 2023.
 
 ## Summary
 
@@ -23,37 +23,29 @@ This release improves compatibility with MediaWiki 1.39 and PHP 8.1.
 
 ## Contributors
 
-Top contributors TODO
+Top contributors
 
-1. Morne Alberts from [Professional Wiki](https://professional.wiki/)
-2. Jeroen De Dauw from [Professional Wiki](https://professional.wiki/)
-3. Abijeet from [TranslateWiki](https://translatewiki.net)
-4. Bernhard Krabina from [KM-A](https://km-a.net/)
-5. Karsten Hoffmeyer from [Professional Wiki](https://professional.wiki/)
+1. Amir E. Aharoni from [TranslateWiki](https://translatewiki.net)
+2. Morne Alberts from [Professional Wiki](https://professional.wiki/)
+3. CosmicAlpha from [Professional Wiki](https://professional.wiki/)
+4. Jeroen De Dauw from [Professional Wiki](https://professional.wiki/)
+5. MPThLee
 
-Code contributions TODO
+Code contributions
 
-* translatewiki.net
-* Morne Alberts
-* Jeroen De Dauw
-* Abijeet
-* Bernhard Krabina
-* Sébastien Beyou
-* Hannes
-* Hamish Slater
-* Karsten Hoffmeyer
-* Youri vd Bogert
-* Alexander
-* Alexander Mashin
 * Amir E. Aharoni
-* C. Scott Ananian
-* D-Groenewegen
+* translatewiki.net
+* CosmicAlpha
+* Morne Alberts
+* MPThLee
+* Jeroen De Dauw
+* Sébastien Beyou
 * Greg Rundlett
-* Mark A. Hershberger
-* Markus
-* Máté Szabó
-* UnknownSkyrimPasserby
-* iusgit
+* Marijn van Wezel
+* Meno25
+* Sophivorus
+* Vedmaka
+* Will Cohen
 
 ## Upgrading
 
@@ -70,4 +62,3 @@ This is only for those that have installed SMW via Git.
 
 * Step 1: do a `git pull` in the SemanticMediaWiki directory
 * Step 2: run `composer update --no-dev --optimize-autoloader` in the MediaWiki directory
-
