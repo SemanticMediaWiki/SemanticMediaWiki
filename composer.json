@@ -44,7 +44,7 @@
 	"require": {
 		"php": ">=7.4",
 		"ext-mbstring": "*",
-		"composer/installers": "^2.2.0",
+		"composer/installers": "^2.2.0|^1.0.1",
 		"psr/log": "~1.0",
 		"mediawiki/parser-hooks": "~1.4",
 		"param-processor/param-processor": "~1.2",
