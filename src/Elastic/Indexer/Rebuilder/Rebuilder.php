@@ -411,7 +411,6 @@ class Rebuilder {
 		$this->client->closeIndex( $index );
 
 		$indexDef = $this->client->getIndexDefinition( $type );
-
 		$indexDef = json_decode( $indexDef, true );
 
 		// Cannot be altered by a simple settings update and requires a complete
@@ -436,7 +435,6 @@ class Rebuilder {
 
 		$params = [
 			'index' => $index,
-			'type'  => $type,
 			'body'  => $indexDef['mappings'] ?? []
 		];
 
