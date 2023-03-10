@@ -148,7 +148,7 @@ class ParserAfterTidy implements HookListener {
 		if ( $displayTitle ||
 			$parserOutput->getImages() !== [] ||
 			$parserOutput->getExtensionData( 'translate-translation-page' ) ||
-			$parserOutput->getCategories() ) {
+			$parserOutput->getCategoryNames() ) {
 			return true;
 		}
 
@@ -209,7 +209,7 @@ class ParserAfterTidy implements HookListener {
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newCategoryPropertyAnnotator(
 			$propertyAnnotator,
-			array_keys( $parserOutput->getCategories() )
+			$parserOutput->getCategoryNames()
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
