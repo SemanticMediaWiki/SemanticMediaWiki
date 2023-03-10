@@ -2,11 +2,8 @@
 
 namespace SMW\Elastic\Connection;
 
-use Elastic\Elasticsearch\Client as ElasticClient;
-use Elastic\Elasticsearch\Endpoints\Indices;
-use Elastic\Elasticsearch\Exception\ClientResponseException;
-use Elastic\Elasticsearch\Exception\ServerResponseException;
-use Elastic\Transport\Exception\NoNodeAvailableException;
+use Elasticsearch\Client as ElasticClient;
+use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Exception;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -206,13 +203,7 @@ class Client {
 			return [];
 		}
 
-		try {
-			$info = $this->client->info( [] );
-		} catch( NoNodeAvailableException|ClientResponseException|ServerResponseException $e ) {
-			return [];
-        }
-
-        return $info->asArray();
+		return $this->client->info( [] );
 	}
 
 	/**
@@ -228,31 +219,16 @@ class Client {
 			$this->getIndexName( self::TYPE_LOOKUP )
 		];
 
-        try {
-            switch ( $type ) {
-                case 'indices':
-                    $res = $this->client->indices()->stats( [ 'index' => $indices ] + $params );
-                    break;
-                case 'nodes':
-                    $res = $this->client->nodes()->stats( $params );
-                    break;
-                default:
-                    return [];
-            }
-        } catch ( NoNodeAvailableException|ClientResponseException|ServerResponseException $exception ) {
-            $context = [
-                'method' => __METHOD__,
-                'role' => 'user',
-                'type' => $type,
-                'exception' => $exception->getMessage()
-            ];
-
-            $this->logger->warning( 'Failed to get stats with: {exception}', $context );
-
-            return [];
+        switch ( $type ) {
+            case 'indices':
+                $res = $this->client->indices()->stats( [ 'index' => $indices ] + $params );
+                break;
+            case 'nodes':
+                $res = $this->client->nodes()->stats( $params );
+                break;
+            default:
+                return [];
         }
-
-		$res = $res->asArray();
 
 		if ( $type === 'indices' && isset( $res['indices'] ) ) {
 			unset( $res['_all'] );
@@ -283,23 +259,10 @@ class Client {
 		if ( $type === 'indices' ) {
 			$params += [ 'format' => 'json' ];
 
-            try {
-                $indices = $this->client->cat()->indices( $params );
-            } catch ( NoNodeAvailableException|ClientResponseException|ServerResponseException $exception ) {
-                $context = [
-                    'method' => __METHOD__,
-                    'role' => 'user',
-                    'type' => $type,
-                    'exception' => $exception->getMessage()
-                ];
+            $indices = $this->client->cat()->indices( $params );
 
-                $this->logger->warning( 'Failed to get indices with: {exception}', $context );
-
-                return [];
-            }
-
-			foreach ( $indices->asArray() as $key => $value ) {
-				$res[$value['index']] = $indices[$key];
+			foreach ( $indices as $value ) {
+				$res[$value['index']] = $value;
 				unset( $res[$value['index']]['index'] );
 			}
 		}
@@ -378,7 +341,7 @@ class Client {
             'index' => $index
         ];
 
-        $context['response'] = $this->client->indices()->delete( $params )->asArray();
+        $context['response'] = $this->client->indices()->delete( $params );
         $this->logger->info( 'Deleted index {index} with: {response}', $context );
 	}
 
@@ -406,7 +369,7 @@ class Client {
 	 * @param array $params
 	 */
 	public function getMapping( array $params ) {
-		return $this->client->indices()->getMapping( $params )->asArray();
+		return $this->client->indices()->getMapping( $params );
 	}
 
 	/**
@@ -415,7 +378,7 @@ class Client {
 	 * @param array $params
 	 */
 	public function getSettings( array $params ) {
-		return $this->client->indices()->getSettings( $params )->asArray();
+		return $this->client->indices()->getSettings( $params );
 	}
 
 	/**
@@ -452,7 +415,7 @@ class Client {
 		unset( $params['body']['size'] );
 
 		try {
-			$results = $this->client->indices()->validateQuery( $params )->asArray();
+			$results = $this->client->indices()->validateQuery( $params );
 		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Failed the validate with: {exception}', $context );
@@ -477,7 +440,7 @@ class Client {
 			return self::$ping = $this->quick_ping();
 		}
 
-		return self::$ping = $this->client->ping( [] )->asBool();
+		return self::$ping = $this->client->ping( [] );
 	}
 
 	/**
@@ -516,7 +479,7 @@ class Client {
 	 * @return boolean
 	 */
 	public function exists( array $params ) {
-		return $this->client->exists( $params )->asBool();
+		return $this->client->exists( $params );
 	}
 
 	/**
@@ -528,7 +491,7 @@ class Client {
 	 * @return mixed
 	 */
 	public function get( array $params ) {
-		return $this->client->get( $params )->asArray();
+		return $this->client->get( $params );
 	}
 
 	/**
@@ -540,7 +503,7 @@ class Client {
 	 * @return mixed
 	 */
 	public function delete( array $params ) {
-		return $this->client->delete( $params )->asArray();
+		return $this->client->delete( $params );
 	}
 
 	/**
@@ -561,7 +524,7 @@ class Client {
 		];
 
 		try {
-			return $this->client->update( $params )->asArray();
+			return $this->client->update( $params );
 		} catch( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Updated failed for document {id} with: {exception}, DOC: {doc}', $context );
@@ -588,7 +551,7 @@ class Client {
 		];
 
 		try {
-			return $this->client->index( $params )->asArray();
+			return $this->client->index( $params );
 		} catch( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Index failed for document {id} with: {exception}', $context );
@@ -615,7 +578,7 @@ class Client {
 		];
 
 		try {
-			$response = $this->client->bulk( $params )->asArray();
+			$response = $this->client->bulk( $params );
 
 			// No errors, just log the head otherwise show the entire
 			// response
@@ -676,7 +639,7 @@ class Client {
 		unset( $params['body']['size'] );
 
 		try {
-			$results = $this->client->count( $params )->asArray();
+			$results = $this->client->count( $params );
 		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Failed the count with: {exception}', $context );
@@ -715,8 +678,8 @@ class Client {
 		$time = -microtime( true );
 
 		try {
-			$results = $this->client->search( $params )->asArray();
-		} catch ( NoNodeAvailableException $e ) {
+			$results = $this->client->search( $params );
+		} catch ( NoNodesAvailableException $e ) {
 			$errors[] = 'Elasticsearch endpoint returned with "' . $e->getMessage() . '" .';
 		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();
@@ -754,7 +717,7 @@ class Client {
 			return [];
 		}
 
-		return $this->client->explain( $params )->asArray();
+		return $this->client->explain( $params );
 	}
 
 	/**
@@ -775,7 +738,7 @@ class Client {
 	 * @return bool
 	 */
 	public function indexExists( string $index ): bool {
-		return $this->client->indices()->exists( [ 'index' => $index ] )->asBool();
+		return $this->client->indices()->exists( [ 'index' => $index ] );
 	}
 
 	/**
@@ -786,7 +749,7 @@ class Client {
 	 * @return bool
 	 */
 	public function aliasExists( string $index ): bool {
-		return $this->client->indices()->existsAlias( [ 'index' => $index ] )->asBool();
+		return $this->client->indices()->existsAlias( [ 'index' => $index ] );
 	}
 
 	/**
