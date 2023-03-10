@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\Connection;
 
-use Elastic\Elasticsearch\ClientBuilder;
+use Elasticsearch\ClientBuilder;
 use SMW\Elastic\Exception\ClientBuilderNotFoundException;
 use SMW\Elastic\Exception\MissingEndpointConfigException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
@@ -158,7 +158,7 @@ class ConnectionProvider implements IConnectionProvider {
 
 		// Fail hard because someone selected the ElasticStore but forgot to install
 		// the elastic interface!
-		if ( !class_exists( 'Elastic\Elasticsearch\ClientBuilder' ) ) {
+		if ( !class_exists( 'Elasticsearch\ClientBuilder' ) ) {
 			throw new ClientBuilderNotFoundException();
 		}
 
