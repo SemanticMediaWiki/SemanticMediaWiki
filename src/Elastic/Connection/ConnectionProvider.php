@@ -180,11 +180,11 @@ class ConnectionProvider implements IConnectionProvider {
 			return $host;
 		}
 
-		$schema = $host['schema'] ?? 'https';
+		$scheme = $host['scheme'] ?? 'https';
 		$hostName = $host['host'] ?? 'localhost';
 		$port = $host['port'] ?? 9200;
 
-		return $schema . '://' . $hostName . ':' . $port;
+		return $scheme . '://' . $hostName . ':' . $port;
 	}
 
 }
