@@ -749,7 +749,7 @@ class Client {
 	 * @return bool
 	 */
 	public function aliasExists( string $index ): bool {
-		return $this->client->indices()->existsAlias( [ 'index' => $index ] );
+		return $this->client->indices()->existsAlias( [ 'name' => $index ] );
 	}
 
 	/**
