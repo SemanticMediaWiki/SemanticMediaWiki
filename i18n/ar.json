@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"20عبد العزيز",
+			"AA800",
 			"Alaa",
 			"Amire80",
 			"Kassem7899",
@@ -625,8 +626,8 @@
 	"smw-admin-maintenance-script-description-populatehashfield": "يعبئ حقل <code>smw_hash</code> للصفوف التي تفتقد إلى القيمة.",
 	"smw-admin-maintenance-script-description-purgeentitycache": "إزالة إدخالات ذاكرة التخزين المؤقت للكيانات المعروفة والبيانات المرتبطة بها.",
 	"smw-admin-maintenance-script-description-updatequerydependencies": "تحديث الاستعلامات وتبعيات الاستعلام (راجع الإعداد [https://www.semantic-mediawiki.org/wiki/Help:$smwgEnabledQueryDependencyLinksStore $smwgEnabledQueryDependencyLinksStore]).",
-	"smw-admin-maintenance-script-section-update": "يحدث السكريبتات",
-	"smw-admin-maintenance-script-section-rebuild": "إعادة بناء السكريبتات",
+	"smw-admin-maintenance-script-section-update": "تحديث السكربتات",
+	"smw-admin-maintenance-script-section-rebuild": "إعادة بناء السكربتات",
 	"smw-livepreview-loading": "جارٍ التحميل...",
 	"smw-sp-searchbyproperty-description": "توفر هذه الصفحة [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces واجهة تصفح] بسيطة للعثور على كيانات تم وصفها بواسطة خاصية وقيمة مسماة، تتضمن واجهات البحث الأخرى المتاحة [[Special:PageProperty|صفحة بحث الخصائص]]، و[[Special:Ask|اطلب منشئ استعلام]].",
 	"smw-sp-searchbyproperty-resultlist-header": "قائمة النتائج",
