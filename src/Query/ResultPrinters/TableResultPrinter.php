@@ -3,6 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use Html;
+use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\Query\PrintRequest;
@@ -12,6 +13,7 @@ use SMWDataValue;
 use SMWDIBlob as DIBlob;
 use SMWQueryResult as QueryResult;
 use SMWResultArray as ResultArray;
+	
 
 /**
  * Print query results in tables
@@ -30,7 +32,8 @@ class TableResultPrinter extends ResultPrinter {
 	 */
 	private $htmlTable;
 
-	private bool $isDataTable;
+	private $isDataTable;
+	private $prefixParameterProcessor;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -78,6 +81,12 @@ class TableResultPrinter extends ResultPrinter {
 			'default' => '',
 		];
 
+		$params['prefix'] = [
+			'message' => 'smw-paramdesc-prefix',
+			'default' => 'none',
+			'values' => [ 'all', 'subject', 'none', 'auto' ],
+		];
+
 		return $params;
 	}
 
@@ -87,6 +96,9 @@ class TableResultPrinter extends ResultPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
+
+		$this->prefixParameterProcessor = new PrefixParameterProcessor( $res->getQuery(),
+			$this->params['prefix'] );
 
 		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
 		$this->isDataTable = false;
@@ -316,6 +328,7 @@ class TableResultPrinter extends ResultPrinter {
 		$values = [];
 
 		foreach ( $dataValues as $dv ) {
+			$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
 			// Restore output in Special:Ask on:
 			// - file/image parsing
@@ -325,11 +338,11 @@ class TableResultPrinter extends ResultPrinter {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
-					[ 'smw-parse', $dv->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
+					[ 'smw-parse', $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
 					Message::PARSE
 				);
 			} else {
-				$value = $dv->getShortText( $outputMode, $this->getLinker( $isSubject ) );
+				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
 			}
 
 
