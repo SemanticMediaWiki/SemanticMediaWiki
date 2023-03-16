@@ -13,7 +13,6 @@ use SMWDataValue;
 use SMWDIBlob as DIBlob;
 use SMWQueryResult as QueryResult;
 use SMWResultArray as ResultArray;
-	
 
 /**
  * Print query results in tables
@@ -31,6 +30,8 @@ class TableResultPrinter extends ResultPrinter {
 	 * @var HtmlTable
 	 */
 	private $htmlTable;
+
+	private $isDataTable;
 
 	private $prefixParameterProcessor;
 
@@ -328,8 +329,6 @@ class TableResultPrinter extends ResultPrinter {
 
 		$values = [];
 		foreach ( $dataValues as $dv ) {
-			// @TODO or use
-			// $dataValue->setOption( 'form/prefixed', true );
 
 			// Restore output in Special:Ask on:
 			// - file/image parsing
@@ -406,9 +405,6 @@ class TableResultPrinter extends ResultPrinter {
 		$tableAttrs['data-query'] = QueryStringifier::toJson(
 			$res->getQuery()
 		);
-
-		$tableAttrs['offset'] = $query->getOffset();
-		$tableAttrs['max'] = $GLOBALS['smwgQMaxInlineLimit'];
 	}
 
 }
