@@ -32,7 +32,6 @@ class TableResultPrinter extends ResultPrinter {
 	 */
 	private $htmlTable;
 
-	private $isDataTable;
 	private $prefixParameterProcessor;
 
 	/**
@@ -325,10 +324,12 @@ class TableResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getCellContent( array $dataValues, $outputMode, $isSubject ) {
-		$values = [];
+		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
+		$values = [];
 		foreach ( $dataValues as $dv ) {
-			$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+			// @TODO or use
+			// $dataValue->setOption( 'form/prefixed', true );
 
 			// Restore output in Special:Ask on:
 			// - file/image parsing
@@ -405,6 +406,9 @@ class TableResultPrinter extends ResultPrinter {
 		$tableAttrs['data-query'] = QueryStringifier::toJson(
 			$res->getQuery()
 		);
+
+		$tableAttrs['offset'] = $query->getOffset();
+		$tableAttrs['max'] = $GLOBALS['smwgQMaxInlineLimit'];
 	}
 
 }
