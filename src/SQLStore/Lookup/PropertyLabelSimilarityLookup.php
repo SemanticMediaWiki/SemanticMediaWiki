@@ -144,7 +144,7 @@ class PropertyLabelSimilarityLookup {
 		$similarities = $this->matchLabels( $propertyList, $withType );
 
 		usort( $similarities, function ( $a, $b ) {
-			return $a['similarity'] < $b['similarity'];
+			return $b['similarity'] <=> $a['similarity'];
 		} );
 
 		return $similarities;

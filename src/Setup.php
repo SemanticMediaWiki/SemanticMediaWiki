@@ -231,14 +231,10 @@ final class Setup {
 		/**
 		 * Fandom change - begin
 		 * @author ttomalak
-		 * Use correct DB connection when using external DB (PLATFORM-4795)
+		 * Allow to override DB connections to use correct DB connection when using external DB (PLATFORM-4795)
 		 */
-		$connectionManager->registerConnectionProvider(
-			'mw.db.source',
-			$mwCollaboratorFactory->newConnectionProvider( 'mw.db' )
-		);
 		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
-		$hookContainer->run( 'SMW::RegisterConnections', [ $connectionManager ] );
+		$hookContainer->run( 'SMW::RegisterConnections', [ $connectionManager, $mwCollaboratorFactory ] );
 		/** Fandom change - end */
 	}
 
