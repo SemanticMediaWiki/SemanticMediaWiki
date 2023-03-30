@@ -278,6 +278,7 @@
 	"right-smw-vieweditpageinfo": "Dostop do [https://www.semantic-mediawiki.org/wiki/Help:Edit_help pomoči za urejanje] (Semantični MediaWiki)",
 	"action-smw-ruleedit": "urejanje strani pravil (Semantični MediaWiki)",
 	"smw-sp-properties-header-label": "Seznam lastnosti",
+	"smw-admin-iddispose-docu": "Upoštevati je treba, da je operacija odstranjevanja neomejena in bo entiteto odstranila iz mehanizma za shranjevanje skupaj z vsemi njenimi sklici v čakajočih tabelah, če bo potrjena. Prosimo, da to opravilo izvedete '''previdno''' in šele potem, ko ste preučili [https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal dokumentacijo].",
 	"smw-admin-idlookup-input": "Iskanje:",
 	"smw-admin-objectid": "ID:",
 	"smw-admin-tab-general": "Pregled",
