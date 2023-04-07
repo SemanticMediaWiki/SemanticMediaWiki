@@ -63,7 +63,7 @@ class SpecialAdmin extends SpecialPage {
 		$output->setPageTitle( $this->msg_text( 'smw-title' ) );
 
 		$output->addModuleStyles( 'ext.smw.special.style' );
-		$output->addModules( 'ext.smw.admin' );
+		$output->addModules( [ 'ext.smw.admin' ] );
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();

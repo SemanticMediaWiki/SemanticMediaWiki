@@ -45,7 +45,7 @@ class SkinTemplateNavigation {
 	public function process() {
 
 		if ( $this->skinTemplate->getUser()->isAllowed( 'purge' ) ) {
-			$this->skinTemplate->getOutput()->addModules( 'ext.smw.purge' );
+			$this->skinTemplate->getOutput()->addModules( [ 'ext.smw.purge' ] );
 			$this->links['actions']['purge'] = [
 				'class' => 'is-disabled',
 				'text' => $this->skinTemplate->msg( 'smw_purge' )->text(),

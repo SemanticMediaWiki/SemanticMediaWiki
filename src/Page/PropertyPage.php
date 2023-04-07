@@ -155,7 +155,7 @@ class PropertyPage extends Page {
 		$matches = [];
 
 		$context->getOutput()->addModuleStyles( 'ext.smw.page.styles' );
-		$context->getOutput()->addModules( 'smw.property.page' );
+		$context->getOutput()->addModules( [ 'smw.property.page' ] );
 
 		$context->getOutput()->setPageTitle(
 			$this->propertyValue->getFormattedLabel( DataValueFormatter::WIKI_LONG )

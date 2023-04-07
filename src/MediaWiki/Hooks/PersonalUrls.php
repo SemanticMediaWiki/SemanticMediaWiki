@@ -69,7 +69,7 @@ class PersonalUrls extends HookHandler {
 		$out = $this->skin->getOutput();
 		$personalUrl = [];
 
-		$out->addModules( 'ext.smw.personal' );
+		$out->addModules( [ 'ext.smw.personal' ] );
 		$out->addJsConfigVars( 'smwgJobQueueWatchlist', $queue );
 
 		$personalUrl['smw-jobqueue-watchlist'] = [

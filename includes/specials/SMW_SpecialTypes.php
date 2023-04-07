@@ -44,7 +44,7 @@ class SMWSpecialTypes extends SpecialPage {
 		$out = $this->getOutput();
 
 		$out->addModuleStyles( 'ext.smw.page.styles' );
-		$out->addModules( 'smw.property.page' );
+		$out->addModules( [ 'smw.property.page' ] );
 
 		$params = Infolink::decodeParameters( $param, false );
 		$typeLabel = reset( $params );

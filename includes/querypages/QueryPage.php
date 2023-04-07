@@ -130,7 +130,7 @@ abstract class QueryPage extends \QueryPage {
 	public function getSearchForm( $property = '', $cacheDate = '', $propertySearch = true, $filter = '' ) {
 
 		$this->useSerchForm = true;
-		$this->getOutput()->addModules( 'ext.smw.autocomplete.property' );
+		$this->getOutput()->addModules( [ 'ext.smw.autocomplete.property' ] );
 
 		// No need to verify $this->selectOptions because its values are set
 		// during doQuery() which is processed before this form is generated

@@ -196,8 +196,8 @@ class SpecialAsk extends SpecialPage {
 			HtmlModal::getModuleStyles()
 		);
 
-		$out->addModules( 'ext.smw.ask' );
-		$out->addModules( 'ext.smw.autocomplete.property' );
+		$out->addModules( [ 'ext.smw.ask' ] );
+		$out->addModules( [ 'ext.smw.autocomplete.property' ] );
 
 		$out->addModules(
 			LinksWidget::getModules()

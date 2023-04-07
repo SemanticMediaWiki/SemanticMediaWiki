@@ -45,7 +45,7 @@ class BeforePageDisplay extends HookHandler {
 
 		// #2726
 		if ( $user->getOption( 'smw-prefs-general-options-suggester-textinput' ) ) {
-			$outputPage->addModules( 'ext.smw.suggester.textInput' );
+			$outputPage->addModules( [ 'ext.smw.suggester.textInput' ] );
 		}
 
 		if ( ( $tasks = $this->getOption( 'installer.incomplete_tasks', [] ) ) !== [] ) {
