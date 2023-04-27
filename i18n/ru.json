@@ -388,7 +388,7 @@
 	"smw-admin-statistics-job-title": "Статистика заданий",
 	"smw-admin-statistics-job-docu": "Статистика заданий отображает информацию о запланированных заданиях Semantic MediaWiki, которые ещё не были выполнены. Количество заданий может быть неточным или может содержать неудачные попытки их выполнения. Обратитесь к [https://www.mediawiki.org/wiki/Special:MyLanguage/manual:Job_queue к руководству] за дополнительной информацией.",
 	"smw-admin-statistics-querycache-title": "Кэш запросов",
-	"smw-admin-statistics-querycache-disabled": "[https://www.semantic-mediawiki.org/wiki/QueryCache QueryCache] не включён на этой вики, поэтому статистика недоступна.",
+	"smw-admin-statistics-querycache-disabled": "[https://www.semantic-mediawiki.org/wiki/QueryCache QueryCache] не был включён на этой вики, поэтому статистика недоступна.",
 	"smw-admin-permission-missing": "Доступ к этой странице ограничен. Пожалуйста, обратитесь к [https://www.semantic-mediawiki.org/wiki/Help:Permissions справочоной] странице помощи за подробной информацией.",
 	"smw-admin-setupsuccess": "Система хранения была установлена.",
 	"smw_smwadmin_return": "Вернуться к $1",
