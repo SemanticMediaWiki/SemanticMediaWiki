@@ -7,6 +7,7 @@
 			"Tweety"
 		]
 	},
+	"smw-upgrade-progress": "اڳڀرائي",
 	"smw_printername_list": "فھرست",
 	"smw_printername_ol": "انگ ڏنل فھرست",
 	"smw_printername_table": "ٽيبل",
@@ -14,6 +15,7 @@
 	"smw_attributearticlecount": "$1 {{PLURAL:$1|صفحو|صفحا}} ڏيکاريندي جيڪي ھي خصوصيت استعمال ڪري ٿو/ڪن ٿا.",
 	"specialpages-group-smw_group-maintenance": "سارسنڀال",
 	"smw-special-wantedproperties-filter-none": "ڪوبہ نہ",
+	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|استعمال}})",
 	"smw_purge": "تازو ڪريو",
 	"smw_ask_defaultformat": "ڏنل",
 	"smw-ask-delete": "ھٽايو",
@@ -53,10 +55,12 @@
 	"smw-property-page-list-count": "$1 {{PLURAL:$1|صفحو|صفحا}} ڏيکاريندي جيڪي ھي خصوصيت استعمال ڪري ٿو/ڪن ٿا.",
 	"smw-filter": "ڇاڻي",
 	"smw-expand": "پکيڙيو",
+	"smw-schema-error-violation": "[\"$1\"، \"$2\"]",
 	"smw-property-tab-specification": "... وڌيڪ",
 	"smw-concept-tab-list": "فھرست",
 	"smw-pendingtasks-setup-tasks": "ڪم",
 	"smw-legend": "ڪنجي",
+	"smw-entity-examiner-associated-revision-mismatch": "ورجاءُ",
 	"smw-indicator-revision-mismatch": "ورجاءُ",
 	"smw-listingcontinuesabbrev": "جاري.",
 	"smw-showingresults": "ھيٺ #<strong>$2</strong> سان شروع ٿيندڙ {{PLURAL:$1|<strong>1</strong> نتيجو|<strong>$1</strong> نتيجا}} تائين ڏيکاري ٿو."
