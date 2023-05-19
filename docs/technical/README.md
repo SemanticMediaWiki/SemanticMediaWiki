@@ -30,5 +30,5 @@ This document collects technical resources to help improve the understanding of 
   - SPARQLStore ([Overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SPARQLStore/README.md))
   - ElasticStore ([Overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/README.md))
 - tests
-  - [Unit](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/README.md)
+  - [Unit](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/README.md)
   - Integration ([JSONScript](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript))

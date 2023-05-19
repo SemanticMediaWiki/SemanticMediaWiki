@@ -6,6 +6,7 @@ use FauxRequest;
 use Language;
 use ReflectionClass;
 use RequestContext;
+use MediaWiki\MediaWikiServices;
 use SMW\DependencyContainer;
 use SMW\DIWikiPage;
 use SMW\Settings;
@@ -130,7 +131,8 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return Language
 	 */
 	protected function getLanguage( $langCode = 'en' ) {
-		return Language::factory( $langCode );
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+		return $languageFactory->getLanguage( $langCode );
 	}
 
 	/**

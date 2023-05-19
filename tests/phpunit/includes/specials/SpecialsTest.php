@@ -78,12 +78,15 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testSpecialAliasesContLang( SpecialPage $specialPage ) {
 
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+
 		// Test for languages
 		$langCodes = [ 'en', 'fr', 'de', 'es', 'zh', 'ja' ];
 
 		// Test aliases for a specific language
 		foreach ( $langCodes as $langCode ) {
-			$langObj = Language::factory( $langCode );
+			$langObj = $languageFactory->getLanguage( $langCode );
+
 			$aliases = $langObj->getSpecialPageAliases();
 			$found = false;
 			$name = $specialPage->getName();

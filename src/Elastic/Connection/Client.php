@@ -204,7 +204,7 @@ class Client {
 	 */
 	public function getSoftwareInfo() {
 		return [
-			'component' => "[https://www.elastic.co/products/elasticsearch Elasticsearch]",
+			'component' => "[https://www.elastic.co/elasticsearch/ Elasticsearch]",
 			'version' => $this->getVersion()
 		];
 	}

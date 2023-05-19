@@ -110,6 +110,7 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() );
 
 		$parser = $this->parserFactory->create( __METHOD__ );
+		// TODO: Illegal dynamic property (#5421)
 		$parser->getOptions()->smwAskNoDependencyTracking = true;
 
 		$parserFunctionFactory = new ParserFunctionFactory();

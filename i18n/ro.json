@@ -117,7 +117,7 @@
 	"smw_smwadmin_datarefreshstop": "Oprește această actualizare",
 	"smw_smwadmin_datarefreshstopconfirm": "Da, sunt {{GENDER:$1|sigur|sigură}}.",
 	"smw-admin-support": "Obținere de ajutor",
-	"smw-admin-supplementary-elastic-mappings-summary": "Sumar",
+	"smw-admin-supplementary-elastic-mappings-summary": "Rezumat",
 	"smw_adminlinks_datastructure": "Structura datelor",
 	"smw_adminlinks_displayingdata": "Afișarea datelor",
 	"smw-createproperty-isproperty": "Aceasta este o proprietate de tipul $1.",

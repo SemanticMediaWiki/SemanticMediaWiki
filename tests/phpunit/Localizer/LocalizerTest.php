@@ -3,6 +3,7 @@
 namespace SMW\Tests\Localizer;
 
 use Language;
+use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Localizer;
 
 /**
@@ -63,8 +64,10 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNamespaceTextById() {
 
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+
 		$instance = new Localizer(
-			Language::factory( 'en' ),
+			$languageFactory->getLanguage( 'en' ),
 			$this->namespaceInfo
 		);
 
@@ -76,8 +79,10 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNamespaceIndexByName() {
 
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+
 		$instance = new Localizer(
-			Language::factory( 'en'),
+			$languageFactory->getLanguage( 'en' ),
 			$this->namespaceInfo
 		);
 
@@ -271,8 +276,10 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateTextWithNamespacePrefix() {
 
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+
 		$instance = new Localizer(
-			Language::factory( 'en'),
+			$languageFactory->getLanguage( 'en' ),
 			$this->namespaceInfo
 		);
 

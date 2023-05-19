@@ -191,6 +191,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		// TODO: Illegal dynamic property (#5421)
 		$this->requestOptions->limit = 1001;
 
 		$instance = new UnusedPropertyListLookup(

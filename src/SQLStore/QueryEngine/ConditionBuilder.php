@@ -68,6 +68,8 @@ class ConditionBuilder {
 	 */
 	private $lastQuerySegmentId = -1;
 
+	private CircularReferenceGuard $circularReferenceGuard;
+
 	/**
 	 * @since 2.2
 	 *

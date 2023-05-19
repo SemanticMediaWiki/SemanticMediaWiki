@@ -30,6 +30,8 @@ class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 */
 	private $debug = false;
 
+	private string $testCaseLocation;
+
 	/**
 	 * @param MwApiFactory mwApiFactory
 	 * @param StringValidator
@@ -48,10 +50,8 @@ class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $testCaseLocation
 	 */
-	public function setTestCaseLocation( $testCaseLocation ) {
+	public function setTestCaseLocation( string $testCaseLocation ) {
 		$this->testCaseLocation = $testCaseLocation;
 	}
 

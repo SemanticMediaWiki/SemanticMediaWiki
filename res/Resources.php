@@ -14,8 +14,7 @@ $pathParts = explode( '/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__ ) );
 
 $moduleTemplate = [
 	'localBasePath' => __DIR__,
-	'remoteExtPath' => implode( '/', array_slice( $pathParts, -2 ) ),
-	'group' => 'ext.smw'
+	'remoteExtPath' => implode( '/', array_slice( $pathParts, -2 ) )
 ];
 
 return [
@@ -840,5 +839,71 @@ return [
 		]
 	],
 
+	'onoi.qtip' => $moduleTemplate + [
+		'styles' => [
+			'onoi/jquery.qtip/core/jquery.qtip.css',
+			'onoi/jquery.qtip/extended/jquery.qtip.css'
+		],
+		'scripts' => [
+			'onoi/jquery.qtip/core/jquery.qtip.js',
+			'onoi/jquery.qtip/extended/jquery.qtip.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
 
+	'onoi.rangeslider' => $moduleTemplate + [
+		'styles' => [
+			'onoi/jquery.rangeSlider/ion.rangeSlider.css',
+			'onoi/jquery.rangeSlider/ion.rangeSlider.skinFlat.css'
+		],
+		'scripts' => [
+			'onoi/jquery.rangeSlider/ion.rangeSlider.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'onoi.blobstore' => $moduleTemplate + [
+		'scripts' => [
+			'onoi/localForage/localforage.min.js',
+			'onoi/onoi.blobstore.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'onoi.clipboard' => $moduleTemplate + [
+		'scripts' => [
+			'onoi/clipboard/clipboard.js',
+			'onoi/onoi.clipboard.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'onoi.dataTables' => $moduleTemplate + [
+		'styles' => [
+			'onoi/jquery.dataTables/dataTables.searchHighlight.css',
+			'onoi/jquery.dataTables/jquery.dataTables.css'
+		],
+		'scripts' => [
+			'onoi/jquery.highlight/jquery.highlight.js',
+			'onoi/jquery.dataTables/dataTables.searchHighlight.js',
+			'onoi/jquery.dataTables/jquery.dataTables.min.js',
+			'onoi/jquery.dataTables/dataTables.search.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
 ];

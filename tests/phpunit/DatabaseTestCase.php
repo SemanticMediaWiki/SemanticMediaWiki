@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestResult;
 use RuntimeException;
 use SMW\Services\ServicesFactory;
 use SMW\NamespaceExaminer;
@@ -157,7 +158,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * request a trear down so that the next test can rebuild the tables from
 	 * scratch
 	 */
-	public function run( ?\PHPUnit_Framework_TestResult $result = null ) : \PHPUnit_Framework_TestResult {
+	public function run( ?TestResult $result = null ) : TestResult {
 
 		$this->getStore()->clear();
 

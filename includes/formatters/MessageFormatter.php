@@ -4,6 +4,7 @@ namespace SMW;
 
 use Html;
 use Language;
+use StubUserLang;
 
 /**
  * Class implementing message output formatting
@@ -38,12 +39,15 @@ class MessageFormatter {
 	/** @var boolean */
 	protected $escape = true;
 
+	/** @var Language|StubUserLang */
+	private $language;
+
 	/**
 	 * @since 1.9
 	 *
-	 * @param Language $language
+	 * @param Language|StubUserLang $language
 	 */
-	public function __construct( Language $language ) {
+	public function __construct( $language ) {
 		$this->language = $language;
 	}
 

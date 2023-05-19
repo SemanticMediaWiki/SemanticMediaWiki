@@ -182,7 +182,10 @@
 		},
 		{
 			"type": "special",
-			"about": "#6",
+			"about": "#6 (MW 1.38-)",
+			"skip-on": {
+				"mediawiki": [ ">1.37.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"special-page": {
 				"page": "Browse",
 				"query-parameters": "Example/S0014/\"Some\"&*^-25-20-2D",
@@ -200,7 +203,31 @@
 		},
 		{
 			"type": "special",
-			"about": "#6",
+			"about": "#6 (MW 1.38+)",
+			"skip-on": {
+				"mediawiki": [ "<1.37.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0014/\"Some\"&*^-25-20-2D",
+				"request-parameters": {
+					"output": "legacy"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example/S0014/%22Some%22%26*%5E-25-20-2D",
+					"title=\"Example/S0014/&quot;Some&quot;&amp;*^-25-20-2D\">Example/S0014/\"Some\"&amp;*^-25-20-2D</a>",
+					"Example-2FS0014-2F&quot;Some&quot;-26*^-2D25-2D20-2D2D"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#7 (MW 1.38-)",
+			"skip-on": {
+				"mediawiki": [ ">1.37.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"special-page": {
 				"page": "Browse",
 				"query-parameters": "",
@@ -213,6 +240,28 @@
 				"to-contain": [
 					"Example/S0014/%22Some%22%26*%5E-25-20-2D",
 					"title=\"Example/S0014/&quot;Some&quot;&amp;*^-25-20-2D\">Example/S0014/\"Some\"&*^-25-20-2D</a>",
+					"Example-2FS0014-2F&quot;Some&quot;-26*^-2D25-2D20-2D2D"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#7 (MW 1.38+)",
+			"skip-on": {
+				"mediawiki": [ "<1.37.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "",
+				"request-parameters": {
+					"output": "legacy",
+					"article": "Example/S0014/\"Some\"&*^-25-20-2D"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example/S0014/%22Some%22%26*%5E-25-20-2D",
+					"title=\"Example/S0014/&quot;Some&quot;&amp;*^-25-20-2D\">Example/S0014/\"Some\"&amp;*^-25-20-2D</a>",
 					"Example-2FS0014-2F&quot;Some&quot;-26*^-2D25-2D20-2D2D"
 				]
 			}

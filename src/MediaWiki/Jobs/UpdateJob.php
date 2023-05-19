@@ -111,7 +111,9 @@ class UpdateJob extends Job {
 			DIWikiPage::newFromTitle( $title )
 		);
 
-		if ( $lastModified !== \WikiPage::factory( $title )->getTimestamp() ) {
+		$wikiPage = $this->applicationFactory->newPageCreator()->createPage( $title );
+
+		if ( $lastModified !== $wikiPage->getTimestamp() ) {
 			return false;
 		}
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
+use ExtensionRegistry;
 use SMW\DIProperty;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\DataTypeRegistry;
@@ -135,7 +136,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 			return;
 		}
 
-		if ( defined( 'SM_VERSION' ) ) {
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 			return;
 		}
 

@@ -19,7 +19,6 @@
 	"smw_concept_cache_miss": "Pojem „$1” nemožno momentálne použiť, pretože konfigurácia wiki vyžaduje, aby sa vypočítal, keď wiki nebude pripojená. Ak problém po určitej dobe nezmizne, požiadajte správcu, aby tento pojem sprístupnil.",
 	"smw_noinvannot": "Hodnoty nemožno priradiť inverzným vlastnostiam.",
 	"smw_baduri": "Prepáčte, URI z rozsahu \"$1\" na tomto mieste nie sú dostupné.",
-	"smw_csv_link": "CSV",
 	"smw_printername_count": "Výsledky počítania",
 	"smw_printername_csv": "export CSV",
 	"smw_printername_debug": "Ladiaca požiadavka (pre expertov)",

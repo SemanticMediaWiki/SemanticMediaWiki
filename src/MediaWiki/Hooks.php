@@ -433,7 +433,8 @@ class Hooks {
 
 		$outputPageParserOutput = new OutputPageParserOutput(
 			$applicationFactory->getNamespaceExaminer(),
-			$permissionExaminer
+			$permissionExaminer,
+			$applicationFactory->getFactboxText()
 		);
 
 		$preferenceExaminer = $applicationFactory->newPreferenceExaminer( $outputPage->getUser() );

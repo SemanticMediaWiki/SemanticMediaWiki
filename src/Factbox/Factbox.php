@@ -78,6 +78,8 @@ class Factbox {
 	 */
 	private $checkMagicWords;
 
+	private AttachmentFormatter $attachmentFormatter;
+
 	/**
 	 * @since 1.9
 	 *

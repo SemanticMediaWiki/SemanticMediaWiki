@@ -31,6 +31,7 @@ class TimeDataTypeTest extends DatabaseTestCase {
 	private $runnerFactory;
 	private $titleValidator;
 	private $semanticDataValidator;
+	private ByPageSemanticDataFinder $semanticDataFinder;
 
 	protected function setUp() : void {
 		parent::setUp();
