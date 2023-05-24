@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 
 /**
@@ -502,9 +503,10 @@ class PropertyRegistry {
 		}
 
 		// @deprecated since 2.1
-		\Hooks::run( 'smwInitProperties' );
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		$hookContainer->run( 'smwInitProperties' );
 
-		\Hooks::run( 'SMW::Property::initProperties', [ $this ] );
+		$hookContainer->run( 'SMW::Property::initProperties', [ $this ] );
 	}
 
 	private function registerPropertyLabel( $id, $label, $asCanonical = true ) {

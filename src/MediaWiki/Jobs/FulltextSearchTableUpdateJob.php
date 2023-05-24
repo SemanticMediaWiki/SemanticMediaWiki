@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Job;
 use Hooks;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -44,7 +45,9 @@ class FulltextSearchTableUpdateJob extends Job {
 			$this->params
 		);
 
-		Hooks::run( 'SMW::Job::AfterFulltextSearchTableUpdateComplete', [ $this ] );
+		MediaWikiServices::getInstance()
+			->getHookContainer()
+			->run( 'SMW::Job::AfterFulltextSearchTableUpdateComplete', [ $this ] );
 
 		return true;
 	}

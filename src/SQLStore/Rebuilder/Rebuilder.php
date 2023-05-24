@@ -3,6 +3,8 @@
 namespace SMW\SQLStore\Rebuilder;
 
 use Hooks;
+use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\PropertyRegistry;
@@ -57,6 +59,11 @@ class Rebuilder {
 	private $namespaceExaminer;
 
 	/**
+	 * @var HookContainer
+	 */
+	private $hookContainer;
+
+	/**
 	 * @var array
 	 */
 	private $options;
@@ -105,6 +112,7 @@ class Rebuilder {
 		$this->entityValidator = $entityValidator;
 		$this->propertyTableIdReferenceDisposer = $propertyTableIdReferenceDisposer;
 		$this->jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+		$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		$this->lru = new Lru( 10000 );
 	}
 
@@ -228,9 +236,9 @@ class Rebuilder {
 		$this->matchAsSubject( $id, $emptyRange );
 
 		// Deprecated since 2.3, use 'SMW::SQLStore::BeforeDataRebuildJobInsert'
-		\Hooks::run( 'smwRefreshDataJobs', [ &$this->updateJobs ] );
+		$this->hookContainer->run( 'smwRefreshDataJobs', [ &$this->updateJobs ] );
 
-		Hooks::run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', [ $this->store, &$this->updateJobs ] );
+		$this->hookContainer->run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', [ $this->store, &$this->updateJobs ] );
 
 		if ( $this->getOption( 'use-job' ) ) {
 			$this->jobFactory->batchInsert( $this->updateJobs );

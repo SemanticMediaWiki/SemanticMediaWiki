@@ -3,6 +3,7 @@
 namespace SMW\SQLStore;
 
 use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\PropertyRegistry;
@@ -66,8 +67,9 @@ class PropertyTableDefinitionBuilder {
 		$customFixedProperties = [];
 		$fixedPropertyTablePrefix = [];
 
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		// Allow to alter the prefix by an extension
-		Hooks::run( 'SMW::SQLStore::AddCustomFixedPropertyTables', [ &$customFixedProperties, &$fixedPropertyTablePrefix ] );
+		$hookContainer->run( 'SMW::SQLStore::AddCustomFixedPropertyTables', [ &$customFixedProperties, &$fixedPropertyTablePrefix ] );
 
 		$this->addTableDefinitionForFixedProperties(
 			$customFixedProperties,
@@ -81,7 +83,7 @@ class PropertyTableDefinitionBuilder {
 			$userDefinedFixedProperties
 		);
 
-		Hooks::run( 'SMW::SQLStore::updatePropertyTableDefinitions', [ &$this->propertyTables ] );
+		$hookContainer->run( 'SMW::SQLStore::updatePropertyTableDefinitions', [ &$this->propertyTables ] );
 
 		$this->createFixedPropertyTableIdIndex();
 	}
