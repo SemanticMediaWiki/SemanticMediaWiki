@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use File;
 use Hooks;
+use MediaWiki\HookContainer\HookContainer;
 use ParserOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Localizer;
@@ -30,12 +31,16 @@ class FileUpload implements HookListener {
 	private $namespaceExaminer;
 
 	/**
-	 * @since 1.9
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
+	 * @var HookContainer
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
+	private $hookContainer;
+
+	public function __construct(
+		NamespaceExaminer $namespaceExaminer,
+		HookContainer $hookContainer
+	) {
 		$this->namespaceExaminer = $namespaceExaminer;
+		$this->hookContainer = $hookContainer;
 	}
 
 	/**
@@ -94,7 +99,7 @@ class FileUpload implements HookListener {
 		$propertyAnnotator->addAnnotation();
 
 		// 2.4+
-		Hooks::run( 'SMW::FileUpload::BeforeUpdate', [ $filePage, $semanticData ] );
+		$this->hookContainer->run( 'SMW::FileUpload::BeforeUpdate', [ $filePage, $semanticData ] );
 
 		$parserData->setOrigin( 'FileUpload' );
 

@@ -362,13 +362,15 @@ class DataUpdater {
 
 		$propertyAnnotator->addAnnotation();
 
-		\Hooks::run(
-			'SMW::DataUpdater::ContentProcessor',
-			[
-				$this->semanticData,
-				$wikiPage->getContent()
-			]
-		);
+		MediaWikiServices::getInstance()
+			->getHookContainer()
+			->run(
+				'SMW::DataUpdater::ContentProcessor',
+				[
+					$this->semanticData,
+					$wikiPage->getContent()
+				]
+			);
 	}
 
 	private function checkUpdateEditProtection( $wikiPage, $user ) {
