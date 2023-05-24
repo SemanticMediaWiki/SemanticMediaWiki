@@ -35,7 +35,8 @@ class Image {
 		'xbm' => 'image/xbm',
 		'tiff' => 'image/tiff',
 		'aiff' => 'image/iff',
-		'wbmp' => 'image/vnd.wap.wbmp'
+		'wbmp' => 'image/vnd.wap.wbmp',
+		'webp' => 'image/webp',
 	];
 
 	/**
