@@ -15,6 +15,7 @@ use SMWDIBlob as DIBlob;
  * @since 2.4
  *
  * @author mwjames
+ * @reviewer thomas-topway-it
  */
 class LanguageCodeValue extends StringValue {
 
@@ -43,6 +44,13 @@ class LanguageCodeValue extends StringValue {
 	 * @param string $value
 	 */
 	protected function parseUserValue( $userValue ) {
+		
+		// @FIXME $userValue isn't already a BCP47Formatted $languageCode ?
+		// Localizer::asBCP47FormattedLanguageCode is already called from
+		// MonolingualTextValue parseUserValue -> getValuesFromString 
+		// -> MonolingualTextValueParser parse
+		// (and afterwards MonolingualTextValue parseUserValue 
+		// calls this function)
 
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $userValue );
 
