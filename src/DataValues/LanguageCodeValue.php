@@ -66,7 +66,7 @@ class LanguageCodeValue extends StringValue {
 		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Localizer::isKnownLanguageTag( $mappedLanguageCode ) ) {
 			$this->addErrorMsg( [
 				'smw-datavalue-languagecode-invalid',
-				$languageCode
+				$mappedLanguageCode
 			] );
 			return;
 		}
