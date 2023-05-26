@@ -11,6 +11,7 @@ use SMW\Localizer;
  * @since 2.4
  *
  * @author mwjames
+ * @reviewer thomas-topway-it
  */
 class MonolingualTextValueParser implements ValueParser {
 
