@@ -71,7 +71,7 @@ class LanguageCodeValue extends StringValue {
 			return;
 		}
 
-		$this->m_dataitem = new DIBlob( $languageCode );
+		$this->m_dataitem = new DIBlob( $mappedLanguageCode );
 	}
 
 }
