@@ -87,8 +87,13 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @return string
 	 */
 	public function getTextWithLanguageTag( $text, $languageCode ) {
+		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode )
+
 		// @TODO test de-formal with PropertyListByApiRequest
-		return $text . '@' . Localizer::asBCP47FormattedLanguageCode( $languageCode );
+		$mappedLanguageCode = !in_array( $languageCode, $this->nonstandardLanguageCodeMapping ) ? $languageCode
+			: array_search( $languageCode, $this->nonstandardLanguageCodeMapping );
+
+		return $text . '@' . $mappedLanguageCode;
 	}
 
 	/**
