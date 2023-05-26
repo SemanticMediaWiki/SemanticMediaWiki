@@ -22,12 +22,18 @@ class LanguageCodeValue extends StringValue {
 	 * DV identifier
 	 */
 	const TYPE_ID = '__lcode';
+	
+
+	private $nonstandardLanguageCodeMapping;
+	
 
 	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
 		parent::__construct( self::TYPE_ID );
+		
+		$this->nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
 	}
 
 	/**
@@ -49,7 +55,14 @@ class LanguageCodeValue extends StringValue {
 
 		// Checks whether the language tag is valid in MediaWiki for when
 		// it is not executed in a query context
-		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Localizer::isKnownLanguageTag( $languageCode ) ) {
+		
+		// ensure non-standard language codes are mapped to
+		// their canonical form (e.g. de-x-formal to de-formal)
+
+		$mappedLanguageCode = !in_array( $languageCode, $this->nonstandardLanguageCodeMapping ) ? $languageCode
+			: array_search( $languageCode, $this->nonstandardLanguageCodeMapping );
+		
+		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Localizer::isKnownLanguageTag( $mappedLanguageCode ) ) {
 			$this->addErrorMsg( [
 				'smw-datavalue-languagecode-invalid',
 				$languageCode
