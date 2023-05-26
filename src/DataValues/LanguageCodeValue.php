@@ -22,10 +22,11 @@ class LanguageCodeValue extends StringValue {
 	 * DV identifier
 	 */
 	const TYPE_ID = '__lcode';
-	
 
+	/**
+	 * nonstandardLanguageCodeMapping
+	 */
 	private $nonstandardLanguageCodeMapping;
-	
 
 	/**
 	 * @param string $typeid
