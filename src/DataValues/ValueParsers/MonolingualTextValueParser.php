@@ -52,8 +52,17 @@ class MonolingualTextValueParser implements ValueParser {
 				$text = substr_replace( $userValue, '', ( mb_strlen( $languageCode ) + 1 ) * -1 );
 			}
 		}
+		
+		// @TODO the following seems correct with de-formal
+		// but seems to not have effect ...
+		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
 
-		return [ $text, Localizer::asBCP47FormattedLanguageCode( $languageCode ) ];
+		$nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
+	
+		$mappedLanguageCode = !in_array( $languageCode, $nonstandardLanguageCodeMapping ) ? $languageCode
+			: array_search( $languageCode, $nonstandardLanguageCodeMapping );
+		
+		return [ $text, $mappedLanguageCode ];
 	}
 
 }
