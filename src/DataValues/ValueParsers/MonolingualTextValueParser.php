@@ -54,9 +54,12 @@ class MonolingualTextValueParser implements ValueParser {
 			}
 		}
 		
-		// @TODO the following seems correct with de-formal
-		// but seems to not have effect ...
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
+		
+		// ***attention! the following is correct but won't have effect as
+		// long as Localizer::asBCP47FormattedLanguageCode is called twice
+		// from LanguageCodeValue -> parseUserValue as well (the latter could
+		// be removed and then the related $mappedLanguageCode as well)
 
 		$nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
 	
