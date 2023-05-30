@@ -161,11 +161,16 @@ class ImportValue extends DataValue {
 		return true;
 	}
 
+	/**
+	 * @param string $namespace
+	 * @return string
+	 */
 	private function getDeclarativeName( $namespace ) {
 		if ( array_key_exists( $namespace, $this->declarativeNames ) ) {
 			return $this->declarativeNames[$namespace];
 		}
 		
+		// @see ImportValueParser
 		$controlledVocabulary = $this->mediaWikiNsContentReader->read(
 			ImportValue::IMPORT_PREFIX . $namespace
 		);
