@@ -17,6 +17,7 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
  *
  * @author Fabian Howahl
  * @author Markus Krötzsch
+ * @reviewer thomas-topway-it
  */
 class ImportValue extends DataValue {
 
@@ -71,9 +72,11 @@ class ImportValue extends DataValue {
 	 * @var string
 	 */
 	private $declarativeName = '';
-	
-	
+
+	/** @var declarativeNames */
 	private $declarativeNames = [];
+	
+	/** @var mediaWikiNsContentReader */
 	private $mediaWikiNsContentReader;
 
 	/**
