@@ -4,7 +4,8 @@
 			"Hello903hello",
 			"Moon0319",
 			"Obonggi",
-			"Yueman"
+			"Yueman",
+			"捍粵者"
 		]
 	},
 	"smw_finallistconjunct": "同埋",
@@ -39,7 +40,7 @@
 	"smw-admin-deprecation-notice-config-notice-option-list": "<code>$1</code>已經毋用，並將會喺$2入面剷走",
 	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code>響$2刪走咗",
 	"smw_smwadmin_datarefreshstop": "停爾個更新",
-	"smw_smwadmin_datarefreshstopconfirm": "係，我{{GENDER:$1|肯定}}。",
+	"smw_smwadmin_datarefreshstopconfirm": "係，我肯定。",
 	"prefs-ask-options": "Special:Ask 選項",
 	"smw-ui-tooltip-title-quantity": "單位轉換",
 	"smw-ui-tooltip-title-info": "資訊",

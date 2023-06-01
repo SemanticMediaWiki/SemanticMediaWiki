@@ -226,7 +226,7 @@
 	"smw_smwadmin_datarefreshstopconfirm": "Da, {{GENDER:$1|prepričan|prepričana|prepričan_a}} sem.",
 	"smw-admin-feature-disabled": "Tamožnost je v tem vikiju onemogočena, prosimo, obiščite stran pomoči za <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures\">nastavitve</a> ali se obrnite na administratorja sistema.",
 	"smw-admin-fulltext-title": "Obnova iskanja po celotnem besedilu",
-	"smw-admin-fulltext-intro": "Iz tabel lastnosti ponovno zgradi iskalni indeks z omogočenim podatkovnim tipom »[https://www.semantic-mediawiki.org/wiki/Full-text iskanje po celotnem besedilu]«. Spremembe pravil indeksiranja (spremenjene ustavitvene besede, nov korenčnik idr.) in/ali na novo dodana ali spremenjena tabela zahtevajo ponovni zagon tega opravila.",
+	"smw-admin-fulltext-intro": "Iz tabel lastnosti znova zgradi iskalni indeks z omogočenim podatkovnim tipom »[https://www.semantic-mediawiki.org/wiki/Full-text iskanje po celotnem besedilu]«. Spremembe pravil indeksiranja (spremenjene ustavitvene besede, nov korenčnik idr.) in/ali na novo dodana ali spremenjena tabela zahtevajo ponovni zagon tega opravila.",
 	"smw-admin-smwhomepage": "Celotna uporabniška dokumentacija za Semantic MediaWiki je na voljo na naslovu <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Hrošče lahko prijavite na <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">sledilniku težav</a>; stran za <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">poročanje o napakah</a> nudi smernice za pisanje učinkovitega poročila o napaki.",
 	"smw-admin-supplementary-operational-statistics-title": "Statistika delovanja",
