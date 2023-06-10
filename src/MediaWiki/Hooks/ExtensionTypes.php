@@ -23,7 +23,7 @@ class ExtensionTypes implements HookListener {
 	 *
 	 * @return boolean
 	 */
-	public function process( array &$extensionTypes ) {
+	public function process( array &$extensionTypes ): bool {
 
 		if ( !is_array( $extensionTypes ) ) {
 			$extensionTypes = [];

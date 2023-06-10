@@ -32,7 +32,7 @@ class FilterCondition extends Condition {
 		return "FILTER( {$this->filter} )\n";
 	}
 
-	public function isSafe() {
+	public function isSafe(): bool {
 		return false;
 	}
 

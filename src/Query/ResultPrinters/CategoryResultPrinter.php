@@ -61,7 +61,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeferrable() {
+	public function isDeferrable(): bool {
 		return true;
 	}
 
@@ -72,7 +72,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function supportsRecursiveAnnotation() {
+	public function supportsRecursiveAnnotation(): bool {
 		return true;
 	}
 
@@ -177,7 +177,10 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $this->htmlColumns->getHtml();
 	}
 
-	private function getContents( QueryResult $res, $outputMode ) {
+	/**
+	 * @return array<int|string, mixed[]>
+	 */
+	private function getContents( QueryResult $res, $outputMode ): array {
 		$contents = [];
 
 		// Print all result rows:

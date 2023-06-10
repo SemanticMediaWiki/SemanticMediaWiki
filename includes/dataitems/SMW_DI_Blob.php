@@ -26,7 +26,7 @@ class SMWDIBlob extends SMWDataItem {
 		$this->m_string = trim( $string );
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return SMWDataItem::TYPE_BLOB;
 	}
 
@@ -34,7 +34,7 @@ class SMWDIBlob extends SMWDataItem {
 		return $this->m_string;
 	}
 
-	public static function normalize( $text ) {
+	public static function normalize( $text ): string {
 		return Normalizer::convertDoubleWidth(
 			Normalizer::applyTransliteration(
 				Normalizer::toLowercase( $text )
@@ -67,7 +67,7 @@ class SMWDIBlob extends SMWDataItem {
 		return new SMWDIBlob( $serialization );
 	}
 
-	public function equals( SMWDataItem $di ) {
+	public function equals( SMWDataItem $di ): bool {
 		if ( !( $di instanceof SMWDIBlob ) ) {
 			return false;
 		}

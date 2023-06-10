@@ -62,7 +62,7 @@ class EditPageForm implements HookListener {
 	 *
 	 * @return boolean
 	 */
-	public function process( EditPage $editPage ) {
+	public function process( EditPage $editPage ): bool {
 
 		$html = '';
 
@@ -99,7 +99,7 @@ class EditPageForm implements HookListener {
 		);
 	}
 
-	private function getMessageKey( $title ) {
+	private function getMessageKey( $title ): string {
 
 		$text = $title->getText();
 		$namespace = $title->getNamespace();

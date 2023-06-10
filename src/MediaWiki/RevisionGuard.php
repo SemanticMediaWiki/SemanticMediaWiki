@@ -49,7 +49,7 @@ class RevisionGuard {
 	 *
 	 * @return boolean
 	 */
-	public function isSkippableUpdate( Title $title, &$latestRevID = null ) {
+	public function isSkippableUpdate( Title $title, &$latestRevID = null ): bool {
 
 		// MW 1.34+
 		// https://github.com/wikimedia/mediawiki/commit/b65e77a385c7423ce03a4d21c141d96c28291a60

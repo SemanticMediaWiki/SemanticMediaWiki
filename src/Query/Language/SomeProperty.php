@@ -155,7 +155,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return boolean
 	 */
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		return false;
 	}
 

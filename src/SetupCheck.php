@@ -208,7 +208,7 @@ class SetupCheck {
 	 *
 	 * @return boolean
 	 */
-	public function isCli() {
+	public function isCli(): bool {
 		return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg';
 	}
 
@@ -253,7 +253,7 @@ class SetupCheck {
 	 *
 	 * @return boolean
 	 */
-	public function hasError() {
+	public function hasError(): bool {
 
 		$this->errorType = '';
 
@@ -378,7 +378,10 @@ class SetupCheck {
 		}
 	}
 
-	private function createErrorContent( $type ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function createErrorContent( $type ): array {
 
 		$indicator_title = 'Error';
 		$template = $this->definitions['error_types'][$type];
@@ -546,7 +549,7 @@ class SetupCheck {
 		// Minify CSS rules, we keep them readable in the template to allow for
 		// better adaption
 		// @see http://manas.tungare.name/software/css-compression-in-php/
-		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", function( $matches ) {
+		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", function( $matches ): string {
 				// Remove space after colons
 				$style = str_replace( ': ', ':', $matches[0] );
 

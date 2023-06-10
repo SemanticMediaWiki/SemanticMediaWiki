@@ -134,7 +134,7 @@ class Timezone {
 	 *
 	 * @return array
 	 */
-	public static function listShortAbbreviations() {
+	public static function listShortAbbreviations(): array {
 		return array_keys( self::$shortList );
 	}
 
@@ -145,7 +145,7 @@ class Timezone {
 	 *
 	 * @return boolean
 	 */
-	public static function isValid( $identifer ) {
+	public static function isValid( $identifer ): bool {
 
 		$identifer = str_replace( ' ', '_', $identifer );
 

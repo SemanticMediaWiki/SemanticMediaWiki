@@ -264,7 +264,7 @@ class PropertyTableRowDiffer {
 	 * The phenomenon has been observed in connection with a page turned from
 	 * a redirect to a normal page or for undeleted pages.
 	 */
-	private function createHash( $tableName, $newData, $hashMutator = '' ) {
+	private function createHash( $tableName, $newData, $hashMutator = '' ): string {
 		return md5( serialize( array_values( $newData[$tableName] ) ) . $hashMutator );
 	}
 
@@ -281,9 +281,9 @@ class PropertyTableRowDiffer {
 	 * @param integer $sid
 	 * @param TableDefinition $tableDeclaration
 	 *
-	 * @return array
+	 * @return array<string, mixed[]>
 	 */
-	private function fetchCurrentContentsForPropertyTable( $sid, TableDefinition $propertyTable ) {
+	private function fetchCurrentContentsForPropertyTable( $sid, TableDefinition $propertyTable ): array {
 
 		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict
 			throw new InvalidArgumentException( 'Operation not supported for tables without subject IDs.' );

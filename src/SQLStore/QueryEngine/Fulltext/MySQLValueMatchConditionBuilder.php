@@ -120,7 +120,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getQuerySearchModifier( &$value ) {
+	public function getQuerySearchModifier( &$value ): string {
 
 		//  @see http://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
 		// "MySQL can perform boolean full-text searches using the IN BOOLEAN

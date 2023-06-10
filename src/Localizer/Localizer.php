@@ -358,7 +358,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function getCanonicalizedUrlByNamespace( $index, $url ) {
+	public function getCanonicalizedUrlByNamespace( $index, $url ): string {
 
 		$namespace = $this->getNsText( $index );
 
@@ -444,7 +444,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public static function convertDoubleWidth( $string ) {
+	public static function convertDoubleWidth( $string ): string {
 		static $full = null;
 		static $half = null;
 

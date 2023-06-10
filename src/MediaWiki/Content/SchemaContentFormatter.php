@@ -82,7 +82,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return []
 	 */
-	public function getModuleStyles() {
+	public function getModuleStyles(): array {
 		return array_merge( [
 			'mediawiki.helplink',
 			'smw.content.schema',

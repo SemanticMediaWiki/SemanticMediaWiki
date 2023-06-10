@@ -256,7 +256,7 @@ class ReferenceValue extends AbstractMultiValue {
 	/**
 	 * @see DataValue::loadDataItem
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 
 		if ( $dataItem->getDIType() === DataItem::TYPE_CONTAINER ) {
 			$this->m_dataitem = $dataItem;

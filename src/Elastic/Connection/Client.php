@@ -273,8 +273,9 @@ class Client {
 	 * @since 3.0
 	 *
 	 * @param array
+	 * @return array<int|string, mixed>
 	 */
-	public function cat( $type, $params = [] ) {
+	public function cat( $type, $params = [] ): array {
 
 		$res = [];
 
@@ -505,7 +506,7 @@ class Client {
 	 *
 	 * @return boolean
 	 */
-	public function quick_ping( $timeout = 2 ) {
+	public function quick_ping( $timeout = 2 ): bool {
 
 		$hosts = $this->options->get( Config::ELASTIC_ENDPOINTS );
 
@@ -783,7 +784,7 @@ class Client {
 	 *
 	 * @return boolean
 	 */
-	public function hasMaintenanceLock() {
+	public function hasMaintenanceLock(): bool {
 		return $this->lockManager->hasMaintenanceLock();
 	}
 
@@ -811,7 +812,7 @@ class Client {
 	 *
 	 * @return boolean
 	 */
-	public function hasLock( $type ) {
+	public function hasLock( $type ): bool {
 		return $this->lockManager->hasLock( $type );
 	}
 

@@ -64,7 +64,7 @@ class PersonalUrls implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( array &$personalUrls ) {
+	public function process( array &$personalUrls ): bool {
 
 		$watchlist = $this->getOption( 'smwgJobQueueWatchlist', [] );
 

@@ -461,7 +461,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function drop( $verbose = true ) {
+	public function drop( $verbose = true ): bool {
 
 		$installer = $this->factory->newInstaller();
 		$installer->setMessageReporter( $this->messageReporter );
@@ -497,7 +497,7 @@ class SQLStore extends Store {
 	 *
 	 * @return array of error strings (empty if no errors occurred)
 	 */
-	public function refreshConceptCache( Title $concept ) {
+	public function refreshConceptCache( Title $concept ): array {
 		return $this->factory->newMasterConceptCache()->refreshConceptCache( $concept );
 	}
 

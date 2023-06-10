@@ -121,7 +121,7 @@ class Task extends ApiBase {
 	 * @codeCoverageIgnore
 	 * @see ApiBase::needsToken
 	 */
-	public function needsToken() {
+	public function needsToken(): string {
 		return 'csrf';
 	}
 
@@ -129,7 +129,7 @@ class Task extends ApiBase {
 	 * @codeCoverageIgnore
 	 * @see ApiBase::mustBePosted
 	 */
-	public function mustBePosted() {
+	public function mustBePosted(): bool {
 		return true;
 	}
 
@@ -137,7 +137,7 @@ class Task extends ApiBase {
 	 * @codeCoverageIgnore
 	 * @see ApiBase::isWriteMode
 	 */
-	public function isWriteMode() {
+	public function isWriteMode(): bool {
 		return true;
 	}
 
@@ -172,7 +172,7 @@ class Task extends ApiBase {
 	 *
 	 * @return string
 	 */
-	public function getHelpUrls() {
+	public function getHelpUrls(): string {
 		return 'https://www.semantic-mediawiki.org/wiki/Help:API:smwtask';
 	}
 

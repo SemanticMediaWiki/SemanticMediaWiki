@@ -181,7 +181,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 	}
 
-	private function isHiddenCategory( $catName ) {
+	private function isHiddenCategory( $catName ): bool {
 
 		if ( $this->hiddenCategories === null ) {
 

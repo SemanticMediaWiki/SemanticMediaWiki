@@ -51,7 +51,7 @@ class RejectParserCacheValue implements HookListener {
 	 *
 	 * @return boolean
 	 */
-	public function process( Page $page ) {
+	public function process( Page $page ): bool {
 
 		$title = $page->getTitle();
 

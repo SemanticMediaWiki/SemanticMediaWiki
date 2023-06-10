@@ -73,7 +73,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isWordTokenizer() {
+	public function isWordTokenizer(): bool {
 		return false;
 	}
 
@@ -252,7 +252,10 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 		return $v ? $v : 0;
 	}
 
-	private function mb_string_to_array_( $str, $encoding = 'UTF-8' ) {
+	/**
+	 * @return string[]
+	 */
+	private function mb_string_to_array_( $str, $encoding = 'UTF-8' ): array {
 
 		$result = array();
 		$length = mb_strlen( $str, $encoding );

@@ -106,9 +106,9 @@ class SemanticDataLookup {
 	 *
 	 * @param SemanticData $semanticData
 	 *
-	 * @return array
+	 * @return array<string, true>
 	 */
-	public function getTableUsageInfo( SemanticData $semanticData ) {
+	public function getTableUsageInfo( SemanticData $semanticData ): array {
 		$state = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -402,7 +402,10 @@ class SemanticDataLookup {
 		return $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
 	}
 
-	private function fetchFromTable( $query, $propTable, $isSubject, $requestOptions, $field = '' ) {
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	private function fetchFromTable( $query, $propTable, $isSubject, $requestOptions, $field = '' ): array {
 
 		$result = [];
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -674,7 +677,10 @@ class SemanticDataLookup {
 		}
 	}
 
-	private function buildResultFromRow( $row, $params ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function buildResultFromRow( $row, $params ): array {
 
 		$hash = '';
 		$sortField = '';

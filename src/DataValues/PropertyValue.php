@@ -216,7 +216,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @return boolean
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 
 		if ( $dataItem->getDIType() !== DataItem::TYPE_PROPERTY ) {
 			return false;
@@ -317,7 +317,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @note Every user defined property is necessarily visible.
 	 */
-	public function isVisible() {
+	public function isVisible(): bool {
 		return $this->isValid() && ( $this->m_dataitem->isUserDefined() || $this->m_dataitem->getCanonicalLabel() !== '' );
 	}
 
@@ -326,7 +326,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @return boolean
 	 */
-	public function isRestricted() {
+	public function isRestricted(): bool {
 
 		if ( !$this->isValid() ) {
 			return true;
@@ -480,7 +480,7 @@ class PropertyValue extends SMWDataValue {
 		return $this->m_dataitem->findPropertyTypeId();
 	}
 
-	private function createDataItemFrom( $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ) {
+	private function createDataItemFrom( $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ): \SMW\DIProperty {
 
 		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
 

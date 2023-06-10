@@ -304,7 +304,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		}
 	}
 
-	private function canUse( $query ) {
+	private function canUse( $query ): bool {
 
 		if ( !$this->enabledCache || !$this->blobStore->canUse() ) {
 			return false;
@@ -479,7 +479,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		);
 	}
 
-	private function getHashFrom( $subject ) {
+	private function getHashFrom( $subject ): string {
 
 		if ( $subject instanceof DIWikiPage ) {
 			// In case the we detect a _QUERY subobject, use it directly

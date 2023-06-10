@@ -165,7 +165,7 @@ class Rebuilder {
 	 *
 	 * @return integer
 	 */
-	public function getMaxId() {
+	public function getMaxId(): int {
 
 		$db = $this->store->getConnection( 'mw.db' );
 
@@ -481,7 +481,7 @@ class Rebuilder {
 		$id = $nextPosition ? $nextPosition : -1;
 	}
 
-	private function hasSkippableRevision( $title, $row = false ) {
+	private function hasSkippableRevision( $title, $row = false ): bool {
 
 		if ( $this->getOption( 'force-update' ) ) {
 			return false;

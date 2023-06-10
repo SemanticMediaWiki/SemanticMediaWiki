@@ -66,28 +66,28 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getIndexNameByType
 	 */
-	public function getIndexNameByType( $type ) {
+	public function getIndexNameByType( $type ): string {
 		return $this->getIndexName( $type );
 	}
 
 	/**
 	 * @see Client::getIndexName
 	 */
-	public function getIndexName( $type ) {
+	public function getIndexName( $type ): string {
 		return '';
 	}
 
 	/**
 	 * @see Client::getIndexDefByType
 	 */
-	public function getIndexDefByType( $type ) {
+	public function getIndexDefByType( $type ): string {
 		return '';
 	}
 
 	/**
 	 * @see Client::getIndexDefFileModificationTimeByType
 	 */
-	public function getIndexDefFileModificationTimeByType( $type ) {
+	public function getIndexDefFileModificationTimeByType( $type ): int {
 		return 0;
 	}
 
@@ -118,14 +118,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::cat
 	 */
-	public function cat( $type, $params = [] ) {
+	public function cat( $type, $params = [] ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::hasIndex
 	 */
-	public function hasIndex( $type, $useCache = true ) {
+	public function hasIndex( $type, $useCache = true ): bool {
 		return true;
 	}
 
@@ -178,21 +178,21 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::ping
 	 */
-	public function ping() {
+	public function ping(): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::quick_ping
 	 */
-	public function quick_ping( $timeout = 2 ) {
+	public function quick_ping( $timeout = 2 ): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::exists
 	 */
-	public function exists( array $params ) {
+	public function exists( array $params ): bool {
 		return false;
 	}
 
@@ -228,7 +228,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::count
 	 */
-	public function count( array $params ) {
+	public function count( array $params ): int {
 		return 0;
 	}
 
@@ -249,7 +249,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::hasMaintenanceLock
 	 */
-	public function hasMaintenanceLock() {
+	public function hasMaintenanceLock(): bool {
 		return false;
 	}
 
@@ -266,14 +266,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::hasLock
 	 */
-	public function hasLock( $type ) {
+	public function hasLock( $type ): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::getLock
 	 */
-	public function getLock( $type ) {
+	public function getLock( $type ): bool {
 		return false;
 	}
 

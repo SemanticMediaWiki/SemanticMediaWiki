@@ -42,7 +42,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeferrable() {
+	public function isDeferrable(): bool {
 		return true;
 	}
 
@@ -95,7 +95,7 @@ class ListResultPrinter extends ResultPrinter {
 	/**
 	 * @return bool
 	 */
-	private function hasTemplates() {
+	private function hasTemplates(): bool {
 		return $this->params['template'] !== '' || $this->params['introtemplate'] !== '' || $this->params['outrotemplate'] !== '';
 	}
 
@@ -127,7 +127,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return boolean
 	 */
-	public function supportsRecursiveAnnotation() {
+	public function supportsRecursiveAnnotation(): bool {
 		return true;
 	}
 
@@ -141,7 +141,7 @@ class ListResultPrinter extends ResultPrinter {
 	 * @return ParamDefinition[]
 	 * @throws \Exception
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 
 		$listFormatDefinitions = [
 

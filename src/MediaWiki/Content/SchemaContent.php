@@ -355,7 +355,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return string
 	 */
-	public static function normalizeLineEndings( $text ) {
+	public static function normalizeLineEndings( $text ): string {
 		return str_replace( [ "\r\n", "\r" ], "\n", rtrim( $text ) );
 	}
 

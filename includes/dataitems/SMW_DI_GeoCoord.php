@@ -96,7 +96,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * (non-PHPdoc)
 	 * @see SMWDataItem::getDIType()
 	 */
-	public function getDIType() {
+	public function getDIType(): int {
 		return SMWDataItem::TYPE_GEO;
 	}
 
@@ -106,7 +106,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 *
 	 * @return array
 	 */
-	public function getCoordinateSet() {
+	public function getCoordinateSet(): array {
 		$coords = [ 'lat' => $this->latitude, 'lon' => $this->longitude ];
 
 		if ( !is_null( $this->altitude ) ) {
@@ -128,7 +128,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * (non-PHPdoc)
 	 * @see SMWDataItem::getSerialization()
 	 */
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return implode( ',', $this->getCoordinateSet() );
 	}
 
@@ -182,7 +182,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 		return $this->altitude;
 	}
 
-	public function equals( SMWDataItem $di ) {
+	public function equals( SMWDataItem $di ): bool {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_GEO ) {
 			return false;
 		}

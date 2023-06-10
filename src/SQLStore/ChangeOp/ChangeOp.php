@@ -158,7 +158,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return TableChangeOp[]
 	 */
-	public function getDataOps() {
+	public function getDataOps(): array {
 
 		$dataChangeOps = [];
 
@@ -214,7 +214,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return TableChangeOp[]|[]
 	 */
-	public function getTableChangeOps( $table = null ) {
+	public function getTableChangeOps( $table = null ): array {
 
 		$tableChangeOps = [];
 
@@ -337,7 +337,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getChangedEntityIdSummaryList() {
+	public function getChangedEntityIdSummaryList(): array {
 		return array_keys( $this->getChangedEntityIdListByType() );
 	}
 
@@ -347,7 +347,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getCombinedIdListOfChangedEntities() {
+	public function getCombinedIdListOfChangedEntities(): array {
 		return $this->getChangedEntityIdSummaryList();
 	}
 

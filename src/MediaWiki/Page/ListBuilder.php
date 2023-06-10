@@ -132,7 +132,7 @@ class ListBuilder {
 	 *
 	 * @return array
 	 */
-	public function getList( array $dataItems ) {
+	public function getList( array $dataItems ): array {
 		return $this->buildList( $dataItems );
 	}
 
@@ -164,7 +164,10 @@ class ListBuilder {
 		return $htmlColumns->getHtml();
 	}
 
-	private function buildList( $dataItems ) {
+	/**
+	 * @return array<int|string, mixed[]>
+	 */
+	private function buildList( $dataItems ): array {
 
 		$dataValueFactory = DataValueFactory::getInstance();
 

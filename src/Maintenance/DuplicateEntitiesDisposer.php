@@ -142,7 +142,7 @@ class DuplicateEntitiesDisposer {
 	 *
 	 * @since 3.0
 	 */
-	private function is_iterable( $obj ) {
+	private function is_iterable( $obj ): bool {
 		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof \Traversable ) );
 	}
 

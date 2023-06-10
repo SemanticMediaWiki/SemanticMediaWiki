@@ -119,7 +119,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @return string[]
 	 */
-	public function getFormats() {
+	public function getFormats(): array {
 		return array_keys( $this->formats );
 	}
 
@@ -132,7 +132,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @return boolean
 	 */
-	public function hasFormat( $formatName ) {
+	public function hasFormat( $formatName ): bool {
 		$formatName = $this->getCanonicalName( $formatName );
 		return array_key_exists( $formatName, $this->formats );
 	}

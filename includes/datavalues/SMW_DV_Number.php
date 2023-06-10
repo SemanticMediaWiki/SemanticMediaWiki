@@ -209,7 +209,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ): bool {
 
 		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_NUMBER ) {
 			return false;
@@ -407,6 +407,8 @@ class SMWNumberValue extends SMWDataValue {
 	 * The returned value is a canonical ID for the main unit.
 	 * Returns the empty string if no unit is given for the value.
 	 * Overwritten by subclasses that support units.
+	 *
+	 * @return bool|string
 	 */
 	public function getUnit() {
 		return '';
@@ -419,7 +421,7 @@ class SMWNumberValue extends SMWDataValue {
 	 *
 	 * @return boolean
 	 */
-	public function hasPrefixalUnitPreference( $unit ) {
+	public function hasPrefixalUnitPreference( $unit ): bool {
 		return isset( $this->prefixalUnitPreference[$unit] ) && $this->prefixalUnitPreference[$unit];
 	}
 
@@ -463,7 +465,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * @param $unit string after the numericla user input
 	 * @return boolean specifying if the unit string is allowed
 	 */
-	protected function convertToMainUnit( $number, $unit ) {
+	protected function convertToMainUnit( $number, $unit ): bool {
 		$this->m_dataitem = new SMWDINumber( $number );
 		$this->m_unitin = '';
 		return ( $unit === '' );

@@ -144,7 +144,10 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function getCurrentFields( $tableName ) {
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	private function getCurrentFields( $tableName ): array {
 
 		$sql = 'PRAGMA table_info(' . $tableName . ')';
 

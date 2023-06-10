@@ -431,7 +431,7 @@ class SPARQLStore extends Store {
 	 * @see Store::drop()
 	 * @since 1.6
 	 */
-	public function drop( $verbose = true ) {
+	public function drop( $verbose = true ): bool {
 		$this->baseStore->setMessageReporter( $this->messageReporter );
 		$this->baseStore->drop( $verbose );
 		$this->getConnection()->deleteAll();

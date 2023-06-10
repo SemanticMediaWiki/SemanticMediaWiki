@@ -329,11 +329,11 @@ class PageBuilder {
 		return "<ul>$html</ul>";
 	}
 
-	private function canQueryNearbyResults( $exactCount ) {
+	private function canQueryNearbyResults( $exactCount ): bool {
 		return $exactCount < ( $this->pageRequestOptions->limit / 3 ) && $this->pageRequestOptions->nearbySearch && $this->pageRequestOptions->valueString !== '';
 	}
 
-	private function canShowSearchByPropertyLink( DataValue $dataValue ) {
+	private function canShowSearchByPropertyLink( DataValue $dataValue ): bool {
 
 		$dataTypeClass = DataTypeRegistry::getInstance()->getDataTypeClassById(
 			$dataValue->getTypeID()
@@ -386,7 +386,7 @@ class PageBuilder {
 		return [ $resultMessage, $resultList, $resultCount ];
 	}
 
-	private function isAskQueryLinksRelatedRequest() {
+	private function isAskQueryLinksRelatedRequest(): bool {
 		return $this->pageRequestOptions->property !== '' &&
 			$this->pageRequestOptions->property->getDataItem()->getKey() === '_ASK' &&
 			$this->pageRequestOptions->value->isValid() &&

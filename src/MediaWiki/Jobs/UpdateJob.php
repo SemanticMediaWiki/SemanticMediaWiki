@@ -101,7 +101,7 @@ class UpdateJob extends Job {
 		return true;
 	}
 
-	private function matchesLastModified( $title ) {
+	private function matchesLastModified( $title ): bool {
 
 		if ( !$this->getParameter( 'shallowUpdate' ) ) {
 			return false;
@@ -164,7 +164,7 @@ class UpdateJob extends Job {
 		);
 	}
 
-	private function set_data( $semanticData ) {
+	private function set_data( $semanticData ): bool {
 
 		$this->setParameter( 'updateType', 'SemanticData' );
 
@@ -218,7 +218,7 @@ class UpdateJob extends Job {
 		return $this->updateStore( $parserData );
 	}
 
-	private function updateStore( $parserData ) {
+	private function updateStore( $parserData ): bool {
 
 		$this->applicationFactory->getMediaWikiLogger()->info(
 			[

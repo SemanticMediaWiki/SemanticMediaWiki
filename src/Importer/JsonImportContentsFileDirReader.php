@@ -80,9 +80,9 @@ class JsonImportContentsFileDirReader {
 	/**
 	 * @since 2.5
 	 *
-	 * @return ImportContents[]
+	 * @return array<string, mixed>
 	 */
-	public function getContentList() {
+	public function getContentList(): array {
 
 		$contents = [];
 		sort( $this->importFileDirs );

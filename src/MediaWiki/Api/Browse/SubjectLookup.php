@@ -47,7 +47,7 @@ class SubjectLookup extends Lookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 
 		if ( !isset( $parameters['subject'] ) ) {
 			throw new ParameterNotFoundException( 'subject' );

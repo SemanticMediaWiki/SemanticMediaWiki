@@ -53,7 +53,7 @@ class SMWDIContainer extends SMWDataItem {
 		$this->m_semanticData = $semanticData;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return SMWDataItem::TYPE_CONTAINER;
 	}
 
@@ -61,7 +61,7 @@ class SMWDIContainer extends SMWDataItem {
 		return $this->m_semanticData;
 	}
 
-	public function getSortKey() {
+	public function getSortKey(): string {
 		return '';
 	}
 
@@ -77,7 +77,7 @@ class SMWDIContainer extends SMWDataItem {
 		);
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return serialize( $this->m_semanticData );
 	}
 
@@ -86,7 +86,7 @@ class SMWDIContainer extends SMWDataItem {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 
 		$hash = $this->getValueHash( $this->m_semanticData );
 		sort( $hash );
@@ -97,7 +97,10 @@ class SMWDIContainer extends SMWDataItem {
 		// return $this->m_semanticData->getHash();
 	}
 
-	private function getValueHash( $semanticData ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getValueHash( $semanticData ): array {
 
 		$hash = [];
 
@@ -131,7 +134,7 @@ class SMWDIContainer extends SMWDataItem {
 		return new SMWDIContainer( $data );
 	}
 
-	public function equals( SMWDataItem $di ) {
+	public function equals( SMWDataItem $di ): bool {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_CONTAINER ) {
 			return false;
 		}

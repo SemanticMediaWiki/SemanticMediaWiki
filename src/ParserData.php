@@ -212,7 +212,7 @@ class ParserData {
 	 *
 	 * @return boolean
 	 */
-	public function isBlocked() {
+	public function isBlocked(): bool {
 		return $this->hasAnnotationBlock();
 	}
 
@@ -221,7 +221,7 @@ class ParserData {
 	 *
 	 * @return boolean
 	 */
-	public function hasAnnotationBlock() {
+	public function hasAnnotationBlock(): bool {
 
 		// ParserOutput::getExtensionData returns null if no value was set for this key
 		if ( $this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) !== null &&
@@ -412,7 +412,7 @@ class ParserData {
 	 *
 	 * @return boolean
 	 */
-	public function updateStore( $opts = [] ) {
+	public function updateStore( $opts = [] ): bool {
 
 		$isDeferrableUpdate = false;
 

@@ -155,11 +155,11 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		return '';
 	}
 
-	private function runCheck( $subject, $options ) {
+	private function runCheck( $subject, $options ): bool {
 
 		$this->indicators = [];
 

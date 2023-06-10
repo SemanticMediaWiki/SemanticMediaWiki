@@ -60,7 +60,7 @@ abstract class DataItemHandler {
 	 *
 	 * @return boolean
 	 */
-	public function hasFeature( $feature ) {
+	public function hasFeature( $feature ): bool {
 		return ( (int)$this->fieldTypeFeatures & $feature ) != 0;
 	}
 
@@ -69,7 +69,7 @@ abstract class DataItemHandler {
 	 *
 	 * @param boolean
 	 */
-	public function isDbType( $dbType ) {
+	public function isDbType( $dbType ): bool {
 
 		if ( $this->dbType === null ) {
 			$this->dbType = $this->store->getConnection( 'mw.db' )->getType();
@@ -135,7 +135,7 @@ abstract class DataItemHandler {
 	 *
 	 * @return string
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 		return '';
 	}
 
@@ -199,7 +199,7 @@ abstract class DataItemHandler {
 	 *
 	 * @return string
 	 */
-	public function getSortField() {
+	public function getSortField(): string {
 		return '';
 	}
 

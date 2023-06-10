@@ -56,7 +56,7 @@ class Parameters {
 	 *
 	 * @return boolean
 	 */
-	public function has( $key ) {
+	public function has( $key ): bool {
 		return isset( $this->parameters[$key] ) || array_key_exists( $key, $this->parameters );
 	}
 

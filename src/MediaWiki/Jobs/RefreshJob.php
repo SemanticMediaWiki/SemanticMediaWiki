@@ -48,7 +48,7 @@ class RefreshJob extends Job {
 	 *
 	 * @return boolean
 	 */
-	public function run() {
+	public function run(): bool {
 
 		if ( $this->hasParameter( 'spos' ) ) {
 			$this->refreshData( $this->getParameter( 'spos' ) );
@@ -64,7 +64,7 @@ class RefreshJob extends Job {
 	 *
 	 * @return double
 	 */
-	public function getProgress() {
+	public function getProgress(): float {
 
 		$prog = $this->hasParameter( 'prog' ) ? $this->getParameter( 'prog' ) : 0;
 		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ): 1;
@@ -76,7 +76,7 @@ class RefreshJob extends Job {
 	/**
 	 * @param $spos start index
 	 */
-	protected function refreshData( $spos ) {
+	protected function refreshData( $spos ): bool {
 
 		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
 

@@ -46,7 +46,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isExportFormat() {
+	public function isExportFormat(): bool {
 		return true;
 	}
 
@@ -71,7 +71,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): bool {
 		return false;
 	}
 
@@ -102,7 +102,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return integer
 	 */
-	public function getQueryMode( $mode ) {
+	public function getQueryMode( $mode ): int {
 
 		if ( $mode == \SMWQueryProcessor::SPECIAL_PAGE ) {
 			return \SMWQuery::MODE_INSTANCES;
@@ -155,7 +155,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getDefaultSort() {
+	public function getDefaultSort(): string {
 		return 'DESC';
 	}
 
@@ -380,7 +380,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return string
 	 */
-	protected function feedItemComments() {
+	protected function feedItemComments(): string {
 		return '';
 	}
 

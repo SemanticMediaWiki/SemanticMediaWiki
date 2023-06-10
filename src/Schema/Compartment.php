@@ -56,7 +56,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 *
 	 * @return boolean
 	 */
-	public function has( $key ) {
+	public function has( $key ): bool {
 		return $this->get( $key, false ) !== false;
 	}
 
@@ -95,7 +95,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		return sha1( $this->jsonSerialize() );
 	}
 

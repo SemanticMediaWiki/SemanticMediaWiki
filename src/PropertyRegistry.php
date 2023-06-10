@@ -435,7 +435,7 @@ class PropertyRegistry {
 	/**
 	 * @deprecated since 3.0 use isRegistered instead
 	 */
-	public function isKnownPropertyId( $id ) {
+	public function isKnownPropertyId( $id ): bool {
 		return $this->isRegistered( $id );
 	}
 
@@ -446,7 +446,7 @@ class PropertyRegistry {
 	 *
 	 * @return boolean
 	 */
-	public function isRegistered( $id ) {
+	public function isRegistered( $id ): bool {
 		return isset( $this->propertyList[$id] ) || array_key_exists( $id, $this->propertyList );
 	}
 

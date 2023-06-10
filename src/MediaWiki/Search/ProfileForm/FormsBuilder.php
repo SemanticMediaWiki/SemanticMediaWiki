@@ -95,7 +95,7 @@ class FormsBuilder {
 	 *
 	 * @return string
 	 */
-	public static function toLowerCase( $key ) {
+	public static function toLowerCase( $key ): string {
 		return strtolower( str_replace( [ ' ' ], [ '' ], $key ) );
 	}
 

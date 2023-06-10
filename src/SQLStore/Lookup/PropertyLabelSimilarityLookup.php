@@ -150,7 +150,10 @@ class PropertyLabelSimilarityLookup {
 		return $similarities;
 	}
 
-	private function matchLabels( $propertyList, $withType ) {
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	private function matchLabels( $propertyList, $withType ): array {
 
 		$similarities = [];
 		$lookupComplete = [];
@@ -201,7 +204,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @return boolean
 	 */
-	private function isExempted( DIProperty $first, DIProperty $second ) {
+	private function isExempted( DIProperty $first, DIProperty $second ): bool {
 
 		if ( $this->exemptionProperty === null ) {
 			return false;
@@ -232,7 +235,7 @@ class PropertyLabelSimilarityLookup {
 		return false;
 	}
 
-	private function getHash( DIProperty $first, DIProperty $second ) {
+	private function getHash( DIProperty $first, DIProperty $second ): string {
 
 		$hashing = [];
 		$hashing[] = $first->getKey();
@@ -271,7 +274,10 @@ class PropertyLabelSimilarityLookup {
 		];
 	}
 
-	private function getPropertyList( RequestOptions $requestOptions = null ) {
+	/**
+	 * @return \SMW\DIProperty[]
+	 */
+	private function getPropertyList( RequestOptions $requestOptions = null ): array {
 
 		$propertyList = [];
 

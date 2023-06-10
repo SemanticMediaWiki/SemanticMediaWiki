@@ -84,7 +84,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	function getName() {
+	function getName(): string {
 		return 'Properties';
 	}
 

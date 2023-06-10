@@ -29,7 +29,7 @@ class SMWDIBoolean extends SMWDataItem {
 		$this->m_boolean = ( $boolean == true );
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return SMWDataItem::TYPE_BOOLEAN;
 	}
 
@@ -60,7 +60,7 @@ class SMWDIBoolean extends SMWDataItem {
 		}
 	}
 
-	public function equals( SMWDataItem $di ) {
+	public function equals( SMWDataItem $di ): bool {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_BOOLEAN ) {
 			return false;
 		}

@@ -156,7 +156,7 @@ class SchemaList implements JsonSerializable {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		return sha1( $this->jsonSerialize() );
 	}
 

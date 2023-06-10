@@ -61,7 +61,7 @@ class NamespaceDescription extends Description {
 		return '[[' . $prefix . $localizedNamespaceText . ':+]]';
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		return false;
 	}
 

@@ -115,7 +115,7 @@ class Indexer {
 	 *
 	 * @return boolean
 	 */
-	public function isAccessible() {
+	public function isAccessible(): bool {
 		return $this->canReplicate();
 	}
 
@@ -351,7 +351,7 @@ class Indexer {
 		);
 	}
 
-	private function canReplicate() {
+	private function canReplicate(): bool {
 
 		$connection = $this->store->getConnection( 'elastic' );
 

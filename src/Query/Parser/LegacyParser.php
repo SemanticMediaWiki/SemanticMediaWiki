@@ -826,16 +826,16 @@ class LegacyParser implements Parser {
 	 * If the delimiter does not match the top-most open block, false
 	 * will be returned. Otherwise return true.
 	 */
-	private function popDelimiter( $endstring ) {
+	private function popDelimiter( $endstring ): bool {
 		$topdelim = array_pop( $this->separatorStack );
 		return ( $topdelim == $endstring );
 	}
 
-	private function isPagePropertyType( $typeid ) {
+	private function isPagePropertyType( $typeid ): bool {
 		return $typeid == '_wpg' || $this->dataTypeRegistry->isSubDataType( $typeid );
 	}
 
-	private function hasClassPrefix( $chunk ) {
+	private function hasClassPrefix( $chunk ): bool {
 
 		$prefix = [
 			$this->categoryPrefix,
@@ -847,7 +847,7 @@ class LegacyParser implements Parser {
 		return in_array( $this->normalizeTitleText( $chunk ), $prefix );
 	}
 
-	private function isClass( $chunk ) {
+	private function isClass( $chunk ): bool {
 
 		$chunk = $this->normalizeTitleText( $chunk );
 

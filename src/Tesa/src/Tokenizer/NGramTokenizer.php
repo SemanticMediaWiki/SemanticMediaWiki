@@ -70,7 +70,7 @@ class NGramTokenizer implements Tokenizer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isWordTokenizer() {
+	public function isWordTokenizer(): bool {
 		return false;
 	}
 
@@ -94,7 +94,7 @@ class NGramTokenizer implements Tokenizer {
 		return array();
 	}
 
-	private function createNGrams( $text, $ngramSize, $withMarker ) {
+	private function createNGrams( $text, $ngramSize, $withMarker ): array {
 
 		$ngramList = array();
 

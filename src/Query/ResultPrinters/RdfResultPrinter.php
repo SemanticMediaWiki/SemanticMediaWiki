@@ -34,7 +34,7 @@ class RdfResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 
 		if ( ( $this->params['syntax'] ?? '' ) === 'turtle' ) {
 			return 'application/x-turtle';
@@ -105,7 +105,7 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function makeExport( QueryResult $res, $outputMode ) {
+	private function makeExport( QueryResult $res, $outputMode ): string {
 
 		$exporterFactory = new ExporterFactory();
 		$exporter = $exporterFactory->getExporter();

@@ -63,7 +63,7 @@ class ConceptCache {
 	 *
 	 * @return array of error strings (empty if no errors occurred)
 	 */
-	public function refreshConceptCache( Title $concept ) {
+	public function refreshConceptCache( Title $concept ): array {
 
 		$errors = array_merge(
 			$this->conceptQuerySegmentBuilder->getErrors(),

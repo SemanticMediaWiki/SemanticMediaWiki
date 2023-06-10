@@ -90,7 +90,7 @@ class DependencyLinksValidator {
 	 *
 	 * @return boolean
 	 */
-	public function hasArchaicDependencies( DIWikiPage $subject ) {
+	public function hasArchaicDependencies( DIWikiPage $subject ): bool {
 
 		$this->checkedDependencies = [];
 

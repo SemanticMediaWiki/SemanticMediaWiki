@@ -129,7 +129,10 @@ class OrderCondition {
 		$conditionBuilder->getQuerySegmentList();
 	}
 
-	private function findDescriptionsFromSortKeys( $querySegment ) {
+	/**
+	 * @return \SMW\Query\Language\Description[]
+	 */
+	private function findDescriptionsFromSortKeys( $querySegment ): array {
 
 		$extraDescriptions = [];
 

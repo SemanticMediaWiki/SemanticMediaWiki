@@ -99,7 +99,7 @@ class SMWSpecialTypes extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 
 		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
 			return 'smw_group';
@@ -398,7 +398,10 @@ class SMWSpecialTypes extends SpecialPage {
 		);
 	}
 
-	private function makeTypeList( $typeLabels ) {
+	/**
+	 * @return mixed[][]
+	 */
+	private function makeTypeList( $typeLabels ): array {
 
 		$contents = [];
 		$linker = smwfGetLinker();

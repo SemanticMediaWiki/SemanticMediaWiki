@@ -203,7 +203,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ): bool {
 
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_CONTAINER ) {
 			// might throw an exception, we just pass it through

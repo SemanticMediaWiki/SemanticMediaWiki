@@ -21,7 +21,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromSemanticData( SemanticData $semanticData ) {
+	public static function createFromSemanticData( SemanticData $semanticData ): string {
 
 		$hash = [];
 		$hash[] = $semanticData->getSubject()->getSerialization();
@@ -77,7 +77,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromSegments( /* args */ ) {
+	public static function createFromSegments( /* args */ ): string {
 		return implode( '#', func_get_args() );
 	}
 
@@ -92,7 +92,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createHashIdFromSegments( $title, $namespace, $interwiki = '', $fragment = '' ) {
+	public static function createHashIdFromSegments( $title, $namespace, $interwiki = '', $fragment = '' ): string {
 		return self::createFromSegments( $title, $namespace, $interwiki, $fragment );
 	}
 
@@ -103,7 +103,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function getHashIdForTitle( Title $title ) {
+	public static function getHashIdForTitle( Title $title ): string {
 		return self::createFromSegments(
 			$title->getDBKey(),
 			$title->getNamespace(),
@@ -119,7 +119,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function getHashIdForDiWikiPage( DIWikiPage $dataItem ) {
+	public static function getHashIdForDiWikiPage( DIWikiPage $dataItem ): string {
 		return self::createFromSegments(
 			$dataItem->getDBKey(),
 			$dataItem->getNamespace(),

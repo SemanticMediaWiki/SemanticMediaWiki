@@ -350,7 +350,7 @@ class DIProperty extends SMWDataItem {
 	/**
 	 * @deprecated since 3.0, use DIProperty::setPropertyValueType
 	 */
-	public function setPropertyTypeId( $valueType ) {
+	public function setPropertyTypeId( $valueType ): \SMW\DIProperty {
 		return $this->setPropertyValueType( $valueType );
 	}
 
@@ -385,7 +385,7 @@ class DIProperty extends SMWDataItem {
 	/**
 	 * @deprecated since 3.0, use DIProperty::findPropertyValueType
 	 */
-	public function findPropertyTypeId() {
+	public function findPropertyTypeId(): string {
 		return $this->findPropertyValueType();
 	}
 

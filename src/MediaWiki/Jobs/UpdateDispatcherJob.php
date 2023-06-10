@@ -332,7 +332,7 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function push_jobs_from_list( array $subjects ) {
+	private function push_jobs_from_list( array $subjects ): bool {
 
 		$check_exists = $this->getParameter( 'check_exists', false );
 

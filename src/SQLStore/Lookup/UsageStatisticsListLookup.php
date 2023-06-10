@@ -80,7 +80,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return boolean
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return false;
 	}
 
@@ -98,7 +98,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return 'statistics-lookup';
 	}
 
@@ -161,9 +161,9 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 1.9
 	 *
-	 * @return int[]
+	 * @return array<int|string, int>
 	 */
-	public function getQueryFormatsCount() {
+	public function getQueryFormatsCount(): array {
 		$count = [];
 
 		$res = $this->store->getConnection()->select(

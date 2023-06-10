@@ -181,7 +181,7 @@ class PropertyTableDefinition {
 	 *
 	 * @return boolean
 	 */
-	public function isFixedPropertyTable() {
+	public function isFixedPropertyTable(): bool {
 		return $this->fixedProperty !== false;
 	}
 

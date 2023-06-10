@@ -58,7 +58,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 
 		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
 		// FROM `smw_object_ids`
@@ -120,7 +120,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_serialized';
 	}
 
@@ -129,7 +129,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_serialized';
 	}
 

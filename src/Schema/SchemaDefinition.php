@@ -56,7 +56,7 @@ class SchemaDefinition extends Compartment implements Schema {
 	 *
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string {
 		return str_replace( '_', ' ', $this->name );
 	}
 

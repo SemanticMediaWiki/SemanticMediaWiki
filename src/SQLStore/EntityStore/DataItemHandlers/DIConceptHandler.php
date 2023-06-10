@@ -90,7 +90,7 @@ class DIConceptHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'concept_txt';
 	}
 
@@ -99,7 +99,7 @@ class DIConceptHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'concept_txt';
 	}
 

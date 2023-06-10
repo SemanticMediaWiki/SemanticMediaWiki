@@ -96,7 +96,7 @@ class DIWikiPage extends SMWDataItem {
 		$this->m_subobjectname = $subobjectname;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return SMWDataItem::TYPE_WIKIPAGE;
 	}
 
@@ -151,7 +151,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @return string
 	 */
-	public function getSha1() {
+	public function getSha1(): string {
 		return sha1( json_encode( [ $this->m_dbkey, $this->m_namespace, $this->m_interwiki, $this->m_subobjectname ] ) );
 	}
 
@@ -272,7 +272,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @return string
 	 */
-	public function getSerialization() {
+	public function getSerialization(): string {
 		$segments = [
 			$this->m_dbkey,
 			$this->m_namespace,
@@ -331,7 +331,7 @@ class DIWikiPage extends SMWDataItem {
 		return new self( $text, $namespace );
 	}
 
-	public function equals( SMWDataItem $di ) {
+	public function equals( SMWDataItem $di ): bool {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_WIKIPAGE ) {
 			return false;
 		}

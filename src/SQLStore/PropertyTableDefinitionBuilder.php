@@ -95,7 +95,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getTablePrefix() {
+	public function getTablePrefix(): string {
 		return self::PROPERTY_TABLE_PREFIX;
 	}
 

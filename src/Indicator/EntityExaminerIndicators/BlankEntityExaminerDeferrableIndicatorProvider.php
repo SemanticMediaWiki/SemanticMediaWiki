@@ -121,7 +121,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		return '';
 	}
 

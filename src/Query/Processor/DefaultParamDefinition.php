@@ -27,7 +27,7 @@ class DefaultParamDefinition {
 	 *
 	 * @return ParamDefinition[]
 	 */
-	public static function getParamDefinitions( $context = null, ResultPrinter $resultPrinter = null ) {
+	public static function getParamDefinitions( $context = null, ResultPrinter $resultPrinter = null ): array {
 		return self::buildParamDefinitions( $GLOBALS, $context, $resultPrinter );
 	}
 
@@ -49,7 +49,7 @@ class DefaultParamDefinition {
 	 *
 	 * @return ParamDefinition[]
 	 */
-	public static function buildParamDefinitions( $vars, $context = null, ResultPrinter $resultPrinter = null ) {
+	public static function buildParamDefinitions( $vars, $context = null, ResultPrinter $resultPrinter = null ): array {
 		$params = [];
 
 		$allowedFormats = $vars['smwgResultFormats'];

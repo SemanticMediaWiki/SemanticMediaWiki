@@ -73,7 +73,7 @@ class ParserCachePurgeJob extends Job {
 	 *
 	 * @since 3.1
 	 */
-	public function run() {
+	public function run(): bool {
 
 		$page = $this->newWikiPage( $this->getTitle() );
 		$page->doPurge();

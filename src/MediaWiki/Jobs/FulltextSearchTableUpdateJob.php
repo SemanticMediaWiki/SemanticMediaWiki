@@ -33,7 +33,7 @@ class FulltextSearchTableUpdateJob extends Job {
 	 *
 	 * @since  2.5
 	 */
-	public function run() {
+	public function run(): bool {
 
 		$fulltextSearchTableFactory = new FulltextSearchTableFactory();
 

@@ -28,7 +28,7 @@ class BrowseBySubject extends ApiBase {
 	/**
 	 * @deprecated since 3.0, use the smwbrowse API module
 	 */
-	public function isDeprecated() {
+	public function isDeprecated(): bool {
 		return true;
 	}
 

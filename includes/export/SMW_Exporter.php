@@ -683,11 +683,11 @@ class SMWExporter {
 	 *
 	 * @return boolean
 	 */
-	static public function hasHelperExpElement( DIProperty $property ) {
+	static public function hasHelperExpElement( DIProperty $property ): bool {
 		return ( $property->findPropertyTypeID() === '_dat' || $property->findPropertyTypeID() === '_geo' ) || ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) );
 	}
 
-	static protected function hasSpecialPropertyResource( DIProperty $property ) {
+	static protected function hasSpecialPropertyResource( DIProperty $property ): bool {
 		return $property->getKey() === '_SKEY' ||
 			$property->getKey() === '_INST' ||
 			$property->getKey() === '_MDAT' ||

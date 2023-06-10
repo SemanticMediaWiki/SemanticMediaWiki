@@ -218,7 +218,7 @@ class EntityIdManager {
 	 *
 	 * @return boolean
 	 */
-	public function isRedirect( DIWikiPage $subject ) {
+	public function isRedirect( DIWikiPage $subject ): bool {
 
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
@@ -433,7 +433,7 @@ class EntityIdManager {
 	 *
 	 * @return boolean
 	 */
-	public function isUnique( DataItem $dataItem ) {
+	public function isUnique( DataItem $dataItem ): bool {
 
 		if ( $this->duplicateFinder === null ) {
 			$this->duplicateFinder = $this->factory->newDuplicateFinder();
@@ -498,7 +498,7 @@ class EntityIdManager {
 	 *
 	 * @param array
 	 */
-	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ) {
+	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ): array {
 		return $this->entityIdFinder->findIdsByTitle( $title, $namespace, $iw, $subobjectName );
 	}
 
@@ -959,7 +959,7 @@ class EntityIdManager {
 	 *
 	 * @return string
 	 */
-	public function computeSha1( $args = '' ) {
+	public function computeSha1( $args = '' ): string {
 		return IdCacheManager::computeSha1( $args );
 	}
 

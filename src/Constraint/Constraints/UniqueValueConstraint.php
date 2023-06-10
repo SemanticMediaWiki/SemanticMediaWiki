@@ -75,7 +75,7 @@ class UniqueValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 
@@ -171,7 +171,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 	}
 
-	private function isKnown( $dataValue ) {
+	private function isKnown( $dataValue ): bool {
 
 		$contextPage = $dataValue->getContextPage();
 		$dataItem = $dataValue->getDataItem();

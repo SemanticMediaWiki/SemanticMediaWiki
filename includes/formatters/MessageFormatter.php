@@ -182,7 +182,7 @@ class MessageFormatter {
 	 *
 	 * @return boolean
 	 */
-	public function exists() {
+	public function exists(): bool {
 		return $this->messages !== [];
 	}
 
@@ -212,9 +212,9 @@ class MessageFormatter {
 	 *
 	 * @param array $messages
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
-	protected function doFormat( array $messages ) {
+	protected function doFormat( array $messages ): array {
 		$newArray = [];
 
 		foreach ( $messages as $msg ) {

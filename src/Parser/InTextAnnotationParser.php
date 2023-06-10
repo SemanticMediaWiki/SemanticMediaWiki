@@ -220,7 +220,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return boolean
 	 */
-	public static function hasMarker( $text ) {
+	public static function hasMarker( $text ): bool {
 		return strpos( $text, self::OFF ) !== false || strpos( $text, self::ON ) !== false;
 	}
 
@@ -231,7 +231,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return boolean
 	 */
-	public static function hasPropertyLink( $text ) {
+	public static function hasPropertyLink( $text ): bool {
 		return strpos( $text, '::@@@' ) !== false;
 	}
 
@@ -242,7 +242,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return text
 	 */
-	public static function decodeSquareBracket( $text ) {
+	public static function decodeSquareBracket( $text ): string {
 		return LinksEncoder::decodeSquareBracket( $text );
 	}
 
@@ -253,7 +253,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return text
 	 */
-	public static function obfuscateAnnotation( $text ) {
+	public static function obfuscateAnnotation( $text ): ?string {
 		return LinksEncoder::obfuscateAnnotation( $text );
 	}
 
@@ -330,7 +330,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return string
 	 */
-	public function getRegexpPattern( $linksInValues = false ) {
+	public function getRegexpPattern( $linksInValues = false ): string {
 		return LinksProcessor::getRegexpPattern( $linksInValues );
 	}
 
@@ -444,7 +444,10 @@ class InTextAnnotationParser {
 		return $result;
 	}
 
-	protected function doStripMagicWordsFromText( &$text ) {
+	/**
+	 * @return string[]
+	 */
+	protected function doStripMagicWordsFromText( &$text ): array {
 
 		$words = [];
 

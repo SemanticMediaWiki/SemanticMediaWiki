@@ -44,7 +44,7 @@ class JulianDay implements CalendarModel {
 	 *
 	 * @return float
 	 */
-	public static function getJD( $calendarModel, $year, $month, $day, $hour, $minute, $second ) {
+	public static function getJD( $calendarModel, $year, $month, $day, $hour, $minute, $second ): float {
 		return self::format( self::date2JD( $calendarModel, $year, $month, $day ) + self::time2JDoffset( $hour, $minute, $second ) );
 	}
 
@@ -61,7 +61,7 @@ class JulianDay implements CalendarModel {
 	 *
 	 * @return float
 	 */
-	public static function format( $value ) {
+	public static function format( $value ): float {
 		// Keep microseconds to a certain degree distinguishable
 		return floatval( number_format( $value, 7, '.', '' ) );
 	}

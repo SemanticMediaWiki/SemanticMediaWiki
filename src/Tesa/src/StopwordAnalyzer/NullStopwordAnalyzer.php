@@ -17,7 +17,7 @@ class NullStopwordAnalyzer implements StopwordAnalyzer {
 	 *
 	 * @return boolean
 	 */
-	public function isStopWord( $word ) {
+	public function isStopWord( $word ): bool {
 		return false;
 	}
 

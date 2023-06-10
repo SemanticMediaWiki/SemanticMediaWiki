@@ -91,7 +91,7 @@ class Database {
 	 *
 	 * @return boolean
 	 */
-	public function ping() {
+	public function ping(): bool {
 		return true;
 	}
 
@@ -111,7 +111,7 @@ class Database {
 	 *
 	 * @return boolean
 	 */
-	public function isType( $type ) {
+	public function isType( $type ): bool {
 
 		if ( $this->type === '' ) {
 			$this->type = $this->connRef->getConnection( 'read' )->getType();
@@ -718,7 +718,7 @@ class Database {
 	 *
 	 * @return boolean
 	 */
-	public function inSectionTransaction( $fname = __METHOD__ ) {
+	public function inSectionTransaction( $fname = __METHOD__ ): bool {
 		return $this->transactionHandler->inSectionTransaction( $fname );
 	}
 

@@ -82,7 +82,7 @@ class TransactionHandler {
 	 *
 	 * @return boolean
 	 */
-	public function inSectionTransaction( $fname = __METHOD__ ) {
+	public function inSectionTransaction( $fname = __METHOD__ ): bool {
 		return $this->sectionTransaction === $fname;
 	}
 
@@ -91,7 +91,7 @@ class TransactionHandler {
 	 *
 	 * @return boolean
 	 */
-	public function hasActiveSectionTransaction() {
+	public function hasActiveSectionTransaction(): bool {
 		return $this->sectionTransaction !== null;
 	}
 

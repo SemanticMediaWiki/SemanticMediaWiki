@@ -150,8 +150,9 @@ class SearchResult {
 
 	/**
 	 * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/6.0/_search_operations.html
+	 * @return array<int|string, true>
 	 */
-	private function filterByField( $results, $cutoff, $field ) {
+	private function filterByField( $results, $cutoff, $field ): array {
 
 		$res = [];
 		$continue = false;

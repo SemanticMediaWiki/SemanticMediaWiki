@@ -43,7 +43,7 @@ class SkinAfterContent implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function performUpdate( &$data ) {
+	public function performUpdate( &$data ): bool {
 
 		if ( $this->canAddFactbox() ) {
 			$this->addFactboxTo( $data );
@@ -52,7 +52,7 @@ class SkinAfterContent implements HookListener {
 		return true;
 	}
 
-	private function canAddFactbox() {
+	private function canAddFactbox(): bool {
 
 		if ( !$this->skin instanceof Skin || !$this->getOption( 'SMW_EXTENSION_LOADED' ) ) {
 			return false;
