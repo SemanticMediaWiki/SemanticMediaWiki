@@ -630,7 +630,6 @@
 	"smw-datavalue-wikipage-invalid-title": "The page type input value \"$1\" contains invalid characters or is incomplete and therefore can cause unexpected results during a query or annotation process.",
 	"smw-datavalue-wikipage-property-invalid-title": "Property \"$1\" (as page type) with input value \"$2\" contains invalid characters or is incomplete and therefore can cause unexpected results during a query or annotation process.",
 	"smw-parser-invalid-json-format": "Ο συντακτικός αναλυτής JSON επέστρεψε το σφάλμα «$1».",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-clipboard-copy-link": "Αντιγραφή συνδέσμου στο πρόχειρο",
 	"smw-property-userdefined-fixedtable": "Η «$1» διαμορφώθηκε ως [https://www.semantic-mediawiki.org/wiki/Fixed_properties σταθερή ιδιότητα] και οποιαδήποτε τροποποίηση στη [https://www.semantic-mediawiki.org/wiki/Type_declaration δήλωση τύπου] της απαιτεί είτε να εκτελέσετε το <code>setupStore.php</code> είτε να ολοκληρώσετε την εργασία [[Special:SemanticMediaWiki|«Εγκατάσταση βάσεως δεδομένων και αναβάθμιση»]].",
 	"smw-data-lookup": "Γίνεται λήψη των δεδομένων...",

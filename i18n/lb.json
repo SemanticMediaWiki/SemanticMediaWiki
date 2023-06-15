@@ -312,7 +312,6 @@
 	"smw-datavalue-time-invalid-ampm": "\"$1\" huet \"$2\" als Stonnenelement, dat ass fir eng 12-Stonne-Konventioun awer net valabel.",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" ass keng valabel URL",
 	"smw-parser-invalid-json-format": "Den JSON-Parser huet mat engem \"$1\" geäntwert.",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-clipboard-copy-link": "Link an den Tëschespäicher kopéieren",
 	"smw-data-lookup": "Donnéeën ofruffen...",
 	"smw-data-lookup-with-wait": "D'Ufro gëtt verschafft an et kann een Ament daueren.",

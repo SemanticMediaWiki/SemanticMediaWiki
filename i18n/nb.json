@@ -888,7 +888,6 @@
 	"smw-type-ref-rec": "«$1» er en [https://www.semantic-mediawiki.org/wiki/Container konteinertype] som gjør det mulig å tegne opp ekstra informasjon om en verditildeling.",
 	"smw-datavalue-reference-invalid-fields-definition": "Typen [[Special:Types/Reference|referanse]] forventer en liste over egenskaper som erklæres med egenskapen [https://www.semantic-mediawiki.org/wiki/Help:Special_properties_Has_fields Has fields].",
 	"smw-parser-invalid-json-format": "JSON-parseren returnerte med «$1».",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "«$1» kan ikke brukes som foretrukket etikett fordi språket «$2» allerede har etiketten «$3» tildelt.",
 	"smw-clipboard-copy-link": "Kopier lenke til utklippstavlen",
 	"smw-property-userdefined-fixedtable": "«$1» ble konfigurert som [https://www.semantic-mediawiki.org/wiki/Fixed_properties «fixed property»] og alle endringer av dens [https://www.semantic-mediawiki.org/wiki/Type_declaration typeerklæring] krever enten kjøring av <code>setupStore.php</code> eller fullføring av oppgaven [[Special:SemanticMediaWiki|«databaseinstallering og oppgradering»]].",

@@ -765,7 +765,6 @@
 	"smw-datavalue-wikipage-property-invalid-title": "Свойство «$1» типа «Страница» со значением «$2» содержит недопустимые символы или неполно и может привести к неожиданным результатам при семантическом аннотировании или запросе.",
 	"smw-datavalue-reference-invalid-fields-definition": "Тип «[[Special:Types/Reference|Ссылка]]» требует ввода списка свойств, объявленных с помощью свойства «[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields Has fields]».",
 	"smw-parser-invalid-json-format": "JSON-парсер вернул ошибку «$1».",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "«$1» нельзя использовать в качестве предпочтительной метки, поскольку язык «$2» уже назначен метке «$3».",
 	"smw-clipboard-copy-link": "Скопировать ссылку в буфер обмена",
 	"smw-property-userdefined-fixedtable": "Свойство «$1» сконфигурировано как as [https://www.semantic-mediawiki.org/wiki/Fixed_properties фиксированное], и любые изменения его [https://www.semantic-mediawiki.org/wiki/Type_declaration типа] требуют или запустить <code>setupStore.php</code>, или выполнить задачу «Установка и обновление базы данных» на служебной странице ''[[Special:SemanticMediaWiki|SemanticMediaWiki]]''.",

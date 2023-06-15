@@ -825,7 +825,6 @@
 	"smw-type-ref-rec": "\"$1\" هو نوع [https://www.semantic-mediawiki.org/wiki/Container الحاوية] الذي يسمح بتسجيل معلومات إضافية (مثل بيانات المصدر) حول تعيين قيمة.",
 	"smw-datavalue-reference-invalid-fields-definition": "يتوقع نوع [[Special:Types/Reference|المرجع]] قائمة بالخصائص التي سيتم الإعلان عنها باستخدام خاصية [mediawiki.org/wiki/Help:Special_property_Has_fields لديه حقول].",
 	"smw-parser-invalid-json-format": "عاد محلل JSON بـ\"$1\".",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "لا يمكن استخدام \"$1\" كعلامة مفضلة لأن اللغة \"$2\" تم تعيينها بالفعل للتسمية \"$3\".",
 	"smw-clipboard-copy-link": "نسخ الرابط إلى الحافظة",
 	"smw-property-userdefined-fixedtable": "تم تكوين \"$1\" [https://www.semantic-mediawiki.org/wiki/Fixed_properties كخاصية ثابتة] وأي تعديل في [https://www.semantic-mediawiki.org/wiki/Type_declaration إعلان نوعها] يتطلب إما تشغيل <code>setupStore.php</code> أو إكمال المهمة الخاصة [[Special:SemanticMediaWiki|\"\"تثبيت وترقية قاعدة البيانات\"]].",

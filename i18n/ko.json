@@ -573,7 +573,6 @@
 	"smw-datavalue-propertylist-invalid-property-key": "\"$1\" 속성 목록은 유효하지 않은 \"$2\" 속성 키를 포함합니다.",
 	"smw-datavalue-wikipage-empty": "위키페이지 입력값이 비어있으므로(예: <code>[[SomeProperty::]], [[]]</code>) 이름이나 쿼리 조건의 일부로 사용할 수 없습니다.",
 	"smw-parser-invalid-json-format": "JSON 파서가 \"$1\"로 반환했습니다.",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$2\" 언어가 이미 \"$3\" 레이블에 할당되어 있기 때문에 \"$1\"을(를) 선호하는 레이블로 사용할 수 없습니다.",
 	"smw-clipboard-copy-link": "클립보드에 링크 복사하기",
 	"smw-data-lookup": "정보 수집 중...",
