@@ -64,10 +64,13 @@ class ExceptionFileLogger {
 	public function setOptions( Options $options ) {
 
 		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
-		$this->exceptionFile = __DIR__ . "../../../";
+		$this->exceptionFile = __DIR__ . "/../../../";
 
 		if ( $options->has( 'exception-log' ) ) {
 			$this->exceptionFile = $options->get( 'exception-log' );
+			if ( !str_ends_with( $this->exceptionFile, '/' ) ) {
+				$this->exceptionFile = $this->exceptionFile . '/';
+			}
 		}
 
 		$this->exceptionFile .= $this->namespace . "-exceptions-" . $dateTimeUtc->format( 'Y-m-d' ) . ".log";
