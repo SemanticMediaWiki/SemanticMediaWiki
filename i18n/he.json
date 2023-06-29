@@ -670,7 +670,7 @@
 	"smw-search-profile-sort-title": "כותרת",
 	"smw-search-profile-extended-help-intro": "[https://www.semantic-mediawiki.org/wiki/Help:SMWSearch/Extended_profile הפרופיל המורחב] Special:Search מספק גישה לפונקציות חיפוש ספציפיות למדיה־ויקי סמנטית ולשרת השאילתה הנתמך שלה.",
 	"smw-search-profile-extended-help-sort": "מציין העדפת מיון עבור תצוגת התוצאה עם:",
-	"smw-search-profile-extended-help-sort-title": "* \"כותרת\" באמצעות כותרת העמוד (או כותרת התצוגה) כקריטריוני מיון",
+	"smw-search-profile-extended-help-sort-title": "* \"כותרת\" באמצעות כותרת הדף (או כותרת התצוגה) כקריטריוני מיון",
 	"smw-search-profile-extended-help-sort-recent": "* \"אחרונות\" יציג תחילה את הישויות שהשתנו לאחרונה (ישויות עצם־משנה יידחקו החוצה כי אינן מסומנות ב[[Property:Modification date|תאריך שינוי]])",
 	"smw-search-profile-extended-help-sort-best": "* \"ההתאמה הטובה ביותר\" ימיין ישויות לפי [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/Relevancy רלוונטיות] על סמך דירוגים שסופקו על־ידי השרת",
 	"smw-search-profile-extended-help-form": "הטפסים מסופקים (אם הם מתוחזקים) כדי להתאים למקרי שימוש מסוימים על־ידי חשיפת שדות מאפיינים וערכים שונים כדי לצמצם את תהליך הקלט ולהקל על המשתמשים להמשיך בבקשת חיפוש. (ר' $1)",
