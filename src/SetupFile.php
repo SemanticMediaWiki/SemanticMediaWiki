@@ -375,9 +375,11 @@ class SetupFile {
 		// Remove legacy
 		if ( isset( $vars[self::SMW_JSON]['upgradeKey'] ) ) {
 			unset( $vars[self::SMW_JSON]['upgradeKey'] );
+			unset( $GLOBALS[self::SMW_JSON]['upgradeKey'] );
 		}
 		if ( isset( $vars[self::SMW_JSON][$id]['in.maintenance_mode'] ) ) {
 			unset( $vars[self::SMW_JSON][$id]['in.maintenance_mode'] );
+			unset( $GLOBALS[self::SMW_JSON][$id]['in.maintenance_mode'] );
 		}
 
 		try {
