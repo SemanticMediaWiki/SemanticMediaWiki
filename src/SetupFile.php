@@ -360,8 +360,10 @@ class SetupFile {
 			// NULL means that the key key is removed
 			if ( $value === null ) {
 				unset( $vars[self::SMW_JSON][$id][$key] );
+				unset( $GLOBALS[self::SMW_JSON][$id][$key] );
 			} else {
 				$vars[self::SMW_JSON][$id][$key] = $value;
+				$GLOBALS[self::SMW_JSON][$id][$key] = $value;
 			}
 		}
 
