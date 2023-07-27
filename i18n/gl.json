@@ -693,7 +693,7 @@
 	"smw-edit-protection-enabled": "Protexido contra modificación (Semantic MediaWiki)",
 	"smw-patternedit-protection": "Esta páxina está protexida e só pode ser editada por usuarios co <code>smw-patternedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions permiso] axeitado.",
 	"smw-property-predefined-edip": "\"$1\" é unha propiedade predefinida proporcionada por  [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] para indicar se a modificación está protexida ou non.",
-	"smw-property-predefined-long-edip": "Aínda que calquera usuario pode engadir esta propiedade a un tema, só aqueles que posúan un privilexio especial poden editar ou revocar a protección dunha entidade despois de que lle sexa engadida.",
+	"smw-property-predefined-long-edip": "Aínda que calquera usuario pode engadir esta propiedade a un tema, só aqueles que posúan un privilexio especial poden editar ou revogar a protección dunha entidade despois de que lle sexa engadida.",
 	"smw-query-reference-link-label": "Referencia de consulta",
 	"smw-format-datatable-emptytable": "Non hai datos dispoñibles na táboa",
 	"smw-format-datatable-info": "Amosando _START_ to _END_ of _TOTAL_ entradas",
