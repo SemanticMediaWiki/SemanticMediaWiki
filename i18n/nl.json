@@ -60,7 +60,6 @@
 	"smw_noinvannot": "Waarden kunnen niet toegekend worden aan omgekeerde eigenschappen.",
 	"version-semantic": "Semantische uitbreidingen",
 	"smw_baduri": "URI's van het formaat \"$1\" zijn niet toegestaan.",
-	"smw_dsv_link": "DSV",
 	"smw_printername_count": "Resultaten tellen",
 	"smw_printername_csv": "Naar CSV exporteren",
 	"smw_printername_dsv": "Naar DSV exporteren",

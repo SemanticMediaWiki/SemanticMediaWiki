@@ -81,7 +81,6 @@
 	"smw_noinvannot": "逆プロパティには値を割り当てられません。",
 	"version-semantic": "意味的拡張機能",
 	"smw_baduri": "「$1」の形式の URI は許可されていません。",
-	"smw_dsv_link": "DSV",
 	"smw_printername_count": "集計結果",
 	"smw_printername_csv": "CSV 形式で書き出し",
 	"smw_printername_dsv": "DSV 形式で書き出し",

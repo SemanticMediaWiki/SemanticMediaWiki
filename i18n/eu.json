@@ -290,7 +290,6 @@
 	"log-name-smw": "MediaWiki sarrera semantikoa",
 	"smw-datavalue-invalid-number": "«$1» ezin da zenbakitzat interpretatu.",
 	"smw-types-list": "Datu-moten zerrenda",
-	"smw-special-pageproperty-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:PageProperty",
 	"smw-limitreport-intext-parsertime-value": "{{PLURAL:$1|segundo bat|$1 segundo}}",
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|segundu bat|$1 segundu}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "{{PLURAL:$1|segundo bat|$1 segundo}}",

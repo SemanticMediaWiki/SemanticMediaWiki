@@ -63,7 +63,6 @@
 	"smw_noinvannot": "No es poden assignar valors a propietats inverses.",
 	"version-semantic": "Extensions semàntiques",
 	"smw_baduri": "Les URI del formulari «$1» no són permeses.",
-	"smw_dsv_link": "DSV",
 	"smw_printername_count": "Resultats del recompte",
 	"smw_printername_csv": "exportació a CSV",
 	"smw_printername_dsv": "Exportació DSV",

@@ -733,7 +733,6 @@
 	"smw-type-container": "حاوية",
 	"smw-type-no-group": "غير مصنف",
 	"smw-specials-bytype-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Type_$1",
-	"smw-special-pageproperty-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:PageProperty",
 	"smw-special-pageproperty-description": "توفر هذه الصفحة واجهة تصفح للعثور على جميع قيم خاصية وصفحة معينة، تتضمن واجهات البحث الأخرى المتاحة [[Special:SearchByProperty|بحث الخاصية]]، و[[Special:Ask|اطلب باني استعلام]].",
 	"smw-property-predefined-errc": "\"$1\" عبارة عن خاصية محددة مسبقا يوفرها [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ميدياويكي الدلالي] وتمثل الأخطاء التي ظهرت فيما يتعلق بتعليقات أو معالجة مدخلات قيمة غير صحيحة.",
 	"smw-property-predefined-long-errc": "يتم جمع الأخطاء في [https://www.semantic-mediawiki.org/wiki/Help:Container حاوية] التي قد تتضمن مرجعا إلى الخاصية التي تسببت في التناقض.",
