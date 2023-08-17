@@ -564,6 +564,8 @@
 	"smw-prefs-general-options-disable-search-info": "在标准搜索页面上禁用语法支持信息",
 	"smw-prefs-general-options-suggester-textinput": "为语义实体启用输入帮助",
 	"smw-prefs-help-general-options-suggester-textinput": "若启用，即允许使用[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance 输入帮助]查找来自输入上下文的属性、概念、分类。",
+	"smw-prefs-general-options-show-entity-issue-panel": "显示实体问题面板",
+	"smw-prefs-help-general-options-show-entity-issue-panel": "若启用，将在每个页面上运行完整性检查并显示[https://www.semantic-mediawiki.org/wiki/Help:Entity_issue_panel 实体问题面板]。",
 	"smw-ui-tooltip-title-property": "属性",
 	"smw-ui-tooltip-title-quantity": "单位转换",
 	"smw-ui-tooltip-title-info": "信息",
