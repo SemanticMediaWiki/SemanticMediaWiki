@@ -397,7 +397,7 @@
 	"smw-admin-statistics-semanticdata-overview": "概要",
 	"smw-admin-permission-missing": "出於缺少權限緣故，被阻止存取此頁面，請參閱[https://www.semantic-mediawiki.org/wiki/Help:Permissions 權限]說明頁面來獲得更多有關所需設定的詳情。",
 	"smw-admin-setupsuccess": "儲存引擎已設定。",
-	"smw_smwadmin_return": "返回 $1",
+	"smw_smwadmin_return": "返回「$1」",
 	"smw_smwadmin_updatestarted": "更新語意資料過程開始。\n所有已儲存資料將被按需重建或修復。\n你可以透過本特殊頁面追蹤更新程序。",
 	"smw_smwadmin_updatenotstarted": "已有更新程序正在執行，請勿建立另一個。",
 	"smw_smwadmin_updatestopped": "已停止所有更新程序。",
