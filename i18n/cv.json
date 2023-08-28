@@ -1,11 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
+			"Astahar",
 			"Chuvash2014"
 		]
 	},
 	"smw_printername_template": "Шаблон",
 	"smw_purge": "Çĕнĕлет",
+	"browse": "Страницӑсене тишкересси",
 	"smw_browse_go": "Куç",
 	"smw-livepreview-loading": "Тултаратпăр…",
 	"smw-listingcontinuesabbrev": "(малалли)",
