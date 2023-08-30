@@ -5,9 +5,8 @@ namespace SMW\Tests\MediaWiki\Api\Browse;
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Connection\Query;
-use SMW\Services\ServicesContainer;
-use FakeResultWrapper;
 use SMW\Tests\PHPUnitCompat;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\PValueLookup

@@ -85,7 +85,7 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );
 
-		$resultWrapper = $this->getMockBuilder( '\FakeResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
