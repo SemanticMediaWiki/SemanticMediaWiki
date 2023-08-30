@@ -113,7 +113,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$row->o_blob = null;
 		$row->s_id = 42;
 
-		$resultWrapper = $this->iteratorMockBuilder->setClass( '\ResultWrapper' )
+		$resultWrapper = $this->iteratorMockBuilder->setClass( '\Wikimedia\Rdbms\ResultWrapper' )
 			->with( [ $row ] )
 			->incrementInvokedCounterBy( 1 )
 			->getMockForIterator();

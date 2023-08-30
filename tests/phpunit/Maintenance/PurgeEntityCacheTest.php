@@ -6,7 +6,7 @@ use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\EntityCache;
 use SMW\Maintenance\PurgeEntityCache;
-use FakeResultWrapper;
+use Wikimedia\Rdbms\FakeResultWrapper;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;

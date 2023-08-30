@@ -4,11 +4,11 @@ namespace SMW\MediaWiki\Connection;
 
 use DBError;
 use Exception;
-use ResultWrapper;
 use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\ResultWrapper;
 use Wikimedia\ScopedCallback;
 
 /**
