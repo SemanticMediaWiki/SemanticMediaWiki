@@ -7,9 +7,9 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 
-Hooks::register( 'SMW::Constraint::initConstraints', function( $constraintRegistry ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Constraint::initConstraints', function( $constraintRegistry ) {
 
 	return true;
 } );

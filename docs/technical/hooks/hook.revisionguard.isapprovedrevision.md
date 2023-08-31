@@ -5,9 +5,9 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 
-Hooks::register( 'SMW::RevisionGuard::IsApprovedRevision', function( $title, $latestRevID ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::RevisionGuard::IsApprovedRevision', function( $title, $latestRevID ) {
 
 	// If you need to decline an update (aka is not approved)
 	// return false;

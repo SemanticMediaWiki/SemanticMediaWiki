@@ -5,10 +5,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\DataTypeRegistry;
 
-Hooks::register( 'SMW::DataType::initTypes', function( DataTypeRegistry $dataTypeRegistry ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::DataType::initTypes', function( DataTypeRegistry $dataTypeRegistry ) {
 
 	return true;
 } );

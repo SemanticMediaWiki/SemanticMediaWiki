@@ -5,10 +5,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\SQLStore\SQLStore;
 
-Hooks::register( 'SMW::SQLStore::BeforeDataRebuildJobInsert', function( SQLStore $store, array &$jobs ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::BeforeDataRebuildJobInsert', function( SQLStore $store, array &$jobs ) {
 
 	return true;
 } );

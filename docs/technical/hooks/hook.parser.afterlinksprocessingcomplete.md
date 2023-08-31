@@ -7,10 +7,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\Parser\AnnotationProcessor;
 
-Hooks::register( 'SMW::Parser::AfterLinksProcessingComplete', function( &$text, AnnotationProcessor $annotationProcessor ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Parser::AfterLinksProcessingComplete', function( &$text, AnnotationProcessor $annotationProcessor ) {
 
 	return true;
 } );

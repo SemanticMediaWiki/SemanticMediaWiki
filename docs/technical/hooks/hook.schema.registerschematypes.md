@@ -5,10 +5,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\Schema\SchemaTypes;
 
-Hooks::register( 'SMW::Schema::RegisterSchemaTypes', function( SchemaTypes $schemaTypes ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Schema::RegisterSchemaTypes', function( SchemaTypes $schemaTypes ) {
 
 	$params = [
 		'group' => FOO_GROUP,

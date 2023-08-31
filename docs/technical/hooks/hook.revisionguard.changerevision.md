@@ -7,9 +7,9 @@ If you do alter a revision, please log the event and make it visible to a user (
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 
-Hooks::register( 'SMW::RevisionGuard::ChangeRevision', function( $title, &$revision ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::RevisionGuard::ChangeRevision', function( $title, &$revision ) {
 
 	// Set a revision
 	// $revisionLookup = \MediaWiki\MediaWikiServices::getInstance()->getRevisionLookup();
