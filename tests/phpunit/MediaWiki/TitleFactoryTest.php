@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Tests\PHPUnitCompat;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * @covers \SMW\MediaWiki\TitleFactory
@@ -61,7 +64,7 @@ class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new TitleFactory();
 		$input = [];
 
-		$out = $instance->newFromIDs($input);
+		$out = $instance->newFromIDs( $input );
 
 		$this->assertCount( 0, $out );
 
@@ -69,6 +72,47 @@ class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
 			'array',
 			$out
 		);
+	}
+
+	public function testNewFromIDsMocked() {
+		$factoryMock = $this->getMockBuilder( '\MediaWiki\Title\TitleFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$factoryMock->expects( $this->once() )->method( 'newFromRow' )->willReturn(
+			Title::makeTitle( NS_MAIN, 'Foo' )
+		);
+
+		$lbMock = $this->getMockBuilder( '\Wikimedia\Rdbms\ILoadBalancer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$conRef = $this->getMockBuilder( '\Wikimedia\Rdbms\DBConnRef' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$conRef->expects( $this->once() )->method( 'select' )->willReturn( [
+			1, 'Foo'
+		] );
+
+		$lbMock->method( 'getMaintenanceConnectionRef' )->willReturn( $conRef );
+
+		$this->testEnvironment->redefineMediaWikiService( 'TitleFactory', fn() => $factoryMock );
+		$this->testEnvironment->redefineMediaWikiService( 'DBLoadBalancer', fn() => $lbMock );
+
+		$instance = new TitleFactory();
+		$input = [];
+
+		$out = $instance->newFromIDs( $input );
+
+		$this->assertCount( 1, $out );
+
+		$this->assertInternalType(
+			'array',
+			$out
+		);
+
+		$this->assertInstanceOf( Title::class, $out[0] );
 	}
 
 	public function testMakeTitleSafe() {

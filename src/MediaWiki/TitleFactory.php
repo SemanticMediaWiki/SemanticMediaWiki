@@ -93,7 +93,7 @@ class TitleFactory {
 		$titles = [];
 
 		foreach ( $res as $row ) {
-			$titles[] = Title::newFromRow( $row );
+			$titles[] = $container->getTitleFactory()->newFromRow( $row );
 		}
 
 		return $titles;
