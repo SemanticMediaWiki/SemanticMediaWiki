@@ -23,10 +23,9 @@ The validation schema only checks whether `custom_constraint` is an object or no
 ### Hook registration
 
 ```php
-use Hooks;
 use Foo\FooConstraint;
 
-Hooks::register( 'SMW::Constraint::initConstraints', function ( $constraintRegistry ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Constraint::initConstraints', function ( $constraintRegistry ) {
 
 	// Declares the constraint identifier and assigns a class that interprets the
 	// content of it
@@ -128,10 +127,10 @@ For example, when implementing `custom_constraint` with a `start_end_constraint`
 ```
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use Custom\StartEndConstraint;
 
-Hooks::register( 'SMW::Constraint::initConstraints', function ( $constraintRegistry ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Constraint::initConstraints', function ( $constraintRegistry ) {
 	$constraintRegistry->registerConstraint( 'start_end_constraint', StartEndConstraint::class );
 	return true;
 } );

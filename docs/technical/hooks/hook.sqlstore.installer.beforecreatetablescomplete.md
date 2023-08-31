@@ -9,10 +9,10 @@ When using this hook, please make sure you understand the implications of modify
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 
-Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function( array $tables, $messageReporter ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function( array $tables, $messageReporter ) {
 
 	// Modify the table definitions
 } );

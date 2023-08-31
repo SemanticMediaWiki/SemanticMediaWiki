@@ -5,11 +5,11 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
-\Hooks::register( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', function( DIProperty $property, DIWikiPage $subject, &$propertyValue ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', function( DIProperty $property, DIWikiPage $subject, &$propertyValue ) {
 
 	// return `false` to replace the link
 

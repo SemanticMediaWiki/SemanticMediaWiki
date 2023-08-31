@@ -63,7 +63,7 @@ class PageCreator {
 	public function createPage( Title $title, $editContent = '', $pageContentLanguage = '' ) {
 
 		if ( $pageContentLanguage !== '' ) {
-			\Hooks::register( 'PageContentLanguage', function( $titleByHook, &$pageLang ) use( $title, $pageContentLanguage ) {
+			MediaWikiServices::getInstance()->getHookContainer()->register( 'PageContentLanguage', function( $titleByHook, &$pageLang ) use( $title, $pageContentLanguage ) {
 
 				// Only change the pageContentLanguage for the selected page
 				if ( $title->getPrefixedDBKey() === $titleByHook->getPrefixedDBKey() ) {

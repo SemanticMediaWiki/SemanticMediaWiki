@@ -5,10 +5,10 @@ This example shows how to register a new dataType/dataValue in Semantic MediaWik
 ### SMW::DataType::initTypes
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use Foo\DataValues\FooValue;
 
-Hooks::register( 'SMW::DataType::initTypes', function ( $dataTypeRegistry ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::DataType::initTypes', function ( $dataTypeRegistry ) {
 
 	$dataTypeRegistry->registerDatatype(
 		FooValue::TYPE_ID,

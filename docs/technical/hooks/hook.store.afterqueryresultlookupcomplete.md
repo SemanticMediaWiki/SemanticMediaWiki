@@ -5,9 +5,9 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 
-Hooks::register( 'SMW::Store::AfterQueryResultLookupComplete', function( $store, &$queryResult ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Store::AfterQueryResultLookupComplete', function( $store, &$queryResult ) {
 
 	return true;
 } );
