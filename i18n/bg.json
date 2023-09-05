@@ -158,7 +158,6 @@
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|секунда|секунди}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|секунда|секунди}}",
 	"smw-datavalue-external-formatter-invalid-uri": "„$1“ е неправилен URL-адрес.",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-clipboard-copy-link": "Копиране на линка в системния буфер",
 	"smw-format-datatable-loadingrecords": "Зареждане...",
 	"smw-format-datatable-processing": "Обработка...",

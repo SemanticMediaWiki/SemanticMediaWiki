@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\DIConcept;
 use SMW\DIProperty;
@@ -329,10 +330,12 @@ class SQLStore extends Store {
 			$this->updater = $this->factory->newUpdater();
 		}
 
-		\Hooks::run(
-			'SMW::SQLStore::BeforeChangeTitleComplete',
-			[ $this, $oldTitle, $newTitle, $pageId, $redirectId ]
-		);
+		MediaWikiServices::getInstance()
+			->getHookContainer()
+			->run(
+				'SMW::SQLStore::BeforeChangeTitleComplete',
+				[ $this, $oldTitle, $newTitle, $pageId, $redirectId ]
+			);
 
 		$status = $this->updater->changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
 
@@ -373,12 +376,13 @@ class SQLStore extends Store {
 		$result = null;
 		$start = microtime( true );
 
-		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', [ $this, $query, &$result, $this->factory->newSlaveQueryEngine() ] ) ) {
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		if ( $hookContainer->run( 'SMW::Store::BeforeQueryResultLookupComplete', [ $this, $query, &$result, $this->factory->newSlaveQueryEngine() ] ) ) {
 			$result = $this->fetchQueryResult( $query );
 		}
 
-		\Hooks::run( 'SMW::SQLStore::AfterQueryResultLookupComplete', [ $this, &$result ] );
-		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this, &$result ] );
+		$hookContainer->run( 'SMW::SQLStore::AfterQueryResultLookupComplete', [ $this, &$result ] );
+		$hookContainer->run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this, &$result ] );
 
 		$query->setOption( Query::PROC_QUERY_TIME, microtime( true ) - $start );
 

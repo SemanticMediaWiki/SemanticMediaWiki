@@ -592,7 +592,6 @@
 	"smw-datavalue-parse-error": "Nun s'entendió el valor dau «$1».",
 	"smw-datavalue-propertylist-invalid-property-key": "La llista de propiedaes «$1» contenía una clave de propiedá non válida, «$2».",
 	"smw-parser-invalid-json-format": "L'analizador JSON devolvió «$1».",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "Nun puede utilizase «$1» como etiqueta preferida porque la llingua «$2» yá se venceyó a la etiqueta «$3».",
 	"smw-clipboard-copy-link": "Copiar l'enllaz al cartafueyu",
 	"smw-data-lookup": "Recuperando los datos...",

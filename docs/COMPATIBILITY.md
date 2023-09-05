@@ -36,10 +36,10 @@ Increases of minimum requirements are indicated in bold.
 		<th>4.1.x</th>
 		<td><strong>Stable release</strong></td>
 		<td>2023-01-21</td>
-		<td>2023-01-21</td>
-		<td><strong>7.4.0</strong> - 8.0.x</td>
+		<td>2023-03-09</td>
+		<td><strong>7.4.0</strong> - 8.1.x</td>
 		<td>1.35.0 - 1.39.x</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5300">Confirmed to not work with PHP 8.1</a></td>
+		<td>4.1.1 or higher needed for PHP 8.1+</td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>

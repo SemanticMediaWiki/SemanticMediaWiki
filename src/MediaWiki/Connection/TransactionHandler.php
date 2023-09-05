@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Connection;
 use RuntimeException;
 use Wikimedia\Rdbms\ILBFactory;
 use Wikimedia\Rdbms\TransactionProfiler;
+use Wikimedia\ScopedCallback;
 
 /**
  * @license GNU GPL v2+
@@ -58,17 +59,19 @@ class TransactionHandler {
 	 *
 	 * @since 3.1
 	 */
-	public function muteTransactionProfiler( $mute ) {
+	public function muteTransactionProfiler(): ?ScopedCallback {
 
 		if ( $this->transactionProfiler === null ) {
-			return;
+			return null;
 		}
 
-		if ( $this->mutedTransactionProfiler === null && $mute !== false ) {
-			$this->mutedTransactionProfiler = $this->transactionProfiler->setSilenced( $mute );
-		} elseif ( $this->mutedTransactionProfiler !== null && $mute === false ) {
-			$this->transactionProfiler->setSilenced( $this->mutedTransactionProfiler );
-			$this->mutedTransactionProfiler = null;
+		if ( method_exists( $this->transactionProfiler, 'silenceForScope' ) ) {
+			return $this->transactionProfiler->silenceForScope();
+		} else {
+			$this->transactionProfiler->setSilenced( true );
+			return new ScopedCallback( function () {
+				$this->transactionProfiler->setSilenced( false );
+			} );
 		}
 	}
 

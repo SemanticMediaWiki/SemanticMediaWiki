@@ -897,7 +897,6 @@
 	"smw-type-ref-rec": "\"$1\" é um tipo de dados [https://www.semantic-mediawiki.org/wiki/Container recipiente] (<i>container</i>) que permite registar informação adicional sobre a atribuição de um valor (por exemplo, dados de proveniência).",
 	"smw-datavalue-reference-invalid-fields-definition": "O tipo [[Special:Types/Reference|Referência]] espera que seja declarada uma lista de propriedades, usando a propriedade [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields Tem campos].",
 	"smw-parser-invalid-json-format": "O analisador JSON terminou com \"$1\".",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" não pode ser usado como etiqueta preferida porque a língua \"$2\" já está atribuída à etiqueta \"$3\".",
 	"smw-clipboard-copy-link": "Copiar hiperligação para a área de transferência",
 	"smw-property-userdefined-fixedtable": "\"$1\" estava configurada como [https://www.semantic-mediawiki.org/wiki/Fixed_properties propriedade fixa] e qualquer modificação da sua [https://www.semantic-mediawiki.org/wiki/Type_declaration declaração de tipo] requer: ou que seja executado <code>setupStore.php</code>, ou que seja completada a tarefa especial [[Special:SemanticMediaWiki|\"Instalação e atualização da base de dados\"]].",

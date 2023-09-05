@@ -3,6 +3,7 @@
 namespace SMW\Elastic;
 
 use Hooks;
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
@@ -213,7 +214,8 @@ class ElasticStore extends SQLStore {
 			$this->queryEngine
 		];
 
-		if ( Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', $params ) ) {
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		if ( $hookContainer->run( 'SMW::Store::BeforeQueryResultLookupComplete', $params ) ) {
 			$result = $this->queryEngine->getQueryResult( $query );
 		}
 
@@ -222,8 +224,8 @@ class ElasticStore extends SQLStore {
 			&$result
 		];
 
-		Hooks::run( 'SMW::ElasticStore::AfterQueryResultLookupComplete', $params );
-		Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', $params );
+		$hookContainer->run( 'SMW::ElasticStore::AfterQueryResultLookupComplete', $params );
+		$hookContainer->run( 'SMW::Store::AfterQueryResultLookupComplete', $params );
 
 		$query->setOption( Query::PROC_QUERY_TIME, microtime( true ) + $time );
 

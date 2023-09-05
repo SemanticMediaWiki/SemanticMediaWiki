@@ -11,9 +11,11 @@
 	"smw_printername_list": "Сијоһи",
 	"smw_printername_template": "Шаблон",
 	"smw_printername_category": "Kateqoriya",
+	"smw_exportrdf_submit": "İxroc",
 	"smw_purge": "Тожә кардеј",
-	"browse": "Сәһифон дијәкә",
-	"smw-admin-supplementary-elastic-version-info": "Versiyə",
+	"browse": "Səhifon dijə karde",
+	"smw-admin-supplementary-elastic-version-info": "Versiya",
+	"smw-format-datatable-toolbar-export": "İxroc",
 	"smw-entity-examiner-deferred-fake": "Pesoxtə",
 	"smw-listingcontinuesabbrev": "dəvom"
 }

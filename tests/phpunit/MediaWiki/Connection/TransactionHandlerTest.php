@@ -161,43 +161,4 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->expectException( '\RuntimeException' );
 		$instance->detachSectionTransaction( __METHOD__ );
 	}
-
-	public function testMuteTransactionProfiler() {
-
-		$instance = new TransactionHandler(
-			$this->loadBalancerFactory
-		);
-
-		$instance->setTransactionProfiler(
-			$this->transactionProfiler
-		);
-
-		$this->transactionProfiler->expects( $this->once() )
-			->method( 'setSilenced' )
-			->will( $this->returnValue( true ) );
-
-		$instance->muteTransactionProfiler( true );
-
-		// Second time
-		$instance->muteTransactionProfiler( true );
-	}
-
-	public function testUnmuteTransactionProfiler() {
-
-		$instance = new TransactionHandler(
-			$this->loadBalancerFactory
-		);
-
-		$instance->setTransactionProfiler(
-			$this->transactionProfiler
-		);
-
-		$this->transactionProfiler->expects( $this->exactly( 2 ) )
-			->method( 'setSilenced' )
-			->will( $this->returnValue( true ) );
-
-		$instance->muteTransactionProfiler( true );
-		$instance->muteTransactionProfiler( false );
-	}
-
 }

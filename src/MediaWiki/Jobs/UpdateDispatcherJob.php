@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Job;
 use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -104,7 +105,9 @@ class UpdateDispatcherJob extends Job {
 			$this->create_secondary_dispatch_run( $this->jobs );
 		}
 
-		Hooks::run( 'SMW::Job::AfterUpdateDispatcherJobComplete', [ $this ] );
+		MediaWikiServices::getInstance()
+			->getHookContainer()
+			->run( 'SMW::Job::AfterUpdateDispatcherJobComplete', [ $this ] );
 
 		return true;
 	}

@@ -296,7 +296,6 @@
 	"smw-limitreport-pagepurge-storeupdatetime-value": "{{PLURAL:$1|segundo bat|$1 segundo}}",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" baliogabeko URLa da.",
 	"smw-datavalue-parse-error": "Emandako \"$1\" balioa ez da ulertu.",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-data-lookup-with-wait": "Eskaera abian dago eta apur bat luza daiteke.",
 	"smw-no-data-available": "Data ez dago eskuragarri.",
 	"smw-property-req-violation-change-propagation-pending": "[https://www.semantic-mediawiki.org/wiki/Change_propagation Change propagation] eguneratzearen zain ($1 [https://www.mediawiki.org/wiki/Manual:Job_queue {{PLURAL:$1|job|jobs}}] espero da) eta gomendagarria da aldaketei itxarotea prozesu osoa amaitu arte, modu honetan geldialdiak saihestuko dira edo nahi ez diren emaitzak.",

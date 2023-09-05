@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DataValues\TypeList;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMWDataItem as DataItem;
@@ -507,10 +508,11 @@ class DataTypeRegistry {
 		}
 
 		// Deprecated since 1.9
-		\Hooks::run( 'smwInitDatatypes' );
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		$hookContainer->run( 'smwInitDatatypes' );
 
 		// Since 1.9
-		\Hooks::run( 'SMW::DataType::initTypes', [ $this ] );
+		$hookContainer->run( 'SMW::DataType::initTypes' );
 	}
 
 	/**

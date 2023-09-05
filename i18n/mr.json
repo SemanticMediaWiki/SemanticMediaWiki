@@ -126,7 +126,6 @@
 	"smw-property-predefined-keyw": "$1 ही एक पूर्वनिर्धारित गुणधर्म आणि [[Special:Types/Keyword|type]] आहे जो [https://www.semantic-mediawiki.org/wiki/Help:Special_properties सेमंटीक मेडियाविकी] ने पुरविला असून तो माहितीचे सामान्यीकीकरण करतो आणि त्यावर अक्षरांच्या संख्येची मर्यादा आहे.",
 	"smw-type-keyw": "$1 हा एक मजकुराचा प्रकार आहे ज्यावर मर्यादित अक्षरांची क्षमता ठरविक असून ते माहितीच्या व्यवस्थापाचे सामान्यीकीकरण करते.",
 	"smw-datavalue-parse-error": "दिलेली किंमत \"$1\" समजल्या गेली नाही.",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-ask-title-keyword-type": "मुख्यशब्दचा शोध",
 	"smw-ask-message-keyword-type": "ह्या शोधातून <code><nowiki>$1</nowiki></code> ही अट जुळली आहे",
 	"smw-listingcontinuesabbrev": "पुढे चला",

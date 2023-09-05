@@ -192,7 +192,6 @@
 	"properties": "Vlastnosti",
 	"smw_properties_docu": "Na této wiki se používají následující vlastnosti.",
 	"smw_property_template": "$1 typu $2 ($3 {{PLURAL:$3|použití}})",
-	"smw_property_template_notype": "$1 ($2)",
 	"smw_propertylackspage": "Všechny vlastnosti by měly mít stránku s popisem!",
 	"smw_propertylackstype": "Této vlastnosti nebyl definován žádný typ (předpokládá se prozatím typ $1)",
 	"smw_propertyhardlyused": "Tato vlastnost se na wiki téměř nepoužívá!",

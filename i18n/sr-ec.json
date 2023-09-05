@@ -120,7 +120,6 @@
 	"properties": "Својства",
 	"smw_properties_docu": "Следеће особине се користе на викију.",
 	"smw_property_template": "$1 типа $2 ($3 {{PLURAL:$3|употреба|употребе|употреба}})",
-	"smw_property_template_notype": "$1 ($2)",
 	"smw_propertylackspage": "Све особине требају имати описну страницу!",
 	"smw_propertylackstype": "Нема дефинисаног типа за ову особину (за сада усвајам тип $1).",
 	"smw_propertyhardlyused": "Ова особина једва да се користи на овом  викију!",
