@@ -538,7 +538,6 @@
 	"smw-datavalue-propertylist-invalid-property-key": "Lista właściwości „$1” zawiera nieprawidłowy klucz właściwości „$2”.",
 	"smw-datavalue-type-invalid-typeuri": "Typu „$1” nie można przekształcić w prawidłową reprezentację URI.",
 	"smw-parser-invalid-json-format": "Parser JSON zwrócił błąd „$1”.",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "„$1” nie może być użyty jako preferowana etykieta, ponieważ język „$2” jest już przypisany do etykiety „$3”.",
 	"smw-clipboard-copy-link": "Kopiuj link do schowka",
 	"smw-data-lookup": "Pobieranie danych...",

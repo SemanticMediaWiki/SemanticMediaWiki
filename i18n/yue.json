@@ -4,7 +4,8 @@
 			"Hello903hello",
 			"Moon0319",
 			"Obonggi",
-			"Yueman"
+			"Yueman",
+			"捍粵者"
 		]
 	},
 	"smw_finallistconjunct": "同埋",
@@ -12,7 +13,7 @@
 	"smw_printername_broadtable": "闊表",
 	"smw_printername_template": "模",
 	"validator-type-class-SMWParamSource": "字",
-	"smw_notitle": "爾個wiki入面唔可以用「$1」作為頁面名。",
+	"smw_notitle": "呢個wiki度唔可以用「$1」作為版名。",
 	"smw_true_words": "true,t,yes,y,係,是,真,啱,恰,合,諳,有",
 	"smw_false_words": "false,f,no,n,毋,唔,毋係,唔係,不是,否,假,毋啱,唔啱,毋恰,唔恰,毋合,唔合,毋諳,唔諳,冇,無",
 	"smw_nofloat": "「$1」毋係一個數。",
@@ -38,8 +39,8 @@
 	"smw_smwadmin_return": "返去$1",
 	"smw-admin-deprecation-notice-config-notice-option-list": "<code>$1</code>已經毋用，並將會喺$2入面剷走",
 	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code>響$2刪走咗",
-	"smw_smwadmin_datarefreshstop": "停爾個更新",
-	"smw_smwadmin_datarefreshstopconfirm": "係，我{{GENDER:$1|肯定}}。",
+	"smw_smwadmin_datarefreshstop": "停呢個更新",
+	"smw_smwadmin_datarefreshstopconfirm": "係，我肯定。",
 	"prefs-ask-options": "Special:Ask 選項",
 	"smw-ui-tooltip-title-quantity": "單位轉換",
 	"smw-ui-tooltip-title-info": "資訊",

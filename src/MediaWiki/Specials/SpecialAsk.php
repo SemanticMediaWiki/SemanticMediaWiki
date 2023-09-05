@@ -548,10 +548,15 @@ class SpecialAsk extends SpecialPage {
 			'from_cache' => $isFromCache
 		];
 	}
-
+	
+	/**
+	 * Generate wikitext for the current query expressed as an {{#ask:}} parser function invocation.
+	 * The return value is not HTML-safe; the caller must take care of escaping it.
+	 * @return string
+	 */
 	private function print_code() {
 
-		$code = $this->queryString ? htmlspecialchars( $this->queryString ) . "\n" : "\n";
+		$code = $this->queryString ? $this->queryString . "\n" : "\n";
 
 		foreach ( $this->printouts as $printout ) {
 			if ( ( $serialization = $printout->getSerialisation( true ) ) !== '' ) {
@@ -566,8 +571,8 @@ class SpecialAsk extends SpecialPage {
 			}
 
 			if ( !$param->wasSetToDefault() ) {
-				$code .= ' |' . htmlspecialchars( $param->getName() ) . '=';
-				$code .= htmlspecialchars( $this->parameters[$param->getName()] ) . "\n";
+				$code .= ' |' . $param->getName() . '=';
+				$code .= $this->parameters[$param->getName()] . "\n";
 			}
 		}
 

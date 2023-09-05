@@ -11,7 +11,6 @@ use SMW\Exception\DataItemException;
 use SMW\Message;
 use SMWDataItem as DataItem;
 use SMWDataValue;
-use SMWDataValue as DataValue;
 use SMWWikiPageValue;
 
 /**
@@ -354,7 +353,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see DataValue::getShortWikiText
+	 * @see SMWDataValue::getShortWikiText
 	 *
 	 * @return string
 	 */
@@ -368,7 +367,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see DataValue::getShortHTMLText
+	 * @see SMWDataValue::getShortHTMLText
 	 *
 	 * @return string
 	 */
@@ -382,7 +381,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see DataValue::getLongWikiText
+	 * @see SMWDataValue::getLongWikiText
 	 *
 	 * @return string
 	 */
@@ -396,7 +395,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see DataValue::getLongHTMLText
+	 * @see SMWDataValue::getLongHTMLText
 	 *
 	 * @return string
 	 */
@@ -410,7 +409,7 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see DataValue::getWikiValue
+	 * @see SMWDataValue::getWikiValue
 	 *
 	 * @return string
 	 */

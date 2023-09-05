@@ -193,7 +193,6 @@
 	"properties": "Proprietates",
 	"smw_properties_docu": "Le sequente proprietates es usate in le wiki.",
 	"smw_property_template": "$1 del typo $2 ($3 {{PLURAL:$3|uso|usos}})",
-	"smw_property_template_notype": "$1 ($2)",
 	"smw_propertylackspage": "Tote le proprietates debe esser describite per un pagina!",
 	"smw_propertylackstype": "Nulle typo esseva specificate pro iste proprietate (es assumite le typo $1 pro le momento).",
 	"smw_propertyhardlyused": "Iste proprietate es a pena usate in iste wiki!",

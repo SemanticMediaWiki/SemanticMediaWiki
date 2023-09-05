@@ -44,7 +44,7 @@
 	"require": {
 		"php": ">=7.4",
 		"ext-mbstring": "*",
-		"composer/installers": "1.*,>=1.0.1",
+		"composer/installers": "^2.2.0|^1.0.1",
 		"psr/log": "~1.0",
 		"mediawiki/parser-hooks": "~1.4",
 		"param-processor/param-processor": "~1.2",
@@ -55,12 +55,11 @@
 		"onoi/blob-store": "~1.2",
 		"mediawiki/http-request": "~2.0|~1.1",
 		"onoi/callback-container": "~2.0",
-		"onoi/shared-resources": "~0.3",
 		"symfony/css-selector": "^5|^4|^3.3",
 		"seld/jsonlint": "^1.7",
 		"justinrainbow/json-schema": "~5.2",
 		"jeroen/file-fetcher": "^6|^5|^4.4",
-		"wikimedia/cdb": "^2|^1",
+		"wikimedia/cdb": "^3|^2|^1",
 		"wikimedia/textcat": "^2|^1.1"
 	},
 	"require-dev": {
@@ -101,7 +100,7 @@
 	},
 	"scripts": {
 		"test": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
-		"phpunit": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist --testdox ${composerScriptArg}",
+		"phpunit": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"phpdbg": "phpdbg -qrr ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"unit": [
 			"composer dump-autoload",

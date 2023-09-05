@@ -442,7 +442,6 @@
 	"smw-property-predefined-peid": "\"$1\" è una proprietà predefinita che rappresenta un identificatore esterno ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-pefu": "\"$1\" è una proprietà predefinita fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] per specificare una risorsa esterna con un segnaposto.",
 	"smw-datavalue-parse-error": "Il valore dato \"$1\" non è stato compreso.",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" non può essere utilizzato come etichetta preferita perché la lingua \"$2\" è già stata assegnata all'etichetta \"$3\".",
 	"smw-clipboard-copy-link": "Copia il collegamento negli appunti",
 	"smw-no-data-available": "Nessun dato disponibile.",

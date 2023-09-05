@@ -514,7 +514,6 @@
 	"smw-constraint-violation-uniqueness": "De beperking <code>unique_value_constraint</code> is toegewezen aan de eigenschap \"[[Property:$1|$1]]\" zodat deze alleen unieke waardetoewijzingen toestaat, maar de waardeannotatie ''$2'' bleek al te zijn geannoteerd in het onderwerp \"$3\".",
 	"smw-constraint-violation-uniqueness-isknown": "Er is een beperking <code>unique_value_constraint</code> toegewezen aan de eigenschap \"[[Property:$1|$1]]\", zodat alleen annotaties met unieke waarden zijn toegestaan. ''$2'' bevat echter al een geannoteerde waarde met \"$3\", wat in strijd is met de uniciteitsbeperking voor het huidige onderwerp.",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" is een ongeldige URL.",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-clipboard-copy-link": "Verwijzing naar het klembord kopiëren",
 	"smw-data-lookup": "Gegevens ophalen ...",
 	"smw-no-data-available": "Geen gegevens beschikbaar",

@@ -601,7 +601,6 @@
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\" innehåller mer än tre komponenter.",
 	"smw-datavalue-time-invalid-ampm": "\"$1\" innehåller \"$2\" som timmeselement som är ogiltigt för en 12-timmarskonvention.",
 	"smw-datavalue-external-formatter-invalid-uri": " \"$1\" är en ogiltig URL.",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" kan inte användas som en föredragen etikett eftersom språket \"$2\" är redan tilldelat till etiketten \"$3\".",
 	"smw-clipboard-copy-link": "Kopiera länk till urklipp",
 	"smw-data-lookup": "Hämtar data...",

@@ -221,7 +221,7 @@
 	"properties": "{{doc-special|Properties}}\n{{Identical|Property}}",
 	"smw_properties_docu": "This is the introductory message at the top of [[Special:Properties]].",
 	"smw_property_template": "This message is used on [[Special:Properties]] to display each property listed. It holds the following parameters:\n* $1 link to the property's page\n* $2 link to the property's data type page\n* $3 number of times the property is used",
-	"smw_property_template_notype": "This is used on [[Special:Properties]].\n*$1 holds the link to the property page.\n*$2 holds the number of times the property is used within the wiki.\n{{optional}}",
+	"smw_property_template_notype": "{{optional}}\nThis is used on [[Special:Properties]].\n*$1 holds the link to the property page.\n*$2 holds the number of times the property is used within the wiki.",
 	"smw_propertylackspage": "This is an error/warning message.",
 	"smw_propertylackstype": "This is an error/warning message. Parameters:\n* $1 holds the name of the assumed data type which is in fact always data type Page.",
 	"smw_propertyhardlyused": "This is an error/warning message.",
