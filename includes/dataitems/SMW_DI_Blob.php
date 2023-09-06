@@ -23,7 +23,7 @@ class SMWDIBlob extends SMWDataItem {
 	protected $m_string;
 
 	public function __construct( $string ) {
-		$this->m_string = trim( $string );
+		$this->m_string = trim( $string ?? '' );
 	}
 
 	public function getDIType() {
