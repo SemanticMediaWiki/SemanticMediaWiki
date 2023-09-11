@@ -115,7 +115,7 @@
 	"smw-paramdesc-json-type": "직렬화 유형",
 	"smw-paramdesc-source": "대체 쿼리 소스",
 	"smw-paramdesc-jsonsyntax": "사용할 JSON 구문",
-	"smw-printername-feed": "RSS와 Atom 피드",
+	"smw-printername-feed": "RSS 및 아톰 피드",
 	"smw-paramdesc-feedtype": "피드 유형",
 	"smw-paramdesc-feedtitle": "피드의 제목으로 사용할 텍스트",
 	"smw-paramdesc-feeddescription": "피드의 설명으로 사용할 텍스트",

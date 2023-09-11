@@ -91,7 +91,7 @@
 	"smw-paramdesc-limit": "מספר התוצאות המרבי להחזרה",
 	"smw-paramdesc-offset": "ההיסט של התוצאה הראשונה",
 	"smw-paramdesc-headers": "הצגת הכותרות או שמות המאפיינים",
-	"smw-paramdesc-mainlabel": "התווית שתינתן לשם הדף הראשי",
+	"smw-paramdesc-mainlabel": "התווית שתינתן לשם העמוד הראשי",
 	"smw-paramdesc-link": "הצגת ערכים כקישורים",
 	"smw-paramdesc-intro": "הטקסט להצגה לפני תוצאות התשאול, אם יש כאלו",
 	"smw-paramdesc-outro": "הטקסט להצגה לאחר תוצאות התשאול, אם יש כאלו",
