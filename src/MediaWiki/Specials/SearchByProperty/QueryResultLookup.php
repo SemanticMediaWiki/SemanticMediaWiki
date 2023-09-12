@@ -3,7 +3,10 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DataValueFactory;
+use SMW\DataTypeRegistry;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
+use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\PrintRequest as PrintRequest;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
@@ -19,6 +22,7 @@ use SMWRequestOptions as RequestOptions;
  * @author Daniel Herzig
  * @author Markus Kroetzsch
  * @author mwjames
+ * @reviewer thomas-topway-it
  */
 class QueryResultLookup {
 
@@ -207,14 +211,40 @@ class QueryResultLookup {
 			$requestOptions
 		);
 	}
+	
+	private function destructureDIContainer( $DIProperty, $dataItem, $pageRequestOptions ) {
+		$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
+			$dataItem,
+			$DIProperty
+		);
+		$properties = $multiValue->getPropertyDataItems( $property );
+		$DIProperty = $properties[0];
+		$requestOptions = [
+			'limit'    => $pageRequestOptions->limit,
+			'offset'   => $pageRequestOptions->offset,
+			'property' => $DIProperty->getCanonicalLabel(),
+			'value'    => $pageRequestOptions->valueString,
+			'nearbySearchForType' => $pageRequestOptions->nearbySearch
+		];
+		$pageRequestOptions = new PageRequestOptions( null, $requestOptions );
+		$pageRequestOptions->initialize();
+		
+		return [ $DIProperty, $pageRequestOptions->value->getDataItem() ];
+	}
 
 	private function doQueryForExactValue( PageRequestOptions $pageRequestOptions, RequestOptions $requestOptions ) {
-
 		$pageRequestOptions->value->setOption( 'is.search', true );
 
+		$DIProperty = $pageRequestOptions->property->getDataItem();
+		$dataItem = $pageRequestOptions->value->getDataItem();
+
+		if ( DataTypeRegistry::getInstance()->isRecordType( $DIProperty->findPropertyTypeID() ) ) {
+			list( $DIProperty, $dataItem ) = $this->destructureDIContainer( $DIProperty, $dataItem, $pageRequestOptions );
+		}
+
 		return $this->store->getPropertySubjects(
-			$pageRequestOptions->property->getDataItem(),
-			$pageRequestOptions->value->getDataItem(),
+			$DIProperty,
+			$dataItem,
 			$requestOptions
 		);
 	}
