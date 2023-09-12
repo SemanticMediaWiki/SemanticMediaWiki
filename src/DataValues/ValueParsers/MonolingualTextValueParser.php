@@ -57,8 +57,7 @@ class MonolingualTextValueParser implements ValueParser {
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
 		$nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
 
-		$mappedLanguageCode = !in_array( $languageCode, $nonstandardLanguageCodeMapping ) ? $languageCode
-			: array_search( $languageCode, $nonstandardLanguageCodeMapping );
+		$mappedLanguageCode = array_search( $languageCode, $nonstandardLanguageCodeMapping ) ?: $languageCode;
 
 		return [ $text, $mappedLanguageCode ];
 	}
