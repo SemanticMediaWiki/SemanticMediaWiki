@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory;
 use Title;
 use WikiFilePage;
@@ -50,7 +51,52 @@ class TitleFactory {
 	 * @return Title[]
 	 */
 	public function newFromIDs( $ids ) {
-		return Title::newFromIDs( $ids );
+		if ( !count( $ids ) ) {
+			return [];
+		}
+
+		$container = MediaWikiServices::getInstance();
+
+		$dbr = $container
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_REPLICA );
+
+		// Since PageStore is only available starting from 1.36
+		if ( version_compare( MW_VERSION, '1.36', '>=' ) ) {
+			$fields = $container->getPageStore()->getSelectFields();
+		} else {
+			$fields = [
+				'page_id',
+				'page_namespace',
+				'page_title',
+				'page_is_redirect',
+				'page_is_new',
+				'page_touched',
+				'page_links_updated',
+				'page_latest',
+				'page_len',
+				'page_content_model'
+			];
+
+			if ( $container->getMainConfig()->get( 'PageLanguageUseDB' ) ) {
+				$fields[] = 'page_lang';
+			}
+		}
+
+		$res = $dbr->select(
+			'page',
+			$fields,
+			[ 'page_id' => $ids ],
+			__METHOD__
+		);
+
+		$titles = [];
+
+		foreach ( $res as $row ) {
+			$titles[] = $container->getTitleFactory()->newFromRow( $row );
+		}
+
+		return $titles;
 	}
 
 	/**

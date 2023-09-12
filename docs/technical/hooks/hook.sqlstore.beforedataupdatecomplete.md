@@ -5,11 +5,11 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\SQLStore\SQLStore;
 use SMW\SemanticData;
 
-Hooks::register( 'SMW::SQLStore::BeforeDataUpdateComplete', function( SQLStore $store, SemanticData $semanticData ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::BeforeDataUpdateComplete', function( SQLStore $store, SemanticData $semanticData ) {
 
 	return true;
 } );

@@ -5,13 +5,13 @@ This document contains examples on how the [`SMW::Store::AfterQueryResultLookupC
 Demonstrates how the `SMW::Store::AfterQueryResultLookupComplete` hook can be used to add unknown entities (not matched by the `QueryEngine`) derived from the query description (see [#3934][issue-3934]).
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\Store;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\ValueDescription;
 use SMWQueryResult as QueryResult;
 
-Hooks::register( 'SMW::Store::AfterQueryResultLookupComplete', function( Store $store, QueryResult &$queryResult ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Store::AfterQueryResultLookupComplete', function( Store $store, QueryResult &$queryResult ) {
 
 	// Contains matched results from the `QueryEngine`
 	$results = $queryResult->getResults();

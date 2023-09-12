@@ -3,6 +3,7 @@
 namespace SMW\Elastic\Admin;
 
 use Html;
+use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use WebRequest;
 use SMW\Utils\HtmlTabs;
@@ -70,18 +71,18 @@ class MappingsInfoProvider extends InfoProviderHandler {
 
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
-		$mappings = array_merge(
-			$connection->getMapping(
+		$mappings = [
+			ElasticClient::TYPE_DATA => $connection->getMapping(
 				[
-					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_DATA )
+					'index' => $connection->getIndexName( ElasticClient::TYPE_DATA )
 				]
 			),
-			$connection->getMapping(
+			ElasticClient::TYPE_LOOKUP => $connection->getMapping(
 				[
-					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_LOOKUP )
+					'index' => $connection->getIndexName( ElasticClient::TYPE_LOOKUP )
 				]
 			)
-		);
+		];
 
 		$limits = [
 			ElasticClient::TYPE_DATA => [
@@ -158,23 +159,18 @@ class MappingsInfoProvider extends InfoProviderHandler {
 			]
 		];
 
-		foreach ( $mappings as $inx ) {
-			foreach ( $inx as $key => $value ) {
-				$this->countFields( $value, ElasticClient::TYPE_DATA, $summary );
-				$this->countFields( $value, ElasticClient::TYPE_LOOKUP, $summary );
+		foreach ( $mappings as $type => $mapping ) {
+			foreach ( $mapping as $inx ) {
+				$this->countFields( $inx['mappings'], $type, $summary );
 			}
 		}
 
 		return $summary;
 	}
 
-	private function countFields( $value, $type, &$count ) {
+	private function countFields( $mapping, $type, &$count ) {
 
-		if ( !isset( $value[$type] ) ) {
-			return;
-		}
-
-		foreach ( $value[$type]['properties'] as $k => $val ) {
+		foreach ( $mapping['properties'] as $k => $val ) {
 			foreach ( $val as $p => $v ) {
 				if ( $p === 'properties' ) {
 					foreach ( $v as $field => $mappings ) {

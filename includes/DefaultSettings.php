@@ -2485,6 +2485,16 @@ return (function() {
 			// 'localhost:9200'
 		],
 
+		##
+		# ElasticSearch basic authentication credentials
+		#
+		# @since 4.2
+		##
+		'smwgElasticsearchCredentials' => [
+			// 'user' => 'foo', 'pass' => 'bar'
+			// 'foo', 'bar'
+		],
+
 		/**
 		 * If SMW should verify that the semantic data is up to date with the latest revision of a
 		 * page whenever this page is loaded. If the semantic data is out of date this will be shown

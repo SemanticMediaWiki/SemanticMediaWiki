@@ -5,10 +5,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\SemanticData;
 
-Hooks::register( 'SMW::FileUpload::BeforeUpdate', function( $filePage, SemanticData $semanticData  ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::FileUpload::BeforeUpdate', function( $filePage, SemanticData $semanticData  ) {
 
 	return true;
 } );

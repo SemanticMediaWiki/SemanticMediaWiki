@@ -56,6 +56,21 @@ class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewFromIDsEmpty() {
+
+		$instance = new TitleFactory();
+		$input = [];
+
+		$out = $instance->newFromIDs( $input );
+
+		$this->assertCount( 0, $out );
+
+		$this->assertInternalType(
+			'array',
+			$out
+		);
+	}
+
 	public function testMakeTitleSafe() {
 
 		$instance = new TitleFactory();

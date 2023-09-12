@@ -75,7 +75,7 @@ class GenericRegExTokenizer implements Tokenizer {
 			'([\s\-_,:;?!%\'\|\/\(\)\[\]{}<>\r\n"]|(?<!\d)\.(?!\d)|(?<=\p{L})(?=\p{N}))'
 		);
 
-		$result = preg_split( '/' . $pattern . '/u', $string, null, PREG_SPLIT_NO_EMPTY );
+		$result = preg_split( '/' . $pattern . '/u', $string, -1, PREG_SPLIT_NO_EMPTY );
 
 		if ( $result === false ) {
 			$result = array();

@@ -158,13 +158,13 @@ class LinksWidget {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $code
+	 * @param string $code Wikitext to display. This will be escaped for output.
 	 *
 	 * @return string
 	 */
 	public static function embeddedCodeBlock( $code, $raw = false ) {
 
-		$code = Html::rawElement(
+		$code = Html::element(
 			'pre',
 			[
 				'id' => 'inlinequeryembedarea',
