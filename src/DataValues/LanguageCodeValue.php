@@ -56,8 +56,7 @@ class LanguageCodeValue extends StringValue {
 
 		// ensure non-standard language codes are mapped to
 		// their canonical form (e.g. de-x-formal to de-formal)
-		$mappedLanguageCode = !in_array( $languageCode, $this->nonstandardLanguageCodeMapping ) ? $languageCode
-			: array_search( $languageCode, $this->nonstandardLanguageCodeMapping );
+		$mappedLanguageCode = array_search( $languageCode, $this->nonstandardLanguageCodeMapping ) ?: $languageCode;
 
 		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Localizer::isKnownLanguageTag( $mappedLanguageCode ) ) {
 			$this->addErrorMsg( [
