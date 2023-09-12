@@ -290,8 +290,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 			return null;
 		}
 
-		$mappedLanguageCode = !array_key_exists( $list['_LCODE'], $this->nonstandardLanguageCodeMapping ) ? $list['_LCODE']
-			: $this->nonstandardLanguageCodeMapping[$list['_LCODE']];
+		$mappedLanguageCode = $this->nonstandardLanguageCodeMapping[$list['_LCODE']] ?? $list['_LCODE'];
 
 		if ( $mappedLanguageCode !== Localizer::asBCP47FormattedLanguageCode( $languageCode ) ) {
 			return null;
