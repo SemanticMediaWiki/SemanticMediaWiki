@@ -3,9 +3,7 @@
 namespace SMW\Tests\Maintenance;
 
 use SMW\Maintenance\AutoRecovery;
-use FakeResultWrapper;
 use SMW\Tests\TestEnvironment;
-use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\Maintenance\AutoRecovery

@@ -46,7 +46,7 @@ class HashFieldTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheck_Populate() {
 
-		$resultWrapper = $this->getMockBuilder( '\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -77,7 +77,7 @@ class HashFieldTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheck_Incomplete() {
 
-		$resultWrapper = $this->getMockBuilder( '\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 

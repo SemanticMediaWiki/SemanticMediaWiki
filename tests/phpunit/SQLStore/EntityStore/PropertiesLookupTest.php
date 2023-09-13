@@ -34,7 +34,7 @@ class PropertiesLookupTest extends \PHPUnit_Framework_TestCase {
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 		$dataItem->setId( 42 );
 
-		$resultWrapper = $this->getMockBuilder( '\FakeResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -91,7 +91,7 @@ class PropertiesLookupTest extends \PHPUnit_Framework_TestCase {
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 		$dataItem->setId( 1001 );
 
-		$resultWrapper = $this->getMockBuilder( '\FakeResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
