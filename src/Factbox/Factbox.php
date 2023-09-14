@@ -3,6 +3,7 @@
 namespace SMW\Factbox;
 
 use Html;
+use MediaWiki\MediaWikiServices;
 use Sanitizer;
 use Title;
 use SMW\DataValueFactory;
@@ -345,11 +346,12 @@ class Factbox {
 
 		$this->displayTitleFinder->prefetchFromSemanticData( $semanticData );
 
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
-		\Hooks::run( 'smwShowFactbox', [ &$html, $semanticData ] );
+		$hookContainer->run( 'smwShowFactbox', [ &$html, $semanticData ] );
 
 		// Hook since 1.9
-		if ( \Hooks::run( 'SMW::Factbox::BeforeContentGeneration', [ &$html, $semanticData ] ) ) {
+		if ( $hookContainer->run( 'SMW::Factbox::BeforeContentGeneration', [ &$html, $semanticData ] ) ) {
 
 			$header = $this->createHeader( $semanticData->getSubject() );
 			$rows = $this->createRows( $semanticData );

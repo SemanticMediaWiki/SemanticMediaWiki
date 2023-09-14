@@ -93,7 +93,6 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|စက္ကန့်|စက္ကန့်}}",
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|စက္ကန့်|စက္ကန့်}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|စက္ကန့်|စက္ကန့်}}",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-format-datatable-loadingrecords": "ဝန်ဆွဲတင်နေသည်...",
 	"smw-format-datatable-processing": "လုပ်ဆောင်နေသည်...",
 	"smw-format-datatable-search": "ရှာဖွေရန်:",

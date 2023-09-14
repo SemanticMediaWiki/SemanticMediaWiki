@@ -43,7 +43,6 @@
 	"smw_noinvannot": "Nilai tidak dapat diberikan pada properti inversi.",
 	"version-semantic": "Ekstensi semantik",
 	"smw_baduri": "URI berbentuk \"$1\" tidak diperbolehkan.",
-	"smw_dsv_link": "DSV",
 	"smw_printername_count": "Hasil perhitungan",
 	"smw_printername_csv": "Expor CSV",
 	"smw_printername_dsv": "Ekspor DSV",

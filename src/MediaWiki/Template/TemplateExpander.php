@@ -74,7 +74,6 @@ class TemplateExpander {
 			$user = RequestContext::getMain()->getUser();
 			$options = new ParserOptions( $user );
 			$options->setRemoveComments( true );
-			$options->setTidy( true );
 			$options->setMaxIncludeSize( self::MAX_INCLUDE_SIZE );
 		}
 

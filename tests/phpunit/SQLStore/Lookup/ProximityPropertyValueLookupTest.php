@@ -6,8 +6,8 @@ use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\MediaWiki\Connection\Query;
-use FakeResultWrapper;
 use SMW\Tests\PHPUnitCompat;
+use \Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\ProximityPropertyValueLookup

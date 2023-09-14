@@ -115,9 +115,7 @@ class FileIndexer {
 	 */
 	public function getIndexName( $type ) {
 
-		$index = $this->store->getConnection( 'elastic' )->getIndexNameByType(
-			$type
-		);
+		$index = $this->store->getConnection( 'elastic' )->getIndexName( $type );
 
 		// If the rebuilder has set a specific version, use it to avoid writing to
 		// the alias of the index when running a rebuild.
@@ -217,7 +215,7 @@ class FileIndexer {
 		];
 
 		$connection = $this->store->getConnection( 'elastic' );
-		$connection->ingest()->putPipeline( $params );
+		$connection->ingestPutPipeline( $params );
 
 		if ( $file === null ) {
 			$file = $this->findFile( $title );
@@ -238,7 +236,6 @@ class FileIndexer {
 
 		$params = [
 			'index' => $index,
-			'type'  => ElasticClient::TYPE_DATA,
 			'id'    => $id,
 		];
 

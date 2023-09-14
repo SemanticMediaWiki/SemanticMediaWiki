@@ -100,7 +100,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$this->connection->expects( $this->any() )
-			->method( 'getIndexNameByType' )
+			->method( 'getIndexName' )
 			->with( $this->equalTo( 'data' ) )
 			->will( $this->returnValue( '_index_abc' ) );
 

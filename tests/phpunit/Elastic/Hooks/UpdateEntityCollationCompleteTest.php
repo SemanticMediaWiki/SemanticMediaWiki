@@ -5,7 +5,7 @@ namespace SMW\Tests\Elastic\Hooks;
 use SMW\Elastic\Hooks\UpdateEntityCollationComplete;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use FakeResultWrapper;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\Elastic\Hooks\UpdateEntityCollationComplete

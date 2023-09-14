@@ -41,7 +41,6 @@
 	"smw-search-profile-sort-title": "Nosaukums",
 	"smw-search-profile-extended-section-query": "Vaicājums",
 	"smw-datavalue-parse-error": "Norādītā vērtība \"$1\" netika saprasta.",
-	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-format-datatable-loadingrecords": "Ielādē...",
 	"smw-format-datatable-toolbar-export": "Eksportēt",
 	"smw-processing": "Apstrādā...",

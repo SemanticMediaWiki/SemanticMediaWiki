@@ -113,7 +113,6 @@
 	"properties": "Svojstva",
 	"smw_properties_docu": "Sledeće osobine se koriste na vikiju.",
 	"smw_property_template": "$1 tipa $2 ($3 {{PLURAL:$3|upotreba|upotrebe|upotreba}})",
-	"smw_property_template_notype": "$1 ($2)",
 	"smw_propertylackspage": "Sve osobine trebaju imati opisnu stranicu!",
 	"smw_propertylackstype": "Nema definisanog tipa za ovu osobinu (za sada usvajam tip $1).",
 	"smw_propertyhardlyused": "Ova osobina jedva da se koristi na ovom  vikiju!",

@@ -7,11 +7,11 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\SQLStore\TableBuilder;
 use Onoi\MessageReporter\MessageReporter;
 
-Hooks::register( 'SMW::SQLStore::Installer::AfterDropTablesComplete', function( TableBuilder $tableBuilder, MessageReporter $messageReporter ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::Installer::AfterDropTablesComplete', function( TableBuilder $tableBuilder, MessageReporter $messageReporter ) {
 
 	// Output details on the activity
 	$messageReporter->reportMessage( '...' );
