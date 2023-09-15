@@ -29,6 +29,12 @@ class RunImportTest extends DatabaseTestCase {
 		$this->testEnvironment->addConfiguration( 'smwgImportReqVersion', 1 );
 		$this->testEnvironment->addConfiguration( 'smwgEnabledFulltextSearch', false );
 
+		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
+
 		$this->runnerFactory  = $this->testEnvironment::getUtilityFactory()->newRunnerFactory();
 		$this->spyMessageReporter = $this->testEnvironment::getUtilityFactory()->newSpyMessageReporter();
 	}
