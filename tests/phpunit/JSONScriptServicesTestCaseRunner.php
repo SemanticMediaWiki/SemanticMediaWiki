@@ -70,7 +70,13 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		// This ensures that if content is created in the NS_MEDIAWIKI namespace
 		// and an object relies on the MediaWikiNsContentReader then it uses the DB
 		ApplicationFactory::clear();
-		ApplicationFactory::getInstance()->getMediaWikiNsContentReader()->skipMessageCache();
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$mediaWikiNsContentReader = $applicationFactory->getMediaWikiNsContentReader();
+		
+		$mediaWikiNsContentReader->skipMessageCache();
+		$mediaWikiNsContentReader->setRevisionGuard( $applicationFactory->singleton( 'RevisionGuard' ) );
+
 		DataValueFactory::getInstance()->clear();
 
 		// Reset the Title/TitleParser otherwise a singleton instance holds an outdated
