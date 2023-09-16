@@ -82,6 +82,8 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 
 		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
 
+		$mediaWikiNsContentReader->setRevisionGuard( $revisionGuard );
+
 		DataValueFactory::getInstance()->clear();
 
 		// Reset the Title/TitleParser otherwise a singleton instance holds an outdated
