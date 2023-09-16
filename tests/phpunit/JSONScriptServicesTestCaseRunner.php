@@ -2,7 +2,6 @@
 
 namespace SMW\Tests;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
@@ -76,9 +75,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		
 		$mediaWikiNsContentReader->skipMessageCache();
 
-		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
-			->disableOriginalConstructor()
-			->getMock();
+		$revisionGuard = $applicationFactory->singleton( 'RevisionGuard' );
 
 		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
 
