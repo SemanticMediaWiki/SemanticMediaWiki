@@ -392,10 +392,10 @@ $magicWords['zh-hans'] = [
 	'subobject' => [ 0, '子对象' ],
 	'smwdoc' => [ 0, 'SMW文档' ],
 	'set' => [ 0, '设置' ],
-	'set_recurring_event' => [ 0, '设置循环活动' ],
-	'declare' => [ 0, '宣布' ],
-	'SMW_NOFACTBOX' => [ 0, '__无实际内容框__' ],
-	'SMW_SHOWFACTBOX' => [ 0, '__显示实际内容框__' ],
+	'set_recurring_event' => [ 0, '设置循环事件' ],
+	'declare' => [ 0, '声明' ],
+	'SMW_NOFACTBOX' => [ 0, '__无事实框__' ],
+	'SMW_SHOWFACTBOX' => [ 0, '__显示事实框__' ],
 ];
 
 /** Traditional Chinese (中文（繁體）‎) */
