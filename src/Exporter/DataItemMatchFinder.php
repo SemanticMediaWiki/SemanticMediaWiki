@@ -57,6 +57,12 @@ class DataItemMatchFinder {
 			return $dataItem;
 		}
 
+		$dataItem = $expElement->getDataItem();
+		if ( $dataItem !== null && $dataItem instanceof DIWikiPage ) {
+			// We already have a valid item
+			return $dataItem;
+		}
+
 		$uri = $expElement->getUri();
 
 		if ( strpos( $uri, $this->wikiNamespace ) !== false ) {
@@ -133,6 +139,14 @@ class DataItemMatchFinder {
 			return $dataItem;
 		}
 
+		/**
+		 * note: lookup rdfs:label as DBKey will fail in case a display title is used
+		 * ToDo: Use swivt:page (after removing / splitting at $wgArticlePath + namespace,
+		 * e. g. Category-3A) or rdfs:isDefinedBy (after removing /
+		 * splitting at Special:ExportRDF/ + namespace, e. g. Category-3A)
+		 * to get the page title from the full iri.
+		 * see: https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5527
+		*/
 		$respositoryResult = $this->store->getConnection( 'sparql' )->select(
 			'?v1 ?v2',
 			"<$uri> rdfs:label ?v1 . <$uri> swivt:wikiNamespace ?v2",
