@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"ArenaL5",
 			"Athena in Wonderland",
 			"Banjo",
@@ -713,7 +714,7 @@
 	"smw-parser-function-expensive-execution-limit": "A función do analizador sintáctico alcanzou o tempo límite autorizado para a súa execución (vexa o parámetro de configuración [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit <code>$smwgQExpensiveExecutionLimit</code>]).",
 	"smw-postproc-queryref": "MediaWiki Semántica lanzará unha actualización desta páxina porque son precisos algúns procesamentos antes da consulta.",
 	"apihelp-smwinfo-summary": "Módulo da API para obter información sobre estatísticas e outra meta información do MediaWiki Semántico.",
-	"apihelp-ask-summary": "Módulo da API para consultar a MediaWiki Semántica usando a linguaxe  de preguntas.",
+	"apihelp-ask-summary": "Módulo da API para consultar a MediaWiki Semántica usando a linguaxe de preguntas.",
 	"apihelp-askargs-summary": "Módulo da API para realizar consultas en MediaWiki Semántica mediante a lenguaxe Ask en forma de lista de condicións, visualizacións e parámetros.",
 	"apihelp-browsebyproperty-summary": "Módulo da API para obter información sobre unha propiedade ou lista de propiedades.",
 	"apihelp-browsebysubject-summary": "Módulo da API para obter informaións sobre un tema.",

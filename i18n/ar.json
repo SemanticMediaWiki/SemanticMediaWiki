@@ -888,7 +888,7 @@
 	"apihelp-browsebysubject-summary": "وحدة API لاسترداد المعلومات حول موضوع.",
 	"apihelp-smwtask-summary": "وحدة API لتنفيذ المهام ذات الصلة بميدياويكي الدلالي",
 	"apihelp-smwbrowse-summary": "وحدة API لدعم أنشطة التصفح لأنواع الكيانات المختلفة في ميدياويكي.",
-	"apihelp-ask-parameter-api-version": "تنسيق الإخراج:\n;2: تنسيق متوافق مع الإصدارات السابقة يستخدم {} لقائمة النتائج.\n;3:التنسيق التجريبي  الذي يستخدم [] كقائمة نتائج.",
+	"apihelp-ask-parameter-api-version": "تنسيق الإخراج:\n;2: تنسيق متوافق مع الإصدارات السابقة يستخدم {} لقائمة النتائج.\n;3:التنسيق التجريبي الذي يستخدم [] كقائمة نتائج.",
 	"apihelp-smwtask-param-task": "يحدد نوع المهمة",
 	"smw-api-invalid-parameters": "وسائط غير صالحة، \"$1\"",
 	"smw-parser-recursion-level-exceeded": "تم تجاوز مستوى العوائد $1 خلال عملية تحليل، يُقترَح التحقق من صحة بنية القالب، أو إذا لزم الأمر ضبط وسيط التكوين <code>$maxRecursionDepth</code>.",
