@@ -76,11 +76,15 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		
 		$mediaWikiNsContentReader->skipMessageCache();
 
+		$revisionGuardMock = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+	
 		$revisionGuard = $applicationFactory->singleton( 'RevisionGuard' );
 
-		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
+		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuardMock );
 
-		$mediaWikiNsContentReader->setRevisionGuard( $revisionGuard );
+		$mediaWikiNsContentReader->setRevisionGuard( $revisionGuardMock );
 
 		DataValueFactory::getInstance()->clear();
 
