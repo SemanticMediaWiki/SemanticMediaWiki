@@ -82,9 +82,9 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 	
 		$revisionGuard = $applicationFactory->singleton( 'RevisionGuard' );
 
-		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuardMock );
+		// $this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuardMock );
 
-		$mediaWikiNsContentReader->setRevisionGuard( $revisionGuardMock );
+		// $mediaWikiNsContentReader->setRevisionGuard( $revisionGuardMock );
 
 		DataValueFactory::getInstance()->clear();
 
