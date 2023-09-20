@@ -82,6 +82,12 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 	
 		$revisionGuard = $applicationFactory->singleton( 'RevisionGuard' );
 
+		if ( $revisionGuard === null ) {
+			echo '^^revisionGuard is null';
+		} else {
+			echo '^^revisionGuard is not null';
+		}
+
 		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
 
 		$mediaWikiNsContentReader->setRevisionGuard( $revisionGuard );
