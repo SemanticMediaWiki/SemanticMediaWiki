@@ -6,7 +6,7 @@ use SMW\Message;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
-use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * This datavalue implements datavalues used by special property '_IMPO' used
@@ -84,8 +84,7 @@ class ImportValue extends DataValue {
 	 */
 	public function __construct( $typeid = self::TYPE_ID ) {
 		parent::__construct( $typeid );
-
-		$this->mediaWikiNsContentReader = new MediaWikiNsContentReader();
+		$this->mediaWikiNsContentReader = ApplicationFactory::getInstance()->getMediaWikiNsContentReader();
 	}
 
 	/**
