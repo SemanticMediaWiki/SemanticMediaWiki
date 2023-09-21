@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
@@ -29,12 +28,6 @@ class RunImportTest extends DatabaseTestCase {
 
 		$this->testEnvironment->addConfiguration( 'smwgImportReqVersion', 1 );
 		$this->testEnvironment->addConfiguration( 'smwgEnabledFulltextSearch', false );
-
-		ApplicationFactory::clear();
-		$applicationFactory = ApplicationFactory::getInstance();
-		$mediaWikiNsContentReader = $applicationFactory->getMediaWikiNsContentReader();
-
-		$mediaWikiNsContentReader->skipMessageCache();
 
 		$this->runnerFactory  = $this->testEnvironment::getUtilityFactory()->newRunnerFactory();
 		$this->spyMessageReporter = $this->testEnvironment::getUtilityFactory()->newSpyMessageReporter();
