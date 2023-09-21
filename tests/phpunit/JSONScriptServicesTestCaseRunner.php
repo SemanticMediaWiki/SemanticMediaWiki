@@ -72,9 +72,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		ApplicationFactory::clear();
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$mediaWikiNsContentReader = $applicationFactory->getMediaWikiNsContentReader();
-		
-		$mediaWikiNsContentReader->skipMessageCache();
+		ApplicationFactory::getInstance()->getMediaWikiNsContentReader()->skipMessageCache();
 
 		DataValueFactory::getInstance()->clear();
 
