@@ -70,8 +70,6 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		// This ensures that if content is created in the NS_MEDIAWIKI namespace
 		// and an object relies on the MediaWikiNsContentReader then it uses the DB
 		ApplicationFactory::clear();
-
-		$applicationFactory = ApplicationFactory::getInstance();
 		ApplicationFactory::getInstance()->getMediaWikiNsContentReader()->skipMessageCache();
 
 		DataValueFactory::getInstance()->clear();
