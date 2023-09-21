@@ -35,14 +35,6 @@ class RunImportTest extends DatabaseTestCase {
 		$mediaWikiNsContentReader = $applicationFactory->getMediaWikiNsContentReader();
 
 		$mediaWikiNsContentReader->skipMessageCache();
-		
-		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
-
-		$mediaWikiNsContentReader->setRevisionGuard( $revisionGuard );
 
 		$this->runnerFactory  = $this->testEnvironment::getUtilityFactory()->newRunnerFactory();
 		$this->spyMessageReporter = $this->testEnvironment::getUtilityFactory()->newSpyMessageReporter();
