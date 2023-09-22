@@ -2,13 +2,15 @@
 	"@metadata": {
 		"authors": [
 			"Baloch Afghanistan",
+			"Moshtank",
 			"Sultanselim baloch"
 		]
 	},
 	"smw-upgrade-error-why-title": "من چۏن کُت کہ اے ارور پݔش آتک؟",
 	"smw-upgrade-error-how-title": "چۏن اے ارورءَ شرّ بکنوں؟",
 	"smw_printername_category": "تهر",
-	"smw-livepreview-loading": "...بار بیت",
+	"browse": "ویکیءِ چارگ",
+	"smw-livepreview-loading": "بییگئن...",
 	"smw-listingcontinuesabbrev": "دامدار.",
 	"smw-showingresults": "جهل پیش دارگنت تا  {{PLURAL:$1|'''1'''نتیجه|'''$1''' نتایج}} شروع بنت گون #'''$2'''."
 }

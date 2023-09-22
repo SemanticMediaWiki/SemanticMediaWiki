@@ -5,9 +5,7 @@
 Demonstrates how to add primary keys ([#3559][issue-3559]) to Semantic MediaWiki table definitions.
 
 ```php
-use Hooks;
-
-Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function( array $tables, $messageReporter ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function( array $tables, $messageReporter ) {
 
 	// #3559
 	// Incomplete list to only showcase how to modify the table definition

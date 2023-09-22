@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Joachim Mos",
-			"Slomox"
+			"Slomox",
+			"Wikiundeplattsnacker"
 		]
 	},
 	"smw_finallistconjunct": "un",
@@ -14,6 +15,7 @@
 	"smw_ask_defaultformat": "default",
 	"smw-ask-search": "Söök",
 	"smw_sbv_value": "Weert:",
+	"browse": "in't Wiki stövern",
 	"smw_browse_go": "Gah",
 	"smw_inverse_label_default": "$1 vun",
 	"smw_pp_type": "Egenschop",

@@ -5,9 +5,9 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 
-Hooks::register( 'SMW::Settings::BeforeInitializationComplete', function( &$configuration ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Settings::BeforeInitializationComplete', function( &$configuration ) {
 
 	// Extend the configuration of `smwgNamespacesWithSemanticLinks`
 	$configuration['smwgNamespacesWithSemanticLinks'][NS_MAIN] = true

@@ -89,7 +89,7 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 
-		$resultWrapper = $this->getMockBuilder( '\FakeResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 

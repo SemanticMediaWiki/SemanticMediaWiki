@@ -2,6 +2,7 @@
 
 namespace SMW\Query;
 
+use MediaWiki\MediaWikiServices;
 use ParamProcessor\Definition\StringParam;
 use ParamProcessor\IParam;
 use ParamProcessor\IParamDefinition;
@@ -99,8 +100,10 @@ class ResultFormat extends StringParam {
 
 		$format = false;
 
+
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		// Deprecated since 3.1, use `SMW::ResultFormat::OverrideDefaultFormat`
-		\Hooks::run( 'SMWResultFormat', [ &$format, $this->printRequests, [] ] );
+		$hookContainer->run( 'SMWResultFormat', [ &$format, $this->printRequests, [] ] );
 
 		/**
 		 * This hook allows extensions to override SMWs implementation of default result
@@ -108,7 +111,7 @@ class ResultFormat extends StringParam {
 		 *
 		 * @since 3.1
 		 */
-		\Hooks::run( 'SMW::ResultFormat::OverrideDefaultFormat', [ &$format, $this->printRequests, [] ] );
+		$hookContainer->run( 'SMW::ResultFormat::OverrideDefaultFormat', [ &$format, $this->printRequests, [] ] );
 
 		if ( $format !== false ) {
 			return $format;

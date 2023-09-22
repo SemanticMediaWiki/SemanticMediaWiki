@@ -329,7 +329,6 @@ class TermsLookup implements ITermsLookup {
 
 		$params = [
 			'index' => $connection->getIndexName( ElasticClient::TYPE_LOOKUP ),
-			'type'  => ElasticClient::TYPE_LOOKUP,
 			'id'    => $id
 		];
 
@@ -344,12 +343,11 @@ class TermsLookup implements ITermsLookup {
 
 		$params = [
 			'index' => $connection->getIndexName( ElasticClient::TYPE_DATA ),
-			'type'  => ElasticClient::TYPE_DATA,
 			'body'  => $parameters->get( 'search.body' ),
 			'size'  => $this->options->safeGet( 'subquery.size', 100 )
 		];
 
-		$info = $info + [
+		$info += [
 			'query' => $params,
 			'search_info' => [ 'search_info' => [ 'total' => 0 ] ],
 			'isFromCache' => false
@@ -393,7 +391,6 @@ class TermsLookup implements ITermsLookup {
 
 		$params = [
 			'index' => $connection->getIndexName( ElasticClient::TYPE_LOOKUP ),
-			'type'  => ElasticClient::TYPE_LOOKUP,
 			'id'    => $id
 		];
 

@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Api;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Api\Tasks\Task;
 use SMW\MediaWiki\Api\Tasks\UpdateTask;
@@ -36,7 +37,9 @@ class TaskFactory {
 	public function getAllowedTypes() {
 
 		if ( self::$services === null ) {
-			\Hooks::run( 'SMW::Api::AddTasks', [ &self::$services ] );
+			MediaWikiServices::getInstance()
+				->getHookContainer()
+				->run( 'SMW::Api::AddTasks', [ &self::$services ] );
 		}
 
 		$types = [

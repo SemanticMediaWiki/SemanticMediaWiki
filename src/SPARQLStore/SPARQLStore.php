@@ -2,6 +2,7 @@
 
 namespace SMW\SPARQLStore;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
@@ -296,11 +297,17 @@ class SPARQLStore extends Store {
 		$result = null;
 		$start = microtime( true );
 
-		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', [ $this, $query, &$result, $this->factory->newMasterQueryEngine() ] ) ) {
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		if (
+			$hookContainer->run(
+				'SMW::Store::BeforeQueryResultLookupComplete',
+				[ $this, $query, &$result, $this->factory->newMasterQueryEngine() ]
+			)
+		) {
 			$result = $this->fetchQueryResult( $query );
 		}
 
-		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this, &$result ] );
+		$hookContainer->run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this, &$result ] );
 
 		$query->setOption( Query::PROC_QUERY_TIME, microtime( true ) - $start );
 

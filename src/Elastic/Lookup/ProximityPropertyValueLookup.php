@@ -138,7 +138,6 @@ class ProximityPropertyValueLookup {
 
 		$params = [
 			'index' => $connection->getIndexName( ElasticClient::TYPE_DATA ),
-			'type'  => ElasticClient::TYPE_DATA,
 			'body'  => $body
 		];
 
