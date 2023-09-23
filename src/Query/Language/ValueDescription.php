@@ -3,7 +3,7 @@
 namespace SMW\Query\Language;
 
 use SMW\DataValueFactory;
-use SMw\DIProperty;
+use SMW\DIProperty;
 use SMW\Query\QueryComparator;
 use SMWDataItem as DataItem;
 use SMWNumberValue as NumberValue;
