@@ -22,7 +22,7 @@ use SMW\MediaWiki\Specials\Admin\Alerts\ByNamespaceInvalidEntitiesMaintenanceAle
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Store;
 use SMW\SetupFile;
-use SMw\ApplicationFactory;
+use SMW\ApplicationFactory;
 use SMW\Utils\FileFetcher;
 use User;
 
