@@ -68,6 +68,7 @@
 	"smw-paramdesc-embedonly": "Ne prikaži naslovov",
 	"smw-paramdesc-table-class": "Dodatni razred CSS, ki ga nastavite za tabelo",
 	"smw-paramdesc-table-transpose": "Prikaži glave tabel navpično in zadetke vodoravno",
+	"smw-paramdesc-prefix": "Upravljanje prikaza imenskega prostora v izpisih",
 	"smw-paramdesc-csv-sep": "Določa ločilo stolpcev",
 	"smw-paramdesc-csv-merge": "Združi vrednosti vrstic in stolpcev z enakim identifikatorjem subjekta (tudi prvi stolpec)",
 	"smw-paramdesc-dsv-separator": "Uporabljeno ločilo",
