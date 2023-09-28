@@ -135,7 +135,7 @@ class Bulk implements JsonSerializable {
 	 *
 	 * @return array|string
 	 */
-	public function getResponse() : array|string {
+	public function getResponse() {
 		return $this->response;
 	}
 
