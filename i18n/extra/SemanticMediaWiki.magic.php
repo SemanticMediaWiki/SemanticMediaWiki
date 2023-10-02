@@ -386,16 +386,16 @@ $magicWords['vi'] = [
 /** Simplified Chinese (中文（简体）‎) */
 $magicWords['zh-hans'] = [
 	'ask' => [ 0, '询问' ],
-	'show' => [ 0, '显示' ],
+	'show' => [ 0, '展示', '显示' ],
 	'info' => [ 0, '信息' ],
 	'concept' => [ 0, '概念' ],
 	'subobject' => [ 0, '子对象' ],
-	'smwdoc' => [ 0, 'SMW文档' ],
+	'smwdoc' => [ 0, 'smw文档', 'SMW文档' ],
 	'set' => [ 0, '设置' ],
-	'set_recurring_event' => [ 0, '设置循环活动' ],
-	'declare' => [ 0, '宣布' ],
-	'SMW_NOFACTBOX' => [ 0, '__无实际内容框__' ],
-	'SMW_SHOWFACTBOX' => [ 0, '__显示实际内容框__' ],
+	'set_recurring_event' => [ 0, '设置循环事件', '设置重复事件' ],
+	'declare' => [ 0, '声明' ],
+	'SMW_NOFACTBOX' => [ 0, '__无事实框__' ],
+	'SMW_SHOWFACTBOX' => [ 0, '__展示事实框__', '__显示事实框__' ],
 ];
 
 /** Traditional Chinese (中文（繁體）‎) */
