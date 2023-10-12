@@ -123,7 +123,7 @@
 	"smw_printername_rdf": "RDF导出",
 	"smw_printername_category": "分类",
 	"validator-type-class-SMWParamSource": "文本",
-	"smw-paramdesc-limit": "返回结果的最大数量",
+	"smw-paramdesc-limit": "最大返回结果数",
 	"smw-paramdesc-offset": "第一个结果的偏移量",
 	"smw-paramdesc-headers": "显示表头/属性名称",
 	"smw-paramdesc-mainlabel": "首列（主页面名称）的表头标签",
