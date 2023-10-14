@@ -282,7 +282,7 @@ class TableResultPrinter extends ResultPrinter {
 			}
 
 			if ( $this->isDataTable && $sortKey !== '' ) {
-				$attributes['data-order'] = $sortKey;
+				$attributes['data-order'] = htmlspecialchars( $sortKey );
 			}
 
 			$alignment = trim( $printRequest->getParameter( 'align' ) );
