@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Maintenance;
 
-use FakeResultWrapper;
 use SMW\Maintenance\PropertyStatisticsRebuilder;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\Maintenance\PropertyStatisticsRebuilder

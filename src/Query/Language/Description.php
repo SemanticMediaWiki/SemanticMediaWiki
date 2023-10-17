@@ -30,6 +30,9 @@ abstract class Description {
 	 */
 	private $membership = '';
 
+	public bool $isPartOfDisjunction;
+	public bool $isNegation;
+
 	/**
 	 * Get the (possibly empty) array of all print requests that
 	 * exist for the entities that fit this description.

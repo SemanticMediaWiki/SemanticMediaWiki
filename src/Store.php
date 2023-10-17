@@ -3,10 +3,12 @@
 namespace SMW;
 
 use InvalidArgumentException;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionManager;
 use SMW\SQLStore\Lookup\ListLookup;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\Timer;
 use SMWDataItem as DataItem;
 use SMWQuery;
@@ -222,21 +224,22 @@ abstract class Store implements QueryEngine {
 		Timer::start( __METHOD__ );
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 
 		$subject = $semanticData->getSubject();
 		$hash = $subject->getHash();
 
 		// Deprecated since 3.1, use SMW::Store::BeforeDataUpdateComplete
-		\Hooks::run( 'SMWStore::updateDataBefore', [ $this, $semanticData ] );
+		$hookContainer->run( 'SMWStore::updateDataBefore', [ $this, $semanticData ] );
 
-		\Hooks::run( 'SMW::Store::BeforeDataUpdateComplete', [ $this, $semanticData ] );
+		$hookContainer->run( 'SMW::Store::BeforeDataUpdateComplete', [ $this, $semanticData ] );
 
 		$this->doDataUpdate( $semanticData );
 
 		// Deprecated since 3.1, use SMW::Store::AfterDataUpdateComplete
-		\Hooks::run( 'SMWStore::updateDataAfter', [ $this, $semanticData ] );
+		$hookContainer->run( 'SMWStore::updateDataAfter', [ $this, $semanticData ] );
 
-		\Hooks::run( 'SMW::Store::AfterDataUpdateComplete', [ $this, $semanticData ] );
+		$hookContainer->run( 'SMW::Store::AfterDataUpdateComplete', [ $this, $semanticData ] );
 
 		$rev = $semanticData->getExtensionData( 'revision_id' );
 		$procTime = Timer::getElapsedTime( __METHOD__, 5 );
@@ -454,10 +457,8 @@ abstract class Store implements QueryEngine {
 	 * @param $count integer
 	 * @param $namespaces mixed array or false
 	 * @param $usejobs boolean
-	 *
-	 * @return float between 0 and 1 to indicate the overall progress of the refreshing
 	 */
-	public abstract function refreshData( &$index, $count, $namespaces = false, $usejobs = true );
+	public abstract function refreshData( &$index, $count, $namespaces = false, $usejobs = true ): Rebuilder;
 
 	/**
 	 * Setup the store.

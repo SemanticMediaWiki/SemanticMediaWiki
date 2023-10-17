@@ -3,7 +3,9 @@
 namespace SMW\MediaWiki\Jobs;
 
 use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Job;
+use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -40,6 +42,8 @@ class UpdateDispatcherJob extends Job {
 	 * Size of chunks used when invoking the secondary dispatch run
 	 */
 	const CHUNK_SIZE = 500;
+
+	private SerializerFactory $serializerFactory;
 
 	/**
 	 * @since  1.9
@@ -101,7 +105,9 @@ class UpdateDispatcherJob extends Job {
 			$this->create_secondary_dispatch_run( $this->jobs );
 		}
 
-		Hooks::run( 'SMW::Job::AfterUpdateDispatcherJobComplete', [ $this ] );
+		MediaWikiServices::getInstance()
+			->getHookContainer()
+			->run( 'SMW::Job::AfterUpdateDispatcherJobComplete', [ $this ] );
 
 		return true;
 	}

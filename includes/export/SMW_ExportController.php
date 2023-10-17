@@ -178,15 +178,17 @@ class SMWExportController {
 		// let other extensions add additional RDF data for this page
 		$expDataList = [];
 
-		\Hooks::run(
-			'SMW::Exporter::Controller::AddExpData',
-			[
-				$diWikiPage,
-				&$expDataList,
-				( $recursiondepth != 0 ),
-				$this->add_backlinks
-			]
-		);
+		MediaWikiServices::getInstance()
+			->getHookContainer()
+			->run(
+				'SMW::Exporter::Controller::AddExpData',
+				[
+					$diWikiPage,
+					&$expDataList,
+					( $recursiondepth != 0 ),
+					$this->add_backlinks
+				]
+			);
 
 		foreach ( $expDataList as $data ) {
 

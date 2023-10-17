@@ -67,7 +67,6 @@
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|sicunnu|sicunni}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sicunnu|sicunni}}",
 	"smw-format-datatable-last": "Ùrtimu",
-	"smw-format-list-other-fields-open": " (",
 	"smw-property-reserved-category": "Catigurìa",
 	"smw-category": "Catigurìa",
 	"smw-help": "Aiutu",

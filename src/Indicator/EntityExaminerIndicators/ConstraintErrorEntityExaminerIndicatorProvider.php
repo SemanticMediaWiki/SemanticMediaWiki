@@ -55,6 +55,10 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 */
 	private $languageCode = '';
 
+	private string $errorTitle;
+
+	private TemplateEngine $templateEngine;
+
 	/**
 	 * @since 3.2
 	 *

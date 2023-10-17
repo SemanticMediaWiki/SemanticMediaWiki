@@ -124,6 +124,8 @@ class RequestOptions {
 
 	public bool $isFirstChain;
 
+	public bool $natural;
+
 	/**
 	 * @since 3.1
 	 *

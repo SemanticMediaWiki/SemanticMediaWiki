@@ -238,7 +238,6 @@
 	"smw-admin-maintenance-tab-scripts": "Karbantartó szkriptek",
 	"smw-livepreview-loading": "Betöltés…",
 	"smw-datavalue-allows-value-list-missing-marker": "A(z) „$1” lista tartalmában nincsenek elemek * listajelzővel.",
-	"smw-schema-error-violation": "[\"$1\", \"$2\"]",
 	"smw-schema-error-json": "JSON hiba: \"$1\"",
 	"smw-schema-usage": "Használat",
 	"smw-listingcontinuesabbrev": "folyt.",

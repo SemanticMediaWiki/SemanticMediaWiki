@@ -26,6 +26,7 @@ class XmlImportRunner {
 	protected $exception = false;
 	protected $result = null;
 	protected $verbose = false;
+	protected float $importTime;
 
 	/**
 	 * @var TestEnvironment

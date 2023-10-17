@@ -179,6 +179,8 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 */
 	private function makeRequestContext( \WebRequest $request, $user, $title ) {
 
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+
 		$context = new RequestContext();
 		$context->setRequest( $request );
 
@@ -186,7 +188,7 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		$out->setTitle( $title );
 
 		$context->setOutput( $out );
-		$context->setLanguage( Language::factory( $GLOBALS['wgLanguageCode'] ) );
+		$context->setLanguage( $languageFactory->getLanguage( $GLOBALS['wgLanguageCode'] ));
 
 		$user = $user === null ? new MockSuperUser() : $user;
 		$context->setUser( $user );

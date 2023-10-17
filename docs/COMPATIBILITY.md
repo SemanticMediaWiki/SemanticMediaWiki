@@ -24,13 +24,22 @@ Increases of minimum requirements are indicated in bold.
 		<th>Notes</th>
 	</tr>
 	<tr>
+		<th>5.0.x</th>
+		<td>Future version</td>
+		<td>-</td>
+		<td>-</td>
+		<td><strong>8.0.x</strong> - TBD</td>
+		<td>TBD - TBD</td>
+		<td></td>
+	</tr>
+	<tr>
 		<th>4.1.x</th>
-		<td>In development</td>
-		<td>-</td>
-		<td>-</td>
-		<td><strong>7.4.0</strong> - 8.0.x</td>
-		<td>1.35.0 - 1.38.x</td>
-		<td>Not fully compatible with MW 1.39 yet</td>
+		<td><strong>Stable release</strong></td>
+		<td>2023-01-21</td>
+		<td>2023-03-09</td>
+		<td><strong>7.4.0</strong> - 8.1.x</td>
+		<td>1.35.0 - 1.39.x</td>
+		<td>4.1.1 or higher needed for PHP 8.1+</td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>
@@ -39,10 +48,10 @@ Increases of minimum requirements are indicated in bold.
 		<td>2022-07-21</td>
 		<td><strong>7.3.0</strong> - 8.0.x</td>
 		<td><strong>1.35.0</strong> - 1.37.x</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5300">Confirmed to not work with PHP 8.1</a></td>
+		<td>Not compatible with PHP 8.1+ or MW 1.39</td>
 	</tr>
 </table>
-	
+
 <table class="compatibility">
 	<tr>
 		<th>SMW</th>
@@ -299,6 +308,63 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 
 - "Full support" means that all functionality has been verified to work and that it can be used in production
 - "Beta support" means that most functionality has been verified to work, though stability is still low, and things might be buggy
+
+### ElasticStore support
+
+
+
+<table class="compatibility">
+	<tr>
+		<th>SMW</th>
+		<th>ElasticSearch</th>
+		<th>OpenSearch</th>
+		<th>Notes</th>
+	</tr>
+	<tr>
+		<th>5.0.x</th>
+		<td>TBD</td>
+		<td>TBD</td>
+		<td></td>
+	</tr>
+	<tr>
+		<th>4.1.x</th>
+		<td>6.5.x - 6.8.23</td>
+		<td>Not supported (TBD)</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5328">Confirmed to not work with ElasticSearch 7.x (MW 1.39)</a></td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>
+		<td>6.5.x - 6.8.23</td>
+		<td>Not supported</td>
+		<td></td>
+	</tr>
+</table>
+
+<table class="compatibility">
+	<tr>
+		<th>SMW</th>
+		<th>ElasticSearch</th>
+		<th>Status</th>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.2.0">3.2.x</a></th>
+		<td>5.5.x - 6.8.23</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.1.0">3.1.x</a></th>
+		<td>5.5.x - 6.8.23</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.0.0">3.0.x</a></th>
+		<td>5.3.x - 6.8.23</td>
+		<td>Obsolete</td>
+	</tr>
+</table>
+
+- A 'minimum' supported version of ElasticSearch is followed by [CirrusSearch's requirements](https://www.mediawiki.org/wiki/Extension:CirrusSearch#Dependencies).
+- [OpenSearch](https://opensearch.org/) is a forked version of ElasticSearch OSS 7.10.2 by Amazon which Wikimedia is [considering migrating to](https://phabricator.wikimedia.org/T280482).
 
 ### Notes
 

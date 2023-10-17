@@ -7,10 +7,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 
-Hooks::register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', function( PropertyChangeListener $propertyChangeListener ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', function( PropertyChangeListener $propertyChangeListener ) {
 
 	return true;
 } );
@@ -19,7 +19,7 @@ Hooks::register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners
 ### Example
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 
@@ -61,7 +61,7 @@ class ActOnPropertyChange {
 	}
 }
 
-Hooks::register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', function( PropertyChangeListener $propertyChangeListener ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', function( PropertyChangeListener $propertyChangeListener ) {
 	$actOnPropertyChange = new ActOnPropertyChange();
 	$actOnPropertyChange->registerPropertyChangeListener( $propertyChangeListener );
 } );

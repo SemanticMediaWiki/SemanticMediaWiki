@@ -384,6 +384,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		// TODO: Illegal dynamic property (#5421)
 		$anotherFile->extraProperty = 'Foo';
 
 		$this->assertNotEquals(
@@ -419,6 +420,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		// TODO: Illegal dynamic property (#5421)
 		$anotherRevision->extraProperty = 'Foo';
 
 		$this->assertNotEquals(

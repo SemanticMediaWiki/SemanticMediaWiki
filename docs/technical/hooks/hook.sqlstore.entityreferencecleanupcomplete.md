@@ -5,11 +5,11 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\Store;
 use SMW\DIWikiPage;
 
-Hooks::register( 'SMW::SQLStore::EntityReferenceCleanUpComplete', function( Store $store, $id, DIWikiPage $subject, $isRedirect ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::EntityReferenceCleanUpComplete', function( Store $store, $id, DIWikiPage $subject, $isRedirect ) {
 
 	return true;
 } );

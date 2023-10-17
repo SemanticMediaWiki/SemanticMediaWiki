@@ -65,9 +65,10 @@ class HashTagParser {
 ```
 
 ```php
+use MediaWiki\MediaWikiServices;
 use SMW\Parser\AnnotationProcessor;
 
-\Hooks::register( 'SMW::Parser::AfterLinksProcessingComplete', function( &$text, AnnotationProcessor $annotationProcessor ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Parser::AfterLinksProcessingComplete', function( &$text, AnnotationProcessor $annotationProcessor ) {
 
 	$hashTagParser = new HashTagParser(
 		$annotationProcessor

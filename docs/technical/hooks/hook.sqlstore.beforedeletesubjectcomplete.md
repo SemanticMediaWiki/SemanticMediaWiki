@@ -5,10 +5,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\SQLStore\SQLStore;
 
-Hooks::register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', function( SQLStore $store, $title ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', function( SQLStore $store, $title ) {
 
 	return true;
 } );

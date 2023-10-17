@@ -47,7 +47,7 @@ The `SEARCH_FORM_SCHEMA` schema type defines forms used in the extended `Special
             },
             {
                 "Publisher": {
-                    "autocomplete": true
+                    "autocomplete": true,
                     "tooltip": "message-can-be-a-msg-key"
                 }
             }

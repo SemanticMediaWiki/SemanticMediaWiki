@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\DIConcept;
 use SMW\DIProperty;
@@ -14,6 +15,7 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
 use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\Lookup\CachedListLookup;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWQuery as Query;
@@ -328,10 +330,12 @@ class SQLStore extends Store {
 			$this->updater = $this->factory->newUpdater();
 		}
 
-		\Hooks::run(
-			'SMW::SQLStore::BeforeChangeTitleComplete',
-			[ $this, $oldTitle, $newTitle, $pageId, $redirectId ]
-		);
+		MediaWikiServices::getInstance()
+			->getHookContainer()
+			->run(
+				'SMW::SQLStore::BeforeChangeTitleComplete',
+				[ $this, $oldTitle, $newTitle, $pageId, $redirectId ]
+			);
 
 		$status = $this->updater->changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
 
@@ -372,12 +376,13 @@ class SQLStore extends Store {
 		$result = null;
 		$start = microtime( true );
 
-		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', [ $this, $query, &$result, $this->factory->newSlaveQueryEngine() ] ) ) {
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		if ( $hookContainer->run( 'SMW::Store::BeforeQueryResultLookupComplete', [ $this, $query, &$result, $this->factory->newSlaveQueryEngine() ] ) ) {
 			$result = $this->fetchQueryResult( $query );
 		}
 
-		\Hooks::run( 'SMW::SQLStore::AfterQueryResultLookupComplete', [ $this, &$result ] );
-		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this, &$result ] );
+		$hookContainer->run( 'SMW::SQLStore::AfterQueryResultLookupComplete', [ $this, &$result ] );
+		$hookContainer->run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this, &$result ] );
 
 		$query->setOption( Query::PROC_QUERY_TIME, microtime( true ) - $start );
 
@@ -464,7 +469,7 @@ class SQLStore extends Store {
 		return $installer->uninstall( $verbose );
 	}
 
-	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ) {
+	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ): Rebuilder {
 
 		$rebuilder = $this->factory->newRebuilder();
 

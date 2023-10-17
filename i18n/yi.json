@@ -1,17 +1,21 @@
 {
 	"@metadata": {
 		"authors": [
+			"Pacha Tchernof",
 			"פוילישער",
 			"පසිඳු කාවින්ද"
 		]
 	},
 	"smw_finallistconjunct": "און",
 	"smw_printername_list": "ליסטע",
+	"smw_printername_template": "מוסטער",
 	"smw_printername_category": "קאַטעגאָריע",
+	"validator-type-class-SMWParamSource": "טעקסט",
 	"smw-paramdesc-table-transpose": "ווײַזן טאבעלע קעפלעך ווערטיקאל און רעזולטאטן האריזאנט",
 	"smw_nodatetime": "די דאַטע \"$1\" איז נישט פֿארשטענדלעך.",
 	"smw_exportrdf_submit": "עקספארטירן",
 	"smw-ask-parameters": "פאַראַמעטערס",
+	"smw-ask-search": "זוכן",
 	"smw_sbv_value": "ווערט:",
 	"browse": "בלעטערן וויקי",
 	"smw_browse_go": "גיין",
@@ -19,11 +23,20 @@
 	"smw_result_prev": "פֿריערדיקער",
 	"smw_result_results": "רעזולטאט",
 	"smw_smwadmin_datarefreshstopconfirm": "יא, כ'בין {{GENDER:$1|זיכער}}.",
+	"smw-admin-supplementary-elastic-replication-pages": "בלעטער",
 	"prefs-general-options": "אַלגעמיינע ברירות",
+	"smw-ui-tooltip-title-error": "פֿעלער",
 	"smw-ui-tooltip-title-parameter": "פאַראַמעטער",
 	"smw-ui-tooltip-title-reference": "רעפערענץ",
+	"smw-admin-idlookup-input": "זוכן:",
+	"smw-admin-configutation-tab-namespaces": "נאָמענטיילן",
 	"smw-livepreview-loading": "לאדנדיג…",
 	"smw-search-syntax": "סינטאקס",
+	"smw-search-profile-extended-section-namespace": "נאָמענטייל",
+	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|סעקונדע|סעקונדעס}}",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|סעקונדע|סעקונדעס}}",
+	"smw-format-datatable-search": "זוכן:",
+	"smw-help": "הילף",
 	"smw-listingcontinuesabbrev": "(המשך)",
 	"smw-showingresults": "ווייזן ביז {{PLURAL:$1|רעזולטאט '''איינס'''|'''$1''' רעזולטאטן}} אנגעפאנגן פון נומער #'''$2''':"
 }

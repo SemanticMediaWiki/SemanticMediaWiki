@@ -7,9 +7,9 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 
-Hooks::register( 'SMW::GroupPermissions::BeforeInitializationComplete', function( &$permissions ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::GroupPermissions::BeforeInitializationComplete', function( &$permissions ) {
 
 	// Assignments have the form of:
 	// $permissions['smw_group_x'] = [ 'right_x' => true, 'right_y' => true ];

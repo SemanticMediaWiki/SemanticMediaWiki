@@ -2,10 +2,12 @@
 
 namespace SMW\SPARQLStore;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWExpNsResource as ExpNsResource;
@@ -295,11 +297,17 @@ class SPARQLStore extends Store {
 		$result = null;
 		$start = microtime( true );
 
-		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', [ $this, $query, &$result, $this->factory->newMasterQueryEngine() ] ) ) {
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		if (
+			$hookContainer->run(
+				'SMW::Store::BeforeQueryResultLookupComplete',
+				[ $this, $query, &$result, $this->factory->newMasterQueryEngine() ]
+			)
+		) {
 			$result = $this->fetchQueryResult( $query );
 		}
 
-		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this, &$result ] );
+		$hookContainer->run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this, &$result ] );
 
 		$query->setOption( Query::PROC_QUERY_TIME, microtime( true ) - $start );
 
@@ -433,7 +441,7 @@ class SPARQLStore extends Store {
 	 * @see Store::refreshData()
 	 * @since 1.8
 	 */
-	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ) {
+	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ): Rebuilder {
 		return $this->baseStore->refreshData( $index, $count, $namespaces, $usejobs );
 	}
 

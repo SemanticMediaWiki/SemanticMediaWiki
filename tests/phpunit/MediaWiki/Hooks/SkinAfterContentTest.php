@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use SMW\Factbox\FactboxText;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\Settings;
@@ -19,6 +20,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
 class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
+	private FactboxText $factboxText;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -33,6 +35,8 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		] );
 
 		$this->applicationFactory->registerObject( 'Settings', $settings );
+
+		$this->factboxText = $this->applicationFactory->getFactboxText();
 	}
 
 	protected function tearDown() : void {
@@ -129,7 +133,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$outputPage->mSMWFactboxText = $text;
+		$this->factboxText->setText( $text );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -221,7 +225,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$outputPage->mSMWFactboxText = $text;
+		$this->factboxText->setText( $text );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -265,7 +269,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$outputPage->mSMWFactboxText = $text;
+		$this->factboxText->setText( $text );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()

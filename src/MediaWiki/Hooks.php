@@ -97,7 +97,6 @@ class Hooks {
 	 * @return boolean
 	 */
 	public function isRegistered( $name ) {
-		// return \Hooks::isRegistered( $name );
 		return isset( $this->handlers[$name] );
 	}
 
@@ -148,7 +147,6 @@ class Hooks {
 	 */
 	public function register() {
 		foreach ( $this->handlers as $name => $callback ) {
-			//\Hooks::register( $name, $callback );
 			$this->hookContainer->register( $name, $callback );
 		}
 	}
@@ -433,7 +431,8 @@ class Hooks {
 
 		$outputPageParserOutput = new OutputPageParserOutput(
 			$applicationFactory->getNamespaceExaminer(),
-			$permissionExaminer
+			$permissionExaminer,
+			$applicationFactory->getFactboxText()
 		);
 
 		$preferenceExaminer = $applicationFactory->newPreferenceExaminer( $outputPage->getUser() );
@@ -921,7 +920,8 @@ class Hooks {
 	public function onFileUpload( $file, $reupload ) {
 
 		$fileUpload = new FileUpload(
-			ApplicationFactory::getInstance()->getNamespaceExaminer()
+			ApplicationFactory::getInstance()->getNamespaceExaminer(),
+			MediaWikiServices::getInstance()->getHookContainer()
 		);
 
 		return $fileUpload->process( $file, $reupload );

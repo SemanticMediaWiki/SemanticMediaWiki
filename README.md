@@ -19,14 +19,10 @@ browse the [wiki](https://www.semantic-mediawiki.org) for a more comprehensive i
 
 ## Requirements
 
-A list of supported PHP versions, MediaWiki versions and database systems per Semantic MediaWiki
-release can be found in the [compatibility matrix](docs/COMPATIBILITY.md).
+Semantic MediaWiki requires MediaWiki and its dependencies, such as PHP.
 
-Semantic MediaWiki 4.0.x requires:
-
-- PHP 7.3 or above
-- MediaWiki 1.35 or above
-- MySQL 5+, SQLite 3+ or PostgreSQL 9+
+Supported MediaWiki, PHP and database versions depend on the version of Semantic MediaWiki.
+See the [compatibility matrix](docs/COMPATIBILITY.md) for details.
 
 ## Installation
 
@@ -46,16 +42,17 @@ to the version of the code it comes bundled with. The most important files are l
 
 ## Support
 
+[![Chatroom](https://www.semantic-mediawiki.org/w/thumb.php?f=Comment-alt-solid.svg&width=35)](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom)
 [![Twitter](https://www.semantic-mediawiki.org/w/thumb.php?f=Twitter-square.svg&width=35)](https://twitter.com/#!/semanticmw)
 [![Facebook](https://www.semantic-mediawiki.org/w/thumb.php?f=Facebook-square.svg&width=35)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
-[![Chatroom](https://www.semantic-mediawiki.org/w/thumb.php?f=Comment-alt-solid.svg&width=35)](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom)
+[![LinkedIn](https://www.semantic-mediawiki.org/w/thumb.php?f=LinkedIn-square.svg&width=35)]([https://twitter.com/#!/semanticmw](https://www.linkedin.com/groups/2482811/))
 [![YouTube](https://www.semantic-mediawiki.org/w/thumb.php?f=Youtube-square.svg&width=35)](https://www.youtube.com/c/semanticmediawiki)
 [![Mailing lists](https://www.semantic-mediawiki.org/w/thumb.php?f=Envelope-square.svg&width=35)](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_mailing_lists)
 
 Primary support channels:
 
-* [User mailing list](https://sourceforge.net/projects/semediawiki/lists/semediawiki-user) - for questions
-* [SMW chat room](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom) - for questions
+* [User mailing list](https://sourceforge.net/projects/semediawiki/lists/semediawiki-user) - for user questions
+* [SMW chat room](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom) - for questions and developer discussions
 * [Issue tracker](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues) - for bug reports
 
 ## Contributing

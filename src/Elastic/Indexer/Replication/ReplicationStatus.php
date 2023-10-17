@@ -27,6 +27,8 @@ class ReplicationStatus {
 	 */
 	private $fieldMapper;
 
+	private ElasticClient $connection;
+
 	/**
 	 * @since 3.0
 	 *
@@ -69,7 +71,6 @@ class ReplicationStatus {
 
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
-			'type'  => ElasticClient::TYPE_DATA,
 			'id'    => $id,
 		];
 
@@ -87,7 +88,6 @@ class ReplicationStatus {
 
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
-			'type'  => ElasticClient::TYPE_DATA,
 			'id'    => $id,
 		];
 
@@ -128,7 +128,6 @@ class ReplicationStatus {
 
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
-			'type'  => ElasticClient::TYPE_DATA,
 			'id'    => $id,
 		];
 
@@ -165,7 +164,6 @@ class ReplicationStatus {
 
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
-			'type'  => ElasticClient::TYPE_DATA,
 			'id'    => $id,
 		];
 
@@ -223,7 +221,6 @@ class ReplicationStatus {
 
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
-			'type'  => ElasticClient::TYPE_DATA,
 			'body'  => $body
 		];
 

@@ -212,7 +212,30 @@
 		},
 		{
 			"type": "api",
-			"about": "#8 `smwbrowse` subject lookup, HTML",
+			"about": "#8 (1.38-) `smwbrowse` subject lookup, HTML",
+			"skip-on": {
+				"mediawiki": [ ">1.37.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "subject",
+					"params": "{ \"subject\": \"A0001/1\" , \"ns\": 0 , \"type\": \"html\", \"options\": { \"lang\" : \"en\" } }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0001.8-pre-mw-1.38.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#8 (1.38+) `smwbrowse` subject lookup, HTML",
+			"skip-on": {
+				"mediawiki": [ "<1.37.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"api": {
 				"parameters": {
 					"action": "smwbrowse",

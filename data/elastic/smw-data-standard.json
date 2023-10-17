@@ -57,220 +57,216 @@
 		}
 	},
 	"mappings": {
-		"data": {
-			"dynamic_templates": [
-				{
-					"text_fields": {
-						"path_match": "P:*.txtField",
-						"match_mapping_type": "*",
-						"mapping": {
-							"type": "text",
-							"copy_to": "text_copy",
-							"fields": {
-								"sort": {
-									"type": "keyword",
-									"normalizer": "standard_sort_normalizer",
-									"index": false,
-									"ignore_above": 256
-								},
-								"keyword": {
-									"type": "keyword",
-									"ignore_above": 2000
-								}
+		"dynamic_templates": [
+			{
+				"text_fields": {
+					"path_match": "P:*.txtField",
+					"match_mapping_type": "*",
+					"mapping": {
+						"type": "text",
+						"copy_to": "text_copy",
+						"fields": {
+							"sort": {
+								"type": "keyword",
+								"normalizer": "standard_sort_normalizer",
+								"index": false,
+								"ignore_above": 256
+							},
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 2000
 							}
-						}
-					}
-				},
-				{
-					"uri_fields": {
-						"path_match": "P:*.uriField",
-						"match_mapping_type": "*",
-						"mapping": {
-							"type": "text",
-							"copy_to": "text_copy",
-							"fields": {
-								"sort": {
-									"type": "keyword",
-									"normalizer": "standard_sort_normalizer",
-									"index": false,
-									"ignore_above": 256
-								},
-								"keyword": {
-									"type": "keyword",
-									"ignore_above": 2000
-								},
-								"lowercase": {
-									"type":     "text",
-									"analyzer": "uri_lowercase_with_stopwords"
-								}
-							}
-						}
-					}
-				},
-				{
-					"page_fields_text": {
-						"path_match": "P:*.wpgField",
-						"match_mapping_type": "*",
-						"mapping": {
-							"type": "text",
-							"copy_to": "text_copy",
-							"fields": {
-								"sort": {
-									"type": "keyword",
-									"normalizer": "standard_sort_normalizer",
-									"index": false,
-									"ignore_above": 256
-								},
-								"keyword": {
-									"type": "keyword",
-									"ignore_above": 500
-								},
-								"lowercase": {
-									"type": "keyword",
-									"normalizer": "lowercase_normalizer"
-								}
-							}
-						}
-					}
-				},
-				{
-					"page_fields_identifier": {
-						"path_match": "P:*.wpgID",
-						"match_mapping_type": "*",
-						"mapping": {
-							"type": "long"
-						}
-					}
-				},
-				{
-					"numeric_fields": {
-						"path_match": "P:*.numField",
-						"match_mapping_type": "*",
-						"mapping": {
-							"type": "double",
-							"fields": {
-								"keyword": {
-									"type": "keyword",
-									"ignore_above": 256
-								}
-							}
-						}
-					}
-				},
-				{
-					"date_fields": {
-						"path_match": "P:*.datField",
-						"match_mapping_type": "*",
-						"mapping": {
-							"type": "double",
-							"fields": {
-								"keyword": {
-									"type": "keyword",
-									"ignore_above": 256
-								}
-							}
-						}
-					}
-				},
-				{
-					"date_fields_raw": {
-						"path_match": "P:*.dat_raw",
-						"match_mapping_type": "*",
-						"mapping": {
-							"type": "keyword"
-						}
-					}
-				},
-				{
-					"geo_fields": {
-						"path_match": "P:*.geoField",
-						"match_mapping_type": "string",
-						"mapping": {
-							"type": "keyword",
-							"fields": {
-								"point": {
-									"type": "geo_point"
-								}
-							}
-						}
-					}
-				},
-				{
-					"boolean_fields": {
-						"path_match": "P:*.booField",
-						"match_mapping_type": "boolean",
-						"mapping": {
-							"type": "boolean"
 						}
 					}
 				}
-			],
-			"properties": {
-				"noop": {
-					"type": "integer"
-				},
-				"text_copy": {
-					"type": "text",
-					"doc_values": false
-				},
-				"text_raw": {
-					"type": "text",
-					"doc_values": false
-				},
-				"subject.title": {
-					"type": "text",
-					"fields": {
-						"sort": {
-							"type": "keyword",
-							"normalizer": "standard_sort_normalizer",
-							"index": false
-						},
-						"keyword": {
-							"type": "keyword",
-							"ignore_above": 256
+			},
+			{
+				"uri_fields": {
+					"path_match": "P:*.uriField",
+					"match_mapping_type": "*",
+					"mapping": {
+						"type": "text",
+						"copy_to": "text_copy",
+						"fields": {
+							"sort": {
+								"type": "keyword",
+								"normalizer": "standard_sort_normalizer",
+								"index": false,
+								"ignore_above": 256
+							},
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 2000
+							},
+							"lowercase": {
+								"type":     "text",
+								"analyzer": "uri_lowercase_with_stopwords"
+							}
 						}
 					}
-				},
-				"subject.interwiki": {
-					"type": "text",
-					"fields": {
-						"keyword": {
-							"type": "keyword",
-							"ignore_above": 256
-						}
-					}
-				},
-				"subject.subobject": {
-					"type": "text",
-					"fields": {
-						"keyword": {
-							"type": "keyword",
-							"ignore_above": 256
-						}
-					}
-				},
-				"subject.sortkey": {
-					"type": "text",
-					"copy_to": "text_copy",
-					"fields": {
-						"sort": {
-							"type": "keyword",
-							"normalizer": "standard_sort_normalizer",
-							"index": false
-						},
-						"keyword": {
-							"type": "keyword",
-							"ignore_above": 256
-						},
-						"lowercase": {
-							"type": "keyword",
-							"normalizer": "lowercase_normalizer"
-						}
-					}
-				},
-				"subject.rev_id": {
-					"type": "integer"
 				}
+			},
+			{
+				"page_fields_text": {
+					"path_match": "P:*.wpgField",
+					"match_mapping_type": "*",
+					"mapping": {
+						"type": "text",
+						"copy_to": "text_copy",
+						"fields": {
+							"sort": {
+								"type": "keyword",
+								"normalizer": "standard_sort_normalizer",
+								"index": false,
+								"ignore_above": 256
+							},
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 500
+							},
+							"lowercase": {
+								"type": "keyword",
+								"normalizer": "lowercase_normalizer"
+							}
+						}
+					}
+				}
+			},
+			{
+				"page_fields_identifier": {
+					"path_match": "P:*.wpgID",
+					"match_mapping_type": "*",
+					"mapping": {
+						"type": "long"
+					}
+				}
+			},
+			{
+				"numeric_fields": {
+					"path_match": "P:*.numField",
+					"match_mapping_type": "*",
+					"mapping": {
+						"type": "double",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			{
+				"date_fields": {
+					"path_match": "P:*.datField",
+					"match_mapping_type": "*",
+					"mapping": {
+						"type": "double",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			{
+				"date_fields_raw": {
+					"path_match": "P:*.dat_raw",
+					"match_mapping_type": "*",
+					"mapping": {
+						"type": "keyword"
+					}
+				}
+			},
+			{
+				"geo_fields": {
+					"path_match": "P:*.geoField",
+					"match_mapping_type": "string",
+					"mapping": {
+						"type": "keyword",
+						"fields": {
+							"point": {
+								"type": "geo_point"
+							}
+						}
+					}
+				}
+			},
+			{
+				"boolean_fields": {
+					"path_match": "P:*.booField",
+					"match_mapping_type": "boolean",
+					"mapping": {
+						"type": "boolean"
+					}
+				}
+			}
+		],
+		"properties": {
+			"noop": {
+				"type": "integer"
+			},
+			"text_copy": {
+				"type": "text"
+			},
+			"text_raw": {
+				"type": "text"
+			},
+			"subject.title": {
+				"type": "text",
+				"fields": {
+					"sort": {
+						"type": "keyword",
+						"normalizer": "standard_sort_normalizer",
+						"index": false
+					},
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"subject.interwiki": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"subject.subobject": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"subject.sortkey": {
+				"type": "text",
+				"copy_to": "text_copy",
+				"fields": {
+					"sort": {
+						"type": "keyword",
+						"normalizer": "standard_sort_normalizer",
+						"index": false
+					},
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					},
+					"lowercase": {
+						"type": "keyword",
+						"normalizer": "lowercase_normalizer"
+					}
+				}
+			},
+			"subject.rev_id": {
+				"type": "integer"
 			}
 		}
 	}

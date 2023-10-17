@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
+use ExtensionRegistry;
 use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
 use SMW\DataItemFactory;
 use SMW\SemanticData;
@@ -215,7 +216,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGeoType_MissingMapsExtension() {
 
-		if ( defined( 'SM_VERSION' ) ) {
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 			$this->markTestSkipped( 'Skipping test because the Maps extension is installed!' );
 		}
 

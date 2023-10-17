@@ -5,10 +5,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 
-\Hooks::register( 'SMW::Job::AfterUpdateDispatcherJobComplete', function( UpdateDispatcherJob $job ) {
+\MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Job::AfterUpdateDispatcherJobComplete', function( UpdateDispatcherJob $job ) {
 
 	// Find related dependencies
 	$title = $job->getTitle();

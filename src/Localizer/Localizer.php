@@ -5,6 +5,7 @@ namespace SMW\Localizer;
 use DateTime;
 use IContextSource;
 use Language;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
 use RequestContext;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
@@ -210,7 +211,8 @@ class Localizer {
 			return $this->getContentLanguage();
 		}
 
-		return Language::factory( $languageCode );
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+		return $languageFactory->getLanguage( $languageCode );
 	}
 
 	/**
@@ -301,13 +303,9 @@ class Localizer {
 	public static function isKnownLanguageTag( $languageCode ) {
 
 		$languageCode = mb_strtolower( $languageCode );
+		$languageNameUtils = MediaWikiServices::getInstance()->getLanguageNameUtils();
 
-		// FIXME 1.19 doesn't know Language::isKnownLanguageTag
-		if ( !method_exists( '\Language', 'isKnownLanguageTag' ) ) {
-			return Language::isValidBuiltInCode( $languageCode );
-		}
-
-		return Language::isKnownLanguageTag( $languageCode );
+		return $languageNameUtils->isKnownLanguageTag( $languageCode );
 	}
 
 	/**

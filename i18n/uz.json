@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"CoderSI",
+			"Malikxan",
 			"Sociologist",
 			"Zafar Shamsiddinov"
 		]
@@ -10,6 +11,7 @@
 	"smw_purge": "Yangilash",
 	"browse": "Vikini koʻrib chiqish",
 	"smw_browselink": "Xossalarni koʻrish",
+	"smw_result_noresults": "Natijalar topilmadi.",
 	"smw-info-par-message": "Tasvirlash uchun xabar",
 	"prefs-smw": "Semantik MediaWiki",
 	"prefs-ask-options": "Maʼnoviy qidiruv moslamalari",
