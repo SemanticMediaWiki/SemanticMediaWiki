@@ -17,7 +17,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author Fabian Howahl
  * @author Markus Krötzsch
- * @reviewer thomas-topway-it
+ * @reviewer thomas-topway-it for KM-A
  */
 class ImportValue extends DataValue {
 
