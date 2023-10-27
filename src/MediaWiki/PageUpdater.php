@@ -151,7 +151,7 @@ class PageUpdater implements DeferrableUpdate {
 	 */
 	public function doPurgeParserCacheAsPool() {
 		if ( $this->connection !== null ) {
-			$this->connection->onTransactionIdle( function() {
+			$this->connection->onTransactionCommitOrIdle( function() {
 				 $this->doPoolPurge();
 			} );
 		} else {

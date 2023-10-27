@@ -120,6 +120,7 @@
 	"smw-paramdesc-embedonly": "見出しを表示しない",
 	"smw-paramdesc-table-class": "表に設定する追加 CSS クラス",
 	"smw-paramdesc-table-transpose": "表の見出しを縦に、結果を横に表示する",
+	"smw-paramdesc-prefix": "印刷出力における名前空間名の表示を制御",
 	"smw-paramdesc-rdfsyntax": "使用する RDF 構文",
 	"smw-paramdesc-csv-sep": "使用する区切り文字の指定",
 	"smw-paramdesc-csv-valuesep": "使用する区切り文字の指定",

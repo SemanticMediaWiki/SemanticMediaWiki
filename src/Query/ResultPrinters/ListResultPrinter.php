@@ -199,6 +199,12 @@ class ListResultPrinter extends ResultPrinter {
 				];
 		}
 
+		$listFormatDefinitions['prefix'] = [
+			'message' => 'smw-paramdesc-prefix',
+			'default' => 'none',
+			'values' => [ 'all', 'subject', 'none', 'auto' ],
+		];
+
 		return array_merge( $definitions, ParamDefinition::getCleanDefinitions( $listFormatDefinitions ) );
 	}
 }

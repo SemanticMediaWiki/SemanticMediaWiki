@@ -96,6 +96,7 @@
 	"smw-paramdesc-embedonly": "Non monstrar capites",
 	"smw-paramdesc-table-class": "Un classe CSS additional a definir pro le tabella",
 	"smw-paramdesc-table-transpose": "Monstrar le capites del tabella verticalmente e le resultatos horizontalmente",
+	"smw-paramdesc-prefix": "Controlar le apparentia del spatio de nomines in impressiones",
 	"smw-paramdesc-rdfsyntax": "Le syntaxe RDF a usar",
 	"smw-paramdesc-csv-sep": "Specifica un separator de columnas",
 	"smw-paramdesc-csv-valuesep": "Specifica un separator de valores",

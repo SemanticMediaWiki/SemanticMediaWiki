@@ -2,7 +2,7 @@
 
 namespace SMW\Property;
 
-use SMw\MediaWiki\RedirectTargetFinder;
+use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Property\Annotators\CategoryPropertyAnnotator;
 use SMW\Property\Annotators\DisplayTitlePropertyAnnotator;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
