@@ -3,7 +3,7 @@
 namespace SMW\Tests\Elastic;
 
 use SMW\Elastic\ElasticStore;
-use SMw\Elastic\Config;
+use SMW\Elastic\Config;
 use SMW\Options;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;

@@ -6,7 +6,7 @@ use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
 use SMW\PropertySpecificationLookup;
 use SMW\Store;
-use SMw\RequestOptions;
+use SMW\RequestOptions;
 use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
 use RuntimeException;

@@ -751,7 +751,7 @@
 	"smw-types-title": "Tipo: $1",
 	"smw-schema-error-title": "{{PLURAL:$1|Erro|Erros}} de validación.",
 	"smw-schema-title": "Esquema",
-	"smw-schema-type": "Tipo",
+	"smw-schema-type": "Tipo de esquema",
 	"smw-schema-tag": "{{PLURAL:$1|Etiqueta|Etiquetas}}",
 	"smw-ask-title-keyword-type": "Procura de palabras clave",
 	"smw-ask-message-keyword-type": "Esta procura coincide coa condición <code><nowiki>$1</nowiki></code>.",

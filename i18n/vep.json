@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Игорь Бродский"
+			"Игорь Бродский",
+			"Лариса Чиркова"
 		]
 	},
 	"smw_viewasrdf": "RDF-purde",
@@ -15,6 +16,7 @@
 	"ask": "Semantine ecind",
 	"smw_ask_submit": "Löuta rezul'tatad",
 	"smw_ask_editquery": "Redaktiruida küzund",
+	"browse": "Wiki kacmine",
 	"smw_browse_go": "Mäne",
 	"smw_pp_from": "Lehtpolelpäi",
 	"smw_pp_type": "Ičend",

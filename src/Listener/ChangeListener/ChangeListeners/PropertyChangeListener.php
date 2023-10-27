@@ -144,7 +144,7 @@ class PropertyChangeListener implements ChangeListener {
 	 * @since 3.2
 	 */
 	public function runChangeListeners() {
-		$this->store->getConnection( 'mw.db' )->onTransactionIdle( [ $this, 'triggerChangeListeners' ] );
+		$this->store->getConnection( 'mw.db' )->onTransactionCommitOrIdle( [ $this, 'triggerChangeListeners' ] );
 	}
 
 	/**
