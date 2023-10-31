@@ -420,7 +420,7 @@ class Rebuilder {
 		// #4341
 		// ES 5.6 may cause a "Can't update [index.number_of_replicas] on closed
 		// indices" see elastic/elasticsearch#22993 and should be fixed with ES 6.4.
-		if ( version_compare( $this->client->getVersion(), '6.4.0', '<' ) ) {
+		if ( !$this->client->isOpenSearch() && version_compare( $this->client->getVersion(), '6.4.0', '<' ) ) {
 			unset( $indexDef['settings']['number_of_replicas'] );
 		}
 

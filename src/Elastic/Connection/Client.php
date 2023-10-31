@@ -61,6 +61,11 @@ class Client {
 	 */
 	private $wikiid;
 
+    /**
+     * @var string
+     */
+    private $distribution;
+
 	/**
 	 * @var boolean
 	 */
@@ -187,7 +192,9 @@ class Client {
 	 */
 	public function getSoftwareInfo() {
 		return [
-			'component' => "[https://www.elastic.co/elasticsearch/ Elasticsearch]",
+			'component' => $this->isOpenSearch() ?
+                "[https://opensearch.org OpenSearch]" :
+                "[https://www.elastic.co/elasticsearch/ Elasticsearch]",
 			'version' => $this->getVersion()
 		];
 	}
@@ -835,5 +842,20 @@ class Client {
 	public function releaseLock( $type ) {
 		$this->lockManager->releaseLock( $type );
 	}
+
+    /**
+     * @since 4.2
+     *
+     * @return bool
+     */
+    public function isOpenSearch(): bool {
+
+        if ( !isset( $this->distribution ) ) {
+            $info = $this->info();
+            $this->distribution = $info['version']['distribution'] ?? 'elasticsearch';
+        }
+
+        return $this->distribution === 'opensearch';
+    }
 
 }
