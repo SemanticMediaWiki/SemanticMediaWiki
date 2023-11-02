@@ -124,7 +124,7 @@
 	"wantedproperties": "Želene lastnosti",
 	"smw-wantedproperties-docu": "Na tej strani so navedene [https://www.semantic-mediawiki.org/wiki/Wanted_properties želene lastnosti], ki se uporabljajo v vikiju, vendar nimajo opisne strani. Razčlenjeni prikaz si oglejte na posebnih straneh [[Special:Properties|vseh]] ali [[Special:UnusedProperties|neuporabljenih lastnosti]].",
 	"smw-wantedproperty-template": "$1 ( $2 {{PLURAL:$2|uporaba|uporabi|uporabe|uporab}})",
-	"smw-special-wantedproperties-docu": "Na tej strani so navedene [https://www.semantic-mediawiki.org/wiki/Wanted_properties želene lastnosti], ki se uporabljajo v wikiju, vendar nimajo opisne strani. Razčlenjeni prikaz si lahko ogledate na posebnih straneh [[Special:Properties|vseh]] ali [[Special:UnusedProperties|neuporabljenih lastnosti]].",
+	"smw-special-wantedproperties-docu": "Na tej strani so navedene [https://www.semantic-mediawiki.org/wiki/Wanted_properties želene lastnosti], ki se uporabljajo v vikiju, vendar nimajo opisne strani. Razčlenjeni prikaz si lahko ogledate na posebnih straneh [[Special:Properties|vseh]] ali [[Special:UnusedProperties|neuporabljenih lastnosti]].",
 	"smw_purge": "Osveži",
 	"smw-purge-failed": "Semantični MediaWiki je poskušal počistiti predpomnjenje strani, vendar ni uspelo",
 	"types": "Tipi",
