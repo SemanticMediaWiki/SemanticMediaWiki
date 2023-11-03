@@ -6,6 +6,7 @@ use Linker;
 use Sanitizer;
 use SMWDataValue;
 use SMWResultArray;
+use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 
 /**
  * Class ValueTextsBuilder
@@ -20,6 +21,11 @@ class ValueTextsBuilder {
 	use ParameterDictionaryUser;
 
 	private $linker;
+	private $prefixParameterProcessor;
+
+	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {		
+		$this->prefixParameterProcessor = $prefixParameterProcessor;
+	}
 
 	/**
 	 * @param SMWResultArray $field
@@ -65,8 +71,10 @@ class ValueTextsBuilder {
 	 * @return string
 	 */
 	private function getValueText( SMWDataValue $value, $column = 0 ) {
+		$isSubject = ( $column === 0 );
+		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
-		$text = $value->getShortText( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
+		$text = $value->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
 
 		return $this->sanitizeValueText( $text );
 	}

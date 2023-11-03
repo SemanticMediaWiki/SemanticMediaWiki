@@ -5,10 +5,9 @@ namespace SMW\Iterators;
 use ArrayIterator;
 use Countable;
 use Iterator;
-use ResultWrapper;
 use RuntimeException;
 use SeekableIterator;
-
+use Wikimedia\Rdbms\ResultWrapper;
 /**
  * @license GNU GPL v2+
  * @since 2.5

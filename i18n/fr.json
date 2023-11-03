@@ -149,6 +149,7 @@
 	"smw-paramdesc-embedonly": "N’afficher aucun en-tête",
 	"smw-paramdesc-table-class": "Une classe CSS supplémentaire à mettre pour la table",
 	"smw-paramdesc-table-transpose": "Afficher les entêtes du tableau verticalement et les résultats horizontalement",
+	"smw-paramdesc-prefix": "Contrôler l’affichage de l’espace de noms dans les impressions",
 	"smw-paramdesc-rdfsyntax": "La syntaxe de RDF à utiliser",
 	"smw-paramdesc-csv-sep": "Spécifie un séparateur de colonnes",
 	"smw-paramdesc-csv-valuesep": "Spécifie un séparateur de valeurs",

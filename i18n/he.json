@@ -114,6 +114,7 @@
 	"smw-paramdesc-embedonly": "לא להציג כותרות",
 	"smw-paramdesc-table-class": "מחלקת CSS נוספת שתוחל על הטבלה",
 	"smw-paramdesc-table-transpose": "הצגת כותרות טבלה אנכית ותוצאות אופקית",
+	"smw-paramdesc-prefix": "שליטה בתצוגת מרחב השמות בתדפיסים",
 	"smw-paramdesc-rdfsyntax": "באיזה תחביר RDF להשתמש",
 	"smw-paramdesc-csv-sep": "מגדיר מפריד טורים",
 	"smw-paramdesc-csv-valuesep": "מגדיר מפריד ערכים",

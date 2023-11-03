@@ -75,7 +75,7 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testdoIterateOnResultWrapper() {
 
-		$resultWrapper = $this->getMockBuilder( '\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 

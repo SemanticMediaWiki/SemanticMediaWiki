@@ -110,7 +110,7 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
-		$resultWrapper = $this->getMockBuilder( '\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -184,7 +184,7 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
-		$resultWrapper = $this->getMockBuilder( '\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 

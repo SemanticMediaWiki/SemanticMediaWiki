@@ -348,13 +348,13 @@ class ConditionBuilder {
 		}
 
 		if ( $this->options->safeGet( 'sort.property.must.exists' ) && $this->sortFields !== [] ) {
-			$params = [];
+			$must = [ $query ];
 
 			foreach ( $this->sortFields as $field ) {
-				$params[] = $this->fieldMapper->exists( "$field" );
+				$must[] = $this->fieldMapper->exists( "$field" );
 			}
 
-			$query = $this->fieldMapper->bool( 'must', [ $query, $params ] );
+			$query = $this->fieldMapper->bool( 'must', $must );
 		}
 
 		// If we know we don't need any score we turn this into a `constant_score`

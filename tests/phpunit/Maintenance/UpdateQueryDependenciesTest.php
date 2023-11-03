@@ -3,9 +3,9 @@
 namespace SMW\Tests\Maintenance;
 
 use SMW\Maintenance\UpdateQueryDependencies;
-use FakeResultWrapper;
 use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\Maintenance\UpdateQueryDependencies

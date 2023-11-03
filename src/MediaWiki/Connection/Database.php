@@ -4,11 +4,11 @@ namespace SMW\MediaWiki\Connection;
 
 use DBError;
 use Exception;
-use ResultWrapper;
 use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\ResultWrapper;
 use Wikimedia\ScopedCallback;
 
 /**
@@ -775,7 +775,7 @@ class Database {
 	 *
 	 * @param callable $callback
 	 */
-	public function onTransactionIdle( callable $callback ) {
+	public function onTransactionCommitOrIdle( callable $callback ) {
 
 		$connection = $this->connRef->getConnection( 'write' );
 
@@ -783,7 +783,7 @@ class Database {
 		if ( method_exists( $connection, 'onTransactionCommitOrIdle' ) ) {
 			$connection->onTransactionCommitOrIdle( $callback );
 		} else {
-			$connection->onTransactionIdle( $callback );
+			$connection->onTransactionCommitOrIdle( $callback );
 		}
 	}
 
