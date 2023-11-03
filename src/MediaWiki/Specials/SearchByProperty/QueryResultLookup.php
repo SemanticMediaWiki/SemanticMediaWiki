@@ -218,6 +218,8 @@ class QueryResultLookup {
 			$DIProperty
 		);
 		$properties = $multiValue->getPropertyDataItems( $property );
+
+		// Property for the reference value
 		$DIProperty = $properties[0];
 		$requestOptions = [
 			'limit'    => $pageRequestOptions->limit,
