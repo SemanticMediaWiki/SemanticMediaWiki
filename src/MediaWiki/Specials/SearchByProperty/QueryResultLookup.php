@@ -22,7 +22,7 @@ use SMWRequestOptions as RequestOptions;
  * @author Daniel Herzig
  * @author Markus Kroetzsch
  * @author mwjames
- * @reviewer thomas-topway-it
+ * @reviewer thomas-topway-it for KM-A
  */
 class QueryResultLookup {
 
