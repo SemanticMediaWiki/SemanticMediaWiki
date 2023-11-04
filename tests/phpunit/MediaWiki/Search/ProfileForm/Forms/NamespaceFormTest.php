@@ -74,7 +74,7 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getEditToken' );
 
 		$user->expects( $this->any() )
-			->method( 'isLoggedIn' )
+			->method( 'isRegistered' )
 			->will( $this->returnValue( true ) );
 
 		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
