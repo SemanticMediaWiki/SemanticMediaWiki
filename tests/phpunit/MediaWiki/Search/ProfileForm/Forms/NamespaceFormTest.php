@@ -73,8 +73,9 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 		$user->expects( $this->once() )
 			->method( 'getEditToken' );
 
+		$isRegisteredMethod = ( version_compare( $GLOBALS['wgVersion'], '1.34' ) !== -1 ) ? 'isRegistered' : 'isLoggedIn';
 		$user->expects( $this->any() )
-			->method( 'isRegistered' )
+			->method( $isRegisteredMethod )
 			->will( $this->returnValue( true ) );
 
 		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
