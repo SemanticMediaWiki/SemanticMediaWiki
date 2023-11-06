@@ -218,7 +218,7 @@ class QueryResultLookup {
 			$dataItem,
 			$DIProperty
 		);
-		$properties = $multiValue->getPropertyDataItems( $property );
+		$properties = $multiValue->getPropertyDataItems( $DIProperty );
 
 		// Property for the reference value
 		$DIPropertyReferenceValue = $properties[0];
