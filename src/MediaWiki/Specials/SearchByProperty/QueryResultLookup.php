@@ -6,6 +6,7 @@ use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMWDataItem as DataItem;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\PrintRequest as PrintRequest;
@@ -212,7 +213,7 @@ class QueryResultLookup {
 		);
 	}
 	
-	private function destructureDIContainer( $DIProperty, $dataItem, $pageRequestOptions ) {
+	private function destructureDIContainer( DIProperty $DIProperty, DataItem $dataItem, PageRequestOptions $pageRequestOptions ) {
 		$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$DIProperty
@@ -220,18 +221,25 @@ class QueryResultLookup {
 		$properties = $multiValue->getPropertyDataItems( $property );
 
 		// Property for the reference value
-		$DIProperty = $properties[0];
+		$DIPropertyReferenceValue = $properties[0];
+
+		// retrieve the dataitem for this property
+		// as is done in the method below (through
+		// pageRequestOptions). This avoids to
+		// create the correct dataItem manually
+		// despite some of the parameters below could
+		// be unnecessary
 		$requestOptions = [
 			'limit'    => $pageRequestOptions->limit,
 			'offset'   => $pageRequestOptions->offset,
-			'property' => $DIProperty->getCanonicalLabel(),
+			'property' => $DIPropertyReferenceValue->getCanonicalLabel(),
 			'value'    => $pageRequestOptions->valueString,
 			'nearbySearchForType' => $pageRequestOptions->nearbySearch
 		];
 		$pageRequestOptions = new PageRequestOptions( null, $requestOptions );
 		$pageRequestOptions->initialize();
 		
-		return [ $DIProperty, $pageRequestOptions->value->getDataItem() ];
+		return [ $DIPropertyReferenceValue, $pageRequestOptions->value->getDataItem() ];
 	}
 
 	private function doQueryForExactValue( PageRequestOptions $pageRequestOptions, RequestOptions $requestOptions ) {
@@ -240,6 +248,8 @@ class QueryResultLookup {
 		$DIProperty = $pageRequestOptions->property->getDataItem();
 		$dataItem = $pageRequestOptions->value->getDataItem();
 
+		// override $DIProperty for reference datatype
+		// with the first multiValue property
 		if ( DataTypeRegistry::getInstance()->isRecordType( $DIProperty->findPropertyTypeID() ) ) {
 			list( $DIProperty, $dataItem ) = $this->destructureDIContainer( $DIProperty, $dataItem, $pageRequestOptions );
 		}
