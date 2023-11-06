@@ -115,8 +115,8 @@ class NamespaceForm {
 	public function checkNamespaceEditToken( SpecialSearch $specialSearch ) {
 
 		$user = $specialSearch->getUser();
-
-		if ( !$user->isRegistered() ) {
+		$isRegistered = ( version_compare( $GLOBALS['wgVersion'], '1.34' ) !== -1 ) ? $user->isRegistered() : $user->isLoggedIn();
+		if ( !$isRegistered ) {
 			return;
 		}
 
