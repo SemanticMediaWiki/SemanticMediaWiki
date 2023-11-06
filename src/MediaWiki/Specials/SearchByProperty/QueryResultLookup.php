@@ -236,7 +236,7 @@ class QueryResultLookup {
 			'value'    => $pageRequestOptions->valueString,
 			'nearbySearchForType' => $pageRequestOptions->nearbySearch
 		];
-		$pageRequestOptions = new PageRequestOptions( null, $requestOptions );
+		$pageRequestOptions = new PageRequestOptions( '', $requestOptions );
 		$pageRequestOptions->initialize();
 		
 		return [ $DIPropertyReferenceValue, $pageRequestOptions->value->getDataItem() ];
