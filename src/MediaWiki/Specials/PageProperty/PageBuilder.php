@@ -161,6 +161,7 @@ class PageBuilder {
 				$this->options->safeGet( 'from', '' ),
 				'smw-article-input',
 				30,
+				// [ 'class' => 'is-disabled' ]
 			)
 			->addNonBreakingSpace()
 			->addInputField(
