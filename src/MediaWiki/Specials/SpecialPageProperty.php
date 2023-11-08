@@ -172,7 +172,7 @@ class SpecialPageProperty extends SpecialPage {
 		$output->addModules( 'ext.smw.tooltip' );
 
 		$output->addModules( 'ext.smw.autocomplete.property' );
-		$output->addModules( 'ext.smw.autocomplete.article' );
+		$output->addModules( 'ext.smw.autocomplete.page' );
 
 		$output->addHTML( $html );
 	}
