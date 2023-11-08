@@ -47,7 +47,7 @@ class SpecialPageProperty extends SpecialPage {
 		}
 
 		if ( $query !== '' ) {
-			$query = Encoder::unescape( $query );
+			$query = Encoder::unescape( (string)$query );
 		}
 
 		// Get parameters
