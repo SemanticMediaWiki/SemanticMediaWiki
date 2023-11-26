@@ -74,7 +74,7 @@ class TableFieldUpdater {
 		$connection->update(
 			SQLStore::ID_TABLE,
 			[
-				'smw_sortkey' => $searchKey,
+				'smw_sortkey' => mb_strcut( $searchKey, 0, 255 ),
 				'smw_sort'    => substr( $this->collator->getSortKey( $searchKey ), 0, 255 ),
 				'smw_touched' => $connection->timestamp()
 			],
