@@ -60,6 +60,9 @@ class Task extends ApiBase {
 			$parameters['uselang'] = $this->getLanguage()->getCode();
 		}
 
+		// We must validate if the lang code is valid
+		$parameters['uselang'] = RequestContext::sanitizeLangCode( $parameters['uselang'] );
+
 		$results = $task->process(
 			$parameters
 		);
