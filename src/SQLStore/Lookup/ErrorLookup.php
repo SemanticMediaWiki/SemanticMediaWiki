@@ -9,6 +9,7 @@ use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use SMW\RequestOptions;
 use Traversable;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -205,7 +206,7 @@ class ErrorLookup {
 			$caller .= " (for " . $requestOptions->getCaller() . ")";
 		}
 
-		return $query->execute( $caller );
+		return $query->execute( $caller, IDatabase::QUERY_CHANGE_NONE );
 	}
 
 }

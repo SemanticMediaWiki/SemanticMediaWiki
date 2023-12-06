@@ -15,6 +15,7 @@ use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use Title;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -594,7 +595,7 @@ class RedirectUpdater {
 			'smw_iw = ' . $connection->addQuotes( '' ) . ' AND ' .
 			'smw_subobject != ' . $connection->addQuotes( '' ); // The "!=" is why we cannot use MW array syntax here
 
-		$connection->query( $sql, __METHOD__ );
+		$connection->query( $sql, __METHOD__, IDatabase::QUERY_CHANGE_ROWS );
 
 		$this->moveSubobjects(
 			$source->getDBkey(),

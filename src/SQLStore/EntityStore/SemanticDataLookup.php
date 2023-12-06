@@ -14,6 +14,7 @@ use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\DataModel\SequenceMap;
 use SMWDataItem as DataItem;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -781,7 +782,7 @@ class SemanticDataLookup {
 
 		$query->option( 'DISTINCT', true );
 
-		return $query->execute( __METHOD__ );
+		return $query->execute( __METHOD__, IDatabase::QUERY_CHANGE_NONE );
 	}
 
 	private function reportDuplicate( $params ) {
