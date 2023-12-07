@@ -9,13 +9,16 @@
 	},
 	"smw_finallistconjunct": ", ијән",
 	"smw_printername_list": "Сијоһи",
-	"smw_printername_template": "Шаблон",
+	"smw_printername_template": "Šablon",
 	"smw_printername_category": "Kategorijə",
 	"smw_exportrdf_submit": "İxroc",
 	"smw_purge": "Тожә кардеј",
 	"browse": "Səhifon dijə karde",
 	"smw-admin-supplementary-elastic-version-info": "Versiya",
+	"smw-ui-tooltip-title-info": "Məlumot",
 	"smw-format-datatable-toolbar-export": "İxroc",
+	"smw-property-reserved-category": "Kategorijə",
+	"smw-category": "Kategorijə",
 	"smw-entity-examiner-deferred-fake": "Pesoxtə",
 	"smw-listingcontinuesabbrev": "dəvom"
 }
