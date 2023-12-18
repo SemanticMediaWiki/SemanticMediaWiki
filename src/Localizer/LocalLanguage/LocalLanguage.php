@@ -50,6 +50,11 @@ class LocalLanguage {
 	private $monthMap = [];
 
 	/**
+	 * @var array
+	 */
+	private $months = [];
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param LanguageContents $languageContents
