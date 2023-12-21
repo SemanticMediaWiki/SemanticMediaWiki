@@ -134,6 +134,7 @@
 	"smw-statistics-query-format": "Format <code>$1</code>",
 	"smw-statistics-query-size": "Velikost poizvedbe",
 	"smw-statistics-delete-count-info": "Entitete, ki so bile označene za odstranitev, je treba redno odstranjevati z uporabo priloženih vzdrževalnih skriptov.",
+	"smw_uri_doc": "Razreševalec URI implementira [$1 W3C TAG najdbo na httpRange-14].\nZagotavlja, da je reprezentacija RDF (za stroje) ali stran viki (za ljudi) dostavljena glede na zahtevek.",
 	"ask": "Semantično iskanje",
 	"smw-ask-help": "Ta razdelek vsebuje nekaj povezav za pojasnitev uporabe skladnje <code>#ask</code>.\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Selecting pages] opisuje, kako izbrati strani in določiti pogoje\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Search_operators Search operators] vsebuje seznam razpoložljivih iskalnih operatorjev, vključno z operatorji za razpone in nadomestne znake\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Displaying_information Displaying information] opisuje uporabo izpisnih izjav in možnosti oblikovanja",
 	"smw_ask_sortby": "Razvrsti po stolpcu (izbirno)",

@@ -267,7 +267,7 @@
 	"smw-statistics-error-count-legacy": "{{PLURAL:$1|ערך מאפיין|ערכי מאפיין}} ({{PLURAL:$1|הערה לא מתאימה|הערות לא מתאימות}})",
 	"smw-statistics-delete-count": "[https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities {{PLURAL:$1|ישות מיושנת (מסומנת להסרה)|ישויות מיושנות (מסומנות להסרה)}}]",
 	"smw-statistics-delete-count-info": "יש להשליך באופן קבוע ישויות שסומנו להסרה באמצעות סקריפטי התחזוקה שסופקו.",
-	"smw_uri_doc": "פותרן כתובות מיישם את [$1 חיפוש W3C TAG ב־httpRange-14]. הוא דואג לכך שאנשים לא יהפכו לאתרי אינטרנט.",
+	"smw_uri_doc": "פותרן הכתובות מיישם את [$1 חיפוש W3C TAG ב־httpRange-14].\nהוא מבטיח שייצוג RDF (למכונות) של דף ויקי (לאנשים) נמסר בהתאם לבקשה.",
 	"ask": "חיפוש סמנטי",
 	"smw-ask-help": "הפרק הזה מכיל כמה קישורים שיעזרו להסביר כיצד להשתמש בתחביר <code>#ask</code>.\n\n* הדף [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages בחירת דפים] מתאר כיצד לבחור דפים ולבנות תנאים\n\n* הדף [https://www.semantic-mediawiki.org/wiki/Help:Search_operators אופרטורי חיפוש] מפרט אופרטורי חיפוש זמינים, כולל אלה עבור שאילתות טווח ושאילתות תווים כלליים\n\n* הדף [https ://www.semantic-mediawiki.org/wiki/Help:Displaying_information הצגת מידע] מתאר את השימוש בהצהרות תדפיס ואפשרויות עיצוב",
 	"smw_ask_sortby": "מיון לפי טור (לא חובה)",

@@ -193,7 +193,7 @@
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Concetto|Concetti}}]]",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Tipo|Tipi}} di dato]]",
 	"smw-statistics-delete-count": "[https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities Entità {{PLURAL:$1|obsoleta|obsolete}}]",
-	"smw_uri_doc": "Il risolutore di URI implementa il [$1 W3C TAG finding on httpRange-14]. Fa in modo che gli esseri umani non diventino siti Web.",
+	"smw_uri_doc": "Il risolutore di URI implementa il [$1 W3C TAG finding on httpRange-14].\nGarantisce che una rappresentazione RDF (per le macchine) o una pagina wiki (per gli esseri umani) venga fornita a seconda della richiesta.",
 	"ask": "Ricerca semantica",
 	"smw_ask_sortby": "Ordina per colonna (opzionale)",
 	"smw_ask_ascorder": "Crescente",

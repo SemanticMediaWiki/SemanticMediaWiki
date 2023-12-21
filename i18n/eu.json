@@ -233,7 +233,7 @@
 	"smw-admin-supplementary-idlookup-title": "Entitate bilaketa eta ezabaketa",
 	"smw-admin-supplementary-duplookup-title": "Entitateak bikoiztu",
 	"smw-admin-supplementary-operational-statistics-cache-title": "Cachearen estatistikak",
-	"smw-admin-supplementary-elastic-title": "Bilaketa elastikoa",
+	"smw-admin-supplementary-elastic-title": "Elasticsearch (Bilaketa elastikoa)",
 	"smw-admin-supplementary-elastic-functions": "Erabilgarri dauden funtzioak",
 	"smw-admin-supplementary-elastic-settings-title": "Ezarpenak",
 	"smw-admin-supplementary-elastic-nodes-title": "Nodoak",
