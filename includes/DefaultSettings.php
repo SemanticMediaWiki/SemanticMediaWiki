@@ -128,6 +128,12 @@ return (function() {
 		##
 
 		###
+		# @since 4.1.3
+		##
+		'smwgIgnoreUpgradeKeyCheck' => false,
+		##
+
+		###
 		# Use another storage backend for Semantic MediaWiki. The default is suitable
 		# for most uses of SMW.
 		#
