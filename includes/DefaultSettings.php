@@ -128,7 +128,7 @@ return (function() {
 		##
 
 		###
-		# @ since 4.1
+		# @since 4.1.3
 		##
 		'smwgIgnoreUpgradeKeyCheck' => false,
 		##
