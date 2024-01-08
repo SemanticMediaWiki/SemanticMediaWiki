@@ -111,34 +111,13 @@ final class Setup {
 	 * @since 1.9
 	 */
 	public function init( array $vars, string $rootDir ): array {
-
 		$setupFile = new SetupFile();
 		$vars = $setupFile->loadSchema( $vars );
 		Globals::replace( $vars );
 
-		//$setupCheck = new SetupCheck(
-		//	[
-		//		'SMW_VERSION' => SMW_VERSION,
-		//		'MW_VERSION'  => MW_VERSION,
-		//		'wgLanguageCode' => $vars['wgLanguageCode'],
-		//		'smwgUpgradeKey' => $vars['smwgUpgradeKey']
-		//	],
-		//	$setupFile
-		//);
-		//
-		//if ( $setupCheck->hasError() ) {
-		//
-		//	// If classified as `ERROR_EXTENSION_LOAD` then it means `extension.json`
-		//	// was invoked by `wfLoadExtension( 'SemanticMediaWiki' )` at this
-		//	// point which we don't allow as it conflicts with the setup of
-		//	// namespaces and other settings hence we reclassify the error as an
-		//	// invalid access.
-		//	if ( $setupCheck->isError( SetupCheck::ERROR_EXTENSION_LOAD ) ) {
-		//		$setupCheck->setErrorType( SetupCheck::ERROR_EXTENSION_INVALID_ACCESS );
-		//	}
-		//
-		//	$setupCheck->showErrorAndAbort( $setupCheck->isCli() );
-		//}
+		if ( !$vars['smwgIgnoreUpgradeKeyCheck'] ) {
+			$this->runUpgradeKeyCheck( $setupFile, $vars );
+		}
 
 		$this->initConnectionProviders();
 		$this->initMessageCallbackHandler();
@@ -154,6 +133,32 @@ final class Setup {
 		$this->hookDispatcher->onSetupAfterInitializationComplete( $vars );
 
 		return $vars;
+	}
+
+	private function runUpgradeKeyCheck( SetupFile $setupFile, array $vars ): void {
+		$setupCheck = new SetupCheck(
+			[
+				'SMW_VERSION' => SMW_VERSION,
+				'MW_VERSION'  => MW_VERSION,
+				'wgLanguageCode' => $vars['wgLanguageCode'],
+				'smwgUpgradeKey' => $vars['smwgUpgradeKey']
+			],
+			$setupFile
+		);
+
+		if ( $setupCheck->hasError() ) {
+
+			// If classified as `ERROR_EXTENSION_LOAD` then it means `extension.json`
+			// was invoked by `wfLoadExtension( 'SemanticMediaWiki' )` at this
+			// point which we don't allow as it conflicts with the setup of
+			// namespaces and other settings hence we reclassify the error as an
+			// invalid access.
+			if ( $setupCheck->isError( SetupCheck::ERROR_EXTENSION_LOAD ) ) {
+				$setupCheck->setErrorType( SetupCheck::ERROR_EXTENSION_INVALID_ACCESS );
+			}
+
+			$setupCheck->showErrorAndAbort( $setupCheck->isCli() );
+		}
 	}
 
 	private function addDefaultConfigurations( &$vars, $rootDir ) {
