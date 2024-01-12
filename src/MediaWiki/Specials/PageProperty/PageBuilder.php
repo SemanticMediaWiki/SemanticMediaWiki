@@ -159,9 +159,10 @@ class PageBuilder {
 				Message::get( 'smw_pp_from', Message::TEXT, Message::USER_LANGUAGE ),
 				'from',
 				$this->options->safeGet( 'from', '' ),
-				'smw-article-input',
+				'smw-page-input',
 				30,
-				[ 'class' => 'is-disabled' ] )
+				[ 'class' => 'is-disabled' ]
+			)
 			->addNonBreakingSpace()
 			->addInputField(
 				Message::get( 'smw_sbv_property', Message::TEXT, Message::USER_LANGUAGE ),
