@@ -120,6 +120,11 @@ class QuerySegment {
 	public $where = '';
 
 	/**
+	 * @var string
+	 */
+	public $sortIndexField;
+
+	/**
 	 * @var string[]
 	 */
 	public $components = [];

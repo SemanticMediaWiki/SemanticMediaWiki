@@ -136,11 +136,7 @@ class RecursiveTextProcessor {
 		}
 
 		$parserOutput = $this->parser->getOutput();
-		$track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK );
-
-		if ( $track === null ) {
-			$track = [];
-		}
+		$track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK ) ?: [];
 
 		// Track each embedded #ask process to ensure to remove
 		// blocks on the correct recursive iteration (e.g Page A containing
