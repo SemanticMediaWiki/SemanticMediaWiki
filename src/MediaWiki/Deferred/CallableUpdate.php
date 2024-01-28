@@ -7,6 +7,7 @@ use DeferrableUpdate;
 use DeferredUpdates;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Database;
+use Wikimedia\Assert\Assert;
 
 /**
  * @see MWCallableUpdate
@@ -223,6 +224,7 @@ class CallableUpdate implements DeferrableUpdate {
 	}
 
 	/**
+	 * Release all pending updates into MediaWiki's DeferredUpdates stack.
 	 * @since 2.4
 	 */
 	public static function releasePendingUpdates() {
@@ -230,6 +232,15 @@ class CallableUpdate implements DeferrableUpdate {
 			DeferredUpdates::addUpdate( $update );
 		}
 
+		self::$pendingUpdates = [];
+	}
+
+	/**
+	 * Clear all pending updates without executing them. Useful for tests.
+	 * @since 4.2
+	 */
+	public static function clearPendingUpdates() {
+		Assert::precondition( defined( 'MW_PHPUNIT_TEST' ), 'This method should only be called in tests' );
 		self::$pendingUpdates = [];
 	}
 

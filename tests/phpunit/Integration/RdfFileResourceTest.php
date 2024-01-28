@@ -30,6 +30,7 @@ class RdfFileResourceTest extends DatabaseTestCase {
 		}
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
+		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 
 		$this->fixturesFileProvider = $utilityFactory->newFixturesFactory()->newFixturesFileProvider();
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();

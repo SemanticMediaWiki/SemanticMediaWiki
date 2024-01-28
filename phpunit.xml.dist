@@ -14,6 +14,7 @@
          beStrictAboutTestsThatDoNotTestAnything="true"
          printerClass="SMW\Tests\PHPUnitResultPrinter"
          printerFile="tests/phpunit/PHPUnitResultPrinter.php"
+         stderr="true"
          verbose="true">
     <listeners>
         <listener file="tests/phpunit/ExecutionTimeTestListener.php" class="SMW\Tests\ExecutionTimeTestListener">

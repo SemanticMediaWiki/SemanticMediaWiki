@@ -2,18 +2,22 @@
 
 namespace SMW\Tests;
 
+use BacklinkCache;
+use HashBagOStuff;
+use MediaWiki\MediaWikiServices;
+use ObjectCache;
 use PHPUnit\Framework\TestResult;
+use RequestContext;
 use RuntimeException;
-use SMW\Services\ServicesFactory;
-use SMW\NamespaceExaminer;
+use SMW\DataValueFactory;
+use SMW\MediaWiki\LinkBatch;
 use SMW\PropertyRegistry;
-use SMW\Settings;
+use SMW\Services\ServicesFactory;
 use SMW\StoreFactory;
 use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
-use HashBagOStuff;
-use ObjectCache;
-use RequestContext;
+use SMWQueryProcessor;
+use Title;
 
 /**
  * @group semantic-mediawiki
@@ -80,6 +84,39 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() : void {
 		parent::setUp();
+		// #3916
+		// Reset $wgUser, which is probably 127.0.0.1, as its loaded data is probably not valid
+		// @todo Should we start setting $wgUser to something nondeterministic
+		//  to encourage tests to be updated to not depend on it?
+		$user = RequestContext::getMain()->getUser();
+		$user->clearInstanceCache( $user->mFrom );
+
+		// Explicitly close all DB connections tracked by existing LBs
+		// to make it easier to track down places that may hold onto a stale
+		// LB or connection reference.
+		$oldServices = MediaWikiServices::getInstance();
+		$oldServices->getDBLoadBalancerFactory()->destroy();
+		ServicesFactory::getInstance()->getConnectionManager()->releaseConnections();
+
+		// Reset all MediaWiki services, as well as SMW services and singletons
+		// that may have captured references to them.
+		LinkBatch::reset();
+		DataValueFactory::getInstance()->clear();
+		Exporter::clear();
+		MediaWikiServices::resetGlobalInstance();
+		StoreFactory::clear();
+		ServicesFactory::clear();
+		SMWQueryProcessor::setRecursiveTextProcessor();
+		if ( !$oldServices->hasService( 'BacklinkCacheFactory' ) ) {
+			// BacklinkCacheFactory is available starting with MW 1.37, reset the legacy singleton otherwise.
+			// Use a mock title for this to avoid premature service realization.
+			$title = $this->createMock( Title::class );
+			$title->expects( $this->any() )
+				->method( 'getPrefixedDBkey' )
+				->willReturn( 'Badtitle/Dummy title for BacklinkCache reset' );
+
+			BacklinkCache::get( $title )->clear();
+		}
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
@@ -98,29 +135,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 			define( 'SMW_PHPUNIT_DB_VERSION',  $this->getDBConnection()->getServerInfo() );
 		}
 
-		/**
-		 * MediaWiki specific setup
-		 */
-
-		// Avoid surprise on revisions etc.
-		// @see MediaWikiTestCase::doLightweightServiceReset
-		$this->testEnvironment->resetMediaWikiService( 'MainObjectStash' );
-		$this->testEnvironment->resetMediaWikiService( 'LocalServerObjectCache' );
-		$this->testEnvironment->resetMediaWikiService( 'MainWANObjectCache' );
-
-		// HACK: clear ActorStore cache to avoid failures in tests
-		// https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5199
-		$this->testEnvironment->resetMediaWikiService( 'ActorStore' );
-		$this->testEnvironment->resetMediaWikiService( 'ActorStoreFactory' );
-
 		$this->testEnvironment->clearPendingDeferredUpdates();
-
-		// #3916
-		// Reset $wgUser, which is probably 127.0.0.1, as its loaded data is probably not valid
-		// @todo Should we start setting $wgUser to something nondeterministic
-		//  to encourage tests to be updated to not depend on it?
-		$user = RequestContext::getMain()->getUser();
-		$user->clearInstanceCache( $user->mFrom );
 
 		ObjectCache::$instances[CACHE_DB] = new HashBagOStuff();
 
@@ -142,10 +157,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		if ( $this->testEnvironment !== null ) {
 			$this->testEnvironment->tearDown();
 		}
-
-		ServicesFactory::clear();
-		PropertyRegistry::clear();
-		Exporter::getInstance()->clear();
 
 		parent::tearDown();
 	}
