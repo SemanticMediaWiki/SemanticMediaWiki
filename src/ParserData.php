@@ -491,6 +491,34 @@ class ParserData {
 
 		$this->semanticData = $this->parserOutput->getExtensionData( self::DATA_ID );
 
+		/**
+		 * Addressing a semantic data handling issue specific to MediaWiki version 1.38 and above,
+		 * particularly in conjunction with the DisplayTitle extension.
+		 *
+		 * This section of the code creates DIProperty instances for '_DTITLE' and '_SKEY',
+		 * retrieves the latest property values for '_DTITLE' and '_SKEY',
+		 * and updates the semantic data if the '_DTITLE' value is a non-empty SMWDIBlob
+		 * and differs from the '_SKEY' value. This ensures proper handling and
+		 * consistency of semantic data, especially when using |sort in ask queries.
+		 */
+		if (
+			$this->semanticData instanceof SemanticData &&
+			defined( 'MW_VERSION' ) &&
+			version_compare( MW_VERSION, "1.38" )
+		) {
+			$dTitleProperty = new DIProperty( '_DTITLE' );
+			$sKeyProperty = new DIProperty( '_SKEY' );
+			if ( $this->semanticData->hasProperty( $dTitleProperty ) ) {
+				$pvDTitle = $this->semanticData->getPropertyValues( $dTitleProperty );
+				$pvDTitleDataItem = end( $pvDTitle );
+				$pvSKey = $this->semanticData->getPropertyValues( $sKeyProperty );
+				$pvSKeyDataItem = end( $pvSKey );
+				if ( $pvDTitleDataItem instanceof \SMWDIBlob && !$pvDTitleDataItem->equals( $pvSKeyDataItem ) ) {
+					$this->semanticData->addPropertyValue( '_SKEY', $pvDTitleDataItem );
+				}
+			}
+		}
+
 		if ( !( $this->semanticData instanceof SemanticData ) ) {
 			$this->setEmptySemanticData();
 		}
