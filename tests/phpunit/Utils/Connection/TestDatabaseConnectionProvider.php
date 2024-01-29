@@ -5,6 +5,8 @@ namespace SMW\Tests\Utils\Connection;
 use DatabaseBase;
 use SMW\Services\ServicesFactory;
 use SMW\Connection\ConnectionProvider;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * @license GNU GPL v2+
@@ -13,11 +15,6 @@ use SMW\Connection\ConnectionProvider;
  * @author mwjames
  */
 class TestDatabaseConnectionProvider implements ConnectionProvider {
-
-	/**
-	 * @var DatabaseBase
-	 */
-	protected $connection;
 
 	protected $id;
 
@@ -33,28 +30,23 @@ class TestDatabaseConnectionProvider implements ConnectionProvider {
 	/**
 	 * @since  2.0
 	 *
-	 * @return DatabaseBase
+	 * @return IDatabase
 	 */
 	public function getConnection() {
+		$lb = $this->getLoadBalancer();
 
-		if ( $this->connection !== null ) {
-			return $this->connection;
+		// MW 1.39+
+		if ( method_exists( $lb, 'getConnectionInternal' ) ) {
+			return $lb->getConnectionInternal( $this->id );
 		}
 
-		$loadBalancer = $this->getLoadBalancer();
-
-		// MW 1.39
-		if ( method_exists( $loadBalancer, 'getConnectionInternal' ) ) {
-			return $this->connection = $loadBalancer->getConnectionInternal( $this->id );
-		}
-
-		return $this->connection = $loadBalancer->getConnection( $this->id );
+		return $lb->getConnection( $this->id );
 	}
 
 	public function releaseConnection() {
 	}
 
-	private function getLoadBalancer() {
+	private function getLoadBalancer(): ILoadBalancer {
 		return ServicesFactory::getInstance()->create( 'DBLoadBalancer' );
 	}
 

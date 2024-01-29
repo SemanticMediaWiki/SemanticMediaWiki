@@ -19,6 +19,7 @@ use SMW\DIWikiPage;
 class SemanticDataCountMapIntegrationTest extends DatabaseTestCase {
 
 	private $semanticDataFactory;
+	private $mwHooksHandler;
 	private $subjects = [];
 
 	protected function setUp() : void {

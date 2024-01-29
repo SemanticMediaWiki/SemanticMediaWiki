@@ -30,10 +30,10 @@ use SMWQuery as Query;
 class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
 
 	private $subjectsToBeCleared = [];
-	private $subject;
 
 	private $dataValueFactory;
 	private $queryResultValidator;
+	private $semanticDataFactory;
 
 	protected function setUp() : void {
 		parent::setUp();

@@ -3,10 +3,10 @@
 namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
+use SMW\Localizer\Localizer;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * The `JSONScriptTestCaseRunner` is a convenience provider for `Json` formatted
@@ -31,11 +31,6 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 * @var FileReader
 	 */
 	private $fileReader;
-
-	/**
-	 * @var JsonTestCaseFileHandler
-	 */
-	private $jsonTestCaseFileHandler;
 
 	/**
 	 * @var JsonTestCaseContentHandler
@@ -156,7 +151,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 		// and dependent objects are reset
 		$this->registerConfigValueCallback( 'wgContLang', function( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
-			\SMW\Localizer::getInstance()->clear();
+			Localizer::clear();
 			// #4682, Avoid any surprises when the `wgLanguageCode` is changed during a test
 			\SMW\NamespaceManager::clear();
 			$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
@@ -172,7 +167,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 
 		$this->registerConfigValueCallback( 'wgLang', function( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
-			\SMW\Localizer::getInstance()->clear();
+			Localizer::clear();
 			\SMW\NamespaceManager::clear();
 			$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 			$lang = $languageFactory->getLanguage( $val );
