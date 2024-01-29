@@ -32,7 +32,6 @@
         </testsuite>
         <testsuite name="semantic-mediawiki-unit">
             <directory>tests/phpunit/includes</directory>
-            <directory>tests/phpunit/Unit</directory>
         </testsuite>
         <testsuite name="semantic-mediawiki-integration">
             <directory>tests/phpunit/Integration</directory>
