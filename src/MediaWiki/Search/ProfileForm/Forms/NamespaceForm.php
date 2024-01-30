@@ -116,7 +116,7 @@ class NamespaceForm {
 
 		$user = $specialSearch->getUser();
 
-		if ( !$user->isLoggedIn() ) {
+		if ( !$user->isRegistered() ) {
 			return;
 		}
 
