@@ -506,15 +506,17 @@ class ParserData {
 			defined( 'MW_VERSION' ) &&
 			version_compare( MW_VERSION, "1.38" )
 		) {
-			$dTitleProperty = new DIProperty( '_DTITLE' );
-			$sKeyProperty = new DIProperty( '_SKEY' );
-			if ( $this->semanticData->hasProperty( $dTitleProperty ) ) {
-				$pvDTitle = $this->semanticData->getPropertyValues( $dTitleProperty );
-				$pvDTitleDataItem = end( $pvDTitle );
-				$pvSKey = $this->semanticData->getPropertyValues( $sKeyProperty );
-				$pvSKeyDataItem = end( $pvSKey );
-				if ( $pvDTitleDataItem instanceof \SMWDIBlob && !$pvDTitleDataItem->equals( $pvSKeyDataItem ) ) {
-					$this->semanticData->addPropertyValue( '_SKEY', $pvDTitleDataItem );
+			if ( !$this->parserOutput->getPageProperty( 'defaultsort' ) ) {
+				$dTitleProperty = new DIProperty( '_DTITLE' );
+				$sKeyProperty = new DIProperty( '_SKEY' );
+				if ( $this->semanticData->hasProperty( $dTitleProperty ) ) {
+					$pvDTitle = $this->semanticData->getPropertyValues( $dTitleProperty );
+					$pvDTitleDataItem = end( $pvDTitle );
+					$pvSKey = $this->semanticData->getPropertyValues( $sKeyProperty );
+					$pvSKeyDataItem = end( $pvSKey );
+					if ( $pvDTitleDataItem instanceof \SMWDIBlob && !$pvDTitleDataItem->equals( $pvSKeyDataItem ) ) {
+						$this->semanticData->addPropertyValue( '_SKEY', $pvDTitleDataItem );
+					}
 				}
 			}
 		}
