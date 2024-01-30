@@ -504,7 +504,7 @@ class ParserData {
 		if (
 			$this->semanticData instanceof SemanticData &&
 			defined( 'MW_VERSION' ) &&
-			version_compare( MW_VERSION, "1.38" )
+			version_compare( MW_VERSION, "1.38", '>=')
 		) {
 			if ( !$this->parserOutput->getPageProperty( 'defaultsort' ) ) {
 				$dTitleProperty = new DIProperty( '_DTITLE' );
