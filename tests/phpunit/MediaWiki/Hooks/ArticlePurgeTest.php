@@ -141,6 +141,10 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
+		$validIdTitle->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
+
 		#0 Id = cache
 		$provider[] = [
 			[
@@ -168,6 +172,10 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
+		$validIdTitle->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
+
 		$provider[] = [
 			[
 				'title'  => $validIdTitle,
@@ -193,6 +201,10 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		$nullIdTitle->expects( $this->any() )
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
+
+		$nullIdTitle->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
 
 		$provider[] = [
 			[

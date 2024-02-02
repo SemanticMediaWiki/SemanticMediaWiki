@@ -3,6 +3,7 @@
 namespace SMW\Tests\Serializers;
 
 use SMW\DataItemFactory;
+use SMW\Property\SpecificationLookup;
 use SMW\Serializers\QueryResultSerializer;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
@@ -27,6 +28,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
+	private SpecificationLookup $propertySpecificationLookup;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -34,9 +36,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->propertySpecificationLookup = $this->createMock( SpecificationLookup::class );
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}

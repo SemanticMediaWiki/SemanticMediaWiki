@@ -22,6 +22,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	private $testEnvironment;
 	private $dataItemFactory;
 	private $propertyLabelFinder;
 	private $propertySpecificationLookup;
@@ -297,9 +298,13 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		);
 
+		// Normalize some equivalent HTML entities across versions.
+		$actual = $instance->format( $propertyValue, [ $type, $linker ] );
+		$actual = strtr( $actual, [ '&#160;' => '&nbsp;' ] );
+
 		$this->assertEquals(
 			$expected,
-			$instance->format( $propertyValue, [ $type, $linker ] )
+			$actual
 		);
 
 		\SMW\PropertyRegistry::clear();

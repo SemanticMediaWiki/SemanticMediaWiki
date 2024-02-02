@@ -474,7 +474,7 @@ class LocalLanguage {
 		);
 
 		foreach ( $dateOutputFormats as $key => $format ) {
-			if ( @constant( $key ) === $precision ) {
+			if ( defined( $key ) && constant( $key ) === $precision ) {
 				return $format;
 			}
 		}

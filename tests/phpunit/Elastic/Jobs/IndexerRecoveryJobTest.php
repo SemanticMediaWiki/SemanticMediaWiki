@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\Jobs;
 
+use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\Tests\TestEnvironment;
 use SMW\Elastic\Indexer\Document;
@@ -17,23 +18,21 @@ use SMW\Elastic\Indexer\Document;
  */
 class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 
+	private TestEnvironment $testEnvironment;
 	private $connection;
 	private $title;
 	private $cache;
-	private $store;
+	private ElasticStore $store;
 	private $config;
 	private $jobQueue;
 	private $indexer;
-	private $elasticFactory;
 
 	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->store = $this->createMock( ElasticStore::class );
 
 		$this->config = $this->getMockBuilder( '\SMW\Elastic\Config' )
 			->disableOriginalConstructor()
@@ -63,15 +62,17 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->elasticFactory = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
+		$elasticFactory = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->elasticFactory->expects( $this->any() )
+		$elasticFactory->expects( $this->any() )
 			->method( 'newIndexer' )
 			->will( $this->returnValue( $this->indexer ) );
 
-		$this->testEnvironment->registerObject( 'ElasticFactory', $this->elasticFactory );
+		$this->store->expects( $this->any() )
+			->method( 'getElasticFactory' )
+			->willReturn($elasticFactory);
 	}
 
 	protected function tearDown() : void {

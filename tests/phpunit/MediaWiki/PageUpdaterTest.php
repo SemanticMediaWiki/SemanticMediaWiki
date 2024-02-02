@@ -170,7 +170,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	public function testPurgeWillNotWaitOnTransactionIdleWhenCommandLineIsTrue( $purgeMethod, $titleMethod ) {
 
 		$this->connection->expects( $this->never() )
-			->method( 'onTransactionIdle' );
+			->method( 'onTransactionCommitOrIdle' );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -266,7 +266,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'update' );
 
 		$this->connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
+			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function( $callback ) {
 				return call_user_func( $callback ); }
 			) );

@@ -116,7 +116,14 @@ jobs:
           tail -n5 ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
           php ${{ env.MW_INSTALL_PATH }}/maintenance/update.php --quick
 
+      - name: Run unit tests
+        run: >
+          composer phpunit
+          --working-dir ${{ env.MW_INSTALL_PATH }}/extensions/SemanticMediaWiki
+          -- --testsuite semantic-mediawiki-unit
+
       - name: Run Tests
         run: >
           composer phpunit
           --working-dir ${{ env.MW_INSTALL_PATH }}/extensions/SemanticMediaWiki
+          -- --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure

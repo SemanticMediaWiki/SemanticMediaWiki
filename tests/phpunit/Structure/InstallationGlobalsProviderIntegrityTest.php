@@ -30,7 +30,6 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCa
 	}
 
 	protected function tearDown() : void {
-		$this->globalsProvider->clear();
 		$this->applicationFactory->clear();
 
 		parent::tearDown();

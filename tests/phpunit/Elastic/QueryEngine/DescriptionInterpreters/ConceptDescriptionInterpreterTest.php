@@ -4,7 +4,9 @@ namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\DIWikiPage;
+use SMW\Elastic\QueryEngine\TermsLookup;
 use SMW\Query\DescriptionFactory;
+use SMW\Store;
 use SMW\Tests\TestEnvironmentTrait;
 
 /**
@@ -20,6 +22,8 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $conditionBuilder;
 	private $descriptionFactory;
+	private TermsLookup $termsLookup;
+	private Store $store;
 	private $queryParser;
 
 	public function setUp() : void {

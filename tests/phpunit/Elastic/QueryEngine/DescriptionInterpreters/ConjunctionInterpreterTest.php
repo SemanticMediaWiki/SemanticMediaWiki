@@ -17,6 +17,7 @@ use SMW\Query\DescriptionFactory;
  */
 class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
+	private DescriptionFactory $descriptionFactory;
 	private $conditionBuilder;
 
 	public function setUp() : void {

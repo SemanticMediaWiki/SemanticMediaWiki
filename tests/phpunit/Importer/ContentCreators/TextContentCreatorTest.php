@@ -4,6 +4,7 @@ namespace SMW\Tests\Importer\ContentCreators;
 
 use SMW\Importer\ContentCreators\TextContentCreator;
 use SMW\Importer\ImportContents;
+use WikiPage;
 
 /**
  * @covers \SMW\Importer\ContentCreators\TextContentCreator
@@ -62,7 +63,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate() {
 
 		$this->connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
+			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function( $callback ) {
 				return call_user_func( $callback ); }
 			) );
@@ -92,7 +93,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$page->expects( $this->once() )
-			->method( 'doEditContent' )
+			->method( self::getDoEditContentMethod() )
 			->will( $this->returnValue( $status ) );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
@@ -122,7 +123,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate_WithError() {
 
 		$this->connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
+			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function( $callback ) {
 				return call_user_func( $callback ); }
 			) );
@@ -156,7 +157,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$page->expects( $this->once() )
-			->method( 'doEditContent' )
+			->method( self::getDoEditContentMethod() )
 			->will( $this->returnValue( $status ) );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
@@ -191,7 +192,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate_NotReplaceable() {
 
 		$this->connection->expects( $this->never() )
-			->method( 'onTransactionIdle' );
+			->method( 'onTransactionCommitOrIdle' );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -206,7 +207,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$page->expects( $this->never() )
-			->method( 'doEditContent' );
+			->method( self::getDoEditContentMethod() );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'newFromText' )
@@ -236,7 +237,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate_ReplaceableOnCreator() {
 
 		$this->connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
+			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function( $callback ) {
 				return call_user_func( $callback ); }
 			) );
@@ -278,7 +279,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$page->expects( $this->once() )
-			->method( 'doEditContent' )
+			->method( self::getDoEditContentMethod() )
 			->will( $this->returnValue( $status ) );
 
 		$page->expects( $this->atLeastOnce() )
@@ -313,7 +314,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate_ReplaceableOnCreator_WithNoAvailableUser() {
 
 		$this->connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
+			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function( $callback ) {
 				return call_user_func( $callback ); }
 			) );
@@ -347,7 +348,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$page->expects( $this->once() )
-			->method( 'doEditContent' )
+			->method( self::getDoEditContentMethod() )
 			->will( $this->returnValue( $status ) );
 
 		$page->expects( $this->atLeastOnce() )
@@ -377,6 +378,15 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 		$importContents->setOptions( [ 'replaceable' => [ 'LAST_EDITOR' => 'IS_IMPORTER' ] ] );
 
 		$instance->create( $importContents );
+	}
+
+	/**
+	 * Get the name of the appropriate edit method to mock.
+	 * @return string
+	 */
+	private static function getDoEditContentMethod(): string {
+		return method_exists( WikiPage::class, 'doUserEditContent' )
+			? 'doUserEditContent' : 'doEditContent';
 	}
 
 }

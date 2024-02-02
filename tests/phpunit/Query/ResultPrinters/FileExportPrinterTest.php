@@ -27,16 +27,15 @@ class FileExportPrinterTest extends \PHPUnit_Framework_TestCase {
 		// #4375 (needs to be accessed first)
 		$fileExportPrinter->expects( $this->at( 0 ) )
 			->method( 'getFileResult' )
-			->with(
-				$this->equalTo( $queryResult ),
-				$this->anything() )
+			->with( $queryResult )
 			->will( $this->returnValue( __METHOD__ ) );
 
 		$fileExportPrinter->expects( $this->at( 1 ) )
 			->method( 'getMimeType' );
 
 		$fileExportPrinter->expects( $this->at( 2 ) )
-			->method( 'getFileName' );
+			->method( 'getFileName' )
+			->willReturn( 'test' );
 
 		$fileExportPrinter->disableHttpHeader();
 

@@ -76,7 +76,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 
 		$params = [
 			'index' => 'FOO',
-			'type' => 'data',
 			'id' => 1001
 		];
 
@@ -140,7 +139,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 
 		$params = [
 			'index' => 'FOO',
-			'type' => 'data',
 			'id' => 42,
 			'_source_includes' => [ 'subject.rev_id' ]
 		];
@@ -212,7 +210,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 
 		$params = [
 			'index' => 'FOO',
-			'type' => 'data',
 			'id' => 42,
 			'_source_includes' => [ 'subject.rev_id' ]
 		];
@@ -255,7 +252,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 
 		$params = [
 			'index' => 'FOO',
-			'type' => 'data',
 			'id' => 42,
 			'_source_includes' => [ 'P:29.datField', 'subject.rev_id' ]
 		];

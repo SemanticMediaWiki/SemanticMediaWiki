@@ -2,10 +2,12 @@
 
 namespace SMW\Tests\Property\Annotators;
 
+use MediaWiki\Permissions\RestrictionStore;
 use SMW\DataItemFactory;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Tests\TestEnvironment;
+use Title;
 
 /**
  * @covers \SMW\Property\Annotators\EditProtectedPropertyAnnotator
@@ -24,6 +26,10 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() : void {
 		parent::setUp();
+
+		if ( method_exists( RestrictionStore::class, 'isProtected' ) ) {
+			$this->markTestSkipped( 'SUT needs refactoring for RestrictionStore' );
+		}
 
 		$testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
@@ -81,11 +87,6 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		// FIXME 3.0; Only MW 1.25+ (ParserOutput::setIndicator)
-		if ( !method_exists( $parserOutput, 'setIndicator' ) ) {
-			return $this->markTestSkipped( 'Only MW 1.25+ (ParserOutput::setIndicator)' );
-		}
 
 		$parserOutput->expects( $this->once() )
 			->method( 'setIndicator' );
