@@ -15,7 +15,7 @@ use SMW\Connection\CallbackConnectionProvider;
  */
 class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
-	private $conection;
+	private $connection;
 
 	public function setUp() : void {
 

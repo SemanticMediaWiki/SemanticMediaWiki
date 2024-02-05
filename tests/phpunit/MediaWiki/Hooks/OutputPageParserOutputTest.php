@@ -28,6 +28,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	private $testEnvironment;
 	private $applicationFactory;
 	private $outputPage;
 	private $parserOutput;
@@ -387,6 +388,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	protected function makeParserOutput( $data ) {
 		$parserOutput = new ParserOutput();
 		$parserOutput->setExtensionData( 'smwdata', $data );
+		$parserOutput->setText( 'test' );
 		return $parserOutput;
 	}
 

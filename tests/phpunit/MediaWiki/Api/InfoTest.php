@@ -19,6 +19,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	private $testEnvironment;
 	private $apiFactory;
 	private $jobQueue;
 

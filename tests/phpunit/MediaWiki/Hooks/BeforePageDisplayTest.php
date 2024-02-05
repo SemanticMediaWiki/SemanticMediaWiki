@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\User\UserOptionsLookup;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\BeforePageDisplay
@@ -19,6 +21,9 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	private $request;
 	private $skin;
 	private $title;
+
+	private UserOptionsLookup $userOptionsLookup;
+	private TestEnvironment $testEnvironment;
 
 	protected function setUp() : void {
 
@@ -53,6 +58,15 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 		$this->skin->expects( $this->any() )
 			->method( 'getContext' )
 			->will( $this->returnValue( $requestContext ) );
+
+		$this->userOptionsLookup = $this->createMock( UserOptionsLookup::class );
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->registerObject( 'UserOptionsLookup', $this->userOptionsLookup );
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -107,9 +121,9 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user->expects( $this->any() )
+		$this->userOptionsLookup->expects( $this->any() )
 			->method( 'getOption' )
-			->with( $this->equalTo( 'smw-prefs-general-options-suggester-textinput' ) )
+			->with( $user, 'smw-prefs-general-options-suggester-textinput' )
 			->will( $this->returnValue( true ) );
 
 		$this->outputPage->expects( $this->exactly( 1 ) )

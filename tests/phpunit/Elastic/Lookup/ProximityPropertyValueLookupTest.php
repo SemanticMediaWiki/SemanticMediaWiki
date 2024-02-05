@@ -21,6 +21,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $logger;
+	private $idTable;
 	private $store;
 	private $elasticClient;
 
@@ -69,7 +70,6 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$params = [
 			'index' => null,
-			'type' => 'data',
 			'body' => [
 				'_source' => [ 'P:42.wpgField' ],
 				'from' => 0,

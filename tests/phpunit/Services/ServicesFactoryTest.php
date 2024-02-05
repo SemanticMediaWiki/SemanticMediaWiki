@@ -15,7 +15,7 @@ use SMW\Services\ServicesFactory;
  */
 class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 
-	private $ServicesFactory;
+	private ServicesFactory $servicesFactory;
 
 	protected function setUp() : void {
 		parent::setUp();

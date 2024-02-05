@@ -96,18 +96,11 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider wikiPageDataProvider
 	 */
 	public function testFetchContentInfoWithDisabledContentHandler( $parameters, $expected ) {
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
-			->setConstructorArgs( [
-				$parameters['wikiPage'],
-				$parameters['revision'],
-				$parameters['user']
-			] )
-			->setMethods( [ 'hasContentForEditMethod' ] )
-			->getMock();
-
-		$instance->expects( $this->any() )
-			->method( 'hasContentForEditMethod' )
-			->will( $this->returnValue( false ) );
+		$instance = new EditInfo(
+			$parameters['wikiPage'],
+			$parameters['revision'],
+			$parameters['user']
+		);
 
 		$this->assertEquals(
 			$expected,
@@ -150,26 +143,6 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 			null
 		];
 
-		#1
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->setConstructorArgs( [ $title ] )
-			->getMock();
-
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareContentForEdit' )
-			->will( $this->returnValue( false ) );
-
-		$provider[] = [
-			[
-				'editInfo' => false,
-				'wikiPage' => $wikiPage,
-				'revision' => $this->newRevisionStub(),
-				'user' => $user
-			],
-			null
-		];
-
-		#2
 		$editInfo = (object)[];
 		$editInfo->output = new ParserOutput();
 
@@ -191,7 +164,6 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 			$editInfo->output
 		];
 
-		#3
 		$editInfo = (object)[];
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )

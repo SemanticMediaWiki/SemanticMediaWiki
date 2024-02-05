@@ -33,11 +33,11 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 	}
 
 	protected function tearDown() : void {

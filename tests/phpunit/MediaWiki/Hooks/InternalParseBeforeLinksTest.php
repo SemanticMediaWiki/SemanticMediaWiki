@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use ParserOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
 use SMW\Tests\TestEnvironment;
@@ -21,6 +22,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 	private $parserFactory;
+	private $stripState;
 	private $testEnvironment;
 
 	protected function setUp() : void {
@@ -67,8 +69,9 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parser->expects( $this->once() )
-			->method( 'getOptions' );
+		$parser->expects( $this->any() )
+			->method( 'getOptions' )
+			->willReturn( $this->createMock( ParserOptions::class ) );
 
 		$instance = new InternalParseBeforeLinks(
 			$parser,
@@ -217,6 +220,10 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		$parser = $this->getMockBuilder( 'Parser' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$parser->expects( $this->any() )
+			->method( 'getOptions' )
+			->willReturn( $parserOptions );
 
 		$parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )

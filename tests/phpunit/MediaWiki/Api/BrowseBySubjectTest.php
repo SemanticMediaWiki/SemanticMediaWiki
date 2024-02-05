@@ -21,6 +21,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	private $testEnvironment;
 	private $apiFactory;
 	private $semanticDataFactory;
 

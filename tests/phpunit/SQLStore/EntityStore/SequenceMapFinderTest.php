@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\SequenceMapFinder;
 
 /**
@@ -17,7 +18,7 @@ class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $cache;
 	private $idCacheManager;
-	private $conection;
+	private Database $connection;
 
 	protected function setUp() : void {
 
@@ -33,7 +34,7 @@ class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'get' )
 			->will( $this->returnValue( $this->cache ) );
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -58,8 +59,8 @@ class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->equalTo( $row ),
-				$this->equalTo( [ 'smw_id' ] ),
-				$this->equalTo( $row ) );
+				$this->equalTo( 'smw_id' ),
+				$this->equalTo( [ 'smw_seqmap' => null ] ) );
 
 		$instance = new SequenceMapFinder(
 			$this->connection,

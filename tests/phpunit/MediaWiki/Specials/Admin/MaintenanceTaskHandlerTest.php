@@ -74,6 +74,7 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 				$taskHandler
 			]
 		);
+		$instance->setFeatureSet( SMW_ADM_MAINTENANCE_SCRIPT_DOCS );
 
 		$this->assertInternalType(
 			'string',

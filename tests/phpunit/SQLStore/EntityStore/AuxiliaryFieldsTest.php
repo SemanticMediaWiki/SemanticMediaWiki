@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use Onoi\Cache\Cache;
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\AuxiliaryFields;
 use Onoi\Cache\FixedInMemoryLruCache;
@@ -21,6 +22,7 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
 	private $idCacheManager;
+	private Cache $cache;
 
 	protected function setUp() : void {
 

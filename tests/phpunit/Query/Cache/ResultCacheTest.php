@@ -25,6 +25,7 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $queryFactory;
 	private $blobStore;
+	private Container $container;
 	private $cacheStats;
 
 	protected function setUp() : void {

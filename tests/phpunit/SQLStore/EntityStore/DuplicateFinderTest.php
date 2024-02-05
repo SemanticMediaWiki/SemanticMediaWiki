@@ -78,7 +78,7 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $query ) );
 
 		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( $resultWrapper ) );
 
 		$instance = new DuplicateFinder(

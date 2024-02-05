@@ -627,7 +627,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				],
 				'propertyValues' => [
 					'Foo Bar',
-					'1001'
+					'Category:1001'
 				]
 			]
 		];

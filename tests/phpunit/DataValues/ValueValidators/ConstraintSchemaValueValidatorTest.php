@@ -18,10 +18,12 @@ use SMW\Tests\TestEnvironment;
  */
 class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
+	private $testEnvironment;
 	private $dataItemFactory;
 	private $dataValueFactory;
 	private $constraintCheckRunner;
 	private $schemafinder;
+	private $jobQueue;
 
 	protected function setUp() : void {
 		parent::setUp();

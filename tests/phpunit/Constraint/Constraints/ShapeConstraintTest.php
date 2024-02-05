@@ -5,6 +5,7 @@ namespace SMW\Tests\Constraint\Constraints;
 use SMW\Constraint\Constraints\ShapeConstraint;
 use SMW\Tests\PHPUnitCompat;
 use SMW\DataItemFactory;
+use SMWDataValue;
 
 /**
  * @covers \SMW\Constraint\Constraints\ShapeConstraint
@@ -69,10 +70,10 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'Foo' ) )
 			->will( $this->returnValue( false ) );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'addError', 'getCallable' ] )
-			->getMockForAbstractClass();
+		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue->expects( $this->any() )
+			->method( 'getWikiValue' )
+			->willReturn( 'foo' );
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
@@ -110,10 +111,10 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'Foo' ) )
 			->will( $this->returnValue( true ) );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'addError', 'getCallable' ] )
-			->getMockForAbstractClass();
+		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue->expects( $this->any() )
+			->method( 'getWikiValue' )
+			->willReturn( 'foo' );
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
@@ -159,10 +160,10 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [ $dataItem, $dataItem ] ) );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'addError', 'getCallable' ] )
-			->getMockForAbstractClass();
+		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue->expects( $this->any() )
+			->method( 'getWikiValue' )
+			->willReturn( 'foo' );
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
@@ -184,7 +185,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_shape_constraint_invalid_min_textlength() {
-
 		$constraint = [
 			'shape_constraint' => [ [ 'property' => 'Foo', 'min_textlength' => 100 ] ]
 		];
@@ -212,10 +212,10 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [ $dataItem ] ) );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'addError', 'getCallable' ] )
-			->getMockForAbstractClass();
+		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue->expects( $this->any() )
+			->method( 'getWikiValue' )
+			->willReturn( 'foo' );
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )

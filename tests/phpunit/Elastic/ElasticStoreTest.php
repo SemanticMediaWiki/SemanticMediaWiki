@@ -86,6 +86,9 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->any() )
 			->method( 'getType' )
 			->will( $this->returnValue( 'mysql' ) );
+		$database->expects( $this->any() )
+			->method( 'getServerInfo' )
+			->willReturn( '5.7.21' );
 
 		$database->expects( $this->any() )
 			->method( 'query' )

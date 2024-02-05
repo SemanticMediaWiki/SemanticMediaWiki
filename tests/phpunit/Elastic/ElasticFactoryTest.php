@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic;
 
+use Onoi\MessageReporter\MessageReporter;
 use SMW\Elastic\ElasticFactory;
 use SMW\Tests\TestEnvironment;
 
@@ -16,6 +17,7 @@ use SMW\Tests\TestEnvironment;
  */
 class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
+	private MessageReporter $messageReporter;
 	private $store;
 	private $outputFormatter;
 	private $conditionBuilder;
