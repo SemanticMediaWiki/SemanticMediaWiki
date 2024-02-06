@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
+use RequestContext;
 
 /**
  * Module to support various tasks initiate using the API interface
