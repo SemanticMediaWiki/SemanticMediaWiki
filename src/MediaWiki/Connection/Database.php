@@ -601,7 +601,7 @@ class Database {
 	 * @since 1.9
 	 */
 	public function makeList( $data, $mode = self::LIST_COMMA ) {
-		return $this->connRef->getConnection( 'write' )->makeList( $data, $mode );
+		return $this->connRef->getConnection( 'read' )->makeList( $data, $mode );
 	}
 
 	/**
