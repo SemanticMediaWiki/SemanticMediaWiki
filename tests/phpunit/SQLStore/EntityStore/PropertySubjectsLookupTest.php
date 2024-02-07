@@ -63,7 +63,7 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $query ) );
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -129,7 +129,7 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $query ) );
 
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( $resultWrapper ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
