@@ -162,20 +162,8 @@ class ItemFetcher {
 
 		// If its a chain we need to reload since the DataItem's use are traversed
 		// from each chain element
-		if ( !$this->prefetchCache->isCached( $property ) || $requestOptions->isChain ) {
-			$list = $this->dataItems;
-
-			if ( $requestOptions->isChain ) {
-				$list = $dataItems;
-
-				// Allow the first chain element to use the entire result list
-				// to filter members as early as possible from the chain
-				if ( $requestOptions->isFirstChain ?? false ) {
-					$list = $this->dataItems;
-				}
-			}
-
-			$this->prefetchCache->prefetch( $list, $property, $requestOptions );
+		if ( !$this->prefetchCache->isCached( $property, $requestOptions ) ) {
+			$this->prefetchCache->prefetch( $this->dataItems, $property, $requestOptions );
 		}
 
 		foreach ( $dataItems as $subject ) {
