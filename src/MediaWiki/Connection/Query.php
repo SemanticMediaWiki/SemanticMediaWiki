@@ -363,7 +363,7 @@ class Query {
 	 * @return iterable
 	 */
 	public function execute( $fname ) {
-		return $this->connection->query( $this, $fname );
+		return $this->connection->readQuery( $this, $fname );
 	}
 
 	private function sql() {
