@@ -19,6 +19,8 @@ use SMW\Options;
  */
 class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
+	private DescriptionFactory $descriptionFactory;
+	private DataItemFactory $dataItemFactory;
 	private $conditionBuilder;
 
 	public function setUp() : void {

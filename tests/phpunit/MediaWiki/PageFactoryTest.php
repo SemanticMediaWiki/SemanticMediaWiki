@@ -61,6 +61,10 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$title->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
+
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
 			->will( $this->returnValue( $namespace ) );

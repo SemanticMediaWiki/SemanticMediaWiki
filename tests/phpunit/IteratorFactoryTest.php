@@ -21,7 +21,7 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IteratorFactory();
 
-		$result = $this->getMockBuilder( '\ResultWrapper' )
+		$result = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 

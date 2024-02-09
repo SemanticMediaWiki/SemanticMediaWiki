@@ -5,7 +5,7 @@ namespace SMW\Tests\Elastic\Hooks;
 use SMW\Elastic\Hooks\UpdateEntityCollationComplete;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use FakeResultWrapper;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\Elastic\Hooks\UpdateEntityCollationComplete
@@ -20,6 +20,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	private TestEnvironment $testEnvironment;
 	private $store;
 	private $messageReporter;
 	private $rebuilder;
@@ -35,7 +36,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,27 +50,27 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->will( $this->returnValue( $semanticData ) );
 
 		$this->rebuilder = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rebuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) {
+		$callback = static function ( $type ) use ( $connection, $database ) {
 
 			if ( $type === 'mw.db' ) {
-				return $this->database;
+				return $database;
 			};
 
-			return $this->connection;
+			return $connection;
 		};
 
 		$this->store->expects( $this->any() )

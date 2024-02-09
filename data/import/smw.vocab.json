@@ -2,6 +2,16 @@
 	"description": "Semantic MediaWiki default vocabulary import",
 	"import": [
 		{
+			"page": "Smw import schema",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": {
+				"importFrom": "/vocabularies/schema.txt"
+			},
+			"options": {
+				"replaceable": false
+			}
+		},
+		{
 			"page": "Smw import skos",
 			"namespace": "NS_MEDIAWIKI",
 			"contents": {

@@ -6,11 +6,9 @@
 		"index.max_result_window": "50000"
 	},
 	"mappings": {
-		"lookup": {
-			"properties": {
-				"id": {
-					"type": "long"
-				}
+		"properties": {
+			"id": {
+				"type": "long"
 			}
 		}
 	}

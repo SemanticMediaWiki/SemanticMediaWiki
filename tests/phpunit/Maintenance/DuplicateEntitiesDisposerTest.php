@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Maintenance;
 
-use FakeResultWrapper;
 use SMW\Maintenance\DuplicateEntitiesDisposer;
 
 /**

@@ -5,7 +5,13 @@ namespace SMW\Tests\SQLStore;
 use Onoi\Cache\FixedInMemoryLruCache;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\EntityStore\CacheWarmer;
+use SMW\SQLStore\EntityStore\EntityIdFinder;
 use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\SQLStore\EntityStore\IdEntityFinder;
+use SMW\SQLStore\EntityStore\SequenceMapFinder;
+use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 
@@ -22,11 +28,16 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $cache;
-	private $idMatchFinder;
+	private IdEntityFinder $idEntityFinder;
+	private CacheWarmer $cacheWarmer;
+	private PropertyTableHashes $propertyTableHashes;
+	private SequenceMapFinder $sequenceMapFinder;
+	private EntityIdFinder $entityIdFinder;
 	private $duplicateFinder;
 	private $tableFieldUpdater;
 	private $auxiliaryFields;
 	private $factory;
+	private Database $connection;
 
 	protected function setUp() : void {
 
@@ -75,7 +86,7 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

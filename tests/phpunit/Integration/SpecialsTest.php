@@ -1,11 +1,12 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Integration;
 
 use FauxRequest;
-use Language;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
+use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
 use SpecialPageFactory;
 
@@ -38,7 +39,7 @@ use SpecialPageFactory;
  * @group SMWExtension
  * @group medium
  */
-class SpecialsTest extends SemanticMediaWikiTestCase {
+class SpecialsTest extends DatabaseTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -52,12 +53,12 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @dataProvider specialPageProvider
 	 *
-	 * @param $specialPage
+	 * @param $specialPageProvider
 	 */
-	public function testSpecial( SpecialPage $specialPage ) {
+	public function testSpecial( callable $specialPageProvider ) {
 
 		try {
-			$specialPage->execute( '' );
+			$specialPageProvider()->execute( '' );
 		}
 		catch ( \Exception $exception ) {
 			if ( !( $exception instanceof \PermissionsError ) && !( $exception instanceof \ErrorPageError ) ) {
@@ -74,9 +75,9 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 	 *
 	 * Test created in response to bug 44191
 	 *
-	 * @param $specialPage
+	 * @param $specialPageProvider
 	 */
-	public function testSpecialAliasesContLang( SpecialPage $specialPage ) {
+	public function testSpecialAliasesContLang( callable $specialPageProvider ) {
 
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 
@@ -89,7 +90,7 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 
 			$aliases = $langObj->getSpecialPageAliases();
 			$found = false;
-			$name = $specialPage->getName();
+			$name = $specialPageProvider()->getName();
 
 			// Check against available aliases
 			foreach ( $aliases as $n => $values ) {
@@ -135,20 +136,36 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 		];
 
 		foreach ( $specialPages as $special ) {
+			// Defer instantiating the special pages until the test runs
+			// to avoid prematurely capturing service references that may become stale later.
+			$specialPageCallable = static function() use ( $special, $request ): SpecialPage {
+				$specialPage = MediaWikiServices::getInstance()->getSpecialPageFactory()->getPage(
+					$special
+				);
 
-			$specialPage = MediaWikiServices::getInstance()->getSpecialPageFactory()->getPage(
-				$special
-			);
+				$context = RequestContext::newExtraneousContext( $specialPage->getPageTitle() );
+				$context->setRequest( $request );
+				$specialPage->setContext( $context );
 
-			$context = RequestContext::newExtraneousContext( $specialPage->getPageTitle() );
-			$context->setRequest( $request );
+				return $specialPage;
+			};
 
-			$specialPage->setContext( clone $context );
-			$argLists[] = [ clone $specialPage ];
+			$specialPageWithSuperUserCallable = static function() use ( $special, $request ): SpecialPage {
+				$specialPage = MediaWikiServices::getInstance()->getSpecialPageFactory()->getPage(
+					$special
+				);
 
-			$context->setUser( $this->getUser() );
-			$specialPage->setContext( $context );
-			$argLists[] = [ $specialPage ];
+				$context = RequestContext::newExtraneousContext( $specialPage->getPageTitle() );
+				$context->setRequest( $request );
+				$context->setUser( new MockSuperUser() );
+				$specialPage->setContext( $context );
+
+				return $specialPage;
+			};
+
+			$argLists[] = [ $specialPageCallable ];
+
+			$argLists[] = [ $specialPageWithSuperUserCallable ];
 		}
 
 		return $argLists;

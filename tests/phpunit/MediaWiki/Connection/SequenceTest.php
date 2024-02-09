@@ -69,7 +69,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'postgres' ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
+			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function( $callback ) { return $callback(); } ) );
 
 		$this->connection->expects( $this->once() )

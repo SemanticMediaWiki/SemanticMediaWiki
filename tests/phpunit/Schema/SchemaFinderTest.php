@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Schema;
 
+use Onoi\Cache\Cache;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMWDIBlob as DIBlob;
@@ -20,6 +21,7 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $propertySpecificationLookup;
+	private Cache $cache;
 
 	protected function setUp() : void {
 

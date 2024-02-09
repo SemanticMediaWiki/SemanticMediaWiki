@@ -2,7 +2,7 @@
 
 - Use [`Composer`](https://packagist.org/packages/mediawiki/) as deployment tool
 - Loaded via MediaWiki's `extension.json`
-- Use Travis-CI as continuous integration platform
+- Use Make and Docker to support both, local testing and GitHub Actions continuous integration
 
 ##  Guidelines and conventions
 
@@ -19,11 +19,10 @@ Some general guidelines are:
 The following extensions can be used as inspiration on "How to write an extension" in connection with Semantic MediaWiki.
 
 - [`SemanticMetaTags`](https://github.com/SemanticMediaWiki/SemanticMetaTags)
-- [`SemanticApprovedRevs `](https://github.com/SemanticMediaWiki/SemanticApprovedRevs)
-- [`SemanticExtraSpecialProperties `](https://github.com/SemanticMediaWiki/SemanticExtraSpecialProperties)
-- [`SemanticBreadcrumbLinks `](https://github.com/SemanticMediaWiki/SemanticBreadcrumbLinks)
-- [`SemanticScribunto `](https://github.com/SemanticMediaWiki/SemanticScribunto)
-- [`SemanticGlossary  `](https://github.com/SemanticMediaWiki/SemanticGlossary)
+- [`SemanticExtraSpecialProperties`](https://github.com/SemanticMediaWiki/SemanticExtraSpecialProperties)
+- [`SemanticBreadcrumbLinks`](https://github.com/SemanticMediaWiki/SemanticBreadcrumbLinks)
+- [`SemanticScribunto`](https://github.com/SemanticMediaWiki/SemanticScribunto)
+- [`SemanticGlossary`](https://github.com/SemanticMediaWiki/SemanticGlossary)
 
 ## Technical notes
 
@@ -39,6 +38,7 @@ tests/
 </pre>
 
 ### Continuous integration
+> This section is outdated. Most SMW extensions use Make, Docker and Docker-Compose to run tests both, locally and on GitHub. Coverage is repored on Codecov.
 
 Using Travis-CI is fairly easy to set up and integrable with Semantic MediaWiki, the best approach is to select an existing repository and copy files such as:
 

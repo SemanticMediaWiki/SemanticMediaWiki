@@ -8,6 +8,7 @@ use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
 use SMW\SQLStore\QueryEngineFactory;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Validators\QuerySegmentValidator;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter
@@ -26,6 +27,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $valueMatchConditionBuilder;
 	private $descriptionFactory;
 	private $dataItemFactory;
+	private QuerySegmentValidator $querySegmentValidator;
 
 	protected function setUp() : void {
 		parent::setUp();

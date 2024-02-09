@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils;
 
 use SMW\Utils\Pager;
 use SMW\Tests\PHPUnitCompat;
+use Title;
 
 /**
  * @covers \SMW\Utils\Pager
@@ -19,10 +20,10 @@ class PagerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testFilter() {
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = $this->createMock( Title::class );
+		$title->expects( $this->any() )
+			->method( 'getPrefixedText' )
+			->willReturn( 'Test' );
 
 		$this->assertInternalType(
 			'string',

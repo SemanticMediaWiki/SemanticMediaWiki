@@ -34,7 +34,7 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( new \FakeResultWrapper( [ $row ] ) ) );
+			->will( $this->returnValue( new \Wikimedia\Rdbms\FakeResultWrapper( [ $row ] ) ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
+use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Services\ServicesContainer;
 use SMW\DIWikiPage;
@@ -20,7 +21,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $bulk;
-	private $servicesContainer;
+	private Client $connection;
 	private $logger;
 	private $jobQueue;
 	private $testEnvironment;
@@ -81,7 +82,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = [
 			'index' => '_index_abc',
-			'type' => 'data',
 			'id' => 42,
 			'body' => [ 'subject' => [
 				'title' => 'Foo',
@@ -100,7 +100,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$this->connection->expects( $this->any() )
-			->method( 'getIndexNameByType' )
+			->method( 'getIndexName' )
 			->with( $this->equalTo( 'data' ) )
 			->will( $this->returnValue( '_index_abc' ) );
 

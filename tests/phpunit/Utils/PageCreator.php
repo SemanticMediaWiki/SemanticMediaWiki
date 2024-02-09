@@ -13,6 +13,7 @@ use Title;
 use UnexpectedValueException;
 use SMW\MediaWiki\EditInfo;
 use SMW\Services\ServicesFactory;
+use User;
 
 /**
  * @license GNU GPL v2+
@@ -63,7 +64,9 @@ class PageCreator {
 	public function createPage( Title $title, $editContent = '', $pageContentLanguage = '' ) {
 
 		if ( $pageContentLanguage !== '' ) {
-			\Hooks::register( 'PageContentLanguage', function( $titleByHook, &$pageLang ) use( $title, $pageContentLanguage ) {
+			$services = MediaWikiServices::getInstance();
+			$pageContentLanguage = $services->getLanguageFactory()->getLanguage( $pageContentLanguage );
+			$services->getHookContainer()->register( 'PageContentLanguage', function( $titleByHook, &$pageLang ) use( $title, $pageContentLanguage ) {
 
 				// Only change the pageContentLanguage for the selected page
 				if ( $title->getPrefixedDBKey() === $titleByHook->getPrefixedDBKey() ) {
@@ -130,8 +133,9 @@ class PageCreator {
 		$reason = "integration test";
 		$source = $this->getPage()->getTitle();
 
+		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 		$mp = MediaWikiServices::getInstance()->getMovePageFactory()->newMovePage( $source, $target );
-		$status = $mp->move( new MockSuperUser(), $reason, $isRedirect );
+		$status = $mp->move( $user, $reason, $isRedirect );
 
 		TestEnvironment::executePendingDeferredUpdates();
 

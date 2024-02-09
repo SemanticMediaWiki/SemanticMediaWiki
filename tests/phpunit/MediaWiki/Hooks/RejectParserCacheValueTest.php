@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\RejectParserCacheValue;
 use SMW\Tests\TestEnvironment;
 
@@ -20,6 +19,8 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $dependencyValidator;
 	private $namespaceExaminer;
+
+	private $entityCache;
 	private $logger;
 
 	protected function setUp() : void {

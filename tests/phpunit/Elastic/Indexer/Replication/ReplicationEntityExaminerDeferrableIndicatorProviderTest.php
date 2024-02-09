@@ -20,6 +20,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 
 	use PHPUnitCompat;
 
+	private TestEnvironment $testEnvironment;
 	private $store;
 	private $connection;
 	private $entityCache;

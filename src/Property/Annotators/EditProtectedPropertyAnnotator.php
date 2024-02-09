@@ -64,11 +64,6 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 			return false;
 		}
 
-		// FIXME 3.0; Only MW 1.25+ (ParserOutput::setIndicator)
-		if ( !method_exists( $parserOutput, 'setIndicator' ) ) {
-			return false;
-		}
-
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
 
 		if ( !$this->isEnabledProtection( $property ) && !$this->hasEditProtection() ) {

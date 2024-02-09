@@ -59,7 +59,7 @@
 		"seld/jsonlint": "^1.7",
 		"justinrainbow/json-schema": "~5.2",
 		"jeroen/file-fetcher": "^6|^5|^4.4",
-		"wikimedia/cdb": "^2|^1",
+		"wikimedia/cdb": "^3|^2|^1",
 		"wikimedia/textcat": "^2|^1.1"
 	},
 	"require-dev": {

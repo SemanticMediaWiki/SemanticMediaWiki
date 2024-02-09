@@ -4,8 +4,10 @@ namespace SMW\MediaWiki;
 
 use IContextSource;
 use Language;
+use MediaWiki\Navigation\PagerNavigationBuilder;
 use MediaWiki\Navigation\PrevNextNavigationRenderer;
 use Message;
+use RequestContext;
 use RuntimeException;
 use Title;
 
@@ -98,11 +100,31 @@ class MessageBuilder {
 	 * @return string
 	 */
 	public function prevNextToText( Title $title, $limit, $offset, array $query, $isAtTheEnd ) {
-		if ( class_exists( 'MediaWiki\Navigation\PrevNextNavigationRenderer' ) ) {
-			$prevNext = new PrevNextNavigationRenderer( \RequestContext::getMain() );
-			return $prevNext->buildPrevNextNavigation( $title, $offset, $limit, $query, $isAtTheEnd );
+		if ( class_exists( PagerNavigationBuilder::class ) ) {
+			// MW > 1.39
+			$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+			$navBuilder
+				->setPage( $title )
+				->setLinkQuery( [ 'limit' => $limit, 'offset' => $offset ] + $query )
+				->setLimitLinkQueryParam( 'limit' )
+				->setCurrentLimit( $limit )
+				->setPrevTooltipMsg( 'prevn-title' )
+				->setNextTooltipMsg( 'nextn-title' )
+				->setLimitTooltipMsg( 'shown-title' );
+
+			if ( $offset > 0 ) {
+				$navBuilder->setPrevLinkQuery( [ 'offset' => (string)max( $offset - $limit, 0 ) ] );
+			}
+
+			if ( !$isAtTheEnd ) {
+				$navBuilder->setNextLinkQuery( [ 'offset' => (string)( $offset + $limit ) ] );
+			}
+
+			return $navBuilder->getHtml();
 		} else {
-			return $this->getLanguage()->viewPrevNext( $title, $offset, $limit, $query, $isAtTheEnd );
+			// MW 1.34 - MW 1.39
+			$prevNext = new PrevNextNavigationRenderer( RequestContext::getMain() );
+			return $prevNext->buildPrevNextNavigation( $title, $offset, $limit, $query, $isAtTheEnd );
 		}
 	}
 

@@ -5,10 +5,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use Onoi\EventListener\EventListener;
 
-Hooks::register( 'SMW::Event::RegisterEventListeners', function( EventListener $eventListener ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Event::RegisterEventListeners', function( EventListener $eventListener ) {
 
 	// $eventListener->registerCallback( 'FooEvent' , [ $this, 'onFooEvent' ] );
 

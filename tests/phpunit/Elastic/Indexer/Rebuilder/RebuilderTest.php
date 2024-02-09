@@ -50,6 +50,10 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\NullMessageReporter' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->connection->expects( $this->any() )
+			->method( 'getVersion' )
+			->willReturn( '6.4.0' );
 	}
 
 	public function testCanConstruct() {
@@ -132,17 +136,10 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateIndices() {
-
-		$indices = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'delete', 'existsAlias', 'updateAliases' ] )
-			->getMock();
-
-		$indices->expects( $this->atLeastOnce() )
+		$this->connection->expects( $this->exactly( 2 ) )
+			->method( 'createIndex' );
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'updateAliases' );
-
-		$this->connection->expects( $this->any() )
-			->method( 'indices' )
-			->will( $this->returnValue( $indices ) );
 
 		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'setLock' );
@@ -163,20 +160,11 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetDefaults() {
+		$this->connection->expects( $this->exactly( 2 ) )
+			->method( 'openIndex' );
 
-		$indices = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'delete', 'close', 'open' ] )
-			->getMock();
-
-		$indices->expects( $this->atLeastOnce() )
-			->method( 'open' );
-
-		$indices->expects( $this->atLeastOnce() )
-			->method( 'close' );
-
-		$this->connection->expects( $this->any() )
-			->method( 'indices' )
-			->will( $this->returnValue( $indices ) );
+		$this->connection->expects( $this->exactly( 2 ) )
+			->method( 'closeIndex' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'hasIndex' )

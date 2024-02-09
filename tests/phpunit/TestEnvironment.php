@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use DeferredUpdates;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Localizer;
@@ -56,7 +57,7 @@ class TestEnvironment {
 	 * @since 2.4
 	 */
 	public static function clearPendingDeferredUpdates() {
-		CallableUpdate::releasePendingUpdates();
+		CallableUpdate::clearPendingUpdates();
 		\DeferredUpdates::clearPendingUpdates();
 	}
 

@@ -4,6 +4,7 @@ namespace SMW\Tests\Elastic\Indexer;
 
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\DIWikiPage;
+use SMW\Store;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
@@ -27,6 +28,7 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 	private $logger;
 	private $entityCache;
 	private $revisionGuard;
+	private Store $store;
 
 	protected function setUp() : void {
 
@@ -93,21 +95,12 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getFile' )
 			->will( $this->returnValue( $file ) );
 
-		$ingest = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'putPipeline' ] )
-			->getMock();
-
-		$ingest->expects( $this->once() )
-			->method( 'putPipeline' );
-
 		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$client->expects( $this->once() )
-			->method( 'ingest' )
-			->will( $this->returnValue( $ingest ) );
+			->method( 'ingestPutPipeline' );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )

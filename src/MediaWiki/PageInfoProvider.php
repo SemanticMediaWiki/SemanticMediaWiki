@@ -189,7 +189,7 @@ class PageInfoProvider implements PageInfo {
 		}
 
 		// MW < 1.37
-		return $title->isProtected();
+		return $title->isProtected( $action );
 	}
 
 }

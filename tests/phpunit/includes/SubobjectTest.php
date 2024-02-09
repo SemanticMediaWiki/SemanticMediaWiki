@@ -23,6 +23,8 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	private $testEnvironment;
+
 	private $semanticDataValidator;
 
 	protected function setUp() : void {

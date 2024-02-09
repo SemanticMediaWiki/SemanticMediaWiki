@@ -278,7 +278,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
+			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function( $callback ) {
 				return call_user_func( $callback );
 			}
@@ -308,11 +308,6 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCleanUpOnTransactionIdleAvoidOnSubobject() {
-
-		if ( !method_exists( '\PHPUnit_Framework_MockObject_Builder_InvocationMocker', 'withConsecutive' ) ) {
-			$this->markTestSkipped( 'PHPUnit_Framework_MockObject_Builder_InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
-		}
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getDataItemById' ] )
 			->getMock();
@@ -334,7 +329,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
+			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function( $callback ) {
 				return $callback();
 			} ) );

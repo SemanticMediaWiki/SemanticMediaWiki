@@ -43,8 +43,6 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			'smwgSparqlCustomConnector',
 			$this->smwgSparqlCustomConnector
 		);
-
-		$this->globalsProvider->clear();
 	}
 
 	public function testCanConstruct() {

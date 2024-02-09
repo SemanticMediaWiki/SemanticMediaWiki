@@ -21,6 +21,7 @@ class RebuildFulltextSearchTableTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
+	private $spyMessageReporter;
 
 	protected function setUp() : void {
 		parent::setUp();

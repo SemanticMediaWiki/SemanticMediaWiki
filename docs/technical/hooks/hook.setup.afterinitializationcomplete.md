@@ -7,9 +7,9 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 
-Hooks::register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
 
 	// #2565
 	// It is suggested to use `SMW::GroupPermissions::BeforeInitializationComplete` for

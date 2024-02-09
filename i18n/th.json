@@ -7,6 +7,7 @@
 			"Horus"
 		]
 	},
+	"smw-desc": "ทำให้วิกิของคุณเข้าถึงได้ง่ายสำหรับเครื่อง''และ''มนุษย์ ([https://www.semantic-mediawiki.org/wiki/Help:User_manual คู่มือการใช้งานแบบออนไลน์)",
 	"smw-upgrade-error-why-title": "เหตุใดฉันจึงเห็นข้อผิดพลาดนี้",
 	"smw-upgrade-error-how-title": "ฉันจะแก้ไขข้อผิดพลาดนี้ได้อย่างไร",
 	"smw_viewasrdf": "ฟีด RDF",

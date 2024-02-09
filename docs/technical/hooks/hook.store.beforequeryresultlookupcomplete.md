@@ -5,9 +5,9 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 
-Hooks::register( 'SMW::Store::BeforeQueryResultLookupComplete', function( $store, $query, &$queryResult, $queryEngine ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Store::BeforeQueryResultLookupComplete', function( $store, $query, &$queryResult, $queryEngine ) {
 
 	// Allow default processing
 	return true;

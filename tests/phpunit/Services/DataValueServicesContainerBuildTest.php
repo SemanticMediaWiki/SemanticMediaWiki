@@ -3,6 +3,7 @@
 namespace SMW\Tests\Services;
 
 use Onoi\CallbackContainer\CallbackContainerFactory;
+use SMW\ConstraintFactory;
 use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\MonolingualTextValue;
@@ -22,6 +23,7 @@ use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Settings;
+use SMW\Store;
 use SMWNumberValue as NumberValue;
 use SMWPropertyValue as PropertyValue;
 use SMWTimeValue as TimeValue;
@@ -36,12 +38,14 @@ use SMWTimeValue as TimeValue;
  */
 class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 
+	private Store $store;
 	private $callbackContainerFactory;
 	private $servicesFileDir;
 	private $mediaWikiNsContentReader;
 	private $propertySpecificationLookup;
 	private $logger;
 	private $schemaFactory;
+	private ConstraintFactory $constraintFactory;
 	private $entityCache;
 
 	protected function setUp() : void {

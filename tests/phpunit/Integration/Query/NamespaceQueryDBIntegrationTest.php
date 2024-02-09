@@ -36,10 +36,13 @@ class NamespaceQueryDBIntegrationTest extends DatabaseTestCase {
 	protected function setUp() : void {
 		parent::setUp();
 
-		$this->semanticDataFactory  = UtilityFactory::getInstance()->newSemanticDataFactory();
-		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
+		$utilityFactory = UtilityFactory::getInstance();
+		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 
-		$this->fixturesProvider = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesProvider();
+		$this->semanticDataFactory  = $utilityFactory->newSemanticDataFactory();
+		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
+
+		$this->fixturesProvider = $utilityFactory->newFixturesFactory()->newFixturesProvider();
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 

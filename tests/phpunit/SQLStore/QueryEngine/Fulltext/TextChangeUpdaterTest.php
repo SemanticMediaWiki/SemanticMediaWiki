@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
 use SMW\DataItemFactory;
+use SMW\MediaWiki\JobFactory;
 use SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater;
 use SMW\Tests\TestEnvironment;
 
@@ -21,7 +22,7 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $searchTableUpdater;
 	private $cache;
-	private $slot;
+	private JobFactory $jobFactory;
 	private $logger;
 	private $testEnvironment;
 
@@ -49,8 +50,6 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
-
-		$this->slot = '';
 	}
 
 	public function testCanConstruct() {

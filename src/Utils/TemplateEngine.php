@@ -115,9 +115,11 @@ class TemplateEngine {
 		}
 
 		$complied = $this->container[$target];
-
-		foreach ( $args as $key => $value ) {
-			$complied = str_replace( [ '{{' . $key . '}}', '{{#' . $key . '}}' ], $value, $complied );
+		
+		foreach ( $args as $key => $value) {
+			if ( $value !== null) {
+				$complied = str_replace( ['{{' . $key . '}}', '{{#' . $key . '}}'], $value, $complied);
+			}
 		}
 
 		$this->compiled[$target] = $complied;

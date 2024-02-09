@@ -59,41 +59,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNumRowsMethod() {
-
-		$database = $this->getMockBuilder( '\DatabaseBase' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'numRows' ] )
-			->getMockForAbstractClass();
-
-		$database->expects( $this->once() )
-			->method( 'numRows' )
-			->with( $this->equalTo( 'Fuyu' ) )
-			->will( $this->returnValue( 1 ) );
-
-		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
-
-		$instance = new Database(
-			new ConnRef(
-				[
-					'read' => $connectionProvider
-				]
-			),
-			$this->transactionHandler
-		);
-
-		$this->assertEquals(
-			1,
-			$instance->numRows( 'Fuyu' )
-		);
-	}
-
 	public function testAddQuotesMethod() {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )
@@ -168,7 +133,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSelectMethod() {
 
-		$resultWrapper = $this->getMockBuilder( 'ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -199,7 +164,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'ResultWrapper',
+			'\Wikimedia\Rdbms\ResultWrapper',
 			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
 		);
 	}
@@ -244,7 +209,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testQueryOnSQLite( $query, $expected ) {
 
-		$resultWrapper = $this->getMockBuilder( 'ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -294,7 +259,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'ResultWrapper',
+			'\Wikimedia\Rdbms\ResultWrapper',
 			$instance->query( $query )
 		);
 	}
@@ -341,7 +306,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$this->expectException( 'RuntimeException' );
 
 		$this->assertInstanceOf(
-			'ResultWrapper',
+			'\Wikimedia\Rdbms\ResultWrapper',
 			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
 		);
 	}
@@ -662,24 +627,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf( IResultWrapper::class, $res );
 	}
 
-	/**
-	 * @dataProvider missingWriteConnectionProvider
-	 */
-	public function testMissingWriteConnectionThrowsException( $func, $args ) {
-
-		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new Database(
-			new ConnRef( [] ),
-			$this->transactionHandler
-		);
-
-		$this->expectException( 'RuntimeException' );
-		call_user_func_array( [ $instance, $func ], $args );
-	}
-
 	public function dbTypeProvider() {
 		return [
 			[ 'mysql' ],
@@ -687,68 +634,4 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			[ 'postgres' ]
 		];
 	}
-
-	public function missingWriteConnectionProvider() {
-
-		yield [
-			'query', [ 'foo' ]
-		];
-
-		yield [
-			'nextSequenceValue', [ 'foo' ]
-		];
-
-		yield [
-			'insertId', []
-		];
-
-		yield [
-			'clearFlag', [ 'Foo' ]
-		];
-
-		yield [
-			'getFlag', [ 'Foo' ]
-		];
-
-		yield [
-			'setFlag', [ 'Foo' ]
-		];
-
-		yield [
-			'insert', [ 'Foo', 'Bar' ]
-		];
-
-		yield [
-			'update', [ 'Foo', 'Bar', 'Foobar' ]
-		];
-
-		yield [
-			'upsert', [ 'Foo', ['Bar'], 'Foobar', [ 'テスト' ] ]
-		];
-
-		yield [
-			'delete', [ 'Foo', 'Bar' ]
-		];
-
-		yield [
-			'replace', [ 'Foo', 'Bar', 'Foobar' ]
-		];
-
-		yield [
-			'makeList', [ 'Foo', 'Bar' ]
-		];
-
-		yield [
-			'beginAtomicTransaction', [ 'Foo' ]
-		];
-
-		yield [
-			'endAtomicTransaction', [ 'Foo' ]
-		];
-
-		yield [
-			'onTransactionIdle', [ function() {} ]
-		];
-	}
-
 }

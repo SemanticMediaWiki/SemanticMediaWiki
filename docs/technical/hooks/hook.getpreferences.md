@@ -5,10 +5,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use User;
 
-Hooks::register( 'SMW::GetPreferences', function( User $user, &$preferences ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::GetPreferences', function( User $user, &$preferences ) {
 
 	return true;
 } );

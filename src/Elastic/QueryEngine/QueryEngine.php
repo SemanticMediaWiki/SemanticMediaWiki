@@ -183,13 +183,8 @@ class QueryEngine implements IQueryEngine {
 
 		$connection = $this->store->getConnection( 'elastic' );
 
-		$index = $connection->getIndexNameByType(
-			ElasticClient::TYPE_DATA
-		);
-
 		$params = [
-			'index' => $index,
-			'type'  => ElasticClient::TYPE_DATA,
+			'index' => $connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'body'  => $body
 		];
 

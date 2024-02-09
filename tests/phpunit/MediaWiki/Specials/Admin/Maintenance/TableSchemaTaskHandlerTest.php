@@ -79,6 +79,7 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
+		$instance->setFeatureSet( SMW_ADM_SETUP );
 
 		$instance->getHtml();
 	}

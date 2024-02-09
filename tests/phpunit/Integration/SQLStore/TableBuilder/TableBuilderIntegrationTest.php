@@ -22,7 +22,7 @@ use SMW\Tests\DatabaseTestCase;
 class TableBuilderIntegrationTest extends DatabaseTestCase {
 
 	private $messageReporterFactory;
-	private $TableBuilder;
+	private $tableBuilder;
 	private $stringValidator;
 	private $tableName = 'rdbms_test';
 

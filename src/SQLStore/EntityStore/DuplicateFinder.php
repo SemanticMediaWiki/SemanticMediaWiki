@@ -82,7 +82,7 @@ class DuplicateFinder {
 		$query->condition( $query->neq( 'smw_iw', SMW_SQL3_SMWDELETEIW ) );
 		$query->condition( $query->neq( 'smw_iw', SMW_SQL3_SMWREDIIW ) );
 
-		$res = $connection->query(
+		$res = $connection->readQuery(
 			$query,
 			__METHOD__
 		);

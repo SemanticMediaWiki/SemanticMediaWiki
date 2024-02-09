@@ -50,6 +50,11 @@ class LocalLanguage {
 	private $monthMap = [];
 
 	/**
+	 * @var array
+	 */
+	private $months = [];
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param LanguageContents $languageContents
@@ -469,7 +474,7 @@ class LocalLanguage {
 		);
 
 		foreach ( $dateOutputFormats as $key => $format ) {
-			if ( @constant( $key ) === $precision ) {
+			if ( defined( $key ) && constant( $key ) === $precision ) {
 				return $format;
 			}
 		}

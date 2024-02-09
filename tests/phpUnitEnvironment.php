@@ -182,26 +182,23 @@ class PHPUnitEnvironment {
 	/**
 	 * @param string $arg1
 	 * @param string|array $arg2
-	 *
-	 * @return string
 	 */
 	public function writeLn( $arg1, $arg2 ) {
-		return print sprintf( "%-{$this->firstColumnWidth}s%s\n", $arg1, $arg2 );
+		fwrite( STDERR, sprintf( "%-{$this->firstColumnWidth}s%s\n", $arg1, $arg2 ) );
 	}
 
 	/**
 	 * @param string $arg1
 	 * @param string|array $arg2
-	 *
-	 * @return string
 	 */
 	public function writeNewLn( $arg1 = '', $arg2 = '' ) {
 
 		if ( $arg1 === '' && $arg2 === '' ) {
-			return print "\n";
+			fwrite( STDERR, "\n" );
+			return;
 		}
 
-		return print sprintf( "\n%-{$this->firstColumnWidth}s%s\n", $arg1, $arg2 );
+		fwrite( STDERR, sprintf( "\n%-{$this->firstColumnWidth}s%s\n", $arg1, $arg2 ) );
 	}
 
 	private function command_exists( $command ) {

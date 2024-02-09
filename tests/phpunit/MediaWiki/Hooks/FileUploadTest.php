@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\HookContainer\HookContainer;
 use ParserOutput;
 use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\Tests\TestEnvironment;
@@ -19,6 +20,7 @@ use Title;
 class FileUploadTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $propertySpecificationLookup;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -62,10 +64,13 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
+		$hookContainer = $this->getMockBuilder( HookContainer::class )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->assertInstanceOf(
 			FileUpload::class,
-			new FileUpload( $namespaceExaminer )
+			new FileUpload( $namespaceExaminer, $hookContainer )
 		);
 	}
 
@@ -114,7 +119,10 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
 		$instance = new FileUpload(
-			$namespaceExaminer
+			$namespaceExaminer,
+			$this->getMockBuilder( HookContainer::class )
+				->disableOriginalConstructor()
+				->getMock()
 		);
 
 		$reUploadStatus = true;
@@ -159,7 +167,10 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
 		$instance = new FileUpload(
-			$namespaceExaminer
+			$namespaceExaminer,
+			$this->getMockBuilder( HookContainer::class )
+				->disableOriginalConstructor()
+				->getMock()
 		);
 
 		$instance->process( $file, false );

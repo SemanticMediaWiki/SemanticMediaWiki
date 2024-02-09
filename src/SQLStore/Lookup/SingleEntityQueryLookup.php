@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Store;
 use SMW\QueryEngine;
 use SMWQuery as Query;
@@ -88,7 +89,9 @@ class SingleEntityQueryLookup implements QueryEngine {
 			$furtherResults
 		);
 
-		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this->store, &$queryResult ] );
+		MediaWikiServices::getInstance()
+			->getHookContainer()
+			->run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this->store, &$queryResult ] );
 
 		return $queryResult;
 	}

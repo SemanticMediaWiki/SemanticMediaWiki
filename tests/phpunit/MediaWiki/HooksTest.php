@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Edit\PreparedEdit;
+use MediaWiki\User\UserIdentity;
+use ParserOptions;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Deferred\CallableUpdate;
@@ -162,43 +165,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$callback,
 			[ $outputPage ]
-		);
-	}
-
-	public function testInitExtension() {
-
-		$vars = [];
-
-		Hooks::registerEarly( $vars );
-
-		// CanonicalNamespaces
-		$callback = end( $vars['wgHooks']['CanonicalNamespaces'] );
-		$namespaces = [];
-
-		$this->assertThatHookIsExcutable(
-			$callback,
-			[ &$namespaces ]
-		);
-
-		// SpecialPage_initList
-		$callback = end( $vars['wgHooks']['SpecialPage_initList'] );
-		$specialPages = [];
-
-		$this->assertThatHookIsExcutable(
-			$callback,
-			[ &$specialPages ]
-		);
-
-		// ApiMain::moduleManager
-		$callback = end( $vars['wgHooks']['ApiMain::moduleManager'] );
-
-		$apiModuleManager = $this->getMockBuilder( '\ApiModuleManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->assertThatHookIsExcutable(
-			$callback,
-			[ $apiModuleManager ]
 		);
 	}
 
@@ -561,6 +527,10 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->title ) );
 
+		$parser->expects( $this->any() )
+			->method( 'getOptions' )
+			->willReturn( $this->createMock( ParserOptions::class ) );
+
 		$stripState = $this->getMockBuilder( '\StripState' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -586,6 +556,9 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$contentHandler = $this->getMockBuilder( '\ContentHandler' )
 			->disableOriginalConstructor()
 			->getMock();
+		$contentHandler->expects( $this->any() )
+			->method( 'getDefaultFormat' )
+			->willReturn( CONTENT_FORMAT_WIKITEXT );
 
 		$content = $this->getMockBuilder( '\Content' )
 			->disableOriginalConstructor()
@@ -618,6 +591,11 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'prepareContentForEdit' )
+			->with( $content, null, $user, CONTENT_FORMAT_WIKITEXT )
+			->willReturn( $this->createMock( PreparedEdit::class ) );
 
 		$baseId = '';
 
@@ -691,6 +669,9 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$contentHandler = $this->getMockBuilder( '\ContentHandler' )
 			->disableOriginalConstructor()
 			->getMock();
+		$contentHandler->expects( $this->any() )
+			->method( 'getDefaultFormat' )
+			->willReturn( CONTENT_FORMAT_WIKITEXT );
 
 		$content = $this->getMockBuilder( '\Content' )
 			->disableOriginalConstructor()
@@ -727,6 +708,11 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$revisionGuard->expects( $this->any() )
 			->method( 'newRevisionFromPage' )
 			->will( $this->returnValue( $revision ) );
+
+		$wikiPage->expects( $this->any() )
+			->method( 'prepareContentForEdit' )
+			->with( $content, null, $user, CONTENT_FORMAT_WIKITEXT )
+			->willReturn( $this->createMock( PreparedEdit::class ) );
 
 		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
 
@@ -791,6 +777,11 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$page->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->title ) );
+
+		$page->expects( $this->any() )
+			->method( 'makeParserOptions' )
+			->with( 'canonical' )
+			->willReturn( $this->createMock( ParserOptions::class ) );
 
 		$article = $this->getMockBuilder( '\Article' )
 			->disableOriginalConstructor()
@@ -1053,6 +1044,9 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function callPersonalUrls( $instance ) {
+		if ( version_compare( MW_VERSION, '1.37', '>=' ) ) {
+			$this->markTestSkipped( 'The PersonalUrls hook does not exist on MW 1.37 and newer.' );
+		}
 
 		$preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
 			->disableOriginalConstructor()
@@ -1098,7 +1092,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 	public function callSkinTemplateNavigation( $instance ) {
 
-		$handler = 'SkinTemplateNavigationUniversal';
+		$handler = 'SkinTemplateNavigation::Universal';
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -1471,10 +1465,20 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$block->expects( $this->any() )
-			->method( 'getTarget' )
-			->will( $this->returnValue( 'Foo' ) );
+		if ( method_exists( $block, 'getTarget' ) ) {
+			$block->expects( $this->any() )
+				->method( 'getTarget' )
+				->will( $this->returnValue( 'Foo' ) );
+		} else {
+			$user = $this->createMock( UserIdentity::class );
+			$user->expects( $this->any() )
+				->method( 'getName' )
+				->willReturn( 'Foo' );
 
+			$block->expects( $this->any() )
+				->method( 'getTargetUserIdentity' )
+				->willReturn( $user );
+		}
 		$performer = '';
 		$priorBlock = '';
 
@@ -1498,9 +1502,20 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$block->expects( $this->any() )
-			->method( 'getTarget' )
-			->will( $this->returnValue( 'Foo' ) );
+		if ( method_exists( $block, 'getTarget' ) ) {
+			$block->expects( $this->any() )
+				->method( 'getTarget' )
+				->will( $this->returnValue( 'Foo' ) );
+		} else {
+			$user = $this->createMock( UserIdentity::class );
+			$user->expects( $this->any() )
+				->method( 'getName' )
+				->willReturn( 'Foo' );
+
+			$block->expects( $this->any() )
+				->method( 'getTargetUserIdentity' )
+				->willReturn( $user );
+		}
 
 		$performer = '';
 		$priorBlock = '';

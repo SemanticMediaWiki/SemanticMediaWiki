@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Iterators\AppendIterator;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
 use SMW\Tests\PHPUnitCompat;
 
@@ -22,6 +23,8 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $iteratorFactory;
+
+	private AppendIterator $appendIterator;
 
 	protected function setUp() : void {
 		parent::setUp();
