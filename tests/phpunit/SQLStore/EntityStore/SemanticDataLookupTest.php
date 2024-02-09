@@ -8,6 +8,7 @@ use SMWDIBlob as DIBlob;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\Tests\PHPUnitCompat;
+use FakeRsultWrapper;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SemanticDataLookup
@@ -569,12 +570,8 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
-			->will( $this->returnValue( [ $row ] ) );
-
-		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'readQuery' )
-			->will( $this->returnValue( [ $row ] ) );
+			->will( $this->onConsecutiveCalls( new FakeResultWrapper( [ $row ] ), new FakeResultWrapper( [ $row ] ) ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'newQuery' )
