@@ -12,6 +12,7 @@ use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIBlob as DIBlob;
 use SMWDIContainer as DIContainer;
 use InvalidArgumentException;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -329,7 +330,7 @@ class MonolingualTextLookup {
 			$caller .= " (for " . $this->caller . ")";
 		}
 
-		return $query->execute( $caller );
+		return $query->execute( $caller, IDatabase::QUERY_CHANGE_NONE );
 	}
 
 	private function getPropertyTable( DIProperty $property ) {

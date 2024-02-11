@@ -12,6 +12,7 @@ use SMW\MediaWiki\DatabaseHelper;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\RequestOptionsProc;
 use RuntimeException;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2
@@ -329,7 +330,8 @@ class PropertySubjectsLookup {
 
 		$res = $connection->readQuery(
 			$query,
-			$caller
+			$caller,
+			IDatabase::QUERY_CHANGE_NONE
 		);
 
 		$this->dataItemHandler = $this->store->getDataItemHandlerForDIType(

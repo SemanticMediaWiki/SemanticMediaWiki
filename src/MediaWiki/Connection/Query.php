@@ -359,11 +359,12 @@ class Query {
 	 * @since 3.0
 	 *
 	 * @param string $fname
+	 * @param int $flags
 	 *
 	 * @return iterable
 	 */
-	public function execute( $fname ) {
-		return $this->connection->query( $this, $fname );
+	public function execute( $fname, $flags = 0 ) {
+		return $this->connection->query( $this, $fname, $flags );
 	}
 
 	private function sql() {

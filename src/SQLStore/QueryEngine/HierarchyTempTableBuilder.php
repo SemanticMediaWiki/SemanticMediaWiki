@@ -5,6 +5,7 @@ namespace SMW\SQLStore\QueryEngine;
 use RuntimeException;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -120,7 +121,8 @@ class HierarchyTempTableBuilder {
 
 			$this->connection->query(
 				"INSERT INTO $tablename (id) SELECT id" . ' FROM ' . $this->hierarchyCache[$valueComposite],
-				__METHOD__
+				__METHOD__,
+				IDatabase::QUERY_CHANGE_ROWS
 			);
 
 			return;
@@ -150,19 +152,22 @@ class HierarchyTempTableBuilder {
 
 			$db->query(
 				"INSERT " . "IGNORE" . " INTO $tablename (id) VALUES $value",
-				__METHOD__
+				__METHOD__,
+				IDatabase::QUERY_CHANGE_ROWS
 			);
 
 			$db->query(
 				"INSERT " . "IGNORE" . " INTO $tmpnew (id) VALUES $value",
-				__METHOD__
+				__METHOD__,
+				IDatabase::QUERY_CHANGE_ROWS
 			);
 		}
 
 		for ( $i = 0; $i < $depth; $i++ ) {
 			$db->query(
 				"INSERT " . 'IGNORE ' . "INTO $tmpres (id) SELECT s_id" . '@INT' . " FROM $smwtable, $tmpnew WHERE o_id=id",
-				__METHOD__
+				__METHOD__,
+				IDatabase::QUERY_CHANGE_ROWS
 			);
 
 			if ( $db->affectedRows() == 0 ) { // no change, exit loop
@@ -171,7 +176,8 @@ class HierarchyTempTableBuilder {
 
 			$db->query(
 				"INSERT " . 'IGNORE ' . "INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
-				__METHOD__
+				__METHOD__,
+				IDatabase::QUERY_CHANGE_ROWS
 			);
 
 			if ( $db->affectedRows() == 0 ) { // no change, exit loop
@@ -181,7 +187,8 @@ class HierarchyTempTableBuilder {
 			// empty "new" table
 			$db->query(
 				'DELETE FROM ' . $tmpnew,
-				__METHOD__
+				__METHOD__,
+				IDatabase::QUERY_CHANGE_ROWS
 			);
 
 			$tmpname = $tmpnew;

@@ -280,19 +280,19 @@ class Database {
 	 *
 	 * @param Query|string $sql
 	 * @param string $fname
-	 * @param boolean $ignoreException
+	 * @param int $flags
 	 *
 	 * @return ResultWrapper
 	 * @throws RuntimeException
 	 */
-	public function query( $sql, $fname = __METHOD__, $ignoreException = false ) {
+	public function query( $sql, $fname = __METHOD__, $flags = 0 ) {
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$results = $this->executeQuery(
 			$this->connRef->getConnection( 'write' ),
 			$sql,
 			$fname,
-			$ignoreException
+			$flags
 		);
 
 		ScopedCallback::consume( $scope );
@@ -308,16 +308,16 @@ class Database {
 	 *
 	 * @param Query|string $sql
 	 * @param string $fname
-	 * @param false $ignoreException
+	 * @param int $flags
 	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
 	 * @throws Exception
 	 */
-	public function readQuery( $sql, $fname = __METHOD__, $ignoreException = false ) {
+	public function readQuery( $sql, $fname = __METHOD__, $flags = 0 ) {
 		return $this->executeQuery(
 			$this->connRef->getConnection( 'read' ),
 			$sql,
 			$fname,
-			$ignoreException
+			$flags | IDatabase::QUERY_CHANGE_NONE
 		);
 	}
 
@@ -327,11 +327,11 @@ class Database {
 	 * @param IDatabase $connection
 	 * @param Query|string $sql
 	 * @param $fname
-	 * @param $ignoreException
+	 * @param int $flags
 	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
 	 * @throws Exception
 	 */
-	private function executeQuery( IDatabase $connection, $sql, $fname, $ignoreException ) {
+	private function executeQuery( IDatabase $connection, $sql, $fname, $flags ) {
 		if ( $sql instanceof Query ) {
 			$sql = $sql->build();
 		}
@@ -379,7 +379,7 @@ class Database {
 			$results = $connection->query(
 				$sql,
 				$fname,
-				$ignoreException
+				$flags
 			);
 		} catch ( Exception $exception ) {
 		}

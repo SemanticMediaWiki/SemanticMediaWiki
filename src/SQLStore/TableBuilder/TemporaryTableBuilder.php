@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\TableBuilder;
 
 use SMW\MediaWiki\Database;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -56,7 +57,7 @@ class TemporaryTableBuilder {
 		$this->connection->query(
 			$this->getSQLCodeFor( $tableName ),
 			__METHOD__,
-			false
+			IDatabase::QUERY_CHANGE_SCHEMA
 		);
 	}
 
@@ -74,7 +75,7 @@ class TemporaryTableBuilder {
 		$this->connection->query(
 			"DROP TEMPORARY TABLE " . $tableName,
 			__METHOD__,
-			false
+			IDatabase::QUERY_CHANGE_SCHEMA
 		);
 	}
 
