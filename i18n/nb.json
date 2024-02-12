@@ -112,6 +112,7 @@
 	"smw-paramdesc-embedonly": "Ikke vis overskrifter",
 	"smw-paramdesc-table-class": "En CSS-klasse til som kan brukes for tabellen",
 	"smw-paramdesc-table-transpose": "Vis tabelloverskrifter vertikalt og resultater horisontalt",
+	"smw-paramdesc-prefix": "Kontroller visning av navnerom i utskrifter",
 	"smw-paramdesc-rdfsyntax": "RDF-syntaksen som blir brukt",
 	"smw-paramdesc-csv-sep": "Angir kolonneskilletegn",
 	"smw-paramdesc-csv-valuesep": "Angir et verdiskilletegn",
