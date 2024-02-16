@@ -570,12 +570,8 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
-
-		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'readQuery' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->will( $this->onConsecutiveCalls( new FakeResultWrapper( [ $row ] ), new FakeResultWrapper( [ $row ] ) ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'newQuery' )
