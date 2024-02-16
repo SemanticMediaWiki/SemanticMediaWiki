@@ -6,6 +6,7 @@ use SMW\Message;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
+use SMW\MediaWiki\MediaWikiNsContentReader as MediaWikiNsContentReader;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -76,8 +77,7 @@ class ImportValue extends DataValue {
 	/** @var array */
 	private $declarativeNames = [];
 
-	/** @var mediaWikiNsContentReader */
-	private $mediaWikiNsContentReader;
+	private MediaWikiNsContentReader $mediaWikiNsContentReader;
 
 	/**
 	 * @param string $typeid
@@ -158,11 +158,7 @@ class ImportValue extends DataValue {
 		return true;
 	}
 
-	/**
-	 * @param string $namespace
-	 * @return string
-	 */
-	private function getDeclarativeName( $namespace ) {
+	private function getDeclarativeName( string $namespace ) : string {
 		if ( array_key_exists( $namespace, $this->declarativeNames ) ) {
 			return $this->declarativeNames[$namespace];
 		}
