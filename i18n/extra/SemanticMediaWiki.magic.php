@@ -342,9 +342,12 @@ $magicWords['sr-ec'] = [
 	'show' => [ 0, 'прикажи' ],
 	'info' => [ 0, 'подаци' ],
 	'concept' => [ 0, 'концепт' ],
+	'subobject' => [ 0, 'подобјекат' ],
 	'set' => [ 0, 'постави' ],
 	'set_recurring_event' => [ 0, 'постави_периодични_догађај' ],
 	'declare' => [ 0, 'одреди' ],
+	'SMW_NOFACTBOX' => [ 0, '__БЕЗЧИЊЕНИЦА__', '__БЕЗ_ЧИЊЕНИЦА__' ],
+	'SMW_SHOWFACTBOX' => [ 0, '__ПРИКАЖИЧИЊЕНИЦЕ__', '__ПРИКАЖИ_ЧИЊЕНИЦЕ__' ],
 ];
 
 /** Serbian (Latin script) (srpski (latinica)‎) */
@@ -353,6 +356,7 @@ $magicWords['sr-el'] = [
 	'show' => [ 0, 'prikaži' ],
 	'info' => [ 0, 'podaci' ],
 	'concept' => [ 0, 'koncept' ],
+	'subobject' => [ 0, 'podobjekat' ],
 	'set' => [ 0, 'postavi' ],
 	'set_recurring_event' => [ 0, 'postavi_periodični_događaj' ],
 	'declare' => [ 0, 'odredi' ],
