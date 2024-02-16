@@ -73,9 +73,8 @@ class ImportValue extends DataValue {
 	 * @var string
 	 */
 	private $declarativeName = '';
-	
-	/** @var array */
-	private $declarativeNames = [];
+
+	private array $declarativeNames = [];
 
 	private MediaWikiNsContentReader $mediaWikiNsContentReader;
 
