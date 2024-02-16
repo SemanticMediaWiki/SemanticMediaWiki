@@ -167,8 +167,8 @@ class HtmlForm {
 		$infoText = '';
 
 		if ( $queryLog !== [] ) {
-			$infoText = '<h3>' . wfMessage( 'smw-ask-extra-query-log' )->text() . '</h3>';
-			$infoText .= '<pre>' . json_encode( $queryLog, JSON_PRETTY_PRINT ) . '</pre>';
+			$infoText = '<h3>' . wfMessage( 'smw-ask-extra-query-log' )->escaped() . '</h3>';
+			$infoText .= Html::element( 'pre', [], json_encode( $queryLog, JSON_PRETTY_PRINT ) );
 		}
 
 		if ( $queryResult instanceof QueryResult ) {
