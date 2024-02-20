@@ -3,12 +3,14 @@
 namespace SMW\Tests;
 
 use Exception;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit_Framework_AssertionFailedError;
 use PHPUnit_Framework_Test;
 use PHPUnit_Framework_TestListener;
 use PHPUnit_Framework_TestSuite;
 use PHPUnit_Framework_Warning;
 use PHPUnit\Framework\TestListenerDefaultImplementation;
+use WeakMap;
 
 class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 
@@ -29,9 +31,16 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	protected $slowTests = [];
 	protected $isEnabledToListen = true;
 
+	/**
+	 * Map of test suites to execution time reports.
+	 * @var WeakMap|null
+	 */
+	private static $slowTestsReport;
+
 	public function __construct( $isEnabledToListen, $slowThreshold ) {
 		$this->isEnabledToListen = $isEnabledToListen;
 		$this->slowThreshold = $slowThreshold;
+		self::$slowTestsReport = class_exists( WeakMap::class ) ? new WeakMap() : null;
 	}
 
 	/**
@@ -79,12 +88,32 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 
 		// Have the PHPUnitResultPrinter to make the actual output in order to
 		// have acces to the output buffer used by PHPUnit
-		$suite->_slowTestsReport = [
-			'slowThreshold' => $this->slowThreshold,
-			'slowTests' => $this->slowTests
-		];
+		if ( self::$slowTestsReport ) {
+			// Use a WeakMap to store the report on PHP 8.0+ to avoid dynamic property creation warnings.
+			self::$slowTestsReport[$suite] = [
+				'slowThreshold' => $this->slowThreshold,
+				'slowTests' => $this->slowTests
+			];
+		} else {
+			$suite->_slowTestsReport = [
+				'slowThreshold' => $this->slowThreshold,
+				'slowTests' => $this->slowTests
+			];
+		}
 
 		unset( $this->slowTests );
 	}
 
+	/**
+	 * Get the execution time report for the given suite.
+	 * @param TestSuite $suite The test suite to get the report for.
+	 * @return array|null The execution time report, or null if not available.
+	 */
+	public static function getSlowTestsReport( TestSuite $suite ): ?array {
+		if ( self::$slowTestsReport ) {
+			return self::$slowTestsReport[$suite] ?? null;
+		} else {
+			return $suite->_slowTestsReport ?? null;
+		}
+	}
 }

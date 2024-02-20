@@ -6,6 +6,8 @@ use SMW\Message;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
+use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\Services\ServicesFactory;
 
 /**
  * This datavalue implements datavalues used by special property '_IMPO' used
@@ -16,6 +18,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author Fabian Howahl
  * @author Markus Krötzsch
+ * @reviewer thomas-topway-it for KM-A
  */
 class ImportValue extends DataValue {
 
@@ -71,11 +74,16 @@ class ImportValue extends DataValue {
 	 */
 	private $declarativeName = '';
 
+	private array $declarativeNames = [];
+
+	private MediaWikiNsContentReader $mediaWikiNsContentReader;
+
 	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = self::TYPE_ID ) {
 		parent::__construct( $typeid );
+		$this->mediaWikiNsContentReader = ServicesFactory::getInstance()->getMediaWikiNsContentReader();
 	}
 
 	/**
@@ -142,11 +150,39 @@ class ImportValue extends DataValue {
 			$this->uri = $parts[2];
 			$this->termType = $parts[3];
 			$this->qname = $this->namespace . ':' . $this->term;
-			$this->declarativeName = '';
+			$this->declarativeName = $this->getDeclarativeName( $this->namespace );
 			$this->m_caption = $this->createCaption( $this->namespace, $this->qname, $this->uri, $this->declarativeName );
 		}
 
 		return true;
+	}
+
+	private function getDeclarativeName( string $namespace ) : string {
+		if ( array_key_exists( $namespace, $this->declarativeNames ) ) {
+			return $this->declarativeNames[$namespace];
+		}
+
+		// @see ImportValueParser
+		$controlledVocabulary = $this->mediaWikiNsContentReader->read(
+			ImportValue::IMPORT_PREFIX . $namespace
+		);
+
+		if ( $controlledVocabulary === '' ) {
+			return $this->declarativeNames[$namespace] = '';
+		}
+
+		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $controlledVocabulary ) );
+
+		// Get definition from first line
+		$fristLine = array_shift( $importDefintions );
+
+		if ( strpos( $fristLine, '|' ) === false ) {
+			return $this->declarativeNames[$namespace] = '';
+		}
+
+		list( $uri, $name ) = explode( '|', $fristLine, 2 );
+
+		return $this->declarativeNames[$namespace] = $name;
 	}
 
 	/**
@@ -225,7 +261,7 @@ class ImportValue extends DataValue {
 	}
 
 	private function createCaption( $namespace, $qname, $uri, $declarativeName ) {
-		return "[[MediaWiki:" . self::IMPORT_PREFIX . $namespace . "|" . $qname . "]] " . Message::get( [ 'parentheses', "[$uri $namespace] | " . $declarativeName ], Message::PARSE );
+		return "[[MediaWiki:" . self::IMPORT_PREFIX . $namespace . "|" . $qname . "]] " . Message::get( [ 'parentheses', "[$uri $namespace] | " . $declarativeName ], Message::TEXT );
 	}
 
 }

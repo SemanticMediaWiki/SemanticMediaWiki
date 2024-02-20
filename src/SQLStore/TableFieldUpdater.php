@@ -71,14 +71,11 @@ class TableFieldUpdater {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
-		// #2089 (MySQL 5.7 complained with "Data too long for column")
-		$searchKey = mb_substr( $searchKey, 0, 254 );
-
 		$connection->update(
 			SQLStore::ID_TABLE,
 			[
-				'smw_sortkey' => $searchKey,
-				'smw_sort'    => $this->collator->getSortKey( $searchKey ),
+				'smw_sortkey' => mb_strcut( $searchKey, 0, 255 ),
+				'smw_sort'    => substr( $this->collator->getSortKey( $searchKey ), 0, 255 ),
 				'smw_touched' => $connection->timestamp()
 			],
 			[ 'smw_id' => $id ],

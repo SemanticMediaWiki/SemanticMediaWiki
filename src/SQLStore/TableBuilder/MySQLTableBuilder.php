@@ -137,7 +137,8 @@ class MySQLTableBuilder extends TableBuilder {
 		// The updated fields have their value set to false, so if a field has a value
 		// that differs from false, it's an obsolete one that should be removed.
 		foreach ( $currentFields as $fieldName => $value ) {
-			if ( $value !== false ) {
+			// Some MySQL versions create my_row_id, ignore that
+			if ( $value !== false && $fieldName !== 'my_row_id' ) {
 				$this->doDropField( $tableName, $fieldName );
 			}
 		}
@@ -197,11 +198,19 @@ class MySQLTableBuilder extends TableBuilder {
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
 			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
-		} elseif ( $currentFields[$fieldName] != $fieldType ) {
+		} elseif ( !$this->areFieldTypesEqual( $fieldType, $currentFields[$fieldName] ) )  {
 			$this->doUpdateFieldType( $tableName, $fieldName, $position, $currentFields[$fieldName], $fieldType );
 		} else {
 			$this->reportMessage( "   ... field $fieldName is fine.\n" );
 		}
+	}
+
+	private function areFieldTypesEqual( string $expectedType, string $actualType ): bool {
+		if ( $expectedType !== $actualType ) {
+			// Remove width from expected type and compare again
+			$expectedType = preg_replace( '/INT\(\d+\)/', 'INT', $expectedType );
+		}
+		return $expectedType === $actualType;
 	}
 
 	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {

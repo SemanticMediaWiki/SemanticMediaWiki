@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Revision\RevisionLookup;
+use SMW\MediaWiki\RevisionGuard;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
 
@@ -190,14 +192,12 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->applicationFactory->expects( $this->atLeastOnce() )
+		$this->applicationFactory->expects( $this->any() )
 			->method( 'singleton' )
-			->with( $this->equalTo( 'RevisionGuard' ) )
-			->will( $this->returnValue( $revisionGuard ) );
+			->willReturnMap( [
+				[ 'RevisionGuard', $this->createMock( RevisionGuard::class ) ],
+				[ 'RevisionLookup', $this->createMock( RevisionLookup::class ) ]
+			] );
 
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory

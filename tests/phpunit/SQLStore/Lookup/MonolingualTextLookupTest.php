@@ -155,7 +155,7 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnArgument( 0 ) );
 
 		$connection->expects( $this->any() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( [ (object)$row ] ) );
 
 		$query = new Query( $connection );

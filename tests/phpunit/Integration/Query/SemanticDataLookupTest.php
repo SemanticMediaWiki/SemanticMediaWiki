@@ -23,9 +23,9 @@ use SMW\Tests\DatabaseTestCase;
 class SemanticDataLookupTest extends DatabaseTestCase {
 
 	private $subjectsToBeCleared = [];
-	private $subject;
+
 	private $dataValueFactory;
-	private $queryResultValidator;
+	private $semanticDataFactory;
 
 	protected function setUp() : void {
 		parent::setUp();

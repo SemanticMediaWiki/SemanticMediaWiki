@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\Installer;
 
 use SMW\MediaWiki\Database;
+use SMW\SetupFile;
 use SMW\SQLStore\Installer\VersionExaminer;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
@@ -21,14 +22,14 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $spyMessageReporter;
-	private $SetupFile;
+	private SetupFile $setupFile;
 
 	protected function setUp() : void {
 		parent::setUp();
 
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
-		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
+		$this->setupFile = $this->getMockBuilder( SetupFile::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

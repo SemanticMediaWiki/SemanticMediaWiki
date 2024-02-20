@@ -64,7 +64,7 @@ class CompositeIndicatorHtmlBuilder {
 			'highlighter_title' => $options['highlighter_title'],
 			'placeholder_title' => $options['placeholder_title'],
 			'dir' => $options['dir'],
-			'uselang' => $options['uselang'],
+			'uselang' => $options['uselang'] ?? '',
 			'subject' => $options['subject'],
 			'options_raw' => $options['options_raw'],
 			'count' => count( $indicatorProviders ),

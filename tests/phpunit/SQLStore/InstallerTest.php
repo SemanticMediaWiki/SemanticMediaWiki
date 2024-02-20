@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\SQLStore\Installer;
 use SMW\Tests\TestEnvironment;
 
@@ -24,6 +25,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	private $tableBuildExaminer;
 	private $versionExaminer;
 	private $tableOptimizer;
+	private JobQueue $jobQueue;
 	private $hookDispatcher;
 	private $setupFile;
 

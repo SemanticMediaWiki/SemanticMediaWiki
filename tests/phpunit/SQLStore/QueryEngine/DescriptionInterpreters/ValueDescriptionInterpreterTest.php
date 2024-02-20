@@ -7,6 +7,7 @@ use SMW\Query\DescriptionFactory;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\SQLStore\QueryEngineFactory;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Validators\QuerySegmentValidator;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter
@@ -21,14 +22,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $conditionBuilder;
-	private $descriptionFactory;
-	private $dataItemFactory;
+	private QuerySegmentValidator $querySegmentValidator;
 
 	protected function setUp() : void {
 		parent::setUp();
-
-		$this->descriptionFactory = new DescriptionFactory();
-		$this->dataItemFactory = new DataItemFactory();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()

@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Anakmalaysia",
+			"Hakimi97",
 			"Pizza1016"
 		]
 	},
@@ -30,6 +31,7 @@
 	"smw_printername_template": "Templat",
 	"smw_printername_rdf": "Eksport RDF",
 	"smw_printername_category": "Kategori",
+	"validator-type-class-SMWParamSource": "teks",
 	"smw-paramdesc-limit": "Bilangan hasil maksimum untuk diberikan",
 	"smw-paramdesc-offset": "Ofset hasil pertama",
 	"smw-paramdesc-headers": "Paparkan nama pengatas/sifat",

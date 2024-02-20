@@ -62,6 +62,11 @@ class Client {
 	private $wikiid;
 
 	/**
+	 * @var string
+	 */
+	private $distribution;
+
+	/**
 	 * @var boolean
 	 */
 	private static $hasIndex = [];
@@ -187,7 +192,9 @@ class Client {
 	 */
 	public function getSoftwareInfo() {
 		return [
-			'component' => "[https://www.elastic.co/elasticsearch/ Elasticsearch]",
+			'component' => $this->isOpenSearch() ?
+				"[https://opensearch.org OpenSearch]" :
+				"[https://www.elastic.co/elasticsearch/ Elasticsearch]",
 			'version' => $this->getVersion()
 		];
 	}
@@ -210,7 +217,7 @@ class Client {
 	 * @since 3.0
 	 *
 	 * @param string $type
-     * @param array $params
+	 * @param array $params
 	 */
 	public function stats( string $type = 'indices', array $params = [] ): array {
 
@@ -219,16 +226,16 @@ class Client {
 			$this->getIndexName( self::TYPE_LOOKUP )
 		];
 
-        switch ( $type ) {
-            case 'indices':
-                $res = $this->client->indices()->stats( [ 'index' => $indices ] + $params );
-                break;
-            case 'nodes':
-                $res = $this->client->nodes()->stats( $params );
-                break;
-            default:
-                return [];
-        }
+		switch ( $type ) {
+			case 'indices':
+				$res = $this->client->indices()->stats( [ 'index' => $indices ] + $params );
+				break;
+			case 'nodes':
+				$res = $this->client->nodes()->stats( $params );
+				break;
+			default:
+				return [];
+		}
 
 		if ( $type === 'indices' && isset( $res['indices'] ) ) {
 			unset( $res['_all'] );
@@ -259,7 +266,7 @@ class Client {
 		if ( $type === 'indices' ) {
 			$params += [ 'format' => 'json' ];
 
-            $indices = $this->client->cat()->indices( $params );
+			$indices = $this->client->cat()->indices( $params );
 
 			foreach ( $indices as $value ) {
 				$res[$value['index']] = $value;
@@ -312,14 +319,14 @@ class Client {
 			'body'  => $this->getIndexDefinition( $type )
 		];
 
-        $context = [
-            'method' => __METHOD__,
-            'role' => 'user',
-            'index' => $index
-        ];
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'user',
+			'index' => $index
+		];
 
-        $context['response'] = $this->client->indices()->create( $params );
-        $this->logger->info( 'Created index {index} with: {response}', $context );
+		$context['response'] = $this->client->indices()->create( $params );
+		$this->logger->info( 'Created index {index} with: {response}', $context );
 
 		return $version;
 	}
@@ -335,14 +342,14 @@ class Client {
 			'index' => $index,
 		];
 
-        $context = [
-            'method' => __METHOD__,
-            'role' => 'user',
-            'index' => $index
-        ];
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'user',
+			'index' => $index
+		];
 
-        $context['response'] = $this->client->indices()->delete( $params );
-        $this->logger->info( 'Deleted index {index} with: {response}', $context );
+		$context['response'] = $this->client->indices()->delete( $params );
+		$this->logger->info( 'Deleted index {index} with: {response}', $context );
 	}
 
 	/**
@@ -529,7 +536,7 @@ class Client {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Updated failed for document {id} with: {exception}, DOC: {doc}', $context );
 
-            return $context['exception'];
+			return $context['exception'];
 		}
 	}
 
@@ -556,7 +563,7 @@ class Client {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Index failed for document {id} with: {exception}', $context );
 
-            return $context['exception'];
+			return $context['exception'];
 		}
 	}
 
@@ -609,7 +616,7 @@ class Client {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Bulk update failed with {exception}', $context );
 
-            return $context['exception'];
+			return $context['exception'];
 		}
 	}
 
@@ -770,14 +777,14 @@ class Client {
 		$this->client->indices()->close( [ 'index' => $index ] );
 	}
 
-    /**
-     * @since 4.2.0
-     *
-     * @param array $params
-     */
-    public function ingestPutPipeline( array $params ) {
-        $this->client->ingest()->putPipeline( $params );
-    }
+	/**
+	 * @since 4.2.0
+	 *
+	 * @param array $params
+	 */
+	public function ingestPutPipeline( array $params ) {
+		$this->client->ingest()->putPipeline( $params );
+	}
 
 	/**
 	 * @since 3.1
@@ -834,6 +841,21 @@ class Client {
 	 */
 	public function releaseLock( $type ) {
 		$this->lockManager->releaseLock( $type );
+	}
+
+	/**
+	 * @since 4.2
+	 *
+	 * @return bool
+	 */
+	public function isOpenSearch(): bool {
+
+		if ( !isset( $this->distribution ) ) {
+			$info = $this->info();
+			$this->distribution = $info['version']['distribution'] ?? 'elasticsearch';
+		}
+
+		return $this->distribution === 'opensearch';
 	}
 
 }

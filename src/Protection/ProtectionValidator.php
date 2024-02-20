@@ -2,16 +2,15 @@
 
 namespace SMW\Protection;
 
-use Onoi\Cache\Cache;
+use MediaWiki\Permissions\PermissionManager as MwPermissionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\RequestOptions;
-use SMW\Store;
 use SMW\EntityCache;
-use SMW\MediaWiki\PermissionManager;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\MediaWiki\PermissionManager;
 use SMW\Services\ServicesFactory;
+use SMW\Store;
 use Title;
 use User;
 
@@ -294,7 +293,9 @@ class ProtectionValidator {
 			return false;
 		}
 
-		return $this->createProtectionRight && !$this->permissionManager->userCan( 'edit', null, $title );
+		$rigor = MwPermissionManager::RIGOR_QUICK;
+		return $this->createProtectionRight &&
+			!$this->permissionManager->userCan( 'edit', null, $title, $rigor );
 	}
 
 	/**
@@ -319,7 +320,9 @@ class ProtectionValidator {
 			$title
 		);
 
-		return !$this->permissionManager->userCan( 'edit', null, $title ) && $this->checkProtection( $subject->asBase() );
+		$rigor = MwPermissionManager::RIGOR_QUICK;
+		return !$this->permissionManager->userCan( 'edit', null, $title, $rigor )
+			&& $this->checkProtection( $subject->asBase() );
 	}
 
 	private function checkProtection( $subject, $property = null ) {

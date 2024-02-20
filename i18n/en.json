@@ -260,7 +260,7 @@
 	"smw-statistics-error-count-legacy": "{{PLURAL:$1|Property value|Property values}} ({{PLURAL:$1|improper annotation|improper annotations}})",
 	"smw-statistics-delete-count": "[https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities Outdated {{PLURAL:$1|entity|entities}}]",
 	"smw-statistics-delete-count-info": "Entities that have been marked for removal should be disposed of regularly using the provided maintenance scripts.",
-	"smw_uri_doc": "The URI resolver implements the [$1 W3C TAG finding on httpRange-14].\nIt takes care that humans do not turn into websites.",
+	"smw_uri_doc": "The URI resolver implements the [$1 W3C TAG finding on httpRange-14].\nIt ensures that an RDF representation (for machines) or a wiki page (for humans) is delivered depending on the request.",
 	"ask": "Semantic search",
 	"smw_ask_doculink": "https://www.semantic-mediawiki.org/wiki/Help:Semantic_search",
 	"smw-ask-help": "This section contains some links to help explain how to use the <code>#ask</code> syntax.\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Selecting pages] describes how to select pages and build conditions\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Search_operators Search operators] lists available search operators including those for range and wildcard queries\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Displaying_information Displaying information] outlines the use of printout statements and formatting options",

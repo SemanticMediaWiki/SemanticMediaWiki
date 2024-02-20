@@ -5,6 +5,7 @@ namespace SMW\Tests\Updater;
 use SMW\DataUpdater;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Property\SpecificationLookup;
 use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
@@ -30,6 +31,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $changePropagationNotifier;
 	private $eventDispatcher;
 	private $revisionGuard;
+	private SpecificationLookup $propertySpecificationLookup;
 	private $revision;
 
 	protected function setUp() : void {

@@ -3,6 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\Services\ServicesFactory;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\TestEnvironment;
 use Title;
 
@@ -15,20 +16,15 @@ use Title;
  *
  * @author mwjames
  */
-class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
+class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 
 	private $mwHooksHandler;
-	private $testEnvironment;
+
 	private $store;
 	private $queryResult;
 
 	protected function setUp() : void {
 		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment( [
-			'smwgMainCacheType' => CACHE_NONE
-		] );
-
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
@@ -67,7 +63,6 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() : void {
 		$this->mwHooksHandler->restoreListedHooks();
-		$this->testEnvironment->tearDown();
 
 		parent::tearDown();
 	}
@@ -76,7 +71,6 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionEnabled( $parserName, $text ) {
-		$this->markTestSkipped( "database connections" );
 		$singleEntityQueryLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\SingleEntityQueryLookup' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -129,7 +123,6 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionDisabled( $parserName, $text ) {
-		$this->markTestSkipped( "database connections" );
 		$expectedNullOutputFor = [
 			'concept',
 			'declare',

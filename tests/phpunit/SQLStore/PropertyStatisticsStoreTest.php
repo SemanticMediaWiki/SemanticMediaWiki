@@ -200,7 +200,7 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 			->getMock();
 
 		$connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
+			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function( $callback ) {
 				return call_user_func( $callback );
 			}
@@ -233,7 +233,7 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 			->getMock();
 
 		$connection->expects( $this->never() )
-			->method( 'onTransactionIdle' );
+			->method( 'onTransactionCommitOrIdle' );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'update' );

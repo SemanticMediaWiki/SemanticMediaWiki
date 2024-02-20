@@ -729,7 +729,7 @@ class SemanticDataLookup {
 
 		// Avoid issues with `$row->$sortField` containing other `#` as for
 		// example in case of a subobject name
-		if ( $sortField !== '' ) {
+		if ( $sortField !== '' && is_string( $row->$sortField ) ) {
 			$hash = mb_substr( str_replace( '#', '|', $row->$sortField ), 0, 32 ) . '#' . $hash;
 		}
 

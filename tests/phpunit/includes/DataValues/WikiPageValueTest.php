@@ -20,6 +20,8 @@ class WikiPageValueTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $dataItemFactory;
 
+	private $propertySpecificationLookup;
+
 	protected function setUp() : void {
 		parent::setUp();
 

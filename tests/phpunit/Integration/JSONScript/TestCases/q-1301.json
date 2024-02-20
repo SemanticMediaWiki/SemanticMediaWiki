@@ -1,0 +1,42 @@
+{
+	"description": "imported-from query (@see issues/4971)",
+	"setup": [
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw import foaf",
+			"contents": "http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n homepage|Type:URL\n"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Foaf:homepage",
+			"contents": "[[Imported from::foaf:homepage]]"
+		},
+		{
+			"page": "Page1",
+			"contents": "{{#ask: [[Imported from::+]] |?Imported from |format=plainlist  }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#1 (output imported-from query)",
+			"subject": "Page1",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\"/index.php/Property:Foaf:homepage\" title=\"Property:Foaf:homepage\">Foaf:homepage</a> (<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"&quot;Imported from&quot; is a predefined property that describes a relation to an imported vocabulary and is provided by Semantic MediaWiki.\"><span class=\"smwbuiltin\"><a href=\"/index.php/Property:Imported_from\" title=\"Property:Imported from\">Imported from</a></span><span class=\"smwttcontent\">\"Imported from\" is a predefined property that describes a relation to an <a rel=\"nofollow\" class=\"external text\" href=\"https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary\">imported vocabulary</a> and is provided by <a rel=\"nofollow\" class=\"external text\" href=\"https://www.semantic-mediawiki.org/wiki/Help:Special_properties\">Semantic MediaWiki</a>.</span></span>: <a href=\"/index.php/MediaWiki:Smw_import_foaf\" title=\"MediaWiki:Smw import foaf\">foaf:homepage</a> (<a rel=\"nofollow\" class=\"external text\" href=\"http://xmlns.com/foaf/0.1/\">foaf</a> | <a rel=\"nofollow\" class=\"external text\" href=\"http://www.foaf-project.org/\">Friend Of A Friend</a>))"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

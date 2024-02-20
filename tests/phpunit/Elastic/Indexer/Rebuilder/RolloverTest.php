@@ -36,17 +36,8 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRollover() {
-
-		$indices = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'delete', 'existsAlias', 'updateAliases' ] )
-			->getMock();
-
-		$indices->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'updateAliases' );
-
-		$this->connection->expects( $this->any() )
-			->method( 'indices' )
-			->will( $this->returnValue( $indices ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'releaseLock' );
@@ -59,21 +50,12 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate() {
-
-		$indices = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'delete', 'existsAlias', 'updateAliases' ] )
-			->getMock();
-
-		$indices->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'updateAliases' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
-
-		$this->connection->expects( $this->any() )
-			->method( 'indices' )
-			->will( $this->returnValue( $indices ) );
 
 		$instance = new Rollover(
 			$this->connection
@@ -83,25 +65,16 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
-		$indices = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'delete', 'existsAlias' ] )
-			->getMock();
-
-		$indices->expects( $this->exactly( 3 ) )
-			->method( 'exists' )
+		$this->connection->expects( $this->exactly( 3 ) )
+			->method( 'indexExists' )
 			->will( $this->returnValue( true ) );
 
-		$indices->expects( $this->exactly( 3 ) )
-			->method( 'delete' );
+		$this->connection->expects( $this->exactly( 3 ) )
+			->method( 'deleteIndex' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
-
-		$this->connection->expects( $this->any() )
-			->method( 'indices' )
-			->will( $this->returnValue( $indices ) );
 
 		$instance = new Rollover(
 			$this->connection

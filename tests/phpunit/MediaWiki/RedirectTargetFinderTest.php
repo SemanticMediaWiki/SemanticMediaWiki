@@ -37,10 +37,11 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 			$instance->hasRedirectTarget()
 		);
 
-		$this->assertEquals(
-			$expectedGetTarget,
-			$instance->getRedirectTarget()
-		);
+		if ( $expectedGetTarget ) {
+			$this->assertTrue( $instance->getRedirectTarget()->equals( $expectedGetTarget ) );
+		} else {
+			$this->assertNull( $instance->getRedirectTarget() );
+		}
 	}
 
 	/**
@@ -58,10 +59,11 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 			$instance->hasRedirectTarget()
 		);
 
-		$this->assertEquals(
-			$directRedirectTarget,
-			$instance->getRedirectTarget()
-		);
+		if ( $directRedirectTarget ) {
+			$this->assertTrue( $instance->getRedirectTarget()->equals( $directRedirectTarget ) );
+		} else {
+			$this->assertNull( $instance->getRedirectTarget() );
+		}
 	}
 
 	public function redirectTextProvider() {

@@ -21,11 +21,15 @@ use Title;
  */
 class InterwikiDBIntegrationTest extends DatabaseTestCase {
 
+	private $semanticDataFactory;
 	private $stringValidator;
 	private $subjects = [];
 
 	private $pageCreator;
 	private $stringBuilder;
+
+	private $queryResultValidator;
+	private $queryParser;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -74,7 +78,6 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testRdfSerializationForInterwikiAnnotation() {
-
 		$this->stringBuilder
 			->addString( '[[Has type::Page]]' );
 
@@ -106,7 +109,6 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testQueryForInterwikiAnnotation() {
-		$this->markTestSkipped( "FIXME" );
 		$this->stringBuilder
 			->addString( '[[Has type::Page]]' );
 

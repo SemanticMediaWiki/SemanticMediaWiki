@@ -326,7 +326,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->with(
 				$this->equalTo( $instance ),
 				$this->equalTo( 'Foo' ) );

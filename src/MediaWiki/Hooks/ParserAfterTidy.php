@@ -248,7 +248,7 @@ class ParserAfterTidy implements HookListener {
 		if ( method_exists( $parserOutput, 'getPageProperty') ) {
 			// T301915
 			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
-			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
+			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' ) ?? '';
 		} else {
 			// MW < 1.38
 			$displayTitle = $parserOutput->getProperty( 'displaytitle' );

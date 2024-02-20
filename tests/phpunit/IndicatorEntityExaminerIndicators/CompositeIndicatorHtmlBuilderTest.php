@@ -3,6 +3,7 @@
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
 use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
+use SMW\Localizer\MessageLocalizer;
 use SMW\Utils\TemplateEngine;
 use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
@@ -23,6 +24,8 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $templateEngine;
+
+	private MessageLocalizer $messageLocalizer;
 
 	protected function setUp() : void {
 		parent::setUp();

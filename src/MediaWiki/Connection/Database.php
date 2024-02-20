@@ -601,7 +601,7 @@ class Database {
 	 * @since 1.9
 	 */
 	public function makeList( $data, $mode = self::LIST_COMMA ) {
-		return $this->connRef->getConnection( 'write' )->makeList( $data, $mode );
+		return $this->connRef->getConnection( 'read' )->makeList( $data, $mode );
 	}
 
 	/**
@@ -775,7 +775,7 @@ class Database {
 	 *
 	 * @param callable $callback
 	 */
-	public function onTransactionIdle( callable $callback ) {
+	public function onTransactionCommitOrIdle( callable $callback ) {
 
 		$connection = $this->connRef->getConnection( 'write' );
 
@@ -783,7 +783,7 @@ class Database {
 		if ( method_exists( $connection, 'onTransactionCommitOrIdle' ) ) {
 			$connection->onTransactionCommitOrIdle( $callback );
 		} else {
-			$connection->onTransactionIdle( $callback );
+			$connection->onTransactionCommitOrIdle( $callback );
 		}
 	}
 

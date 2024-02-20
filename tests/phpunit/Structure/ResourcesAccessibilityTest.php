@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use ResourceLoader;
 use ResourceLoaderContext;
@@ -23,7 +24,9 @@ class ResourcesAccessibilityTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider moduleDataProvider
 	 */
-	public function testModulesScriptsFilesAreAccessible( $modules, ResourceLoader $resourceLoader, $context ) {
+	public function testModulesScriptsFilesAreAccessible( $modules ) {
+		$resourceLoader = MediaWikiServices::getInstance()->getResourceLoader();
+		$context = ResourceLoaderContext::newDummyContext();
 
 		foreach ( array_keys( $modules ) as $name ) {
 			$resourceLoaderModule = $resourceLoader->getModule( $name );
@@ -38,7 +41,9 @@ class ResourcesAccessibilityTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider moduleDataProvider
 	 */
-	public function testModulesStylesFilesAreAccessible( $modules, ResourceLoader $resourceLoader, $context ) {
+	public function testModulesStylesFilesAreAccessible( $modules ) {
+		$resourceLoader = MediaWikiServices::getInstance()->getResourceLoader();
+		$context = ResourceLoaderContext::newDummyContext();
 
 		foreach ( array_keys( $modules ) as $name ) {
 			$resourceLoaderModule = $resourceLoader->getModule( $name );
@@ -50,16 +55,10 @@ class ResourcesAccessibilityTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	public function moduleDataProvider() {
-
-		$resourceLoader = ApplicationFactory::getInstance()->create( 'ResourceLoader' );
-		$context = ResourceLoaderContext::newDummyContext();
-
+	public static function moduleDataProvider() {
 		foreach ( $GLOBALS['smwgResourceLoaderDefFiles'] as $key => $file ) {
 			yield [
 				include $file,
-				$resourceLoader,
-				$context
 			];
 		}
 	}

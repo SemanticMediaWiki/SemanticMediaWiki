@@ -23,6 +23,7 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
+	private $mediaWikiNsContentReader;
 	private $dataValueServiceFactory;
 	private $constraintValueValidator;
 

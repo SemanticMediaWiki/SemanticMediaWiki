@@ -27,7 +27,10 @@ class RandomQueryResultOrderIntegrationTest extends DatabaseTestCase {
 	protected function setUp() : void {
 		parent::setUp();
 
-		$this->fixturesProvider = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesProvider();
+		$utilityFactory = UtilityFactory::getInstance();
+		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
+
+		$this->fixturesProvider = $utilityFactory->newFixturesFactory()->newFixturesProvider();
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 

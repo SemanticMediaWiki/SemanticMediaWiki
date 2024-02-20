@@ -7,6 +7,7 @@ use ParserOutput;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\Tests\TestEnvironment;
 use Title;
+use TitleValue;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\LinksUpdateComplete
@@ -204,7 +205,10 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$title = Title::newFromText( __METHOD__, NS_HELP );
-		$parserOutput = new ParserOutput();
+		$parserOutput = $this->createMock( ParserOutput::class );
+		$parserOutput->expects( $this->any() )
+			->method( 'getTemplates' )
+			->willReturn( [ NS_TEMPLATE => [ 'Foo' => 1 ] ] );
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
@@ -231,9 +235,9 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getParserOutput' )
 			->will( $this->returnValue( $parserOutput ) );
 
-		// TODO: Illegal dynamic property (#5421)
-		$linksUpdate->mTemplates = [ 'Foo' ];
-		$linksUpdate->mRecursive = false;
+		$linksUpdate->expects( $this->any() )
+			->method( 'isRecursive' )
+			->willReturn( false );
 
 		$instance = new LinksUpdateComplete(
 			$this->namespaceExaminer

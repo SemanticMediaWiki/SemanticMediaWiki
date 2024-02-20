@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use MediaWiki\DAO\WikiAwareEntity;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Tests\TestEnvironment;
@@ -231,6 +232,16 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
+
+		if ( method_exists( $title, 'getWikiId' ) ) {
+			$title->expects( $this->any() )
+				->method( 'getWikiId' )
+				->willReturn( WikiAwareEntity::LOCAL );
+		}
 
 		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
 			->disableOriginalConstructor()

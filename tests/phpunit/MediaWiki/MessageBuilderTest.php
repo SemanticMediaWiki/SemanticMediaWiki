@@ -80,35 +80,26 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		if ( class_exists( 'MediaWiki\Navigation\PrevNextNavigationRenderer' ) ) {
-			$instance = new MessageBuilder( $language );
-			$html = $instance->prevNextToText( $title, 20, 0, [], false );
+		$instance = new MessageBuilder( $language );
+		$html = $instance->prevNextToText( $title, 20, 0, [], false );
 
-			$this->assertStringStartsWith( 'View (previous 20', $html );
+		$this->assertStringStartsWith( 'View (previous 20', strip_tags( $html ) );
 
-			preg_match_all( '!<a.*?</a>!', $html, $m, PREG_PATTERN_ORDER );
-			$links = $m[0];
+		preg_match_all( '!<a.*?</a>!', $html, $m, PREG_PATTERN_ORDER );
+		$links = $m[0];
 
-			$nums= [20, 50, 100, 250, 500];
-			$i = 0;
-			foreach ( $links as $index => $a ) {
-				if ( $index < 1 ) {
-					$this->assertContains( 'class="mw-nextlink"', $a );
-					$this->assertContains( '>next 20<', $a );
-					continue;
-				}
-				$this->assertContains( 'class="mw-numlink"', $a );
-				$this->assertContains( 'title="Show ' . $nums[$i] . ' results per page"', $a );
-				$this->assertContains( ">$nums[$i]<", $a );
-				$i+=1;
-			}
-		} else {
-			$language->expects( $this->once() )
-				->method( 'viewPrevNext' );
-			$instance = new MessageBuilder( $language );
-			$instance->prevNextToText( $title, 20, 0, [], false );
+		$this->assertContains( 'class="mw-nextlink"', $links[0] );
+		$this->assertContains( '>next 20<', $links[0] );
+
+		$nums= [20, 50, 100, 250, 500];
+		// On MW 1.39 and newer, the current limit selection is not a link any more.
+		$nums = version_compare( MW_VERSION, '1.39', '>=' ) ? [ 50, 100, 250, 500 ] : $nums;
+		for ( $i = 1; $i < count( $links ); $i++ ) {
+			$a = $links[$i];
+			$this->assertContains( 'class="mw-numlink"', $a );
+			$this->assertContains( 'title="Show ' . $nums[$i - 1] . ' results per page"', $a );
+			$this->assertContains( ">{$nums[$i - 1]}<", $a );
 		}
-
 	}
 
 	public function testGetForm() {

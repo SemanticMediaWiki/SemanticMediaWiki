@@ -41,7 +41,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$this->testEnvironment = new TestEnvironment( $settings );
-		$this->dataItemFactory = new DataItemFactory();
 
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();

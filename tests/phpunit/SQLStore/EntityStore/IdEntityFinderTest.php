@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
 use SMW\IteratorFactory;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\MediaWiki\Connection\Query;
 use SMW\Tests\TestEnvironment;
@@ -24,7 +25,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	private $iteratorFactory;
 	private $idCacheManager;
 	private $store;
-	private $conection;
+	private Database $connection;
 
 	protected function setUp() : void {
 		$this->testEnvironment = new TestEnvironment();
@@ -45,7 +46,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -43,7 +43,7 @@ class ConceptParserFunction {
 
 	/**
 	 * @since 1.9
-	 *
+	 * 
 	 * @param ParserData $parserData
 	 * @param MessageFormatter $messageFormatter
 	 */
@@ -72,7 +72,7 @@ class ConceptParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $rawParams ) {
-		$this->parserData->getOutput()->addModules( 'ext.smw.style' );
+		$this->parserData->getOutput()->addModules( ['ext.smw.style'] );
 
 		$title = $this->parserData->getTitle();
 		$property = new DIProperty( '_CONC' );

@@ -67,24 +67,6 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		$this->validatorFactory = $utilityFactory->newValidatorFactory();
 		$this->apiFactory = $utilityFactory->newMwApiFactory();
 
-		// This ensures that if content is created in the NS_MEDIAWIKI namespace
-		// and an object relies on the MediaWikiNsContentReader then it uses the DB
-		ApplicationFactory::clear();
-		ApplicationFactory::getInstance()->getMediaWikiNsContentReader()->skipMessageCache();
-		DataValueFactory::getInstance()->clear();
-
-		// Reset the Title/TitleParser otherwise a singleton instance holds an outdated
-		// content language reference
-		$this->testEnvironment->resetMediaWikiService( '_MediaWikiTitleCodec' );
-		$this->testEnvironment->resetMediaWikiService( 'TitleParser' );
-
-		// #3414
-		// NameTableAccessException: Expected unused ID from database insert for
-		// 'mw-changed-redirect-target'  into 'change_tag_def',
-		$this->testEnvironment->resetMediaWikiService( 'NameTableStoreFactory' );
-
-		$this->testEnvironment->resetMediaWikiService( 'NamespaceInfo' );
-
 		$this->testEnvironment->resetPoolCacheById( TurtleTriplesBuilder::POOLCACHE_ID );
 
 		// Make sure LocalSettings don't interfere with the default settings
@@ -264,6 +246,12 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 				$jsonTestCaseFileHandler->getSettingsFor( $key, $this->getConfigValueCallback( $key ) )
 			);
 		}
+
+		// This ensures that if content is created in the NS_MEDIAWIKI namespace
+		// and an object relies on the MediaWikiNsContentReader then it uses the DB
+		ApplicationFactory::clear();
+		ApplicationFactory::getInstance()->getMediaWikiNsContentReader()->skipMessageCache();
+		DataValueFactory::getInstance()->clear();
 
 		if ( $jsonTestCaseFileHandler->hasSetting( 'smwgFieldTypeFeatures' ) ) {
 			$this->doRunTableSetupBeforeContentCreation();
