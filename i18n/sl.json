@@ -5,7 +5,8 @@
 			"Eleassar",
 			"HairyFotr",
 			"Janezdrilc",
-			"Lesko987"
+			"Lesko987",
+			"Reedy"
 		]
 	},
 	"smw-desc": "Naredi vaš viki dostopnejši – za stroje ''in'' ljudi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual spletna dokumentacija])",
@@ -281,7 +282,7 @@
 	"smw-ui-tooltip-title-legend": "Legenda",
 	"smw_concept_header": "Strani zasnove »$1«",
 	"right-smw-admin": "Dostop do administrativnih opravil (Semantični MediaWiki)",
-	"right-smw-patternedit": "Urejanje dostopa za ohranjanje dovoljenih regularnih izrazov in vzorcev (Semantični Mediawiki)",
+	"right-smw-patternedit": "Urejanje dostopa za ohranjanje dovoljenih regularnih izrazov in vzorcev (Semantični MediaWiki)",
 	"right-smw-pageedit": "Urejanje dostopa do strani, označenih z <code>Is edit protected</code> (Semantični MediaWiki)",
 	"right-smw-schemaedit": "Urejanje [https://www.semantic-mediawiki.org/wiki/Help:Schema strani sheme] (Semantični MediaWiki)",
 	"right-smw-viewjobqueuewatchlist": "Dostop do [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist spiska nadzorov] vrste opravil (Semantični MediaWiki)",
