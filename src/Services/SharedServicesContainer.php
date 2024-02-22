@@ -311,7 +311,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$contentParser = new ContentParser(
 				$title,
 				$containerBuilder->create( 'Parser' ),
-				$settings->get( 'smwgExtraSlotsWithSemanticLinks' )
+				$settings->get( 'smwgExtraSlotsWithSemanticLinks' ) ?? []
 			);
 
 			$contentParser->setRevisionGuard(

@@ -225,7 +225,7 @@ class MwCollaboratorFactory {
 			$wikiPage,
 			$revision,
 			$user,
-			$this->applicationFactory->getSettings()->get( 'smwgExtraSlotsWithSemanticLinks' )
+			$this->applicationFactory->getSettings()->get( 'smwgExtraSlotsWithSemanticLinks' ) ?? []
 		);
 
 		$editInfo->setRevisionGuard(

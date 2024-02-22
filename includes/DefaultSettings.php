@@ -2519,7 +2519,7 @@ return (function() {
          #
          # Annotations in the 'main' slot are always evaluated.
          #
-         # @since 4.1.0
+         # @since 4.2.0
          ##
         'smwgExtraSlotsWithSemanticLinks' => []
 	];
