@@ -327,7 +327,13 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 		<td></td>
 	</tr>
 	<tr>
-		<th>4.1.x</th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.1.3">4.1.3</a></th>
+		<td>7.10.x</td>
+		<td>Not supported (TBD)</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5611#issuecomment-1962729300">Confirmed to work with ElasticSearch 7.10.2 (MW 1.39)</a></td>
+	</tr>
+	<tr>
+		<th>4.1.0 - 4.1.2</th>
 		<td>6.5.x - 6.8.23</td>
 		<td>Not supported (TBD)</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5328">Confirmed to not work with ElasticSearch 7.x (MW 1.39)</a></td>
