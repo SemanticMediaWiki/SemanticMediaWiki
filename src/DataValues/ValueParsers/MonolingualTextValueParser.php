@@ -11,6 +11,7 @@ use SMW\Localizer;
  * @since 2.4
  *
  * @author mwjames
+ * @reviewer thomas-topway-it
  */
 class MonolingualTextValueParser implements ValueParser {
 
@@ -52,8 +53,20 @@ class MonolingualTextValueParser implements ValueParser {
 				$text = substr_replace( $userValue, '', ( mb_strlen( $languageCode ) + 1 ) * -1 );
 			}
 		}
+		
+		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
+		
+		// ***attention! the following is correct but won't have effect as
+		// long as Localizer::asBCP47FormattedLanguageCode is called twice
+		// from LanguageCodeValue -> parseUserValue as well (the latter could
+		// be removed and then the related $mappedLanguageCode as well)
 
-		return [ $text, Localizer::asBCP47FormattedLanguageCode( $languageCode ) ];
+		$nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
+	
+		$mappedLanguageCode = !in_array( $languageCode, $nonstandardLanguageCodeMapping ) ? $languageCode
+			: array_search( $languageCode, $nonstandardLanguageCodeMapping );
+		
+		return [ $text, $mappedLanguageCode ];
 	}
 
 }

@@ -45,12 +45,18 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @var DIProperty[]|null
 	 */
 	private static $properties = null;
+	
+	/**
+	 * nonstandardLanguageCodeMapping
+	 */
+	private $nonstandardLanguageCodeMapping;
 
 	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
 		parent::__construct( self::TYPE_ID );
+		$this->nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
 	}
 
 	/**
@@ -81,7 +87,13 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @return string
 	 */
 	public function getTextWithLanguageTag( $text, $languageCode ) {
-		return $text . '@' . Localizer::asBCP47FormattedLanguageCode( $languageCode );
+		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
+
+		// @TODO test de-formal with PropertyListByApiRequest
+		$mappedLanguageCode = !in_array( $languageCode, $this->nonstandardLanguageCodeMapping ) ? $languageCode
+			: array_search( $languageCode, $this->nonstandardLanguageCodeMapping );
+
+		return $text . '@' . $mappedLanguageCode;
 	}
 
 	/**
@@ -277,7 +289,12 @@ class MonolingualTextValue extends AbstractMultiValue {
 			return null;
 		}
 
-		if ( $list['_LCODE'] !== Localizer::asBCP47FormattedLanguageCode( $languageCode ) ) {
+		$mappedLanguageCode = !array_key_exists( $list['_LCODE'], $this->nonstandardLanguageCodeMapping ) ? $list['_LCODE']
+			: $this->nonstandardLanguageCodeMapping[$list['_LCODE']];
+
+		// $list['_LCODE'] is 'de-formal' but the output
+		// of asBCP47FormattedLanguageCode is 'de-x-formal'
+		if ( $mappedLanguageCode !== Localizer::asBCP47FormattedLanguageCode( $languageCode ) ) {
 			return null;
 		}
 

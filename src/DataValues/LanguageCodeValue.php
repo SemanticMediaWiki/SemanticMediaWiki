@@ -15,6 +15,7 @@ use SMWDIBlob as DIBlob;
  * @since 2.4
  *
  * @author mwjames
+ * @reviewer thomas-topway-it
  */
 class LanguageCodeValue extends StringValue {
 
@@ -24,10 +25,17 @@ class LanguageCodeValue extends StringValue {
 	const TYPE_ID = '__lcode';
 
 	/**
+	 * nonstandardLanguageCodeMapping
+	 */
+	private $nonstandardLanguageCodeMapping;
+
+	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
 		parent::__construct( self::TYPE_ID );
+		
+		$this->nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
 	}
 
 	/**
@@ -36,6 +44,13 @@ class LanguageCodeValue extends StringValue {
 	 * @param string $value
 	 */
 	protected function parseUserValue( $userValue ) {
+		
+		// @FIXME $userValue isn't already a BCP47Formatted $languageCode ?
+		// Localizer::asBCP47FormattedLanguageCode is already called from
+		// MonolingualTextValue parseUserValue -> getValuesFromString 
+		// -> MonolingualTextValueParser parse
+		// (and afterwards MonolingualTextValue parseUserValue 
+		// calls this function)
 
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $userValue );
 
@@ -49,15 +64,22 @@ class LanguageCodeValue extends StringValue {
 
 		// Checks whether the language tag is valid in MediaWiki for when
 		// it is not executed in a query context
-		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Localizer::isKnownLanguageTag( $languageCode ) ) {
+		
+		// ensure non-standard language codes are mapped to
+		// their canonical form (e.g. de-x-formal to de-formal)
+
+		$mappedLanguageCode = !in_array( $languageCode, $this->nonstandardLanguageCodeMapping ) ? $languageCode
+			: array_search( $languageCode, $this->nonstandardLanguageCodeMapping );
+		
+		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Localizer::isKnownLanguageTag( $mappedLanguageCode ) ) {
 			$this->addErrorMsg( [
 				'smw-datavalue-languagecode-invalid',
-				$languageCode
+				$mappedLanguageCode
 			] );
 			return;
 		}
 
-		$this->m_dataitem = new DIBlob( $languageCode );
+		$this->m_dataitem = new DIBlob( $mappedLanguageCode );
 	}
 
 }
