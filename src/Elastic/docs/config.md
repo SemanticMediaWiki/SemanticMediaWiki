@@ -17,7 +17,7 @@ $GLOBALS['smwgElasticsearchEndpoints'] = [
 ];
 ```
 
-For SMW 4.1.3 and Elastic Search 7.10.2 you also need to provide :
+For SMW 4.1.3 and Elasticsearch 7.10.2 you also need to provide :
 ```
 $smwgElasticsearchCredentials = [
     'host' => '192.168.1.126',

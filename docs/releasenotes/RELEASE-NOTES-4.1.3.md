@@ -10,7 +10,7 @@ This release contains security patches and improves support for modern PHP and M
 Upgrading is recommended for all users.
 
 ## Breaking changes
-* This version of SemanticMediaWiki requires ElasticSearch 7.10, with a change of configuration (see below) - this is only a problem if you enabled ElasticStore
+* This version of SemanticMediaWiki requires Elasticsearch 7.10, with a change of configuration (see below) - this is only a problem if you enabled ElasticStore
 
 ## Changes
 
@@ -75,9 +75,9 @@ This is only for those that have installed SMW via Git.
 * Step 1: do a `git pull` in the SemanticMediaWiki directory
 * Step 2: run `composer update --no-dev --optimize-autoloader` in the MediaWiki directory
 
-**Upgrading ElasticSearch:**
-This version of SMW uses ElasticSearch 7.10.2 (if you enabled). If you are using ElasticStore as a backend, then you need to perform the following changes:
-* Step 1: Upgrade your version of Elastic Search to 7.10.2 (if you are using docker that should work without any other action than changing the version number)
+**Upgrading Elasticsearch:**
+This version of SMW uses Elasticsearch 7.10.2 (if you enabled). If you are using ElasticStore as a backend, then you need to perform the following changes:
+* Step 1: Upgrade your version of Elasticsearch to 7.10.2 (if you are using docker that should work without any other action than changing the version number)
 * Step 2: Make sure your version of the elasticsearch package is right, you might want to add it to the composer.local.json: `COMPOSER=composer.local.json composer require elasticsearch/elasticsearch "7.17.2"`
 * Step 3: Add $smwgElasticsearchCredentials after $smwgElasticsearchEndpoints:
 
