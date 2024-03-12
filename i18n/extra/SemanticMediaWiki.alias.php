@@ -814,12 +814,17 @@ $specialPageAliases['zh-hans'] = [
 	'PageProperty' => [ '页面属性' ],
 	'Properties' => [ '属性' ],
 	'Concepts' => [ '概念' ],
-	'SMWAdmin' => [ 'SMW管理' ],
+	'SMWAdmin' => [ '语义MediaWiki', 'SMW管理' ],
+	'PendingTaskList' => [ '待处理任务列表' ],
 	'SearchByProperty' => [ '按属性搜索' ],
+	'ProcessingErrorList' => [ '处理错误列表' ],
+	'ConstraintErrorList' => [ '约束错误列表' ],
+	'PropertyLabelSimilarity' => [ '属性标签相似性' ],
+	'MissingRedirectAnnotations' => [ '丢失的重定向注释' ],
 	'Types' => [ '类型' ],
-	'URIResolver' => [ 'URI分解器' ],
-	'UnusedProperties' => [ '未使用属性' ],
-	'WantedProperties' => [ '尚缺属性' ],
+	'URIResolver' => [ 'URI解析器' ],
+	'UnusedProperties' => [ '未使用的属性' ],
+	'WantedProperties' => [ '需要的属性' ],
 ];
 
 /** Traditional Chinese (中文（繁體）‎) */
