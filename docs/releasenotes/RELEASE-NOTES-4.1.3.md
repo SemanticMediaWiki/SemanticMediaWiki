@@ -82,11 +82,13 @@ This version of SMW uses Elasticsearch 7.10.2 (if you have enabled it). If you a
 * Step 3: Add $smwgElasticsearchCredentials after $smwgElasticsearchEndpoints:
 
 ```
-$smwgElasticsearchEndpoints = [ [ 'host' => $elasticSearchHost,
-                                  'port' => 9200,
-                                  'scheme' => 'http',
-                                  'user' => $elastic_user,
-                                  'pass' => $elastic_password ] ];
+$smwgElasticsearchEndpoints = [ 
+    [
+        'host' => $elasticSearchHost,
+        'port' => 9200,
+        'scheme' => 'http'
+    ]
+];
 
 $smwgElasticsearchCredentials = [
     'user' => $elastic_user,
