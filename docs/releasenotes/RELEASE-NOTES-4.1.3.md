@@ -89,9 +89,6 @@ $smwgElasticsearchEndpoints = [ [ 'host' => $elasticSearchHost,
                                   'pass' => $elastic_password ] ];
 
 $smwgElasticsearchCredentials = [
-    'host' => $elasticSearchHost,
-    'port' => 9200,
-    'scheme' => 'http',
     'user' => $elastic_user,
     'pass' => $elastic_password,
 ];
