@@ -54,7 +54,7 @@ class TemplateExpander {
 	 * @see Special:ExpandTemplates
 	 * @since 3.1
 	 *
-	 * @param Template|TemplateSet|srting $template
+	 * @param Template|TemplateSet|string $template
 	 *
 	 * @return string
 	 */
