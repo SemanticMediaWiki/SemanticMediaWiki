@@ -2,9 +2,11 @@
 
 namespace SMW\Parser;
 
+use Error;
 use MediaWiki\MediaWikiServices;
 use Parser;
 use ParserOptions;
+use ParserOutput;
 use RequestContext;
 use RuntimeException;
 use SMW\Localizer\Localizer;
@@ -112,8 +114,9 @@ class RecursiveTextProcessor {
 	 * @param boolean $transcludeAnnotation
 	 */
 	public function transcludeAnnotation( $transcludeAnnotation ) {
+		$parserOutput = $this->getParserOutputSafe();
 
-		if ( $this->parser->getOutput() === null || $transcludeAnnotation === true ) {
+		if ( !$parserOutput || $transcludeAnnotation === true ) {
 			return;
 		}
 
@@ -121,7 +124,6 @@ class RecursiveTextProcessor {
 			throw new RuntimeException( "Expected a uniqid and not null." );
 		}
 
-		$parserOutput = $this->parser->getOutput();
 		$track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK ) ?: [];
 
 		// Track each embedded #ask process to ensure to remove
@@ -137,12 +139,12 @@ class RecursiveTextProcessor {
 	 * @since 3.0
 	 */
 	public function releaseAnnotationBlock() {
+		$parserOutput = $this->getParserOutputSafe();
 
-		if ( $this->parser->getOutput() === null ) {
+		if ( !$parserOutput ) {
 			return;
 		}
 
-		$parserOutput = $this->parser->getOutput();
 		$track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK );
 
 		if ( $track !== [] ) {
@@ -155,15 +157,6 @@ class RecursiveTextProcessor {
 		}
 
 		$parserOutput->setExtensionData( ParserData::ANNOTATION_BLOCK, $track );
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function releaseAnyAnnotationBlock() {
-		if ( $this->parser->getOutput() !== null ) {
-			$this->parser->getOutput()->setExtensionData( ParserData::ANNOTATION_BLOCK, false );
-		}
 	}
 
 	/**
@@ -182,7 +175,7 @@ class RecursiveTextProcessor {
 	 */
 	public function copyData( ParserData $parserData ) {
 		if ( $this->recursiveAnnotation ) {
-			$parserData->importFromParserOutput( $this->parser->getOutput() );
+			$parserData->importFromParserOutput( $this->getParserOutputSafe() );
 		}
 	}
 
@@ -212,7 +205,7 @@ class RecursiveTextProcessor {
 	public function recursivePreprocess( $text ) {
 
 		// not during parsing, no preprocessing needed, still protect the result
-		if ( $this->parser === null || !$this->parser->getOptions() || !$this->parser->getPage() ) {
+		if ( !$this->parser || !$this->parser->getOptions() || !$this->parser->getTitle() ) {
 			return $this->recursiveAnnotation ? $text : '[[SMW::off]]' . $text . '[[SMW::on]]';
 		}
 
@@ -253,7 +246,7 @@ class RecursiveTextProcessor {
 		}
 
 		$this->recursionDepth++;
-		$isValid = $this->parser->getOptions() && $this->parser->getPage();
+		$isValid = $this->parser->getOptions() && $this->parser->getTitle();
 
 		if ( $this->recursionDepth <= $this->maxRecursionDepth && $isValid ) {
 			$text = $this->parser->recursiveTagParse( $text );
@@ -280,12 +273,10 @@ class RecursiveTextProcessor {
 	}
 
 	private function pruneCategory( &$text ) {
-
-		if ( $this->parser->getOutput() === null ) {
+		$parserOutput = $this->getParserOutputSafe();
+		if ( !$parserOutput ) {
 			return;
 		}
-
-		$parserOutput = $this->parser->getOutput();
 
 		if ( ( $track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK ) ) === false ) {
 			return;
@@ -302,6 +293,14 @@ class RecursiveTextProcessor {
 				'',
 				$text
 			);
+		}
+	}
+
+	private function getParserOutputSafe(): ?ParserOutput {
+		try {
+			return $this->parser->getOutput();
+		} catch ( Error $e ) {
+			return null;
 		}
 	}
 
