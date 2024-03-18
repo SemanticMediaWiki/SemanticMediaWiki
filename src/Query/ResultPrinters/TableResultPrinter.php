@@ -156,10 +156,10 @@ class TableResultPrinter extends ResultPrinter {
 
 			$this->htmlTable->cell(
 					$link->getText( $outputMode, $this->mLinker ),
-					[ 'class' => 'sortbottom', 'colspan' => $res->getColumnCount() ]
+					[ 'colspan' => $res->getColumnCount() ]
 			);
 
-			$this->htmlTable->row( [ 'class' => 'smwfooter' ] );
+			$this->htmlTable->row( [ 'class' => 'smwfooter sortbottom' ] );
 		}
 
 		$tableAttrs = [ 'class' => $class ];
