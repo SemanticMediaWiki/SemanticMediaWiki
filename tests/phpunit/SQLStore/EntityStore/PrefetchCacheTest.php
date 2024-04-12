@@ -83,4 +83,59 @@ class PrefetchCacheTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
+	public function testMultiCacheAndFetch() {
+		# two triples of (A, Pm, B), (X, Pm, Y)
+		$property = new DIProperty( 'Pm' );
+		$A = DIWikiPage::newFromText("A");
+		$B = DIWikiPage::newFromText("B");
+		$X = DIWikiPage::newFromText("X");
+		$Y = DIWikiPage::newFromText("Y");
+
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idTable->expects( $this->atLeastOnce() )
+			->method( 'getSMWPageID' )
+			->will( $this->returnCallback(
+				function($title, $namespace, $iw, $subobjectName, $canonical = true, $fetchHashes = false){
+					switch($title){
+						case "A": return 53;
+						case "X": return 54;
+					}
+				}
+			));
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$this->prefetchItemLookup->expects( $this->atLeastOnce() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnCallback(
+				function($subjects, $p, $opts) use ($A,$B,$X,$Y) {
+					switch($subjects){
+						case [$A]: return [ 53 => [$B]];
+						case [$X]: return [ 54 => [$Y]];
+					}
+				}
+			));
+
+		$instance = new PrefetchCache(
+			$this->store,
+			$this->prefetchItemLookup
+		);
+
+		$instance->prefetch( [ $A ], $property, $this->requestOptions );
+		$instance->prefetch( [ $X ], $property, $this->requestOptions );
+		$this->assertEquals(
+			[ $B ],
+			$instance->getPropertyValues( $A, $property, $this->requestOptions )
+		);
+		$this->assertEquals(
+			[ $Y ],
+			$instance->getPropertyValues( $X, $property, $this->requestOptions )
+		);
+	}
+
 }
