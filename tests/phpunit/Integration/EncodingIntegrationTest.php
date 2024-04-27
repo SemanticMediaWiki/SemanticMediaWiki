@@ -51,7 +51,7 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			$expected,
-			$sidebar['TOOLBOX'][0]['href']
+			$sidebar['TOOLBOX']['smwbrowselink']['href']
 		);
 
 		ApplicationFactory::clear();
