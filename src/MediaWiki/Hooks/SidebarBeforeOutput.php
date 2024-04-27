@@ -74,9 +74,10 @@ class SidebarBeforeOutput implements HookListener {
 			true
 		);
 
-		$sidebar["TOOLBOX"][] = [
+		$sidebar["TOOLBOX"]['smwbrowselink'] = [
 			'text' => $skin->msg( 'smw_browselink' )->text(),
 			'href' => SpecialPage::getTitleFor( 'Browse', ':' . $link )->getLocalUrl(),
+			'icon' => 'database',
 			'id'   => 't-smwbrowselink',
 			'rel'  => 'search'
 		];
