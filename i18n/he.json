@@ -576,7 +576,7 @@
 	"grouppage-smweditor": "{{ns:project}}:עורכים (מדיה־ויקי סמנטית)",
 	"action-smw-admin": "לגשת למשימות ניהול של מדיה־ויקי סמנטית",
 	"action-smw-ruleedit": "לערוך דפי חוקים (מדיה־ויקי סמנטית)",
-	"smw-property-namespace-disabled": "המאפיין [https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespacesWithSemanticLinks מרחב שם] מושבת, ניסיון להכריז על סוג או על מאפיינים מסוימים אחרים למאפיין הזה אינו אפשרי.",
+	"smw-property-namespace-disabled": "המאפיין [https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespacesWithSemanticLinks מרחב שם] כבוי, ניסיון להכריז על סוג או על מאפיינים מסוימים אחרים למאפיין הזה אינו אפשרי.",
 	"smw-property-predefined-default": "\"$1\" הוא מאפיין מוגדר מראש מסוג $2.",
 	"smw-property-predefined-common": "המאפיין הזה מותקן מראש (ידוע גם בתור [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מאפיין מיוחד]) ובא עם הרשאות ניהול נוספות, אבל יכול לשמש כמו כל [https://www.semantic-mediawiki.org/wiki/Property מפאיין שמוגדר על־ידי משתמש].",
 	"smw-property-predefined-ask": "$1 הוא מאפיין מוגדר מראש שמייצג מטא־מידע (בצורת [https://www.semantic-mediawiki.org/wiki/Subobject תת־עצם]) על שאילתות פרטניות והוא מסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית].",
