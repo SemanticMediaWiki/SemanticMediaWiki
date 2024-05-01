@@ -971,7 +971,8 @@ class Hooks {
 		);
 
 		$getPreferences = new GetPreferences(
-			$permissionExaminer
+			$permissionExaminer,
+			$applicationFactory->singleton( 'SchemaFactory' )
 		);
 
 		$getPreferences->setHookDispatcher(

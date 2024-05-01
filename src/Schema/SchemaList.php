@@ -29,6 +29,15 @@ class SchemaList implements JsonSerializable {
 	}
 
 	/**
+	 * @since 4.1
+	 *
+	 * @return bool
+	 */
+	public function isEmpty() : bool {
+		return $this->list === [];
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @return []

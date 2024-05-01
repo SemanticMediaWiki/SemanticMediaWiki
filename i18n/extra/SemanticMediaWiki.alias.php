@@ -153,6 +153,7 @@ $specialPageAliases['de'] = [
 	'ProcessingErrorList' => [ 'Liste_der_Verarbeitungsfehler' ],
 	'PropertyLabelSimilarity' => [ 'Ähnliche_Attributbezeichnungen' ],
 	'MissingRedirectAnnotations' => [ 'Fehlende_Weiterleitungsannotationen' ],
+	'FacetedSearch' => [ 'FacetedSearch' ],
 	'Types' => [ 'Datentypen' ],
 	'URIResolver' => [ 'URI-Auflöser' ],
 	'UnusedProperties' => [ 'Verwaiste_Attribute' ],
