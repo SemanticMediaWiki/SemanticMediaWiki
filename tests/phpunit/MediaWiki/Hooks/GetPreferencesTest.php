@@ -38,9 +38,13 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 		$preferences = [];
 
+		$schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->assertInstanceOf(
 			GetPreferences::class,
-			new GetPreferences( $this->permissionExaminer )
+			new GetPreferences( $this->permissionExaminer, $schemaFactory )
 		);
 	}
 
@@ -49,9 +53,21 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $key ) {
 
-		$this->permissionExaminer->expects( $this->any() )
-			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( true ) );
+		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaFinder->expects( $this->any() )
+			->method( 'getSchemaListByType' )
+			->will( $this->returnValue( $schemaList ) );
+
+		$this->schemaFactory->expects( $this->any() )
+			->method( 'newSchemaFinder' )
+			->will( $this->returnValue( $schemaFinder ) );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -60,21 +76,18 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 		$preferences = [];
 
 		$instance = new GetPreferences(
-			$this->permissionExaminer
+			$this->schemaFactory
 		);
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
 		);
-
 		$instance->setOptions(
 			[
 				'smwgEnabledEditPageHelp' => false
 			]
 		);
-
 		$instance->process( $user, $preferences );
-
 		$this->assertArrayHasKey(
 			$key,
 			$preferences

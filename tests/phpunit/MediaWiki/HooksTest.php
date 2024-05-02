@@ -1023,23 +1023,41 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 	public function callGetPreferences( $instance ) {
 
+		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaFinder->expects( $this->any() )
+			->method( 'getSchemaListByType' )
+			->will( $this->returnValue( $schemaList ) );
+
+		$schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaFactory->expects( $this->any() )
+			->method( 'newSchemaFinder' )
+			->will( $this->returnValue( $schemaFinder ) );
+
+		$this->testEnvironment->registerObject( 'SchemaFactory', $schemaFactory );
+
 		$handler = 'GetPreferences';
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
-
 		$preferences = [];
-
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
 		);
-
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ $user, &$preferences ]
 		);
-
 		return $handler;
 	}
 
