@@ -21,12 +21,12 @@ class LogoTest extends \PHPUnit_Framework_TestCase {
 	public function testGet_Small() {
 
 		$this->assertContains(
-			'data:image/png;base64',
+			'logo_small.png',
 			Logo::get( '100x90' )
 		);
 
 		$this->assertContains(
-			'data:image/png;base64',
+			'logo_small.png',
 			Logo::get( 'small' )
 		);
 	}
@@ -34,7 +34,7 @@ class LogoTest extends \PHPUnit_Framework_TestCase {
 	public function testGet_Footer() {
 
 		$this->assertContains(
-			'data:image/png;base64',
+			'logo_footer.png',
 			Logo::get( 'footer' )
 		);
 	}
