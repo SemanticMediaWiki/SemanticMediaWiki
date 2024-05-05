@@ -128,6 +128,12 @@ return (function() {
 		##
 
 		###
+		# @since 4.1.3
+		##
+		'smwgIgnoreUpgradeKeyCheck' => false,
+		##
+
+		###
 		# Use another storage backend for Semantic MediaWiki. The default is suitable
 		# for most uses of SMW.
 		#
@@ -2483,6 +2489,16 @@ return (function() {
 			// [ 'host' => '127.0.0.1', 'port' => 9200, 'scheme' => 'http' ],
 			// [ 'host' => '127.0.0.1', 'port' => 9200, 'scheme' => 'http', 'user' => 'username', 'pass' => 'password!#$?*abc' ]
 			// 'localhost:9200'
+		],
+
+		##
+		# ElasticSearch basic authentication credentials
+		#
+		# @since 4.2
+		##
+		'smwgElasticsearchCredentials' => [
+			// 'user' => 'foo', 'pass' => 'bar'
+			// 'foo', 'bar'
 		],
 
 		/**

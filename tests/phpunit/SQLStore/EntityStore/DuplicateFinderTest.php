@@ -69,7 +69,7 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$query = new \SMW\MediaWiki\Connection\Query( $connection );
 
-		$resultWrapper = $this->getMockBuilder( '\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -78,7 +78,7 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $query ) );
 
 		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( $resultWrapper ) );
 
 		$instance = new DuplicateFinder(
@@ -123,7 +123,7 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $query ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new DuplicateFinder(
@@ -171,7 +171,7 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $query ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new DuplicateFinder(

@@ -88,11 +88,11 @@ final class ApiRequestParameterFormatter {
 		}
 
 		if ( isset( $this->requestParameters['conditions'] ) && is_array( $this->requestParameters['conditions'] ) ) {
-			$result->set( 'conditions', implode( ' ', array_map( 'self::formatConditions', $this->requestParameters['conditions'] ) ) );
+			$result->set( 'conditions', implode( ' ', array_map( [ $this, 'formatConditions' ], $this->requestParameters['conditions'] ) ) );
 		}
 
 		if ( isset( $this->requestParameters['printouts'] ) && is_array( $this->requestParameters['printouts'] ) ) {
-			$result->set( 'printouts', array_map( 'self::formatPrintouts', $this->requestParameters['printouts'] ) );
+			$result->set( 'printouts', array_map( [ $this, 'formatPrintouts' ], $this->requestParameters['printouts'] ) );
 		}
 
 		return $result;

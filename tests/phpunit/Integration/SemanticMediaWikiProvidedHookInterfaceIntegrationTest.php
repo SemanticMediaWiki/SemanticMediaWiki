@@ -17,6 +17,7 @@ use SMW\Tests\TestEnvironment;
  */
 class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
+	private $testEnvironment;
 	private $mwHooksHandler;
 	private $applicationFactory;
 	private $spyLogger;
@@ -356,15 +357,14 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 		$null = 0;
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeChangeTitleComplete', function( $store, $oldTitle, $newTitle, $pageId, $redirectId ) {
-			return $store->reachedTheBeforeChangeTitleCompleteHook = true;
+		$reachedTheBeforeChangeTitleCompleteHook = false;
+		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeChangeTitleComplete', function() use ( &$reachedTheBeforeChangeTitleCompleteHook ) {
+			$reachedTheBeforeChangeTitleCompleteHook = true;
 		} );
 
 		$store->changeTitle( $title, $title, $null, $null );
 
-		$this->assertTrue(
-			$store->reachedTheBeforeChangeTitleCompleteHook
-		);
+		$this->assertTrue( $reachedTheBeforeChangeTitleCompleteHook );
 	}
 
 	public function testRegisteredSQLStoreBeforeDeleteSubjectComplete() {
@@ -394,14 +394,15 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', function( $store, $title ) {
-			return $store->reachedTheBeforeDeleteSubjectCompleteHook = true;
+		$reachedTheBeforeDeleteSubjectCompleteHook = false;
+		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', function() use ( &$reachedTheBeforeDeleteSubjectCompleteHook) {
+			$reachedTheBeforeDeleteSubjectCompleteHook = true;
 		} );
 
 		$store->deleteSubject( $title );
 
 		$this->assertTrue(
-			$store->reachedTheBeforeDeleteSubjectCompleteHook
+			$reachedTheBeforeDeleteSubjectCompleteHook
 		);
 	}
 
@@ -432,15 +433,14 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDeleteSubjectComplete', function( $store, $title ) {
-			return $store->reachedTheAfterDeleteSubjectCompleteHook = true;
+		$reachedTheAfterDeleteSubjectCompleteHook = false;
+		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDeleteSubjectComplete', function() use ( &$reachedTheAfterDeleteSubjectCompleteHook ) {
+			$reachedTheAfterDeleteSubjectCompleteHook = true;
 		} );
 
 		$store->deleteSubject( $title );
 
-		$this->assertTrue(
-			$store->reachedTheAfterDeleteSubjectCompleteHook
-		);
+		$this->assertTrue( $reachedTheAfterDeleteSubjectCompleteHook );
 	}
 
 	public function testRegisteredParserBeforeMagicWordsFinder() {

@@ -263,7 +263,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_INST',
-				'propertyValues' => [ 'Foo',  'Bar' ],
+				'propertyValues' => [ 'Category:Foo', 'Category:Bar' ],
 			]
 		];
 
@@ -281,7 +281,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SUBC',
-				'propertyValues' => [ 'Foo',  'Bar' ],
+				'propertyValues' => [ 'Category:Foo',  'Category:Bar' ],
 			]
 		];
 
@@ -320,7 +320,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_INST',
-				'propertyValues' => [ 'Foo', 'Bar' ],
+				'propertyValues' => [ 'Category:Foo', 'Category:Bar' ],
 			]
 		];
 
@@ -339,7 +339,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_INST',
-				'propertyValues' => [ 'Foo' ],
+				'propertyValues' => [ 'Category:Foo' ],
 			]
 		];
 
@@ -358,7 +358,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SUBC',
-				'propertyValues' => [ 'Foo', 'Bar' ],
+				'propertyValues' => [ 'Category:Foo', 'Category:Bar' ],
 			]
 		];
 
@@ -377,7 +377,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SUBC',
-				'propertyValues' => [ 'Foo' ],
+				'propertyValues' => [ 'Category:Foo' ],
 			]
 		];
 

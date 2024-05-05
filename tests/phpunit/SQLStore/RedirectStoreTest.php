@@ -3,8 +3,11 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\InMemoryPoolCache;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\JobQueue;
 use SMW\SQLStore\RedirectStore;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\RedirectStore
@@ -18,10 +21,11 @@ use SMW\Tests\TestEnvironment;
 class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
-	private $conection;
+	private Database $connection;
 	private $cache;
 	private $testEnvironment;
 	private $connectionManager;
+	private JobQueue $jobQueue;
 
 	protected function setUp() : void {
 
@@ -31,7 +35,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -196,7 +200,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->equalTo( [ 'Foo' => 42 ] ) )
-			->will( $this->returnValue( [ $row ] ) );
+			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -261,7 +265,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()

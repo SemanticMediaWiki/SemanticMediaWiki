@@ -205,15 +205,8 @@ class Rebuilder {
 	 */
 	public function hasIndices() {
 
-		if ( !$this->client->hasIndex( ElasticClient::TYPE_DATA ) ) {
-			return false;
-		}
-
-		if ( !$this->client->hasIndex( ElasticClient::TYPE_LOOKUP ) ) {
-			return false;
-		}
-
-		return true;
+		return $this->client->hasIndex( ElasticClient::TYPE_DATA ) &&
+			$this->client->hasIndex( ElasticClient::TYPE_LOOKUP );
 	}
 
 	/**
@@ -269,7 +262,6 @@ class Rebuilder {
 
 		$params = [
 			'index' => $index,
-			'type' => ElasticClient::TYPE_DATA,
 			'id' => $id
 		];
 
@@ -402,8 +394,6 @@ class Rebuilder {
 			$cliMsgFormatter->oneCol( "... $type index ...", 3 )
 		);
 
-		$indices = $this->client->indices();
-
 		$index = $this->client->getIndexName(
 			$type
 		);
@@ -418,12 +408,9 @@ class Rebuilder {
 
 		// Certain changes ( ... to define new analyzers ...) requires to close
 		// and reopen an index
-		$indices->close( [ 'index' => $index ] );
+		$this->client->closeIndex( $index );
 
-		$indexDef = $this->client->getIndexDefByType(
-			$type
-		);
-
+		$indexDef = $this->client->getIndexDefinition( $type );
 		$indexDef = json_decode( $indexDef, true );
 
 		// Cannot be altered by a simple settings update and requires a complete
@@ -433,7 +420,7 @@ class Rebuilder {
 		// #4341
 		// ES 5.6 may cause a "Can't update [index.number_of_replicas] on closed
 		// indices" see elastic/elasticsearch#22993 and should be fixed with ES 6.4.
-		if ( version_compare( $this->client->getVersion(), '6.4.0', '<' ) ) {
+		if ( !$this->client->isOpenSearch() && version_compare( $this->client->getVersion(), '6.4.0', '<' ) ) {
 			unset( $indexDef['settings']['number_of_replicas'] );
 		}
 
@@ -448,15 +435,13 @@ class Rebuilder {
 
 		$params = [
 			'index' => $index,
-			'type'  => $type,
 			'body'  => $indexDef['mappings'] ?? []
 		];
 
 		$this->client->putMapping( $params );
 
 		$this->messageReporter->reportMessage( ', reopening ...' );
-		$indices->open( [ 'index' => $index ] );
-
+		$this->client->openIndex( $index );
 
 		$this->client->releaseLock( $type );
 
@@ -482,17 +467,16 @@ class Rebuilder {
 		}
 
 		$index = $this->client->getIndexName( $type );
-		$indices = $this->client->indices();
 
 		// No Alias available, create one before the rollover
-		if ( !$indices->exists( [ 'index' => "$index" ] ) ) {
+		if ( !$this->client->indexExists( "$index" ) ) {
 			$actions = [
 				[ 'add' => [ 'index' => "$index-$version", 'alias' => $index ] ]
 			];
 
 			$params['body'] = [ 'actions' => $actions ];
 
-			$indices->updateAliases( $params );
+			$this->client->updateAliases( $params );
 		}
 
 		$this->versions[$type] = $version;

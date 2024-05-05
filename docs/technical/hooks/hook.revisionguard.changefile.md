@@ -7,9 +7,9 @@ If you do alter a file, please log the event and make it visible to a user (or a
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 
-Hooks::register( 'SMW::RevisionGuard::ChangeFile', function( $title, &$file ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::RevisionGuard::ChangeFile', function( $title, &$file ) {
 
 	// $file = ...;
 

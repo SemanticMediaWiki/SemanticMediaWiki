@@ -21,7 +21,6 @@
 	"smw_concept_description": "Miêu tả khái niệm “$1”",
 	"version-semantic": "Phần mở rộng ngữ nghĩa",
 	"smw_baduri": "Rất tiếc, không cho phép URI có dạng “$1”.",
-	"smw_dsv_link": "DSV",
 	"smw_printername_count": "Đếm kết quả",
 	"smw_printername_csv": "Xuất CSV",
 	"smw_printername_dsv": "Xuất DSV",

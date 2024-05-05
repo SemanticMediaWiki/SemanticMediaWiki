@@ -3,6 +3,9 @@
 namespace SMW\MediaWiki\Page;
 
 use Html;
+use ParserOptions;
+use SMW\ParserData;
+use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
@@ -104,7 +107,7 @@ class PropertyPage extends Page {
 
 		$declarationExaminer = $this->declarationExaminerFactory->newDeclarationExaminer(
 			$this->store,
-			$this->fetchSemanticDataFromEditInfo()
+			$this->getSemanticData()
 		);
 
 		$declarationExaminer->check( $this->property );
@@ -113,6 +116,28 @@ class PropertyPage extends Page {
 		$declarationExaminerMsgBuilder = $this->declarationExaminerFactory->newDeclarationExaminerMsgBuilder();
 
 		return $declarationExaminerMsgBuilder->buildHTML( $declarationExaminer );
+	}
+
+	/**
+	 * Retrieve the semantic data for the current page from a possibly cached rendering.
+	 * @return SemanticData|null The semantic data for the current page, or null if the page does not exist.
+	 */
+	private function getSemanticData(): ?SemanticData {
+		$parserOptions = ParserOptions::newFromAnon();
+
+		// Set enableLimitReport explicitly to maintain MW 1.35 compatibility.
+		$enableLimitReport = $this->getContext()->getConfig()->get( 'EnableParserLimitReporting' );
+		$parserOptions->setOption( 'enableLimitReport', $enableLimitReport );
+
+		$parserOutput = $this->getPage()->getParserOutput( $parserOptions );
+
+		if ( $parserOutput === false ) {
+			return null;
+		}
+
+		$parserData = new ParserData( $this->getTitle(), $parserOutput );
+
+		return $parserData->getSemanticData();
 	}
 
 	/**
@@ -314,17 +339,6 @@ class PropertyPage extends Page {
 		);
 
 		return $html;
-	}
-
-	private function fetchSemanticDataFromEditInfo() {
-
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$editInfo = $applicationFactory->newMwCollaboratorFactory()->newEditInfo(
-			$this->getPage()
-		);
-
-		return $editInfo->fetchSemanticData();
 	}
 
 	private function makeItemList( $key, $propertyKey, $checkProperty = true ) {

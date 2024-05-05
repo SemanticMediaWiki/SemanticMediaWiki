@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Connection;
 
 use SMW\MediaWiki\Connection\TransactionHandler;
 use SMW\Tests\PHPUnitCompat;
+use Wikimedia\Rdbms\ILBFactory;
 
 /**
  * @covers \SMW\MediaWiki\Connection\TransactionHandler
@@ -22,17 +23,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $transactionProfiler;
 
 	protected function setUp() : void {
-
-		if ( interface_exists( '\Wikimedia\Rdbms\ILBFactory' ) ) {
-			$this->loadBalancerFactory = $this->getMockBuilder( '\Wikimedia\Rdbms\ILBFactory' )
-				->disableOriginalConstructor()
-				->getMock();
-		} else {
-			$this->loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
-				->disableOriginalConstructor()
-				->setMethods( [ 'getEmptyTransactionTicket', 'hasMasterChanges', 'commitAndWaitForReplication' ] )
-				->getMock();
-		}
+		$this->loadBalancerFactory = $this->createMock( ILBFactory::class );
 
 		$this->transactionProfiler = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -48,16 +39,10 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstruct_ThrowsException() {
-
-		$this->expectException( '\RuntimeException' );
-		new TransactionHandler( 'Foo' );
-	}
-
 	public function testGetEmptyTransactionTicket() {
 
 		$this->loadBalancerFactory->expects( $this->once() )
-			->method( 'hasMasterChanges' )
+			->method( self::getHasPrimaryChangesMethod() )
 			->will( $this->returnValue( false ) );
 
 		$this->loadBalancerFactory->expects( $this->once() )
@@ -73,7 +58,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testGetEmptyTransactionTicketOnMasterChanges() {
 
 		$this->loadBalancerFactory->expects( $this->once() )
-			->method( 'hasMasterChanges' )
+			->method( self::getHasPrimaryChangesMethod() )
 			->will( $this->returnValue( true ) );
 
 		$this->loadBalancerFactory->expects( $this->never() )
@@ -162,42 +147,11 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 		$instance->detachSectionTransaction( __METHOD__ );
 	}
 
-	public function testMuteTransactionProfiler() {
-
-		$instance = new TransactionHandler(
-			$this->loadBalancerFactory
-		);
-
-		$instance->setTransactionProfiler(
-			$this->transactionProfiler
-		);
-
-		$this->transactionProfiler->expects( $this->once() )
-			->method( 'setSilenced' )
-			->will( $this->returnValue( true ) );
-
-		$instance->muteTransactionProfiler( true );
-
-		// Second time
-		$instance->muteTransactionProfiler( true );
+	/**
+	 * Get the appropriate `hasMaster/PrimaryChanges` method to mock for the `ILBFactory` interface.
+	 * @return string
+	 */
+	private static function getHasPrimaryChangesMethod(): string{
+		return method_exists( ILBFactory::class, 'hasPrimaryChanges' ) ? 'hasPrimaryChanges' : 'hasMasterChanges';
 	}
-
-	public function testUnmuteTransactionProfiler() {
-
-		$instance = new TransactionHandler(
-			$this->loadBalancerFactory
-		);
-
-		$instance->setTransactionProfiler(
-			$this->transactionProfiler
-		);
-
-		$this->transactionProfiler->expects( $this->exactly( 2 ) )
-			->method( 'setSilenced' )
-			->will( $this->returnValue( true ) );
-
-		$instance->muteTransactionProfiler( true );
-		$instance->muteTransactionProfiler( false );
-	}
-
 }

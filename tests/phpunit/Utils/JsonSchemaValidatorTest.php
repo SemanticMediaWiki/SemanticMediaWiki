@@ -142,7 +142,7 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 				$this->data = $data;
 			}
 
-			public function jsonSerialize() {
+			public function jsonSerialize(): string {
 				return json_encode( $this->data );
 			}
 		};

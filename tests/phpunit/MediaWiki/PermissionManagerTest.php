@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Permissions\PermissionManager as MwPermissionManager;
 use SMW\MediaWiki\PermissionManager;
-use SMW\Tests\PHPUnitCompat;
+use Title;
+use User;
 
 /**
  * @covers \SMW\MediaWiki\PermissionManager
@@ -16,61 +18,61 @@ use SMW\Tests\PHPUnitCompat;
  */
 class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 
-	use PHPUnitCompat;
-
-	public function testCanConstruct() {
-		$this->assertInstanceOf(
-			PermissionManager::class,
-			new PermissionManager( $this->getMwPermissionManagerMock() )
-		);
-	}
-
 	public function testUserCan_PermissionManager() {
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();		
+		$title = $this->createMock( Title::class );
 
-		$mwPermissionManager = $this->getMwPermissionManagerMock(
-			[ 'userCan' => true ]
-		);
+		$mwPermissionManager = $this->createMock( MwPermissionManager::class );
+		$mwPermissionManager->expects( $this->any() )
+			->method( 'userCan' )
+			->with( 'foo', $this->isInstanceOf( User::class ), $title, MwPermissionManager::RIGOR_SECURE )
+			->willReturn( true );
 
 		$instance = new PermissionManager( $mwPermissionManager );
 
-		$this->assertInternalType(
-			'bool',
-			$instance->userCan( 'foo', null, $title )
-		);
-	}	
+		$this->assertTrue( $instance->userCan( 'foo', null, $title ) );
+	}
+
+	public function testUserCan_PermissionManager_UserPassed() {
+		$user = $this->createMock( User::class );
+		$title = $this->createMock( Title::class );
+
+		$mwPermissionManager = $this->createMock( MwPermissionManager::class );
+		$mwPermissionManager->expects( $this->any() )
+			->method( 'userCan' )
+			->with( 'foo', $user, $title, MwPermissionManager::RIGOR_SECURE )
+			->willReturn( true );
+
+		$instance = new PermissionManager( $mwPermissionManager );
+
+		$this->assertTrue( $instance->userCan( 'foo', $user, $title ) );
+	}
+
+	public function testUserCan_PermissionManager_CustomRigor() {
+		$title = $this->createMock( Title::class );
+
+		$mwPermissionManager = $this->createMock( MwPermissionManager::class );
+		$mwPermissionManager->expects( $this->any() )
+			->method( 'userCan' )
+			->with( 'foo', $this->isInstanceOf( User::class ), $title, MwPermissionManager::RIGOR_QUICK )
+			->willReturn( true );
+
+		$instance = new PermissionManager( $mwPermissionManager );
+
+		$this->assertTrue( $instance->userCan( 'foo', null, $title, MwPermissionManager::RIGOR_QUICK ) );
+	}
 
 	public function testUserHasRight_PermissionManager() {
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
+		$user = $this->createMock( User::class );
 
-		$mwPermissionManager = $this->getMwPermissionManagerMock(
-			[ 'userHasRight' => true ]
-		);		
+		$mwPermissionManager = $this->createMock( MwPermissionManager::class );
+		$mwPermissionManager->expects( $this->any() )
+			->method( 'userHasRight' )
+			->with( $user, 'foo' )
+			->willReturn( true );
 
 		$instance = new PermissionManager( $mwPermissionManager );
 
-		$this->assertInternalType(
-			'bool',
-			$instance->userHasRight( $user, 'foo' )
-		);
-	}
-
-	private function getMwPermissionManagerMock( array $methodMocks = [] ) {
-		$permissionManager = $this->getMockBuilder( '\MediaWiki\Permissions\PermissionManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		foreach ( $methodMocks as $method => $returnValue ) {
-			$permissionManager->expects( $this->any() )
-				->method(  $method )
-				->will( $this->returnValue( $returnValue ) );
-		}
-
-		return $permissionManager;
+		$this->assertTrue( $instance->userHasRight( $user, 'foo' ) );
 	}
 
 }

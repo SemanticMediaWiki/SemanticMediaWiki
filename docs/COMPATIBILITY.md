@@ -29,17 +29,17 @@ Increases of minimum requirements are indicated in bold.
 		<td>-</td>
 		<td>-</td>
 		<td><strong>8.0.x</strong> - TBD</td>
-		<td>TBD - TBD</td>
+		<td><strong>1.39.0</strong> - TBD</td>
 		<td></td>
 	</tr>
 	<tr>
 		<th>4.1.x</th>
 		<td><strong>Stable release</strong></td>
 		<td>2023-01-21</td>
-		<td>2023-01-21</td>
-		<td><strong>7.4.0</strong> - 8.0.x</td>
+		<td>2023-03-09</td>
+		<td><strong>7.4.0</strong> - 8.1.x</td>
 		<td>1.35.0 - 1.39.x</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5300">Confirmed to not work with PHP 8.1</a></td>
+		<td>4.1.1 or higher needed for PHP 8.1+</td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>
@@ -327,7 +327,13 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 		<td></td>
 	</tr>
 	<tr>
-		<th>4.1.x</th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.1.3">4.1.3</a></th>
+		<td>7.10.x</td>
+		<td>Not supported (TBD)</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5611#issuecomment-1962729300">Confirmed to work with ElasticSearch 7.10.2 (MW 1.39)</a></td>
+	</tr>
+	<tr>
+		<th>4.1.0 - 4.1.2</th>
 		<td>6.5.x - 6.8.23</td>
 		<td>Not supported (TBD)</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5328">Confirmed to not work with ElasticSearch 7.x (MW 1.39)</a></td>

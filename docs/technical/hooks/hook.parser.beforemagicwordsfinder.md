@@ -5,10 +5,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\SQLStore\SQLStore;
 
-Hooks::register( 'SMW::Parser::BeforeMagicWordsFinder', function( array &$magicWords ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Parser::BeforeMagicWordsFinder', function( array &$magicWords ) {
 
 	return true;
 } );

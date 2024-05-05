@@ -5,10 +5,10 @@ This example shows how to register a custom predefined property in Semantic Medi
 ### SMW::Property::initProperties
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\PropertyRegistry;
 
-Hooks::register( 'SMW::Property::initProperties', function ( PropertyRegistry $propertyRegistry ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Property::initProperties', function ( PropertyRegistry $propertyRegistry ) {
 
 	// Canonical label
 	define( 'PROP_LABEL_FOOBAR_KEY', 'Foobar key' );

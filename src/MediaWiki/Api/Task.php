@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
+use RequestContext;
 
 /**
  * Module to support various tasks initiate using the API interface
@@ -59,6 +60,9 @@ class Task extends ApiBase {
 		if ( !isset( $parameters['uselang'] ) || $parameters['uselang'] === '' ) {
 			$parameters['uselang'] = $this->getLanguage()->getCode();
 		}
+
+		// We must validate if the lang code is valid
+		$parameters['uselang'] = RequestContext::sanitizeLangCode( $parameters['uselang'] );
 
 		$results = $task->process(
 			$parameters

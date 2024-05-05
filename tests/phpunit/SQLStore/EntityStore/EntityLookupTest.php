@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
 
 /**
@@ -19,6 +20,7 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $factory;
+	private EntityIdManager $idTable;
 	private $traversalPropertyLookup;
 	private $propertySubjectsLookup;
 	private $propertiesLookup;

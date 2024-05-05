@@ -97,12 +97,8 @@ class FileAttachment {
 		$semanticData = $this->store->getSemanticData( $dataItem );
 		$connection = $this->indexer->getConnection();
 
-		$index = $this->indexer->getIndexName( ElasticClient::TYPE_DATA );
-		$doc = [ '_source' => [] ];
-
 		$params = [
-			'index' => $index,
-			'type'  => ElasticClient::TYPE_DATA,
+			'index' => $this->indexer->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $dataItem->getId(),
 		];
 
@@ -275,8 +271,7 @@ class FileAttachment {
 	private function upsertDoc( $baseDocId, $subject, $property ) {
 
 		$params = [
-			'_index' => $this->indexer->getIndexName( ElasticClient::TYPE_DATA ),
-			'_type'  => ElasticClient::TYPE_DATA
+			'_index' => $this->indexer->getIndexName( ElasticClient::TYPE_DATA )
 		];
 
 		$this->bulk->clear();

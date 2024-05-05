@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\ArticleFromTitle;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleFromTitle
@@ -38,9 +39,10 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $namespace, $expected ) {
 
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = $this->createMock( Title::class );
+		$title->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )

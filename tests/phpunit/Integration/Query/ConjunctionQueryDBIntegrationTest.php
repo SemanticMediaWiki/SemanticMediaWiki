@@ -33,6 +33,7 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
 	private $queryResultValidator;
+	private $fixturesProvider;
 	private $queryParser;
 
 	protected function setUp() : void {
@@ -51,6 +52,8 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
+
+		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 	}
 
 	protected function tearDown() : void {

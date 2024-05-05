@@ -3,6 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use Html;
+use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\Query\PrintRequest;
@@ -30,7 +31,9 @@ class TableResultPrinter extends ResultPrinter {
 	 */
 	private $htmlTable;
 
-	private bool $isDataTable;
+	private $isDataTable;
+
+	private $prefixParameterProcessor;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -78,6 +81,12 @@ class TableResultPrinter extends ResultPrinter {
 			'default' => '',
 		];
 
+		$params['prefix'] = [
+			'message' => 'smw-paramdesc-prefix',
+			'default' => 'none',
+			'values' => [ 'all', 'subject', 'none', 'auto' ],
+		];
+
 		return $params;
 	}
 
@@ -87,6 +96,9 @@ class TableResultPrinter extends ResultPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
+
+		$this->prefixParameterProcessor = new PrefixParameterProcessor( $res->getQuery(),
+			$this->params['prefix'] );
 
 		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
 		$this->isDataTable = false;
@@ -144,10 +156,10 @@ class TableResultPrinter extends ResultPrinter {
 
 			$this->htmlTable->cell(
 					$link->getText( $outputMode, $this->mLinker ),
-					[ 'class' => 'sortbottom', 'colspan' => $res->getColumnCount() ]
+					[ 'colspan' => $res->getColumnCount() ]
 			);
 
-			$this->htmlTable->row( [ 'class' => 'smwfooter' ] );
+			$this->htmlTable->row( [ 'class' => 'smwfooter sortbottom' ] );
 		}
 
 		$tableAttrs = [ 'class' => $class ];
@@ -270,7 +282,7 @@ class TableResultPrinter extends ResultPrinter {
 			}
 
 			if ( $this->isDataTable && $sortKey !== '' ) {
-				$attributes['data-order'] = $sortKey;
+				$attributes['data-order'] = htmlspecialchars( $sortKey );
 			}
 
 			$alignment = trim( $printRequest->getParameter( 'align' ) );
@@ -313,8 +325,9 @@ class TableResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getCellContent( array $dataValues, $outputMode, $isSubject ) {
-		$values = [];
+		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
+		$values = [];
 		foreach ( $dataValues as $dv ) {
 
 			// Restore output in Special:Ask on:
@@ -325,11 +338,11 @@ class TableResultPrinter extends ResultPrinter {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
-					[ 'smw-parse', $dv->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
+					[ 'smw-parse', $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
 					Message::PARSE
 				);
 			} else {
-				$value = $dv->getShortText( $outputMode, $this->getLinker( $isSubject ) );
+				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
 			}
 
 

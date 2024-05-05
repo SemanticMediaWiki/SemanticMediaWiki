@@ -35,6 +35,9 @@ class MockTitle extends \PHPUnit_Framework_TestCase {
 		$title->expects( $instance->any() )
 			->method( 'getContentModel' )
 			->will( $instance->returnValue( $contentModel ) );
+		$title->expects( $instance->any() )
+			->method( 'canExist' )
+			->willReturn( true );
 
 		return $title;
 	}

@@ -2,10 +2,12 @@
 
 namespace SMW\Tests\Elastic\Connection;
 
+use Psr\Log\LoggerInterface;
 use SMW\Elastic\Connection\ConnectionProvider;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Config;
+use SMW\Elastic\Connection\LockManager;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -21,18 +23,15 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
-	private $logger;
-	private $lockManager;
+	private LoggerInterface $logger;
+	private LockManager $lockManager;
+	private Config $config;
 
 	protected function setUp() : void {
 
-		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->logger = $this->createMock( LoggerInterface::class );
 
-		$this->lockManager = $this->getMockBuilder( '\SMW\Elastic\Connection\LockManager' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->lockManager = $this->createMock( LockManager::class );
 
 		$this->config = new Config();
 	}

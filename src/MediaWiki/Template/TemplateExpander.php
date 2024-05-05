@@ -54,7 +54,7 @@ class TemplateExpander {
 	 * @see Special:ExpandTemplates
 	 * @since 3.1
 	 *
-	 * @param Template|TemplateSet|srting $template
+	 * @param Template|TemplateSet|string $template
 	 *
 	 * @return string
 	 */
@@ -74,7 +74,6 @@ class TemplateExpander {
 			$user = RequestContext::getMain()->getUser();
 			$options = new ParserOptions( $user );
 			$options->setRemoveComments( true );
-			$options->setTidy( true );
 			$options->setMaxIncludeSize( self::MAX_INCLUDE_SIZE );
 		}
 

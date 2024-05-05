@@ -6,6 +6,7 @@ use SMW\Query\DescriptionFactory;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
 use SMW\SQLStore\QueryEngineFactory;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Validators\QuerySegmentValidator;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter
@@ -21,6 +22,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $conditionBuilder;
 	private $descriptionFactory;
+	private QuerySegmentValidator $querySegmentValidator;
 
 	protected function setUp() : void {
 		parent::setUp();

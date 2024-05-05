@@ -5,10 +5,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\PropertyRegistry;
 
-Hooks::register( 'SMW::Property::initProperties', function( PropertyRegistry $propertyRegistry ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Property::initProperties', function( PropertyRegistry $propertyRegistry ) {
 
 	return true;
 } );

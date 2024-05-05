@@ -114,7 +114,7 @@ class LinksEncoder {
 
 		return preg_replace_callback(
 			LinksProcessor::getRegexpPattern( false ),
-			'self::doRemoveAnnotation',
+			[ self::class, 'doRemoveAnnotation' ],
 			self::decodeSquareBracket( $text )
 		);
 	}

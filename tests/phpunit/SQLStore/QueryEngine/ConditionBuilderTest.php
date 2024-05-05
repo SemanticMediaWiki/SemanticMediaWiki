@@ -11,6 +11,7 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\Validators\QuerySegmentValidator;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\ConditionBuilder
@@ -30,6 +31,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $orderCondition;
 	private $circularReferenceGuard;
 	private $descriptionInterpreterFactory;
+	private QuerySegmentValidator $querySegmentValidator;
 
 	protected function setUp() : void {
 		parent::setUp();

@@ -75,6 +75,8 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 	public function testperformUpdateFactboxPresenterIntegration( $parameters, $expected ) {
 		$data = '';
 
+		$this->factboxText->setText( $parameters['text'] );
+
 		$instance = new SkinAfterContent( $parameters['skin'] );
 
 		$instance->setOption( 'SMW_EXTENSION_LOADED', true );
@@ -133,8 +135,6 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$this->factboxText->setText( $text );
-
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -155,7 +155,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $requestContext ) );
 
 		$provider[] = [
-			[ 'skin' => $skin ],
+			[ 'skin' => $skin, 'text' => $text ],
 			[ 'text' => $text ]
 		];
 
@@ -225,8 +225,6 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$this->factboxText->setText( $text );
-
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -268,8 +266,6 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
-
-		$this->factboxText->setText( $text );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()

@@ -35,15 +35,21 @@ class PermissionManager {
 	 * @param string $action
 	 * @param User|null $user
 	 * @param Title $title
+	 * @param string $rigor One of the PermissionManager::RIGOR_* constants
 	 *
 	 * @return bool
 	 */
-	public function userCan( string $action, User $user = null, Title $title ) : bool {
+	public function userCan(
+		string $action,
+		?User $user,
+		Title $title,
+		string $rigor = MwPermissionManager::RIGOR_SECURE
+	) : bool {
 		if ( !$user instanceof User ) {
-			$user = RequestContext::getMain()->getUser();			
+			$user = RequestContext::getMain()->getUser();
 		}
 
-		return $this->permissionManager->userCan( $action, $user, $title );
+		return $this->permissionManager->userCan( $action, $user, $title, $rigor );
 	}
 
 	/**

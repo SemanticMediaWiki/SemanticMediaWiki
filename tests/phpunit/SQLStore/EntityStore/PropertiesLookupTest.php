@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\SQLStore\EntityStore\PropertiesLookup;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\PropertiesLookup
@@ -34,7 +35,7 @@ class PropertiesLookupTest extends \PHPUnit_Framework_TestCase {
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 		$dataItem->setId( 42 );
 
-		$resultWrapper = $this->getMockBuilder( '\FakeResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -91,9 +92,7 @@ class PropertiesLookupTest extends \PHPUnit_Framework_TestCase {
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 		$dataItem->setId( 1001 );
 
-		$resultWrapper = $this->getMockBuilder( '\FakeResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = new FakeResultWrapper( [] );
 
 		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()

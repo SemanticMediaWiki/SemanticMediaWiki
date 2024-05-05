@@ -38,21 +38,22 @@ class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 			false
 		);
 
-		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$utilityFactory = UtilityFactory::getInstance();
 
-		// #3414
-		// NameTableAccessException: Expected unused ID from database insert for
-		// 'mw-changed-redirect-target'  into 'change_tag_def',
-		$this->testEnvironment->resetMediaWikiService( 'NameTableStoreFactory' );
+		$this->pageCreator = $utilityFactory->newPageCreator();
+		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
+
+		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 	}
 
 	protected function tearDown() : void {
-
-		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+		$utilityFactory = UtilityFactory::getInstance();
+		$pageDeleter = $utilityFactory->newPageDeleter();
 
 		$pageDeleter
 			->doDeletePoolOfPages( $this->deletePoolOfPages );
+
+		$utilityFactory->newMwHooksHandler()->restoreListedHooks();
 
 		parent::tearDown();
 	}

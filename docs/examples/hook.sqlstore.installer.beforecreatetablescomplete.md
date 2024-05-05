@@ -5,9 +5,7 @@
 Demonstrates how to add primary keys ([#3559][issue-3559]) to Semantic MediaWiki table definitions.
 
 ```php
-use Hooks;
-
-Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function( array $tables, $messageReporter ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function( array $tables, $messageReporter ) {
 
 	// #3559
 	// Incomplete list to only showcase how to modify the table definition
@@ -16,13 +14,15 @@ Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', functio
 		'smw_di_bool'     => 'p_id,s_id,o_value',
 		'smw_di_uri'      => 'p_id,s_id,o_serialized',
 		'smw_di_coords'   => 'p_id,s_id,o_serialized',
-		'smw_di_wikipage' => 'p_id,s_id,o_id',
+		'smw_di_wikipage' => [ 'addPrimaryID', 'id' ],
 		'smw_di_number'   => 'p_id,s_id,o_serialized',
 
 		// smw_fpt ...
 
 		'smw_prop_stats'  => 'p_id',
-		'smw_query_links' => 's_id,o_id'
+		'smw_query_links' => 's_id,o_id',
+		'smw_prop_stats'  => 'p_id',
+		'smw_ft_search'   => 's_id,p_id,o_sort'
 	];
 
 	/**
@@ -34,8 +34,11 @@ Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', functio
 	 * @var \SMW\SQLStore\TableBuilder\Table[]
 	 */
 	foreach ( $tables as $table ) {
-		if ( isset( $primaryKeys[$table->getName()] ) ) {
+		$key = $primaryKeys[$table->getName()] ?? false;
+		if ( is_string( $key ) ) {
 			$table->setPrimaryKey( $primaryKeys[$table->getName()] );
+		} elseif ( is_array( $key ) && $key[0] === "addPrimaryID" && is_string( $key[1] ?? false ) ) {
+			$table->addColumn( $key[1], 'id_primary' );
 		}
 	}
 

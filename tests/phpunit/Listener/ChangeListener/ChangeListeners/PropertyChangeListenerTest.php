@@ -128,7 +128,7 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$connection->expects( $this->once() )
-			->method( 'onTransactionIdle' );
+			->method( 'onTransactionCommitOrIdle' );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )

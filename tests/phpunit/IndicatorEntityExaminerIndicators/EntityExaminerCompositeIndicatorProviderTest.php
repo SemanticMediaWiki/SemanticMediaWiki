@@ -4,6 +4,7 @@ namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
 use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 
@@ -21,6 +22,8 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	use PHPUnitCompat;
 
 	private $compositeIndicatorHtmlBuilder;
+
+	private PermissionExaminer $permissionExaminer;
 	private $testEnvironment;
 
 	protected function setUp() : void {

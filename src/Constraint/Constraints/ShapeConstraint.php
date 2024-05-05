@@ -181,7 +181,7 @@ class ShapeConstraint implements Constraint {
 				continue;
 			}
 
-			if ( mb_strlen( $dataItem->getString() < $minLength ) ) {
+			if ( mb_strlen( $dataItem->getString() ) < $minLength ) {
 				return false;
 			}
 		}

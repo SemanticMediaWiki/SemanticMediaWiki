@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\Tests\PHPUnitCompat;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UsageStatisticsListLookup
@@ -72,7 +73,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( new \FakeResultWrapper( [] ) ) );
+			->will( $this->returnValue( new FakeResultWrapper( [] ) ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
@@ -110,7 +111,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( new \FakeResultWrapper( [ $row ] ) ) );
+			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
 
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()

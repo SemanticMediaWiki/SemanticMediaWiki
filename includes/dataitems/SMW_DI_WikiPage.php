@@ -161,7 +161,7 @@ class DIWikiPage extends SMWDataItem {
 	 * @param string $sortkey
 	 */
 	public function setSortKey( $sortkey ) {
-		$this->sortkey = str_replace( '_', ' ', $sortkey );
+		$this->sortkey = str_replace( '_', ' ', $sortkey ?? '' );
 	}
 
 	/**
@@ -341,7 +341,7 @@ class DIWikiPage extends SMWDataItem {
 
 	/**
 	 * Implements \JsonSerializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @return array
@@ -357,7 +357,7 @@ class DIWikiPage extends SMWDataItem {
 
 	/**
 	 * Implements JsonUnserializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @param JsonUnserializer $unserializer Unserializer

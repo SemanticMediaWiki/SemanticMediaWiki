@@ -7,11 +7,11 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\Store;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 
-Hooks::register( 'SMW::Admin::RegisterTaskHandlers', function( TaskHandlerRegistry $taskHandlerRegistry, Store $store, $outputFormatter, $user ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Admin::RegisterTaskHandlers', function( TaskHandlerRegistry $taskHandlerRegistry, Store $store, $outputFormatter, $user ) {
 
 	// Instance of TaskHandler
 	// $taskHandlerRegistry->registerTaskHandler( new FooTaskHandler() );

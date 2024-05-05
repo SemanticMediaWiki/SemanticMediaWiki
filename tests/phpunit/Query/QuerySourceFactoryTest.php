@@ -24,6 +24,7 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $testEnvironment;
+	private Store $store;
 
 	protected function setUp() : void {
 		$this->testEnvironment = new TestEnvironment();
