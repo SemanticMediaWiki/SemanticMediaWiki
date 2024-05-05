@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\DIContainer;
 use SMW\MediaWiki\Connection\OptionsBuilder;
@@ -41,8 +42,8 @@ class TraversalPropertyLookup {
 	 * {@inheritDoc}
 	 */
 	public function fetchFromTable( PropertyTableDef $propertyTableDef, DataItem $dataItem, RequestOptions $requestOptions = null ) {
-
-		$connection = $this->store->getConnection( 'mw.db' );
+		$connection = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+		$selectQueryBuilder = $connection->newSelectQueryBuilder();
 
 		if ( $dataItem instanceof DIContainer ) {
 			throw new RuntimeException( "DIContainer: " . $dataItem->getSerialization() );
@@ -74,16 +75,13 @@ class TraversalPropertyLookup {
 			// from the inner join
 			$options['GROUP BY'] = 'p_id';
 
-			$opt = OptionsBuilder::toString( $options );
-
-			$cond = ( $cond !== '' ? ' WHERE ' : '' ) . $cond;
-
 			// Use a subquery to match all possible IDs, no ORDER BY or DISTINCT to avoid
 			// a filesort
-			$from = $connection->tableName( SQLStore::ID_TABLE ) .
-				" INNER JOIN (" .
-				" SELECT p_id FROM " . $connection->tableName( $propertyTableDef->getName() ) .
-				" $cond $opt ) AS t1 ON t1.p_id=smw_id";
+			$subSelectQueryBuilder = $connection->newSelectQueryBuilder();
+			$subSelectQueryBuilder->select( 'p_id' )
+				->from( $connection->tableName( $propertyTableDef->getName() ) )
+				->where( $cond )
+				->options( $options );
 
 			$conditions .= ( $conditions ? ' AND ' : ' ' ) .
 				" smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) .
@@ -92,14 +90,14 @@ class TraversalPropertyLookup {
 			$conditions .= $this->store->getSQLConditions( $subOptions, 'smw_sortkey', 'smw_sortkey', $conditions !== '' );
 
 			$options = $this->store->getSQLOptions( $subOptions, '' ) + [ 'DISTINCT' ];
-
-			$result = $connection->select(
-				$from,
-				' smw_title,smw_sortkey,smw_iw',
-				$conditions,
-				__METHOD__,
-				$options
-			);
+			$selectQueryBuilder->select( 'smw_title,smw_sortkey,smw_iw' )
+				->from( $connection->tableName( SQLStore::ID_TABLE ) )
+				->join( $subSelectQueryBuilder, 't1', 't1.p_id=smw_id' )
+				->where( $conditions )
+				->options( $options );
+			$result = $selectQueryBuilder
+				->caller( __METHOD__ )
+				->fetchResultSet();
 
 		} else {
 			$from = $connection->tableName( $propertyTableDef->getName() ) . " AS t1";
