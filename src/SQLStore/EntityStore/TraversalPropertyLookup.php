@@ -100,17 +100,18 @@ class TraversalPropertyLookup {
 				->fetchResultSet();
 
 		} else {
-			$from = $connection->tableName( $propertyTableDef->getName() ) . " AS t1";
 			$where = $this->getWhereConds( $dataItem );
 			$fields = $propertyTableDef->usesIdSubject() ? 's_id' : '*';
 
-			$result = $connection->select(
-				$from,
-				$fields,
-				$where,
-				__METHOD__,
-				[ 'LIMIT' => 1 ]
-			);
+			$selectQueryBuilder
+				->select( $fields )
+				->from( $propertyTableDef->getName(), 't1' )
+				->where( $where )
+				->limit( 1 );
+
+			$result = $selectQueryBuilder
+				->caller( __METHOD__ )
+				->fetchResultSet();
 
 			if ( $result->numRows() > 0 ) {
 				$res = new \stdClass;
