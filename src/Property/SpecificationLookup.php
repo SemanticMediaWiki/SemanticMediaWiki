@@ -703,7 +703,7 @@ class SpecificationLookup {
 		$sub_key = $languageCode . ':' . ( $linker === null ? '0' : '1' );
 
 		if ( ( $text = $this->entityCache->fetchSub( $key, $sub_key ) ) !== false ) {
-	//		return $text;
+			return $text;
 		}
 
 		$text = $this->getTextByLanguageCode(
