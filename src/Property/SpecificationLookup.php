@@ -2,6 +2,7 @@
 
 namespace SMW\Property;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Query\DescriptionFactory;
 use SMWDIBlob as DIBlob;
@@ -14,9 +15,6 @@ use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\DataValueFactory;
 use SMW\PropertyRegistry;
-
-use MediaWiki\Languages\LanguageFallback;
-use MediaWiki\MediaWikiServices;
 
 
 /**
