@@ -493,7 +493,7 @@ class HtmlFormRenderer {
 			'action' => htmlspecialchars( $this->actionUrl ? $this->actionUrl : $GLOBALS['wgScript'] )
 		], Html::hidden(
 			'title',
-			strtok( $this->title->getPrefixedText(), '/' )
+			strtok( $this->title->getPrefixedText() ?? "", '/' )
 		) . $content );
 
 		$this->clear();

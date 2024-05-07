@@ -318,7 +318,7 @@ class IntlNumberFormatter {
 		// Format to some level of precision; number_format does rounding and
 		// locale formatting, x and y are used temporarily since number_format
 		// supports only single characters for either
-		$value = number_format( $value, $precision, 'x', 'y' );
+		$value = number_format( $value, $precision ?? 0, 'x', 'y' );
 
 		// Due to https://bugs.php.net/bug.php?id=76824
 		// #4071

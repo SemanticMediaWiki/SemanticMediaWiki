@@ -123,12 +123,12 @@ class Message {
 		foreach ( $message as $value ) {
 			// Check if the value is already encoded, and if decode to keep the
 			// structure intact
-			if ( substr( $value, 0, 1 ) === '[' && ( $dc = json_decode( $value, true ) ) && json_last_error() === JSON_ERROR_NONE ) {
+			if ( $value && substr( $value, 0, 1 ) === '[' && ( $dc = json_decode( $value, true ) ) && json_last_error() === JSON_ERROR_NONE ) {
 				$encode += $dc;
 			} else {
 				// Normalize arguments like "<strong>Expression error:
 				// Unrecognized word "yyyy".</strong>"
-				$value = strip_tags( htmlspecialchars_decode( $value, ENT_QUOTES ) );
+				$value = strip_tags( htmlspecialchars_decode( $value ?? "", ENT_QUOTES ) );
 
 				// - Internally encoded to circumvent the strip_tags which would
 				//   remove <, > from values that represent a range

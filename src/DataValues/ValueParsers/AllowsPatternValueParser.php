@@ -69,7 +69,7 @@ class AllowsPatternValueParser implements ValueParser {
 
 		$list = [];
 
-		if ( $contents === '' ) {
+		if ( !$contents ) {
 			return null;
 		}
 

@@ -50,7 +50,7 @@ class InfoParserFunction implements HookHandler {
 		// If the message contains another highlighter (caused by recursive
 		// parsing etc.) remove the tags to allow to show the text without making
 		// the JS go berserk due to having more than one `smw-highlighter`
-		if ( strpos( $message, 'smw-highlighter' ) !== '' ) {
+		if ( $message && strpos( $message, 'smw-highlighter' ) !== '' ) {
 			$message = preg_replace_callback(
 					"/" . "<span class=\"smw-highlighter\"(.*)?>(.*)?<\/span>" . "/m",
 					function( $matches ) {

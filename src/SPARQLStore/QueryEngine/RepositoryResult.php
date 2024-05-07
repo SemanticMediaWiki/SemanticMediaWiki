@@ -164,7 +164,7 @@ class RepositoryResult implements Iterator {
 	/**
 	 * Reset iterator to position 0. Standard method of Iterator.
 	 */
-	public function rewind() {
+	public function rewind(): void {
 		reset( $this->data );
 	}
 
@@ -173,6 +173,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 		return current( $this->data );
 	}
@@ -180,11 +181,9 @@ class RepositoryResult implements Iterator {
 	/**
 	 * Return the next result row and advance the internal pointer.
 	 * Standard method of Iterator.
-	 *
-	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
-	public function next() {
-		return next( $this->data );
+	public function next(): void {
+		next( $this->data );
 	}
 
 	/**
@@ -193,6 +192,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
+	#[\ReturnTypeWillChange]
 	public function key() {
 		return key( $this->data );
 	}
@@ -203,7 +203,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return boolean
 	 */
-	public function valid() {
+	public function valid(): bool {
 		return ( current( $this->data ) !== false );
 	}
 

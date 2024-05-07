@@ -83,7 +83,7 @@ class DebugFormatter {
 		if ( $query instanceof Query ) {
 			$preEntries = [];
 			$description = $query->getDescription();
-			$queryString = str_replace( '[', '&#91;', $description->getQueryString() );
+			$queryString = str_replace( '[', '&#91;', $description->getQueryString() ?? "" );
 
 			$preEntries['ASK Query'] = '<div class="smwpre">' . $queryString . '</div>';
 			$entries = array_merge( $preEntries, $entries );
@@ -230,7 +230,9 @@ class DebugFormatter {
 	 * @return string
 	 */
 	public function prettifySPARQL( $sparql ) {
-
+		if ( $sparql === null ) {
+			return "";
+		}
 		$sparql = str_replace(
 			[
 				'[',

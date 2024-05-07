@@ -145,7 +145,7 @@ class Highlighter {
 		return str_replace(
 			[ '&amp;', '&lt;', '&gt;', '&#160;', '<nowiki>', '</nowiki>' ],
 			[ '&', '<', '>', ' ', '', '' ],
-			$text
+			$text ?? ""
 		);
 	}
 
@@ -193,7 +193,7 @@ class Highlighter {
 	 */
 	public static function getTypeId( $type ) {
 		// TODO: why do we have a htmlspecialchars here?!
-		switch ( strtolower ( htmlspecialchars ( $type ) ) ) {
+		switch ( strtolower ( htmlspecialchars ( $type ?? "" ) ) ) {
 			case 'property':
 			return self::TYPE_PROPERTY;
 			case 'text':
@@ -257,7 +257,7 @@ class Highlighter {
 
 		// In case the text contains HTML, remove trailing line feeds to avoid breaking
 		// the display
-		if ( $this->options['content'] != strip_tags( $this->options['content'] ) ) {
+		if ( $this->options['content'] && $this->options['content'] != strip_tags( $this->options['content'] ) ) {
 			$this->options['content'] = str_replace( [ "\n" ], [ '' ], $this->options['content'] );
 		}
 
@@ -292,7 +292,7 @@ class Highlighter {
 				// will make the parser go berserk (injecting <p> elements etc.)
 				// hence encode the identifying </> and decode it within the
 				// tooltip
-				str_replace( [ "\n", '<', '>' ], [ '</br>', '&lt;', '&gt;' ], htmlspecialchars_decode( $this->options['content'] ) )
+				str_replace( [ "\n", '<', '>' ], [ '</br>', '&lt;', '&gt;' ], htmlspecialchars_decode( $this->options['content'] ?? "" ) )
 			)
 		);
 
@@ -375,6 +375,10 @@ class Highlighter {
 	}
 
 	private function title( $content, $language ) {
+
+		if ( !$content ) {
+			return "";
+		}
 
 		// Pre-process the content when used as title to avoid breaking elements
 		// (URLs etc.)

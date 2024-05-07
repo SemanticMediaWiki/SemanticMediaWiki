@@ -233,7 +233,9 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		if ( ctype_digit( $id ) ) {
+		if ( is_int( $id ) ) {
+			$condition = 'smw_id=' . $id;
+		} else if ( ctype_digit( $id ) ) {
 			$condition = 'smw_id=' . intval( $id );
 		} else {
 			$op = strpos( $id, '*' ) !== false ? ' LIKE ' : '=';

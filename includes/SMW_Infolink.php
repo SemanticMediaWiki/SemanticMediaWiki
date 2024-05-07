@@ -503,7 +503,7 @@ class SMWInfolink {
 
 			foreach ( $params as $name => $value ) {
 				if ( is_string( $name ) && ( $name !== '' ) ) {
-					$value = rawurlencode( $name ) . '=' . rawurlencode( $value );
+					$value = rawurlencode( $name ) . '=' . rawurlencode( $value ?? "" );
 
 					if ( $result !== '' ) {
 						$result .= '&';

@@ -178,7 +178,7 @@ class CachedListLookup implements ListLookup {
 		$this->isFromCache = false;
 
 		// Collect the options keys
-		$data = unserialize( $this->cache->fetch( $key ) );
+		$data = unserialize( $this->cache->fetch( $key ) ?? "" );
 		$data = $data === false ? [] : $data;
 		$data[$optionsKey] = true;
 		$this->cache->save( $key, serialize( $data ), $ttl );
@@ -195,7 +195,7 @@ class CachedListLookup implements ListLookup {
 
 		$optionsKey = '';
 
-		if ( strpos( $id, '#' ) !== false ) {
+		if ( $id && strpos( $id, '#' ) !== false ) {
 			list( $id, $optionsKey ) = explode( '#', $id, 2 );
 		}
 

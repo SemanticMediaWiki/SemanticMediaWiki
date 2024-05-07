@@ -92,7 +92,7 @@ class TemplateExpander {
 			}
 		}
 
-		$text = $this->parser->preprocess( $template, $title, $options );
+		$text = $this->parser->preprocess( $template, $title, $options ) ?? "";
 
 		$text = str_replace(
 			[ '_&lt;nowiki&gt;_', '_&lt;/nowiki&gt;_', '_&lt;nowiki */&gt;_', '<nowiki>', '</nowiki>' ],

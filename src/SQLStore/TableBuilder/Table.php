@@ -125,7 +125,7 @@ class Table {
 
 		$val = is_array( $index ) ? $index[0] : $index;
 
-		if ( count( explode( ' ', $val ) ) > 1 ) {
+		if ( $val && count( explode( ' ', $val ) ) > 1 ) {
 			throw new RuntimeException( "Index declaration `$val` contains a space!." );
 		}
 

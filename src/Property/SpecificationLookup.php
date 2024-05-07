@@ -387,6 +387,7 @@ class SpecificationLookup {
 			new DIProperty( '_PDESC' ),
 			$languageCode
 		);
+		$text ??= "";
 
 		// If a local property description wasn't available for a predefined property
 		// the try to find a system translation
@@ -394,7 +395,7 @@ class SpecificationLookup {
 			$text = $this->getPredefinedPropertyDescription( $property, $languageCode, $linker );
 		}
 
-		$text = trim( $text );
+		$text = trim( $text ?? "" );
 
 		$this->entityCache->saveSub( $key, $sub_key, $text );
 		$this->entityCache->associate( $subject, $key );

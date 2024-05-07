@@ -418,8 +418,8 @@ class CliMsgFormatter {
 	private function trimContent( $content, $maxLen = self::MAX_LEN ) {
 
 		$length = mb_strlen( $content ) - 1;
-		$startOff = ( $maxLen / 2 ) - 3;
-		$endOff = ( $maxLen / 2 ) - 3;
+		$startOff = floor( $maxLen / 2 ) - 3;
+		$endOff = ceil( $maxLen / 2 ) - 3;
 
 		if ( $length >= $maxLen ) {
 			$content = mb_substr( $content, 0, $startOff ) . ' ... ' . mb_substr( $content, $length - $endOff );
