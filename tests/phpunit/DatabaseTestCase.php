@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use BacklinkCache;
 use HashBagOStuff;
 use MediaWiki\MediaWikiServices;
+use MediaWikiIntegrationTestCase;
 use ObjectCache;
 use PHPUnit\Framework\TestResult;
 use RequestContext;
@@ -30,7 +31,7 @@ use Title;
  *
  * @author mwjames
  */
-abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
+abstract class DatabaseTestCase extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var TestEnvironment
