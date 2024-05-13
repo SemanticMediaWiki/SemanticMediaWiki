@@ -59,7 +59,7 @@ abstract class Query extends ApiBase {
 	 * @return SMWQueryResult
 	 */
 	protected function getQueryResult( SMWQuery $query ) {
-		return ApplicationFactory::getInstance()->getStore()->getQueryResult( $query );
+		return ApplicationFactory::getInstance()->getQuerySourceFactory()->get( $query->getQuerySource() )->getQueryResult( $query );
 	}
 
 	/**
