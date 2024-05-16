@@ -759,7 +759,7 @@ class SpecificationLookup {
 	 * @param DIWikiPage $subject
 	 * @param DIProperty $property
 	 * @param string &$languageCode
-	 * @return DataValue
+	 * @return DataValue|null
 	 */
 	private function tryOutFalldownAndInverse( $monolingualTextLookup, $subject, $property, &$languageCode ) {
 		$getDataValue = static function( $value ) use ( $monolingualTextLookup, $subject, $property, &$languageCode ) {
@@ -784,6 +784,11 @@ class SpecificationLookup {
 		}
 
 		$languageFalldown = MediaWikiServices::getInstance()->getLanguageFallback()->getFirst( $languageCode );
+
+		// when $languageCode is 'en' $languageFalldown is null
+		if ( $languageFalldown === null ) {
+			return null;
+		}
 		return $getDataValue( $languageFalldown );
 	}
 
@@ -809,7 +814,7 @@ class SpecificationLookup {
 
 		if ( $dataValue === null ) {
 			// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5342
-			$dataValue = $this->tryOutFalldownAndInverse( $monolingualTextLookup, $subject, $property, $languageCode);
+			$dataValue = $this->tryOutFalldownAndInverse( $monolingualTextLookup, $subject, $property, $languageCode );
 
 			if ( $dataValue === null ) {
 				return '';
