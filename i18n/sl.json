@@ -346,6 +346,7 @@
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|sekunda|sekundi|sekunde|sekund}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Čas posodabljanja podatkovne zbirke (ob osvežitvi strani)",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sekunda|sekundi|sekunde|sekund}}",
+	"smw-property-predefined-long-pvuc": "Edinstvenost se vzpostavi, ko dve vrednosti nista enaki v svoji literalni predstavitvi in vsaka kršitev te omejitve bo kategorizirana kot napaka.",
 	"smw-constraint-violation-uniqueness": "Lastnosti »[[Property:$1|$1]]« je dodeljena omejitev <code>unique_value_constraint</code>, ki dovoljuje samo edinstvene dodelitve vrednosti, dodelitev vrednosti ''$2'' pa je bila že najdena v subjektu »$3«.",
 	"smw-constraint-violation-uniqueness-isknown": "Lastnosti »[[Property:$1|$1]]« je dodeljena omejitev <code>unique_value_constraint</code>, zato so dovoljene samo edinstvene dodelitve vrednosti. ''$2'' že vsebuje dodeljeno vrednost z »$3«, s čimer krši omejitev edinstvenosti za trenutni subjekt.",
 	"smw-datavalue-time-invalid-prehistoric": "Ni mogoče interpretirati prazgodovinske vhodne vrednosti »$1«. Na primer določitev več kot določenega števila let v koledarskem modelu lahko v prazgodovinskem kontekstu vrne nepričakovane rezultate.",
