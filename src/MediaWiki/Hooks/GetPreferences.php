@@ -3,6 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Hooks;
+use PHPUnit\TextUI\RuntimeException;
+use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\SchemaFactory;
 use User;
 use Xml;
@@ -187,7 +189,7 @@ class GetPreferences implements HookListener {
 
 		try {
 			$profileList = $facetedSearchProfile->getProfileList();
-		} catch ( DefaultProfileNotFoundException $e ) {
+		} catch ( DefaultProfileNotFoundException|SchemaTypeNotFoundException $e ) {
 			$profileList = [];
 		}
 
