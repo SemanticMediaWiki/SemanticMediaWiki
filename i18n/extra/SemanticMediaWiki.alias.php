@@ -29,6 +29,7 @@ $specialPageAliases['en'] = [
 	'URIResolver' => [ 'URIResolver' ],
 	'UnusedProperties' => [ 'UnusedProperties' ],
 	'WantedProperties' => [ 'WantedProperties' ],
+	'FacetedSearch' => [ 'FacetedSearch' ],
 ];
 
 /** Afrikaans (Afrikaans) */
@@ -585,6 +586,7 @@ $specialPageAliases['nl'] = [
 	'Types' => [ 'Typen' ],
 	'UnusedProperties' => [ 'OngebruikteEigenschappen' ],
 	'WantedProperties' => [ 'GewensteEigenschappen' ],
+	'FacetedSearch' => [ 'GefacetteerdZoeken' ]
 ];
 
 /** Occitan (occitan) */
