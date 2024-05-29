@@ -14,7 +14,8 @@ use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\OptionsAwareTrait;
 use SMW\Schema\Compartment;
-use SMW\MediaWiki\Specials\FacetedSearch\Profile;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile as FacetedSearchProfile;
+use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
 
 /**
  * Hook: GetPreferences adds user preference
