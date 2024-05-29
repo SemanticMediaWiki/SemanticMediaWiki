@@ -17,7 +17,6 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 	private $hookDispatcher;
 	private $permissionExaminer;
-	private $schemaFactory;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -54,21 +53,9 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $key ) {
 
-		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$schemaFinder->expects( $this->any() )
-			->method( 'getSchemaListByType' )
-			->will( $this->returnValue( $schemaList ) );
-
-		$this->schemaFactory->expects( $this->any() )
-			->method( 'newSchemaFinder' )
-			->will( $this->returnValue( $schemaFinder ) );
+		$this->permissionExaminer->expects( $this->any() )
+			->method( 'hasPermissionOf' )
+			->will( $this->returnValue( true ) );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -84,12 +71,15 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
 		);
+
 		$instance->setOptions(
 			[
 				'smwgEnabledEditPageHelp' => false
 			]
 		);
+
 		$instance->process( $user, $preferences );
+
 		$this->assertArrayHasKey(
 			$key,
 			$preferences
