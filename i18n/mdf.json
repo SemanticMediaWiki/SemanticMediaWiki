@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Numulunj pilgae",
 			"Валгриш"
 		]
 	},
-	"browse": "Лопа ланга ётама",
+	"browse": "Лопатнень ванондома",
 	"smw-livepreview-loading": "Аноклакшни…",
 	"smw-listingcontinuesabbrev": "полатксоц",
 	"smw-showingresults": "Ала няфтеви {{PLURAL:$1|мувсь '''1'''|мувсть '''$1'''}} '''$2'''-ста ушедомс."
