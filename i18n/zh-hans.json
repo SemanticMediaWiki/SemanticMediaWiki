@@ -60,7 +60,7 @@
 			"아라"
 		]
 	},
-	"smw-desc": "让您的wiki更易于访问 - 对机器''与''人类都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual/zh-hans 在线文档]）",
+	"smw-desc": "让机器与人类都能更轻松地访问wiki（[https://www.semantic-mediawiki.org/wiki/Help:User_manual/zh-hans 在线文档]）",
 	"smw-error": "错误",
 	"smw-upgrade-error": "[https://www.semantic-mediawiki.org/ 语义MediaWiki]已安装并启用，但缺少适当的[https://www.semantic-mediawiki.org/wiki/Help:Upgrade 升级密钥]。",
 	"smw-upgrade-release": "发行",
@@ -87,7 +87,7 @@
 	"smw-semantics-not-enabled": "此wiki未启用语义MediaWiki功能。",
 	"smw_viewasrdf": "RDF信息源",
 	"smw_finallistconjunct": "和",
-	"smw-factbox-head": "...关于“$1”的更多信息",
+	"smw-factbox-head": "...深入了解“$1”",
 	"smw-factbox-facts": "事实",
 	"smw-factbox-facts-help": "展示用户创建的陈述和事实",
 	"smw-factbox-attachments": "附件",
