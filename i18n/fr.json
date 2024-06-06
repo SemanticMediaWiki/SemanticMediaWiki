@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Ajeje Brazorf",
+			"Alien333",
 			"Boniface",
 			"Brunoperel",
 			"Crochet.david",
@@ -305,7 +306,7 @@
 	"smw-statistics-error-count-legacy": "Valeur{{PLURAL:$1||s}} de propriété (mauvaise{{PLURAL:$1||s}} annotation{{PLURAL:$1||s}})",
 	"smw-statistics-delete-count": "[https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities Entité{{PLURAL:$1||s}} désuète{{PLURAL:$1||s}}]",
 	"smw-statistics-delete-count-info": "Entités qui ont été marquées à supprimer et qui doivent être éliminées régulièrement à l’aide des scripts de maintenance fournis.",
-	"smw_uri_doc": "Le résolveur d’URI met en œuvre la [$1 Conclusion du TAG du W3C à propos de httpRange-14].\nIl peut veiller à ce que les humains ne deviennent pas des sites web.",
+	"smw_uri_doc": "Le résolveur d’URI met en œuvre la [$1 Conclusion du TAG du W3C à propos de httpRange-14].\nIl assure qu'une représentation RDF (pour les machines) ou une page wiki (pour les humains) et fournie selon la requête.",
 	"ask": "Recherche sémantique",
 	"smw-ask-help": "Cette section contient des liens pour aider à expliquer comment utiliser la syntaxe <code>#ask</code> :\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Sélection des pages] décrit comment sélectionner les pages et construire les conditions ;\n* [https://www.semantic-mediawiki.org/wiki/Help:Search_operators Opérateurs de recherche] liste les opérateurs de recherche disponibles, y compris ceux des requêtes dans une plage et les jokers ;\n* [https://www.semantic-mediawiki.org/wiki/Help:Displaying_information Affichage des informations] expose l’utilisation des déclarations d’affichage et des options de mise en forme des résultats.",
 	"smw_ask_sortby": "Trier par colonne (facultatif)",

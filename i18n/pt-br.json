@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			555,
 			"Agripinoduarte",
 			"Amgauna",
 			"Amire80",
@@ -38,8 +39,7 @@
 			"Trigonometria87",
 			"Waldir",
 			"Waldyrious",
-			"Walesson",
-			555
+			"Walesson"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação online])",

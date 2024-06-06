@@ -16,7 +16,7 @@
 	"smw_printername_template": "Кеп",
 	"smw_printername_rdf": "RDF-экспорт",
 	"smw_printername_category": "Категори",
-	"validator-type-class-SMWParamSource": "йоза",
+	"validator-type-class-SMWParamSource": "текст",
 	"smw-paramdesc-export": "Экспортан параметраш",
 	"smw-paramdesc-source": "Дехаран альтернативан хьост",
 	"smw-label-feed-description": "$2-канал $1",

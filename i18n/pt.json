@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			555,
 			"Athena in Wonderland",
 			"CaiusSPQR",
 			"Crazymadlover",
@@ -25,8 +26,7 @@
 			"Vitorvicentevalente",
 			"Waldir",
 			"Waldyrious",
-			"아라",
-			555
+			"아라"
 		]
 	},
 	"smw-desc": "Tornar a sua wiki mais inteligível - para máquinas ''e'' seres humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
