@@ -28,11 +28,6 @@ use SMW\Tests\Utils\UtilityFactory;
 abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	/**
-	 * @var TestEnvironment
-	 */
-	protected $testEnvironment;
-
-	/**
 	 * @var FileReader
 	 */
 	private $fileReader;
@@ -69,8 +64,6 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	protected function setUp() : void {
 		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 		$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
