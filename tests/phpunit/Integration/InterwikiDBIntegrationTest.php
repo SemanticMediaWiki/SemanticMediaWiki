@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Exporter\ExporterFactory;
 use SMWQuery as Query;
@@ -19,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class InterwikiDBIntegrationTest extends DatabaseTestCase {
+class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $semanticDataFactory;
 	private $stringValidator;

@@ -4,7 +4,8 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\DatabaseTestCase;
+
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -18,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class PropertyStatisticsStoreTest extends DatabaseTestCase {
+class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 

@@ -8,7 +8,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Subobject;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
@@ -28,7 +28,7 @@ use Title;
  *
  * @author mwjames
  */
-class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
+class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $applicationFactory;
 	private $mwHooksHandler;

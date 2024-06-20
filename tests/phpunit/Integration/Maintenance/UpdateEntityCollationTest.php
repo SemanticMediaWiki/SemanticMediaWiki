@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 
@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class UpdateEntityCollationTest extends DatabaseTestCase {
+class UpdateEntityCollationTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 

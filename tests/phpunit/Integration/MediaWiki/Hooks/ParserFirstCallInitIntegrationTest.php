@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\Services\ServicesFactory;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 use Title;
 
@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
+class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 	private $mwHooksHandler;
 

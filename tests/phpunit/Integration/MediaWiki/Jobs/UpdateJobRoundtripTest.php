@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-class UpdateJobRoundtripTest extends DatabaseTestCase {
+class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 
 	private $job = null;
 	private $applicationFactory;
