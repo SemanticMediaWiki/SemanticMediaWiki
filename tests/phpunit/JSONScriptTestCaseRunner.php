@@ -28,6 +28,11 @@ use SMW\Tests\Utils\UtilityFactory;
 abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	/**
+	 * @var TestEnvironment
+	 */
+	protected $testEnvironment;
+
+	/**
 	 * @var FileReader
 	 */
 	private $fileReader;
@@ -65,6 +70,8 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	protected function setUp() : void {
 		parent::setUp();
 
+		$this->testEnvironment = new TestEnvironment();
+
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 		$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
 		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
@@ -88,7 +95,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		} elseif ( $this->getStore() instanceof \SMW\Elastic\ElasticStore ) {
 			$this->connectorId = 'elastic';
 		} else {
-			$this->connectorId = strtolower( $this->getDBConnection()->getType() );
+			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
 		}
 	}
 
@@ -291,7 +298,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->getDBConnection()->getType() ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 

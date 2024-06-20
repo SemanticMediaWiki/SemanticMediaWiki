@@ -19,6 +19,11 @@ use SMW\StoreFactory;
  */
 abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
+    /**
+	 * @var TestDatabaseTableBuilder
+	 */
+	protected $testDatabaseTableBuilder;
+    
     protected function setUp() : void {
 		parent::setUp();
 
