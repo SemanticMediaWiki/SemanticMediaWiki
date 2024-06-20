@@ -65,7 +65,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		$this->jobQueue = $this->applicationFactory->getJobQueue();
 
 		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
-		$this->jobQueueRunner->setConnectionProvider( $this->getConnectionProvider() );
+		$this->jobQueueRunner->setConnectionProvider( $this->testDatabaseTableBuilder->getConnectionProvider() );
 		$this->jobQueueRunner->deleteAllJobs();
 	}
 
