@@ -46,4 +46,15 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		return StoreFactory::getStore();
 	}
 
+    protected function skipTestForMediaWikiVersionLowerThan( $version, $message = '' ) {
+
+		if ( $message === '' ) {
+			$message = "This test is skipped for MediaWiki version " . MW_VERSION;
+		}
+
+		if ( version_compare( MW_VERSION, $version, '<' ) ) {
+			$this->markTestSkipped( $message );
+		}
+	}
+
 }
