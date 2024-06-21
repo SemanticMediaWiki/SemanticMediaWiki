@@ -33,17 +33,23 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 
 	private $jobQueueRunner;
 	private $jobQueue;
+	private $revisionGuard;
+	private $toBeDeleted = [];
 
 	protected function setUp() : void {
 		parent::setUp();
 
-		$utilityFactory = UtilityFactory::getInstance();
+		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 
 		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
 
 		$this->mwHooksHandler
 			->deregisterListedHooks()
 			->invokeHooksFromRegistry();
+		$this->mwHooksHandler->register(
+			'PageMoveComplete',
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'PageMoveComplete' )
+		);
 
 		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageDeleter = $utilityFactory->newPageDeleter();
@@ -67,6 +73,14 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
 		$this->jobQueueRunner->setConnectionProvider( $this->testDatabaseTableBuilder->getConnectionProvider() );
 		$this->jobQueueRunner->deleteAllJobs();
+
+		$this->job = Job::factory(
+			'SMW\UpdateJob',
+			Title::newFromText( __METHOD__ . 'SMW\UpdateJob' ),
+			[]
+		);
+
+		$this->revisionGuard = $this->applicationFactory->singleton( 'RevisionGuard' );
 	}
 
 	protected function tearDown() : void {
@@ -86,36 +100,53 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
 		$newTitle = Title::newFromText( __METHOD__ . '-new' );
 
-		$this->pageCreator
-			->createPage( $oldTitle )
-			->doEdit( '[[Has jobqueue test::UpdateJob]]' );
+		$this->assertNull(
+			$this->newRevisionFromTitle( $newTitle )
+		);
 
-		$this->pageCreator->doMoveTo( $newTitle, true );
+		$this->pageCreator->createPage( $oldTitle );
+		$result = $this->pageCreator->doMoveTo( $newTitle, true );
 
-		// Execute the job directly
-		// $this->assertJob( 'SMW\UpdateJob' );
+		$this->assertTrue( $result );
+
+		$this->assertNotNull(
+			$this->newRevisionFromTitle( $oldTitle )
+		);
+
+		$this->assertNotNull(
+			$this->newRevisionFromTitle( $newTitle )
+		);
 
 		$this->assertTrue(
 			$oldTitle->isRedirect()
 		);
+
+		if ( $result ) {
+			$this->assertJob( 'smw.update', $this->job );
+		}
+
+		$this->toBeDeleted = [
+			$oldTitle,
+			$newTitle
+		];
 
 		$this->pageDeleter->deletePage(
 			$oldTitle
 		);
 	}
 
+	private function newRevisionFromTitle( $title ) {
+		return $this->revisionGuard->newRevisionFromPage(
+			$this->applicationFactory->newPageCreator()->createPage( $title )
+		);
+	}
+
 	public function testSQLStoreRefreshDataTriggersUpdateJob() {
 
 		$index = 1; //pass-by-reference
-		
-		$job = Job::factory(
-			'SMW\UpdateJob',
-			Title::newFromText( __METHOD__ . 'SMW\UpdateJob' ),
-			[]
-		);
-
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
-		$this->assertJob( 'smw.update', $job );
+		
+		$this->assertJob( 'smw.update', $this->job );
 	}
 
 	/**
