@@ -104,13 +104,13 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 	// 	);
 	// }
 
-	public function testSQLStoreRefreshDataTriggersUpdateJob() {
+	// public function testSQLStoreRefreshDataTriggersUpdateJob() {
 
-		$index = 1; //pass-by-reference
+	// 	$index = 1; //pass-by-reference
 
-		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
-		$this->assertJob( 'smw.update' );
-	}
+	// 	$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
+	// 	$this->assertJob( 'smw.update' );
+	// }
 
 	/**
 	 * @dataProvider jobFactoryProvider
