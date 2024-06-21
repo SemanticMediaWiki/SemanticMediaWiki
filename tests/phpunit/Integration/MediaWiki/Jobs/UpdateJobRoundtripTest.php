@@ -107,9 +107,15 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 	public function testSQLStoreRefreshDataTriggersUpdateJob() {
 
 		$index = 1; //pass-by-reference
+		
+		$job = Job::factory(
+			'SMW\UpdateJob',
+			Title::newFromText( __METHOD__ . 'SMW\UpdateJob' ),
+			[]
+		);
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
-		$this->assertJob( 'smw.update' );
+		$this->assertJob( 'smw.update', $job );
 	}
 
 	/**
