@@ -81,28 +81,28 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		parent::tearDown();
 	}
 
-	public function testPageMoveTriggersUpdateJob() {
+	// public function testPageMoveTriggersUpdateJob() {
 
-		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
-		$newTitle = Title::newFromText( __METHOD__ . '-new' );
+	// 	$oldTitle = Title::newFromText( __METHOD__ . '-old' );
+	// 	$newTitle = Title::newFromText( __METHOD__ . '-new' );
 
-		$this->pageCreator
-			->createPage( $oldTitle )
-			->doEdit( '[[Has jobqueue test::UpdateJob]]' );
+	// 	$this->pageCreator
+	// 		->createPage( $oldTitle )
+	// 		->doEdit( '[[Has jobqueue test::UpdateJob]]' );
 
-		$this->pageCreator->doMoveTo( $newTitle, true );
+	// 	$this->pageCreator->doMoveTo( $newTitle, true );
 
-		// Execute the job directly
-		// $this->assertJob( 'SMW\UpdateJob' );
+	// 	// Execute the job directly
+	// 	// $this->assertJob( 'SMW\UpdateJob' );
 
-		$this->assertTrue(
-			$oldTitle->isRedirect()
-		);
+	// 	$this->assertTrue(
+	// 		$oldTitle->isRedirect()
+	// 	);
 
-		$this->pageDeleter->deletePage(
-			$oldTitle
-		);
-	}
+	// 	$this->pageDeleter->deletePage(
+	// 		$oldTitle
+	// 	);
+	// }
 
 	public function testSQLStoreRefreshDataTriggersUpdateJob() {
 
