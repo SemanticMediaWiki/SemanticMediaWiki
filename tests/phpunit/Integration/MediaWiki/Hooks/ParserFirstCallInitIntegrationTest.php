@@ -98,7 +98,8 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$expectedNullOutputFor = [
 			'concept',
-			'declare'
+			'declare',
+			'ask'
 		];
 
 		$title = Title::newFromText( __METHOD__ );

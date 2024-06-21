@@ -61,6 +61,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
+		$this->title = Title::newFromText( __METHOD__ );
 		$this->pageDeleter->deletePage( $this->title );
 
 		parent::tearDown();
