@@ -110,10 +110,35 @@
 			<file>StringConditionTest.php</file>
 			<file>TypesRegistryTest.php</file>
 		</testsuite>
-        <testsuite name="semantic-mediawiki-integration">
+		<testsuite name="semantic-mediawiki-integration">
             <directory>tests/phpunit/Integration</directory>
             <exclude>tests/phpunit/Integration/MediaWiki/Import</exclude>
 			<exclude>tests/phpunit/Integration/MediaWiki/Jobs</exclude>
+			<exclude>tests/phpunit/Integration/MediaWiki/LinksUpdateSQLStoreDBIntegrationTest.php</exclude>
+			<exclude>tests/phpunit/Integration/MediaWiki/LinksUpdateTest.php</exclude>
+			<exclude>tests/phpunit/Integration/MediaWiki/ApiBrowseBySubjectDBIntegrationTest.php</exclude>
+			<exclude>tests/phpunit/Integration/MediaWiki/LinksUpdateTest.php</exclude>
+			<exclude>tests/phpunit/Integration/MediaWiki/MediaWikiIntegrationForRegisteredHookTest.php</exclude>
+			<exclude>tests/phpunit/Integration/MediaWiki/NamespaceInfoCanonicalNameMatchTest.php</exclude>
+			<exclude>tests/phpunit/Integration/MediaWiki/PredefinedPropertyAnnotationDBIntegrationTest.php</exclude>
+			<exclude>tests/phpunit/Integration/MediaWiki/RedirectTargetFinderIntegrationTest.php</exclude>
+			<exclude>tests/phpunit/Integration/MediaWiki/SearchInPageDBIntegrationTest.php</exclude>
+			<exclude>tests/phpunit/Integration/MediaWiki/TitleFactoryIntegrationTest.php</exclude>
+        </testsuite>
+        <testsuite name="semantic-integration">
+            <file>tests/phpunit/Integration/MediaWiki/ApiBrowseBySubjectDBIntegrationTest.php</file>
+			<file>tests/phpunit/Integration/MediaWiki/LinksUpdateEmptyParserOutputDBIntegrationTest.php</file>
+			<file>tests/phpunit/Integration/MediaWiki/LinksUpdateSQLStoreDBIntegrationTest.php</file>
+			<file>tests/phpunit/Integration/MediaWiki/LinksUpdateTest.php</file>
+			<file>tests/phpunit/Integration/MediaWiki/MediaWikiIntegrationForRegisteredHookTest.php</file>
+			<file>tests/phpunit/Integration/MediaWiki/NamespaceInfoCanonicalNameMatchTest.php</file>
+			<file>tests/phpunit/Integration/MediaWiki/PredefinedPropertyAnnotationDBIntegrationTest.php</file>
+			<file>tests/phpunit/Integration/MediaWiki/RedirectTargetFinderIntegrationTest.php</file>
+			<file>tests/phpunit/Integration/MediaWiki/SearchInPageDBIntegrationTest.php</file>
+			<file>tests/phpunit/Integration/MediaWiki/TitleFactoryIntegrationTest.php</file>
+        </testsuite>
+		<testsuite name="semantic-mediawiki-jobs">
+            <directory>tests/phpunit/Integration/MediaWiki/Jobs</directory>
         </testsuite>
         <testsuite name="semantic-mediawiki-import">
             <directory>tests/phpunit/Integration/MediaWiki/Import</directory>
