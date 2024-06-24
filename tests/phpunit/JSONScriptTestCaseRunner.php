@@ -25,7 +25,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
+abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	/**
 	 * @var FileReader
@@ -88,7 +88,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 		} elseif ( $this->getStore() instanceof \SMW\Elastic\ElasticStore ) {
 			$this->connectorId = 'elastic';
 		} else {
-			$this->connectorId = strtolower( $this->getDBConnection()->getType() );
+			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
 		}
 	}
 
@@ -291,7 +291,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->getDBConnection()->getType() ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
