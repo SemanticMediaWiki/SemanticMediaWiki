@@ -28,6 +28,10 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
@@ -40,7 +44,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			GetPreferences::class,
-			new GetPreferences( $this->permissionExaminer )
+			new GetPreferences( $this->permissionExaminer, $this->schemaFactory )
 		);
 	}
 
@@ -60,7 +64,8 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 		$preferences = [];
 
 		$instance = new GetPreferences(
-			$this->permissionExaminer
+			$this->permissionExaminer,
+			$this->schemaFactory
 		);
 
 		$instance->setHookDispatcher(

@@ -163,4 +163,16 @@ class UrlArgs {
 		return $cgi;
 	}
 
+	/**
+	 * @since 4.1
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function find( string $key, $default = false ) {
+		return DotArray::get( $this->args, $key, $default );
+	}
+
 }

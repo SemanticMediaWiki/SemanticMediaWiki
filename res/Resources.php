@@ -564,6 +564,30 @@ return [
 		]
 	],
 
+	// Special:FactedSearch
+	'smw.special.facetedsearch.styles' => $moduleTemplate + [
+		'styles' => 'smw/special/smw.special.facetedsearch.css',
+		'position' => 'top',
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'smw.special.facetedsearch' => $moduleTemplate + [
+		'scripts' => 'smw/special/smw.special.facetedsearch.js',
+		'dependencies' => [
+			'smw.special.facetedsearch.styles',
+			'onoi.rangeslider',
+			//'vue'
+		],
+		'position' => 'top',
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
 	// Personal resource
 	'ext.smw.personal' => $moduleTemplate + [
 		'scripts' => 'smw/util/ext.smw.personal.js',
@@ -666,7 +690,8 @@ return [
 	'ext.smw.page.styles' => $moduleTemplate + [
 		'styles' => [
 			'smw/ext.smw.page.css',
-			'smw/ext.smw.table.css'
+			'smw/ext.smw.table.css',
+			'smw/smw.jsonview.css'
 		],
 		'position' => 'top',
 		'targets' => [
@@ -682,10 +707,15 @@ return [
 			'mediawiki.api',
 			'mediawiki.api.parse',
 			'ext.smw.tooltip',
+			'smw.jsonview'
 		],
 		'messages' => [
 			'smw_result_noresults'
 		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
 	],
 
 	// Schema content styles
