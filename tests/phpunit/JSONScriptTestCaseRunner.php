@@ -3,9 +3,12 @@
 namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
+use SMW\StoreFactory;
 use SMW\Localizer\Localizer;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
+use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -25,7 +28,17 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
+abstract class JSONScriptTestCaseRunner extends \PHPUnit_Framework_TestCase {
+
+	/**
+	 * @var TestEnvironment
+	 */
+	protected $testEnvironment;
+
+	/**
+	 * @var TestDatabaseTableBuilder
+	 */
+	protected $testDatabaseTableBuilder;
 
 	/**
 	 * @var FileReader
@@ -65,6 +78,13 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	protected function setUp() : void {
 		parent::setUp();
 
+		MediaWikiServices::resetGlobalInstance();
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
+			$this->getStore()
+		);
+
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 		$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
 		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
@@ -100,6 +120,10 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
+	}
+
+	protected function getStore() {
+		return StoreFactory::getStore();
 	}
 
 	/**
