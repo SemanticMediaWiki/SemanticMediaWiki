@@ -3,11 +3,13 @@
 namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
+use SMW\StoreFactory;
 use SMW\Localizer\Localizer;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 
 /**
  * The `JSONScriptTestCaseRunner` is a convenience provider for `Json` formatted
@@ -26,7 +28,17 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
+abstract class JSONScriptTestCaseRunner extends \PHPUnit_Framework_TestCase {
+
+	/**
+	 * @var TestEnvironment
+	 */
+	protected $testEnvironment;
+
+	/**
+	 * @var TestDatabaseTableBuilder
+	 */
+	protected $testDatabaseTableBuilder;
 
 	/**
 	 * @var FileReader
@@ -66,6 +78,17 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	protected function setUp() : void {
 		parent::setUp();
 
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
+
+		$this->getStore()->clear();
+
+		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
+			$this->getStore()
+		);
+
+		$this->testDatabaseTableBuilder->doBuild();
+
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 		$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
 		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
@@ -91,6 +114,10 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 		} else {
 			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
 		}
+	}
+
+	protected function getStore() {
+		return StoreFactory::getStore();
 	}
 
 	protected function tearDown() : void {
