@@ -114,4 +114,4 @@ jobs:
         run: >
           composer phpunit
           --working-dir ${{ env.MW_INSTALL_PATH }}/extensions/SemanticMediaWiki
-          -- --testsuite semantic-mediawiki-structure
+          -- --testsuite semantic-mediawiki-integration
