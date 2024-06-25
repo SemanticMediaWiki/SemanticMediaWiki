@@ -28,17 +28,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
  *
  * @author mwjames
  */
-abstract class JSONScriptTestCaseRunner extends \PHPUnit_Framework_TestCase {
-
-	/**
-	 * @var TestEnvironment
-	 */
-	protected $testEnvironment;
-
-	/**
-	 * @var TestDatabaseTableBuilder
-	 */
-	protected $testDatabaseTableBuilder;
+abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 
 	/**
 	 * @var FileReader
@@ -78,17 +68,6 @@ abstract class JSONScriptTestCaseRunner extends \PHPUnit_Framework_TestCase {
 	protected function setUp() : void {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
-		$this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
-
-		$this->getStore()->clear();
-
-		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
-			$this->getStore()
-		);
-
-		$this->testDatabaseTableBuilder->doBuild();
-
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 		$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
 		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
@@ -115,11 +94,7 @@ abstract class JSONScriptTestCaseRunner extends \PHPUnit_Framework_TestCase {
 			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
 		}
 	}
-
-	protected function getStore() {
-		return StoreFactory::getStore();
-	}
-
+	
 	protected function tearDown() : void {
 
 		if ( $this->deletePagesOnTearDown ) {
