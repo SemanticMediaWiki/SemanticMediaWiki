@@ -13,17 +13,17 @@ TODO: summary
 
 ## Changes
 
-* 
+* Add Special:FacetedSearch; this special page provides users with a simple interface to quickly narrow down query results from a condition with the help of faceted views created from dependent properties and categories
+* Allow the use of the "source" parameter to set a query source for queries using the API-modules "ask" and "askargs"
 
 ## Contributors
 
 Top Contributors
 
 
-
 Code Contributors
-
-
+* Youri van den Bogert
+* Yvar Nanlohij
 
 ## Upgrading
 
