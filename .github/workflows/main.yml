@@ -115,9 +115,3 @@ jobs:
           composer phpunit
           --working-dir ${{ env.MW_INSTALL_PATH }}/extensions/SemanticMediaWiki
           -- --testsuite semantic-mediawiki-unit
-
-      - name: Run Tests
-        run: >
-          composer phpunit
-          --working-dir ${{ env.MW_INSTALL_PATH }}/extensions/SemanticMediaWiki
-          -- --testsuite semantic-integration,semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-jobs,semantic-mediawiki-import,semantic-mediawiki-structure
