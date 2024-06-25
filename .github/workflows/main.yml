@@ -110,8 +110,8 @@ jobs:
           tail -n5 ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
           php ${{ env.MW_INSTALL_PATH }}/maintenance/update.php --quick
 
-      - name: Run unit tests
+      - name: Run Tests
         run: >
           composer phpunit
           --working-dir ${{ env.MW_INSTALL_PATH }}/extensions/SemanticMediaWiki
-          -- --testsuite semantic-mediawiki-integration
+          -- --testsuite semantic-integration
