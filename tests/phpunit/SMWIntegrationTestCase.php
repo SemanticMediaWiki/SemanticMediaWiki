@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
+abstract class SMWIntegrationTestCase extends \PHPUnit_Framework_TestCase {
 
     /**
 	 * @var TestDatabaseTableBuilder
