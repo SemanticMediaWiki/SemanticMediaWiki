@@ -110,11 +110,9 @@
 			<file>StringConditionTest.php</file>
 			<file>TypesRegistryTest.php</file>
 		</testsuite>
-		<testsuite name="semantic-mediawiki-integration">
+        <testsuite name="semantic-mediawiki-integration">
             <directory>tests/phpunit/Integration</directory>
             <exclude>tests/phpunit/Integration/MediaWiki/Import</exclude>
-			<exclude>tests/phpunit/Integration/MediaWiki/Jobs</exclude>
-			<exclude>tests/phpunit/Integration/MediaWiki/Hooks</exclude>
         </testsuite>
         <testsuite name="semantic-mediawiki-import">
             <directory>tests/phpunit/Integration/MediaWiki/Import</directory>
