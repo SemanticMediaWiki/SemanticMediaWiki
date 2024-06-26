@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use SMW\StoreFactory;
 use SMW\Localizer\Localizer;
 use SMW\Tests\SMWIntegrationTestCase;
-use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
@@ -30,7 +29,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
  *
  * @author mwjames
  */
-abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
+abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	/**
 	 * @var FileReader
