@@ -132,6 +132,7 @@
 	"smw_exportrdf_submit": "Ekspor",
 	"uriresolver": "Pengurai URI",
 	"properties": "Atribut",
+	"categories": "Daftar kategori",
 	"smw_properties_docu": "Properti berikut digunakan dalam wiki ini.",
 	"smw_property_template": "$1 dari tipe $2 ($3 {{PLURAL:$3|digunakan|digunakan}})",
 	"smw_propertylackspage": "Semua properti harus dideskripsikan dengan suatu halaman!",

@@ -97,6 +97,7 @@
 	"smw_exportrdf_submit": "Ezporzhiañ",
 	"uriresolver": "Diskoulmer URI",
 	"properties": "Perzhioù",
+	"categories": "Roll ar rummadoù",
 	"smw_properties_docu": "Ar perzhioù-mañ zo implijet er wiki.",
 	"smw_property_template": "$1 eus ar seurt $2 ($3 {{PLURAL:$3|implij}})",
 	"smw_propertylackspage": "An holl berzhioù a rank bezañ deskrivet gant ur bajenn !",

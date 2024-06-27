@@ -11,6 +11,7 @@
 			"Maria zaos",
 			"McDutchie",
 			"Nemo bis",
+			"Prevert",
 			"Toliño",
 			"Xabier Cid"
 		]
@@ -166,6 +167,7 @@
 	"smw_exportrdf_submit": "Exportar",
 	"uriresolver": "Solucionador de URI",
 	"properties": "Propiedades",
+	"categories": "Categorías",
 	"smw_properties_docu": "Este wiki usa as seguintes propiedades.",
 	"smw_property_template": "\"$1\" de tipo \"$2\" ($3 {{PLURAL:$3|uso|usos}})",
 	"smw_propertylackspage": "Todas as propiedades deberían estar descritas nunha páxina!",

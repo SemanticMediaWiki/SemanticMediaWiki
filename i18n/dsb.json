@@ -4,6 +4,7 @@
 			"Derbeth",
 			"Matěj Suchánek",
 			"Michawiki",
+			"Qualia",
 			"아라"
 		]
 	},
@@ -121,6 +122,7 @@
 	"smw_exportrdf_submit": "Eksportěrowaś",
 	"uriresolver": "Rezolwer URI",
 	"properties": "Kakosći",
+	"categories": "Kategorije",
 	"smw_properties_docu": "Slědujuce kakosći wužywaju se we wikiju.",
 	"smw_property_template": "$1 typa $2 ($3 {{PLURAL:$3|wužyśe|wužyśi|wužyśa|wužyśow}})",
 	"smw_propertylackspage": "Wše kakosći měli se pśez bok wopisaś!",

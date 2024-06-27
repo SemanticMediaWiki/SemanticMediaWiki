@@ -3,6 +3,7 @@
 		"authors": [
 			"GrigorGB",
 			"Kareyac",
+			"Teak",
 			"Xelgen",
 			"Սերգեյ Սաֆարյան"
 		]
@@ -15,6 +16,7 @@
 	"validator-type-class-SMWParamSource": "տեքստ",
 	"smw-propertylist-redirect-header": "Հոմանիշներ",
 	"properties": "Կարգավորումներ",
+	"categories": "Կատեգորիաներ",
 	"smw-special-property-searchform-options": "Ընտրանքներ",
 	"smw-special-wantedproperties-filter-none": "Ոչ մեկը",
 	"smw_purge": "Թարմացնել",
@@ -41,6 +43,7 @@
 	"smw-format-datatable-last": "Վերջին",
 	"smw-help": "Օգնություն",
 	"smw-loading": "Բեռնում ...",
+	"smw-facetedsearch-intro-tab-search": "Որոնել",
 	"smw-listingcontinuesabbrev": "շարունակելի",
 	"smw-showingresults": "Ստորև բերված է մինչև {{PLURAL:$1|'''1''' արդյունք|'''$1''' արդյունք}}՝ սկսած №&nbsp;<strong>$2</strong>-ից։"
 }

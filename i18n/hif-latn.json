@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Girmitya",
 			"Thakurji"
 		]
 	},
+	"categories": "Vibhag",
 	"browse": "Wiki me dekho",
 	"smw-livepreview-loading": "load karaa jaae hae...",
 	"smw-listingcontinuesabbrev": "aur",

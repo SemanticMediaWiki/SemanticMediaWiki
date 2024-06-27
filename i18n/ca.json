@@ -198,6 +198,7 @@
 	"smw_exportrdf_submit": "Exporta",
 	"uriresolver": "Resolutor d'URI",
 	"properties": "Propietats",
+	"categories": "Categories",
 	"smw_properties_docu": "S'utilitzen les propietats següents al wiki.",
 	"smw_property_template": "$1 de tipus $2 ($3 {{PLURAL:$3|ús|usos}})",
 	"smw_propertylackspage": "Cal descriure totes les propietats amb una pàgina!",

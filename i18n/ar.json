@@ -215,6 +215,7 @@
 	"smw_exportrdf_submit": "صدّر",
 	"uriresolver": "حال_المسارات",
 	"properties": "الخصائص",
+	"categories": "تصنيفات",
 	"smw_properties_docu": "الخصائص التالية مستخدمة في هذه الويكي.",
 	"smw_property_template": "$1 من نوع $2 ({{PLURAL:$3|مرة|مرّتان|$3 مرات}})",
 	"smw_propertylackspage": "كل خصيصة يجب أن توصف بصفحة!",

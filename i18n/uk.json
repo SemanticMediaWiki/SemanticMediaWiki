@@ -211,6 +211,7 @@
 	"smw_exportrdf_submit": "Експорт",
 	"uriresolver": "Оброблювач URI",
 	"properties": "Властивості",
+	"categories": "Категорії",
 	"smw_properties_docu": "Наступні властивості використовуються у цій вікі.",
 	"smw_property_template": "$1 із типом $2 ($3 {{PLURAL:$3|1=використання|використань}})",
 	"smw_propertylackspage": "Кожна властивість повинна мати сторінку, що її описує.",

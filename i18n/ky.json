@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"AidaBishkek",
 			"Bosogo",
 			"Growingup"
 		]
@@ -11,6 +12,7 @@
 	"smw_printername_template": "Калып",
 	"smw_printername_category": "Категория",
 	"validator-type-class-SMWParamSource": "текст",
+	"categories": "Категориялар",
 	"smw-special-property-searchform-options": "Параметрлер",
 	"smw-special-wantedproperties-filter-label": "Чыпка:",
 	"smw_purge": "Жаңыртуу",

@@ -205,6 +205,7 @@
 	"smw_exportrdf_submit": "Dışa aktar",
 	"uriresolver": "URIResolver",
 	"properties": "Özellikler",
+	"categories": "Kategoriler",
 	"smw_properties_docu": "Vikide aşağıdaki özellikler kullanılıyor.",
 	"smw_property_template": "$1 tipi $2 ($3 {{PLURAL:$1|kullanım|kullanım}})",
 	"smw_propertylackspage": "Tüm özellikler bir sayfa tarafından açıklanmalıdır!",

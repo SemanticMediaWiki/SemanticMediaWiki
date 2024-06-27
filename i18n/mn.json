@@ -8,6 +8,7 @@
 		]
 	},
 	"smw-paramdesc-table-transpose": "table -ын толгойг босоогоор, үр дүнг хэвтээгээр",
+	"categories": "Ангиллууд",
 	"browse": "Викиг үзэх",
 	"smw_browse_go": "Явах",
 	"smw_smwadmin_datarefreshstopconfirm": "Тийм, би {{GENDER:$1|итгэлтэй байна}}.",

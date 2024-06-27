@@ -42,6 +42,7 @@
 	"smw_exportrdf_lastdate": "Без изнасяне на страници, които не са променяни от посоченото време.",
 	"smw_exportrdf_submit": "Изнасяне",
 	"properties": "Свойства",
+	"categories": "Категории",
 	"smw_property_template": "$1 от типа $2 ($3 {{PLURAL:$3|употреба|употреби}})",
 	"smw-special-property-searchform-options": "Настройки",
 	"smw-special-wantedproperties-filter-label": "Филтър:",

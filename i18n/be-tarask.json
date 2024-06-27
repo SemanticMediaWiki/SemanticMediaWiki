@@ -151,6 +151,7 @@
 	"smw_exportrdf_submit": "Экспартаваць",
 	"uriresolver": "Пераўтваральнік URI",
 	"properties": "Уласьцівасьці",
+	"categories": "Катэгорыі",
 	"smw_properties_docu": "Наступныя ўласьцівасьці выкарыстоўваюцца ў {{GRAMMAR:месны|{{SITENAME}}}}.",
 	"smw_property_template": "$1 тыпу $2 ($3 {{PLURAL:$3|выкарыстаньне|выкарыстаньні|выкарыстаньняў}})",
 	"smw_propertylackspage": "Усе ўласьцівасьці павінны мець старонку апісаньня!",
@@ -181,7 +182,7 @@
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Запыт|Запыты|Запытаў}}",
 	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|1=Запыт|Запыты}}]] (укладзеныя, усяго)",
 	"smw-statistics-query-size": "Памер запыту",
-	"smw_uri_doc": "Пераўтваральнік URI ажыцьцяўляе [$1 пошук W3C TAG у httpRange-14].\nГэта забясьпечвае ўпэўненасьць, што людзі не заходзяць на сайты.",
+	"smw_uri_doc": "Пераўтваральнік URI ажыцьцяўляе [$1 пошук W3C TAG у httpRange-14].\nГэта забясьпечвае, што ў залежнасьці ад запыту выдаецца або прадстаўленьне RDF (для машынаў), або вікі-старонка (для людзей).",
 	"ask": "Сэмантычны пошук",
 	"smw_ask_sortby": "Сартаваць па слупку (неабавязкова)",
 	"smw_ask_ascorder": "Па павелічэньні",
@@ -321,7 +322,7 @@
 	"smw-admin-supplementary-elastic-status-last-active-replication": "Апошняя актыўная рэплікацыя: $1",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Прамежак абнаўленьня: $1",
 	"smw-admin-supplementary-elastic-status-recovery-job-count": "Затрымка ўзнаўленьня працы: $1 (ацэнка)",
-	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "Часопіс (файл) нявыкананай працы: $1 (ацэнка)",
+	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "Назапашаны пратакол (файл) нявыкананай працы: $1 (ацэнка)",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Рэплікацыя заблякавана: $1 (перабудова ў працэсе)",
 	"smw-list-count": "Сьпіс утрымлівае $1 {{PLURAL:$1|уваход|уваходы}}.",
 	"smw-property-label-similarity-title": "Справаздача аб падобнасьці назваў уласьцівасьцяў",
@@ -428,5 +429,5 @@
 	"smw-no-data-available": "Няма даступных зьвестак.",
 	"smw-es-replication-error-no-connection": "Сачэньне за паўтарэньнем ня можа выканаць праверкі, бо ня можа ўсталяваць сувязь з клястэрам Elasticsearch.",
 	"smw-listingcontinuesabbrev": " (працяг)",
-	"smw-showingresults": "Ніжэй {{PLURAL:$1|паданы|паданыя|паданыя}} да '''$1''' {{PLURAL:$1|выніку|вынікаў|вынікаў}}, пачынаючы з #<b>$2</b>."
+	"smw-showingresults": "Ніжэй {{PLURAL:$1|пададзены|пададзеныя}} да <strong>$1</strong> {{PLURAL:$1|выніку|вынікаў}}, пачынаючы з #<strong>$2</strong>."
 }

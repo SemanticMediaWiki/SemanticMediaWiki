@@ -110,6 +110,7 @@
 	"smw_exportrdf_backlinks": "Izvozi tudi vse strani ki se sklicujejo na strani izvoza.\nUstvari brskalni RDF.",
 	"smw_exportrdf_submit": "Izvozi",
 	"properties": "Lastnosti",
+	"categories": "Kategorije",
 	"smw_properties_docu": "V tem vikiju se uporabljajo naslednje lastnosti.",
 	"smw_property_template": "$1 tipa $2 ($3 {{PLURAL:$3|uporaba|uporabi|uporabe|uporab}})",
 	"smw_propertylackspage": "Vse lastnosti mora opisovati ena stran!",

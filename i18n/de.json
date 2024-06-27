@@ -231,6 +231,7 @@
 	"smw_exportrdf_submit": "Exportieren",
 	"uriresolver": "URI-Auflöser",
 	"properties": "Attribute",
+	"categories": "Kategorien",
 	"smw_properties_docu": "In diesem Wiki werden die folgenden Attribute genutzt:",
 	"smw_property_template": "$1 mit Datentyp $2 ($3 {{PLURAL:$3|Vorkommen}})",
 	"smw_property_template_notype": "$1 ($2)",
