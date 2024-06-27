@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Abijeet Patro",
 			"Bhatakati aatma",
 			"Jayprakash12345",
 			"Kaustubh",
@@ -131,6 +132,7 @@
 	"smw_exportrdf_submit": "निर्यात",
 	"uriresolver": "यूआरएलरिसोल्वर",
 	"properties": "गुणधर्म",
+	"categories": "श्रेणियाँ",
 	"smw-special-property-searchform": "प्रदर्शित गुण जिसमें शामिल हैं:",
 	"smw-special-property-searchform-inputinfo": "निविष्ट कारक संवेदनशील है और जब निष्पंदन के लिए प्रयुक्त होता है, केवल गुण जो स्थिति से मेल खाते हैं, प्रदर्शित होते हैं।",
 	"smw-special-property-searchform-options": "विकल्प",
@@ -265,6 +267,9 @@
 	"smw-section-expand": "अंश का विस्तार करें",
 	"smw-section-collapse": "अंश को संक्षिप्त करें",
 	"smw-types-title": "प्रकार: $1",
+	"smw-facetedsearch-intro-tab-search": "खोजें",
+	"smw-facetedsearch-format-table": "टेबल",
+	"smw-search-placeholder": "खोजें...",
 	"smw-listingcontinuesabbrev": "जारी",
 	"smw-showingresults": "नीचे क्रमांक '''$2''' से प्रारंभ कर के अधिकतम '''$1''' परिणाम {{PLURAL:$1|दिखाया गया है|दिखाए गए हैं}}।"
 }

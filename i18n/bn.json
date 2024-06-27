@@ -5,6 +5,7 @@
 			"Aftab1995",
 			"Aftabuzzaman",
 			"Aishik Rehman",
+			"Bellayet",
 			"Elias Ahmmad",
 			"Muktogayn",
 			"Rasal Lia",
@@ -72,6 +73,7 @@
 	"smw_noqueryfeature": "এই উইকিতে কয়েকটি প্রশ্ন বৈশিষ্ট্য সমর্থিত নয় এবং প্রশ্নের ($1) অংশ বাদ দেওয়া হয়েছে।",
 	"smw-propertylist-redirect-header": "প্রতিশব্দ",
 	"smw_exportrdf_submit": "রপ্তানি",
+	"categories": "বিষয়শ্রেণীসমূহ",
 	"smw-special-property-searchform-options": "বিকল্পসমূহ",
 	"smw-special-wantedproperties-filter-label": "ছাকনি:",
 	"smw-special-wantedproperties-filter-none": "কোনটিই নয়",
@@ -207,6 +209,8 @@
 	"smw-ask-tab-debug": "ডিবাগ",
 	"smw-ask-tab-code": "কোড",
 	"smw-legend": "ব্যাখ্যা",
+	"smw-facetedsearch-format-table": "ছক",
+	"smw-search-placeholder": "অনুসন্ধান ...",
 	"smw-listingcontinuesabbrev": "আরও আছে",
 	"smw-showingresults": "<strong>$2</strong> নং থেকে শুরু করে {{PLURAL:$1|<strong>১টি</strong> ফলাফল|<strong>$1টি</strong> ফলাফল}} নিচে দেখানো হচ্ছে।"
 }

@@ -246,6 +246,7 @@
 	"smw_exportrdf_submit": "Exporter",
 	"uriresolver": "Résolveur d’URI",
 	"properties": "Propriétés",
+	"categories": "Liste des catégories",
 	"smw_properties_docu": "Les propriétés suivantes sont utilisées sur ce wiki.",
 	"smw_property_template": "$1 du type $2 ($3 utilisation{{PLURAL:$3||s}})",
 	"smw_propertylackspage": "Toutes les propriétés devraient être décrites par une page !",

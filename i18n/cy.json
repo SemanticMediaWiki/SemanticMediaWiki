@@ -3,6 +3,7 @@
 		"authors": [
 			"Afalau",
 			"Ham II",
+			"Lloffiwr",
 			"Robin Owain"
 		]
 	},
@@ -10,6 +11,7 @@
 	"smw_printername_table": "Tabl",
 	"smw_printername_category": "Categori",
 	"validator-type-class-SMWParamSource": "testun",
+	"categories": "Categorïau",
 	"smw_purge": "Adnewyddu",
 	"browse": "Pori'r wici",
 	"smw-livepreview-loading": "Wrthi'n llwytho…",

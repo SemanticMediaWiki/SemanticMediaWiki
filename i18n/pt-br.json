@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
-			555,
+			"555",
 			"Agripinoduarte",
 			"Amgauna",
 			"Amire80",
@@ -227,6 +227,7 @@
 	"smw_exportrdf_submit": "Exportar",
 	"uriresolver": "Resolvedor de URIs",
 	"properties": "Propriedades",
+	"categories": "Categorias",
 	"smw_properties_docu": "As seguintes propriedades são utilizadas neste wiki.",
 	"smw_property_template": "$1 do tipo $2 ($3 {{PLURAL:$3|uso|usos}})",
 	"smw_propertylackspage": "Todas as propriedades devem ser descritas por uma página!",

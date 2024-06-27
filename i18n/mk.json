@@ -160,6 +160,7 @@
 	"smw_exportrdf_submit": "Извези",
 	"uriresolver": "URI претворач",
 	"properties": "Својства",
+	"categories": "Категории",
 	"smw_properties_docu": "Во викито се користат следниве својства.",
 	"smw_property_template": "$1 од типот $2 ($3 {{PLURAL:$3|употреба|употреби}})",
 	"smw_propertylackspage": "Сите својства треба да се опишани во страница!",

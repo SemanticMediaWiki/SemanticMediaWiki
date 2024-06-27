@@ -189,6 +189,7 @@
 	"smw_exportrdf_submit": "Exportovat",
 	"uriresolver": "Překladač URI",
 	"properties": "Vlastnosti",
+	"categories": "Kategorie",
 	"smw_properties_docu": "Na této wiki se používají následující vlastnosti.",
 	"smw_property_template": "$1 typu $2 ($3 {{PLURAL:$3|použití}})",
 	"smw_propertylackspage": "Všechny vlastnosti by měly mít stránku s popisem!",

@@ -228,6 +228,7 @@
 	"smw_exportrdf_submit": "匯出",
 	"uriresolver": "URI 解析器",
 	"properties": "屬性",
+	"categories": "分類",
 	"smw_properties_docu": "本 wiki 使用以下屬性。",
 	"smw_property_template": "類型為 $2 的屬性 $1 (出現 $3 次)",
 	"smw_propertylackspage": "所有屬性均應有一個頁面描述！",

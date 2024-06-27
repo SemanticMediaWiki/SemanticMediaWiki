@@ -91,6 +91,7 @@
 	"smw_exportrdf_submit": "Exportiere",
 	"uriresolver": "URI-Ufleser",
 	"properties": "Eigeschafte",
+	"categories": "Kategorie",
 	"smw_properties_docu": "In däm Wiki git s die Eigeschafte:",
 	"smw_property_template": "$1 mit Datetyp $2 ($3)",
 	"smw_propertylackspage": "Alli Eigeschafte sotte uf ere Syte bschribe syy!",

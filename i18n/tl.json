@@ -122,6 +122,7 @@
 	"smw_exportrdf_submit": "Iluwas",
 	"uriresolver": "tagalutas ng URI",
 	"properties": "Mga pag-aari",
+	"categories": "Mga kategorya",
 	"smw_properties_docu": "Ginagamit sa wiki ang sumusunod na mga pahina ng pag-aari.",
 	"smw_property_template": "$1 ng uring $2 ($3)",
 	"smw_propertylackspage": "Lahat ng mga pag-aari ay dapat na nilalarawan ng isang pahina!",

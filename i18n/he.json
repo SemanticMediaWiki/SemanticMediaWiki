@@ -207,6 +207,7 @@
 	"smw_exportrdf_submit": "יצוא",
 	"uriresolver": "פותר הכתובות",
 	"properties": "מאפיינים",
+	"categories": "קטגוריות",
 	"smw_properties_docu": "בוויקי הזה נעשה שימוש במאפיינים הבאים.",
 	"smw_property_template": "$1 מסוג $2 ($3 {{PLURAL:$3|פעם אחת|פעמים}})",
 	"smw_propertylackspage": "כל המאפיינים אמורים להיות מתוארים על־ידי דף!",

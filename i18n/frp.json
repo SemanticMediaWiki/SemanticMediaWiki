@@ -44,6 +44,7 @@
 	"smw_exportrdf_submit": "Èxportar",
 	"uriresolver": "Rèsolvior d’URI",
 	"properties": "Propriètâts",
+	"categories": "Catègories",
 	"smw_property_template": "$1 du tipo $2 ($3)",
 	"unusedproperties": "Propriètâts inutilisâs",
 	"smw-unusedproperty-template": "$1 de tipo $2",

@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Agurzil",
 			"Belkacem77",
 			"Mastanabal"
 		]
@@ -38,6 +39,7 @@
 	"smw-paramdesc-filename": "ISem n ufaylu n tuffɣa",
 	"smw-smwdoc-par-format": "Amasal n ugmuḍ anida ara d-ttwasken tsemlit n uɣewwaṛ.",
 	"smw_exportrdf_submit": "Sifeḍ",
+	"categories": "Taggayin",
 	"smw-special-property-searchform-options": "Iɣewwaṛen",
 	"smw-special-wantedproperties-filter-label": "Imzizdig:",
 	"smw-special-wantedproperties-filter-none": "Ulac",

@@ -206,6 +206,7 @@
 	"smw_exportrdf_submit": "Eksporter",
 	"uriresolver": "URI-løser",
 	"properties": "Egenskaper",
+	"categories": "Kategorier",
 	"smw_properties_docu": "Følgende egenskaper brukes på wikien.",
 	"smw_property_template": "$1 av type $2 ($3 {{PLURAL:$3|bruker}})",
 	"smw_propertylackspage": "Alle egenskaper burde beskrives av en side.",
