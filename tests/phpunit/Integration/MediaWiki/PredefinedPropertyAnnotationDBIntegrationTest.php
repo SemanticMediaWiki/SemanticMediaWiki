@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDITime as DITime;
 use Title;
@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
+class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $semanticDataValidator;
 	private $applicationFactory;

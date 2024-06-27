@@ -6,6 +6,9 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\StoreFactory;
+use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 
 /**
  * @group SMW
@@ -19,7 +22,17 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class DumpRdfMaintenanceTest extends DatabaseTestCase {
+class DumpRdfMaintenanceTest extends \PHPUnit_Framework_TestCase {
+
+	/**
+	 * @var TestEnvironment
+	 */
+	protected $testEnvironment;
+
+	/**
+	 * @var TestDatabaseTableBuilder
+	 */
+	protected $testDatabaseTableBuilder;
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
@@ -31,7 +44,19 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 	protected function setUp() : void {
 		parent::setUp();
 
-		$utilityFactory = UtilityFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
+
+		$utilityFactory = $this->testEnvironment->getUtilityFactory();
+
+		$this->getStore()->clear();
+
+		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
+			$this->getStore()
+		);
+
+		$this->testDatabaseTableBuilder->doBuild();
+
 		$this->runnerFactory  = $utilityFactory->newRunnerFactory();
 		$this->titleValidator = $utilityFactory->newValidatorFactory()->newTitleValidator();
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
@@ -52,6 +77,11 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 			$this->markTestIncomplete( 'Test was marked as incomplete because the data import failed' );
 		}
 	}
+
+	protected function getStore() {
+		return StoreFactory::getStore();
+	}
+
 
 	protected function tearDown() : void {
 		ApplicationFactory::getInstance()->clear();

@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration;
 use FauxRequest;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
 use SpecialPageFactory;
@@ -39,7 +39,7 @@ use SpecialPageFactory;
  * @group SMWExtension
  * @group medium
  */
-class SpecialsTest extends DatabaseTestCase {
+class SpecialsTest extends SMWIntegrationTestCase {
 
 	/**
 	 * Returns the name of the class to be tested

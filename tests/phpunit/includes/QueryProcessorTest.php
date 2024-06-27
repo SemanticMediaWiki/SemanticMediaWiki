@@ -6,9 +6,9 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\DatabaseTestCase;
 use SMWQueryProcessor;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * Tests for the SMWQueryProcessor class.
@@ -23,7 +23,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author Nischay Nahata
  */
-class SMWQueryProcessorTest extends DatabaseTestCase {
+class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 	

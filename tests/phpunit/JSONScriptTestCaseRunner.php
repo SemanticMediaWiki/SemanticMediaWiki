@@ -3,10 +3,14 @@
 namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
+use SMW\StoreFactory;
 use SMW\Localizer\Localizer;
+use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 
 /**
  * The `JSONScriptTestCaseRunner` is a convenience provider for `Json` formatted
@@ -25,7 +29,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
+abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	/**
 	 * @var FileReader
@@ -88,7 +92,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 		} elseif ( $this->getStore() instanceof \SMW\Elastic\ElasticStore ) {
 			$this->connectorId = 'elastic';
 		} else {
-			$this->connectorId = strtolower( $this->getDBConnection()->getType() );
+			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
 		}
 	}
 
@@ -291,7 +295,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->getDBConnection()->getType() ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 

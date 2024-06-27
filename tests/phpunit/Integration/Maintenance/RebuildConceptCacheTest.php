@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RebuildConceptCacheTest extends DatabaseTestCase {
+class RebuildConceptCacheTest extends SMWIntegrationTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
