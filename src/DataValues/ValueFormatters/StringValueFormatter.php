@@ -62,7 +62,14 @@ class StringValueFormatter extends DataValueFormatter {
 			return $dataValue->getDataItem()->getUserValue();
 		}
 
-		return $this->doFormat( $dataValue, $type, $linker );
+		$formatted = $this->doFormat( $dataValue, $type, $linker );
+
+		if ( $type === self::HTML_SHORT || $type === self::HTML_LONG ) {
+			$attribute_key = $dataValue->getProperty()->getKey();
+			return "<span class=\"smw-attribute smw-attribute-$attribute_key\">$formatted</span>";
+		}
+
+		return $formatted;
 	}
 
 	/**
