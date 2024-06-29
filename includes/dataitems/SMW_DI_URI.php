@@ -88,11 +88,7 @@ class SMWDIUri extends SMWDataItem {
 			. ( $this->m_query ? '?' . $this->m_query : '' )
 			. ( $this->m_fragment ? '#' . $this->m_fragment : '' );
 
-		// #1878
-		// https://tools.ietf.org/html/rfc3986
-		// Normalize spaces to use `_` instead of %20 and so ensure
-		// that http://example.org/Foo bar === http://example.org/Foo_bar === http://example.org/Foo%20bar
-		return str_replace( [ ' ', '%20'], '_', $uri );
+		return $uri;
 	}
 
 	public function getScheme() {
@@ -130,6 +126,9 @@ class SMWDIUri extends SMWDataItem {
 	 * @return SMWDIUri
 	 */
 	public static function doUnserialize( $serialization ) {
+		// *** this could replace the block below, from '$escapeFrom'
+		// however that appears to be more consistent
+		// $serialization = str_replace( ' ', '%20', $serialization );
 
 		// try to split "schema:rest"
 		$parts = explode( ':', $serialization, 2 );
@@ -164,6 +163,28 @@ class SMWDIUri extends SMWDataItem {
 		}
 
 		$hierpart = ltrim( $hierpart, '/' );
+
+
+		// @see includes/datavalues/SMW_DV_URI.php -> parseUserValue()
+		// the following assumes that new SMWDIUri is constructed
+		// using the same format of SMWURIValue -> parseUserValue
+		$escapeFrom = [ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ];
+		$escapeTo = [ ':', '/', '#', '@', '?', '=', '&', '%' ];
+
+		switch( $scheme ) {
+			case 'tel':
+				break;
+
+			case 'mailto':
+				$hierpart = str_replace( $escapeFrom, $escapeTo, rawurlencode( $hierpart ) );
+				break;
+
+			// http
+			default:
+				$hierpart = str_replace( $escapeFrom, $escapeTo, rawurlencode( $hierpart ) );
+				$query = str_replace( $escapeFrom, $escapeTo, rawurlencode( $query ) );
+				$fragment = str_replace( $escapeFrom, $escapeTo, rawurlencode( $fragment ) );
+		}
 
 		return new SMWDIUri( $scheme, $hierpart, $query, $fragment, $strict );
 	}
