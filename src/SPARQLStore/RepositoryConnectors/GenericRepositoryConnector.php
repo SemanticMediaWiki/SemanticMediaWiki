@@ -573,16 +573,9 @@ class GenericRepositoryConnector implements RepositoryConnection {
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getDataEndpoint() .
 			( ( $defaultGraph !== '' ) ? '?graph=' . urlencode( $defaultGraph ) : '?default' ) );
 		$this->httpRequest->setOption( CURLOPT_POST, true );
-
-		// POST as file (fails in 4Store)
-		$payloadFile = tmpfile();
-		fwrite( $payloadFile, $payload );
-		fseek( $payloadFile, 0 );
-
-		$this->httpRequest->setOption( CURLOPT_INFILE, $payloadFile );
-		$this->httpRequest->setOption( CURLOPT_INFILESIZE, strlen( $payload ) );
 		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, [ 'Content-Type: application/x-turtle' ] );
-
+		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $payload );
+		$this->httpRequest->setOption( CURLOPT_NOBODY, false );
 		$this->httpRequest->execute();
 
 		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
