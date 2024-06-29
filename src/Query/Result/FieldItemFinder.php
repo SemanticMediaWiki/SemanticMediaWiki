@@ -136,7 +136,6 @@ class FieldItemFinder {
 		if ( $this->printRequest->isMode( PrintRequest::PRINT_CATS ) ) {
 			$options = new RequestOptions();
 			$options->isChain = false;
-			$options->isFirstChain = false;
 
 			// Rely on the prefetch
 			self::$catCache = $this->itemFetcher->fetch(
@@ -323,7 +322,6 @@ class FieldItemFinder {
 		}
 
 		$requestOptions->isChain = false;
-		$requestOptions->isFirstChain = false;
 
 		// If it is a chain then try to find a connected DIWikiPage subject that
 		// matches the property on the chained PrintRequest.
@@ -334,25 +332,24 @@ class FieldItemFinder {
 		// for `Has page` and try to match a Number annotation on the results
 		// retrieved from `Has page`.
 		if ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
-			$requestOptions->isChain = $dataValue->getDataItem()->getString();
-			$isFirstChain = true;
 
 			// Output of the previous iteration is the input for the next iteration
+			$chain = '';
 			foreach ( $dataValue->getPropertyChainValues() as $pv ) {
-				$requestOptions->isFirstChain = $isFirstChain;
-				$dataItems = $this->itemFetcher->fetch( $dataItems, $pv->getDataItem(), $requestOptions );
+				$propertyItem = $pv->getDataItem();
+				$dataItems = $this->itemFetcher->fetch( $dataItems, $propertyItem, $requestOptions );
+
+				$chain .= ( $chain ? '.' : '' ) . ( $propertyItem->isInverse() ? '-' : '' ) . $propertyItem->getKey();
+				$requestOptions->isChain = $chain;
 
 				// If the results return empty then it means that for this element
 				// the chain has no matchable items hence we stop
 				if ( $dataItems === [] ) {
 					return [];
 				}
-
-				$isFirstChain = false;
 			}
 
 			$dataValue = $dataValue->getLastPropertyChainValue();
-			$requestOptions->isFirstChain = false;
 		}
 
 		$content = $this->itemFetcher->fetch(
