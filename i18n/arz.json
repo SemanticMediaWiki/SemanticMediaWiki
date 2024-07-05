@@ -88,7 +88,7 @@
 	"smw_exportrdf_submit": "تصدير",
 	"uriresolver": "محلل URI",
 	"properties": "الخصائص",
-	"categories": "تصانيف",
+	"smw-categories": "تصانيف",
 	"smw_properties_docu": "الخصائص التاليه تستخدم فى الويكى.",
 	"smw_property_template": "$1 من نوع $2 ({{PLURAL:$3|مرة|مرتين|$3 مرات}})",
 	"smw_propertylackspage": "جميع الخصائص ينبغى أن توصف بصفحة!",

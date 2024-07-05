@@ -177,7 +177,7 @@
 	"smw_exportrdf_submit": "Εξαγωγή",
 	"uriresolver": "Επιλύτης URI",
 	"properties": "Ιδιότητες",
-	"categories": "Κατηγορίες",
+	"smw-categories": "Κατηγορίες",
 	"smw_properties_docu": "Σε αυτό το wiki χρησιμοποιούνται οι ακόλουθες ιδιότητες.",
 	"smw_property_template": "$1 τύπου $2 ($3 {{PLURAL:$3|χρήση|χρήσεις}})",
 	"smw_propertylackspage": "Όλες οι ιδιότητες πρέπει να περιγράφονται από κάποια σελίδα!",

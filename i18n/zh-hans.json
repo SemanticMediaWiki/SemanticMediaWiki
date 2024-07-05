@@ -246,7 +246,7 @@
 	"smw_exportrdf_submit": "导出",
 	"uriresolver": "URI解析器",
 	"properties": "属性",
-	"categories": "分类",
+	"smw-categories": "分类",
 	"smw_properties_docu": "以下属性在本wiki内使用。",
 	"smw_property_template": "$1，$2类型（$3次{{PLURAL:$3|使用}}）",
 	"smw_property_template_notype": "$1（$2）",

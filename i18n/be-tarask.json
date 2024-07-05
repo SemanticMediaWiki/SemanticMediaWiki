@@ -151,7 +151,7 @@
 	"smw_exportrdf_submit": "Экспартаваць",
 	"uriresolver": "Пераўтваральнік URI",
 	"properties": "Уласьцівасьці",
-	"categories": "Катэгорыі",
+	"smw-categories": "Катэгорыі",
 	"smw_properties_docu": "Наступныя ўласьцівасьці выкарыстоўваюцца ў {{GRAMMAR:месны|{{SITENAME}}}}.",
 	"smw_property_template": "$1 тыпу $2 ($3 {{PLURAL:$3|выкарыстаньне|выкарыстаньні|выкарыстаньняў}})",
 	"smw_propertylackspage": "Усе ўласьцівасьці павінны мець старонку апісаньня!",

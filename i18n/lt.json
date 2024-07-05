@@ -95,7 +95,7 @@
 	"exportrdf": "Eksportuoti puslapius į RDF",
 	"smw_exportrdf_submit": "Eksportuoti",
 	"properties": "Savybės",
-	"categories": "Kategorijos",
+	"smw-categories": "Kategorijos",
 	"concepts": "Koncepcijos",
 	"smw-special-concept-header": "Koncepcijų sąrašas",
 	"unusedproperties": "Nenaudojamos savybės",

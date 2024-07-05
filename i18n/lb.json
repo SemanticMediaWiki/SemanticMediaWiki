@@ -94,7 +94,7 @@
 	"smw_exportrdf_lastdate": "Keng Säiten exportéieren déi zënter dem Zäitpunkt deen uginn ass net geännert goufen.",
 	"smw_exportrdf_submit": "Exportéieren",
 	"properties": "Eegenschaften",
-	"categories": "Kategorien",
+	"smw-categories": "Kategorien",
 	"smw_properties_docu": "Dës Eegenschafte ginn op dëser Wiki benotzt.",
 	"smw_property_template": "$1 vum Typ $2 ({{PLURAL:$3|eemol benotzt|$3 benotzt}})",
 	"smw_propertylackspage": "All Eegenschafte sollen op enger Säit beschriwwe sinn!",

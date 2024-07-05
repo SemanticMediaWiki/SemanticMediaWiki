@@ -136,7 +136,7 @@
 	"smw_exportrdf_submit": "Eksportować",
 	"uriresolver": "Rezolwer URI",
 	"properties": "Kajkosće",
-	"categories": "Kategorije",
+	"smw-categories": "Kategorije",
 	"smw_properties_docu": "Slědowace kajkosće so we wikiju wužiwaja.",
 	"smw_property_template": "$1 typa $2 ($3 {{PLURAL:$3|wužiće|wužići|wužića|wužićow}})",
 	"smw_propertylackspage": "Wšě kajkosće měli so přez stronu wopisać!",

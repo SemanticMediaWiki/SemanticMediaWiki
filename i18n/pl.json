@@ -177,7 +177,7 @@
 	"smw_exportrdf_submit": "Eksport",
 	"uriresolver": "Przekształcanie URI",
 	"properties": "Właściwości",
-	"categories": "Kategorie",
+	"smw-categories": "Kategorie",
 	"smw_properties_docu": "Następujące właściwości są wykorzystywane w wiki.",
 	"smw_property_template": "$1 typu $2 ($3 {{PLURAL:$3|użycie|użycia}})",
 	"smw_propertylackspage": "Wszystkie właściwości powinny być opisane stroną!",

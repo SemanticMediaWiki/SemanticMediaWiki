@@ -119,7 +119,7 @@
 	"smw_exportrdf_submit": "Извоз",
 	"uriresolver": "URI резолвер",
 	"properties": "Својства",
-	"categories": "Категоријe",
+	"smw-categories": "Категоријe",
 	"smw_properties_docu": "Следеће особине се користе на викију.",
 	"smw_property_template": "$1 типа $2 ($3 {{PLURAL:$3|употреба|употребе|употреба}})",
 	"smw_propertylackspage": "Све особине требају имати описну страницу!",

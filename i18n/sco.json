@@ -7,7 +7,7 @@
 		]
 	},
 	"smw_attribute_header": "Pages uisin the property \"$1\"",
-	"categories": "Categeries",
+	"smw-categories": "Categeries",
 	"browse": "Brouse wiki",
 	"smw-admin-bugsreport": "Bugs can be reported til <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw-admin-idlookup-title": "Object ID leukup",
