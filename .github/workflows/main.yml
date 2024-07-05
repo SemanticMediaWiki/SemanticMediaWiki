@@ -30,7 +30,7 @@ jobs:
           - mediawiki_version: 1.39
             database_type: mysql
             experimental: true
-          - mediawiki_version: 1.40
+          - mediawiki_version: "1.40"
             database_type: mysql
             experimental: true
           - mediawiki_version: 1.41
