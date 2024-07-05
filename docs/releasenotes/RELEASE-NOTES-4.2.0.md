@@ -22,12 +22,6 @@ documentation of Elasticsearch integration, and provides other fixes.
 * Fixed footer sorting on table results ([#5617](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5617))
 * Translation updates
 
-## Note
-When enabling the faceted search feature by adding `FACETEDSEARCH_PROFILE_SCHEMA` to the
-[`$smwgSchemaTypes`](https://www.semantic-mediawiki.org/wiki/Help:$smwgSchemaTypes) configuration parameter, you need to
-run either MediaWiki's update.php or SemanticMediaWiki's
-[setupStore.php maintenance script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_setupStore.php)
-
 ## Contributors
 
 Top Contributors
@@ -50,7 +44,6 @@ Code Contributors
 * Jeroen De Dauw
 * Karsten Hoffmeyer
 
-
 ## Upgrading
 
 No need to run "update.php" or any other migration scripts.
@@ -59,6 +52,8 @@ No need to run "update.php" or any other migration scripts.
 
 * Step 1: if you are upgrading from SMW older than 4.0.0, ensure the SMW version in `composer.json` is `^4.2.0`
 * Step 2: run composer in your MediaWiki directory: `composer update --no-dev --optimize-autoloader`
+* Step 3: run either MediaWiki's update.php or SemanticMediaWiki's
+  [setupStore.php maintenance script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_setupStore.php)
 
 **Get the new version via Git:**
 
