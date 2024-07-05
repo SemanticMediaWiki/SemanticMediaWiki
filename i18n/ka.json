@@ -35,7 +35,7 @@
 	"exportrdf": "გვერდების ექსპორტი RDF-ში",
 	"smw_exportrdf_submit": "ექსპორტი",
 	"properties": "პარამეტრები",
-	"categories": "კატეგორიები",
+	"smw-categories": "კატეგორიები",
 	"smw_purge": "განახლება",
 	"types": "ტიპები",
 	"ask": "სემანტიკური ძიება",

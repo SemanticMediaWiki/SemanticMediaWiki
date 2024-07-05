@@ -64,7 +64,7 @@
 	"exportrdf": "Elporti paĝojn al RDF",
 	"smw_exportrdf_submit": "Elporti",
 	"properties": "Atributoj",
-	"categories": "Kategorioj",
+	"smw-categories": "Kategorioj",
 	"smw_properties_docu": "La jenaj atributoj estas uzataj en la vikio.",
 	"smw_property_template": "$1 de datumtipo $2 ($3 {{PLURAL:$3|apero|aperoj}})",
 	"smw-special-property-searchform-options": "Opcioj",

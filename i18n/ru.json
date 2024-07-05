@@ -235,7 +235,7 @@
 	"smw_exportrdf_submit": "Экспорт",
 	"uriresolver": "Преобразователь URI",
 	"properties": "Свойства",
-	"categories": "Категории",
+	"smw-categories": "Категории",
 	"smw_properties_docu": "Следующие свойства используются на данном сайте.",
 	"smw_property_template": "$1 имеет тип $2, ($3 {{PLURAL:$3|использование|использования|использований}})",
 	"smw_propertylackspage": "Каждое свойство должно иметь свою страницу описания!",

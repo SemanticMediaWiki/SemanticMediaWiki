@@ -37,7 +37,7 @@
 	"smw_exportrdf_submit": "ส่งออก",
 	"uriresolver": "ตัวแปลงที่อยู่ URI",
 	"properties": "คุณลักษณะ",
-	"categories": "หมวดหมู่",
+	"smw-categories": "หมวดหมู่",
 	"unusedproperties": "คุณสมบัติที่ไม่ได้ใช้",
 	"smw-unusedproperty-template": "$1 ของประเภท $2",
 	"wantedproperties": "คุณสมบัติที่ต้องการ",

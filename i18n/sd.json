@@ -15,7 +15,7 @@
 	"validator-type-class-SMWParamSource": "متن",
 	"smw_attributearticlecount": "$1 {{PLURAL:$1|صفحو|صفحا}} ڏيکاريندي جيڪي ھي خصوصيت استعمال ڪري ٿو/ڪن ٿا.",
 	"specialpages-group-smw_group-maintenance": "سارسنڀال",
-	"categories": "زمرا",
+	"smw-categories": "زمرا",
 	"smw-special-wantedproperties-filter-none": "ڪوبہ نہ",
 	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|استعمال}})",
 	"smw_purge": "تازو ڪريو",

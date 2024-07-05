@@ -73,7 +73,7 @@
 	"smw_noqueryfeature": "এই উইকিতে কয়েকটি প্রশ্ন বৈশিষ্ট্য সমর্থিত নয় এবং প্রশ্নের ($1) অংশ বাদ দেওয়া হয়েছে।",
 	"smw-propertylist-redirect-header": "প্রতিশব্দ",
 	"smw_exportrdf_submit": "রপ্তানি",
-	"categories": "বিষয়শ্রেণীসমূহ",
+	"smw-categories": "বিষয়শ্রেণীসমূহ",
 	"smw-special-property-searchform-options": "বিকল্পসমূহ",
 	"smw-special-wantedproperties-filter-label": "ছাকনি:",
 	"smw-special-wantedproperties-filter-none": "কোনটিই নয়",

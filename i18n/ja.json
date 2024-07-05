@@ -195,7 +195,7 @@
 	"smw_exportrdf_submit": "書き出し",
 	"uriresolver": "URI リゾルバー",
 	"properties": "プロパティ",
-	"categories": "カテゴリ",
+	"smw-categories": "カテゴリ",
 	"smw_properties_docu": "このウィキでは以下のプロパティが使用されています。",
 	"smw_property_template": "$1、$2 型 ($3 {{PLURAL:$3|回使用}})",
 	"smw_property_template_notype": "$1 ($2 件)",

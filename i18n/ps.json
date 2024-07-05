@@ -17,7 +17,7 @@
 	"smw_nodatetime": "دا \"$1\" نېټه و نه پېژندل شوه.",
 	"smw_exportrdf_submit": "صادرول",
 	"properties": "ځانتياوې",
-	"categories": "وېشنيزې",
+	"smw-categories": "وېشنيزې",
 	"unusedproperties": "ناکارېدلې ځانتياوې",
 	"wantedproperties": "غوښتل شوې ځانتياوې",
 	"smw_ask_ascorder": "ختند",
