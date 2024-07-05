@@ -199,7 +199,7 @@
 	"smw_exportrdf_submit": "Export",
 	"uriresolver": "URIResolver",
 	"properties": "Properties",
-	"categories": "Categories",
+	"smw-categories": "Categories",
 	"smw_properties_docu": "The following properties are used in the wiki.",
 	"smw_property_template": "$1 of type $2 ($3 {{PLURAL:$3|use|uses}})",
 	"smw_property_template_notype": "$1 ($2)",
