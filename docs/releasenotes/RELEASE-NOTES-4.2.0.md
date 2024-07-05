@@ -25,6 +25,7 @@ documentation of Elasticsearch integration, and provides other fixes.
 ## Contributors
 
 Top Contributors
+
 * Bertrand Gorge
 * Niklas Laxström
 * Mark A. Hershberger
@@ -32,6 +33,8 @@ Top Contributors
 * alistair3149
 
 Code Contributors
+
+* James Hong Kong
 * Bertrand Gorge
 * Niklas Laxström
 * Mark A. Hershberger
