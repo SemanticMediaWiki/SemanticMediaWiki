@@ -157,7 +157,7 @@ class FacetBuilder {
 			'filter-facet',
 			[
 				'id' => 'card-cat',
-				'label' => $this->msg( 'categories' ),
+				'label' => $this->msg( 'smw-categories' ),
 				'filterfacet' => $html,
 				'class' => $cssClass,
 				'clear' => $clear
