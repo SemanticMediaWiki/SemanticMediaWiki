@@ -6,7 +6,7 @@ Released on July 5th, 2024.
 
 This is a [minor release](../RELEASE-POLICY.md). Thus, it contains no breaking changes, only bug fixes and new features.
 
-This release introduces the new faceted search feature, extends the API modules "ask" and "askargs," improves
+This release introduces the new faceted search feature, extends the "ask" and "askargs" API modules, improves
 documentation of Elasticsearch integration, and provides other fixes.
 
 ## Changes
@@ -17,7 +17,7 @@ documentation of Elasticsearch integration, and provides other fixes.
 * Added the "source" parameter to set a query source for queries using the API-modules "ask" and "askargs"
   ([#5633](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5633))
 * Improved handling of logos ([#5635](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5635))
-* Updated and improved documentation for Elasticsearch backend
+* Updated and improved documentation for the Elasticsearch backend
 * Fixed property linking for languages with fallback languages ([#5530](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5530), [#5638](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5638))
 * Fixed footer sorting on table results ([#5617](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5617))
 * Translation updates
@@ -29,7 +29,8 @@ Top Contributors
 * Bertrand Gorge
 * Niklas Laxström
 * Mark A. Hershberger
-* jaideraf
+* Jaider Andrade Ferreira
+* Youri van den Bogert
 * alistair3149
 
 Code Contributors
@@ -38,14 +39,14 @@ Code Contributors
 * Bertrand Gorge
 * Niklas Laxström
 * Mark A. Hershberger
-* jaideraf
+* Jaider Andrade Ferreira
 * alistair3149
-* Yvar
-* Youri vd Bogert
+* Yvar Nanlohij
 * thomas-topway-it
 * Robert Vogel
 * Jeroen De Dauw
 * Karsten Hoffmeyer
+* Translatewiki.net
 
 ## Upgrading
 
@@ -66,3 +67,4 @@ This is only for those who have installed SMW via Git.
 * Step 2: run `composer update --no-dev --optimize-autoloader` in the MediaWiki directory
 * Step 3: run either MediaWiki's update.php or SemanticMediaWiki's
   [setupStore.php maintenance script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_setupStore.php)
+ 
