@@ -49,7 +49,7 @@ Code Contributors
 
 ## Upgrading
 
-No need to run "update.php" or any other migration scripts.
+**Note:** You need to run either "update.php" or "setupStore.php". Apart from that, no other script needs to be run.
 
 **Get the new version via Composer:**
 
@@ -64,3 +64,5 @@ This is only for those who have installed SMW via Git.
 
 * Step 1: do a `git pull` in the SemanticMediaWiki directory
 * Step 2: run `composer update --no-dev --optimize-autoloader` in the MediaWiki directory
+* Step 3: run either MediaWiki's update.php or SemanticMediaWiki's
+  [setupStore.php maintenance script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_setupStore.php)
