@@ -12,6 +12,7 @@
 			"ElBe",
 			"Ferdinand0101",
 			"FriedhelmW",
+			"Gichi",
 			"Imre",
 			"Jan Luca",
 			"Jens Liebenau",
@@ -231,7 +232,7 @@
 	"smw_exportrdf_submit": "Exportieren",
 	"uriresolver": "URI-Auflöser",
 	"properties": "Attribute",
-	"categories": "Kategorien",
+	"smw-categories": "Kategorien",
 	"smw_properties_docu": "In diesem Wiki werden die folgenden Attribute genutzt:",
 	"smw_property_template": "$1 mit Datentyp $2 ($3 {{PLURAL:$3|Vorkommen}})",
 	"smw_property_template_notype": "$1 ($2)",
@@ -1130,6 +1131,7 @@
 	"smw-indicator-revision-mismatch": "Revision",
 	"smw-indicator-revision-mismatch-error": "Der [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner Seitenversionsprüfung] hat beim Vergleich eine Abweichung der Seitenversionen zwischen den Datenbanken von MediaWiki und Semantic MediaWiki festgestellt.",
 	"smw-indicator-revision-mismatch-comment": "Eine Abweichung deutet normalerweise darauf hin, daß eine Softwareaufgabe zur Aktualisierung der Seitenversion, in der Datenbank von Semantic MediaWiki, unterbrochen wurde. Daher sollten die entsprechenden Logdateien des Servers auf Informationen zu möglichen Fehlern geprüft werden.",
+	"smw-facetedsearch-profile-label-default": "Standardprofil",
 	"smw-listingcontinuesabbrev": "Fortsetzung",
 	"smw-showingresults": "{{PLURAL:$1|<strong>1</strong> Ergebnis|<strong>$1</strong> Ergebnisse}}, beginnend mit Nummer <strong>$2</strong>."
 }

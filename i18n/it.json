@@ -157,7 +157,7 @@
 	"smw_exportrdf_submit": "Esporta",
 	"uriresolver": "Risolutore di URI",
 	"properties": "Proprietà",
-	"categories": "Categorie",
+	"smw-categories": "Categorie",
 	"smw_properties_docu": "Le seguenti proprietà sono utilizzate all'interno del wiki.",
 	"smw_property_template": "$1 di tipo $2 (usata $3 {{PLURAL:$3|volta|volte}})",
 	"smw_propertylackspage": "Tutte le proprietà dovrebbero essere descritte da una pagina!",

@@ -147,7 +147,7 @@
 	"smw_exportrdf_submit": "Vie",
 	"uriresolver": "URI-resolveri",
 	"properties": "Ominaisuudet",
-	"categories": "Luokat",
+	"smw-categories": "Luokat",
 	"smw_properties_docu": "Wikissä käytetään seuraavia ominaisuuksia.",
 	"smw_property_template": "$1 on tyypiltään $2 ($3 {{PLURAL:$3|esiintymä|esiintymää}})",
 	"smw_propertylackspage": "Jokaisella ominaisuudella pitäisi olla kuvaussivu.",

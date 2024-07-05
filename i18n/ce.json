@@ -28,7 +28,7 @@
 	"smw_exportrdf_lastdate": "Билгалйинчу хенахь хийцам бина боцу, агӀонаш экспорт мае.",
 	"smw_exportrdf_submit": "Экспорт",
 	"properties": "Билгало",
-	"categories": "Категореш",
+	"smw-categories": "Категореш",
 	"smw_property_template": "$1 йу тайпа $2, ($3 {{PLURAL:$3|лелор}})",
 	"smw-sp-property-searchform": "Гайта билгалонаш, чулацам болу:",
 	"concepts": "Концепташ",

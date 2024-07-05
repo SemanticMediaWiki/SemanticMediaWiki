@@ -220,7 +220,7 @@
 	"smw_exportrdf_submit": "Exporteren",
 	"uriresolver": "URI-resolver",
 	"properties": "Eigenschappen",
-	"categories": "Categorieën",
+	"smw-categories": "Categorieën",
 	"smw_properties_docu": "De volgende eigenschappen worden in de wiki gebruikt.",
 	"smw_property_template": "$1 van type $2 ($3 keer {{PLURAL:$3|gebruikt}})",
 	"smw_propertylackspage": "Alle eigenschappen moeten op een pagina beschreven worden!",

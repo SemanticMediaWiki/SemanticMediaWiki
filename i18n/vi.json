@@ -90,7 +90,7 @@
 	"smw_exportrdf_submit": "Xuất",
 	"uriresolver": "Bộ giải URI",
 	"properties": "Thuộc tính",
-	"categories": "Thể loại",
+	"smw-categories": "Thể loại",
 	"smw_properties_docu": "Các thuộc tính được dùng trong wiki.",
 	"smw_property_template": "$1 thuộc loại $2 (sử dụng $3 lần)",
 	"smw_propertylackspage": "Tất cả các thuộc tính nên được mô tả bằng một trang!",

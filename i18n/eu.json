@@ -110,7 +110,7 @@
 	"smw_exportrdf_submit": "Esportatu",
 	"uriresolver": "URIKonpontzailea",
 	"properties": "Propietateak",
-	"categories": "Kategoriak",
+	"smw-categories": "Kategoriak",
 	"smw_properties_docu": "Hurrengo propietateak wikian erabiltzen dira.",
 	"smw_propertylackspage": "Propietate guztiak orri batek deskribatutakoak izan beharko lukete!",
 	"smw_propertylackstype": "Ez da motarik zehaztu propietate honetarako (oraingoz $1 mota onartuta).",

@@ -22,7 +22,7 @@
 	"smw_printername_category": "பகுப்பு",
 	"smw_exportrdf_submit": "ஏற்றுமதி செய்",
 	"properties": "பண்புகள்",
-	"categories": "பகுப்புகள்",
+	"smw-categories": "பகுப்புகள்",
 	"smw_ask_ascorder": "ஏறுவரிசை",
 	"smw_ask_descorder": "இறங்குவரிசை",
 	"smw_ask_submit": "முடிவுகளைத் தேடு",

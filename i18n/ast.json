@@ -155,7 +155,7 @@
 	"smw_exportrdf_submit": "Esportar",
 	"uriresolver": "URIResolver",
 	"properties": "Propiedaes",
-	"categories": "Categoríes",
+	"smw-categories": "Categoríes",
 	"smw_properties_docu": "Les siguientes propiedaes s'usen na wiki.",
 	"smw_property_template": "$1 de tipu $2 ($3 {{PLURAL:$3|usu|usos}})",
 	"smw_propertylackspage": "¡Toles propiedaes habríen de tar descrites por una páxina!",

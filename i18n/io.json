@@ -11,7 +11,7 @@
 	"smw_printername_template": "Shablono",
 	"smw_exportrdf_submit": "Exportacar",
 	"properties": "Atributi",
-	"categories": "Kategorii",
+	"smw-categories": "Kategorii",
 	"smw-special-wantedproperties-filter-none": "Nula",
 	"smw_purge": "Rinovigar",
 	"types": "Tipi di datumi",
