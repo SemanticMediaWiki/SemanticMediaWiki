@@ -58,8 +58,9 @@ class PrefetchCache {
 	 *
 	 * @return boolean
 	 */
-	public function isCached( DIProperty $property ) {
-		return isset( $this->cache[$property->getKey()] );
+	public function isCached( DIProperty $property, RequestOptions $requestOptions ) {
+		$lookupKey = $this->makeCacheKey( $property, $requestOptions );
+		return isset( $this->lookupCache[$lookupKey] );
 	}
 
 	/**
@@ -78,20 +79,15 @@ class PrefetchCache {
 	 */
 	public static function makeCacheKey( DIProperty $property, RequestOptions $requestOptions ) {
 
-		$key = $property->getKey();
+		$key = '';
 
 		// Use the .dot notation to distingish it from other prrintouts that
 		// use the same property
 		if ( isset( $requestOptions->isChain ) && $requestOptions->isChain ) {
-			$key .= '#' . $requestOptions->isChain;
-			$key .= '#' . $property->isInverse();
+			$key = $requestOptions->isChain . '.';
 		}
 
-		// T:P0467, requires an extra identification to ensure the test passes
-		// when the lookup is part of the firstChain request
-		if ( $requestOptions->isFirstChain ?? false ) {
-			$key .= '#' . 'isFirstChain';
-		}
+		$key .= ( $property->isInverse() ? '-' : '' ) . $property->getKey();
 
 		return $key;
 	}
@@ -108,23 +104,25 @@ class PrefetchCache {
 	 */
 	public function prefetch( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
 
-		$fingerprint = '';
-		$this->store->getObjectIds()->warmUpCache( $subjects );
-
-		foreach ( $subjects as $subject ) {
-			$fingerprint .= $subject->getHash();
-		}
-
-		$requestOptions->setOption( RequestOptions::PREFETCH_FINGERPRINT, md5( $fingerprint ) );
-		$key = $this->makeCacheKey( $property, $requestOptions );
-
-		// Use an aggressive cache strategy to avoid repetitive queries especially
-		// when called as part of a printrequest chain
-		$lookupKey = md5( $key . '#' . $fingerprint );
-
+		$lookupKey = $this->makeCacheKey( $property, $requestOptions );
 		if ( isset( $this->lookupCache[$lookupKey] ) ) {
 			return;
 		}
+
+		# Load from previous lookup
+		if ( isset( $requestOptions->isChain ) && $requestOptions->isChain ) {
+			if ( !isset( $this->lookupCache[$requestOptions->isChain] ) ) {
+				throw new \Exception();
+			}
+			$subjects = $this->lookupCache[$requestOptions->isChain];
+		}
+
+		$fingerprint = '';
+		$this->store->getObjectIds()->warmUpCache( $subjects );
+		foreach ( $subjects as $subject ) {
+			$fingerprint .= $subject->getHash();
+		}
+		$requestOptions->setOption( RequestOptions::PREFETCH_FINGERPRINT, md5( $fingerprint ) );
 
 		$result = $this->prefetchItemLookup->getPropertyValues(
 			$subjects,
@@ -132,8 +130,19 @@ class PrefetchCache {
 			$requestOptions
 		);
 
-		$this->cache[$key] = $result;
-		$this->lookupCache[$lookupKey] = true;
+		# Register we looked up to this chained property to be able to restart from these values
+		$this->lookupCache[$lookupKey] = [];
+		foreach ( $result as $rk => $rv ) {
+			$this->lookupCache[$lookupKey] = array_merge( $this->lookupCache[$lookupKey], array_values( $rv ) );
+		}
+
+		# Put all results of this property in the cache
+		$key = ( $property->isInverse() ? '-' : '' ) . $property->getKey();
+		if ( isset( $this->cache[$key] ) ) {
+			$this->cache[$key] = array_replace( $result, $this->cache[$key] );
+		} else {
+			$this->cache[$key] = $result;
+		}
 	}
 
 	/**
@@ -147,7 +156,7 @@ class PrefetchCache {
 	 */
 	public function getPropertyValues( DIWikiPage $subject, DIProperty $property, RequestOptions $requestOptions ) {
 
-		$key = $this->makeCacheKey( $property, $requestOptions );
+		$key = ( $property->isInverse() ? '-' : '' ) . $property->getKey();
 
 		$sid = $this->store->getObjectIds()->getSMWPageID(
 			$subject->getDBkey(),

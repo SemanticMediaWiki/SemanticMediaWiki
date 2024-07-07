@@ -1,0 +1,67 @@
+{
+	"description": "Test `_wpg` for property chain query queries",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Located in",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Member of",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Europe",
+			"contents": "[[Member of::European Union]] {{#subobject:Member of=NATO}}"
+		},
+		{
+			"page": "France",
+			"contents": "[[Located in::Europe]] [[Has surrounding sea::Mediterranean Sea]]"
+		},
+		{
+			"page": "Germany",
+			"contents": "{{#set:Located in=Europe|Has surrounding sea=North Sea}}"
+		},
+		{
+			"page": "Italy",
+			"contents": "{{#subobject:Located in=Europe|Has surrounding sea=Mediterranean Sea}}"
+		},
+		{
+			"page": "Mediterranean Sea",
+			"contents": "[[Located in::South Europe]]"
+		},
+		{
+			"page": "North Sea",
+			"contents": "[[Located in::North Europe]]"
+		},
+		{
+			"page": "Example/Q0601/Q2",
+			"contents": "{{#ask: [[Located in.Member of::European Union]] | ?Has surrounding sea.Located in | link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (see issue #4988)",
+			"subject": "Example/Q0601/Q2",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">France</td><td class=\"Located-in smwtype_wpg\">South Europe</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Germany</td><td class=\"Located-in smwtype_wpg\">North Europe</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Italy#_7c13af61ab1eac49b09a02a9511dccb8</td><td class=\"Located-in smwtype_wpg\">South Europe</td></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
