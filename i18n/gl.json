@@ -586,7 +586,6 @@
 	"smw-type-compound": "Composto",
 	"smw-type-container": "Contedor",
 	"smw-type-no-group": "Sen clasificar",
-	"smw-specials-bytype-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Type_$1",
 	"smw-special-pageproperty-description": "Esta páxina proporciona unha interface de navegación para atopar tódolos valores dunha propiedade nunha páxina dada. Outras interfaces de procura dispoñibles inclúen a [[Special:SearchByProperty|procura de propiedades]] e o [[Special:Ask|construtor de preguntas]].",
 	"smw-property-predefined-errc": "\"$1\" é unha propiedade predefinida proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica] e representa erros que aparecen en conexión con anotacións de valores impropios ou do procesamento da entrada.",
 	"smw-property-predefined-long-errc": "Os erros son recollidos nun [https://www.semantic-mediawiki.org/wiki/Help:Container contedor] que pode incluír unha referencia á propiedade que causou o problema.",

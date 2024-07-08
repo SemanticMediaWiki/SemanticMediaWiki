@@ -352,7 +352,6 @@
 	"smw_browselink": "Explorar propiedades",
 	"smw_browse_article": "Escribe el nombre de la página desde donde comenzar a navegar.",
 	"smw_browse_go": "Ir",
-	"smw_browse_more": "…",
 	"smw_browse_show_incoming": "Mostrar propiedades entrantes",
 	"smw_browse_hide_incoming": "Ocultar propiedades entrantes",
 	"smw_browse_no_outgoing": "Esta página no tiene propiedades.",
@@ -885,6 +884,7 @@
 	"smw-entity-examiner-deferred-constraint-error": "Restricción",
 	"smw-entity-examiner-associated-revision-mismatch": "Revisión",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Restricción|Restricciones}}",
+	"smw-search-placeholder": "Buscar...",
 	"smw-listingcontinuesabbrev": "cont.",
 	"smw-showingresults": "Abajo se muestran {{PLURAL:$1|<strong>1</strong> resultado|hasta <strong>$1</strong> resultados}} comenzando con el n.º <strong>$2</strong>."
 }

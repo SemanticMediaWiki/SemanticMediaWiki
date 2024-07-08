@@ -747,7 +747,6 @@
 	"smw-type-compound": "Bileşik",
 	"smw-type-container": "Konteyner",
 	"smw-type-no-group": "Sınıflandırılmamış",
-	"smw-specials-bytype-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Type_$1",
 	"smw-special-pageproperty-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:PageProperty/tr",
 	"smw-special-pageproperty-description": "Bu sayfa, bir özelliğin ve belirli bir sayfanın tüm değerlerini bulmak için bir tarama arayüzü sağlar. Diğer kullanılabilir arama arayüzleri arasında [[Special:SearchByProperty|özellik arama]] ve [[Special:Ask|ask sorgu oluşturucu]] yer alır.",
 	"smw-property-predefined-errc": "\"$1\", [https://www.semantic-mediawiki.org/wiki/Help:Special_properties/tr Semantic MediaWiki] tarafından sağlanan önceden tanımlanmış bir özelliktir ve uygun olmayan değer ek açıklamaları veya giriş işlemleriyle bağlantılı olarak ortaya çıkan hataları temsil eder.",

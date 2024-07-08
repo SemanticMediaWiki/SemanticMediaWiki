@@ -1132,7 +1132,6 @@
 	"smw-facetedsearch-no-filter-range": "Geen filterbereik.",
 	"smw-facetedsearch-no-output": "Voor het gekozen formaat “$1” is geen uitvoer beschikbaar.",
 	"smw-facetedsearch-clear-filters": "Filter{{PLURAL:$1||s}} wissen",
-	"smw-specials-facetedsearch-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:FacetedSearch",
 	"smw-search-placeholder": "Zoeken…",
 	"smw-listingcontinuesabbrev": "meer",
 	"smw-showingresults": "Hieronder {{PLURAL:$1|staat '''1''' resultaat|staan '''$1''' resultaten}} vanaf #'''$2'''."

@@ -509,7 +509,6 @@
 	"smw-type-contextual": "Zależne od kontekstu",
 	"smw-type-compound": "Złożone",
 	"smw-type-container": "Kontenery",
-	"smw-specials-bytype-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Type_$1",
 	"smw-property-predefined-errt": "„$1” jest predefiniowaną właściwością, zawierającą tekstowy opis błędu i pochodzi z [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantycznej MediaWiki].",
 	"smw-property-predefined-mdat": "„$1” jest predefiniowaną właściwością, która odpowiada dacie ostatniej modyfikacji strony i pochodzi z [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantycznej MediaWiki].",
 	"smw-property-predefined-cdat": "„$1” jest predefiniowaną właściwością, która odpowiada dacie pierwszej wersji tematu i pochodzi z [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantycznej MediaWiki].",

@@ -267,7 +267,6 @@
 	"searchbyproperty": "جستجو بر اساس ویژگی",
 	"processingerrorlist": "پردازش فهرست خطا",
 	"propertylabelsimilarity": "گزارش تشابه برچسب ویژگی",
-	"smw-constrainterrorlist-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Constraint_errors",
 	"smw_sbv_docu": "جستجو برای همه صفحاتی که یک ویژگی داده شده و مقدار دارند.",
 	"smw_sbv_novalue": "یک مقدار معتبر برای ویژگی وارد کید، یا همه مقادیر ویژگی را برای \"$1\" مشاهده کنید.",
 	"smw_sbv_displayresultfuzzy": "فهرست همه صفحاتی که ویژگی \"$1\" با مقدار \"$2\" دارند.\nاز آنجایی که آنها فقط نتایج کمی دارند، همچنین تقریباً مقادیر نمایش داده می‌شوند.",

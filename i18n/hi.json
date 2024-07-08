@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Abijeet Patro",
+			"AnupamM",
 			"Bhatakati aatma",
 			"Jayprakash12345",
 			"Kaustubh",
@@ -220,7 +221,6 @@
 	"smw-admin-fulltext-active": "एक पूर्ण-पाठ खोज पुनर्निर्माण कार्य निर्धारित किया गया है।",
 	"smw-admin-supplementary-duplookup-title": "प्रतिरूप प्रविष्टियां",
 	"smw-admin-supplementary-duplookup-docu": "यह पृष्ठ [https://www.semantic-mediawiki.org/wiki/Help:Entity_table इकाई तालिका] से प्रविष्टियों को सूचीबद्ध करता है जिन्हें डुप्लिकेट के रूप में वर्गीकृत किया गया है। प्रतिरूप प्रविष्टियां (यदि सभी में हों) केवल एक दुर्लभ अवसरों पर होती हैं जो संभावित रूप से एक डेटाबेस अद्यतन या एक असफल रोलबैक लेनदेन के दौरान समाप्त प्रक्रिया के कारण होती हैं।",
-	"smw-admin-supplementary-duplookup-helplink": "https://www.semantic-mediawiki.org/wiki/Help:प्रतिरूप_प्रविष्टियां",
 	"smw-list-count": "सूची में $1 {{PLURAL:$1|प्रविष्टि|प्रविष्टियां}} शामिल हैं|",
 	"smw_adminlinks_displayingdata": "डाटा डिस्प्ले",
 	"smw-createproperty-isproperty": "यह $1 प्रकार का गुणधर्म हैं।",
@@ -254,6 +254,7 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|सेकंड}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|सेकंड}}",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" अमान्य पता है।",
+	"smw-data-lookup": "आंकड़ा प्राप्त किया जा रहा है...",
 	"smw-data-lookup-with-wait": "अनुरोध को संसाधित किया जा रहा है और कुछ समय लग सकता है।",
 	"smw-no-data-available": "कोई डाटा उपलब्ध नहीं है।",
 	"smw-edit-protection": "यह प्रष्ठ [[Property:Is edit protected|protected]] आकस्मिक डेटा संशोधन को रोकने के लिए है और उपयुक्त संपादन अधिकार वाले उपयोगकर्ताओं द्वारा ही संपादित किया जा सकता है (\"$1\") या [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups user group]।",
@@ -266,9 +267,13 @@
 	"smw-format-datatable-previous": "पिछला",
 	"smw-section-expand": "अंश का विस्तार करें",
 	"smw-section-collapse": "अंश को संक्षिप्त करें",
+	"smw-loading": "खुल रहा है...",
+	"smw-fetching": "लाया जा रहा है...",
+	"smw-preparing": "तैयार कर रहे हैं...",
 	"smw-types-title": "प्रकार: $1",
 	"smw-facetedsearch-intro-tab-search": "खोजें",
 	"smw-facetedsearch-format-table": "टेबल",
+	"smw-facetedsearch-input-filter-placeholder": "फ़िल्टर...",
 	"smw-search-placeholder": "खोजें...",
 	"smw-listingcontinuesabbrev": "जारी",
 	"smw-showingresults": "नीचे क्रमांक '''$2''' से प्रारंभ कर के अधिकतम '''$1''' परिणाम {{PLURAL:$1|दिखाया गया है|दिखाए गए हैं}}।"
