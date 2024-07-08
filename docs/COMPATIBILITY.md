@@ -37,8 +37,8 @@ Increases of minimum requirements are indicated in bold.
 		<td><strong>Stable release</strong></td>
 		<td>2024-07-05</td>
 		<td>2024-07-05</td>
-		<td><strong>7.4.0</strong> - 8.1.x</td>
-		<td>1.35.0 - 1.39.x</td>
+		<td><strong>7.4.0</strong> - 8.2.x</td>
+		<td>1.35.0 - 1.41.x</td>
 		<td></td>
 	</tr>
 	<tr>
