@@ -41,7 +41,7 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 	protected function tearDown() : void {
 		$pageDeleter= new PageDeleter();
 
-		$this->title = Title::newFromText( __METHOD__ );
+		// $this->title = Title::newFromText( __METHOD__ );
 		$pageDeleter->deletePage( $this->title );
 
 		parent::tearDown();

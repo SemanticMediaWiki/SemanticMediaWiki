@@ -29,7 +29,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
  *
  * @author mwjames
  */
-abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
+abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 
 	/**
 	 * @var FileReader
