@@ -1,8 +1,8 @@
 # Semantic MediaWiki
 
 [![CI](https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions/workflows/main.yml/badge.svg)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions/workflows/main.yml)
-[![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-media-wiki/version.png)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
-[![Packagist download count](https://poser.pugx.org/mediawiki/semantic-media-wiki/d/total.png)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
+![Latest Stable Version](https://img.shields.io/packagist/v/mediawiki/semantic-media-wiki.svg)
+![Total Download Count](https://img.shields.io/packagist/dt/mediawiki/semantic-media-wiki.svg)
 
 **Semantic MediaWiki** (a.k.a. SMW) is a free, open-source extension to [MediaWiki](https://www.semantic-mediawiki.org/wiki/MediaWiki) – the wiki software that
 powers Wikipedia – that lets you store and query data within the wiki's pages.
@@ -33,8 +33,8 @@ The recommended way to install Semantic MediaWiki is by using [Composer][compose
 
 Most of the documentation can be found on the [Semantic MediaWiki wiki](https://www.semantic-mediawiki.org).
 A small core of documentation also comes bundled with the software itself. This documentation is minimalistic
-and less explanatory than what can be found on the SMW wiki. It is however always kept up to date, and applies
-to the version of the code it comes bundled with. The most important files are linked below.
+and less explanatory than what can be found on the SMW wiki. However, It is always kept up to date and applies
+to the version of the code it bundles with. The most critical files are linked below.
 
 * [User documentation](docs/README.md)
 * [Technical documentation](docs/technical/README.md)
@@ -62,7 +62,7 @@ be found [here][contributors] or on the [wiki for Semantic MediaWiki](https://ww
 The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/CONTRIBUTING.md)
 provides information on the different ways available to do so.
 
-If you want to contribute work to the project please subscribe to the developers mailing list and
+If you want to contribute work to the project, please subscribe to the developer's mailing list and
 have a look at the contribution guidelines.
 
 * [File an issue](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues)
@@ -71,7 +71,7 @@ have a look at the contribution guidelines.
 
 ## Tests
 
-This extension provides unit and integration tests and are normally run by a [continuous integration platform][travis]
+This extension provides unit and integration tests and is usually run by a [continuous integration platform][travis]
 but can also be executed locally using the shortcut command `composer phpunit` from the extension base directory. A more
 comprehensive introduction can be found under the [test section](/tests/README.md#running-tests).
 
