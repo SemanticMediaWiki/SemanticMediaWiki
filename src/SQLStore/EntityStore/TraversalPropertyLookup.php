@@ -83,8 +83,8 @@ class TraversalPropertyLookup {
 			$builder->from( SQLStore::ID_TABLE )
 				->join( $subquery, "t1", "t1.p_id=smw_id" );
 
-			$builder->where( $connection->expr( "smw_iw", "!=", SMW_SQL3_SMWIW_OUTDATED )
-				->and( "smw_iw", "!=", SMW_SQL3_SMWDELETEIW ) );
+			$builder->where( "smw_iw != " . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) )
+				->where( "smw_iw != " . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ) );
 
 			$conditions .= $this->store->getSQLConditions( $subOptions, 'smw_sortkey', 'smw_sortkey', $conditions !== '' );
 			$options = $this->store->getSQLOptions( $subOptions, '' );

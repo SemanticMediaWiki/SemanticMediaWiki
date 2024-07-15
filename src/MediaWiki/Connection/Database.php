@@ -820,13 +820,6 @@ class Database {
 	}
 
 	/**
-	 * Mode of last builder.  Should be 'read' or 'write'.
-	 * @since 4.xx
-	 * @var string
-	 */
-	private $lastBuilderMode = 'read';
-
-	/**
 	 * Create and return a new SelectQueryBuilder from the read or write connection.
 	 *
 	 * @since 4.xx
@@ -836,27 +829,8 @@ class Database {
 	 * @return Wikimedia\Rdbms\SelectQueryBuilder
 	 */
 	public function newSelectQueryBuilder( $mode ) {
-		$this->lastBuilderMode = $mode;
 		$conn = $this->connRef->getConnection( $mode );
 		return $conn->newSelectQueryBuilder();
-	}
-
-	/**
-	 * Create and return a new Expression for building queries.
-	 * Connection mode (read/write) will be same as last builder, or "read" if no builder has been created.
-	 *
-	 * @since 4.xx
-	 *
-	 * @param string $field
-	 * @param string $op
-	 * @param mixed $value
-	 *
-	 * @return Wikimedia\Rdbms\Expression
-	 */
-	public function expr( $field, $op, $value ) {
-		$conn = $this->connRef->getConnection( $mode ?: $this->lastBuilderMode );
-		return $conn->expr( $field, $op, $value );
-		// Experssion does not exist before MW 1.42; not sure what can be done to support legacy versions
 	}
 
 	/**
