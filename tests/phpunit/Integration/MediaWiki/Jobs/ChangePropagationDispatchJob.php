@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use Title;
 
 /**
@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class ChangePropagationDispatchJob extends DatabaseTestCase {
+class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 
 	private $job = null;
 	private $pages = [];
@@ -41,7 +41,7 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 		$this->jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 
 		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
-		$this->jobQueueRunner->setConnectionProvider( $this->getConnectionProvider() );
+		$this->jobQueueRunner->setConnectionProvider( $this->testDatabaseTableBuilder->getConnectionProvider() );
 		$this->jobQueueRunner->deleteAllJobs();
 
 		$this->testEnvironment->addConfiguration( 'smwgEnableUpdateJobs', true );

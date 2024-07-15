@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\MediaWiki\TitleFactory;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
@@ -19,7 +19,7 @@ use Title;
  *
  * @author octfx
  */
-class TitleFactoryIntegrationTest extends DatabaseTestCase {
+class TitleFactoryIntegrationTest extends SMWIntegrationTestCase {
 	use PHPUnitCompat;
 
 	public function testNewFromIDs() {

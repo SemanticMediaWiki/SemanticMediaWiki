@@ -23,7 +23,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author Nischay Nahata
  */
-class StoreTest extends DatabaseTestCase {
+class StoreTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 

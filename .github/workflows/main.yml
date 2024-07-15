@@ -21,12 +21,6 @@ jobs:
           - mediawiki_version: 1.36
             database_type: mysql
             experimental: true
-          - mediawiki_version: 1.37
-            database_type: mysql
-            experimental: true
-          - mediawiki_version: 1.38
-            database_type: mysql
-            experimental: true
           - mediawiki_version: 1.39
             database_type: mysql
             experimental: true

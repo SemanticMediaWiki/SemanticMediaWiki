@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use Title;
 
 /**
@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class LinksUpdateTest extends DatabaseTestCase {
+class LinksUpdateTest extends SMWIntegrationTestCase {
 
 	protected $destroyDatabaseTablesBeforeRun = true;
 

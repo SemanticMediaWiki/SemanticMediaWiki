@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -14,7 +14,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class UpdateEntityCollationTest extends DatabaseTestCase {
+class UpdateEntityCollationTest extends SMWIntegrationTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 

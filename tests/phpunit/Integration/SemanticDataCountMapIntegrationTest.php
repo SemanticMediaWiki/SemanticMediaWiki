@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DIProperty;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\DIWikiPage;
 
@@ -16,7 +16,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class SemanticDataCountMapIntegrationTest extends DatabaseTestCase {
+class SemanticDataCountMapIntegrationTest extends SMWIntegrationTestCase {
 
 	private $semanticDataFactory;
 	private $mwHooksHandler;
