@@ -17,35 +17,31 @@ jobs:
       matrix:
         include:
           - mediawiki_version: '1.35'
+            php_version: 7.4
             database_type: mysql
             coverage: false
             experimental: false
           - mediawiki_version: '1.39'
+            php_version: 8.1
             database_type: mysql
             coverage: false
             experimental: false
           - mediawiki_version: '1.39'
+            php_version: 8.1
             database_type: sqlite
             coverage: false
             experimental: true
-          - mediawiki_version: '1.40'
+          - mediawiki_version: '1.41'
+            php_version: 8.1
             database_type: sqlite
             coverage: false
             experimental: true
             
     env:
-      EXT_NAME: SemanticMediaWiki
-      COMPOSER_VERSION: 2.1.14
-      MW_INSTALL_PATH: /var/www/html
-      MW_EXT_PATH: /var/www/html/extensions
-      DB_ROOT_USER: root
-      DB_ROOT_PWD: database
-      MW_DB_TYPE: ${{ matrix.database_type }}
-      MW_DB_SERVER: ${{ matrix.database_type }}
-      MW_DB_PATH: /var/www/data
-      MW_DB_USER: wiki
-      MW_DB_PWD: wiki
-      MW_DB_NAME: wiki
+      MW_VERSION: ${{ matrix.mediawiki_version }}
+      PHP_VERSION: ${{ matrix.php_version }}
+      DB_TYPE: ${{ matrix.database_type }}
+      DB_IMAGE: ${{ matrix.database_image }}
 
     steps:
       - name: Checkout
