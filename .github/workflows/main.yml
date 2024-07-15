@@ -17,7 +17,6 @@ jobs:
     strategy:
       matrix:
         include:
-          include:
           - mediawiki_version: 1.35
             database_type: mysql
             coverage: false
