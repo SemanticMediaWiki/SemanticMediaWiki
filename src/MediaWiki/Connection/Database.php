@@ -819,4 +819,63 @@ class Database {
 		return $text;
 	}
 
+	/**
+	 * Mode of last builder.  Should be 'read' or 'write'.
+	 * @since 4.xx
+	 * @var string
+	 */
+	private $lastBuilderMode = 'read';
+
+	/**
+	 * Create and return a new SelectQueryBuilder from the read or write connection.
+	 *
+	 * @since 4.xx
+	 *
+	 * @param string $mode 'read' or 'write'
+	 *
+	 * @return Wikimedia\Rdbms\SelectQueryBuilder
+	 */
+	public function newSelectQueryBuilder( $mode ) {
+		$this->lastBuilderMode = $mode;
+		$conn = $this->connRef->getConnection( $mode );
+		return $conn->newSelectQueryBuilder();
+	}
+
+	/**
+	 * Create and return a new Expression for building queries.
+	 * Connection mode (read/write) will be same as last builder, or "read" if no builder has been created.
+	 *
+	 * @since 4.xx
+	 *
+	 * @param string $field
+	 * @param string $op
+	 * @param mixed $value
+	 *
+	 * @return Wikimedia\Rdbms\Expression
+	 */
+	public function expr( $field, $op, $value ) {
+		$conn = $this->connRef->getConnection( $mode ?: $this->lastBuilderMode );
+		return $conn->expr( $field, $op, $value );
+		// Experssion does not exist before MW 1.42; not sure what can be done to support legacy versions
+	}
+
+	/**
+	 * Apply SQLOptions to a SelectQueryBuilder.
+	 * Supported options: LIMIT, OFFSET, GROUP BY, ORDER BY, DISTINCT
+	 *
+	 * @since 4.xx
+	 *
+	 * @param Wikimedia\Rdbms\SelectQueryBuilder $builder
+	 * @param array $sql_options
+	 *
+	 * @return Wikimedia\Rdbms\SelectQueryBuilder
+	 */
+	public function applySqlOptions ( $builder, $sql_options ) {
+		if ( ! empty( $sql_options[ 'LIMIT' ]    ) ) $builder->limit  ( $sql_options[ 'LIMIT'    ] );
+		if ( ! empty( $sql_options[ 'OFFSET' ]   ) ) $builder->offset ( $sql_options[ 'OFFSET'   ] );
+		if ( ! empty( $sql_options[ 'GROUP BY' ] ) ) $builder->groupBy( $sql_options[ 'GROUP BY' ] );
+		if ( ! empty( $sql_options[ 'ORDER BY' ] ) ) $builder->orderBy( $sql_options[ 'ORDER BY' ] );
+		if ( isset( $sql_options[ 'DISTINCT' ] ) ) $builder->distinct();
+		return $builder;
+	}
 }
