@@ -25,7 +25,7 @@ jobs:
           - mediawiki_version: '1.39'
             php_version: 8.1
             database_type: mysql
-            database_image: "mysql:8"
+            database_image: "mariadb:latest"
             coverage: false
             experimental: false
           - mediawiki_version: '1.39'
