@@ -22,7 +22,7 @@ jobs:
             experimental: false
           - mediawiki_version: '1.39'
             database_type: mysql
-            coverage: true
+            coverage: false
             experimental: false
           - mediawiki_version: '1.39'
             database_type: sqlite
