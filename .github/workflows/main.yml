@@ -9,121 +9,71 @@ on:
 
 jobs:
   build:
+
     runs-on: ubuntu-22.04
     continue-on-error: ${{ matrix.experimental }}
 
     strategy:
       matrix:
         include:
-          - mediawiki_version: 1.35
+          - mediawiki_version: '1.35'
+            php_version: 7.4
             database_type: mysql
+            database_image: "mysql:5.7"
+            coverage: false
             experimental: false
-          - mediawiki_version: 1.36
+          - mediawiki_version: '1.39'
+            php_version: 8.1
             database_type: mysql
+            database_image: "mariadb:11.2"
+            coverage: false
+            experimental: false
+          - mediawiki_version: '1.39'
+            php_version: 8.1
+            database_type: sqlite
+            coverage: false
             experimental: true
-          - mediawiki_version: 1.37
+          - mediawiki_version: '1.41'
+            php_version: 8.1
             database_type: mysql
+            database_image: "mariadb:11.2"
+            coverage: false
             experimental: true
-          - mediawiki_version: 1.38
-            database_type: mysql
-            experimental: true
-          - mediawiki_version: 1.39
-            database_type: mysql
-            experimental: true
-
-    container:
-      image: mediawiki:${{ matrix.mediawiki_version }}
-      options: --link some-${{ matrix.database_type }}:${{ matrix.database_type }}
-
+            
     env:
-      EXT_NAME: SemanticMediaWiki
-      COMPOSER_VERSION: 2.1.14
-      MW_INSTALL_PATH: /var/www/html
-      MW_EXT_PATH: /var/www/html/extensions
-      DB_ROOT_USER: root
-      DB_ROOT_PWD: database
-      MW_DB_TYPE: ${{ matrix.database_type }}
-      MW_DB_SERVER: ${{ matrix.database_type }}
-      MW_DB_PATH: /var/www/data
-      MW_DB_USER: wiki
-      MW_DB_PWD: wiki
-      MW_DB_NAME: wiki
-
-    services:
-      some-mysql:
-        image: mariadb:latest
-        env:
-          MARIADB_ROOT_PASSWORD: ${{ env.DB_ROOT_PWD }}
+      MW_VERSION: ${{ matrix.mediawiki_version }}
+      PHP_VERSION: ${{ matrix.php_version }}
+      DB_TYPE: ${{ matrix.database_type }}
+      DB_IMAGE: ${{ matrix.database_image }}
 
     steps:
-      # https://getcomposer.org/download/
-      - name: Get Composer
-        run: |
-          apt update
-          apt install -y unzip
-          php -r "copy('https://getcomposer.org/installer', 'installer');"
-          php -r "copy('https://composer.github.io/installer.sig', 'expected');"
-          echo `cat expected` " installer" | sha384sum -c -
-          php installer --version=${{ env.COMPOSER_VERSION }}
-          rm -f installer expected
-          mv composer.phar /usr/local/bin/composer
-
-      - name: Checkout Extension
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          path: ${{ env.EXT_NAME }}
-
-      # Setting actions/checkout@v3 path to env.MW_EXT_PATH fails with "Repository path '/var/www/html/extensions' is not under ..."
-      # See also open PR https://github.com/actions/checkout/pull/388
-      - name: Move Extension
-        run: |
-          mkdir -p ${{ env.MW_EXT_PATH }}
-          mv ${{ env.EXT_NAME }} ${{ env.MW_EXT_PATH }}
-
-      - name: MediaWiki Composer Update
-        run: |
-          COMPOSER=composer.local.json composer require --no-update --working-dir ${{ env.MW_INSTALL_PATH }} mediawiki/semantic-media-wiki @dev
-          COMPOSER=composer.local.json composer config repositories.semantic-media-wiki '{"type": "path", "url": "extensions/SemanticMediaWiki"}' --working-dir ${{ env.MW_INSTALL_PATH }}
-          composer update --working-dir ${{ env.MW_INSTALL_PATH }}
-
-      - name: MediaWiki Install
-        run: >
-          php ${{ env.MW_INSTALL_PATH }}/maintenance/install.php
-          --pass=Password123456
-          --server="http://localhost:8000"
-          --scriptpath=""
-          --dbtype=${{ env.MW_DB_TYPE }}
-          --dbserver=${{ env.MW_DB_SERVER }}
-          --installdbuser=${{ env.DB_ROOT_USER }}
-          --installdbpass=${{ env.DB_ROOT_PWD }}
-          --dbname=${{ env.MW_DB_NAME }}
-          --dbuser=${{ env.MW_DB_USER }}
-          --dbpass=${{ env.MW_DB_PWD }}
-          --dbpath=${{ env.MW_DB_PATH }}
-          --extensions=SemanticMediaWiki
-          ${{ env.EXT_NAME }}-test WikiSysop
-
-      - name: Enable Debug Output
-        run: |
-          echo 'error_reporting(E_ALL| E_STRICT);' >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
-          echo 'ini_set("display_errors", 1);' >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
-          echo '$wgShowExceptionDetails = true;' >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
-          echo '$wgDevelopmentWarnings = true;' >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
-
-      - name: Install SemanticMediaWiki
-        run: |
-          echo "enableSemantics( 'localhost' );" >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
-          tail -n5 ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
-          php ${{ env.MW_INSTALL_PATH }}/maintenance/update.php --quick
+          submodules: recursive
+                   
+      - name: Update submodules
+        run: git submodule update --init --remote
 
       - name: Run unit tests
-        run: >
-          composer phpunit
-          --working-dir ${{ env.MW_INSTALL_PATH }}/extensions/SemanticMediaWiki
-          -- --testsuite semantic-mediawiki-unit
+        run: make ci COMPOSER_PARAMS="-- --testsuite=semantic-mediawiki-unit"
+        if: matrix.coverage == false
 
-      - name: Run Tests
-        run: >
-          composer phpunit
-          --working-dir ${{ env.MW_INSTALL_PATH }}/extensions/SemanticMediaWiki
-          -- --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure
+      - name: Run tests
+        run: make ci COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure"
+        if: matrix.coverage == false
+
+      - name: Run unit tests with coverage
+        run: make ci-coverage COMPOSER_PARAMS="-- --testsuite=semantic-mediawiki-unit"
+        if: matrix.coverage == true
+
+      - name: Run tests with coverage
+        run: make ci-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure"
+        if: matrix.coverage == true
+
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/php/coverage.xml
+        if: matrix.coverage == true
