@@ -392,6 +392,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	private function getInstanceQueryResult( Query $query, $rootid ) {
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
+		$builder = $connection->newSelectQueryBuilder( 'read' );
 		$qobj = $this->querySegmentList[$rootid];
 
 		// Empty result, no query needed
@@ -406,24 +407,26 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$sql_options = $this->getSQLOptions( $query, $rootid );
 
-		// Selecting those is required in standard SQL (but MySQL does not require it).
-		$sortfields = implode( ',', $qobj->sortfields );
-		$sortfields = $sortfields ? ',' . $sortfields : '';
+		if ( ! empty( $qobj->from ) ) die( 'Join not implemented' ); // TODO: qobj Join
+		$t0 = $qobj->alias;
+		$builder
+			->from( $qobj->joinTable, $t0 )
+			->distinct()
+			->select([
+				"id" => "$t0.smw_id",
+				"t"  => "$t0.smw_title",
+				"ns" => "$t0.smw_namespace",
+				"iw" => "$t0.smw_iw",
+				"so" => "$t0.smw_subobject",
+				"sortkey" => "smw_sortkey",
+				])
+			->where( $qobj->where );
 
-		$res = $connection->select(
-			$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from,
-			"DISTINCT " .
-			"$qobj->alias.smw_id AS id," .
-			"$qobj->alias.smw_title AS t," .
-			"$qobj->alias.smw_namespace AS ns," .
-			"$qobj->alias.smw_iw AS iw," .
-			"$qobj->alias.smw_subobject AS so," .
-			"$qobj->alias.smw_sortkey AS sortkey" .
-			"$sortfields",
-			$qobj->where,
-			__METHOD__,
-			$sql_options
-		);
+		// Selecting sort fields is required in standard SQL (but MySQL does not require it).
+		if ( ! empty( $qobj->sortfields ) ) $builder->select( $qobj->sortfields );
+		$connection->applySqlOptions( $builder, $sql_options );
+
+		$res = $builder->caller( __METHOD__ )->fetchResultSet();
 
 		$results = [];
 		$dataItemCache = [];
@@ -431,8 +434,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$logToTable = [];
 		$hasFurtherResults = false;
 
-		// Number of fetched results ( != number of valid results in
-		// array $results)
+		// Number of fetched results ( != number of valid results in array $results)
 		$count = 0;
 		$missedCount = 0;
 
