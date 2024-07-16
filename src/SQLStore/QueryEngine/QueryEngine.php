@@ -407,7 +407,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$sql_options = $this->getSQLOptions( $query, $rootid );
 
-		if ( ! empty( $qobj->from ) ) die( 'Join not implemented' ); // TODO: qobj Join
 		$t0 = $qobj->alias;
 		$builder
 			->from( $qobj->joinTable, $t0 )
@@ -421,6 +420,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 				"sortkey" => "smw_sortkey",
 				])
 			->where( $qobj->where );
+		QuerySegmentListProcessor::applyFrom( $qobj, $builder );
 
 		// Selecting sort fields is required in standard SQL (but MySQL does not require it).
 		if ( ! empty( $qobj->sortfields ) ) $builder->select( $qobj->sortfields );

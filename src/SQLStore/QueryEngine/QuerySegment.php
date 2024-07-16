@@ -115,6 +115,13 @@ class QuerySegment {
 	public $from = '';
 
 	/**
+	 * Array of QuerySegment to replace $from for Rdbms.
+	 * @since 4.xx
+	 * @var array
+	 */
+	public $fromSegs = [];
+
+	/**
 	 * @var string
 	 */
 	public $where = '';

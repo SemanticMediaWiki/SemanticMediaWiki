@@ -6,6 +6,7 @@ use RuntimeException;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMWQuery as Query;
+use Wikimedia\Rdbms\JoinGroup;
 
 /**
  * @license GNU GPL v2+
@@ -140,7 +141,6 @@ class QuerySegmentListProcessor {
 	 * Resolves normal queries with possible conjunctive subconditions
 	 */
 	private function table( QuerySegment &$query ) {
-
 		foreach ( $query->components as $qid => $joinField ) {
 			$subQuery = $this->querySegmentList[$qid];
 			$this->segment( $subQuery );
@@ -156,6 +156,14 @@ class QuerySegmentListProcessor {
 				}
 
 				$query->from .= " $joinType JOIN $t ON $joinField$op=" . $subQuery->joinfield;
+
+				$seg = new QuerySegment();
+				$seg->joinType  = $subQuery->joinType;
+				$seg->joinTable = $subQuery->joinTable;
+				$seg->alias = $subQuery->alias;
+				$seg->where = [ $joinField, "$op=", $subQuery->joinfield ];
+				$seg->fromSegs = $subQuery->fromSegs;
+				$query->fromSegs[] = $seg;
 
 				if ( $joinType === 'LEFT' ) {
 					$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->joinfield . ' IS NULL)';
@@ -368,6 +376,30 @@ class QuerySegmentListProcessor {
 	public function cleanUp() {
 		foreach ( $this->executedQueries as $table => $log ) {
 			$this->temporaryTableBuilder->drop( $this->connection->tableName( $table ) );
+		}
+	}
+
+	/**
+	 * Apply QuerySegment->fromSegs to a SelectQueryBuilder.
+	 * @since 4.xx
+	 */
+	public static function applyFrom( $qobj, $builder ) {
+		foreach ( $qobj->fromSegs as $seg ) {
+			$joinMethod = 'join';
+			if ( $seg->joinType === 'LEFT'|| $seg->joinType === 'LEFT OUTER' ) {
+				$joinMethod = 'leftJoin';
+			} elseif ( ! empty( $seg->joinType ) && $seg->joinType !== 'INNER' ) {
+				throw new RuntimeException( "Unknown QuerySegment->joinType `{$seg->joinType}`" );
+			}
+			$cond = implode( '', $seg->where );
+			if ( empty( $seg->fromSegs ) ) {
+				$builder->{$joinMethod}( $seg->joinTable, $seg->alias, $cond );
+			} else {
+				$grp = new JoinGroup( $seg->alias . 'jg' );
+				$grp->table( $seg->joinTable, $seg->alias );
+				self::applyFrom( $seg, $grp );
+				$builder->{$joinMethod}( $grp, $grp->getAlias(), $cond );
+			}
 		}
 	}
 
