@@ -321,32 +321,18 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$queryResult->setCountValue( 0 );
 
-		$qobj = $this->querySegmentList[$rootid];
-
-		if ( $qobj == null || $qobj->joinfield === '' ) { // empty result, no query needed
+		$connection = $this->store->getConnection( 'mw.db.queryengine' );
+		$builder = $this->getInstanceQuery( $connection, $query, $rootid, 'count' );
+		if ( $builder === null ) {
 			return $queryResult;
 		}
 
-		$connection = $this->store->getConnection( 'mw.db.queryengine' );
-
-		$sql_options = [ 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() ];
-
-		$res = $connection->select(
-			$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from,
-			"COUNT(DISTINCT $qobj->alias.smw_id) AS count",
-			$qobj->where,
-			__METHOD__,
-			$sql_options
-		);
-
-		$row = $res->fetchObject();
+		$row = $builder->caller( __METHOD__ )->fetchRow();
 		$count = 0;
 
 		if ( $row !== false ) {
 			$count = $row->count;
 		}
-
-		$res->free();
 
 		$queryResult->setCountValue( $count );
 
@@ -375,7 +361,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @return SelectQueryBuilder null if no query required (result is empty)
 	 */
-	private function getInstanceQuery( $connection, $query, $rootid ) {
+	private function getInstanceQuery( $connection, $query, $rootid, $mode = '' ) {
 		$builder = $connection->newSelectQueryBuilder( 'read' );
 		$qobj = $this->querySegmentList[$rootid];
 		if ( $qobj->joinfield === '' ) return null;
@@ -385,21 +371,26 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$t0 = $qobj->alias;
 		$builder
 			->from( $qobj->joinTable, $t0 )
-			->distinct()
-			->select([
-				"id" => "$t0.smw_id",
-				"t"  => "$t0.smw_title",
-				"ns" => "$t0.smw_namespace",
-				"iw" => "$t0.smw_iw",
-				"so" => "$t0.smw_subobject",
-				"sortkey" => "smw_sortkey",
-				])
 			->where( $qobj->where );
+		if ( $mode === 'count' ) {
+			$builder->select( "COUNT(DISTINCT {$qobj->alias}.smw_id) AS count" );
+		} else {
+			$builder
+				->distinct()
+				->select([
+					"id" => "$t0.smw_id",
+					"t"  => "$t0.smw_title",
+					"ns" => "$t0.smw_namespace",
+					"iw" => "$t0.smw_iw",
+					"so" => "$t0.smw_subobject",
+					"sortkey" => "smw_sortkey",
+					]);
+			// Selecting sort fields is required in standard SQL (but MySQL does not require it).
+			if ( ! empty( $qobj->sortfields ) ) $builder->select( $qobj->sortfields );
+			$connection->applySqlOptions( $builder, $sql_options );
+		}
 		QuerySegmentListProcessor::applyFrom( $qobj, $builder );
 
-		// Selecting sort fields is required in standard SQL (but MySQL does not require it).
-		if ( ! empty( $qobj->sortfields ) ) $builder->select( $qobj->sortfields );
-		$connection->applySqlOptions( $builder, $sql_options );
 		return $builder;
 	}
 
