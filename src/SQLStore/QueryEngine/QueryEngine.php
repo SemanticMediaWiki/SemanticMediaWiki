@@ -243,7 +243,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 */
 	private function getDebugQueryResult( Query $query, $rootid ) {
 
-		$qobj = $this->querySegmentList[$rootid] ?? 0;
 		$entries = [];
 
 		$debugFormatter = new DebugFormatter(
@@ -252,12 +251,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$debugFormatter->setName( 'SQLStore' );
 
-		$sqlOptions = $this->getSQLOptions( $query, $rootid );
-
 		$entries['SQL Query'] = '';
 		$entries['SQL Explain'] = '';
 
-		$this->doExecuteDebugQueryResult( $debugFormatter, $qobj, $sqlOptions, $entries );
+		$this->doExecuteDebugQueryResult( $debugFormatter, $query, $rootid, $entries );
 		$auxtables = '';
 
 		foreach ( $this->querySegmentListProcessor->getExecutedQueries() as $table => $log ) {
@@ -277,31 +274,16 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $debugFormatter->buildHTML( $entries, $query );
 	}
 
-	private function doExecuteDebugQueryResult( $debugFormatter, $qobj, $sqlOptions, &$entries ) {
+	private function doExecuteDebugQueryResult( $debugFormatter, $query, $rootid, &$entries ) {
 
-		if ( !isset( $qobj->joinfield ) || $qobj->joinfield === '' ) {
+		$connection = $this->store->getConnection( 'mw.db.queryengine' );
+		$builder = $this->getInstanceQuery( $connection, $query, $rootid );
+
+		if ( $builder === null ) {
 			return $entries['SQL Query'] = 'Empty result, no SQL query created.';
 		}
 
-		$connection = $this->store->getConnection( 'mw.db.queryengine' );
-		list( $startOpts, $useIndex, $tailOpts ) = $connection->makeSelectOptions( $sqlOptions );
-
-		$sortfields = implode( ',', $qobj->sortfields );
-		$sortfields = $sortfields ? ', ' . $sortfields : '';
-
-		$sql = "SELECT DISTINCT " .
-			"$qobj->alias.smw_id AS id," .
-			"$qobj->alias.smw_title AS t," .
-			"$qobj->alias.smw_namespace AS ns," .
-			"$qobj->alias.smw_iw AS iw," .
-			"$qobj->alias.smw_subobject AS so," .
-			"$qobj->alias.smw_sortkey AS sortkey" .
-			"$sortfields " .
-			"FROM " .
-			$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
-			( $qobj->where === '' ? '' : ' WHERE ' ) . $qobj->where . "$tailOpts $startOpts $useIndex " .
-			"LIMIT " . $sqlOptions['LIMIT'] . ' ' .
-			"OFFSET " . $sqlOptions['OFFSET'];
+		$sql = $builder->getSQL();
 
 		if ( $connection->isType( 'sqlite' ) ) {
 			$query = "EXPLAIN QUERY PLAN $sql";
@@ -312,6 +294,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$res = $connection->query( $query, __METHOD__ );
 
+		$qobj = $this->querySegmentList[$rootid] ?? 0;
 		$entries['SQL Explain'] = $debugFormatter->prettifyExplain( new ResultIterator( $res ) );
 		$entries['SQL Query'] = $debugFormatter->prettifySQL( $sql, $qobj->alias );
 
@@ -340,7 +323,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$qobj = $this->querySegmentList[$rootid];
 
-		if ( $qobj->joinfield === '' ) { // empty result, no query needed
+		if ( $qobj == null || $qobj->joinfield === '' ) { // empty result, no query needed
 			return $queryResult;
 		}
 
@@ -372,7 +355,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 	/**
 	 * Using a preprocessed internal query description referenced by $rootid,
-	 * compute the proper result instance output for the given query.
+	 * construct a query.
 	 *
 	 * @todo The SQL standard requires us to select all fields by which we sort, leading
 	 * to wrong results regarding the given limit: the user expects limit to be applied to
@@ -384,26 +367,18 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * this reason, we select sortfields only for POSTGRES. MySQL is able to perform what
 	 * we want here. It would be nice if we could eliminate the bug in POSTGRES as well.
 	 *
+	 * @since 4.xx
+	 *
+	 * @param DBConnRef $connection
 	 * @param Query $query
 	 * @param integer $rootid
 	 *
-	 * @return QueryResult
+	 * @return SelectQueryBuilder null if no query required (result is empty)
 	 */
-	private function getInstanceQueryResult( Query $query, $rootid ) {
-
-		$connection = $this->store->getConnection( 'mw.db.queryengine' );
+	private function getInstanceQuery( $connection, $query, $rootid ) {
 		$builder = $connection->newSelectQueryBuilder( 'read' );
 		$qobj = $this->querySegmentList[$rootid];
-
-		// Empty result, no query needed
-		if ( $qobj->joinfield === '' ) {
-			return $this->queryFactory->newQueryResult(
-				$this->store,
-				$query,
-				[],
-				false
-			);
-		}
+		if ( $qobj->joinfield === '' ) return null;
 
 		$sql_options = $this->getSQLOptions( $query, $rootid );
 
@@ -425,6 +400,32 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		// Selecting sort fields is required in standard SQL (but MySQL does not require it).
 		if ( ! empty( $qobj->sortfields ) ) $builder->select( $qobj->sortfields );
 		$connection->applySqlOptions( $builder, $sql_options );
+		return $builder;
+	}
+
+	/**
+	 * Using a preprocessed internal query description referenced by $rootid,
+	 * compute the proper result instance output for the given query.
+	 *
+	 * @param Query $query
+	 * @param integer $rootid
+	 *
+	 * @return QueryResult
+	 */
+	private function getInstanceQueryResult( Query $query, $rootid ) {
+
+		$connection = $this->store->getConnection( 'mw.db.queryengine' );
+		$builder = $this->getInstanceQuery( $connection, $query, $rootid );
+
+		// Empty result, no query needed
+		if ( $builder === null ) {
+			return $this->queryFactory->newQueryResult(
+				$this->store,
+				$query,
+				[],
+				false
+			);
+		}
 
 		$res = $builder->caller( __METHOD__ )->fetchResultSet();
 
