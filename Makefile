@@ -13,7 +13,7 @@ EXTENSION=SemanticMediaWiki
 # docker images
 MW_VERSION?=1.39
 PHP_VERSION?=8.1
-DB_TYPE?=mysql
+DB_TYPE?=sqlite
 DB_IMAGE?=""
 
 # composer
