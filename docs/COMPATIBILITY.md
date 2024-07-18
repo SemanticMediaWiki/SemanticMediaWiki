@@ -28,7 +28,7 @@ Increases of minimum requirements are indicated in bold.
 		<td>Future release</td>
 		<td></td>
 		<td></td>
-		<td><strong>8.0.x</strong> - TBD</td>
+		<td><strong>8.x</strong> - TBD</td>
 		<td><strong>1.39.0</strong> - TBD</td>
 		<td></td>
 	</tr>
