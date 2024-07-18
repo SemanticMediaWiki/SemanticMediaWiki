@@ -35,17 +35,17 @@ Increases of minimum requirements are indicated in bold.
 	<tr>
 		<th>4.2.x</th>
 		<td><strong>Stable release</strong></td>
-		<td>2024-07-05</td>
-		<td>2024-07-05</td>
-		<td><strong>7.4.0</strong> - 8.1.x</td>
-		<td>1.35.0 - 1.39.x</td>
+		<td>2024-07-18</td>
+		<td>2024-07-18</td>
+		<td>7.4.0 - <strong>8.2.x</strong></td>
+		<td>1.35.0 - <strong>1.41.x</strong></td>
 		<td></td>
 	</tr>
 	<tr>
 		<th>4.1.x</th>
 		<td><strong>Obsolete release</strong></td>
 		<td>2023-01-21</td>
-		<td>2023-03-09</td>
+		<td>2024-02-17</td>
 		<td><strong>7.4.0</strong> - 8.1.x</td>
 		<td>1.35.0 - 1.39.x</td>
 		<td>4.1.1 or higher needed for PHP 8.1+</td>
