@@ -43,7 +43,7 @@ Increases of minimum requirements are indicated in bold.
 	</tr>
 	<tr>
 		<th>4.1.x</th>
-		<td><strong>Obsolete release</strong></td>
+		<td>Obsolete release</td>
 		<td>2023-01-21</td>
 		<td>2024-02-17</td>
 		<td><strong>7.4.0</strong> - 8.1.x</td>
@@ -52,7 +52,7 @@ Increases of minimum requirements are indicated in bold.
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>
-		<td><strong>Obsolete release</strong></td>
+		<td>Obsolete release</td>
 		<td>2022-01-18</td>
 		<td>2022-07-21</td>
 		<td><strong>7.3.0</strong> - 8.0.x</td>
