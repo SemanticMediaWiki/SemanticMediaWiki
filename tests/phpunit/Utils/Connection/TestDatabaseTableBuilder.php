@@ -211,14 +211,8 @@ class TestDatabaseTableBuilder {
 			$this->cloneDatabase = new CloneDatabase(
 				$this->getDBConnection(),
 				$tablesToBeCloned,
-				$this->getDBPrefix()
+				""
 			);
-
-			// $this->cloneDatabase->useTemporaryTables( false );
-			$this->cloneDatabase->cloneTableStructure();
-
-			CloneDatabase::changePrefix( "" );
-
 		} else {
 			$this->cloneDatabase = new CloneDatabase(
 				$this->getDBConnection(),
