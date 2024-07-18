@@ -1,6 +1,6 @@
 # Semantic MediaWiki 4.2.0
 
-Released on July 5th, 2024.
+Released on July 18th, 2024.
 
 ## Summary
 
@@ -14,9 +14,12 @@ documentation of Elasticsearch integration, and provides other fixes.
 * Added faceted searching, which provides users with a simple interface (special page "FacetedSearch") to quickly narrow
   down query results from a condition with the help of faceted views created from dependent properties and categories
   ([#5631](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5631))
+* Fixed ask queries with a conjunction of negations failing when using the Elasticsearch backend
+  ([#5651](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5651))
 * Added the "source" parameter to set a query source for queries using the API-modules "ask" and "askargs"
   ([#5633](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5633))
 * Improved handling of logos ([#5635](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5635))
+* Improved compatibility with MW 1.41 ([#5616](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5616))
 * Updated and improved documentation for Elasticsearch backend
 * Fixed property linking for languages with fallback languages ([#5530](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5530), [#5638](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5638))
 * Fixed footer sorting on table results ([#5617](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5617))
@@ -28,9 +31,10 @@ Top Contributors
 
 * Bertrand Gorge
 * Niklas Laxström
+* Youri vd Bogert
 * Mark A. Hershberger
-* jaideraf
 * alistair3149
+* jaideraf
 
 Code Contributors
 

@@ -33,6 +33,15 @@ Increases of minimum requirements are indicated in bold.
 		<td></td>
 	</tr>
 	<tr>
+		<th>4.2.x</th>
+		<td><strong>Stable release</strong></td>
+		<td>2024-07-18</td>
+		<td>2023-03-09</td>
+		<td>7.4.0 - <strong>8.2.x</strong></td>
+		<td>1.35.0 - 1.41.x</td>
+		<td></td>
+	</tr>
+	<tr>
 		<th>4.1.x</th>
 		<td><strong>Stable release</strong></td>
 		<td>2023-01-21</td>
