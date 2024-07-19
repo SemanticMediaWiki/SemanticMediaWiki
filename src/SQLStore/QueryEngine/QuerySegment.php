@@ -110,12 +110,13 @@ class QuerySegment {
 	public $indexField = '';
 
 	/**
+	 * Still used by ConceptCache.  Otherwise replaced by $fromSegs
 	 * @var string
 	 */
 	public $from = '';
 
 	/**
-	 * Array of QuerySegment to replace $from for Rdbms.
+	 * Array of QuerySegment to build joins (replace $from) for Rdbms.
 	 * @since 4.2
 	 * @var array
 	 */
