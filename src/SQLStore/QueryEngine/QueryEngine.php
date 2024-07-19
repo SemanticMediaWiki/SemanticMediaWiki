@@ -383,7 +383,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 					"ns" => "$t0.smw_namespace",
 					"iw" => "$t0.smw_iw",
 					"so" => "$t0.smw_subobject",
-					"sortkey" => "smw_sortkey",
+					"sortkey" => "$t0.smw_sortkey",
 					]);
 			// Selecting sort fields is required in standard SQL (but MySQL does not require it).
 			if ( ! empty( $qobj->sortfields ) ) $builder->select( $qobj->sortfields );
