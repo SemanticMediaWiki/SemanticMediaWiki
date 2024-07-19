@@ -373,7 +373,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			->from( $qobj->joinTable, $t0 )
 			->where( $qobj->where );
 		if ( $mode === 'count' ) {
-			$builder->select( "COUNT(DISTINCT {$qobj->alias}.smw_id) AS count" );
+			$builder->select( "COUNT(DISTINCT $t0.smw_id) AS count" );
 		} else {
 			$builder
 				->distinct()
