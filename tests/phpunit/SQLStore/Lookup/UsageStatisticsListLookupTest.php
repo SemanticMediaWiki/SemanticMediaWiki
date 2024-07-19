@@ -24,7 +24,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 	private $propertyStatisticsStore;
 	private $requestOptions;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();

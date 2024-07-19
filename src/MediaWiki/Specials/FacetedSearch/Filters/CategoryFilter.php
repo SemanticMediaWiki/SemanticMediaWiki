@@ -57,7 +57,7 @@ class CategoryFilter {
 	 *
 	 * @return string
 	 */
-	public function create( UrlArgs $urlArgs, array $filters ) : string {
+	public function create( UrlArgs $urlArgs, array $filters ): string {
 		$categories = [];
 
 		$list = [

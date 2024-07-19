@@ -58,7 +58,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return '';
 	}
 
@@ -67,7 +67,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		foreach ( $this->taskHandlers as $taskHandler ) {
 			if ( $taskHandler->isTaskFor( $action ) ) {
 				return true;

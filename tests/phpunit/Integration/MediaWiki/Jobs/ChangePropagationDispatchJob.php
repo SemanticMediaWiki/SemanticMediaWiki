@@ -26,7 +26,7 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 	private $jobQueueRunner;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -47,7 +47,7 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 		$this->testEnvironment->addConfiguration( 'smwgEnableUpdateJobs', true );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->flushPages(
 			$this->pages
 		);

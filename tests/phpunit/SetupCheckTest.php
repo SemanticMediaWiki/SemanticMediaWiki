@@ -21,7 +21,7 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 
 	private $setupFile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )

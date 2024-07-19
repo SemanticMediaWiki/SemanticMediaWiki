@@ -22,7 +22,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();

@@ -21,7 +21,7 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -32,7 +32,7 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 

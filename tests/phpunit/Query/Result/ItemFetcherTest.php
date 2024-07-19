@@ -20,7 +20,7 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $requestOptions;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 

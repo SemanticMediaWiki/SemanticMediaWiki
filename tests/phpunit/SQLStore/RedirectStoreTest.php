@@ -27,7 +27,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	private $connectionManager;
 	private JobQueue $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -62,7 +62,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 		InMemoryPoolCache::getInstance()->clear();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		InMemoryPoolCache::getInstance()->clear();
 	}

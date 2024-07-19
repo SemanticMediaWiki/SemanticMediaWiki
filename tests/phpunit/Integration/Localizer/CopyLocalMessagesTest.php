@@ -19,12 +19,12 @@ class CopyLocalMessagesTest extends \PHPUnit_Framework_TestCase {
 	private $canonicalMessages;
 	private $translatedMessages;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->canonicalMessages = file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Localizer/en.json' );
 		$this->translatedMessages = file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Localizer/test.json' );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		file_put_contents( SMW_PHPUNIT_DIR . '/Fixtures/Localizer/en.json', $this->canonicalMessages );
 		file_put_contents( SMW_PHPUNIT_DIR . '/Fixtures/Localizer/test.json', $this->translatedMessages );
 	}

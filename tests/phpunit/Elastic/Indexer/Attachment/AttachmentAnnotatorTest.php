@@ -17,7 +17,7 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $containerSemanticData;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();

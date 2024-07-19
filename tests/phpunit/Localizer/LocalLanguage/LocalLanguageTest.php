@@ -18,7 +18,7 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 
 	private $languageContents;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->languageContents = $this->getMockBuilder( LanguageContents::class )
@@ -26,7 +26,7 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		LocalLanguage::clear();
 		parent::tearDown();
 	}

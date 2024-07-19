@@ -21,13 +21,13 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataTypeRegistry;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataTypeRegistry = DataTypeRegistry::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->dataTypeRegistry->clear();
 
 		parent::tearDown();

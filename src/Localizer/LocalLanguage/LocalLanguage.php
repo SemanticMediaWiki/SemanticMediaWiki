@@ -68,7 +68,7 @@ class LocalLanguage {
 	 *
 	 * @return LocalLanguage
 	 */
-	public static function getInstance() : LocalLanguage {
+	public static function getInstance(): LocalLanguage {
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}

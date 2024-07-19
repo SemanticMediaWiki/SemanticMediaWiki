@@ -28,7 +28,7 @@ class PurgeEntityCacheTest extends TestCase {
 	private $connection;
 	private $entityCache;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment =  new TestEnvironment();
 
 		$this->messageReporter = $this->createMock( MessageReporter::class );
@@ -40,7 +40,7 @@ class PurgeEntityCacheTest extends TestCase {
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

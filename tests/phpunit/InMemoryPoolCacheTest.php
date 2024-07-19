@@ -18,7 +18,7 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		InMemoryPoolCache::getInstance()->clear();
 		parent::tearDown();
 	}

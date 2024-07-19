@@ -24,7 +24,7 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	private $fileFetcher;
 	private $file;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->contentModeller = $this->getMockBuilder( '\SMW\Importer\ContentModeller' )

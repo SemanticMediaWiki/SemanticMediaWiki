@@ -215,7 +215,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @return boolean
 	 */
-	public function isStub() : bool {
+	public function isStub(): bool {
 		return false;
 	}
 

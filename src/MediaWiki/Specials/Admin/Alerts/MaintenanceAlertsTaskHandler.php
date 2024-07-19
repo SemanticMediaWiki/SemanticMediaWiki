@@ -35,7 +35,7 @@ class MaintenanceAlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'maintenancealerts';
 	}
 

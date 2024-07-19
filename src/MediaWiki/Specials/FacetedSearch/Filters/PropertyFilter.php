@@ -61,7 +61,7 @@ class PropertyFilter {
 	 *
 	 * @return string
 	 */
-	public function create( UrlArgs $urlArgs, array $propertyFilters ) : string {
+	public function create( UrlArgs $urlArgs, array $propertyFilters ): string {
 		$this->urlArgs = $urlArgs;
 
 		$properties = [];

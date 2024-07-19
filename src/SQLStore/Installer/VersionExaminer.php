@@ -63,7 +63,7 @@ class VersionExaminer {
 	 * @return array
 	 * @throws RuntimeException
 	 */
-	public function defineDatabaseRequirements( array $minRequirements ) : array {
+	public function defineDatabaseRequirements( array $minRequirements ): array {
 		$type = $this->connection->getType();
 
 		if ( !isset( $minRequirements[$type] ) ) {
@@ -86,7 +86,7 @@ class VersionExaminer {
 	 *
 	 * @return bool
 	 */
-	public function meetsVersionMinRequirement( array $minRequirements ) : bool {
+	public function meetsVersionMinRequirement( array $minRequirements ): bool {
 		$this->messageReporter->reportMessage( "\nChecking version requirement ..." );
 		$this->messageReporter->reportMessage( "\n   ... done.\n" );
 

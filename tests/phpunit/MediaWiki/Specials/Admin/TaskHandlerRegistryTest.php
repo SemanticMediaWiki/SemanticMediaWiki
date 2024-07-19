@@ -26,7 +26,7 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $outputFormatter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -146,11 +146,11 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 				return '';
 			}
 
-			public function getTask() : string {
+			public function getTask(): string {
 				return 'Foo';
 			}
 
-			public function isTaskFor( string $action ) : bool {
+			public function isTaskFor( string $action ): bool {
 				return '';
 			}
 

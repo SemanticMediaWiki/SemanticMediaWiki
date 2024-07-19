@@ -37,7 +37,7 @@ class ExpDataFactory {
 	 *
 	 * @return ExpData
 	 */
-	public function newSiteExpData() : ExpData {
+	public function newSiteExpData(): ExpData {
 		// assemble export data:
 		$expData = new ExpData( new ExpResource( '&wiki;#wiki' ) );
 
@@ -95,7 +95,7 @@ class ExpDataFactory {
 	 *
 	 * @return ExpData
 	 */
-	public function newDefinedExpData() : ExpData {
+	public function newDefinedExpData(): ExpData {
 		// link to list of existing pages:
 		// check whether we have title as a first parameter or in URL
 		if ( strpos( $this->exporter->expandURI( '&wikiurl;' ), '?' ) === false ) {
@@ -126,7 +126,7 @@ class ExpDataFactory {
 	 *
 	 * @return ExpData
 	 */
-	public function newOntologyExpData( string $ontologyuri ) : ExpData {
+	public function newOntologyExpData( string $ontologyuri ): ExpData {
 		$expData = new ExpData(
 			new ExpResource( $ontologyuri )
 		);

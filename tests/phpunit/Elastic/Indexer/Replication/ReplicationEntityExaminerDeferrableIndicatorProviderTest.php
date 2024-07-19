@@ -26,7 +26,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	private $entityCache;
 	private $replicationCheck;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -52,7 +52,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

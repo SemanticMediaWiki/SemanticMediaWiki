@@ -44,7 +44,7 @@ class CopyLocalMessages {
 	 *
 	 * @return array
 	 */
-	public function copyCanonicalMessages() : array {
+	public function copyCanonicalMessages(): array {
 		$messages = $this->readJSONFile(
 			$this->languageFileDir . '/' . $this->file
 		);
@@ -82,7 +82,7 @@ class CopyLocalMessages {
 	 *
 	 * @return array
 	 */
-	public function copyTranslatedMessages() : array {
+	public function copyTranslatedMessages(): array {
 		$messages = $this->readJSONFile( $this->languageFileDir . '/' . $this->file );
 
 		$fileFetcher = new FileFetcher(

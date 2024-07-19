@@ -20,7 +20,7 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $containerBuilder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->containerBuilder = $this->getMockBuilder( '\Onoi\CallbackContainer\ContainerBuilder' )

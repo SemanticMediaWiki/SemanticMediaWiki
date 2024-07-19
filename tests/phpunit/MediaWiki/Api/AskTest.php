@@ -21,7 +21,7 @@ class AskTest extends \PHPUnit_Framework_TestCase {
 
 	private $apiFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->apiFactory = new MwApiFactory();

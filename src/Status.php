@@ -31,7 +31,7 @@ class Status {
 	 *
 	 * @return boolean
 	 */
-	public function has( string $key ) : bool {
+	public function has( string $key ): bool {
 		return isset( $this->options[$key] ) || array_key_exists( $key, $this->options );
 	}
 
@@ -43,7 +43,7 @@ class Status {
 	 *
 	 * @return boolean
 	 */
-	public function is( string $key, $value ) : bool {
+	public function is( string $key, $value ): bool {
 		return $this->get( $key ) === $value;
 	}
 

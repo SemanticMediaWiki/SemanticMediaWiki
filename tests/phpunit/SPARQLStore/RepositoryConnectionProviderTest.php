@@ -23,7 +23,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	private $smwgSparqlCustomConnector;
 	private $smwgSparqlRepositoryConnector;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->globalsProvider = GlobalsProvider::getInstance();
@@ -32,7 +32,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$this->smwgSparqlCustomConnector = $this->globalsProvider->get( 'smwgSparqlCustomConnector' );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->globalsProvider->set(
 			'smwgSparqlRepositoryConnector',
 			$this->smwgSparqlRepositoryConnector

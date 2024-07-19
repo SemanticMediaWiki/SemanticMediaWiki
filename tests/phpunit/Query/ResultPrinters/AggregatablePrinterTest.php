@@ -27,7 +27,7 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 	private $resultPrinterReflector;
 	private $aggregatablePrinter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();

@@ -20,7 +20,7 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 	private $permissionExaminer;
 	private $preferenceExaminer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
 			->getMock();

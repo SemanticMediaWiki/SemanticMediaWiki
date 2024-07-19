@@ -79,7 +79,7 @@ class ParametersProcessor {
 	 *
 	 * @return array
 	 */
-	public function getParameters() : array {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 
@@ -88,7 +88,7 @@ class ParametersProcessor {
 	 *
 	 * @return string
 	 */
-	public function getFormat() : string {
+	public function getFormat(): string {
 		return $this->format;
 	}
 
@@ -97,7 +97,7 @@ class ParametersProcessor {
 	 *
 	 * @return array
 	 */
-	public function getFilterConditions() : array {
+	public function getFilterConditions(): array {
 		return $this->filterConditions;
 	}
 
@@ -106,7 +106,7 @@ class ParametersProcessor {
 	 *
 	 * @return array
 	 */
-	public function getValueFilters() : array {
+	public function getValueFilters(): array {
 		return $this->valueFilters;
 	}
 
@@ -115,7 +115,7 @@ class ParametersProcessor {
 	 *
 	 * @return array
 	 */
-	public function getPropertyFilters() : array {
+	public function getPropertyFilters(): array {
 		return $this->propertyFilters;
 	}
 

@@ -232,7 +232,7 @@ class HookDispatcher {
 	 *
 	 * @return bool
 	 */
-	public function onIsApprovedRevision( Title $title, int $latestRevID ) : bool {
+	public function onIsApprovedRevision( Title $title, int $latestRevID ): bool {
 		return $this->getHookContiner()
 			->run( 'SMW::RevisionGuard::IsApprovedRevision', [ $title, $latestRevID ] );
 	}

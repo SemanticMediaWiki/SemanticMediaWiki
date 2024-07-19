@@ -45,7 +45,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 *
 	 * @return boolean
 	 */
-	public function isEmpty() : bool {
+	public function isEmpty(): bool {
 		return $this->data === [];
 	}
 

@@ -42,7 +42,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'deprecationnotices';
 	}
 

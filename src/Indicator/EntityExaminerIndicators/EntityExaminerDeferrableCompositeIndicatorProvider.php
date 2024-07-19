@@ -88,7 +88,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return boolean
 	 */
-	public function isDeferredMode() : bool {
+	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
 	}
 
@@ -97,7 +97,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'deferrablecompoundintegrityexaminer';
 	}
 

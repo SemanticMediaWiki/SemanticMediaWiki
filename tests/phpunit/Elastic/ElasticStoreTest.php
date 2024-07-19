@@ -28,7 +28,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 	private $spyMessageReporter;
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
@@ -47,7 +47,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 		$this->spyLogger = $utilityFactory->newSpyLogger();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

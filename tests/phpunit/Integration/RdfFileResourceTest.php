@@ -22,7 +22,7 @@ class RdfFileResourceTest extends DatabaseTestCase {
 	private $fixturesFileProvider;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
@@ -56,7 +56,7 @@ class RdfFileResourceTest extends DatabaseTestCase {
 		\SMWExporter::clear();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

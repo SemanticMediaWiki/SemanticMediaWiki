@@ -47,7 +47,7 @@ class AuxiliaryFields {
 	 *
 	 * @return FieldList
 	 */
-	public function prefetchFieldList( array $subjects ) : FieldList {
+	public function prefetchFieldList( array $subjects ): FieldList {
 		if ( $subjects === [] ) {
 			return new FieldList( [] );
 		}

@@ -14,7 +14,7 @@ use SMW\Localizer\LocalLanguage\LocalLanguage;
  */
 class LanguageContent extends \PHPUnit_Framework_TestCase {
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		LocalLanguage::clear();
 		parent::tearDown();
 	}

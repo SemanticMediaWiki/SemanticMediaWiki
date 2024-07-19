@@ -27,7 +27,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 	private $testEnvironment;
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -42,7 +42,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

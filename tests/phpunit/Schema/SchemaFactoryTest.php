@@ -22,7 +22,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -39,7 +39,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'HookDispatcher', $hookDispatcher );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

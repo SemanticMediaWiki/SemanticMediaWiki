@@ -17,7 +17,7 @@ class FileHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $fileRepoFinder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->fileRepoFinder = $this->getMockBuilder( '\SMW\MediaWiki\FileRepoFinder' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -162,7 +162,7 @@ class TaskFactory {
 	 *
 	 * @return EntityExaminerTask
 	 */
-	public function newEntityExaminerTask( User $user = null ) : EntityExaminerTask {
+	public function newEntityExaminerTask( User $user = null ): EntityExaminerTask {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityExaminerTask = new EntityExaminerTask(

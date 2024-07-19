@@ -25,7 +25,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataValidator;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -40,7 +40,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

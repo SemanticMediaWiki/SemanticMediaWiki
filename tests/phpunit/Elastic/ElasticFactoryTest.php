@@ -24,7 +24,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->messageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
@@ -64,7 +64,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

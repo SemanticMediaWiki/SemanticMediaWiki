@@ -20,7 +20,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->connection = $this->createMock( Database::class );
 
 		$this->connection->expects( $this->any() )

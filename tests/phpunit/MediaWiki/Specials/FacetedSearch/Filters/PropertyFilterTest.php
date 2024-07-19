@@ -23,7 +23,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	private $urlArgs;
 	private $messageLocalizer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )

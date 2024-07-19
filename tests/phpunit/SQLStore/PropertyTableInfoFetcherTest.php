@@ -22,7 +22,7 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 
 	private $propertyTypeFinder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->propertyTypeFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTypeFinder' )

@@ -32,7 +32,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProvider extends Constrain
 	 *
 	 * @return boolean
 	 */
-	public function isDeferredMode() : bool {
+	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
 	}
 

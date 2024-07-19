@@ -278,7 +278,7 @@ class RequestOptions {
 	 *
 	 * @return integer
 	 */
-	public function getLookahead() : int {
+	public function getLookahead(): int {
 		return $this->lookahead;
 	}
 

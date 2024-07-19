@@ -22,13 +22,13 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

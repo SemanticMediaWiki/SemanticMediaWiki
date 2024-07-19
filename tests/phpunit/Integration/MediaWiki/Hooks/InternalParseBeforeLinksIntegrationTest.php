@@ -24,7 +24,7 @@ class InternalParseBeforeLinksIntegrationTest extends \PHPUnit_Framework_TestCas
 	private $parserAfterTidyHook;
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -38,7 +38,7 @@ class InternalParseBeforeLinksIntegrationTest extends \PHPUnit_Framework_TestCas
 		);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->applicationFactory->clear();
 

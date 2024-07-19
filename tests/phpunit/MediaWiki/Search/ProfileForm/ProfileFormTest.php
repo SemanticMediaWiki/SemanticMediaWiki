@@ -24,7 +24,7 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 	private $user;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )

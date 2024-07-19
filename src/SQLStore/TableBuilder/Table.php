@@ -58,7 +58,7 @@ class Table {
 	 *
 	 * @return boolean
 	 */
-	public function isCoreTable() : bool {
+	public function isCoreTable(): bool {
 		return $this->isCoreTable;
 	}
 

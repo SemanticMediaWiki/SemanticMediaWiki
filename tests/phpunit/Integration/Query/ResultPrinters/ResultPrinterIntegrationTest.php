@@ -26,7 +26,7 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 	private $stringBuilder;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -36,7 +36,7 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->subjects );
 		parent::tearDown();
 	}

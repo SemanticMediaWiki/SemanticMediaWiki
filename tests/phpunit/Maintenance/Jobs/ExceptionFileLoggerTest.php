@@ -21,7 +21,7 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 
 	private $file;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->file = $this->getMockBuilder( '\SMW\Utils\File' )

@@ -38,7 +38,7 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'namespace';
 	}
 

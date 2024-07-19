@@ -26,7 +26,7 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	private $propertiesLookup;
 	private $semanticDataLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();

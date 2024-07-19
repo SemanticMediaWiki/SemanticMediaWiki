@@ -96,7 +96,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @return string
 	 */
-	public function withDir( string $dir = '' ) : string {
+	public function withDir( string $dir = '' ): string {
 		return str_replace( [ '\\', '//', '/', '\\\\' ], DIRECTORY_SEPARATOR, "{$this->dir}/$dir" );
 	}
 
@@ -150,7 +150,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @return []
 	 */
-	public function getType( string $type ) : array {
+	public function getType( string $type ): array {
 		return $this->schemaTypes[$type] ?? [];
 	}
 
@@ -161,7 +161,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @return boolean
 	 */
-	public function isRegisteredType( ?string $type ) : bool {
+	public function isRegisteredType( ?string $type ): bool {
 		return isset( $this->schemaTypes[$type] );
 	}
 
@@ -170,7 +170,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @return []
 	 */
-	public function getRegisteredTypes() : array {
+	public function getRegisteredTypes(): array {
 		return array_keys( $this->schemaTypes );
 	}
 
@@ -181,7 +181,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @return []
 	 */
-	public function getRegisteredTypesByGroup( string $group ) : array {
+	public function getRegisteredTypesByGroup( string $group ): array {
 		$registeredTypes = [];
 		$groups = (array)$group;
 

@@ -30,7 +30,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	private $circularReferenceGuard;
 	private $expensiveFuncExecutionWatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -74,7 +74,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

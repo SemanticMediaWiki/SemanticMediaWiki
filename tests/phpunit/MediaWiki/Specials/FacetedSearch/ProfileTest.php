@@ -21,7 +21,7 @@ class ProfileTest extends \PHPUnit_Framework_TestCase {
 
 	private $schemaFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )

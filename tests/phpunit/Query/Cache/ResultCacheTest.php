@@ -28,7 +28,7 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	private Container $container;
 	private $cacheStats;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

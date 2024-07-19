@@ -31,7 +31,7 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 	private $queryResultValidator;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -68,7 +68,7 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 		};
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->subjects );
 		unset( $GLOBALS['wgHooks']['InterwikiLoadPrefix'] );
 

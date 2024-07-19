@@ -18,7 +18,7 @@ class HtmlVTabsTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		HtmlVTabs::init();
 	}
 

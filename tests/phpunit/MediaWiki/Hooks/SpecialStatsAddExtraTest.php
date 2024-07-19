@@ -16,7 +16,7 @@ use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
  */
 class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		ApplicationFactory::clear();
 
 		parent::tearDown();

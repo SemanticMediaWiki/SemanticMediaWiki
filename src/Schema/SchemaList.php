@@ -33,7 +33,7 @@ class SchemaList implements JsonSerializable {
 	 *
 	 * @return bool
 	 */
-	public function isEmpty() : bool {
+	public function isEmpty(): bool {
 		return $this->list === [];
 	}
 
@@ -109,7 +109,7 @@ class SchemaList implements JsonSerializable {
 	 *
 	 * @return CompartmentIterator
 	 */
-	public function newCompartmentIteratorByKey( string $key, ?string $type = null ) : CompartmentIterator {
+	public function newCompartmentIteratorByKey( string $key, ?string $type = null ): CompartmentIterator {
 		$list = [];
 
 		foreach ( $this->getList() as $schema ) {

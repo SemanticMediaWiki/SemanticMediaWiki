@@ -33,14 +33,14 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	private $semanticDataFactory;
 	private $queryResultValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}

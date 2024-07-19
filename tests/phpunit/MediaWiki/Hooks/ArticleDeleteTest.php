@@ -22,7 +22,7 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 	private $jobFactory;
 	private $eventDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment(
@@ -48,7 +48,7 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

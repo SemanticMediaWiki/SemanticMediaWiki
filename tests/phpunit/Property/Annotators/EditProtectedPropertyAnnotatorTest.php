@@ -24,7 +24,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataValidator;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if ( method_exists( RestrictionStore::class, 'isProtected' ) ) {

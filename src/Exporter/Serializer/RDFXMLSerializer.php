@@ -124,7 +124,7 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function flushContent() : string {
+	public function flushContent(): string {
 		$result = parent::flushContent();
 
 		// must not be done before calling the parent method (which may declare

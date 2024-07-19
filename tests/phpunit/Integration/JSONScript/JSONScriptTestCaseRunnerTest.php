@@ -19,7 +19,7 @@ class JSONScriptTestCaseRunnerTest extends JSONScriptServicesTestCaseRunner {
 	/**
 	 * @see JSONScriptServicesTestCaseRunner::runTestAssertionForType
 	 */
-	protected function runTestAssertionForType( string $type ) : bool {
+	protected function runTestAssertionForType( string $type ): bool {
 		$expectedAssertionTypes = [
 			'parser',
 			'parser-html',

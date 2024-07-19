@@ -206,7 +206,7 @@ class ProtectionValidator {
 	 *
 	 * @return boolean
 	 */
-	public function isClassifiedAsImportPerformerProtected( Title $title, User $user ) : bool {
+	public function isClassifiedAsImportPerformerProtected( Title $title, User $user ): bool {
 		if ( $this->importPerformers === [] ) {
 			return false;
 		}

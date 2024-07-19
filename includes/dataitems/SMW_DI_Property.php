@@ -107,7 +107,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return int
 	 */
-	public function getDIType() : int {
+	public function getDIType(): int {
 		return SMWDataItem::TYPE_PROPERTY;
 	}
 
@@ -116,7 +116,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return string|null
 	 */
-	public function getKey() : ?string {
+	public function getKey(): ?string {
 		return $this->m_key;
 	}
 
@@ -125,7 +125,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return bool
 	 */
-	public function isInverse() : bool {
+	public function isInverse(): bool {
 		return $this->m_inverse;
 	}
 
@@ -134,7 +134,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return string
 	 */
-	public function getSha1() : string {
+	public function getSha1(): string {
 		return sha1( json_encode( [ $this->m_key, SMW_NS_PROPERTY, '', '' ] ) );
 	}
 
@@ -143,7 +143,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return string|null
 	 */
-	public function getSortKey() : ?string {
+	public function getSortKey(): ?string {
 		return $this->m_key;
 	}
 
@@ -166,7 +166,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return int
 	 */
-	public function isShown() : bool {
+	public function isShown(): bool {
 		if ( $this->isUserDefined() ) {
 			return true;
 		}
@@ -182,7 +182,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return bool
 	 */
-	public function isUserDefined() : bool {
+	public function isUserDefined(): bool {
 		return $this->m_key[0] != '_';
 	}
 
@@ -194,7 +194,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return bool
 	 */
-	public function isUserAnnotable() : bool {
+	public function isUserAnnotable(): bool {
 		// A user defined property is generally assumed to be unrestricted for
 		// usage
 		if ( $this->isUserDefined() ) {
@@ -213,7 +213,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return string
 	 */
-	public function getLabel() : string {
+	public function getLabel(): string {
 		$prefix = $this->m_inverse ? '-' : '';
 
 		if ( $this->isUserDefined() ) {
@@ -228,7 +228,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return string|null
 	 */
-	public function getCanonicalLabel() : ?string {
+	public function getCanonicalLabel(): ?string {
 		$prefix = $this->m_inverse ? '-' : '';
 
 		if ( $this->isUserDefined() ) {
@@ -252,7 +252,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return string
 	 */
-	public function getPreferredLabel( string $languageCode = '' ) : string {
+	public function getPreferredLabel( string $languageCode = '' ): string {
 		$label = PropertyRegistry::getInstance()->findPreferredPropertyLabelFromIdByLanguageCode(
 			$this->m_key,
 			$languageCode
@@ -288,7 +288,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return DIWikiPage|null
 	 */
-	public function getDiWikiPage( string $subobjectName = '' ) : ?DIWikiPage {
+	public function getDiWikiPage( string $subobjectName = '' ): ?DIWikiPage {
 		$dbkey = $this->m_key;
 
 		if ( !$this->isUserDefined() ) {
@@ -305,7 +305,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return DIWikiPage|null
 	 */
-	public function getCanonicalDiWikiPage( string $subobjectName = '' ) : ?DIWikiPage  {
+	public function getCanonicalDiWikiPage( string $subobjectName = '' ): ?DIWikiPage  {
 		if ( $this->isUserDefined() ) {
 			$dbkey = $this->m_key;
 		} elseif ( $this->m_key === $this->findPropertyTypeID() ) {
@@ -332,7 +332,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return DIProperty
 	 */
-	public function getRedirectTarget() : self {
+	public function getRedirectTarget(): self {
 		if ( $this->m_inverse ) {
 			return $this;
 		}
@@ -356,7 +356,7 @@ class DIProperty extends SMWDataItem {
 	 * @throws DataTypeLookupException
 	 * @throws RuntimeException
 	 */
-	public function setPropertyValueType( string $valueType ) : self {
+	public function setPropertyValueType( string $valueType ): self {
 		if ( !DataTypeRegistry::getInstance()->isRegistered( $valueType ) ) {
 			throw new DataTypeLookupException( "{$valueType} is an unknown type id" );
 		}
@@ -391,7 +391,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return string type ID
 	 */
-	public function findPropertyValueType() : string {
+	public function findPropertyValueType(): string {
 		if ( isset( $this->propertyValueType ) ) {
 			return $this->propertyValueType;
 		}
@@ -435,7 +435,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return string|null
 	 */
-	public function getSerialization() : ?string {
+	public function getSerialization(): ?string {
 		return ( $this->m_inverse ? '-' : '' ) . $this->m_key;
 	}
 
@@ -449,7 +449,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return DIProperty
 	 */
-	public static function doUnserialize( ?string $serialization ) : self {
+	public static function doUnserialize( ?string $serialization ): self {
 		$inverse = false;
 
 		if ( is_string( $serialization ) && $serialization[0] == '-' ) {
@@ -469,7 +469,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return bool
 	 */
-	public function equals( SMWDataItem $di ) : bool {
+	public function equals( SMWDataItem $di ): bool {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_PROPERTY ) {
 			return false;
 		}
@@ -494,7 +494,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return DIProperty
 	 */
-	public static function newFromUserLabel( string $label, bool $inverse = false, $languageCode = false ) : self {
+	public static function newFromUserLabel( string $label, bool $inverse = false, $languageCode = false ): self {
 		// Explicitly cast to a string so we are able to return an object from
 		// any user label
 		$label = (string)$label;
@@ -534,7 +534,7 @@ class DIProperty extends SMWDataItem {
 		return new self( $id, $inverse );
 	}
 
-	private function newDIWikiPage( string $dbkey, string $subobjectName ) : ?DIWikiPage {
+	private function newDIWikiPage( string $dbkey, string $subobjectName ): ?DIWikiPage {
 		// If an inverse marker is present just omit the marker so a normal
 		// property page link can be produced independent of its directionality
 		if ( $dbkey !== '' && $dbkey[0] == '-'  ) {

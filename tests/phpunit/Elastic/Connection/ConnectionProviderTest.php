@@ -27,7 +27,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	private LockManager $lockManager;
 	private Config $config;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->logger = $this->createMock( LoggerInterface::class );
 
 		$this->lockManager = $this->createMock( LockManager::class );

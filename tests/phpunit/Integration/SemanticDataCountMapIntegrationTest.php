@@ -22,7 +22,7 @@ class SemanticDataCountMapIntegrationTest extends DatabaseTestCase {
 	private $mwHooksHandler;
 	private $subjects = [];
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
@@ -31,7 +31,7 @@ class SemanticDataCountMapIntegrationTest extends DatabaseTestCase {
 		$this->mwHooksHandler->deregisterListedHooks();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->subjects );
 		$this->mwHooksHandler->restoreListedHooks();

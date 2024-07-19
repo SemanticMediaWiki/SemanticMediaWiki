@@ -24,7 +24,7 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $entityCache;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment =  new TestEnvironment();
 
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
@@ -47,7 +47,7 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

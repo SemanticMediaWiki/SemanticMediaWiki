@@ -21,7 +21,7 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();

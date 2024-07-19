@@ -20,7 +20,7 @@ class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
 	private $idCacheManager;
 	private Database $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();

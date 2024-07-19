@@ -26,7 +26,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private Store $store;
 	private $queryParser;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )

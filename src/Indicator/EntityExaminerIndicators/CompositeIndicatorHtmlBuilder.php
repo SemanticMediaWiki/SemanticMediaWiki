@@ -47,7 +47,7 @@ class CompositeIndicatorHtmlBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildHTML( array $indicatorProviders, array $options ) : string {
+	public function buildHTML( array $indicatorProviders, array $options ): string {
 		if ( !isset( $options['subject'] ) ) {
 			throw new RuntimeException( "Expected a subject reference!" );
 		}

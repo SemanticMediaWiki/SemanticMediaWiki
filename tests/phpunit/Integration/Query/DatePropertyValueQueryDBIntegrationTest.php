@@ -37,7 +37,7 @@ class DatePropertyValueQueryDBIntegrationTest extends DatabaseTestCase {
 	private $queryResultValidator;
 	private $fixturesProvider;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -52,7 +52,7 @@ class DatePropertyValueQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 
 		$fixturesCleaner

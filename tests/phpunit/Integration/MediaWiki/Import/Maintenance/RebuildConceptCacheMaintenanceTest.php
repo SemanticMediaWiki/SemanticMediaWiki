@@ -27,7 +27,7 @@ class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 	private $titleValidator;
 	private $pageCreator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -49,7 +49,7 @@ class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 

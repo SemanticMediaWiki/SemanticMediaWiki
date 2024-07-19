@@ -45,7 +45,7 @@ class Config extends Options {
 	 *
 	 * @return boolean
 	 */
-	public function isDefaultStore() : bool {
+	public function isDefaultStore(): bool {
 		$defaultStore = $this->get(
 			Config::DEFAULT_STORE
 		);

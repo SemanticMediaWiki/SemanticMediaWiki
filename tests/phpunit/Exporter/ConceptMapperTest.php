@@ -20,7 +20,7 @@ class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
 
 	private $descriptionFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 	}
 

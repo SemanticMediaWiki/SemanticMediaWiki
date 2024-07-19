@@ -15,7 +15,7 @@ use SMW\Listener\EventListener\EventHandler;
  */
 class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		EventHandler::clear();
 
 		parent::tearDown();

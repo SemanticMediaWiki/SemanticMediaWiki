@@ -18,7 +18,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 	private $hookDispatcher;
 	private $permissionExaminer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )

@@ -21,7 +21,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $idTable;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();

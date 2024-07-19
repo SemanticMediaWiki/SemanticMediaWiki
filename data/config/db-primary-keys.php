@@ -78,14 +78,14 @@ class ConfigPreloadPrimaryKeyTableMutator {
 	/**
 	 * @param string $tableName
 	 */
-	public function hasKey( string $tableName ) : bool {
+	public function hasKey( string $tableName ): bool {
 		return self::PRIMARY_KEYS[$tableName] ?? false;
 	}
 
 	/**
 	 * @param string $tableName
 	 */
-	public function getKey( string $tableName ) : string {
+	public function getKey( string $tableName ): string {
 		return self::PRIMARY_KEYS[$tableName];
 	}
 }

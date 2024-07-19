@@ -21,11 +21,11 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 

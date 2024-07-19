@@ -22,14 +22,14 @@ class TaskFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $apiFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->apiFactory = $this->testEnvironment->getUtilityFactory()->newMwApiFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

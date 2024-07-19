@@ -30,7 +30,7 @@ class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 	private $pageCreator;
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment->addConfiguration(
@@ -46,7 +46,7 @@ class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$utilityFactory = UtilityFactory::getInstance();
 		$pageDeleter = $utilityFactory->newPageDeleter();
 

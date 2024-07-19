@@ -19,7 +19,7 @@ class SequenceMapTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $schemaFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();

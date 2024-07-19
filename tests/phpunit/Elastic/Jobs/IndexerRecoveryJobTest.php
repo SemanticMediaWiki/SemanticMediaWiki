@@ -27,7 +27,7 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 	private $jobQueue;
 	private $indexer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -75,7 +75,7 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 			->willReturn($elasticFactory);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

@@ -20,7 +20,7 @@ class MySQLValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $searchTable;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )

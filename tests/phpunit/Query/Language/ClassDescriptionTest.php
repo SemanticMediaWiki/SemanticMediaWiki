@@ -23,7 +23,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	private $cat_name;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->cat_name = Localizer::getInstance()->getNsText( NS_CATEGORY );
 	}

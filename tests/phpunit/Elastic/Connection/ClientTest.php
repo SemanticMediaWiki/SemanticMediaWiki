@@ -22,7 +22,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	private $elasticClient;
 	private $lockManager;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		if ( !class_exists( '\Elasticsearch\Client' ) ) {
 			$this->markTestSkipped( "elasticsearch-php dependency is not available." );
 		}

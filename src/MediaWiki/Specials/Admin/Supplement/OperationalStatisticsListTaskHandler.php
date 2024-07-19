@@ -53,7 +53,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'stats';
 	}
 
@@ -62,7 +62,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		$actions = [
 			$this->getTask(),
 		];

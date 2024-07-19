@@ -21,7 +21,7 @@ class ItemListBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();

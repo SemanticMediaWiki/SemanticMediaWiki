@@ -71,7 +71,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return bool
 	 */
-	public function hasPermission( PermissionExaminer $permissionExaminer ) : bool {
+	public function hasPermission( PermissionExaminer $permissionExaminer ): bool {
 		return $permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_ENTITY_ASSOCIATEDREVISIONMISMATCH );
 	}
 
@@ -89,7 +89,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return boolean
 	 */
-	public function isDeferredMode() : bool {
+	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
 	}
 
@@ -100,7 +100,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return boolean
 	 */
-	public function isSeverityType( string $severityType ) : bool {
+	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
 	}
 
@@ -109,7 +109,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'smw-entity-examiner-associated-revision-mismatch';
 	}
 

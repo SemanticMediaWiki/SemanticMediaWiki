@@ -23,7 +23,7 @@ class SchemaFilterFactory {
 	 *
 	 * @return CompositeFilter
 	 */
-	public function newCompositeFilter( array $filters ) : CompositeFilter {
+	public function newCompositeFilter( array $filters ): CompositeFilter {
 		return new CompositeFilter( $filters );
 	}
 
@@ -34,7 +34,7 @@ class SchemaFilterFactory {
 	 *
 	 * @return NamespaceFilter
 	 */
-	public function newNamespaceFilter( ?int $namespace ) : NamespaceFilter {
+	public function newNamespaceFilter( ?int $namespace ): NamespaceFilter {
 		return new NamespaceFilter( $namespace );
 	}
 
@@ -45,7 +45,7 @@ class SchemaFilterFactory {
 	 *
 	 * @return CategoryFilter
 	 */
-	public function newCategoryFilter( $categories ) : CategoryFilter {
+	public function newCategoryFilter( $categories ): CategoryFilter {
 		return new CategoryFilter( $categories );
 	}
 
@@ -56,7 +56,7 @@ class SchemaFilterFactory {
 	 *
 	 * @return PropertyFilter
 	 */
-	public function newPropertyFilter( $properties ) : PropertyFilter {
+	public function newPropertyFilter( $properties ): PropertyFilter {
 		return new PropertyFilter( $properties );
 	}
 

@@ -18,7 +18,7 @@ class FallbackFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $jsonContentsFileReader;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->jsonContentsFileReader = $this->getMockBuilder( JsonContentsFileReader::class )
 			->disableOriginalConstructor()
 			->getMock();

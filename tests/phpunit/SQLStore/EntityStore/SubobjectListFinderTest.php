@@ -19,7 +19,7 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $iteratorFactory;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->iteratorFactory = ApplicationFactory::getInstance()->getIteratorFactory();

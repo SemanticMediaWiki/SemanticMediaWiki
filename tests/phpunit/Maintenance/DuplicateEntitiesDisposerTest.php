@@ -20,7 +20,7 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 	private $messageReporter;
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$propertyTableIdReferenceDisposer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceDisposer' )
 			->disableOriginalConstructor()
 			->getMock();

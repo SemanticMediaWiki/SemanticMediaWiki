@@ -23,7 +23,7 @@ class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 	private $store;
 	private $queryResult;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
@@ -61,7 +61,7 @@ class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 		);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();

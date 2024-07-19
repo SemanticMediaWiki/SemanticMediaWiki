@@ -25,7 +25,7 @@ class SetupStoreMaintenanceTest extends DatabaseTestCase {
 	private $titleValidator;
 	private $spyMessageReporter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->runnerFactory  = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
@@ -42,7 +42,7 @@ class SetupStoreMaintenanceTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->flushPages( $this->importedTitles );
 		parent::tearDown();
 	}

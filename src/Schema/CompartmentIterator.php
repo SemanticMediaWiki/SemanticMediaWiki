@@ -54,7 +54,7 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * @return bool
 	 */
-	public function has( string $key ) : bool {
+	public function has( string $key ): bool {
 		foreach ( $this->container as $data ) {
 			if ( DotArray::get( $data, $key, false ) !== false ) {
 				return true;
@@ -97,7 +97,7 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * @return CompartmentIterator
 	 */
-	public function find( string $key, ?string $flag = null ) : CompartmentIterator {
+	public function find( string $key, ?string $flag = null ): CompartmentIterator {
 		$meta = [];
 		$result = [];
 

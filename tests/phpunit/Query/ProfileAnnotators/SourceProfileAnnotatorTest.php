@@ -22,7 +22,7 @@ class SourceProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$testEnvironment = new TestEnvironment();

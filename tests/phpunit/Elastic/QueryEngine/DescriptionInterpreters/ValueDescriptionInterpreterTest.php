@@ -23,7 +23,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private DataItemFactory $dataItemFactory;
 	private $conditionBuilder;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 		$this->dataItemFactory = new DataItemFactory();
 

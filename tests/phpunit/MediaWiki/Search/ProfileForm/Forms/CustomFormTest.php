@@ -20,7 +20,7 @@ class CustomFormTest extends \PHPUnit_Framework_TestCase {
 
 	private $webRequest;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();

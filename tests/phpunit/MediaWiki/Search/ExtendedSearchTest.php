@@ -21,7 +21,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $fallbackSearchEngine;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( 'SMW\Store' )
@@ -34,7 +34,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

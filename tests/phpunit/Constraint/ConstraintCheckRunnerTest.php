@@ -20,7 +20,7 @@ class ConstraintCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 
 	private $constraintRegistry;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->constraintRegistry = $this->getMockBuilder( '\SMW\Constraint\ConstraintRegistry' )
 			->disableOriginalConstructor()
 			->getMock();

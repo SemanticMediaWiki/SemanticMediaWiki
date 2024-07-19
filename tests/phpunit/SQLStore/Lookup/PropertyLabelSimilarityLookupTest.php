@@ -25,7 +25,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 	private $requestOptions;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

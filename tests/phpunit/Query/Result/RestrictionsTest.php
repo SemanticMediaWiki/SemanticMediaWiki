@@ -20,7 +20,7 @@ class RestrictionsTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $printRequest;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 

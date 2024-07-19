@@ -60,7 +60,7 @@ class EntityExaminerTask extends Task implements PermissionExaminerAware {
 	 *
 	 * @return array
 	 */
-	public function process( array $parameters ) : array {
+	public function process( array $parameters ): array {
 		if ( $parameters['subject'] === '' ) {
 			return [ 'done' => false ];
 		}

@@ -78,7 +78,7 @@ class TreeBuilder {
 	 *
 	 * @return []
 	 */
-	public function getHierarchyList( array $subjects, string $type ) : array {
+	public function getHierarchyList( array $subjects, string $type ): array {
 		if ( $subjects === []) {
 			return [];
 		}

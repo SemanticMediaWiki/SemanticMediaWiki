@@ -20,7 +20,7 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $htmlFormRenderer;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -37,7 +37,7 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

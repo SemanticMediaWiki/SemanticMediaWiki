@@ -29,7 +29,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	private $hookDispatcher;
 	private $setupFile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyMessageReporter = MessageReporterFactory::getInstance()->newSpyMessageReporter();

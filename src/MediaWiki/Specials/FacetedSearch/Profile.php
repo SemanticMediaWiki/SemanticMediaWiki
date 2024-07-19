@@ -64,7 +64,7 @@ class Profile {
 	 *
 	 * @return string
 	 */
-	public function getProfileName() : string {
+	public function getProfileName(): string {
 		return $this->profileName;
 	}
 
@@ -73,7 +73,7 @@ class Profile {
 	 *
 	 * @return int
 	 */
-	public function getProfileCount() : int {
+	public function getProfileCount(): int {
 		return count( $this->getProfileList() );
 	}
 
@@ -82,7 +82,7 @@ class Profile {
 	 *
 	 * @return array
 	 */
-	public function getProfileList() : array {
+	public function getProfileList(): array {
 		if ( $this->profileList === [] ) {
 			$this->loadProfile();
 		}

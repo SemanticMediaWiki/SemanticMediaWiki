@@ -26,7 +26,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 	private $jobQueue;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$options = $this->getMockBuilder( '\SMW\Options' )
@@ -64,7 +64,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

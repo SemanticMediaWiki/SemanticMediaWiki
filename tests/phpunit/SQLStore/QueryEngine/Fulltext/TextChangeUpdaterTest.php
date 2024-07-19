@@ -26,7 +26,7 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $logger;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 

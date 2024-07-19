@@ -282,7 +282,7 @@ class Localizer {
 	 *
 	 * @return string a string representation of the namespace
 	 */
-	public function convertNamespace( $ns, $variant = null ) : string {
+	public function convertNamespace( $ns, $variant = null ): string {
 		return $this->contentLanguage->getConverter()->convertNamespace( $ns, $variant );
 	}
 
@@ -410,7 +410,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function normalizeTitleText( string $text ) : string {
+	public function normalizeTitleText( string $text ): string {
 		$text = trim( $text );
 
 		if ( Site::isCapitalLinks() ) {

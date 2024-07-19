@@ -18,7 +18,7 @@ class ExtensionSchemaUpdatesTest extends \PHPUnit_Framework_TestCase {
 	private $databaseUpdater;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$databaseUpdater = $this->getMockBuilder( '\DatabaseUpdater' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

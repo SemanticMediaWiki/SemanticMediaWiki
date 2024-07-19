@@ -17,7 +17,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 	private $jobQueueGroup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
 			->disableOriginalConstructor()
 			->getMock();

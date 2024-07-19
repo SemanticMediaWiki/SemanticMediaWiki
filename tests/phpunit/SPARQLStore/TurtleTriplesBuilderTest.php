@@ -24,7 +24,7 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $repositoryRedirectLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->repositoryRedirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryRedirectLookup' )

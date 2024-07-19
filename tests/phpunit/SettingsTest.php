@@ -22,7 +22,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 
 	private $hookDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
@@ -30,7 +30,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 

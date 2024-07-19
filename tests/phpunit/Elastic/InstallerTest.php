@@ -18,7 +18,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 	private $rollover;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rollover' )
 			->disableOriginalConstructor()
 			->getMock();

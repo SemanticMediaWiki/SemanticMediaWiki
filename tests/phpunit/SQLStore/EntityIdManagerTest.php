@@ -39,7 +39,7 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	private $factory;
 	private Database $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$idCacheManager = new IdCacheManager(
 			[
 				'entity.id' => new FixedInMemoryLruCache(),

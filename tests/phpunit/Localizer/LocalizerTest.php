@@ -27,7 +27,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	private IContextSource $context;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->language = $this->getMockBuilder( '\Language' )
@@ -42,7 +42,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		$this->context = $this->createMock( IContextSource::class );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		Localizer::clear();
 	}
 

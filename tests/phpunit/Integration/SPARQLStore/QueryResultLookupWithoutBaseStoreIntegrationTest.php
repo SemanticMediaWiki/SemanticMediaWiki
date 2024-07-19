@@ -32,7 +32,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 	private $semanticDataFactory;
 	private $dataValueFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->store = ApplicationFactory::getInstance()->getStore();
 
 		if ( !$this->store instanceof SPARQLStore ) {

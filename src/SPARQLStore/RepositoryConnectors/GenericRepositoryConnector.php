@@ -91,7 +91,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string
 	 */
-	public function getEndpoint( $type ) : ?string {
+	public function getEndpoint( $type ): ?string {
 		if ( $type === RepositoryConnection::QUERY_ENDPOINT ) {
 			return $this->repositoryClient->getQueryEndpoint();
 		}
@@ -141,7 +141,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return boolean
 	 */
-	public function shouldPing() : bool {
+	public function shouldPing(): bool {
 		return $this->repositoryClient->isFlagSet( SMW_SPARQL_CONNECTION_PING );
 	}
 

@@ -23,7 +23,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	private $elasticClient;
 	private $idTable;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )

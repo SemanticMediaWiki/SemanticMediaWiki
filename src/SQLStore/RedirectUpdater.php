@@ -209,7 +209,7 @@ class RedirectUpdater {
 	 *
 	 * @return boolean
 	 */
-	public function shouldCleanUpAnnotationsAndRedirects( array $redirects = [] ) : bool {
+	public function shouldCleanUpAnnotationsAndRedirects( array $redirects = [] ): bool {
 		if ( $redirects === [] ) {
 			return false;
 		}

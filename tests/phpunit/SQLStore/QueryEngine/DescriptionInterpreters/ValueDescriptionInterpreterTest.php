@@ -24,7 +24,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $conditionBuilder;
 	private QuerySegmentValidator $querySegmentValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

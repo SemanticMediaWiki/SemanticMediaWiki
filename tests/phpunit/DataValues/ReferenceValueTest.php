@@ -24,7 +24,7 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -37,7 +37,7 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

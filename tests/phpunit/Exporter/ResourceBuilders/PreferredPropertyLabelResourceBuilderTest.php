@@ -24,7 +24,7 @@ class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestC
 	private $dataValueFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -33,7 +33,7 @@ class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestC
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

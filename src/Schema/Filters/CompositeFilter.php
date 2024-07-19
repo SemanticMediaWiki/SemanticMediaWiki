@@ -50,7 +50,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasMatches() : bool {
+	public function hasMatches(): bool {
 		return $this->matches !== [];
 	}
 
@@ -59,7 +59,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMatches() : iterable {
+	public function getMatches(): iterable {
 		return $this->matches;
 	}
 

@@ -22,11 +22,11 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 
 	private $inMemoryPoolCache;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->inMemoryPoolCache = InMemoryPoolCache::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->inMemoryPoolCache->clear();
 	}
 

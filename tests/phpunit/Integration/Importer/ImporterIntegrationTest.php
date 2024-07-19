@@ -21,7 +21,7 @@ class ImporterIntegrationTest extends DatabaseTestCase {
 	private $stringValidator;
 	private $fixtures;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();

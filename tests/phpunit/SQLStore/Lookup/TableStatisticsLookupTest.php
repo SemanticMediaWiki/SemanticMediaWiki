@@ -22,7 +22,7 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $query;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
 			->disableOriginalConstructor()
 			->getMock();

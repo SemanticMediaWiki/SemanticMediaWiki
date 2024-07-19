@@ -1104,7 +1104,7 @@ class EntityIdManager {
 	 *
 	 * @return FieldList
 	 */
-	public function preload( array $subjects ) : FieldList {
+	public function preload( array $subjects ): FieldList {
 		$fieldList = $this->auxiliaryFields->prefetchFieldList(
 			$subjects
 		);

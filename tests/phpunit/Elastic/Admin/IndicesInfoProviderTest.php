@@ -23,7 +23,7 @@ class IndicesInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	private $webRequest;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -849,7 +849,7 @@ class LegacyParser implements Parser {
 		return false;
 	}
 
-	private function normalizeTitleText( string $text ) : string {
+	private function normalizeTitleText( string $text ): string {
 		return Localizer::getInstance()->normalizeTitleText( $text );
 	}
 

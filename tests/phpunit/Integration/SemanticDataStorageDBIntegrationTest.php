@@ -39,7 +39,7 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	private $pageDeleter;
 	private $pageCreator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -57,7 +57,7 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->pageDeleter
 			->doDeletePoolOfPages( $this->subjects );
 

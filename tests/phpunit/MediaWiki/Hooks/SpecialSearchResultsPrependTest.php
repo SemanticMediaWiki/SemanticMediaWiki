@@ -18,7 +18,7 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 	private $preferenceExaminer;
 	private $messageLocalizer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
 			->disableOriginalConstructor()
 			->getMock();

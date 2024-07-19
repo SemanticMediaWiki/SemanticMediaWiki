@@ -34,7 +34,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private SpecificationLookup $propertySpecificationLookup;
 	private $revision;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( [
@@ -100,7 +100,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

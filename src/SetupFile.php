@@ -202,7 +202,7 @@ class SetupFile {
 		$this->set( [ self::INCOMPLETE_TASKS => $incomplete_tasks ] );
 	}
 
-	public function hasDatabaseMinRequirement( array $vars = [] ) : bool {
+	public function hasDatabaseMinRequirement( array $vars = [] ): bool {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
