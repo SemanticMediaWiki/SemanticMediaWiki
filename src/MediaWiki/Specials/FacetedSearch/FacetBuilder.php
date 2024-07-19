@@ -63,7 +63,6 @@ class FacetBuilder {
 	 * @return string
 	 */
 	public function getPropertyFilterFacet( Title $title, UrlArgs $urlArgs ) : string {
-
 		$params = [
 			'min_item' => $this->profile->get( 'filters.property_filter.filter_input.min_item' ),
 			'hierarchy_tree' => $this->profile->get( 'filters.property_filter.hierarchy_tree', false )
@@ -119,7 +118,6 @@ class FacetBuilder {
 	 * @return string
 	 */
 	public function getCategoryFilterFacet( Title $title, UrlArgs $urlArgs ) : string {
-
 		$params = [
 			'min_item' => $this->profile->get( 'filters.category_filter.filter_input.min_item', 10 ),
 			'hierarchy_tree' => $this->profile->get( 'filters.category_filter.hierarchy_tree', false )
@@ -176,7 +174,6 @@ class FacetBuilder {
 	 * @return string
 	 */
 	public function getValueFilterFacets( Title $title, UrlArgs $urlArgs ) : string {
-
 		$params = [
 			'default_filter' => $this->profile->get( 'filters.value_filter.default_filter' ),
 			'min_item' => $this->profile->get( 'filters.value_filter.filter_input.min_item' ),
@@ -246,7 +243,6 @@ class FacetBuilder {
 	}
 
 	private function createClearFilter( $name, $count = 1 ) {
-
 		$this->templateEngine->compile(
 			'filter-items-clear-button',
 			[

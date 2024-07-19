@@ -30,7 +30,6 @@ class TableBuildExaminerFactory {
 	 * @return EntityCollation
 	 */
 	public function newEntityCollation( SQLStore $store ) : EntityCollation {
-
 		$servicesFactory = ServicesFactory::getInstance();
 
 		$entityCollation = new EntityCollation(
@@ -56,7 +55,6 @@ class TableBuildExaminerFactory {
 	 * @return CountMapField
 	 */
 	public function newCountMapField( SQLStore $store ) : CountMapField {
-
 		$countMapField = new CountMapField(
 			$store
 		);

@@ -49,7 +49,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new HtmlBuilder(
 			$this->store,
 			DIWikiPage::newFromText( 'Foo' )
@@ -62,7 +61,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildEmptyHTML() {
-
 		$instance = new HtmlBuilder(
 			$this->store,
 			DIWikiPage::newFromText( 'Foo' )
@@ -75,7 +73,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->any() )
@@ -94,7 +91,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLegacy() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->any() )
@@ -113,7 +109,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPlaceholder() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->any() )
@@ -132,7 +127,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTMLWithOptions() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->any() )
@@ -167,7 +161,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOptions() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$instance = new HtmlBuilder(

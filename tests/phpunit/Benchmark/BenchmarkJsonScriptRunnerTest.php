@@ -137,7 +137,6 @@ class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
 	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
-
 		$this->pageImportBenchmarkRunner->setTestCaseLocation(
 			$this->getTestCaseLocation()
 		);

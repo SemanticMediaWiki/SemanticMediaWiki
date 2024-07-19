@@ -31,7 +31,6 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	 * @return boolean
 	 */
 	public function canInterpretDescription( Description $description ) {
-
 		foreach ( $this->interpreters as $interpreter ) {
 			if ( $interpreter->canInterpretDescription( $description ) ) {
 				return true;
@@ -47,7 +46,6 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	 * @return Condition
 	 */
 	public function interpretDescription( Description $description ) {
-
 		foreach ( $this->interpreters as $interpreter ) {
 			if ( $interpreter->canInterpretDescription( $description ) ) {
 				return $interpreter->interpretDescription( $description );

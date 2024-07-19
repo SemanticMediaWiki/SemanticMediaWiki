@@ -60,7 +60,6 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\TemperatureValue',
 			new TemperatureValue()
@@ -68,7 +67,6 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetUserValueToReturnKelvinForAnyNonPreferredDisplayUnit() {
-
 		$instance = new TemperatureValue();
 
 		$numberValueFormatter = new NumberValueFormatter();
@@ -103,7 +101,6 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetUserValueOnUnknownUnit() {
-
 		$instance = new TemperatureValue();
 
 		$numberValueFormatter = new NumberValueFormatter();
@@ -126,7 +123,6 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetUserValueToReturnOnPreferredDisplayUnit() {
-
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getDisplayUnits' )
 			->will( $this->returnValue( [ 'Celsius' ] ) );
@@ -167,7 +163,6 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetUserValueToReturnOnPreferredDisplayPrecision() {
-
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getDisplayPrecision' )
 			->will( $this->returnValue( 0 ) );

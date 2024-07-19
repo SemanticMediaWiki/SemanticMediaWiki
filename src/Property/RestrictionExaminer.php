@@ -97,7 +97,6 @@ class RestrictionExaminer {
 	 * @return DIProperty|null
 	 */
 	public static function grepPropertyFromRestrictionErrorMsg( $errorMsg ) {
-
 		if ( strpos( $errorMsg, self::CREATE_RESTRICTION ) === false ) {
 			return null;
 		}
@@ -114,7 +113,6 @@ class RestrictionExaminer {
 	 * @param DIWikiPage|null $contextPage
 	 */
 	public function checkRestriction( DIProperty $property, DIWikiPage $contextPage = null ) {
-
 		$this->error = [];
 
 		if ( $this->isDeclarative( $property, $contextPage ) ) {
@@ -131,7 +129,6 @@ class RestrictionExaminer {
 	}
 
 	private function isDeclarative( $property, $contextPage = null ) {
-
 		if ( $this->isQueryContext || $contextPage === null ) {
 			return false;
 		}
@@ -157,7 +154,6 @@ class RestrictionExaminer {
 	}
 
 	private function isAnnotationRestricted( $property ) {
-
 		if ( $this->isQueryContext || $property->isUserDefined() ) {
 			return false;
 		}
@@ -173,7 +169,6 @@ class RestrictionExaminer {
 	}
 
 	private function isCreateProtected( $property ) {
-
 		if ( $this->user === null || $this->createProtectionRight === false ) {
 			return false;
 		}

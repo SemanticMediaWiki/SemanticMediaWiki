@@ -39,7 +39,6 @@ class SpecialPropertyLabelSimilarityTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanExecute() {
-
 		$instance = new SpecialPropertyLabelSimilarity();
 
 		$instance->getContext()->setTitle(

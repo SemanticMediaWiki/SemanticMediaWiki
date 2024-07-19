@@ -37,7 +37,6 @@ class MappingIterator extends IteratorIterator implements Countable {
 	 * @param callable $callback
 	 */
 	public function __construct( $iterable, callable $callback ) {
-
 		if ( is_array( $iterable ) ) {
 			$iterable = new ArrayIterator( $iterable );
 		}

@@ -39,7 +39,6 @@ class TableOptimizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableOptimizer::class,
 			new TableOptimizer( $this->tableBuilder )
@@ -47,7 +46,6 @@ class TableOptimizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunForTables() {
-
 		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
 			->disableOriginalConstructor()
 			->getMock();

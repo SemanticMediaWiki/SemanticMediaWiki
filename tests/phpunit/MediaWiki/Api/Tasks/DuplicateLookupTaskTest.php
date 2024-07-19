@@ -40,7 +40,6 @@ class DuplicateLookupTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new DuplicateLookupTask( $this->store, $this->cache );
 
 		$this->assertInstanceOf(
@@ -50,7 +49,6 @@ class DuplicateLookupTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -20,7 +20,6 @@ class DeepRedirectTargetResolverTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,7 +31,6 @@ class DeepRedirectTargetResolverTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResolveRedirectTarget() {
-
 		$title = MockTitle::buildMock( 'Uuuuuuuuuu' );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
@@ -71,7 +69,6 @@ class DeepRedirectTargetResolverTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResolveRedirectTargetThrowsException() {
-
 		$title = MockTitle::buildMock( 'Uuuuuuuuuu' );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
@@ -107,7 +104,6 @@ class DeepRedirectTargetResolverTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToResolveCircularRedirectThrowsException() {
-
 		$title = MockTitle::buildMock( 'Uuuuuuuuuu' );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )

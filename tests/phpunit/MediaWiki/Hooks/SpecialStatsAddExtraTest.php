@@ -23,7 +23,6 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -38,7 +37,6 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider statisticsDataProvider
 	 */
 	public function testProcess( $setup, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -67,7 +65,6 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_FakeStats() {
-
 		$extraStats = [];
 
 		$statistics = [
@@ -114,7 +111,6 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function matchArray( array $matcher, $searchValue ) {
-
 		foreach ( $matcher as $key => $value ) {
 
 			if ( $searchValue === $key || $searchValue === $value ) {
@@ -130,7 +126,6 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function statisticsDataProvider() {
-
 		$input = [
 			'PROPUSES' => 1001
 		];

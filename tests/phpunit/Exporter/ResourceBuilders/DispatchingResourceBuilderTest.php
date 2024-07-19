@@ -25,7 +25,6 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			DispatchingResourceBuilder::class,
 			new DispatchingResourceBuilder()
@@ -33,7 +32,6 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsResourceBuilderForValidMatch() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$resourceBuilder = $this->getMockBuilder( ResourceBuilder::class )
@@ -54,7 +52,6 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsResourceBuilderForInvalidMatch() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new DispatchingResourceBuilder();
@@ -65,7 +62,6 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddResourceValueOnValidMatchedResourceBuilder() {
-
 		$expData = $this->getMockBuilder( '\SMWExpData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -91,7 +87,6 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddResourceValueOnDefaultResourceBuilderWhenOthersCannotMatch() {
-
 		$expData = $this->getMockBuilder( '\SMWExpData' )
 			->disableOriginalConstructor()
 			->getMock();

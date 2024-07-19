@@ -49,7 +49,6 @@ class ConceptDescriptionInterpreter {
 	 * @return Condition|[]
 	 */
 	public function interpretDescription( ConceptDescription $description, $isConjunction = false ) {
-
 		$concept = $description->getConcept();
 
 		$value = $this->conditionBuilder->getStore()->getPropertyValues(
@@ -87,7 +86,6 @@ class ConceptDescriptionInterpreter {
 	}
 
 	private function terms_lookup( $description, $concept, $params ) {
-
 		$concept->setId(
 			$this->conditionBuilder->getID( $concept )
 		);
@@ -117,7 +115,6 @@ class ConceptDescriptionInterpreter {
 	}
 
 	private function hasCircularConceptDescription( $description, $concept ) {
-
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->conditionBuilder->addError( [ 'smw-query-condition-circular', $description->getQueryString() ] );

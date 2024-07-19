@@ -19,7 +19,6 @@ class CsvFileExportPrinterTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CsvFileExportPrinter::class,
 			new CsvFileExportPrinter( 'csv' )
@@ -27,7 +26,6 @@ class CsvFileExportPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetResult_Empty() {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -45,7 +43,6 @@ class CsvFileExportPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLink() {
-
 		$link = $this->getMockBuilder( '\SMWInfolink' )
 			->disableOriginalConstructor()
 			->getMock();

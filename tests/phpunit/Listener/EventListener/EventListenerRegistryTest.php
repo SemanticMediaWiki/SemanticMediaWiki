@@ -31,7 +31,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$eventListenerCollection = $this->getMockBuilder( '\Onoi\EventDispatcher\EventListenerCollection' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -43,7 +42,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListenerCollection() {
-
 		$eventListenerCollection = $this->getMockBuilder( '\Onoi\EventDispatcher\EventListenerCollection' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'registerCallback' ] )
@@ -61,7 +59,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanExecuteRegisteredListeners() {
-
 		$instance = new EventListenerRegistry(
 			$this->eventDispatcherFactory->newGenericEventListenerCollection()
 		);
@@ -78,7 +75,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertListenerExecuteFor( $eventName, $instance, $dispatchContext = null ) {
-
 		$executed = false;
 
 		foreach ( $instance->getCollection() as $event => $listeners ) {

@@ -33,7 +33,6 @@ trait OptionsAwareTrait {
 	 * @param mixed $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( $this->options === null ) {
 			$this->setOptions( [] );
 		}
@@ -50,7 +49,6 @@ trait OptionsAwareTrait {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
-
 		if ( $this->options === null ) {
 			$this->setOptions( [] );
 		}

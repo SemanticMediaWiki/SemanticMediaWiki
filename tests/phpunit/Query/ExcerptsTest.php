@@ -17,7 +17,6 @@ use SMW\Query\Excerpts;
 class ExcerptsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Excerpts::class,
 			new Excerpts()
@@ -25,7 +24,6 @@ class ExcerptsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddExcerpt() {
-
 		$instance = new Excerpts();
 
 		$instance->addExcerpt( 'Foo', 0.1 );
@@ -41,7 +39,6 @@ class ExcerptsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddExcerpt_DIWikiPage() {
-
 		$dataItem = DIWikiPage::newFromText( 'Bar' );
 		$instance = new Excerpts();
 
@@ -54,7 +51,6 @@ class ExcerptsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExcerpts() {
-
 		$instance = new Excerpts();
 
 		$instance->addExcerpt( 'Foo', '...' );

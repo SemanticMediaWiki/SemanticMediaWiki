@@ -17,7 +17,6 @@ use SMW\RequestOptions;
 class ResultLimiterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ResultLimiter::class,
 			new ResultLimiter()
@@ -25,7 +24,6 @@ class ResultLimiterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCalcAndSkip() {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->exclude_limit = true;
 		$requestOptions->setLimit( 2 );
@@ -52,7 +50,6 @@ class ResultLimiterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoSkip() {
-
 		$requestOptions = new RequestOptions();
 
 		$instance = new ResultLimiter();

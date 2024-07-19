@@ -29,7 +29,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$this->assertInstanceOf(
@@ -39,7 +38,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetLimitForLowerbound() {
-
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
@@ -72,7 +70,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetLimitForUpperboundWhereLimitIsRestrictedByGLOBALRequirements() {
-
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
@@ -105,7 +102,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetLimitForUpperboundWhereLimitIsUnrestricted() {
-
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
@@ -131,7 +127,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToArray() {
-
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$printRequest = $this->getMockBuilder( 'SMW\Query\PrintRequest' )
@@ -172,7 +167,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHash() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getFingerprint' ] )

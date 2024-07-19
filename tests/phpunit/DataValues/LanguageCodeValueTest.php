@@ -19,7 +19,6 @@ class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\LanguageCodeValue',
 			new LanguageCodeValue()
@@ -27,7 +26,6 @@ class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasErrorForMissingLanguageCode() {
-
 		$instance = new LanguageCodeValue();
 		$instance->setUserValue( '' );
 
@@ -37,7 +35,6 @@ class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasErrorForInvalidLanguageCode() {
-
 		$instance = new LanguageCodeValue();
 		$instance->setUserValue( '-Foo' );
 
@@ -47,7 +44,6 @@ class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNormalizationOnLanguageCodeOccurs() {
-
 		$mixedCase = new LanguageCodeValue();
 		$mixedCase->setUserValue( 'eN' );
 
@@ -71,7 +67,6 @@ class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidLanguageCode() {
-
 		$instance = new LanguageCodeValue();
 		$instance->setUserValue( 'Foo' );
 
@@ -82,7 +77,6 @@ class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidLanguageCodeIsAllowedInQueryContext() {
-
 		$instance = new LanguageCodeValue();
 		$instance->setOption( LanguageCodeValue::OPT_QUERY_CONTEXT, true );
 

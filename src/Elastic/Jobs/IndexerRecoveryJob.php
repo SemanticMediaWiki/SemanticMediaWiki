@@ -56,7 +56,6 @@ class IndexerRecoveryJob extends Job {
 	 * @return string
 	 */
 	public static function makeCacheKey( $subject ) {
-
 		if ( $subject instanceof Title ) {
 			$subject = DIWikiPage::newFromTitle( $subject );
 		}
@@ -70,7 +69,6 @@ class IndexerRecoveryJob extends Job {
 	 * @param Document $document
 	 */
 	public static function pushFromDocument( Document $document ) {
-
 		$cache = ApplicationFactory::getInstance()->getCache();
 		$subject = $document->getSubject();
 
@@ -94,7 +92,6 @@ class IndexerRecoveryJob extends Job {
 	 * @param array $params
 	 */
 	public static function pushFromParams( Title $title, array $params ) {
-
 		$indexerRecoveryJob = new IndexerRecoveryJob(
 			$title,
 			$params
@@ -118,7 +115,6 @@ class IndexerRecoveryJob extends Job {
 	 * @since  3.0
 	 */
 	public function run() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$store = $applicationFactory->getStore( ElasticStore::class );
@@ -166,7 +162,6 @@ class IndexerRecoveryJob extends Job {
 	}
 
 	private function requeueRetry( $config ) {
-
 		// Give up!
 		if ( $this->getParameter( 'retryCount' ) >= $config->dotGet( 'indexer.job.recovery.retries' ) ) {
 			return true;
@@ -197,7 +192,6 @@ class IndexerRecoveryJob extends Job {
 	}
 
 	private function index( $cache, $hash ) {
-
 		$key = self::makeCacheKey(
 			DIWikiPage::doUnserialize( $hash )
 		);

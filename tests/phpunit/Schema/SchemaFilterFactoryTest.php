@@ -18,7 +18,6 @@ use SMW\Tests\TestEnvironment;
 class SchemaFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructCompositeFilter() {
-
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(
@@ -28,7 +27,6 @@ class SchemaFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructNamespaceFilter() {
-
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(
@@ -38,7 +36,6 @@ class SchemaFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructCategoryFilter() {
-
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(
@@ -48,7 +45,6 @@ class SchemaFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructPropertyFilter() {
-
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(

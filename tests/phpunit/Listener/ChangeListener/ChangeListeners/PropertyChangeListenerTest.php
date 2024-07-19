@@ -42,7 +42,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyChangeListener::class,
 			new PropertyChangeListener( $this->store )
@@ -50,7 +49,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanTrigger() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
@@ -79,7 +77,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecordAndMatch() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
@@ -122,7 +119,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunChangeListeners() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -142,7 +138,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLoadListeners() {
-
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onRegisterPropertyChangeListeners' );
 
@@ -156,7 +151,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMissedLoadListenersThrowsException() {
-
 		$instance = new PropertyChangeListener( $this->store );
 
 		$this->expectException( '\RuntimeException' );

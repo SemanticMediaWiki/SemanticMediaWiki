@@ -37,7 +37,6 @@ class SequenceMap {
 	 * @param boolean
 	 */
 	public static function canMap( DIProperty $property ) {
-
 		$key = $property->getKey();
 
 		if ( isset( self::$canMap[$key] ) ) {

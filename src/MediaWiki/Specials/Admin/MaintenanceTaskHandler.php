@@ -68,7 +68,6 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function isTaskFor( string $action ) : bool {
-
 		foreach ( $this->taskHandlers as $taskHandler ) {
 			if ( $taskHandler->isTaskFor( $action ) ) {
 				return true;
@@ -84,7 +83,6 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$tasks = '';
 		$html = '';
 
@@ -126,7 +124,6 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$action = $webRequest->getText( 'action' );
 
 		foreach ( $this->taskHandlers as $taskHandler ) {
@@ -155,7 +152,6 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function buildHTML() {
-
 		$html = Html::rawElement(
 			'p',
 			[

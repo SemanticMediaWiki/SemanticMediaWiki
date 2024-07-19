@@ -33,7 +33,6 @@ class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,7 +49,6 @@ class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotation() {
-
 		$semanticData = new SemanticData(
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
@@ -81,7 +79,6 @@ class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotation_EmptyAttachments() {
-
 		$semanticData = new SemanticData(
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);

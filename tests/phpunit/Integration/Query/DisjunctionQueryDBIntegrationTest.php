@@ -49,7 +49,6 @@ class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -61,7 +60,6 @@ class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	 * {{#ask: [[Category:WickedPlaces]] OR [[LocatedIn.MemberOf::Wonderland]] }}
 	 */
 	public function testDisjunctionSubqueryForPageTypePropertyChainThatComparesEqualToValue() {
-
 		/**
 		 * Page ...-dangerland annotated with [[Category:WickedPlaces]]
 		 */
@@ -166,7 +164,6 @@ class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testSubqueryDisjunction() {
-
 		$property = new DIProperty( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 

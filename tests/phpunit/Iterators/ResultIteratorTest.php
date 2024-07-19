@@ -19,7 +19,6 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ResultIterator::class,
 			new ResultIterator( [] )
@@ -27,13 +26,11 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidConstructorArgumentThrowsException() {
-
 		$this->expectException( 'RuntimeException' );
 		$instance = new ResultIterator( 2 );
 	}
 
 	public function testdoIterateOnArray() {
-
 		$result = [
 			1, 42
 		];
@@ -59,7 +56,6 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testdoSeekOnArray() {
-
 		$result = [
 			1, 42, 1001
 		];
@@ -74,7 +70,6 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testdoIterateOnResultWrapper() {
-
 		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();

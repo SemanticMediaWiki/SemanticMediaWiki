@@ -104,7 +104,6 @@ class HookDispatcher {
 	 * @param array &$configuration
 	 */
 	public function onSettingsBeforeInitializationComplete( array &$configuration ) {
-
 		// Deprecated since 3.1
 		$this->getHookContiner()
 			->run( 'SMW::Config::BeforeCompletion', [ &$configuration ] );

@@ -50,7 +50,6 @@ class ExpLiteral extends ExpElement {
 	 * @throws InvalidArgumentException
 	 */
 	public function __construct( $lexicalForm, $datatype = '', $lang = '', DataItem $dataItem = null ) {
-
 		if ( !is_string( $lexicalForm ) ) {
 			throw new InvalidArgumentException( '$lexicalForm needs to be a string' );
 		}
@@ -116,7 +115,6 @@ class ExpLiteral extends ExpElement {
 	 * @return array
 	 */
 	public function getSerialization() {
-
 		$serialization = [
 			'type'     => self::TYPE_LITERAL,
 			'lexical'  => $this->lexicalForm,
@@ -131,7 +129,6 @@ class ExpLiteral extends ExpElement {
 	 * @see ExpElement::newFromSerialization
 	 */
 	protected static function deserialize( $serialization ) {
-
 		if ( !isset( $serialization['lexical'] ) || !isset( $serialization['datatype'] ) || !isset( $serialization['lang'] ) ) {
 			throw new RuntimeException( "Invalid format caused by a missing lexical/datatype element" );
 		}

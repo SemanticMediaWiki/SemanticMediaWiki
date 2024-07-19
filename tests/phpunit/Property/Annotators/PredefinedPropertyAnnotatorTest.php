@@ -33,7 +33,6 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -57,7 +56,6 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider specialPropertiesDataProvider
 	 */
 	public function testAddSpecialProperties( array $parameters, array $expected ) {
-
 		$semanticData = $this->semanticDataFactory
 			->setSubject( $parameters['subject'] )
 			->newEmptySemanticData();
@@ -90,7 +88,6 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function specialPropertiesDataProvider() {
-
 		$provider = [];
 
 		#0 Unknown

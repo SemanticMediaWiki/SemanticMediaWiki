@@ -36,7 +36,6 @@ class PropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			PropertyValueResourceBuilder::class,
 			new PropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class PropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddResourceValue() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN );
 

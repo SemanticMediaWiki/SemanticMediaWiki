@@ -26,7 +26,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NonNegativeIntegerConstraint::class,
 			new NonNegativeIntegerConstraint()
@@ -34,7 +33,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new NonNegativeIntegerConstraint();
 
 		$this->assertEquals(
@@ -44,7 +42,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new NonNegativeIntegerConstraint();
 
 		$this->assertFalse(
@@ -53,7 +50,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_non_negative_integer() {
-
 		$constraint = [
 			'non_negative_integer' => true
 		];
@@ -89,7 +85,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_non_negative_integer_ThrowsException() {
-
 		$constraint = [
 			'non_negative_integer' => true
 		];
@@ -101,7 +96,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

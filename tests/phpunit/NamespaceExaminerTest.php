@@ -18,7 +18,6 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NamespaceExaminer::class,
 			new NamespaceExaminer( [] )
@@ -26,7 +25,6 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInNamespace_Title() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,7 +48,6 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInNamespace_DIWikiPage() {
-
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -74,7 +71,6 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsSemanticEnabled() {
-
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 		$instance->setValidNamespaces( [ NS_MAIN ] );
 
@@ -90,7 +86,6 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoNumberNamespaceThrowsException() {
-
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -101,7 +96,6 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	 * Bug 51435; return false instead of an Exception
 	 */
 	public function testNoValidNamespaceException() {
-
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 
 		$this->assertFalse(

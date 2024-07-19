@@ -128,7 +128,6 @@ class PrintRequest {
 	 * @param string $text
 	 */
 	public function markThisLabel( $text ) {
-
 		if ( $this->m_mode !== self::PRINT_THIS ) {
 			return;
 		}
@@ -172,7 +171,6 @@ class PrintRequest {
 	 * @return string
 	 */
 	public function getCanonicalLabel() {
-
 		if ( $this->m_mode === self::PRINT_PROP ) {
 			return $this->m_data->getDataItem()->getCanonicalLabel();
 		} elseif ( $this->m_mode === self::PRINT_CHAIN ) {
@@ -229,7 +227,6 @@ class PrintRequest {
 	 * @return string
 	 */
 	public function getTypeID() {
-
 		if ( $this->m_typeid !== false ) {
 			return $this->m_typeid;
 		}
@@ -254,7 +251,6 @@ class PrintRequest {
 	 * @return string
 	 */
 	public function getHash() {
-
 		if ( $this->m_hash !== false ) {
 			return $this->m_hash;
 		}
@@ -279,7 +275,6 @@ class PrintRequest {
 	 *                include the extra print request parameters
 	 */
 	public function getSerialisation( $showparams = false ) {
-
 		// In case of  disconnected instance (QueryProcessor::addThisPrintout as
 		// part of a post-processing) return an empty serialization when the
 		// mainLabel is available to avoid an extra `?...`
@@ -358,7 +353,6 @@ class PrintRequest {
 	 * @return PrintRequest|null
 	 */
 	public static function newFromText( $text, $showMode = false, $useCanonicalLabel = false ) {
-
 		$options = [
 			'show_mode' => $showMode,
 			'canonical_label' => $useCanonicalLabel

@@ -94,7 +94,6 @@ class GetPreferences implements HookListener {
 	 * @return true
 	 */
 	public function process( User $user, array &$preferences ) {
-
 		$otherPreferences = [];
 		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );
 		$this->permissionExaminer->setUser( $user );
@@ -182,7 +181,6 @@ class GetPreferences implements HookListener {
 	}
 
 	private function getProfileList() : array {
-
 		$facetedSearchProfile = new FacetedSearchProfile(
 			$this->schemaFactory
 		);

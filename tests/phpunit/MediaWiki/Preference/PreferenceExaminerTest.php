@@ -29,7 +29,6 @@ class PreferenceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PreferenceExaminer::class,
 			new PreferenceExaminer()
@@ -37,7 +36,6 @@ class PreferenceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasPreferenceOf() {
-
 		$this->user->expects( $this->any() )
 			->method( 'getOption' )
 			->with( $this->equalTo( 'foo' ) )
@@ -54,7 +52,6 @@ class PreferenceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasPreferenceOf_NoUser() {
-
 		$instance = new PreferenceExaminer();
 
 		$this->assertInternalType(

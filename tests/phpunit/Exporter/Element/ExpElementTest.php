@@ -19,7 +19,6 @@ use SMW\Exporter\Element\ExpResource;
 class ExpElementTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = $this->getMockBuilder( '\SMW\Exporter\Element\ExpElement' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -40,7 +39,6 @@ class ExpElementTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetDataItem( ExpElement $element ) {
-
 		if ( $element->getDataItem() === null ) {
 			$this->assertNull(
 				$element->getDataItem()
@@ -57,7 +55,6 @@ class ExpElementTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider instanceProvider
 	 */
 	public function testSerielization( ExpElement $element ) {
-
 		$serialization = ExpElement::newFromSerialization(
 			$element->getSerialization()
 		);
@@ -69,7 +66,6 @@ class ExpElementTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function instanceProvider() {
-
 		$provider = [];
 
 		$provider[] = [ new ExpResource( 'foo' ) ];

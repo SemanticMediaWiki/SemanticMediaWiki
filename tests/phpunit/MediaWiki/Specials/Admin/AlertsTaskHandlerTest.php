@@ -38,7 +38,6 @@ class AlertsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AlertsTaskHandler::class,
 			new AlertsTaskHandler( $this->outputFormatter, [] )
@@ -46,7 +45,6 @@ class AlertsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getName', 'getHtml' ] )

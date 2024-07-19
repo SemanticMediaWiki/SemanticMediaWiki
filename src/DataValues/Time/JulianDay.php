@@ -139,7 +139,6 @@ class JulianDay implements CalendarModel {
 	 * @throws RuntimeException
 	 */
 	public static function JD2Date( $jdValue, $calendarModel = null ) {
-
 		if ( $calendarModel === null ) { // 1582/10/15
 			$calendarModel = $jdValue < self::J1582 ? self::CM_JULIAN : self::CM_GREGORIAN;
 		}

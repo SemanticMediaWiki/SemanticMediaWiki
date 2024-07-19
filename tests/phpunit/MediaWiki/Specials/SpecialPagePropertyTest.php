@@ -44,7 +44,6 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\SpecialPageProperty',
 			new SpecialPageProperty()
@@ -55,7 +54,6 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryParameterProvider
 	 */
 	public function testQueryParameter( $query, $expected ) {
-
 		$instance = new SpecialPageProperty();
 
 		$instance->getContext()->setTitle(
@@ -71,7 +69,6 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRequestParameter() {
-
 		$request = [
 			'type' => 'Has subobject',
 			'from' => 'Bar'
@@ -100,7 +97,6 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryParameterProvider() {
-
 		#0
 		$provider[] = [
 			'Has page::Has prop',

@@ -16,7 +16,6 @@ use SMW\Factbox\FactboxFactory;
 class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FactboxFactory::class,
 			new FactboxFactory()
@@ -24,7 +23,6 @@ class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructCachedFactbox() {
-
 		$instance = new FactboxFactory();
 
 		$this->assertInstanceOf(
@@ -34,7 +32,6 @@ class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructCheckMagicWords() {
-
 		$instance = new FactboxFactory();
 
 		$this->assertInstanceOf(
@@ -44,7 +41,6 @@ class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructFactbox() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

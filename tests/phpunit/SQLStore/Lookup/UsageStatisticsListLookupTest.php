@@ -25,7 +25,6 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 	private $requestOptions;
 
 	protected function setUp() : void {
-
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -36,7 +35,6 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\Lookup\UsageStatisticsListLookup',
 			new UsageStatisticsListLookup( $this->store, $this->propertyStatisticsStore )
@@ -44,7 +42,6 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListLookupInterfaceMethodAccess() {
-
 		$instance = new UsageStatisticsListLookup(
 			$this->store,
 			$this->propertyStatisticsStore
@@ -66,7 +63,6 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForInvalidTableThrowsException() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -100,7 +96,6 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider bySegmentDataProvider
 	 */
 	public function testfetchList( $segment, $type ) {
-
 		$row = new \stdClass;
 		$row->o_hash = 42;
 		$row->count = 1001;

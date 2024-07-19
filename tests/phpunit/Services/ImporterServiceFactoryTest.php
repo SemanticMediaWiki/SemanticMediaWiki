@@ -67,7 +67,6 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ImporterServiceFactory::class,
 			new ImporterServiceFactory( $this->containerBuilder )
@@ -75,7 +74,6 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructImportStringSource() {
-
 		$instance = new ImporterServiceFactory(
 			$this->containerBuilder
 		);
@@ -87,7 +85,6 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructWikiImporter() {
-
 		$importSource = $this->getMockBuilder( '\ImportSource' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -103,7 +100,6 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructImporter() {
-
 		$contentIterator = $this->getMockBuilder( '\SMW\Importer\ContentIterator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -119,7 +115,6 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructJsonContentIterator() {
-
 		$instance = new ImporterServiceFactory(
 			$this->containerBuilder
 		);

@@ -74,7 +74,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * any service is created.
 	 */
 	public static function setUpBeforeClass() : void {
-
 		$defaultSettingKeys = [
 			'smwgQEqualitySupport'
 		];
@@ -152,7 +151,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function tearDown() : void {
-
 		// If setUp is skipped early this might not be initialized
 		if ( $this->testEnvironment !== null ) {
 			$this->testEnvironment->tearDown();
@@ -170,7 +168,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * scratch
 	 */
 	public function run( ?TestResult $result = null ) : TestResult {
-
 		$this->getStore()->clear();
 
 		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
@@ -213,7 +210,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function skipTestForMediaWikiVersionLowerThan( $version, $message = '' ) {
-
 		if ( $message === '' ) {
 			$message = "This test is skipped for MediaWiki version " . MW_VERSION;
 		}
@@ -224,7 +220,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function skipTestForDatabase( $excludedDatabase, $message = '' ) {
-
 		if ( is_string( $excludedDatabase ) ) {
 			$excludedDatabase = [ $excludedDatabase ];
 		}
@@ -239,7 +234,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function skipTestForStore( $excludeStore ) {
-
 		$store = get_class( $this->getStore() );
 
 		if ( $store == $excludeStore ) {
@@ -262,7 +256,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function checkIfDatabaseCanBeUsedOtherwiseSkipTest() {
-
 		if ( !$this->isUsableUnitTestDatabase ) {
 			$this->markTestSkipped(
 				"Database was excluded and is not expected to support the test"
@@ -271,7 +264,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function checkIfStoreCanBeUsedOtherwiseSkipTest() {
-
 		$store = get_class( $this->getStore() );
 
 		if ( in_array( $store, (array)$this->storesToBeExcluded ) ) {
@@ -282,7 +274,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function destroyDatabaseTables( $destroyDatabaseTables ) {
-
 		if ( $this->isUsableUnitTestDatabase && $destroyDatabaseTables ) {
 			try {
 				$this->testDatabaseTableBuilder->doDestroy();

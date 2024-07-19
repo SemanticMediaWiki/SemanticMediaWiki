@@ -36,7 +36,6 @@ class KeywordPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			KeywordPropertyValueResourceBuilder::class,
 			new KeywordPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class KeywordPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	}
 
 	public function testIsNotResourceBuilderForNonExternalIdentifierTypedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new KeywordPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class KeywordPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	}
 
 	public function testAddResourceValueForValidProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_keyw' );
 

@@ -49,7 +49,6 @@ class ImportValueParser implements ValueParser {
 	 * @return array|null
 	 */
 	public function parse( $value ) {
-
 		list( $namespace, $section, $controlledVocabulary ) = $this->splitByNamespaceSection(
 			$value
 		);
@@ -86,7 +85,6 @@ class ImportValueParser implements ValueParser {
 	 * @return array|null
 	 */
 	private function splitByNamespaceSection( $value ) {
-
 		if ( strpos( $value, ':' ) === false ) {
 
 			$this->errors[] = [
@@ -126,7 +124,6 @@ class ImportValueParser implements ValueParser {
 	 * @return array|null
 	 */
 	private function checkForValidType( $namespace, $section, $uri, $typelist ) {
-
 		if ( $uri === '' ) {
 
 			$this->errors[] = [
@@ -155,7 +152,6 @@ class ImportValueParser implements ValueParser {
 	 * @return array|null
 	 */
 	private function doParse( $controlledVocabulary ) {
-
 		$list = [];
 		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $controlledVocabulary ) );
 

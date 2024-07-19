@@ -20,7 +20,6 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			IntlNumberFormatter::class,
 			new IntlNumberFormatter( 10000 )
@@ -36,7 +35,6 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider numberProvider
 	 */
 	public function testLocalizedFormattedNumber( $maxNonExpNumber, $number, $userLanguage, $contentLanguage, $expected ) {
-
 		$instance = new IntlNumberFormatter( $maxNonExpNumber );
 
 		$instance->setOption( IntlNumberFormatter::USER_LANGUAGE, $userLanguage );
@@ -49,7 +47,6 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testZeroPadding() {
-
 		$expected = '1000(foo)42';
 
 		$instance = new IntlNumberFormatter( 10000 );
@@ -68,7 +65,6 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider unformattedNumberByPrecisionProvider
 	 */
 	public function testGetUnformattedNumberByPrecision( $maxNonExpNumber, $number, $precision, $userLanguage, $contentLanguage, $expected ) {
-
 		$instance = new IntlNumberFormatter( $maxNonExpNumber );
 
 		$instance->setOption( IntlNumberFormatter::USER_LANGUAGE, $userLanguage );
@@ -81,7 +77,6 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompareFloatValue() {
-
 		$instance = new IntlNumberFormatter( 1000 );
 
 		$instance->setOption( IntlNumberFormatter::USER_LANGUAGE, 'en' );
@@ -106,7 +101,6 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider separatorProvider
 	 */
 	public function testGetSeparatorByLanguage( $type, $locale, $userLanguage, $contentLanguage, $expected ) {
-
 		$instance = new IntlNumberFormatter( 10000000 );
 
 		$instance->setOption( IntlNumberFormatter::USER_LANGUAGE, $userLanguage );
@@ -119,7 +113,6 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCustomSeparator() {
-
 		$instance = new IntlNumberFormatter( 10000000 );
 
 		$instance->setOption( IntlNumberFormatter::DECIMAL_SEPARATOR, 'FOO' );
@@ -137,7 +130,6 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryTogetSeparatorByLanguageOnInvalidTypeThrowsException() {
-
 		$instance = new IntlNumberFormatter( 10000000 );
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -145,7 +137,6 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function numberProvider() {
-
 		$provider[] = [
 			10000,
 			1000,
@@ -209,7 +200,6 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function unformattedNumberByPrecisionProvider() {
-
 		$provider['un.1'] = [
 			10000,
 			1000,
@@ -313,7 +303,6 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function separatorProvider() {
-
 		$provider['1.en'] = [
 			IntlNumberFormatter::DECIMAL_SEPARATOR,
 			IntlNumberFormatter::USER_LANGUAGE,

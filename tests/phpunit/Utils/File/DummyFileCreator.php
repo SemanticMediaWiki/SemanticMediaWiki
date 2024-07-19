@@ -67,7 +67,6 @@ class DummyFileCreator {
 	}
 
 	private function createFile( $desiredDestName, $content = '' ) {
-
 		$filename = $this->getLocationForTemporaryFile( $desiredDestName );
 
 		$fh = fopen( $filename, 'w' );
@@ -88,7 +87,6 @@ class DummyFileCreator {
 	}
 
 	private function getFile( $path ) {
-
 		$path = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $path );
 
 		if ( is_readable( $path ) ) {

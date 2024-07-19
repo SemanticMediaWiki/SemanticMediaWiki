@@ -60,7 +60,6 @@ class TransactionHandler {
 	 * @since 3.1
 	 */
 	public function muteTransactionProfiler(): ?ScopedCallback {
-
 		if ( $this->transactionProfiler === null ) {
 			return null;
 		}
@@ -114,7 +113,6 @@ class TransactionHandler {
 	 * @throws RuntimeException
 	 */
 	public function markSectionTransaction( $fname = __METHOD__ ) {
-
 		if ( $this->sectionTransaction !== null ) {
 			throw new RuntimeException(
 				"Trying to begin a new section transaction while {$this->sectionTransaction} is still active!"
@@ -130,7 +128,6 @@ class TransactionHandler {
 	 * @param string $fname
 	 */
 	public function detachSectionTransaction( $fname = __METHOD__ ) {
-
 		if ( $this->sectionTransaction !== $fname ) {
 			throw new RuntimeException(
 				"Trying to end an invalid section transaction (registered: {$this->sectionTransaction}, requested: {$fname})"
@@ -150,7 +147,6 @@ class TransactionHandler {
 	 * @return mixed A value to pass to commitAndWaitForReplication
 	 */
 	public function getEmptyTransactionTicket( $fname = __METHOD__ ) {
-
 		$ticket = null;
 
 		// @see LBFactory::getEmptyTransactionTicket
@@ -178,7 +174,6 @@ class TransactionHandler {
 	 * @param array $opts Options to waitForReplication
 	 */
 	public function commitAndWaitForReplication( $fname, $ticket, array $opts = [] ) {
-
 		if ( !is_int( $ticket ) || !method_exists( $this->loadBalancerFactory, 'commitAndWaitForReplication' ) ) {
 			return;
 		}

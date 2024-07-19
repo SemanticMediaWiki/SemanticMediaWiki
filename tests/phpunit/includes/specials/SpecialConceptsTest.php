@@ -29,7 +29,6 @@ class SpecialConceptsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SpecialConcepts::class,
 			new SpecialConcepts()
@@ -37,7 +36,6 @@ class SpecialConceptsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecute() {
-
 		$expected = 'p class="smw-special-concept-docu plainlinks"';
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
@@ -68,7 +66,6 @@ class SpecialConceptsTest extends \PHPUnit_Framework_TestCase {
 	 * @depends testExecute
 	 */
 	public function testGetHtmlForAnEmptySubject() {
-
 		$instance = new SpecialConcepts();
 
 		$this->stringValidator->assertThatStringContains(
@@ -81,7 +78,6 @@ class SpecialConceptsTest extends \PHPUnit_Framework_TestCase {
 	 * @depends testGetHtmlForAnEmptySubject
 	 */
 	public function testGetHtmlForSingleSubject() {
-
 		$subject  = DIWikiPage::newFromText( __METHOD__ );
 		$instance = new SpecialConcepts();
 

@@ -19,7 +19,6 @@ class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\ManualEntryLogger',
 			new ManualEntryLogger()
@@ -27,7 +26,6 @@ class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLogToTableForNonLoggableEvent() {
-
 		$instance = new ManualEntryLogger();
 
 		$this->assertNull(
@@ -36,7 +34,6 @@ class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterLoggableEventType() {
-
 		$manualLogEntry = $this->getMockBuilder( '\ManualLogEntry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -55,7 +52,6 @@ class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLogToTableForLoggableEvent() {
-
 		$manualLogEntry = $this->getMockBuilder( '\ManualLogEntry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -82,7 +78,6 @@ class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLogToTableForLoggableEventWithPerformer() {
-
 		$performer = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();

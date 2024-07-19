@@ -71,7 +71,6 @@ class CachingTermsLookup extends TermsLookup {
 	 * @throws RuntimeException
 	 */
 	public function lookup( $type, Parameters $parameters ) {
-
 		if ( $type === 'concept' ) {
 			return $this->concept_lookup( $parameters );
 		}
@@ -99,7 +98,6 @@ class CachingTermsLookup extends TermsLookup {
 	 * @return array
 	 */
 	public function concept_lookup( Parameters $parameters ) {
-
 		// @see Indexer::delete
 		$parameters->set( 'id', md5( $parameters->get( 'id' ) ) );
 		$id = $parameters->get( 'id' );
@@ -184,7 +182,6 @@ class CachingTermsLookup extends TermsLookup {
 	 * @return array
 	 */
 	public function chain_lookup( Parameters $parameters ) {
-
 		$params = $parameters->get( 'params' );
 
 		if ( $params instanceof Condition ) {
@@ -257,7 +254,6 @@ class CachingTermsLookup extends TermsLookup {
 	 * @return array
 	 */
 	public function predef_lookup( Parameters $parameters ) {
-
 		$params = $parameters->get( 'params' );
 
 		if ( $params instanceof Condition ) {
@@ -325,7 +321,6 @@ class CachingTermsLookup extends TermsLookup {
 	 * @return array
 	 */
 	public function inverse_lookup( Parameters $parameters ) {
-
 		$params = $parameters->get( 'params' );
 
 		if ( $params instanceof Condition ) {

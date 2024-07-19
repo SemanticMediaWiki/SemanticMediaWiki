@@ -16,7 +16,6 @@ use SMW\Services\Exception\ServiceNotFoundException;
 class ServiceNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new ServiceNotFoundException( 'foo' );
 
 		$this->assertInstanceof(

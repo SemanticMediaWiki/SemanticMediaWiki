@@ -16,7 +16,6 @@ use SMW\ParameterProcessorFactory;
 class ParameterProcessorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\ParameterProcessorFactory',
 			new ParameterProcessorFactory()
@@ -24,7 +23,6 @@ class ParameterProcessorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToEliminateFirstParameterIfObject() {
-
 		$parameter = [
 			new \stdClass
 		];
@@ -42,7 +40,6 @@ class ParameterProcessorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFromArray() {
-
 		$parameter = [
 			'La' => 'Lu'
 		];

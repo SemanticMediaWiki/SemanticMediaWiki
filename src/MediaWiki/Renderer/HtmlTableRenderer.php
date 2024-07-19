@@ -189,7 +189,6 @@ class HtmlTableRenderer {
 	 * @return string
 	 */
 	public function getHtml( $attributes = [] ) {
-
 		$table = $this->transpose ? $this->buildTransposedTable() : $this->buildStandardTable();
 
 		if ( $this->transpose ) {
@@ -224,7 +223,6 @@ class HtmlTableRenderer {
 	}
 
 	private function doConcatenatedRows() {
-
 		if ( $this->htmlContext ) {
 			return Html::rawElement( 'tbody', [], implode( '', $this->tableRows ) );
 		}
@@ -290,7 +288,6 @@ class HtmlTableRenderer {
 	}
 
 	private function getTransposedCell( $index, $row ) {
-
 		if ( isset( $row['cells'][$index] ) ) {
 			return $row['cells'][$index];
 		}

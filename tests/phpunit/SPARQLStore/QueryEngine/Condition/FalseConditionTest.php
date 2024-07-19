@@ -16,7 +16,6 @@ use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 class FalseConditionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\SPARQLStore\QueryEngine\Condition\FalseCondition',
 			new FalseCondition()
@@ -24,7 +23,6 @@ class FalseConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommonMethods() {
-
 		$instance = new FalseCondition();
 
 		$this->assertNotEmpty(

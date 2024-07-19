@@ -68,7 +68,6 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-settings-title' ),
 			[
@@ -94,7 +93,6 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-settings-title' ) ] )
 		);
@@ -163,7 +161,6 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	}
 
 	private function cleanPath( array &$options ) {
-
 		foreach ( $options as $key => &$value ) {
 			if ( is_array( $value ) ) {
 				$this->cleanPath( $value );

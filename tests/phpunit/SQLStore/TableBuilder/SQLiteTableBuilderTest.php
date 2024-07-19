@@ -21,7 +21,6 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 
 	protected function setUp() : void {
-
 		$this->connection = $this->createMock( IMaintainableDatabase::class );
 
 		$this->connection->expects( $this->any() )
@@ -41,7 +40,6 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SQLiteTableBuilder::class,
 			SQLiteTableBuilder::factory( $this->connection )

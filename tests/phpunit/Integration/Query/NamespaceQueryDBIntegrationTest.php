@@ -47,7 +47,6 @@ class NamespaceQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 		$fixturesCleaner
 			->purgeSubjects( $this->subjects )
@@ -57,7 +56,6 @@ class NamespaceQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testConjunctiveNamespaceQueryThatIncludesSubobject() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 		$this->subjects[] = $semanticData->getSubject();
 

@@ -65,7 +65,6 @@ class EntityCollation {
 	 * @since 3.2
 	 */
 	public function check() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

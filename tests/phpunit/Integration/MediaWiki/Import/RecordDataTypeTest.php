@@ -49,7 +49,6 @@ class RecordDataTypeTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -57,7 +56,6 @@ class RecordDataTypeTest extends DatabaseTestCase {
 	}
 
 	public function testImportOfRecordValues() {
-
 		$this->importedTitles = [
 			'Property:Has record number field',
 			'Property:Has record page field',
@@ -178,7 +176,6 @@ class RecordDataTypeTest extends DatabaseTestCase {
 	}
 
 	protected function assertThatSemanticDataValuesAreSet( $expected, $semanticData ) {
-
 		$runValueAssert = false;
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -199,7 +196,6 @@ class RecordDataTypeTest extends DatabaseTestCase {
 	}
 
 	protected function assertThatRecordValuesAreSet( $expected ) {
-
 		$runValueAssert = false;
 		$values = [];
 

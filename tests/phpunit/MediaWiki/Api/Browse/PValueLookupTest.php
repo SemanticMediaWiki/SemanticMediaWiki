@@ -24,7 +24,6 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 
 	protected function setUp() : void {
-
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -36,7 +35,6 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PValueLookup::class,
 			new PValueLookup( $this->store )
@@ -44,7 +42,6 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_wpg_property() {
-
 		$row = new \stdClass;
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
@@ -125,7 +122,6 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_wpg_propertyChain() {
-
 		$row = new \stdClass;
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
@@ -196,7 +192,6 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_txt_property() {
-
 		$row = new \stdClass;
 		$row->o_hash = 'Test';
 		$row->smw_id = 42;

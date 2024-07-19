@@ -41,7 +41,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ProtectionValidator::class,
 			new ProtectionValidator( $this->store, $this->entityCache, $this->permissionManager )
@@ -49,7 +48,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetEditProtectionRight() {
-
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
@@ -67,7 +65,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasEditProtectionOnNamespace() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN, '', 'Bar' );
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
 
@@ -98,7 +95,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasProtection() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN, '', 'Bar' );
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
 
@@ -125,7 +121,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasProtectionFromCache() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN, '', 'Bar' );
 
 		$this->entityCache->expects( $this->once() )
@@ -148,7 +143,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasChangePropagationProtectionOnCategory_FromCache() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_CATEGORY );
 
 		$this->entityCache->expects( $this->once() )
@@ -171,7 +165,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasChangePropagationProtectionOnCategory_Disabled() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_CATEGORY );
 
 		$this->entityCache->expects( $this->never() )
@@ -193,7 +186,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoChangePropagationProtectionOnCategory_FromCache() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_CATEGORY );
 
 		$this->entityCache->expects( $this->once() )
@@ -216,7 +208,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoChangePropagationProtectionOnCategory_WithFalseSetting() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_CATEGORY );
 
 		$this->entityCache->expects( $this->never() )
@@ -238,7 +229,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetCreateProtectionRight() {
-
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
@@ -256,7 +246,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasCreateProtection() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -285,7 +274,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasCreateProtection_NullTitle() {
-
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
@@ -298,7 +286,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasEditProtection_NullTitle() {
-
 		$instance = new ProtectionValidator(
 			$this->store,
 			$this->entityCache,
@@ -311,7 +298,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsClassifiedAsImportPerformerProtected_NoImportersNoProtection() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -426,7 +412,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterPropertyChangeListener() {
-
 		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -447,7 +432,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidateCacheFromChangeRecord() {
-
 		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -486,7 +470,6 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCacheStateChangeFromChangeRecord() {
-
 		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();

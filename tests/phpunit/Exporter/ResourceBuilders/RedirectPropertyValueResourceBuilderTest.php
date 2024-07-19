@@ -36,7 +36,6 @@ class RedirectPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCa
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			RedirectPropertyValueResourceBuilder::class,
 			new RedirectPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class RedirectPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCa
 	}
 
 	public function testIsNotResourceBuilderForNonRediProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new RedirectPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class RedirectPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCa
 	}
 
 	public function testAddResourceValueForRediPropert() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_REDI' );
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 

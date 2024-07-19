@@ -16,7 +16,6 @@ use SMW\Exception\PredefinedPropertyLabelMismatchException;
 class PredefinedPropertyLabelMismatchExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new PredefinedPropertyLabelMismatchException();
 
 		$this->assertInstanceof(

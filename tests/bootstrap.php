@@ -43,7 +43,6 @@ define( 'SMW_PHPUNIT_TABLE_PREFIX', '' );
  * Register a shutdown function the invoke a final clean-up
  */
 register_shutdown_function( function() {
-
 	if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 		return;
 	}

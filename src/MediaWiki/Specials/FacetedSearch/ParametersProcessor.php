@@ -125,7 +125,6 @@ class ParametersProcessor {
 	 * @param WebRequest $request
 	 */
 	public function checkRequest( WebRequest $request ) {
-
 		// Was not filtered and the query checksum is different which means
 		// the query string was modified
 		if (
@@ -158,7 +157,6 @@ class ParametersProcessor {
 	 * @param array|null $params
 	 */
 	public function process( WebRequest $request, $params ) {
-
 		$this->parameters = [];
 
 		$query = $request->getVal( 'q' );
@@ -208,7 +206,6 @@ class ParametersProcessor {
 	}
 
 	private function fromQueryParameter( $query ) {
-
 		$params = '';
 
 		// Allow Category:Foo, Property:Bar, Concept:Foobar
@@ -236,7 +233,6 @@ class ParametersProcessor {
 	}
 
 	private function makeParameters( $query, $request ) {
-
 		$this->queryString = $query[0] ?? '';
 
 		$parameters = [];
@@ -310,7 +306,6 @@ class ParametersProcessor {
 	}
 
 	private function fieldConditions( $fields ) {
-
 		if ( !is_array( $fields ) || $fields === [] ) {
 			return [];
 		}
@@ -344,7 +339,6 @@ class ParametersProcessor {
 	}
 
 	private function propertyFilterConditions( $values, $clear ) {
-
 		$filters = array_keys( (array)$values );
 		$this->propertyFilters = $filters;
 
@@ -372,7 +366,6 @@ class ParametersProcessor {
 	}
 
 	private function categoryFilterConditions( $values, $clear ) {
-
 		$filters = (array)$values;
 		$conditions = [];
 		$printRequests = [];
@@ -395,7 +388,6 @@ class ParametersProcessor {
 	}
 
 	private function valueFilterConditions( $values, $cond, $clear ) {
-
 		if ( is_string( $values ) ) {
 			$filters = array_filter( explode( '|', $values ) );
 		} else {
@@ -481,7 +473,6 @@ class ParametersProcessor {
 	}
 
 	private function addDefaultPrintRequests( string $query ) {
-
 		preg_match_all('/\[\[(.*?)\]\]/i', $query, $matches );
 		$printRequests = [];
 

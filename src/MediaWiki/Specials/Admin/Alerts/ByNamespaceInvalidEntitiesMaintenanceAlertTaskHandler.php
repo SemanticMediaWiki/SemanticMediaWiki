@@ -51,7 +51,6 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$count = $this->fetchCount();
 
 		if ( $count == 0 ) {
@@ -62,7 +61,6 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 	}
 
 	private function fetchCount() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -78,7 +76,6 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 	}
 
 	private function buildHTML( $count ) {
-
 		$html = Html::rawElement(
 			'fieldset',
 			[

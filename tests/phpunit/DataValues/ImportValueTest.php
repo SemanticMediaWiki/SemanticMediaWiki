@@ -35,7 +35,6 @@ class ImportValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ImportValue',
 			new ImportValue()
@@ -43,7 +42,6 @@ class ImportValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorForInvalidUserValue() {
-
 		$instance = new ImportValue();
 		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 

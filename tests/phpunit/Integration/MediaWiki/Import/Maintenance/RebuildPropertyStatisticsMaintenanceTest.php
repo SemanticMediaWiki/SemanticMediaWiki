@@ -42,7 +42,6 @@ class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -50,7 +49,6 @@ class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testRebuildPropertyStatistics() {
-
 		$this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',

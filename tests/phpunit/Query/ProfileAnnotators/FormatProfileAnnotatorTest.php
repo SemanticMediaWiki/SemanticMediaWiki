@@ -29,7 +29,6 @@ class FormatProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -41,7 +40,6 @@ class FormatProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateProfile() {
-
 		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
 
 		$container = new DIContainer(

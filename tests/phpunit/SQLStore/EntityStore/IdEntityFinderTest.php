@@ -61,7 +61,6 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			IdEntityFinder::class,
 			new IdEntityFinder( $this->store, $this->iteratorFactory, $this->idCacheManager )
@@ -69,7 +68,6 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDataItemForNonCachedId() {
-
 		$row = new \stdClass;
 		$row->smw_id = 42;
 		$row->smw_title = 'Foo';
@@ -111,7 +109,6 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDataItemForCachedId() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
@@ -132,7 +129,6 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPredefinedPropertyItem() {
-
 		$dataItem = new DIWikiPage( '_MDAT', SMW_NS_PROPERTY );
 		$dataItem->setId( 42 );
 		$dataItem->setSortKey( 'bar' );
@@ -173,7 +169,6 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNullForUnknownId() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );
@@ -194,7 +189,6 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDataItemsFromList() {
-
 		$expected = new DIWikiPage( 'Foo', 0, '', '' );
 		$expected->setId( 42 );
 		$expected->setSortKey( '...' );

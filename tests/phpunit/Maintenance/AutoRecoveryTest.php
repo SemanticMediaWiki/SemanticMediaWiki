@@ -21,7 +21,6 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	private $site;
 
 	protected function setUp() : void {
-
 		$this->testEnvironment =  new TestEnvironment();
 		$this->site = \SMW\Site::id();
 
@@ -36,7 +35,6 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AutoRecovery::class,
 			new AutoRecovery( 'Foo' )
@@ -44,7 +42,6 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckForID() {
-
 		$contents = [
 			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => false ] ] ]
 		];
@@ -68,7 +65,6 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSet() {
-
 		$init = [
 			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => false ] ] ]
 		];
@@ -109,7 +105,6 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetClosed() {
-
 		$init = [
 			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => 42 ] ] ]
 		];
@@ -149,7 +144,6 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSafeMargin() {
-
 		$init = [
 			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => 42 ] ] ]
 		];

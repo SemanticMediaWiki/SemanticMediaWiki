@@ -21,7 +21,6 @@ class TestClient extends Client {
 	 * @param array $params
 	 */
 	public function bulk( array $params ) {
-
 		if ( $params === [] ) {
 			return;
 		}
@@ -41,7 +40,6 @@ class TestClient extends Client {
 	 * @return mixed
 	 */
 	public function count( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -62,7 +60,6 @@ class TestClient extends Client {
 	 * @return array
 	 */
 	public function search( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -81,7 +78,6 @@ class TestClient extends Client {
 	 * @return mixed
 	 */
 	public function explain( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}

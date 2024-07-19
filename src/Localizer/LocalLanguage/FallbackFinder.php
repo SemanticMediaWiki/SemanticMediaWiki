@@ -60,7 +60,6 @@ class FallbackFinder {
 	 * @return string
 	 */
 	public function getFallbackLanguageBy( $languageCode = '' ) {
-
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		if ( isset( $this->fallbackLanguages[$languageCode] ) ) {

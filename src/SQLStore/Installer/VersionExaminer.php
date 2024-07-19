@@ -36,7 +36,6 @@ class VersionExaminer {
 	 * @param IDatabase $connection
 	 */
 	public function __construct( $connection ) {
-
 		if (
 			!$connection instanceof \Wikimedia\Rdbms\IDatabase &&
 			!$connection instanceof \IDatabase &&
@@ -65,7 +64,6 @@ class VersionExaminer {
 	 * @throws RuntimeException
 	 */
 	public function defineDatabaseRequirements( array $minRequirements ) : array {
-
 		$type = $this->connection->getType();
 
 		if ( !isset( $minRequirements[$type] ) ) {
@@ -89,7 +87,6 @@ class VersionExaminer {
 	 * @return bool
 	 */
 	public function meetsVersionMinRequirement( array $minRequirements ) : bool {
-
 		$this->messageReporter->reportMessage( "\nChecking version requirement ..." );
 		$this->messageReporter->reportMessage( "\n   ... done.\n" );
 
@@ -109,7 +106,6 @@ class VersionExaminer {
 	}
 
 	private function throwFalseAndNotice( $requirements = [] ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

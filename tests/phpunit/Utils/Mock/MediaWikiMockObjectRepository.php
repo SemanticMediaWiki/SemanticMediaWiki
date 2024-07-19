@@ -32,7 +32,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return User
 	 */
 	public function User() {
-
 		$user = $this->getMockBuilder( 'User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,7 +49,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return ParserOptions
 	 */
 	public function ParserOptions() {
-
 		$parserOptions = $this->getMockBuilder( 'ParserOptions' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -68,7 +66,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return ParserOutput
 	 */
 	public function ParserOutput() {
-
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -91,7 +88,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return WikiPage
 	 */
 	public function WikiPage() {
-
 		$wikiPage = $this->getMockBuilder( 'WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -113,7 +109,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return WikiFilePage
 	 */
 	public function WikiFilePage() {
-
 		$wikiPage = $this->getMockBuilder( 'WikiFilePage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -135,7 +130,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return File
 	 */
 	public function File() {
-
 		$wikiPage = $this->getMockBuilder( 'File' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -157,7 +151,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return Revision
 	 */
 	public function Revision() {
-
 		$revision = $this->getMockBuilder( 'Revision' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -182,7 +175,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return Title
 	 */
 	public function Title() {
-
 		// When interacting with a "real" Parser object, the Parser expects in
 		// in 1.21+ a content model to be present while in MW 1.19/1.20 such
 		// object is not required. In order to avoid operational obstruction a
@@ -266,7 +258,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return Skin
 	 */
 	public function Skin() {
-
 		$skin = $this->getMockBuilder( 'Skin' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -288,7 +279,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return SkinTemplate
 	 */
 	public function SkinTemplate() {
-
 		$skinTemplate = $this->getMockBuilder( 'SkinTemplate' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -306,7 +296,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return Parser
 	 */
 	public function Parser() {
-
 		$parser = $this->getMockBuilder( 'Parser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -328,7 +317,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return LinksUpdate
 	 */
 	public function LinksUpdate() {
-
 		$linksUpdate = $this->getMockBuilder( 'LinksUpdate' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -350,7 +338,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return OutputPage
 	 */
 	public function OutputPage() {
-
 		$outputPage = $this->getMockBuilder( 'OutputPage' )
 		->disableOriginalConstructor()
 		->getMock();
@@ -385,7 +372,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return DatabaseBase
 	 */
 	public function DatabaseBase() {
-
 		// DatabaseBase is an abstract class, use setMethods to implement
 		// required abstract methods
 		$requiredAbstractMethods = [
@@ -435,7 +421,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return Content
 	 */
 	public function Content() {
-
 		$methods = $this->builder->getInvokedMethods();
 
 		$content = $this->getMockBuilder( 'Content' )
@@ -459,7 +444,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return ContentHandler
 	 */
 	public function ContentHandler() {
-
 		$requiredAbstractMethods = [
 			'serializeContent',
 			'unserializeContent',
@@ -490,7 +474,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return RequestContext
 	 */
 	public function RequestContext() {
-
 		$requestContext = $this->getMockForAbstractClass( 'RequestContext' );
 
 		return $requestContext;
@@ -502,7 +485,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 * @return Language
 	 */
 	public function Language() {
-
 		$language = $this->getMockBuilder( 'Language' )
 			->disableOriginalConstructor()
 			->getMock();

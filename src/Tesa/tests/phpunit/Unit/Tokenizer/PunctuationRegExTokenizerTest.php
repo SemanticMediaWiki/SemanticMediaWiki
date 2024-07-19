@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class PunctuationRegExTokenizerTest extends TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\PunctuationRegExTokenizer',
 			new PunctuationRegExTokenizer()
@@ -28,7 +27,6 @@ class PunctuationRegExTokenizerTest extends TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testTokenize( $string, $patternExemption, $expected ) {
-
 		$instance = new PunctuationRegExTokenizer();
 
 		$instance->setOption(
@@ -47,7 +45,6 @@ class PunctuationRegExTokenizerTest extends TestCase {
 	}
 
 	public function testisWordTokenizerFromInheritTokenizer() {
-
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -64,7 +61,6 @@ class PunctuationRegExTokenizerTest extends TestCase {
 	}
 
 	public function testTokenizeWithOption() {
-
 		$string = '123, 345';
 
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
@@ -93,7 +89,6 @@ class PunctuationRegExTokenizerTest extends TestCase {
 	}
 
 	public function stringProvider() {
-
 		$provider[] = array(
 			'123, 345^456&[foo:bar]',
 			'',

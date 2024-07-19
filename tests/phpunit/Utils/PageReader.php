@@ -26,7 +26,6 @@ class PageReader {
 	 * @throws UnexpectedValueException
 	 */
 	public function getPage() {
-
 		if ( $this->page instanceof \WikiPage ) {
 			return $this->page;
 		}
@@ -42,7 +41,6 @@ class PageReader {
 	 * @return text
 	 */
 	public function getContentAsText( Title $title ) {
-
 		$this->page = new \WikiPage( $title );
 		$content = $this->page->getContent();
 
@@ -53,7 +51,6 @@ class PageReader {
 	 * @since 2.2
 	 */
 	public function getEditInfo( Title $title ) {
-
 		$this->page = new \WikiPage( $title );
 
 		$editInfo = ServicesFactory::getInstance()->newMwCollaboratorFactory()->newEditInfo(

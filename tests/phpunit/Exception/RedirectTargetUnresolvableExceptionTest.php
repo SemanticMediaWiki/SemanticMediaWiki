@@ -16,7 +16,6 @@ use SMW\Exception\RedirectTargetUnresolvableException;
 class RedirectTargetUnresolvableExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new RedirectTargetUnresolvableException();
 
 		$this->assertInstanceof(

@@ -26,7 +26,6 @@ class PropertyTypeFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyTypeFinder::class,
 			new PropertyTypeFinder( $this->connection )
@@ -34,7 +33,6 @@ class PropertyTypeFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCountByType() {
-
 		$row = new \stdClass;
 		$row->count = 42;
 

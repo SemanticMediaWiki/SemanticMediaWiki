@@ -40,7 +40,6 @@ class IncomingSemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $message
 	 */
 	public function assertThatIncomingDataAreSet( array $incomingSemanticData, DIWikiPage $subject, $message ) {
-
 		if ( !isset( $incomingSemanticData['propertyKeys'] ) ) {
 			return;
 		}
@@ -62,7 +61,6 @@ class IncomingSemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function doAssertPropertiesAndValues( $incomingSemanticData, $incomingProperties, $subject, $message ) {
-
 		$incomingPropertyValues = [];
 
 		foreach ( $incomingProperties as $property ) {

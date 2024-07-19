@@ -26,7 +26,6 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 	private $logger;
 
 	protected function setUp() : void {
-
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -49,7 +48,6 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FileAttachment::class,
 			new FileAttachment( $this->store, $this->indexer, $this->bulk )
@@ -57,7 +55,6 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateAttachment() {
-
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 
 		$document = [
@@ -113,7 +110,6 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateAttachment_NoFileSha1() {
-
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 		$document = [];
 
@@ -145,7 +141,6 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateAttachment_NotExists() {
-
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->client->expects( $this->once() )
@@ -175,7 +170,6 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIndexAttachmentInfo() {
-
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -237,7 +231,6 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIndexAttachmentInfo_MissingId_ThrowsException() {
-
 		$attachmentAnnotator = $this->getMockBuilder( '\SMW\Elastic\Indexer\Attachment\AttachmentAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -269,7 +262,6 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIndexAttachmentInfo_MissingIdOnConsecutiveCalls_ThrowsException() {
-
 		$attachmentAnnotator = $this->getMockBuilder( '\SMW\Elastic\Indexer\Attachment\AttachmentAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -301,7 +293,6 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateAttachment_MissingId_ThrowsException() {
-
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();

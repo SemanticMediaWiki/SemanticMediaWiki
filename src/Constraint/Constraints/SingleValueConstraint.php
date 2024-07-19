@@ -52,7 +52,6 @@ class SingleValueConstraint implements Constraint {
 	 * {@inheritDoc}
 	 */
 	public function checkConstraint( array $constraint, $dataValue ) {
-
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -67,7 +66,6 @@ class SingleValueConstraint implements Constraint {
 	}
 
 	private function check( $single_value, $dataValue ) {
-
 		if ( $single_value === false ) {
 			return;
 		}
@@ -86,7 +84,6 @@ class SingleValueConstraint implements Constraint {
 	}
 
 	private function reportError( $dataValue, $property ) {
-
 		$this->hasViolation = true;
 
 		$error = [

@@ -18,14 +18,12 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 	private $jobQueueGroup;
 
 	protected function setUp() : void {
-
 		$this->jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JobQueue::class,
 			new JobQueue( $this->jobQueueGroup )
@@ -33,7 +31,6 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunFromQueue() {
-
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -54,7 +51,6 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPop() {
-
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -75,7 +71,6 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAck() {
-
 		$job = $this->getMockBuilder( '\Job' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getType', 'run' ] )
@@ -105,7 +100,6 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteWithDisabledCache() {
-
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'assertNotReadOnly', 'doDelete', 'doFlushCaches' ] )
@@ -133,7 +127,6 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPush() {
-
 		$fakeJob = $this->getMockBuilder( '\Job' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -146,7 +139,6 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLazyPush() {
-
 		if ( !method_exists( $this->jobQueueGroup, 'lazyPush' ) ) {
 			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
 		}
@@ -163,7 +155,6 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueueSizes() {
-
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'getQueueSizes' );
 
@@ -172,7 +163,6 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueueSize() {
-
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doGetSize', 'doFlushCaches' ] )
@@ -196,7 +186,6 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasPendingJob() {
-
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doGetSize' ] )
@@ -219,7 +208,6 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasPendingJobWithLegacyName() {
-
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doGetSize' ] )

@@ -19,7 +19,6 @@ class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			'\JsonContent',
 			new SchemaContent( 'foo' )
@@ -27,7 +26,6 @@ class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToJson() {
-
 		$text = json_encode( [ 'Foo' => 42 ] );
 
 		$instance = new SchemaContent( $text );
@@ -39,7 +37,6 @@ class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsYaml() {
-
 		if ( !class_exists( '\Symfony\Component\Yaml\Yaml' ) ) {
 			$this->markTestSkipped( 'Skipping because `Symfony\Component\Yaml\Yaml` is not available!' );
 		}
@@ -54,7 +51,6 @@ class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareSave() {
-
 		$schema = $this->getMockBuilder( '\SMW\Schema\SchemaDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -119,7 +115,6 @@ class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareSave_InvalidJSON() {
-
 		$schema = $this->getMockBuilder( '\SMW\Schema\SchemaDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -184,7 +179,6 @@ class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSerializationOfClassInstance() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -230,7 +224,6 @@ class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPreSaveTransform() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -254,7 +247,6 @@ class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFillParserOutput() {
-
 		$schema = $this->getMockBuilder( '\SMW\Schema\SchemaDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -322,7 +314,6 @@ class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFillParserOutput_MediaWikiTypeNotFoundException() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

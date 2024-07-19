@@ -28,7 +28,6 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	private Config $config;
 
 	protected function setUp() : void {
-
 		$this->logger = $this->createMock( LoggerInterface::class );
 
 		$this->lockManager = $this->createMock( LockManager::class );
@@ -37,7 +36,6 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConnectionProvider::class,
 			new ConnectionProvider( $this->lockManager, $this->config )
@@ -45,7 +43,6 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection_MissingEndpointsThrowsException() {
-
 		$config = new Config (
 			[
 				Config::DEFAULT_STORE => 'SMWElasticStore'
@@ -62,7 +59,6 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection_DummyClient() {
-
 		$config = new Config (
 			[
 				Config::DEFAULT_STORE => 'SMWSQLStore',
@@ -84,7 +80,6 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection_Client() {
-
 		if ( !class_exists( '\Elasticsearch\ClientBuilder' ) ) {
 			$this->markTestSkipped( "elasticsearch-php dependency is not available." );
 		}
@@ -110,7 +105,6 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionThrowsExceptionWhenNotInstalled() {
-
 		if ( class_exists( '\Elasticsearch\ClientBuilder' ) ) {
 			$this->markTestSkipped( "\Elasticsearch\ClientBuilder is available, no exception is thrown" );
 		}

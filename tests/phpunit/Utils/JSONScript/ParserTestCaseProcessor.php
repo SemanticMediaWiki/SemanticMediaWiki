@@ -96,7 +96,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param array $case
 	 */
 	public function process( array $case ) {
-
 		if ( !isset( $case['subject'] ) ) {
 			return;
 		}
@@ -115,7 +114,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertSemanticDataForCase( $case ) {
-
 		// Allows for data to be re-read from the DB instead of being fetched
 		// from the store-id-cache
 		if ( isset( $case['store']['clear-cache'] ) && $case['store']['clear-cache'] ) {
@@ -159,7 +157,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertTextFromParserOutputForCase( $case ) {
-
 		if ( !isset( $case['assert-output'] ) ) {
 			return;
 		}
@@ -227,7 +224,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertTextFromParsedMsgForCase( $case ) {
-
 		if ( !isset( $case['assert-msgoutput'] ) ) {
 			return;
 		}
@@ -256,7 +252,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function getSubjectFrom( $case, $checkExists = true ) {
-
 		$subject = DIWikiPage::newFromText(
 			$case['subject'],
 			isset( $case['namespace'] ) ? constant( $case['namespace'] ) : NS_MAIN

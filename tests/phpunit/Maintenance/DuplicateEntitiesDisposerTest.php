@@ -21,7 +21,6 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 
 	protected function setUp() : void {
-
 		$propertyTableIdReferenceDisposer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceDisposer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -49,7 +48,6 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DuplicateEntitiesDisposer::class,
 			new DuplicateEntitiesDisposer( $this->store )
@@ -57,7 +55,6 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindDuplicateEntityRecords() {
-
 		$idTable = $this->getMockBuilder( '\stdClss' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'findDuplicates' ] )
@@ -75,7 +72,6 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVerifyAndDispose_NoDuplicates() {
-
 		$this->store->expects( $this->never() )
 			->method( 'getConnection' );
 
@@ -91,7 +87,6 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVerifyAndDispose_NonIterable() {
-
 		$this->store->expects( $this->never() )
 			->method( 'getConnection' );
 
@@ -107,7 +102,6 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVerifyAndDispose_NoDuplicates_WithCache() {
-
 		$this->store->expects( $this->never() )
 			->method( 'getConnection' );
 
@@ -127,7 +121,6 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVerifyAndDispose_WithDuplicateRecord() {
-
 		$record = [
 			'smw_title' => 'Foo',
 			'smw_namespace' => 0,

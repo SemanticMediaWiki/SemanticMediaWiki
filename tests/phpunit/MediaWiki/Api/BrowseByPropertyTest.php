@@ -41,7 +41,6 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new BrowseByProperty(
 			$this->apiFactory->newApiMain( [] ),
 			'browsebyproperty'
@@ -54,7 +53,6 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecute() {
-
 		$list[] = [
 			new DIProperty( 'Foo' ),
 			42

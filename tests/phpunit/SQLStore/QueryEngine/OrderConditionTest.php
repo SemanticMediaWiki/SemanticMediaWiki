@@ -22,14 +22,12 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 	private $conditionBuilder;
 
 	protected function setUp() : void {
-
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			OrderCondition::class,
 			new OrderCondition( $this->conditionBuilder )
@@ -37,7 +35,6 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testApplyWithoutSortKey() {
-
 		$this->conditionBuilder->expects( $this->once() )
 			->method( 'getQuerySegmentList' );
 
@@ -46,7 +43,6 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testApplyWithInvalidSortKeyThrowsException() {
-
 		$querySegment = new QuerySegment();
 
 		$this->conditionBuilder->expects( $this->never() )
@@ -73,7 +69,6 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sortKeyProvider
 	 */
 	public function testApplyWithSortKey( $sortKeys ) {
-
 		$querySegment = new QuerySegment();
 
 		$this->conditionBuilder->expects( $this->once() )
@@ -92,7 +87,6 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function sortKeyProvider() {
-
 		$provider[] = [
 			[
 				'' => 'ASC'

@@ -47,7 +47,6 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableSchemaTaskHandler::class,
 			new TableSchemaTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
@@ -55,7 +54,6 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$methods = [
 			'setName',
 			'setMethod',
@@ -85,7 +83,6 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequest() {
-
 		$this->store->expects( $this->once() )
 			->method( 'setup' );
 

@@ -20,7 +20,6 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -32,7 +31,6 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoQueryForNonValue() {
-
 		$pageRequestOptions = new PageRequestOptions( 'Foo', [] );
 		$pageRequestOptions->initialize();
 
@@ -57,7 +55,6 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoQueryForExactValue() {
-
 		$pageRequestOptions = new PageRequestOptions( 'Foo/Bar', [] );
 		$pageRequestOptions->initialize();
 
@@ -82,7 +79,6 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoQueryForNearbyResults() {
-
 		$pageRequestOptions = new PageRequestOptions( 'Foo/Bar', [] );
 		$pageRequestOptions->initialize();
 
@@ -112,7 +108,6 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoQueryLinksReferences() {
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getId' ] )
 			->getMock();

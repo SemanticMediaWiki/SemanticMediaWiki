@@ -102,7 +102,6 @@ class DocumentCreator {
 	 * @return Document
 	 */
 	public function newFromSemanticData( SemanticData $semanticData ) : Document {
-
 		$time = microtime( true );
 		$this->subEntities = [];
 
@@ -138,7 +137,6 @@ class DocumentCreator {
 	}
 
 	private function newFromData( SemanticData $semanticData, $parent_id = null ) {
-
 		$subject = $semanticData->getSubject();
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 
@@ -303,7 +301,6 @@ class DocumentCreator {
 	}
 
 	private function makeSubject( DIWikiPage $subject ) {
-
 		$title = $subject->getDBKey();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $title[0] !== '_' ) {

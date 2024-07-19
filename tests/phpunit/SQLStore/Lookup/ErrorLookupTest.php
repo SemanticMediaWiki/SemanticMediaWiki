@@ -22,7 +22,6 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 	private $iteratorFactory;
 
 	protected function setUp() : void {
-
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -42,7 +41,6 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ErrorLookup::class,
 			new ErrorLookup( $this->store )
@@ -50,7 +48,6 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildArray() {
-
 		$res = [
 			(object)[ 'o_hash' => 'Foo', 'o_blob' => null ],
 			(object)[ 'o_hash' => 'Foo', 'o_blob' => 'Bar' ]
@@ -74,7 +71,6 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindErrorsByType() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -145,7 +141,6 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindErrorsByType_WithSubobjects() {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->setOption( 'checkConstraintErrors', SMW_CONSTRAINT_ERR_CHECK_ALL );
 

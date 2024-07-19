@@ -60,7 +60,6 @@ class InMemoryPoolCache {
 	 * @return InMemoryPoolCache
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 			self::$instance = new self( ApplicationFactory::getInstance()->newCacheFactory() );
 		}
@@ -121,7 +120,6 @@ class InMemoryPoolCache {
 	 * @return Cache
 	 */
 	public function getPoolCacheById( $poolCacheId, $cacheSize = 500 ) {
-
 		if ( !isset( $this->poolCacheList[$poolCacheId] ) ) {
 			$this->poolCacheList[$poolCacheId] = $this->cacheFactory->newFixedInMemoryCache( $cacheSize );
 		}
@@ -130,7 +128,6 @@ class InMemoryPoolCache {
 	}
 
 	private function computeStats() {
-
 		ksort( $this->poolCacheList );
 		$stats = [];
 

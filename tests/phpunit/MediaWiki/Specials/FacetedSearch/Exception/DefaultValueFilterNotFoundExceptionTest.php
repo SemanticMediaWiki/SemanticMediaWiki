@@ -16,7 +16,6 @@ use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultValueFilterNotFoundExc
 class DefaultValueFilterNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new DefaultValueFilterNotFoundException( 'Foo' );
 
 		$this->assertInstanceof(

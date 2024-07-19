@@ -171,7 +171,6 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 	 * {@inheritDoc}
 	 */
 	public function tokenize( $string ) {
-
 		if ( $this->tokenizer !== null ) {
 			$string = implode( " ", $this->tokenizer->tokenize( $string ) );
 		}
@@ -206,7 +205,6 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 	 * {@inheritDoc}
 	 */
 	public function splitByCharacterGroup( $string ) {
-
 		// Space strings of like hiragana/katakana/kanji
 		$hiragana = '(?:\xe3(?:\x81[\x80-\xbf]|\x82[\x80-\x9f]))'; # U3040-309f
 		$katakana = '(?:\xe3(?:\x82[\xa0-\xbf]|\x83[\x80-\xbf]))'; # U30a0-30ff

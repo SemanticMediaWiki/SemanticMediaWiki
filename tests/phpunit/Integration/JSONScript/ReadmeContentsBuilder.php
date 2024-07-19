@@ -30,7 +30,6 @@ class ReadmeContentsBuilder {
 	 * @since  2.4
 	 */
 	public function run() {
-
 		$file = __DIR__ . '/README.md';
 
 		$replacement = self::REPLACE_START_MARKER . "\n\n";
@@ -49,7 +48,6 @@ class ReadmeContentsBuilder {
 	}
 
 	private function doGenerateContentFor( $title, $path ) {
-
 		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 		$urlLocation = $this->urlLocationMap[$title];
 
@@ -93,7 +91,6 @@ class ReadmeContentsBuilder {
 	}
 
 	private function findFilesFor( $path, $extension ) {
-
 		$files = [];
 
 		$directoryIterator = new \RecursiveDirectoryIterator( $path );

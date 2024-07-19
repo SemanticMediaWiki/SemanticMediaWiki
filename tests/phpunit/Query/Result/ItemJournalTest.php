@@ -18,7 +18,6 @@ use SMW\Query\Result\ItemJournal;
 class ItemJournalTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ItemJournal::class,
 			new ItemJournal()
@@ -26,7 +25,6 @@ class ItemJournalTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecordItem() {
-
 		$dataItem = DIWikiPage::newFromText( 'Foo' );
 		$instance = new ItemJournal();
 
@@ -46,7 +44,6 @@ class ItemJournalTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecordProperty() {
-
 		$property = new DIProperty( 'Bar' );
 		$instance = new ItemJournal();
 

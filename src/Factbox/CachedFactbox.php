@@ -147,7 +147,6 @@ class CachedFactbox {
 	 * @return integer
 	 */
 	public static function makeCacheKey( $id ) {
-
 		if ( $id instanceof Title ) {
 			$id = $id->getArticleID();
 		}
@@ -170,7 +169,6 @@ class CachedFactbox {
 	 * @param ParserOutput $parserOutput
 	 */
 	public function prepare( OutputPage &$outputPage, ParserOutput $parserOutput ) {
-
 		$this->factboxText->clear();
 		$time = -microtime( true );
 
@@ -274,7 +272,6 @@ class CachedFactbox {
 	 * @return string
 	 */
 	public function retrieveContent( OutputPage $outputPage ) {
-
 		$text = '';
 		$content = [];
 		$title = $outputPage->getTitle();
@@ -315,7 +312,6 @@ class CachedFactbox {
 	 * Processing and re-parsing of the Factbox content
 	 */
 	private function rebuild( Title $title, ParserOutput $parserOutput, $checkMagicWords ) {
-
 		$text = null;
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -355,7 +351,6 @@ class CachedFactbox {
 	}
 
 	private function hasCachedContent( $subKey, $rev_id, $lang, $content, $request ) {
-
 		if ( $request->getVal( 'action' ) === 'edit' ) {
 			return $this->isCached = false;
 		}
@@ -376,7 +371,6 @@ class CachedFactbox {
 	}
 
 	private function findContentFromCache( $data ) {
-
 		if ( $data === false || !$this->isEnabled ) {
 			return [];
 		}
@@ -392,7 +386,6 @@ class CachedFactbox {
 	 * { 'rev_id' => $revisionId, 'text' => (...) }
 	 */
 	private function saveToCache( $key, $subKey, array $content ) {
-
 		$this->timestamp = wfTimestamp( TS_UNIX );
 		$this->isCached = false;
 

@@ -103,7 +103,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @param string $userValue
 	 */
 	protected function parseUserValue( $userValue ) {
-
 		list( $text, $languageCode ) = $this->getValuesFromString( $userValue );
 
 		$languageCodeValue = $this->newLanguageCodeValue( $languageCode );
@@ -182,7 +181,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() === DataItem::TYPE_CONTAINER ) {
 			$this->m_dataitem = $dataItem;
 			return true;
@@ -255,7 +253,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @return DIProperty[]
 	 */
 	public function getPropertyDataItems() {
-
 		if ( self::$properties !== null && self::$properties !== [] ) {
 			return self::$properties;
 		}
@@ -284,7 +281,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @return DataValue|null
 	 */
 	public function getTextValueByLanguageCode( $languageCode ) {
-
 		if ( ( $list = $this->toArray() ) === [] ) {
 			return null;
 		}
@@ -313,7 +309,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @return array
 	 */
 	public function toArray() {
-
 		if ( !$this->isValid() || $this->getDataItem() === [] ) {
 			return [];
 		}
@@ -348,7 +343,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @return string
 	 */
 	public function toString() {
-
 		if ( !$this->isValid() || $this->getDataItem() === [] ) {
 			return '';
 		}
@@ -359,7 +353,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 	}
 
 	private function newContainerSemanticData( $value ) {
-
 		if ( $this->m_contextPage === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();
@@ -380,7 +373,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 	}
 
 	private function newLanguageCodeValue( $languageCode ) {
-
 		$languageCodeValue = new LanguageCodeValue();
 
 		if ( $this->m_property !== null ) {

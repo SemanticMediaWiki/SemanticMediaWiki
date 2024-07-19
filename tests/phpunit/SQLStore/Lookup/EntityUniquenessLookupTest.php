@@ -21,7 +21,6 @@ class EntityUniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 	private $iteratorFactory;
 
 	protected function setUp() : void {
-
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -41,7 +40,6 @@ class EntityUniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EntityUniquenessLookup::class,
 			new EntityUniquenessLookup( $this->store, $this->iteratorFactory )
@@ -49,7 +47,6 @@ class EntityUniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint() {
-
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

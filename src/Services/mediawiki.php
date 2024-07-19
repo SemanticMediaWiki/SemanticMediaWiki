@@ -190,7 +190,6 @@ return [
 	 * @return callable
 	 */
 	'JobQueueGroup' => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType( 'JobQueueGroup', '\JobQueueGroup' );
 
 		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {

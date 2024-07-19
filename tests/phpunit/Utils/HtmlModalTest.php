@@ -19,7 +19,6 @@ class HtmlModalTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testGetModules() {
-
 		$this->assertInternalType(
 			'array',
 			HtmlModal::getModules()
@@ -32,7 +31,6 @@ class HtmlModalTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLink() {
-
 		$this->assertContains(
 			'smw-modal-link',
 			HtmlModal::link( 'Foo' )
@@ -40,7 +38,6 @@ class HtmlModalTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testElement() {
-
 		$this->assertContains(
 			'smw-modal-link',
 			HtmlModal::element( 'Foo' )
@@ -48,7 +45,6 @@ class HtmlModalTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testModal() {
-
 		$this->assertContains(
 			'smw-modal',
 			HtmlModal::modal( 'Foo' )

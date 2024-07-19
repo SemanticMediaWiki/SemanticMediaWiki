@@ -56,7 +56,6 @@ return [
 	 * @return callable
 	 */
 	'UnitConverter' => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			'UnitConverter',
 			UnitConverter::class
@@ -88,7 +87,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_PARSER . PropertyValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . PropertyValue::TYPE_ID,
 			PropertyValueParser::class
@@ -113,7 +111,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . PropertyValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . PropertyValue::TYPE_ID,
 			PropertyValueFormatter::class
@@ -128,7 +125,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID,
 			AllowsPatternValueParser::class
@@ -143,7 +139,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID,
 			AllowsListValueParser::class
@@ -158,7 +153,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_VALIDATOR . 'CompoundConstraintValueValidator' => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_VALIDATOR . 'CompoundConstraintValueValidator',
 			CompoundConstraintValueValidator::class
@@ -226,7 +220,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_PARSER . ImportValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . ImportValue::TYPE_ID,
 			ImportValueParser::class
@@ -241,7 +234,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_ID,
 			StringValueFormatter::class
@@ -261,7 +253,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_COD_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_COD_ID,
 			CodeStringValueFormatter::class
@@ -276,7 +267,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID,
 			ReferenceValueFormatter::class
@@ -291,7 +281,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_PARSER . MonolingualTextValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . MonolingualTextValue::TYPE_ID,
 			MonolingualTextValueParser::class
@@ -306,7 +295,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . MonolingualTextValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . MonolingualTextValue::TYPE_ID,
 			MonolingualTextValueFormatter::class
@@ -325,7 +313,6 @@ return [
 	},
 
 	DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID,
 			NumberValueFormatter::class
@@ -340,7 +327,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . TimeValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_FORMATTER . TimeValue::TYPE_ID,
 			TimeValueFormatter::class
@@ -355,7 +341,6 @@ return [
 	 * @return callable
 	 */
 	DataValueServiceFactory::TYPE_PARSER . TimeValue::TYPE_ID => function( $containerBuilder ) {
-
 		$containerBuilder->registerExpectedReturnType(
 			DataValueServiceFactory::TYPE_PARSER . TimeValue::TYPE_ID,
 			TimeValueParser::class

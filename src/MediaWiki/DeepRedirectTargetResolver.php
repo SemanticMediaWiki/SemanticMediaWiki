@@ -56,7 +56,6 @@ class DeepRedirectTargetResolver {
 	}
 
 	private function doResolveRedirectTarget( Title $title ) {
-
 		$this->addToResolverTracker( $title );
 
 		if ( $this->isCircularByKnownRedirectTarget( $title ) ) {
@@ -79,7 +78,6 @@ class DeepRedirectTargetResolver {
 	}
 
 	private function addToResolverTracker( $title ) {
-
 		if ( !isset( $this->recursiveResolverTracker[$title->getPrefixedDBkey()] ) ) {
 			$this->recursiveResolverTracker[$title->getPrefixedDBkey()] = 0;
 		}

@@ -67,7 +67,6 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -79,7 +78,6 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsDetachedSubobject() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -108,7 +106,6 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasLatestRevID() {
-
 		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -150,7 +147,6 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsDetachedQueryRef() {
-
 		$row = (object)[
 			'smw_subobject' => '_QUERY-Foo',
 			'smw_proptable_hash' => null
@@ -174,7 +170,6 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyRetiredListProvider
 	 */
 	public function testIsRetiredProperty( $row, $list, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -195,7 +190,6 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function propertyRetiredListProvider() {
-
 		yield [
 			(object)[ 'smw_namespace' => SMW_NS_PROPERTY, 'smw_title' => 'Test_SD_Some' ],
 			[ '_SD_' ],

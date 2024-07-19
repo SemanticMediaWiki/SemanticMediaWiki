@@ -50,7 +50,6 @@ class NonNegativeIntegerConstraint implements Constraint {
 	 * {@inheritDoc}
 	 */
 	public function checkConstraint( array $constraint, $dataValue ) {
-
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -65,7 +64,6 @@ class NonNegativeIntegerConstraint implements Constraint {
 	}
 
 	private function check( $dataValue ) {
-
 		$dataItem = $dataValue->getDataItem();
 
 		if ( $dataItem->getDIType() !== DataItem::TYPE_NUMBER ) {
@@ -81,7 +79,6 @@ class NonNegativeIntegerConstraint implements Constraint {
 	}
 
 	private function reportError( $dataValue, $number ) {
-
 		$this->hasViolation = true;
 
 		$dataValue->addError( new ConstraintError( [

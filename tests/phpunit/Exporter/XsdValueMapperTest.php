@@ -24,7 +24,6 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider supportedDataItemProvider
 	 */
 	public function testMatchSupportedTypes( $dataItem, $xsdValue, $xsdType ) {
-
 		list( $type, $value ) = XsdValueMapper::map( $dataItem );
 
 		$this->assertEquals(
@@ -42,13 +41,11 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider unsupportedDataItemProvider
 	 */
 	public function testTryToMatchUnsupportedTypeThrowsException( $dataItem ) {
-
 		$this->expectException( 'RuntimeException' );
 		XsdValueMapper::map( $dataItem );
 	}
 
 	public function supportedDataItemProvider() {
-
 		#0
 		$provider[] = [
 			new \SMWDINumber( 42 ),
@@ -102,7 +99,6 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function unsupportedDataItemProvider() {
-
 		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
 			->disableOriginalConstructor()
 			->setMethods( [ '__toString' ] )

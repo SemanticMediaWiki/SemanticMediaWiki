@@ -16,7 +16,6 @@ use SMW\Schema\Exception\SchemaTypeNotFoundException;
 class SchemaTypeNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SchemaTypeNotFoundException( 'foo' );
 
 		$this->assertInstanceof(
@@ -31,7 +30,6 @@ class SchemaTypeNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new SchemaTypeNotFoundException( 'foo' );
 
 		$this->assertEquals(

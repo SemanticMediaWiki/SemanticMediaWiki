@@ -46,7 +46,6 @@ class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -55,7 +54,6 @@ class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testSubjects_onCategoryCondition() {
-
 		$property = new DIProperty( '_INST' );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property, 'SomeCategory' );
@@ -105,7 +103,6 @@ class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function searchForResultsThatCompareEqualToClassOf( $categoryName ) {
-
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( new DIProperty( '_INST' ) );
 

@@ -39,7 +39,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -51,7 +50,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testImmutableMethodAccess() {
-
 		$instance = new DIUriHandler(
 			$this->store
 		);
@@ -83,7 +81,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMutableMethodAccess() {
-
 		$uri = new DIUri( 'http', 'example.org', '', '' );
 
 		$instance = new DIUriHandler(
@@ -105,7 +102,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider fieldTypeProvider
 	 */
 	public function testMutableOnFieldTypeFeature( $fieldTypeFeatures, $expected ) {
-
 		$instance = new DIUriHandler(
 			$this->store
 		);
@@ -129,7 +125,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbKeysProvider
 	 */
 	public function testDataItemFromDBKeys( $dbKeys ) {
-
 		$instance = new DIUriHandler(
 			$this->store
 		);
@@ -144,7 +139,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbKeysExceptionProvider
 	 */
 	public function testDataItemFromDBKeysThrowsException( $dbKeys ) {
-
 		$instance = new DIUriHandler(
 			$this->store
 		);
@@ -154,7 +148,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dbKeysProvider() {
-
 		$provider[] = [
 			[ 'http://example.org', '' ]
 		];
@@ -167,7 +160,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dbKeysExceptionProvider() {
-
 		$provider[] = [
 			[ '' ]
 		];
@@ -176,7 +168,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function fieldTypeProvider() {
-
 		$provider[] = [
 			SMW_FIELDT_NONE,
 			[

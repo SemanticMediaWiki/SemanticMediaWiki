@@ -43,7 +43,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testCreateTable() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -68,7 +67,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUpdateTableWithNewField() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -96,7 +94,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUpdateTableWithNewFieldType() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -129,7 +126,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testCreateIndex() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -166,7 +162,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUpdateIndex_ReplaceIndex() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -203,7 +198,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUpdateIndex_RemoveIndexWithArrayNotation() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -238,7 +232,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUpdateIndex_NoIndexChange() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -272,7 +265,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testDropTable() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -295,7 +287,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testTryToDropTableWhichNotExists() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(

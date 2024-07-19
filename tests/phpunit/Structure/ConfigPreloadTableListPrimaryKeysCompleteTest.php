@@ -20,7 +20,6 @@ class ConfigPreloadTableListPrimaryKeysCompleteTest extends \PHPUnit_Framework_T
 	const FILENAME = 'db-primary-keys.php';
 
 	public function testCheckTableList() {
-
 		$store = ServicesFactory::getInstance()->getStore( SQLStore::class );
 		$file = $GLOBALS['smwgDir'] . '/data/config/' . self::FILENAME;
 

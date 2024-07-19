@@ -61,7 +61,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 		$asNoCase = $this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_NOCASE );
@@ -112,7 +111,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createConditionForEqualityComparator( $dataItem, $property, $joinVariable, $orderByProperty ) {
-
 		$expElement = $this->exporter->newAuxiliaryExpElement( $dataItem );
 
 		if ( $expElement === null ) {
@@ -157,7 +155,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createConditionForRegexComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
-
 		if ( !$dataItem instanceof DIBlob && !$dataItem instanceof DIWikiPage && !$dataItem instanceof DIUri ) {
 			return $this->conditionBuilder->newTrueCondition( $joinVariable, $orderByProperty );
 		}
@@ -202,7 +199,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createFilterConditionForAnyOtherComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
-
 		$result = new FilterCondition( '', [] );
 
 		$this->conditionBuilder->addOrderByData(
@@ -237,7 +233,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createFilterConditionToMatchRegexPattern( $dataItem, &$joinVariable, $comparator, $pattern ) {
-
 		$flag = $this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_NOCASE ) ? 'i' : 's';
 
 		if ( $dataItem instanceof DIBlob ) {
@@ -268,7 +263,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function lcase( $dataItem, &$orderByVariable, &$valueName ) {
-
 		$isValidDataItem = $dataItem instanceof DIBlob || $dataItem instanceof DIUri || $dataItem instanceof DIWikiPage;
 
 		// https://stackoverflow.com/questions/10660030/how-to-write-sparql-query-that-efficiently-matches-string-literals-while-ignorin

@@ -25,7 +25,6 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	private Cache $cache;
 
 	protected function setUp() : void {
-
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -38,7 +37,6 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AuxiliaryFields::class,
 			new AuxiliaryFields( $this->connection, $this->idCacheManager )
@@ -46,7 +44,6 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrefetchFieldList() {
-
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
 			->with( $this->equalTo( AuxiliaryFields::COUNTMAP_CACHE_ID ) )
@@ -80,7 +77,6 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetFieldMaps_Empty() {
-
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
 			->with( $this->equalTo( AuxiliaryFields::COUNTMAP_CACHE_ID ) )
@@ -104,7 +100,6 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetFieldMaps() {
-
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
 			->with( $this->equalTo( AuxiliaryFields::COUNTMAP_CACHE_ID ) )

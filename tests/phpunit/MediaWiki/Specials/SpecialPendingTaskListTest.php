@@ -39,7 +39,6 @@ class SpecialPendingTaskListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanExecute() {
-
 		$instance = new SpecialPendingTaskList();
 
 		$instance->getContext()->setTitle(
@@ -52,7 +51,6 @@ class SpecialPendingTaskListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHtmlOutput() {
-
 		$instance = new SpecialPendingTaskList();
 
 		$instance->getContext()->setTitle(

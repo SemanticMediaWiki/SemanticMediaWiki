@@ -43,7 +43,6 @@ class SidebarBeforeOutput implements HookListener {
 	 * @return boolean
 	 */
 	public function process( $skin, &$sidebar ) {
-
 		$title = $skin->getTitle();
 
 		if ( $this->canProcess( $title, $skin ) ) {
@@ -66,7 +65,6 @@ class SidebarBeforeOutput implements HookListener {
 	}
 
 	private function performUpdate( Title $title, Skin $skin, &$sidebar ) {
-
 		$link = Infolink::encodeParameters(
 			[
 				$title->getPrefixedDBkey()

@@ -28,7 +28,6 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	private $constraintValueValidator;
 
 	protected function setUp() : void {
-
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -66,7 +65,6 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\AllowsPatternValue',
 			new AllowsPatternValue()
@@ -74,7 +72,6 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasErrorForMissingValue() {
-
 		$instance = new AllowsPatternValue();
 
 		$instance->setDataValueServiceFactory(
@@ -91,7 +88,6 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasErrorForNonMatchingContent() {
-
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
 			->will( $this->returnValue( " \nFoo|Bar\n" ) );
@@ -112,7 +108,6 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasNoErrorOnMatchableContent() {
-
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
 			->will( $this->returnValue( " \nFoo|Bar\n" ) );
@@ -133,7 +128,6 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorOnNotEnabledFeatureWhenUserValueIsNotEmpty() {
-
 		$instance = new AllowsPatternValue();
 
 		$instance->setDataValueServiceFactory(
@@ -148,7 +142,6 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortWikiText() {
-
 		$allowsPatternValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\AllowsPatternValueParser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -185,7 +178,6 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortHtmlText() {
-
 		$allowsPatternValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\AllowsPatternValueParser' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -50,7 +50,6 @@ class NamespaceConstraint implements Constraint {
 	 * {@inheritDoc}
 	 */
 	public function checkConstraint( array $constraint, $dataValue ) {
-
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -65,7 +64,6 @@ class NamespaceConstraint implements Constraint {
 	}
 
 	private function check( $namespaces, $dataValue ) {
-
 		$dataItem = $dataValue->getDataItem();
 		$property = $dataValue->getProperty();
 
@@ -95,7 +93,6 @@ class NamespaceConstraint implements Constraint {
 	}
 
 	private function reportError( $dataValue, $error ) {
-
 		$this->hasViolation = true;
 
 		$dataValue->addError(

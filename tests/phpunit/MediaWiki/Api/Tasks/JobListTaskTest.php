@@ -35,7 +35,6 @@ class JobListTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new JobListTask( $this->jobQueue );
 
 		$this->assertInstanceOf(
@@ -45,7 +44,6 @@ class JobListTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'runFromQueue' )
 			->with( $this->equalTo( [ 'FooJob' => 1 ] ) )

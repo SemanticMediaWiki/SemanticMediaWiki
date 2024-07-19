@@ -32,7 +32,6 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\ConceptCache',
 			new ConceptCache( $this->store, $this->conceptQuerySegmentBuilder )
@@ -40,7 +39,6 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRefreshConceptCache() {
-
 		$this->conceptQuerySegmentBuilder->expects( $this->once() )
 			->method( 'getErrors' )
 			->will( $this->returnValue( [] ) );
@@ -56,7 +54,6 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteConceptCache() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();

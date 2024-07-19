@@ -19,7 +19,6 @@ class CategoryResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CategoryResultPrinter::class,
 			new CategoryResultPrinter( 'category' )
@@ -27,7 +26,6 @@ class CategoryResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetResult_Empty() {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();

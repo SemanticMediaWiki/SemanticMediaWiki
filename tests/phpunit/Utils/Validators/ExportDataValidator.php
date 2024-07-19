@@ -20,7 +20,6 @@ class ExportDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param ExpData $exportData
 	 */
 	public function assertThatExportDataContainsProperty( $expectedProperties, ExpData $exportData ) {
-
 		$expProperties = $exportData->getProperties();
 
 		$this->assertNotEmpty( $expProperties );
@@ -56,7 +55,6 @@ class ExportDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param ExpData $exportData
 	 */
 	public function assertThatExportDataContainsResource( $expectedResources, ExpResource $selectedElement, ExpData $exportData ) {
-
 		$expElements = $exportData->getValues( $selectedElement );
 
 		$this->assertNotEmpty( $expElements );

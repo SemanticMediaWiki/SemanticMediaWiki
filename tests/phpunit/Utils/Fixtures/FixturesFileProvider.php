@@ -21,7 +21,6 @@ class FixturesFileProvider {
 	 * @return DummyFileCreator
 	 */
 	public function newDummyJsonFile( $desiredDestName ) {
-
 		$dummyFileCreator = new DummyFileCreator();
 		$dummyFileCreator->createFileWithCopyFrom( $desiredDestName, __DIR__ . '/File/' . 'LoremIpsum.json' );
 
@@ -36,7 +35,6 @@ class FixturesFileProvider {
 	 * @return DummyFileCreator
 	 */
 	public function newDummyTextFile( $desiredDestName ) {
-
 		$dummyFileCreator = new DummyFileCreator();
 		$dummyFileCreator->createFileWithCopyFrom( $desiredDestName, __DIR__ . '/File/' . 'LoremIpsum.txt' );
 
@@ -51,7 +49,6 @@ class FixturesFileProvider {
 	 * @return LocalFileUpload
 	 */
 	public function newUploadForDummyTextFile( $desiredDestName ) {
-
 		$dummyTextFile = $this->newDummyTextFile( $desiredDestName );
 
 		return new LocalFileUpload(

@@ -19,7 +19,6 @@ class SingletonConditionTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$expElement = $this->getMockBuilder( '\SMWExpElement' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +30,6 @@ class SingletonConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommonMethods() {
-
 		$expElement = $this->getMockBuilder( '\SMWExpElement' )
 			->disableOriginalConstructor()
 			->getMock();

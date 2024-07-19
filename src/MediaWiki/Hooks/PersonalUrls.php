@@ -65,7 +65,6 @@ class PersonalUrls implements HookListener {
 	 * @return true
 	 */
 	public function process( array &$personalUrls ) {
-
 		$watchlist = $this->getOption( 'smwgJobQueueWatchlist', [] );
 
 		if (
@@ -79,7 +78,6 @@ class PersonalUrls implements HookListener {
 	}
 
 	private function getJobQueueWatchlist( $watchlist, $personalUrls ) {
-
 		$queue = [];
 
 		foreach ( $watchlist as $job ) {
@@ -125,7 +123,6 @@ class PersonalUrls implements HookListener {
 	}
 
 	private function humanReadable( $num, $decimals = 0 ) {
-
 		if ( $num < 1000 ) {
 			$num = number_format( $num );
 		} else if ( $num < 1000000) {

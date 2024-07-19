@@ -59,7 +59,6 @@ class MissingRedirectLookup {
 	 * @return Iterator/array
 	 */
 	public function findMissingRedirects() {
-
 		$namespaces = array_keys( array_filter( $this->namespaces, function( $v ) {
 			return $v; }
 		) );
@@ -68,7 +67,6 @@ class MissingRedirectLookup {
 	}
 
 	private function fetchFromTable( $namespaces ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$options = [

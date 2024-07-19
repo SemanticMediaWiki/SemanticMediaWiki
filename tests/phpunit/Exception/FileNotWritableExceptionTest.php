@@ -16,7 +16,6 @@ use SMW\Exception\FileNotWritableException;
 class FileNotWritableExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new FileNotWritableException( 'Foo' );
 
 		$this->assertInstanceof(

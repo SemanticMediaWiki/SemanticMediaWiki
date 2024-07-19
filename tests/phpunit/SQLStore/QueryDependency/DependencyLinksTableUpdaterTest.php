@@ -40,7 +40,6 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater',
 			new DependencyLinksTableUpdater( $this->store )
@@ -48,7 +47,6 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddToUpdateList() {
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getId' ] )
 			->getMock();
@@ -112,7 +110,6 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddToUpdateListOnNull_List() {
-
 		$instance = new DependencyLinksTableUpdater(
 			$this->store
 		);
@@ -123,7 +120,6 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddToUpdateListOnZero_Id() {
-
 		$instance = new DependencyLinksTableUpdater(
 			$this->store
 		);
@@ -134,7 +130,6 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddToUpdateListOnEmpty_List() {
-
 		$instance = new DependencyLinksTableUpdater(
 			$this->store
 		);
@@ -145,7 +140,6 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddDependenciesFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getId', 'makeSMWPageID' ] )
 			->getMock();

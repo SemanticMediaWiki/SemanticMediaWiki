@@ -89,7 +89,6 @@ class ElasticStore extends SQLStore {
 	 * {@inheritDoc}
 	 */
 	public function service( $service, ...$args ) {
-
 		if ( $this->servicesContainer === null ) {
 			$this->servicesContainer = parent::newServicesContainer();
 
@@ -193,7 +192,6 @@ class ElasticStore extends SQLStore {
 	 * @return QueryResult
 	 */
 	public function getQueryResult( Query $query ) {
-
 		$result = null;
 		$time = -microtime( true );
 
@@ -320,7 +318,6 @@ class ElasticStore extends SQLStore {
 	 * {@inheritDoc}
 	 */
 	public function setup( $options = true ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 		$client = $this->getConnection( 'elastic' );
 
@@ -396,7 +393,6 @@ class ElasticStore extends SQLStore {
 	 * {@inheritDoc}
 	 */
 	public function drop( $verbose = true ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 		$client = $this->getConnection( 'elastic' );
 
@@ -458,7 +454,6 @@ class ElasticStore extends SQLStore {
 	 * @return array
 	 */
 	public function getInfo( $type = null ) {
-
 		if ( $type === 'store' ) {
 			return 'SMWElasticStore';
 		}

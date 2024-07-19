@@ -83,7 +83,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -98,7 +97,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider idProvider
 	 */
 	public function testDispatchRebuildForSingleIteration( $id, $expected ) {
-
 		$this->titleFactory->expects( $this->any() )
 			->method( 'newFromIDs' )
 			->will( $this->returnValue( [] ) );
@@ -153,7 +151,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRevisionMode() {
-
 		$this->entityValidator->expects( $this->any() )
 			->method( 'hasLatestRevID' )
 			->will( $this->returnValue( true ) );
@@ -235,7 +232,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function idProvider() {
-
 		$provider[] = [
 			42, // Within the border Id
 			43

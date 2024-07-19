@@ -60,7 +60,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			HtmlBuilder::class,
 			new HtmlBuilder( $this->profile, $this->templateEngine, $this->optionsBuilder, $this->extraFieldBuilder, $this->facetBuilder, $this->resultFetcher, $this->exploreListBuilder )

@@ -34,7 +34,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInstance() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataTypeRegistry',
 			$this->dataTypeRegistry
@@ -54,7 +53,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsEqualItemType() {
-
 		$this->assertTrue(
 			$this->dataTypeRegistry->isEqualByType( '_wpg', '__sob' )
 		);
@@ -65,7 +63,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterDatatypeWithCallable() {
-
 		$callback = function() {
 			return new FooValue();
 		};
@@ -85,7 +82,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterDatatype() {
-
 		$this->assertNull(
 			$this->dataTypeRegistry->getDataTypeClassById( '_foo' ),
 			'Asserts that prior registration getDataTypeClassById() returns null'
@@ -121,7 +117,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterDatatypeIdAndAlias() {
-
 		$this->dataTypeRegistry
 			->registerDataType( '_foo', '\SMW\Tests\FooValue', DataItem::TYPE_NOTYPE, 'FooValue' );
 
@@ -163,7 +158,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTypeIdAndLabelAsLanguageIndependantInvocation() {
-
 		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -198,7 +192,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testKnownAliasAsLanguageIndependantInvocation() {
-
 		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -241,7 +234,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindTypeByLabelAndLanguage() {
-
 		$this->assertSame(
 			'_num',
 			$this->dataTypeRegistry->findTypeByLabelAndLanguage( 'Número', 'es' )
@@ -259,7 +251,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindTypeByLabelAndLanguageFromRegisteredTypeWithoutLanguageMatch() {
-
 		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -300,7 +291,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider recordTypeProvider
 	 */
 	public function testIsRecordType( $typeId, $expected ) {
-
 		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -328,7 +318,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSubDataType() {
-
 		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -357,7 +346,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBrowsableType() {
-
 		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -391,7 +379,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFieldType() {
-
 		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -421,7 +408,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function assertRegistryFindsIdForLabels( $inputLabel, array $equivalentLabels ) {
-
 		$id = '_wpg';
 
 		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
@@ -478,7 +464,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterCallableGetCallablesByTypeId() {
-
 		$callback = function() {
 			return 'foo';
 		};
@@ -518,7 +503,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function recordTypeProvider() {
-
 		yield [
 			'_rec',
 			true

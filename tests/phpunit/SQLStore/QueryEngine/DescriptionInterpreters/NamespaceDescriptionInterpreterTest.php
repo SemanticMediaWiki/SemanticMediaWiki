@@ -42,8 +42,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
-
 		$this->assertInstanceOf(
 			NamespaceDescriptionInterpreter::class,
 			new NamespaceDescriptionInterpreter( $this->store, $this->conditionBuilder )
@@ -51,7 +49,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();

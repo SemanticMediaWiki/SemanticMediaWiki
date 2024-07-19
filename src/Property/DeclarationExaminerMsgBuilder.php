@@ -21,7 +21,6 @@ class DeclarationExaminerMsgBuilder {
 	 * @return string
 	 */
 	public function buildHTML( DeclarationExaminer $declarationExaminer ) {
-
 		$messages = $declarationExaminer->getMessages();
 		$html = '';
 

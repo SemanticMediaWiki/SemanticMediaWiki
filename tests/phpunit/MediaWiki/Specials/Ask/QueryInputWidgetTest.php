@@ -17,7 +17,6 @@ use SMW\Tests\TestEnvironment;
 class QueryInputWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInput() {
-
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$stringValidator->assertThatStringContains(

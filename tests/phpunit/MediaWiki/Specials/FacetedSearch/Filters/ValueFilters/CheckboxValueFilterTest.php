@@ -39,7 +39,6 @@ class CheckboxValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CheckboxValueFilter::class,
 			new CheckboxValueFilter( $this->templateEngine, [] )
@@ -47,7 +46,6 @@ class CheckboxValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate_NoFilter() {
-
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
 			->will( $this->returnValue( '' ) );

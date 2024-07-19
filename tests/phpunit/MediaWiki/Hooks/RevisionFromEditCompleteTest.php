@@ -75,7 +75,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -87,7 +86,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_NoParserOutput() {
-
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -121,7 +119,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_OnSchemaNamespace() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -170,7 +167,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_OnSchemaNamespace_InvalidSchema() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -220,7 +216,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_OnConceptNamespace() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -23,7 +23,6 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -35,7 +34,6 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_wpg_property() {
-
 		$row = new \stdClass;
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
@@ -117,7 +115,6 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesLookup_txt_property() {
-
 		$row = new \stdClass;
 		$row->o_hash = 'Test';
 		$row->smw_id = 42;

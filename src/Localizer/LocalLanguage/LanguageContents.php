@@ -66,7 +66,6 @@ class LanguageContents {
 	 * @return boolean
 	 */
 	public function load( $languageCode ) {
-
 		if ( !$this->isLoaded( $languageCode ) && !$this->jsonContentsFileReader->canReadByLanguageCode( $languageCode ) ) {
 			$languageCode = $this->fallbackFinder->getFallbackLanguageBy( $languageCode );
 		}
@@ -89,7 +88,6 @@ class LanguageContents {
 	}
 
 	private function matchLanguage( $languageCode, $id ) {
-
 		$canonicalFallbackLanguageCode = $this->fallbackFinder->getCanonicalFallbackLanguageCode();
 
 		if ( !isset( $this->contents[$languageCode] ) || $this->contents[$languageCode] === [] ) {
@@ -132,7 +130,6 @@ class LanguageContents {
 	}
 
 	private function matchCanonicalLanguage( $languageCode, $id ) {
-
 		$depth = 1;
 
 		if ( strpos( $id, '.' ) !== false ) {

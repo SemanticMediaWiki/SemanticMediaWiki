@@ -36,7 +36,6 @@ class JobListTask extends Task {
 	 * @return array
 	 */
 	public function process( array $parameters ) {
-
 		if ( !isset( $parameters['subject'] ) || $parameters['subject'] === '' ) {
 			return [ 'done' => false ];
 		}

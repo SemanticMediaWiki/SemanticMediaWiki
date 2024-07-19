@@ -21,7 +21,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $conditionBuilder;
 
 	public function setUp() : void {
-
 		$this->descriptionFactory = new DescriptionFactory();
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
@@ -31,7 +30,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NamespaceDescriptionInterpreter::class,
 			new NamespaceDescriptionInterpreter( $this->conditionBuilder )
@@ -39,7 +37,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_NotPartOfAConjunction() {
-
 		$instance = new NamespaceDescriptionInterpreter(
 			$this->conditionBuilder
 		);
@@ -56,7 +53,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_IsPartOfAConjunction() {
-
 		$instance = new NamespaceDescriptionInterpreter(
 			$this->conditionBuilder
 		);

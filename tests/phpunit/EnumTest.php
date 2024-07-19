@@ -22,7 +22,6 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 	 *@dataProvider constProvider
 	 */
 	public function testValidate( $const ) {
-
 		$this->assertInternalType(
 			'string',
 			$const
@@ -30,7 +29,6 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function constProvider() {
-
 		$provider[] = [
 			Enum::OPT_SUSPEND_PURGE
 		];

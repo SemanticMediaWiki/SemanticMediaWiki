@@ -36,7 +36,6 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
  	}
 
 	public function testCanConstruct() {
-
 		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -48,7 +47,6 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSerializedListForProperty() {
-
 		$list[] = [
 			new DIProperty( 'Foo' ),
 			42

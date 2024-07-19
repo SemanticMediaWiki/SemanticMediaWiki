@@ -19,7 +19,6 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\EngineOptions',
 			new EngineOptions()
@@ -30,7 +29,6 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider initialSettingsProvider
 	 */
 	public function testInitialState( $setting, $expected ) {
-
 		$instance = new EngineOptions();
 
 		$this->assertNotNull(
@@ -39,7 +37,6 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddOption() {
-
 		$instance = new EngineOptions();
 
 		$this->assertFalse(
@@ -55,7 +52,6 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnregisteredKeyThrowsException() {
-
 		$instance = new EngineOptions();
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -63,7 +59,6 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function initialSettingsProvider() {
-
 		$provider[] = [
 			'smwgIgnoreQueryErrors',
 			'boolean'

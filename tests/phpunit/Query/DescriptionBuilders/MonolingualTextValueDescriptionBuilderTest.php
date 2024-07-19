@@ -21,7 +21,6 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MonolingualTextValueDescriptionBuilder::class,
 			new MonolingualTextValueDescriptionBuilder()
@@ -29,7 +28,6 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function testIsBuilderForTimeValue() {
-
 		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -42,7 +40,6 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function testNonStringThrowsException() {
-
 		$recordValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -57,7 +54,6 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $decription, $queryString, $dvFeatures ) {
-
 		$monolingualTextValue = DataValueFactory::getInStance()->newDataValueByType(
 			MonolingualTextValue::TYPE_ID
 		);
@@ -78,7 +74,6 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function valueProvider() {
-
 		#0
 		$provider[] = [
 			'Jan;1970',

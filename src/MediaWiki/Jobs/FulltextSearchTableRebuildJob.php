@@ -31,7 +31,6 @@ class FulltextSearchTableRebuildJob extends Job {
 	 * @since  2.5
 	 */
 	public function run() {
-
 		if ( $this->waitOnCommandLineMode() ) {
 			return true;
 		}
@@ -56,7 +55,6 @@ class FulltextSearchTableRebuildJob extends Job {
 	}
 
 	private function createJobsFromTableList( $tableList ) {
-
 		if ( $tableList === [] ) {
 			return;
 		}

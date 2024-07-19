@@ -29,7 +29,6 @@ class ContainerSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ContainerSemanticData::class,
 			new ContainerSemanticData( $this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN ) )
@@ -37,7 +36,6 @@ class ContainerSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeAnonymousContainer() {
-
 		$instance = ContainerSemanticData::makeAnonymousContainer();
 		$instance->skipAnonymousCheck();
 
@@ -52,7 +50,6 @@ class ContainerSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSubjectOnAnonymousContainerWithoutSkipThrowsException() {
-
 		$instance = ContainerSemanticData::makeAnonymousContainer();
 
 		$this->expectException( '\SMW\Exception\DataItemException' );
@@ -60,7 +57,6 @@ class ContainerSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCopyDataFrom() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN );
 
 		$semanticData = new SemanticData(

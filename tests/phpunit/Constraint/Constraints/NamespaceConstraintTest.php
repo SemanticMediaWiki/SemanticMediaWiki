@@ -30,7 +30,6 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NamespaceConstraint::class,
 			new NamespaceConstraint()
@@ -38,7 +37,6 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new NamespaceConstraint();
 
 		$this->assertEquals(
@@ -48,7 +46,6 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new NamespaceConstraint();
 
 		$this->assertFalse(
@@ -57,7 +54,6 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_allowed_namespaces() {
-
 		$constraint = [
 			'allowed_namespaces' => [ 'NS_HELP' ]
 		];
@@ -93,7 +89,6 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

@@ -130,7 +130,6 @@ class HtmlDivTable {
 	}
 
 	private static function mergeAttributes( $class, $attr ) {
-
 		$attributes = [];
 
 		// A bit of attribute order

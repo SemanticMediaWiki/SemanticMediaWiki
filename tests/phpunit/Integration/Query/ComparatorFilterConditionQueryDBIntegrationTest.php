@@ -42,7 +42,6 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -68,7 +67,6 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider dateConjunctionFilterProvider
 	 */
 	public function testDateConjunctionConstraints( $range, $parameters, $expected ) {
-
 		if ( is_a( $this->getStore(), '\SMW\SPARQLStore\SPARQLStore' )
 			&& is_a( $this->getStore()->getConnection( 'sparql' ), '\SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector' ) ) {
 			$this->markTestSkipped( "Date filter constraints do not work properly in Virtuoso" );
@@ -78,7 +76,6 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function queryPagesThatUseConjunctionConstraintsForPropertyValues( $range, $parameters, $expected ) {
-
 		$expectedSubjects = [];
 		$property = $parameters['property'];
 
@@ -128,7 +125,6 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function numericConjunctionFilterProvider() {
-
 		$property = new DIProperty( 'SomeNumericPropertyToFilter' );
 		$property->setPropertyTypeId( '_num' );
 
@@ -216,7 +212,6 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function textConjunctionFilterProvider() {
-
 		$property = new DIProperty( 'SomeBlobPropertyToFilter' );
 		$property->setPropertyTypeId( '_txt' );
 
@@ -285,7 +280,6 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function dateConjunctionFilterProvider() {
-
 		$property = new DIProperty( 'SomeDatePropertyToFilter' );
 		$property->setPropertyTypeId( '_dat' );
 

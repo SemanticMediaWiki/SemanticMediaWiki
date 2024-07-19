@@ -60,7 +60,6 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -75,7 +74,6 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testprocessEnabledNamespace() {
-
 		$title = Title::newFromText( __METHOD__, NS_FILE );
 
 		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
@@ -138,7 +136,6 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToProcessDisabledNamespace() {
-
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )

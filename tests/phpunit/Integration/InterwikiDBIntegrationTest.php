@@ -51,7 +51,6 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 
 		// Manipulate the interwiki prefix on-the-fly
 		$GLOBALS['wgHooks']['InterwikiLoadPrefix'][] = function( $prefix, &$interwiki ) {
-
 			if ( $prefix !== 'iw-test' ) {
 				return true;
 			}
@@ -70,7 +69,6 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->subjects );
 		unset( $GLOBALS['wgHooks']['InterwikiLoadPrefix'] );
 
@@ -150,7 +148,6 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function fetchSerializedRdfOutputFor( array $pages ) {
-
 		$this->subjects = $pages;
 		$exporterFactory = new ExporterFactory();
 

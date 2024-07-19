@@ -66,7 +66,6 @@ trait FilterTrait {
 	 * @since 3.2
 	 */
 	public function getLog() : iterable {
-
 		$log = [
 			$this->getName() => count( $this->getMatches() )
 		];
@@ -93,7 +92,6 @@ trait FilterTrait {
 	 * {@inheritDoc}
 	 */
 	public function filter( iterable $compartments ) {
-
 		$this->matches = [];
 
 		if ( $compartments instanceof CompartmentIterator ) {
@@ -123,7 +121,6 @@ trait FilterTrait {
 	abstract protected function match( Compartment $compartment );
 
 	private function getOption( string $key ) {
-
 		if ( !isset( $this->options[$key] ) ) {
 			return false;
 		}

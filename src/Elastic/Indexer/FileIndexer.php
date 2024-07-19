@@ -114,7 +114,6 @@ class FileIndexer {
 	 * @return string
 	 */
 	public function getIndexName( $type ) {
-
 		$index = $this->store->getConnection( 'elastic' )->getIndexName( $type );
 
 		// If the rebuilder has set a specific version, use it to avoid writing to
@@ -167,7 +166,6 @@ class FileIndexer {
 	 * @param File|null $file
 	 */
 	public function index( DIWikiPage $dataItem, File $file = null ) {
-
 		$title = $dataItem->getTitle();
 
 		// Allow any third-party extension to modify the file used as base for

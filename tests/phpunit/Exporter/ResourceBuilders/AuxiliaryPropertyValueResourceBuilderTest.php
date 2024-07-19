@@ -36,7 +36,6 @@ class AuxiliaryPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestC
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			AuxiliaryPropertyValueResourceBuilder::class,
 			new AuxiliaryPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class AuxiliaryPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestC
 	}
 
 	public function testIsNotResourceBuilderForNonImpoProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new AuxiliaryPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class AuxiliaryPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestC
 	}
 
 	public function testAddResourceValueForSelectedAuxiliaryProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_dat' );
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 

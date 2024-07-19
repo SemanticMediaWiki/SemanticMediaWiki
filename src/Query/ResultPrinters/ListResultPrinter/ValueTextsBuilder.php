@@ -34,7 +34,6 @@ class ValueTextsBuilder {
 	 * @return string
 	 */
 	public function getValuesText( SMWResultArray $field, $column = 0 ) {
-
 		$valueTexts = $this->getValueTexts( $field, $column );
 
 		return join( $this->get( 'valuesep' ), $valueTexts );
@@ -48,7 +47,6 @@ class ValueTextsBuilder {
 	 * @return string[]
 	 */
 	private function getValueTexts( SMWResultArray $field, $column ) {
-
 		$valueTexts = [];
 
 		$field->reset();
@@ -88,7 +86,6 @@ class ValueTextsBuilder {
 	 * @return \Linker|null
 	 */
 	private function getLinkerForColumn( $columnNumber ) {
-
 		if ( ( $columnNumber === 0 && $this->get( 'link-first' ) ) ||
 			( $columnNumber > 0 && $this->get( 'link-others' ) ) ) {
 			return $this->getLinker();
@@ -117,7 +114,6 @@ class ValueTextsBuilder {
 	 * @return string
 	 */
 	private function sanitizeValueText( $text ) {
-
 		if ( $this->isSimpleList() ) {
 			return $text;
 		}

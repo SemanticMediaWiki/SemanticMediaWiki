@@ -40,7 +40,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	private Database $connection;
 
 	protected function setUp() : void {
-
 		$idCacheManager = new IdCacheManager(
 			[
 				'entity.id' => new FixedInMemoryLruCache(),
@@ -155,7 +154,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\EntityStore\EntityIdManager',
 			new EntityIdManager( $this->store, $this->factory )
@@ -163,7 +161,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectInfoRoundtrip() {
-
 		$subject = new DIWikiPage( 'Foo', 9001 );
 
 		$instance = new EntityIdManager(
@@ -199,7 +196,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyId() {
-
 		$selectRow = new \stdClass;
 		$selectRow->smw_id = 9999;
 		$selectRow->smw_sort = '';
@@ -232,7 +228,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider pageIdandSortProvider
 	 */
 	public function testGetSMWPageIDandSort( $parameters ) {
-
 		$selectRow = new \stdClass;
 		$selectRow->smw_id = 9999;
 		$selectRow->smw_sort = '';
@@ -276,7 +271,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider pageIdandSortProvider
 	 */
 	public function testMakeSMWPageID( $parameters ) {
-
 		$selectRow = new \stdClass;
 		$selectRow->smw_id = 0;
 		$selectRow->o_id = 0;
@@ -324,7 +318,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDataItemById() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -350,7 +343,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateInterwikiField() {
-
 		$this->tableFieldUpdater->expects( $this->once() )
 			->method( 'updateIwField' )
 			->with(
@@ -370,7 +362,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindDuplicateEntries() {
-
 		$expected = [
 			'count' => 2,
 			'smw_title' => 'Foo',
@@ -402,7 +393,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetIDOnPredefinedProperty() {
-
 		$row = new \stdClass;
 		$row->smw_id = 42;
 
@@ -439,7 +429,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWarmUpCache() {
-
 		$list = [
 			new DIWikiPage( 'Bar', NS_MAIN )
 		];
@@ -481,7 +470,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindAssociatedRev() {
-
 		$row = [
 			'smw_id' => 42,
 			'smw_title' => 'Foo',
@@ -541,7 +529,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPreload() {
-
 		$subjects = [
 			DIWikiPage::newFromText( 'Foo' )
 		];
@@ -568,7 +555,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateFieldMaps() {
-
 		$this->auxiliaryFields->expects( $this->once() )
 			->method( 'setFieldMaps' )
 			->with(
@@ -584,7 +570,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSequenceMap() {
-
 		$this->sequenceMapFinder->expects( $this->once() )
 			->method( 'findMapById' )
 			->with( $this->equalTo( 1001 ) );
@@ -598,7 +583,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLoadSequenceMap() {
-
 		$this->sequenceMapFinder->expects( $this->once() )
 			->method( 'prefetchSequenceMap' )
 			->with( $this->equalTo( [ 42, 1001 ] ) );
@@ -612,7 +596,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function pageIdandSortProvider() {
-
 		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', false, false ];
 		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', true, false ];
 		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', true, true ];
@@ -627,7 +610,6 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function createAssociativeArrayFromProviderDefinition( $definitions ) {
-
 		foreach ( $definitions as $map ) {
 			$provider[] = [ [
 				'title'         => $map[0],

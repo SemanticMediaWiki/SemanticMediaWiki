@@ -51,7 +51,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Importer\Importer',
 			new Importer( $this->contentIterator, $this->contentCreator )
@@ -59,7 +58,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisabled() {
-
 		$instance = new Importer(
 			new JsonContentIterator( $this->jsonImportContentsFileDirReader ),
 			$this->contentCreator
@@ -77,7 +75,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunImport() {
-
 		$importContents = new ImportContents();
 
 		$importContents->setName( 'Foo' );
@@ -110,7 +107,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testrunImportWithError() {
-
 		$importContents = new ImportContents();
 
 		$importContents->addError( 'Bar' );
@@ -139,7 +135,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testrunImportWithErrorDuringCreation() {
-
 		$importContents = new ImportContents();
 		$importContents->setVersion( 1 );
 

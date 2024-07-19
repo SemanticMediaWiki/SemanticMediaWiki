@@ -19,7 +19,6 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testGetDataTypeList() {
-
 		$this->assertInternalType(
 			'array',
 			TypesRegistry::getDataTypeList()
@@ -27,7 +26,6 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyList() {
-
 		$this->assertInternalType(
 			'array',
 			TypesRegistry::getPropertyList()
@@ -35,7 +33,6 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFixedProperties_IDList() {
-
 		$propertyList = TypesRegistry::getPropertyList();
 
 		foreach ( TypesRegistry::getFixedProperties( 'id' ) as $key => $id ) {
@@ -44,7 +41,6 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFixedProperties_DefaultFixed() {
-
 		$propertyList = TypesRegistry::getPropertyList();
 
 		foreach ( TypesRegistry::getFixedProperties( 'default_fixed' ) as $key ) {
@@ -53,7 +49,6 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFixedProperties_CustomFixed() {
-
 		$propertyList = TypesRegistry::getPropertyList();
 
 		foreach ( TypesRegistry::getFixedProperties( 'custom_fixed' ) as $key ) {
@@ -62,7 +57,6 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFixedProperties_CompareFixed() {
-
 		$customList = TypesRegistry::getFixedProperties( 'custom_fixed' );
 
 		// Both list are exclusive (members of one list should not appear in the
@@ -83,7 +77,6 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeList
 	 */
 	public function testTypeList_ClassExists( $key, $def ) {
-
 		$class = $def[0];
 
 		if ( is_array( $class ) ) {
@@ -101,7 +94,6 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function typeList() {
-
 		$excludes = [];
 
 		// Requires Maps/Semantic Maps hence remove from the
@@ -119,7 +111,6 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function propertyList() {
-
 		$excludes = [];
 
 		foreach ( TypesRegistry::getPropertyList() as $key => $def ) {

@@ -40,7 +40,6 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AllowsListConstraintValueValidator::class,
 			new AllowsListConstraintValueValidator( $this->allowsListValueParser, $this->propertySpecificationLookup )
@@ -48,7 +47,6 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testIsAllowedValueOnTheValidatedDataValue() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'ValidAllowedValue' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
@@ -89,7 +87,6 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testIsNotAllowedValueOnTheValidatedDataValue() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'InvalidAllowedValue' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
@@ -130,7 +127,6 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testIsNotAllowedValueWithShortenedLongList() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'InvalidAllowedValue' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
@@ -187,7 +183,6 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testIsAllowedValueFromCombinedList() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'ValidAllowedValue' );
 
 		$this->allowsListValueParser->expects( $this->any() )
@@ -237,7 +232,6 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	 * @dataProvider rangeProvider
 	 */
 	public function testCompareNumberRange( $allowsValue, $dataItem, $expected ) {
-
 		$property = $this->dataItemFactory->newDIProperty( 'InvalidAllowedValue' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
@@ -283,7 +277,6 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function rangeProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		// Combinations do test that the order for a range and a discrete value

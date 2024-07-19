@@ -39,7 +39,6 @@ class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestC
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			PreferredPropertyLabelResourceBuilder::class,
 			new PreferredPropertyLabelResourceBuilder()
@@ -47,7 +46,6 @@ class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestC
 	}
 
 	public function testIsNotResourceBuilderForNonPreferredPropertyLabelProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new PreferredPropertyLabelResourceBuilder();
@@ -58,7 +56,6 @@ class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestC
 	}
 
 	public function testAddResourceValueForValidProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_PPLB' );
 
 		$monolingualTextValue = $this->dataValueFactory->newDataValueByProperty(

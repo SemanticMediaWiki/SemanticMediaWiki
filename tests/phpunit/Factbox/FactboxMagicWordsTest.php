@@ -53,7 +53,6 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textDataProvider
 	 */
 	public function testMagicWordsFromParserOutputExtension( $text, array $expected ) {
-
 		$title  = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -134,7 +133,6 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function textDataProvider() {
-
 		$provider = [];
 
 		// #0 __NOFACTBOX__, this test should not generate a factbox output

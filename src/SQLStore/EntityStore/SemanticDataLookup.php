@@ -53,7 +53,6 @@ class SemanticDataLookup {
 	 * @return RequestOptions|null
 	 */
 	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, RequestOptions $requestOptions = null ) {
-
 		if ( $requestOptions === null || !isset( $requestOptions->conditionConstraint ) ) {
 			return $requestOptions;
 		}
@@ -89,7 +88,6 @@ class SemanticDataLookup {
 	 * @throws RuntimeException
 	 */
 	public function newStubSemanticData( $object ) {
-
 		if ( $object instanceof DIWikiPage ) {
 			return new StubSemanticData( $object, $this->store, false );
 		}
@@ -129,7 +127,6 @@ class SemanticDataLookup {
 	 * @return SemanticData
 	 */
 	public function getSemanticData( $id, DataItem $dataItem = null, PropertyTableDefinition $propTable, RequestOptions $requestOptions = null ) {
-
 		if ( !$dataItem instanceof DIWikiPage ) {
 			throw new RuntimeException( 'Expected a DIWikiPage instance' );
 		}
@@ -215,7 +212,6 @@ class SemanticDataLookup {
 	 * @return array
 	 */
 	public function prefetchDataFromTable( array $subjects, DIProperty $property, PropertyTableDefinition $propTable, RequestOptions $requestOptions = null ) {
-
 		$ids = [];
 		$isSubject = true;
 		$entityIdManager = $this->store->getObjectIds();
@@ -318,7 +314,6 @@ class SemanticDataLookup {
 	 * @return array
 	 */
 	public function fetchSemanticDataFromTable( $id, DataItem $dataItem = null, PropertyTableDefinition $propTable, RequestOptions $requestOptions = null ) {
-
 		$isSubject = $dataItem instanceof DIWikiPage || $dataItem === null;
 
 		// stop if there is not enough data:
@@ -372,7 +367,6 @@ class SemanticDataLookup {
 	}
 
 	private function fetchSemanticDataFromTableByList( $list, $pid, $propTable, $requestOptions ) {
-
 		if ( $list === [] ) {
 			return [];
 		}
@@ -403,7 +397,6 @@ class SemanticDataLookup {
 	}
 
 	private function fetchFromTable( $query, $propTable, $isSubject, $requestOptions, $field = '' ) {
-
 		$result = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -622,7 +615,6 @@ class SemanticDataLookup {
 	}
 
 	private function addFields( &$query, &$map, $fields, $valueField, $labelField, &$valueCount, &$fieldname ) {
-
 		// Select dataItem column(s)
 		foreach ( $fields as $fieldname => $fieldType ) {
 
@@ -675,7 +667,6 @@ class SemanticDataLookup {
 	}
 
 	private function buildResultFromRow( $row, $params ) {
-
 		$hash = '';
 		$sortField = '';
 
@@ -759,7 +750,6 @@ class SemanticDataLookup {
 	}
 
 	private function fetchPropertiesFromTable( $id, $propTable ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 

@@ -24,7 +24,6 @@ class SettingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 
 	protected function setUp() : void {
-
 		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -48,7 +47,6 @@ class SettingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SettingsInfoProvider::class,
 			new SettingsInfoProvider( $this->outputFormatter )
@@ -56,7 +54,6 @@ class SettingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTask() {
-
 		$instance = new SettingsInfoProvider(
 			$this->outputFormatter
 		);
@@ -73,7 +70,6 @@ class SettingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new SettingsInfoProvider(
 			$this->outputFormatter
 		);
@@ -85,7 +81,6 @@ class SettingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequest() {
-
 		$this->outputFormatter->expects( $this->once() )
 			->method( 'addParentLink' )
 			->with(	$this->equalTo( [ 'action' => 'elastic' ] ) );

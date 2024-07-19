@@ -23,7 +23,6 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 	private $query;
 
 	protected function setUp() : void {
-
 		$this->query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -54,7 +53,6 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableStatisticsLookup::class,
 			new TableStatisticsLookup( $this->store )
@@ -62,7 +60,6 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStats() {
-
 		$this->query->expects( $this->any() )
 			->method( 'execute' )
 			->will( $this->returnValue( [] ) );
@@ -86,7 +83,6 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_last_id() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'selectField' )
 			->with(
@@ -105,7 +101,6 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_rows_total_count() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'selectField' )
 			->with(

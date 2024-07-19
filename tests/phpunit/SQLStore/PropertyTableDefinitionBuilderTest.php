@@ -33,14 +33,12 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$dataItems = [];
 		$specials = [];
 		$fixed = [];
@@ -52,7 +50,6 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDataItemTypes() {
-
 		$dataItems = [ DataItem::TYPE_NUMBER => 'smw_di_number' ];
 		$specials = [];
 		$fixed = [];
@@ -84,7 +81,6 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUserDefinedFixedPropertyDeclaration() {
-
 		$propertyKey = 'foo bar';
 		$expectedKey = 'Foo_bar';
 
@@ -128,7 +124,6 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSpecialProperties() {
-
 		$propertyKey = '_MDAT';
 
 		$dataItems = [];
@@ -159,7 +154,6 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirects() {
-
 		$propertyKey = '_REDI';
 
 		$dataItems = [];

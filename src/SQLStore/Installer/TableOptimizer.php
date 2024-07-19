@@ -55,7 +55,6 @@ class TableOptimizer {
 	 * @param array $tables
 	 */
 	public function runForTables( array $tables ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$text = [

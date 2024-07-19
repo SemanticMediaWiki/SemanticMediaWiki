@@ -53,7 +53,6 @@ class DatePropertyValueQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 
 		$fixturesCleaner
@@ -64,7 +63,6 @@ class DatePropertyValueQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUserDefinedDateProperty() {
-
 		$property = new DIProperty( 'SomeDateProperty' );
 		$property->setPropertyTypeId( '_dat' );
 
@@ -120,7 +118,6 @@ class DatePropertyValueQueryDBIntegrationTest extends DatabaseTestCase {
 	 * #576
 	 */
 	public function testSortableDateQuery() {
-
 		$this->getStore()->updateData(
 			$this->fixturesProvider->getFactsheet( 'Berlin' )->asEntity()
 		);

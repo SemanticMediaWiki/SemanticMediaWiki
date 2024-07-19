@@ -55,7 +55,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -67,7 +66,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructOutdatedEntitiesResultIterator() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -81,7 +79,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructByNamespaceInvalidEntitiesResultIterator() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -95,7 +92,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructOutdatedQueryLinksResultIterator() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -109,7 +105,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructUnassignedQueryLinksResultIterator() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -126,7 +121,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testJobRun( $parameters ) {
-
 		$row = [
 			'smw_id' => 42,
 			'smw_title' => 'Foo',
@@ -155,7 +149,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		$provider[] = [
 			[]
 		];

@@ -41,7 +41,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -69,7 +68,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInstance() {
-
 		$instance = PropertyRegistry::getInstance();
 
 		$this->assertSame(
@@ -86,7 +84,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLanguageIndependantPropertyLabelAliasInvocation() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -123,7 +120,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterProperty() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -177,7 +173,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterProperty_DifferentSignatureThrowsException() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -211,7 +206,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnregisterProperty() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -252,7 +246,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPropertyId() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -308,7 +301,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPropertyLabelForRegisteredId() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -370,7 +362,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPropertyInfoForUnregisteredId() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -419,7 +410,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfindPropertyIdFromLabelByLanguageCode() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -455,7 +445,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPropertyLabelByLanguageCode() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -491,7 +480,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPropertyDescriptionMsgKey() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -533,7 +521,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDataTypePropertyExemptionList() {
-
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -583,7 +570,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeToCanonicalLabelProvider
 	 */
 	public function testFindCanonicalPropertyLabelById( $id, $expected ) {
-
 		$instance = PropertyRegistry::getInstance();
 
 		$this->assertSame(
@@ -593,7 +579,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function typeToCanonicalLabelProvider() {
-
 		$provider[] = [
 			'_txt',
 			'Text'

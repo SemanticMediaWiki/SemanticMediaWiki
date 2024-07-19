@@ -51,7 +51,6 @@ class ParamListProcessor {
 	 * @return array
 	 */
 	public function format( array $paramList, $type ) {
-
 		if ( $type === self::FORMAT_LEGACY ) {
 			return $this->legacy_format( $paramList );
 		}
@@ -68,7 +67,6 @@ class ParamListProcessor {
 	 * @return array
 	 */
 	public function preprocess( array $parameters, $showMode = false ) {
-
 		$previousPrintout = null;
 
 		$serialization = [
@@ -133,7 +131,6 @@ class ParamListProcessor {
 	}
 
 	private function legacy_format( array $paramList ) {
-
 		$printouts = [];
 
 		foreach ( $paramList['printouts'] as $k => $request ) {
@@ -197,7 +194,6 @@ class ParamListProcessor {
 	}
 
 	private function addPrintRequest( $name, $param, &$previousPrintout, array &$serialization ) {
-
 		$param = substr( $param, 1 );
 
 		// Currently we don't filter any duplicates hence the additional
@@ -212,7 +208,6 @@ class ParamListProcessor {
 	}
 
 	private function addThisPrintRequest( $name, $param, &$previousPrintout, array &$serialization ) {
-
 		$param = substr( $param, 1 );
 
 		$parts = explode( '=', $param, 2 );
@@ -221,7 +216,6 @@ class ParamListProcessor {
 	}
 
 	private function addPrintRequestParameter( $name, $param, $previousPrintout, array &$serialization ) {
-
 		if ( $previousPrintout === null ) {
 			return;
 		}
@@ -245,7 +239,6 @@ class ParamListProcessor {
 	}
 
 	private function addOtherParameters( $name, $param, array &$serialization, $showMode ) {
-
 		// #1645
 		$parts = $showMode && $name == 0 ? $param : explode( '=', $param, 2 );
 

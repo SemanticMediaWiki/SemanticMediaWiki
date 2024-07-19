@@ -48,7 +48,6 @@ class JsonResultPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	public function getFileName( QueryResult $queryResult ) {
-
 		if ( $this->params['filename'] === '' ) {
 			return 'result.json';
 		}
@@ -107,7 +106,6 @@ class JsonResultPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
-
 		if ( $outputMode !== SMW_OUTPUT_FILE ) {
 			return $this->getJsonLink( $res, $outputMode );
 		}
@@ -121,7 +119,6 @@ class JsonResultPrinter extends FileExportPrinter {
 	}
 
 	private function getJsonLink( QueryResult $res, $outputMode ) {
-
 		// Can be viewed as HTML if requested, no more parsing needed
 		$this->isHTML = $outputMode == SMW_OUTPUT_HTML;
 
@@ -134,7 +131,6 @@ class JsonResultPrinter extends FileExportPrinter {
 	}
 
 	private function buildJSON( QueryResult $res, $outputMode ) {
-
 		$flags = isset( $this->params['prettyprint'] ) && $this->params['prettyprint'] ? JSON_PRETTY_PRINT : 0;
 		$flags = $flags | ( isset( $this->params['unescape'] ) && $this->params['unescape'] ? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES : 0 );
 
@@ -148,7 +144,6 @@ class JsonResultPrinter extends FileExportPrinter {
 	}
 
 	private function buildSimpleList( $res ) {
-
 		$result = [];
 
 		while ( $row = $res->getNext() ) {

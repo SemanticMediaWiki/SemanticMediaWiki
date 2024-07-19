@@ -33,7 +33,6 @@ class MonolingualTextPropertyValueResourceBuilder extends PropertyValueResourceB
 	 * {@inheritDoc}
 	 */
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-
 		$expResourceElement = $this->exporter->getResourceElementForWikiPage(
 			$property->getCanonicalDiWikiPage(),
 			true

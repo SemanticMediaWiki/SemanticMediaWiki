@@ -44,7 +44,6 @@ class Logger extends AbstractLogger {
 	 * {@inheritDoc}
 	 */
 	public function log( $level, $message, array $context = [] ) {
-
 		$shouldLog = false;
 
 		// Everthings goes for the developer role!

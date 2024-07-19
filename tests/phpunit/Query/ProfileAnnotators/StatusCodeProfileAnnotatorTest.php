@@ -29,7 +29,6 @@ class StatusCodeProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -44,7 +43,6 @@ class StatusCodeProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider codesDataProvider
 	 */
 	public function testCreateProfile( $codes, $expected ) {
-
 		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', '_QUERYe7d20a88' );
 
 		$container = new DIContainer(
@@ -65,7 +63,6 @@ class StatusCodeProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function codesDataProvider() {
-
 		$provider[] = [
 			[],
 			[

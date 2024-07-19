@@ -21,7 +21,6 @@ class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit_Framework_Test
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testCommonInterfaceMethods( $langcode ) {
-
 		$methods = [
 			'getDateFormats' => 'array',
 			'getNamespaces'  => 'array',
@@ -44,7 +43,6 @@ class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit_Framework_Test
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testComparePredefinedPropertyLabels( $langcode ) {
-
 		$class = $this->loadLanguageFileAndConstructClass( $langcode );
 
 		$baseToCompareInstance = LocalLanguage::getInstance()->fetch( 'en' );
@@ -65,7 +63,6 @@ class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit_Framework_Test
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testCompareMonthAndLabel( $langcode ) {
-
 		$class = $this->loadLanguageFileAndConstructClass( $langcode );
 
 		for ( $i=1; $i <= 12; $i++ ) {
@@ -79,7 +76,6 @@ class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit_Framework_Test
 	}
 
 	public function languageCodeProvider() {
-
 		$provider = [];
 
 		$languageCodes = [

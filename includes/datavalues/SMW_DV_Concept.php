@@ -24,7 +24,6 @@ class SMWConceptValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_CONCEPT ) {
 			return false;
 		}

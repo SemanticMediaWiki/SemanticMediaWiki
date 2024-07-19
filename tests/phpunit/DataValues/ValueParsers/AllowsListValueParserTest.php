@@ -24,7 +24,6 @@ class AllowsListValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueParsers\AllowsListValueParser',
 			new AllowsListValueParser( $this->mediaWikiNsContentReader )
@@ -32,7 +31,6 @@ class AllowsListValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParseAndMatchFromResource() {
-
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
 			->will( $this->returnValue( " \n*Foo\n**Foobar|bar\n" ) );
@@ -51,7 +49,6 @@ class AllowsListValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParseAndMatchFromJSON() {
-
 		$contents = json_encode( [ 'Foo' => 'Foo', 'Foobar' => 'fooooo bar' ] );
 
 		$this->mediaWikiNsContentReader->expects( $this->once() )

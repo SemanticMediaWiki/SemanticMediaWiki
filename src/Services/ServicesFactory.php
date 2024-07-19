@@ -104,7 +104,6 @@ class ServicesFactory {
 	 * @return self
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -316,7 +315,6 @@ class ServicesFactory {
 	 * @since 2.5
 	 */
 	public function newPageUpdater() : PageUpdater {
-
 		$pageUpdater = $this->containerBuilder->create(
 			'PageUpdater',
 			$this->getStore()->getConnection( 'mw.db' ),
@@ -377,7 +375,6 @@ class ServicesFactory {
 	 * @return InTextAnnotationParser
 	 */
 	public function newInTextAnnotationParser( ParserData $parserData ) {
-
 		$mwCollaboratorFactory = $this->newMwCollaboratorFactory();
 
 		$linksProcessor = $this->containerBuilder->create( 'LinksProcessor' );
@@ -437,7 +434,6 @@ class ServicesFactory {
 	 * @return DataUpdater
 	 */
 	public function newDataUpdater( SemanticData $semanticData ) {
-
 		$settings = $this->getSettings();
 
 		$changePropagationNotifier = new \SMW\Property\ChangePropagationNotifier(
@@ -544,7 +540,6 @@ class ServicesFactory {
 	 * @param callable $callback
 	 */
 	public function newDeferredCallableUpdate( callable $callback = null ) : CallableUpdate {
-
 		$deferredCallableUpdate = $this->containerBuilder->create(
 			'DeferredCallableUpdate',
 			$callback
@@ -571,7 +566,6 @@ class ServicesFactory {
 	 * @param callable $callback
 	 */
 	public function newDeferredTransactionalCallableUpdate( callable $callback = null ) : DeferredTransactionalCallableUpdate {
-
 		$deferredTransactionalUpdate = $this->containerBuilder->create(
 			'DeferredTransactionalCallableUpdate',
 			$callback,
@@ -632,7 +626,6 @@ class ServicesFactory {
 	}
 
 	private static function newContainerBuilder( CallbackContainerFactory $callbackContainerFactory, $servicesFileDir ) {
-
 		$containerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
 
 		$containerBuilder->registerCallbackContainer( new SharedServicesContainer() );

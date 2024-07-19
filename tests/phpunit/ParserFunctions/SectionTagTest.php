@@ -22,7 +22,6 @@ class SectionTagTest extends \PHPUnit_Framework_TestCase {
 	private $parser;
 
 	protected function setUp() : void {
-
 		$this->frame = $this->getMockBuilder( '\PPFrame' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -33,7 +32,6 @@ class SectionTagTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SectionTag::class,
 			new SectionTag( $this->parser, $this->frame )
@@ -41,7 +39,6 @@ class SectionTagTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegister_Enabled() {
-
 		$this->parser->expects( $this->once() )
 			->method( 'setHook' );
 
@@ -51,7 +48,6 @@ class SectionTagTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegister_Disabled() {
-
 		$this->parser->expects( $this->never() )
 			->method( 'setHook' );
 
@@ -61,7 +57,6 @@ class SectionTagTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParse() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -88,7 +83,6 @@ class SectionTagTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParse_PropertyNamespace() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

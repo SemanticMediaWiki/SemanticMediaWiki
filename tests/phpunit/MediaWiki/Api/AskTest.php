@@ -28,7 +28,6 @@ class AskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new Ask(
 			$this->apiFactory->newApiMain( [ 'query' => 'Foo' ] ),
 			'ask'
@@ -44,7 +43,6 @@ class AskTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sampleQueryProvider
 	 */
 	public function testExecute( array $query, array $expected ) {
-
 		$results = $this->apiFactory->doApiRequest( [
 			'action' => 'ask',
 			'query' => implode( '|', $query )
@@ -61,7 +59,6 @@ class AskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function sampleQueryProvider() {
-
 		// #0 Standard query
 		$provider[] = [
 			[

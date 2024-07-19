@@ -32,7 +32,6 @@ class Formatter {
 	 * @return string
 	 */
 	public static function format( PrintRequest $printRequest, $linker = null, $outputType = null ) {
-
 		if ( $outputType === self::FORMAT_WIKI || $outputType === SMW_OUTPUT_WIKI ) {
 			return self::getWikiText( $printRequest, $linker );
 		}
@@ -41,7 +40,6 @@ class Formatter {
 	}
 
 	private static function getHTMLText( $printRequest, $linker = null ) {
-
 		$label = $printRequest->getLabel();
 
 		if ( \SMW\Parser\InTextAnnotationParser::hasPropertyLink( $label ) ) {
@@ -69,7 +67,6 @@ class Formatter {
 	}
 
 	private static function getWikiText( $printRequest, $linker = false ) {
-
 		$label = $printRequest->getLabel();
 
 		if ( $linker === null || $linker === false || $label === '' ) {

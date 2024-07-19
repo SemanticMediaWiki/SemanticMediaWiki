@@ -22,14 +22,12 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 
 	protected function setUp() : void {
-
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EntityCache::class,
 			new EntityCache( $this->cache )
@@ -37,7 +35,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeCacheKey() {
-
 		$instance = new EntityCache(
 			$this->cache
 		);
@@ -66,7 +63,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeCacheKey_SubNamespace() {
-
 		$instance = new EntityCache(
 			$this->cache
 		);
@@ -85,7 +81,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testContains() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'contains' )
 			->with( $this->equalTo( 'Foo' ) );
@@ -98,7 +93,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetch() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->with( $this->equalTo( 'Foo' ) )
@@ -112,7 +106,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSave() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
@@ -127,7 +120,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'delete' )
 			->with( $this->equalTo( 'Foo' ) );
@@ -140,7 +132,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSub() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->with( $this->equalTo( 'Foo' ) )
@@ -157,7 +148,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesSaveSub() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->with( $this->equalTo( 'Foo' ) )
@@ -177,7 +167,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesOverrideSub() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
@@ -192,7 +181,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesDeleteSub() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->with( $this->equalTo( 'Foo' ) )
@@ -212,7 +200,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAssociate() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$expected = [
@@ -239,7 +226,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAssociate_NoValidSubject() {
-
 		$this->cache->expects( $this->never() )
 			->method( 'fetch' );
 
@@ -251,7 +237,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidate() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->cache->expects( $this->once() )
@@ -274,7 +259,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidate_NoValidSubject() {
-
 		$this->cache->expects( $this->never() )
 			->method( 'fetch' );
 

@@ -19,7 +19,6 @@ class ErrorCodeFormatterTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testGetStringFromJsonErrorCode() {
-
 		$this->assertInternalType(
 			'string',
 			ErrorCodeFormatter::getStringFromJsonErrorCode( 'Foo' )
@@ -34,7 +33,6 @@ class ErrorCodeFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMessageFromJsonErrorCode() {
-
 		$this->assertInternalType(
 			'string',
 			ErrorCodeFormatter::getMessageFromJsonErrorCode( 'Foo' )

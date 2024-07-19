@@ -37,7 +37,6 @@ class ConfigPreloader {
 	 * @return self
 	 */
 	public function loadDefaultConfigFrom( ...$files ) : ConfigPreloader {
-
 		$dir = $GLOBALS['smwgDir'] . '/data/config/';
 
 		foreach ( $files as $file ) {
@@ -62,7 +61,6 @@ class ConfigPreloader {
 	 * @return self
 	 */
 	public function loadConfigFrom( ...$files ) : ConfigPreloader {
-
 		foreach ( $files as $file ) {
 			$this->load( $file );
 		}
@@ -71,7 +69,6 @@ class ConfigPreloader {
 	}
 
 	private function load( $file ) {
-
 		$file = str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( !is_readable( $file ) ) {

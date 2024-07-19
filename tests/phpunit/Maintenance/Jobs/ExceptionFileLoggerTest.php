@@ -30,7 +30,6 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExceptionFileLogger::class,
 			new ExceptionFileLogger()
@@ -38,7 +37,6 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetter() {
-
 		$instance = new ExceptionFileLogger();
 
 		$instance->setOptions( new Options( [
@@ -57,7 +55,6 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoWriteExceptionLog() {
-
 		$this->file->expects( $this->once() )
 			->method( 'write' );
 

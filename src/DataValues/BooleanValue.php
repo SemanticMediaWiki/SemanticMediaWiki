@@ -45,7 +45,6 @@ class BooleanValue extends DataValue {
 	 * @see DataValue::parseUserValue
 	 */
 	protected function parseUserValue( $value ) {
-
 		$value = trim( $value );
 
 		if ( $this->m_caption === false ) {
@@ -65,7 +64,6 @@ class BooleanValue extends DataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() !== DataItem::TYPE_BOOLEAN ) {
 			return false;
 		}
@@ -80,7 +78,6 @@ class BooleanValue extends DataValue {
 	 * @see DataValue::setOutputFormat
 	 */
 	public function setOutputFormat( $formatstring ) {
-
 		if ( $formatstring == $this->m_outformat ) {
 			return;
 		}
@@ -180,7 +177,6 @@ class BooleanValue extends DataValue {
 	 * @return string
 	 */
 	protected function getStandardCaption( $useformat ) {
-
 		if ( !$this->isValid() ) {
 			return false;
 		}
@@ -196,7 +192,6 @@ class BooleanValue extends DataValue {
 	}
 
 	private function doParseBoolValue( $value ) {
-
 		// Use either the global or page related content language
 		$contentLanguage = $this->getOption( 'content.language' );
 
@@ -222,7 +217,6 @@ class BooleanValue extends DataValue {
 	}
 
 	private function setLocalizedCaptions( &$formatstring ) {
-
 		if ( !( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) ) {
 			$languageCode = $this->getOption( 'user.language' );
 		}
@@ -239,7 +233,6 @@ class BooleanValue extends DataValue {
 	}
 
 	private function getFirstBooleanCaptionFrom( $msgKey, $languageCode = null ) {
-
 		$vals = $this->getBooleanWordsFrom(
 			$msgKey,
 			$languageCode
@@ -249,7 +242,6 @@ class BooleanValue extends DataValue {
 	}
 
 	private function getBooleanWordsFrom( $msgKey, $languageCode = null, $canonicalForm = null ) {
-
 		$vals = explode(
 			',',
 			Message::get( $msgKey, Message::TEXT, $languageCode )

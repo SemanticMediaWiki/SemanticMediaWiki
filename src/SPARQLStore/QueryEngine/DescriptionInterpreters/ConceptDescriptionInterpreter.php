@@ -58,7 +58,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
@@ -96,7 +95,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function getConceptDescription( DIWikiPage $concept ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$value = $applicationFactory->getStore()->getSemanticData( $concept )->getPropertyValues(
@@ -119,7 +117,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function findCircularDescription( $concept, $description ) {
-
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->conditionBuilder->addError(

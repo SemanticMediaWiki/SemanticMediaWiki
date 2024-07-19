@@ -16,7 +16,6 @@ use SMW\Exception\DataItemException;
 class DataItemExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new DataItemException();
 
 		$this->assertInstanceof(

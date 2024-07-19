@@ -32,7 +32,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TransactionHandler::class,
 			new TransactionHandler( $this->loadBalancerFactory )
@@ -40,7 +39,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetEmptyTransactionTicket() {
-
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( self::getHasPrimaryChangesMethod() )
 			->will( $this->returnValue( false ) );
@@ -56,7 +54,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetEmptyTransactionTicketOnMasterChanges() {
-
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( self::getHasPrimaryChangesMethod() )
 			->will( $this->returnValue( true ) );
@@ -74,7 +71,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommitAndWaitForReplication() {
-
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( 'commitAndWaitForReplication' );
 
@@ -86,7 +82,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMarkSectionTransaction() {
-
 		$instance = new TransactionHandler(
 			$this->loadBalancerFactory
 		);
@@ -99,7 +94,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMarkDetachSectionTransaction() {
-
 		$instance = new TransactionHandler(
 			$this->loadBalancerFactory
 		);
@@ -126,7 +120,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMarkSectionTransactionWithAnotherActive_ThrowsException() {
-
 		$instance = new TransactionHandler(
 			$this->loadBalancerFactory
 		);
@@ -138,7 +131,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDetachSectionTransactionOnNonActiveSection_ThrowsException() {
-
 		$instance = new TransactionHandler(
 			$this->loadBalancerFactory
 		);

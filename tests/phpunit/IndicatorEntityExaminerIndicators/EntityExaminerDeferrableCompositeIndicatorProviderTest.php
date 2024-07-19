@@ -39,7 +39,6 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 	}
 
 	public function testCanConstruct() {
-
 		$indicatorProviders = [];
 
 		$this->assertInstanceOf(
@@ -64,7 +63,6 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 	}
 
 	public function testIsDeferredMode() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
@@ -78,7 +76,6 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 	}
 
 	public function testGetName() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
@@ -92,7 +89,6 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 	}
 
 	public function testGetIndicators() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
@@ -106,7 +102,6 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 	}
 
 	public function testGetModules() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
@@ -120,7 +115,6 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 	}
 
 	public function testGetInlineStyle() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
@@ -134,7 +128,6 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 	}
 
 	public function testHasIndicator() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$deferrableIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider' )
@@ -171,7 +164,6 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 	}
 
 	public function testHasIndicator_DeferredMode() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$deferrableIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider' )
@@ -214,7 +206,6 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 	}
 
 	public function testNoIndicatorOnFailedPermission() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->permissionExaminer->expects( $this->once() )

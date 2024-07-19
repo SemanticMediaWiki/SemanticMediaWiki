@@ -98,7 +98,6 @@ class FieldMapper {
 	 * @return boolean
 	 */
 	public function containsReservedChar( $value ) {
-
 		$reservedChars = [
 			'+', '-', '=', '&&', '||', '>', '<', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\', '//'
 		];
@@ -143,7 +142,6 @@ class FieldMapper {
 	 * @return []
 	 */
 	public function field_filter( $field, $params ) {
-
 		$idList = [];
 
 		foreach ( $params as $key => $value ) {
@@ -244,7 +242,6 @@ class FieldMapper {
 	 * @return array
 	 */
 	public function range( $field, $value, $comp = '' ) {
-
 		$comparators = [
 			SMW_CMP_LESS => 'lt',
 			SMW_CMP_GRTR => 'gt',
@@ -266,7 +263,6 @@ class FieldMapper {
 	 * @return array
 	 */
 	public function match( $field, $value, $operator = 'or' ) {
-
 		if ( is_array( $field ) ) {
 			return $this->multi_match( $field, $value );
 		}
@@ -310,7 +306,6 @@ class FieldMapper {
 	 * @return array
 	 */
 	public function multi_match( $fields, $value, array $params = [] ) {
-
 		//return $this->multi_match( $field, trim( $value, '"' ) , [ "type" => "phrase" ] );
 
 		if ( strpos( $value, '"' ) !== false ) {
@@ -338,7 +333,6 @@ class FieldMapper {
 	 * @return array
 	 */
 	public function match_phrase( $field, $value, array $params = [] ) {
-
 		if ( strpos( $value, '*' ) !== false ) {
 			return [
 				'match_phrase_prefix' => [ "$field" => trim( $value, '*' ) ]
@@ -369,7 +363,6 @@ class FieldMapper {
 	 * @return array
 	 */
 	public function query_string_compat( $value, array $params = [] ) {
-
 		$wildcard = '';
 	//	$params = [];
 
@@ -465,7 +458,6 @@ class FieldMapper {
 	 * @return array
 	 */
 	public function query_string( $fields, $value, array $params = [] ) {
-
 		if ( $this->isCompatMode ) {
 			list( $value, $params ) = $this->query_string_compat( $value, $params );
 		}
@@ -518,7 +510,6 @@ class FieldMapper {
 	 * @return array
 	 */
 	public function terms( $field, $value ) {
-
 		if ( !is_array( $value ) ) {
 			$value = [ $value ];
 		}
@@ -643,7 +634,6 @@ class FieldMapper {
 	 * @return string
 	 */
 	public function hierarchy( $params, $replacement, $hierarchy = [] ) {
-
 		if ( $hierarchy === [] ) {
 			return $params;
 		}

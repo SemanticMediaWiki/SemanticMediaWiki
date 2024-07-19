@@ -166,7 +166,6 @@ class DataUpdater {
 	 * @return boolean
 	 */
 	public function isSkippable( Title $title, ?int &$latestRevID = null ) {
-
 		if ( $this->revisionGuard->isSkippableUpdate( $title, $latestRevID ) ) {
 			return true;
 		}
@@ -186,7 +185,6 @@ class DataUpdater {
 	 * @return boolean
 	 */
 	public function doUpdate() {
-
 		if ( !$this->canUpdate() ) {
 			return false;
 		}
@@ -236,7 +234,6 @@ class DataUpdater {
 	}
 
 	private function canUpdate() {
-
 		$title = $this->getSubject()->getTitle();
 
 		// Protect against null and namespace -1 see Bug 50153
@@ -253,7 +250,6 @@ class DataUpdater {
 	 * the given namespace
 	 */
 	public function runUpdate() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $this->canCreateUpdateJob === null ) {
@@ -307,7 +303,6 @@ class DataUpdater {
 	}
 
 	private function addAnnotations( Title $title, WikiPage $wikiPage, $revision, $user ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $revision !== null ) {
@@ -374,7 +369,6 @@ class DataUpdater {
 	}
 
 	private function checkUpdateEditProtection( $wikiPage, $user ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$editProtectionUpdater = $applicationFactory->create( 'EditProtectionUpdater',
@@ -392,7 +386,6 @@ class DataUpdater {
 	 * even finding uses of a property fails after its type changed.
 	 */
 	private function checkChangePropagation() {
-
 		// canCreateUpdateJob: if it is not enabled there's not much to do here
 		// isChangeProp: means the update is part of the ChangePropagationDispatchJob
 		// therefore skip
@@ -404,7 +397,6 @@ class DataUpdater {
 	}
 
 	private function updateData() {
-
 		$this->store->setOption(
 			Store::OPT_CREATE_UPDATE_JOB,
 			$this->canCreateUpdateJob
@@ -430,7 +422,6 @@ class DataUpdater {
 	}
 
 	private function checkForPossibleRedirectPreUpdate( SemanticData $semanticData ) {
-
 		// Check only during online-mode so that when a user operates Special:MovePage
 		// or #redirect the same process is applied
 		if ( !$this->canCreateUpdateJob ) {
@@ -451,7 +442,6 @@ class DataUpdater {
 	}
 
 	private function updateRedirectTarget( SemanticData $semanticData, DIWikiPage $target ) {
-
 		$subject = $semanticData->getSubject();
 
 		// The general rule is that a redirect page is not expected to contain

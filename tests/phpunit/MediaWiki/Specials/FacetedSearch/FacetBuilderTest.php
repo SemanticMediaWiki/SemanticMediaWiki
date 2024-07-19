@@ -45,7 +45,6 @@ class FacetBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FacetBuilder::class,
 			new FacetBuilder( $this->profile, $this->templateEngine, $this->filterFactory, $this->resultFetcher )

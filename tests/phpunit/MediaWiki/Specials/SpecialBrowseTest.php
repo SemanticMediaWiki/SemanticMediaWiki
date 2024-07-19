@@ -49,7 +49,6 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryParameterProvider
 	 */
 	public function testQueryParameter( $query, $expected ) {
-
 		$instance = new SpecialBrowse();
 
 		$instance->getContext()->setTitle(
@@ -70,7 +69,6 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryParameterProvider() {
-
 		#0
 		$provider[] = [
 			'',

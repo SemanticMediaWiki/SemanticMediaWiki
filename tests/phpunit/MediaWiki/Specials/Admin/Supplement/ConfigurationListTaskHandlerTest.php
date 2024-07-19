@@ -49,7 +49,6 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConfigurationListTaskHandler::class,
 			new ConfigurationListTaskHandler( $this->outputFormatter )
@@ -57,7 +56,6 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new ConfigurationListTaskHandler(
 			$this->outputFormatter
 		);
@@ -69,7 +67,6 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequest() {
-
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
 

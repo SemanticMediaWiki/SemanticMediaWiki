@@ -19,7 +19,6 @@ class FileTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$instance = new File();
 
 		$this->assertInstanceOf(
@@ -29,7 +28,6 @@ class FileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWrite_ThrowsException() {
-
 		$instance = new File();
 
 		$this->expectException( '\SMW\Exception\FileNotWritableException' );
@@ -37,7 +35,6 @@ class FileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDir() {
-
 		$this->assertInternalType(
 			'string',
 			File::dir( 'foo' )

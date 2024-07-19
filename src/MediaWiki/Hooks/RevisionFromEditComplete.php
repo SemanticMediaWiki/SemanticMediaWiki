@@ -80,7 +80,6 @@ class RevisionFromEditComplete implements HookListener {
 	 * @return boolean
 	 */
 	public function process( Title $title ) {
-
 		$this->editInfo->fetchEditInfo();
 
 		$parserOutput = $this->editInfo->getOutput();
@@ -121,7 +120,6 @@ class RevisionFromEditComplete implements HookListener {
 	}
 
 	private function tryCreateSchema( $title ) {
-
 		if ( $title->getNamespace() !== SMW_NS_SCHEMA ) {
 			return null;
 		}
@@ -139,7 +137,6 @@ class RevisionFromEditComplete implements HookListener {
 	}
 
 	private function addPredefinedPropertyAnnotation( ParserData $parserData, Schema $schema = null ) {
-
 		$propertyAnnotator = $this->propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$parserData->getSemanticData()
 		);

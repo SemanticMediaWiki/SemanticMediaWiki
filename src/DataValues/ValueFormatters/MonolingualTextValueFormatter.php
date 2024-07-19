@@ -32,7 +32,6 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 	 * {@inheritDoc}
 	 */
 	public function format( $type, $linker = null ) {
-
 		if ( !$this->dataValue instanceof MonolingualTextValue ) {
 			throw new RuntimeException( "The formatter is missing a valid MonolingualTextValue object" );
 		}
@@ -47,7 +46,6 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 	}
 
 	protected function getOutputText( $type, $linker = null ) {
-
 		if ( !$this->dataValue->isValid() ) {
 			return ( ( $type == self::WIKI_SHORT ) || ( $type == self::HTML_SHORT ) ) ? '' : $this->dataValue->getErrorText();
 		}
@@ -73,7 +71,6 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 	}
 
 	private function doFormatFinalOutputFor( $type, $linker ) {
-
 		$text = '';
 		$languagecode = '';
 

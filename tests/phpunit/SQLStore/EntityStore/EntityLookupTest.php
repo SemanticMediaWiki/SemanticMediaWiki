@@ -27,7 +27,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataLookup;
 
 	protected function setUp() : void {
-
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -78,7 +77,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EntityLookup::class,
 			new EntityLookup( $this->store, $this->factory )
@@ -86,7 +84,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
@@ -115,7 +112,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetProperties() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
@@ -151,7 +147,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues() {
-
 		$property = new DIProperty( 'Bar' );
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -192,7 +187,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues_Property_Inverse() {
-
 		$property = new DIProperty( 'Bar', true );
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -225,7 +219,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues_Subject_Null() {
-
 		$property = new DIProperty( 'Bar' );
 		$subject = null;
 
@@ -258,7 +251,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertySubjects() {
-
 		$property = new DIProperty( 'Bar' );
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -291,7 +283,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAllPropertySubjects() {
-
 		$property = new DIProperty( 'Bar' );
 
 		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
@@ -323,7 +314,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInProperties() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )

@@ -26,7 +26,6 @@ class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MustExistsConstraint::class,
 			new MustExistsConstraint()
@@ -34,7 +33,6 @@ class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new MustExistsConstraint();
 
 		$this->assertEquals(
@@ -44,7 +42,6 @@ class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new MustExistsConstraint();
 
 		$this->assertFalse(
@@ -53,7 +50,6 @@ class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_must_exists() {
-
 		$constraint = [
 			'must_exists' => true
 		];
@@ -109,7 +105,6 @@ class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_must_exists_ThrowsException() {
-
 		$constraint = [
 			'must_exists' => true
 		];
@@ -121,7 +116,6 @@ class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

@@ -159,7 +159,6 @@ class ChangeOp implements IteratorAggregate {
 	 * @return TableChangeOp[]
 	 */
 	public function getDataOps() {
-
 		$dataChangeOps = [];
 
 		foreach ( $this->data as $hash => $data ) {
@@ -195,7 +194,6 @@ class ChangeOp implements IteratorAggregate {
 	 * @param array $deleteOp
 	 */
 	public function addDiffOp( array $insertOp, array $deleteOp ) {
-
 		$diff = [
 			'insert' => $insertOp,
 			'delete' => $deleteOp
@@ -215,7 +213,6 @@ class ChangeOp implements IteratorAggregate {
 	 * @return TableChangeOp[]|[]
 	 */
 	public function getTableChangeOps( $table = null ) {
-
 		$tableChangeOps = [];
 
 		foreach ( $this->getOrderedDiffByTable( $table ) as $tableName => $diff ) {
@@ -231,7 +228,6 @@ class ChangeOp implements IteratorAggregate {
 	 * @return ChangeDiff
 	 */
 	public function newChangeDiff() {
-
 		$changeDiff = new ChangeDiff(
 			$this->subject,
 			$this->getTableChangeOps(),
@@ -262,7 +258,6 @@ class ChangeOp implements IteratorAggregate {
 	 * @return array
 	 */
 	public function getOrderedDiffByTable( $table = null ) {
-
 		if ( $table === null && $this->orderedDiff !== [] ) {
 			return $this->orderedDiff;
 		}
@@ -311,7 +306,6 @@ class ChangeOp implements IteratorAggregate {
 	 * @return array
 	 */
 	public function getChangedEntityIdListByType( $type = null ) {
-
 		$changedEntities = [];
 
 		foreach ( $this->getOrderedDiffByTable() as $diff ) {

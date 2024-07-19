@@ -32,7 +32,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			IdBorder::class,
 			new IdBorder( $this->store )
@@ -40,7 +39,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckBorder_HasBorder() {
-
 		$row = [
 			'smw_id' => 100
 		];
@@ -77,7 +75,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckBorder_HasMultipleBorders() {
-
 		$rows = [
 			(object)[ 'smw_id' => 100 ],
 			(object)[ 'smw_id' => 9999 ]
@@ -121,7 +118,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckBorder_NoBorder() {
-
 		$rows = [];
 
 		$expected = [
@@ -189,7 +185,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMissingUpperboundThrowsException() {
-
 		$instance = new IdBorder(
 			$this->store
 		);
@@ -199,7 +194,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMissingLegacyboundThrowsException() {
-
 		$instance = new IdBorder(
 			$this->store
 		);

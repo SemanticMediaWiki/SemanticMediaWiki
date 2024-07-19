@@ -47,7 +47,6 @@ class ParserHtmlTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param array $case
 	 */
 	public function process( array $case ) {
-
 		if ( !isset( $case[ 'subject' ] ) ) {
 			return;
 		}
@@ -63,7 +62,6 @@ class ParserHtmlTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param array $case
 	 */
 	private function assertParserHtmlOutputForCase( array $case ) {
-
 		if ( !isset( $case[ 'assert-output' ] ) ) {
 			return;
 		}
@@ -99,7 +97,6 @@ class ParserHtmlTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @return string
 	 */
 	private function getOutputText( array $case ) {
-
 		$subject = DIWikiPage::newFromText(
 			$case[ 'subject' ],
 			isset( $case[ 'namespace' ] ) ? constant( $case[ 'namespace' ] ) : NS_MAIN
@@ -133,7 +130,6 @@ class ParserHtmlTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @return bool True if any of the $keys is defined in $array and true-ish
 	 */
 	private function isSetAndTrueish( $array, $keys ) {
-
 		$keys = (array)$keys;
 
 		foreach ( $keys as $key ) {

@@ -29,7 +29,6 @@ class PurgeEntityCacheTest extends TestCase {
 	private $entityCache;
 
 	protected function setUp() : void {
-
 		$this->testEnvironment =  new TestEnvironment();
 
 		$this->messageReporter = $this->createMock( MessageReporter::class );
@@ -47,7 +46,6 @@ class PurgeEntityCacheTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PurgeEntityCache::class,
 			new PurgeEntityCache()
@@ -55,7 +53,6 @@ class PurgeEntityCacheTest extends TestCase {
 	}
 
 	public function testExecute() {
-
 		$fields = [
 			"smw_subobject=''",
 			'smw_iw != '

@@ -37,7 +37,6 @@ class Url {
 	 * @return string
 	 */
 	public function path( string $path = '' ) : string {
-
 		if ( $path === '' ) {
 			return $this->get( PHP_URL_SCHEME, PHP_URL_HOST, PHP_URL_PORT, PHP_URL_USER, PHP_URL_PASS, PHP_URL_PATH );
 		}

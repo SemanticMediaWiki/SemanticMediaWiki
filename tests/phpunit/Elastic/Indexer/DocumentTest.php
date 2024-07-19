@@ -19,7 +19,6 @@ use SMW\Tests\TestEnvironment;
 class DocumentTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Document::class,
 			new Document( 42 )
@@ -27,7 +26,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetId() {
-
 		$instance = new Document( 42, [] );
 
 		$this->assertEquals(
@@ -37,7 +35,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSubject() {
-
 		$instance = new Document( 42, [ 'subject' => [ 'serialization' => 'Foo#0##' ] ] );
 
 		$this->assertEquals(
@@ -47,7 +44,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPriorityDeleteList() {
-
 		$instance = new Document( 42, [] );
 		$instance->setPriorityDeleteList( [ 1001, 1002 ] );
 
@@ -58,7 +54,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsType_Default() {
-
 		$instance = new Document( 42, [] );
 
 		$this->assertTrue(
@@ -67,7 +62,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetField() {
-
 		$instance = new Document( 42, [] );
 		$instance->setField( 'foo_field', 'bar_value' );
 
@@ -78,7 +72,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSubDocument() {
-
 		$subDocument = new Document( 1001 );
 
 		$instance = new Document( 42 );
@@ -104,7 +97,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTextBody() {
-
 		$instance = new Document( 42 );
 		$instance->setTextBody( 'some text' );
 
@@ -115,7 +107,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJsonSerialize() {
-
 		$instance = new Document( 42, [ 'subject' => [ 'serialization' => 'Foo#0##' ] ] );
 
 		$this->assertEquals(
@@ -125,7 +116,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddSubDocument_ToArray() {
-
 		$expected = [
 			'id'   => 42,
 			'type' => 'type/insert',

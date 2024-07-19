@@ -66,7 +66,6 @@ abstract class ExpElement implements Element {
 	 * @return array
 	 */
 	public function getSerialization() {
-
 		$dataItem = null;
 
 		if ( $this->getDataItem() !== null ) {
@@ -85,7 +84,6 @@ abstract class ExpElement implements Element {
 	 * @see ExpElement::newFromSerialization
 	 */
 	protected static function deserialize( $serialization ) {
-
 		$dataItem = null;
 
 		if ( !array_key_exists( 'dataitem', $serialization ) ) {
@@ -111,7 +109,6 @@ abstract class ExpElement implements Element {
 	 * @return ExpElement
 	 */
 	public static function newFromSerialization( array $serialization ) {
-
 		if ( !isset( $serialization['type'] ) ) {
 			throw new RuntimeException( "The serialization format is missing a type element" );
 		}

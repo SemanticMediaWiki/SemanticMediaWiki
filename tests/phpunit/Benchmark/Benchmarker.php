@@ -104,7 +104,6 @@ class Benchmarker {
 	 * @return integer
 	 */
 	public function getVariance() {
-
 		$mean  = $this->getMean();
 		$count = count( $this->container );
 

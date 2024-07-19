@@ -21,14 +21,12 @@ class OpenFormTest extends \PHPUnit_Framework_TestCase {
 	private $webRequest;
 
 	protected function setUp() : void {
-
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			OpenForm::class,
 			new OpenForm( $this->webRequest )
@@ -36,7 +34,6 @@ class OpenFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeFields() {
-
 		$this->webRequest->expects( $this->at( 0 ) )
 			->method( 'getArray' )
 			->with( $this->equalTo( 'property' ) )

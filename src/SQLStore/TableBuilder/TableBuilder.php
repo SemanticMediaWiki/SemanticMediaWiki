@@ -57,7 +57,6 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @throws RuntimeException
 	 */
 	public static function factory( $connection ) {
-
 		if (
 			!$connection instanceof \Wikimedia\Rdbms\IDatabase &&
 			!$connection instanceof \IDatabase &&
@@ -122,7 +121,6 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter === null ) {
 			return;
 		}
@@ -145,7 +143,6 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * {@inheritDoc}
 	 */
 	public function create( Table $table ) {
-
 		$attributes = $table->getAttributes();
 		$tableName = $table->getName();
 
@@ -177,7 +174,6 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * {@inheritDoc}
 	 */
 	public function drop( Table $table ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( !isset( $this->droppedTables ) ) {

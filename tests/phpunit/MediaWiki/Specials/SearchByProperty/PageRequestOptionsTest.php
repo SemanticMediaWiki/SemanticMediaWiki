@@ -16,7 +16,6 @@ use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$queryString = '';
 		$requestOptions = [];
 
@@ -30,7 +29,6 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider pageRequestOptionsProvider
 	 */
 	public function testProcess( $queryString, $requestOptions, $expected ) {
-
 		$instance = new PageRequestOptions( $queryString, $requestOptions );
 		$instance->initialize();
 
@@ -45,7 +43,6 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function pageRequestOptionsProvider() {
-
 		#0
 		$provider[] = [
 			'',

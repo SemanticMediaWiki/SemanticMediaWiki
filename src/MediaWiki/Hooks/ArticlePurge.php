@@ -36,7 +36,6 @@ class ArticlePurge implements HookListener {
 	 * @return true
 	 */
 	public function process( WikiPage &$wikiPage ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$title = $wikiPage->getTitle();
@@ -67,7 +66,6 @@ class ArticlePurge implements HookListener {
 	}
 
 	private function invalidateResultCache( $store, $title ) {
-
 		$dependency_list = $store->getPropertyValues(
 			DIWikiPage::newFromTitle( $title ),
 			new DIProperty( '_ASK' )

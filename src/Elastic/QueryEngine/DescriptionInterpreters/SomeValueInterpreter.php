@@ -57,7 +57,6 @@ class SomeValueInterpreter {
 	 * @throws RuntimeException
 	 */
 	public function interpretDescription( ValueDescription $description, array &$options ) {
-
 		if ( !isset( $options['property'] ) || !$options['property'] instanceof DIProperty ) {
 			throw new RuntimeException( "Missing a property" );
 		}
@@ -128,7 +127,6 @@ class SomeValueInterpreter {
 	 * @return array
 	 */
 	public function page( DIWikiPage $dataItem, array &$options ) {
-
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -268,7 +266,6 @@ class SomeValueInterpreter {
 	 * @return array
 	 */
 	public function blob( DIBlob $dataItem, array &$options ) {
-
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -344,7 +341,6 @@ class SomeValueInterpreter {
 	 * @return array
 	 */
 	public function uri( DIUri $dataItem, array &$options ) {
-
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -398,7 +394,6 @@ class SomeValueInterpreter {
 	 * @return array
 	 */
 	public function geo( DIGeoCoord $dataItem, array &$options ) {
-
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -448,7 +443,6 @@ class SomeValueInterpreter {
 	 * @return array
 	 */
 	public function plain( $value, array &$options ) {
-
 		if ( mb_strlen( $value ) > $this->conditionBuilder->getOption( 'maximum.value.length' ) ) {
 			$value = mb_substr( $value, 0, $this->conditionBuilder->getOption( 'maximum.value.length' ) );
 		}
@@ -482,7 +476,6 @@ class SomeValueInterpreter {
 	 * @return array
 	 */
 	public function inverse_property( $params, $options ) {
-
 		$termsLookup = $this->conditionBuilder->getTermsLookup();
 		$comparator = $options['comparator'];
 

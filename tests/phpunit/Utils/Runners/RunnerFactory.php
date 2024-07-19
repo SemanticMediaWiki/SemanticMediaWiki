@@ -21,7 +21,6 @@ class RunnerFactory {
 	 * @return RunnerFactory
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 			self::$instance = new self();
 		}
@@ -37,7 +36,6 @@ class RunnerFactory {
 	 * @return MaintenanceRunner
 	 */
 	public function newMaintenanceRunner( $maintenanceClass ) {
-
 		switch ( $maintenanceClass ) {
 			case 'rebuildPropertyStatistics':
 				$maintenanceClass = 'SMW\Maintenance\RebuildPropertyStatistics';

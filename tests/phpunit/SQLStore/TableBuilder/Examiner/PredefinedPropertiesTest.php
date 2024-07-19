@@ -32,7 +32,6 @@ class PredefinedPropertiesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PredefinedProperties::class,
 			new PredefinedProperties( $this->store )
@@ -40,7 +39,6 @@ class PredefinedPropertiesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckOnValidProperty() {
-
 		$row = [
 			'smw_id' => 42,
 			'smw_iw' => '',
@@ -95,7 +93,6 @@ class PredefinedPropertiesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckOnValidProperty_NotFixed() {
-
 		$row = [
 			'smw_id' => 42,
 			'smw_iw' => '',
@@ -154,7 +151,6 @@ class PredefinedPropertiesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckOnInvalidProperty() {
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getPropertyInterwiki', 'moveSMWPageID' ] )
 			->getMock();

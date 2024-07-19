@@ -45,7 +45,6 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConstraintSchemaValue::class,
 			new ConstraintSchemaValue( ConstraintSchemaValue::TYPE_ID, $this->propertySpecificationLookup )
@@ -53,7 +52,6 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoSchema() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
 			->will( $this->returnValue( [] ) );
@@ -76,7 +74,6 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSchemaType_PropertyNamespace() {
-
 		$data = json_encode(
 			[
 				'type' => 'CLASS_CONSTRAINT_SCHEMA'
@@ -108,7 +105,6 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSchemaType_CategoryNamespace() {
-
 		$data = json_encode(
 			[
 				'type' => 'PROPERTY_CONSTRAINT_SCHEMA'

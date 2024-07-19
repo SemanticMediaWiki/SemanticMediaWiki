@@ -47,7 +47,6 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructEntityExaminerIndicatorProvider() {
-
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
@@ -62,7 +61,6 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructAssociatedRevisionMismatchEntityExaminerIndicatorProvider() {
-
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
@@ -72,7 +70,6 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConstraintErrorEntityExaminerIndicatorProvider() {
-
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
@@ -82,7 +79,6 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructEntityExaminerDeferrableCompositeIndicatorProvider() {
-
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
@@ -102,7 +98,6 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructEntityExaminerCompositeIndicatorProvider() {
-
 		$instance = new EntityExaminerIndicatorsFactory();
 		$indicatorProviders = [];
 
@@ -118,7 +113,6 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConfirmAllCanConstructMethodsWereCalled() {
-
 		// Available class methods to be tested
 		$classMethods = get_class_methods( EntityExaminerIndicatorsFactory::class );
 

@@ -70,7 +70,6 @@ class FileIngestJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FileIngestJob::class,
 			new FileIngestJob( $this->title )
@@ -78,7 +77,6 @@ class FileIngestJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushIngestJob() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__, NS_FILE );
 
 		$checkJobParameterCallback = function( $job ) use( $subject ) {
@@ -93,7 +91,6 @@ class FileIngestJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunFileIndexer() {
-
 		$file = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -141,7 +138,6 @@ class FileIngestJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunFileIndexer_NoFile_RequeueRetry() {
-
 		$this->fileIndexer->expects( $this->once() )
 			->method( 'findFile' )
 			->will( $this->returnValue( null ) );

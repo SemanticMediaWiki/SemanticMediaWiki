@@ -44,7 +44,6 @@ class ExtensionSchemaUpdates implements HookListener {
 	 * @param array $params
 	 */
 	public static function addMaintenanceUpdateParams( &$params ) {
-
 		// For details, see https://github.com/wikimedia/mediawiki/commit/a6facc8a0a4f9b54e0cfb1e5ef6f3991de752342
 		$params['skip-optimize'] = [
 			'desc' => 'SMW, allow to skip the table optimization during the Store setup'
@@ -59,7 +58,6 @@ class ExtensionSchemaUpdates implements HookListener {
 	 * @return true
 	 */
 	public function process( Store $store ) {
-
 		$verbose = true;
 
 		$options = new Options(
@@ -112,7 +110,6 @@ class ExtensionSchemaUpdates implements HookListener {
 	}
 
 	private function hasMaintenanceArg( $key ) {
-
 		$maintenance = null;
 
 		// We don't have access to the `update.php` internals due to lack

@@ -43,7 +43,6 @@ class NavigationLinksWidget {
 	 * @return string
 	 */
 	public static function topLinks( Title $title, $visibleLinks = [], $isEditMode = true ) {
-
 		if ( $visibleLinks === [] ) {
 			return '';
 		}
@@ -156,7 +155,6 @@ class NavigationLinksWidget {
 	 * @return string
 	 */
 	public static function navigationLinks( Title $title, UrlArgs $urlArgs, $count, $hasFurtherResults = false ) {
-
 		if ( $count == 0 ) {
 			return '';
 		}
@@ -196,7 +194,6 @@ class NavigationLinksWidget {
 	 * @return string
 	 */
 	public static function basicLinks( $navigation = '', Infolink $infoLink = null ) {
-
 		if ( $navigation === '' ) {
 			return '';
 		}

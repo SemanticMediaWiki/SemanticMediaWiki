@@ -53,7 +53,6 @@ class ArticleLookup extends Lookup {
 	 * @return array
 	 */
 	public function lookup( array $parameters ) {
-
 		$limit = 50;
 		$offset = 0;
 		$namespace = null;
@@ -95,7 +94,6 @@ class ArticleLookup extends Lookup {
 	}
 
 	private function search( $limit, $offset, $search, $namespace = null ) {
-
 		$search = $this->getSearchTerm( $search, $namespace );
 
 		$escapeChar = '`';
@@ -176,7 +174,6 @@ class ArticleLookup extends Lookup {
 	}
 
 	private function getSearchTerm( $search, &$namespace = null ) {
-
 		if ( strpos( $search, ':' ) !== false ) {
 			list( $ns, $term ) = explode( ':', $search );
 

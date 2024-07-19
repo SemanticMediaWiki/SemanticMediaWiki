@@ -30,7 +30,6 @@ class ExploreListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExploreListBuilder::class,
 			new ExploreListBuilder( $this->profile )

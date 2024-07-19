@@ -19,14 +19,12 @@ class DownloadLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testOnNull() {
-
 		$this->assertEmpty(
 			DownloadLinksWidget::downloadLinks( null )
 		);
 	}
 
 	public function testLinks() {
-
 		$infolink = $this->getMockBuilder( '\SMWInfolink' )
 			->disableOriginalConstructor()
 			->getMock();

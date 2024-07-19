@@ -32,7 +32,6 @@ class ProfileAnnotatorFactory {
 	 * @return ProfileAnnotator
 	 */
 	public function newProfileAnnotator( Query $query, $format ) {
-
 		$profileAnnotator = $this->newDescriptionProfileAnnotator(
 			$query
 		);
@@ -78,7 +77,6 @@ class ProfileAnnotatorFactory {
 	 * @return DescriptionProfileAnnotator
 	 */
 	public function newDescriptionProfileAnnotator( Query $query ) {
-
 		$profileAnnotator = new NullProfileAnnotator(
 			$this->newDIContainer( $query )
 		);
@@ -96,7 +94,6 @@ class ProfileAnnotatorFactory {
 	}
 
 	private function newParametersProfileAnnotator( $profileAnnotator, $query ) {
-
 		if ( $query->getOption( Query::OPT_PARAMETERS ) === false ) {
 			return $profileAnnotator;
 		}
@@ -105,7 +102,6 @@ class ProfileAnnotatorFactory {
 	}
 
 	private function newDurationProfileAnnotator( $profileAnnotator, $duration ) {
-
 		if ( $duration == 0 ) {
 			return $profileAnnotator;
 		}
@@ -114,7 +110,6 @@ class ProfileAnnotatorFactory {
 	}
 
 	private function newSourceProfileAnnotator( $profileAnnotator, $querySource ) {
-
 		if ( $querySource === '' || $querySource === null ) {
 			return $profileAnnotator;
 		}
@@ -123,7 +118,6 @@ class ProfileAnnotatorFactory {
 	}
 
 	private function newStatusCodeProfileAnnotator( $profileAnnotator, $statusCodes ) {
-
 		if ( $statusCodes === false || $statusCodes === null || $statusCodes === [] ) {
 			return $profileAnnotator;
 		}
@@ -132,7 +126,6 @@ class ProfileAnnotatorFactory {
 	}
 
 	private function newSchemaLinkProfileAnnotator( $profileAnnotator, $schemaLink ) {
-
 		if ( $schemaLink === false || $schemaLink === null ) {
 			return $profileAnnotator;
 		}
@@ -145,7 +138,6 @@ class ProfileAnnotatorFactory {
 	 * a failed Title::makeTitleSafe.
 	 */
 	private function newDIContainer( Query $query ) {
-
 		$subject = $query->getContextPage();
 
 		if ( $subject === null ) {

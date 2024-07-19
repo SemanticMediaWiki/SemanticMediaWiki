@@ -24,7 +24,6 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$cacheFactory = $this->getMockBuilder( '\SMW\CacheFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -41,7 +40,6 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPoolCache() {
-
 		$instance = InMemoryPoolCache::getInstance();
 
 		$this->assertInstanceOf(
@@ -60,7 +58,6 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStats() {
-
 		$instance = InMemoryPoolCache::getInstance();
 
 		$instance->getPoolCacheById( 'Foo' )->save( 'Bar', 42 );

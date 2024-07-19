@@ -19,7 +19,6 @@ class ParameterDictionary {
 	 * @param mixed $value
 	 */
 	public function set( $setting, $value = null ) {
-
 		if ( !is_array( $setting ) ) {
 			$setting = [ $setting => $value ];
 		}
@@ -42,7 +41,6 @@ class ParameterDictionary {
 	 * @param mixed $value
 	 */
 	public function setDefault( $setting, $value = null ) {
-
 		if ( !is_array( $setting ) ) {
 			$setting = [ $setting => $value ];
 		}

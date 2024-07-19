@@ -37,7 +37,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -49,7 +48,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCleanUp() {
-
 		$subject = DIWikiPage::newFromText(__METHOD__, SMW_NS_PROPERTY );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -64,7 +62,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasPendingJobs() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
@@ -88,7 +85,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPendingJobsCount() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
@@ -113,7 +109,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindAndDispatchOnNonPropertyEntity() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
@@ -133,7 +128,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPlanAsJob() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
@@ -149,7 +143,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindAndDispatchOnPropertyEntity() {
-
 		$subject = DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
 
 		$tempFile = $this->getMockBuilder( '\SMW\Utils\TempFile' )
@@ -227,7 +220,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDispatchSchemaChangePropagation() {
-
 		$dataItem = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

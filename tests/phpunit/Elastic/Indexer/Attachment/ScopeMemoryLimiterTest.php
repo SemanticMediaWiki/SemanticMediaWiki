@@ -19,7 +19,6 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 	private $memoryLimitFromCallable;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ScopeMemoryLimiter::class,
 			new ScopeMemoryLimiter()
@@ -35,7 +34,6 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider toIntProvider
 	 */
 	public function testToInt( $string, $expected ) {
-
 		$instance = new ScopeMemoryLimiter();
 
 		$this->assertEquals(
@@ -45,7 +43,6 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public static function toIntProvider() {
-
 		yield 'Empty string' => [
 			'',
 			-1,
@@ -88,7 +85,6 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecute() {
-
 		$memoryLimitBefore = $originalMemoryLimitBefore = ini_get( 'memory_limit' );
 		$converter = new ScopeMemoryLimiter();
 

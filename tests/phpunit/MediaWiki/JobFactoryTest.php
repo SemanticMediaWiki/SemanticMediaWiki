@@ -20,7 +20,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JobFactory::class,
 			new JobFactory()
@@ -31,7 +30,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeProvider
 	 */
 	public function testNewByType( $type, $expected ) {
-
 		$instance = new JobFactory();
 
 		$this->assertInstanceOf(
@@ -44,7 +42,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeProvider
 	 */
 	public function testNewByTypeWithNullTitle( $type ) {
-
 		$instance = new JobFactory();
 
 		$this->assertInstanceOf(
@@ -54,7 +51,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewByTypeOnUnknownJobThrowsException() {
-
 		$instance = new JobFactory();
 
 		$this->expectException( 'RuntimeException' );
@@ -62,7 +58,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function typeProvider() {
-
 		$provider[] = [
 			'SMW\RefreshJob',
 			'\SMW\MediaWiki\Jobs\RefreshJob'

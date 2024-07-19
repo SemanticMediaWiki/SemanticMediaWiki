@@ -25,7 +25,6 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStandardTable_Cell_Row() {
-
 		$instance = new HtmlTable();
 
 		$instance->cell( 'Foo', [ 'rel' => 'some' ] );
@@ -38,7 +37,6 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStandardTable_Header_Cell_Row() {
-
 		$instance = new HtmlTable();
 
 		$instance->header( 'Foo ');
@@ -52,7 +50,6 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStandardTable_Header_Cell_Row_IsHtml() {
-
 		$instance = new HtmlTable();
 
 		$instance->header( 'Foo' );
@@ -66,7 +63,6 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTransposedTable_Cell_Row() {
-
 		$instance = new HtmlTable();
 
 		// We need a dedicated header definition to support a table transpose
@@ -91,7 +87,6 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTransposedTable_Cell_Row_IsHtml() {
-
 		$instance = new HtmlTable();
 
 		// We need a dedicated header definition to support a table transpose

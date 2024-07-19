@@ -23,7 +23,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructSanitizer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Sanitizer',
 			$this->sanitizerFactory->newSanitizer()
@@ -33,7 +32,6 @@ class SanitizerFactoryTest extends TestCase {
 	/* StopwordAnalyzer */
 
 	public function testCanConstructStopwordAnalyzerByNullLanguage() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer',
 			$this->sanitizerFactory->newStopwordAnalyzerByLanguage( null )
@@ -41,7 +39,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructStopwordAnalyzerByEnLanguage() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\StopwordAnalyzer\CdbStopwordAnalyzer',
 			$this->sanitizerFactory->newStopwordAnalyzerByLanguage( 'EN' )
@@ -49,7 +46,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructCdbStopwordAnalyzer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\StopwordAnalyzer\CdbStopwordAnalyzer',
 			$this->sanitizerFactory->newCdbStopwordAnalyzer()
@@ -57,7 +53,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructArrayStopwordAnalyzer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\StopwordAnalyzer\ArrayStopwordAnalyzer',
 			$this->sanitizerFactory->newArrayStopwordAnalyzer()
@@ -65,7 +60,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructNullStopwordAnalyzer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\StopwordAnalyzer\NullStopwordAnalyzer',
 			$this->sanitizerFactory->newNullStopwordAnalyzer()
@@ -75,7 +69,6 @@ class SanitizerFactoryTest extends TestCase {
 	/* Synonymizer */
 
 	public function testCanConstructSynonymizerByLanguage() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Synonymizer\Synonymizer',
 			$this->sanitizerFactory->newSynonymizerByLanguage()
@@ -83,7 +76,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructNullSynonymizer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Synonymizer\NullSynonymizer',
 			$this->sanitizerFactory->newNullSynonymizer()
@@ -93,7 +85,6 @@ class SanitizerFactoryTest extends TestCase {
 	/* LanguageDetector */
 
 	public function testCanConstructNullLanguageDetector() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\LanguageDetector\NullLanguageDetector',
 			$this->sanitizerFactory->newNullLanguageDetector()
@@ -101,7 +92,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructTextCatLanguageDetector() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\LanguageDetector\TextCatLanguageDetector',
 			$this->sanitizerFactory->newTextCatLanguageDetector()
@@ -111,7 +101,6 @@ class SanitizerFactoryTest extends TestCase {
 	/* Tokenizer */
 
 	public function testCanConstructPreferredTokenizerByLanguage() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\Tokenizer',
 			$this->sanitizerFactory->newPreferredTokenizerByLanguage( 'テスト' )
@@ -124,7 +113,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructnewCJKMatchableTokenizer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\Tokenizer',
 			$this->sanitizerFactory->newCJKMatchableTokenizer( 'テスト' )
@@ -137,7 +125,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructIcuWordBoundaryTokenizer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\IcuWordBoundaryTokenizer',
 			$this->sanitizerFactory->newIcuWordBoundaryTokenizer()
@@ -145,7 +132,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructGenericRegExTokenizer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\GenericRegExTokenizer',
 			$this->sanitizerFactory->newGenericRegExTokenizer()
@@ -153,7 +139,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructPunctuationRegExTokenizer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\PunctuationRegExTokenizer',
 			$this->sanitizerFactory->newPunctuationRegExTokenizer()
@@ -161,7 +146,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructJaCompoundGroupTokenizer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\JaCompoundGroupTokenizer',
 			$this->sanitizerFactory->newJaCompoundGroupTokenizer()
@@ -169,7 +153,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructJaTinySegmenterTokenizer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\JaTinySegmenterTokenizer',
 			$this->sanitizerFactory->newJaTinySegmenterTokenizer()
@@ -177,7 +160,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructCJKSimpleCharacterRegExTokenizer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\CJKSimpleCharacterRegExTokenizer',
 			$this->sanitizerFactory->newCJKSimpleCharacterRegExTokenizer()
@@ -185,7 +167,6 @@ class SanitizerFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructNGramTokenizer() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\NGramTokenizer',
 			$this->sanitizerFactory->newNGramTokenizer()

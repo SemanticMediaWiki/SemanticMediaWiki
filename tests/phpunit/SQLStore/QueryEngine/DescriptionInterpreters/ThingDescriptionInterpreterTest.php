@@ -45,7 +45,6 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ThingDescriptionInterpreter::class,
 			new ThingDescriptionInterpreter( $this->conditionBuilder )
@@ -53,7 +52,6 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ThingDescription' )
 			->disableOriginalConstructor()
 			->getMock();

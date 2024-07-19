@@ -17,7 +17,6 @@ class PHPUnitCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 	private static $iterator;
 
 	public static function setUpBeforeClass() : void {
-
 		$fileFetcher = new FileFetcher(
 			SMW_PHPUNIT_DIR
 		);
@@ -29,7 +28,6 @@ class PHPUnitCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 	 * @see https://phpunit.de/announcements/phpunit-8.html
 	 */
 	public function testCheckMissingVoidType() {
-
 		$exceptions = [
 			'PHPUnitCheckRunnerTest'
 		];
@@ -82,7 +80,6 @@ class PHPUnitCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckDeprecatedUsages() {
-
 		$exceptions = [
 			'PHPUnitCompat',
 			'PHPUnitCheckRunnerTest'

@@ -55,7 +55,6 @@ class ConnectionProvider implements IConnectionProvider {
 	 * @return Client
 	 */
 	public function getConnection() {
-
 		if ( $this->connection !== null ) {
 			return $this->connection;
 		}
@@ -126,7 +125,6 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function newClient( $clientBuilder = null ) {
-
 		if ( $clientBuilder === null ) {
 			return new DummyClient();
 		}
@@ -142,7 +140,6 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function hasEndpoints( $endpoints ) {
-
 		if ( $this->config->isDefaultStore() === false ) {
 			return true;
 		}
@@ -151,7 +148,6 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function hasAvailableClientBuilder() {
-
 		if ( $this->config->isDefaultStore() === false ) {
 			return false;
 		}
@@ -175,7 +171,6 @@ class ConnectionProvider implements IConnectionProvider {
 	 * @return string
 	 */
 	private function buildHostString( $host ): string {
-
 		if ( is_string( $host ) ) {
 			return $host;
 		}

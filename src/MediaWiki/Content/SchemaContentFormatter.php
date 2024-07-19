@@ -109,7 +109,6 @@ class SchemaContentFormatter {
 	 * @return string
 	 */
 	public function getHelpLink( Schema $schema ) {
-
 		$key = [
 			'smw-schema-type-help-link',
 			$schema->get( Schema::SCHEMA_TYPE )
@@ -139,7 +138,6 @@ class SchemaContentFormatter {
 	 * @return string
 	 */
 	public function getText( $text, Schema $schema = null, array $errors = [] ) {
-
 		$methods = [
 			'body'   => [ $schema, $errors, $text ],
 		//	'footer' => [ $schema ]
@@ -166,7 +164,6 @@ class SchemaContentFormatter {
 	 * @return array
 	 */
 	public function getUsage( Schema $schema = null ) {
-
 		if ( $schema === null || !isset( $this->type['usage_lookup'] ) ) {
 			return [ '', 0 ];
 		}
@@ -207,7 +204,6 @@ class SchemaContentFormatter {
 	}
 
 	private function body( $schema, array $errors, $text ) {
-
 		if ( $schema === null ) {
 			return '';
 		}
@@ -231,7 +227,6 @@ class SchemaContentFormatter {
 	}
 
 	private function schema_summary( $schema, $errors ) {
-
 		$errorCount = count( $errors );
 		$type = $schema->get( Schema::SCHEMA_TYPE );
 
@@ -268,7 +263,6 @@ class SchemaContentFormatter {
 	}
 
 	private function schema_body( $text ) {
-
 		$codeHighlighter = null;
 
 		if ( class_exists( '\Onoi\CodeHighlighter\Highlighter' ) ) {
@@ -300,7 +294,6 @@ class SchemaContentFormatter {
 	}
 
 	private function attributes_extra( $schema ) {
-
 		if ( $schema === null ) {
 			return [];
 		}
@@ -331,7 +324,6 @@ class SchemaContentFormatter {
 	}
 
 	private function error_params( $validator_schema, array $errors = [] ) {
-
 		if ( $errors === [] ) {
 			return [];
 		}
@@ -355,7 +347,6 @@ class SchemaContentFormatter {
 	}
 
 	private function unknown_type( $type ) {
-
 		if ( $type === '' || $type === null ) {
 			$key = 'smw-schema-error-type-missing';
 		} else {

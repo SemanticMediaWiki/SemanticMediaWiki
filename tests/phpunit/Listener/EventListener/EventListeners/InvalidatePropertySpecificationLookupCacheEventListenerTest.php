@@ -36,7 +36,6 @@ class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUn
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			InvalidatePropertySpecificationLookupCacheEventListener::class,
 			new InvalidatePropertySpecificationLookupCacheEventListener( $this->specificationLookup )
@@ -44,7 +43,6 @@ class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUn
 	}
 
 	public function testExecute_OnSubject() {
-
 		$context = DispatchContext::newFromArray(
 			[
 				'subject' => DIWikiPage::newFromText( __METHOD__ ),

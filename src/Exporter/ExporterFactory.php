@@ -35,7 +35,6 @@ class ExporterFactory {
 	 * @return ExportController
 	 */
 	public function newExportController( Serializer $serializer ) : ExportController {
-
 		$exportController = new ExportController(
 			$serializer,
 			new Queue(),
@@ -54,7 +53,6 @@ class ExporterFactory {
 	 * @throws InvalidArgumentException
 	 */
 	public function newSerializerByType( string $type ) : Serializer {
-
 		switch ( $type ) {
 			case 'application/x-turtle':
 			case 'turtle':

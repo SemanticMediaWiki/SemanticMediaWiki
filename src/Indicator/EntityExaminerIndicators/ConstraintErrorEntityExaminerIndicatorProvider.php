@@ -108,7 +108,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 * @return boolean
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
-
 		if ( $this->checkConstraintErrors ) {
 			$this->checkConstraintErrors( $subject, $options );
 		}
@@ -150,7 +149,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	}
 
 	protected function runCheck( $subject, $options ) {
-
 		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
 
 		$errors = $this->findErrors( $subject );
@@ -251,7 +249,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	}
 
 	private function findErrors( $subject ) {
-
 		$key = $this->entityCache->makeKey( $subject, 'constraint-error' );
 
 		if ( ( $errors = $this->entityCache->fetch( $key ) ) !== false ) {
@@ -289,7 +286,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	}
 
 	private function decodeErrors( $errors ) {
-
 		if ( $errors === 'null' ) {
 			return [];
 		}

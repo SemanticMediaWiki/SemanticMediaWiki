@@ -30,7 +30,6 @@ trait DotSeekableIteratorTrait {
 	 * {@inheritDoc}
 	 */
 	public function seek( $position ): void {
-
 		if ( isset( $this->seekable[$position] ) ) {
 			$this->position = $position;
 			return;
@@ -60,7 +59,6 @@ trait DotSeekableIteratorTrait {
 	 */
 	#[\ReturnTypeWillChange]
 	public function current() {
-
 		if ( isset( $this->seekable[$this->position] ) ) {
 			return $this->seekable[$this->position];
 		}
@@ -73,7 +71,6 @@ trait DotSeekableIteratorTrait {
 	}
 
 	private function findPosition( $position ) {
-
 		// Allow to seek using the dot notation
 		if ( !is_string( $position ) || strpos( $position, '.' ) === false ) {
 			return null;

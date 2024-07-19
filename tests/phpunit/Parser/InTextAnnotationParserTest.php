@@ -64,7 +64,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textDataProvider
 	 */
 	public function testCanConstruct( $namespace ) {
-
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -89,7 +88,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasMarker() {
-
 		$this->assertTrue(
 			InTextAnnotationParser::hasMarker( '[[SMW::off]]' )
 		);
@@ -107,7 +105,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider magicWordDataProvider
 	 */
 	public function testStripMagicWords( $namespace, $text, array $expected ) {
-
 		$parserData = new ParserData(
 			Title::newFromText( __METHOD__, $namespace ),
 			new ParserOutput()
@@ -138,7 +135,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textDataProvider
 	 */
 	public function testTextParse( $namespace, array $settings, $text, array $expected ) {
-
 		$parserData = new ParserData(
 			Title::newFromText( __METHOD__, $namespace ),
 			new ParserOutput()
@@ -185,7 +181,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectAnnotationFromText() {
-
 		$namespace = NS_MAIN;
 		$text      = '#REDIRECT [[:Lala]]';
 
@@ -231,7 +226,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectAnnotationFromInjectedRedirectTarget() {
-
 		$namespace = NS_MAIN;
 		$text      = '';
 		$redirectTarget = Title::newFromText( 'Foo' );
@@ -279,7 +273,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStripMarkerDecoding() {
-
 		$redirectTargetFinder = $this->getMockBuilder( 'SMW\MediaWiki\RedirectTargetFinder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -341,7 +334,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnReflection() {
-
 		$parserData = new ParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -376,7 +368,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stripTextWithAnnotationProvider
 	 */
 	public function testStrip( $text, $expectedRemoval, $expectedObscuration ) {
-
 		$this->assertEquals(
 			$expectedRemoval,
 			InTextAnnotationParser::removeAnnotation( $text )
@@ -389,7 +380,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function stripTextWithAnnotationProvider() {
-
 		$provider = [];
 
 		$provider[] = [
@@ -402,7 +392,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textDataProvider() {
-
 		$testEnvironment = new TestEnvironment();
 		$provider = [];
 
@@ -712,7 +701,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function magicWordDataProvider() {
-
 		$provider = [];
 
 		// #0 __NOFACTBOX__

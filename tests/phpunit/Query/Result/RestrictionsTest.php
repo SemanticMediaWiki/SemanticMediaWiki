@@ -30,7 +30,6 @@ class RestrictionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Restrictions::class,
 			new Restrictions()
@@ -38,7 +37,6 @@ class RestrictionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testApplyLimitRestriction() {
-
 		$this->printRequest->expects( $this->at( 0 ) )
 			->method( 'getParameter' )
 			->with( $this->equalTo( 'limit' ) )
@@ -67,7 +65,6 @@ class RestrictionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testApplySortRestriction() {
-
 		$this->printRequest->expects( $this->at( 0 ) )
 			->method( 'getParameter' )
 			->with( $this->equalTo( 'order' ) )

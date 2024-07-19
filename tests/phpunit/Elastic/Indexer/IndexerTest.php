@@ -27,7 +27,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 
 	protected function setUp() : void {
-
 		$this->testEnvironment = new TestEnvironment();
 
 		$options = $this->getMockBuilder( '\SMW\Options' )
@@ -71,7 +70,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Indexer::class,
 			new Indexer( $this->store, $this->bulk )
@@ -79,7 +77,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate() {
-
 		$expected = [
 			'index' => '_index_abc',
 			'id' => 42,
@@ -119,7 +116,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate_FailedConnection_PushJob() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->jobQueue->expects( $this->once() )
@@ -139,7 +135,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
@@ -166,7 +161,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete_FailedConnection_PushJob() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->jobQueue->expects( $this->once() )
@@ -186,7 +180,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIndexDocument() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$subject->setId( 42 );
 
@@ -220,7 +213,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIndexDocument_FailedConnection_PushJob() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )

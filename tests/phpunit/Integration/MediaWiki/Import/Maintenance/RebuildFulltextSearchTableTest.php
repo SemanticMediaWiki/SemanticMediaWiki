@@ -46,7 +46,6 @@ class RebuildFulltextSearchTableTest extends DatabaseTestCase {
 	}
 
 	public function testCanRun() {
-
 		$this->importedTitles = [
 			'De Finibus Bonorum et Malorum'
 		];

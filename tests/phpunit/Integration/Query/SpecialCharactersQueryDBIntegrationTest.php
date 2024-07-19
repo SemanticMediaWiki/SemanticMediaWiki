@@ -48,7 +48,6 @@ class SpecialCharactersQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 
 			if ( $subject->getTitle() === null ) {
@@ -65,7 +64,6 @@ class SpecialCharactersQueryDBIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider specialCharactersNameProvider
 	 */
 	public function testSpecialCharactersInQuery( $subject, $subobjectId, $property, $dataItem ) {
-
 		$dataValue = $this->dataValueFactory->newDataValueByItem(
 			$dataItem,
 			$property
@@ -122,7 +120,6 @@ class SpecialCharactersQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function specialCharactersNameProvider() {
-
 		$provider[] = [
 			'特殊文字',
 			'Nuñez',

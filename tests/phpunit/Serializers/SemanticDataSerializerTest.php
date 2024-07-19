@@ -27,7 +27,6 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataFactory;
 
 	public function testCanConstructor() {
-
 		$this->assertInstanceOf(
 			'\SMW\Serializers\SemanticDataSerializer',
 			new SemanticDataSerializer()
@@ -35,7 +34,6 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSerializerObjectThrowsException() {
-
 		$this->expectException( 'OutOfBoundsException' );
 
 		$instance = new SemanticDataSerializer();
@@ -46,7 +44,6 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider semanticDataProvider
 	 */
 	public function testSerializerDeserializerRountrip( $data ) {
-
 		$instance = new SemanticDataSerializer();
 
 		$this->assertInternalType(
@@ -56,7 +53,6 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function semanticDataProvider() {
-
 		// Is a dataprovider therefore can't use the setUp
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();

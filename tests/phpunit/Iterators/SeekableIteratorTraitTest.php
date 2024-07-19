@@ -20,7 +20,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testIterate_Indexed() {
-
 		$container = [
 			1, 42, 1001
 		];
@@ -50,7 +49,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIterate_Associative() {
-
 		$container = [
 			'foo' => 1, 'bar' => 42, 'foobar' => 1001
 		];
@@ -80,7 +78,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIterate_Mixed() {
-
 		$container = [
 			1, 'bar' => 42, 'foobar' => 1001
 		];
@@ -110,7 +107,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSeek_Indexed() {
-
 		$container = [
 			1, 42, 1001
 		];
@@ -128,7 +124,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSeek_Associative() {
-
 		$container = [
 			'foo' => 1, 'bar' => 42, 'foobar' => 1001
 		];
@@ -146,7 +141,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSeek_Mixed() {
-
 		$container = [
 			1, 'bar' => 42, 'foobar' => 1001
 		];
@@ -164,7 +158,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSeekPositionThrowsException() {
-
 		$instance = $this->newSeekableIterator();
 
 		$this->expectException( 'OutOfBoundsException' );

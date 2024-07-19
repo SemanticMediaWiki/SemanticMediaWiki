@@ -20,14 +20,12 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 
 	protected function setUp() : void {
-
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testGetSQLOptions() {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
 		$requestOptions->offset = 2;
@@ -45,7 +43,6 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSQLOptionsWithOrderBy() {
-
 		$instance = new RequestOptionsProcessor( $this->store );
 
 		$requestOptions = new RequestOptions();
@@ -69,7 +66,6 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider requestOptionsToSqlConditionsProvider
 	 */
 	public function testGetSQLConditions( $requestOptions, $valueCol, $labelCol, $expected ) {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -92,7 +88,6 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider requestOptionsToApplyProvider
 	 */
 	public function testApplyRequestOptions( $data, $requestOptions, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			RequestOptionsProcessor::applyRequestOptions( $this->store, $data, $requestOptions )
@@ -100,7 +95,6 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function requestOptionsToSqlConditionsProvider() {
-
 		$provider = [];
 
 		# 0
@@ -228,7 +222,6 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function requestOptionsToApplyProvider() {
-
 		$provider = [];
 
 		#0

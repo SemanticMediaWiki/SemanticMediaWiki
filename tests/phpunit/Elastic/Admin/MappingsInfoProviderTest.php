@@ -24,7 +24,6 @@ class MappingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 
 	protected function setUp() : void {
-
 		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -48,7 +47,6 @@ class MappingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MappingsInfoProvider::class,
 			new MappingsInfoProvider( $this->outputFormatter )
@@ -56,7 +54,6 @@ class MappingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTask() {
-
 		$instance = new MappingsInfoProvider(
 			$this->outputFormatter
 		);
@@ -73,7 +70,6 @@ class MappingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new MappingsInfoProvider(
 			$this->outputFormatter
 		);
@@ -85,7 +81,6 @@ class MappingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequest() {
-
 		$this->outputFormatter->expects( $this->once() )
 			->method( 'addParentLink' )
 			->with(	$this->equalTo( [ 'action' => 'elastic' ] ) );

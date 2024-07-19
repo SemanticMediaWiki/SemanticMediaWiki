@@ -34,7 +34,6 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\SPARQLStoreFactory',
 			new SPARQLStoreFactory( $this->store )
@@ -42,7 +41,6 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructBaseStore() {
-
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -52,7 +50,6 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMasterQueryEngine() {
-
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -62,7 +59,6 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConnectionManager() {
-
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -72,7 +68,6 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructRepositoryRedirectLookup() {
-
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -82,7 +77,6 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructReplicationDataTruncator() {
-
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(

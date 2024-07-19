@@ -67,7 +67,6 @@ class XmlImportRunner {
 	 * @return boolean
 	 */
 	public function run() {
-
 		$this->unregisterUploadsource();
 		$start = microtime( true );
 		$config = null;
@@ -134,7 +133,6 @@ class XmlImportRunner {
 	 * @throws RuntimeException
 	 */
 	public function reportFailedImport() {
-
 		$exceptionAsString = '';
 
 		if ( $this->exception ) {
@@ -156,7 +154,6 @@ class XmlImportRunner {
 	}
 
 	protected function acquireRequestContext() {
-
 		if ( $this->requestContext === null ) {
 			$this->requestContext = new RequestContext();
 		}
@@ -165,7 +162,6 @@ class XmlImportRunner {
 	}
 
 	private function assertThatFileIsReadableOrThrowException( $file ) {
-
 		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( is_readable( $file ) ) {

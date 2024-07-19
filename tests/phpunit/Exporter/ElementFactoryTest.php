@@ -23,7 +23,6 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider supportedDataItemProvider
 	 */
 	public function testNewFromDataItemForSupportedTypes( $dataItem ) {
-
 		$instance = new ElementFactory();
 
 		$this->assertInstanceOf(
@@ -36,7 +35,6 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider unsupportedDataItemProvider
 	 */
 	public function testUnsupportedDataItemTypes( $dataItem ) {
-
 		$instance = new ElementFactory();
 
 		$this->assertNull(
@@ -45,7 +43,6 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNotSupportedEncoderResultThrowsException() {
-
 		$dataItemFactory = new DataItemFactory();
 		$instance = new ElementFactory();
 
@@ -58,7 +55,6 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function supportedDataItemProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		#0
@@ -110,7 +106,6 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function unsupportedDataItemProvider() {
-
 		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
 			->disableOriginalConstructor()
 			->setMethods( [ '__toString' ] )

@@ -58,7 +58,6 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ArticleViewHeader::class,
 			new ArticleViewHeader( $this->store, $this->namespaceExaminer, $this->dependencyValidator )
@@ -66,7 +65,6 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnCategory() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__, NS_CATEGORY );
 		$property = new DIProperty( DIProperty::TYPE_CHANGE_PROP );
 
@@ -137,7 +135,6 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnNoCategory() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->namespaceExaminer->expects( $this->any() )
@@ -178,7 +175,6 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasArchaicDependency() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->namespaceExaminer->expects( $this->any() )

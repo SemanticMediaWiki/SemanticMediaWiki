@@ -23,7 +23,6 @@ class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textLinksProvider
 	 */
 	public function testRemoveLinks( $text, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			TextSanitizer::removeLinks( $text )
@@ -31,7 +30,6 @@ class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textLinksProvider() {
-
 		yield [
 			'',
 			''

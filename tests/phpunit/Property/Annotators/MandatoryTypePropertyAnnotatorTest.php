@@ -33,7 +33,6 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -49,7 +48,6 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoImportForNoProperty() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -71,7 +69,6 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoImportForPredefinedProperty() {
-
 		$subject = DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -93,7 +90,6 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidImportTypeReferenceToSetType() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
@@ -123,7 +119,6 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidImportTypeReferenceToOverrideUserType() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
@@ -172,7 +167,6 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidImportTypeReferenceDoesNotSetAnyType() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
@@ -202,7 +196,6 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBogusImportTypeDoesNotSetAnyType() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
@@ -232,7 +225,6 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEnforcedMandatoryTypeForSubproperty() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);

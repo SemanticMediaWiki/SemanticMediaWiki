@@ -17,7 +17,6 @@ use SMW\Tests\Utils\Mock\MockTitle;
 class PageCreatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\PageCreator',
 			 new PageCreator()
@@ -25,7 +24,6 @@ class PageCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreatePage() {
-
 		$instance = new PageCreator();
 
 		$this->assertInstanceOf(
@@ -35,7 +33,6 @@ class PageCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateFilePage() {
-
 		$instance = new PageCreator();
 
 		$this->assertInstanceOf(

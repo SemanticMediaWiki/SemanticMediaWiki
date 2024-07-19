@@ -58,7 +58,6 @@ class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EntityLookupTaskHandler::class,
 			new EntityLookupTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
@@ -66,7 +65,6 @@ class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHml() {
-
 		$this->outputFormatter->expects( $this->any() )
 			->method( 'getSpecialPageLinkWith' )
 			->with(
@@ -86,7 +84,6 @@ class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPerformAction() {
-
 		$methods = [
 			'setName',
 			'setMethod',
@@ -134,7 +131,6 @@ class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPerformActionWithId() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'select' )
 			->will( $this->returnValue( [] ) );

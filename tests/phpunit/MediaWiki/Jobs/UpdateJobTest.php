@@ -69,7 +69,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -88,7 +87,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobWithMissingParserOutput() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -104,7 +102,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobWithInvalidTitle() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -130,7 +127,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobWithNoRevisionAvailable() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -156,7 +152,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobWithValidRevision() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -216,7 +211,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobToCompareLastModified() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -279,7 +273,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobOnSerializedSemanticData() {
-
 		$title = Title::newFromText( __METHOD__ );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -310,7 +303,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobOnChangePropagation() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY );
 
 		$semanticData = $this->semanticDataSerializer->serialize(

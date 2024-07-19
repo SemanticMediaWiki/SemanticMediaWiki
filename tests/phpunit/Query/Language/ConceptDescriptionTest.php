@@ -19,7 +19,6 @@ use SMW\Query\Language\ThingDescription;
 class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$concept = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -37,7 +36,6 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommonMethods() {
-
 		$ns = Localizer::getInstance()->getNsText( SMW_NS_CONCEPT );
 
 		$concept = new DIWikiPage( 'Foo', SMW_NS_CONCEPT );
@@ -57,7 +55,6 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFingerprint() {
-
 		$instance = new ConceptDescription(
 			new DIWikiPage( 'Foo', SMW_NS_CONCEPT )
 		);
@@ -75,7 +72,6 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrune() {
-
 		$instance = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
 
 		$maxsize  = 1;

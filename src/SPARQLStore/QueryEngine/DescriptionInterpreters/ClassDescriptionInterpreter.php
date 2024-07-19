@@ -56,7 +56,6 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
@@ -84,7 +83,6 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function mapCategoriesToConditionElements( array $categories, $depth, $joinVariable ) {
-
 		$condition = '';
 		$namespaces = [];
 		$instExpElement = $this->exporter->getSpecialPropertyResource( '_INST' );
@@ -116,7 +114,6 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function tryToAddClassHierarchyPattern( $category, $depth, &$categoryExpName ) {
-
 		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBC ) || ( $depth !== null && $depth < 1 ) ) {
 			return '';
 		}

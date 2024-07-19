@@ -35,7 +35,6 @@ class CheckQueryTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new CheckQueryTask( $this->store );
 
 		$this->assertInstanceOf(
@@ -45,7 +44,6 @@ class CheckQueryTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();

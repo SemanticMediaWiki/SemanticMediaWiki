@@ -47,7 +47,6 @@ class DeclareParserFunction {
 	 * @param array $args
 	 */
 	public function parse( PPFrame $frame, array $args ) {
-
 		// @todo Save as metadata
 		if ( !$frame->isTemplate() ) {
 			return '';
@@ -84,7 +83,6 @@ class DeclareParserFunction {
 	}
 
 	private function matchValueArgument( PropertyValue $propertyValue, $propertystring, $valuestring ) {
-
 		if ( $propertyValue->getPropertyTypeID() === '_wpg' ) {
 			$matches = [];
 			preg_match_all( '/\[\[([^\[\]]*)\]\]/u', $valuestring, $matches );
@@ -108,7 +106,6 @@ class DeclareParserFunction {
 	}
 
 	private function addDataValue( $property, $value ) {
-
 		$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 			$property,
 			$value,

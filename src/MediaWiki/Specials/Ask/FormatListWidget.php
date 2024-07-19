@@ -38,7 +38,6 @@ class FormatListWidget {
 	 * @return string
 	 */
 	public static function selectList( Title $title, array $params ) {
-
 		$result = '';
 
 		// Default
@@ -81,7 +80,6 @@ class FormatListWidget {
 	}
 
 	private static function formatList( $url, $selectedFormat, &$default, $defaultName, $defaultLocalizedName ) {
-
 		$formatList = Html::rawElement(
 			'option',
 			[

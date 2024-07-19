@@ -104,7 +104,6 @@ class HtmlTabs {
 	 * @return string
 	 */
 	public function buildHTML( array $attributes = [] ) {
-
 		$tabs = $this->tabs;
 		$contents = $this->contents;
 
@@ -147,7 +146,6 @@ class HtmlTabs {
 	 * @return string
 	 */
 	public function html( $html, array $params = [] ) {
-
 		if ( isset( $params['hide'] ) && $params['hide'] ) {
 			return;
 		}
@@ -165,7 +163,6 @@ class HtmlTabs {
 	 * @return string
 	 */
 	public function tab( $id, $name = '', array $params = [] ) {
-
 		if ( isset( $params['hide'] ) && $params['hide'] ) {
 			return $this->hidden[$id] = true;
 		}
@@ -206,7 +203,6 @@ class HtmlTabs {
 	 * @param string $content
 	 */
 	public function content( $id, $content ) {
-
 		// Tab hidden?
 		if ( isset( $this->hidden[$id] ) ) {
 			return;
@@ -224,7 +220,6 @@ class HtmlTabs {
 	}
 
 	private function mergeAttributes( $class, $attr ) {
-
 		$attributes = [];
 
 		// A bit of attribute order

@@ -119,7 +119,6 @@ class QueryTestCaseInterpreter {
 	 * @return array
 	 */
 	public function getExtraPrintouts() {
-
 		$extraPrintouts = [];
 
 		if ( !isset( $this->contents['printouts'] ) || $this->contents['printouts'] === [] ) {
@@ -164,7 +163,6 @@ class QueryTestCaseInterpreter {
 	 * @return integer
 	 */
 	public function getSortKeys() {
-
 		if ( isset( $this->contents['parameters']['sort'] ) ) {
 
 			if ( is_array( $this->contents['parameters']['sort'] ) ) {
@@ -201,7 +199,6 @@ class QueryTestCaseInterpreter {
 	 * @return DIWikiPage[]
 	 */
 	public function getExpectedSubjects() {
-
 		$subjects = [];
 
 		if ( !isset( $this->contents['assert-queryresult']['results'] )  ) {
@@ -221,7 +218,6 @@ class QueryTestCaseInterpreter {
 	 * @return DataItem[]
 	 */
 	public function getExpectedDataItems() {
-
 		$dataItems = [];
 
 		if ( !isset( $this->contents['assert-queryresult']['dataitems'] )  ) {
@@ -244,7 +240,6 @@ class QueryTestCaseInterpreter {
 	 * @return DataValues[]
 	 */
 	public function getExpectedDataValues() {
-
 		$dataValues = [];
 
 		if ( !isset( $this->contents['assert-queryresult']['datavalues'] )  ) {
@@ -267,7 +262,6 @@ class QueryTestCaseInterpreter {
 	 * @return integer
 	 */
 	public function getExpectedErrorCount() {
-
 		if ( !isset( $this->contents['assert-queryresult']['error'] ) ) {
 			return -1;
 		}
@@ -281,7 +275,6 @@ class QueryTestCaseInterpreter {
 	 * @return string
 	 */
 	public function fetchTextFromOutputSubject() {
-
 		if ( !isset( $this->contents['subject'] ) ) {
 			return '';
 		}
@@ -298,7 +291,6 @@ class QueryTestCaseInterpreter {
 	 * @return array
 	 */
 	public function getExpectedFormatOuputFor( $id ) {
-
 		$output = [];
 
 		if ( !isset( $this->contents['assert-output'] ) || !isset( $this->contents['assert-output'][$id] )  ) {

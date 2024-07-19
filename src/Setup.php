@@ -45,7 +45,6 @@ final class Setup {
 	 * @param array $vars
 	 */
 	public static function registerExtensionCheck( &$vars ) {
-
 		$uncaughtExceptionHandler = new UncaughtExceptionHandler(
 			SetupCheck::newFromDefaults()
 		);
@@ -71,7 +70,6 @@ final class Setup {
 	 * @param array $vars
 	 */
 	public static function releaseExtensionCheck( &$vars ) {
-
 		// Restore the exception handler from before Setup::registerExtensionCheck
 		// and before MediaWiki setup has added its own in `Setup.php` after
 		// declaring `MW_SERVICE_BOOTSTRAP_COMPLETE` using
@@ -162,7 +160,6 @@ final class Setup {
 	}
 
 	private function addDefaultConfigurations( &$vars, $rootDir ) {
-
 		// Convenience function for extensions depending on a SMW specific
 		// test infrastructure
 		if ( !defined( 'SMW_PHPUNIT_AUTOLOADER_FILE' ) ) {
@@ -200,7 +197,6 @@ final class Setup {
 	}
 
 	private function initConnectionProviders() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
@@ -234,9 +230,7 @@ final class Setup {
 	}
 
 	private function initMessageCallbackHandler() {
-
 		Message::registerCallbackHandler( Message::TEXT, function ( $arguments, $language ) {
-
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}
@@ -249,7 +243,6 @@ final class Setup {
 		} );
 
 		Message::registerCallbackHandler( Message::ESCAPED, function ( $arguments, $language ) {
-
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}
@@ -262,7 +255,6 @@ final class Setup {
 		} );
 
 		Message::registerCallbackHandler( Message::PARSE, function ( $arguments, $language ) {
-
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}
@@ -289,7 +281,6 @@ final class Setup {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgJobClasses
 	 */
 	private function registerJobClasses( &$vars ) {
-
 		$jobClasses = [
 
 			'smw.update' => 'SMW\MediaWiki\Jobs\UpdateJob',
@@ -334,7 +325,6 @@ final class Setup {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgGroupPermissions
 	 */
 	private function registerPermissions( &$vars ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -366,7 +356,6 @@ final class Setup {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgFooterIcons
 	 */
 	private function registerFooterIcon( &$vars, $path ) {
-
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return;
 		}

@@ -26,7 +26,6 @@ class ConceptPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConceptPage::class,
 			new ConceptPage( $this->title )

@@ -62,7 +62,6 @@ class RepositoryRedirectLookup {
 	 * @throws RuntimeException
 	 */
 	public function findRedirectTargetResource( ExpNsResource $expNsResource, &$exists ) {
-
 		$exists = true;
 
 		if ( $expNsResource->isBlankNode() || $this->isNonRedirectableResource( $expNsResource ) ) {
@@ -90,7 +89,6 @@ class RepositoryRedirectLookup {
 	}
 
 	private function doLookupResourceUriTargetFor( ExpNsResource $expNsResource ) {
-
 		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheById( self::POOLCACHE_ID );
 
 		if ( !$poolCache->contains( $expNsResource->getUri() ) ) {
@@ -112,7 +110,6 @@ class RepositoryRedirectLookup {
 	}
 
 	private function lookupResourceUriTargetFromDatabase( ExpNsResource $expNsResource ) {
-
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expNsResource );
 		$rediUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getInstance()->getSpecialPropertyResource( '_REDI' ) );
 		$skeyUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' ) );
@@ -128,7 +125,6 @@ class RepositoryRedirectLookup {
 	}
 
 	private function getResourceForTargetElement( ExpNsResource $expNsResource, $rediTargetElement ) {
-
 		if ( !$rediTargetElement instanceof ExpResource ) {
 			throw new RuntimeException( 'Expected a ExpResource instance' );
 		}

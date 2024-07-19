@@ -57,7 +57,6 @@ class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->testEnvironment->tearDown();
 
@@ -68,7 +67,6 @@ class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPageMoveWithCreationOfRedirectTarget() {
-
 		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
 		$expectedNewTitle = Title::newFromText( __METHOD__ . '-new' );
 
@@ -96,7 +94,6 @@ class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPageMoveWithRemovalOfOldPage() {
-
 		// Further hooks required to ensure in-text annotations can be used for queries
 		$this->mwHooksHandler->register(
 			'InternalParseBeforeLinks',
@@ -167,7 +164,6 @@ class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPredefinedPropertyPageIsNotMovable() {
-
 		$this->mwHooksHandler->register(
 			'TitleIsMovable',
 			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'TitleIsMovable' )

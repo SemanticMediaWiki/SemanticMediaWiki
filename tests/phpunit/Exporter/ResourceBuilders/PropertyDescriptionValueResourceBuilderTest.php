@@ -39,7 +39,6 @@ class PropertyDescriptionValueResourceBuilderTest extends \PHPUnit_Framework_Tes
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			PropertyDescriptionValueResourceBuilder::class,
 			new PropertyDescriptionValueResourceBuilder()
@@ -47,7 +46,6 @@ class PropertyDescriptionValueResourceBuilderTest extends \PHPUnit_Framework_Tes
 	}
 
 	public function testIsNotResourceBuilderForPropertyDescription() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new PropertyDescriptionValueResourceBuilder();
@@ -58,7 +56,6 @@ class PropertyDescriptionValueResourceBuilderTest extends \PHPUnit_Framework_Tes
 	}
 
 	public function testAddResourceValueForPropertyDescription() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_PDESC' );
 
 		$monolingualTextValue = $this->dataValueFactory->newDataValueByProperty(

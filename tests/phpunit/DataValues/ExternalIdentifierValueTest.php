@@ -66,7 +66,6 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExternalIdentifierValue::class,
 			new ExternalIdentifierValue()
@@ -74,7 +73,6 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortWikiText() {
-
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getExternalFormatterUri' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIUri( 'http', 'example.org/$1' ) ) );
@@ -97,7 +95,6 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortWikiText_Nowiki() {
-
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getExternalFormatterUri' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIUri( 'http', 'example.org/$1' ) ) );
@@ -124,7 +121,6 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider identifierProvider
 	 */
 	public function testGetShortHTMLText( $value, $uri, $expected_text, $expected_html ) {
-
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getExternalFormatterUri' )
 			->will( $this->returnValue( $uri ) );
@@ -151,7 +147,6 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToGetShortHTMLTextWithLinkerOnMissingFormatterUri() {
-
 		$instance = new ExternalIdentifierValue();
 		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 
@@ -171,7 +166,6 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function identifierProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		yield [

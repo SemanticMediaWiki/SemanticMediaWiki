@@ -39,7 +39,6 @@ class HtmlModal {
 	 * @return string
 	 */
 	public static function link( $name, array $attributes = [] ) {
-
 		$attributes = self::mergeAttributes(
 			'smw-modal-link is-disabled',
 			$attributes
@@ -71,7 +70,6 @@ class HtmlModal {
 	 * @return string
 	 */
 	public static function element( $name, array $attributes = [] ) {
-
 		$attributes = self::mergeAttributes(
 			'smw-modal-link is-disabled',
 			$attributes
@@ -93,7 +91,6 @@ class HtmlModal {
 	 * @return string
 	 */
 	public static function modal( $title = '', $html = '', array $attributes = [] ) {
-
 		$attributes = self::mergeAttributes(
 			'smw-modal',
 			$attributes
@@ -147,7 +144,6 @@ class HtmlModal {
 	}
 
 	private static function mergeAttributes( $class, $attr ) {
-
 		$attributes = [];
 
 		// A bit of attribute order

@@ -51,7 +51,6 @@ class SequenceMapFinder {
 	 * @param array $map
 	 */
 	public function setMap( $sid, array $map = null ) {
-
 		if ( $map === null ) {
 			return;
 		}
@@ -84,7 +83,6 @@ class SequenceMapFinder {
 	 * @return array
 	 */
 	public function findMapById( $sid ) {
-
 		$omap = [];
 		$cache = $this->idCacheManager->get( 'sequence.map' );
 
@@ -128,7 +126,6 @@ class SequenceMapFinder {
 	 * @param array $ids
 	 */
 	public function prefetchSequenceMap( array $ids ) {
-
 		sort( $ids );
 		$hash = md5( json_encode( $ids ) );
 

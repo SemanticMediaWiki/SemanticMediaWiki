@@ -54,7 +54,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructor() {
-
 		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$this->assertInstanceOf(
@@ -69,7 +68,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues() {
-
 		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$this->assertInstanceOf(
@@ -87,7 +85,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddPropertyValue() {
-
 		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$instance->addPropertyValue(
@@ -110,7 +107,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHash() {
-
 		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$instance->addDataValue(
@@ -131,7 +127,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCountMap() {
-
 		$instance = new SemanticData(
 			DIWikiPage::newFromText( __METHOD__ )
 		);
@@ -173,7 +168,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPropertyOrderDoesNotInfluenceHash() {
-
 		$instance = new SemanticData(
 			new DIWikiPage( 'Foo', NS_MAIN )
 		);
@@ -205,7 +199,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSubSemanticPropertyOrderDoesNotInfluenceHash() {
-
 		$subobject = new Subobject( Title::newFromText( 'Foo' ) );
 		$subobject->setEmptyContainerForId( 'Foo' );
 
@@ -251,7 +244,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testThatChangingDataDoesEnforceDifferentHash() {
-
 		$instance = new SemanticData(
 			new DIWikiPage( 'Foo', NS_MAIN )
 		);
@@ -300,7 +292,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSubSemanticData() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
@@ -333,7 +324,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAndRemoveSubSemanticData() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
@@ -369,7 +359,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddSubSemanticDataWithOutSubobjectNameThrowsException() {
-
 		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
 		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
@@ -380,7 +369,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDifferentSubSemanticDataSubjectThrowsException() {
-
 		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
 		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
@@ -388,7 +376,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testImportDataFromForDifferentSubjectThrowsException() {
-
 		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
 		$this->expectException( '\SMW\Exception\SemanticDataImportException' );
@@ -399,7 +386,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasAndFindSubSemanticData() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
@@ -430,7 +416,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSubSemanticDataForNonStringSubobjectName() {
-
 		$instance = new SemanticData(
 			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
 		);
@@ -445,7 +430,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetLastModified() {
-
 		$instance = new SemanticData(
 			new DIWikiPage( 'Foo', NS_MAIN )
 		);
@@ -459,7 +443,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLastModifiedFromModificationDate() {
-
 		$instance = new SemanticData(
 			new DIWikiPage( 'Foo', NS_MAIN )
 		);
@@ -476,7 +459,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVisibility() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
@@ -501,7 +483,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider removePropertyObjectProvider
 	 */
 	public function testRemovePropertyObjectValue( $title, $property, $dataItem ) {
-
 		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
 		$instance->addPropertyObjectValue( $property, $dataItem );
@@ -512,7 +493,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRemoveProperty() {
-
 		$property = new DIProperty( 'Foo' );
 		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
@@ -533,7 +513,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValuesToReturnAnUnmappedArray() {
-
 		$property = new DIProperty( 'Foo' );
 		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
@@ -549,7 +528,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testClear() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
@@ -565,7 +543,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExtensionData() {
-
 		$instance = new SemanticData(
 			DIWikiPage::newFromText( __METHOD__ )
 		);
@@ -591,7 +568,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataValueDataProvider
 	 */
 	public function testAddDataValues( $dataValues, $expected ) {
-
 		$title = Title::newFromText( __METHOD__ );
 		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
@@ -738,7 +714,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function newSubobject( Title $title, $property = 'Quuy', $value = 'Xeer' ) {
-
 		$subobject = new Subobject( $title );
 		$subobject->setEmptyContainerForId( 'Foo' );
 

@@ -60,7 +60,6 @@ class QueryResultFactory {
 	 * @return QueryResult
 	 */
 	public function newQueryResult( RepositoryResult $repositoryResult = null, Query $query ) {
-
 		if ( $repositoryResult === null ) {
 			return $this->newEmptyQueryResult( $query );
 		}
@@ -73,7 +72,6 @@ class QueryResultFactory {
 	}
 
 	private function makeQueryResultForCount( RepositoryResult $repositoryResult, Query $query ) {
-
 		$queryResult = new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,
@@ -92,7 +90,6 @@ class QueryResultFactory {
 	}
 
 	private function makeQueryResultForInstance( RepositoryResult $repositoryResult, Query $query ) {
-
 		$resultDataItems = [];
 
 		foreach ( $repositoryResult as $resultRow ) {

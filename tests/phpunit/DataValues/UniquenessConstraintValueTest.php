@@ -37,7 +37,6 @@ class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\UniquenessConstraintValue',
 			new UniquenessConstraintValue()
@@ -45,7 +44,6 @@ class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorForMissingFeatureSetting() {
-
 		$instance = new UniquenessConstraintValue();
 
 		$instance->setOption( 'smwgDVFeatures', '' );
@@ -57,7 +55,6 @@ class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorForInvalidBoolean() {
-
 		$instance = new UniquenessConstraintValue();
 
 		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVUC );

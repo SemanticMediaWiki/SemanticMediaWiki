@@ -21,14 +21,12 @@ class ConstraintCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 	private $constraintRegistry;
 
 	protected function setUp() : void {
-
 		$this->constraintRegistry = $this->getMockBuilder( '\SMW\Constraint\ConstraintRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConstraintCheckRunner::class,
 			new ConstraintCheckRunner( $this->constraintRegistry )
@@ -36,7 +34,6 @@ class ConstraintCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_Instance() {
-
 		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -84,7 +81,6 @@ class ConstraintCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_Deferred() {
-
 		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();

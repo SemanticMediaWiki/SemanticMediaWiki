@@ -36,7 +36,6 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCa
 	}
 
 	public function testNamespaceSettingOnExampleIfSet() {
-
 		$expected = 'http://example.org/id/';
 
 		if ( $this->globalsProvider->get( 'smwgNamespace' ) !== $expected ) {
@@ -53,7 +52,6 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCa
 	 * @dataProvider smwgNamespacesWithSemanticLinksProvider
 	 */
 	public function testNamespacesWithSemanticLinksOnTravisCustomNamespace( $type, $container ) {
-
 		if ( !defined( 'NS_TRAVIS' ) ) {
 			$this->markTestSkipped( 'Test can only be executed with a specified NS_TRAVIS' );
 		}
@@ -84,7 +82,6 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCa
 	 * @since 1.9
 	 */
 	public function smwgNamespacesWithSemanticLinksProvider() {
-
 		$provider = [];
 
 		$provider[] = [

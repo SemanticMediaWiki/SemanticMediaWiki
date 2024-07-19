@@ -39,7 +39,6 @@ class SpecialConstraintErrorListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanExecute() {
-
 		$instance = new SpecialConstraintErrorList();
 
 		$instance->getContext()->setTitle(
@@ -52,7 +51,6 @@ class SpecialConstraintErrorListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindRedirectURL() {
-
 		$instance = new SpecialConstraintErrorList();
 
 		$instance->getContext()->setTitle(

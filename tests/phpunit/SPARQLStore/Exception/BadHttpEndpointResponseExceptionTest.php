@@ -16,7 +16,6 @@ use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 class BadHttpEndpointResponseExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException',
 			new BadHttpEndpointResponseException( 'Foo', 'Bar', 'Que' )
@@ -27,13 +26,11 @@ class BadHttpEndpointResponseExceptionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorCodeProvider
 	 */
 	public function testErrorCodes( $errorCode ) {
-
 		$instance = new BadHttpEndpointResponseException( $errorCode, '', '' );
 		$this->assertEquals( $errorCode, $instance->getCode() );
 	}
 
 	public function errorCodeProvider() {
-
 		$provider = [
 			[ BadHttpEndpointResponseException::ERROR_MALFORMED ],
 			[ BadHttpEndpointResponseException::ERROR_REFUSED ],

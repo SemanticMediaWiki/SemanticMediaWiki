@@ -110,7 +110,6 @@ class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		if ( !$this->hasFeature( SMW_ADM_SETUP ) ) {
 			return;
 		}

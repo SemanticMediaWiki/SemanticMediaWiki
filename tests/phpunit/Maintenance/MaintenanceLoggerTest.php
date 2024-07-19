@@ -19,7 +19,6 @@ class MaintenanceLoggerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +30,6 @@ class MaintenanceLoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLog() {
-
 		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -49,7 +47,6 @@ class MaintenanceLoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLogWithInvalidNameLengthThrowsException() {
-
 		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
 			->disableOriginalConstructor()
 			->getMock();

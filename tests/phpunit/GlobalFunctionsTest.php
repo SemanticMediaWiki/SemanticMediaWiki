@@ -90,7 +90,6 @@ class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSmwfCacheKeyOnPrefixedNamespace() {
-
 		$this->assertEquals(
 			smwfCacheKey( 'foo', 'bar' ),
 			smwfCacheKey( ':foo', 'bar' )

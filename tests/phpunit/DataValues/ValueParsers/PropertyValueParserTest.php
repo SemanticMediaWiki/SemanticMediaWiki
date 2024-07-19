@@ -16,7 +16,6 @@ use SMW\DataValues\ValueParsers\PropertyValueParser;
 class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyValueParser::class,
 			new PropertyValueParser()
@@ -27,7 +26,6 @@ class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider nameProvider
 	 */
 	public function testParse( $value, $invalidCharacterList, $expectedPropertyName, $expectedInverse ) {
-
 		$instance = new PropertyValueParser();
 		$instance->setInvalidCharacterList(
 			$invalidCharacterList
@@ -47,7 +45,6 @@ class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEnforceFirstCharUpperCase() {
-
 		$instance = new PropertyValueParser();
 		$instance->isCapitalLinks( false );
 		$instance->reqCapitalizedFirstChar( true );
@@ -66,7 +63,6 @@ class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function nameProvider() {
-
 		$provider[] = [
 			'Foo',
 			[],

@@ -46,7 +46,6 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 	 * @query {{#ask: [[Modification date::+]]|limit=0|searchlabel= }}
 	 */
 	public function testLimitNullWithEmptySearchlabel() {
-
 		foreach ( [ 'Foo', 'Bar', 'テスト' ] as $title ) {
 
 			$this->pageCreator
@@ -82,7 +81,6 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 	 * @query {{#ask: [[Modification date::+]]|limit=0|searchlabel=do something }}
 	 */
 	public function testLimitNullWithDescriptiveSearchlabel() {
-
 		foreach ( [ 'Foo', 'Bar', 'テスト' ] as $title ) {
 
 			$this->pageCreator

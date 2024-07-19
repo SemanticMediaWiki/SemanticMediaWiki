@@ -21,7 +21,6 @@ class FixturesCleaner {
 	 * @return FixturesCleaner
 	 */
 	public function purgeSubjects( array $subjects ) {
-
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $subjects );
 
@@ -46,7 +45,6 @@ class FixturesCleaner {
 	 * @return FixturesCleaner
 	 */
 	public function purgeFacts( array $facts ) {
-
 		foreach ( $facts as $fact ) {
 			$fact->purge();
 		}

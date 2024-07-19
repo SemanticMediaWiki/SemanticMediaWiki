@@ -33,7 +33,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	 * @dataProvider semanticDataProvider
 	 */
 	public function testSerializerDeserializerRountrip( $data ) {
-
 		$serialized = $this->newSerializerInstance()->serialize( $data );
 
 		$this->assertEquals(
@@ -52,7 +51,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	 * @dataProvider incompleteSubobjectDataProvider
 	 */
 	public function testSerializerDeserializerWithIncompleteSubobjectData( $data ) {
-
 		$serialized = $this->newSerializerInstance()->serialize( $data );
 
 		$this->assertInstanceOf(
@@ -65,7 +63,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	 * @dataProvider typeChangeSemanticDataProvider
 	 */
 	public function testForcedTypeErrorDuringRountrip( $data, $type ) {
-
 		$serialized   = $this->newSerializerInstance()->serialize( $data );
 		$deserializer = $this->newDeserializerInstance();
 
@@ -90,7 +87,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	}
 
 	public function semanticDataProvider() {
-
 		ApplicationFactory::clear();
 
 		$provider = [];
@@ -141,7 +137,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	 * @return array
 	 */
 	public function incompleteSubobjectDataProvider() {
-
 		$provider = [];
 
 		$title = \Title::newFromText( __METHOD__ );
@@ -162,7 +157,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	 * @return array
 	 */
 	public function typeChangeSemanticDataProvider() {
-
 		$provider = [];
 		$title = \Title::newFromText( __METHOD__ );
 

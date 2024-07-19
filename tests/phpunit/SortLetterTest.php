@@ -19,7 +19,6 @@ class SortLetterTest extends \PHPUnit_Framework_TestCase {
 	private $collator;
 
 	protected function setUp() : void {
-
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getWikiPageSortKey' ] )
@@ -31,7 +30,6 @@ class SortLetterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SortLetter::class,
 			new SortLetter( $this->store, $this->collator )
@@ -39,7 +37,6 @@ class SortLetterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFirstLetter() {
-
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();

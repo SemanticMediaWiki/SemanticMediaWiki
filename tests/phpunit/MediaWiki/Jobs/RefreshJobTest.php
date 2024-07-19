@@ -41,7 +41,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -63,7 +62,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parameterDataProvider
 	 */
 	public function testRunJobOnMockStore( $parameters, $expected ) {
-
 		$title = Title::newFromText( __METHOD__ );
 
 		$expectedToRun = $expected['spos'] === null ? $this->once() : $this->once();
@@ -102,7 +100,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function parameterDataProvider() {
-
 		$provider = [];
 
 		// #0 Empty

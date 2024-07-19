@@ -29,7 +29,6 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -53,7 +52,6 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider redirectsDataProvider
 	 */
 	public function testAddAnnotation( array $parameter, array $expected ) {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$redirectTargetFinder = new RedirectTargetFinder();
@@ -72,7 +70,6 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function redirectsDataProvider() {
-
 		// #0 Free text
 		$provider[] = [
 			[ 'text' => '#REDIRECT [[:Lala]]' ],

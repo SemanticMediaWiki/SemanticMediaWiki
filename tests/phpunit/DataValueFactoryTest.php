@@ -26,7 +26,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddGetCallable() {
-
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		$test = $this->getMockBuilder( '\stdClass' )
@@ -53,7 +52,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddCallableOnAlreadyRegisteredKeyThrowsException() {
-
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		$dataValueFactory->addCallable( 'foo.test', [ $this, 'testAddCallableOnAlreadyRegisteredKeyThrowsException' ] );
@@ -65,7 +63,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCallableOnUnknownKeyThrowsException() {
-
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		$dataValue = $dataValueFactory->newTypeIdValue(
@@ -81,7 +78,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeIdValueDataProvider
 	 */
 	public function testNewTypeIdValue( $typeId, $value, $expectedValue, $expectedInstance ) {
-
 		$dataValue = DataValueFactory::getInstance()->newTypeIdValue( $typeId, $value );
 
 		$this->assertInstanceOf(
@@ -106,7 +102,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyObjectValueDataProvider
 	 */
 	public function testNewPropertyObjectValue( $propertyName, $value, $expectedValue, $expectedInstance ) {
-
 		$propertyDV = DataValueFactory::getInstance()->newPropertyValueByLabel( $propertyName );
 		$propertyDI = $propertyDV->getDataItem();
 
@@ -143,7 +138,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyValueDataProvider
 	 */
 	public function testAddPropertyValueByText( $propertyName, $value, $expectedValue, $expectedInstance ) {
-
 		$dataValue = DataValueFactory::getInstance()->newDataValueByText( $propertyName, $value );
 
 		// Check the returned instance
@@ -174,7 +168,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToCreateDataValueUsingRestrictedPropertyValue() {
-
 		$dataValue = DataValueFactory::getInstance()->newDataValueByText( 'Has subobject', 'Foo' );
 
 		$this->assertInstanceOf(
@@ -188,7 +181,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToCreateDataValueUsingLegacyNewPropertyValueMethod() {
-
 		$dataValue = DataValueFactory::getInstance()->newPropertyValue( 'Bar', 'Foo' );
 
 		$this->assertInstanceOf(
@@ -201,7 +193,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * Issue 673
 	 */
 	public function testEnforceFirstUpperCaseForDisabledCapitalLinks() {
-
 		$wgCapitalLinks = $GLOBALS['wgCapitalLinks'];
 		$GLOBALS['wgCapitalLinks'] = false;
 
@@ -223,7 +214,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewPropertyValueByLabel() {
-
 		$dataValue = DataValueFactory::getInstance()->newPropertyValueByLabel(
 			'Foo',
 			'Bar',
@@ -242,7 +232,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewPropertyValueByItem() {
-
 		$dataValue = DataValueFactory::getInstance()->newPropertyValueByItem(
 			DIProperty::newFromUserLabel( __METHOD__ ),
 			'Bar',
@@ -264,7 +253,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider newDataValueByItemDataProvider
 	 */
 	public function testNewDataItemValue( $setup ) {
-
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$setup['dataItem'],
 			$setup['property'],
@@ -278,7 +266,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function newDataValueByItemDataProvider() {
-
 		$provider = [];
 
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );

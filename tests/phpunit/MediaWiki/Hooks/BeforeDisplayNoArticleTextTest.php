@@ -16,7 +16,6 @@ use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
 class BeforeDisplayNoArticleTextTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +30,6 @@ class BeforeDisplayNoArticleTextTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testPerformUpdate( $namespace, $text, $expected ) {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -58,7 +56,6 @@ class BeforeDisplayNoArticleTextTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleProvider() {
-
 		$provider = [
 			[ SMW_NS_PROPERTY, 'Modification date', false ],
 			[ SMW_NS_PROPERTY, 'Foo', true ],

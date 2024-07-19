@@ -44,7 +44,6 @@ class SchemaFactory {
 	 * @return SchemaTypes
 	 */
 	public function getSchemaTypes() : SchemaTypes {
-
 		if ( $this->schemaTypes === null ) {
 			$this->schemaTypes = $this->newSchemaTypes( $this->types );
 		}
@@ -69,7 +68,6 @@ class SchemaFactory {
 	 * @param Schema|null $schema
 	 */
 	public function pushChangePropagationDispatchJob( Schema $schema = null ) {
-
 		if ( $schema === null ) {
 			return;
 		}
@@ -107,7 +105,6 @@ class SchemaFactory {
 	 * @throws RuntimeException
 	 */
 	public function newSchema( $name, $data ) {
-
 		if ( is_string( $data ) ) {
 			if ( ( $data = json_decode( $data, true ) ) === null || json_last_error() !== JSON_ERROR_NONE ) {
 				throw new RuntimeException( "Invalid JSON format." );
@@ -150,7 +147,6 @@ class SchemaFactory {
 	 * @since 3.1
 	 */
 	public function newSchemaFinder( ?Store $store = null ): SchemaFinder {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -185,7 +181,6 @@ class SchemaFactory {
 	}
 
 	private function newSchemaTypes( array $types ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

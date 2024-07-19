@@ -42,7 +42,6 @@ class SchemaDefinition extends Compartment implements Schema {
 	 * @return string|null
 	 */
 	public function info( $key, $default = null ) {
-
 		if ( isset( $this->info[$key] ) ) {
 			return $this->info[$key];
 		}

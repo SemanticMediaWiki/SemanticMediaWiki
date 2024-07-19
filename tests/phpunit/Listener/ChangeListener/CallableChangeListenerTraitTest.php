@@ -19,7 +19,6 @@ class CallableChangeListenerTraitTest extends \PHPUnit_Framework_TestCase {
 	private $changeRecord;
 
 	public function testCanTrigger() {
-
 		$instance = $this->newCallableChangeListenerClass(
 			[ 'foo' => [ [ $this, 'runChange' ] ] ]
 		);
@@ -30,7 +29,6 @@ class CallableChangeListenerTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTrigger() {
-
 		$logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
 			->disableOriginalConstructor()
 			->getMock();

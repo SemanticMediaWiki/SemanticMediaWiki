@@ -30,7 +30,6 @@ class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			OptionsBuilder::class,
 			new OptionsBuilder( $this->profile )

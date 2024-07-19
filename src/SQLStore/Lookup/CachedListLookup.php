@@ -72,7 +72,6 @@ class CachedListLookup implements ListLookup {
 	 * @return array
 	 */
 	public function fetchList() {
-
 		list( $key, $optionsKey ) = $this->getCacheKey( $this->listLookup->getHash() );
 
 		if ( $this->cacheOptions->useCache && ( ( $result = $this->tryFetchFromCache( $key, $optionsKey ) ) !== null ) ) {
@@ -131,7 +130,6 @@ class CachedListLookup implements ListLookup {
 	 * @since 2.3
 	 */
 	public function deleteCache() {
-
 		list( $id, $optionsKey ) = $this->getCacheKey(
 			$this->listLookup->getHash()
 		);
@@ -148,7 +146,6 @@ class CachedListLookup implements ListLookup {
 	}
 
 	private function tryFetchFromCache( $key, $optionsKey ) {
-
 		if ( !$this->cache->contains( $key ) ) {
 			return null;
 		}
@@ -173,7 +170,6 @@ class CachedListLookup implements ListLookup {
 	}
 
 	private function saveToCache( $key, $optionsKey, $list, $time, $ttl ) {
-
 		$this->timestamp = $time;
 		$this->isFromCache = false;
 
@@ -192,7 +188,6 @@ class CachedListLookup implements ListLookup {
 	}
 
 	private function getCacheKey( $id ) {
-
 		$optionsKey = '';
 
 		if ( strpos( $id, '#' ) !== false ) {

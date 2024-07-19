@@ -86,7 +86,6 @@ class LocalFileUpload extends UploadBase {
 	 * @return boolean
 	 */
 	public function doUploadCopyFromLocation( $localUploadPath, $desiredDestName, $pageText = '', $comment = '' ) {
-
 		if ( !$this->dummyFileCreator instanceof DummyFileCreator ) {
 			throw new RuntimeException( "Expected a DummyFileCreator instance." );
 		}
@@ -115,7 +114,6 @@ class LocalFileUpload extends UploadBase {
 	 * @return boolean
 	 */
 	public function doUploadFromLocation( $localUploadPath, $desiredDestName, $pageText = '', $comment = '' ) {
-
 		$localUploadPath = $this->createReadablePath( $localUploadPath );
 
 		$this->initializePathInfo(
@@ -166,7 +164,6 @@ class LocalFileUpload extends UploadBase {
 	}
 
 	private function createReadablePath( $path ) {
-
 		$path = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $path );
 
 		if ( is_readable( $path ) ) {

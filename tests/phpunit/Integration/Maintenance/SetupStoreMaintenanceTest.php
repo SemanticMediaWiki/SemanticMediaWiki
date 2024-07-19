@@ -48,7 +48,6 @@ class SetupStoreMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testSetupStore_Delete() {
-
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\SetupStore' );
 
 		$maintenanceRunner->setQuiet();
@@ -73,7 +72,6 @@ class SetupStoreMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testSetupStore() {
-
 		$this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',

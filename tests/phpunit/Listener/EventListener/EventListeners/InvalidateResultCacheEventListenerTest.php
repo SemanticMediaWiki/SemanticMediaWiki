@@ -36,7 +36,6 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			InvalidateResultCacheEventListener::class,
 			new InvalidateResultCacheEventListener( $this->resultCache )
@@ -44,7 +43,6 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testExecute() {
-
 		$context = DispatchContext::newFromArray(
 			[
 				'subject' => 'Foo',

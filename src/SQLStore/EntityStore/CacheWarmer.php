@@ -76,7 +76,6 @@ class CacheWarmer {
 	 * @param array $list
 	 */
 	public function prepareCache( $list = [] ) {
-
 		$hashList = [];
 		$linkBatch = LinkBatch::singleton();
 		$linkBatch->setCaller( __METHOD__ );
@@ -141,7 +140,6 @@ class CacheWarmer {
 	 * @param array $hashList
 	 */
 	public function prefetchFromList( $hashList = [] ) {
-
 		if ( $hashList === [] ) {
 			return;
 		}
@@ -194,7 +192,6 @@ class CacheWarmer {
 	 * @param array $idList
 	 */
 	public function loadByIds( $idList = [] ) {
-
 		if ( $idList === [] ) {
 			return;
 		}

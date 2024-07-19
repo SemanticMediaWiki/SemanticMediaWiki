@@ -63,7 +63,6 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	 * {@inheritDoc}
 	 */
 	public function isTaskFor( string $action ) : bool {
-
 		$actions = [
 			$this->getTask(),
 		];
@@ -81,7 +80,6 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->getSpecialPageLinkWith(
 			$this->msg( 'smw-admin-supplementary-operational-statistics-short-title' ),
 			[ 'action' => $this->getTask() ]
@@ -105,7 +103,6 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$action = $webRequest->getText( 'action' );
 
 		if ( $action === 'stats' ) {
@@ -129,7 +126,6 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	}
 
 	private function outputHead() {
-
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-operational-statistics-title' ) ] )
 		);
@@ -140,7 +136,6 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	}
 
 	private function outputBody() {
-
 		$html = Html::rawElement( 'p', [], $this->msg( [ 'smw-admin-operational-statistics' ], Message::PARSE ) );
 
 		$htmlTabs = new HtmlTabs();
@@ -167,7 +162,6 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	}
 
 	private function outputInfo() {
-
 		$list = '';
 
 		foreach ( $this->taskHandlers as $taskHandler ) {
@@ -184,7 +178,6 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	}
 
 	private function outputSemanticStatistics() {
-
 		$semanticStatistics = $this->getStore()->getStatistics();
 
 		return Html::rawElement( 'pre', [],
@@ -206,7 +199,6 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	}
 
 	private function outputJobStatistics() {
-
 		return Html::rawElement( 'p', [ 'class' => 'plainlinks' ], $this->msg( 'smw-admin-statistics-job-docu', Message::PARSE ) ) . Html::rawElement(
 			'div',
 			[

@@ -36,7 +36,6 @@ class DisposeOutdatedEntitiesTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DisposeOutdatedEntities::class,
 			new DisposeOutdatedEntities()
@@ -44,7 +43,6 @@ class DisposeOutdatedEntitiesTest extends TestCase {
 	}
 
 	public function testExecute() {
-
 		$instance = new DisposeOutdatedEntities();
 
 		$instance->setMessageReporter(

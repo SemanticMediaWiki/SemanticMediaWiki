@@ -33,7 +33,6 @@ class FactboxFactory {
 	 * @return CachedFactbox
 	 */
 	public function newCachedFactbox() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -77,7 +76,6 @@ class FactboxFactory {
 	 * @return Factbox
 	 */
 	public function newFactbox( Title $title, ParserOutput $parserOutput ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$factbox = new Factbox(

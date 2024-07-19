@@ -27,7 +27,6 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 	private $requestOptions;
 
 	protected function setUp() : void {
-
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +45,6 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PrefetchItemLookup::class,
 			new PrefetchItemLookup( $this->store, $this->semanticDataLookup, $this->propertySubjectsLookup )
@@ -54,7 +52,6 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues() {
-
 		$subjects = [
 			DIWikiPage::newFromText( __METHOD__ ),
 		];
@@ -139,7 +136,6 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues_InvertedProperty() {
-
 		$subjects = [
 			DIWikiPage::newFromText( __METHOD__ ),
 		];
@@ -185,7 +181,6 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues_InvertedProperty_HashIndex() {
-
 		$subjects = [
 			DIWikiPage::newFromText( __METHOD__ ),
 		];

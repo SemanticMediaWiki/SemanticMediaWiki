@@ -19,7 +19,6 @@ class ConstraintRegistryFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constraintKeyProvider
 	 */
 	public function testGetConstraint( $key ) {
-
 		$hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -39,7 +38,6 @@ class ConstraintRegistryFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function constraintKeyProvider() {
-
 		$hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -221,7 +221,6 @@ class RequestOptions {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
-
 		if ( isset( $this->options[$key] ) ) {
 			return $this->options[$key];
 		}
@@ -289,7 +288,6 @@ class RequestOptions {
 	 * @return string
 	 */
 	public function getHash() {
-
 		$stringConditions = '';
 
 		foreach ( $this->stringConditions as $stringCondition ) {

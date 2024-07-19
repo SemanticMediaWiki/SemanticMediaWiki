@@ -68,7 +68,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			UserdefinedPropertyExaminer::class,
 			new UserdefinedPropertyExaminer( $this->declarationExaminer, $this->store )
@@ -76,7 +75,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsFixedTable() {
-
 		$this->propertyTableInfoFetcher->expects( $this->any() )
 			->method( 'isFixedTableProperty' )
 			->will( $this->returnValue( true ) );
@@ -102,7 +100,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider recordTypeProvider
 	 */
 	public function testRecordType_FieldList( $type, $name ) {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$this->semanticData->expects( $this->any() )
@@ -133,7 +130,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIgnoreRecordType_MonolingualText() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$instance = new UserdefinedPropertyExaminer(
@@ -158,7 +154,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider recordTypeProvider
 	 */
 	public function testRecordType_MultipleFieldList( $type, $name ) {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$this->semanticData->expects( $this->any() )
@@ -193,7 +188,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExternalIdentifier_MissingFormatter() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$instance = new UserdefinedPropertyExaminer(
@@ -215,7 +209,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGeoType_MissingMapsExtension() {
-
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 			$this->markTestSkipped( 'Skipping test because the Maps extension is installed!' );
 		}
@@ -241,7 +234,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testImportTypeDeclarationMismatch() {
-
 		$dataItemFactory = new DataItemFactory();
 		$imported_type = $dataItemFactory->newDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_num' );
 		$user_type = $dataItemFactory->newDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_dat' );
@@ -280,7 +272,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckSubpropertyParentTypeMismatch_ForcedInheritance() {
-
 		$declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -333,7 +324,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckSubpropertyParentTypeMismatch() {
-
 		$declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
 			->disableOriginalConstructor()
 			->getMock();

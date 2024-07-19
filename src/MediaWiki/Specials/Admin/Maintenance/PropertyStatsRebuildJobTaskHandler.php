@@ -89,7 +89,6 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$subject = DIWikiPage::newFromTitle( \SpecialPage::getTitleFor( 'SMWAdmin' ) );
 
 		// smw-admin-propertystatistics
@@ -143,7 +142,6 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		if ( !$this->hasFeature( SMW_ADM_PSTATS ) || $this->hasPendingJob() || $this->isApiTask() ) {
 			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 		}

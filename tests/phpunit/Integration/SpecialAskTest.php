@@ -42,7 +42,6 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 	 * @param $skipFUSEKI
 	 */
 	public function testProducesWellformedHtml( $params, $skipFUSEKI ) {
-
 		$instance = new RepositoryConnectionProvider( 'fuSEKi' );
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector',

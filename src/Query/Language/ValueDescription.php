@@ -58,7 +58,6 @@ class ValueDescription extends Description {
 	 * @return string
 	 */
 	public function getFingerprint() {
-
 		$property = null;
 
 		if ( $this->property !== null ) {
@@ -108,7 +107,6 @@ class ValueDescription extends Description {
 	 * @return string
 	 */
 	public function getQueryString( $asValue = false ) {
-
 		$comparator = QueryComparator::getInstance()->getStringForComparator(
 			$this->comparator
 		);

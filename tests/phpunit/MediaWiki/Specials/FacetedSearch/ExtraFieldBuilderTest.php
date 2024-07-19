@@ -35,7 +35,6 @@ class ExtraFieldBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExtraFieldBuilder::class,
 			new ExtraFieldBuilder( $this->profile, $this->templateEngine )

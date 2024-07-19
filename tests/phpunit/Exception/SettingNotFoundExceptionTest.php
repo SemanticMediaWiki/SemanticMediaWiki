@@ -16,7 +16,6 @@ use SMW\Exception\SettingNotFoundException;
 class SettingNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SettingNotFoundException();
 
 		$this->assertInstanceof(

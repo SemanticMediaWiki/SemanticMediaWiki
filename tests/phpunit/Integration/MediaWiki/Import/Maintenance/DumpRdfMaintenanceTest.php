@@ -63,7 +63,6 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testMaintenanceRdfOutput() {
-
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->importedTitles = [
@@ -93,7 +92,6 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 	}
 
 	private function doExportForDefaultOptions( $maintenanceRunner ) {
-
 		$expectedOutputContent = [
 		//	'<rdf:type rdf:resource="&wiki;Category-3ALorem_ipsum"/>',
 			'<rdfs:label>Lorem ipsum</rdfs:label>',
@@ -118,7 +116,6 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 	}
 
 	private function doExportForPageOption( $maintenanceRunner ) {
-
 		$expectedOutputContent = [
 			'<rdfs:label>Lorem ipsum</rdfs:label>',
 			'<swivt:masterPage rdf:resource="&wiki;Lorem_ipsum"/>',

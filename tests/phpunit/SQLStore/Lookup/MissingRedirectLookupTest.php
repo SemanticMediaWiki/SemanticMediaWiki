@@ -18,14 +18,12 @@ class MissingRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 
 	protected function setUp() : void {
-
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MissingRedirectLookup::class,
 			new MissingRedirectLookup( $this->store )
@@ -33,7 +31,6 @@ class MissingRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindMissingRedirects() {
-
 		$tables = [
 			'page',
 			'smw_fpt_redi'

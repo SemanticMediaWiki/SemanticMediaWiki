@@ -125,7 +125,6 @@ abstract class Store implements QueryEngine {
 	 * @return string sortkey
 	 */
 	public function getWikiPageSortKey( DIWikiPage $dataItem ) {
-
 		$dataItems = $this->getPropertyValues( $dataItem, new DIProperty( '_SKEY' ) );
 
 		if ( is_array( $dataItems ) && count( $dataItems ) > 0 ) {
@@ -145,7 +144,6 @@ abstract class Store implements QueryEngine {
 	 * @return DataItem
 	 */
 	public function getRedirectTarget( DataItem $dataItem ) {
-
 		$type = $dataItem->getDIType();
 
 		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
@@ -220,7 +218,6 @@ abstract class Store implements QueryEngine {
 	 * @param SemanticData $semanticData
 	 */
 	public function updateData( SemanticData $semanticData ) {
-
 		Timer::start( __METHOD__ );
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -471,7 +468,6 @@ abstract class Store implements QueryEngine {
 	 * @return boolean Success indicator
 	 */
 	public static function setupStore( $verbose = true, $options = null ) {
-
 		$store = StoreFactory::getStore();
 
 		// See notes in ExtensionSchemaUpdates
@@ -496,7 +492,6 @@ abstract class Store implements QueryEngine {
 	 * @return Options
 	 */
 	public function getOptions() {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -511,7 +506,6 @@ abstract class Store implements QueryEngine {
 	 * @param mixed $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -528,7 +522,6 @@ abstract class Store implements QueryEngine {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -540,7 +533,6 @@ abstract class Store implements QueryEngine {
 	 * @since 2.0
 	 */
 	public function clear() {
-
 		if ( $this->connectionManager !== null ) {
 			$this->connectionManager->releaseConnections();
 		}
@@ -574,7 +566,6 @@ abstract class Store implements QueryEngine {
 	 * @return mixed
 	 */
 	public function getConnection( $type ) {
-
 		if ( $this->connectionManager === null ) {
 			$this->connectionManager = ApplicationFactory::getInstance()->getConnectionManager();
 		}

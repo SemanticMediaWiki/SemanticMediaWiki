@@ -30,7 +30,6 @@ class SourceProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -45,7 +44,6 @@ class SourceProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sourceDataProvider
 	 */
 	public function testCreateProfile( $source, $expected ) {
-
 		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', '_QUERYe7d20a88' );
 
 		$container = new DIContainer(
@@ -66,7 +64,6 @@ class SourceProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function sourceDataProvider() {
-
 		$provider = [];
 
 		$provider[] = [ '', [

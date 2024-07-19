@@ -25,7 +25,6 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 	private $requestOptions;
 
 	protected function setUp() : void {
-
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +39,6 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\Lookup\PropertyUsageListLookup',
 			new PropertyUsageListLookup( $this->store, $this->propertyStatisticsStore, $this->requestOptions )
@@ -48,7 +46,6 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListLookupInterfaceMethodAccess() {
-
 		$instance = new PropertyUsageListLookup(
 			$this->store,
 			$this->propertyStatisticsStore,
@@ -71,7 +68,6 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupIdentifierChangedByRequestOptions() {
-
 		$requestOptions = new RequestOptions();
 
 		$instance = new PropertyUsageListLookup(
@@ -97,7 +93,6 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryTofetchListForMissingOptionsThrowsException() {
-
 		$instance = new PropertyUsageListLookup(
 			$this->store,
 			$this->propertyStatisticsStore
@@ -111,7 +106,6 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider usageCountProvider
 	 */
 	public function testfetchListForValidProperty( $expectedCount ) {
-
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
 		$row->smw_id = 42;
@@ -161,7 +155,6 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForInvalidProperty() {
-
 		$row = new \stdClass;
 		$row->smw_title = '-Foo';
 		$row->smw_id = 42;
@@ -202,7 +195,6 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function usageCountProvider() {
-
 		$provider[] = [
 			0
 		];

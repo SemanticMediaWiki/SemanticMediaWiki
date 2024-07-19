@@ -57,12 +57,10 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 	 * @return text
 	 */
 	private function runTemplateTransclusion( Title $title, $text, $return ) {
-
 		$parser = MediaWikiServices::getInstance()->getParserFactory()->create();
 		$user = RequestContext::getMain()->getUser();
 		$options = new ParserOptions( $user );
 		$options->setTemplateCallback( function ( $title, $parser = false ) use ( $return ) {
-
 			$text = $return;
 			$deps = [];
 
@@ -81,7 +79,6 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 	 * @dataProvider templateDataProvider
 	 */
 	public function testPreprocessTemplateAndParse( $namespace, array $settings, $text, $tmplValue, array $expected ) {
-
 		$parserOutput = new ParserOutput();
 		$title        = Title::newFromText( __METHOD__, $namespace );
 
@@ -122,7 +119,6 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 	}
 
 	public function templateDataProvider() {
-
 		$provider = [];
 
 		// #0 Bug 54967

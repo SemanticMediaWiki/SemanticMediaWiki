@@ -20,7 +20,6 @@ class Excerpts extends \SMW\Query\Excerpts {
 	 * @return string|integer|false
 	 */
 	public function getExcerpt( $hash ) {
-
 		if ( $hash instanceof DIWikiPage ) {
 			$hash = $hash->getHash();
 		}
@@ -44,7 +43,6 @@ class Excerpts extends \SMW\Query\Excerpts {
 	}
 
 	private function format( $v ) {
-
 		// https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
 		// By default, highlighted text is wrapped in <em> and </em> tags
 

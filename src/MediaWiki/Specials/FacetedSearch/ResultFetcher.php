@@ -186,7 +186,6 @@ class ResultFetcher {
 	 * @return string
 	 */
 	public function getHtml() : string {
-
 		if ( $this->errors !== [] ) {
 			$msg = '';
 			foreach ( $this->errors as $error ) {
@@ -221,7 +220,6 @@ class ResultFetcher {
 	 * @param ParametersProcessor $parametersProcessor
 	 */
 	public function fetchQueryResult( ParametersProcessor $parametersProcessor ) {
-
 		[ $queryString, $parameters, $printRequests ] = QueryProcessor::getComponentsFromFunctionParams(
 			$parametersProcessor->getParameters(),
 			false
@@ -353,7 +351,6 @@ class ResultFetcher {
 	}
 
 	private function findValueFilters( $results, $valueFilterResult, array $propertyFilters ) {
-
 		if ( $propertyFilters === [] ) {
 			return;
 		}

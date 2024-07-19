@@ -30,7 +30,6 @@ class ErrorMsgTextValue extends DataValue {
 	 * @param string $value
 	 */
 	protected function parseUserValue( $value ) {
-
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}
@@ -46,7 +45,6 @@ class ErrorMsgTextValue extends DataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-
 		if ( !$dataItem instanceof DIBlob ) {
 			return false;
 		}
@@ -93,7 +91,6 @@ class ErrorMsgTextValue extends DataValue {
 	}
 
 	private function constructErrorText( $linker = null ) {
-
 		if ( !$this->isValid() || $this->getDataItem() === [] ) {
 			return '';
 		}

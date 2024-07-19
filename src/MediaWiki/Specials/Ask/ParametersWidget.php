@@ -57,7 +57,6 @@ class ParametersWidget {
 	 * @return string
 	 */
 	public static function fieldset( Title $title, array $parameters ) {
-
 		$toggle = Html::rawElement(
 			'span',
 			[
@@ -135,7 +134,6 @@ class ParametersWidget {
 	 * @return string
 	 */
 	public static function parameterList( array $values ) {
-
 		$format = 'broadtable';
 
 		if ( isset( $values['format'] ) ) {
@@ -205,7 +203,6 @@ class ParametersWidget {
 	}
 
 	private static function optionList( $definitions, $values ) {
-
 		$html = [];
 
 		/**
@@ -259,7 +256,6 @@ class ParametersWidget {
 	}
 
 	private static function field( ParamDefinition $definition, $name ) {
-
 		$info = '';
 		$class = '';
 
@@ -289,7 +285,6 @@ class ParametersWidget {
 	}
 
 	private static function input( ParamDefinition $definition, $currentValue ) {
-
 		$description = '';
 		$info = '';
 

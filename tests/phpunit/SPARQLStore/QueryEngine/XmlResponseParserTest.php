@@ -32,7 +32,6 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider rawXmlResultDocumentProvider
 	 */
 	public function testXmlParse( $rawXmlResult, $expectedResultRowItemInstance ) {
-
 		$instance = new XmlResponseParser();
 		$resultFormat = $instance->parse( $rawXmlResult );
 
@@ -48,7 +47,6 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidXmlThrowsException() {
-
 		$rawResultProvider = new FakeRawResultProvider();
 
 		$instance = new XmlResponseParser();
@@ -58,7 +56,6 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function assertResultFormat( $expectedResultRowItemInstance, $results ) {
-
 		if ( !is_array( $expectedResultRowItemInstance ) ) {
 			$expectedResultRowItemInstance =  [ $expectedResultRowItemInstance ];
 		}
@@ -69,7 +66,6 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function assertResultRow( $expectedItemInstance, $row ) {
-
 		foreach ( $row as $key => $item ) {
 
 			if ( $item === null ) {
@@ -81,7 +77,6 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function rawXmlResultDocumentProvider() {
-
 		$rawResultProvider = new FakeRawResultProvider();
 
 		#0

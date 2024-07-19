@@ -18,14 +18,12 @@ class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 
 	public function setUp() : void {
-
 		$this->connection = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$callback = function() {};
 
 		$this->assertInstanceOf(
@@ -39,7 +37,6 @@ class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionFormCallback() {
-
 		$callback = function() {
 			return $this->connection;
 		};
@@ -55,7 +52,6 @@ class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionFormStaticCallback() {
-
 		$instance = new CallbackConnectionProvider(
 			[ $this, 'getConnection' ]
 		);

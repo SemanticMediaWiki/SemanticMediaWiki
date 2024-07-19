@@ -36,7 +36,6 @@ class ImportFromPropertyValueResourceBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			ImportFromPropertyValueResourceBuilder::class,
 			new ImportFromPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class ImportFromPropertyValueResourceBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function testIsNotResourceBuilderForNonImpoProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new ImportFromPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class ImportFromPropertyValueResourceBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function testAddResourceValueForImpoProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_IMPO' );
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 

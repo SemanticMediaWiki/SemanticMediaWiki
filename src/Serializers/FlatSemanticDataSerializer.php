@@ -19,7 +19,6 @@ class FlatSemanticDataSerializer extends SemanticDataSerializer {
 	 * @return array
 	 */
 	protected function doSerializeSubSemanticData( $subSemanticData ) {
-
 		$subobjects = [];
 
 		foreach ( $subSemanticData as $semanticData ) {

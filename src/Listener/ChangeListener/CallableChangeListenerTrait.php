@@ -58,7 +58,6 @@ trait CallableChangeListenerTrait {
 	 * @param string $key
 	 */
 	public function trigger( string $key ) {
-
 		if ( !isset( $this->changeListeners[$key] ) ) {
 			return;
 		}

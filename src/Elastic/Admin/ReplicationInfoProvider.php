@@ -59,7 +59,6 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-replication-function-title' ),
 			[ 'action' => $this->getTask() ]
@@ -83,7 +82,6 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle(
 			$this->msg( 'smw-admin-supplementary-elastic-replication-header-title' )
 		);
@@ -97,7 +95,6 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	}
 
 	private function outputInfo() {
-
 		$this->outputFormatter->addModules( 'ext.smw.purge' );
 
 		$html = Html::rawElement(
@@ -168,7 +165,6 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	}
 
 	private function buildFromFile( $title ) {
-
 		$response = '';
 
 		$key = $this->entityCache->makeCacheKey(
@@ -239,7 +235,6 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	}
 
 	private function buildFromTitle( $title ) {
-
 		$response = $this->purge( $title );
 
 		return Html::rawElement(

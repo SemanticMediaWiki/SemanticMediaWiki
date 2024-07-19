@@ -79,7 +79,6 @@ class FilterFactory {
 	 * @return ValueFilter
 	 */
 	public function newValueFilter( array $params ) : ValueFilter {
-
 		$valueFilterFactory = new ValueFilterFactory(
 			$this->templateEngine
 		);

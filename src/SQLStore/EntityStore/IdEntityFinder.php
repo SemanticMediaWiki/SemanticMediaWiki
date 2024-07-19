@@ -54,7 +54,6 @@ class IdEntityFinder {
 	 * @return DIWikiPage[]
 	 */
 	public function getDataItemsFromList( array $idList, RequestOptions $requestOptions = null ) {
-
 		if ( $idList === [] ) {
 			return [];
 		}
@@ -91,7 +90,6 @@ class IdEntityFinder {
 	 * @return DIWikiPage
 	 */
 	public function newFromRow( $row ) {
-
 		$dataItem = new DIWikiPage(
 			$row->smw_title,
 			$row->smw_namespace,
@@ -133,7 +131,6 @@ class IdEntityFinder {
 	 * @return DIWikiPage|null
 	 */
 	public function getDataItemById( $id ) {
-
 		if ( ( $dataItem = $this->get( (int)$id ) ) !== false ) {
 			return $dataItem;
 		}
@@ -142,7 +139,6 @@ class IdEntityFinder {
 	}
 
 	private function get( $id ) {
-
 		$cache = $this->idCacheManager->get( 'entity.lookup' );
 
 		if ( ( $dataItem = $cache->fetch( $id ) ) !== false ) {
@@ -165,7 +161,6 @@ class IdEntityFinder {
 	}
 
 	private function fetchFromTable( $conditions, $selectRow = false ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$fields = [

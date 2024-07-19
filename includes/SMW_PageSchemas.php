@@ -201,7 +201,6 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * semantic property within the Page Schemas 'editschema' page.
 	 */
 	public static function getFieldEditingHTML( $psTemplateField ) {
-
 		$smwgContLang = smwfContLang();
 
 		$prop_array = [];
@@ -310,7 +309,6 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * Creates the text for a property page.
 	 */
 	static public function createPropertyText( $propertyType, $allowedValues, $linkedForm = null ) {
-
 		$smwgContLang = smwfContLang();
 
 		$propLabels = $smwgContLang->getPropertyLabels();

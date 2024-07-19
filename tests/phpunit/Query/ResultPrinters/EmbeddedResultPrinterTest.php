@@ -30,7 +30,6 @@ class EmbeddedResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EmbeddedResultPrinter::class,
 			new EmbeddedResultPrinter( 'embedded' )

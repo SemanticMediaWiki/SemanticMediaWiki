@@ -21,7 +21,6 @@ class CleanUpTablesTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 
 	protected function setUp() : void {
-
 		$this->connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +39,6 @@ class CleanUpTablesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonPostgres() {
-
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'listTables', 'query', 'tableExists' ] )
@@ -66,7 +64,6 @@ class CleanUpTablesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPostgres() {
-
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'listTables', 'query', 'getType', 'tableExists' ] )

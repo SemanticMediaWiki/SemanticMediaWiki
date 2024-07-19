@@ -100,7 +100,6 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getIndexHint( $key ) {
-
 		// Store::getPropertySubjects has seen to choose the wrong index
 
 		// ELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
@@ -132,7 +131,6 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-
 		$oid = $this->store->getObjectIds()->getSMWPageID(
 			$dataItem->getDBkey(),
 			$dataItem->getNamespace(),
@@ -149,7 +147,6 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-
 		$oid = $this->store->getObjectIds()->makeSMWPageID(
 			$dataItem->getDBkey(),
 			$dataItem->getNamespace(),
@@ -184,7 +181,6 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-
 		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 5 ) {
 			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 		}
@@ -216,7 +212,6 @@ class DIWikiPageHandler extends DataItemHandler {
 	}
 
 	private function newDiWikiPage( $dbkeys ) {
-
 		$diWikiPage = new DIWikiPage(
 			$dbkeys[0],
 			intval( $dbkeys[1] ),

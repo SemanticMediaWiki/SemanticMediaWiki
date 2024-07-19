@@ -98,7 +98,6 @@ class PropertyPage extends Page {
 	 * @return string
 	 */
 	protected function initHtml() {
-
 		$redirectTarget = $this->store->getRedirectTarget( $this->property );
 
 		if ( !$redirectTarget->equals( $this->property ) ) {
@@ -159,7 +158,6 @@ class PropertyPage extends Page {
 	 * @return string|boolean
 	 */
 	protected function getRedirectTargetURL() {
-
 		$label = $this->getTitle()->getText();
 
 		if ( ( $key = PropertyRegistry::getInstance()->findPropertyIdByLabel( $label ) ) === false ) {
@@ -187,7 +185,6 @@ class PropertyPage extends Page {
 	 * @return string
 	 */
 	protected function getHtml() {
-
 		if ( !$this->store->getRedirectTarget( $this->property )->equals( $this->property ) ) {
 			return '';
 		}
@@ -342,7 +339,6 @@ class PropertyPage extends Page {
 	}
 
 	private function makeItemList( $key, $propertyKey, $checkProperty = true ) {
-
 		// Ignore the list when a filter is present
 		if ( $this->getContext()->getRequest()->getVal( 'filter', '' ) !== '' ) {
 			return [ '', '' ];
@@ -390,7 +386,6 @@ class PropertyPage extends Page {
 	}
 
 	private function makeValueList() {
-
 		$request = $this->getContext()->getRequest();
 		$language = $this->getContext()->getLanguage();
 		$user = $this->getContext()->getUser();
@@ -442,7 +437,6 @@ class PropertyPage extends Page {
 	}
 
 	private function getCount() {
-
 		if ( $this->filterCount !== null ) {
 			return Html::rawElement(
 				'span',

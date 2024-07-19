@@ -65,7 +65,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider',
 			new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store )
@@ -83,7 +82,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testHasPermission() {
-
 		$permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -104,7 +102,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testGetName() {
-
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
@@ -116,7 +113,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testIsSeverityType() {
-
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
@@ -128,7 +124,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testGetIndicators() {
-
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
@@ -140,7 +135,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testGetModules() {
-
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
@@ -152,7 +146,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testGetInlineStyle() {
-
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
@@ -164,7 +157,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testHasIndicator_SameRevision() {
-
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->will( $this->returnValue( 42 ) );
@@ -197,7 +189,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testHasIndicator_DifferentRevision() {
-
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->will( $this->returnValue( 42 ) );
@@ -237,7 +228,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testPredefinedPropertyHasIndicator_DifferentRevision() {
-
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->with( $this->equalTo( '_MDAT' ) )

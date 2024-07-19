@@ -29,7 +29,6 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandlerTest extends \
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler::class,
 			new OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler( $this->store )
@@ -37,7 +36,6 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandlerTest extends \
 	}
 
 	public function testGetHtml() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();

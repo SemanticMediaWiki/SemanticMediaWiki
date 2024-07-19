@@ -40,7 +40,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExtendedSearch::class,
 			new ExtendedSearch( $this->store, $this->fallbackSearchEngine )
@@ -48,7 +47,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFallbackSearchEngineAccessToPublicProperties() {
-
 		$reflect = new \ReflectionObject( $this->fallbackSearchEngine );
 		$properties = [ 'prefix', 'namespaces' ];
 
@@ -66,7 +64,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetLimitOffset() {
-
 		$instance = new ExtendedSearch(
 			$this->store,
 			$this->fallbackSearchEngine
@@ -86,7 +83,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchTitle_withNonsemanticQuery() {
-
 		$term = 'Some string that can not be interpreted as a semantic query';
 
 		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
@@ -117,7 +113,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchTitle_withEmptyQuery() {
-
 		$term = '   ';
 
 		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
@@ -148,7 +143,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchText_withSemanticQuery() {
-
 		$term = '[[Some string that can be interpreted as a semantic query]]';
 
 		$infoLink = $this->getMockBuilder( '\SMWInfolink' )
@@ -200,7 +194,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchText_withNonsemanticQuery() {
-
 		$term = 'Some string that can not be interpreted as a semantic query';
 
 		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
@@ -227,7 +220,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchTitle_withSemanticQuery() {
-
 		$term = '[[Some string that can be interpreted as a semantic query]]';
 
 		$instance = new ExtendedSearch(
@@ -241,7 +233,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearch_OnEligiblePrefix() {
-
 		$infoLink = $this->getMockBuilder( '\SMWInfolink' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -314,7 +305,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearch_NoRelevantPrefix() {
-
 		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -343,7 +333,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearch_NoRelevantPrefix_ReplaceEmptySearchTermWithInfusedTerm() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();

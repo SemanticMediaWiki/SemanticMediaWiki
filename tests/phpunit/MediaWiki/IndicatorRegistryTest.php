@@ -20,7 +20,6 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 	private $permissionExaminer;
 
 	protected function setUp() : void {
-
 		$this->indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +30,6 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			IndicatorRegistry::class,
 			 new IndicatorRegistry()
@@ -39,7 +37,6 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddIndicatorProvider() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -67,7 +64,6 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAttachIndicators() {
-
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -80,7 +76,6 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoPermissionOnIndicatorProvider() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -100,7 +95,6 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPermissionAwareIndicatorProvider() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

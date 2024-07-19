@@ -32,7 +32,6 @@ class QueryStringifier {
 	 * @return string
 	 */
 	public static function toArray( Query $query, $printParameters = false ) {
-
 		$serialized = [];
 		$serialized['conditions'] = $query->getQueryString();
 
@@ -88,7 +87,6 @@ class QueryStringifier {
 	 * @return string
 	 */
 	public static function toString( Query $query, $printParameters = false ) {
-
 		$serialized = self::toArray( $query, $printParameters );
 
 		$string = $serialized['conditions'];
@@ -105,7 +103,6 @@ class QueryStringifier {
 	}
 
 	private static function printouts( $query, $showParams = false ) {
-
 		$printouts = [];
 
 		if ( $query->getExtraPrintouts() === null ) {
@@ -122,7 +119,6 @@ class QueryStringifier {
 	}
 
 	private static function sortKeys( $query ) {
-
 		$sort = [];
 		$order = [];
 

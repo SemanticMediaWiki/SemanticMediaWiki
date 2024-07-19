@@ -134,7 +134,6 @@ class ImportValue extends DataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-
 		if ( !$dataItem instanceof DIBlob ) {
 			return false;
 		}
@@ -203,7 +202,6 @@ class ImportValue extends DataValue {
 	 * @see DataValue::getLongWikiText
 	 */
 	public function getLongWikiText( $linked = null ) {
-
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
@@ -215,7 +213,6 @@ class ImportValue extends DataValue {
 	 * @see DataValue::getLongHTMLText
 	 */
 	public function getLongHTMLText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}

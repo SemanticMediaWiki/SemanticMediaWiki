@@ -16,7 +16,6 @@ use SMW\MediaWiki\Template\Template;
 class TemplateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Template::class,
 			 new Template( 'Foo' )
@@ -24,7 +23,6 @@ class TemplateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testField() {
-
 		$instance = new Template( 'Foo' );
 		$instance->field( 'Bar', 123 );
 		$instance->field( 'Bar', 'Foobar' );

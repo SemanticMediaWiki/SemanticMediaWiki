@@ -38,7 +38,6 @@ class RunImportTest extends DatabaseTestCase {
 	}
 
 	public function testRun() {
-
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
 			'SMW\Maintenance\RunImport'
 		);

@@ -122,7 +122,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 * @return boolean
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
-
 		if ( $this->isDeferredMode ) {
 			return $this->runCheck( $subject, $options );
 		}
@@ -160,7 +159,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	}
 
 	private function runCheck( $subject, $options ) {
-
 		$this->indicators = [];
 
 		$latestRevID = $this->revisionGuard->getLatestRevID(
@@ -190,7 +188,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	}
 
 	private function buildHTML( $latestRevID, $associatedRev, $options ) {
-
 		$content = '';
 		$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_ERROR;
 

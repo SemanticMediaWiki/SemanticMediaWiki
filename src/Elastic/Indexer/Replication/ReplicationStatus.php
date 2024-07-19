@@ -48,7 +48,6 @@ class ReplicationStatus {
 	 * @throws RuntimeException
 	 */
 	public function get( $key, ...$args ) {
-
 		if ( $key === 'associated_revision' ) {
 			$key = 'getAssociatedRev';
 		}
@@ -68,7 +67,6 @@ class ReplicationStatus {
 	 * @return boolean
 	 */
 	private function exists( $id ) {
-
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,
@@ -85,7 +83,6 @@ class ReplicationStatus {
 	 * @return []
 	 */
 	private function modification_date_associated_revision( $id ) {
-
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,
@@ -125,7 +122,6 @@ class ReplicationStatus {
 	 * @throws RuntimeException
 	 */
 	public function getModificationDate( $id ) {
-
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,
@@ -161,7 +157,6 @@ class ReplicationStatus {
 	 * @return integer
 	 */
 	public function getAssociatedRev( $id ) {
-
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,
@@ -184,7 +179,6 @@ class ReplicationStatus {
 	 * @since 3.0
 	 */
 	private function refresh_interval() {
-
 		$refresh_interval = null;
 
 		$settings = $this->connection->getSettings(
@@ -206,7 +200,6 @@ class ReplicationStatus {
 	 * @since 3.0
 	 */
 	private function last_update() {
-
 		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
 		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
 

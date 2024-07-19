@@ -36,7 +36,6 @@ class ConceptPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			ConceptPropertyValueResourceBuilder::class,
 			new ConceptPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class ConceptPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	}
 
 	public function testIsNotResourceBuilderForNonConcProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new ConceptPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class ConceptPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	}
 
 	public function testAddResourceValueForConcProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_CONC' );
 		$dataItem = $this->dataItemFactory->newDIConcept( 'Foo' );
 

@@ -193,7 +193,6 @@ class EntityIdManager {
 	 * @param ChangeRecord $changeRecord
 	 */
 	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ) {
-
 		if ( $key === 'smwgQEqualitySupport' ) {
 			$this->setEqualitySupport( $changeRecord->get( $key ) );
 		}
@@ -219,7 +218,6 @@ class EntityIdManager {
 	 * @return boolean
 	 */
 	public function isRedirect( DIWikiPage $subject ) {
-
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -238,7 +236,6 @@ class EntityIdManager {
 	 * @return integer
 	 */
 	public function findRedirect( $title, $namespace ) {
-
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -256,7 +253,6 @@ class EntityIdManager {
 	 * @param integer $namespace
 	 */
 	public function addRedirect( $id, $title, $namespace ) {
-
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -274,7 +270,6 @@ class EntityIdManager {
 	 * @param integer $namespace
 	 */
 	public function updateRedirect( $id, $title, $namespace ) {
-
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -291,7 +286,6 @@ class EntityIdManager {
 	 * @param integer $namespace
 	 */
 	public function deleteRedirect( $title, $namespace ) {
-
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -356,7 +350,6 @@ class EntityIdManager {
 	 * @return integer SMW id or 0 if there is none
 	 */
 	protected function getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes ) {
-
 		$sha1 = $this->idCacheManager->computeSha1(
 			[
 				$title,
@@ -434,7 +427,6 @@ class EntityIdManager {
 	 * @return boolean
 	 */
 	public function isUnique( DataItem $dataItem ) {
-
 		if ( $this->duplicateFinder === null ) {
 			$this->duplicateFinder = $this->factory->newDuplicateFinder();
 		}
@@ -448,7 +440,6 @@ class EntityIdManager {
 	 * @return []
 	 */
 	public function findDuplicates() {
-
 		if ( $this->duplicateFinder === null ) {
 			$this->duplicateFinder = $this->factory->newDuplicateFinder();
 		}
@@ -527,7 +518,6 @@ class EntityIdManager {
 	 * @return int
 	 */
 	public function getId( DIWikiPage $subject ) {
-
 		// Try to match a predefined property
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
 			try {
@@ -634,7 +624,6 @@ class EntityIdManager {
 	 * @return integer SMW id or 0 if there is none
 	 */
 	protected function makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes ) {
-
 		$oldsort = '';
 		$id = $this->getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical, $fetchHashes );
 		$db = $this->store->getConnection( 'mw.db' );
@@ -733,7 +722,6 @@ class EntityIdManager {
 	 * @param integer|string|null $interwiki
 	 */
 	public function updateInterwikiField( $sid, DIWikiPage $subject, $interwiki = null ) {
-
 		if ( $interwiki === null ) {
 			$interwiki = $subject->getInterWiki();
 		}
@@ -853,7 +841,6 @@ class EntityIdManager {
 	 * @return integer
 	 */
 	public function makeSMWPropertyID( DIProperty $property ) {
-
 		$key = $property->getKey();
 
 		if ( isset( self::$special_ids[$key] ) && is_int( self::$special_ids[$key] ) ) {
@@ -1045,7 +1032,6 @@ class EntityIdManager {
 	 * @since 3.0
 	 */
 	public function initCache() {
-
 		// Tests indicate that it is more memory efficient to have two
 		// arrays (IDs and sortkeys) than to have one array that stores both
 		// values in some data structure (other than a single string).
@@ -1119,7 +1105,6 @@ class EntityIdManager {
 	 * @return FieldList
 	 */
 	public function preload( array $subjects ) : FieldList {
-
 		$fieldList = $this->auxiliaryFields->prefetchFieldList(
 			$subjects
 		);
@@ -1151,7 +1136,6 @@ class EntityIdManager {
 	 * @return array
 	 */
 	public function getSequenceMap( $sid, $key = null ) {
-
 		$sequenceMap = $this->sequenceMapFinder->findMapById( $sid );
 
 		if ( $key === null ) {

@@ -71,7 +71,6 @@ class IntlNumberFormatter {
 	 * @return IntlNumberFormatter
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 			self::$instance = new self(
 				$GLOBALS['smwgMaxNonExpNumber']
@@ -120,7 +119,6 @@ class IntlNumberFormatter {
 	 * @return string
 	 */
 	public function getSeparatorByLanguage( $type, $locale = '' ) {
-
 		$language = $locale === self::USER_LANGUAGE ? $this->getUserLanguage() : $this->getContentLanguage();
 
 		if ( $type === self::DECIMAL_SEPARATOR ) {
@@ -149,7 +147,6 @@ class IntlNumberFormatter {
 	 * @return string
 	 */
 	public function format( $value, $precision = false, $format = '' ) {
-
 		if ( $format === self::VALUE_FORMAT ) {
 			return $this->getValueFormattedNumberWithPrecision( $value, $precision );
 		}
@@ -243,7 +240,6 @@ class IntlNumberFormatter {
 	}
 
 	private function getValueFormattedNumberWithPrecision( $value, $precision = false ) {
-
 		// The decimal are in ISO format (.), the separator as plain representation
 		// may collide with the content language (FR) therefore use the content language
 		// to match the decimal separator
@@ -264,7 +260,6 @@ class IntlNumberFormatter {
 	}
 
 	private function getDefaultFormattedNumberWithPrecision( $value, $precision = false ) {
-
 		if ( $precision === false ) {
 			return $this->isDecimal( $value ) ? $this->applyDefaultPrecision( $value ) : floatval( $value );
 		}
@@ -302,7 +297,6 @@ class IntlNumberFormatter {
 	}
 
 	private function doFormatWithPrecision( $value, $precision, $decimal, $thousand ) {
-
 		$replacement = 0;
 
 		// Don't try to be more precise than the actual value (e.g avoid turning
@@ -343,7 +337,6 @@ class IntlNumberFormatter {
 	}
 
 	private function getUserLanguage() {
-
 		$language = Message::USER_LANGUAGE;
 
 		// The preferred language is set when the output formatter contained
@@ -359,7 +352,6 @@ class IntlNumberFormatter {
 	}
 
 	private function getContentLanguage() {
-
 		$language = Message::CONTENT_LANGUAGE;
 
 		if ( $this->options->has( self::CONTENT_LANGUAGE ) && $this->options->get( self::CONTENT_LANGUAGE ) ) {
@@ -370,7 +362,6 @@ class IntlNumberFormatter {
 	}
 
 	private function getPreferredLocalizedSeparator( $custom, $standard, $language ) {
-
 		if ( $this->options->has( $custom ) && ( $separator = $this->options->get( $custom ) ) !== false ) {
 			return $separator;
 		}

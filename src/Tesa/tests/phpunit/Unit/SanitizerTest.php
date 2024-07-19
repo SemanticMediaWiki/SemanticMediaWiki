@@ -24,7 +24,6 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function testTransliteration() {
-
 		$instance = new Sanitizer( 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž' );
 		$instance->applyTransliteration();
 
@@ -35,7 +34,6 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function testToLowercase() {
-
 		$instance = new Sanitizer( 'ÀÁÂÃÄÅ ABC 텍스트의 テスト часто הוא פשוט' );
 		$instance->toLowercase();
 
@@ -46,7 +44,6 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function testReduceLengthTo() {
-
 		$instance = new Sanitizer( 'ABCDEF' );
 		$instance->reduceLengthTo( 3 );
 
@@ -64,7 +61,6 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function testReduceLengthToNearestWholeWordForLatinString() {
-
 		$instance = new Sanitizer( 'abc def gh in 123' );
 		$instance->reduceLengthTo( 12 );
 
@@ -80,7 +76,6 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function testReduceLengthToNearestWholeWordForNonLatinString() {
-
 		if ( version_compare( phpversion(), '5.4', '<' ) ) {
 			$this->markTestSkipped(
 				"Boo, PHP 5.3 returns with `Failed asserting that 9 matches expected 3`"
@@ -102,7 +97,6 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function testReplace() {
-
 		$instance = new Sanitizer( 'テスト' );
 		$instance->replace( array( 'テスト' ), array( 'Test' ) );
 
@@ -113,7 +107,6 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function testSanitizeWithSimpleStopwordList() {
-
 		$text = 'Foo bar foobar';
 
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
@@ -146,7 +139,6 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function testSanitizeByStopwordsToIncludeExemptionWithMinLengthRestriction() {
-
 		$text = 'Foo bar foobar';
 
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
@@ -186,7 +178,6 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function testTrySanitizeByStopwordsWithProximityCheck() {
-
 		$text = 'foo foo テスト テスト';
 
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )

@@ -23,7 +23,6 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 	private $queryResult;
 
 	protected function setUp() : void {
-
 		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -85,7 +84,6 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExtractResults() {
-
 		$res = $this->resultSet->extractResults();
 
 		$this->assertCount(
@@ -115,7 +113,6 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExcerpt() {
-
 		$excerpts = $this->getMockBuilder( 'SMW\Query\Excerpts' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -136,7 +133,6 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTermMatches() {
-
 		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -171,7 +167,6 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSearchSuggestionSet() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -221,7 +216,6 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSearchSuggestionSet_FilterSameTitle() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

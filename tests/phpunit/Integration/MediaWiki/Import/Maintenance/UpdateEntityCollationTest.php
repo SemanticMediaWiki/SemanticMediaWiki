@@ -39,7 +39,6 @@ class UpdateEntityCollationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -47,7 +46,6 @@ class UpdateEntityCollationTest extends DatabaseTestCase {
 	}
 
 	public function testSortFieldUpdate() {
-
 		$version = $this->getStore()->getInfo( 'es' );
 
 		// Testing against ES 5.6 may cause a "Can't update

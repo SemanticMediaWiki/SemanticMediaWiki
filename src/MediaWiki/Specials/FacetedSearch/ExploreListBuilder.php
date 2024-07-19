@@ -41,7 +41,6 @@ class ExploreListBuilder {
 	 * @return string
 	 */
 	public function buildHTML( Title $title ) : string {
-
 		$queryList = $this->profile->get( 'exploration.query_list', [] );
 		$profileName = $this->profile->getProfileName();
 		$html = '';

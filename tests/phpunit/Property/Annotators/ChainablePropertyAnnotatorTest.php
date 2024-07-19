@@ -33,7 +33,6 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider annotationDataProvider
 	 */
 	public function testChainableDecoratorAnnotation( array $parameters, array $expected ) {
-
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\PageInfo' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -88,7 +87,6 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function annotationDataProvider() {
-
 		$provider = [];
 
 		// #0

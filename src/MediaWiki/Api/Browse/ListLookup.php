@@ -56,7 +56,6 @@ class ListLookup extends Lookup {
 	 * @return array
 	 */
 	public function lookup( array $parameters ) {
-
 		$requestOptions = $this->newRequestOptions(
 			$parameters
 		);
@@ -109,7 +108,6 @@ class ListLookup extends Lookup {
 	}
 
 	private function newRequestOptions( $parameters ) {
-
 		$limit = 50;
 		$offset = 0;
 		$search = '';
@@ -182,7 +180,6 @@ class ListLookup extends Lookup {
 	}
 
 	private function fetchFromTable( $ns, $requestOptions, $parameters ) {
-
 		$limit = $requestOptions->getLimit() - 1;
 		$list = [];
 		$options = [];

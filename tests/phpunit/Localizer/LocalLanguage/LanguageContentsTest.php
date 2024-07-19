@@ -24,7 +24,6 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 	private $fallbackFinder;
 
 	protected function setUp() : void {
-
 		$this->jsonContentsFileReader = $this->getMockBuilder( JsonContentsFileReader::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -35,7 +34,6 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			LanguageContents::class,
 			new LanguageContents( $this->jsonContentsFileReader, $this->fallbackFinder )
@@ -43,7 +41,6 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCanonicalFallbackLanguageCode() {
-
 		$this->fallbackFinder->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalFallbackLanguageCode' );
 
@@ -56,7 +53,6 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareWithLanguageWithoutFallback() {
-
 		$languageCode = 'Foo';
 
 		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
@@ -84,7 +80,6 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentsByLanguage_ID_Depth_2() {
-
 		$languageCode = 'Foo';
 
 		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
@@ -108,7 +103,6 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentsByLanguage_ID_Depth_3() {
-
 		$languageCode = 'Foo';
 
 		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
@@ -132,7 +126,6 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentsByLanguageWithIndexWithFallback() {
-
 		$languageCode = 'Foo';
 		$fallback = 'Foobar';
 
@@ -166,7 +159,6 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentsByLanguageWithIndexWithFallbackButMissingIndexThrowsException() {
-
 		$languageCode = 'Foo';
 		$fallback = 'Foobar';
 

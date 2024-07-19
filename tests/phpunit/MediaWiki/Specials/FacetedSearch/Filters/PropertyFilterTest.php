@@ -44,7 +44,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyFilter::class,
 			new PropertyFilter( $this->templateEngine, $this->treeBuilder,  [] )
@@ -52,7 +51,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate_NoFilter() {
-
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
 			->will( $this->returnValue( '' ) );
@@ -80,7 +78,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate_OneFilter() {
-
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
 			->will( $this->returnValue( '' ) );

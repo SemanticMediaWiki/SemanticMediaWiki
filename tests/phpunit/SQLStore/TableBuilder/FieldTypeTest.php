@@ -19,7 +19,6 @@ class FieldTypeTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider fieldTypeProvider
 	 */
 	public function testMapType( $fieldType, $fieldTypes, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			FieldType::mapType( $fieldType, $fieldTypes )
@@ -27,7 +26,6 @@ class FieldTypeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function fieldTypeProvider() {
-
 		$fieldTypes = [
 			'double' => 'DOUBLE'
 		];

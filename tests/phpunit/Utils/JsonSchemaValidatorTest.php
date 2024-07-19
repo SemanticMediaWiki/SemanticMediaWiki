@@ -20,7 +20,6 @@ use SMW\Utils\JsonSchemaValidator;
 class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JsonSchemaValidator::class,
 			new JsonSchemaValidator()
@@ -40,7 +39,6 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoSchemaValidator() {
-
 		$instance = new JsonSchemaValidator();
 
 		$this->assertFalse(
@@ -49,7 +47,6 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidate() {
-
 		if ( !class_exists( SchemaValidator::class ) ) {
 			$this->markTestSkipped( 'JsonSchema\Validator is not available.' );
 		}
@@ -82,7 +79,6 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidateWhereSchemaValidatorThrowsException() {
-
 		if ( !class_exists( SchemaValidator::class ) ) {
 			$this->markTestSkipped( 'JsonSchema\Validator is not available.' );
 		}
@@ -119,7 +115,6 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoJSONValidatorButSchemaLink() {
-
 		$instance = new JsonSchemaValidator();
 
 		$instance->validate( $this->newJsonSerializable( [] ), 'Foo' );

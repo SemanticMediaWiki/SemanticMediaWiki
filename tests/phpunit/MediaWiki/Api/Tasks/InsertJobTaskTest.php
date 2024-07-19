@@ -35,7 +35,6 @@ class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new InsertJobTask( $this->jobFactory );
 
 		$this->assertInstanceOf(
@@ -45,7 +44,6 @@ class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
 			->getMock();

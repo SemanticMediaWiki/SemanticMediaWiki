@@ -61,7 +61,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangePropagationNotifier::class,
 			new ChangePropagationNotifier( $this->store, $this->serializerFactory )
@@ -72,7 +71,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnProperty( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-
 		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
 			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
 		}
@@ -92,7 +90,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnCategory( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-
 		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
 			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
 		}
@@ -109,7 +106,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function detectChanges( $subject, $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-
 		$this->mockedStoreValues = $mockedStoreValues;
 
 		$expectedToRun = $expected['job'] ? $this->atLeastOnce() : $this->never();
@@ -168,7 +164,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataItemDataProvider() {
-
 		// Single
 		$subject  = [
 			DIWikiPage::newFromText( __METHOD__ )

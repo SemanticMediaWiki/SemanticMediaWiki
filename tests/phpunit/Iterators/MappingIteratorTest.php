@@ -20,7 +20,6 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MappingIterator::class,
 			new MappingIterator( [], function() {
@@ -29,14 +28,12 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidConstructorArgumentThrowsException() {
-
 		$this->expectException( 'RuntimeException' );
 		$instance = new MappingIterator( 2, function() {
 		} );
 	}
 
 	public function testdoIterateOnArray() {
-
 		$expected = [
 			1 , 42
 		];
@@ -54,7 +51,6 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testdoIterateOnArrayIterator() {
-
 		$expected = [
 			1001 , 42
 		];

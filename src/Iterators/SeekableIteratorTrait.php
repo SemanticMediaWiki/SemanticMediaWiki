@@ -48,7 +48,6 @@ trait SeekableIteratorTrait {
 	 * {@inheritDoc}
 	 */
 	public function seek( $position ): void {
-
 		if ( !isset( $this->container[$position] ) ) {
 			throw new OutOfBoundsException( "Invalid seek position ($position)" );
 		}
@@ -74,7 +73,6 @@ trait SeekableIteratorTrait {
 	 */
 	#[\ReturnTypeWillChange]
 	public function current() {
-
 		if ( $this->position !== null ) {
 			return $this->container[$this->position];
 		}

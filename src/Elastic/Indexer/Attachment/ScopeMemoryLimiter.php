@@ -45,7 +45,6 @@ class ScopeMemoryLimiter {
 	 * @param callable $callable
 	 */
 	public function execute( callable $callable ) {
-
 		$memory_limit = ini_get( 'memory_limit' );
 
 		if ( $this->toInt( $memory_limit ) < $this->toInt( $this->memoryLimit ) ) {

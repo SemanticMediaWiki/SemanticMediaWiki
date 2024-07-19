@@ -39,7 +39,6 @@ class SpecialMissingRedirectAnnotationsTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function testCanExecute() {
-
 		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();

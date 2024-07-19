@@ -39,7 +39,6 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Importer\ContentCreators\DispatchingContentCreator',
 			new DispatchingContentCreator( [] )
@@ -47,7 +46,6 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanCreateContentsFor() {
-
 		$importContents = new ImportContents();
 		$importContents->setContentType( 'Foo' );
 
@@ -72,7 +70,6 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoCreateFrom() {
-
 		$importContents = new ImportContents();
 		$importContents->setContentType( 'Foo' );
 
@@ -105,7 +102,6 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoCreateFromOnNonMatchableCreatorThrowsException() {
-
 		$importContents = new ImportContents();
 		$importContents->setContentType( 'Foo' );
 

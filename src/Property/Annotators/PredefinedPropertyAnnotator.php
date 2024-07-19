@@ -51,7 +51,6 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	protected function addPropertyValues() {
-
 		$cachedProperties = [];
 
 		foreach ( $this->predefinedPropertyList as $propertyId ) {
@@ -82,7 +81,6 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	protected function createDataItemByPropertyId( $propertyId ) {
-
 		$dataItem = null;
 
 		switch ( $propertyId ) {

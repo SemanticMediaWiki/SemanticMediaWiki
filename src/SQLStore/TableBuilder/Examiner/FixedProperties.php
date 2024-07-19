@@ -64,7 +64,6 @@ class FixedProperties {
 	 * @param array $opts
 	 */
 	public function check( array $opts = [] ) {
-
 		$this->messageReporter->reportMessage( "Checking selected fixed properties IDs ...\n" );
 
 		if ( $this->fixedProperties === [] ) {
@@ -83,7 +82,6 @@ class FixedProperties {
 	}
 
 	private function checkAndMove( $prop ) {
-
 		if ( !isset( $this->fixedProperties[$prop] ) ) {
 			return;
 		}

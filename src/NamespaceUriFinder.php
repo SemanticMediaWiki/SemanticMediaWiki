@@ -32,7 +32,6 @@ class NamespaceUriFinder {
 	 * @return false|string
 	 */
 	public static function getUri( $key ) {
-
 		$key = strtolower( $key );
 
 		if ( isset( self::$namespaceUriList[$key] ) ) {

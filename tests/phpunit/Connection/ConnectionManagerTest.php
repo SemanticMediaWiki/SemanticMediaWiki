@@ -19,7 +19,6 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConnectionManager::class,
 			new ConnectionManager()
@@ -27,7 +26,6 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDefaultRegisteredConnectionProvided() {
-
 		$instance = new ConnectionManager();
 		$instance->releaseConnections();
 
@@ -52,7 +50,6 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnregisteredConnectionTypeThrowsException() {
-
 		$instance = new ConnectionManager();
 
 		$this->expectException( 'RuntimeException' );
@@ -60,7 +57,6 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterConnectionProvider() {
-
 		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -75,7 +71,6 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterCallbackConnection() {
-
 		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -50,7 +50,6 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueValidators\PatternConstraintValueValidator',
 			new PatternConstraintValueValidator( $this->allowsPatternValueParser )
@@ -61,7 +60,6 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider allowedPatternProvider
 	 */
 	public function testPatternUsingMockedDataValue( $allowedPattern, $testString, $expectedConstraintViolation ) {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Has allowed pattern' );
 
 		$this->mediaWikiNsContentReader->expects( $this->once() )
@@ -104,7 +102,6 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function allowedPatternProvider() {
-
 		$provider[] = [
 			" \nFoo|^(Bar|Foo bar)$/e\n",
 			'Foo bar',
