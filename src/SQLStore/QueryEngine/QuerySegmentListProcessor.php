@@ -161,7 +161,7 @@ class QuerySegmentListProcessor {
 				$seg->joinType  = $subQuery->joinType;
 				$seg->joinTable = $subQuery->joinTable;
 				$seg->alias = $subQuery->alias;
-				$seg->where = [ $joinField, "$op=", $subQuery->joinfield ];
+				$seg->where = "$joinField$op=" . $subQuery->joinfield;
 				$seg->fromSegs = $subQuery->fromSegs;
 				$query->fromSegs[] = $seg;
 
@@ -187,17 +187,20 @@ class QuerySegmentListProcessor {
 
 				$query->where .= ( ( $query->where === '' || $subQuery->where === null ) ? '' : ' AND ' ) . $condition;
 				$query->from .= $subQuery->from;
+				$query->fromSegs = array_merge( $query->fromSegs, $subQuery->fromSegs );
 			} else { // interpret empty joinfields as impossible condition (empty result)
 				$query->joinfield = ''; // make whole query false
 				$query->joinTable = '';
 				$query->where = '';
 				$query->from = '';
+				$query->fromSegs = [];
 				break;
 			}
 
 			if ( $subQuery->where !== '' && $subQuery->where !== null ) {
 				if ( $subQuery->joinType === 'LEFT' || $subQuery->joinType == 'LEFT OUTER' ) {
 					$query->from .= ' AND (' . $subQuery->where . ')';
+					last( $query->fromSegs )->where .= ' AND (' . $subQuery->where . ')';
 				} else {
 					$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
 				}
@@ -391,14 +394,13 @@ class QuerySegmentListProcessor {
 			} elseif ( ! empty( $seg->joinType ) && $seg->joinType !== 'INNER' ) {
 				throw new RuntimeException( "Unknown QuerySegment->joinType `{$seg->joinType}`" );
 			}
-			$cond = implode( '', $seg->where );
 			if ( empty( $seg->fromSegs ) ) {
-				$builder->{$joinMethod}( $seg->joinTable, $seg->alias, $cond );
+				$builder->{$joinMethod}( $seg->joinTable, $seg->alias, $seg->where );
 			} else {
 				$grp = new JoinGroup( $seg->alias . 'jg' );
 				$grp->table( $seg->joinTable, $seg->alias );
 				self::applyFrom( $seg, $grp );
-				$builder->{$joinMethod}( $grp, $grp->getAlias(), $cond );
+				$builder->{$joinMethod}( $grp, $grp->getAlias(), $seg->where );
 			}
 		}
 	}

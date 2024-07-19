@@ -139,6 +139,7 @@ class ConceptCache {
 			//		" WHERE {$concCacheTableName}.s_id = {$querySegment->alias}.s_id " .
 			//		" AND  {$concCacheTableName}.o_id = {$querySegment->alias}.o_id )";
 			$querySegment->from = str_replace( 'INNER JOIN', 'LEFT JOIN', $querySegment->from );
+			$querySegment->innerToLeftJoin();
 		}
 
 		$db->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .

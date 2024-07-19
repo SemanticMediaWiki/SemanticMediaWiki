@@ -181,4 +181,15 @@ class QuerySegment {
 		self::$qnum++;
 	}
 
+	/**
+	 * @since 4.2
+	 */
+	public function innerToLeftJoin() {
+		foreach ( $this->fromSegs as $seg ) {
+			if ( ! $seg->joinType || $seg->joinType == 'INNER' ) {
+				$seg->joinType = 'LEFT';
+			}
+			$seg->innerToLeftJoin();
+		}
+	}
 }
