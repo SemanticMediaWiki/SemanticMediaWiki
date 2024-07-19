@@ -381,7 +381,7 @@ class QuerySegmentListProcessor {
 
 	/**
 	 * Apply QuerySegment->fromSegs to a SelectQueryBuilder.
-	 * @since 4.xx
+	 * @since 4.2
 	 */
 	public static function applyFrom( $qobj, $builder ) {
 		foreach ( $qobj->fromSegs as $seg ) {

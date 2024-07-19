@@ -822,7 +822,7 @@ class Database {
 	/**
 	 * Create and return a new SelectQueryBuilder from the read or write connection.
 	 *
-	 * @since 4.xx
+	 * @since 4.2
 	 *
 	 * @param string $mode 'read' or 'write'
 	 *
@@ -837,7 +837,7 @@ class Database {
 	 * Apply SQLOptions to a SelectQueryBuilder.
 	 * Supported options: LIMIT, OFFSET, GROUP BY, ORDER BY, DISTINCT
 	 *
-	 * @since 4.xx
+	 * @since 4.2
 	 *
 	 * @param Wikimedia\Rdbms\SelectQueryBuilder $builder
 	 * @param array $sql_options

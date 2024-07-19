@@ -353,7 +353,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * this reason, we select sortfields only for POSTGRES. MySQL is able to perform what
 	 * we want here. It would be nice if we could eliminate the bug in POSTGRES as well.
 	 *
-	 * @since 4.xx
+	 * @since 4.2
 	 *
 	 * @param DBConnRef $connection
 	 * @param Query $query

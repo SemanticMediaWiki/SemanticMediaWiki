@@ -116,7 +116,7 @@ class QuerySegment {
 
 	/**
 	 * Array of QuerySegment to replace $from for Rdbms.
-	 * @since 4.xx
+	 * @since 4.2
 	 * @var array
 	 */
 	public $fromSegs = [];
