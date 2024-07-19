@@ -105,11 +105,9 @@
 	},
 	"scripts": {
 		"test": [
-			"@analyze",
 			"@phpunit"
 		],
 		"test-coverage": [
-			"@analyze",
 			"@phpunit-coverage"
 		],
 		"analyze": [
