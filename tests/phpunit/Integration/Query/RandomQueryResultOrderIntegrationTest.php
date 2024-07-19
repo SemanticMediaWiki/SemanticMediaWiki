@@ -35,7 +35,6 @@ class RandomQueryResultOrderIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 		$fixturesCleaner->purgeAllKnownFacts();
 
@@ -43,7 +42,6 @@ class RandomQueryResultOrderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testRandomOrder() {
-
 		$factsheet = $this->fixturesProvider->getFactsheet( 'Berlin' );
 		$populationValue = $factsheet->getPopulationValue();
 

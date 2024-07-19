@@ -58,7 +58,6 @@ class EntityUniquenessLookup {
 	 * @return Iterator|[]
 	 */
 	public function checkConstraint( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ) {
-
 		$propTableId = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
 			$property
 		);
@@ -111,7 +110,6 @@ class EntityUniquenessLookup {
 	}
 
 	private function resolve_value_condition( $propertyTable, $property, $dataItem, $query ) {
-
 		// Collect conditions to appear as
 		// `... (t1.p_id='121913' AND t1.o_sortkey='3520062') ...`
 		$conditions = [];
@@ -162,7 +160,6 @@ class EntityUniquenessLookup {
 	}
 
 	private function resolve_container_conditions( $propertyTable, $dataItem, $query ) {
-
 		$proptables = $this->store->getPropertyTables();
 		$semanticData = $dataItem->getSemanticData();
 

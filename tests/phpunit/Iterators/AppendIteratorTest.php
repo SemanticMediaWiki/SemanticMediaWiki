@@ -19,7 +19,6 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AppendIterator::class,
 			new AppendIterator()
@@ -30,7 +29,6 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider iterableProvider
 	 */
 	public function testCount( $iterable, $expected ) {
-
 		$instance = new AppendIterator();
 		$instance->add( $iterable );
 
@@ -41,7 +39,6 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddOnNonIterableThrowsException() {
-
 		$instance = new AppendIterator();
 
 		$this->expectException( 'RuntimeException' );
@@ -49,7 +46,6 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function iterableProvider() {
-
 		$provider[] = [
 			[
 				1, 42, 1001, 9999

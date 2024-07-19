@@ -48,7 +48,6 @@ class JsonFileReader {
 	 * @throws RuntimeException
 	 */
 	public function read() {
-
 		if ( $this->contents === null && $this->isReadable() ) {
 			$this->contents = $this->parse( $this->file );
 		}
@@ -76,7 +75,6 @@ class JsonFileReader {
 	 * @throws RuntimeException
 	 */
 	public function getModificationTime() {
-
 		if ( $this->isReadable() ) {
 			return filemtime( $this->file );
 		}
@@ -85,7 +83,6 @@ class JsonFileReader {
 	}
 
 	private function parse( $file ) {
-
 		$json = file_get_contents( $file );
 
 		$json = preg_replace(

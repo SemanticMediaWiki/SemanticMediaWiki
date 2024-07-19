@@ -59,7 +59,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConceptDescriptionInterpreter::class,
 			new ConceptDescriptionInterpreter( $this->store, $this->conditionBuilder, $this->circularReferenceGuard )
@@ -67,7 +66,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckForCircularReference() {
-
 		$this->circularReferenceGuard->expects( $this->once() )
 			->method( 'isCircular' )
 			->with( $this->equalTo( 'concept-42' ) )
@@ -104,7 +102,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testInterpretDescription( $description, $concept, $expected ) {
-
 		$objectIds = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getSMWPageID' ] )
 			->getMock();
@@ -158,7 +155,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$descriptionFactory = $applicationFactory->getQueryFactory()->newDescriptionFactory();

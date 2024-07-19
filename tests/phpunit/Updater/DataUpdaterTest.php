@@ -106,7 +106,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -118,7 +117,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoUpdateForDefaultSettings() {
-
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
 			->will( $this->returnValue( $this->revision ) );
@@ -149,7 +147,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeferredUpdate() {
-
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
 			->will( $this->returnValue( $this->revision ) );
@@ -184,7 +181,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider updateJobStatusProvider
 	 */
 	public function testDoUpdateForValidRevision( $updateJobStatus ) {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -256,7 +252,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider updateJobStatusProvider
 	 */
 	public function testDoUpdateForNullRevision( $updateJobStatus ) {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
@@ -322,7 +317,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoUpdateForTitleInUnknownNs() {
-
 		$wikiPage = new DIWikiPage(
 			'Foo',
 			-32768, // This namespace does not exist
@@ -348,7 +342,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoUpdateForSpecialPage() {
-
 		$wikiPage = new DIWikiPage(
 			'Foo',
 			NS_SPECIAL,
@@ -373,7 +366,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoUpdateForSchema() {
-
 		$wikiPage = new DIWikiPage(
 			'Foo',
 			SMW_NS_SCHEMA,
@@ -452,7 +444,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testForYetUnknownRedirectTarget() {
-
 		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -539,7 +530,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function updateJobStatusProvider() {
-
 		$provider = [
 			[ true ],
 			[ false ]

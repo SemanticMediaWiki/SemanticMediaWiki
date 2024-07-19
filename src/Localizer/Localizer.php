@@ -68,7 +68,6 @@ class Localizer {
 	 * @return Localizer
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -118,7 +117,6 @@ class Localizer {
 	 * @return boolean
 	 */
 	public function hasLocalTimeOffsetPreference( $user = null ) {
-
 		if ( !$user instanceof User ) {
 			$user = $this->context->getUser();
 		}
@@ -135,7 +133,6 @@ class Localizer {
 	 * @return DateTime
 	 */
 	public function getLocalTime( DateTime $dateTime, $user = null ) {
-
 		if ( !$user instanceof User ) {
 			$user = $this->context->getUser();
 		}
@@ -174,7 +171,6 @@ class Localizer {
 	 * @return Language
 	 */
 	public function getPreferredContentLanguage( $title = null ) {
-
 		$language = '';
 
 		if ( $title instanceof DIWikiPage ) {
@@ -206,7 +202,6 @@ class Localizer {
 	 * @return Language
 	 */
 	public function getLanguage( $languageCode = '' ) {
-
 		if ( $languageCode === '' || !$languageCode || $languageCode === null ) {
 			return $this->getContentLanguage();
 		}
@@ -223,7 +218,6 @@ class Localizer {
 	 * @return LocalLanguage
 	 */
 	public function getLang( $language = '' ) {
-
 		$languageCode = $language;
 
 		if ( $language instanceof Language ) {
@@ -256,7 +250,6 @@ class Localizer {
 	 * @return string
 	 */
 	public function getCanonicalNamespaceTextById( $index ) {
-
 		$canonicalNames = NamespaceManager::getCanonicalNames();
 
 		if ( isset( $canonicalNames[$index] ) ) {
@@ -301,7 +294,6 @@ class Localizer {
 	 * @return boolean
 	 */
 	public static function isKnownLanguageTag( $languageCode ) {
-
 		$languageCode = mb_strtolower( $languageCode );
 		$languageNameUtils = MediaWikiServices::getInstance()->getLanguageNameUtils();
 
@@ -359,7 +351,6 @@ class Localizer {
 	 * @return string
 	 */
 	public function getCanonicalizedUrlByNamespace( $index, $url ) {
-
 		$namespace = $this->getNsText( $index );
 
 		if ( strpos( $url, 'title=' ) !== false ) {
@@ -391,7 +382,6 @@ class Localizer {
 	 * @return string|false
 	 */
 	public static function getAnnotatedLanguageCodeFrom( &$value ) {
-
 		if ( strpos( $value, '@' ) === false ) {
 			return false;
 		}
@@ -421,7 +411,6 @@ class Localizer {
 	 * @return string
 	 */
 	public function normalizeTitleText( string $text ) : string {
-
 		$text = trim( $text );
 
 		if ( Site::isCapitalLinks() ) {

@@ -21,7 +21,6 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 	private $preferenceExaminer;
 
 	protected function setUp() : void {
-
 		$this->skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +39,6 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PersonalUrls::class,
 			new PersonalUrls( $this->skinTemplate, $this->jobQueue, $this->permissionExaminer, $this->preferenceExaminer )
@@ -48,7 +46,6 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnJobQueueWatchlist() {
-
 		$this->preferenceExaminer->expects( $this->at( 0 ) )
 			->method( 'hasPreferenceOf' )
 			->with( $this->equalTo( 'smw-prefs-general-options-jobqueue-watchlist' ) )

@@ -28,7 +28,6 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RestrictionExaminer::class,
 			new RestrictionExaminer()
@@ -42,7 +41,6 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGrepPropertyFromRestrictionErrorMsg() {
-
 		$msg = '[2,"smw-datavalue-property-create-restriction","Has unknown","foo"]';
 
 		$this->assertInstanceOf(
@@ -52,7 +50,6 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRestrictionForPredefinedProperty() {
-
 		$instance = new RestrictionExaminer();
 
 		$instance->checkRestriction( new DIProperty( '_MDAT' )  );
@@ -63,7 +60,6 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRestrictionForPredefinedPropertyOnQueryContext() {
-
 		$instance = new RestrictionExaminer();
 		$instance->isQueryContext( true );
 
@@ -75,7 +71,6 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRestrictionForUserPropertyOnFalseCreateProtectionRight() {
-
 		$instance = new RestrictionExaminer();
 
 		$instance->setCreateProtectionRight( false );
@@ -89,7 +84,6 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRestrictionForUserPropertyOnCreateProtectionRight() {
-
 		$instance = new RestrictionExaminer();
 
 		$instance->setCreateProtectionRight( 'foo' );
@@ -103,7 +97,6 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRestrictionForUserPropertyOnCreateProtectionRightWithAllowedUser() {
-
 		$right = 'bar';
 
 		$this->user->expects( $this->once() )
@@ -124,7 +117,6 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeclarativePropertyOnMainNamespace() {
-
 		$instance = new RestrictionExaminer();
 
 		$instance->checkRestriction(
@@ -138,7 +130,6 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeclarativePropertyOnPropertyNamespace() {
-
 		$instance = new RestrictionExaminer();
 
 		$instance->checkRestriction(

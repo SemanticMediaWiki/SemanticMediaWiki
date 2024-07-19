@@ -23,7 +23,6 @@ class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDefaultStore() {
-
 		$instance = StoreFactory::getStore();
 
 		$this->assertInstanceOf(
@@ -45,7 +44,6 @@ class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDifferentStoreIdInstanceInvocation() {
-
 		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMWSQLStore3' ) );
 		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMWSparqlStore' ) );
 

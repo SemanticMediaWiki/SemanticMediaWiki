@@ -17,7 +17,6 @@ use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CodeStringValueFormatter::class,
 			new CodeStringValueFormatter()
@@ -28,7 +27,6 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stringValueProvider
 	 */
 	public function testFormat( $userValue, $type, $linker, $expected ) {
-
 		$codeStringValue = DataValueFactory::getInstance()->newDataValueByType( '_cod' );
 		$codeStringValue->setUserValue( $userValue );
 
@@ -41,7 +39,6 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function stringValueProvider() {
-
 		$provider[] = [
 			'foo',
 			CodeStringValueFormatter::VALUE,

@@ -56,7 +56,6 @@ class ProcessingErrorMsgHandler {
 	 * @return array
 	 */
 	public static function normalizeAndDecodeMessages( array $messages, $type = null, $language = null ) {
-
 		$normalizedMessages = [];
 
 		if ( $type === null ) {
@@ -111,7 +110,6 @@ class ProcessingErrorMsgHandler {
 	 * @return string
 	 */
 	public static function getMessagesAsString( array $messages, $type = null, $language = null ) {
-
 		$normalizedMessages = self::normalizeAndDecodeMessages( $messages, $type, $language );
 		$msg = [];
 
@@ -134,7 +132,6 @@ class ProcessingErrorMsgHandler {
 	 * @param DIContainer|null $container
 	 */
 	public function addToSemanticData( SemanticData $semanticData, DIContainer $container = null ) {
-
 		if ( $container === null ) {
 			return;
 		}
@@ -154,7 +151,6 @@ class ProcessingErrorMsgHandler {
 	 * @return DIContainer
 	 */
 	public function newErrorContainerFromMsg( $error, DIProperty $property = null ) {
-
 		if ( $property !== null && $property->isInverse() ) {
 			$property = new DIProperty( $property->getKey() );
 		}
@@ -190,7 +186,6 @@ class ProcessingErrorMsgHandler {
 	 * @return DIContainer|null
 	 */
 	public function newErrorContainerFromDataValue( DataValue $dataValue ) {
-
 		if ( $dataValue->getErrors() === [] ) {
 			return null;
 		}
@@ -224,7 +219,6 @@ class ProcessingErrorMsgHandler {
 	}
 
 	private function publishError( $containerSemanticData, $property, $error, $type ) {
-
 		// `_INST` is not a real (visible) property to create a reference from
 		// and link to
 		if ( $property !== null && $property->getKey() !== '_INST' ) {
@@ -248,7 +242,6 @@ class ProcessingErrorMsgHandler {
 	}
 
 	private function newContainerSemanticData( $hash ) {
-
 		if ( $this->subject === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();

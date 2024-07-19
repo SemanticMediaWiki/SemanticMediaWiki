@@ -91,7 +91,6 @@ class TermsLookup implements ITermsLookup {
 	 * @throws RuntimeException
 	 */
 	public function lookup( $type, Parameters $parameters ) {
-
 		if ( $type === 'concept' ) {
 			return $this->concept_index_lookup( $parameters );
 		}
@@ -119,7 +118,6 @@ class TermsLookup implements ITermsLookup {
 	 * @return array
 	 */
 	public function concept_index_lookup( Parameters $parameters ) {
-
 		$params = $parameters->get( 'params' );
 		$query = $params instanceof Condition ? $params->toArray() : $params;
 
@@ -162,7 +160,6 @@ class TermsLookup implements ITermsLookup {
 	 * @return array
 	 */
 	public function chain_index_lookup( Parameters $parameters ) {
-
 		$id = $parameters->get( 'id' );
 
 		$query = $this->fieldMapper->bool( 'must', $parameters->get( 'params' ) );
@@ -194,7 +191,6 @@ class TermsLookup implements ITermsLookup {
 	 * @return array
 	 */
 	public function predef_index_lookup( Parameters $parameters ) {
-
 		$id = $parameters->get( 'id' );
 		$params = $parameters->get( 'params' );
 
@@ -228,7 +224,6 @@ class TermsLookup implements ITermsLookup {
 	 * @return array
 	 */
 	public function inverse_index_lookup( Parameters $parameters ) {
-
 		$id = $parameters->get( 'id' );
 		$params = $parameters->get( 'params' );
 
@@ -275,7 +270,6 @@ class TermsLookup implements ITermsLookup {
 	 * @return array
 	 */
 	public function terms_filter( $field, $params ) {
-
 		if ( $params === [] ) {
 			// Fail with a non existing condition to avoid a " ...
 			// query malformed, must start with start_object ..."
@@ -302,7 +296,6 @@ class TermsLookup implements ITermsLookup {
 	 * @return array
 	 */
 	public function ids_filter( $params ) {
-
 		if ( $params === [] ) {
 			// Fail with a non existing condition to avoid a " ...
 			// query malformed, must start with start_object ..."
@@ -324,7 +317,6 @@ class TermsLookup implements ITermsLookup {
 	 * @return array
 	 */
 	public function path_filter( $id ) {
-
 		$connection = $this->store->getConnection( 'elastic' );
 
 		$params = [
@@ -337,7 +329,6 @@ class TermsLookup implements ITermsLookup {
 	}
 
 	private function query_result( Parameters $parameters ) {
-
 		$connection = $this->store->getConnection( 'elastic' );
 		$info = $parameters->get( 'query.info' );
 
@@ -386,7 +377,6 @@ class TermsLookup implements ITermsLookup {
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/6.1/query-dsl-terms-query.html
 	 */
 	private function terms_index( $id, $results ) {
-
 		$connection = $this->store->getConnection( 'elastic' );
 
 		$params = [

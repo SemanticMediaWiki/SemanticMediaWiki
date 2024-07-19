@@ -41,7 +41,6 @@ class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new TableStatisticsTask( $this->store, $this->cache );
 
 		$this->assertInstanceOf(
@@ -51,7 +50,6 @@ class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$tableStatisticsLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\TableStatisticsLookup' )
 			->disableOriginalConstructor()
 			->getMock();

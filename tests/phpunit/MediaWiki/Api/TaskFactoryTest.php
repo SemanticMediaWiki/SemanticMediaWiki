@@ -35,7 +35,6 @@ class TaskFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new TaskFactory();
 
 		$this->assertInstanceOf(
@@ -45,7 +44,6 @@ class TaskFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAllowedTypes() {
-
 		$instance = new TaskFactory();
 
 		$this->assertInternalType(
@@ -58,7 +56,6 @@ class TaskFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeProvider
 	 */
 	public function testNewByType( $type ) {
-
 		$instance = new TaskFactory();
 
 		$this->assertInstanceOf(
@@ -68,7 +65,6 @@ class TaskFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewByTypeOnUnknownTypeThrowsException() {
-
 		$instance = new TaskFactory();
 
 		$this->expectException( '\RuntimeException' );

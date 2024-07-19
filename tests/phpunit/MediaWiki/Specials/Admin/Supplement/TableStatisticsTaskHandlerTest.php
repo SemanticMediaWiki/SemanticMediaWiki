@@ -43,7 +43,6 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableStatisticsTaskHandler::class,
 			new TableStatisticsTaskHandler( $this->outputFormatter, $this->entityCache )
@@ -51,7 +50,6 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new TableStatisticsTaskHandler(
 			$this->outputFormatter,
 			$this->entityCache
@@ -64,7 +62,6 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequest() {
-
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
 

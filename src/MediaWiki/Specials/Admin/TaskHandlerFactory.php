@@ -73,7 +73,6 @@ class TaskHandlerFactory {
 	 * @return TaskHandlerRegistry
 	 */
 	public function newTaskHandlerRegistry( User $user, int $adminFeatures ) {
-
 		$taskHandlerRegistry = new TaskHandlerRegistry(
 			$this->store,
 			$this->outputFormatter
@@ -127,7 +126,6 @@ class TaskHandlerFactory {
 	 * @return SupplementTaskHandler
 	 */
 	public function newSupplementTaskHandler( $adminFeatures = 0, $user = null ) {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$taskHandlers = [
@@ -164,7 +162,6 @@ class TaskHandlerFactory {
 	 * @return OperationalStatisticsListTaskHandler
 	 */
 	public function newOperationalStatisticsListTaskHandler() {
-
 		$entityCache = ApplicationFactory::getInstance()->getEntityCache();
 
 		$taskHandlers = [
@@ -183,7 +180,6 @@ class TaskHandlerFactory {
 	 * @return MaintenanceTaskHandler
 	 */
 	public function newMaintenanceTaskHandler( $adminFeatures = 0 ) {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$taskHandlers = [
@@ -213,7 +209,6 @@ class TaskHandlerFactory {
 	 * @return EntityLookupTaskHandler
 	 */
 	public function newEntityLookupTaskHandler( $user = null ) {
-
 		$entityLookupTaskHandler = new EntityLookupTaskHandler(
 			$this->store,
 			$this->htmlFormRenderer,
@@ -271,7 +266,6 @@ class TaskHandlerFactory {
 	 * @return AlertsTaskHandler
 	 */
 	public function newAlertsTaskHandler( $adminFeatures = 0 ) {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$byNamespaceInvalidEntitiesMaintenanceAlertTaskHandler = new ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler(

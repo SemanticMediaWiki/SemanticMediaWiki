@@ -23,7 +23,6 @@ class CleanUpTables {
 	 * @since 3.1
 	 */
 	public function __construct( $connection ) {
-
 		if (
 			!$connection instanceof \SMW\MediaWiki\Database &&
 			!$connection instanceof \Wikimedia\Rdbms\IDatabase &&
@@ -41,7 +40,6 @@ class CleanUpTables {
 	 * @param string $tablePrefix
 	 */
 	public function dropTables( $tablePrefix ) {
-
 		$tables = $this->connection->listTables();
 
 		// MW SQLite does some prefix meddling hence we require to remove any

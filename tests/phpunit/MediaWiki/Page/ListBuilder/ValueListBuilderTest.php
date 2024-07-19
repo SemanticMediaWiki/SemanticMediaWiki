@@ -45,7 +45,6 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ValueListBuilder::class,
 			new ValueListBuilder( $this->store )
@@ -53,7 +52,6 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateEmptyList() {
-
 		$instance = new ValueListBuilder( $this->store );
 
 		$property = new DIProperty( 'Foo' );
@@ -66,7 +64,6 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateHtml() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->prefetchItemLookup->expects( $this->once() )
@@ -107,7 +104,6 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateHtml_TimeOffset() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->prefetchItemLookup->expects( $this->once() )

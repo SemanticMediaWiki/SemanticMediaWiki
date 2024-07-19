@@ -188,7 +188,6 @@ class StoreTest extends DatabaseTestCase {
 	}
 
 	public function testConnection() {
-
 		$store = StoreFactory::getStore();
 		$store->setConnectionManager( new ConnectionManager() );
 
@@ -199,7 +198,6 @@ class StoreTest extends DatabaseTestCase {
 	}
 
 	public function testGetRedirectTarget() {
-
 		$wikipage = new DIWikiPage( 'Foo', NS_MAIN );
 		$expected = new DIWikiPage( 'Bar', NS_MAIN );
 

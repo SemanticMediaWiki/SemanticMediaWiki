@@ -19,7 +19,6 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testFormatDebugOutputWithoutQuery() {
-
 		$instance = new DebugFormatter();
 
 		$this->assertInternalType(
@@ -29,7 +28,6 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExplainFormat() {
-
 		$instance = new DebugFormatter( 'mysql', DebugFormatter::JSON_FORMAT );
 
 		$this->assertEquals(
@@ -39,7 +37,6 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatDebugOutputWithQuery() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -68,7 +65,6 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sqlExplainFormatProvider
 	 */
 	public function testFormatSQLExplainOutput( $type, $res ) {
-
 		$instance = new DebugFormatter();
 
 		$this->assertInternalType(
@@ -78,7 +74,6 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatSPARQLStatement() {
-
 		$instance = new DebugFormatter();
 
 		$sparql = '';
@@ -95,7 +90,6 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatSQLStatement() {
-
 		$instance = new DebugFormatter();
 
 		$sql = '';
@@ -108,7 +102,6 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function sqlExplainFormatProvider() {
-
 		$row = [
 			'id' => '',
 			'select_type' => '',

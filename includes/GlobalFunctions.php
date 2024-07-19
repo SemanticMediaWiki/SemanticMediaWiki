@@ -88,7 +88,6 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
  * @param string $text
  */
 function smwfAbort( $text ) {
-
 	if ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) {
 		$text = strip_tags( $text );
 	}
@@ -108,7 +107,6 @@ function smwfAbort( $text ) {
  * @return string
  */
 function smwfEncodeMessages( array $messages, $type = 'warning', $separator = ' <!--br-->', $escape = true ) {
-
 	$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
 	if ( $messages === [] ) {

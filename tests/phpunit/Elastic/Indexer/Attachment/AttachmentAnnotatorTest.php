@@ -18,14 +18,12 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	private $containerSemanticData;
 
 	protected function setUp() : void {
-
 		$this->containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AttachmentAnnotator::class,
 			new AttachmentAnnotator( $this->containerSemanticData )
@@ -33,7 +31,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetProperty() {
-
 		$instance = new AttachmentAnnotator(
 			$this->containerSemanticData
 		);
@@ -45,7 +42,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContainer() {
-
 		$instance = new AttachmentAnnotator(
 			$this->containerSemanticData
 		);
@@ -57,7 +53,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData() {
-
 		$instance = new AttachmentAnnotator(
 			$this->containerSemanticData
 		);
@@ -72,7 +67,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider documentProvider
 	 */
 	public function testAddAnnotation( $document, $expected ) {
-
 		$this->containerSemanticData->expects( $this->once() )
 			->method( 'addPropertyObjectValue' )
 			->with( $this->equalTo( new \SMW\DIProperty( $expected ) ) );
@@ -89,7 +83,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function documentProvider() {
-
 		yield 'date' => [
 			[ '_source' => [ 'attachment' => [ 'date' => '1362200400' ] ] ],
 			'_CONT_DATE'

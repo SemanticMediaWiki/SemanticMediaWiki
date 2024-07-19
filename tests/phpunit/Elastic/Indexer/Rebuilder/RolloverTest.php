@@ -21,14 +21,12 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 
 	protected function setUp() : void {
-
 		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Rollover::class,
 			new Rollover( $this->connection )
@@ -84,7 +82,6 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate_OnNoConnectionThrowsException() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
 			->will( $this->returnValue( false ) );
@@ -98,7 +95,6 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete_OnNoConnectionThrowsException() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
 			->will( $this->returnValue( false ) );

@@ -30,7 +30,6 @@ class UpdateQueryDependenciesTest extends DatabaseTestCase {
 	}
 
 	public function testRun() {
-
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
 			'SMW\Maintenance\UpdateQueryDependencies'
 		);

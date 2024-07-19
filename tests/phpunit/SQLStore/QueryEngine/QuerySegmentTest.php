@@ -16,7 +16,6 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
 class QuerySegmentTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\QuerySegment',
 			new QuerySegment()
@@ -24,7 +23,6 @@ class QuerySegmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInitialStateAfterReset() {
-
 		$instance = new QuerySegment();
 		$instance->reset();
 

@@ -49,7 +49,6 @@ class ValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ValueFilter::class,
 			new ValueFilter( $this->templateEngine, $this->valueFilterFactory, $this->schemaFinder, [] )
@@ -57,7 +56,6 @@ class ValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate_NoFilter() {
-
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
 			->will( $this->returnValue( '' ) );
@@ -86,7 +84,6 @@ class ValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate_OneFilter_ListFilter() {
-
 		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -127,7 +124,6 @@ class ValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate_NoDefaultFilterThrowsException() {
-
 		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
 			->disableOriginalConstructor()
 			->getMock();

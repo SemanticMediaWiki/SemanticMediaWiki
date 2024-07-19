@@ -144,7 +144,6 @@ class ChangeDiff {
 	 * @return []
 	 */
 	public function getPropertyList( $op = false ) {
-
 		if ( $op === true || $op === 'flip' ) {
 			$list = [];
 
@@ -210,7 +209,6 @@ class ChangeDiff {
 	 * @return string
 	 */
 	public function toJson( $prettify = false ) {
-
 		$changes = [];
 
 		foreach ( $this->tableChangeOps as $tableChangeOp ) {
@@ -246,7 +244,6 @@ class ChangeDiff {
 	 * @param Cache $cache
 	 */
 	public function save( Cache $cache ) {
-
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			$this->subject->getHash()
@@ -263,7 +260,6 @@ class ChangeDiff {
 	 * @param DIWikiPage $subject
 	 */
 	public static function fetch( Cache $cache, DIWikiPage $subject ) {
-
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			$subject->getHash()

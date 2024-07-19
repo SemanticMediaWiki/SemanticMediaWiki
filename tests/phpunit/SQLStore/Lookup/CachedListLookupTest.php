@@ -16,7 +16,6 @@ use SMW\SQLStore\Lookup\CachedListLookup;
 class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,7 +31,6 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListFromCache() {
-
 		$expectedCachedItem = [
 			'time' => 42,
 			'list' => [ 'Foo' ]
@@ -86,7 +84,6 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRetrieveResultListFromInjectedListLookup() {
-
 		$expectedCacheItem = [
 			'time' => 42,
 			'list' => [ 'Foo' ]
@@ -137,7 +134,6 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteCache() {
-
 		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();

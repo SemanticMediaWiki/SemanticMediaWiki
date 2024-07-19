@@ -179,7 +179,6 @@ class StubSemanticData extends SemanticData {
 	 * @return array of DataItem
 	 */
 	public function getPropertyValues( DIProperty $property ) {
-
 		// we never have any data for inverses
 		if ( $property->isInverse() ) {
 			return [];
@@ -201,7 +200,6 @@ class StubSemanticData extends SemanticData {
 	 * @since 2.0
 	 */
 	public function getSubSemanticData() {
-
 		if ( $this->subSemanticDataInit ) {
 			return parent::getSubSemanticData();
 		}
@@ -234,7 +232,6 @@ class StubSemanticData extends SemanticData {
 	 * @since 2.0
 	 */
 	public function hasSubSemanticData( $subobjectName = null ) {
-
 		if ( !$this->subSemanticDataInit ) {
 			$this->getSubSemanticData();
 		}
@@ -248,7 +245,6 @@ class StubSemanticData extends SemanticData {
 	 * @since 2.5
 	 */
 	public function findSubSemanticData( $subobjectName ) {
-
 		if ( !$this->subSemanticDataInit ) {
 			$this->getSubSemanticData();
 		}
@@ -385,7 +381,6 @@ class StubSemanticData extends SemanticData {
 	}
 
 	private function unstubPropertyValues( DIProperty $property ) {
-
 		// Not catching exception here; the
 		$this->unstubProperty( $property->getKey(), $property );
 		$propertyTypeId = $property->findPropertyTypeID();

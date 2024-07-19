@@ -24,7 +24,6 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstructor() {
-
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\ExpDataDeserializer',
 			new ExpDataDeserializer()
@@ -32,7 +31,6 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSerializerObjectThrowsException() {
-
 		$instance = new ExpDataDeserializer();
 
 		$this->expectException( 'OutOfBoundsException' );
@@ -40,7 +38,6 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVersionMismatchThrowsException() {
-
 		$instance = new ExpDataDeserializer();
 
 		$this->expectException( 'OutOfBoundsException' );
@@ -51,7 +48,6 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider expDataProvider
 	 */
 	public function testDeserialize( $seralization, $expected ) {
-
 		$instance = new ExpDataDeserializer();
 
 		$this->assertEquals(
@@ -64,7 +60,6 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider expDataProvider
 	 */
 	public function testDeserializeToCompareHash( $seralization, $expected ) {
-
 		$instance = new ExpDataDeserializer();
 
 		$this->assertEquals(
@@ -74,7 +69,6 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function expDataProvider() {
-
 		$serializier = new ExpDataSerializer();
 
 		#0

@@ -83,7 +83,6 @@ abstract class DescriptionBuilder {
 	 * @param string $error
 	 */
 	public function addError( $error ) {
-
 		if ( is_array( $error ) ) {
 			return $this->errors = array_merge( $this->errors, $error );
 		}

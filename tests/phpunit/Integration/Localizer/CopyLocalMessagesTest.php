@@ -30,7 +30,6 @@ class CopyLocalMessagesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCopyCanonicalMessages() {
-
 		$instance = new CopyLocalMessages(
 			'test.json',
 			SMW_PHPUNIT_DIR . '/Fixtures/Localizer'
@@ -59,7 +58,6 @@ class CopyLocalMessagesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesCopyTranslatedMessages() {
-
 		$instance = new CopyLocalMessages(
 			'test.json',
 			SMW_PHPUNIT_DIR . '/Fixtures/Localizer'

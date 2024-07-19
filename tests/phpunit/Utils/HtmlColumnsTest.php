@@ -27,7 +27,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			HtmlColumns::class,
 			new HtmlColumns()
@@ -35,7 +34,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnknownTypeThrowsException() {
-
 		$instance = new HtmlColumns();
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -47,7 +45,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDefaultColumnUnorderedList() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -72,7 +69,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnUnorderedList() {
-
 		$listContinuesAbbrev = '...';
 		$instance = new HtmlColumns();
 
@@ -106,7 +102,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testThreeColumnUnorderedList() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -134,7 +129,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnOrderedList() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -163,7 +157,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnOrderedListNoHeader() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -193,7 +186,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResponsiveColumnsToBeDeterminedByBrowser() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -222,7 +214,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResponsiveColumnsOnResponsiveColsThreshold() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -251,7 +242,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testItemListWithAttributes() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -289,7 +279,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOListWithAttributes() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(

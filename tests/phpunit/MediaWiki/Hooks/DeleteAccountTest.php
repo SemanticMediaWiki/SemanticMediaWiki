@@ -34,7 +34,6 @@ class DeleteAccountTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DeleteAccount::class,
 			new DeleteAccount( $this->namespaceExaminer, $this->articleDelete )
@@ -42,7 +41,6 @@ class DeleteAccountTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
 			->with( $this->equalTo( NS_USER ) )
@@ -62,7 +60,6 @@ class DeleteAccountTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_User() {
-
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
 			->with( $this->equalTo( NS_USER ) )

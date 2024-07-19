@@ -30,7 +30,6 @@ class RemoveDuplicateEntitiesTest extends DatabaseTestCase {
 	}
 
 	public function testRun() {
-
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
 			'SMW\Maintenance\RemoveDuplicateEntities'
 		);

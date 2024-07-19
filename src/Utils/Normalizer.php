@@ -30,7 +30,6 @@ class Normalizer {
 	 * @return string
 	 */
 	public static function reduceLengthTo( $text, $length = null ) {
-
 		if ( $length === null || mb_strlen( $text ) <= $length ) {
 			return $text;
 		}

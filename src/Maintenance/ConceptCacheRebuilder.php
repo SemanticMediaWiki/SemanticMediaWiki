@@ -74,7 +74,6 @@ class ConceptCacheRebuilder {
 	 * @param array $parameters
 	 */
 	public function setParameters( array $parameters ) {
-
 		$options = [ 'hard', 'update', 'old', 'quiet', 'status', 'verbose' ];
 
 		foreach ( $options as $option ) {
@@ -112,7 +111,6 @@ class ConceptCacheRebuilder {
 	 * @return boolean
 	 */
 	public function rebuild() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -179,7 +177,6 @@ class ConceptCacheRebuilder {
 	}
 
 	private function workOnConcept( Title $title ) {
-
 		$concept = $this->store->getConceptCacheStatus( $title );
 
 		if ( $this->skipConcept( $title, $concept ) ) {
@@ -192,7 +189,6 @@ class ConceptCacheRebuilder {
 	}
 
 	private function skipConcept( $title, $concept = null ) {
-
 		$skip = false;
 
 		if ( $concept === null ) {
@@ -217,7 +213,6 @@ class ConceptCacheRebuilder {
 	}
 
 	private function performAction( Title $title, DIConcept $concept ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( $this->action === 'create' ) {
@@ -261,7 +256,6 @@ class ConceptCacheRebuilder {
 	}
 
 	private function getConcepts() {
-
 		if ( $this->concept !== null ) {
 			return [ $this->createConcept() ];
 		}
@@ -274,7 +268,6 @@ class ConceptCacheRebuilder {
 	}
 
 	private function createMultipleConcepts() {
-
 		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db' ) );
 		$titleLookup->setNamespace( SMW_NS_CONCEPT );
 

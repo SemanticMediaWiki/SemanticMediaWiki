@@ -23,7 +23,6 @@ class Info extends ApiBase {
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
-
 		$params = $this->extractRequestParams();
 		$requestedInfo = $params['info'];
 
@@ -145,7 +144,6 @@ class Info extends ApiBase {
 	}
 
 	private function doMapResultInfoFrom( $map, $requestedInfo, $semanticStats ) {
-
 		$resultInfo = [];
 
 		foreach ( $map as $apiName => $smwName ) {

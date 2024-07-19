@@ -146,7 +146,6 @@ abstract class Serializer {
 	 * serializing other elements.
 	 */
 	public function serializeDeclarations() {
-
 		foreach ( $this->decl_todo as $name => $flag ) {
 			$types = [];
 
@@ -201,7 +200,6 @@ abstract class Serializer {
 	 * @return string
 	 */
 	public function flushContent() : string {
-
 		if ( ( $this->pre_ns_buffer === '' ) && ( $this->post_ns_buffer === '' ) ) {
 			return '';
 		}
@@ -219,7 +217,6 @@ abstract class Serializer {
 	 * Include collected namespace information into the serialization.
 	 */
 	protected function serializeNamespaces() {
-
 		foreach ( $this->extra_namespaces as $nsshort => $nsuri ) {
 			$this->serializeNamespace( $nsshort, $nsuri );
 		}

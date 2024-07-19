@@ -49,7 +49,6 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryProcessorWithDefaultSource() {
-
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -76,7 +75,6 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryProcessorWithValidSource() {
-
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -103,7 +101,6 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryProcessorWithInvalidSourceSwitchesToDefault() {
-
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -130,7 +127,6 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQuerySourceOnCount() {
-
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -157,7 +153,6 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryProcessorWithInvalidSource() {
-
 		$rawParams = [
 			'[[Modification date::+]]',
 			'?Modification date',
@@ -170,7 +165,6 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function makeQueryResultFromRawParameters( $rawParams ) {
-
 		list( $query, $params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,

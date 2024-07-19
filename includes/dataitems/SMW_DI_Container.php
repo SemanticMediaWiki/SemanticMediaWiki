@@ -87,7 +87,6 @@ class SMWDIContainer extends SMWDataItem {
 	 * @return string
 	 */
 	public function getHash() {
-
 		$hash = $this->getValueHash( $this->m_semanticData );
 		sort( $hash );
 
@@ -98,7 +97,6 @@ class SMWDIContainer extends SMWDataItem {
 	}
 
 	private function getValueHash( $semanticData ) {
-
 		$hash = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {

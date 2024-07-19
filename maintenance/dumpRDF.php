@@ -100,7 +100,6 @@ class dumpRDF extends \Maintenance {
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter->reportMessage( $message );
 		}
@@ -114,7 +113,6 @@ class dumpRDF extends \Maintenance {
 	 * @since 2.0
 	 */
 	public function execute() {
-
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
 			exit ( $maintenanceCheck->getMessage() );
 		}
@@ -153,7 +151,6 @@ class dumpRDF extends \Maintenance {
 	}
 
 	private function runExport() {
-
 		$delay = 0;
 		$pages = [];
 		$restrictNamespaceTo = false;

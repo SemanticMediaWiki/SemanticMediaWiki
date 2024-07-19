@@ -29,7 +29,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DataValueServiceFactory::class,
 			new DataValueServiceFactory( $this->containerBuilder )
@@ -37,7 +36,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetServiceFile() {
-
 		$this->assertInternalType(
 			'string',
 			DataValueServiceFactory::SERVICE_FILE
@@ -45,7 +43,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewDataValueByTypeOrClass() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -63,7 +60,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDataValueFactory() {
-
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
 		);
@@ -75,7 +71,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetValueParser() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -92,7 +87,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetValueFormatterOnRegisteredFormatters() {
-
 		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -118,7 +112,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetValueFormatterOnNonRegisteredFormatters() {
-
 		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -144,7 +137,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyRestrictionExaminer() {
-
 		$propertyRestrictionExaminer = $this->getMockBuilder( '\SMW\PropertyRestrictionExaminer' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -162,7 +154,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDescriptionBuilderRegistry() {
-
 		$descriptionBuilderRegistry = $this->getMockBuilder( '\SMW\Query\DescriptionBuilderRegistry' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -180,7 +171,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetUnitConverter() {
-
 		$unitConverter = $this->getMockBuilder( '\SMW\DataValues\Number\UnitConverter' )
 			->disableOriginalConstructor()
 			->getMock();

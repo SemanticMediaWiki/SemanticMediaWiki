@@ -33,7 +33,6 @@ class NumberValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function doAssertWith( $expected, $actual, $message ) {
-
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $expected );
 
 		$expected = (int)$expected;

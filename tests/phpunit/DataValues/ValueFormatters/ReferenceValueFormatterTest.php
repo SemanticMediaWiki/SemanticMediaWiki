@@ -46,7 +46,6 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueFormatters\ReferenceValueFormatter',
 			new ReferenceValueFormatter()
@@ -54,7 +53,6 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsFormatterForValidation() {
-
 		$referenceValue = $this->getMockBuilder( '\SMW\DataValues\ReferenceValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -67,7 +65,6 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToUseCaptionOutput() {
-
 		$referenceValue = new ReferenceValue();
 		$referenceValue->setCaption( 'ABC' );
 
@@ -88,7 +85,6 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stringValueProvider
 	 */
 	public function testFormat( $suserValue, $type, $linker, $expected ) {
-
 		$referenceValue = new ReferenceValue();
 
 		$referenceValue->setFieldProperties( [
@@ -111,7 +107,6 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToFormatOnMissingDataValueThrowsException() {
-
 		$instance = new ReferenceValueFormatter();
 
 		$this->expectException( 'RuntimeException' );
@@ -119,7 +114,6 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function stringValueProvider() {
-
 		$provider[] = [
 			'abc;12;3',
 			ReferenceValueFormatter::VALUE,

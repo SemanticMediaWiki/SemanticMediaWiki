@@ -40,7 +40,6 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProvider extends Constrain
 	 * @see ConstraintErrorEntityExaminerIndicatorProvider::checkConstraintErrors
 	 */
 	protected function checkConstraintErrors( $subject, $options ) {
-
 		if ( $this->isDeferredMode ) {
 			return $this->runCheck( $subject, $options );
 		}

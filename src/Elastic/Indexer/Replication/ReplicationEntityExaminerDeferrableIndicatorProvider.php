@@ -128,7 +128,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 * @return boolean
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
-
 		if ( $this->checkReplication ) {
 			$this->checkReplication( $subject, $options );
 		}
@@ -172,7 +171,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 * @return void
 	 */
 	private function checkReplication( $subject, $options ) {
-
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
@@ -203,7 +201,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 * @return null
 	 */
 	private function runCheck( $subject, $options ) {
-
 		$html = $this->replicationCheck->checkReplication( $subject, $options );
 
 		$this->templateEngine = new TemplateEngine();
@@ -233,7 +230,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	}
 
 	private function wasChecked( $subject ) {
-
 		$connection = $this->store->getConnection( 'elastic' );
 		$wasChecked = false;
 

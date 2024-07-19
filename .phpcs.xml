@@ -25,7 +25,6 @@
 		<exclude name="MediaWiki.Commenting.LicenseComment.InvalidLicenseTag" />
 		<exclude name="MediaWiki.PHPUnit.PHPUnitClassUsage.NotNamespaced" />
 		<exclude name="PSR12.Functions.ReturnTypeDeclaration.SpaceBeforeColon" />
-		<exclude name="Squiz.WhiteSpace.FunctionOpeningBraceSpace.SpacingAfter" />
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.returnValue" />
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.ConstraintEqualTo" />
 		<exclude name="MediaWiki.Classes.UnsortedUseStatements.UnsortedUse" />

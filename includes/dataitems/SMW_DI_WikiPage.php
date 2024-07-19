@@ -124,7 +124,6 @@ class DIWikiPage extends SMWDataItem {
 	 * @return boolean
 	 */
 	public function isSubEntityOf( string $prefix ) : bool {
-
 		if (
 			$this->m_dbkey === '' ||
 			$this->m_subobjectname ===  '' ||
@@ -171,7 +170,6 @@ class DIWikiPage extends SMWDataItem {
 	 * "new SMW\DIProperty( '_SKEY' )".
 	 */
 	public function getSortKey() {
-
 		if ( $this->sortkey === null || $this->sortkey === '' ) {
 			$this->sortkey = str_replace( '_', ' ', $this->m_dbkey );
 		}
@@ -207,7 +205,6 @@ class DIWikiPage extends SMWDataItem {
 	 * @return string
 	 */
 	public function getPageLanguage() {
-
 		if ( $this->pageLanguage === null ) {
 			$this->pageLanguage = false;
 

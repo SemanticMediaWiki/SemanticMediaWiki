@@ -19,7 +19,6 @@ class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider obfuscateProvider
 	 */
 	public function testRoundTripLinkObfuscation( $text ) {
-
 		$newText = LinksEncoder::encodeLinks( $text );
 
 		$this->assertEquals(
@@ -32,7 +31,6 @@ class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider obfuscateProvider
 	 */
 	public function testfindAndEncodeLinks( $text, $expected ) {
-
 		$inTextAnnotationParser = $this->getMockBuilder( 'SMW\Parser\InTextAnnotationParser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,7 +45,6 @@ class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stripTextWithAnnotationProvider
 	 */
 	public function testStrip( $text, $expectedRemoval, $expectedObscuration ) {
-
 		$this->assertEquals(
 			$expectedRemoval,
 			LinksEncoder::removeAnnotation( $text )
@@ -60,7 +57,6 @@ class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function stripTextWithAnnotationProvider() {
-
 		$provider = [];
 
 		$provider[] = [
@@ -122,7 +118,6 @@ class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function obfuscateProvider() {
-
 		$provider = [];
 
 		$provider[] = [

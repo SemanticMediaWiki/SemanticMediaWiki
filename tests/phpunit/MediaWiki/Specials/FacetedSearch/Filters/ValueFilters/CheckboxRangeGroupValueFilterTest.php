@@ -44,7 +44,6 @@ class CheckboxRangeGroupValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CheckboxRangeGroupValueFilter::class,
 			new CheckboxRangeGroupValueFilter( $this->templateEngine, $this->compartmentIterator, [] )
@@ -52,7 +51,6 @@ class CheckboxRangeGroupValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate_NoFilter() {
-
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
 			->will( $this->returnValue( '' ) );

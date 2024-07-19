@@ -21,7 +21,6 @@ class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testHandle() {
-
 		$instance = new DocumentationParserFunction();
 
 		$parser = $this->getMockBuilder( '\Parser' )

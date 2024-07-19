@@ -25,7 +25,6 @@ class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFieldset() {
-
 		$parameters = [];
 
 		$this->stringValidator->assertThatStringContains(
@@ -41,7 +40,6 @@ class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testCreateParametersForm( $format, $parameters, $expected ) {
-
 		$parameters['format'] = $format;
 
 		$this->stringValidator->assertThatStringContains(
@@ -51,7 +49,6 @@ class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		$provider[] = [
 			'',
 			[],

@@ -51,7 +51,6 @@ class ConnRef {
 	 * @throws RuntimeException
 	 */
 	public function getConnection( $key ) {
-
 		if ( isset( $this->connections[$key] ) ) {
 			return $this->connections[$key];
 		}

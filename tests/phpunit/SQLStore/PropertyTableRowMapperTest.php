@@ -22,7 +22,6 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -34,7 +33,6 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMapToRowsOnEmptyTable() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
 
@@ -64,7 +62,6 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMapToRowsWithFixedProperty() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -137,7 +134,6 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewChangeOp() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();

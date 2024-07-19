@@ -18,14 +18,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 	private $logger;
 
 	protected function setUp() : void {
-
 		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Logger::class,
 			new Logger( $this->logger )
@@ -36,7 +34,6 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider logProvider
 	 */
 	public function testLog( $role, $message, $context ) {
-
 		$this->logger->expects( $this->once() )
 			->method( 'log' );
 
@@ -45,7 +42,6 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function logProvider() {
-
 		yield [
 			Logger::ROLE_DEVELOPER,
 			'Foo',

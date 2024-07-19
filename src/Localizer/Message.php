@@ -80,7 +80,6 @@ class Message {
 	 * @return FixedInMemoryLruCache
 	 */
 	public static function getCache() {
-
 		if ( self::$messageCache === null ) {
 			self::$messageCache = InMemoryPoolCache::getInstance()->getPoolCacheById( self::POOLCACHE_ID, 1000 );
 		}
@@ -103,7 +102,6 @@ class Message {
 	 * @return string
 	 */
 	public static function encode( $message, $type = null ) {
-
 		if ( is_string( $message ) && json_decode( $message ) && json_last_error() === JSON_ERROR_NONE ) {
 			return $message;
 		}
@@ -166,7 +164,6 @@ class Message {
 	 * @return string|boolean
 	 */
 	public static function decode( $message, $type = null, $language = null ) {
-
 		$message = json_decode( $message );
 		$asType = null;
 
@@ -202,7 +199,6 @@ class Message {
 	 * @return string
 	 */
 	public static function get( $parameters, $type = null, $language = null ) {
-
 		$handler = null;
 		$parameters = (array)$parameters;
 
@@ -248,7 +244,6 @@ class Message {
 	 * @return string
 	 */
 	public static function getHash( $parameters, $type = null, $language = null ) {
-
 		if ( $language instanceof Language ) {
 			$language = $language->getCode();
 		}

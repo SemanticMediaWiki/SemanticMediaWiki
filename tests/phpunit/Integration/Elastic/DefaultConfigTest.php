@@ -22,7 +22,6 @@ class DefaultConfigTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJSONFileValidity() {
-
 		$jsonParseException = new JSONParseException(
 			$this->contents
 		);
@@ -39,7 +38,6 @@ class DefaultConfigTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider defaultSettingsProvider
 	 */
 	public function testComparePHP_JSONConfigKeys( $key, $k, $expected ) {
-
 		$contents = json_decode( $this->contents, true );
 
 		$this->assertEquals(
@@ -49,7 +47,6 @@ class DefaultConfigTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function defaultSettingsProvider() {
-
 		$defaultSettings = \SemanticMediaWiki::getDefaultSettings();
 
 		foreach ( $defaultSettings['smwgElasticsearchConfig'] as $key => $configs ) {

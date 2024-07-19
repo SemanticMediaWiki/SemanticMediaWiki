@@ -97,7 +97,6 @@ class JsonTestCaseContentHandler {
 	 * @param integer $defaultNamespace
 	 */
 	public function createPagesFrom( array $pages, $defaultNamespace = NS_MAIN ) {
-
 		foreach ( $pages as $page ) {
 
 			$skipOn = isset( $page['skip-on'] ) ? $page['skip-on'] : [];
@@ -123,7 +122,6 @@ class JsonTestCaseContentHandler {
 	 * @param integer $defaultNamespace
 	 */
 	public function createPage( array $page, $namespace ) {
-
 		$pageContentLanguage = isset( $page['contentlanguage'] ) ? $page['contentlanguage'] : '';
 
 		if ( isset( $page['message-cache'] ) && $page['message-cache'] === 'clear' ) {
@@ -181,7 +179,6 @@ class JsonTestCaseContentHandler {
 	}
 
 	private function doUploadFile( $title, array $contents ) {
-
 		$this->localFileUpload->doUploadCopyFromLocation(
 			$this->testCaseLocation . $contents['file'],
 			$title->getText(),

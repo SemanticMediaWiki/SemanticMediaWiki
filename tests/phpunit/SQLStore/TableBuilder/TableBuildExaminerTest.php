@@ -82,7 +82,6 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableBuildExaminer::class,
 			new TableBuildExaminer( $this->store, $this->tableBuildExaminerFactory )
@@ -90,7 +89,6 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckOnActivitiesPostCreationForID_TABLE() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -148,7 +146,6 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckOnPostDestruction() {
-
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'listTables' ] )
@@ -187,7 +184,6 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDatabaseInfo() {
-
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getType', 'getServerInfo' ] )

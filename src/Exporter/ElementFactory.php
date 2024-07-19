@@ -44,7 +44,6 @@ class ElementFactory {
 	 * @throws RuntimeException
 	 */
 	public function newFromDataItem( DataItem $dataItem ) {
-
 		if ( $this->dataItemMappers === [] ) {
 			$this->initDefaultMappers();
 		}
@@ -59,7 +58,6 @@ class ElementFactory {
 	}
 
 	private function newElement( DataItem $dataItem ) {
-
 		$type = $dataItem->getDIType();
 
 		if ( isset( $this->dataItemMappers[$type] ) && is_callable( $this->dataItemMappers[$type] ) ) {
@@ -81,7 +79,6 @@ class ElementFactory {
 	 * @return ExpLiteral
 	 */
 	public function newFromNumber( DataItem $dataItem ) {
-
 		list( $type, $value ) = XsdValueMapper::map(
 			$dataItem
 		);
@@ -97,7 +94,6 @@ class ElementFactory {
 	 * @return ExpLiteral
 	 */
 	public function newFromBlob( DataItem $dataItem ) {
-
 		list( $type, $value ) = XsdValueMapper::map(
 			$dataItem
 		);
@@ -113,7 +109,6 @@ class ElementFactory {
 	 * @return ExpLiteral
 	 */
 	public function newFromBoolean( DataItem $dataItem ) {
-
 		list( $type, $value ) = XsdValueMapper::map(
 			$dataItem
 		);
@@ -140,7 +135,6 @@ class ElementFactory {
 	 * @return ExpLiteral
 	 */
 	public function newFromTime( DataItem $dataItem ) {
-
 		$dataItem = $dataItem->getForCalendarModel( DITime::CM_GREGORIAN );
 
 		list( $type, $value ) = XsdValueMapper::map(
@@ -195,7 +189,6 @@ class ElementFactory {
 	}
 
 	private function initDefaultMappers() {
-
 		$this->dataItemMappers[DataItem::TYPE_NUMBER] = [ $this, 'newFromNumber' ];
 		$this->dataItemMappers[DataItem::TYPE_BLOB] = [ $this, 'newFromBlob' ];
 		$this->dataItemMappers[DataItem::TYPE_BOOLEAN] = [ $this, 'newFromBoolean' ];

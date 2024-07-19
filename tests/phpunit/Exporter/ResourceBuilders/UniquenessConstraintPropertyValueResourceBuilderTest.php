@@ -39,7 +39,6 @@ class UniquenessConstraintPropertyValueResourceBuilderTest extends \PHPUnit_Fram
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			UniquenessConstraintPropertyValueResourceBuilder::class,
 			new UniquenessConstraintPropertyValueResourceBuilder()
@@ -47,7 +46,6 @@ class UniquenessConstraintPropertyValueResourceBuilderTest extends \PHPUnit_Fram
 	}
 
 	public function testIsNotResourceBuilderForNonUniquenessConstraintProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new UniquenessConstraintPropertyValueResourceBuilder();
@@ -58,7 +56,6 @@ class UniquenessConstraintPropertyValueResourceBuilderTest extends \PHPUnit_Fram
 	}
 
 	public function testAddResourceValueForValidProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_PVUC' );
 
 		$expData = new ExpData(

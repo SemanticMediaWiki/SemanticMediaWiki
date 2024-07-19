@@ -17,7 +17,6 @@ use SMW\Tests\TestEnvironment;
 class ConstraintErrorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConstraintError::class,
 			new ConstraintError( 'Foo' )
@@ -30,7 +29,6 @@ class ConstraintErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new ConstraintError( 'Foo' );
 
 		$this->assertSame(
@@ -40,7 +38,6 @@ class ConstraintErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHash() {
-
 		$instance = new ConstraintError( 'Foo' );
 
 		$this->assertSame(
@@ -50,7 +47,6 @@ class ConstraintErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEncode() {
-
 		$instance = new ConstraintError( 'Foo' );
 
 		$this->assertSame(

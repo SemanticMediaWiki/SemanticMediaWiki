@@ -123,7 +123,6 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 */
 	public function __construct( $calendarmodel, $year, $month = false, $day = false,
 	                             $hour = false, $minute = false, $second = false, $timezone = false ) {
-
 		if ( ( $calendarmodel != self::CM_GREGORIAN ) && ( $calendarmodel != self::CM_JULIAN ) ) {
 			throw new DataItemException( "Unsupported calendar model constant \"$calendarmodel\"." );
 		}
@@ -267,7 +266,6 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @return string
 	 */
 	public function getCalendarModelLiteral() {
-
 		$literal = [
 			self::CM_GREGORIAN => '',
 			self::CM_JULIAN    => 'JL'
@@ -285,7 +283,6 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @throws DataItemException
 	 */
 	public static function newFromDateTime( DateTime $dateTime ) {
-
 		$calendarModel = self::CM_JULIAN;
 
 		$year = $dateTime->format( 'Y' );
@@ -307,7 +304,6 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @return DateTime
 	 */
 	public function asDateTime() {
-
 		$year = str_pad( $this->m_year, 4, '0', STR_PAD_LEFT );
 
 		// Avoid "Failed to parse time string (-900-02-02 00:00:00) at
@@ -422,7 +418,6 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @return double
 	 */
 	public function getJD() {
-
 		if ( $this->julianDay !== null ) {
 			return $this->julianDay;
 		}
@@ -516,7 +511,6 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @return self
 	 */
 	public static function newFromJD( $jdValue, $calendarModel = null, $precision = null, $timezone = false ) {
-
 		$hour = $minute = $second = false;
 		$year = $month = $day = false;
 		$jdValue = JulianDay::format( $jdValue );

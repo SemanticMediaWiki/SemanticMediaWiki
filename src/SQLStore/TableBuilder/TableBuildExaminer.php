@@ -66,7 +66,6 @@ class TableBuildExaminer {
 	 * @return string
 	 */
 	public function getDatabaseInfo() : string {
-
 		$connection = $this->store->getConnection(
 			DB_MASTER
 		);
@@ -80,7 +79,6 @@ class TableBuildExaminer {
 	 * @param array $propertyList
 	 */
 	public function setPredefinedPropertyList( array $propertyList ) {
-
 		$fixedPropertyList = SMWSql3SmwIds::$special_ids;
 		$predefinedPropertyList = [];
 
@@ -103,7 +101,6 @@ class TableBuildExaminer {
 	 * @param TableBuilder $tableBuilder
 	 */
 	public function checkOnPostCreation( ITableBuilder $tableBuilder ) {
-
 		$fixedProperties = $this->tableBuildExaminerFactory->newFixedProperties(
 			$this->store
 		);
@@ -177,7 +174,6 @@ class TableBuildExaminer {
 	 * @param TableBuilder $tableBuilder
 	 */
 	public function checkOnPostDestruction( ITableBuilder $tableBuilder ) {
-
 		$connection = $this->store->getConnection( DB_MASTER );
 
 		// Find orphaned tables that have not been removed but were produced and
@@ -196,7 +192,6 @@ class TableBuildExaminer {
 	}
 
 	private function checkSortField( $log ) {
-
 		$connection = $this->store->getConnection( DB_MASTER );
 
 		$tableName = $connection->tableName( SQLStore::ID_TABLE );

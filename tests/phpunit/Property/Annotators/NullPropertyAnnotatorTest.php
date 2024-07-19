@@ -16,7 +16,6 @@ use SMW\Property\Annotators\NullPropertyAnnotator;
 class NullPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -28,7 +27,6 @@ class NullPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMethodAccess() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();

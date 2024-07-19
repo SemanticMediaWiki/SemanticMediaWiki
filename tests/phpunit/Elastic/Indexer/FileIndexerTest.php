@@ -31,7 +31,6 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 	private Store $store;
 
 	protected function setUp() : void {
-
 		$this->testEnvironment =  new TestEnvironment();
 
 		$this->indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
@@ -72,7 +71,6 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FileIndexer::class,
 			new FileIndexer( $this->store, $this->entityCache, $this->fileHandler, $this->fileAttachment )
@@ -80,7 +78,6 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIndex() {
-
 		$url = 'http://example.org/Foo.txt';
 
 		$file = $this->getMockBuilder( '\File' )

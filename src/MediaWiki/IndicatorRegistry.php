@@ -44,7 +44,6 @@ class IndicatorRegistry {
 	 * @param IndicatorProvider|null $indicatorProvider
 	 */
 	public function addIndicatorProvider( IndicatorProvider $indicatorProvider = null ) {
-
 		if ( $indicatorProvider === null ) {
 			return;
 		}
@@ -62,7 +61,6 @@ class IndicatorRegistry {
 	 * @return boolean
 	 */
 	public function hasIndicator( Title $title, PermissionExaminer $permissionExaminer, array $options ) {
-
 		$subject = DIWikiPage::newFromTitle(
 			$title
 		);

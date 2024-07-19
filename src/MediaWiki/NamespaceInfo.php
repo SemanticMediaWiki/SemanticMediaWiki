@@ -34,7 +34,6 @@ class NamespaceInfo {
 	 * @return string
 	 */
 	public function getCanonicalName( $index ) {
-
 		if ( $this->nsInfo === null ) {
 			return MWNamespace::getCanonicalName( $index );
 		}
@@ -48,7 +47,6 @@ class NamespaceInfo {
 	 * @return []
 	 */
 	public function getValidNamespaces() {
-
 		if ( $this->nsInfo === null ) {
 			return MWNamespace::getValidNamespaces();
 		}
@@ -64,7 +62,6 @@ class NamespaceInfo {
 	 * @return int
 	 */
 	public function getSubject( $index ) {
-
 		if ( $this->nsInfo === null ) {
 			return MWNamespace::getSubject( $index );
 		}

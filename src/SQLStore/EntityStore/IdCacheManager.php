@@ -71,7 +71,6 @@ class IdCacheManager {
 	 * @return boolean
 	 */
 	public function get( $key ) {
-
 		if ( !isset( $this->caches[$key] ) ) {
 			throw new RuntimeException( "$key is unknown" );
 		}
@@ -87,7 +86,6 @@ class IdCacheManager {
 	 * @return boolean
 	 */
 	public function hasCache( $hash ) {
-
 		if ( !is_string( $hash ) ) {
 			return false;
 		}
@@ -106,7 +104,6 @@ class IdCacheManager {
 	 * @param string $sortkey
 	 */
 	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
-
 		if ( is_array( $title ) ) {
 			throw new RuntimeException( "Expected a string instead an array was detected!" );
 		}
@@ -143,7 +140,6 @@ class IdCacheManager {
 	 * @param string $subobject
 	 */
 	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
-
 		$hash = $this->computeSha1(
 			[ $title, (int)$namespace, $interwiki, $subobject ]
 		);
@@ -162,7 +158,6 @@ class IdCacheManager {
 	 * @param string $id
 	 */
 	public function deleteCacheById( $id ) {
-
 		$dataItem = $this->caches['entity.lookup']->fetch( $id );
 
 		if ( !$dataItem instanceof DIWikiPage ) {
@@ -193,7 +188,6 @@ class IdCacheManager {
 	 * @return integer|boolean
 	 */
 	public function getId( $args ) {
-
 		if ( $args instanceof DIWikiPage ) {
 			$args = [
 				$args->getDBKey(),
@@ -229,7 +223,6 @@ class IdCacheManager {
 	 * @return string|boolean
 	 */
 	public function getSort( $args ) {
-
 		if ( is_array( $args ) ) {
 			$hash = $this->computeSha1( $args );
 		} else {

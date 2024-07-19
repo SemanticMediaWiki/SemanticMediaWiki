@@ -39,7 +39,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$callback = function( $type ) use( $database ) {
-
 			if ( $type === 'mw.db' ) {
 				return $connection;
 			};
@@ -66,7 +65,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			QueryEngine::class,
 			new QueryEngine( $this->store, $this->conditionBuilder )
@@ -74,7 +72,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testgetQueryResult_MODE_NONE() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -105,7 +102,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testgetQueryResult_MODE_INSTANCES() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$subject->setId( 42 );
 

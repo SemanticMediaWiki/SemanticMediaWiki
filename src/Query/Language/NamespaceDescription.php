@@ -49,7 +49,6 @@ class NamespaceDescription extends Description {
 	}
 
 	public function getQueryString( $asValue = false ) {
-
 		$localizedNamespaceText = Localizer::getInstance()->getNsText( $this->namespace );
 
 		$prefix = $this->namespace == NS_CATEGORY ? ':' : '';

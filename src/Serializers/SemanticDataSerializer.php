@@ -20,7 +20,6 @@ class SemanticDataSerializer implements Serializer {
 	 * @since  1.9
 	 */
 	public function serialize( $semanticData ) {
-
 		if ( !$semanticData instanceof SemanticData ) {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
@@ -29,7 +28,6 @@ class SemanticDataSerializer implements Serializer {
 	}
 
 	private function doSerialize( SemanticData $semanticData ) {
-
 		$data = [
 			'subject' => $semanticData->getSubject()->getSerialization(),
 			'data'    => $this->doSerializeProperty( $semanticData )
@@ -52,7 +50,6 @@ class SemanticDataSerializer implements Serializer {
 	 * @return array
 	 */
 	private function doSerializeProperty( $semanticData ) {
-
 		$properties = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -76,7 +73,6 @@ class SemanticDataSerializer implements Serializer {
 	 * @return array
 	 */
 	private function doSerializeDataItem( $semanticData, $property ) {
-
 		$dataItems = [];
 
 		foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
@@ -95,7 +91,6 @@ class SemanticDataSerializer implements Serializer {
 	 * @return array
 	 */
 	protected function doSerializeSubSemanticData( $subSemanticData ) {
-
 		$subobjects = [];
 
 		foreach ( $subSemanticData as $semanticData ) {

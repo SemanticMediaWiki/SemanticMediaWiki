@@ -19,7 +19,6 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dotProvider
 	 */
 	public function testDotGet( $options, $key, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			DotArray::get( $options, $key )
@@ -27,7 +26,6 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dotProvider() {
-
 		$options = [
 			'Foo' => [
 				'Bar' => [ 'Foobar' => 42 ],

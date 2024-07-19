@@ -28,7 +28,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SomeValueDescriptionBuilder::class,
 			new SomeValueDescriptionBuilder()
@@ -36,7 +35,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsBuilderForDataValue() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -52,7 +50,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $decription ) {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
@@ -88,7 +85,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider likeNotLikeProvider
 	 */
 	public function testnNewDescriptionForLikeNotLike( $value ) {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'setUserValue' ] )
@@ -106,7 +102,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidDataValueRetunsThingDescription() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid' ] )
@@ -125,7 +120,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonStringThrowsException() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -137,7 +131,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWikiPageValueOnNonMainNamespace() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
@@ -170,7 +163,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		$provider[] = [
 			'Foo',
 			'\SMW\Query\Language\ValueDescription'
@@ -181,7 +173,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function likeNotLikeProvider() {
-
 		$provider[] = [
 			'~Foo'
 		];

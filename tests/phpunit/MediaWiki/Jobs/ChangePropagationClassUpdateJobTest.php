@@ -37,7 +37,6 @@ class ChangePropagationClassUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -52,7 +51,6 @@ class ChangePropagationClassUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider jobProvider
 	 */
 	public function testRun( $subject, $parameters ) {
-
 		$instance = new ChangePropagationClassUpdateJob(
 			$subject->getTitle(),
 			$parameters
@@ -64,7 +62,6 @@ class ChangePropagationClassUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function jobProvider() {
-
 		$provider[] = [
 			DIWikiPage::newFromText( __METHOD__ ),
 			[]

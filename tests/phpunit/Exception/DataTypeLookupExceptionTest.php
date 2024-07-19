@@ -16,7 +16,6 @@ use SMW\Exception\DataTypeLookupException;
 class DataTypeLookupExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new DataTypeLookupException();
 
 		$this->assertInstanceof(

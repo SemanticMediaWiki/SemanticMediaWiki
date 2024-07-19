@@ -112,7 +112,6 @@ class RedirectStore {
 	 * @return integer
 	 */
 	public function findRedirect( $title, $namespace ) {
-
 		$hash = $this->makeHash(
 			$title,
 			$namespace
@@ -137,7 +136,6 @@ class RedirectStore {
 	 * @param integer $namespace
 	 */
 	public function addRedirect( $id, $title, $namespace ) {
-
 		$this->insert( $id, $title, $namespace );
 
 		$hash = $this->makeHash(
@@ -156,7 +154,6 @@ class RedirectStore {
 	 * @param integer $namespace
 	 */
 	public function updateRedirect( $id, $title, $namespace ) {
-
 		$this->deleteRedirect( $title, $namespace );
 
 		if ( !$this->canCreateUpdateJobs() || $this->equalitySupport->is( SMW_EQ_NONE ) ) {
@@ -238,7 +235,6 @@ class RedirectStore {
 	 * @param integer $namespace
 	 */
 	public function deleteRedirect( $title, $namespace ) {
-
 		$this->delete( $title, $namespace );
 
 		$hash = $this->makeHash(
@@ -250,7 +246,6 @@ class RedirectStore {
 	}
 
 	private function select( $title, $namespace ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -267,7 +262,6 @@ class RedirectStore {
 	}
 
 	private function insert( $id, $title, $namespace ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -303,7 +297,6 @@ class RedirectStore {
 	}
 
 	private function delete( $title, $namespace ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$connection->delete(
@@ -320,7 +313,6 @@ class RedirectStore {
 	}
 
 	private function findUpdateJobs( $connection, $query, &$jobs ) {
-
 		$res = $connection->select(
 			$query['from'],
 			$query['fields'],

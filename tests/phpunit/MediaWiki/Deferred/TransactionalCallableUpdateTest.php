@@ -40,7 +40,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$callback = function() {
 			return null;
 		};
@@ -57,7 +56,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -82,7 +80,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateOnEmptyCallback() {
-
 		$instance = new TransactionalCallableUpdate(
 			null,
 			$this->connection
@@ -100,7 +97,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateOnLateCallback() {
-
 		$instance = new TransactionalCallableUpdate(
 			null,
 			$this->connection
@@ -132,7 +128,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWaitableUpdate() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -161,7 +156,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateWithDisabledDeferredUpdate() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -186,7 +180,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOrigin() {
-
 		$callback = function() {
 		};
 
@@ -206,7 +199,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilterDuplicateQueueEntryByFingerprint() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -245,7 +237,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateOnTransactionIdle() {
-
 		$callback = function( $callback ) {
 			return call_user_func( $callback );
 		};
@@ -286,7 +277,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommitWithTransactionTicketOnDeferrableUpdate() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -323,7 +313,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommitWithTransactionTicketOnNonDeferrableUpdate() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -360,7 +349,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCancelOnRollback() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();

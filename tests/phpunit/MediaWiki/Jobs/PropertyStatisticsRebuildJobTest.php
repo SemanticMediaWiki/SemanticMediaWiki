@@ -57,7 +57,6 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -72,7 +71,6 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testRunJob( $parameters ) {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new PropertyStatisticsRebuildJob(
@@ -86,7 +84,6 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		$provider[] = [
 			[]
 		];

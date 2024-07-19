@@ -63,7 +63,6 @@ class runLocalMessageCopy extends \Maintenance {
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter->reportMessage( $message );
 		}
@@ -75,7 +74,6 @@ class runLocalMessageCopy extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
 			exit ( $maintenanceCheck->getMessage() );
 		}
@@ -139,7 +137,6 @@ class runLocalMessageCopy extends \Maintenance {
 	}
 
 	private function copyCanonicalMessages() {
-
 		$this->reportMessage(
 			$cliMsgFormatter->firstCol( "... copy `$file` messages to canonical `en.json` ...", 3 )
 		);
@@ -156,7 +153,6 @@ class runLocalMessageCopy extends \Maintenance {
 	}
 
 	private function copyTranslatedMessages() {
-
 		$this->reportMessage(
 			$cliMsgFormatter->firstCol( "... copy i18n messages to the `$file`", 3 )
 		);

@@ -33,7 +33,6 @@ class SchemaPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,7 +49,6 @@ class SchemaPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotation() {
-
 		$def = [
 			SchemaDefinition::SCHEMA_TYPE => 'bar',
 			SchemaDefinition::SCHEMA_DESCRIPTION => '...',

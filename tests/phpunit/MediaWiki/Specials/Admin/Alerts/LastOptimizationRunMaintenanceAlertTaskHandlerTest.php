@@ -29,7 +29,6 @@ class LastOptimizationRunMaintenanceAlertTaskHandlerTest extends \PHPUnit_Framew
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			LastOptimizationRunMaintenanceAlertTaskHandler::class,
 			new LastOptimizationRunMaintenanceAlertTaskHandler( $this->setupFile )
@@ -37,7 +36,6 @@ class LastOptimizationRunMaintenanceAlertTaskHandlerTest extends \PHPUnit_Framew
 	}
 
 	public function testGetHtml() {
-
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->equalTo( 'last_optimization_run' ) )

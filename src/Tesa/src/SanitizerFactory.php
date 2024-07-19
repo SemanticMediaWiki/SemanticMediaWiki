@@ -46,7 +46,6 @@ class SanitizerFactory {
 	 * @return StopwordAnalyzer
 	 */
 	public function newStopwordAnalyzerByLanguage( $languageCode = null ) {
-
 		if ( $languageCode === null ) {
 			return $this->newNullStopwordAnalyzer();
 		}
@@ -95,7 +94,6 @@ class SanitizerFactory {
 	 * @return Synonymizer
 	 */
 	public function newSynonymizerByLanguage( $languageCode = null ) {
-
 		if ( $languageCode === null ) {
 			return $this->newNullSynonymizer();
 		}
@@ -145,7 +143,6 @@ class SanitizerFactory {
 	 * @return Tokenizer
 	 */
 	public function newPreferredTokenizerByLanguage( $text, $languageCode = null ) {
-
 		$tokenizer = $this->newIcuWordBoundaryTokenizer();
 
 		if ( !$tokenizer->isAvailable() && CharacterExaminer::contains( CharacterExaminer::CJK_UNIFIED, $text ) ) {
@@ -171,7 +168,6 @@ class SanitizerFactory {
 	 * @return Tokenizer
 	 */
 	public function newCJKMatchableTokenizer( $text ) {
-
 		$tokenizer = null;
 
 		if ( CharacterExaminer::contains( CharacterExaminer::HIRAGANA_KATAKANA, $text ) ) {

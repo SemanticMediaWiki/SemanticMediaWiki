@@ -76,7 +76,6 @@ class JobQueueRunner {
 	 * @since 1.9.2
 	 */
 	public function run() {
-
 		$conds = '';
 		$connection = $this->connectionProvider->getConnection();
 
@@ -107,7 +106,6 @@ class JobQueueRunner {
 	 * @since  2.0
 	 */
 	public function deleteAllJobs() {
-
 		$conditions = '*';
 		$connection = $this->connectionProvider->getConnection();
 
@@ -149,7 +147,6 @@ class JobQueueRunner {
 	 * @see https://gerrit.wikimedia.org/r/#/c/162009/
 	 */
 	public function pop_type( $type ) {
-
 		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
 			// MW 1.37+
 			return MediaWikiServices::getInstance()->getJobQueueGroup()->get( $type )->pop();

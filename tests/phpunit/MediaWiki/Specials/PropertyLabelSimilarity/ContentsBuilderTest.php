@@ -43,7 +43,6 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ContentsBuilder::class,
 			new ContentsBuilder( $this->propertyLabelSimilarityLookup, $this->htmlFormRenderer )
@@ -51,7 +50,6 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
 			->disableOriginalConstructor()
 			->getMock();

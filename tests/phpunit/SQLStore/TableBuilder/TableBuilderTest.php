@@ -19,7 +19,6 @@ class TableBuilderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstructForMySQL() {
-
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -35,7 +34,6 @@ class TableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructForSQLite() {
-
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -51,7 +49,6 @@ class TableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructForPostgres() {
-
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -67,7 +64,6 @@ class TableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructWithInvalidTypeThrowsException() {
-
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

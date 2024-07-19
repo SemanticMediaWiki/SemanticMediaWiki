@@ -38,7 +38,6 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -53,7 +52,6 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider argumentProvider
 	 */
 	public function testParse( $args, $expected ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -89,7 +87,6 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function argumentProvider() {
-
 		$provider[] = [
 			[ 'Has foo=Bar' ],
 			[

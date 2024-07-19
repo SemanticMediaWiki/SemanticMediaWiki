@@ -36,7 +36,6 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -51,7 +50,6 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testRunJob( $parameters ) {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new FulltextSearchTableRebuildJob(
@@ -65,7 +63,6 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		$provider[] = [
 			[]
 		];

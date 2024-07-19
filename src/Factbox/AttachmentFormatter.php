@@ -55,7 +55,6 @@ class AttachmentFormatter {
 	 * @return string
 	 */
 	public function buildHTML( array $attachments = [] ) {
-
 		if ( $attachments === [] ) {
 			return '';
 		}
@@ -132,7 +131,6 @@ class AttachmentFormatter {
 	}
 
 	private function buildRow( $property, $dataItem ) {
-
 		$unknown = Message::get(
 			'smw-factbox-attachments-value-unknown',
 			Message::TEXT,

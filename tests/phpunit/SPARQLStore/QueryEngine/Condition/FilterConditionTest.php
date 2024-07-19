@@ -19,7 +19,6 @@ class FilterConditionTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\SPARQLStore\QueryEngine\Condition\FilterCondition',
 			new FilterCondition( 'condition' )
@@ -27,7 +26,6 @@ class FilterConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommonMethods() {
-
 		$instance = new FilterCondition( 'filter' );
 
 		$this->assertInternalType(

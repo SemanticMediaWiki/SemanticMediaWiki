@@ -39,7 +39,6 @@ class SpecialProcessingErrorListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanExecute() {
-
 		$instance = new SpecialProcessingErrorList();
 
 		$instance->getContext()->setTitle(
@@ -52,7 +51,6 @@ class SpecialProcessingErrorListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLocalAskRedirectUrl() {
-
 		$instance = new SpecialProcessingErrorList();
 
 		$instance->getContext()->setTitle(

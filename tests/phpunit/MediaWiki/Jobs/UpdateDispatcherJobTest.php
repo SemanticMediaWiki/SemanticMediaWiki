@@ -49,7 +49,6 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -61,7 +60,6 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushToJobQueue() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -73,7 +71,6 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChunkedJobWithListOnValidMembers() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -95,7 +92,6 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChunkedJobWithListOnInvalidMembers() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -117,7 +113,6 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobRunOnMainNamespace() {
-
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -144,7 +139,6 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobRunOnPropertyNamespace() {
-
 		$title = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -181,7 +175,6 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobRunOnRestrictedPool() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -218,7 +211,6 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider subjectDataProvider
 	 */
 	public function testRunJobOnMockWithOutParameters( $setup, $expected ) {
-
 		$this->expectedProperty = $setup['property'];
 		$this->expectedSubjects = $setup['subjects'];
 
@@ -268,7 +260,6 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider subjectDataProvider
 	 */
 	public function testRunJobOnMockWithParameters( $setup, $expected ) {
-
 		$semanticData = new SemanticData(
 			DIWikiPage::newFromTitle( $setup['title'] )
 		);
@@ -323,7 +314,6 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function subjectDataProvider() {
-
 		$provider = [];
 
 		$duplicate = DIWikiPage::newFromText( 'Foo' );

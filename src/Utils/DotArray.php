@@ -25,7 +25,6 @@ class DotArray {
 	 * @return mixed
 	 */
 	public static function get( array $array, $key, $default = false ) {
-
 		if ( strpos( $key, '.' ) !== false ) {
 			return self::find( $array, explode( '.', $key ), $default );
 		}

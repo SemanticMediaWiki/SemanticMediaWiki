@@ -40,7 +40,6 @@ class FilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FilterFactory::class,
 			new FilterFactory( $this->templateEngine, $this->treeBuilder, $this->schemaFactory )

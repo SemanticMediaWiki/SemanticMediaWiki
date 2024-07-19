@@ -26,7 +26,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	private TestEnvironment $testEnvironment;
 
 	protected function setUp() : void {
-
 		$this->title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -70,7 +69,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			BeforePageDisplay::class,
 			new BeforePageDisplay()
@@ -78,7 +76,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInformAboutExtensionAvailability() {
-
 		$this->title->expects( $this->once() )
 			->method( 'isSpecial' )
 			->with( $this->equalTo( 'Version' ) )
@@ -99,7 +96,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIgnoreInformAboutExtensionAvailability() {
-
 		$this->outputPage->expects( $this->never() )
 			->method( 'prependHTML' );
 
@@ -116,7 +112,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testModules() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -139,7 +134,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrependHTML_IncompleteTasks() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -163,7 +157,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmptyPrependHTML_IncompleteTasks_DisallowedSpecialPages() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -200,7 +193,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleDataProvider
 	 */
 	public function testProcess( $setup, $expected ) {
-
 		$expected = $expected['result'] ? $this->atLeastOnce() : $this->never();
 
 		$user = $this->getMockBuilder( '\User' )
@@ -230,7 +222,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleDataProvider() {
-
 		#0 Standard title
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()

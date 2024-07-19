@@ -156,7 +156,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 * @param string|integer $cacheKeyExtension
 	 */
 	public function setCacheKeyExtension( $cacheKeyExtension ) {
-
 		if ( is_array( $cacheKeyExtension ) ) {
 			$cacheKeyExtension = implode( '|', $cacheKeyExtension );
 		}
@@ -225,7 +224,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 * {@inheritDoc}
 	 */
 	public function getQueryResult( Query $query ) {
-
 		if ( !$this->queryEngine instanceof QueryEngine ) {
 			throw new RuntimeException( "Missing a QueryEngine instance." );
 		}
@@ -272,7 +270,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 * @param string $context
 	 */
 	public function invalidateCache( $items, $context = '' ) {
-
 		if ( !$this->blobStore->canUse() ) {
 			return;
 		}
@@ -305,7 +302,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function canUse( $query ) {
-
 		if ( !$this->enabledCache || !$this->blobStore->canUse() ) {
 			return false;
 		}
@@ -314,7 +310,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function newQueryResultFromCache( $queryId, $query, $container ) {
-
 		$results = [];
 		$incrStats = 'hits.Undefined';
 		$itemJournal = null;
@@ -387,7 +382,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function addQueryResultToCache( $queryResult, $queryId, $container, $query ) {
-
 		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
 			$context = 'Undefined';
 		}
@@ -424,7 +418,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function doCacheQueryResult( $queryResult, $queryId, $container, $query ) {
-
 		$results = [];
 
 		// Keep the simple string representation to avoid unnecessary data cruft
@@ -463,7 +456,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function addToLinkedList( $contextPage, $queryId ) {
-
 		// Ensure that without QueryDependencyLinksStore being enabled recorded
 		// subjects related to a query can be discoverable and purged separately
 		$container = $this->blobStore->read(
@@ -480,7 +472,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function getHashFrom( $subject ) {
-
 		if ( $subject instanceof DIWikiPage ) {
 			// In case the we detect a _QUERY subobject, use it directly
 			if ( ( $subobjectName = $subject->getSubobjectName() ) !== '' && strpos( $subobjectName, Query::ID_PREFIX ) !== false ) {
@@ -494,7 +485,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function log( $message, $context = [] ) {
-
 		if ( $this->logger === null ) {
 			return;
 		}
@@ -503,7 +493,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function noCacheExemption( $query ) {
-
 		$id = 'noCache.misc';
 
 		if ( !$this->canUse( $query ) ) {

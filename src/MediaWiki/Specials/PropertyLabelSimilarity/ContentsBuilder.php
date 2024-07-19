@@ -43,7 +43,6 @@ class ContentsBuilder {
 	 * @param RequestOptions $requestOption
 	 */
 	public function getHtml( RequestOptions $requestOptions ) {
-
 		$threshold = 90;
 		$type = '';
 
@@ -85,7 +84,6 @@ class ContentsBuilder {
 	}
 
 	private function getForm( $limit, $offset, $resultCount, $threshold, $type ) {
-
 		$exemptionProperty = $this->propertyLabelSimilarityLookup->getExemptionProperty();
 		$lookupCount = $this->propertyLabelSimilarityLookup->getLookupCount();
 

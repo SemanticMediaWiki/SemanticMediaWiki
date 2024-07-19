@@ -39,7 +39,6 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -63,7 +62,6 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testAddAnnotationForDisplayTitle( $title, $editProtectionRight, array $expected ) {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			$title
 		);
@@ -83,7 +81,6 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddTopIndicatorToFromMatchableRestriction() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -118,7 +115,6 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleProvider() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

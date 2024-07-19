@@ -70,7 +70,6 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 	 * @param array $case
 	 */
 	public function run( array $case ) {
-
 		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
@@ -93,7 +92,6 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 	}
 
 	private function doRunJob( array $case ) {
-
 		$this->jobQueueRunner->setType( $case['job'] );
 		$memoryBefore = memory_get_peak_usage( false );
 

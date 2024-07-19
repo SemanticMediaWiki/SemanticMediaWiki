@@ -38,7 +38,6 @@ class CheckMagicWords {
 	 * @return string|null
 	 */
 	public function getMagicWords( ParserOutput $parserOutput ) {
-
 		$smwMagicWords = $parserOutput->getExtensionData( 'smwmagicwords' );
 		$mws = [];
 

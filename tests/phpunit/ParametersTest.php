@@ -18,7 +18,6 @@ class ParametersTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Parameters::class,
 			new Parameters()
@@ -26,7 +25,6 @@ class ParametersTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddOption() {
-
 		$instance = new Parameters();
 
 		$this->assertFalse(
@@ -42,7 +40,6 @@ class ParametersTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnregisteredKeyThrowsException() {
-
 		$instance = new Parameters();
 
 		$this->expectException( 'InvalidArgumentException' );

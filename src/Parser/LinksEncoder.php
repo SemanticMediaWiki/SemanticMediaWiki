@@ -19,7 +19,6 @@ class LinksEncoder {
 	 * @return text
 	 */
 	public static function findAndEncodeLinks( $text, InTextAnnotationParser $parser ) {
-
 		// #2193
 		// Use &#x005B; instead of &#91; to distinguish it from the MW's Sanitizer
 		// who uses the same decode sequence and avoid issues when removing links
@@ -49,7 +48,6 @@ class LinksEncoder {
 	 * @return text
 	 */
 	public static function removeLinkObfuscation( $text ) {
-
 		$from = [ '&#x005B;', '&#x005D;', '&#124;' ];
 		$to = [ '[', ']', '|' ];
 
@@ -107,7 +105,6 @@ class LinksEncoder {
 	 * @return text
 	 */
 	public static function removeAnnotation( $text ) {
-
 		if ( strpos( $text, '::' ) === false && strpos( $text, ':=' ) === false ) {
 			return $text;
 		}
@@ -120,7 +117,6 @@ class LinksEncoder {
 	}
 
 	private static function doRemoveAnnotation( array $matches ) {
-
 		$caption = false;
 		$value = '';
 
@@ -157,7 +153,6 @@ class LinksEncoder {
 	}
 
 	private static function matchAndReplace( $text, $parser ) {
-
 		/**
 		 * @see http://blog.angeloff.name/post/2012/08/05/php-recursive-patterns/
 		 *
@@ -206,7 +201,6 @@ class LinksEncoder {
 	}
 
 	private static function replace( $match, $parser, $isOffAnnotation = false ) {
-
 		// Remove the Leading and last square bracket to avoid distortion
 		// during the annotation parsing
 		$match = substr( substr( $match, 2 ), 0, -2 );

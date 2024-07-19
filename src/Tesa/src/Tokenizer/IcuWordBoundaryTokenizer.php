@@ -91,7 +91,6 @@ class IcuWordBoundaryTokenizer implements Tokenizer {
 	 * @return array|false
 	 */
 	public function tokenize( $string ) {
-
 		if ( $this->tokenizer !== null ) {
 			$string = implode( " ", $this->tokenizer->tokenize( $string ) );
 		}
@@ -104,7 +103,6 @@ class IcuWordBoundaryTokenizer implements Tokenizer {
 	}
 
 	private function createTokens( $string ) {
-
 		$tokens = array();
 
 		if ( $tokenizer = IntlRuleBasedBreakIterator::createWordInstance( $this->locale ) ) {

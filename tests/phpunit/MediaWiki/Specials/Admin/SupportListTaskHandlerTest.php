@@ -43,7 +43,6 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\Admin\SupportListTaskHandler',
 			new SupportListTaskHandler( $this->htmlFormRenderer )
@@ -51,7 +50,6 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$methods = [
 			'setName',
 			'setMethod',

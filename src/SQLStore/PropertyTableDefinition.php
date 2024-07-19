@@ -164,7 +164,6 @@ class PropertyTableDefinition {
 	 * @throws OutOfBoundsException
 	 */
 	public function getFixedProperty() {
-
 		if ( $this->fixedProperty === false ) {
 			throw new OutOfBoundsException( 'Attempt to get the fixed property from a table that does not hold one' );
 		}

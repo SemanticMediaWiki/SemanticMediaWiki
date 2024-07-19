@@ -22,7 +22,6 @@ use SMWQuery as Query;
 class NullQueryResultTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNullQueryResult() {
-
 		$term = '[[Some_string_to_query]]';
 
 		$description = new ValueDescription(

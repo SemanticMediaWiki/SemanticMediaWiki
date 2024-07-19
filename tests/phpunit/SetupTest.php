@@ -71,7 +71,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Setup::class,
 			new Setup()
@@ -79,7 +78,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterExtensionCheck() {
-
 		$vars = [
 			'smwgIgnoreExtensionRegistrationCheck' => true
 		];
@@ -104,7 +102,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResourceModules() {
-
 		$config = $this->defaultConfig;
 
 		$instance = new Setup();
@@ -121,7 +118,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHookRunOnSetupAfterInitializationComplete() {
-
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onSetupAfterInitializationComplete' );
 
@@ -144,7 +140,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterDefaultRightsUserGroupPermissions() {
-
 		$config = $this->defaultConfig;
 
 		$instance = new Setup();
@@ -173,7 +168,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoResetOfAlreadyRegisteredGroupPermissions() {
-
 		// Avoid re-setting permissions, refs #1137
 		$localConfig['wgGroupPermissions']['sysop']['smw-admin'] = false;
 		$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin'] = false;
@@ -202,7 +196,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterParamDefinitions() {
-
 		$config = $this->defaultConfig;
 
 		$config['wgParamDefinitions']['smwformat'] = '';
@@ -225,7 +218,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterFooterIcon() {
-
 		$config = $this->defaultConfig;
 
 		$config['wgFooterIcons']['poweredby'] = [];
@@ -247,7 +239,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function jobClassesDataProvider() {
-
 		$jobs = [
 
 			'smw.update',
@@ -282,7 +273,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertArrayEntryExists( $target, $entry, $config, $type = 'class' ) {
-
 		$config = $config + $this->defaultConfig;
 
 		$this->assertEmpty(
@@ -314,7 +304,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	private function buildDataProvider( $id, $definitions, $default ) {
-
 		$provider = [];
 
 		foreach ( $definitions as $definition ) {

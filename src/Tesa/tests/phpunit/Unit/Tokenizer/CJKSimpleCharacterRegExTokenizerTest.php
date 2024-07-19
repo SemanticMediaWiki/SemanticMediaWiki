@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class CJKSimpleCharacterRegExTokenizerTest extends TestCase {
 
 	public function testUnknownOption() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\CJKSimpleCharacterRegExTokenizer',
 			new CJKSimpleCharacterRegExTokenizer()
@@ -28,7 +27,6 @@ class CJKSimpleCharacterRegExTokenizerTest extends TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testTokenize( $string, $expected ) {
-
 		$instance = new CJKSimpleCharacterRegExTokenizer();
 
 		$this->assertEquals(
@@ -42,7 +40,6 @@ class CJKSimpleCharacterRegExTokenizerTest extends TestCase {
 	}
 
 	public function testTokenizeWithEnabledExemptionList() {
-
 		$string = '《红色中华》报改名为《新中华报》的同时，在';
 
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
@@ -71,7 +68,6 @@ class CJKSimpleCharacterRegExTokenizerTest extends TestCase {
 	}
 
 	public function stringProvider() {
-
 		$provider[] = array(
 			'《红色中华》报改名为《新中华报》的同时，在延安更名为新华通讯社。但是当时，新华社和《新中华报》还是同一个机构。',
 			array( '红色中华', '报改名', '新中华报', '同', '延安更名', '新华通讯社', '新华社', '新中华报', '同一', '机构' )

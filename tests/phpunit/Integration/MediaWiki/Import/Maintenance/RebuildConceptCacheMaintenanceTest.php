@@ -50,7 +50,6 @@ class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -58,7 +57,6 @@ class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testRebuildConceptCache() {
-
 		$this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',
@@ -121,7 +119,6 @@ class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 	}
 
 	protected function createConceptPage( $name, $condition ) {
-
 		$this->pageCreator
 			->createPage( Title::newFromText( $name, SMW_NS_CONCEPT ) )
 			->doEdit( "{{#concept: {$condition} }}" );

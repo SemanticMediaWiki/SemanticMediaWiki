@@ -23,7 +23,6 @@ class PropertyTableHashesTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 
 	protected function setUp() : void {
-
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -39,7 +38,6 @@ class PropertyTableHashesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyTableHashes::class,
 			new PropertyTableHashes( $this->connection, $this->idCacheManager )
@@ -47,7 +45,6 @@ class PropertyTableHashesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetPropertyTableHashes() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'save' );
 
@@ -79,7 +76,6 @@ class PropertyTableHashesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyTableHashes() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'save' );
 
@@ -127,7 +123,6 @@ class PropertyTableHashesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetPropertyTableHashesCache() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
@@ -147,7 +142,6 @@ class PropertyTableHashesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetPropertyTableHashesCache_Zero() {
-
 		$this->idCacheManager->expects( $this->never() )
 			->method( 'get' )
 			->will( $this->returnValue( $this->cache ) );
@@ -161,7 +155,6 @@ class PropertyTableHashesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testClearPropertyTableHashCacheById() {
-
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'get' )
 			->will( $this->returnValue( $this->cache ) );

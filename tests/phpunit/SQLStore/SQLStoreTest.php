@@ -45,7 +45,6 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Store',
 			$this->store
@@ -61,7 +60,6 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	 * @depends testCanConstruct
 	 */
 	public function testGetPropertyTables() {
-
 		$defaultPropertyTableCount = count( $this->store->getPropertyTables() );
 
 		$this->assertInternalType(
@@ -81,7 +79,6 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	 * @depends testGetPropertyTables
 	 */
 	public function testPropertyTablesValidCustomizableProperty() {
-
 		$defaultPropertyTableCount = count( $this->store->getPropertyTables() );
 
 		$settings = [
@@ -105,7 +102,6 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	 * @depends testGetPropertyTables
 	 */
 	public function testPropertyTablesWithInvalidCustomizableProperty() {
-
 		$defaultPropertyTableCount = count( $this->store->getPropertyTables() );
 
 		$settings = [
@@ -129,7 +125,6 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	 * @depends testGetPropertyTables
 	 */
 	public function testPropertyTablesWithValidCustomizableProperties() {
-
 		$defaultPropertyTableCount = count( $this->store->getPropertyTables() );
 
 		$settings = [
@@ -150,7 +145,6 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetObjectIds() {
-
 		$this->assertInternalType(
 			'object',
 			$this->store->getObjectIds()

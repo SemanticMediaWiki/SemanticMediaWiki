@@ -20,7 +20,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\CacheFactory',
 			new CacheFactory( 'hash' )
@@ -28,7 +27,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMainCacheType() {
-
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertEquals(
@@ -45,7 +43,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCachePrefix() {
-
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInternalType(
@@ -55,7 +52,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPurgeCacheKey() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -83,7 +79,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructCacheOptions() {
-
 		$instance = new CacheFactory( 'hash' );
 
 		$cacheOptions = $instance->newCacheOptions( [
@@ -97,7 +92,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIncompleteCacheOptionsThrowsException() {
-
 		$instance = new CacheFactory( 'hash' );
 
 		$this->expectException( 'RuntimeException' );
@@ -108,7 +102,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructFixedInMemoryCache() {
-
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(
@@ -118,7 +111,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructNullCache() {
-
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(
@@ -128,7 +120,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMediaWikiCompositeCache() {
-
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(
@@ -143,7 +134,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMediaWikiCache() {
-
 		$instance = new CacheFactory();
 
 		$this->assertInstanceOf(
@@ -153,7 +143,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructCacheByType() {
-
 		$instance = new CacheFactory();
 
 		$this->assertInstanceOf(
@@ -168,7 +157,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructBlobStore() {
-
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(

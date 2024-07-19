@@ -26,7 +26,6 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MandatoryPropertiesConstraint::class,
 			new MandatoryPropertiesConstraint()
@@ -34,7 +33,6 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new MandatoryPropertiesConstraint();
 
 		$this->assertEquals(
@@ -44,7 +42,6 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new MandatoryPropertiesConstraint();
 
 		$this->assertFalse(
@@ -53,7 +50,6 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_mandatory_properties() {
-
 		$constraint = [
 			'mandatory_properties' => [ 'Foo' ]
 		];
@@ -93,7 +89,6 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_mandatory_properties_ThrowsException() {
-
 		$constraint = [
 			'mandatory_properties' => true
 		];
@@ -105,7 +100,6 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

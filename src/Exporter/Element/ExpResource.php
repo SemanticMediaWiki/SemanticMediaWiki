@@ -42,7 +42,6 @@ class ExpResource extends ExpElement {
 	 * @throws InvalidArgumentException
 	 */
 	public function __construct( $uri, DataItem $dataItem = null ) {
-
 		if ( !is_string( $uri ) ) {
 			throw new InvalidArgumentException( '$uri needs to be a string' );
 		}
@@ -90,7 +89,6 @@ class ExpResource extends ExpElement {
 	 * @return array
 	 */
 	public function getSerialization() {
-
 		$serialization = [
 			'type' => self::TYPE_RESOURCE,
 			'uri'  => $this->getUri()
@@ -103,7 +101,6 @@ class ExpResource extends ExpElement {
 	 * @see ExpElement::newFromSerialization
 	 */
 	protected static function deserialize( $serialization ) {
-
 		if ( !isset( $serialization['uri'] ) ) {
 			throw new RuntimeException( "Invalid serialization format" );
 		}

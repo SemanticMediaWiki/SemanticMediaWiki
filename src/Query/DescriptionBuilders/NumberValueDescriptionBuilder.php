@@ -37,7 +37,6 @@ class NumberValueDescriptionBuilder extends DescriptionBuilder {
 	 * @return Description
 	 */
 	public function newDescription( NumberValue $dataValue, $value ) {
-
 		$comparator = SMW_CMP_EQ;
 
 		$this->dataValue = $dataValue;

@@ -55,7 +55,6 @@ class Collator {
 	 * @return Collator
 	 */
 	public static function singleton( $collationName = '' ) {
-
 		$collationName = $collationName === '' ? $GLOBALS['smwgEntityCollation'] : $collationName;
 
 		if ( !isset( self::$instance[$collationName] ) ) {
@@ -89,7 +88,6 @@ class Collator {
 	 * @return string
 	 */
 	public function armor( $text, $source = '' ) {
-
 		if ( strpos( $this->collationName, 'uca' ) === false ) {
 			return $text;
 		}
@@ -118,7 +116,6 @@ class Collator {
 	 * @return string
 	 */
 	public function getFirstLetter( $text ) {
-
 		// Add check otherwise the Collation instance returns with a
 		// "Uninitialized string offset: 0"
 		if ( $text === '' ) {

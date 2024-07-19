@@ -19,7 +19,6 @@ class QuerySegmentValidator extends \PHPUnit_Framework_Assert {
 	 * @param  QuerySegment[] $querySegment
 	 */
 	public function assertThatContainerContains( $expected, array $querySegment ) {
-
 		$expected = is_array( $expected ) ? $expected : [ $expected ];
 
 		$this->assertEquals(
@@ -57,7 +56,6 @@ class QuerySegmentValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function assertPublicProperty( $expected, QuerySegment $querySegment, $property ) {
-
 		if ( !isset( $expected->{$property} ) ) {
 			return null;
 		}

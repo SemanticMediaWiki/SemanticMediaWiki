@@ -35,7 +35,6 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunNamespaceManagerWithNoConstantsDefined() {
-
 		$this->mwHooksHandler->deregisterListedHooks();
 
 		$default = [
@@ -60,7 +59,6 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanonicalNames() {
-
 		$this->mwHooksHandler->deregisterListedHooks();
 		$applicationFactory = ApplicationFactory::getInstance();
 		$namespaceInfo = $applicationFactory->singleton( 'NamespaceInfo' );

@@ -34,7 +34,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +45,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBuildConditionFor() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -66,7 +64,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider notSupportedDataItemTypeProvider
 	 */
 	public function testCreateFalseConditionForNotSupportedDataItemType( $dataItem ) {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
 			->setMethods( [ 'isSetFlag' ] )
@@ -93,7 +90,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider comparatorProvider
 	 */
 	public function testValueConditionForDifferentComparators( $description, $expectedConditionType, $expectedConditionString ) {
-
 		$resultVariable = 'result';
 
 		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -116,7 +112,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValueConditionOnRediret() {
-
 		$resultVariable = 'result';
 
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
@@ -164,7 +159,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider noCaseDescritionProvider
 	 */
 	public function testValueConditionOnNoCase( $description, $expected ) {
-
 		$engineOptions = new EngineOptions();
 		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_NOCASE );
 
@@ -185,7 +179,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function comparatorProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
@@ -467,7 +460,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function noCaseDescritionProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
@@ -570,7 +562,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function notSupportedDataItemTypeProvider() {
-
 		$dataItem = $this->getMockBuilder( '\SMWDIGeoCoord' )
 			->disableOriginalConstructor()
 			->getMock();

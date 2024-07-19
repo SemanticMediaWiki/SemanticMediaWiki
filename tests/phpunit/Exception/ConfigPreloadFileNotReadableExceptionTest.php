@@ -16,7 +16,6 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
 class ConfigPreloadFileNotReadableExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new ConfigPreloadFileNotReadableException( 'Foo' );
 
 		$this->assertInstanceof(

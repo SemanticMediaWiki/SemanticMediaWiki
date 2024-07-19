@@ -25,7 +25,6 @@ use Title;
 class LinksUpdateEmptyParserOutputDBIntegrationTest extends DatabaseTestCase {
 
 	public function testDoUpdate() {
-
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
 

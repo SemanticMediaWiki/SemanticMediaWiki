@@ -17,7 +17,6 @@ use Title;
 class StripMarkerDecoderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$stripState = $this->getMockBuilder( '\StripState' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -29,7 +28,6 @@ class StripMarkerDecoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsSupported() {
-
 		$stripState = $this->getMockBuilder( '\StripState' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +44,6 @@ class StripMarkerDecoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDecodeWithoutStrip() {
-
 		$stripState = $this->getMockBuilder( '\StripState' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -64,7 +61,6 @@ class StripMarkerDecoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnstripNoWiki() {
-
 		$stripState = $this->getMockBuilder( '\StripState' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -84,7 +80,6 @@ class StripMarkerDecoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnstripGeneral() {
-
 		$stripState = $this->getMockBuilder( '\StripState' )
 			->disableOriginalConstructor()
 			->getMock();

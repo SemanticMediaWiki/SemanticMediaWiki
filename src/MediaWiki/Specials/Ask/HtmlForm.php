@@ -139,7 +139,6 @@ class HtmlForm {
 	 * @return string
 	 */
 	public function getForm( UrlArgs $urlArgs, $queryResult = null, array $queryLog = [] ) {
-
 		$html = $this->buildHTML( $urlArgs, $queryResult, $queryLog );
 
 		if ( $this->isPostSubmit ) {
@@ -160,7 +159,6 @@ class HtmlForm {
 	}
 
 	private function buildHTML( $urlArgs, $queryResult, array $queryLog ) {
-
 		$navigation = '';
 		$queryLink = null;
 		$isFromCache = false;

@@ -85,7 +85,6 @@ abstract class Description {
 	 * @throws FingerprintNotFoundException
 	 */
 	public function getFingerprint() {
-
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
 		}
@@ -181,7 +180,6 @@ abstract class Description {
 	 * changes!
 	 */
 	public function prune( &$maxsize, &$maxDepth, &$log ) {
-
 		if ( ( $maxsize < $this->getSize() ) || ( $maxDepth < $this->getDepth() ) ) {
 			$log[] = $this->getQueryString();
 

@@ -79,7 +79,6 @@ class Options implements JsonUnserializable {
 	 * @throws InvalidArgumentException
 	 */
 	public function get( $key ) {
-
 		if ( $this->has( $key ) ) {
 			return $this->options[$key];
 		}
@@ -150,7 +149,6 @@ class Options implements JsonUnserializable {
 	 * @return array
 	 */
 	public function filter( array $keys ) {
-
 		$options = [];
 
 		foreach ( $keys as $key ) {

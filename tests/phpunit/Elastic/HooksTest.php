@@ -44,7 +44,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Hooks::class,
 			new Hooks( $this->elasticFactory )
@@ -52,7 +51,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHandlers() {
-
 		$instance = new Hooks(
 			$this->elasticFactory
 		);
@@ -64,7 +62,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnRegisterTaskHandlers() {
-
 		$infoTaskHandler = $this->getMockBuilder( '\SMW\Elastic\Admin\ElasticClientTaskHandler' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -105,7 +102,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnRegisterEntityExaminerDeferrableIndicatorProviders() {
-
 		$indicatorProviders = [];
 
 		$replicationCheck = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\ReplicationCheck' )
@@ -148,7 +144,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConfirmAllCanConstructMethodsWereCalled() {
-
 		// Available class methods to be tested
 		$classMethods = get_class_methods( Hooks::class );
 

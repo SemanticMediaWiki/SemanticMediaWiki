@@ -31,7 +31,6 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,7 +49,6 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider displayTitleProvider
 	 */
 	public function testAddAnnotationForDisplayTitle( $title, $displayTitle, $defaultSort, array $expected ) {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			$title
 		);
@@ -70,7 +68,6 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotationForWhenPropertyNamespaceIsUsed() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			new DIWikiPage( 'Foo', SMW_NS_PROPERTY )
 		);
@@ -95,7 +92,6 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoAnnotationWhenDisabled() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			DIWikiPage::newFromText( 'Foo' )
 		);
@@ -118,7 +114,6 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function displayTitleProvider() {
-
 		$provider = [];
 
 		#0 with title entry

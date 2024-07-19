@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class NGramTokenizerTest extends TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\NGramTokenizer',
 			new NGramTokenizer()
@@ -28,7 +27,6 @@ class NGramTokenizerTest extends TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testTokenize( $string, $ngram, $expected ) {
-
 		if ( version_compare( phpversion(), '5.4', '<' ) ) {
 			$this->markTestSkipped(
 				"Ehh, PHP 5.3 returns with unexpected results"
@@ -48,7 +46,6 @@ class NGramTokenizerTest extends TestCase {
 	}
 
 	public function testTokenizeWithStartEndMarker() {
-
 		// http://cloudmark.github.io/Language-Detection
 		$string = 'TEXT';
 
@@ -70,7 +67,6 @@ class NGramTokenizerTest extends TestCase {
 	}
 
 	public function testTokenizeWithStartEndMarker2() {
-
 		$string = '教授は';
 
 		$expected = array(
@@ -89,7 +85,6 @@ class NGramTokenizerTest extends TestCase {
 		);
 	}
 	public function testTokenizeWithOption() {
-
 		$string = '红色中华';
 
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
@@ -118,7 +113,6 @@ class NGramTokenizerTest extends TestCase {
 	}
 
 	public function stringProvider() {
-
 		$provider[] = array(
 			'TEXT',
 			'4',

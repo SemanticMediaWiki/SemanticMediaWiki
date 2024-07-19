@@ -27,7 +27,6 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 	private $entityIdManager;
 
 	protected function setUp() : void {
-
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->messageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
@@ -65,7 +64,6 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$callback = static function ( $type ) use ( $connection, $database ) {
-
 			if ( $type === 'mw.db' ) {
 				return $database;
 			};
@@ -86,7 +84,6 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			UpdateEntityCollationComplete::class,
 			new UpdateEntityCollationComplete( $this->store )
@@ -94,7 +91,6 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunUpdate() {
-
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -45,7 +45,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new SchemaFactory();
 
 		$this->assertInstanceof(
@@ -55,7 +54,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSchemaValidator() {
-
 		$instance = new SchemaFactory();
 
 		$this->assertInstanceof(
@@ -65,7 +63,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSchemaFinder() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -84,7 +81,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSchemaFilterFactory() {
-
 		$instance = new SchemaFactory();
 
 		$this->assertInstanceof(
@@ -94,7 +90,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSchemaDefinition() {
-
 		$instance = new SchemaFactory(
 			[
 				'foo' => [ 'group' => 'f_group' ]
@@ -108,7 +103,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSchemaDefinitionOnUnknownTypeThrowsException() {
-
 		$instance = new SchemaFactory();
 
 		$this->expectException( '\SMW\Schema\Exception\SchemaTypeNotFoundException' );
@@ -116,7 +110,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSchemaDefinitionOnNoTypeThrowsException() {
-
 		$instance = new SchemaFactory(
 			[
 				'foo' => [ 'group' => 'f_group' ]
@@ -128,7 +121,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushChangePropagationDispatchJob() {
-
 		$checkJobParameterCallback = function( $job ) {
 			return $job->getParameter( 'property_key' ) === 'FOO' && $job->hasParameter( 'schema_change_propagation' );
 		};
@@ -152,7 +144,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushChangePropagationDispatchJob_CastAsArray() {
-
 		$checkJobParameterCallback = function( $job ) {
 			return $job->getParameter( 'property_key' ) === 'FOO' && $job->hasParameter( 'schema_change_propagation' );
 		};

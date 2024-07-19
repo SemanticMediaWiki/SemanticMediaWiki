@@ -52,7 +52,6 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return MockObjectBuilder
 	 */
 	public function newMockBuilder() {
-
 		$builder = new MockObjectBuilder();
 		$builder->registerRepository( new CoreMockObjectRepository() );
 		$builder->registerRepository( new MediaWikiMockObjectRepository() );
@@ -143,7 +142,6 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return RequestContext
 	 */
 	protected function newContext( $request = [] ) {
-
 		$context = new RequestContext();
 
 		if ( $request instanceof WebRequest ) {
@@ -216,7 +214,6 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	protected function runOnlyOnSQLStore( $store = null ) {
-
 		if ( $store === null ) {
 			$store = StoreFactory::getStore();
 		}

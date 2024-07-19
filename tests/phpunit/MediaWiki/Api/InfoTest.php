@@ -42,7 +42,6 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new Info(
 			$this->apiFactory->newApiMain( [] ),
 			'smwinfo'
@@ -58,7 +57,6 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeDataProvider
 	 */
 	public function testExecuteOnStore( $queryParameters, $expectedType ) {
-
 		$result = $this->apiFactory->doApiRequest( [
 				'action' => 'smwinfo',
 				'info' => $queryParameters
@@ -78,7 +76,6 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider countDataProvider
 	 */
 	public function testExecuteOnMockStore( $statistics, $type, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -117,7 +114,6 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testUnknownQueryParameter() {
-
 		$data = $this->apiFactory->doApiRequest( [
 				'action' => 'smwinfo',
 				'info' => 'Foo'
@@ -130,7 +126,6 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobCount() {
-
 		$this->jobQueue->expects( $this->any() )
 			->method( 'getQueueSize' )
 			->will( $this->returnValue( 1 ) );

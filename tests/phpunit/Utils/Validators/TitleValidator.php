@@ -27,7 +27,6 @@ class TitleValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function assertTitleExists( $isExpected, $titles ) {
-
 		if ( !is_array( $titles ) ) {
 			$titles = [ $titles ];
 		}

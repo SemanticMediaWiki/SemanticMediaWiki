@@ -43,7 +43,6 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangePropagationEntityLookup::class,
 			new ChangePropagationEntityLookup( $this->store, $this->iteratorFactory )
@@ -51,7 +50,6 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindByProperty() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$this->iteratorFactory->expects( $this->any() )
@@ -70,7 +68,6 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindByProperty_TypePropagation() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$this->iteratorFactory->expects( $this->any() )
@@ -131,7 +128,6 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindByCategory() {
-
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$this->iteratorFactory->expects( $this->any() )
@@ -175,7 +171,6 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindAllOnUnknownTypeThrowsException() {
-
 		$instance = new ChangePropagationEntityLookup(
 			$this->store,
 			$this->iteratorFactory

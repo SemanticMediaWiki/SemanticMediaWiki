@@ -67,7 +67,6 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			LinksUpdateComplete::class,
 			new LinksUpdateComplete( $this->namespaceExaminer )
@@ -75,7 +74,6 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -151,7 +149,6 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoExtraParsingForNotEnabledNamespace() {
-
 		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
 			[ NS_HELP => false ]
@@ -198,7 +195,6 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTemplateUpdate() {
-
 		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
 			[ NS_HELP => false ]
@@ -255,7 +251,6 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsNotReady_DoNothing() {
-
 		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -28,7 +28,6 @@ class DocumentReplicationExaminerTest extends \PHPUnit_Framework_TestCase {
 	private $idTable;
 
 	protected function setUp() : void {
-
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -60,7 +59,6 @@ class DocumentReplicationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DocumentReplicationExaminer::class,
 			new DocumentReplicationExaminer( $this->store, $this->replicationStatus )
@@ -68,7 +66,6 @@ class DocumentReplicationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_NoError() {
-
 		$replicationStatus = [
 			'modification_date' => DITime::newFromTimestamp( 1272508900 ),
 			'associated_revision' => 42
@@ -114,7 +111,6 @@ class DocumentReplicationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_NotExists() {
-
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
 			->will( $this->returnValue( false ) );
@@ -162,7 +158,6 @@ class DocumentReplicationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_DocumentExists() {
-
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
 			->with(	$this->equalTo( 'exists' ) )
@@ -202,7 +197,6 @@ class DocumentReplicationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_ModificationDate() {
-
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
 			->will( $this->returnValue( false ) );
@@ -255,7 +249,6 @@ class DocumentReplicationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_AssociateRev() {
-
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
 			->will( $this->returnValue( false ) );
@@ -313,7 +306,6 @@ class DocumentReplicationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_MissingFileAttachment() {
-
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
 		$time = DITime::newFromTimestamp( 1272508903 );
 
@@ -390,7 +382,6 @@ class DocumentReplicationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_NoMissingFileAttachment() {
-
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
 		$time = DITime::newFromTimestamp( 1272508903 );
 
@@ -454,7 +445,6 @@ class DocumentReplicationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_FileAttachment_Disabled() {
-
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
 		$time = DITime::newFromTimestamp( 1272508903 );
 
@@ -514,7 +504,6 @@ class DocumentReplicationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_FileAttachment_NoCheck() {
-
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
 		$time = DITime::newFromTimestamp( 1272508903 );
 

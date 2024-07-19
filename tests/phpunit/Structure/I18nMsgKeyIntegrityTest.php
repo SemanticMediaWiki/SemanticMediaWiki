@@ -19,7 +19,6 @@ class I18nMsgKeyIntegrityTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider mediawikiI18nFileProvider
 	 */
 	public function testDecKiloSeparatorMsgKeySetting( $file ) {
-
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 		$contents = $jsonFileReader->read();
 
@@ -44,7 +43,6 @@ class I18nMsgKeyIntegrityTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider mediawikiI18nFileProvider
 	 */
 	public function testDecKiloSeparatorHasDifferentValue( $file ) {
-
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 		$contents = $jsonFileReader->read();
 
@@ -70,7 +68,6 @@ class I18nMsgKeyIntegrityTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function findFilesIn( $location ) {
-
 		$provider = [];
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( $location );

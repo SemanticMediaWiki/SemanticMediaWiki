@@ -100,7 +100,6 @@ class XmlResponseParser implements HttpResponseParser {
 	 * @throws XmlParserException
 	 */
 	public function parse( $response ) {
-
 		$this->xmlOpenTags = [];
 		$this->header = [];
 		$this->data = [];
@@ -159,7 +158,6 @@ class XmlResponseParser implements HttpResponseParser {
 	 * @see xml_set_element_handler
 	 */
 	private function handleOpenElement( $parser, $elementTag, $attributes ) {
-
 		$this->currentDataType = '';
 
 		$prevTag = end( $this->xmlOpenTags );
@@ -200,7 +198,6 @@ class XmlResponseParser implements HttpResponseParser {
 	 * @see xml_set_character_data_handler
 	 */
 	private function handleCharacterData( $parser, $characterData ) {
-
 		$prevTag = end( $this->xmlOpenTags );
 		$rowcount = count( $this->data ) - 1;
 

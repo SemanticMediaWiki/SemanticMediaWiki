@@ -26,7 +26,6 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 	private $iteratorFactory;
 
 	protected function setUp() : void {
-
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +45,6 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DuplicateFinder::class,
 			new DuplicateFinder( $this->store, $this->iteratorFactory )
@@ -54,7 +52,6 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasDuplicate() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -100,7 +97,6 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindDuplicates_ID_Table() {
-
 		$row = new \stdClass;
 		$row->count = 42;
 		$row->smw_title = 'Foo';
@@ -150,7 +146,6 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindDuplicates_REDI_Table() {
-
 		$row = new \stdClass;
 		$row->count = 42;
 		$row->s_title = 'Foo';

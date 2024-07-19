@@ -33,7 +33,6 @@ class ByGroupPropertyValuesLookupIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->subjects );
 		$this->mwHooksHandler->restoreListedHooks();
@@ -42,7 +41,6 @@ class ByGroupPropertyValuesLookupIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testGroup_SingleSubject_Page() {
-
 		$store = $this->getStore();
 		$subjects = [];
 
@@ -96,7 +94,6 @@ class ByGroupPropertyValuesLookupIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testGroup_SingleSubject_Blob() {
-
 		$store = $this->getStore();
 		$subjects = [];
 
@@ -133,7 +130,6 @@ class ByGroupPropertyValuesLookupIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testGroup_SingleSubject_Number() {
-
 		$store = $this->getStore();
 		$subjects = [];
 
@@ -170,7 +166,6 @@ class ByGroupPropertyValuesLookupIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testGroup_SingleSubject_Date() {
-
 		$store = $this->getStore();
 		$subjects = [];
 
@@ -202,7 +197,6 @@ class ByGroupPropertyValuesLookupIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testGroup_SingleSubject_Uri() {
-
 		$store = $this->getStore();
 		$subjects = [];
 
@@ -234,7 +228,6 @@ class ByGroupPropertyValuesLookupIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testGroup_MultiSubjects() {
-
 		$store = $this->getStore();
 		$subjects = [];
 

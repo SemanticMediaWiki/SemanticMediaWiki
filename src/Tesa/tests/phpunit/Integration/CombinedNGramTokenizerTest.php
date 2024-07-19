@@ -20,7 +20,6 @@ class CombinedNGramTokenizerTest extends TestCase {
 	 * @dataProvider textProvider
 	 */
 	public function testNgramWithBeginEndMarker( $languageCode, $ngramSize, $text, $expected ) {
-
 		$sanitizerFactory = new SanitizerFactory();
 
 		$tokenizer = $sanitizerFactory->newNGramTokenizer(
@@ -39,7 +38,6 @@ class CombinedNGramTokenizerTest extends TestCase {
 	}
 
 	public function textProvider() {
-
 		// https://en.wikipedia.org/wiki/Stop_words
 		$provider[] = array(
 			'en',

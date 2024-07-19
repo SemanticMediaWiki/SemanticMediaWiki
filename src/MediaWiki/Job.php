@@ -103,7 +103,6 @@ abstract class Job extends MediaWikiJob {
 	 */
 
 	public function hasParameter( $key ) {
-
 		if ( !is_array( $this->params ) ) {
 			return false;
 		}
@@ -173,7 +172,6 @@ abstract class Job extends MediaWikiJob {
 	 * @param integer $delay
 	 */
 	public function setDelay( $delay ) {
-
 		$isDelayedJobsEnabled = $this->getJobQueue()->isDelayedJobsEnabled(
 			$this->getType()
 		);
@@ -197,7 +195,6 @@ abstract class Job extends MediaWikiJob {
 	 * @since 3.0
 	 */
 	public static function newRootJobParams( $key = '', $title = '' ) {
-
 		if ( $title instanceof Title ) {
 			$title = $title->getPrefixedDBkey();
 		}
@@ -210,7 +207,6 @@ abstract class Job extends MediaWikiJob {
 	 * @since 3.0
 	 */
 	public function ignoreDuplicates() {
-
 		if ( isset( $this->params['waitOnCommandLine'] ) ) {
 			return $this->params['waitOnCommandLine'] > 1;
 		}
@@ -223,7 +219,6 @@ abstract class Job extends MediaWikiJob {
 	 * Special:RunJobs as it can cause the script to timeout.
 	 */
 	public function waitOnCommandLineMode() {
-
 		if ( !$this->hasParameter( 'waitOnCommandLine' ) || Site::isCommandLineMode() ) {
 			return false;
 		}
@@ -241,7 +236,6 @@ abstract class Job extends MediaWikiJob {
 	}
 
 	protected function getJobQueue() {
-
 		if ( $this->jobQueue === null ) {
 			$this->jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 		}

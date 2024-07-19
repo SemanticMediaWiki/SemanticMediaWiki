@@ -35,7 +35,6 @@ class SpecialURIResolverTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecuteOnEmptyContext() {
-
 		$instance = new SpecialURIResolver();
 
 		$instance->getContext()->setTitle(

@@ -31,7 +31,6 @@ class SchemaPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	protected function addPropertyValues() {
-
 		if ( $this->schema === null ) {
 			return;
 		}

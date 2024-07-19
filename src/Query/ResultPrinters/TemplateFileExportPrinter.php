@@ -43,7 +43,6 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	public function getMimeType( QueryResult $queryResult ) {
-
 		if ( $this->params['mimetype'] !== '' ) {
 			return $this->params['mimetype'];
 		}
@@ -127,7 +126,6 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $queryResult, $outputMode ) {
-
 		// Always return a link for when the output mode is not a file request,
 		// a file request is normally only initiated when resolving the query
 		// via Special:Ask
@@ -147,7 +145,6 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	}
 
 	private function getFileLink( QueryResult $queryResult, $outputMode ) {
-
 		// Can be viewed as HTML if requested, no more parsing needed
 		$this->isHTML = $outputMode == SMW_OUTPUT_HTML;
 
@@ -160,7 +157,6 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	}
 
 	private function newTemplateSet( $queryResult ) {
-
 		$templateSet = new TemplateSet();
 
 		$link = $this->getLink(

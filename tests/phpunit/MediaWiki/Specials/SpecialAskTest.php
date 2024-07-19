@@ -38,7 +38,6 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\SpecialAsk',
 			new SpecialAsk()
@@ -46,7 +45,6 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecuteWithValidUser() {
-
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();

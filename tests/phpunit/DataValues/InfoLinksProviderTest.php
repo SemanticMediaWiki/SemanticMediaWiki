@@ -62,7 +62,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -74,7 +73,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInfolinkTextOnNumberValue() {
-
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getSpecification' )
 			->will( $this->returnValue( [] ) );
@@ -108,7 +106,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInfolinkTextOnStringValue() {
-
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getSpecification' )
 			->will( $this->returnValue( [] ) );
@@ -142,7 +139,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInfolinkTextOnSobValue() {
-
 		$stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
 
 		$sobValue = $this->dataValueFactory->newDataValueByType( '__sob' );
@@ -166,7 +162,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInfolinkTextOnTimeValueWithoutLocalizedOutput() {
-
 		$timeValue = $this->dataValueFactory->newDataValueByType( '_dat' );
 
 		$timeValue->setOption( $timeValue::OPT_USER_LANGUAGE, 'fr' );
@@ -204,7 +199,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInfolinkTextOnStringValueWithServiceLinks() {
-
 		$service = 'testGetInfolinkTextOnStringValueWithServiceLinks';
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )

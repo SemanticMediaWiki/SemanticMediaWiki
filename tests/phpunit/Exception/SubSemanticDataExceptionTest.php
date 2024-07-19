@@ -16,7 +16,6 @@ use SMW\Exception\SubSemanticDataException;
 class SubSemanticDataExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SubSemanticDataException();
 
 		$this->assertInstanceof(

@@ -54,7 +54,6 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -68,7 +67,6 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();

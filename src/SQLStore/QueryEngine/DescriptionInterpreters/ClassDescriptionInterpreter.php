@@ -58,7 +58,6 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$query = new QuerySegment();
 
 		$cqid = QuerySegment::$qnum;

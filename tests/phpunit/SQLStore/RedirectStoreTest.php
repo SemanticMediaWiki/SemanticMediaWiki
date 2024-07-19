@@ -28,7 +28,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	private JobQueue $jobQueue;
 
 	protected function setUp() : void {
-
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -69,7 +68,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RedirectStore::class,
 			new RedirectStore( $this->store )
@@ -77,7 +75,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindRedirectIdForNonCachedRedirect() {
-
 		$row = new \stdClass;
 		$row->o_id = 42;
 
@@ -118,7 +115,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindRedirectIdForNonCachedNonRedirect() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
@@ -140,7 +136,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddRedirectInfoRecordToFetchFromCache() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
@@ -167,7 +162,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteRedirectInfoRecord() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
@@ -189,7 +183,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateRedirect() {
-
 		$row = new \stdClass;
 		$row->ns = NS_MAIN;
 		$row->t = 'Bar';
@@ -250,7 +243,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateRedirect_OnCommandLine_ActiveSectionTransaction() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'inSectionTransaction' )
 			->with( $this->equalTo( \SMW\SQLStore\SQLStore::UPDATE_TRANSACTION ) )
@@ -312,7 +304,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateRedirectNotEnabled() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyTables' ] )

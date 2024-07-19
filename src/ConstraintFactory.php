@@ -33,7 +33,6 @@ class ConstraintFactory {
 	 * @return ConstraintRegistry
 	 */
 	public function newConstraintRegistry() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$constraintRegistry = new ConstraintRegistry(
@@ -65,7 +64,6 @@ class ConstraintFactory {
 	 * @throws RuntimeException
 	 */
 	public function newConstraintByClass( $class ) {
-
 		if ( !class_exists( $class ) ) {
 			throw new ClassNotFoundException( $class );
 		}
@@ -140,7 +138,6 @@ class ConstraintFactory {
 	 * @return UniqueValueConstraint
 	 */
 	public function newUniqueValueConstraint() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$uniqueValueConstraint = new UniqueValueConstraint(
@@ -195,7 +192,6 @@ class ConstraintFactory {
 	 * @return ConstraintSchemaCompiler
 	 */
 	public function newConstraintSchemaCompiler( Store $store ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$schemaFactory = $applicationFactory->singleton( 'SchemaFactory' );
 

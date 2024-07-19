@@ -212,7 +212,6 @@ class SMWURIValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_URI ) {
 			return false;
 		}
@@ -233,7 +232,6 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-
 		list( $url, $caption ) = $this->decodeUriContext( $this->m_caption, $linked );
 
 		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
@@ -247,7 +245,6 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText( $linker = null ) {
-
 		list( $url, $caption ) = $this->decodeUriContext( $this->m_caption, $linker );
 
 		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
@@ -293,7 +290,6 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-
 		if ( $this->getOption( self::VALUE_RAW ) ) {
 			return rawurldecode( $this->m_wikitext );
 		}
@@ -358,7 +354,6 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	private function decodeUriContext( $context, $linker ) {
-
 		// Prior to decoding turn any `-` into an internal representation to avoid
 		// potential breakage
 		if ( !$this->showUrlContextInRawFormat ) {

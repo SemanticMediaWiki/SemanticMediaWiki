@@ -34,7 +34,6 @@ class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PermissionExaminer::class,
 			new PermissionExaminer( $this->permissionManager )
@@ -42,7 +41,6 @@ class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasPermissionOf() {
-
 		$this->permissionManager->expects( $this->any() )
 			->method( 'userHasRight' )
 			->with(

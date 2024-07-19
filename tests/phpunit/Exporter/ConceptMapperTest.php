@@ -25,7 +25,6 @@ class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConceptMapper::class,
 			new ConceptMapper()
@@ -33,7 +32,6 @@ class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsMapperFor() {
-
 		$dataItem = $this->getMockBuilder( '\SMWDIConcept' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +44,6 @@ class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExpDataForSingleClassDescription() {
-
 		$instance = new ConceptMapper();
 
 		$exact = false;
@@ -80,7 +77,6 @@ class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExpDataForMultipleClassDescriptions() {
-
 		$instance = new ConceptMapper();
 
 		$exact = false;
@@ -122,7 +118,6 @@ class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExpDataForThingDescription() {
-
 		$instance = new ConceptMapper();
 
 		$exact = false;

@@ -35,7 +35,6 @@ class DisjunctionInterpreter {
 	 * @return Condition|[]
 	 */
 	public function interpretDescription( Disjunction $description, $isConjunction = false ) {
-
 		$params = [];
 		$notConditionFields = [];
 

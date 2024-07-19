@@ -22,7 +22,6 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 
 	protected function setUp() : void {
-
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +45,6 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RedirectTargetLookup::class,
 			new RedirectTargetLookup( $this->store, $this->idCacheManager )
@@ -54,7 +52,6 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareCache_FromHash() {
-
 		$rows = [
 			(object)[ 's_title' => 'Bar', 's_namespace' => 0, 'o_id' => 42 ]
 		];
@@ -88,7 +85,6 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareCache_FromInstance() {
-
 		$rows = [
 			(object)[ 's_title' => 'Bar', 's_namespace' => 0, 'o_id' => 42 ]
 		];
@@ -122,7 +118,6 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindRedirectSource() {
-
 		$flag = RedirectTargetLookup::CACHE_ONLY;
 		$target = DIWikiPage::newFromText( 'Foo' );
 

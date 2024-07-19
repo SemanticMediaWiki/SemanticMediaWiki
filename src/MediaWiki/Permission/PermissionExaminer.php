@@ -51,7 +51,6 @@ class PermissionExaminer {
 	 * @return bool
 	 */
 	public function hasPermissionOf( string $right ) : bool {
-
 		if ( $this->user === null ) {
 			return false;
 		}

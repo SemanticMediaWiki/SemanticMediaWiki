@@ -53,7 +53,6 @@ class PValueLookup extends Lookup {
 	 * @return array
 	 */
 	public function lookup( array $parameters ) {
-
 		$limit = 20;
 		$offset = 0;
 

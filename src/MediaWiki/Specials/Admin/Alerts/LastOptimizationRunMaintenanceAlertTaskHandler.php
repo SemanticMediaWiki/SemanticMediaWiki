@@ -43,7 +43,6 @@ class LastOptimizationRunMaintenanceAlertTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() : string {
-
 		if ( !$this->hasFeature( SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN ) ) {
 			return '';
 		}
@@ -61,7 +60,6 @@ class LastOptimizationRunMaintenanceAlertTaskHandler extends TaskHandler {
 	}
 
 	private function buildHTML( $lastRun, $daysDiff ) {
-
 		if ( $daysDiff < self::DAYS_THRESHOLD ) {
 			return '';
 		}

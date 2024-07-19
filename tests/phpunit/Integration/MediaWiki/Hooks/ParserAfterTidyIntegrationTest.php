@@ -43,7 +43,6 @@ class ParserAfterTidyIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonParseForInvokedMessageParse() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();

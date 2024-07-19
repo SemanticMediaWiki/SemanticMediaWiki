@@ -48,7 +48,6 @@ class ProtectionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ProtectionExaminer::class,
 			new ProtectionExaminer( $this->declarationExaminer, $this->protectionValidator )
@@ -56,7 +55,6 @@ class ProtectionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateProtectionRight() {
-
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'isLocked' )
 			->will( $this->returnValue( false ) );
@@ -87,7 +85,6 @@ class ProtectionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEditProtectionRight() {
-
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'isLocked' )
 			->will( $this->returnValue( false ) );
@@ -118,7 +115,6 @@ class ProtectionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsEditProtectedProperty() {
-
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'isLocked' )
 			->will( $this->returnValue( false ) );

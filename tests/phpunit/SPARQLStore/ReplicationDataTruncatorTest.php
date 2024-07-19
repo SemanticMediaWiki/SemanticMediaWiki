@@ -19,14 +19,12 @@ class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
 	private $semanticData;
 
 	public function setUp() : void {
-
 		$this->semanticData = $this->getMockBuilder( '\SMW\semanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\ReplicationDataTruncator',
 			new ReplicationDataTruncator()
@@ -34,7 +32,6 @@ class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnEmptyList() {
-
 		$instance = new ReplicationDataTruncator();
 		$semanticData = $instance->doTruncate( $this->semanticData );
 
@@ -45,7 +42,6 @@ class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnExemptedList() {
-
 		$property = new DIProperty( 'Foo_bar' );
 
 		$this->semanticData->expects( $this->once() )
@@ -59,7 +55,6 @@ class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnExemptedListWithPredefinedProperty() {
-
 		$property = new DIProperty( '_ASK' );
 
 		$this->semanticData->expects( $this->once() )

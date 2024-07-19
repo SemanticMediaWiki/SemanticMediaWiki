@@ -23,7 +23,6 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 	private $nullJob;
 
 	protected function setUp() : void {
-
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
@@ -49,7 +48,6 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			IdChanger::class,
 			new IdChanger( $this->store )
@@ -57,7 +55,6 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMove_NoMatch() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
@@ -74,7 +71,6 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMove_ZeroTarget() {
-
 		if ( !method_exists( '\PHPUnit_Framework_MockObject_Builder_InvocationMocker', 'withConsecutive' ) ) {
 			$this->markTestSkipped( 'PHPUnit_Framework_MockObject_Builder_InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
 		}
@@ -140,7 +136,6 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMove_Target() {
-
 		if ( !method_exists( '\PHPUnit_Framework_MockObject_Builder_InvocationMocker', 'withConsecutive' ) ) {
 			$this->markTestSkipped( 'PHPUnit_Framework_MockObject_Builder_InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
 		}
@@ -198,7 +193,6 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChange_IdSubject_Fields_NotFixedPropertyTable() {
-
 		$table = $this->getMockBuilder( 'SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -256,7 +250,6 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChange_IdSubject_PropertyNS_Fields_NotFixedPropertyTable() {
-
 		$table = $this->getMockBuilder( 'SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -313,7 +306,6 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChange_IdSubject_ConceptNS_Fields_NotFixedPropertyTable() {
-
 		$table = $this->getMockBuilder( 'SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();

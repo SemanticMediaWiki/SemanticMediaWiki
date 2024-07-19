@@ -19,7 +19,6 @@ class TableResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableResultPrinter::class,
 			new TableResultPrinter( 'table' )
@@ -27,7 +26,6 @@ class TableResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetResult_Empty() {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();

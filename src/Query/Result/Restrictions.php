@@ -23,7 +23,6 @@ class Restrictions {
 	 * @return []
 	 */
 	public static function applySortRestriction( PrintRequest $printRequest, array $content ) {
-
 		if ( $content === [] ) {
 			return $content;
 		}
@@ -77,7 +76,6 @@ class Restrictions {
 	 * @return []
 	 */
 	public static function applyLimitRestriction( PrintRequest $printRequest, array $content ) {
-
 		$limit = (int)$printRequest->getParameter( 'limit' );
 		$offset = (int)$printRequest->getParameter( 'offset' );
 

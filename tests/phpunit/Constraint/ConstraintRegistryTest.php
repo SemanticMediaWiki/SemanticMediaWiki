@@ -23,7 +23,6 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	private $hookDispatcher;
 
 	protected function setUp() : void {
-
 		$this->constraintFactory = $this->getMockBuilder( '\SMW\ConstraintFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -34,7 +33,6 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConstraintRegistry::class,
 			new ConstraintRegistry( $this->constraintFactory )
@@ -42,7 +40,6 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConstraintKeys() {
-
 		$instance = new ConstraintRegistry(
 			$this->constraintFactory
 		);
@@ -58,7 +55,6 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunHookOnInitConstraints() {
-
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onInitConstraints' );
 
@@ -74,7 +70,6 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConstraintByUnkownKey() {
-
 		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -96,7 +91,6 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterConstraintWithInstance() {
-
 		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -118,7 +112,6 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterConstraintWithCallable() {
-
 		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -142,7 +135,6 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterConstraintWithClassReference() {
-
 		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -172,7 +164,6 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constraintKeyProvider
 	 */
 	public function testGetConstraintByKey( $key, $expected ) {
-
 		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -194,7 +185,6 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function constraintKeyProvider() {
-
 		yield [
 			'allowed_namespaces',
 			'SMW\Constraint\Constraints\NamespaceConstraint'

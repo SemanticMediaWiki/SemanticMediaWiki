@@ -66,7 +66,6 @@ class LocalMessageProvider implements MessageLocalizer {
 	 * @return bool
 	 */
 	public function has( ...$args ) : bool {
-
 		$key = array_shift( $args );
 		$msgArgs = [];
 
@@ -92,7 +91,6 @@ class LocalMessageProvider implements MessageLocalizer {
 	 * @return string
 	 */
 	public function msg( ...$args ) : string {
-
 		$key = array_shift( $args );
 		$msgArgs = [];
 
@@ -117,7 +115,6 @@ class LocalMessageProvider implements MessageLocalizer {
 	}
 
 	private function readJSONFile( $file ) {
-
 		$file = str_replace( [ '\\', '/', '//', '\\\\' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $file );
 
 		if ( !is_readable( $file ) ) {

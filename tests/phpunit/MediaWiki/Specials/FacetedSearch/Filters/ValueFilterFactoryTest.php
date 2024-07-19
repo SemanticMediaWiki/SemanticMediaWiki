@@ -29,7 +29,6 @@ class ValueFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ValueFilterFactory::class,
 			new ValueFilterFactory( $this->templateEngine )
@@ -37,7 +36,6 @@ class ValueFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructListValueFilter() {
-
 		$instance = new ValueFilterFactory(
 			$this->templateEngine
 		);
@@ -49,7 +47,6 @@ class ValueFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructCheckboxValueFilter() {
-
 		$instance = new ValueFilterFactory(
 			$this->templateEngine
 		);
@@ -61,7 +58,6 @@ class ValueFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructCheckboxRangeGroupValueFilter() {
-
 		$compartmentIterator = $this->getMockBuilder( '\SMW\Schema\CompartmentIterator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -77,7 +73,6 @@ class ValueFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructRangeValueFilter() {
-
 		$compartmentIterator = $this->getMockBuilder( '\SMW\Schema\CompartmentIterator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -93,7 +88,6 @@ class ValueFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConfirmAllCanConstructMethodsWereCalled() {
-
 		// Available class methods to be tested
 		$classMethods = get_class_methods( ValueFilterFactory::class );
 

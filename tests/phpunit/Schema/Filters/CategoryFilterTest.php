@@ -22,7 +22,6 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CategoryFilter::class,
 			new CategoryFilter()
@@ -30,7 +29,6 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetName() {
-
 		$instance = new CategoryFilter();
 
 		$this->assertEquals(
@@ -40,7 +38,6 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIfCondition() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -54,7 +51,6 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoCondition_FilterNotRequired() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -75,7 +71,6 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilterOnCallbackWhileFailingReturnFormat_ThrowsException() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -94,7 +89,6 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider categoryFilterProvider
 	 */
 	public function testHasMatches_Compartment( $categories, $compartment, $expected ) {
-
 		$instance = new CategoryFilter(
 			$categories
 		);
@@ -113,7 +107,6 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider categoryFilterProvider
 	 */
 	public function testHasMatches_Callback_Compartment( $categories, $compartment, $expected ) {
-
 		$callback = function() use ( $categories ) {
 			return $categories;
 		};
@@ -136,7 +129,6 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider categoryFilterProvider
 	 */
 	public function testHasMatches_Rule( $categories, $compartment, $expected, $score ) {
-
 		$instance = new CategoryFilter(
 			$categories
 		);
@@ -162,7 +154,6 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider categoryFilterProvider
 	 */
 	public function testHasMatches_CompartmentIterator( $categories, $compartment, $expected ) {
-
 		$instance = new CategoryFilter(
 			$categories
 		);
@@ -178,7 +169,6 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function categoryFilterProvider() {
-
 		yield 'oneOf.1: single one_of' => [
 			[ 'NotFoo', 'Bar' ],
 			[

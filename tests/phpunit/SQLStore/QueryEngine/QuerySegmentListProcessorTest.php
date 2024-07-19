@@ -19,7 +19,6 @@ class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -39,7 +38,6 @@ class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryResolveSegmentForInvalidIdThrowsException() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();

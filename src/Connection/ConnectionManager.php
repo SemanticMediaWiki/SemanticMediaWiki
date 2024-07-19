@@ -35,7 +35,6 @@ class ConnectionManager {
 	 * @throws RuntimeException
 	 */
 	public function getConnection( $id = null ) {
-
 		$id = strtolower( $id );
 
 		if ( self::$isConnectable === null ) {
@@ -79,7 +78,6 @@ class ConnectionManager {
 	}
 
 	private function isConnectable() {
-
 		if ( defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return true;
 		}

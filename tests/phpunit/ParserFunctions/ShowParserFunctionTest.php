@@ -80,7 +80,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -102,7 +101,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testParse( array $params, array $expected ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -127,7 +125,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsQueryDisabled() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -155,7 +152,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testInstantiatedQueryData( array $params, array $expected ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -183,7 +179,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryWithErroneousData() {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -246,7 +241,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryDataProvider() {
-
 		$provider = [];
 
 		// #0

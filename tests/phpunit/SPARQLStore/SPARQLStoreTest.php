@@ -33,7 +33,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\SPARQLStore',
 			new SPARQLStore()
@@ -47,7 +46,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticDataOnMockBaseStore() {
-
 		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -72,7 +70,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteSubjectOnMockBaseStore() {
-
 		$title = Title::newFromText( 'DeleteSubjectOnMockBaseStore' );
 
 		$expResource = Exporter::getInstance()->newExpElement( DIWikiPage::newFromTitle( $title ) );
@@ -122,7 +119,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoSparqlDataUpdateOnMockBaseStore() {
-
 		$semanticData = new SemanticData( new DIWikiPage( __METHOD__, NS_MAIN ) );
 
 		$semanticData->addPropertyObjectValue(
@@ -164,7 +160,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCallToChangeTitleForCompletePageMove() {
-
 		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
 		$newTitle = Title::newFromText( __METHOD__ . '-new' );
 
@@ -197,7 +192,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoDeleteTaskForSubobjectsDuringUpdate() {
-
 		$expectedSubjectForDeleteTask = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 
 		$subobject = new Subobject( $expectedSubjectForDeleteTask->getTitle() );
@@ -243,7 +237,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoSparqlDataUpdate_FailedPingThrowsException() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -281,7 +274,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResult() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -338,7 +330,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResultOnDisabledQueryEndpoint() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -381,7 +372,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyTableIdReferenceFinder() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -100,7 +100,6 @@ class PropertyAliasFinder {
 	 * @return array
 	 */
 	public function getKnownPropertyAliasesByLanguageCode( $languageCode = 'en' ) {
-
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[
@@ -132,7 +131,6 @@ class PropertyAliasFinder {
 	 * @param string $label
 	 */
 	public function registerAliasByFixedLabel( $id, $label ) {
-
 		$label = (string)$label;
 
 		// Prevent an extension to register an already known
@@ -201,7 +199,6 @@ class PropertyAliasFinder {
 	 * @return string|boolean
 	 */
 	public function findPropertyIdByAlias( $alias ) {
-
 		if ( isset( $this->propertyAliases[$alias] ) ) {
 			return $this->propertyAliases[$alias];
 		} elseif ( isset( $this->canonicalPropertyAliases[$alias] ) ) {

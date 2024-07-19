@@ -63,7 +63,6 @@ class EditPageForm implements HookListener {
 	 * @return boolean
 	 */
 	public function process( EditPage $editPage ) {
-
 		$html = '';
 
 		if (
@@ -79,7 +78,6 @@ class EditPageForm implements HookListener {
 	}
 
 	private function buildHTML( $title ) {
-
 		$msgKey = $this->getMessageKey(
 			$title
 		);
@@ -100,7 +98,6 @@ class EditPageForm implements HookListener {
 	}
 
 	private function getMessageKey( $title ) {
-
 		$text = $title->getText();
 		$namespace = $title->getNamespace();
 

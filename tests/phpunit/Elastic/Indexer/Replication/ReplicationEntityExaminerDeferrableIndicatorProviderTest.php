@@ -58,7 +58,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ReplicationEntityExaminerDeferrableIndicatorProvider::class,
 			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck )
@@ -76,7 +75,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testGetName() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
@@ -90,7 +88,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testIsSeverityType() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
@@ -104,7 +101,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testGetIndicators() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
@@ -118,7 +114,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testIsDeferredMode() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
@@ -132,7 +127,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testGetModules() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
@@ -146,7 +140,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testGetInlineStyle() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
@@ -160,7 +153,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testHasIndicators_NoCheck() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
@@ -177,7 +169,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testHasIndicators_CheckOnMaintenanceLock() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
@@ -205,7 +196,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testHasIndicators_FromCache_NoCheck() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
@@ -231,7 +221,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testHasIndicators_NoCache_Check() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
@@ -261,7 +250,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testHasIndicators_NoCache_DeferredCheck() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
@@ -299,7 +287,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testHasIndicators_NoCache_DeferredCheck_ErrorSeverity() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );

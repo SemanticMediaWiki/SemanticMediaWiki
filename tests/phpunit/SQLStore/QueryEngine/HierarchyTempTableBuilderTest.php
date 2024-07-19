@@ -22,7 +22,6 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $temporaryTableBuilder;
 
 	protected function setUp() : void {
-
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -33,7 +32,6 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			HierarchyTempTableBuilder::class,
 			new HierarchyTempTableBuilder( $this->connection, $this->temporaryTableBuilder )
@@ -41,7 +39,6 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHierarchyTableDefinitionForType() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'tableName' )
 			->with(
@@ -62,7 +59,6 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToGetHierarchyTableDefinitionForUnregisteredTypeThrowsException() {
-
 		$instance = new HierarchyTempTableBuilder(
 			$this->connection,
 			$this->temporaryTableBuilder
@@ -73,7 +69,6 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFillTempTable() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'tableName' )
 			->with(

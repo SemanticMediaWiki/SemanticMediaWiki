@@ -96,7 +96,6 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-idlookup-short-title' ),
 			[
@@ -122,7 +121,6 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-idlookup-title' ) ] )
 		);
@@ -148,7 +146,6 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 * @param User|null $use
 	 */
 	private function doDispose( $id ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(
@@ -163,7 +160,6 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function getForm( $webRequest, $id ) {
-
 		list( $result, $error ) = $this->createInfoMessageById( $webRequest, $id );
 
 		if ( $id < 1 ) {
@@ -226,7 +222,6 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function createInfoMessageById( $webRequest, &$id ) {
-
 		if ( $webRequest->getText( 'action' ) !== 'lookup' || $id === '' ) {
 			return [ '', '' ];
 		}
@@ -261,7 +256,6 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function createMessageFromRows( &$id, $rows ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$references = [];

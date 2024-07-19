@@ -50,7 +50,6 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 
 		$fixturesCleaner
@@ -61,7 +60,6 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUriQueryFromRawParameters() {
-
 		$property = $this->fixturesProvider->getProperty( 'url' );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
@@ -117,7 +115,6 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testCanConstructor( array $test ) {
-
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
 			$this->getQueryResultFor( $test['query'] )
@@ -128,7 +125,6 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testToArray( array $test, array $expected ) {
-
 		$instance = $this->getQueryResultFor( $test['query'] );
 		$results  = $instance->toArray();
 
@@ -137,7 +133,6 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function getQueryResultFor( $queryString ) {
-
 		list( $query, $formattedParams ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$queryString,
 			SMW_OUTPUT_WIKI,
@@ -149,7 +144,6 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function queryDataProvider() {
-
 		$provider = [];
 
 		// #1 Standard query

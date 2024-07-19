@@ -51,7 +51,6 @@ class UpdateEntityCollationComplete {
 	 * @param Rebuilder $rebuilder
 	 */
 	public function runUpdate( Rebuilder $rebuilder ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -127,7 +126,6 @@ class UpdateEntityCollationComplete {
 	}
 
 	private function rebuild( $rebuilder, $res, $last ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$rebuilder->set( 'skip-fileindex', true );

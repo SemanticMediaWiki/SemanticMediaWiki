@@ -47,7 +47,6 @@ class CategoryInstanceAndCategoryHierarchyTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -55,7 +54,6 @@ class CategoryInstanceAndCategoryHierarchyTest extends DatabaseTestCase {
 	}
 
 	public function testCategoryHierarchies() {
-
 		$this->importedTitles = [
 			'Category:Regression test',
 			'Category:Regression test category',

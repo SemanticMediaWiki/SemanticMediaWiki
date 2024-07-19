@@ -77,7 +77,6 @@ class ElasticFactory {
 	 * @return Config
 	 */
 	public function newConfig() {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$config = new Config(
@@ -114,7 +113,6 @@ class ElasticFactory {
 	 * @return ConnectionProvider
 	 */
 	public function newConnectionProvider() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$connectionProvider = new ConnectionProvider(
@@ -137,7 +135,6 @@ class ElasticFactory {
 	 * @return DocumentCreator
 	 */
 	public function newDocumentCreator( Store $store ) : DocumentCreator {
-
 		$config = $store->getConnection( 'elastic' )->getConfig();
 
 		$documentCreator = new DocumentCreator( $store );
@@ -180,7 +177,6 @@ class ElasticFactory {
 	 * @return Indexer
 	 */
 	public function newIndexer( Store $store = null, MessageReporter $messageReporter = null ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -243,7 +239,6 @@ class ElasticFactory {
 	 * @return FileIndexer
 	 */
 	public function newFileIndexer( Store $store, Indexer $indexer ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$logger = $applicationFactory->getMediaWikiLogger( 'smw-elastic' );
@@ -307,7 +302,6 @@ class ElasticFactory {
 	 * @return DocumentReplicationExaminer
 	 */
 	public function newDocumentReplicationExaminer( Store $store = null ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -331,7 +325,6 @@ class ElasticFactory {
 	 * @return ReplicationCheck
 	 */
 	public function newReplicationCheck( Store $store = null ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -362,7 +355,6 @@ class ElasticFactory {
 	 * @return QueryEngine
 	 */
 	public function newQueryEngine( Store $store ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$config = $store->getConnection( 'elastic' )->getConfig();
 
@@ -418,7 +410,6 @@ class ElasticFactory {
 	 * @return Rebuilder
 	 */
 	public function newRebuilder( Store $store ) {
-
 		$connection = $store->getConnection( 'elastic' );
 		$indexer = $this->newIndexer( $store );
 
@@ -442,7 +433,6 @@ class ElasticFactory {
 	 * @return UpdateEntityCollationComplete
 	 */
 	public function newUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ) {
-
 		$updateEntityCollationComplete = new UpdateEntityCollationComplete(
 			$store
 		);
@@ -462,7 +452,6 @@ class ElasticFactory {
 	 * @return ElasticClientTaskHandler
 	 */
 	public function newInfoTaskHandler( Store $store, $outputFormatter ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$replicationInfoProvider = new ReplicationInfoProvider(
@@ -580,7 +569,6 @@ class ElasticFactory {
 	 * @param Store $store
 	 */
 	public function onEntityReferenceCleanUpComplete( Store $store, $id, $subject, $isRedirect ) {
-
 		if ( !$store instanceof ElasticStore || $store->getConnection( 'elastic' ) instanceof DummyClient ) {
 			return true;
 		}
@@ -601,7 +589,6 @@ class ElasticFactory {
 	 * @param DispatchContext $dispatchContext
 	 */
 	public function onInvalidateEntityCache( $dispatchContext ) {
-
 		$store = ApplicationFactory::getInstance()->getStore();
 
 		if ( !$store instanceof ElasticStore ) {
@@ -638,7 +625,6 @@ class ElasticFactory {
 	 * @since 3.1
 	 */
 	public function onAfterUpdateEntityCollationComplete( $store, $messageReporter ) {
-
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||
 			$connection instanceof DummyClient ) {

@@ -45,7 +45,6 @@ class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AllowsListValue::class,
 			new AllowsListValue()
@@ -53,7 +52,6 @@ class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortWikiText() {
-
 		$instance = new AllowsListValue();
 
 		$instance->setDataValueServiceFactory(
@@ -71,7 +69,6 @@ class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLongHtmlText() {
-
 		$instance = new AllowsListValue();
 
 		$instance->setDataValueServiceFactory(
@@ -89,7 +86,6 @@ class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortHtmlText() {
-
 		$instance = new AllowsListValue();
 
 		$instance->setDataValueServiceFactory(

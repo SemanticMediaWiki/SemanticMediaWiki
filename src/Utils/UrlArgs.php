@@ -60,7 +60,6 @@ class UrlArgs {
 	 * @return int|null
 	 */
 	public function getInt( string $key, ?int $default = null ) : ?int {
-
 		if ( isset( $this->args[$key] ) ) {
 			return (int)$this->args[$key];
 		}
@@ -76,7 +75,6 @@ class UrlArgs {
 	 * @return array
 	 */
 	public function getArray( string $key ) : array {
-
 		if ( !isset( $this->args[$key] ) || $this->args[$key] === '' ) {
 			return [];
 		}

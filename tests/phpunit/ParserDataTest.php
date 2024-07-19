@@ -45,7 +45,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -65,7 +64,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInitialDataIsEmpty() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -77,7 +75,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateJobState() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -91,7 +88,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetterInstances() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -114,7 +110,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddDataVlaueAndClear() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -140,7 +135,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddDataValueAndPushSemanticDataToParserOutput() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -164,7 +158,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetSemanticData() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -202,7 +195,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getPropertyValueDataProvider
 	 */
 	public function testAddDataValue( $propertyName, $value, $errorCount, $propertyCount ) {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -232,7 +224,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateStore() {
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
@@ -270,7 +261,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSkipUpdateOnMatchedMarker() {
-
 		$this->revisionGuard->expects( $this->once() )
 			->method( 'isSkippableUpdate' )
 			->will( $this->returnValue( true ) );
@@ -306,7 +296,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasSemanticData() {
-
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData(
@@ -333,7 +322,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testImportFromParserOutput() {
-
 		$import = new ParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -369,7 +357,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddLimitReport() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -399,7 +386,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsBlocked() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -427,7 +413,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetOption() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -451,7 +436,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddExtraParserKey() {
-
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -39,7 +39,6 @@ class InSemanticDataFetcher {
 	 * @return SemanticData
 	 */
 	public function getSemanticData( DIWikiPage $subject ) {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 

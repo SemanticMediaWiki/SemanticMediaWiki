@@ -55,7 +55,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function tearDown() : void {
-
 		$this->mwHooksHandler->restoreListedHooks();
 
 		if ( $this->title !== null ) {
@@ -66,7 +65,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPageCreationAndRevisionHandlingBeforeLinksUpdate() {
-
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
@@ -86,7 +84,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider propertyCountProvider
 	 */
 	public function testLinksUpdateAndVerifyStoreUpdate( $expected ) {
-
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
@@ -152,7 +149,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function fetchRevisionAndRunLinksUpdater( array $expected, $revId ) {
-
 		$parserData = $this->retrieveAndLoadData( $revId );
 
 		// Status before the update
@@ -186,7 +182,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function retrieveAndLoadData( $revId = null ) {
-
 		$revision = $revId !== null
 				  ? MediaWikiServices::getInstance()->getRevisionLookup()->getRevisionById( $revId )
 				  : null;
@@ -208,7 +203,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function propertyCountProvider() {
-
 		// Property _SKEY is always present even within an empty container
 		// po = ParserOutput, before means prior LinksUpdate
 

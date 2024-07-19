@@ -72,7 +72,6 @@ class MaintenanceRunner {
 	 * @throws DomainException
 	 */
 	public function run() {
-
 		if ( !class_exists( $this->maintenanceClass ) ) {
 			throw new RuntimeException( "Expected a valid {$this->maintenanceClass} class" );
 		}

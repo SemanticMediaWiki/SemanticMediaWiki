@@ -51,7 +51,6 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 	 * {@inheritDoc}
 	 */
 	public function validate( $dataValue ) {
-
 		$this->hasConstraintViolation = false;
 
 		if (
@@ -85,7 +84,6 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	private function doPregMatch( $pattern, $dataValue, $reference ) {
-
 		// Convert escaping as in /\d{4}
 		$pattern = str_replace( "/\\", "\\", (string)$pattern );
 

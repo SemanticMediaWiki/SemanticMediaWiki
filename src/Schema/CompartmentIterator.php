@@ -55,7 +55,6 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 * @return bool
 	 */
 	public function has( string $key ) : bool {
-
 		foreach ( $this->container as $data ) {
 			if ( DotArray::get( $data, $key, false ) !== false ) {
 				return true;
@@ -73,7 +72,6 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 */
 	#[\ReturnTypeWillChange]
 	public function current() {
-
 		$data = current( $this->container );
 
 		if ( $data instanceof Compartment ) {
@@ -100,7 +98,6 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 * @return CompartmentIterator
 	 */
 	public function find( string $key, ?string $flag = null ) : CompartmentIterator {
-
 		$meta = [];
 		$result = [];
 
@@ -111,7 +108,6 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	}
 
 	private function search( $key, $flag, $data, $meta, &$result ) {
-
 		foreach ( $data as $section => $value ) {
 
 			if ( isset( $data[Compartment::ASSOCIATED_SCHEMA] ) ) {

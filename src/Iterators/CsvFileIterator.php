@@ -66,7 +66,6 @@ class CsvFileIterator implements Iterator, Countable {
 	 * @param integer $length
 	 */
 	public function __construct( $file, $parseHeader = false, $delimiter = ",", $length = 8000 ) {
-
 		try {
 			$this->file = new SplFileObject( $file, 'r' );
 		} catch ( RuntimeException $e ) {
@@ -92,7 +91,6 @@ class CsvFileIterator implements Iterator, Countable {
 	 * {@inheritDoc}
 	 */
 	public function count() {
-
 		if ( $this->count ) {
 			return $this->count;
 		}
@@ -134,7 +132,6 @@ class CsvFileIterator implements Iterator, Countable {
 	 * {@inheritDoc}
 	 */
 	public function current() {
-
 		// First iteration to match the header
 		if ( $this->parseHeader && $this->key == 0 ) {
 			$this->header = $this->file->fgetcsv( $this->delimiter );
@@ -176,7 +173,6 @@ class CsvFileIterator implements Iterator, Countable {
 	 * {@inheritDoc}
 	 */
 	public function valid() {
-
 		if ( $this->next() ) {
 			return true;
 		}

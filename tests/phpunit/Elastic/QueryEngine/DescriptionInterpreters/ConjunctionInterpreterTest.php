@@ -21,7 +21,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $conditionBuilder;
 
 	public function setUp() : void {
-
 		$this->descriptionFactory = new DescriptionFactory();
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
@@ -31,7 +30,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConjunctionInterpreter::class,
 			new ConjunctionInterpreter( $this->conditionBuilder )
@@ -39,7 +37,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_Empty() {
-
 		$instance = new ConjunctionInterpreter(
 			$this->conditionBuilder
 		);
@@ -55,7 +52,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_NotEmpty() {
-
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'interpretDescription' )
 			->will( $this->returnValue( $this->conditionBuilder->newCondition( [ 'Foo' ] ) ) );

@@ -67,7 +67,6 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -79,7 +78,6 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunParseOnText() {
-
 		$text = __METHOD__;
 
 		$this->parser->expects( $this->any() )
@@ -105,7 +103,6 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunParseFromRevision() {
-
 		$content = $this->getMockBuilder( '\Content' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

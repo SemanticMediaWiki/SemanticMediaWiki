@@ -88,7 +88,6 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 * @return boolean
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
-
 		if ( $this->isDeferredMode ) {
 			return $this->runCheck( $subject, $options );
 		}
@@ -126,7 +125,6 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	}
 
 	private function runCheck( $subject, $options ) {
-
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
 		// Doing some checks here ...

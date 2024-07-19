@@ -66,7 +66,6 @@ class FranceFactsheet {
 	 * @return SemanticData
 	 */
 	public function asEntity() {
-
 		$semanticData = new SemanticData( $this->asSubject() );
 		$semanticData->addDataValue( $this->getLocatedInValue() );
 
@@ -83,7 +82,6 @@ class FranceFactsheet {
 	 * @return DataValue
 	 */
 	public function getLocatedInValue() {
-
 		$locatedInProperty = new LocatedInProperty();
 
 		return $this->dataValueFactory->newDataValueByItem(
@@ -97,7 +95,6 @@ class FranceFactsheet {
 	 * @since 2.1
 	 */
 	public function purge() {
-
 		$subjects = [];
 
 		$subjects[] = $this->asSubject();

@@ -17,7 +17,6 @@ use SMW\Exporter\DataItemMatchFinder;
 class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -29,7 +28,6 @@ class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMatchExpElementOnMatchableWikiNamespaceUri() {
-
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -56,7 +54,6 @@ class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMatchExpElementOnMatchableWikiNamespaceUriWithHelpWikiNs() {
-
 		$dataItem = new DIWikiPage( 'Foo', NS_HELP, '', 'Bar' );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -83,7 +80,6 @@ class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMatchExpElementOnUnmatchableWikiNamespaceUri() {
-
 		$dataItem = new DIWikiPage( 'UNKNOWN', NS_MAIN, '', '' );
 
 		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
@@ -126,7 +122,6 @@ class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToFindDataItemOnInvalidUri() {
-
 		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
 			->disableOriginalConstructor()
 			->getMock();

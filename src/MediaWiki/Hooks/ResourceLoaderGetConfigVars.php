@@ -53,7 +53,6 @@ class ResourceLoaderGetConfigVars implements HookListener {
 	 * @return boolean
 	 */
 	public function process( array &$vars ) {
-
 		$vars['smw-config'] = [
 			'version' => SMW_VERSION,
 			'namespaces' => [],

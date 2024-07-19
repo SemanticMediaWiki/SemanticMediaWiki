@@ -36,7 +36,6 @@ class RunImportTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RunImport::class,
 			new RunImport()
@@ -44,7 +43,6 @@ class RunImportTest extends TestCase {
 	}
 
 	public function testExecute() {
-
 		$instance = new RunImport();
 
 		$instance->setMessageReporter(

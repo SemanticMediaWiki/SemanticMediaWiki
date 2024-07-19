@@ -35,7 +35,6 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConstraintSchemaCompiler::class,
 			new ConstraintSchemaCompiler( $this->schemaFinder, $this->propertySpecificationLookup )
@@ -43,7 +42,6 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrettifyOnEmpty() {
-
 		$instance = new ConstraintSchemaCompiler(
 			$this->schemaFinder,
 			$this->propertySpecificationLookup
@@ -56,7 +54,6 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrettifyAsJSON() {
-
 		$instance = new ConstraintSchemaCompiler(
 			$this->schemaFinder,
 			$this->propertySpecificationLookup
@@ -77,7 +74,6 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompileConstraintSchema_allowed_values() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValues' )
 			->will( $this->returnValue( [ new DIBlob( 'foo' ) ] ) );
@@ -114,7 +110,6 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompileConstraintSchema_allowed_pattern() {
-
 		$hash = Message::getHash(
 			[ 'smw_allows_pattern' ],
 			Message::TEXT,
@@ -165,7 +160,6 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompileConstraintSchema_unique_value_constraint() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'hasUniquenessConstraint' )
 			->will( $this->returnValue( true ) );

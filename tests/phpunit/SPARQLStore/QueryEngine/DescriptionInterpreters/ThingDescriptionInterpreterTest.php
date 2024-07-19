@@ -29,7 +29,6 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -41,7 +40,6 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBuildConditionFor() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ThingDescription' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -61,7 +59,6 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testThingDescriptionInterpreter( $description, $orderByProperty, $expectedConditionType, $expectedConditionString ) {
-
 		$resultVariable = 'result';
 
 		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -85,7 +82,6 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0

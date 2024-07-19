@@ -80,7 +80,6 @@ class ProfileForm {
 	 * @param array &$profiles
 	 */
 	public static function addProfile( $type, array &$profiles, array $options ) {
-
 		if ( $type !== SMW_SPECIAL_SEARCHTYPE ) {
 			return;
 		}
@@ -100,7 +99,6 @@ class ProfileForm {
 	 * @return array
 	 */
 	public static function getFormDefinitions( Store $store ) {
-
 		static $data = null;
 
 		if ( $data !== null ) {
@@ -128,7 +126,6 @@ class ProfileForm {
 	 * @return array
 	 */
 	public static function getPrefixMap( array $data ) {
-
 		$map = [];
 
 		if (
@@ -156,7 +153,6 @@ class ProfileForm {
 	 * @param array $opts
 	 */
 	public function buildForm( &$form, array $opts = [] ) {
-
 		$hidden = '';
 		$html = '';
 
@@ -251,7 +247,6 @@ class ProfileForm {
 	}
 
 	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, $hiddenNamespaces, &$hidden ) {
-
 		$activeNamespaces = array_merge( $this->specialSearch->getNamespaces(), $preselectNamespaces );
 		$default = false;
 
@@ -305,7 +300,6 @@ class ProfileForm {
 	}
 
 	private function buildSearchForms( $request ) {
-
 		$data = $this->getFormDefinitions( $this->store );
 
 		if ( $data === [] ) {
@@ -335,7 +329,6 @@ class ProfileForm {
 	}
 
 	private function findErrors( $searchEngine ) {
-
 		if ( ( $errors = $searchEngine->getErrors() ) === [] ) {
 			return '';
 		}
@@ -357,7 +350,6 @@ class ProfileForm {
 	}
 
 	private function buildSortForm( $request ) {
-
 		$sortForm = $this->formsFactory->newSortForm( $request );
 
 		// TODO this information should come from the store and not being
@@ -377,7 +369,6 @@ class ProfileForm {
 	}
 
 	private function profile_sheet( $query, $queryLink, $termPrefixes ) {
-
 		$text = Message::get( 'smw-search-profile-extended-help-intro', Message::PARSE, Message::USER_LANGUAGE );
 
 		$link = $queryLink !== null ? $queryLink->getHtml() : '';

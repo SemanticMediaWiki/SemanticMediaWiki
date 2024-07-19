@@ -119,7 +119,6 @@ class Installer implements MessageReporter {
 	 * @param Options|array $options
 	 */
 	public function setOptions( $options ) {
-
 		if ( !$options instanceof Options ) {
 			$options = new Options( $options );
 		}
@@ -142,7 +141,6 @@ class Installer implements MessageReporter {
 	 * @param Options|boolean $verbose
 	 */
 	public function install( $verbose = true ) {
-
 		if ( $verbose instanceof Options ) {
 			$this->options = $verbose;
 		}
@@ -296,7 +294,6 @@ class Installer implements MessageReporter {
 	 * @param boolean $verbose
 	 */
 	public function uninstall( $verbose = true ) {
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$this->initMessageReporter( $verbose );
@@ -355,7 +352,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function initMessageReporter( $verbose = true ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter;
 		}
@@ -373,7 +369,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function runTableOptimization() {
-
 		if ( !$this->options->safeGet( self::OPT_TABLE_OPTIMIZE, false ) ) {
 			return $this->messageReporter->reportMessage(
 				"Table optimization was not enabled (or skipped), stopping the task.\n"
@@ -386,7 +381,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function addSupplementJobs() {
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		if ( !$this->options->safeGet( self::OPT_SUPPLEMENT_JOBS, false ) ) {
@@ -433,7 +427,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function outputReport( $timer ) {
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$keys = $timer->keys;
 
@@ -457,7 +450,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function printHead() {
-
 		if (
 			$this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) &&
 			$this->options->get( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
@@ -468,7 +460,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function printBottom() {
-
 		if ( $this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
 			$this->messageReporter->reportMessage( $this->cliMsgFormatter->section( '', 0, '=' ) );
 			$this->messageReporter->reportMessage( "\n" );

@@ -16,7 +16,6 @@ use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
 class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NumberValueDescriptionBuilder::class,
 			new NumberValueDescriptionBuilder()
@@ -24,7 +23,6 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsBuilderForNumberValue() {
-
 		$dataValue = $this->getMockBuilder( '\SMWNumberValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -40,7 +38,6 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $decription ) {
-
 		$numberValue = $this->getMockBuilder( '\SMWNumberValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -66,7 +63,6 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidNumberValueReturnsThingDescription() {
-
 		$numberValue = $this->getMockBuilder( '\SMWNumberValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -84,7 +80,6 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		$provider[] = [
 			'42',
 			'\SMW\Query\Language\ValueDescription'

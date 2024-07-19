@@ -19,7 +19,6 @@ class JaTokenizerTest extends TestCase {
 	 * @dataProvider icuTextProvider
 	 */
 	public function testIcuWordBoundaryTokenizer( $text, $expected ) {
-
 		$sanitizerFactory = new SanitizerFactory();
 
 		$tokenier = $sanitizerFactory->newIcuWordBoundaryTokenizer(
@@ -40,7 +39,6 @@ class JaTokenizerTest extends TestCase {
 	 * @dataProvider tinyTextProvider
 	 */
 	public function testJaTinySegmenterTokenizer( $text, $expected ) {
-
 		$sanitizerFactory = new SanitizerFactory();
 
 		$tokenier = $sanitizerFactory->newJaTinySegmenterTokenizer(
@@ -54,7 +52,6 @@ class JaTokenizerTest extends TestCase {
 	}
 
 	public function icuTextProvider() {
-
 		// https://github.com/NaturalNode/natural/blob/master/spec/tokenizer_ja_spec.js
 
 		$provider[] = array(
@@ -82,7 +79,6 @@ class JaTokenizerTest extends TestCase {
 	}
 
 	public function tinyTextProvider() {
-
 		// https://github.com/NaturalNode/natural/blob/master/spec/tokenizer_ja_spec.js
 		/*
 			['計算', '機科', '学', 'に', 'おける', '字句', '解析',

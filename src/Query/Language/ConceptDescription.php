@@ -47,7 +47,6 @@ class ConceptDescription extends Description {
 	}
 
 	public function getQueryString( $asValue = false ) {
-
 		$pageValue = DataValueFactory::getInstance()->newDataValueByItem( $this->concept, null );
 		$result = '[[' . $pageValue->getPrefixedText() . ']]';
 

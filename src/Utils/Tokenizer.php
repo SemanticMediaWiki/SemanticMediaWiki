@@ -18,7 +18,6 @@ class Tokenizer {
 	 * @return array
 	 */
 	public static function tokenize( $text ) {
-
 		if ( !class_exists( '\IntlRuleBasedBreakIterator' ) ) {
 			return explode( ' ', $text );
 		}

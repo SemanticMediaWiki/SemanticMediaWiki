@@ -41,7 +41,6 @@ class WikiPageValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			WikiPageValue::class,
 			new WikiPageValue( '' )
@@ -49,7 +48,6 @@ class WikiPageValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisableInfolinksOnSpecialUsernamePrefix() {
-
 		$instance = new WikiPageValue( '_wpg' );
 
 		$this->assertFalse(

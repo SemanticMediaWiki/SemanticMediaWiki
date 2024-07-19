@@ -62,7 +62,6 @@ class TimeDataTypeTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -70,7 +69,6 @@ class TimeDataTypeTest extends DatabaseTestCase {
 	}
 
 	public function testImportOfDifferentDateWithAssortmentOfOutputConversion() {
-
 		$this->importedTitles = [
 			'TimeDataTypeRegressionTest',
 			'Property:Has query date',
@@ -233,7 +231,6 @@ class TimeDataTypeTest extends DatabaseTestCase {
 	}
 
 	protected function assertThatDateValuesAreSet( $expected, $semanticData ) {
-
 		$runDateValueAssert = false;
 
 		foreach ( $semanticData->getProperties() as $property ) {

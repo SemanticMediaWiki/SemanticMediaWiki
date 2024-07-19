@@ -45,7 +45,6 @@ class SupplementTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SupplementTaskHandler::class,
 			new SupplementTaskHandler( $this->outputFormatter, [] )
@@ -53,7 +52,6 @@ class SupplementTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -72,7 +70,6 @@ class SupplementTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsTaskFor() {
-
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -95,7 +92,6 @@ class SupplementTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleSubRequest() {
-
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();

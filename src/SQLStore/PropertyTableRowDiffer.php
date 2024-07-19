@@ -105,7 +105,6 @@ class PropertyTableRowDiffer {
 	 * @return array
 	 */
 	public function computeTableRowDiff( $sid, SemanticData $semanticData ) {
-
 		$tablesDeleteRows = [];
 		$tablesInsertRows = [];
 
@@ -284,7 +283,6 @@ class PropertyTableRowDiffer {
 	 * @return array
 	 */
 	private function fetchCurrentContentsForPropertyTable( $sid, TableDefinition $propertyTable ) {
-
 		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict
 			throw new InvalidArgumentException( 'Operation not supported for tables without subject IDs.' );
 		}
@@ -338,7 +336,6 @@ class PropertyTableRowDiffer {
 	 * @return array
 	 */
 	private function arrayDeleteMatchingValues( $oldValues, $newValues, $propertyTable ) {
-
 		$isString = $propertyTable->getDIType() === DataItem::TYPE_BLOB;
 
 		// Cycle through old values

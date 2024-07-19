@@ -16,7 +16,6 @@ use SMW\Schema\Exception\SchemaParameterTypeMismatchException;
 class SchemaParameterTypeMismatchExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SchemaParameterTypeMismatchException( 'foo', 'array' );
 
 		$this->assertInstanceof(

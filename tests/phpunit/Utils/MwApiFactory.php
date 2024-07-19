@@ -34,7 +34,6 @@ class MwApiFactory {
 	 * @return ApiResult
 	 */
 	public function newApiResult( array $params ) {
-
 		if ( version_compare( MW_VERSION, '1.25', '<' ) ) {
 			return new ApiResult( $this->newApiMain( $params ) );
 		}
@@ -58,7 +57,6 @@ class MwApiFactory {
 	 * @return array
 	 */
 	public function doApiRequest( array $params ) {
-
 		$api = $this->newApiMain( $params );
 		$api->execute();
 
@@ -70,7 +68,6 @@ class MwApiFactory {
 	}
 
 	private function newRequestContext( $request = [] ) {
-
 		$context = new RequestContext();
 
 		if ( $request instanceof WebRequest ) {

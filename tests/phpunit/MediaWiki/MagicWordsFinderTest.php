@@ -29,7 +29,6 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\MagicWordsFinder',
 			new MagicWordsFinder()
@@ -49,7 +48,6 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider magicWordsProvider
 	 */
 	public function testFindMagicWordInText( $magicWord, $text, $expectedText, $expectedWord ) {
-
 		$instance = $this->magicWordsFinder;
 		$word = $instance->findMagicWordInText( $magicWord, $text );
 
@@ -70,7 +68,6 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetMagicWords() {
-
 		$instance = new MagicWordsFinder(
 			new ParserOutput()
 		);
@@ -83,7 +80,6 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetMagicWordsOnLegacyStorage() {
-
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'hasExtensionData' ] )
@@ -103,7 +99,6 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoPushOnEmptyMagicWordsList() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -125,7 +120,6 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function assertMagicWordFromParserOutput( $instance, $magicWord, $expectedMagicWords ) {
-
 		$this->assertEmpty(
 			$instance->getMagicWords()
 		);
@@ -142,7 +136,6 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function magicWordsProvider() {
-
 		$provider = [];
 
 		$provider[] = [

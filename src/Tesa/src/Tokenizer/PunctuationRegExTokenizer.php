@@ -35,7 +35,6 @@ class PunctuationRegExTokenizer implements Tokenizer {
 	 * {@inheritDoc}
 	 */
 	public function setOption( $name, $value ) {
-
 		if ( $this->tokenizer !== null ) {
 			$this->tokenizer->setOption( $name, $value );
 		}
@@ -62,7 +61,6 @@ class PunctuationRegExTokenizer implements Tokenizer {
 	 * @return array|false
 	 */
 	public function tokenize( $string ) {
-
 		if ( $this->tokenizer !== null ) {
 			$string = implode( " ", $this->tokenizer->tokenize( $string ) );
 		}

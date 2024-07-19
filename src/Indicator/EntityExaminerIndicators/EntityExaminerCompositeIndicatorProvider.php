@@ -109,7 +109,6 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	 * @return boolean
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
-
 		if ( isset( $options['action'] ) && ( $options['action'] === 'edit' || $options['action'] === 'history' ) ) {
 			return false;
 		}
@@ -122,7 +121,6 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	}
 
 	private function checkIndicators( DIWikiPage $subject, array $options ) : bool {
-
 		$indicatorProviders = [];
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 		$options['options_raw'] = json_encode( $options );

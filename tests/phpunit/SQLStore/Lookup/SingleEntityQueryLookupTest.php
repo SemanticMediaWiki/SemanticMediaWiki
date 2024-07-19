@@ -22,7 +22,6 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	private $idTable;
 
 	protected function setUp() : void {
-
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -37,7 +36,6 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SingleEntityQueryLookup::class,
 			new SingleEntityQueryLookup( $this->store )
@@ -50,7 +48,6 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonValueDescriptionReturnsEmptyQueryResult() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ThingDescription' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -78,7 +75,6 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResult_PageEntity() {
-
 		$this->idTable->expects( $this->any() )
 			->method( 'findAssociatedRev' )
 			->will( $this->returnValue( 1001 ) );
@@ -133,7 +129,6 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResult_SubobjectEntity() {
-
 		$dataItem_base = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -197,7 +192,6 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResult_LimitNull() {
-
 		$this->idTable->expects( $this->never() )
 			->method( 'findAssociatedRev' );
 

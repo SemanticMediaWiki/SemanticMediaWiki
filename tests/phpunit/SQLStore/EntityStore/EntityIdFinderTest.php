@@ -51,7 +51,6 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EntityIdFinder::class,
 			new EntityIdFinder( $this->connection, $this->propertyTableHashes, $this->idCacheManager )
@@ -59,7 +58,6 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindIdByItem() {
-
 		$row = [
 			'smw_id' => 42
 		];
@@ -92,7 +90,6 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchFieldsFromTableById() {
-
 		$row = [
 			'smw_id' => 42,
 			'smw_hash' => '00000000000',
@@ -126,7 +123,6 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchFromTableByTitle() {
-
 		$row = [
 			'smw_id' => 42,
 			'smw_hash' => '00000000000',
@@ -160,7 +156,6 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindIdsByTitle() {
-
 		$rows = [
 			(object)[ 'smw_id' => 42 ],
 			(object)[ 'smw_id' => 1001 ],

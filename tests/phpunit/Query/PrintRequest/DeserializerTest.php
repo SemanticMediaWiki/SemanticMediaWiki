@@ -23,7 +23,6 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textProvider
 	 */
 	public function testDeserialize( $text, $showMode, $expectedLabel, $expectedMode, $expectedDataInstance, $expectedOutputFormat ) {
-
 		$options = [
 			'show_mode' => $showMode
 		];
@@ -54,7 +53,6 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-
 		#0
 		$provider[] = [
 			'Foo',

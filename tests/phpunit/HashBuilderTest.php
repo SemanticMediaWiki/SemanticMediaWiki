@@ -27,7 +27,6 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider segmentProvider
 	 */
 	public function testTitleRoundTrip( $namespace, $title, $interwiki , $fragment ) {
-
 		$title = Title::makeTitle( $namespace, $title, $fragment, $interwiki );
 
 		$this->assertEquals(
@@ -42,7 +41,6 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider segmentProvider
 	 */
 	public function testDiWikiPageRoundTrip( $namespace, $title, $interwiki, $subobjectName ) {
-
 		$dataItem = new DIWikiPage( $title, $namespace, $interwiki, $subobjectName );
 
 		$this->assertEquals(
@@ -54,7 +52,6 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPredefinedProperty() {
-
 		$instance = new HashBuilder();
 
 		$property = new DIProperty( '_MDAT' );
@@ -76,7 +73,6 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testContentHashId() {
-
 		$hash = HashBuilder::createFromContent( 'Foo' );
 
 		$this->assertInternalType(
@@ -96,7 +92,6 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateFromSemanticData() {
-
 		$semanticData = new SemanticData(
 			DIWikiPage::newFromText( __METHOD__ )
 		);
@@ -108,7 +103,6 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateFromSemanticDataWithSubSemanticDataAndPHPSerialization() {
-
 		$semanticData = new SemanticData(
 			DIWikiPage::newFromText( __METHOD__ )
 		);
@@ -138,7 +132,6 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function segmentProvider() {
-
 		$provider[] = [ NS_FILE, 'ichi', '', '' ];
 		$provider[] = [ NS_HELP, 'ichi', 'ni', '' ];
 		$provider[] = [ NS_MAIN, 'ichi maru', 'ni', 'san' ];

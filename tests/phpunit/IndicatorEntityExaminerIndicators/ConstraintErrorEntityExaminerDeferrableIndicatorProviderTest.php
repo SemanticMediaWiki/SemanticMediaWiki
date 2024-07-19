@@ -63,7 +63,6 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider',
 			new ConstraintErrorEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache )
@@ -81,7 +80,6 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 	}
 
 	public function testHasIndicator_NoDeferredMode() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new ConstraintErrorEntityExaminerDeferrableIndicatorProvider(
@@ -111,7 +109,6 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 	}
 
 	public function testHasIndicator_FromErrorLookup() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );
@@ -146,7 +143,6 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 	}
 
 	public function testHasIndicator_FromCache() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( [ 'Foo' ] ) );

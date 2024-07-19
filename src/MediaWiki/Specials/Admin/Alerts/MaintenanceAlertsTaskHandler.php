@@ -45,7 +45,6 @@ class MaintenanceAlertsTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$contents = '';
 
 		foreach ( $this->taskHandlers as $taskHandler ) {

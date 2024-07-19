@@ -29,7 +29,6 @@ class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider optionsProvider
 	 */
 	public function testMakeSelectOptions( $options ) {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -44,7 +43,6 @@ class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider optionsProvider
 	 */
 	public function testToString( $options ) {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -56,7 +54,6 @@ class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function optionsProvider() {
-
 		$provider[] = [
 			[ 'FOR UPDATE' ]
 		];

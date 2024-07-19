@@ -50,7 +50,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$parser = $this->getMockBuilder( 'Parser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -62,7 +61,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonProcessForEmptyText() {
-
 		$text = '';
 
 		$parser = $this->getMockBuilder( 'Parser' )
@@ -84,7 +82,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisableProcessOfInterfaceMessageOnNonSpecialPage() {
-
 		$text = 'Foo';
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -126,7 +123,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOfInterfaceMessageOnEnabledSpecialPage() {
-
 		$text = 'Foo';
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -185,7 +181,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOfInterfaceMessageOnSpecialPageWithOnOffMarker() {
-
 		$text = '[[SMW::off]]Foo[[SMW::on]]';
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -245,7 +240,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testProcess( $title ) {
-
 		$text   = 'Foo';
 		$parser = $this->parserFactory->newFromTitle( $title );
 
@@ -263,7 +257,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textDataProvider
 	 */
 	public function testTextChangeWithParserOuputUpdateIntegration( $parameters, $expected ) {
-
 		$this->testEnvironment->withConfiguration(
 			$parameters['settings']
 		);
@@ -310,7 +303,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleProvider() {
-
 		#0
 		$provider[] = [ Title::newFromText( __METHOD__ ) ];
 
@@ -346,7 +338,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textDataProvider() {
-
 		$provider = [];
 
 		// #0 NS_MAIN; [[FooBar...]] with a different caption

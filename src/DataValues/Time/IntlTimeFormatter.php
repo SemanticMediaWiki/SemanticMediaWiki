@@ -65,7 +65,6 @@ class IntlTimeFormatter {
 	 * @return string|boolean
 	 */
 	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ) {
-
 		$dateTime = $this->dataItem->asDateTime();
 		$timezone = '';
 
@@ -124,7 +123,6 @@ class IntlTimeFormatter {
 	 * @return string|boolean
 	 */
 	public function format( $format ) {
-
 		$dateTime = $this->dataItem->asDateTime();
 
 		if ( !$dateTime ) {
@@ -147,7 +145,6 @@ class IntlTimeFormatter {
 	 * @return boolean
 	 */
 	public function containsValidDateFormatRule( $format ) {
-
 		foreach ( str_split( $format ) as $value ) {
 			if ( in_array( $value, [ 'd', 'D', 'j', 'l', 'N', 'w', 'W', 'F', 'M', 'm', 'n', 't', 'L', 'o', 'Y', 'y', "c", 'r' ] ) ) {
 				return true;
@@ -168,7 +165,6 @@ class IntlTimeFormatter {
 	 * - A	Uppercase Ante meridiem and Post meridiem
 	 */
 	private function formatWithLocalizedTextReplacement( $dateTime, $format ) {
-
 		$output = $dateTime->format( $format );
 
 		// (n) DateTime => 1 through 12

@@ -109,7 +109,6 @@ class DIConceptHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-
 		if ( is_array( $dbkeys ) && count( $dbkeys ) == 5 ) {
 			return new DIConcept(
 				$dbkeys[0],

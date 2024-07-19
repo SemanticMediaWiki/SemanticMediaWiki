@@ -21,7 +21,6 @@ class OptionsBuilder {
 	 * @return string
 	 */
 	public static function toString( array $options ) {
-
 		$string = '';
 
 		if ( isset( $options['GROUP BY'] ) ) {

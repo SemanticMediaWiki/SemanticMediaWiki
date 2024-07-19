@@ -52,7 +52,6 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$html = '';
 
 		// Push `smw` to the top
@@ -108,7 +107,6 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	}
 
 	private function buildSection( $section, $deprecationNoticeList ) {
-
 		$noticeConfigList = [];
 		$replacementConfigList = [];
 		$removedConfigList = [];
@@ -155,7 +153,6 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	}
 
 	private function buildList( $section, $noticeConfigList, $replacementConfigList, $removedConfigList ) {
-
 		$noticeList = [];
 		$list = [];
 
@@ -202,7 +199,6 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	}
 
 	private function mergeList( $title, $section, &$list ) {
-
 		if ( $list === [] || ( $items = implode( '', $list ) ) === '' ) {
 			return;
 		}
@@ -225,7 +221,6 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	}
 
 	private function createItems( $message, $values ) {
-
 		$list = [];
 
 		if ( !is_array( $values ) ) {

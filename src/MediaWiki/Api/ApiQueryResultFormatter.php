@@ -103,7 +103,6 @@ class ApiQueryResultFormatter {
 	 * @since 1.9
 	 */
 	public function doFormat() {
-
 		if ( $this->queryResult->getErrors() !== [] ) {
 			$this->result = $this->formatErrors(
 				ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $this->queryResult->getErrors() )
@@ -127,7 +126,6 @@ class ApiQueryResultFormatter {
 	 * @return array
 	 */
 	protected function formatResults( array $queryResult ) {
-
 		$this->type = 'query';
 		$results    = [];
 
@@ -184,7 +182,6 @@ class ApiQueryResultFormatter {
 	 * @return array
 	 */
 	protected function formatErrors( array $errors ): array {
-
 		$this->type      = 'error';
 		$result['query'] = $errors;
 
@@ -207,7 +204,6 @@ class ApiQueryResultFormatter {
 	 * @param string $tag
 	 */
 	public function setIndexedTagName( &$arr, $tag = null ) {
-
 		if ( !$this->isRawMode ) {
 			return;
 		}

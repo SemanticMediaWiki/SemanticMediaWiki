@@ -32,7 +32,6 @@ class SchemaLinkProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -44,7 +43,6 @@ class SchemaLinkProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotationOnInvalidSchemaLinkTypeThrowsException() {
-
 		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -59,7 +57,6 @@ class SchemaLinkProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider SchemaLinkProvider
 	 */
 	public function testAddAnnotation( $SchemaLink, $expected ) {
-
 		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', '_QUERYe7d20a88999' );
 
 		$container = new DIContainer(
@@ -80,7 +77,6 @@ class SchemaLinkProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function SchemaLinkProvider() {
-
 		yield [
 			'',
 			[

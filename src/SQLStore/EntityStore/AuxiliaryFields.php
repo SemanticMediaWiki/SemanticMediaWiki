@@ -48,7 +48,6 @@ class AuxiliaryFields {
 	 * @return FieldList
 	 */
 	public function prefetchFieldList( array $subjects ) : FieldList {
-
 		if ( $subjects === [] ) {
 			return new FieldList( [] );
 		}
@@ -89,7 +88,6 @@ class AuxiliaryFields {
 	 * @param array|null $countmap
 	 */
 	public function setFieldMaps( $sid, array $seqmap = null, array $countmap = null ) {
-
 		$cache = $this->idCacheManager->get( self::COUNTMAP_CACHE_ID );
 
 		if ( $seqmap !== [] ) {
@@ -127,7 +125,6 @@ class AuxiliaryFields {
 	}
 
 	private function fetchCountMap( array $hashes ) {
-
 		return $this->connection->select(
 			[
 				// tableName conversion required by SQlite otherwise the

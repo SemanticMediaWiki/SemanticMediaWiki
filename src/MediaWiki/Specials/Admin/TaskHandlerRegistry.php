@@ -59,7 +59,6 @@ class TaskHandlerRegistry {
 	 * @param User $user
 	 */
 	public function registerTaskHandlers( array $taskHandlers, User $user ) {
-
 		if ( $this->onRegisterTaskHandlers ) {
 			return;
 		}

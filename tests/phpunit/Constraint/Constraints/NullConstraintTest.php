@@ -17,7 +17,6 @@ use SMW\Tests\TestEnvironment;
 class NullConstraintTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NullConstraint::class,
 			new NullConstraint()
@@ -25,7 +24,6 @@ class NullConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new NullConstraint();
 
 		$this->assertEquals(
@@ -35,7 +33,6 @@ class NullConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new NullConstraint();
 
 		$this->assertFalse(

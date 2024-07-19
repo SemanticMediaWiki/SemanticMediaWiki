@@ -38,7 +38,6 @@ class FilterMapTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FilterMap::class,
 			new FilterMap( $this->store, [] )
@@ -46,7 +45,6 @@ class FilterMapTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCountListByType() {
-
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'preload' )
 			->with( $this->equalTo( [ 'Foo' ] ) );

@@ -56,7 +56,6 @@ class Status {
 	 * @throws InvalidArgumentException
 	 */
 	public function get( string $key ) {
-
 		if ( $this->has( $key ) ) {
 			return $this->options[$key];
 		}

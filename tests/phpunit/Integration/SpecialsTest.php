@@ -56,7 +56,6 @@ class SpecialsTest extends DatabaseTestCase {
 	 * @param $specialPageProvider
 	 */
 	public function testSpecial( callable $specialPageProvider ) {
-
 		try {
 			$specialPageProvider()->execute( '' );
 		}
@@ -78,7 +77,6 @@ class SpecialsTest extends DatabaseTestCase {
 	 * @param $specialPageProvider
 	 */
 	public function testSpecialAliasesContLang( callable $specialPageProvider ) {
-
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 
 		// Test for languages

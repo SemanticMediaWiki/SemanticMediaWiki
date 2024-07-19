@@ -62,7 +62,6 @@ class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangePropagationExaminer::class,
 			new ChangePropagationExaminer( $this->declarationExaminer, $this->store, $this->semanticData )
@@ -70,7 +69,6 @@ class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsChangePropagation() {
-
 		$dataItemFactory = new DataItemFactory();
 		$subject = $dataItemFactory->newDIWikiPage( 'Test', NS_MAIN );
 
@@ -108,7 +106,6 @@ class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPendingJob() {
-
 		$dataItemFactory = new DataItemFactory();
 		$subject = $dataItemFactory->newDIWikiPage( 'Test', NS_MAIN );
 

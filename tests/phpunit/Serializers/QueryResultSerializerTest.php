@@ -47,7 +47,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructor() {
-
 		$this->assertInstanceOf(
 			'\SMW\Serializers\QueryResultSerializer',
 			new QueryResultSerializer()
@@ -55,7 +54,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSerializeOutOfBoundsException() {
-
 		$this->expectException( 'OutOfBoundsException' );
 
 		$instance = new QueryResultSerializer();
@@ -81,7 +79,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryResultSerializerForRecordType() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -140,7 +137,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSerializeFormatForTimeValue() {
-
 		$property = \SMW\DIProperty::newFromUserLabel( 'Foo' );
 		$property->setPropertyTypeId( '_dat' );
 
@@ -163,7 +159,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryResultSerializerOnMockOnDIWikiPageNonTitle() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -191,7 +186,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function numberDataProvider() {
-
 		$provider = [];
 
 		$setup = [
@@ -218,7 +212,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @return QueryResult
 	 */
 	private function buildMockQueryResult( $setup ) {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -275,7 +268,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function newMockBuilder() {
-
 		$builder = new MockObjectBuilder();
 		$builder->registerRepository( new CoreMockObjectRepository() );
 		$builder->registerRepository( new MediaWikiMockObjectRepository() );

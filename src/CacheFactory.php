@@ -63,7 +63,6 @@ class CacheFactory {
 	 * @return string
 	 */
 	public static function getPurgeCacheKey( $key ) {
-
 		if ( $key instanceof Title ) {
 			$key = $key->getArticleID();
 		}
@@ -80,7 +79,6 @@ class CacheFactory {
 	 * @throws RuntimeException
 	 */
 	public function newCacheOptions( array $cacheOptions ) {
-
 		if ( !isset( $cacheOptions['useCache'] ) || !isset( $cacheOptions['ttl'] ) ) {
 			throw new RuntimeException( "Cache options is missing a useCache/ttl parameter" );
 		}
@@ -116,7 +114,6 @@ class CacheFactory {
 	 * @return Cache
 	 */
 	public function newMediaWikiCompositeCache( $mediaWikiCacheType = null ) {
-
 		$compositeCache = OnoiCacheFactory::getInstance()->newCompositeCache( [
 			$this->newFixedInMemoryCache( 500 ),
 			$this->newMediaWikiCache( $mediaWikiCacheType )
@@ -133,7 +130,6 @@ class CacheFactory {
 	 * @return Cache
 	 */
 	public function newMediaWikiCache( $mediaWikiCacheType = null ) {
-
 		$mediaWikiCache = ObjectCache::getInstance(
 			( $mediaWikiCacheType === null ? $this->getMainCacheType() : $mediaWikiCacheType )
 		);
@@ -149,7 +145,6 @@ class CacheFactory {
 	 * @return Cache
 	 */
 	public function newCacheByType( $cacheType = null ) {
-
 		if ( $cacheType === CACHE_NONE || $cacheType === null ) {
 			return $this->newNullCache();
 		}

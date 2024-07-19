@@ -112,7 +112,6 @@ class ValueMatchConditionBuilder {
 	}
 
 	protected function getMatchableTextFromDescription( ValueDescription $description ) {
-
 		$matchableText = false;
 
 		if ( $description->getDataItem() instanceof DIBlob ) {

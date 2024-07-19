@@ -27,7 +27,6 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	// inappropriate buffer settings which can cause interference during unit
 	// testing, we clean the output buffer
 	protected function setUp() : void {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -73,7 +72,6 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -92,7 +90,6 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @depends testCanConstruct
 	 */
 	public function testRebuildSelectedPagesWithQueryOption() {
-
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -142,7 +139,6 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRebuildSelectedPagesWithCategoryNamespaceFilter() {
-
 		$row = new \stdClass;
 		$row->cat_title = 'Foo';
 
@@ -186,7 +182,6 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRebuildSelectedPagesWithPropertyNamespaceFilter() {
-
 		$row = new \stdClass;
 		$row->page_namespace = SMW_NS_PROPERTY;
 		$row->page_title = 'Bar';
@@ -231,7 +226,6 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRebuildSelectedPagesWithPageOption() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

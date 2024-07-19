@@ -100,7 +100,6 @@ class PrefetchItemLookup {
 	 * @return []
 	 */
 	public function getPropertyValues( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
-
 		$this->linkBatch->setCaller( __METHOD__ );
 		$this->linkBatch->addFromList( $subjects );
 		$this->linkBatch->execute();
@@ -113,7 +112,6 @@ class PrefetchItemLookup {
 	}
 
 	private function prefetchSemanticData( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
-
 		$tableid = $this->store->findPropertyTableID( $property );
 		$entityIdManager = $this->store->getObjectIds();
 
@@ -197,7 +195,6 @@ class PrefetchItemLookup {
 	}
 
 	private function prefetchPropertySubjects( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
-
 		$noninverse = new DIProperty(
 			$property->getKey(),
 			false
@@ -276,7 +273,6 @@ class PrefetchItemLookup {
 	}
 
 	private function buildList( $diHandler, $itemList, $requestOptions, $sequenceMap ) {
-
 		$values = [];
 		$i = 0;
 

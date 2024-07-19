@@ -410,7 +410,6 @@ class QueryResult {
 	 * @return SMWInfolink
 	 */
 	public function getQueryLink( $caption = false ) {
-
 		$link = QueryLinker::get( $this->mQuery );
 
 		$link->setCaption( $caption );
@@ -447,7 +446,6 @@ class QueryResult {
 	 * @return array
 	 */
 	public function serializeToArray() {
-
 		$serializerFactory = new SerializerFactory();
 		$serializer = $serializerFactory->newQueryResultSerializer();
 		$serializer->version( $this->serializer_version );
@@ -472,7 +470,6 @@ class QueryResult {
 	 * @return array
 	 */
 	public function toArray() {
-
 		$time = microtime( true );
 
 		// @note micro optimization: We call getSerializedQueryResult()
@@ -501,7 +498,6 @@ class QueryResult {
 	 * @return string
 	 */
 	public function getHash( $type = null ) {
-
 		// Just iterate over available subjects to create a "quick" hash given
 		// that resolving the entire object tree is costly due to recursive
 		// processing of all data items including its printouts

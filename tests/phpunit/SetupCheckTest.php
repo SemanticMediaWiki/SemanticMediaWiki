@@ -30,7 +30,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SetupCheck::class,
 			new SetupCheck( [] )
@@ -43,7 +42,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasError() {
-
 		$this->setupFile->expects( $this->any() )
 			->method( 'inMaintenanceMode' )
 			->will( $this->returnValue( true ) );
@@ -57,7 +55,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsCli() {
-
 		$instance = new SetupCheck( [], $this->setupFile );
 
 		$this->assertInternalType(
@@ -67,7 +64,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReadFromFile_ThrowsException() {
-
 		$instance = new SetupCheck( [], $this->setupFile );
 
 		$this->expectException( '\SMW\Exception\FileNotReadableException' );
@@ -75,7 +71,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReadFromFile_InvalidJSON_ThrowsException() {
-
 		$instance = new SetupCheck( [], $this->setupFile );
 
 		$this->expectException( '\RuntimeException' );
@@ -83,7 +78,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsError() {
-
 		$instance = SetupCheck::newFromDefaults(
 			$this->setupFile
 		);
@@ -98,7 +92,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnknownErrorType_ThrowsException() {
-
 		$instance = SetupCheck::newFromDefaults(
 			$this->setupFile
 		);
@@ -113,7 +106,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorTypeProvider
 	 */
 	public function testGetError_CliOutput( $errorType ) {
-
 		$this->setupFile->expects( $this->any() )
 			->method( 'getMaintenanceMode' )
 			->will( $this->returnValue( [ 'Foo' => 'bar' ] ) );
@@ -142,7 +134,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorTypeProvider
 	 */
 	public function testGetError_NoCliHTMLOutput( $errorType ) {
-
 		$this->setupFile->expects( $this->any() )
 			->method( 'getMaintenanceMode' )
 			->will( $this->returnValue( [ 'Foo' => 'bar' ] ) );
@@ -170,7 +161,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function errorTypeProvider() {
-
 		$reflectionClass = new ReflectionClass(
 			SetupCheck::class
 		);

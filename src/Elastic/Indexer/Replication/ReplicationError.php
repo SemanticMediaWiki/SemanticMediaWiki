@@ -86,7 +86,6 @@ class ReplicationError {
 	 * @throws InvalidArgumentException
 	 */
 	public function get( $key ) {
-
 		if ( !isset( $this->data[$key] ) ) {
 			throw new InvalidArgumentException( "Key: `$key` is unknown!" );
 		}

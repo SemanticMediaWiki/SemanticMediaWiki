@@ -66,7 +66,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CachedFactbox::class,
 			new CachedFactbox( $this->entityCache, $this->factboxText )
@@ -77,7 +76,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider outputDataProvider
 	 */
 	public function testProcessAndRetrieveContent( $parameters, $expected ) {
-
 		$this->entityCache->expects( $this->any() )
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );
@@ -144,7 +142,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function assertPreProcess( $expected, $result, $outputPage, $instance ) {
-
 		if ( $expected['text'] ) {
 
 			$this->assertContains(
@@ -171,7 +168,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function assertPostProcess( $expected, $result, $outputPage, $instance ) {
-
 		$this->assertEquals(
 			$result,
 			$instance->retrieveContent( $outputPage ),
@@ -200,7 +196,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function outputDataProvider() {
-
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 		$language = $languageFactory->getLanguage( 'en' );
 

@@ -40,7 +40,6 @@ class JSONParseException extends RuntimeException {
 	 * JSON.
 	 */
 	protected function getParseError( $json ) {
-
 		$parser = new JsonParser();
 
 		try {

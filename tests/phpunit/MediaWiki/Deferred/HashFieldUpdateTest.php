@@ -38,7 +38,6 @@ class HashFieldUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			HashFieldUpdate::class,
 			new HashFieldUpdate( $this->connection, 42, '__hash__' )
@@ -46,7 +45,6 @@ class HashFieldUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddUpdate() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'update' )
 			->with(
@@ -59,7 +57,6 @@ class HashFieldUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoUpdate() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'update' )
 			->with(

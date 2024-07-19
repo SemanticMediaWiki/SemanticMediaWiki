@@ -28,7 +28,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	 * @see https://www.w3.org/TR/rdf-sparql-query/#ask
 	 */
 	public function testAskToQueryEndpointOnMockedHttpRequest( $httpDatabaseConnector, $expectedPostField ) {
-
 		$rawResultProvider = new FakeRawResultProvider();
 
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
@@ -68,7 +67,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	 * @see http://www.w3.org/TR/sparql11-update/#deleteInsert
 	 */
 	public function testDeleteToUpdateEndpointOnMockedHttpRequest( $httpDatabaseConnector, $expectedPostField ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -104,7 +102,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	 * @see http://www.w3.org/TR/sparql11-http-rdf-update/#http-post
 	 */
 	public function testInsertViaHttpPostToDataPointOnMockedHttpRequest( $httpDatabaseConnector ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -129,7 +126,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function httpDatabaseConnectorInstanceNameForAskProvider() {
-
 		$provider = [];
 		$encodedDefaultGraph = urlencode( 'http://foo/myDefaultGraph' );
 
@@ -155,7 +151,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function httpDatabaseConnectorInstanceNameForDeleteProvider() {
-
 		$provider = [];
 
 		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {
@@ -177,7 +172,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function httpDatabaseConnectorInstanceNameForInsertProvider() {
-
 		$provider = [];
 
 		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {

@@ -19,7 +19,6 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +30,6 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatNumberToText() {
-
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,7 +45,6 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListToCommaSeparatedText() {
-
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -71,7 +68,6 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrevNextToText() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -103,7 +99,6 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetForm() {
-
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -117,7 +112,6 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNullLanguageThrowsException() {
-
 		$instance = new MessageBuilder();
 
 		$this->expectException( 'RuntimeException' );

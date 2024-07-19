@@ -49,7 +49,6 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	}
 
 	private function match( Compartment $compartment ) {
-
 		if ( $this->isLoaded === false ) {
 			$this->loadCategories();
 		}
@@ -171,7 +170,6 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	}
 
 	private function loadCategories() {
-
 		// Allow categories to be lazy loaded when for example those are
 		// fetched from the DB
 		if ( is_callable( $this->categories ) ) {
@@ -197,7 +195,6 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	}
 
 	private function matchAllOf( array $categories ) : bool {
-
 		$count = count( $categories );
 
 		foreach ( $categories as $category ) {
@@ -212,7 +209,6 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	}
 
 	private function matchOneOf( array $categories ) : bool {
-
 		$count = 0;
 
 		foreach ( $categories as $category ) {
@@ -227,7 +223,6 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	}
 
 	private function matchAnyOf( array $categories ) : bool {
-
 		foreach ( $categories as $category ) {
 			$category = str_replace( ' ', '_', $category );
 

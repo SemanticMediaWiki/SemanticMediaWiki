@@ -36,7 +36,6 @@ class ExternalIdentifierPropertyValueResourceBuilderTest extends \PHPUnit_Framew
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			ExternalIdentifierPropertyValueResourceBuilder::class,
 			new ExternalIdentifierPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class ExternalIdentifierPropertyValueResourceBuilderTest extends \PHPUnit_Framew
 	}
 
 	public function testIsNotResourceBuilderForNonExternalIdentifierTypedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new ExternalIdentifierPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class ExternalIdentifierPropertyValueResourceBuilderTest extends \PHPUnit_Framew
 	}
 
 	public function testAddResourceValueForValidProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_eid' );
 

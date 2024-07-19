@@ -36,7 +36,6 @@ class BrowseBySubject extends ApiBase {
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
-
 		$params = $this->extractRequestParams();
 
 		if ( isset( $params['type'] ) && $params['type'] === 'html' ) {
@@ -53,7 +52,6 @@ class BrowseBySubject extends ApiBase {
 	}
 
 	protected function buildHTML( $params ) {
-
 		$subject = new DIWikiPage(
 			$params['subject'],
 			$params['ns'],
@@ -74,7 +72,6 @@ class BrowseBySubject extends ApiBase {
 	}
 
 	protected function doSerialize( $params ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$title = $applicationFactory->newTitleFactory()->newFromText(
@@ -113,7 +110,6 @@ class BrowseBySubject extends ApiBase {
 	}
 
 	protected function doFormat( $serialized ) {
-
 		$this->addIndexTags( $serialized );
 
 		if ( isset( $serialized['sobj'] ) ) {
@@ -129,7 +125,6 @@ class BrowseBySubject extends ApiBase {
 	}
 
 	protected function addIndexTags( &$serialized ) {
-
 		if ( isset( $serialized['data'] ) && is_array( $serialized['data'] ) ) {
 
 			$this->getResult()->setIndexedTagName( $serialized['data'], 'property' );

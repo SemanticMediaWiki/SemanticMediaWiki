@@ -39,7 +39,6 @@ class InvalidatePropertySpecificationLookupCacheEventListener implements EventLi
 	 * {@inheritDoc}
 	 */
 	public function execute( DispatchContext $dispatchContext = null ) {
-
 		$subject = $dispatchContext->get( 'subject' );
 		$context = $dispatchContext->get( 'context' );
 

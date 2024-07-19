@@ -42,7 +42,6 @@ class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\WantedPropertiesQueryPage',
 			new WantedPropertiesQueryPage( $this->store, $this->settings )
@@ -50,7 +49,6 @@ class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatResultDIError() {
-
 		$error = $this->dataItemFactory->newDIError( 'Foo');
 
 		$instance = new WantedPropertiesQueryPage(
@@ -74,7 +72,6 @@ class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatPropertyItemOnUserDefinedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new WantedPropertiesQueryPage(
@@ -94,7 +91,6 @@ class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatPropertyItemOnPredefinedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_MDAT' );
 
 		$instance = new WantedPropertiesQueryPage(

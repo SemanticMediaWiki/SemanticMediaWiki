@@ -122,7 +122,6 @@ class CachingSemanticDataLookup {
 	 * @param DIWikiPage $subject
 	 */
 	public function initLookupCache( $id, DIWikiPage $subject ) {
-
 		// *** Prepare the cache ***//
 		if ( !isset( self::$data[$id] ) ) {
 			self::$data[$id] = $this->semanticDataLookup->newStubSemanticData( $subject );
@@ -158,7 +157,6 @@ class CachingSemanticDataLookup {
 	 * @param SemanticData $semanticData
 	 */
 	public function setLookupCache( $id, SemanticData $semanticData ) {
-
 		self::$data[$id] = $this->semanticDataLookup->newStubSemanticData(
 			$semanticData
 		);
@@ -178,7 +176,6 @@ class CachingSemanticDataLookup {
 	 * @param DIWikiPage $subject
 	 */
 	public function getSemanticDataById( $id ) {
-
 		if ( !isset( self::$data[$id] ) ) {
 			throw new RuntimeException( 'Data are not initialized.' );
 		}
@@ -210,7 +207,6 @@ class CachingSemanticDataLookup {
 	 * @return []
 	 */
 	public function prefetchDataFromTable( array $subjects, DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef, RequestOptions $requestOptions = null ) {
-
 		$hash = '';
 
 		if ( $dataItem !== null ) {
@@ -270,7 +266,6 @@ class CachingSemanticDataLookup {
 	 * @return SemanticData
 	 */
 	public function getSemanticData( $id, DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef, RequestOptions $requestOptions = null ) {
-
 		// Avoid the cache when a request is constrainted
 		if ( $requestOptions !== null || !$dataItem instanceof DIWikiPage ) {
 			return $this->semanticDataLookup->getSemanticData( $id, $dataItem, $propertyTableDef, $requestOptions );
@@ -291,7 +286,6 @@ class CachingSemanticDataLookup {
 	}
 
 	private function fetchFromCache( $id, DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef ) {
-
 		// Do not clear the cache when called recursively.
 		$this->lockCache();
 		$this->initLookupCache( $id, $dataItem );

@@ -27,7 +27,6 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 
 	protected function setUp() : void {
-
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -53,7 +52,6 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TextChangeUpdater::class,
 			new TextChangeUpdater( $this->connection, $this->cache, $this->searchTableUpdater )
@@ -61,7 +59,6 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushUpdatesOnNullChange() {
-
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'isEnabled' )
 			->will( $this->returnValue( true ) );
@@ -97,7 +94,6 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushUpdates() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
 		$searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
@@ -155,7 +151,6 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushUpdatesDirectlyWhenExecutedFromCommandLine() {
-
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'isEnabled' )
 			->will( $this->returnValue( true ) );
@@ -201,7 +196,6 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNullUpdate() {
-
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'isEnabled' )
 			->will( $this->returnValue( true ) );

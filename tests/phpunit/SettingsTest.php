@@ -38,7 +38,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider settingsProvider
 	 */
 	public function testCanConstruct( array $settings ) {
-
 		$instance = Settings::newFromArray( $settings );
 
 		$this->assertInstanceOf(
@@ -55,7 +54,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider settingsProvider
 	 */
 	public function testGet( array $settings ) {
-
 		$instance = Settings::newFromArray( $settings );
 
 		foreach ( $settings as $name => $value ) {
@@ -66,7 +64,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnknownSettingThrowsException() {
-
 		$instance = Settings::newFromArray( [ 'Foo' => 'bar' ] );
 
 		$this->expectException( '\SMW\Exception\SettingNotFoundException' );
@@ -74,7 +71,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSafeGetOnUnknownSetting() {
-
 		$instance = Settings::newFromArray( [ 'Foo' => 'bar' ] );
 
 		$this->assertFalse(
@@ -83,7 +79,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterChangeListener() {
-
 		$changeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListener' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -112,7 +107,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider settingsProvider
 	 */
 	public function testSet( array $settings ) {
-
 		$instance = Settings::newFromArray( [] );
 
 		foreach ( $settings as $name => $value ) {
@@ -127,7 +121,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider globalsSettingsProvider
 	 */
 	public function testNewFromGlobals( $setting ) {
-
 		$instance = new Settings();
 
 		$instance->setHookDispatcher(
@@ -144,7 +137,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReloadAttemptThrowsException() {
-
 		$instance = new Settings();
 
 		$instance->setHookDispatcher(
@@ -158,7 +150,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMung() {
-
 		$instance = Settings::newFromArray( [ 'Foo' => 123 ] );
 
 		$this->assertEquals(
@@ -168,7 +159,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMungOnUnknownTypeThrowsException() {
-
 		$instance = Settings::newFromArray( [ 'Foo' => 123 ] );
 
 		$this->expectException( '\RuntimeException' );

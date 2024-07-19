@@ -19,7 +19,6 @@ class JulianDayTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testConvert( $calendarModel, $seralization, $jdValue ) {
-
 		list( $year, $month, $day, $hour, $minute, $second ) = explode( '/', $seralization );
 
 		$this->assertEquals(
@@ -29,7 +28,6 @@ class JulianDayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetJD_Issue2454() {
-
 		$offset = -4 / 24;
 
 		$this->assertSame(
@@ -49,7 +47,6 @@ class JulianDayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		$provider[] = [
 			JulianDay::CM_JULIAN,
 			'1352/01/01/0/0/0',

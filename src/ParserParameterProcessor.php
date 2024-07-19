@@ -145,7 +145,6 @@ class ParserParameterProcessor {
 	 * @return array
 	 */
 	public function getParameterValuesByKey( $key ) {
-
 		if ( $this->hasParameter( $key ) ) {
 			return $this->parameters[$key];
 		}
@@ -193,7 +192,6 @@ class ParserParameterProcessor {
 	 * @param boolean $associative
 	 */
 	public static function sort( array &$parameters, $associative = true ) {
-
 		// Associative vs. simple index array sort
 		if ( $associative ) {
 			ksort( $parameters );
@@ -271,7 +269,6 @@ class ParserParameterProcessor {
 	}
 
 	private function lookAheadOnNextElement( &$params, &$pipe ) {
-
 		$separator = '';
 
 		if ( !next( $params ) ) {
@@ -298,7 +295,6 @@ class ParserParameterProcessor {
 	}
 
 	private function parseFromJson( $results ) {
-
 		if ( !isset( $results['@json'] ) || !isset( $results['@json'][0] ) ) {
 			return $results;
 		}
@@ -319,7 +315,6 @@ class ParserParameterProcessor {
 		}
 
 		array_walk( $params, function( &$value, $key ) {
-
 			if ( $value === '' ) {
 				$value = [];
 			}

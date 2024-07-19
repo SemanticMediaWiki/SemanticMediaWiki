@@ -69,7 +69,6 @@ class LocalLanguage {
 	 * @return LocalLanguage
 	 */
 	public static function getInstance() : LocalLanguage {
-
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -120,7 +119,6 @@ class LocalLanguage {
 	 * @return self
 	 */
 	public function fetch( $languageCode ) {
-
 		$this->languageCode = strtolower( trim( $languageCode ) );
 
 		if ( !$this->languageContents->isLoaded( $this->languageCode ) ) {
@@ -140,7 +138,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getNamespaces() {
-
 		$namespaces = $this->languageContents->get(
 			'namespace.labels',
 			$this->languageCode
@@ -170,7 +167,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getNamespaceAliases() {
-
 		$namespaceAliases = $this->languageContents->get(
 			'namespace.aliases',
 			$this->languageCode
@@ -201,7 +197,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getDatatypeLabels() {
-
 		$datatypeLabels = $this->languageContents->get(
 			'datatype.labels',
 			$this->languageCode
@@ -223,7 +218,6 @@ class LocalLanguage {
 	 * @return string
 	 */
 	public function findDatatypeByLabel( $label ) {
-
 		$label = mb_strtolower( $label );
 
 		$datatypeLabels = $this->getDatatypeLabels();
@@ -245,7 +239,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getCanonicalDatatypeLabels() {
-
 		$datatypeLabels = $this->languageContents->get(
 			'datatype.labels',
 			$this->canonicalFallbackLanguageCode
@@ -265,7 +258,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getDatatypeAliases() {
-
 		$datatypeAliases = $this->languageContents->get(
 			'datatype.aliases',
 			$this->languageCode
@@ -285,7 +277,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getCanonicalPropertyLabels() {
-
 		$canonicalPropertyLabels = $this->languageContents->get(
 			'property.labels',
 			$this->canonicalFallbackLanguageCode
@@ -314,7 +305,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getPropertyLabels() {
-
 		$propertyLabels = $this->languageContents->get(
 			'property.labels',
 			$this->languageCode
@@ -336,7 +326,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getCanonicalPropertyAliases() {
-
 		$canonicalPropertyAliases = $this->languageContents->get(
 			'property.aliases',
 			$this->canonicalFallbackLanguageCode
@@ -362,7 +351,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getPropertyAliases() {
-
 		$propertyAliases = $this->languageContents->get(
 			'property.aliases',
 			$this->languageCode
@@ -382,7 +370,6 @@ class LocalLanguage {
 	 * @deprecated use getPropertyIdByLabel
 	 */
 	protected function getPropertyId( $propertyLabel ) {
-
 		$list += $this->languageContents->get(
 			'property.aliases',
 			$this->languageCode
@@ -406,7 +393,6 @@ class LocalLanguage {
 	 * @return string|null
 	 */
 	public function getPropertyIdByLabel( $label ) {
-
 		$this->initPropertyIdByLabelMap( $this->languageCode );
 
 		if ( isset( $this->propertyIdByLabelMap[$this->languageCode]['label'][$label] ) ) {
@@ -426,7 +412,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getPropertyLabelList() {
-
 		$this->initPropertyIdByLabelMap( $this->languageCode );
 
 		if ( isset( $this->propertyIdByLabelMap[$this->languageCode] ) ) {
@@ -449,7 +434,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getDateFormats() {
-
 		$languageCode = $this->languageCode;
 
 		if ( !isset( $this->dateFormatsMap[$languageCode] ) || $this->dateFormatsMap[$languageCode] === [] ) {
@@ -467,7 +451,6 @@ class LocalLanguage {
 	 * @return string
 	 */
 	public function getPreferredDateFormatByPrecision( $precision = null ) {
-
 		$dateOutputFormats = $this->languageContents->get(
 			'date.precision',
 			$this->languageCode
@@ -500,7 +483,6 @@ class LocalLanguage {
 	 * @return false|integer
 	 */
 	public function findMonthNumberByLabel( $label ) {
-
 		$languageCode = $this->languageCode;
 
 		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === [] ) {
@@ -535,7 +517,6 @@ class LocalLanguage {
 	 * @return array
 	 */
 	public function getMonthLabelByNumber( $number ) {
-
 		$languageCode = $this->languageCode;
 		$number = (int)( $number - 1 ); // array starts with 0
 
@@ -551,7 +532,6 @@ class LocalLanguage {
 	}
 
 	private function getDateFormatsByLanguageCode( $languageCode ) {
-
 		$dateformats = [];
 
 		foreach ( $this->languageContents->get( 'date.format', $languageCode ) as $row ) {
@@ -568,7 +548,6 @@ class LocalLanguage {
 	}
 
 	private function initPropertyIdByLabelMap( $languageCode ) {
-
 		if ( isset( $this->propertyIdByLabelMap[$languageCode] ) && $this->propertyIdByLabelMap[$languageCode] !== [] ) {
 			return;
 		}

@@ -59,7 +59,6 @@ class ConstraintRegistry {
 	 * @param Constraint|string $constraint
 	 */
 	public function registerConstraint( $key, $constraint ) {
-
 		if ( $this->constraints === [] ) {
 			$this->initConstraints();
 		}
@@ -73,7 +72,6 @@ class ConstraintRegistry {
 	 * @return []
 	 */
 	public function getConstraintKeys() {
-
 		if ( $this->constraints === [] ) {
 			$this->initConstraints();
 		}
@@ -89,7 +87,6 @@ class ConstraintRegistry {
 	 * @return Constraint
 	 */
 	public function getConstraintByKey( $key ) {
-
 		if ( $this->constraints === [] ) {
 			$this->initConstraints();
 		}
@@ -102,7 +99,6 @@ class ConstraintRegistry {
 	}
 
 	private function initConstraints() {
-
 		$this->constraints = [
 			'null' => NullConstraint::class,
 			'allowed_namespaces' => NamespaceConstraint::class,
@@ -118,7 +114,6 @@ class ConstraintRegistry {
 	}
 
 	private function loadInstance( $class ) {
-
 		if ( is_callable( $class ) ) {
 			return $class();
 		} elseif ( $class instanceof Constraint ) {

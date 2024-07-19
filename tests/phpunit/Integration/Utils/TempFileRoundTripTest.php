@@ -15,7 +15,6 @@ use SMW\Utils\TempFile;
 class TempFileRoundTripTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRoundTrip() {
-
 		$expected = 'Test write file';
 		$tempFile = new TempFile();
 

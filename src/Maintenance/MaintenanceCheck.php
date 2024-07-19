@@ -26,7 +26,6 @@ class MaintenanceCheck {
 	 * @return bool
 	 */
 	public function canExecute() : bool {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 		$this->message = '';
 

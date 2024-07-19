@@ -20,7 +20,6 @@ class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -35,7 +34,6 @@ class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemTypeProvider
 	 */
 	public function testGetHandlerByType( $type, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -52,7 +50,6 @@ class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider invalidTypeProvider
 	 */
 	public function testGetHandlerByInvalidTypeThrowsException( $type ) {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -64,7 +61,6 @@ class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataItemTypeProvider() {
-
 		$provider[] = [
 			DataItem::TYPE_NUMBER,
 			'\SMW\SQLStore\EntityStore\DataItemHandlers\DINumberHandler'
@@ -109,7 +105,6 @@ class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function invalidTypeProvider() {
-
 		$provider[] = [
 			DataItem::TYPE_PROPERTY,
 		];

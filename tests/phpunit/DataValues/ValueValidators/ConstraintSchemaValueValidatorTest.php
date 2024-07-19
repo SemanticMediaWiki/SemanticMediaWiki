@@ -60,7 +60,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConstraintSchemaValueValidator::class,
 			new ConstraintSchemaValueValidator( $this->constraintCheckRunner, $this->schemafinder )
@@ -68,7 +67,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasNoConstraintViolationOnNonRelatedValue() {
-
 		$instance = new ConstraintSchemaValueValidator(
 			$this->constraintCheckRunner,
 			$this->schemafinder
@@ -82,7 +80,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchEmptyConstraintSchemaList() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->schemafinder->expects( $this->once() )
@@ -106,7 +103,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunConstraintCheck() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty(
@@ -150,7 +146,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunConstraintCheckTriggerDeferredConstraintCheckUpdateJob() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN );
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
@@ -203,7 +198,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkPushedJobInstance( array $jobs ) {
-
 		foreach ( $jobs as $job ) {
 			if ( is_a( $job, '\SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob' ) ) {
 				return true;

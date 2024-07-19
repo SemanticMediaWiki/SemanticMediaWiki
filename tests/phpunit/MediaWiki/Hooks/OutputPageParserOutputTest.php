@@ -75,7 +75,6 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			OutputPageParserOutput::class,
 			new OutputPageParserOutput( $this->namespaceExaminer, $this->permissionExaminer, $this->factboxText )
@@ -158,7 +157,6 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function outputDataProvider() {
-
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 		$language = $languageFactory->getLanguage( 'en' );
 

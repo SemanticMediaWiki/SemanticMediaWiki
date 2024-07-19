@@ -30,7 +30,6 @@ class ProfileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Profile::class,
 			new Profile( $this->schemaFactory, 'foo' )
@@ -38,7 +37,6 @@ class ProfileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetProfileName() {
-
 		$instance = new Profile(
 			$this->schemaFactory,
 			'foo'
@@ -51,7 +49,6 @@ class ProfileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetProfileCount() {
-
 		$profile = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -33,7 +33,6 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JsonImportContentsFileDirReader::class,
 			new JsonImportContentsFileDirReader( $this->contentModeller, $this->fileFetcher, $this->file )
@@ -41,7 +40,6 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentList() {
-
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
 			$this->fileFetcher,
@@ -67,7 +65,6 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentListOnFalseImportFormat() {
-
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
 			$this->fileFetcher,
@@ -81,7 +78,6 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentListOnMissingSections() {
-
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
 			$this->fileFetcher,
@@ -98,7 +94,6 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentListWithInvalidPath() {
-
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
 			$this->fileFetcher,
@@ -112,7 +107,6 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentListOnInvalidJson_Error() {
-
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
 			$this->fileFetcher,

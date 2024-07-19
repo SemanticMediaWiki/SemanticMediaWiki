@@ -19,7 +19,6 @@ class WhereConditionTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
 			new WhereCondition( 'condition', true )
@@ -27,7 +26,6 @@ class WhereConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommonMethods() {
-
 		$instance = new WhereCondition( 'condition', true );
 
 		$this->assertInternalType(

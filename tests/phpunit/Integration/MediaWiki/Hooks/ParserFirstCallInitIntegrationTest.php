@@ -86,7 +86,6 @@ class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 		$this->store->expects( $this->any() )
 			->method( 'service' )
 			->will( $this->returnCallback( function( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
-
 				if ( $service === 'SingleEntityQueryLookup' ) {
 					return $singleEntityQueryLookup;
 				}
@@ -149,7 +148,6 @@ class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function textToParseProvider() {
-
 		$provider = [];
 
 		#0 ask

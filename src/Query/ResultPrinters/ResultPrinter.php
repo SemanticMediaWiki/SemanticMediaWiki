@@ -223,7 +223,6 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @return \Parser
 	 */
 	public function copyParser() {
-
 		if ( $this->recursiveTextProcessor === null ) {
 			$this->recursiveTextProcessor = new RecursiveTextProcessor();
 		}
@@ -238,7 +237,6 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param array $styleModules
 	 */
 	public function registerResources( array $modules = [], array $styleModules = [] ) {
-
 		foreach ( $modules as $module ) {
 			ResourceManager::requireResource( $module );
 		}
@@ -357,7 +355,6 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @return string
 	 */
 	protected function handleNonFileResult( $result, QueryResult $results, $outputmode ) {
-
 		// append errors
 		$result .= $this->getErrorString( $results );
 

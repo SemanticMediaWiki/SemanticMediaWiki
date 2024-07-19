@@ -50,7 +50,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DependencyValidator::class,
 			new DependencyValidator( $this->namespaceExaminer, $this->dependencyLinksValidator, $this->entityCache )
@@ -58,7 +57,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasArchaicDependencies() {
-
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( true ) );
@@ -110,7 +108,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasNoArchaicDependencies() {
-
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( true ) );
@@ -143,7 +140,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasNoArchaicDependencies_DisabledNamespace() {
-
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( false ) );
@@ -167,7 +163,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMarkTitle() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$title = $subject->getTitle();
 
@@ -185,7 +180,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanKeepParserCache_NoCache() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
 			->will( $this->returnValue( false ) );
@@ -207,7 +201,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanKeepParserCache_NoCacheOnFetch() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
 			->will( $this->returnValue( true ) );
@@ -233,7 +226,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanNotKeepParserCache() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
 			->will( $this->returnValue( true ) );

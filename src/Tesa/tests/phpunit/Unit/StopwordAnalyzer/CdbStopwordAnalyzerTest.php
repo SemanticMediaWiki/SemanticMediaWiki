@@ -47,7 +47,6 @@ class CdbStopwordAnalyzerTest extends TestCase {
 	 * @dataProvider languageProvider
 	 */
 	public function testCreateCdbByLanguage( $languageCode ) {
-
 		$res = CdbStopwordAnalyzer::createCdbByLanguage(
 			CdbStopwordAnalyzer::getLocation(),
 			$languageCode
@@ -62,7 +61,6 @@ class CdbStopwordAnalyzerTest extends TestCase {
 	 * @dataProvider stopWordProvider
 	 */
 	public function testIsStopWord( $languageCode , $word, $expected ) {
-
 		$instane = new CdbStopwordAnalyzer(
 			CdbStopwordAnalyzer::getTargetByLanguage( $languageCode )
 		);
@@ -74,7 +72,6 @@ class CdbStopwordAnalyzerTest extends TestCase {
 	}
 
 	public function languageProvider() {
-
 		$provider[] = array(
 			'en',
 		);
@@ -111,7 +108,6 @@ class CdbStopwordAnalyzerTest extends TestCase {
 	}
 
 	public function stopWordProvider() {
-
 		$provider[] = array(
 			'en',
 			'Foo',

@@ -42,7 +42,6 @@ class SortPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			SortPropertyValueResourceBuilder::class,
 			new SortPropertyValueResourceBuilder()
@@ -50,7 +49,6 @@ class SortPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsNotResourceBuilderForNon_SKEYProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new SortPropertyValueResourceBuilder();
@@ -61,7 +59,6 @@ class SortPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsResourceBuilderFor_SKEYProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_SKEY' );
 
 		$instance = new SortPropertyValueResourceBuilder();
@@ -72,7 +69,6 @@ class SortPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddResourceValueFor_SKEYProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_SKEY' );
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
@@ -97,7 +93,6 @@ class SortPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddResourceValueFor_SKEYPropertyWithEnabledCollationField() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_SKEY' );
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
@@ -128,7 +123,6 @@ class SortPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddResourceValueFor_SKEYPropertyWithEnabledCollationFieldOnBlobItem() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_SKEY' );
 		$dataItem = $this->dataItemFactory->newDIBlob( 'Bar' );
 

@@ -47,7 +47,6 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TaskHandlerRegistry::class,
 			new TaskHandlerRegistry( $this->store, $this->outputFormatter )
@@ -55,7 +54,6 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterTaskHandlers() {
-
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onRegisterTaskHandlers' );
 
@@ -86,7 +84,6 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sectionTypeProvider
 	 */
 	public function testRegisterTaskHandler( $section ) {
-
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -109,7 +106,6 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterTaskHandler_Actionable() {
-
 		$taskHandler = $this->newActionableTask();
 
 		$instance = new TaskHandlerRegistry(
@@ -126,7 +122,6 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function sectionTypeProvider() {
-
 		yield [
 			TaskHandler::SECTION_MAINTENANCE
 		];

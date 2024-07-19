@@ -56,7 +56,6 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleDataProvider
 	 */
 	public function testProcess( $setup, $expected ) {
-
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
 			->with( $this->equalTo( 'InvalidateEntityCache' ) );
@@ -130,7 +129,6 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleDataProvider() {
-
 		$validIdTitle =  MockTitle::buildMock( 'validIdTitle' );
 
 		$validIdTitle->expects( $this->atLeastOnce() )

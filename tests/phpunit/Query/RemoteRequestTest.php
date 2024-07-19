@@ -22,7 +22,6 @@ class RemoteRequestTest extends \PHPUnit_Framework_TestCase {
 	private $query;
 
 	protected function setUp() : void {
-
 		$this->httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -33,7 +32,6 @@ class RemoteRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RemoteRequest::class,
 			new RemoteRequest( [], $this->httpRequest )
@@ -41,7 +39,6 @@ class RemoteRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResult_CannotConnect() {
-
 		$this->httpRequest->expects( $this->once() )
 			->method( 'ping' )
 			->will( $this->returnValue( false ) );
@@ -62,7 +59,6 @@ class RemoteRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResult_Connect() {
-
 		$output = 'Foobar <!--COUNT:42--><!--FURTHERRESULTS:1-->' . RemoteRequest::REQUEST_ID;
 
 		$this->httpRequest->expects( $this->once() )

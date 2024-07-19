@@ -39,7 +39,6 @@ class MonolingualTextPropertyValueResourceBuilderTest extends \PHPUnit_Framework
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			MonolingualTextPropertyValueResourceBuilder::class,
 			new MonolingualTextPropertyValueResourceBuilder()
@@ -47,7 +46,6 @@ class MonolingualTextPropertyValueResourceBuilderTest extends \PHPUnit_Framework
 	}
 
 	public function testIsNotResourceBuilderForNonExternalIdentifierTypedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new MonolingualTextPropertyValueResourceBuilder();
@@ -58,7 +56,6 @@ class MonolingualTextPropertyValueResourceBuilderTest extends \PHPUnit_Framework
 	}
 
 	public function testAddResourceValueForValidProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_mlt_rec' );
 

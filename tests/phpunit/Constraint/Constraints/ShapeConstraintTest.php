@@ -27,7 +27,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ShapeConstraint::class,
 			new ShapeConstraint()
@@ -35,7 +34,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new ShapeConstraint();
 
 		$this->assertEquals(
@@ -45,7 +43,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new ShapeConstraint();
 
 		$this->assertFalse(
@@ -54,7 +51,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_shape_constraint_missing_property() {
-
 		$constraint = [
 			'shape_constraint' => [ [ 'property' => 'Foo' ] ]
 		];
@@ -95,7 +91,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_shape_constraint_wrong_type() {
-
 		$constraint = [
 			'shape_constraint' => [ [ 'property' => 'Foo', 'property_type' => 'Text' ] ]
 		];
@@ -136,7 +131,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_shape_constraint_invalid_max_cardinality() {
-
 		$constraint = [
 			'shape_constraint' => [ [ 'property' => 'Foo', 'max_cardinality' => 1 ] ]
 		];
@@ -237,7 +231,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_mandatory_properties_ThrowsException() {
-
 		$constraint = [
 			'mandatory_properties' => true
 		];
@@ -249,7 +242,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

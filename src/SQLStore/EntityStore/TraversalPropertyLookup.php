@@ -41,7 +41,6 @@ class TraversalPropertyLookup {
 	 * {@inheritDoc}
 	 */
 	public function fetchFromTable( PropertyTableDef $propertyTableDef, DataItem $dataItem, RequestOptions $requestOptions = null ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( $dataItem instanceof DIContainer ) {
@@ -125,7 +124,6 @@ class TraversalPropertyLookup {
 	}
 
 	private function getWhereConds( $dataItem ) {
-
 		$where = '';
 		$connection = $this->store->getConnection( 'mw.db' );
 

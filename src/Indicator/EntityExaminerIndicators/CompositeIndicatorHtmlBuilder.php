@@ -48,7 +48,6 @@ class CompositeIndicatorHtmlBuilder {
 	 * @return string
 	 */
 	public function buildHTML( array $indicatorProviders, array $options ) : string {
-
 		if ( !isset( $options['subject'] ) ) {
 			throw new RuntimeException( "Expected a subject reference!" );
 		}
@@ -149,7 +148,6 @@ class CompositeIndicatorHtmlBuilder {
 	}
 
 	private function highlighter( $content, $tabset, $options ) {
-
 		$this->templateEngine->load( '/indicator/comment.ms', 'comment_template' );
 
 		$this->templateEngine->compile(
@@ -192,7 +190,6 @@ class CompositeIndicatorHtmlBuilder {
 	}
 
 	private function placeholder( $options ) {
-
 		$this->templateEngine->load( '/indicator/composite.placeholder.ms', 'placeholder_template' );
 
 		$this->templateEngine->compile(

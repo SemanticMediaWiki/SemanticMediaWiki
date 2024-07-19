@@ -62,7 +62,6 @@ class PropertyFilter {
 	 * @return string
 	 */
 	public function create( UrlArgs $urlArgs, array $propertyFilters ) : string {
-
 		$this->urlArgs = $urlArgs;
 
 		$properties = [];
@@ -132,7 +131,6 @@ class PropertyFilter {
 	}
 
 	private function matchFilter( $key, $count, &$list ) {
-
 		$property = DIWikiPage::newFromText( $key, SMW_NS_PROPERTY );
 		$propertyFilters = $this->urlArgs->getArray( 'pv' );
 
@@ -172,7 +170,6 @@ class PropertyFilter {
 	}
 
 	private function createInputField( array $values ) {
-
 		if ( count( $values ) <= $this->params['min_item'] ) {
 			return '';
 		}

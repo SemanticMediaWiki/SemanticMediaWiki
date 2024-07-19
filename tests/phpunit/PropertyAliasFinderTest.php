@@ -31,7 +31,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$languageIndependentPropertyLabels = [];
 
 		$this->assertInstanceOf(
@@ -41,7 +40,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPropertyAliasById() {
-
 		$propertyAliases = [ 'Bar' => '_Foo' ];
 
 		$instance = new PropertyAliasFinder(
@@ -61,7 +59,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPropertyIdByAlias() {
-
 		$canonicalPropertyAliases = [ 'Bar' => '_Foo' ];
 
 		$instance = new PropertyAliasFinder(
@@ -77,7 +74,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterAliasByFixedLabel() {
-
 		$instance = new PropertyAliasFinder(
 			$this->cache
 		);
@@ -91,7 +87,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterAliasByFixedLabel_withContentLanguage() {
-
 		$instance = new PropertyAliasFinder(
 			$this->cache
 		);
@@ -107,7 +102,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetKnownPropertyAliasesByLanguageCodeCached() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( [ '⧼smw-bar⧽' => '_Foo' ] ) );
@@ -131,7 +125,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetKnownPropertyAliasesByLanguageCode() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );

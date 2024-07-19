@@ -65,7 +65,6 @@ class DataItemHandlerFactory {
 	 * @throws RuntimeException
 	 */
 	public function getHandlerByType( $type ) {
-
 		if ( !isset( $this->handlers[$type] ) ) {
 			$this->handlers[$type] = $this->newHandlerByType( $type );
 		}
@@ -74,7 +73,6 @@ class DataItemHandlerFactory {
 	}
 
 	private function newHandlerByType( $type ) {
-
 		switch ( $type ) {
 			case DataItem::TYPE_NUMBER:
 				$handler = new DINumberHandler( $this->store );

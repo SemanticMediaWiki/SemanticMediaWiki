@@ -97,7 +97,6 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	 * @param SemanticData $semanticData
 	 */
 	public function doUpdateFrom( SemanticData $semanticData ) {
-
 		// Do nothing
 		if ( $this->editProtectionRight === false ) {
 			return;
@@ -131,7 +130,6 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	}
 
 	private function fetchEditProtectedInfo( $semanticData ) {
-
 		// Whether or not the update was invoked by the ArticleProtectComplete hook
 		$this->isRestrictedUpdate = $semanticData->getOption( ArticleProtectComplete::RESTRICTED_UPDATE ) === true;
 		$property = new DIProperty( '_EDIP' );
@@ -163,7 +161,6 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	}
 
 	private function doUpdateRestrictions( $isEditProtected ) {
-
 		$protections = [];
 		$expiry = [];
 
@@ -198,7 +195,6 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	}
 
 	private function log( $message, $context = [] ) {
-
 		if ( $this->logger === null ) {
 			return;
 		}

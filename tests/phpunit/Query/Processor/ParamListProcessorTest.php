@@ -19,7 +19,6 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$printRequestFactory = $this->getMockBuilder( '\SMW\Query\PrintRequestFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -34,7 +33,6 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testPreprocess( $parameters, $showMode, $expected ) {
-
 		$printRequestFactory = $this->getMockBuilder( '\SMW\Query\PrintRequestFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -53,7 +51,6 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider legacyParametersProvider
 	 */
 	public function testLegacyArray( $parameters ) {
-
 		$printRequestFactory = $this->getMockBuilder( '\SMW\Query\PrintRequestFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -84,7 +81,6 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		yield [
 			[ '[[Foo::Bar]]' ],
 			false,
@@ -363,7 +359,6 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function legacyParametersProvider() {
-
 		yield [
 			[
 				'showMode'   => false,

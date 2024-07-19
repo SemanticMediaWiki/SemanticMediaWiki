@@ -47,7 +47,6 @@ class IncompleteSetupTasks {
 	 * @return string
 	 */
 	public function getHtml() : string {
-
 		$incompleteTasks = $this->setupFile->findIncompleteTasks();
 		$count = $this->setupFile->get( SetupFile::PREVIOUS_VERSION ) !== null ? 2 : 1;
 
@@ -68,7 +67,6 @@ class IncompleteSetupTasks {
 	}
 
 	private function buildList( array $messages ) {
-
 		$html = '';
 
 		foreach ( $messages as $message ) {

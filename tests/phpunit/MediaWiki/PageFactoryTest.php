@@ -29,7 +29,6 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PageFactory::class,
 			new PageFactory( $this->store )
@@ -37,7 +36,6 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewPageFromNotRegisteredNamespaceThrowsException() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -56,7 +54,6 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceProvider
 	 */
 	public function testNewPageFromTitle( $namespace, $expected ) {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -78,7 +75,6 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceProvider() {
-
 		$provider[] = [
 			SMW_NS_PROPERTY,
 			'SMW\MediaWiki\Page\PropertyPage'

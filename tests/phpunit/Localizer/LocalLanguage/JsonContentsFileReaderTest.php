@@ -19,7 +19,6 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JsonContentsFileReader::class,
 			new JsonContentsFileReader()
@@ -30,7 +29,6 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testReadByLanguageCode( $languageCode ) {
-
 		$instance = new JsonContentsFileReader();
 
 		$this->assertInternalType(
@@ -43,7 +41,6 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testReadByLanguageCodeWithCache( $languageCode ) {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -66,7 +63,6 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReadByLanguageCodeToUseInMemoryCache() {
-
 		$instance = $this->getMockBuilder( JsonContentsFileReader::class )
 			->setMethods( [ 'readJSONFile', 'getFileModificationTime' ] )
 			->getMock();
@@ -86,7 +82,6 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReadByLanguageCodeIsForcedToRereadFromFile() {
-
 		$instance = $this->getMockBuilder( JsonContentsFileReader::class )
 			->setMethods( [ 'readJSONFile', 'getFileModificationTime' ] )
 			->getMock();
@@ -104,7 +99,6 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToReadInaccessibleFileByLanguageThrowsException() {
-
 		$instance = new JsonContentsFileReader();
 
 		$this->expectException( 'RuntimeException' );
@@ -119,7 +113,6 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataExtensionProvider
 	 */
 	public function WriteToFile( $topic, $extension ) {
-
 		$instance = new JsonContentsFileReader();
 		$list ='ar,arz,ca,de,es,fi,fr,he,hu,id,it,nb,nl,pl,pt,ru,sk,zh-cn,zh-tw';
 
@@ -140,7 +133,6 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testgetFileModificationTime( $languageCode ) {
-
 		$instance = new JsonContentsFileReader();
 
 		$this->assertInternalType(
@@ -150,7 +142,6 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function languageCodeProvider() {
-
 		$provider[] = [
 			'en'
 		];
@@ -159,7 +150,6 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataExtensionProvider() {
-
 		$provider[] = [
 			'dataTypeLabels',
 			[

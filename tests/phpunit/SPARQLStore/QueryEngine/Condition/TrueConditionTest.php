@@ -16,7 +16,6 @@ use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 class TrueConditionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\SPARQLStore\QueryEngine\Condition\TrueCondition',
 			new TrueCondition()
@@ -24,7 +23,6 @@ class TrueConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommonMethods() {
-
 		$instance = new TrueCondition();
 
 		$this->assertEmpty(

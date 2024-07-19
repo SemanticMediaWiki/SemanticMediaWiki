@@ -50,7 +50,6 @@ class PreferenceExaminer {
 	 * @return bool
 	 */
 	public function hasPreferenceOf( string $key ) : bool {
-
 		if ( $this->user === null ) {
 			return false;
 		}

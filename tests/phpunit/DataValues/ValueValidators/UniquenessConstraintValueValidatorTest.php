@@ -40,7 +40,6 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			UniquenessConstraintValueValidator::class,
 			new UniquenessConstraintValueValidator( $this->uniqueValueConstraint, $this->propertySpecificationLookup )
@@ -48,7 +47,6 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testValidate_HasNoConstraintViolation() {
-
 		$property = $this->dataItemFactory->newDIProperty( __METHOD__ );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
@@ -93,7 +91,6 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testValidate_HasConstraintViolation() {
-
 		$property = $this->dataItemFactory->newDIProperty( __METHOD__ );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )

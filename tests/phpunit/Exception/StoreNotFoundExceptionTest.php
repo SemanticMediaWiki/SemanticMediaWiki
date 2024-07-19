@@ -16,7 +16,6 @@ use SMW\Exception\StoreNotFoundException;
 class StoreNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new StoreNotFoundException();
 
 		$this->assertInstanceof(

@@ -46,7 +46,6 @@ class InternalParseBeforeLinksIntegrationTest extends \PHPUnit_Framework_TestCas
 	}
 
 	public function testNonParseForInvokedMessageParse() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();

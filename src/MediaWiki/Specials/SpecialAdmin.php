@@ -47,7 +47,6 @@ class SpecialAdmin extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $query ) {
-
 		if ( !$this->userCanExecute( $this->getUser() ) ) {
 			// $this->mRestriction is private MW 1.23-
 			throw new ExtendedPermissionsError( 'smw-admin', [ 'smw-admin-permission-missing' ] );

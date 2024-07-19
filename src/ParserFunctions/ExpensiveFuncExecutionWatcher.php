@@ -70,7 +70,6 @@ class ExpensiveFuncExecutionWatcher {
 	 * @return boolean
 	 */
 	public function hasReachedExpensiveLimit( Query $query ) {
-
 		if ( $this->expensiveExecutionLimit === false ) {
 			return false;
 		}
@@ -94,7 +93,6 @@ class ExpensiveFuncExecutionWatcher {
 	 * @return boolean
 	 */
 	public function incrementExpensiveCount( Query $query ) {
-
 		if ( $this->expensiveExecutionLimit === false || $query->getLimit() == 0 || $query->getOption( Query::PROC_QUERY_TIME ) < $this->expensiveThreshold ) {
 			return;
 		}

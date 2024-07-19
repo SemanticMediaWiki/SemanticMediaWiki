@@ -47,7 +47,6 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DisposeJobTaskHandler::class,
 			new DisposeJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter )
@@ -55,7 +54,6 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$methods = [
 			'setName',
 			'setMethod',
@@ -83,7 +81,6 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequestOnNonPendingJob() {
-
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
 			->with( $this->equalTo( 'smw.entityIdDisposer' ) )
@@ -121,7 +118,6 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequestOnPendingJob() {
-
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
 			->with( $this->equalTo( 'smw.entityIdDisposer' ) )

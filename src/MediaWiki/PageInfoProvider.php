@@ -132,7 +132,6 @@ class PageInfoProvider implements PageInfo {
 	 * @return text
 	 */
 	public function getNativeData() {
-
 		if ( $this->wikiPage->getContent() === null ) {
 			return '';
 		}
@@ -152,7 +151,6 @@ class PageInfoProvider implements PageInfo {
 	 * @return string|null
 	 */
 	public function getMediaType() {
-
 		if ( $this->isFilePage() === false ) {
 			return null;
 		}
@@ -166,7 +164,6 @@ class PageInfoProvider implements PageInfo {
 	 * @return string|null
 	 */
 	public function getMimeType() {
-
 		if ( $this->isFilePage() === false ) {
 			return null;
 		}

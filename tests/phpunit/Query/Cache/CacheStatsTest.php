@@ -20,14 +20,12 @@ class CacheStatsTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 
 	protected function setUp() : void {
-
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CacheStats::class,
 			new CacheStats( $this->cache, 42 )
@@ -35,7 +33,6 @@ class CacheStatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStats() {
-
 		$container = [
 			'misses' => 1,
 			'hits'   => [ 'Foo' => 2, [ 'Bar' => 2 ] ],
@@ -63,7 +60,6 @@ class CacheStatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStatsEmpty() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );

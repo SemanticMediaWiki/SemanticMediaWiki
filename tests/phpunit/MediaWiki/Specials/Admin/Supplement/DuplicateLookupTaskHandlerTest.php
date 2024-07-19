@@ -38,7 +38,6 @@ class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DuplicateLookupTaskHandler::class,
 			new DuplicateLookupTaskHandler( $this->outputFormatter )
@@ -46,7 +45,6 @@ class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new DuplicateLookupTaskHandler(
 			$this->outputFormatter
 		);
@@ -58,7 +56,6 @@ class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequest() {
-
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
 

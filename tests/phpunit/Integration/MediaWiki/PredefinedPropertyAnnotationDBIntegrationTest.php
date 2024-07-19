@@ -54,7 +54,6 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPredefinedModificationDatePropertyAndChangedDefaultsortForNewPage() {
-
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [ '_MDAT' ] );
 
 		$title   = Title::newFromText( __METHOD__ );
@@ -80,7 +79,6 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testAddedCategoryAndChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
-
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [] );
 
 		$title   = Title::newFromText( __METHOD__ );

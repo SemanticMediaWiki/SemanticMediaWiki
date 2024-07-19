@@ -52,7 +52,6 @@ class SPARQLStoreFactory {
 	 * @return QueryEngine
 	 */
 	public function newMasterQueryEngine() {
-
 		$engineOptions = new EngineOptions();
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'sparql-queryengine' );
@@ -96,7 +95,6 @@ class SPARQLStoreFactory {
 	 * @return TurtleTriplesBuilder
 	 */
 	public function newTurtleTriplesBuilder() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$turtleTriplesBuilder = new TurtleTriplesBuilder(
@@ -115,7 +113,6 @@ class SPARQLStoreFactory {
 	 * @return ReplicationDataTruncator
 	 */
 	public function newReplicationDataTruncator() {
-
 		$replicationDataTruncator = new ReplicationDataTruncator();
 
 		$replicationDataTruncator->setPropertyExemptionList(
@@ -131,7 +128,6 @@ class SPARQLStoreFactory {
 	 * @return ConnectionManager
 	 */
 	public function getConnectionManager() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

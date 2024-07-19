@@ -51,7 +51,6 @@ class SortWidget {
 	 * @return string
 	 */
 	public static function sortSection( array $params ) {
-
 		if ( self::$sortingSupport === false ) {
 			return '';
 		}
@@ -92,7 +91,6 @@ class SortWidget {
 	}
 
 	private static function sortingOptions( array $sorts, array $orders ) {
-
 		$result = '';
 
 		foreach ( $orders as $i => $order ) {

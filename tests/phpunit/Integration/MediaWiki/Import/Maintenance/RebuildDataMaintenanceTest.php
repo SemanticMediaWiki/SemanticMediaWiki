@@ -50,7 +50,6 @@ class RebuildDataMaintenanceTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -58,7 +57,6 @@ class RebuildDataMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testRebuildData() {
-
 		 $this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',
@@ -117,7 +115,6 @@ class RebuildDataMaintenanceTest extends DatabaseTestCase {
 	}
 
 	protected function assertRunWithFullDeleteOption( $expectedSomeProperties ) {
-
 		$options = [
 			'f' => true,
 			'no-cache' => true,
@@ -164,7 +161,6 @@ class RebuildDataMaintenanceTest extends DatabaseTestCase {
 	}
 
 	private function assertThatPropertiesAreSet( $expectedSomeProperties, $runner ) {
-
 		$this->assertTrue( $runner );
 
 		$runPropertiesAreSetAssert = $this->semanticDataValidator->assertThatPropertiesAreSet(

@@ -35,7 +35,6 @@ class CallbackConnectionProvider implements ConnectionProvider {
 	 * @return mixed
 	 */
 	public function getConnection() {
-
 		if ( $this->connection === null ) {
 			$this->connection = call_user_func( $this->callback );
 		}

@@ -66,7 +66,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$descriptionInterpreterFactory = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -78,7 +77,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildCondition() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -105,7 +103,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNamespaceDescription() {
-
 		$description = new NamespaceDescription( NS_HELP );
 
 		$instance = new ConditionBuilder(
@@ -131,7 +128,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisjunctiveNamespaceDescription() {
-
 		$description = new Disjunction();
 		$description->addDescription( new NamespaceDescription( NS_HELP ) );
 		$description->addDescription( new NamespaceDescription( NS_MAIN ) );
@@ -178,7 +174,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testClassDescription() {
-
 		$objectIds = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getSMWPageID' ] )
 			->getMock();
@@ -234,7 +229,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGivenNonInteger_getQuerySegmentThrowsException() {
-
 		$instance = new ConditionBuilder(
 			$this->store,
 			$this->orderCondition,
@@ -247,7 +241,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGivenUnknownId_getQuerySegmentThrowsException() {
-
 		$instance = new ConditionBuilder(
 			$this->store,
 			$this->orderCondition,
@@ -260,7 +253,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGivenKnownId_getQuerySegmentReturnsCorrectPart() {
-
 		$instance = new ConditionBuilder(
 			$this->store,
 			$this->orderCondition,
@@ -279,7 +271,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWhenNoQuerySegments_getQuerySegmentListReturnsEmptyArray() {
-
 		$instance = new ConditionBuilder(
 			$this->store,
 			$this->orderCondition,
@@ -294,7 +285,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWhenSomeQuerySegments_getQuerySegmentListReturnsThemAll() {
-
 		$instance = new ConditionBuilder(
 			$this->store,
 			$this->orderCondition,

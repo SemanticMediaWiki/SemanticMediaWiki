@@ -22,7 +22,6 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -39,7 +38,6 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetEventDispatcher() {
-
 		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -58,7 +56,6 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDispatchContext() {
-
 		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -72,7 +69,6 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddCallbackListenerForAdhocRegistration() {
-
 		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\Dispatcher\GenericEventDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();

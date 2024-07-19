@@ -19,7 +19,6 @@ class TimerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testGetElapsedTime() {
-
 		Timer::start( __CLASS__ );
 
 		$this->assertInternalType(
@@ -34,7 +33,6 @@ class TimerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetElapsedTimeWithoutStart() {
-
 		$this->assertEquals(
 			0,
 			Timer::getElapsedTime( 'Foo' )
@@ -42,7 +40,6 @@ class TimerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetElapsedTimeAsLoggableMessage() {
-
 		$this->assertInternalType(
 			'string',
 			Timer::getElapsedTimeAsLoggableMessage( 'Foo' )

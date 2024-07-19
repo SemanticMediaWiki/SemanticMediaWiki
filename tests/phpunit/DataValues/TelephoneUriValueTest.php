@@ -16,7 +16,6 @@ use SMW\DataValues\TelephoneUriValue;
 class TelephoneUriValueTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\TelephoneUriValue',
 			new TelephoneUriValue()

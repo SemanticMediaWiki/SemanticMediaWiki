@@ -51,7 +51,6 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RejectParserCacheValue::class,
 			new RejectParserCacheValue( $this->namespaceExaminer, $this->dependencyValidator )
@@ -59,7 +58,6 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcesCanKeepParserCache() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -99,7 +97,6 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcesCanNOTKeepParserCache() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -139,7 +136,6 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnDisabledNamespace() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

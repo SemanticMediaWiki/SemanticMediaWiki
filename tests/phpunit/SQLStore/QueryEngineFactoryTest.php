@@ -18,7 +18,6 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 
 	protected function setUp() : void {
-
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -33,7 +32,6 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			QueryEngineFactory::class,
 			new QueryEngineFactory( $this->store )
@@ -41,7 +39,6 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConditionBuilder() {
-
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -51,7 +48,6 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructQuerySegmentListProcessor() {
-
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -61,7 +57,6 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructQueryEngine() {
-
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -71,7 +66,6 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConceptQuerySegmentBuilder() {
-
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(

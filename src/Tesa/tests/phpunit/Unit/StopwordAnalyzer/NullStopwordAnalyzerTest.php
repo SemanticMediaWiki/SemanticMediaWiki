@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class NullStopwordAnalyzerTest extends TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\StopwordAnalyzer\NullStopwordAnalyzer',
 			new NullStopwordAnalyzer()
@@ -25,7 +24,6 @@ class NullStopwordAnalyzerTest extends TestCase {
 	}
 
 	public function testIsStopWord() {
-
 		$instance = new NullStopwordAnalyzer();
 
 		$this->assertFalse(

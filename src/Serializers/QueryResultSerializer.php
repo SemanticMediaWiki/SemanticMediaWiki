@@ -51,7 +51,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 * @throws OutOfBoundsException
 	 */
 	public function serialize( $queryResult ) {
-
 		if ( !( $this->isSerializerFor( $queryResult ) ) ) {
 			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
 		}
@@ -252,7 +251,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 	}
 
 	private static function serialize_printrequest( $printRequest ) {
-
 		$serialized = [
 			'label'  => $printRequest->getLabel(),
 			'key'    => '',

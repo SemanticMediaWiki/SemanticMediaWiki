@@ -19,7 +19,6 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryProvider
 	 */
 	public function testToArray( $query, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			QueryStringifier::toArray( $query )
@@ -30,7 +29,6 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryProvider
 	 */
 	public function testToJson( $query, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			json_decode( QueryStringifier::toJson( $query ), true )
@@ -41,7 +39,6 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryProvider
 	 */
 	public function testGet( $query, $array, $expected ) {
-
 		$this->assertSame(
 			$expected,
 			QueryStringifier::toString( $query )
@@ -52,7 +49,6 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryProvider
 	 */
 	public function testRawUrlEncode( $query, $array, $encode, $expected ) {
-
 		$this->assertSame(
 			$expected,
 			QueryStringifier::rawUrlEncode( $query )
@@ -60,7 +56,6 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryProvider() {
-
 		#0
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()

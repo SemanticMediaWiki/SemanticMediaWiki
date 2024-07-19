@@ -40,7 +40,6 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -63,7 +62,6 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider setParserProvider
 	 */
 	public function testParse( array $params ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -101,7 +99,6 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider setParserProvider
 	 */
 	public function testInstantiatedPropertyValues( array $params, array $expected ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -134,7 +131,6 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTemplateSupport() {
-
 		$params = [ 'Foo=bar', 'Foo=foobar', 'BarFoo=9001', 'template=FooTemplate' ];
 
 		$expected = [
@@ -176,7 +172,6 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function setParserProvider() {
-
 		// #0 Single data set
 		// {{#set:
 		// |Foo=bar

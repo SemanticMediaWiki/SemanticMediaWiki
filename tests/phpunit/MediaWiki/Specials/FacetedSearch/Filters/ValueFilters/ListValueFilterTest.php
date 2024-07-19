@@ -39,7 +39,6 @@ class ListValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ListValueFilter::class,
 			new ListValueFilter( $this->templateEngine, [] )
@@ -47,7 +46,6 @@ class ListValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate_NoFilter() {
-
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
 			->will( $this->returnValue( '' ) );

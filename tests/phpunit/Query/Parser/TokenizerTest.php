@@ -16,7 +16,6 @@ use SMW\Query\Parser\Tokenizer;
 class TokenizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Tokenizer::class,
 			new Tokenizer()
@@ -27,7 +26,6 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider tokenProvider
 	 */
 	public function testGetToken( $currentString, $stoppattern, $expectedRes, $expectedCurrent ) {
-
 		$instance = new Tokenizer();
 		$instance->setDefaultPattern( [] );
 
@@ -45,7 +43,6 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tokenProvider() {
-
 		yield [
 			'',
 			'',

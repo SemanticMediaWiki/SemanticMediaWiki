@@ -58,7 +58,6 @@ class HtmlTemplateRenderer {
 	 * @return string
 	 */
 	public function render() {
-
 		$wikiText = $this->wikitextTemplateRenderer->render();
 
 		if ( $wikiText === '' ) {

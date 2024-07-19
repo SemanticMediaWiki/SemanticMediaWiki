@@ -16,7 +16,6 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory',
 			new DescriptionInterpreterFactory()
@@ -24,7 +23,6 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDispatchingDescriptionInterpreter() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();

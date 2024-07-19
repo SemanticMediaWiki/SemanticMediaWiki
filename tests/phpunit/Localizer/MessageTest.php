@@ -24,7 +24,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Message::class,
 			new Message()
@@ -32,7 +31,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmptyStringOnUnregisteredHandler() {
-
 		$instance = new Message();
 
 		$this->assertEmpty(
@@ -41,11 +39,9 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisteredHandler() {
-
 		$instance = new Message();
 
 		$instance->registerCallbackHandler( 'Foo', function( $parameters, $language ) {
-
 			if ( $parameters[0] === 'Foo' && $language === Message::CONTENT_LANGUAGE ) {
 				return 'Foobar';
 			}
@@ -71,7 +67,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisteredHandlerWithLanguage() {
-
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -101,7 +96,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFromCache() {
-
 		$instance = new Message();
 		$instance->clear();
 
@@ -159,7 +153,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider encodeProvider
 	 */
 	public function testEncode( $string, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			Message::encode( $string )
@@ -167,7 +160,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDecode() {
-
 		$this->assertEquals(
 			false,
 			Message::decode( 'Foo' )
@@ -180,7 +172,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function encodeProvider() {
-
 		$provider[] = [
 			'Foo',
 			'[2,"Foo"]'

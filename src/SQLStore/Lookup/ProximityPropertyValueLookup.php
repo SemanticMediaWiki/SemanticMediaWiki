@@ -57,7 +57,6 @@ class ProximityPropertyValueLookup {
 	 * @return array
 	 */
 	public function fetchFromTable( DIProperty $property, $search, RequestOptions $opts ) {
-
 		$options = [];
 		$list = [];
 
@@ -140,7 +139,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function fetchFromIDTable( $query, $pid, $table, $field, $options, $search, $sort, $limit, $offset ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$continueOffset = 0;
 		$res = [];
@@ -224,7 +222,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function isFixedPropertyTable( $table ) {
-
 		$propertyTables = $this->store->getPropertyTables();
 
 		foreach ( $propertyTables as $propertyTable ) {
@@ -237,7 +234,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function getField( $property ) {
-
 		$typeId = $property->findPropertyTypeID();
 		$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeId );
 
@@ -249,7 +245,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function build_like( $query, $field, $search ) {
-
 		$conds = [
 			'%' . $search . '%',
 			'%' . ucfirst( $search ) . '%',

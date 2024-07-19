@@ -30,7 +30,6 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ParametersProcessor::class,
 			new ParametersProcessor( $this->profile )

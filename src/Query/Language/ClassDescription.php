@@ -52,7 +52,6 @@ class ClassDescription extends Description {
 	 * @param integer $hierarchyDepth
 	 */
 	public function setHierarchyDepth( $hierarchyDepth ) {
-
 		if ( $hierarchyDepth > $GLOBALS['smwgQSubcategoryDepth'] ) {
 			$hierarchyDepth = $GLOBALS['smwgQSubcategoryDepth'];
 		}
@@ -77,7 +76,6 @@ class ClassDescription extends Description {
 	 * @return boolean
 	 */
 	public function isMergableDescription( ClassDescription $description ) {
-
 		if ( isset( $this->isNegation ) && isset( $description->isNegation ) ) {
 			return true;
 		}
@@ -112,7 +110,6 @@ class ClassDescription extends Description {
 	 * @return string
 	 */
 	public function getFingerprint() {
-
 		$hash = [];
 
 		foreach ( $this->m_diWikiPages as $subject ) {
@@ -133,7 +130,6 @@ class ClassDescription extends Description {
 	}
 
 	public function getQueryString( $asValue = false ) {
-
 		$first = true;
 		$namespaceText = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
@@ -165,7 +161,6 @@ class ClassDescription extends Description {
 	}
 
 	public function getSize() {
-
 		if ( $GLOBALS['smwgQSubcategoryDepth'] > 0 ) {
 			return 1; // disj. of cats should not cause much effort if we compute cat-hierarchies anyway!
 		}
@@ -174,7 +169,6 @@ class ClassDescription extends Description {
 	}
 
 	public function getQueryFeatures() {
-
 		if ( count( $this->m_diWikiPages ) > 1 ) {
 			return SMW_CATEGORY_QUERY | SMW_DISJUNCTION_QUERY;
 		}
@@ -183,7 +177,6 @@ class ClassDescription extends Description {
 	}
 
 	public function prune( &$maxsize, &$maxdepth, &$log ) {
-
 		if ( $maxsize >= $this->getSize() ) {
 			$maxsize = $maxsize - $this->getSize();
 			return $this;

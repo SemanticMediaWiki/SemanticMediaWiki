@@ -23,7 +23,6 @@ class PrintRequestFactory {
 	 * @return PrintRequest
 	 */
 	public function newFromProperty( DIProperty $property ) {
-
 		$propertyValue = DataValueFactory::getInstance()->newDataValueByType( PropertyValue::TYPE_ID );
 		$propertyValue->setDataItem( $property );
 

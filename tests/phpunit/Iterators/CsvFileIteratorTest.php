@@ -37,7 +37,6 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CsvFileIterator::class,
 			new CsvFileIterator( $this->file )
@@ -45,13 +44,11 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidFileThrowsException() {
-
 		$this->expectException( '\SMW\Exception\FileNotFoundException' );
 		new CsvFileIterator( 'Foo' );
 	}
 
 	public function testForEachOnCsvFileWithNoHeader() {
-
 		$sample = [
 			'1,Foo,abc',
 			'2,Bar,123'
@@ -90,7 +87,6 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testForEachOnCsvFileWithHeader() {
-
 		$sample = [
 			'No,Text,Other',
 			'1,Foo,abc',

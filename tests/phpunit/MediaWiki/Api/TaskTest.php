@@ -32,7 +32,6 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new Task(
 			$this->apiFactory->newApiMain( [] ),
 			'smwtask'
@@ -45,7 +44,6 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateTask() {
-
 		$updateJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -78,7 +76,6 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDupLookupTask() {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -125,7 +122,6 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGenericJobTask() {
-
 		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -168,7 +164,6 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunJobListTask() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -205,7 +200,6 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckQueryTask() {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();

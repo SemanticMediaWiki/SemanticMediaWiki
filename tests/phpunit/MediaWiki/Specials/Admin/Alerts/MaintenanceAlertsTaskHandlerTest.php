@@ -19,7 +19,6 @@ class MaintenanceAlertsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MaintenanceAlertsTaskHandler::class,
 			new MaintenanceAlertsTaskHandler( [] )
@@ -27,7 +26,6 @@ class MaintenanceAlertsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getHtml' ] )

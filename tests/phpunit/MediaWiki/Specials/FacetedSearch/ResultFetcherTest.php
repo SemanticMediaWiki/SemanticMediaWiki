@@ -30,7 +30,6 @@ class ResultFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ResultFetcher::class,
 			new ResultFetcher( $this->store )

@@ -179,7 +179,6 @@ class SetupFile {
 	}
 
 	public function addIncompleteTask( string $key, array $args = [] ): void {
-
 		$incomplete_tasks = $this->get( self::INCOMPLETE_TASKS );
 
 		if ( $incomplete_tasks === null ) {
@@ -276,7 +275,6 @@ class SetupFile {
 	}
 
 	public function finalize( array $vars = [] ): void {
-
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -341,7 +339,6 @@ class SetupFile {
 	}
 
 	public function remove( string $key, $vars = [] ): void {
-
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}

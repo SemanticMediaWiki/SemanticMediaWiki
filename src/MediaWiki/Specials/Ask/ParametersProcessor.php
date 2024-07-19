@@ -51,7 +51,6 @@ class ParametersProcessor {
 	 * @return string
 	 */
 	public static function process( WebRequest $request, $params ) {
-
 		// First make all inputs into a simple parameter list that can again be
 		// parsed into components later.
 		$parameterList = self::getParameterList( $request, $params );
@@ -164,7 +163,6 @@ class ParametersProcessor {
 	 * @return array
 	 */
 	private static function getParameterList( $request, $params ) {
-
 		// Called from wiki, get all parameters
 		if ( !$request->getCheck( 'q' ) ) {
 			return Infolink::decodeParameters( $params ?? '', true );
@@ -202,7 +200,6 @@ class ParametersProcessor {
 	}
 
 	private static function checkParameterList( $request, $parameterList, $printouts ) {
-
 		// Add initial ? if omitted (all params considered as printouts)
 		foreach ( $printouts as $param ) {
 			$param = trim( $param );
@@ -254,7 +251,6 @@ class ParametersProcessor {
 	}
 
 	private static function hasPipe( $key, $value ) {
-
 		if ( is_string( $key ) && $key !== '' && $key[0] == '?' && strpos( $value, '|' ) !== false ) {
 			return true;
 		}

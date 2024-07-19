@@ -76,7 +76,6 @@ class PropertyStatisticsStore {
 	 * @return boolean Success indicator
 	 */
 	public function addToUsageCount( $pid, $value ) {
-
 		$usageVal = 0;
 		$nullVal = 0;
 
@@ -135,7 +134,6 @@ class PropertyStatisticsStore {
 	 * @return boolean Success indicator
 	 */
 	public function addToUsageCounts( array $additions ) {
-
 		$success = true;
 
 		if ( $additions === [] ) {
@@ -179,7 +177,6 @@ class PropertyStatisticsStore {
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function setUsageCount( $propertyId, $value ) {
-
 		$usageCount = 0;
 		$nullCount = 0;
 
@@ -223,7 +220,6 @@ class PropertyStatisticsStore {
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function insertUsageCount( $propertyId, $value ) {
-
 		$usageCount = 0;
 		$nullCount = 0;
 
@@ -270,7 +266,6 @@ class PropertyStatisticsStore {
 	 * @return integer
 	 */
 	public function getUsageCount( $propertyId ) {
-
 		if ( !is_int( $propertyId ) ) {
 			return 0;
 		}
@@ -349,7 +344,6 @@ class PropertyStatisticsStore {
 	}
 
 	private function log( $message, $context = [] ) {
-
 		if ( $this->logger === null ) {
 			return;
 		}

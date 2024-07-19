@@ -26,7 +26,6 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 	private $elasticClient;
 
 	protected function setUp() : void {
-
 		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -59,7 +58,6 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ProximityPropertyValueLookup::class,
 			new ProximityPropertyValueLookup( $this->store )
@@ -67,7 +65,6 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_AnyValue() {
-
 		$params = [
 			'index' => null,
 			'body' => [

@@ -47,7 +47,6 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	 * @see PHPUnit_Framework_TestListener::endTest
 	 */
 	public function endTest( PHPUnit_Framework_Test $test, $length ) : void {
-
 		if ( $this->isEnabledToListen && ( $length > $this->slowThreshold ) ) {
 			$className = get_class( $test );
 			$className = substr( $className, strrpos( $className, '\\') + 1 );
@@ -83,7 +82,6 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	}
 
 	private function reportSlowTests( $suite ) {
-
 		arsort( $this->slowTests );
 
 		// Have the PHPUnitResultPrinter to make the actual output in order to

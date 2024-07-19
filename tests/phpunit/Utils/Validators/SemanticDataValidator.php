@@ -66,7 +66,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param SemanticData $semanticData
 	 */
 	public function assertThatCategoriesAreSet( array $expected, SemanticData $semanticData ) {
-
 		$runCategoryInstanceAssert = false;
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -105,7 +104,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param string|null $msg
 	 */
 	public function assertThatSemanticDataHasPropertyCountOf( $count, SemanticData $semanticData, $msg = null ) {
-
 		$prop = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -125,7 +123,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param array $properties
 	 */
 	public function assertHasProperties( array $expected, array $properties ) {
-
 		$expected = isset( $expected['properties'] ) ? $expected['properties'] : $expected;
 
 		foreach ( $properties as $property ) {
@@ -150,7 +147,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param DIProperty $property
 	 */
 	public function assertThatPropertyHasCharacteristicsAs( array $expected, DIProperty $property ) {
-
 		$runAssertThatPropertyHasCharacteristicsAs = false;
 
 		if ( isset( $expected['property'] ) ) {
@@ -204,7 +200,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param SemanticData $semanticData
 	 */
 	public function assertThatPropertiesAreSet( array $expected, SemanticData $semanticData, $message = '' ) {
-
 		$runPropertiesAreSetAssert = false;
 		$properties = $semanticData->getProperties();
 
@@ -288,7 +283,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param array $dataItems
 	 */
 	public function assertThatPropertyValuesAreSet( array &$expected, DIProperty $property, array $dataItems ) {
-
 		$runPropertyValueAssert = false;
 
 		if ( !isset( $expected['@valueHint'] ) ) {
@@ -322,7 +316,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function assertThatSemanticDataIsIndeedEmpty( SemanticData $semanticData ) {
-
 		$property = new DIProperty( '_SKEY' );
 
 		foreach( $semanticData->getPropertyValues( $property ) as $dataItem ) {
@@ -333,7 +326,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function assertContainsPropertyKeys( $keys, DIProperty $property, $message = null ) {
-
 		$keys = str_replace( " ", "_", $keys );
 		$message = ( $message === null ? 'Failed asserting' : "Failed asserting \"$message\"" );
 
@@ -353,7 +345,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function assertContainsProperty( array $properties, DIProperty $property ) {
-
 		$runContainsPropertyAssert = false;
 
 		foreach ( $properties as $expectedproperty ) {
@@ -376,7 +367,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function assertContainsPropertyValues( &$expected, $dataValue, $defaultFormatter, $formatterParameters = [] ) {
-
 		if ( !isset( $expected['propertyValues'] ) ) {
 			throw new RuntimeException( "Expected a 'propertyValues' array index" );
 		}

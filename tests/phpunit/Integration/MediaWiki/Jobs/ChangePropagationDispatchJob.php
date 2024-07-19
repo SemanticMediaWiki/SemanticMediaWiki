@@ -48,7 +48,6 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$this->testEnvironment->flushPages(
 			$this->pages
 		);
@@ -60,7 +59,6 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 	}
 
 	public function testTriggerUpdateJob() {
-
 		$index = 1; //pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
@@ -72,7 +70,6 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 	}
 
 	public function testPropertyTypeChangeToCreateUpdateJob() {
-
 		$this->skipTestForDatabase(
 			'sqlite', 'No idea why SQLite fails here with "Failed asserting that 0 is greater than 0".'
 		);
@@ -127,7 +124,6 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 	}
 
 	public function testCategoryChangeToCreateUpdateJob() {
-
 		$this->skipTestForDatabase(
 			'sqlite', 'No idea why SQLite fails here with "Failed asserting that 0 is greater than 0".'
 		);

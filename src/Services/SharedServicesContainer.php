@@ -81,7 +81,6 @@ class SharedServicesContainer implements CallbackContainer {
 	 * @since 2.3
 	 */
 	public function register( ContainerBuilder $containerBuilder ) {
-
 		$containerBuilder->registerCallback( 'Store', [ $this, 'newStore' ] );
 		$containerBuilder->registerCallback( 'IndicatorRegistry', [ $this, 'newIndicatorRegistry' ] );
 
@@ -96,7 +95,6 @@ class SharedServicesContainer implements CallbackContainer {
 	 * @return Store
 	 */
 	public function newStore( ContainerBuilder $containerBuilder, $storeClass = null ) {
-
 		$containerBuilder->registerExpectedReturnType( 'Store', '\SMW\Store' );
 		$settings = $containerBuilder->singleton( 'Settings' );
 
@@ -131,7 +129,6 @@ class SharedServicesContainer implements CallbackContainer {
 	 * @return IndicatorRegistry
 	 */
 	public function newIndicatorRegistry( ContainerBuilder $containerBuilder, bool $addEntityExaminer ) {
-
 		$indicatorRegistry = new IndicatorRegistry();
 
 		if ( !$addEntityExaminer ) {
@@ -152,7 +149,6 @@ class SharedServicesContainer implements CallbackContainer {
 	}
 
 	private function registerCallbackHandlers( ContainerBuilder $containerBuilder ) {
-
 		$containerBuilder->registerCallback( 'Settings', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'Settings', '\SMW\Settings' );
 
@@ -193,7 +189,6 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		$containerBuilder->registerCallback( 'NamespaceExaminer', function() use ( $containerBuilder ) {
-
 			$settings = $containerBuilder->singleton( 'Settings' );
 			$namespaceInfo = $containerBuilder->singleton( 'NamespaceInfo' );
 
@@ -263,7 +258,6 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @return callable
 		 */
 		$containerBuilder->registerCallback( 'JobQueue', function( $containerBuilder ) {
-
 			$containerBuilder->registerExpectedReturnType(
 				'JobQueue',
 				'\SMW\MediaWiki\JobQueue'
@@ -496,7 +490,6 @@ class SharedServicesContainer implements CallbackContainer {
 	}
 
 	private function registerCallableFactories( ContainerBuilder $containerBuilder ) {
-
 		/**
 		 * @var CacheFactory
 		 */
@@ -585,7 +578,6 @@ class SharedServicesContainer implements CallbackContainer {
 	}
 
 	private function registerCallbackHandlersByConstructedInstance( ContainerBuilder $containerBuilder ) {
-
 		/**
 		 * @var BlobStore
 		 */

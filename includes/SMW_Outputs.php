@@ -174,7 +174,6 @@ class SMWOutputs {
 	 * @param ParserOutput $parserOutput
 	 */
 	static public function commitToParserOutput( ParserOutput $parserOutput ) {
-
 		foreach ( self::$scripts as $key => $script ) {
 			$parserOutput->addHeadItem( $script . "\n", $key );
 		}

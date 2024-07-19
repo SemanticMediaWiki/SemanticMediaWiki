@@ -55,7 +55,6 @@ class PropertyTableDefinitionBuilder {
 	 * @param array $userDefinedFixedProperties
 	 */
 	public function doBuild( $diTypes, $specialProperties, $userDefinedFixedProperties ) {
-
 		$this->addTableDefinitionForDiTypes( $diTypes );
 
 		$this->addTableDefinitionForFixedProperties(
@@ -218,7 +217,6 @@ class PropertyTableDefinitionBuilder {
 	 * @param array $fixedProperties
 	 */
 	private function addTableDefinitionForUserDefinedFixedProperties( array $fixedProperties ) {
-
 		$this->propertyTypeFinder->setTypeTableName(
 			$this->makeTableName( '_TYPE' )
 		);
@@ -241,7 +239,6 @@ class PropertyTableDefinitionBuilder {
 	}
 
 	private function createFixedPropertyTableIdIndex() {
-
 		foreach ( $this->propertyTables as $tid => $propTable ) {
 			if ( $propTable->isFixedPropertyTable() ) {
 				$this->fixedPropertyTableIds[$propTable->getFixedProperty()] = $tid;

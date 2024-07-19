@@ -32,7 +32,6 @@ class SemanticDataCountMapIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->subjects );
 		$this->mwHooksHandler->restoreListedHooks();
@@ -41,7 +40,6 @@ class SemanticDataCountMapIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testCountMapFromDatabase() {
-
 		$store = $this->getStore();
 
 		$semanticData = $this->semanticDataFactory

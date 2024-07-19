@@ -36,7 +36,6 @@ class PredefinedPropertyValueResourceBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			PredefinedPropertyValueResourceBuilder::class,
 			new PredefinedPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class PredefinedPropertyValueResourceBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function testIsNotResourceBuilderForUserDefinedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new PredefinedPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class PredefinedPropertyValueResourceBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function testAddResourceValueForPredefinedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_boo' );
 		$dataItem = $this->dataItemFactory->newDIBoolean( true );
 

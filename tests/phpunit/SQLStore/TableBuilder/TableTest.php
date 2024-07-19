@@ -19,7 +19,6 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Table::class,
 			new Table( 'Foo' )
@@ -27,7 +26,6 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsCoreTable() {
-
 		$instance = new Table( 'Foo' );
 
 		$this->assertTrue(
@@ -42,7 +40,6 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddColumn() {
-
 		$instance = new Table( 'Foo' );
 
 		$instance->addColumn( 'b', 'integer' );
@@ -60,7 +57,6 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddIndex() {
-
 		$instance = new Table( 'Foo' );
 
 		$instance->addIndex( 'bar' );
@@ -83,7 +79,6 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddIndexWithKey() {
-
 		$instance = new Table( 'Foo' );
 
 		$instance->addIndex( [ 'foobar' ], 'bar' );
@@ -101,7 +96,6 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetPrimaryKey() {
-
 		$instance = new Table( 'Foo' );
 		$instance->setPrimaryKey( 'abc,def' );
 
@@ -118,7 +112,6 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddIndexWithSpaceThrowsException() {
-
 		$instance = new Table( 'Foo' );
 
 		$this->expectException( 'RuntimeException' );
@@ -126,7 +119,6 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddOption() {
-
 		$instance = new Table( 'Foo' );
 
 		$instance->addOption( 'bar', [ 'foobar' ] );
@@ -147,7 +139,6 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetOnUnregsiteredKeyThrowsException() {
-
 		$instance = new Table( 'Foo' );
 
 		$this->expectException( 'RuntimeException' );
@@ -158,7 +149,6 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider invalidOptionsProvider
 	 */
 	public function testAddOptionOnReservedOptionKeyThrowsException( $key ) {
-
 		$instance = new Table( 'Foo' );
 
 		$this->expectException( 'RuntimeException' );
@@ -166,7 +156,6 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function invalidOptionsProvider() {
-
 		$provider[] = [
 			'fields'
 		];

@@ -82,7 +82,6 @@ class Queue {
 	 * @param int $recdepth
 	 */
 	public function add( DIWikiPage $dataItem, int $recdepth ) {
-
 		if ( $this->isDone( $dataItem, $recdepth ) ) {
 			return;
 		}
@@ -151,7 +150,6 @@ class Queue {
 	 * recursion depth.
 	 */
 	private function isHashDone( string $hash, int $recdepth ) {
-
 		if ( isset( $this->done[$hash] ) && $this->done[$hash] == -1 ) {
 			return true;
 		}

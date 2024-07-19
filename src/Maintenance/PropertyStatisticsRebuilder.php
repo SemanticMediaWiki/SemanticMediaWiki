@@ -60,7 +60,6 @@ class PropertyStatisticsRebuilder {
 	 * @since 1.9
 	 */
 	public function rebuild() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -142,7 +141,6 @@ class PropertyStatisticsRebuilder {
 	}
 
 	private function getCountFormRow( $row ) {
-
 		$usageCount = 0;
 		$nullCount = 0;
 
@@ -166,7 +164,6 @@ class PropertyStatisticsRebuilder {
 	}
 
 	private function getPropertyTableRowCount( $propertyTable, $pid ) {
-
 		$condition = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 

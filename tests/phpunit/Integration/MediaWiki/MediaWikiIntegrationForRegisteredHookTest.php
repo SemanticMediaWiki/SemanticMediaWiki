@@ -67,7 +67,6 @@ class MediaWikiIntegrationForRegisteredHookTest extends DatabaseTestCase {
 	}
 
 	public function testPagePurge() {
-
 		$cacheFactory = $this->applicationFactory->newCacheFactory();
 		$cache = $cacheFactory->newFixedInMemoryCache();
 
@@ -93,7 +92,6 @@ class MediaWikiIntegrationForRegisteredHookTest extends DatabaseTestCase {
 	}
 
 	public function testPageDelete() {
-
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
@@ -114,7 +112,6 @@ class MediaWikiIntegrationForRegisteredHookTest extends DatabaseTestCase {
 	}
 
 	public function testEditPageToGetNewRevision() {
-
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
@@ -146,7 +143,6 @@ class MediaWikiIntegrationForRegisteredHookTest extends DatabaseTestCase {
 	}
 
 	public function testOnOutputPageParserOutputeOnDatabase() {
-
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();

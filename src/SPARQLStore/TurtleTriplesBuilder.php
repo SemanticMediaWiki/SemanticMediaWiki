@@ -89,7 +89,6 @@ class TurtleTriplesBuilder {
 	 * @param SemanticData $semanticData
 	 */
 	public function doBuildTriplesFrom( SemanticData $semanticData ) {
-
 		$this->hasTriplesForUpdate = false;
 		$this->triples = '';
 		$this->prefixes = [];
@@ -125,7 +124,6 @@ class TurtleTriplesBuilder {
 	 * @return array
 	 */
 	public function getChunkedTriples() {
-
 		$chunkedTriples = [];
 
 		if ( $this->triples === null ) {
@@ -164,7 +162,6 @@ class TurtleTriplesBuilder {
 	}
 
 	private function doSerialize( SemanticData $semanticData ) {
-
 		$expDataArray = $this->prepareUpdateExpData( $semanticData );
 
 		if ( count( $expDataArray ) > 0 ) {
@@ -203,7 +200,6 @@ class TurtleTriplesBuilder {
 	 * @return array of SMWExpData
 	 */
 	private function prepareUpdateExpData( SemanticData $semanticData ) {
-
 		$result = [];
 
 		$expData = Exporter::getInstance()->makeExportData( $semanticData );
@@ -230,7 +226,6 @@ class TurtleTriplesBuilder {
 	 * @return ExpElement
 	 */
 	private function expandUpdateExpElement( Element $expElement, array &$auxiliaryExpData ) {
-
 		if ( $expElement instanceof ExpResource ) {
 			return $this->expandUpdateExpResource( $expElement, $auxiliaryExpData );
 		}
@@ -259,7 +254,6 @@ class TurtleTriplesBuilder {
 	 * @return ExpElement
 	 */
 	private function expandUpdateExpResource( ExpResource $expResource, array &$auxiliaryExpData ) {
-
 		$exists = true;
 
 		if ( $expResource instanceof ExpNsResource ) {
@@ -300,7 +294,6 @@ class TurtleTriplesBuilder {
 	 * @return ExpData
 	 */
 	private function expandUpdateExpData( ExpData $expData, array &$auxiliaryExpData, $expandSubject ) {
-
 		$subjectExpResource = $expData->getSubject();
 
 		if ( $expandSubject ) {

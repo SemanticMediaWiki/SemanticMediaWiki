@@ -113,7 +113,6 @@ class NamespaceForm {
 	 * @param SpecialSearch $specialSearch
 	 */
 	public function checkNamespaceEditToken( SpecialSearch $specialSearch ) {
-
 		$user = $specialSearch->getUser();
 
 		if ( !$user->isRegistered() ) {
@@ -129,7 +128,6 @@ class NamespaceForm {
 	 * @return string
 	 */
 	public function makeFields() {
-
 		$divider = "<div class='divider'></div>";
 		$rows = [];
 		$tableRows = [];

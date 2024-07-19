@@ -125,7 +125,6 @@ class PropertyTableIdReferenceDisposer {
 	 * @param integer $id
 	 */
 	public function removeOutdatedEntityReferencesById( $id ) {
-
 		if ( $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) ) {
 			return null;
 		}
@@ -141,7 +140,6 @@ class PropertyTableIdReferenceDisposer {
 	 * @return ResultIterator
 	 */
 	public function newOutdatedEntitiesResultIterator( RequestOptions $requestOptions = null ) {
-
 		$options = [];
 
 		if ( $requestOptions !== null ) {
@@ -170,7 +168,6 @@ class PropertyTableIdReferenceDisposer {
 	 * @return ResultIterator
 	 */
 	public function newByNamespaceInvalidEntitiesResultIterator( RequestOptions $requestOptions = null ) {
-
 		$options = [];
 
 		if ( $requestOptions !== null ) {
@@ -199,7 +196,6 @@ class PropertyTableIdReferenceDisposer {
 	 * @param stdClass $row
 	 */
 	public function cleanUpTableEntriesByRow( $row ) {
-
 		if ( !isset( $row->smw_id ) ) {
 			return;
 		}
@@ -216,7 +212,6 @@ class PropertyTableIdReferenceDisposer {
 	 * @param integer $id
 	 */
 	public function cleanUpTableEntriesById( $id ) {
-
 		if ( $this->onTransactionIdle ) {
 			return $this->connection->onTransactionCommitOrIdle( function() use ( $id ) {
 				$this->cleanUpReferencesById( $id );
@@ -227,7 +222,6 @@ class PropertyTableIdReferenceDisposer {
 	}
 
 	private function cleanUpReferencesById( $id ) {
-
 		$subject = $this->store->getObjectIds()->getDataItemById( $id );
 		$isRedirect = false;
 
@@ -288,7 +282,6 @@ class PropertyTableIdReferenceDisposer {
 	}
 
 	private function cleanUpSecondaryReferencesById( $id, $isRedirect ) {
-
 		// When marked as redirect, don't remove the reference
 		if ( $isRedirect === false || ( $isRedirect && $this->redirectRemoval ) ) {
 			$this->connection->delete(
@@ -340,7 +333,6 @@ class PropertyTableIdReferenceDisposer {
 	}
 
 	private function triggerCleanUpEvents( $subject ) {
-
 		if ( !$subject instanceof DIWikiPage ) {
 			return;
 		}

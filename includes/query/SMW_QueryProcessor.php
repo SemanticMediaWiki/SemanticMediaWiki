@@ -55,7 +55,6 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return ProcessedParam[]
 	 */
 	public static function getProcessedParams( array $params, array $printRequests = [], $unknownInvalid = true, $context = null, $showMode = false ) {
-
 		// #4261
 		// The `ProcessedParam` library creates inconsistent results pending the
 		// input types especially between conversion of string to integer, so to
@@ -117,7 +116,6 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return SMWQuery
 	 */
 	static public function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = [], $contextPage = null ) {
-
 		if ( $format === '' || is_null( $format ) ) {
 			$format = $params['format']->getValue();
 		}
@@ -185,7 +183,6 @@ class SMWQueryProcessor implements QueryContext {
 	 * @param array $rawParams
 	 */
 	public static function addThisPrintout( array &$printRequests, array $rawParams ) {
-
 		if ( $printRequests === null ) {
 			return;
 		}
@@ -293,7 +290,6 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return string
 	 */
 	public static function getResultFromQuery( SMWQuery $query, array $params, $outputMode, $context ) {
-
 		$printer = self::getResultPrinter(
 			$params['format']->getValue(),
 			$context

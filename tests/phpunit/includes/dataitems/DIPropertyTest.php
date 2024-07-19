@@ -51,7 +51,6 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetPropertyTypeIdOnUserDefinedProperty() {
-
 		$property = new DIProperty( 'SomeBlobProperty' );
 		$property->setPropertyTypeId( '_txt' );
 
@@ -59,7 +58,6 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetPropertyTypeIdOnPredefinedProperty() {
-
 		$property = new DIProperty( '_MDAT' );
 		$property->setPropertyTypeId( '_dat' );
 
@@ -67,7 +65,6 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetUnknownPropertyTypeIdThrowsException() {
-
 		$property = new DIProperty( 'SomeUnknownTypeIdProperty' );
 
 		$this->expectException( '\SMW\Exception\DataTypeLookupException' );
@@ -75,7 +72,6 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetPropertyTypeIdOnPredefinedPropertyThrowsException() {
-
 		$property = new DIProperty( '_MDAT' );
 
 		$this->expectException( 'RuntimeException' );
@@ -83,7 +79,6 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCorrectInversePrefixForPredefinedProperty() {
-
 		$property = new DIProperty( '_SOBJ', true );
 
 		$this->assertTrue(
@@ -99,7 +94,6 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUseInterwikiPrefix() {
-
 		$property = new DIProperty( 'Foo' );
 		$property->setInterwiki( 'bar' );
 
@@ -110,7 +104,6 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreatePropertyFromLabelThatContainsInverseMarker() {
-
 		$property = DIProperty::newFromUserLabel( '-Foo' );
 		$property->setInterwiki( 'bar' );
 
@@ -125,7 +118,6 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreatePropertyFromLabelThatContainsLanguageMarker() {
-
 		$property = DIProperty::newFromUserLabel( '-Foo@en' );
 		$property->setInterwiki( 'bar' );
 
@@ -143,7 +135,6 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider labelProvider
 	 */
 	public function testNewFromLabel( $label, $iw, $lc, $expected ) {
-
 		$property = DIProperty::newFromUserLabel( $label, $iw, $lc );
 
 		$this->assertEquals(
@@ -153,7 +144,6 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanonicalRepresentation() {
-
 		$property = new DIProperty( '_MDAT' );
 
 		$this->assertEquals(
@@ -168,7 +158,6 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function labelProvider() {
-
 		$provider['testCreatePropertyFromLabelWithAnnotatedLangCodeToTakePrecedence'] = [
 			'A le type@fr', '', 'es',
 			'_TYPE'

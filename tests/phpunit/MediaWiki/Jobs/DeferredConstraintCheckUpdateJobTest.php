@@ -43,7 +43,6 @@ class DeferredConstraintCheckUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -55,7 +54,6 @@ class DeferredConstraintCheckUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushJob() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->jobQueue->expects( $this->once() )
@@ -70,7 +68,6 @@ class DeferredConstraintCheckUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider jobProvider
 	 */
 	public function testRun( $subject, $parameters ) {
-
 		$instance = new DeferredConstraintCheckUpdateJob(
 			$subject->getTitle(),
 			$parameters
@@ -82,7 +79,6 @@ class DeferredConstraintCheckUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function jobProvider() {
-
 		$provider[] = [
 			DIWikiPage::newFromText( __METHOD__ ),
 			[]

@@ -47,7 +47,6 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\PropertiesQueryPage',
 			new PropertiesQueryPage( $this->store, $this->settings )
@@ -55,7 +54,6 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatResultDIError() {
-
 		$error = $this->dataItemFactory->newDIError( 'Foo');
 
 		$instance = new PropertiesQueryPage(
@@ -80,7 +78,6 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidResultThrowsException() {
-
 		$instance = new PropertiesQueryPage(
 			$this->store,
 			$this->settings
@@ -91,7 +88,6 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatPropertyItemOnUserDefinedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new PropertiesQueryPage(
@@ -111,7 +107,6 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatPropertyItemOnPredefinedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_MDAT' );
 
 		$instance = new PropertiesQueryPage(
@@ -131,7 +126,6 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatPropertyItemZeroDisplay() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->settings->set(
@@ -155,7 +149,6 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatPropertyItemLowUsageThreshold() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 		$count  = 42;
 

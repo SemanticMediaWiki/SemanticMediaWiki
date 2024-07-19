@@ -26,7 +26,6 @@ class ErrorMsgTextValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ErrorMsgTextValue',
 			new ErrorMsgTextValue()
@@ -34,7 +33,6 @@ class ErrorMsgTextValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorOnEmptyUserValue() {
-
 		$instance = new ErrorMsgTextValue();
 		$instance->setUserValue( '' );
 
@@ -44,7 +42,6 @@ class ErrorMsgTextValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testShortWikiText() {
-
 		$instance = new ErrorMsgTextValue();
 		$instance->setOption( ErrorMsgTextValue::OPT_USER_LANGUAGE, 'en' );
 		$instance->setUserValue( '[2,"smw-constraint-violation-uniqueness","Has Url","http:\/\/loremipsum.org\/2","Lorem ipsum\/2"]' );
@@ -74,7 +71,6 @@ class ErrorMsgTextValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textProvider
 	 */
 	public function testValueOutput( $text, $expected ) {
-
 		$dataItem = $this->dataItemFactory->newDIBlob( $text );
 
 		$instance = new ErrorMsgTextValue();
@@ -107,7 +103,6 @@ class ErrorMsgTextValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-
 		$provider[] = [
 			'Foo',
 			'Foo'

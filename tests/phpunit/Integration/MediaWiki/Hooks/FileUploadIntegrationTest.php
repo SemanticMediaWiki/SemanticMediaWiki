@@ -107,7 +107,6 @@ class FileUploadIntegrationTest extends DatabaseTestCase {
 	 * @depends testFileUploadForDummyTextFile
 	 */
 	public function testReUploadDummyTextFileToEditFilePage() {
-
 		$subject = new DIWikiPage( 'Foo.txt', NS_FILE );
 
 		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'Foo.txt' );

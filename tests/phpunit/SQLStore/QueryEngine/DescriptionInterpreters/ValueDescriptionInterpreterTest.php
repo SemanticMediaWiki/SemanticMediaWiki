@@ -40,7 +40,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ValueDescriptionInterpreter::Class,
 			new ValueDescriptionInterpreter( $this->store, $this->conditionBuilder )
@@ -51,7 +50,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testInterpretDescription( $description, $expected ) {
-
 		$objectIds = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getSMWPageID' ] )
 			->getMock();
@@ -94,7 +92,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$descriptionFactory = new DescriptionFactory();
 		$dataItemFactory = new DataItemFactory();
 

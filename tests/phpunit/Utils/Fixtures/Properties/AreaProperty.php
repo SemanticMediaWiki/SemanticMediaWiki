@@ -39,7 +39,6 @@ class AreaProperty extends FixtureProperty {
 	 * @return SemanticData
 	 */
 	public function getDependencies() {
-
 		$semanticData = parent::getDependencies();
 
 		$dataValueFactory = DataValueFactory::getInstance();

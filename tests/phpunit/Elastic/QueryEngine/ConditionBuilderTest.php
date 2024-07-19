@@ -41,7 +41,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$callback = function( $type ) use( $database ) {
-
 			if ( $type === 'mw.db' ) {
 				return $connection;
 			};
@@ -75,7 +74,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConditionBuilder::class,
 			new ConditionBuilder( $this->store, $this->termsLookup, $this->hierarchyLookup, $this->servicesContainer )
@@ -83,7 +81,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareCache() {
-
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'warmUpCache' );
 

@@ -27,7 +27,6 @@ class CharacterExaminerTest extends TestCase {
 	}
 
 	public function testToContainJapaneseCharacters() {
-
 		$this->assertTrue(
 			CharacterExaminer::contains( CharacterExaminer::LATIN, '脳のIQテスト' )
 		);
@@ -42,7 +41,6 @@ class CharacterExaminerTest extends TestCase {
 	}
 
 	public function testToContainChineseCharacters() {
-
 		$this->assertFalse(
 			CharacterExaminer::contains( CharacterExaminer::LATIN, '才可以过关' )
 		);
@@ -57,7 +55,6 @@ class CharacterExaminerTest extends TestCase {
 	}
 
 	public function testToContainCyrillic() {
-
 		$this->assertFalse(
 			CharacterExaminer::contains( CharacterExaminer::LATIN, 'Привет' )
 		);

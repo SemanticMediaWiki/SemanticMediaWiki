@@ -19,7 +19,6 @@ class LocalLanguageFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider i18nFileProvider
 	 */
 	public function testPropertyLabelsTrailingSpaces( $file ) {
-
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 		$contents = $jsonFileReader->read();
 		$isComplete = true;
@@ -46,7 +45,6 @@ class LocalLanguageFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider i18nFileProvider
 	 */
 	public function testPropertyAliasesTrailingSpaces( $file ) {
-
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 		$contents = $jsonFileReader->read();
 		$isComplete = true;
@@ -82,7 +80,6 @@ class LocalLanguageFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function findFilesIn( $location ) {
-
 		$provider = [];
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( $location );

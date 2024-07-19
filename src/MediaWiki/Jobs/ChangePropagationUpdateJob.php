@@ -34,7 +34,6 @@ class ChangePropagationUpdateJob extends Job {
 	 * @param array $params job parameters
 	 */
 	public function __construct( Title $title, $params = [], $jobType = null ) {
-
 		if ( $jobType === null ) {
 			$jobType = self::JOB_COMMAND;
 		}
@@ -49,7 +48,6 @@ class ChangePropagationUpdateJob extends Job {
 	 * @since 3.0
 	 */
 	public function run() {
-
 		ChangePropagationDispatchJob::cleanUp(
 			DIWikiPage::newFromTitle( $this->getTitle() )
 		);

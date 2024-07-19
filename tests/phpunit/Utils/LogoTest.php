@@ -19,7 +19,6 @@ class LogoTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testGet_Small() {
-
 		$this->assertContains(
 			'logo_small.png',
 			Logo::get( '100x90' )
@@ -32,7 +31,6 @@ class LogoTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_Footer() {
-
 		$this->assertContains(
 			'logo_footer.png',
 			Logo::get( 'footer' )
@@ -40,7 +38,6 @@ class LogoTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_Unkown() {
-
 		$this->assertNull(
 			Logo::get( 'Foo' )
 		);

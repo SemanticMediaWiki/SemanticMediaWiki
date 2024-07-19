@@ -142,7 +142,6 @@ class SMWExportController {
 	 * @param integer $recursiondepth specifying the depth of recursion
 	 */
 	protected function serializePage( SMWDIWikiPage $diWikiPage, $recursiondepth = 1 ) {
-
 		if ( $this->queue->isDone( $diWikiPage, $recursiondepth ) ) {
 			return; // do not export twice
 		}
@@ -320,7 +319,6 @@ class SMWExportController {
 	 * caching purposes elsewhere.
 	 */
 	protected function getSemanticData( SMWDIWikiPage $diWikiPage, $core_props_only ) {
-
 		// Issue 619
 		// Resolve the redirect target and return a container with information
 		// about the redirect
@@ -459,7 +457,6 @@ class SMWExportController {
 	 * @param integer $delayeach number of pages to process between two sleeps
 	 */
 	public function printAllToFile( $outfile, $ns_restriction, $delay, $delayeach ) {
-
 		if ( !$this->prepareSerialization( $outfile ) ) {
 			return;
 		}
@@ -614,7 +611,6 @@ class SMWExportController {
 	 * Print basic information about this site.
 	 */
 	public function printWikiInfo() {
-
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 
@@ -653,7 +649,6 @@ class SMWExportController {
 	}
 
 	private function getDeepRedirectTargetResolver() {
-
 		if ( $this->deepRedirectTargetResolver === null ) {
 			$this->deepRedirectTargetResolver = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newDeepRedirectTargetResolver();
 		}
@@ -662,7 +657,6 @@ class SMWExportController {
 	}
 
 	private function isSemanticEnabled( $namespace ) {
-
 		if ( $this->namespaceExaminer === null ) {
 			$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 		}

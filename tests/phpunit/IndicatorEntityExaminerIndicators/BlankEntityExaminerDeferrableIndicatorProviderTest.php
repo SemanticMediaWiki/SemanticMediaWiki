@@ -34,7 +34,6 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			BlankEntityExaminerDeferrableIndicatorProvider::class,
 			new BlankEntityExaminerDeferrableIndicatorProvider()
@@ -52,7 +51,6 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testIsDeferredMode() {
-
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 
 		$this->assertInternalType(
@@ -62,7 +60,6 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testGetName() {
-
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 
 		$this->assertInternalType(
@@ -72,7 +69,6 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testGetIndicators() {
-
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 
 		$this->assertInternalType(
@@ -82,7 +78,6 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testGetModules() {
-
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 
 		$this->assertInternalType(
@@ -92,7 +87,6 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testGetInlineStyle() {
-
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 
 		$this->assertInternalType(
@@ -102,7 +96,6 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testHasIndicator() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();

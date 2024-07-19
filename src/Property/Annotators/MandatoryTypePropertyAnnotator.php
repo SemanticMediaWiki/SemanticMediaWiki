@@ -39,7 +39,6 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	protected function addPropertyValues() {
-
 		$subject = $this->getSemanticData()->getSubject();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY ) {
@@ -61,7 +60,6 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function enforceMandatoryTypeForSubproperty() {
-
 		if ( !$this->subpropertyParentTypeInheritance ) {
 			return;
 		}
@@ -98,7 +96,6 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function enforceMandatoryTypeForImportVocabulary() {
-
 		$property = new DIProperty( '_IMPO' );
 
 		$dataItems = $this->getSemanticData()->getPropertyValues(
@@ -113,7 +110,6 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function addTypeFromImportVocabulary( $property, $dataItem ) {
-
 		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$property
@@ -142,7 +138,6 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function replaceAnyTypeByImportType( DIProperty $property, $dataValue ) {
-
 		foreach ( $this->getSemanticData()->getPropertyValues( $property ) as $dataItem ) {
 			$this->getSemanticData()->setOption( self::IMPO_REMOVED_TYPE, $dataItem );
 

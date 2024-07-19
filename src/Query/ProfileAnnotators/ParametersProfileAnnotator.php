@@ -35,7 +35,6 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
-
 		list( $sort, $order ) = $this->doSerializeSortKeys( $this->query );
 
 		$options = [
@@ -53,7 +52,6 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 	}
 
 	private function doSerializeSortKeys( $query ) {
-
 		$sort = [];
 		$order = [];
 

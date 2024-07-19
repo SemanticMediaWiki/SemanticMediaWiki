@@ -52,7 +52,6 @@ class FileUpload implements HookListener {
 	 * @return true
 	 */
 	public function process( File $file, $reUploadStatus = false ) {
-
 		if ( $this->canProcess( $file->getTitle() ) ) {
 			$this->doProcess( $file, $reUploadStatus );
 		}
@@ -65,7 +64,6 @@ class FileUpload implements HookListener {
 	}
 
 	private function doProcess( $file, $reUploadStatus = false ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$filePage = $this->makeFilePage( $file, $reUploadStatus );
 
@@ -110,7 +108,6 @@ class FileUpload implements HookListener {
 	}
 
 	private function makeFilePage( $file, $reUploadStatus ) {
-
 		$filePage = ApplicationFactory::getInstance()->newPageCreator()->createFilePage(
 			$file->getTitle()
 		);

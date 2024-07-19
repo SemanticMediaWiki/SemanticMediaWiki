@@ -25,7 +25,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Renderer\HtmlColumnListRenderer',
 			new HtmlColumnListRenderer()
@@ -33,7 +32,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDefaultColumnUnorderedList() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->addContentsByIndex( [
@@ -55,7 +53,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnUnorderedList() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->setNumberOfColumns( 2 );
@@ -86,7 +83,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testThreeColumnUnorderedList() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->setNumberOfColumns( 3 );
@@ -111,7 +107,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnOrderedList() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance
@@ -138,7 +133,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnOrderedListNoHeader() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance
@@ -166,7 +160,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResponsiveColumnsToBeDeterminedByBrowser() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->setColumnListClass( 'foo-class' )
@@ -191,7 +184,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testItemListWithAttributes() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->setColumnListClass( 'foo-class' )
@@ -225,7 +217,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOListWithAttributes() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->setColumnListClass( 'foo-class' )

@@ -50,7 +50,6 @@ class InversePropertyRelationshipDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown() : void {
-
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -62,7 +61,6 @@ class InversePropertyRelationshipDBIntegrationTest extends DatabaseTestCase {
 	 * {{#ask: [[-Has mother::Michael]] }}
 	 */
 	public function testParentChildInverseRelationshipQuery() {
-
 		$semanticData = $this->semanticDataFactory
 			->setTitle( 'Michael' )
 			->newEmptySemanticData();
@@ -117,7 +115,6 @@ class InversePropertyRelationshipDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function newDataValueForPagePropertyValue( $property, $value ) {
-
 		$property = DIProperty::newFromUserLabel( $property );
 		$property->setPropertyTypeId( '_wpg' );
 

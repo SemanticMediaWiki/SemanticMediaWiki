@@ -19,7 +19,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SerializerFactory',
 			new SerializerFactory()
@@ -27,7 +26,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSemanticDataSerializer() {
-
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
@@ -37,7 +35,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSemanticDataDeserializer() {
-
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
@@ -47,7 +44,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructQueryResultSerializer() {
-
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
@@ -57,7 +53,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructExpDataSerializer() {
-
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
@@ -67,7 +62,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructExpDataDeserializer() {
-
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
@@ -80,7 +74,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider objectToSerializerProvider
 	 */
 	public function testGetSerializerFor( $object ) {
-
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
@@ -93,7 +86,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider serializationToDeserializerProvider
 	 */
 	public function testGetDeserializerFor( $serialization ) {
-
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
@@ -103,7 +95,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSerializerForUnregisteredSerializerThrowsException() {
-
 		$instance = new SerializerFactory();
 
 		$this->expectException( 'OutOfBoundsException' );
@@ -111,7 +102,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDeserializerForUnregisteredSerializerThrowsException() {
-
 		$instance = new SerializerFactory();
 
 		$this->expectException( 'OutOfBoundsException' );
@@ -119,7 +109,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function objectToSerializerProvider() {
-
 		#0
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -151,7 +140,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function serializationToDeserializerProvider() {
-
 		$provider = [];
 
 		#0

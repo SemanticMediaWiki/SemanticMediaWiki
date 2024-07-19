@@ -49,7 +49,6 @@ class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PredefinedPropertyExaminer::class,
 			new PredefinedPropertyExaminer( $this->declarationExaminer )
@@ -57,7 +56,6 @@ class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMessages() {
-
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $this->semanticData ) );
@@ -79,7 +77,6 @@ class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTypeDeclarationMismatch() {
-
 		$dataItemFactory = new DataItemFactory();
 		$uri = $dataItemFactory->newDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_num' );
 
@@ -112,7 +109,6 @@ class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGeoProperty_MissingMapsExtension() {
-
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 			$this->markTestSkipped( 'Skipping test because the Maps extension is installed!' );
 		}

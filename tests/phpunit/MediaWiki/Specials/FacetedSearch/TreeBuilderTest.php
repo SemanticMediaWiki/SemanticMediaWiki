@@ -30,7 +30,6 @@ class TreeBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TreeBuilder::class,
 			new TreeBuilder( $this->store )

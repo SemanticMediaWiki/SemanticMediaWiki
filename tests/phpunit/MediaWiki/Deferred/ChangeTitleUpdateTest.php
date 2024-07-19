@@ -43,7 +43,6 @@ class ChangeTitleUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangeTitleUpdate::class,
 			new ChangeTitleUpdate()
@@ -51,7 +50,6 @@ class ChangeTitleUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoUpdate() {
-
 		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
 			->getMock();

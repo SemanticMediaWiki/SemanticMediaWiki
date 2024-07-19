@@ -19,7 +19,6 @@ use Wikimedia\Rdbms\FakeResultWrapper;
 class PropertiesLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +30,6 @@ class PropertiesLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupForNonFixedPropertyTable() {
-
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 		$dataItem->setId( 42 );
 
@@ -88,7 +86,6 @@ class PropertiesLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupForFixedPropertyTable() {
-
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 		$dataItem->setId( 1001 );
 

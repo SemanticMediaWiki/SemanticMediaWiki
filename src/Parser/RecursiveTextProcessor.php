@@ -187,7 +187,6 @@ class RecursiveTextProcessor {
 	 * @return string
 	 */
 	public function expandTemplate( $template ) {
-
 		$templateExpander = new TemplateExpander(
 			$this->parser
 		);
@@ -203,7 +202,6 @@ class RecursiveTextProcessor {
 	 * @return string
 	 */
 	public function recursivePreprocess( $text ) {
-
 		// not during parsing, no preprocessing needed, still protect the result
 		if ( !$this->parser || !$this->parser->getOptions() || !$this->parser->getTitle() ) {
 			return $this->recursiveAnnotation ? $text : '[[SMW::off]]' . $text . '[[SMW::on]]';
@@ -240,7 +238,6 @@ class RecursiveTextProcessor {
 	 * @return string
 	 */
 	public function recursiveTagParse( $text ) {
-
 		if ( $this->parser === null ) {
 			throw new RuntimeException( 'Missing a parser instance!' );
 		}

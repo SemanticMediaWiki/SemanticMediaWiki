@@ -28,7 +28,6 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SidebarBeforeOutput::class,
 			new SidebarBeforeOutput( $this->namespaceExaminer )
@@ -39,7 +38,6 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider skinTemplateDataProvider
 	 */
 	public function testProcess( $setup, $expected ) {
-
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( $setup['settings']['isEnabledNamespace'] ) );
@@ -71,7 +69,6 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function skinTemplateDataProvider() {
-
 		#0 Standard title
 		$settings = [
 			'isEnabledNamespace' => true,
@@ -155,7 +152,6 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function newSkinStub( bool $isArticle ) {
-
 		$message = $this->getMockBuilder( '\Message' )
 			->disableOriginalConstructor()
 			->getMock();

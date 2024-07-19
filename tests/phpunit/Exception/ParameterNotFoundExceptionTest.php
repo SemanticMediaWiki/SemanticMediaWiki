@@ -16,7 +16,6 @@ use SMW\Exception\ParameterNotFoundException;
 class ParameterNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new ParameterNotFoundException( 'foo' );
 
 		$this->assertInstanceof(
@@ -31,7 +30,6 @@ class ParameterNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetName() {
-
 		$instance = new ParameterNotFoundException( 'bar' );
 
 		$this->assertEquals(

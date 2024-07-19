@@ -92,7 +92,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @return string
 	 */
 	public function getEndpoint( $type ) : ?string {
-
 		if ( $type === RepositoryConnection::QUERY_ENDPOINT ) {
 			return $this->repositoryClient->getQueryEndpoint();
 		}
@@ -227,7 +226,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @return string SPARQL query
 	 */
 	public function getSparqlForSelect( $vars, $where, $options = [], $extraNamespaces = [] ) {
-
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT ';
 
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
@@ -301,7 +299,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @return RepositoryResult
 	 */
 	public function selectCount( $variable, $where, $options = [], $extraNamespaces = [] ) {
-
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT (COUNT(';
 
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
@@ -334,7 +331,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = [] ) {
-
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -388,7 +384,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ) {
-
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -410,7 +405,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertData( $triples, $extraNamespaces = [] ) {
-
 		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
@@ -439,7 +433,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function deleteData( $triples, $extraNamespaces = [] ) {
-
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -466,7 +459,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @return RepositoryResult
 	 */
 	public function doQuery( $sparql ) {
-
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
@@ -519,7 +511,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @return boolean
 	 */
 	public function doUpdate( $sparql ) {
-
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
@@ -563,7 +554,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @return boolean
 	 */
 	public function doHttpPost( $payload ) {
-
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
@@ -634,7 +624,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @param $sparql string query that caused the problem
 	 */
 	protected function mapHttpRequestError( $endpoint, $sparql ) {
-
 		if ( $this->badHttpResponseMapper === null ) {
 			$this->badHttpResponseMapper = new HttpResponseErrorMapper( $this->httpRequest );
 		}

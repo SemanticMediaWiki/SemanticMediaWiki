@@ -73,7 +73,6 @@ class populateHashField extends \Maintenance {
 	 * @param boolean $complete
 	 */
 	public function setComplete( $complete ) {
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -120,7 +119,6 @@ class populateHashField extends \Maintenance {
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter->reportMessage( $message );
 		}
@@ -132,7 +130,6 @@ class populateHashField extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
 			exit ( $maintenanceCheck->getMessage() );
 		}
@@ -183,7 +180,6 @@ class populateHashField extends \Maintenance {
 	 * @return Iterator
 	 */
 	public function fetchRows() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$conditions = [
@@ -223,7 +219,6 @@ class populateHashField extends \Maintenance {
 	 * @param Iterator $rows
 	 */
 	public function populate( \Iterator $rows = null ) {
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$this->cliMsgFormatter->setStartTime( (int) microtime( true ) );
 

@@ -45,7 +45,6 @@ class JsonSchemaValidator {
 	 * @param string|null $schemaLink
 	 */
 	public function validate( JsonSerializable $data, $schemaLink = null ) {
-
 		// Raise an error because we expect the validator to be available
 		// when at the same time a schema link is present
 		if ( $this->schemaValidator === null && $schemaLink !== null ) {
@@ -61,7 +60,6 @@ class JsonSchemaValidator {
 	}
 
 	private function runValidation( $data, $schemaLink ) {
-
 		// https://github.com/justinrainbow/json-schema/issues/203
 		$data = json_decode( $data->jsonSerialize() );
 

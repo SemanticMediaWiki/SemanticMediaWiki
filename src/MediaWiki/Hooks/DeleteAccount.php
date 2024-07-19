@@ -46,7 +46,6 @@ class DeleteAccount implements HookListener {
 	 * @param User|string $user
 	 */
 	public function process( $user ) {
-
 		if ( !$this->namespaceExaminer->isSemanticEnabled( NS_USER ) ) {
 			return false;
 		}

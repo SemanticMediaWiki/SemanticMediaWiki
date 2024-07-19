@@ -57,7 +57,6 @@ class ByPageSemanticDataFinder {
 	 * @return SemanticData
 	 */
 	public function fetchIncomingDataFromStore() {
-
 		$requestOptions = new \SMWRequestOptions();
 		$requestOptions->sort = true;
 
@@ -104,7 +103,6 @@ class ByPageSemanticDataFinder {
 	}
 
 	protected function makeOutputFromPageRevision() {
-
 		$wikiPage = $this->getPage();
 		$revisionGuard = ServicesFactory::getInstance()->singleton( 'RevisionGuard' );
 		$revision = $revisionGuard->newRevisionFromPage( $wikiPage );
@@ -126,7 +124,6 @@ class ByPageSemanticDataFinder {
 	}
 
 	protected function getTitle() {
-
 		if ( $this->title instanceof Title ) {
 			return $this->title;
 		}
@@ -135,7 +132,6 @@ class ByPageSemanticDataFinder {
 	}
 
 	protected function getStore() {
-
 		if ( $this->store instanceof Store ) {
 			return $this->store;
 		}

@@ -86,7 +86,6 @@ class QueryEngine implements QueryEngineInterface {
 	 * @return QueryResult|string
 	 */
 	public function getQueryResult( Query $query ) {
-
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 		     $query->querymode != Query::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
@@ -119,7 +118,6 @@ class QueryEngine implements QueryEngineInterface {
 	}
 
 	private function getCountQueryResult( Query $query, Condition $compoundCondition ) {
-
 		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
 				return 1;
@@ -152,7 +150,6 @@ class QueryEngine implements QueryEngineInterface {
 	}
 
 	private function getInstanceQueryResult( Query $query, Condition $compoundCondition ) {
-
 		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
 			$matchElement = $compoundCondition->matchElement;
 
@@ -189,7 +186,6 @@ class QueryEngine implements QueryEngineInterface {
 	}
 
 	private function getDebugQueryResult( Query $query, Condition $compoundCondition ) {
-
 		$entries = [];
 		$debugFormatter = new DebugFormatter();
 		$debugFormatter->setName( 'SPARQLStore' );
@@ -240,7 +236,6 @@ class QueryEngine implements QueryEngineInterface {
 	 * @return array
 	 */
 	protected function getOptions( Query $query, Condition $compoundCondition ) {
-
 		$options = [
 			'LIMIT' => $query->getLimit() + 1,
 			'OFFSET' => $query->getOffset()

@@ -70,7 +70,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SemanticDataLookup::class,
 			new SemanticDataLookup( $this->store )
@@ -78,7 +77,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewStubSemanticData_FromDIWikiPage() {
-
 		$instance = new SemanticDataLookup(
 			$this->store
 		);
@@ -90,7 +88,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewStubSemanticData_FromSemanticData() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -110,7 +107,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewStubSemanticDataThrowsException() {
-
 		$instance = new SemanticDataLookup(
 			$this->store
 		);
@@ -120,7 +116,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTableUsageInfo() {
-
 		$property =  new DIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -147,7 +142,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewRequestOptions_NULL() {
-
 		$property =  new DIProperty( 'Foo' );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
@@ -165,7 +159,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewRequestOptions_AsConditionConstraint_IsFixedPropertyTable() {
-
 		$property =  new DIProperty( 'Foo' );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
@@ -190,7 +183,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSemanticDataFromTable() {
-
 		$row = new \stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
@@ -233,7 +225,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSemanticDataFromTable_WithConstraint() {
-
 		$row = new \stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
@@ -311,7 +302,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_NoDataItem() {
-
 		$row = new \stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
@@ -359,7 +349,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_NoIdSubject() {
-
 		$row = new \stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
@@ -413,7 +402,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_Empty() {
-
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -433,7 +421,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -459,7 +446,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData_NonWikiPage_ThrowsException() {
-
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -473,7 +459,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_NonWikiPageTable_DISTINCT_SELECT() {
-
 		$row = new \stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
@@ -524,7 +509,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData_OnLimit() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
