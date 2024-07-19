@@ -158,22 +158,17 @@ class SomePropertyInterpreter {
 
 		// Build an extra condition to restore strictness by making sure
 		// the property exist on those matched entities
-		// `[[Has text::!~foo*]]` becomes `[[Has text::!~foo*]] [[Has text::+]`
+		// `[[Has text::!~foo*]]` becomes `[[Has text::!~foo*]] [[Has text::+]]`
 		if ( $opType === Condition::TYPE_MUST_NOT && !$desc instanceof ThingDescription ) {
 
 			// Use case: `[[Category:Q0905]] [[!Example/Q0905/1]] <q>[[Has page::123]]
 			// OR [[Has page::!ABCD]]</q>`
 			$params = [ $this->fieldMapper->exists( "$pid.$field" ), $condition ];
 			$condition = $this->conditionBuilder->newCondition( $params );
-			$condition->type( '' );
+			$condition->type( 'must' );
 
 			if ( $this->conditionBuilder->getOption( 'must_not.property.exists' ) ) {
 				$description->notConditionField = "$pid.$field";
-			}
-
-			// Use case: `[[Has telephone number::!~*123*]]`
-			if ( !$isConjunction ) {
-				$condition->type( 'must' );
 			}
 		}
 
