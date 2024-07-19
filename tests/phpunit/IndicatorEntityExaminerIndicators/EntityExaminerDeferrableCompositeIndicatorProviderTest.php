@@ -23,7 +23,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 	private $permissionExaminer;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
@@ -33,7 +33,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 		$this->testEnvironment = new TestEnvironment();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -238,11 +238,11 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 			public function setDeferredMode( bool $deferredMode ) {
 			}
 
-			public function isDeferredMode() : bool {
+			public function isDeferredMode(): bool {
 				return true;
 			}
 
-			public function getName() : string {
+			public function getName(): string {
 				return '';
 			}
 
@@ -262,7 +262,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 				return [];
 			}
 
-			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ) : bool {
+			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ): bool {
 				return $permissionExaminer->hasPermissionOf( 'Foo' );
 			}
 		};

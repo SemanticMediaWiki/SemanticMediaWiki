@@ -28,7 +28,7 @@ class LinksUpdateTest extends DatabaseTestCase {
 	private $pageCreator;
 	private $revisionGuard;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
@@ -47,7 +47,7 @@ class LinksUpdateTest extends DatabaseTestCase {
 		$this->revisionGuard = ApplicationFactory::getInstance()->singleton( 'RevisionGuard' );
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 

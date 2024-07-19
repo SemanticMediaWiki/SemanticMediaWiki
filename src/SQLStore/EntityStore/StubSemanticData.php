@@ -76,7 +76,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @return boolean
 	 */
-	public function isStub() : bool {
+	public function isStub(): bool {
 		return true;
 	}
 

@@ -22,7 +22,7 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = new SQLStore();
@@ -37,7 +37,7 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->store->clear();
 		ApplicationFactory::getInstance()->clear();
 

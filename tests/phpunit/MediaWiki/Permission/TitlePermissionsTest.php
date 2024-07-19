@@ -19,7 +19,7 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	private $protectionValidator;
 	private $permissionManager;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->protectionValidator = $this->getMockBuilder( '\SMW\Protection\ProtectionValidator' )

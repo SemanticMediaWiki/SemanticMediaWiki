@@ -34,7 +34,7 @@ class RedirectPageTest extends DatabaseTestCase {
 	private $pageRefresher;
 	private $pageCreator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->runnerFactory  = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
@@ -54,7 +54,7 @@ class RedirectPageTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->flushPages( $this->importedTitles );
 		parent::tearDown();
 	}

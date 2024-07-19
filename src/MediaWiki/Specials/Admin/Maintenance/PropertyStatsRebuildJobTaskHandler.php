@@ -70,7 +70,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'pstatsrebuild';
 	}
 
@@ -79,7 +79,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 

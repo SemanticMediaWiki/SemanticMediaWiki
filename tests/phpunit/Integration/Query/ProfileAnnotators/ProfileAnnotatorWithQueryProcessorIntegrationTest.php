@@ -21,7 +21,7 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framewo
 
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {

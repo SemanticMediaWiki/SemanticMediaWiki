@@ -28,7 +28,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	private $revisionGuard;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -59,7 +59,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 			->will( $this->returnValue( 'foo' ) );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

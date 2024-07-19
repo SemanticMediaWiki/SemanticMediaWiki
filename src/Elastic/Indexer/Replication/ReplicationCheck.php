@@ -150,7 +150,7 @@ class ReplicationCheck {
 	 *
 	 * @return string
 	 */
-	public function getErrorTitle() : string {
+	public function getErrorTitle(): string {
 		return $this->errorTitle;
 	}
 
@@ -159,7 +159,7 @@ class ReplicationCheck {
 	 *
 	 * @return string
 	 */
-	public function getSeverityType() : string {
+	public function getSeverityType(): string {
 		return $this->severityType;
 	}
 

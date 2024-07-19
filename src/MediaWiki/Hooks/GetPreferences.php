@@ -180,7 +180,7 @@ class GetPreferences implements HookListener {
 		return "<img style='float:right;margin-top: 10px;margin-left:20px;' src='{$logo}' height='63' width='70'>";
 	}
 
-	private function getProfileList() : array {
+	private function getProfileList(): array {
 		$facetedSearchProfile = new FacetedSearchProfile(
 			$this->schemaFactory
 		);

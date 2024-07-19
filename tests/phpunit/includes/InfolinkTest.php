@@ -21,7 +21,7 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$language = $this->getMockBuilder( '\Language' )
@@ -31,7 +31,7 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'ContentLanguage', $language );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

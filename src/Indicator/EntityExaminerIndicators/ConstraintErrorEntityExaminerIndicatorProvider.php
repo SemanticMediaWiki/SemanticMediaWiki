@@ -77,7 +77,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return boolean
 	 */
-	public function isSeverityType( string $severityType ) : bool {
+	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
 	}
 
@@ -86,7 +86,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'smw-entity-examiner-deferred-constraint-error';
 	}
 

@@ -25,7 +25,7 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	private UserOptionsLookup $userOptionsLookup;
 	private TestEnvironment $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

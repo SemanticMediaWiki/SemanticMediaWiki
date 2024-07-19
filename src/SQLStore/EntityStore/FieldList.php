@@ -48,7 +48,7 @@ class FieldList {
 	 *
 	 * @return array
 	 */
-	public function getCountListByType( string $type ) : array {
+	public function getCountListByType( string $type ): array {
 		$countList = [];
 
 		foreach ( $this->countMaps as $hash => $countMap ) {
@@ -69,7 +69,7 @@ class FieldList {
 	 *
 	 * @return array
 	 */
-	public function getHashList( $type = null ) : array {
+	public function getHashList( $type = null ): array {
 		$list = [];
 
 		foreach ( $this->countMaps as $hash => $map ) {

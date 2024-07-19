@@ -31,6 +31,6 @@ interface ContentIterator extends IteratorAggregate {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() : string;
+	public function getFingerprint(): string;
 
 }

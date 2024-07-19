@@ -25,7 +25,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setup();
 
 		$testEnvironment = new TestEnvironment();

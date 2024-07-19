@@ -20,6 +20,6 @@ interface PermissionAware {
 	 *
 	 * @return bool
 	 */
-	public function hasPermission( PermissionExaminer $permissionExaminer ) : bool;
+	public function hasPermission( PermissionExaminer $permissionExaminer ): bool;
 
 }

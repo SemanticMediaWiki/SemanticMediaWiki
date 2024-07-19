@@ -21,7 +21,7 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $caches;
 
- 	protected function setUp() : void {
+ 	protected function setUp(): void {
 		$this->caches = [
 			'entity.id' => new FixedInMemoryLruCache(),
 			'entity.sort' => new FixedInMemoryLruCache(),

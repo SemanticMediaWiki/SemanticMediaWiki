@@ -68,7 +68,7 @@ class FileHandler {
 	 *
 	 * @return string
 	 */
-	public function fetchContentFromURL( string $url ) : string {
+	public function fetchContentFromURL( string $url ): string {
 		//PHP 7.1+
 		$readCallback = $this->readCallback;
 
@@ -104,7 +104,7 @@ class FileHandler {
 	 *
 	 * @return string
 	 */
-	public function format( string $contents, string $type = '' ) : string {
+	public function format( string $contents, string $type = '' ): string {
 		if ( $type === self::FORMAT_BASE64 ) {
 			return base64_encode( $contents );
 		}

@@ -24,7 +24,7 @@ use SMW\ConfigPreloader;
  *
  * @return LocalLanguage
  */
-function smwfContLang() : LocalLanguage {
+function smwfContLang(): LocalLanguage {
 	return LocalLanguage::getInstance()->fetch( $GLOBALS['wgLanguageCode'] );
 }
 

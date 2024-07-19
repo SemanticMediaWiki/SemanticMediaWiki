@@ -27,7 +27,7 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $resultFetcher;
 	private $exploreListBuilder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->profile = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\Profile' )

@@ -73,7 +73,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * components therefore add configurations that needs to be initialized before
 	 * any service is created.
 	 */
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		$defaultSettingKeys = [
 			'smwgQEqualitySupport'
 		];
@@ -81,7 +81,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		TestEnvironment::loadDefaultSettings( $defaultSettingKeys );
 	}
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		// #3916
 		// Reset $wgUser, which is probably 127.0.0.1, as its loaded data is probably not valid
@@ -150,7 +150,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		$GLOBALS['wgUseDatabaseMessages'] = false;
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		// If setUp is skipped early this might not be initialized
 		if ( $this->testEnvironment !== null ) {
 			$this->testEnvironment->tearDown();
@@ -167,7 +167,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * request a trear down so that the next test can rebuild the tables from
 	 * scratch
 	 */
-	public function run( ?TestResult $result = null ) : TestResult {
+	public function run( ?TestResult $result = null ): TestResult {
 		$this->getStore()->clear();
 
 		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(

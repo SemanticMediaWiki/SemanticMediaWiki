@@ -24,7 +24,7 @@ class RandomQueryResultOrderIntegrationTest extends DatabaseTestCase {
 
 	private $fixturesProvider;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -34,7 +34,7 @@ class RandomQueryResultOrderIntegrationTest extends DatabaseTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 		$fixturesCleaner->purgeAllKnownFacts();
 

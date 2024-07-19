@@ -56,7 +56,7 @@ class CheckboxValueFilter {
 	 *
 	 * @return string
 	 */
-	public function create( UrlArgs $urlArgs, string $property, array $values, array $raw ) : string {
+	public function create( UrlArgs $urlArgs, string $property, array $values, array $raw ): string {
 		if ( $values === [] ) {
 			return '';
 		}

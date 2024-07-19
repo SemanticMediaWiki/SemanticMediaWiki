@@ -90,7 +90,7 @@ class DocumentCreator {
 	 *
 	 * @return integer
 	 */
-	public function getDocumentCreationDuration() : int {
+	public function getDocumentCreationDuration(): int {
 		return $this->documentCreationDuration;
 	}
 
@@ -101,7 +101,7 @@ class DocumentCreator {
 	 *
 	 * @return Document
 	 */
-	public function newFromSemanticData( SemanticData $semanticData ) : Document {
+	public function newFromSemanticData( SemanticData $semanticData ): Document {
 		$time = microtime( true );
 		$this->subEntities = [];
 

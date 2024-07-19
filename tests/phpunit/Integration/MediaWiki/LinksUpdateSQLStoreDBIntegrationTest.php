@@ -33,7 +33,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	private $revisionGuard;
 	private $pageCreator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$serviceFactory = ServicesFactory::getInstance();
@@ -54,7 +54,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 		$this->pageCreator = $serviceFactory->newPageCreator();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 
 		if ( $this->title !== null ) {

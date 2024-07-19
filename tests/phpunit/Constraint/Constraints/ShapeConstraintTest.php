@@ -22,7 +22,7 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 	}
 

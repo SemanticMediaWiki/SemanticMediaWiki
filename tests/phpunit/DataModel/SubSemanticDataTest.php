@@ -22,7 +22,7 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();

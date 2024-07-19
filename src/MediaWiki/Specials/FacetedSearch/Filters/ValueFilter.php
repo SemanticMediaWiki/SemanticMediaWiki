@@ -74,7 +74,7 @@ class ValueFilter {
 	 *
 	 * @return array
 	 */
-	public function create( UrlArgs $urlArgs, array $valueFilters ) : array {
+	public function create( UrlArgs $urlArgs, array $valueFilters ): array {
 		$cards = [];
 		$filters = $valueFilters['filter'] ?? [];
 

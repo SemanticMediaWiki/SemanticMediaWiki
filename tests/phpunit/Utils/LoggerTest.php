@@ -17,7 +17,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
 	private $logger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
 			->disableOriginalConstructor()
 			->getMock();

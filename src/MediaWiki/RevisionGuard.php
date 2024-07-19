@@ -106,7 +106,7 @@ class RevisionGuard {
 	 *
 	 * @return ?RevisionRecord
 	 */
-	public function newRevisionFromPage( WikiPage $page ) : ?RevisionRecord {
+	public function newRevisionFromPage( WikiPage $page ): ?RevisionRecord {
 		return $page->getRevisionRecord();
 	}
 
@@ -135,7 +135,7 @@ class RevisionGuard {
 	 *
 	 * @return ?RevisionRecord
 	 */
-	public function getRevision( Title $title, ?RevisionRecord $revision ) : ?RevisionRecord {
+	public function getRevision( Title $title, ?RevisionRecord $revision ): ?RevisionRecord {
 		if ( $revision === null ) {
 			$revision = $this->newRevisionFromTitle( $title, false, IDBAccessObject::READ_NORMAL );
 		}

@@ -15,7 +15,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 
 	private $namespaceExaminer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
@@ -23,7 +23,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 

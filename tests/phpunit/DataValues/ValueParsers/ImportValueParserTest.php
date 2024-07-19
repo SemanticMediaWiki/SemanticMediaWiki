@@ -18,7 +18,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	private $mediaWikiNsContentReader;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )

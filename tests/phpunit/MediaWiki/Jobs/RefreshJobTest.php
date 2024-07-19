@@ -22,7 +22,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -34,7 +34,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->applicationFactory->clear();
 
 		parent::tearDown();

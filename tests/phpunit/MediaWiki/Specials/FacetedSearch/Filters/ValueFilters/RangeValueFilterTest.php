@@ -23,7 +23,7 @@ class RangeValueFilterTest extends \PHPUnit_Framework_TestCase {
 	private $messageLocalizer;
 	private $compartmentIterator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )

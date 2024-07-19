@@ -24,7 +24,7 @@ class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $nsFileName;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataValidator = TestEnvironment::newValidatorFactory()->newSemanticDataValidator();

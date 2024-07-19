@@ -32,7 +32,7 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private $contentRenderer = null;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
@@ -58,7 +58,7 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		if ( $this->contentRenderer !== null ) {
 			$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', fn() => $this->contentRenderer );
 		}

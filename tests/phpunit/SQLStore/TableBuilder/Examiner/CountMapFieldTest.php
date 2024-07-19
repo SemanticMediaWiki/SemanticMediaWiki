@@ -25,7 +25,7 @@ class CountMapFieldTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $setupFile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 

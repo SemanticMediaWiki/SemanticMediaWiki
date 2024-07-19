@@ -21,7 +21,7 @@ class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
 
 	private $gl = [];
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		foreach ( $GLOBALS as $key => $value ) {
 			if ( is_callable( $value ) ) {
 				continue;
@@ -31,7 +31,7 @@ class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		foreach ( $this->gl as $key => $value ) {
 			$GLOBALS[$key] = $value;
 		}

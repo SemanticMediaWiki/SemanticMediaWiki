@@ -20,7 +20,7 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $querySegmentListProcessor;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )

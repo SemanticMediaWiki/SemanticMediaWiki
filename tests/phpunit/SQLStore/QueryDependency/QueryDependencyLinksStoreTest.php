@@ -24,7 +24,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	private $subject;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -75,7 +75,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		$this->testEnvironment->clearPendingDeferredUpdates();
 

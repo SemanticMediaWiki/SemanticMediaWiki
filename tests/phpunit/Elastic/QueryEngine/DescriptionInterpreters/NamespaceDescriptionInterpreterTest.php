@@ -20,7 +20,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private DescriptionFactory $descriptionFactory;
 	private $conditionBuilder;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )

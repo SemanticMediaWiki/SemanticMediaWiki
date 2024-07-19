@@ -134,7 +134,7 @@ class ElasticFactory {
 	 *
 	 * @return DocumentCreator
 	 */
-	public function newDocumentCreator( Store $store ) : DocumentCreator {
+	public function newDocumentCreator( Store $store ): DocumentCreator {
 		$config = $store->getConnection( 'elastic' )->getConfig();
 
 		$documentCreator = new DocumentCreator( $store );

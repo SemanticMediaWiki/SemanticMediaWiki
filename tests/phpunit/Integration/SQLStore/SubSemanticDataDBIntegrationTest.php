@@ -38,7 +38,7 @@ class SubSemanticDataDBIntegrationTest extends DatabaseTestCase {
 			->invokeHooksFromRegistry();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$pageDeleter= new PageDeleter();
 
 		$pageDeleter->deletePage( $this->title );

@@ -30,12 +30,12 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	protected string $text;
 	protected WebResponse $response;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->obLevel = ob_get_level();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$obLevel = ob_get_level();
 
 		while ( ob_get_level() > $this->obLevel ) {

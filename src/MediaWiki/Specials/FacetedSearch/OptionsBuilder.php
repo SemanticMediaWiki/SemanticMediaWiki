@@ -40,7 +40,7 @@ class OptionsBuilder {
 	 *
 	 * @return string
 	 */
-	public function profiles( string $profile = '' ) : string {
+	public function profiles( string $profile = '' ): string {
 		$html = [];
 		$list = $this->profile->getProfileList();
 
@@ -162,7 +162,7 @@ class OptionsBuilder {
 	 *
 	 * @return string
 	 */
-	public function previous( int $size, int $offset ) : string {
+	public function previous( int $size, int $offset ): string {
 		if ( $offset < 1 ) {
 			return $this->msg( 'smw_result_prev' );
 		}
@@ -189,7 +189,7 @@ class OptionsBuilder {
 	 *
 	 * @return string
 	 */
-	public function next( int $size, int $offset, bool $hasFurtherResults ) : string {
+	public function next( int $size, int $offset, bool $hasFurtherResults ): string {
 		if ( $hasFurtherResults === false ) {
 			return $this->msg( 'smw_result_next' );
 		}

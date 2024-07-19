@@ -23,14 +23,14 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 	private $apiFactory;
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->apiFactory = new MwApiFactory();
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		ApplicationFactory::clear();
 
 		parent::tearDown();

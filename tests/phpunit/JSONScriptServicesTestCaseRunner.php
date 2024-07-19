@@ -58,7 +58,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		'special'
 	];
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -95,7 +95,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 	 *
 	 * @return bool
 	 */
-	protected function runTestAssertionForType( string $type ) : bool {
+	protected function runTestAssertionForType( string $type ): bool {
 		return in_array( $type, $this->defaultAssertionTypes );
 	}
 

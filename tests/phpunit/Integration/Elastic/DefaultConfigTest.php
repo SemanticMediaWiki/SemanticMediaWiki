@@ -14,7 +14,7 @@ class DefaultConfigTest extends \PHPUnit_Framework_TestCase {
 
 	private $contents;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->contents = file_get_contents(
 			$GLOBALS['smwgIP'] . 'data/elastic/default-profile.json'

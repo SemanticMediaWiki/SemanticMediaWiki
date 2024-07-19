@@ -17,6 +17,6 @@ interface MessageLocalizer {
 	 *
 	 * @return string
 	 */
-	public function msg( ...$args ) : string;
+	public function msg( ...$args ): string;
 
 }

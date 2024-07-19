@@ -18,7 +18,7 @@ class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticData;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		$this->semanticData = $this->getMockBuilder( '\SMW\semanticData' )
 			->disableOriginalConstructor()
 			->getMock();

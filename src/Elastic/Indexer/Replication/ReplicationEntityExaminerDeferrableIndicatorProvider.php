@@ -95,7 +95,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return boolean
 	 */
-	public function isDeferredMode() : bool {
+	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
 	}
 
@@ -106,7 +106,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return boolean
 	 */
-	public function isSeverityType( string $severityType ) : bool {
+	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
 	}
 
@@ -115,7 +115,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'smw-entity-examiner-deferred-elastic-replication';
 	}
 

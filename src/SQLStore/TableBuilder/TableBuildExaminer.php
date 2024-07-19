@@ -65,7 +65,7 @@ class TableBuildExaminer {
 	 *
 	 * @return string
 	 */
-	public function getDatabaseInfo() : string {
+	public function getDatabaseInfo(): string {
 		$connection = $this->store->getConnection(
 			DB_MASTER
 		);

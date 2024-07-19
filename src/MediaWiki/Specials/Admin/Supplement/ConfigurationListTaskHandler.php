@@ -49,7 +49,7 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'settings';
 	}
 
@@ -58,7 +58,7 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 

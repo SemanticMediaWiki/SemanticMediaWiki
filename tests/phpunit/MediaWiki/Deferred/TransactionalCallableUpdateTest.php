@@ -23,7 +23,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	private $spyLogger;
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
@@ -33,7 +33,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->clearPendingDeferredUpdates();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();

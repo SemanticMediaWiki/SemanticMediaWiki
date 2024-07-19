@@ -73,7 +73,7 @@ class ReplicationError {
 	 *
 	 * @return boolean
 	 */
-	public function is( $type ) : bool {
+	public function is( $type ): bool {
 		return $this->type === $type;
 	}
 
@@ -98,7 +98,7 @@ class ReplicationError {
 	 *
 	 * @return string
 	 */
-	public function getType() : string {
+	public function getType(): string {
 		return $this->type;
 	}
 
@@ -107,7 +107,7 @@ class ReplicationError {
 	 *
 	 * @return mixed
 	 */
-	public function getData() : array {
+	public function getData(): array {
 		return $this->data;
 	}
 

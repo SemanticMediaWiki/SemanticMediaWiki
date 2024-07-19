@@ -44,7 +44,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'category';
 	}
 
@@ -194,7 +194,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		$this->isLoaded = true;
 	}
 
-	private function matchAllOf( array $categories ) : bool {
+	private function matchAllOf( array $categories ): bool {
 		$count = count( $categories );
 
 		foreach ( $categories as $category ) {
@@ -208,7 +208,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		return $count == 0;
 	}
 
-	private function matchOneOf( array $categories ) : bool {
+	private function matchOneOf( array $categories ): bool {
 		$count = 0;
 
 		foreach ( $categories as $category ) {
@@ -222,7 +222,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		return $count == 1;
 	}
 
-	private function matchAnyOf( array $categories ) : bool {
+	private function matchAnyOf( array $categories ): bool {
 		foreach ( $categories as $category ) {
 			$category = str_replace( ' ', '_', $category );
 

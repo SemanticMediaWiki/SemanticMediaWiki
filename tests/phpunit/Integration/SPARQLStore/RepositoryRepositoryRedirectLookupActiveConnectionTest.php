@@ -25,7 +25,7 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Fr
 	private $repositoryConnection;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->store = ApplicationFactory::getInstance()->getStore();
 
 		if ( !$this->store instanceof SPARQLStore ) {

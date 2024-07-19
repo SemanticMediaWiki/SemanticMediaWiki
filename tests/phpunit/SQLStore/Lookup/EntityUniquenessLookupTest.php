@@ -20,7 +20,7 @@ class EntityUniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $iteratorFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();

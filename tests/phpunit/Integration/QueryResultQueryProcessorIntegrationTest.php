@@ -34,7 +34,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	private $fixturesProvider;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -49,7 +49,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 
 		$fixturesCleaner

@@ -42,7 +42,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private static $handlers = [];
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$user = $this->getMockBuilder( '\User' )
@@ -134,7 +134,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PermissionManager', $permissionManager );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 

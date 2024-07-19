@@ -24,7 +24,7 @@ class RebuildElasticMissingDocumentsTest extends DatabaseTestCase {
 	private $runnerFactory;
 	private $spyMessageReporter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$store = ApplicationFactory::getInstance()->getStore();
@@ -39,7 +39,7 @@ class RebuildElasticMissingDocumentsTest extends DatabaseTestCase {
 		$this->spyMessageReporter = $utilityFactory->newSpyMessageReporter();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 

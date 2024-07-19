@@ -22,7 +22,7 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataValueServiceFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )

@@ -17,7 +17,7 @@ class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
 
 	private $namespaceInfo;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
 			->disableOriginalConstructor()
 			->getMock();

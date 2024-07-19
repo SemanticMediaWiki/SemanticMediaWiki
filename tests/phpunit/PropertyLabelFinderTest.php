@@ -19,7 +19,7 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();

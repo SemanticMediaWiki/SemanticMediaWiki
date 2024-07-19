@@ -197,7 +197,7 @@ class DataTypeRegistry {
 	 *
 	 * @return boolean
 	 */
-	public function isRecordType( string $typeId ) : bool {
+	public function isRecordType( string $typeId ): bool {
 		return strpos( $typeId, '_rec' ) !== false;
 	}
 

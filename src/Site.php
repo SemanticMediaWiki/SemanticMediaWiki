@@ -133,7 +133,7 @@ class Site {
 	 *
 	 * @return string
 	 */
-	public static function id( string $affix = '' ) : string {
+	public static function id( string $affix = '' ): string {
 		if ( $affix !== '' && $affix[0] !== ':' ) {
 			$affix = ':' . $affix;
 		}

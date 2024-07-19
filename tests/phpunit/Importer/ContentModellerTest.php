@@ -19,7 +19,7 @@ class ContentModellerTest extends \PHPUnit_Framework_TestCase {
 	private $contentModeller;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->contentModeller = new ContentModeller();

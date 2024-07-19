@@ -25,7 +25,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $elasticClient;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -55,7 +55,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return boolean
 	 */
-	public function isDeferredMode() : bool {
+	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
 	}
 
@@ -66,7 +66,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return boolean
 	 */
-	public function isSeverityType( string $severityType ) : bool {
+	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
 	}
 
@@ -75,7 +75,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'smw-entity-examiner-deferred-void';
 	}
 

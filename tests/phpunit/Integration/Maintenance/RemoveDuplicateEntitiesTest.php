@@ -19,13 +19,13 @@ class RemoveDuplicateEntitiesTest extends DatabaseTestCase {
 	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->runnerFactory  = TestEnvironment::getUtilityFactory()->newRunnerFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 

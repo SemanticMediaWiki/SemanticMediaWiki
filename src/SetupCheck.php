@@ -151,7 +151,7 @@ class SetupCheck {
 	 * @return array
 	 * @throws RuntimeException
 	 */
-	public static function readFromFile( string $file ) : array {
+	public static function readFromFile( string $file ): array {
 		if ( !is_readable( $file ) ) {
 			throw new FileNotReadableException( $file );
 		}
@@ -242,7 +242,7 @@ class SetupCheck {
 	 *
 	 * @return boolean
 	 */
-	public function isError( string $error ) : bool {
+	public function isError( string $error ): bool {
 		return $this->errorType === $error;
 	}
 

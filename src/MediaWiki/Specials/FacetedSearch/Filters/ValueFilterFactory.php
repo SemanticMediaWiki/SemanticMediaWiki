@@ -41,7 +41,7 @@ class ValueFilterFactory {
 	 *
 	 * @return ListValueFilter
 	 */
-	public function newListValueFilter( array $params ) : ListValueFilter {
+	public function newListValueFilter( array $params ): ListValueFilter {
 		return new ListValueFilter( $this->templateEngine, $params );
 	}
 
@@ -52,7 +52,7 @@ class ValueFilterFactory {
 	 *
 	 * @return CheckboxValueFilter
 	 */
-	public function newCheckboxValueFilter( array $params ) : CheckboxValueFilter {
+	public function newCheckboxValueFilter( array $params ): CheckboxValueFilter {
 		return new CheckboxValueFilter( $this->templateEngine, $params );
 	}
 
@@ -64,7 +64,7 @@ class ValueFilterFactory {
 	 *
 	 * @return CheckboxRangeGroupValueFilter
 	 */
-	public function newCheckboxRangeGroupValueFilter( CompartmentIterator $compartmentIterator, array $params ) : CheckboxRangeGroupValueFilter {
+	public function newCheckboxRangeGroupValueFilter( CompartmentIterator $compartmentIterator, array $params ): CheckboxRangeGroupValueFilter {
 		return new CheckboxRangeGroupValueFilter( $this->templateEngine, $compartmentIterator, $params );
 	}
 
@@ -76,7 +76,7 @@ class ValueFilterFactory {
 	 *
 	 * @return RangeValueFilter
 	 */
-	public function newRangeValueFilter( CompartmentIterator $compartmentIterator, array $params ) : RangeValueFilter {
+	public function newRangeValueFilter( CompartmentIterator $compartmentIterator, array $params ): RangeValueFilter {
 		return new RangeValueFilter( $this->templateEngine, $compartmentIterator, $params );
 	}
 

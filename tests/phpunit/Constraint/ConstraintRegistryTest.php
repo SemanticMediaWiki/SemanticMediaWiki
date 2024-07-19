@@ -22,7 +22,7 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	private $constraintFactory;
 	private $hookDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->constraintFactory = $this->getMockBuilder( '\SMW\ConstraintFactory' )
 			->disableOriginalConstructor()
 			->getMock();

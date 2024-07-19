@@ -156,7 +156,7 @@ class ImportValue extends DataValue {
 		return true;
 	}
 
-	private function getDeclarativeName( string $namespace ) : string {
+	private function getDeclarativeName( string $namespace ): string {
 		if ( array_key_exists( $namespace, $this->declarativeNames ) ) {
 			return $this->declarativeNames[$namespace];
 		}

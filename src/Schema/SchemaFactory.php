@@ -43,7 +43,7 @@ class SchemaFactory {
 	 *
 	 * @return SchemaTypes
 	 */
-	public function getSchemaTypes() : SchemaTypes {
+	public function getSchemaTypes(): SchemaTypes {
 		if ( $this->schemaTypes === null ) {
 			$this->schemaTypes = $this->newSchemaTypes( $this->types );
 		}
@@ -176,7 +176,7 @@ class SchemaFactory {
 	 *
 	 * @return SchemaFilterFactory
 	 */
-	public function newSchemaFilterFactory() : SchemaFilterFactory {
+	public function newSchemaFilterFactory(): SchemaFilterFactory {
 		return new SchemaFilterFactory();
 	}
 

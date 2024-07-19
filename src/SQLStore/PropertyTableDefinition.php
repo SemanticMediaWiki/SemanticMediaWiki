@@ -138,7 +138,7 @@ class PropertyTableDefinition {
 	 *
 	 * @return boolean
 	 */
-	public function isTableType( string $tableType ) : bool {
+	public function isTableType( string $tableType ): bool {
 		return $this->tableType === $tableType;
 	}
 

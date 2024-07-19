@@ -41,7 +41,7 @@ class Hooks {
 	 *
 	 * @return []
 	 */
-	public function getHandlers() : array {
+	public function getHandlers(): array {
 		return [
 			'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders' => [ $this, 'onRegisterEntityExaminerDeferrableIndicatorProviders' ],
 			'SMW::Admin::RegisterTaskHandlers' => [ $this, 'onRegisterTaskHandlers' ],

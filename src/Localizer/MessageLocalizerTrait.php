@@ -35,7 +35,7 @@ trait MessageLocalizerTrait {
 	 *
 	 * @return string
 	 */
-	public function msg( ...$args ) : string {
+	public function msg( ...$args ): string {
 		if ( $this->messageLocalizer !== null ) {
 			return $this->messageLocalizer->msg( ...$args );
 		}

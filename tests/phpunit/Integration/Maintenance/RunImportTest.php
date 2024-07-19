@@ -23,7 +23,7 @@ class RunImportTest extends DatabaseTestCase {
 	private $runnerFactory;
 	private $spyMessageReporter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment->addConfiguration( 'smwgImportReqVersion', 1 );
@@ -33,7 +33,7 @@ class RunImportTest extends DatabaseTestCase {
 		$this->spyMessageReporter = $this->testEnvironment::getUtilityFactory()->newSpyMessageReporter();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 

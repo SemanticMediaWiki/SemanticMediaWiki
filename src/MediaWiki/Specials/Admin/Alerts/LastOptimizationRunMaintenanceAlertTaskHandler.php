@@ -42,7 +42,7 @@ class LastOptimizationRunMaintenanceAlertTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() : string {
+	public function getHtml(): string {
 		if ( !$this->hasFeature( SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN ) ) {
 			return '';
 		}

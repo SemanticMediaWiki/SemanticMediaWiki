@@ -62,7 +62,7 @@ class DebugFormatter {
 	 *
 	 * @return string
 	 */
-	public function getFormat() : string {
+	public function getFormat(): string {
 		return $this->format;
 	}
 

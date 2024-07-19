@@ -22,7 +22,7 @@ class PredefinedPropertyValueResourceBuilderTest extends \PHPUnit_Framework_Test
 	private $dataItemFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->testEnvironment = new TestEnvironment();
@@ -30,7 +30,7 @@ class PredefinedPropertyValueResourceBuilderTest extends \PHPUnit_Framework_Test
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

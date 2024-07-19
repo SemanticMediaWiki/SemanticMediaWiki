@@ -32,7 +32,7 @@ class EntityExaminerIndicatorsFactory {
 	 *
 	 * @return EntityExaminerCompositeIndicatorProvider
 	 */
-	public function newEntityExaminerIndicatorProvider( Store $store ) : EntityExaminerCompositeIndicatorProvider {
+	public function newEntityExaminerIndicatorProvider( Store $store ): EntityExaminerCompositeIndicatorProvider {
 		$servicesFactory = ServicesFactory::getInstance();
 
 		$indicatorProviders = [
@@ -59,7 +59,7 @@ class EntityExaminerIndicatorsFactory {
 	 *
 	 * @return AssociatedRevisionMismatchEntityExaminerIndicatorProvider
 	 */
-	public function newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( Store $store ) : AssociatedRevisionMismatchEntityExaminerIndicatorProvider {
+	public function newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( Store $store ): AssociatedRevisionMismatchEntityExaminerIndicatorProvider {
 		$associatedRevisionMismatchEntityExaminerIndicatorProvider = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$store
 		);
@@ -79,7 +79,7 @@ class EntityExaminerIndicatorsFactory {
 	 *
 	 * @return ConstraintErrorEntityExaminerIndicatorProvider
 	 */
-	public function newConstraintErrorEntityExaminerIndicatorProvider( Store $store, EntityCache $entityCache ) : ConstraintErrorEntityExaminerIndicatorProvider {
+	public function newConstraintErrorEntityExaminerIndicatorProvider( Store $store, EntityCache $entityCache ): ConstraintErrorEntityExaminerIndicatorProvider {
 		$constraintErrorEntityExaminerIndicatorProvider = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$store,
 			$entityCache
@@ -95,7 +95,7 @@ class EntityExaminerIndicatorsFactory {
 	 *
 	 * @return EntityExaminerDeferrableCompositeIndicatorProvider
 	 */
-	public function newEntityExaminerDeferrableCompositeIndicatorProvider( Store $store ) : EntityExaminerDeferrableCompositeIndicatorProvider {
+	public function newEntityExaminerDeferrableCompositeIndicatorProvider( Store $store ): EntityExaminerDeferrableCompositeIndicatorProvider {
 		$indicatorProviders = [];
 
 		if ( $this->getServicesFactory()->getSettings()->get( 'smwgDetectOutdatedData' ) ) {
@@ -143,7 +143,7 @@ class EntityExaminerIndicatorsFactory {
 	 *
 	 * @return EntityExaminerCompositeIndicatorProvider
 	 */
-	public function newEntityExaminerCompositeIndicatorProvider( array $indicatorProviders = [] ) : EntityExaminerCompositeIndicatorProvider {
+	public function newEntityExaminerCompositeIndicatorProvider( array $indicatorProviders = [] ): EntityExaminerCompositeIndicatorProvider {
 		$compositeIndicatorHtmlBuilder = new CompositeIndicatorHtmlBuilder(
 			new TemplateEngine()
 		);

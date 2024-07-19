@@ -22,7 +22,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $elasticFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -38,7 +38,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'EntityCache', $entityCache );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

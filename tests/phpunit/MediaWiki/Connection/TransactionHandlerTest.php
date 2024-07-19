@@ -22,7 +22,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $loadBalancerFactory;
 	private $transactionProfiler;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->loadBalancerFactory = $this->createMock( ILBFactory::class );
 
 		$this->transactionProfiler = $this->getMockBuilder( '\stdClass' )

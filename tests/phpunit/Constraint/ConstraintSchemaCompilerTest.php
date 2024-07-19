@@ -22,7 +22,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	private $schemaFinder;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )

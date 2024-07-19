@@ -26,7 +26,7 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 	private $propertySubjectsLookup;
 	private $requestOptions;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();

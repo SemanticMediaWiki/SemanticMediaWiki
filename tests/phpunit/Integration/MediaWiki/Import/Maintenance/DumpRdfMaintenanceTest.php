@@ -28,7 +28,7 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 	private $titleValidator;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -53,7 +53,7 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		ApplicationFactory::getInstance()->clear();
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();

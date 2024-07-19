@@ -64,7 +64,7 @@ class DocumentReplicationExaminer {
 	 *
 	 * @return ReplicationError|null
 	 */
-	public function check( DIWikiPage $subject, array $params = [] ) : ?ReplicationError {
+	public function check( DIWikiPage $subject, array $params = [] ): ?ReplicationError {
 		$id = $this->store->getObjectIds()->getSMWPageID(
 			$subject->getDBKey(),
 			$subject->getNamespace(),

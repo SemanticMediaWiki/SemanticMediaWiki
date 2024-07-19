@@ -25,7 +25,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $hierarchyLookup;
 	private $servicesContainer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )

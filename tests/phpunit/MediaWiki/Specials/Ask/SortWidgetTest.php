@@ -21,7 +21,7 @@ class SortWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$testEnvironment = new TestEnvironment();
 
 		$this->stringValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();

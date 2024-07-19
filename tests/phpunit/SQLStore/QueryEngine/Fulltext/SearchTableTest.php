@@ -20,7 +20,7 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

@@ -19,7 +19,7 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $declarationExaminer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )

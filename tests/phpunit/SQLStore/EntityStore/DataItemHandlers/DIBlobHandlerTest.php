@@ -22,7 +22,7 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )

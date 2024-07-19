@@ -699,7 +699,7 @@ class SQLStoreFactory {
 	 *
 	 * @return AuxiliaryFields
 	 */
-	public function newAuxiliaryFields( IdCacheManager $idCacheManager ) : AuxiliaryFields {
+	public function newAuxiliaryFields( IdCacheManager $idCacheManager ): AuxiliaryFields {
 		$auxiliaryFields = new AuxiliaryFields(
 			$this->store->getConnection( 'mw.db' ),
 			$idCacheManager
@@ -739,7 +739,7 @@ class SQLStoreFactory {
 	 *
 	 * @return redirectTargetLookup
 	 */
-	public function newRedirectTargetLookup( IdCacheManager $idCacheManager ) : RedirectTargetLookup {
+	public function newRedirectTargetLookup( IdCacheManager $idCacheManager ): RedirectTargetLookup {
 		$redirectTargetLookup = new RedirectTargetLookup(
 			$this->store,
 			$idCacheManager
@@ -1048,7 +1048,7 @@ class SQLStoreFactory {
 	 *
 	 * @return ByGroupPropertyValuesLookup
 	 */
-	public function newByGroupPropertyValuesLookup() : ByGroupPropertyValuesLookup {
+	public function newByGroupPropertyValuesLookup(): ByGroupPropertyValuesLookup {
 		return new ByGroupPropertyValuesLookup( $this->store );
 	}
 
@@ -1207,7 +1207,7 @@ class SQLStoreFactory {
 		return ApplicationFactory::getInstance()->getIteratorFactory();
 	}
 
-	private function newCallableChangeListener( array $args ) : CallableChangeListener {
+	private function newCallableChangeListener( array $args ): CallableChangeListener {
 		$callableChangeListener = new CallableChangeListener( $args );
 
 		$callableChangeListener->setLogger(

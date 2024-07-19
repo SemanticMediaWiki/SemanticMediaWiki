@@ -52,7 +52,7 @@ class HtmlTabs {
 	 *
 	 * @return bool
 	 */
-	public function hasContents() : bool {
+	public function hasContents(): bool {
 		return $this->contents !== [];
 	}
 

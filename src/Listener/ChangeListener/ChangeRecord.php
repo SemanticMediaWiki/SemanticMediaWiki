@@ -34,7 +34,7 @@ class ChangeRecord implements Iterator, SeekableIterator {
 	 *
 	 * @return boolean
 	 */
-	public function has( $key ) : bool {
+	public function has( $key ): bool {
 		try {
 			$this->seek( $key );
 		} catch( OutOfBoundsException $e ) {

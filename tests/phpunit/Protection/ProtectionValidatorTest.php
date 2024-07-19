@@ -21,7 +21,7 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	private $entityCache;
 	private $permissionManager;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();

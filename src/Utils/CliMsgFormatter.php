@@ -33,7 +33,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function head() : string {
+	public function head(): string {
 		$head = [
 			sprintf( "%-" . ( self::MAX_LEN - mb_strlen( SMW_VERSION ) ) . "s%s\n", "Semantic MediaWiki:", SMW_VERSION ),
 			sprintf( "%-" . ( self::MAX_LEN - mb_strlen( MW_VERSION ) ) . "s%s\n", "MediaWiki:", MW_VERSION )
@@ -49,7 +49,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function wordwrap( array $lines = [] ) : string {
+	public function wordwrap( array $lines = [] ): string {
 		return wordwrap( str_replace( "\n ", "\n", implode( " ", $lines ) ), self::MAX_LEN, "\n" );
 	}
 
@@ -60,7 +60,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function red( string $text ) : string {
+	public function red( string $text ): string {
 		return "\x1b[91m$text\x1b[0m";
 	}
 
@@ -71,7 +71,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function green( string $text ) : string {
+	public function green( string $text ): string {
 		return "\x1b[32m$text\x1b[0m";
 	}
 
@@ -82,7 +82,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function yellow( string $text ) : string {
+	public function yellow( string $text ): string {
 		return "\x1b[33m$text\x1b[0m";
 	}
 
@@ -94,7 +94,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function progress( int $i, int $total ) : string {
+	public function progress( int $i, int $total ): string {
 		return min( 100, round( ( $i / $total ) * 100 ) ) . " %";
 	}
 
@@ -109,7 +109,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function progressCompact( int $i, int $total, ?int $current = null, ?int $last = null, ?int $remainingTime = null ) : string {
+	public function progressCompact( int $i, int $total, ?int $current = null, ?int $last = null, ?int $remainingTime = null ): string {
 		if ( $current === null ) {
 			$current = $i;
 		}
@@ -144,7 +144,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function remainingTime( int $i, int $total ) : string {
+	public function remainingTime( int $i, int $total ): string {
 		return $this->humanReadableTime( ( ( microtime( true ) - $this->startTime ) / $i ) * ( $total - $i ) );
 	}
 
@@ -153,7 +153,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function elapsedTime() : string {
+	public function elapsedTime(): string {
 		return $this->humanReadableTime( ( microtime( true ) - $this->startTime ) );
 	}
 
@@ -167,7 +167,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function section( string $title, int $indentLen = 3, string $placeHolder = '-', bool $reverse = false ) : string {
+	public function section( string $title, int $indentLen = 3, string $placeHolder = '-', bool $reverse = false ): string {
 		if ( $reverse ) {
 			$title = "$title" . ( $indentLen == 0 ? '' : ' ' ) . sprintf( "%'{$placeHolder}" . $indentLen . "s", '' );
 			return "\n" . sprintf( "%'{$placeHolder}" . ( self::MAX_LEN - mb_strlen( $title ) ) . "s%s", ' ', $title ) . "\n";
@@ -190,7 +190,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function twoColsOverride( string $firstCol, string $secondCol, int $indentLen = 0, string $placeHolder = ' ' ) : string {
+	public function twoColsOverride( string $firstCol, string $secondCol, int $indentLen = 0, string $placeHolder = ' ' ): string {
 		if ( $placeHolder !== ' ' ) {
 			$firstCol = "$firstCol ";
 		}
@@ -217,7 +217,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function twoLineOverride( string $firstLine, string $secondLine ) : string {
+	public function twoLineOverride( string $firstLine, string $secondLine ): string {
 		return "\x1b[A" . $firstLine . "\n" . $secondLine;
 	}
 
@@ -231,7 +231,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function twoCols( string $firstCol, string $secondCol, int $indentLen = 0, string $placeHolder = ' ' ) : string {
+	public function twoCols( string $firstCol, string $secondCol, int $indentLen = 0, string $placeHolder = ' ' ): string {
 		if ( $placeHolder !== ' ' ) {
 			$firstCol = "$firstCol ";
 		}
@@ -290,7 +290,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function oneCol( string $oneCol, int $indentLen = 0 ) : string {
+	public function oneCol( string $oneCol, int $indentLen = 0 ): string {
 		if ( $indentLen > 0 ) {
 			$oneCol = sprintf( "%-{$indentLen}s%s", '', $oneCol );
 		}
@@ -306,7 +306,7 @@ class CliMsgFormatter {
 	 *
 	 * @return integer
 	 */
-	public function getLen( string $key, int $indentLen = 0 ) : int {
+	public function getLen( string $key, int $indentLen = 0 ): int {
 		if ( $indentLen > 0 ) {
 			$key = sprintf( "%-{$indentLen}s%s", '', $key );
 		}
@@ -337,7 +337,7 @@ class CliMsgFormatter {
 	 *
 	 * @return integer|null
 	 */
-	public function getFirstColLen() : ?int {
+	public function getFirstColLen(): ?int {
 		return $this->firstColLen;
 	}
 
@@ -350,7 +350,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function firstCol( string $firstCol, int $indentLen = 0, int $expectedSecondColLen = 0 ) : string {
+	public function firstCol( string $firstCol, int $indentLen = 0, int $expectedSecondColLen = 0 ): string {
 		if ( $indentLen > 0 ) {
 			$firstCol = sprintf( "%-{$indentLen}s%s", '', $firstCol );
 		}
@@ -376,7 +376,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function positionCol( string $value, int $position = 0, string $placeHolder = ' ' ) : string {
+	public function positionCol( string $value, int $position = 0, string $placeHolder = ' ' ): string {
 		if ( $position == 0 ) {
 			$len = $position;
 			$this->firstColLen += mb_strlen( $value );
@@ -398,7 +398,7 @@ class CliMsgFormatter {
 	 *
 	 * @return string
 	 */
-	public function secondCol( string $value, string $placeHolder = ' ' ) : string {
+	public function secondCol( string $value, string $placeHolder = ' ' ): string {
 		$len = self::MAX_LEN - mb_strlen( $value ) - $this->firstColLen;
 		$this->firstColLen = null;
 

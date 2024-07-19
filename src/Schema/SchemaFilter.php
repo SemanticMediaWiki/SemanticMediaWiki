@@ -39,14 +39,14 @@ interface SchemaFilter {
 	 *
 	 * @return bool
 	 */
-	public function hasMatches() : bool;
+	public function hasMatches(): bool;
 
 	/**
 	 * @since 3.2
 	 *
 	 * @return iterable
 	 */
-	public function getMatches() : iterable;
+	public function getMatches(): iterable;
 
 	/**
 	 * @since 3.2

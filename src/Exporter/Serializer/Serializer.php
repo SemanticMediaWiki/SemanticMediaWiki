@@ -199,7 +199,7 @@ abstract class Serializer {
 	 *
 	 * @return string
 	 */
-	public function flushContent() : string {
+	public function flushContent(): string {
 		if ( ( $this->pre_ns_buffer === '' ) && ( $this->post_ns_buffer === '' ) ) {
 			return '';
 		}
@@ -347,7 +347,7 @@ abstract class Serializer {
 	 *
 	 * @return boolean
 	 */
-	protected function isOWLClassTypeProperty( ExpNsResource $property ) : bool {
+	protected function isOWLClassTypeProperty( ExpNsResource $property ): bool {
 		$locname = $property->getLocalName();
 
 		if ( $property->getNamespaceID() == 'rdf' ) {

@@ -94,7 +94,7 @@ class TaskHandlerRegistry {
 	 *
 	 * @return TaskHandler[]
 	 */
-	public function get( string $type ) : array {
+	public function get( string $type ): array {
 		$taskHandlers = [];
 
 		foreach ( $this->taskHandlers as $taskHandler ) {

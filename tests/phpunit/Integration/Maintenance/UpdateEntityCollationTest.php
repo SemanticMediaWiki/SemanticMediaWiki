@@ -24,7 +24,7 @@ class UpdateEntityCollationTest extends DatabaseTestCase {
 	private $spyMessageReporter;
 	private $hookDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
@@ -35,7 +35,7 @@ class UpdateEntityCollationTest extends DatabaseTestCase {
 		$this->spyMessageReporter = $this->testEnvironment::getUtilityFactory()->newSpyMessageReporter();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 

@@ -19,7 +19,7 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $conceptQuerySegmentBuilder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->conceptQuerySegmentBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder' )

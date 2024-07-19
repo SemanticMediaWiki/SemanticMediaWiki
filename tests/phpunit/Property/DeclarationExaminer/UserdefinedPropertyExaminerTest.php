@@ -28,7 +28,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	private $propertyTableInfoFetcher;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -62,7 +62,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->propertyTableInfoFetcher ) );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

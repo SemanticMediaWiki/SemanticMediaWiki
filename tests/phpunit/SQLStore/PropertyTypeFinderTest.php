@@ -17,7 +17,7 @@ class PropertyTypeFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )

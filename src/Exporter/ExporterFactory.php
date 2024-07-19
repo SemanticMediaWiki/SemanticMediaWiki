@@ -23,7 +23,7 @@ class ExporterFactory {
 	 *
 	 * @return Exporter
 	 */
-	public function getExporter() : Exporter {
+	public function getExporter(): Exporter {
 		return Exporter::getInstance();
 	}
 
@@ -34,7 +34,7 @@ class ExporterFactory {
 	 *
 	 * @return ExportController
 	 */
-	public function newExportController( Serializer $serializer ) : ExportController {
+	public function newExportController( Serializer $serializer ): ExportController {
 		$exportController = new ExportController(
 			$serializer,
 			new Queue(),
@@ -52,7 +52,7 @@ class ExporterFactory {
 	 * @return Serializer
 	 * @throws InvalidArgumentException
 	 */
-	public function newSerializerByType( string $type ) : Serializer {
+	public function newSerializerByType( string $type ): Serializer {
 		switch ( $type ) {
 			case 'application/x-turtle':
 			case 'turtle':
@@ -72,7 +72,7 @@ class ExporterFactory {
 	 *
 	 * @return RDFXMLSerializer
 	 */
-	public function newRDFXMLSerializer() : RDFXMLSerializer {
+	public function newRDFXMLSerializer(): RDFXMLSerializer {
 		return new RDFXMLSerializer();
 	}
 
@@ -81,7 +81,7 @@ class ExporterFactory {
 	 *
 	 * @return TurtleSerializer
 	 */
-	public function newTurtleSerializer() : TurtleSerializer {
+	public function newTurtleSerializer(): TurtleSerializer {
 		return new TurtleSerializer();
 	}
 
@@ -92,7 +92,7 @@ class ExporterFactory {
 	 *
 	 * @return ExpDataFactory
 	 */
-	public function newExpDataFactory( Exporter $exporter ) : ExpDataFactory {
+	public function newExpDataFactory( Exporter $exporter ): ExpDataFactory {
 		return new ExpDataFactory( $exporter );
 	}
 
