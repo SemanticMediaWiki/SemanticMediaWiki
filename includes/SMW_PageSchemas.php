@@ -174,7 +174,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * Returns the HTML necessary for getting information about the
 	 * "connecting property" within the Page Schemas 'editschema' page.
 	 */
-	public static function getTemplateEditingHTML( $psTemplate) {
+	public static function getTemplateEditingHTML( $psTemplate ) {
 		// Only display this if the Semantic Internal Objects extension
 		// isn't displaying something similar.
 		if ( class_exists( 'SIOPageSchemas' ) ) {

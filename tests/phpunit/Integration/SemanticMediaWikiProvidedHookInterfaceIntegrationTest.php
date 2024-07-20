@@ -385,7 +385,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->will( $this->returnValue( [] ) );
 
 		$reachedTheBeforeDeleteSubjectCompleteHook = false;
-		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', function() use ( &$reachedTheBeforeDeleteSubjectCompleteHook) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', function() use ( &$reachedTheBeforeDeleteSubjectCompleteHook ) {
 			$reachedTheBeforeDeleteSubjectCompleteHook = true;
 		} );
 

@@ -67,7 +67,7 @@ class MessageFormatter {
 	 *
 	 * @return MessageFormatter
 	 */
-	public static function newFromArray( Language $language, array $messages =  [] ) {
+	public static function newFromArray( Language $language, array $messages = [] ) {
 		$instance = new self( $language );
 		return $instance->addFromArray( $messages );
 	}

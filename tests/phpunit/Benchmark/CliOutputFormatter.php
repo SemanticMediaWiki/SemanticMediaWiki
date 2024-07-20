@@ -32,7 +32,7 @@ class CliOutputFormatter {
 	 *
 	 * @param array $report
 	 */
-	public function format( array $report  ) {
+	public function format( array $report ) {
 		if ( $this->formatType === self::FORMAT_TREE ) {
 			return $this->doFormatAsTree( $report );
 		}

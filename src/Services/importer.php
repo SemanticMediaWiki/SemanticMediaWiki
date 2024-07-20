@@ -69,7 +69,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'Importer' => function( $containerBuilder, ContentIterator $contentIterator  ) {
+	'Importer' => function( $containerBuilder, ContentIterator $contentIterator ) {
 		$containerBuilder->registerExpectedReturnType( 'Importer', '\SMW\Importer\Importer' );
 
 		$dispatchingContentCreator = new DispatchingContentCreator(

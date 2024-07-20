@@ -26,7 +26,7 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider segmentProvider
 	 */
-	public function testTitleRoundTrip( $namespace, $title, $interwiki , $fragment ) {
+	public function testTitleRoundTrip( $namespace, $title, $interwiki, $fragment ) {
 		$title = Title::makeTitle( $namespace, $title, $fragment, $interwiki );
 
 		$this->assertEquals(

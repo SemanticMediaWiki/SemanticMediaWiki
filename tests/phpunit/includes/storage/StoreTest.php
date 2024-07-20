@@ -38,7 +38,7 @@ class StoreTest extends DatabaseTestCase {
 	/**
 	* @dataProvider getSemanticDataProvider
 	*/
-	public function testGetSemanticData( $titleText ,$filter = false) {
+	public function testGetSemanticData( $titleText, $filter = false ) {
 		$title = Title::newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();

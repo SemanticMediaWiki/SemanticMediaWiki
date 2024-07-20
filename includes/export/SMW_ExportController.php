@@ -400,7 +400,7 @@ class SMWExportController {
 	 * @todo Consider dropping the $revisiondate filtering and all associated
 	 * functionality. Is anybody using this?
 	 */
-	public function printPages( $pages, $recursion = 1, $revisiondate = false  ) {
+	public function printPages( $pages, $recursion = 1, $revisiondate = false ) {
 		$mwServices = MediaWikiServices::getInstance();
 		$linkCache = $mwServices->getLinkCache();
 		$revisionStore = $mwServices->getRevisionStore();

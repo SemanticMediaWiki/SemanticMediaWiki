@@ -135,7 +135,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider purgeMethodProvider
 	 */
-	public function testPurgeWillNotWaitOnTransactionIdleForMissingConnection(  $purgeMethod, $titleMethod ) {
+	public function testPurgeWillNotWaitOnTransactionIdleForMissingConnection( $purgeMethod, $titleMethod ) {
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

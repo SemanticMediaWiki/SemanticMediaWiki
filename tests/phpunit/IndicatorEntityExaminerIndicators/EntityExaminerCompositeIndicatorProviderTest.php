@@ -266,7 +266,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 				return '';
 			}
 
-			public function hasIndicator( \SMW\DIWikiPage $subject, array $options) {
+			public function hasIndicator( \SMW\DIWikiPage $subject, array $options ) {
 				return false;
 			}
 

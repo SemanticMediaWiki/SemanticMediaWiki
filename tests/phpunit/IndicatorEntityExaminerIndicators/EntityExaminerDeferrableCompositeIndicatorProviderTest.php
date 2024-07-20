@@ -250,7 +250,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 				return '';
 			}
 
-			public function hasIndicator( \SMW\DIWikiPage $subject, array $options) {
+			public function hasIndicator( \SMW\DIWikiPage $subject, array $options ) {
 				return false;
 			}
 
