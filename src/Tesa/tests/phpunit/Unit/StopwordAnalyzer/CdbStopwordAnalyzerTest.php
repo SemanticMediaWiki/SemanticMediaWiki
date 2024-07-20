@@ -60,7 +60,7 @@ class CdbStopwordAnalyzerTest extends TestCase {
 	/**
 	 * @dataProvider stopWordProvider
 	 */
-	public function testIsStopWord( $languageCode , $word, $expected ) {
+	public function testIsStopWord( $languageCode, $word, $expected ) {
 		$instane = new CdbStopwordAnalyzer(
 			CdbStopwordAnalyzer::getTargetByLanguage( $languageCode )
 		);

@@ -124,7 +124,7 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 				return '';
 			}
 
-			public function hasIndicator( \SMW\DIWikiPage $subject, array $options) {
+			public function hasIndicator( \SMW\DIWikiPage $subject, array $options ) {
 				return false;
 			}
 
@@ -153,7 +153,7 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 				return '';
 			}
 
-			public function hasIndicator( \SMW\DIWikiPage $subject, array $options) {
+			public function hasIndicator( \SMW\DIWikiPage $subject, array $options ) {
 				return false;
 			}
 

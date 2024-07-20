@@ -89,7 +89,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider firstElementDataProvider
 	 */
-	public function testFirstElementAsPropertyLabel( $isEnabled , array $parameters, array $expected ) {
+	public function testFirstElementAsPropertyLabel( $isEnabled, array $parameters, array $expected ) {
 		$parserOutput = new ParserOutput();
 		$title        = Title::newFromText( __METHOD__ );
 		$subobject    = new Subobject( $title );
