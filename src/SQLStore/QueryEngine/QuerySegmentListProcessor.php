@@ -381,8 +381,13 @@ class QuerySegmentListProcessor {
 	/**
 	 * Apply QuerySegment->fromSegs to a SelectQueryBuilder.
 	 * @since 4.2
+	 * 
+	 * @param QuerySegment $qobj QuerySegment to build the joins from
+	 * @param JoinGroupBase $builder First call must be SelectQueryBuilder, but become JoinGroup on recursive calls.
+	 * @param SelectQueryBuilder $topBuilder Top level builder passed in from the original call
 	 */
-	public static function applyFromSegments( $qobj, $builder ) {
+	public static function applyFromSegments( $qobj, $builder, $topBuilder = null ) {
+		if ( $topBuilder == null ) $topBuilder = $builder;
 		foreach ( $qobj->fromSegs as $seg ) {
 			$joinMethod = 'join';
 			if ( $seg->joinType === 'LEFT'|| $seg->joinType === 'LEFT OUTER' ) {
@@ -395,14 +400,14 @@ class QuerySegmentListProcessor {
 				// Bug: Temporary table `t1` renamed to `wt1` by MW SQLPlatform,
 				// however join('t1','t1') yields "JOIN `wt1`" instead of "JOIN `wt1` AS `t1`",
 				// causing "Table t1 not found".  Using subquery as workaround.
-				$table = $builder->newSubquery()->select( '*' )->from( $table );
+				$table = $topBuilder->newSubquery()->select( '*' )->from( $table );
 			}
 			if ( empty( $seg->fromSegs ) ) {
 				$builder->{$joinMethod}( $table, $seg->alias, $seg->where );
 			} else {
 				$grp = new JoinGroup( $seg->alias . 'jg' );
 				$grp->table( $table, $seg->alias );
-				self::applyFromSegments( $seg, $grp );
+				self::applyFromSegments( $seg, $grp, $topBuilder );
 				$builder->{$joinMethod}( $grp, $grp->getAlias(), $seg->where );
 			}
 		}
