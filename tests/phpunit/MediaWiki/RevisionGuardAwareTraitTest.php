@@ -16,7 +16,6 @@ use SMW\MediaWiki\RevisionGuardAwareTrait;
 class RevisionGuardAwareTraitTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSetRevisionGuard() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

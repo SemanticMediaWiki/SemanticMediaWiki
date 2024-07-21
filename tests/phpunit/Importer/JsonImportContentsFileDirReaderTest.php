@@ -24,7 +24,7 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	private $fileFetcher;
 	private $file;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->contentModeller = $this->getMockBuilder( '\SMW\Importer\ContentModeller' )
@@ -41,7 +41,6 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JsonImportContentsFileDirReader::class,
 			new JsonImportContentsFileDirReader( $this->contentModeller, $this->fileFetcher, $this->file )
@@ -49,7 +48,6 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesGetContentList() {
-
 		$importContents = $this->getMockBuilder( '\SMW\Importer\ImportContents' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -91,7 +89,6 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentList_WithError() {
-
 		$importContents = $this->getMockBuilder( '\SMW\Importer\ImportContents' )
 			->disableOriginalConstructor()
 			->getMock();

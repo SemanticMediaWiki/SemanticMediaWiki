@@ -75,7 +75,6 @@ class DataValueFactory {
 	 * @return DataValueFactory
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -111,7 +110,6 @@ class DataValueFactory {
 	 * @throws RuntimeException
 	 */
 	public function addCallable( $key, callable $callable ) {
-
 		if ( isset( $this->callables[$key] ) ) {
 			throw new RuntimeException( "`$key` is already in use, please clear the callable first!" );
 		}
@@ -152,7 +150,6 @@ class DataValueFactory {
 	 * @param array $defaultOutputFormatters
 	 */
 	public function setDefaultOutputFormatters( array $defaultOutputFormatters ) {
-
 		$this->defaultOutputFormatters = [];
 
 		foreach ( $defaultOutputFormatters as $type => $formatter ) {
@@ -180,7 +177,6 @@ class DataValueFactory {
 	 * @return DataValue
 	 */
 	public function newDataValueByType( $typeId, $valueString = false, $caption = false, DIProperty $property = null, $contextPage = null ) {
-
 		if ( !$this->dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
 			return new ErrorValue(
 				$typeId,
@@ -260,7 +256,6 @@ class DataValueFactory {
 	 * @return DataValue
 	 */
 	public function newDataValueByItem( DataItem $dataItem, DIProperty $property = null, $caption = false, $contextPage = null ) {
-
 		if ( $property !== null ) {
 			$typeId = $property->findPropertyTypeID();
 		} else {
@@ -297,7 +292,6 @@ class DataValueFactory {
 	 * @return DataValue
 	 */
 	public function newDataValueByProperty( DIProperty $property, $valueString = false, $caption = false, $contextPage = null ) {
-
 		$typeId = $property->isInverse() ? '_wpg' : $property->findPropertyTypeID();
 
 		return $this->newDataValueByType( $typeId, $valueString, $caption, $property, $contextPage );
@@ -318,7 +312,6 @@ class DataValueFactory {
 	 * @return DataValue
 	 */
 	public function newDataValueByText( $propertyName, $valueString, $caption = false, DIWikiPage $contextPage = null ) {
-
 		$propertyDV = $this->newPropertyValueByLabel( $propertyName, $caption, $contextPage );
 
 		if ( !$propertyDV->isValid() ) {
@@ -412,7 +405,6 @@ class DataValueFactory {
 	 * @return DataValue
 	 */
 	public function newPropertyValueByItem( DIProperty $property, $caption = false, DIWikiPage $contextPage = null ) {
-
 		$dataValue = $this->newDataValueByType(
 			PropertyValue::TYPE_ID,
 			false,

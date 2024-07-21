@@ -16,7 +16,6 @@ use SMW\Exception\PropertyLabelNotResolvedException;
 class PropertyLabelNotResolvedExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new PropertyLabelNotResolvedException();
 
 		$this->assertInstanceof(

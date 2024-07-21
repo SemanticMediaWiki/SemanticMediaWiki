@@ -23,7 +23,7 @@ class EntityCollationTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $setupFile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
@@ -37,7 +37,6 @@ class EntityCollationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EntityCollation::class,
 			new EntityCollation( $this->store )
@@ -45,7 +44,6 @@ class EntityCollationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_DifferentCollationTriggerIncompleteTask() {
-
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'entity_collation' ) )
@@ -69,7 +67,6 @@ class EntityCollationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_Collection() {
-
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'entity_collation' ) )

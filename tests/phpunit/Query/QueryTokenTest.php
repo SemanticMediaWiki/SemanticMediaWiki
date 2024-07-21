@@ -18,14 +18,13 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			QueryToken::class,
 			new QueryToken()
@@ -36,7 +35,6 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testAddFromDesciption( $description, $expected ) {
-
 		$instance = new QueryToken();
 
 		$instance->addFromDesciption( $description );
@@ -48,7 +46,6 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMulitpleAddFromDesciption() {
-
 		$instance = new QueryToken();
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
@@ -91,7 +88,6 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider highlightProvider
 	 */
 	public function testHighlight( $description, $text, $type, $expected ) {
-
 		$instance = new QueryToken();
 
 		$instance->addFromDesciption( $description );
@@ -104,7 +100,6 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
@@ -132,7 +127,6 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function highlightProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )

@@ -16,7 +16,6 @@ use SMW\Schema\Rule;
 class RuleTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			Rule::class,
 			new Rule()
@@ -24,7 +23,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilterScore() {
-
 		$instance = new Rule();
 
 		$this->assertEquals(
@@ -41,7 +39,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIf() {
-
 		$data = [
 			'if' => [
 				'foo',
@@ -67,7 +64,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testThen() {
-
 		$data = [
 			'then' => [
 				'foo',

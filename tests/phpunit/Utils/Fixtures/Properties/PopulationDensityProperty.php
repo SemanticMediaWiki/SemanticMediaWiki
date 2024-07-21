@@ -28,7 +28,6 @@ class PopulationDensityProperty extends FixtureProperty {
 	 * @return SemanticData
 	 */
 	public function getDependencies() {
-
 		$semanticData = parent::getDependencies();
 
 		$populationProperty = new PopulationProperty();

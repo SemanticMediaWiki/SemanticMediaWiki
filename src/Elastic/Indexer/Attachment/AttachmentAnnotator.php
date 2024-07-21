@@ -73,7 +73,6 @@ class AttachmentAnnotator implements PropertyAnnotator {
 	 * @return PropertyAnnotator
 	 */
 	public function addAnnotation() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		// @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/using-ingest-attachment.html

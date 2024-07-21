@@ -135,7 +135,6 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPrinterThrowsException() {
-
 		$factory = new QueryPrinterFactory();
 
 		$this->expectException( '\SMW\Query\Exception\ResultFormatNotFoundException' );
@@ -143,7 +142,6 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCanonicalNameThrowsException() {
-
 		$factory = new QueryPrinterFactory();
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -154,7 +152,6 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider registerFormatExceptioProvider
 	 */
 	public function testRegisterFormatThrowsException( $formatName, $class ) {
-
 		$factory = new QueryPrinterFactory();
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -177,7 +174,6 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider registerAliasesExceptionProvider
 	 */
 	public function testRegisterAliasesThrowsException( $formatName, array $aliases ) {
-
 		$factory = new QueryPrinterFactory();
 
 		$this->expectException( 'InvalidArgumentException' );

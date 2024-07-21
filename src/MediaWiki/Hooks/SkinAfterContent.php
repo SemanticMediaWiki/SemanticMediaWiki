@@ -44,7 +44,6 @@ class SkinAfterContent implements HookListener {
 	 * @return true
 	 */
 	public function performUpdate( &$data ) {
-
 		if ( $this->canAddFactbox() ) {
 			$this->addFactboxTo( $data );
 		}
@@ -53,7 +52,6 @@ class SkinAfterContent implements HookListener {
 	}
 
 	private function canAddFactbox() {
-
 		if ( !$this->skin instanceof Skin || !$this->getOption( 'SMW_EXTENSION_LOADED' ) ) {
 			return false;
 		}
@@ -68,7 +66,6 @@ class SkinAfterContent implements HookListener {
 	}
 
 	private function addFactboxTo( &$data ) {
-
 		$cachedFactbox = ApplicationFactory::getInstance()->singleton( 'FactboxFactory' )->newCachedFactbox();
 
 		$data .= $cachedFactbox->retrieveContent(

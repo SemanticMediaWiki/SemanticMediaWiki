@@ -18,14 +18,13 @@ class SummaryTableTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 	}
 
 	public function testBuildHTML() {
-
 		$instance = new SummaryTable(
 			[ 'Foo' => 'Bar' ]
 		);
@@ -41,7 +40,6 @@ class SummaryTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_SetAttributes() {
-
 		$instance = new SummaryTable(
 			[ 'Foo' => 'Bar' ]
 		);
@@ -63,7 +61,6 @@ class SummaryTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_ColumnThreshold() {
-
 		$instance = new SummaryTable(
 			[ 'Foo' => 'Bar', 'Foobar' => 'Bar' ]
 		);
@@ -85,7 +82,6 @@ class SummaryTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_ColumnThreshold_NoImage() {
-
 		$instance = new SummaryTable(
 			[ 'Foo' => 'Bar', 'Foobar' => 'Bar' ]
 		);

@@ -70,7 +70,6 @@ class FakeRawResultProvider {
 	}
 
 	private function isReadableFile( $file ) {
-
 		if ( is_readable( $file ) ) {
 			return $file;
 		}

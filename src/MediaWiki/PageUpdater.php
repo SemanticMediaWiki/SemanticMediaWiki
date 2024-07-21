@@ -123,7 +123,6 @@ class PageUpdater implements DeferrableUpdate {
 	 * @param Title|null $title
 	 */
 	public function addPage( Title $title = null ) {
-
 		if ( $title === null ) {
 			return;
 		}
@@ -151,7 +150,7 @@ class PageUpdater implements DeferrableUpdate {
 	 */
 	public function doPurgeParserCacheAsPool() {
 		if ( $this->connection !== null ) {
-			$this->connection->onTransactionCommitOrIdle( function() {
+			$this->connection->onTransactionCommitOrIdle( function () {
 				 $this->doPoolPurge();
 			} );
 		} else {
@@ -182,12 +181,11 @@ class PageUpdater implements DeferrableUpdate {
 	 * @since 3.0
 	 */
 	public function pushUpdate() {
-
 		if ( $this->transactionalCallableUpdate === null ) {
 			return $this->log( __METHOD__ . ' it is not possible to push updates as DeferredTransactionalUpdate)' );
 		}
 
-		$this->transactionalCallableUpdate->setCallback( function(){
+		$this->transactionalCallableUpdate->setCallback( function (){
 			$this->doUpdate();
 		} );
 
@@ -228,7 +226,6 @@ class PageUpdater implements DeferrableUpdate {
 	 * @since 2.1
 	 */
 	public function doPurgeParserCache() {
-
 		$method = __METHOD__;
 
 		if ( $this->isPending || $this->onTransactionIdle ) {
@@ -244,7 +241,6 @@ class PageUpdater implements DeferrableUpdate {
 	 * @since 2.1
 	 */
 	public function doPurgeHtmlCache() {
-
 		if ( $this->isHtmlCacheUpdate === false ) {
 			return;
 		}
@@ -266,7 +262,6 @@ class PageUpdater implements DeferrableUpdate {
 	 * @since 2.1
 	 */
 	public function doPurgeWebCache() {
-
 		$method = __METHOD__;
 
 		if ( $this->isPending || $this->onTransactionIdle ) {
@@ -283,7 +278,6 @@ class PageUpdater implements DeferrableUpdate {
 	 * Title::invalidateCache introduced with MW 1.28/1.29 on a large update pool
 	 */
 	private function doPoolPurge() {
-
 		Timer::start( __METHOD__ );
 
 		// #3413

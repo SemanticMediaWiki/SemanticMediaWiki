@@ -35,7 +35,6 @@ class NamespaceDescriptionInterpreter {
 	 * @return Condition
 	 */
 	public function interpretDescription( NamespaceDescription $description, $isConjunction = false ) {
-
 		$params = [];
 		$fieldMapper = $this->conditionBuilder->getFieldMapper();
 

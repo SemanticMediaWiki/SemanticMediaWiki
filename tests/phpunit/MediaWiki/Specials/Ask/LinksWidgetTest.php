@@ -19,7 +19,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testFieldset() {
-
 		$this->assertInternalType(
 			'string',
 			LinksWidget::fieldset()
@@ -27,7 +26,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmbeddedCodeLink() {
-
 		$this->assertInternalType(
 			'string',
 			LinksWidget::embeddedCodeLink()
@@ -35,7 +33,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmbeddedCodeBlock() {
-
 		$this->assertInternalType(
 			'string',
 			LinksWidget::embeddedCodeBlock( 'Foo' )
@@ -43,7 +40,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResultSubmitLinkHide() {
-
 		$this->assertInternalType(
 			'string',
 			LinksWidget::resultSubmitLink( true )
@@ -51,7 +47,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResultSubmitLinkShow() {
-
 		$this->assertInternalType(
 			'string',
 			LinksWidget::resultSubmitLink( false )
@@ -59,7 +54,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testShowHideLink() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -75,7 +69,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDebugLink() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -91,7 +84,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoQCacheLink() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -107,7 +99,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoQCacheLinkOnFalseFromCache() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -122,7 +113,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testClipboardLink() {
-
 		$infolink = $this->getMockBuilder( '\SMWInfolink' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -16,7 +16,6 @@ use SMW\Elastic\QueryEngine\Excerpts;
 class ExcerptsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Excerpts::class,
 			new Excerpts()
@@ -24,7 +23,6 @@ class ExcerptsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExcerpt_StrippedTagsOnString() {
-
 		$instance = new Excerpts();
 
 		$instance->addExcerpt( 'Foo', '<div style="display:none;">Foo<em>bar</em></div>' );
@@ -36,7 +34,6 @@ class ExcerptsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExcerpt_StrippedTagsOnArray() {
-
 		$instance = new Excerpts();
 
 		$instance->addExcerpt( 'Bar', [

@@ -19,7 +19,6 @@ class JSONFileParseExceptionTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$instance = new JSONFileParseException(
 			SMW_PHPUNIT_DIR . '/Fixtures/Exception/invalid.trailing.comma.json'
 		);
@@ -31,7 +30,6 @@ class JSONFileParseExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct_FileNotReadable() {
-
 		$instance = new JSONFileParseException(
 			'Foo'
 		);

@@ -64,7 +64,6 @@ class EditInfo {
 	 * @return SemanticData|null
 	 */
 	public function fetchSemanticData() {
-
 		$parserOutput = $this->fetchEditInfo()->getOutput();
 
 		if ( $parserOutput === null ) {
@@ -77,8 +76,7 @@ class EditInfo {
 	/**
 	 * @since 2.0
 	 */
-	public function fetchEditInfo() : self {
-
+	public function fetchEditInfo(): self {
 		if ( $this->page !== null && $this->revision === null ) {
 			$this->revision = $this->revisionGuard->newRevisionFromPage( $this->page );
 		}

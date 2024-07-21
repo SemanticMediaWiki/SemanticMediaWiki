@@ -21,7 +21,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 	private $outputFormatter;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -41,13 +41,12 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyStatsRebuildJobTaskHandler::class,
 			new PropertyStatsRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter )
@@ -55,7 +54,6 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testGetHtml() {
-
 		$methods = [
 			'setName',
 			'setMethod',
@@ -83,7 +81,6 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testHandleRequestOnNonPendingJob() {
-
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
 			->with( $this->equalTo( 'smw.propertyStatisticsRebuild' ) )
@@ -121,7 +118,6 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testHandleRequestOnPendingJob() {
-
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
 			->with( $this->equalTo( 'smw.propertyStatisticsRebuild' ) )

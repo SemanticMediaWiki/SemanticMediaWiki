@@ -50,7 +50,6 @@ class DuplicateFinder {
 	 * @return boolean
 	 */
 	public function hasDuplicate( DataItem $dataItem ) {
-
 		$type = $dataItem->getDIType();
 
 		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
@@ -98,7 +97,6 @@ class DuplicateFinder {
 	 * @return Iterator|[]
 	 */
 	public function findDuplicates( $table = null ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 
@@ -124,7 +122,6 @@ class DuplicateFinder {
 		}
 
 		$callback = function ( $row ) use ( $connection, $table, $fname ) {
-
 			$map = self::mapRow( $table, $row );
 			$map = [ 'count' => $row->count ] + $map;
 
@@ -190,7 +187,6 @@ class DuplicateFinder {
 	}
 
 	private static function fields( $tableName ) {
-
 		$fieldsDef = self::fieldsDef();
 
 		if ( !isset( $fieldsDef[$tableName] ) ) {
@@ -201,7 +197,6 @@ class DuplicateFinder {
 	}
 
 	private static function mapRow( $tableName, $row ) {
-
 		$fieldsDef = self::fieldsDef();
 
 		if ( !isset( $fieldsDef[$tableName] ) ) {

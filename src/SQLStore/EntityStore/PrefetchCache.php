@@ -77,7 +77,6 @@ class PrefetchCache {
 	 * @param RequestOptions $requestOptions
 	 */
 	public static function makeCacheKey( DIProperty $property, RequestOptions $requestOptions ) {
-
 		$key = $property->getKey();
 
 		// Use the .dot notation to distingish it from other prrintouts that
@@ -107,7 +106,6 @@ class PrefetchCache {
 	 * @param RequestOptions $requestOptions
 	 */
 	public function prefetch( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
-
 		$fingerprint = '';
 		$this->store->getObjectIds()->warmUpCache( $subjects );
 
@@ -146,7 +144,6 @@ class PrefetchCache {
 	 * @return []
 	 */
 	public function getPropertyValues( DIWikiPage $subject, DIProperty $property, RequestOptions $requestOptions ) {
-
 		$key = $this->makeCacheKey( $property, $requestOptions );
 
 		$sid = $this->store->getObjectIds()->getSMWPageID(

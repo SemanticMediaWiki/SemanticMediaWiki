@@ -26,7 +26,7 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 	private $iteratorMockBuilder;
 	private $resultIterator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
@@ -46,7 +46,6 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			OutdatedDisposer::class,
 			new OutdatedDisposer( $this->entityIdDisposerJob, $this->iteratorFactory )
@@ -54,7 +53,6 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDispose_Entities() {
-
 		$row = new \stdClass;
 		$row->smw_id = 1001;
 
@@ -120,7 +118,6 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDispose_QueryLinks_Invalid() {
-
 		$row = new \stdClass;
 		$row->id = 1002;
 
@@ -184,7 +181,6 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDispose_QueryLinks_Unassigned() {
-
 		$row = new \stdClass;
 		$row->id = 3333;
 

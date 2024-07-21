@@ -94,7 +94,6 @@ class SMWExporter {
 	 * @return SMWExporter
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 
 			self::$instance = new self();
@@ -278,7 +277,6 @@ class SMWExporter {
 	 * @return SMWExpData
 	 */
 	public function makeExportDataForSubject( DIWikiPage $subject, $addStubData = false ) {
-
 		$wikiPageExpElement = $this->newExpElement( $subject );
 		$expData = new SMWExpData( $wikiPageExpElement );
 
@@ -394,7 +392,6 @@ class SMWExporter {
 	 * @param $data SMWExpData to add the data to
 	 */
 	static public function addPropertyValues( SMWDIProperty $property, array $dataItems, SMWExpData &$expData ) {
-
 		$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
 
 		if ( $property->isUserDefined() ) {
@@ -665,7 +662,6 @@ class SMWExporter {
 	 * @return ExpElement|null
 	 */
 	public function newAuxiliaryExpElement( SMWDataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_TIME ) {
 			return new ExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', '', $dataItem );
 		}

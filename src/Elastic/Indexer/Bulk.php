@@ -108,7 +108,6 @@ class Bulk implements JsonSerializable {
 	 * @param Document $document
 	 */
 	public function infuseDocument( Document $document ) {
-
 		if ( $document->isType( Document::TYPE_DELETE ) ) {
 			$this->delete( [ '_id' => $document->getId() ] );
 		}
@@ -143,7 +142,6 @@ class Bulk implements JsonSerializable {
 	 * @since 3.0
 	 */
 	public function execute() {
-
 		$this->response = $this->connection->bulk(
 			$this->bulk
 		);

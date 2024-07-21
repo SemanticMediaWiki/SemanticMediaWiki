@@ -21,7 +21,7 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 	private $resultCache;
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
@@ -31,12 +31,11 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			InvalidateResultCacheEventListener::class,
 			new InvalidateResultCacheEventListener( $this->resultCache )
@@ -44,7 +43,6 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testExecute() {
-
 		$context = DispatchContext::newFromArray(
 			[
 				'subject' => 'Foo',

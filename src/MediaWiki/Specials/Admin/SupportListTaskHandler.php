@@ -43,7 +43,6 @@ class SupportListTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$html = Html::rawElement(
 			'p',
 			[],
@@ -58,7 +57,6 @@ class SupportListTaskHandler extends TaskHandler {
 	}
 
 	private function ennvironmentSection() {
-
 		$info = $this->getStore()->getInfo() + [
 			'smw' => SMW_VERSION,
 			'mediawiki' => MW_VERSION
@@ -95,7 +93,6 @@ class SupportListTaskHandler extends TaskHandler {
 	}
 
 	private function registryForm() {
-
 		$this->htmlFormRenderer
 			->setName( 'announce' )
 			->setMethod( 'get' )

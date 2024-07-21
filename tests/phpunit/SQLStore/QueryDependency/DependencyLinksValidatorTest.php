@@ -20,7 +20,7 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();
@@ -30,12 +30,11 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DependencyLinksValidator::class,
 			new DependencyLinksValidator( $this->store )
@@ -43,7 +42,6 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasArchaicDependencies_Disabled() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN );
 
 		$instance = new DependencyLinksValidator(
@@ -62,7 +60,6 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasArchaicDependencies() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', '' );
 
 		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )

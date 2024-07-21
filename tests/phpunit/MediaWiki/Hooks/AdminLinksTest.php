@@ -16,7 +16,6 @@ use SMW\MediaWiki\Hooks\AdminLinks;
 class AdminLinksTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AdminLinks::class,
 			new AdminLinks()

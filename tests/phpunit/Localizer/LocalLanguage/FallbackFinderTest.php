@@ -18,15 +18,13 @@ class FallbackFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $jsonContentsFileReader;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->jsonContentsFileReader = $this->getMockBuilder( JsonContentsFileReader::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FallbackFinder::class,
 			new FallbackFinder( $this->jsonContentsFileReader )
@@ -34,7 +32,6 @@ class FallbackFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDefaultFallbackLanguage() {
-
 		$this->jsonContentsFileReader->expects( $this->never() )
 			->method( 'readByLanguageCode' );
 
@@ -54,7 +51,6 @@ class FallbackFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testgetFallbackLanguageByStatedFallback() {
-
 		$mockedContent = [
 			'fallback_language' => 'Foo'
 		];
@@ -74,7 +70,6 @@ class FallbackFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testgetFallbackLanguageByUnknownLanguageCode() {
-
 		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
 			->method( 'readByLanguageCode' )
 			->will( $this->throwException( new \RuntimeException ) );

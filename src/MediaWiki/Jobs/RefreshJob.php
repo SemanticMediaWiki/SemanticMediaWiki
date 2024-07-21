@@ -49,7 +49,6 @@ class RefreshJob extends Job {
 	 * @return boolean
 	 */
 	public function run() {
-
 		if ( $this->hasParameter( 'spos' ) ) {
 			$this->refreshData( $this->getParameter( 'spos' ) );
 		}
@@ -65,7 +64,6 @@ class RefreshJob extends Job {
 	 * @return double
 	 */
 	public function getProgress() {
-
 		$prog = $this->hasParameter( 'prog' ) ? $this->getParameter( 'prog' ) : 0;
 		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ): 1;
 		$rc   = $this->hasParameter( 'rc' ) ? $this->getParameter( 'rc' ) : 1;
@@ -77,7 +75,6 @@ class RefreshJob extends Job {
 	 * @param $spos start index
 	 */
 	protected function refreshData( $spos ) {
-
 		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
 
 		$entityRebuildDispatcher = ApplicationFactory::getInstance()->getStore()->refreshData(
@@ -113,7 +110,6 @@ class RefreshJob extends Job {
 	}
 
 	protected function createNextJob( array $parameters ) {
-
 		$job = new self(
 			$this->getTitle(),
 			$parameters
@@ -124,7 +120,6 @@ class RefreshJob extends Job {
 	}
 
 	protected function getNamespace( $run ) {
-
 		if ( !$this->hasParameter( 'rc' ) ) {
 			return false;
 		}

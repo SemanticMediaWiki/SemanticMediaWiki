@@ -54,7 +54,6 @@ class PageBuilder {
 	 * @return string
 	 */
 	public function buildForm( $count = 0 ) {
-
 		$html = Html::rawElement(
 			'p',
 			[
@@ -82,7 +81,6 @@ class PageBuilder {
 	 * @return string
 	 */
 	public function buildHtml( array $results ) {
-
 		if ( count( $results ) == 0 ) {
 			return Message::get( 'smw_result_noresults', Message::TEXT, Message::USER_LANGUAGE );
 		}
@@ -140,7 +138,6 @@ class PageBuilder {
 	}
 
 	private function createForm( $count ) {
-
 		// Precaution to avoid any inline breakage caused by a div element
 		// within a paragraph (e.g Highlighter content)
 		// $resultMessage = str_replace( 'div', 'span', $resultMessage );

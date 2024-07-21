@@ -23,7 +23,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	private $spyLogger;
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
@@ -33,15 +33,14 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->clearPendingDeferredUpdates();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
-		$callback = function() {
+		$callback = function () {
 			return null;
 		};
 
@@ -57,7 +56,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -66,7 +64,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -82,7 +80,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateOnEmptyCallback() {
-
 		$instance = new TransactionalCallableUpdate(
 			null,
 			$this->connection
@@ -100,7 +97,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateOnLateCallback() {
-
 		$instance = new TransactionalCallableUpdate(
 			null,
 			$this->connection
@@ -114,7 +110,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -132,7 +128,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWaitableUpdate() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -141,7 +136,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -161,7 +156,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateWithDisabledDeferredUpdate() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -170,7 +164,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -186,8 +180,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOrigin() {
-
-		$callback = function() {
+		$callback = function () {
 		};
 
 		$instance = new TransactionalCallableUpdate(
@@ -206,7 +199,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilterDuplicateQueueEntryByFingerprint() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -215,7 +207,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -245,8 +237,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateOnTransactionIdle() {
-
-		$callback = function( $callback ) {
+		$callback = function ( $callback ) {
 			return call_user_func( $callback );
 		};
 
@@ -268,7 +259,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -286,7 +277,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommitWithTransactionTicketOnDeferrableUpdate() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -304,7 +294,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -323,7 +313,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommitWithTransactionTicketOnNonDeferrableUpdate() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -341,7 +330,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -360,7 +349,6 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCancelOnRollback() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -378,7 +366,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->never() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 

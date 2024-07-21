@@ -53,7 +53,6 @@ class ExpNsResource extends ExpResource {
 	 * @throws InvalidArgumentException
 	 */
 	public function __construct( $localName, $namespace, $namespaceId, DataItem $dataItem = null ) {
-
 		if ( !is_string( $localName ) ) {
 			throw new InvalidArgumentException( '$localName needs to be a string' );
 		}
@@ -127,7 +126,6 @@ class ExpNsResource extends ExpResource {
 	 * @return array
 	 */
 	public function getSerialization() {
-
 		// Use '|' as divider as it is unlikely that symbol appears within a uri
 		$serialization = [
 			'type' => self::TYPE_NSRESOURCE,
@@ -141,7 +139,6 @@ class ExpNsResource extends ExpResource {
 	 * @see ExpElement::newFromSerialization
 	 */
 	protected static function deserialize( $serialization ) {
-
 		if ( !isset( $serialization['uri'] ) ) {
 			throw new RuntimeException( "Invalid serialization format, missing a uri element" );
 		}

@@ -43,7 +43,6 @@ class Csv {
 	 * @return string
 	 */
 	public function toString( array $header, array $rows, $sep = self::DEFAULT_SEP ) {
-
 		$handle = fopen( 'php://temp', 'r+' );
 
 		// fputcsv(): delimiter must be a single character
@@ -85,7 +84,6 @@ class Csv {
 	 * @return array
 	 */
 	public function merge( $rows, $sep = ',' ) {
-
 		$map = [];
 		$order = [];
 

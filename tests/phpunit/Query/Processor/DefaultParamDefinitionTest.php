@@ -19,7 +19,6 @@ class DefaultParamDefinitionTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DefaultParamDefinition::class,
 			new DefaultParamDefinition()
@@ -27,7 +26,6 @@ class DefaultParamDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildParamDefinitions() {
-
 		$vars = [
 			'smwgResultFormats' => [],
 			'smwgResultAliases' => [],
@@ -43,7 +41,6 @@ class DefaultParamDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetParamDefinitions() {
-
 		$this->assertInternalType(
 			'array',
 			DefaultParamDefinition::getParamDefinitions()

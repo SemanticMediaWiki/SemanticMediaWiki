@@ -37,7 +37,7 @@ class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
 	private $dataValueFactory;
 	private $queryResultValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -45,8 +45,7 @@ class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -55,7 +54,6 @@ class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testSubjects_onCategoryCondition() {
-
 		$property = new DIProperty( '_INST' );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property, 'SomeCategory' );
@@ -105,7 +103,6 @@ class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function searchForResultsThatCompareEqualToClassOf( $categoryName ) {
-
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( new DIProperty( '_INST' ) );
 

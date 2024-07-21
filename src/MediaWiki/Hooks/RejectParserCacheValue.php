@@ -52,7 +52,6 @@ class RejectParserCacheValue implements HookListener {
 	 * @return boolean
 	 */
 	public function process( Page $page ) {
-
 		$title = $page->getTitle();
 
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {

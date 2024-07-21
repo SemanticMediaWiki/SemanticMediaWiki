@@ -56,7 +56,6 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return string
 	 */
 	public function getCacheInfo() {
-
 		if ( $this->listLookup->isFromCache() ) {
 			return $this->msg( 'smw-sp-properties-cache-info', $this->getLanguage()->userTimeAndDate( $this->listLookup->getTimestamp(), $this->getUser() ) )->parse();
 		}
@@ -100,7 +99,6 @@ class PropertiesQueryPage extends QueryPage {
 	 * @throws PropertyNotFoundException if the result was not of a supported type
 	 */
 	function formatResult( $skin, $result ) {
-
 		[ $dataItem, $useCount ] = $result;
 
 		if ( $dataItem instanceof DIProperty ) {
@@ -126,7 +124,6 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return string
 	 */
 	protected function formatPropertyItem( DIProperty $property, $useCount ) {
-
 		// Clear formatter before invoking messages
 		$this->getMessageFormatter()->clear();
 
@@ -197,7 +194,6 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return array
 	 */
 	private function getUserDefinedPropertyInfo( $title, $property, $useCount ) {
-
 		if ( $useCount <= $this->settings->get( 'smwgPropertyLowUsageThreshold' ) ) {
 			$this->getMessageFormatter()->addFromKey( 'smw_propertyhardlyused' );
 		}
@@ -247,7 +243,6 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return array
 	 */
 	private function getPredefinedPropertyInfo( DIProperty $property ) {
-
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $property, null );
 
 		$dataValue->setLinkAttributes( [

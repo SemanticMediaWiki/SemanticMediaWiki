@@ -33,15 +33,14 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	private $semanticDataFactory;
 	private $queryResultValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -50,7 +49,6 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testDefaultSortedQueryResult() {
-
 		$expectedSubjects = [
 			new DIWikiPage( 'AA', NS_MAIN ),
 			new DIWikiPage( 'AB', NS_MAIN ),
@@ -77,7 +75,6 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	 * @see Virtuoso MaxSortedTopRows setting
 	 */
 	public function testAscendingOrderedQueryResult() {
-
 		$expectedSubjects = [
 			new DIWikiPage( 'AA', NS_MAIN ),
 			new DIWikiPage( 'AB', NS_MAIN ),
@@ -100,7 +97,6 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testDescendingOrderedQueryResult() {
-
 		$expectedSubjects = [
 			new DIWikiPage( 'AA', NS_MAIN ),
 			new DIWikiPage( 'AB', NS_MAIN ),
@@ -123,7 +119,6 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function createQueryForSamplePagesThatContain( $property, array &$expectedSubjects ) {
-
 		foreach ( $expectedSubjects as $key => $expectedSubject ) {
 
 			$subjectTitle = $expectedSubject->getTitle()->getText() . '-' . __METHOD__;
@@ -160,7 +155,6 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function assertResultOrder( $expected, $results ) {
-
 		$hasSameOrder = true;
 
 		foreach ( $results as $key => $dataItem ) {

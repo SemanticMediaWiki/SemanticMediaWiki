@@ -28,8 +28,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 	private $spyMessageReporter;
 	private $spyLogger;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
@@ -48,13 +47,12 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 		$this->spyLogger = $utilityFactory->newSpyLogger();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ElasticStore::class,
 			new ElasticStore()
@@ -62,7 +60,6 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetup() {
-
 		$row = new \stdClass;
 		$row->smw_id = \SMW\SQLStore\SQLStore::FIXED_PROPERTY_ID_UPPERBOUND;
 		$row->smw_proptable_hash = 'foo';
@@ -106,8 +103,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) use( $connection, $database, $client ) {
-
+		$callback = function ( $type ) use( $connection, $database, $client ) {
 			if ( $type === 'elastic' ) {
 				return $client;
 			};
@@ -159,7 +155,6 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDrop() {
-
 		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -184,8 +179,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) use( $connection, $database, $client ) {
-
+		$callback = function ( $type ) use( $connection, $database, $client ) {
 			if ( $type === 'elastic' ) {
 				return $client;
 			};
@@ -231,7 +225,6 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateData_PushFileIngestJob() {
-
 		$config = new Config(
 			[
 				'indexer.experimental.file.ingest' => true
@@ -241,7 +234,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 		$subject = DIWikiPage::newFromText( __METHOD__, NS_FILE );
 
 		// Check that the IngestJob is referencing to the same subject instance
-		$checkJobParameterCallback = function( $job ) use( $subject ) {
+		$checkJobParameterCallback = function ( $job ) use( $subject ) {
 			return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $subject );
 		};
 
@@ -302,8 +295,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) use( $connection, $client ) {
-
+		$callback = function ( $type ) use( $connection, $client ) {
 			if ( $type === 'mw.db' ) {
 				return $connection;
 			};

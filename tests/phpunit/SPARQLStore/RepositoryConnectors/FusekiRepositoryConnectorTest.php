@@ -23,7 +23,6 @@ class FusekiRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	}
 
 	public function testGetVersion() {
-
 		$data = json_encode( [ 'version' => '3.2' ] );
 
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )

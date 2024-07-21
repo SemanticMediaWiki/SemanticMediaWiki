@@ -32,7 +32,6 @@ class ExternalFormatterUriValue extends UriValue {
 	 * @param string $value
 	 */
 	protected function parseUserValue( $value ) {
-
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 			return;
@@ -57,7 +56,6 @@ class ExternalFormatterUriValue extends UriValue {
 	 * @return boolean
 	 */
 	public function hasMultiSubstitute() {
-
 		$dataItem = $this->getDataItem();
 		$uri = str_replace( [ '%24' ], [ '$' ], $dataItem->getUri() );
 
@@ -73,7 +71,6 @@ class ExternalFormatterUriValue extends UriValue {
 	 * @return string
 	 */
 	public function substituteAndFormatUri( $value, $parameters = [] ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}

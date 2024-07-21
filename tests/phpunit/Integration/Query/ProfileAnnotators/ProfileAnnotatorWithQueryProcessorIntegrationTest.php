@@ -21,7 +21,7 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framewo
 
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
@@ -36,7 +36,6 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framewo
 	 * @dataProvider queryDataProvider
 	 */
 	public function testCreateProfile( array $rawParams, array $expected ) {
-
 		list( $query, $formattedParams ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
@@ -69,7 +68,6 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framewo
 	}
 
 	public function queryDataProvider() {
-
 		$categoryNS = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$provider = [];

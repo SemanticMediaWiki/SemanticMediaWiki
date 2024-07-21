@@ -22,14 +22,13 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SubSemanticData::class,
 			new SubSemanticData( $this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN ) )
@@ -37,7 +36,6 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddSubSemanticData() {
-
 		$instance = new SubSemanticData(
 			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN )
 		);
@@ -60,7 +58,6 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddSubSemanticDataWithMismatchedSubjectThrowsException() {
-
 		$instance = new SubSemanticData(
 			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN )
 		);
@@ -73,7 +70,6 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRemoveSubSemanticData() {
-
 		$instance = new SubSemanticData(
 			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN )
 		);
@@ -100,7 +96,6 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRemoveProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new SubSemanticData(

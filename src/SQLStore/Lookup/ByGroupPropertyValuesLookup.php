@@ -47,8 +47,7 @@ class ByGroupPropertyValuesLookup {
 	 *
 	 * @return array
 	 */
-	public function findValueGroups( DIProperty $property, array $subjects ) : array {
-
+	public function findValueGroups( DIProperty $property, array $subjects ): array {
 		$diType = DataTypeRegistry::getInstance()->getDataItemId(
 			$property->findPropertyTypeID()
 		);
@@ -123,7 +122,6 @@ class ByGroupPropertyValuesLookup {
 	}
 
 	public function fetchValuesByGroup( DIProperty $property, $subjects ) {
-
 		$tableid = $this->store->findPropertyTableID( $property );
 		$entityIdManager = $this->store->getObjectIds();
 

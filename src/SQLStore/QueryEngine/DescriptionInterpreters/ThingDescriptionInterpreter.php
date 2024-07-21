@@ -47,7 +47,6 @@ class ThingDescriptionInterpreter implements DescriptionInterpreter {
 	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$query = new QuerySegment();
 		$query->type = QuerySegment::Q_NOQUERY;
 

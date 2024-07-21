@@ -22,7 +22,7 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataValidator;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataValidator = TestEnvironment::newValidatorFactory()->newSemanticDataValidator();
@@ -30,7 +30,6 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,7 +46,6 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotation() {
-
 		$semanticData = new SemanticData(
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
@@ -100,7 +98,6 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotation_NotListed() {
-
 		$semanticData = new SemanticData(
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
@@ -133,7 +130,6 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotation_EmptyData() {
-
 		$semanticData = new SemanticData(
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);

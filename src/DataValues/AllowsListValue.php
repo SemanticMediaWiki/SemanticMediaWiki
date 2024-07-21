@@ -38,7 +38,6 @@ class AllowsListValue extends StringValue {
 	 * @param string $value
 	 */
 	protected function parseUserValue( $value ) {
-
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}
@@ -64,7 +63,6 @@ class AllowsListValue extends StringValue {
 	 * @return string
 	 */
 	public function getShortWikiText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -93,7 +91,6 @@ class AllowsListValue extends StringValue {
 	 * @return string
 	 */
 	public function getShortHtmlText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}

@@ -16,7 +16,6 @@ use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
 class PropertyStatisticsInvalidArgumentExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new PropertyStatisticsInvalidArgumentException();
 
 		$this->assertInstanceof(

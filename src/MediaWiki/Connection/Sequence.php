@@ -27,7 +27,6 @@ class Sequence {
 	 * @since 3.0
 	 */
 	public function __construct( $connection ) {
-
 		if (
 			!$connection instanceof Database &&
 			!$connection instanceof DatabaseBase &&
@@ -67,7 +66,6 @@ class Sequence {
 	 * @return integer
 	 */
 	public function restart( $table, $field ) {
-
 		if ( $this->connection->getType() !== 'postgres' ) {
 			return;
 		}
@@ -81,7 +79,7 @@ class Sequence {
 
 		$sequence = self::makeSequence( $table, $field );
 
-		$this->connection->onTransactionCommitOrIdle( function() use( $sequence, $seq_num ) {
+		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num ) {
 			$this->connection->query( "ALTER SEQUENCE {$sequence} RESTART WITH {$seq_num}", __METHOD__ );
 		} );
 

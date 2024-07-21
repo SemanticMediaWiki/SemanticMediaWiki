@@ -16,7 +16,6 @@ use SMW\Utils\CircularReferenceGuard;
 class CircularReferenceGuardTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Utils\CircularReferenceGuard',
 			new CircularReferenceGuard()
@@ -24,7 +23,6 @@ class CircularReferenceGuardTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRoundtripForRegisteredNamespace() {
-
 		$instance = new CircularReferenceGuard( 'bar' );
 		$instance->setMaxRecursionDepth( 1 );
 
@@ -63,7 +61,6 @@ class CircularReferenceGuardTest extends \PHPUnit_Framework_TestCase {
 	 * @depends testRoundtripForRegisteredNamespace
 	 */
 	public function testVerifyRetainedReferenceFromPreviousInvocation() {
-
 		$instance = new CircularReferenceGuard( 'bar' );
 
 		$this->assertEquals(

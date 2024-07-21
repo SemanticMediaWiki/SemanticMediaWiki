@@ -218,7 +218,6 @@ abstract class SMWDataValue {
 	 * @param mixed $caption
 	 */
 	public function setUserValue( $value, $caption = false ) {
-
 		$this->m_dataitem = null;
 		$this->mErrors = []; // clear errors
 		$this->mHasErrors = false;
@@ -402,7 +401,6 @@ abstract class SMWDataValue {
 	 * @param array|string|ProcessingError $error
 	 */
 	public function addError( $error ) {
-
 		if ( $error instanceof ProcessingError ) {
 			$hash = $error->getHash();
 			$type = $error->getType();
@@ -435,7 +433,6 @@ abstract class SMWDataValue {
 	 * @param integer|null $type
 	 */
 	public function addErrorMsg( $error, $type = Message::TEXT ) {
-
 		if ( $error instanceof ProcessingError ) {
 			$hash = $error->getHash();
 			$type = $error->getType();
@@ -481,7 +478,6 @@ abstract class SMWDataValue {
 	 * @return array
 	 */
 	public function getErrorsByType( $type = null ) {
-
 		if ( $type === null ) {
 			return $this->errorsByType;
 		}
@@ -527,7 +523,6 @@ abstract class SMWDataValue {
 	 * @throws InvalidArgumentException
 	 */
 	public function getQueryDescription( $value ) {
-
 		$descriptionBuilderRegistry = $this->dataValueServiceFactory->getDescriptionBuilderRegistry();
 		$descriptionBuilder = $descriptionBuilderRegistry->getDescriptionBuilder( $this );
 
@@ -569,7 +564,6 @@ abstract class SMWDataValue {
 	 * @return SMWDataItem|SMWDIError
 	 */
 	public function getDataItem() {
-
 		if ( $this->isValid() ) {
 			return $this->m_dataitem;
 		}
@@ -702,7 +696,6 @@ abstract class SMWDataValue {
 	 * @return string
 	 */
 	public function getInfolinkText( $outputFormat, $linker = null ) {
-
 		if ( $this->getOption( self::OPT_DISABLE_INFOLINKS ) === true ) {
 			return '';
 		}
@@ -729,7 +722,6 @@ abstract class SMWDataValue {
 	 * but is always an array.
 	 */
 	public function getInfolinks() {
-
 		if ( $this->infoLinksProvider === null ) {
 			$this->infoLinksProvider = $this->dataValueServiceFactory->newInfoLinksProvider( $this );
 		}
@@ -811,7 +803,6 @@ abstract class SMWDataValue {
 	 * @throws RuntimeException
 	 */
 	public function addCallable( $key, callable $callable ) {
-
 		if ( isset( $this->callables[$key] ) ) {
 			throw new RuntimeException( "`$key` is alread in use, please clear the callable first!" );
 		}
@@ -826,7 +817,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return bool
 	 */
-	public function hasCallable( $key ) : bool {
+	public function hasCallable( $key ): bool {
 		return isset( $this->callables[$key] );
 	}
 
@@ -838,8 +829,7 @@ abstract class SMWDataValue {
 	 * @return callable
 	 * @throws RuntimeException
 	 */
-	public function getCallable( $key ) : callable {
-
+	public function getCallable( $key ): callable {
 		if ( !isset( $this->callables[$key] ) ) {
 			throw new RuntimeException( "`$key` as callable is unknown or not registered!" );
 		}
@@ -862,7 +852,6 @@ abstract class SMWDataValue {
 	 * @return Options|null $options
 	 */
 	public function copyOptions( Options $options = null ) {
-
 		if ( $options === null ) {
 			return;
 		}
@@ -879,7 +868,6 @@ abstract class SMWDataValue {
 	 * @param mxied $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -895,7 +883,6 @@ abstract class SMWDataValue {
 	 * @return mixed|false
 	 */
 	public function getOption( $key, $default = false ) {
-
 		if ( $this->options !== null && $this->options->has( $key ) ) {
 			return $this->options->get( $key );
 		}
@@ -911,7 +898,6 @@ abstract class SMWDataValue {
 	 * @return boolean
 	 */
 	public function hasFeature( $feature ) {
-
 		if ( $this->options !== null ) {
 			return $this->options->isFlagSet( 'smwgDVFeatures', (int)$feature );
 		}
@@ -984,7 +970,6 @@ abstract class SMWDataValue {
 	 * @since 3.1
 	 */
 	public function checkConstraints() {
-
 		if ( $this->dataValueServiceFactory === null ) {
 			return;
 		}

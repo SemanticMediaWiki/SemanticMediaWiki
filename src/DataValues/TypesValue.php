@@ -93,7 +93,6 @@ class TypesValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	public function getShortWikiText( $linker = null ) {
-
 		if ( !$linker || $this->m_outformat === '-' || $this->m_caption === '' ) {
 			return $this->m_caption;
 		}
@@ -117,7 +116,6 @@ class TypesValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	public function getShortHTMLText( $linker = null ) {
-
 		if ( !$linker || $this->m_outformat === '-' || $this->m_caption === '' ) {
 			return htmlspecialchars( $this->m_caption );
 		}
@@ -136,7 +134,6 @@ class TypesValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	public function getLongWikiText( $linker = null ) {
-
 		if ( !$linker || $this->typeLabel === '' ) {
 			return $this->typeLabel;
 		}
@@ -160,7 +157,6 @@ class TypesValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	public function getLongHTMLText( $linker = null ) {
-
 		if ( !$linker || $this->typeLabel === '' ) {
 			return htmlspecialchars( $this->typeLabel );
 		}
@@ -188,7 +184,6 @@ class TypesValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	protected function parseUserValue( $value ) {
-
 		$value = (string)$value;
 
 		if ( $this->m_caption === false ) {
@@ -226,7 +221,6 @@ class TypesValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-
 		if ( ( $dataItem instanceof DIUri ) && ( $dataItem->getScheme() == 'http' ) &&
 			( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
 			( $dataItem->getQuery() === '' ) ) {

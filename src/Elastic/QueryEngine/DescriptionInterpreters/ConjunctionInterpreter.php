@@ -36,7 +36,6 @@ class ConjunctionInterpreter {
 	 * @return Condition
 	 */
 	public function interpretDescription( Conjunction $description ) {
-
 		$params = [];
 
 		foreach ( $description->getDescriptions() as $desc ) {

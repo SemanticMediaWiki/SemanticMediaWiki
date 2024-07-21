@@ -19,7 +19,6 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testSessionFailure() {
-
 		$this->assertInternalType(
 			'string',
 			ErrorWidget::sessionFailure()
@@ -27,7 +26,6 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoScript() {
-
 		$this->assertInternalType(
 			'string',
 			ErrorWidget::noScript()
@@ -35,7 +33,6 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoResult() {
-
 		$this->assertInternalType(
 			'string',
 			ErrorWidget::noResult()
@@ -46,7 +43,6 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryErrorProvider
 	 */
 	public function testGetFormattedQueryErrorElement( $errors, $expected ) {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -62,7 +58,6 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryErrorProvider() {
-
 		$provider[] = [
 			'',
 			''

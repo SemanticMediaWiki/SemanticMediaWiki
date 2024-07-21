@@ -23,8 +23,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $idTable;
 	private $redirectUpdater;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -151,7 +150,6 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SQLStoreUpdater::class,
 			new SQLStoreUpdater( $this->store, $this->factory )
@@ -159,7 +157,6 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoDataUpdateForMainNamespaceWithoutSubobject() {
-
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -219,7 +216,6 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoDataUpdateForConceptNamespaceWithoutSubobject() {
-
 		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -272,7 +268,6 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoDataUpdateForMainNamespaceWithRedirect() {
-
 		$this->redirectUpdater->expects( $this->any() )
 			->method( 'shouldCleanUpAnnotationsAndRedirects' )
 			->will( $this->returnValue( true ) );
@@ -325,7 +320,6 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAtomicTransactionOnDataUpdate() {
-
 		$this->redirectUpdater->expects( $this->any() )
 			->method( 'shouldCleanUpAnnotationsAndRedirects' )
 			->will( $this->returnValue( true ) );
@@ -384,7 +378,6 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteSubjectForMainNamespace() {
-
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$this->idTable->expects( $this->atLeastOnce() )
@@ -433,7 +426,6 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteSubjectForConceptNamespace() {
-
 		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
 
 		$propertyTableIdReferenceFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )

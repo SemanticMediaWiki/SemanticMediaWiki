@@ -65,7 +65,6 @@ class ConceptMapper implements DataItemMapper {
 	 * @return ExpData|null
 	 */
 	public function newElement( DataItem $concept ) {
-
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$concept
 		);
@@ -124,7 +123,6 @@ class ConceptMapper implements DataItemMapper {
 	 * @return Element|false
 	 */
 	public function newExpDataFromDescription( Description $description, &$exact ) {
-
 		if ( ( $description instanceof Conjunction ) || ( $description instanceof Disjunction ) ) {
 			$expData = $this->mapConjunctionDisjunction( $description, $exact );
 		} elseif ( $description instanceof ClassDescription ) {
@@ -146,7 +144,6 @@ class ConceptMapper implements DataItemMapper {
 	}
 
 	private function mapValueDescription( ValueDescription $description, &$exact ) {
-
 		if ( $description->getComparator() === SMW_CMP_EQ ) {
 			$result = $this->exporter->newExpElement( $description->getDataItem() );
 		} else {
@@ -159,7 +156,6 @@ class ConceptMapper implements DataItemMapper {
 	}
 
 	private function mapConceptDescription( ConceptDescription $description, &$exact ) {
-
 		$result = new ExpData(
 			$this->exporter->getResourceElementForWikiPage( $description->getConcept() )
 		);
@@ -168,7 +164,6 @@ class ConceptMapper implements DataItemMapper {
 	}
 
 	private function mapSomeProperty( SomeProperty $description, &$exact ) {
-
 		$result = new ExpData(
 			new ExpResource( '' )
 		);
@@ -234,7 +229,6 @@ class ConceptMapper implements DataItemMapper {
 	}
 
 	private function mapClassDescription( ClassDescription $description, &$exact ) {
-
 		if ( count( $description->getCategories() ) == 1 ) { // single category
 			$categories = $description->getCategories();
 			$result = new ExpData(
@@ -271,7 +265,6 @@ class ConceptMapper implements DataItemMapper {
 	}
 
 	private function mapConjunctionDisjunction( Description $description, &$exact ) {
-
 		$result = new ExpData(
 			new ExpResource( '' )
 		);

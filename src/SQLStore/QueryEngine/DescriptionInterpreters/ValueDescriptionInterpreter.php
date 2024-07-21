@@ -75,7 +75,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$query = new QuerySegment();
 
 		if ( !$description->getDataItem() instanceof DIWikiPage ) {
@@ -133,7 +132,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function addFulltextSearchCondition( $description, $query, $comparator, &$value ) {
-
 		// Uses ~~ wide proximity?
 		$usesWidePromixity = false;
 

@@ -48,7 +48,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'stats/cache';
 	}
 
@@ -57,7 +57,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 
@@ -67,7 +67,6 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-operational-statistics-cache-title' ),
 			[ 'action' => $this->getTask() ]
@@ -91,7 +90,6 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-operational-statistics-cache-title' ) ] )
 		);
@@ -105,7 +103,6 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	}
 
 	private function outputQueryCacheStatistics() {
-
 		$resultCache = ApplicationFactory::getInstance()->singleton( 'ResultCache' );
 
 		if ( !$resultCache->isEnabled() ) {

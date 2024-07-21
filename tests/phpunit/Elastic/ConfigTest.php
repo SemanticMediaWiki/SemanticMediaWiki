@@ -19,7 +19,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Config::class,
 			new Config()
@@ -27,7 +26,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsDefaultStore_False() {
-
 		$instance = new Config(
 			[ Config::DEFAULT_STORE => 'Foo' ]
 		);
@@ -38,7 +36,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsDefaultStore_True() {
-
 		$instance = new Config(
 			[ Config::DEFAULT_STORE => 'SMWElasticStore' ]
 		);
@@ -49,7 +46,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReassignDeprectedKeys() {
-
 		$instance = new Config(
 			[
 				'foo' => [
@@ -80,7 +76,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLoadFromJSON() {
-
 		$instance = new Config();
 		$instance->set( 'Foo', '123' );
 		$instance->set( 'Bar', '456' );
@@ -127,7 +122,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReadfile_InaccessibleFileThrowsException() {
-
 		$instance = new Config();
 
 		$this->expectException( 'RuntimeException' );

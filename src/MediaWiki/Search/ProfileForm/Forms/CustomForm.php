@@ -89,7 +89,6 @@ class CustomForm {
 	 * @param array $definition
 	 */
 	public function makeFields( $definition ) {
-
 		$fields = [];
 		$this->parameters = [];
 		$nameList = [];
@@ -140,7 +139,6 @@ class CustomForm {
 	}
 
 	private function makeField( $name, $property, $value, $options ) {
-
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
 		$options = !is_array( $options ) ? [] : $options;
 

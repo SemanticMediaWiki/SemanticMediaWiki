@@ -16,7 +16,6 @@ use SMW\Exception\SettingsAlreadyLoadedException;
 class SettingsAlreadyLoadedExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SettingsAlreadyLoadedException();
 
 		$this->assertInstanceof(

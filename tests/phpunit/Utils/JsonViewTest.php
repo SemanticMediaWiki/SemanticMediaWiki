@@ -19,7 +19,6 @@ class JsonViewTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JsonView::class,
 			new JsonView()
@@ -27,7 +26,6 @@ class JsonViewTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate() {
-
 		$messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
 			->disableOriginalConstructor()
 			->getMock();

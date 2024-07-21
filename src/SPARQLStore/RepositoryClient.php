@@ -86,7 +86,7 @@ class RepositoryClient {
 	 *
 	 * @param int $key
 	 */
-	public function isFlagSet( int $key ) : bool {
+	public function isFlagSet( int $key ): bool {
 		return $this->featureSet !== null && $this->featureSet->is( $key );
 	}
 

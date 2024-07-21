@@ -17,7 +17,7 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $setupCheck;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->setupCheck = $this->getMockBuilder( '\SMW\SetupCheck' )
@@ -26,7 +26,6 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			UncaughtExceptionHandler::class,
 			new UncaughtExceptionHandler( $this->setupCheck )
@@ -34,7 +33,6 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConfigPreloadError() {
-
 		$this->setupCheck->expects( $this->once() )
 			->method( 'showErrorAndAbort' );
 
@@ -54,7 +52,6 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExtensionRegistryError() {
-
 		$this->setupCheck->expects( $this->once() )
 			->method( 'showErrorAndAbort' );
 
@@ -73,7 +70,6 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorTypeProvider
 	 */
 	public function testExtensionDependencyError( $args, $expected ) {
-
 		$exception = $this->getMockBuilder( '\ExtensionDependencyError' )
 			->setConstructorArgs( [ [ $args ] ] )
 			->getMock();
@@ -93,7 +89,6 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function errorTypeProvider() {
-
 		yield[
 			[ 'msg' => 'SemanticFoo', 'type' => 'Foo' ],
 			\SMW\SetupCheck::ERROR_EXTENSION_DEPENDENCY

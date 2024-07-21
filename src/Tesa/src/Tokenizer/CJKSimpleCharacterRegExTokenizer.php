@@ -35,7 +35,6 @@ class CJKSimpleCharacterRegExTokenizer implements Tokenizer {
 	 * {@inheritDoc}
 	 */
 	public function setOption( $name, $value ) {
-
 		if ( $this->tokenizer !== null ) {
 			$this->tokenizer->setOption( $name, $value );
 		}
@@ -60,7 +59,6 @@ class CJKSimpleCharacterRegExTokenizer implements Tokenizer {
 	 * {@inheritDoc}
 	 */
 	public function tokenize( $string ) {
-
 		if ( $this->tokenizer !== null ) {
 			$string = implode( " ", $this->tokenizer->tokenize( $string ) );
 		}

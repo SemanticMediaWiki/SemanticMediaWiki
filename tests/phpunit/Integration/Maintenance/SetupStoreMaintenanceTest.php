@@ -25,7 +25,7 @@ class SetupStoreMaintenanceTest extends DatabaseTestCase {
 	private $titleValidator;
 	private $spyMessageReporter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->runnerFactory  = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
@@ -42,13 +42,12 @@ class SetupStoreMaintenanceTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->flushPages( $this->importedTitles );
 		parent::tearDown();
 	}
 
 	public function testSetupStore_Delete() {
-
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\SetupStore' );
 
 		$maintenanceRunner->setQuiet();
@@ -73,7 +72,6 @@ class SetupStoreMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testSetupStore() {
-
 		$this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',

@@ -50,7 +50,6 @@ class updateQueryDependencies extends \Maintenance {
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter->reportMessage( $message );
 		}
@@ -62,7 +61,6 @@ class updateQueryDependencies extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( !Setup::isEnabled() ) {
 			$this->dieMessage(
 				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
@@ -117,7 +115,6 @@ class updateQueryDependencies extends \Maintenance {
 	}
 
 	private function runUpdate() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$store = $applicationFactory->getStore( SQLStore::class );
 

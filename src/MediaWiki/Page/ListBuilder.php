@@ -144,7 +144,6 @@ class ListBuilder {
 	 * @return string
 	 */
 	public function getColumnList( array $dataItems, $colsThreshold = 10 ) {
-
 		$htmlColumns = new HtmlColumns();
 
 		$htmlColumns->setResponsiveCols();
@@ -165,7 +164,6 @@ class ListBuilder {
 	}
 
 	private function buildList( $dataItems ) {
-
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		if ( $this->linker === false ) {

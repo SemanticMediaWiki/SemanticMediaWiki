@@ -41,7 +41,6 @@ class ExternalIdentifierPropertyValueResourceBuilder extends PropertyValueResour
 	 * {@inheritDoc}
 	 */
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-
 		parent::addResourceValue( $expData, $property, $dataItem );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(

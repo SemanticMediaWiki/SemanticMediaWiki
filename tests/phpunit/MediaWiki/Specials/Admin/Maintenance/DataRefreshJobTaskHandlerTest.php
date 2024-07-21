@@ -21,7 +21,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $outputFormatter;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -41,13 +41,12 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DataRefreshJobTaskHandler::class,
 			new DataRefreshJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter )
@@ -55,7 +54,6 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$methods = [
 			'setName',
 			'setMethod',
@@ -83,7 +81,6 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoRefreshOn_Yes() {
-
 		$refreshJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\RefreshJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -126,7 +123,6 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoRefreshOn_Stop() {
-
 		$this->jobQueue->expects( $this->once() )
 			->method( 'delete' )
 			->with( $this->equalTo( 'smw.refresh' ) );

@@ -24,8 +24,7 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $idChanger;
 	private $jobFactory;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,12 +49,11 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RedirectUpdater::class,
 			new RedirectUpdater( $this->store, $this->idChanger, $this->tableFieldUpdater, $this->propertyStatisticsStore )
@@ -63,7 +61,6 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTriggerChangeTitleUpdate() {
-
 		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -87,7 +84,6 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidateLookupCache() {
-
 		$cachingSemanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -135,7 +131,6 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChangeTitleForMainNamespaceWithoutRedirectId() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -210,7 +205,6 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChangeTitleForMainNamespaceWithRedirectId() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();

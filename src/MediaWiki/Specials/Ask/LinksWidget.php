@@ -31,7 +31,6 @@ class LinksWidget {
 	 * @return string
 	 */
 	public static function fieldset( $html = '' ) {
-
 		$html = '<p></p>' . $html;
 
 		return Html::rawElement(
@@ -53,7 +52,6 @@ class LinksWidget {
 	 * @return string
 	 */
 	public static function embeddedCodeLink( $isEmpty = false ) {
-
 		if ( $isEmpty ) {
 			return '';
 		}
@@ -163,7 +161,6 @@ class LinksWidget {
 	 * @return string
 	 */
 	public static function embeddedCodeBlock( $code, $raw = false ) {
-
 		$code = Html::element(
 			'pre',
 			[
@@ -202,7 +199,6 @@ class LinksWidget {
 	 * @return string
 	 */
 	public static function resultSubmitLink( $isEmpty = false ) {
-
 		if ( !$isEmpty ) {
 			return '';
 		}
@@ -245,7 +241,6 @@ class LinksWidget {
 	 * @return string
 	 */
 	public static function showHideLink( Title $title, UrlArgs $urlArgs, $hideForm = false, $isEmpty = false ) {
-
 		if ( $isEmpty || $hideForm === false ) {
 			return '';
 		}
@@ -276,7 +271,6 @@ class LinksWidget {
 	 * @return string
 	 */
 	public static function debugLink( Title $title, UrlArgs $urlArgs, $isEmpty = false, $raw = false ) {
-
 		if ( $isEmpty ) {
 			return '';
 		}
@@ -322,7 +316,6 @@ class LinksWidget {
 	 * @return string
 	 */
 	public static function noQCacheLink( Title $title, UrlArgs $urlArgs, $isFromCache = false ) {
-
 		if ( $isFromCache === false ) {
 			return '';
 		}
@@ -359,7 +352,6 @@ class LinksWidget {
 	 * @return string
 	 */
 	public static function clipboardLink( Infolink $infolink = null ) {
-
 		if ( $infolink === null ) {
 			return '';
 		}

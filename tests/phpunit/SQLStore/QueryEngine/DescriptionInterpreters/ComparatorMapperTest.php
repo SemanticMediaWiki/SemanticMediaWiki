@@ -19,7 +19,6 @@ class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\DescriptionInterpreters\ComparatorMapper',
 			new ComparatorMapper()
@@ -27,7 +26,6 @@ class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidComparatorThrowsException() {
-
 		$value = '';
 
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
@@ -44,7 +42,6 @@ class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider comparatorProvider
 	 */
 	public function testSQLComparatorElement( $comparator, $value, $expected ) {
-
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -67,7 +64,6 @@ class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function comparatorProvider() {
-
 		$provider[] = [ SMW_CMP_EQ,   'Foo%_*?', [ 'comparator' => '=',  'value' => 'Foo%_*?' ] ];
 		$provider[] = [ SMW_CMP_LESS, 'Foo%_*?', [ 'comparator' => '<',  'value' => 'Foo%_*?' ] ];
 		$provider[] = [ SMW_CMP_GRTR, 'Foo%_*?', [ 'comparator' => '>',  'value' => 'Foo%_*?' ] ];

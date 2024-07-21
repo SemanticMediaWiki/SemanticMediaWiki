@@ -17,7 +17,7 @@ interface ChainableFilter extends SchemaFilter {
 	 *
 	 * @return string
 	 */
-	public function getName() : string;
+	public function getName(): string;
 
 	/**
 	 * Inject a filter as a node to build a decision tree by chaining together

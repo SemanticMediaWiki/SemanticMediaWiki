@@ -27,7 +27,6 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 
 	// @see #795
 	public function testExportDataForPropertyPage() {
-
 		$propertyPage = new DIWikiPage( 'Foo', SMW_NS_PROPERTY );
 
 		$expData = Exporter::getInstance()->makeExportDataForSubject( $propertyPage );
@@ -47,7 +46,6 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemExpElementProvider
 	 */
 	public function testnewExpElement( DataItem $dataItem, $instance ) {
-
 		if ( $instance === null ) {
 			return $this->assertNull( Exporter::getInstance()->newExpElement( $dataItem ) );
 		}
@@ -63,7 +61,6 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 	 * #378
 	 */
 	public function testFindDataItemForExpElement( $uri, $expectedDataItem ) {
-
 		$uri = Exporter::getInstance()->getNamespaceUri( 'wiki' ) . $uri;
 
 		$this->assertEquals(
@@ -73,7 +70,6 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataItemExpElementProvider() {
-
 		// #0 (bug 56643)
 		$provider[] = [ new DINumber( 9001 ),  'SMWExpElement' ];
 
@@ -86,7 +82,6 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function uriDataItemProvider() {
-
 		$provider[] = [ 'Foo',              new DIWikiPage( 'Foo', NS_MAIN, '', '' ) ];
 		$provider[] = [ 'Foo#Bar',          new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' ) ];
 		$provider[] = [ 'Foo#Bar#Oooo',     new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar#Oooo' ) ];

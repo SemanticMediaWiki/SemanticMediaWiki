@@ -97,7 +97,6 @@ class QueryCreator implements QueryContext {
 	 * @return Query
 	 */
 	public function create( $queryString, array $params = [] ) {
-
 		$this->params = $params;
 		$context = $this->getParam( 'context', self::INLINE_QUERY );
 
@@ -180,7 +179,6 @@ class QueryCreator implements QueryContext {
 	 * @return array ( keys => array(), errors => array() )
 	 */
 	private function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ) {
-
 		$sortKeys = [];
 		$sortErros = [];
 

@@ -25,8 +25,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 	private $requestOptions;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -39,7 +38,6 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup',
 			new PropertyLabelSimilarityLookup( $this->store )
@@ -47,7 +45,6 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyMaxCount() {
-
 		$this->store->expects( $this->any() )
 			->method( 'getStatistics' )
 			->will( $this->returnValue( [ 'TOTALPROPS' => 42 ] ) );
@@ -68,7 +65,6 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompareAndFindLabels() {
-
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
 
@@ -104,7 +100,6 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompareAndFindLabelsWithExemption() {
-
 		$row1 = new \stdClass;
 		$row1->smw_title = 'Foo';
 

@@ -22,7 +22,7 @@ class TouchedFieldTest extends \PHPUnit_Framework_TestCase {
 	private $spyMessageReporter;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
@@ -32,7 +32,6 @@ class TouchedFieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TouchedField::class,
 			new TouchedField( $this->store )
@@ -40,7 +39,6 @@ class TouchedFieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck() {
-
 		$row = [
 			'count' => 42
 		];

@@ -18,7 +18,6 @@ use SMW\Tests\TestEnvironment;
 class DeclarationExaminerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DeclarationExaminerFactory::class,
 			new DeclarationExaminerFactory()
@@ -26,7 +25,6 @@ class DeclarationExaminerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDeclarationExaminerMsgBuilder() {
-
 		$instance = new DeclarationExaminerFactory();
 
 		$this->assertInstanceOf(
@@ -36,7 +34,6 @@ class DeclarationExaminerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDeclarationExaminer() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

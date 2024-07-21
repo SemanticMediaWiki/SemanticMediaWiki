@@ -50,7 +50,6 @@ class ChangeTitleUpdate implements DeferrableUpdate {
 	 * @param Title|null $newTitle
 	 */
 	public static function addUpdate( Title $oldTitle = null, Title $newTitle = null ) {
-
 		// Avoid deferring the update on CLI (and the DeferredUpdates::tryOpportunisticExecute)
 		// since we use a Job instance to carry out the change
 		if ( Site::isCommandLineMode() ) {
@@ -67,7 +66,6 @@ class ChangeTitleUpdate implements DeferrableUpdate {
 	 * @since 3.0
 	 */
 	public function doUpdate() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$jobFactory = $applicationFactory->newJobFactory();
 

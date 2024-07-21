@@ -49,7 +49,6 @@ class SortLetter {
 	 * @return string
 	 */
 	public function getFirstLetter( DataItem $dataItem ) {
-
 		$sortKey = $dataItem->getSortKey();
 
 		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {

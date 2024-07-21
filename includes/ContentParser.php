@@ -122,7 +122,6 @@ class ContentParser {
 	 * @return ContentParser
 	 */
 	public function parse( $text = null ) {
-
 		if ( $text !== null ) {
 			return $this->parseText( $text );
 		}
@@ -131,7 +130,6 @@ class ContentParser {
 	}
 
 	private function parseText( $text ) {
-
 		$this->parserOutput = $this->parser->parse(
 			$text,
 			$this->getTitle(),
@@ -142,7 +140,6 @@ class ContentParser {
 	}
 
 	private function fetchFromContent() {
-
 		if ( $this->getRevision() === null ) {
 			return $this->msgForNullRevision();
 		}
@@ -187,7 +184,6 @@ class ContentParser {
 	}
 
 	private function makeParserOptions() {
-
 		$user = null;
 
 		if ( $this->getRevision() !== null ) {
@@ -208,7 +204,6 @@ class ContentParser {
 	}
 
 	private function getRevision() {
-
 		if ( $this->revision instanceof RevisionRecord ) {
 			return $this->revision;
 		}

@@ -23,8 +23,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $requestOptions;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -39,7 +38,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$defaultPropertyType = '_foo';
 
 		$this->assertInstanceOf(
@@ -49,7 +47,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListLookupInterfaceMethodAccess() {
-
 		$defaultPropertyType = '_foo';
 
 		$instance = new UndeclaredPropertyListLookup(
@@ -74,7 +71,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNullRequestOptionsThrowsException() {
-
 		$defaultPropertyType = '_foo';
 
 		$instance = new UndeclaredPropertyListLookup(
@@ -87,7 +83,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidTableIdThrowsException() {
-
 		$defaultPropertyType = '_foo';
 
 		$instance = new UndeclaredPropertyListLookup(
@@ -101,7 +96,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupIdentifierChangedByRequestOptions() {
-
 		$defaultPropertyType = '_foo';
 		$requestOptions = new RequestOptions();
 
@@ -128,7 +122,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForValidProperty() {
-
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
 		$row->count = 42;
@@ -185,7 +178,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForInvalidProperty() {
-
 		$row = new \stdClass;
 		$row->smw_title = '-Foo';
 		$row->count = 42;
@@ -237,7 +229,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForFixedPropertyTable() {
-
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();

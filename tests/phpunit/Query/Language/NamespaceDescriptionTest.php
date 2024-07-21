@@ -18,7 +18,6 @@ use SMW\Query\Language\ThingDescription;
 class NamespaceDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$namespace = NS_MAIN;
 
 		$this->assertInstanceOf(
@@ -34,7 +33,6 @@ class NamespaceDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommonMethods() {
-
 		$namespace = NS_MAIN;
 
 		$instance = new NamespaceDescription( $namespace );
@@ -53,7 +51,6 @@ class NamespaceDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryStringForCategoryNamespace() {
-
 		$namespace = NS_CATEGORY;
 
 		$ns = Localizer::getInstance()->getNsText( $namespace );
@@ -71,7 +68,6 @@ class NamespaceDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrune() {
-
 		$instance = new NamespaceDescription( NS_MAIN );
 
 		$maxsize  = 1;

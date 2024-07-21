@@ -20,7 +20,6 @@ class ScoreSetTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ScoreSet::class,
 			new ScoreSet()
@@ -28,7 +27,6 @@ class ScoreSetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddScore() {
-
 		$instance = new ScoreSet();
 
 		$instance->addScore( 'Foo', 0.1 );
@@ -44,7 +42,6 @@ class ScoreSetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddScore_DIWikiPage() {
-
 		$dataItem = DIWikiPage::newFromText( 'Bar' );
 		$instance = new ScoreSet();
 
@@ -57,7 +54,6 @@ class ScoreSetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetScores() {
-
 		$instance = new ScoreSet();
 
 		$instance->addScore( 'Foo', 42 );
@@ -73,7 +69,6 @@ class ScoreSetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAsTable() {
-
 		$instance = new ScoreSet();
 
 		$instance->addScore( 'Foo', 42 );

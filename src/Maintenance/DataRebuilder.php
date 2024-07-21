@@ -175,7 +175,6 @@ class DataRebuilder {
 	 * @return boolean
 	 */
 	public function rebuild() {
-
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Notice' )
 		);
@@ -247,7 +246,6 @@ class DataRebuilder {
 	}
 
 	private function rebuildFromSelection( $params = [] ) {
-
 		if ( $params !== [] ) {
 			foreach ( $params as $key => $value ) {
 				$this->options->set( $key, $value );
@@ -290,7 +288,6 @@ class DataRebuilder {
 	}
 
 	private function rebuildAll() {
-
 		$this->entityRebuildDispatcher = $this->store->refreshData(
 			$this->start,
 			1
@@ -463,7 +460,6 @@ class DataRebuilder {
 	}
 
 	private function doUpdateById( &$id ) {
-
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
 			$this->entityRebuildDispatcher->rebuild( $id );
 		} else {
@@ -487,7 +483,6 @@ class DataRebuilder {
 	}
 
 	private function getHumanReadableTextFrom( $id, array $entities ) {
-
 		if ( !$this->options->has( 'v' ) ) {
 			return [ '', '' ];
 		}
@@ -510,7 +505,6 @@ class DataRebuilder {
 	}
 
 	private function performFullDelete() {
-
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Delete data' )
 		);
@@ -587,7 +581,6 @@ class DataRebuilder {
 	}
 
 	private function runOutdatedDisposer() {
-
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Disposal (outdated)', 3, '-', true ) . "\n"
 		);
@@ -605,7 +598,6 @@ class DataRebuilder {
 	}
 
 	private function is_writable( $startIdFile ) {
-
 		if ( !is_writable( file_exists( $startIdFile ) ? $startIdFile : dirname( $startIdFile ) ) ) {
 			die( "Cannot use a startidfile that we can't write to.\n" );
 		}

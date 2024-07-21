@@ -21,7 +21,7 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -31,7 +31,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			SchemaContentFormatter::class,
 			new SchemaContentFormatter( $this->store )
@@ -39,7 +38,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHelpLink() {
-
 		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -55,7 +53,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetText() {
-
 		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -79,7 +76,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetText_Errors() {
-
 		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -106,7 +102,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetUsage_Empty() {
-
 		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -128,7 +123,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetUsage() {
-
 		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -164,7 +158,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetUsage_MultipleProperties() {
-
 		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
 			->disableOriginalConstructor()
 			->getMock();

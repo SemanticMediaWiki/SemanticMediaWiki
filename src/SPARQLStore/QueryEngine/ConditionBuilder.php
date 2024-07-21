@@ -308,7 +308,6 @@ class ConditionBuilder {
 	 * @return string
 	 */
 	public function convertConditionToString( Condition &$condition ) {
-
 		$conditionAsString = $condition->getWeakConditionString();
 
 		if ( ( $conditionAsString === '' ) && !$condition->isSafe() ) {
@@ -362,7 +361,6 @@ class ConditionBuilder {
 	 * @return string|null
 	 */
 	public function tryToFindRedirectVariableForDataItem( DataItem $dataItem = null ) {
-
 		if ( !$dataItem instanceof DIWikiPage || !$this->isSetFlag( SMW_SPARQL_QF_REDI ) ) {
 			return null;
 		}
@@ -409,7 +407,6 @@ class ConditionBuilder {
 	 * @return boolean
 	 */
 	public function isSetFlag( $featureFlag ) {
-
 		$canUse = true;
 
 		// Adhere additional condition
@@ -454,7 +451,6 @@ class ConditionBuilder {
 	 * @param integer $diType DataItem type id
 	 */
 	public function addOrderByData( Condition &$condition, $mainVariable, $diType ) {
-
 		if ( $diType !== DataItem::TYPE_WIKIPAGE ) {
 			return $condition->orderByVariable = $mainVariable;
 		}
@@ -500,7 +496,6 @@ class ConditionBuilder {
 	}
 
 	private function addOrderForUnknownPropertyKey( Condition &$condition, $propertyKey, $order ) {
-
 		if ( $propertyKey === '' || $propertyKey === '#' ) { // order by result page sortkey
 
 			$this->addOrderByData(
@@ -591,7 +586,6 @@ class ConditionBuilder {
 	 * }
 	 */
 	private function addPropertyPathToMatchRedirectTargets( Condition &$condition ) {
-
 		if ( $this->redirectByVariableReplacementMap === [] ) {
 			return;
 		}
@@ -618,7 +612,6 @@ class ConditionBuilder {
 	 * Remove entities that contain a "swivt:redirectsTo" predicate
 	 */
 	private function addFilterToRemoveEntitiesThatContainRedirectPredicate( Condition &$condition ) {
-
 		$rediExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_REDI' );
 		$namespaces[$rediExpElement->getNamespaceId()] = $rediExpElement->getNamespace();
 

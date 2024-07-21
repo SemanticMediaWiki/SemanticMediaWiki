@@ -23,7 +23,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->connection = $this->getMockBuilder( 'DatabaseBase' )
@@ -31,13 +31,12 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SearchEngineFactory::class,
 			new SearchEngineFactory()
@@ -45,7 +44,6 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFallbackSearchEngine_ConstructFromCallable() {
-
 		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -59,7 +57,6 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewDefaultFallbackSearchEngineForNullFallbackSearchType() {
-
 		$searchEngine = 'SearchDatabase';
 
 		if ( class_exists( 'SearchEngine' ) ) {
@@ -91,7 +88,6 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidFallbackSearchEngineThrowsException() {
-
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', 'InvalidFallbackSearchEngine' );
 
 		$searchEngineFactory = new SearchEngineFactory();
@@ -101,12 +97,11 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromCallable() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function() use( $fallbackSearchEngine ) {
+		$callback = function () use( $fallbackSearchEngine ) {
 			return $fallbackSearchEngine;
 		};
 
@@ -121,8 +116,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromInvalidCallableThrowsException() {
-
-		$callback = function() {
+		$callback = function () {
 			return new \stdClass;
 		};
 
@@ -135,7 +129,6 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromString() {
-
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\DummySearchDatabase' );
 
 		$searchEngineFactory = new SearchEngineFactory();
@@ -147,7 +140,6 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromStringNonSearchDatabaseThrowsException() {
-
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\DummySearchEngine' );
 
 		$searchEngineFactory = new SearchEngineFactory();
@@ -157,7 +149,6 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromStringInvalidClassThrowsException() {
-
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', 'ClassDoesntExist' );
 
 		$searchEngineFactory = new SearchEngineFactory();

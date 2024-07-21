@@ -61,7 +61,6 @@ class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param array $case
 	 */
 	public function process( array $case ) {
-
 		if ( !isset( $case['api'] ) ) {
 			return;
 		}
@@ -80,7 +79,6 @@ class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertOutputForCase( $case, $text ) {
-
 		// Avoid issue with \r carriage return and \n new line
 		$text = str_replace( "\r\n", "\n", $text );
 

@@ -29,8 +29,7 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	private $messageLocalizer;
 	private $idTable;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -66,7 +65,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ReplicationCheck::class,
 			new ReplicationCheck( $this->store, $this->documentReplicationExaminer, $this->entityCache )
@@ -74,7 +72,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetErrorTitle() {
-
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
@@ -88,7 +85,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSeverityType() {
-
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
@@ -102,7 +98,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_Invalid() {
-
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
@@ -120,7 +115,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->elasticClient ) );
@@ -143,7 +137,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckReplication_NotExists() {
-
 		$error = new ReplicationError(
 			ReplicationError::TYPE_MODIFICATION_DATE_MISSING,
 			[ 'id' => 42 ]
@@ -180,7 +173,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckReplication_NoConnection() {
-
 		$elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -220,7 +212,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckReplication_ConnectionHasMaintenanceLock() {
-
 		$elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -261,7 +252,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckReplication_Exception() {
-
 		$error = new ReplicationError(
 			ReplicationError::TYPE_EXCEPTION ,
 			[
@@ -316,7 +306,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckReplication_ModificationDate() {
-
 		$error = new ReplicationError(
 			ReplicationError::TYPE_MODIFICATION_DATE_DIFF,
 			[
@@ -377,7 +366,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckReplication_AssociateRev() {
-
 		$error = new ReplicationError(
 			ReplicationError::TYPE_ASSOCIATED_REVISION_DIFF,
 			[
@@ -438,7 +426,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckReplication_FileAttachment() {
-
 		$error = new ReplicationError(
 			ReplicationError::TYPE_FILE_ATTACHMENT_MISSING ,
 			[
@@ -492,7 +479,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeCacheKey() {
-
 		$subject = DIWikiPage::newFromText( 'Foo', NS_MAIN );
 
 		$this->assertSame(
@@ -502,7 +488,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetReplicationFailures() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
 			->with( $this->stringContains( 'smw:entity:1ce32bc49b4f8bc82a53098238ded208' ) );
@@ -521,7 +506,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteReplicationTrail_OnTitle() {
-
 		$subject = DIWikiPage::newFromText( 'Foo', NS_MAIN );
 
 		$this->entityCache->expects( $this->once() )
@@ -544,7 +528,6 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteReplicationTrail_OnSubject() {
-
 		$subject = DIWikiPage::newFromText( 'Foo', NS_MAIN );
 
 		$this->entityCache->expects( $this->once() )

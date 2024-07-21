@@ -27,7 +27,7 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 	private $propertySpecificationLookup;
 	private $dataValueServiceFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -64,12 +64,11 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			KeywordValue::class,
 			new KeywordValue()
@@ -77,7 +76,6 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorWhenLengthExceedsLimit() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
 			->will( $this->returnValue( [] ) );
@@ -100,7 +98,6 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortWikiText_WithoutLink() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
 			->will( $this->returnValue( [] ) );
@@ -123,7 +120,6 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortWikiText_WithLink() {
-
 		$data = json_encode(
 			[
 				'type' => 'LINK_FORMAT_SCHEMA',

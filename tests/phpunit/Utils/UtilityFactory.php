@@ -32,7 +32,6 @@ class UtilityFactory {
 	 * @return UtilityFactory
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 			self::$instance = new self();
 		}
@@ -188,7 +187,6 @@ class UtilityFactory {
 	 * @return LocalFileUpload
 	 */
 	public function newLocalFileUploadWithCopy( $localUploadPath, $desiredDestName ) {
-
 		// Use to create a copy to avoid having the original file being
 		// deleted after the upload
 		$dummyFileCreator = new DummyFileCreator();
@@ -206,7 +204,6 @@ class UtilityFactory {
 	 * @return LocalFileUpload
 	 */
 	public function newLocalFileUpload() {
-
 		$localFileUpload = new LocalFileUpload();
 
 		$localFileUpload->setDummyFileCreator(

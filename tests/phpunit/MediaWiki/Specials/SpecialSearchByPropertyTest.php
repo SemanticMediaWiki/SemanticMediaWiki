@@ -21,7 +21,7 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 	private $applicationFactory;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -52,14 +52,13 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\SpecialSearchByProperty',
 			new SpecialSearchByProperty()
@@ -70,7 +69,6 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryParameterProvider
 	 */
 	public function testQueryParameter( $query, $expected ) {
-
 		$instance = new SpecialSearchByProperty();
 		$instance->getContext()->setTitle( Title::newFromText( 'SearchByProperty' ) );
 
@@ -83,7 +81,6 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testXRequestParameter() {
-
 		$request = [
 			'x' => ':Has-20subobject/Foo-23%7B%7D'
 		];
@@ -105,7 +102,6 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryParameterProvider() {
-
 		#0
 		$provider[] = [
 			'Foo/Bar',

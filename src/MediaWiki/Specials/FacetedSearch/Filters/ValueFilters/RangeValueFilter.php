@@ -61,8 +61,7 @@ class RangeValueFilter {
 	 *
 	 * @return string
 	 */
-	public function create( UrlArgs $urlArgs, string $property, array $values, array $raw ) : string {
-
+	public function create( UrlArgs $urlArgs, string $property, array $values, array $raw ): string {
 		if ( $values === [] ) {
 			return $this->msg( 'smw-facetedsearch-no-filter-range' );
 		}
@@ -145,7 +144,6 @@ class RangeValueFilter {
 	}
 
 	private function findDefaults() {
-
 		$defaults = [
 			'step_size' => 1,
 			'min_interval' => 5,

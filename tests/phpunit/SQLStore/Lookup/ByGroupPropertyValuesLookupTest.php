@@ -23,15 +23,13 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ByGroupPropertyValuesLookup::class,
 			new ByGroupPropertyValuesLookup( $this->store )
@@ -39,7 +37,6 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchGroup_Empty() {
-
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -115,7 +112,6 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchGroup_PageResult() {
-
 		$row = [
 			'smw_title' => 'Foobar',
 			'smw_namespace' => 0,
@@ -207,7 +203,6 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchGroup_NonPageResult() {
-
 		$row = [
 			'foo_field' => '1001',
 			'count' => 42

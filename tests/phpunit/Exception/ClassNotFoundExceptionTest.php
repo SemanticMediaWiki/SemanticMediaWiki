@@ -16,7 +16,6 @@ use SMW\Exception\ClassNotFoundException;
 class ClassNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new ClassNotFoundException( 'Foo' );
 
 		$this->assertInstanceof(

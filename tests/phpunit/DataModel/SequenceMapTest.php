@@ -19,7 +19,7 @@ class SequenceMapTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $schemaFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -32,7 +32,6 @@ class SequenceMapTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SequenceMap::class,
 			new SequenceMap()
@@ -40,7 +39,6 @@ class SequenceMapTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanMap() {
-
 		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -19,7 +19,6 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +30,6 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSetIndexedTagNameThrowsException() {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -56,7 +54,6 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider resultDataProvider
 	 */
 	public function testResultFormat( array $parameters, array $expected ) {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -95,7 +92,6 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorDataProvider
 	 */
 	public function testErrorFormat( array $parameters, array $expected ) {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -118,7 +114,6 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function resultDataProvider() {
-
 		$result = [
 			'results' => [
 				'Foo' => [
@@ -312,7 +307,6 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function errorDataProvider() {
-
 		$errors = [ 'Foo', 'Bar' ];
 
 		$provider = [];

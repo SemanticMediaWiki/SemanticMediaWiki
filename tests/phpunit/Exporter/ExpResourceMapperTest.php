@@ -22,16 +22,15 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 
 	private $inMemoryPoolCache;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->inMemoryPoolCache = InMemoryPoolCache::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->inMemoryPoolCache->clear();
 	}
 
 	public function testInvalidateCache() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.expresource.mapper' );
@@ -64,7 +63,6 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMapPropertyToResourceElement() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -83,7 +81,6 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider diWikiPageProvider
 	 */
 	public function testMapWikiPageToResourceElement( $dataItem, $modifier, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -104,7 +101,6 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider importDataProvider
 	 */
 	public function testMapWikiPageToResourceElementForImportMatch( $dataItem, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -133,7 +129,6 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function diWikiPageProvider() {
-
 		// Constant
 		$wiki = \SMWExporter::getInstance()->getNamespaceUri( 'wiki' );
 		$property = \SMWExporter::getInstance()->getNamespaceUri( 'property' );
@@ -234,7 +229,6 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function importDataProvider() {
-
 		// || is not the result we normally would expect but mocking the
 		// dataValueFactory at this point is not worth the hassle therefore
 		// we live with || output

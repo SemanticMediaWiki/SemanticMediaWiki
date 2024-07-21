@@ -30,7 +30,6 @@ class FulltextSearchTableFactory {
 	 * @return ValueMatchConditionBuilder
 	 */
 	public function newValueMatchConditionBuilderByType( Store $store ) {
-
 		$type = $store->getConnection( 'mw.db' )->getType();
 
 		switch ( $type ) {
@@ -59,7 +58,6 @@ class FulltextSearchTableFactory {
 	 * @return SearchTable
 	 */
 	public function newTextSanitizer() {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$textSanitizer = new TextSanitizer(
@@ -85,7 +83,6 @@ class FulltextSearchTableFactory {
 	 * @return SearchTable
 	 */
 	public function newSearchTable( Store $store ) {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$searchTable = new SearchTable(
@@ -134,7 +131,6 @@ class FulltextSearchTableFactory {
 	 * @return TextChangeUpdater
 	 */
 	public function newTextChangeUpdater( Store $store ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

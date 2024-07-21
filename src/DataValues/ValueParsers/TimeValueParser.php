@@ -67,7 +67,6 @@ class TimeValueParser implements ValueParser {
 	 * @return string|false
 	 */
 	public function parse( $userValue ) {
-
 		$this->errors = [];
 		$this->userValue = $userValue;
 
@@ -131,7 +130,6 @@ class TimeValueParser implements ValueParser {
 	 * @return boolean stating if the parsing succeeded
 	 */
 	private function parseDateString( $string, &$datecomponents, &$calendarmodel, &$era, &$hours, &$minutes, &$seconds, &$microseconds, &$timeoffset, &$timezone ) {
-
 		$calendarmodel = $timezoneoffset = $era = $ampm = false;
 		$hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
 
@@ -284,7 +282,6 @@ class TimeValueParser implements ValueParser {
 	 * @return boolean stating if the parsing succeeded
 	 */
 	private static function parseTimeString( $string, &$hours, &$minutes, &$seconds, &$timeoffset ) {
-
 		if ( !preg_match( "/^[T]?([0-2]?[0-9]):([0-5][0-9])(:[0-5][0-9])?(([+\-][0-2]?[0-9])(:(30|00))?)?$/u", $string, $match ) ) {
 			return false;
 		} else {
@@ -331,7 +328,6 @@ class TimeValueParser implements ValueParser {
 	 * @return boolean stating if the parsing succeeded
 	 */
 	private static function parseMilTimeString( $string, &$hours, &$minutes, &$seconds ) {
-
 		if ( !preg_match( "/^([0-2][0-9])([0-5][0-9])([0-5][0-9])?$/u", $string, $match ) ) {
 			return false;
 		} else {
@@ -362,7 +358,6 @@ class TimeValueParser implements ValueParser {
 	 * @return boolean stating whether a month was found
 	 */
 	private function parseMonthString( $string, &$monthname ) {
-
 		// takes precedence over English month names!
 		$monthnum = Localizer::getInstance()->getLang( $this->languageCode )->findMonthNumberByLabel( $string );
 

@@ -29,7 +29,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	private $circularReferenceGuard;
 	private $expensiveFuncExecutionWatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -74,13 +74,12 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -102,7 +101,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testParse( array $params, array $expected ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -127,7 +125,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsQueryDisabled() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -155,7 +152,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testInstantiatedQueryData( array $params, array $expected ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -183,7 +179,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryWithErroneousData() {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -246,7 +241,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryDataProvider() {
-
 		$provider = [];
 
 		// #0

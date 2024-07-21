@@ -31,7 +31,7 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 	private $serializerFactory;
 	private $semanticDataFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->apiFactory = new MwApiFactory();
@@ -41,7 +41,6 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testResultDataForEmptySemanticData() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$this->getStore()->updateData( $semanticData );
@@ -65,7 +64,6 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testResultDataForSingleSemanticDataValueAssignment() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$semanticData->addDataValue(
@@ -93,7 +91,6 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testResultDataFoSubobjectExtendedSemanticData() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$semanticData->addDataValue(
@@ -133,7 +130,6 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function newBrowseBySubject( $subject, $asRawMode = false ) {
-
 		$instance = new BrowseBySubject(
 			$this->apiFactory->newApiMain( [ 'subject' => $subject ] ),
 			'browsebysubject'

@@ -55,7 +55,6 @@ class UnusedPropertyListLookup implements ListLookup {
 	 * @throws RuntimeException
 	 */
 	public function fetchList() {
-
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
 		}
@@ -91,7 +90,6 @@ class UnusedPropertyListLookup implements ListLookup {
 	}
 
 	private function selectPropertiesFromTable() {
-
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
 		$options = [ 'ORDER BY' => 'smw_sort' ];
 
@@ -128,7 +126,6 @@ class UnusedPropertyListLookup implements ListLookup {
 	}
 
 	private function buildPropertyList( $res ) {
-
 		$result = [];
 
 		foreach ( $res as $row ) {
@@ -139,7 +136,6 @@ class UnusedPropertyListLookup implements ListLookup {
 	}
 
 	private function addPropertyFor( $title ) {
-
 		try {
 			$property = new DIProperty( $title );
 		} catch ( PropertyLabelNotResolvedException $e ) {

@@ -47,7 +47,6 @@ class Deferred {
 	 * @return string
 	 */
 	public static function buildHTML( Query $query ) {
-
 		$isShowMode = $query->getOption( self::SHOW_MODE );
 		$params = $query->getOption( 'query.params' );
 

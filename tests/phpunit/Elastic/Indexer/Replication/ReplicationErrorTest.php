@@ -20,7 +20,6 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ReplicationError::class,
 			new ReplicationError( ReplicationError::TYPE_EXCEPTION )
@@ -28,7 +27,6 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$instance = new ReplicationError(
 			ReplicationError::TYPE_EXCEPTION,
 			[ 'foo' => 'bar' ]
@@ -41,7 +39,6 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_OnUnknownKeyThrowsException() {
-
 		$instance = new ReplicationError(
 			ReplicationError::TYPE_EXCEPTION
 		);
@@ -51,7 +48,6 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsType() {
-
 		$instance = new ReplicationError(
 			ReplicationError::TYPE_EXCEPTION
 		);
@@ -63,7 +59,6 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetData() {
-
 		$data = [
 			'Foo' => 'Bar'
 		];
@@ -80,7 +75,6 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new ReplicationError(
 			ReplicationError::TYPE_EXCEPTION
 		);

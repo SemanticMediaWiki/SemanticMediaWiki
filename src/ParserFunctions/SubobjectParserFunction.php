@@ -159,7 +159,6 @@ class SubobjectParserFunction {
 	 * @return string|null
 	 */
 	public function parse( ParserParameterProcessor $parameters ) {
-
 		if (
 			$this->parserData->canUse() &&
 			$this->addDataValuesToSubobject( $parameters ) &&
@@ -183,7 +182,6 @@ class SubobjectParserFunction {
 	}
 
 	protected function addDataValuesToSubobject( ParserParameterProcessor $parserParameterProcessor ) {
-
 		// Named subobjects containing a "." in the first five characters are
 		// reserved to be used by extensions only in order to separate them from
 		// user land and avoid having them accidentally to refer to the same
@@ -241,7 +239,6 @@ class SubobjectParserFunction {
 	}
 
 	private function getParameters( ParserParameterProcessor $parserParameterProcessor ) {
-
 		$id = $parserParameterProcessor->getFirst();
 		$isAnonymous = in_array( $id, [ null, '', '-' ] );
 
@@ -270,7 +267,6 @@ class SubobjectParserFunction {
 	}
 
 	private function preprocess( ParserParameterProcessor $parserParameterProcessor, $useFirst ) {
-
 		if ( $parserParameterProcessor->hasParameter( self::PARAM_LINKWITH ) ) {
 			$val = $parserParameterProcessor->getParameterValuesByKey( self::PARAM_LINKWITH );
 			$parserParameterProcessor->addParameter(
@@ -311,7 +307,6 @@ class SubobjectParserFunction {
 	}
 
 	private function decode( $parameters ) {
-
 		if ( $this->stripMarkerDecoder === null || !$this->stripMarkerDecoder->canUse() ) {
 			return $parameters;
 		}
@@ -331,7 +326,6 @@ class SubobjectParserFunction {
 	}
 
 	private function augment( $semanticData ) {
-
 		// Data block created by a user
 		$semanticData->setOption( SemanticData::PROC_USER, true );
 

@@ -20,15 +20,13 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MonolingualTextLookup::class,
 			new MonolingualTextLookup( $this->store )
@@ -39,7 +37,6 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider subjectProvider
 	 */
 	public function testFetchFromTable( $subject, $languageCode, $expected ) {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -105,7 +102,6 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function subjectProvider() {
-
 		yield 'Foo' => [
 			new DIWikiPage( 'Foo', NS_MAIN, '', '' ),
 			'fr',
@@ -135,7 +131,6 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewDIContainer() {
-
 		$row = [
 			'v0' => __METHOD__,
 			'v1' => NS_MAIN,

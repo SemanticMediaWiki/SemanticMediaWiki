@@ -74,7 +74,6 @@ class EntityIdFinder {
 	 * @return integer
 	 */
 	public function findIdByItem( DIWikiPage $dataItem ) {
-
 		if ( ( $id = $this->idCacheManager->getId( $dataItem ) ) !== false ) {
 			return $id;
 		}
@@ -124,7 +123,6 @@ class EntityIdFinder {
 	 * @return array
 	 */
 	public function fetchFieldsFromTableById( $id, $title, $namespace, $iw, $subobjectName, &$sortkey ) {
-
 		if ( $id == 0 ) {
 			return [ $id, '' ];
 		}
@@ -193,7 +191,6 @@ class EntityIdFinder {
 	 * @return array
 	 */
 	public function fetchFromTableByTitle( $title, $namespace, $iw, $subobjectName, &$sortkey ) {
-
 		$sha1 = IdCacheManager::computeSha1(
 			[
 				$title,
@@ -274,7 +271,6 @@ class EntityIdFinder {
 	 * @return array
 	 */
 	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ) {
-
 		$matches = [];
 
 		$conditions = [

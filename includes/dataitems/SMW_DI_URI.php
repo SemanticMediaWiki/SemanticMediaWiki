@@ -130,7 +130,6 @@ class SMWDIUri extends SMWDataItem {
 	 * @return SMWDIUri
 	 */
 	public static function doUnserialize( $serialization ) {
-
 		// try to split "schema:rest"
 		$parts = explode( ':', $serialization, 2 );
 		$strict = true;

@@ -70,7 +70,6 @@ abstract class QueryPage extends \QueryPage {
 	 * @return array
 	 */
 	public function linkParameters() {
-
 		$parameters = [];
 		$property   = $this->getRequest()->getVal( 'property' );
 
@@ -95,7 +94,6 @@ abstract class QueryPage extends \QueryPage {
 	 * @return MessageFormatter
 	 */
 	public function getMessageFormatter() {
-
 		if ( !isset( $this->msgFormatter ) ) {
 			$this->msgFormatter = new MessageFormatter( $this->getLanguage() );
 		}
@@ -111,7 +109,6 @@ abstract class QueryPage extends \QueryPage {
 	 * @return Linker
 	 */
 	public function getLinker() {
-
 		if ( $this->linker === null ) {
 			$this->linker = smwfGetLinker();
 		}
@@ -129,7 +126,6 @@ abstract class QueryPage extends \QueryPage {
 	 * @return string
 	 */
 	public function getSearchForm( $property = '', $cacheDate = '', $propertySearch = true, $filter = '' ) {
-
 		$this->useSerchForm = true;
 		$this->getOutput()->addModules( 'ext.smw.autocomplete.property' );
 

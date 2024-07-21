@@ -50,7 +50,6 @@ class DataItemMatchFinder {
 	 * @return DataItem|null
 	 */
 	public function matchExpElement( ExpElement $expElement ) {
-
 		$dataItem = null;
 
 		if ( !$expElement instanceof ExpResource ) {
@@ -76,7 +75,6 @@ class DataItemMatchFinder {
 	}
 
 	private function matchToWikiNamespaceUri( $uri ) {
-
 		$dataItem = null;
 		$localName = substr( $uri, strlen( $this->wikiNamespace ) );
 
@@ -131,7 +129,6 @@ class DataItemMatchFinder {
 	}
 
 	private function matchToUnknownWikiNamespaceUri( $uri ) {
-
 		$dataItem = null;
 
 		// Sesame: Not a valid (absolute) URI: _node1abjt1k9bx17
@@ -181,7 +178,6 @@ class DataItemMatchFinder {
 	}
 
 	private function getFittingDBKey( $dbKey, $namespace ) {
-
 		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinks
 		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinkOverrides
 		if ( $GLOBALS['wgCapitalLinks'] || ( isset( $GLOBALS['wgCapitalLinkOverrides'][$namespace] ) && $GLOBALS['wgCapitalLinkOverrides'][$namespace] ) ) {

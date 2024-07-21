@@ -19,8 +19,7 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $searchTable;
 	private $textSanitizer;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -35,7 +34,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater',
 			new SearchTableUpdater( $this->connection, $this->searchTable, $this->textSanitizer )
@@ -43,7 +41,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRead() {
-
 		$row = new \stdClass;
 		$row->o_text = 'Foo';
 
@@ -65,7 +62,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOptimizeOnEnabledType() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'isType' )
 			->with( $this->equalTo( 'mysql' ) )
@@ -86,7 +82,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOptimizeOnDisabledType() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'isType' )
 			->will( $this->returnValue( false ) );
@@ -106,7 +101,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateWithText() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'update' );
 
@@ -120,7 +114,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteOnUpdateWithEmptyText() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'delete' );
 
@@ -137,7 +130,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInsert() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
@@ -157,7 +149,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
@@ -176,7 +167,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFlushTable() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
@@ -193,7 +183,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExists() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(

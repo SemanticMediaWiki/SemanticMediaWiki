@@ -48,7 +48,7 @@ trait CallableChangeListenerTrait {
 	 *
 	 * @return boolean
 	 */
-	public function canTrigger( string $key ) : bool {
+	public function canTrigger( string $key ): bool {
 		return isset( $this->changeListeners[$key] );
 	}
 
@@ -58,7 +58,6 @@ trait CallableChangeListenerTrait {
 	 * @param string $key
 	 */
 	public function trigger( string $key ) {
-
 		if ( !isset( $this->changeListeners[$key] ) ) {
 			return;
 		}

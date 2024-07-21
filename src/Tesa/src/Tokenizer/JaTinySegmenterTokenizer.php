@@ -83,7 +83,6 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	 * {@inheritDoc}
 	 */
 	public function tokenize( $string ) {
-
 		if ( $this->tokenizer !== null ) {
 			$string = implode( " ", $this->tokenizer->tokenize( $string ) );
 		}
@@ -92,7 +91,6 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	}
 
 	private function loadModel() {
-
 		if ( self::$model !== null ) {
 			return $this;
 		}
@@ -112,7 +110,6 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	}
 
 	protected function segment( $input, $encoding = null ) {
-
 		if ( !$input ) {
 			return array();
 		}
@@ -238,7 +235,6 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	}
 
 	private function ctype_( $str ) {
-
 		foreach( $this->patterns_ as $pattern => $type ) {
 			if( preg_match( '/'.$pattern.'/u', $str ) ) {
 				return $type;
@@ -253,7 +249,6 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	}
 
 	private function mb_string_to_array_( $str, $encoding = 'UTF-8' ) {
-
 		$result = array();
 		$length = mb_strlen( $str, $encoding );
 

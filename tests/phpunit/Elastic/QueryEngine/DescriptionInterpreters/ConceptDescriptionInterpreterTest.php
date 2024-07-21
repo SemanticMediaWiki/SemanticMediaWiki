@@ -26,8 +26,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private Store $store;
 	private $queryParser;
 
-	public function setUp() : void {
-
+	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -65,7 +64,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConceptDescriptionInterpreter::class,
 			new ConceptDescriptionInterpreter( $this->conditionBuilder, $this->queryParser )
@@ -73,7 +71,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_EmptyConcept() {
-
 		$instance = new ConceptDescriptionInterpreter(
 			$this->conditionBuilder,
 			$this->queryParser
@@ -90,7 +87,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_AvailableConceptQuery() {
-
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'interpretDescription' )
 			->will( $this->returnValue( $this->conditionBuilder->newCondition( [ 'Foo' ] ) ) );

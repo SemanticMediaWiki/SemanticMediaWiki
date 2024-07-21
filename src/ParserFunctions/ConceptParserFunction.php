@@ -129,7 +129,6 @@ class ConceptParserFunction {
 	}
 
 	private function createHtml( Title $title, $queryString, $documentation ) {
-
 		$message = '';
 
 		if ( wfMessage( 'smw-concept-introductory-message' )->exists() ) {
@@ -174,7 +173,6 @@ class ConceptParserFunction {
 	}
 
 	private function addQueryProfile( $query ) {
-
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
 		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryProfiler' ) === false ) {
 			return;

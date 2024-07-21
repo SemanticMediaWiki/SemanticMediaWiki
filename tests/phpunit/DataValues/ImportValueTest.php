@@ -18,7 +18,7 @@ class ImportValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataValueServiceFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
@@ -35,7 +35,6 @@ class ImportValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ImportValue',
 			new ImportValue()
@@ -43,7 +42,6 @@ class ImportValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorForInvalidUserValue() {
-
 		$instance = new ImportValue();
 		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 

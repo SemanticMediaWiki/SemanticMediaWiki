@@ -28,7 +28,7 @@ class FileUploadIntegrationTest extends DatabaseTestCase {
 	private $semanticDataValidator;
 	private $pageEditor;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -70,7 +70,7 @@ class FileUploadIntegrationTest extends DatabaseTestCase {
 		$this->getStore()->setup( false );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->testEnvironment->tearDown();
 
@@ -107,7 +107,6 @@ class FileUploadIntegrationTest extends DatabaseTestCase {
 	 * @depends testFileUploadForDummyTextFile
 	 */
 	public function testReUploadDummyTextFileToEditFilePage() {
-
 		$subject = new DIWikiPage( 'Foo.txt', NS_FILE );
 
 		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'Foo.txt' );

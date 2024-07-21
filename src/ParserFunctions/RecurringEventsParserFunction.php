@@ -49,7 +49,6 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	 * @return string|null
 	 */
 	public function parse( ParserParameterProcessor $parameters ) {
-
 		$this->useFirstElementAsPropertyLabel( true );
 
 		$this->recurringEvents->parse(

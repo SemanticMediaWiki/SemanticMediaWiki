@@ -19,7 +19,6 @@ class CombinedSanitizerTextStopwordTest extends TestCase {
 	 * @dataProvider textByLanguageProvider
 	 */
 	public function testByLanguage( $languageCode, $text, $expected ) {
-
 		$sanitizerFactory = new SanitizerFactory();
 
 		$sanitizer = $sanitizerFactory->newSanitizer( $text );
@@ -38,7 +37,6 @@ class CombinedSanitizerTextStopwordTest extends TestCase {
 	}
 
 	public function textByLanguageProvider() {
-
 		// https://en.wikipedia.org/wiki/Stop_words
 		$provider[] = array(
 			'en',

@@ -18,7 +18,6 @@ use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -30,7 +29,6 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testlookupForNonFixedPropertyTable() {
-
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
@@ -86,7 +84,6 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testlookupForFixedPropertyTable() {
-
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 
 		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )

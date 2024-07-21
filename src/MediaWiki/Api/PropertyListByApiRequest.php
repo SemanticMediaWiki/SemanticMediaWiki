@@ -149,7 +149,6 @@ class PropertyListByApiRequest {
 	 * @return boolean
 	 */
 	public function findPropertyListBy( $property = '' ) {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->limit = $this->limit;
@@ -195,7 +194,6 @@ class PropertyListByApiRequest {
 	}
 
 	private function doModifyRequestOptionsWith( $property, $requestOptions ) {
-
 		if ( $property === '' ) {
 			return $requestOptions;
 		}
@@ -235,7 +233,6 @@ class PropertyListByApiRequest {
 	}
 
 	private function addPropertyToList( array $value ) {
-
 		if ( $value === [] || !$value[0] instanceof DIProperty ) {
 			return;
 		}
@@ -262,7 +259,6 @@ class PropertyListByApiRequest {
 	}
 
 	private function findPropertyDescriptionBy( DIProperty $property ) {
-
 		$description = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
 			$property,
 			$this->languageCode
@@ -278,7 +274,6 @@ class PropertyListByApiRequest {
 	}
 
 	private function matchPropertiesToPreferredLabelBy( $label ) {
-
 		$propertyLabelFinder = ApplicationFactory::getInstance()->getPropertyLabelFinder();
 
 		// Use the proximity search on a text field

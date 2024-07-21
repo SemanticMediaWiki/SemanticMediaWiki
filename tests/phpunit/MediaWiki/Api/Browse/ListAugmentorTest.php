@@ -16,7 +16,6 @@ use SMW\MediaWiki\Api\Browse\ListAugmentor;
 class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -28,7 +27,6 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAugmentOnDescription() {
-
 		$res = [
 			'query' => [
 				'Foo' => [
@@ -79,7 +77,6 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAugmentOnPrefLabel() {
-
 		$res = [
 			'query' => [
 				'Foo' => [
@@ -130,7 +127,6 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAugmentOnUsageCount() {
-
 		$res = [
 			'query' => [
 				'Foo' => [

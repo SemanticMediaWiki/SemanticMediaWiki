@@ -20,7 +20,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -33,7 +33,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Query::class,
 			new Query( $this->connection )
@@ -41,7 +40,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoType_ThrowsException() {
-
 		$instance = new Query( $this->connection );
 
 		$this->expectException( 'RuntimeException' );
@@ -49,7 +47,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoFields_ThrowsException() {
-
 		$instance = new Query( $this->connection );
 		$instance->type( 'select' );
 
@@ -60,7 +57,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoJoinType_ThrowsException() {
-
 		$instance = new Query( $this->connection );
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -68,7 +64,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTable_Field() {
-
 		$instance = new Query( $this->connection );
 		$instance->type( 'select' );
 
@@ -82,7 +77,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTable_AS() {
-
 		$instance = new Query( $this->connection );
 		$instance->type( 'select' );
 
@@ -96,7 +90,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTable_Field_Condition() {
-
 		$instance = new Query( $this->connection );
 		$instance->type( 'select' );
 
@@ -116,7 +109,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testField_HasField() {
-
 		$instance = new Query( $this->connection );
 		$instance->field( 'bar', 'b_ar' );
 
@@ -134,7 +126,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTable_Field_Conditions() {
-
 		$instance = new Query( $this->connection );
 		$instance->type( 'select' );
 
@@ -154,7 +145,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTable_Join_Field_Conditions() {
-
 		$instance = new Query( $this->connection );
 		$instance->type( 'select' );
 
@@ -177,7 +167,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTable_Join_ON_Field_Conditions() {
-
 		$instance = new Query( $this->connection );
 		$instance->type( 'select' );
 
@@ -194,7 +183,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTable_Field_Condition_Options_Distinct_Order() {
-
 		$instance = new Query( $this->connection );
 		$instance->type( 'select' );
 
@@ -218,7 +206,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTable_Field_Condition_Options_Group_Having() {
-
 		$instance = new Query( $this->connection );
 		$instance->type( 'select' );
 
@@ -243,7 +230,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTable() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'tableName' )
 			->with( $this->equalTo( 'Bar' ) );
@@ -256,7 +242,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJoin() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'tableName' )
 			->with( $this->equalTo( 'Foo' ) );
@@ -269,7 +254,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEq() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'addQuotes' )
 			->with( $this->equalTo( 'Bar' ) )
@@ -286,7 +270,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIn() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'makeList' )
 			->with( $this->equalTo( [ 'a', 'b' ] ) )
@@ -303,7 +286,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNeq() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'addQuotes' )
 			->with( $this->equalTo( 'Bar' ) )
@@ -320,7 +302,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecute() {
-
 		$instance = new Query(
 			$this->connection
 		);

@@ -41,7 +41,6 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @param MockObjectRepository|null $repository
 	 */
 	public function __construct( MockObjectRepository $repository = null ) {
-
 		if ( $repository === null ) {
 			$repository = new CoreMockObjectRepository();
 		}
@@ -69,7 +68,6 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @return mixed
 	 */
 	public function newObject( $objectName, $objectArguments = [] ) {
-
 		if ( !is_string( $objectName ) ) {
 			throw new InvalidArgumentException( "Object name is not a string" );
 		}
@@ -164,7 +162,6 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @return MockObjectRepository|null
 	 */
 	protected function findRepositoryForObject( $objectName ) {
-
 		foreach ( $this->repository as $repository ) {
 			if ( method_exists( $repository, $objectName ) ) {
 				return $repository;
@@ -180,7 +177,6 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @param $config
 	 */
 	protected function setupConfiguration( $config ) {
-
 		$configuration = new Options( $config );
 
 		if ( $this->configuration instanceof Options ) {

@@ -64,8 +64,7 @@ class CheckboxRangeGroupValueFilter {
 	 *
 	 * @return string
 	 */
-	public function create( UrlArgs $urlArgs, string $property, array $values, array $raw ) : string {
-
+	public function create( UrlArgs $urlArgs, string $property, array $values, array $raw ): string {
 		if ( $values === [] ) {
 			return '';
 		}
@@ -116,7 +115,6 @@ class CheckboxRangeGroupValueFilter {
 	}
 
 	private function matchFilter( $property, $range, $valueFilters, &$list, $isClear ) {
-
 		$key = $range['min'] . '|' . $range['max'];
 
 		if ( $key === '' ) {
@@ -151,7 +149,6 @@ class CheckboxRangeGroupValueFilter {
 	}
 
 	private function getValueFilters( $property ) {
-
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 
@@ -159,7 +156,6 @@ class CheckboxRangeGroupValueFilter {
 	}
 
 	private function buildRangeGroups( $property, $values, $raw ) {
-
 		$ranges = [];
 
 		$property = DIProperty::newFromUserLabel( $property );
@@ -204,7 +200,6 @@ class CheckboxRangeGroupValueFilter {
 	}
 
 	private function range( $diType, $property, $key, $value ) {
-
 		[ $min, $max ] = explode( '...', $value );
 
 		$msg = $this->msg( $key );
@@ -260,7 +255,6 @@ class CheckboxRangeGroupValueFilter {
 	}
 
 	private function createConditionField( $property ) {
-
 		if ( $this->params['condition_field'] === false ) {
 			return '';
 		}
@@ -281,7 +275,6 @@ class CheckboxRangeGroupValueFilter {
 	}
 
 	private function createInputField( $property, array $values ) {
-
 		if ( count( $values ) <= $this->params['min_item'] ) {
 			return '';
 		}

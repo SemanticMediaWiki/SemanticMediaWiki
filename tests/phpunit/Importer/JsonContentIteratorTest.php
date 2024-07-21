@@ -20,7 +20,7 @@ class JsonContentIteratorTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $jsonImportContentsFileDirReader;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->jsonImportContentsFileDirReader = $this->getMockBuilder( JsonImportContentsFileDirReader::class )
@@ -31,7 +31,6 @@ class JsonContentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Importer\JsonContentIterator',
 			new JsonContentIterator( $this->jsonImportContentsFileDirReader )
@@ -44,7 +43,6 @@ class JsonContentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetIterator() {
-
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
 			->method( 'getContentList' )
 			->will( $this->returnValue( [] ) );
@@ -60,7 +58,6 @@ class JsonContentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDescription() {
-
 		$instance = new JsonContentIterator(
 			$this->jsonImportContentsFileDirReader
 		);

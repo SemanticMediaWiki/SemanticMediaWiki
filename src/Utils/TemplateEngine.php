@@ -88,7 +88,6 @@ class TemplateEngine {
 	 * @throws FileNotReadableException
 	 */
 	public function load( $file, $target ) {
-
 		if ( isset( self::$templates[$file] ) ) {
 			return $this->container[$target] = self::$templates[$file];
 		}
@@ -109,7 +108,6 @@ class TemplateEngine {
 	 * @param array $args
 	 */
 	public function compile( $target, array $args = [] ) {
-
 		if ( !isset( $this->container[$target] ) ) {
 			return;
 		}
@@ -148,7 +146,6 @@ class TemplateEngine {
 	 * @throws RuntimeException
 	 */
 	public function publish( $target, int $flag = -1 ) {
-
 		if ( !isset( $this->compiled[$target] ) ) {
 			throw new RuntimeException( "Unknown `$target` reference!" );
 		}

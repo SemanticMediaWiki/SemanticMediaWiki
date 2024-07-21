@@ -35,7 +35,6 @@ class DocumentationParserFunction implements HookHandler {
 	 * @return mixed
 	 */
 	public function handle( Parser $parser, ProcessingResult $result ) {
-
 		if ( $result->hasFatal() ) {
 			return $this->getOutputForErrors( $result->getErrors() );
 		}
@@ -90,7 +89,6 @@ class DocumentationParserFunction implements HookHandler {
 	 * @return string
 	 */
 	private function buildParameterListDocumentation( array $parameters, $formatParameters ) {
-
 		if ( $parameters['parameters']->getValue() === 'specific' ) {
 			foreach ( array_keys( QueryProcessor::getParameters() ) as $name ) {
 				unset( $formatParameters[$name] );

@@ -16,7 +16,6 @@ use SMW\Services\SharedServicesContainer;
 class SharedServicesContainerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SharedServicesContainer::class,
 			new SharedServicesContainer()
@@ -29,7 +28,6 @@ class SharedServicesContainerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegister() {
-
 		$containerBuilder = $this->getMockBuilder( '\Onoi\CallbackContainer\ContainerBuilder' )
 			->disableOriginalConstructor()
 			->getMock();

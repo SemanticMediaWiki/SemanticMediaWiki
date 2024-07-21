@@ -24,7 +24,6 @@ class ResultPrintersTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constructorProvider
 	 */
 	public function testConstructor( $format, $class, $isInline ) {
-
 		$instance = new $class( $format, $isInline );
 
 		$this->assertInstanceOf(
@@ -37,7 +36,6 @@ class ResultPrintersTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetParamDefinitions( ResultPrinter $printer ) {
-
 		$params = $printer->getParamDefinitions(
 			QueryProcessor::getParameters( null, $printer )
 		);

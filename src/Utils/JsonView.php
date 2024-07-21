@@ -24,8 +24,7 @@ class JsonView {
 	 *
 	 * @return string
 	 */
-	public function create( string $id, string $data, int $level = 1 ) : string {
-
+	public function create( string $id, string $data, int $level = 1 ): string {
 		$placeholder = Html::rawElement(
 			'span',
 			[

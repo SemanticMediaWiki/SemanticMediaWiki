@@ -22,8 +22,7 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $cache;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -36,7 +35,6 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CacheWarmer::class,
 			new CacheWarmer( $this->store, $this->idCacheManager )
@@ -44,7 +42,6 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareCache_Page() {
-
 		$list = [
 			new DIWikiPage( 'Bar', NS_MAIN )
 		];
@@ -96,7 +93,6 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareCache_DisplayTitleFinder() {
-
 		$displayTitleFinder = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -116,7 +112,6 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareCache_Property() {
-
 		$list = [
 			// Both represent the same object hence only cache once
 			new DIProperty( 'Foo' ),
@@ -170,7 +165,6 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareCache_UnknownPredefinedProperty() {
-
 		$list = [
 			new DIWikiPage( '_Foo', SMW_NS_PROPERTY )
 		];

@@ -36,7 +36,6 @@ class SpecialConcepts extends \SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $param ) {
-
 		$this->setHeaders();
 		$out = $this->getOutput();
 		$out->addModuleStyles( 'ext.smw.page.styles' );
@@ -64,7 +63,6 @@ class SpecialConcepts extends \SpecialPage {
 	 * @return DIWikiPage[]
 	 */
 	public function fetchFromTable( $limit, $offset ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$results = [];
 
@@ -117,7 +115,6 @@ class SpecialConcepts extends \SpecialPage {
 	 * @return string
 	 */
 	public function getHtml( $dataItems, $limit, $offset ) {
-
 		if ( $this->store === null ) {
 			$this->store = ApplicationFactory::getInstance()->getStore();
 		}
@@ -175,7 +172,6 @@ class SpecialConcepts extends \SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
 		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
 			return 'smw_group';
 		}

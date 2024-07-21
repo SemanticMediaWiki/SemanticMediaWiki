@@ -44,7 +44,6 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 	 * @throws InvalidArgumentException
 	 */
 	public function newDescription( MonolingualTextValue $dataValue, $value ) {
-
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'Value needs to be a string' );
 		}
@@ -98,7 +97,6 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 	}
 
 	private function newConjunction( $subdescriptions ) {
-
 		$count = count( $subdescriptions );
 
 		if ( $count == 0 ) {
@@ -113,7 +111,6 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 	}
 
 	private function newSubdescription( $dataValue, $comparator ) {
-
 		$description = new ValueDescription(
 			$dataValue->getDataItem(),
 			$dataValue->getProperty(),

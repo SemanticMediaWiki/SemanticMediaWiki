@@ -19,7 +19,6 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider rowsProvider
 	 */
 	public function testConcatenate( $rows, $sep, $expected ) {
-
 		$instance = new Csv();
 
 		$this->assertEquals(
@@ -32,7 +31,6 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider makeProvider
 	 */
 	public function testMake( $header, $rows, $sep, $show, $expected ) {
-
 		$instance = new Csv( $show );
 
 		$this->assertEquals(
@@ -42,7 +40,6 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWithBOM() {
-
 		$header = [];
 		$rows = [
 			[ 'Foo', '1', '2', '3' ]
@@ -59,7 +56,6 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function rowsProvider() {
-
 		// No change
 		yield [
 			[
@@ -150,7 +146,6 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function makeProvider() {
-
 		// Without header
 		yield [
 			[],

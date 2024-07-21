@@ -20,7 +20,7 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $sortLetter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
@@ -38,7 +38,6 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ListBuilder::class,
 			new ListBuilder( $this->store )
@@ -46,7 +45,6 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetList() {
-
 		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
 			->will( $this->returnValue( 'F' ) );
@@ -62,7 +60,6 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetList_Sorted() {
-
 		$list = [
 			DIWikiPage::newFromText( 'Foo' ),
 			DIWikiPage::newFromText( 'ABC' )
@@ -87,7 +84,6 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetColumnList() {
-
 		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
 			->will( $this->returnValue( 'F' ) );
@@ -111,7 +107,6 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetColumnList_ItemFormatter() {
-
 		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
 			->will( $this->returnValue( 'F' ) );
@@ -120,7 +115,7 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->setItemFormatter( function( $dataValue, $linker ) {
+		$instance->setItemFormatter( function ( $dataValue, $linker ) {
 			return 'Bar';
 		} );
 

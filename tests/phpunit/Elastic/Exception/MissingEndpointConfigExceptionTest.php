@@ -17,7 +17,6 @@ use RuntimeException;
 class MissingEndpointConfigExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RuntimeException::class,
 			new MissingEndpointConfigException()

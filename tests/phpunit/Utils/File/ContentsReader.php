@@ -20,7 +20,6 @@ class ContentsReader {
 	 * @return string
 	 */
 	public static function readContentsFrom( $file ) {
-
 		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $file );
 		$extension = pathinfo( $file, PATHINFO_EXTENSION );
 

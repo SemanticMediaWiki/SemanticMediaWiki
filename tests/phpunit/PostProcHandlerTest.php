@@ -23,7 +23,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $parserOutput;
 	private $cache;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->parserOutput = $this->getMockBuilder( '\ParserOutput' )
@@ -36,7 +36,6 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PostProcHandler::class,
 			new PostProcHandler( $this->parserOutput, $this->cache )
@@ -44,7 +43,6 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtmlOnCookie() {
-
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
 			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
@@ -86,7 +84,6 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml_CheckQuery() {
-
 		$this->cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
 			->will( $this->returnValue( true ) );
@@ -143,7 +140,6 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunJobs() {
-
 		$instance = new PostProcHandler(
 			$this->parserOutput,
 			$this->cache
@@ -186,7 +182,6 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPurgePageOnQueryDependency() {
-
 		$this->parserOutput->expects( $this->any() )
 			->method( 'getExtensionData' )
 			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
@@ -232,7 +227,6 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider validPropertyKey
 	 */
 	public function testGetHtmlOnCookieAndValidChangeDiff( $key ) {
-
 		$fieldChangeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\FieldChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -304,7 +298,6 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryProvider
 	 */
 	public function testAddUpdate( $gExtensionData, $sExtensionData, $query ) {
-
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
 			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
@@ -327,7 +320,6 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryProvider
 	 */
 	public function testAddCheck( $gExtensionData, $sExtensionData, $query ) {
-
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
 			->with( $this->equalTo( PostProcHandler::POST_EDIT_CHECK ) )
@@ -353,7 +345,6 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryProvider() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -378,7 +369,6 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function validPropertyKey() {
-
 		yield [
 			'Foo'
 		];

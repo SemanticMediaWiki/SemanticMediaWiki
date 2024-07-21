@@ -24,7 +24,6 @@ class TurtleSerializerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testFlushContent_Empty() {
-
 		$instance = new TurtleSerializer();
 		$instance->startSerialization();
 		$instance->finishSerialization();
@@ -36,7 +35,6 @@ class TurtleSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFlushContent_SingleElement() {
-
 		$expData = new ExpData(
 			new ExpNsResource( 'Foobar', 'Bar', 'ns:Mo', null )
 		);

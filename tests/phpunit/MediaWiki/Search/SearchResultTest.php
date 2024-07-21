@@ -19,7 +19,6 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testGetSectionTitle_WithFragment() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -37,7 +36,6 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSectionTitle_WithoutFragment() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -54,7 +52,6 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExcerpt() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -73,7 +70,6 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTitleSnippet() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -99,7 +95,6 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTextSnippet_HasHighlight() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -115,7 +110,6 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTextSnippet_NoHighlight() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

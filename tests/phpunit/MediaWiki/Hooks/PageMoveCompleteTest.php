@@ -23,7 +23,7 @@ class PageMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 	private $namespaceExaminer;
 	private $eventDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -48,13 +48,12 @@ class PageMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PageMoveComplete::class,
 			new PageMoveComplete( $this->namespaceExaminer )
@@ -62,7 +61,6 @@ class PageMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChangeSubjectForSupportedSemanticNamespace() {
-
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
 			->withConsecutive(
@@ -97,7 +95,6 @@ class PageMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteSubjectForNotSupportedSemanticNamespace() {
-
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
 			->withConsecutive(

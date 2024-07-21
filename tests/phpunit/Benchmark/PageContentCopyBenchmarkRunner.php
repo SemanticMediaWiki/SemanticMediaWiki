@@ -86,7 +86,6 @@ class PageContentCopyBenchmarkRunner {
 	 * @param array $case
 	 */
 	public function run( array $case ) {
-
 		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 		$start = microtime( true );
@@ -137,7 +136,6 @@ class PageContentCopyBenchmarkRunner {
 	}
 
 	private function doCopy( $copyFrom, array $case ) {
-
 		$copyText = $this->pageReader->getContentAsText( $copyFrom );
 		$copyName = 'BenchmarkCopy-' . $copyFrom->getText();
 

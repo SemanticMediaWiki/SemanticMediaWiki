@@ -26,7 +26,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $applicationFactory;
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -47,14 +47,13 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -66,7 +65,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBuildConditionFor() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ConceptDescription' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -86,7 +84,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testConceptDescriptionInterpreter( $description, $orderByProperty, $expectedConditionType, $expectedConditionString ) {
-
 		$resultVariable = 'result';
 
 		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
@@ -115,7 +112,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConceptDescriptionInterpreterForAnyValueConceptUsingMockedStore() {
-
 		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -172,7 +168,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0

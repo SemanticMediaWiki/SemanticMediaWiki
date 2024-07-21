@@ -18,14 +18,13 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -41,7 +40,6 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMessageBuilder() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -59,7 +57,6 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetForm() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -123,7 +120,6 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOptionsSelecList() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -173,7 +169,6 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckbox() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

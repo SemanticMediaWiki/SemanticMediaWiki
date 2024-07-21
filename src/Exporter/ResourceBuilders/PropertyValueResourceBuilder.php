@@ -61,7 +61,6 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	 * {@inheritDoc}
 	 */
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-
 		$expElement = $this->exporter->newExpElement(
 			$dataItem
 		);
@@ -85,7 +84,6 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	}
 
 	protected function addAuxiliaryResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-
 		$auxiliaryExpElement = $this->exporter->newAuxiliaryExpElement(
 			$dataItem
 		);
@@ -101,7 +99,6 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	}
 
 	protected function getResourceElementForProperty( $property ) {
-
 		$key = 'resource:builder:' . $property->getKey();
 
 		if ( ( $resourceElement = $this->inMemoryPoolCache->fetch( $key ) ) !== false ) {
@@ -119,7 +116,6 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	}
 
 	protected function getResourceElementHelperForProperty( $property ) {
-
 		$key = 'resource:builder:aux:' . $property->getKey();
 
 		if ( ( $resourceElement = $this->inMemoryPoolCache->fetch( $key ) ) !== false ) {

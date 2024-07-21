@@ -19,15 +19,13 @@ class PSubjectLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PSubjectLookup::class,
 			new PSubjectLookup( $this->store )
@@ -38,7 +36,6 @@ class PSubjectLookupTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider lookupProvider
 	 */
 	public function testLookup( $subject, $parameters, $expected ) {
-
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( [ $subject ] ) );
@@ -56,7 +53,6 @@ class PSubjectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function lookupProvider() {
-
 		yield [
 			new DIWikiPage( 'Foo bar', NS_MAIN ),
 			[

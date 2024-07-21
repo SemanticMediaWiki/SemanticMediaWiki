@@ -33,7 +33,6 @@ class ChunkedIterator extends IteratorIterator {
 	 * @param integer $chunkSize
 	 */
 	public function __construct( $iterable, $chunkSize = 500 ) {
-
 		$chunkSize = (int)$chunkSize;
 
 		if ( is_array( $iterable ) ) {

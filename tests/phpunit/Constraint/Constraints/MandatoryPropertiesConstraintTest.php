@@ -21,12 +21,11 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MandatoryPropertiesConstraint::class,
 			new MandatoryPropertiesConstraint()
@@ -34,7 +33,6 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new MandatoryPropertiesConstraint();
 
 		$this->assertEquals(
@@ -44,7 +42,6 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new MandatoryPropertiesConstraint();
 
 		$this->assertFalse(
@@ -53,7 +50,6 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_mandatory_properties() {
-
 		$constraint = [
 			'mandatory_properties' => [ 'Foo' ]
 		];
@@ -75,11 +71,11 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
+			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
@@ -93,7 +89,6 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_mandatory_properties_ThrowsException() {
-
 		$constraint = [
 			'mandatory_properties' => true
 		];
@@ -105,7 +100,6 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

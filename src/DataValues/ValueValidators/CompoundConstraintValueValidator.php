@@ -59,7 +59,6 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	 * {@inheritDoc}
 	 */
 	public function validate( $dataValue ) {
-
 		$this->hasConstraintViolation = false;
 		$time = -microtime( true );
 

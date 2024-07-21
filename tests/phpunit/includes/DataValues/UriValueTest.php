@@ -18,7 +18,6 @@ use SMWURIValue as UriValue;
 class UriValueTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMWURIValue',
 			new UriValue( '_uri' )
@@ -29,7 +28,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider uriProvider
 	 */
 	public function testUriOutputFormatting( $uri, $caption, $linker, $expected ) {
-
 		$instance = new UriValue( '_uri' );
 		$instance->setUserValue( $uri, $caption );
 
@@ -44,7 +42,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider uriProvider
 	 */
 	public function testAnuOutputFormatting( $uri, $caption, $linker, $expected ) {
-
 		$instance = new UriValue( '_anu' );
 		$instance->setUserValue( $uri, $caption );
 
@@ -59,7 +56,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider telProvider
 	 */
 	public function testTelOutputFormatting( $uri, $caption, $linker, $expected ) {
-
 		$instance = new UriValue( '_tel' );
 		$instance->setUserValue( $uri, $caption );
 
@@ -74,7 +70,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider emaProvider
 	 */
 	public function testEmaOutputFormatting( $uri, $caption, $linker, $expected ) {
-
 		$instance = new UriValue( '_ema' );
 		$instance->setUserValue( $uri, $caption );
 
@@ -86,7 +81,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertOutputFormatting( $instance, $linker, $expected ) {
-
 		$this->assertEquals(
 			$expected['wikiValue'],
 			$instance->getWikiValue(),
@@ -119,7 +113,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function uriProvider() {
-
 		$linker = smwfGetLinker();
 		$noFollowAttribute = ' rel="nofollow"';
 
@@ -357,7 +350,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function telProvider() {
-
 		$provider[] = [
 			'+1-201-555-0123',
 			false,
@@ -375,7 +367,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function emaProvider() {
-
 		$provider[] = [
 			'foo@example.org',
 			false,

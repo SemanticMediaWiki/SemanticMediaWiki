@@ -18,7 +18,6 @@ class ConfigPreloadFileNotReadableException extends RuntimeException {
 	 * @param string $file
 	 */
 	public function __construct( string $file ) {
-
 		$profile = pathinfo( $file, PATHINFO_BASENAME );
 
 		parent::__construct(

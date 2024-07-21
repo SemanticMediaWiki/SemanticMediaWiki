@@ -25,7 +25,7 @@ class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
 	private $runnerFactory;
 	private $titleValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
@@ -41,8 +41,7 @@ class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -50,7 +49,6 @@ class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testRebuildPropertyStatistics() {
-
 		$this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',

@@ -37,7 +37,6 @@ class SpecialPageProperty extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $query ) {
-
 		$request = $this->getRequest();
 
 		if ( $request->getText( 'cl', '' ) !== '' ) {
@@ -86,7 +85,6 @@ class SpecialPageProperty extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
 		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
 			return 'smw_group';
 		}
@@ -96,7 +94,6 @@ class SpecialPageProperty extends SpecialPage {
 	}
 
 	private function load( $options ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
 

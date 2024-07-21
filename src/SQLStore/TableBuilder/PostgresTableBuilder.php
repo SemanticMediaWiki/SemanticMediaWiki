@@ -23,7 +23,6 @@ class PostgresTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	public function getStandardFieldType( $fieldType ) {
-
 		// serial is a 4 bytes autoincrementing integer (1 to 2147483647)
 
 		$fieldTypes = [
@@ -70,7 +69,6 @@ class PostgresTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doCreateTable( $tableName, array $attributes = null ) {
-
 		$tableName = $this->connection->tableName( $tableName );
 
 		$fieldSql = [];
@@ -93,7 +91,6 @@ class PostgresTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doUpdateTable( $tableName, array $attributes = null ) {
-
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -122,7 +119,6 @@ class PostgresTableBuilder extends TableBuilder {
 	}
 
 	private function getCurrentFields( $tableName ) {
-
 		$tableName = str_replace( '"', '', $tableName );
 		// Use the data dictionary in postgresql to get an output comparable to DESCRIBE.
 /*
@@ -186,7 +182,6 @@ EOT;
 	}
 
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
-
 		$fieldType = $this->getStandardFieldType( $fieldType );
 		$keypos = strpos( $fieldType, ' PRIMARY KEY' );
 
@@ -264,7 +259,6 @@ EOT;
 	}
 
 	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
-
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		// https://www.postgresql.org/docs/9.1/datatype-enum.html
@@ -283,7 +277,6 @@ EOT;
 	}
 
 	private function doDropField( $tableName, $fieldName ) {
-
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
@@ -299,7 +292,6 @@ EOT;
 	 * {@inheritDoc}
 	 */
 	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
-
 		$indices = $indexOptions['indices'];
 		$ix = [];
 
@@ -331,7 +323,6 @@ EOT;
 	}
 
 	private function doDropObsoleteIndices( $tableName, array &$indices ) {
-
 		$tableName = $this->connection->tableName( $tableName, 'raw' );
 		$currentIndices = $this->getIndexInfo( $tableName );
 
@@ -352,7 +343,6 @@ EOT;
 	}
 
 	private function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
-
 		if ( $indexType === 'FULLTEXT' ) {
 			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
 		}
@@ -381,7 +371,6 @@ EOT;
 	}
 
 	private function getIndexInfo( $tableName ) {
-
 		$indices = [];
 
 		$sql = "SELECT  i.relname AS indexname,"
@@ -436,7 +425,6 @@ EOT;
 	 * {@inheritDoc}
 	 */
 	protected function doOptimize( $tableName ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -476,7 +464,6 @@ EOT;
 	}
 
 	private function doCheckOnPostCreation() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$sequence = new Sequence( $this->connection );

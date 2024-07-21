@@ -157,7 +157,6 @@ class Client {
 	 * @return integer
 	 */
 	public function getIndexDefFileModificationTimeByType( $type ) {
-
 		static $filemtime = [];
 
 		if ( !isset( $filemtime[$type] ) ) {
@@ -173,7 +172,6 @@ class Client {
 	 * @return integer
 	 */
 	public function getVersion() {
-
 		$info = $this->info();
 
 		if (
@@ -205,7 +203,6 @@ class Client {
 	 * @param array
 	 */
 	public function info(): array {
-
 		if ( !$this->ping() ) {
 			return [];
 		}
@@ -220,7 +217,6 @@ class Client {
 	 * @param array $params
 	 */
 	public function stats( string $type = 'indices', array $params = [] ): array {
-
 		$indices = [
 			$this->getIndexName( self::TYPE_DATA ),
 			$this->getIndexName( self::TYPE_LOOKUP )
@@ -260,7 +256,6 @@ class Client {
 	 * @param array
 	 */
 	public function cat( $type, $params = [] ) {
-
 		$res = [];
 
 		if ( $type === 'indices' ) {
@@ -285,7 +280,6 @@ class Client {
 	 * @param boolean
 	 */
 	public function hasIndex( $type ) {
-
 		if ( isset( self::$hasIndex[$type] ) && self::$hasIndex[$type] ) {
 			return true;
 		}
@@ -302,7 +296,6 @@ class Client {
 	 * @param string $type
 	 */
 	public function createIndex( $type ) {
-
 		$index = $this->getIndexName( $type );
 		$version = 'v1';
 
@@ -337,7 +330,6 @@ class Client {
 	 * @param string $index
 	 */
 	public function deleteIndex( string $index ) {
-
 		$params = [
 			'index' => $index,
 		];
@@ -403,7 +395,6 @@ class Client {
 	 * @param array $params
 	 */
 	public function validate( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -438,7 +429,6 @@ class Client {
 	 * @return boolean
 	 */
 	public function ping() {
-
 		if ( self::$ping !== null ) {
 			return self::$ping;
 		}
@@ -458,7 +448,6 @@ class Client {
 	 * @return boolean
 	 */
 	public function quick_ping( $timeout = 2 ) {
-
 		$hosts = $this->options->get( Config::ELASTIC_ENDPOINTS );
 
 		foreach ( $hosts as $host ) {
@@ -522,7 +511,6 @@ class Client {
 	 * @return array|string
 	 */
 	public function update( array $params ) {
-
 		$context = [
 			'method' => __METHOD__,
 			'role' => 'production',
@@ -549,7 +537,6 @@ class Client {
 	 * @return array|string
 	 */
 	public function index( array $params ) {
-
 		$context = [
 			'method' => __METHOD__,
 			'role' => 'production',
@@ -574,7 +561,6 @@ class Client {
 	 * @param array $params
 	 */
 	public function bulk( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -630,7 +616,6 @@ class Client {
 	 * @return mixed
 	 */
 	public function count( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -674,7 +659,6 @@ class Client {
 	 * @return array
 	 */
 	public function search( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -719,7 +703,6 @@ class Client {
 	 * @return mixed
 	 */
 	public function explain( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -849,7 +832,6 @@ class Client {
 	 * @return bool
 	 */
 	public function isOpenSearch(): bool {
-
 		if ( !isset( $this->distribution ) ) {
 			$info = $this->info();
 			$this->distribution = $info['version']['distribution'] ?? 'elasticsearch';

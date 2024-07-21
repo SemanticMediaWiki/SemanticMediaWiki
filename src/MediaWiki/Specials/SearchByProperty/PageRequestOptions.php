@@ -82,7 +82,6 @@ class PageRequestOptions {
 	 * @since 2.1
 	 */
 	public function initialize() {
-
 		$params = explode( '/', $this->queryString );
 		reset( $params );
 		$escaped = false;
@@ -118,7 +117,6 @@ class PageRequestOptions {
 	}
 
 	private function getValue( $value, $escaped ) {
-
 		$this->value = DataValueFactory::getInstance()->newDataValueByProperty(
 			$this->property->getDataItem()
 		);
@@ -130,7 +128,6 @@ class PageRequestOptions {
 	}
 
 	private function unescape( $value, $escaped ) {
-
 		if ( $this->value instanceof NumberValue ) {
 			$value = $escaped ? str_replace( [ '-20', '-2D' ], [ ' ', '-' ], $value ) : $value;
 			// Do not try to decode things like 1.2e-13
@@ -160,7 +157,6 @@ class PageRequestOptions {
 	}
 
 	private function setNearbySearch() {
-
 		if ( $this->value === null ) {
 			return null;
 		}

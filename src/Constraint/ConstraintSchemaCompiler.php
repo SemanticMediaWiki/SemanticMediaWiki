@@ -43,7 +43,6 @@ class ConstraintSchemaCompiler {
 	 * @return string
 	 */
 	public function prettify( array $constraintSchema ) {
-
 		if ( $constraintSchema === [] ) {
 			return '';
 		}
@@ -59,7 +58,6 @@ class ConstraintSchemaCompiler {
 	 * @return []
 	 */
 	public function compileConstraintSchema( DIProperty $property ) {
-
 		$constraintSchema = [];
 
 		$this->constraint_schema( $property, $constraintSchema );
@@ -82,7 +80,6 @@ class ConstraintSchemaCompiler {
 	}
 
 	private function constraint_schema( $property, &$constraintSchema ) {
-
 		$schemaList = $this->schemaFinder->getConstraintSchema(
 			$property
 		);
@@ -93,7 +90,6 @@ class ConstraintSchemaCompiler {
 	}
 
 	private function allowed_values( $property, &$constraintSchema ) {
-
 		$allowedValues = $this->propertySpecificationLookup->getAllowedValues(
 			$property
 		);
@@ -131,7 +127,6 @@ class ConstraintSchemaCompiler {
 	}
 
 	private function allowed_pattern( $property, &$constraintSchema ) {
-
 		$allowed_pattern = $this->propertySpecificationLookup->getAllowedPatternBy(
 			$property
 		);
@@ -169,7 +164,6 @@ class ConstraintSchemaCompiler {
 	}
 
 	private function unique_value_constraint( $property, &$constraintSchema ) {
-
 		$unique_value_constraint = $this->propertySpecificationLookup->hasUniquenessConstraint(
 			$property
 		);

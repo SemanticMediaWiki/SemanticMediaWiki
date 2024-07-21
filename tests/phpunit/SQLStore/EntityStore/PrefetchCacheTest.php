@@ -24,8 +24,7 @@ class PrefetchCacheTest extends \PHPUnit_Framework_TestCase {
 	private $prefetchItemLookup;
 	private $requestOptions;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +39,6 @@ class PrefetchCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PrefetchCache::class,
 			new PrefetchCache( $this->store, $this->prefetchItemLookup )
@@ -48,7 +46,6 @@ class PrefetchCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCacheAndFetch() {
-
 		$property = new DIProperty( 'Foo' );
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 

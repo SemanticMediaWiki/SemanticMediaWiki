@@ -22,7 +22,6 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getTypeDataProvider
 	 */
 	public function testCanConstruct( $type ) {
-
 		$this->assertInstanceOf(
 			'\SMW\Highlighter',
 			Highlighter::factory( $type )
@@ -47,7 +46,6 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDecode() {
-
 		$this->assertEquals(
 			'&<> ',
 			Highlighter::decode( '&amp;&lt;&gt;&#160;<nowiki></nowiki>' )
@@ -58,7 +56,6 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getTypeDataProvider
 	 */
 	public function testGetHtml( $type ) {
-
 		$instance = Highlighter::factory( $type );
 
 		$instance->setContent( [
@@ -84,7 +81,6 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasHighlighterClass() {
-
 		$instance = Highlighter::factory(
 			Highlighter::TYPE_WARNING
 		);

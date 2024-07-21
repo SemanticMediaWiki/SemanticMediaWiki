@@ -23,19 +23,18 @@ class RebuildFulltextSearchTableTest extends DatabaseTestCase {
 	private $runnerFactory;
 	private $spyMessageReporter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->runnerFactory  = $this->testEnvironment::getUtilityFactory()->newRunnerFactory();
 		$this->spyMessageReporter = $this->testEnvironment::getUtilityFactory()->newSpyMessageReporter();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testRun() {
-
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
 			'SMW\Maintenance\RebuildFulltextSearchTable'
 		);

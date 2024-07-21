@@ -20,7 +20,7 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -29,7 +29,6 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler::class,
 			new ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler( $this->store )
@@ -37,7 +36,6 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit
 	}
 
 	public function testGetHtml() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();

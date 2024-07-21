@@ -21,7 +21,6 @@ class MySQLTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	public function getStandardFieldType( $fieldType ) {
-
 		$charLongLength = FieldType::CHAR_LONG_LENGTH;
 
 		$fieldTypes = [
@@ -67,7 +66,6 @@ class MySQLTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doCreateTable( $tableName, array $attributes = null ) {
-
 		$tableName = $this->connection->tableName( $tableName );
 		$sql = '';
 
@@ -88,7 +86,6 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function sql_from( array $attributes ) {
-
 		// $smwgFulltextSearchTableOptions can define:
 		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' )
 		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8', 'WITH PARSER ngram' )
@@ -119,7 +116,6 @@ class MySQLTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doUpdateTable( $tableName, array $attributes = null ) {
-
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -145,7 +141,6 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function getCurrentFields( $tableName ) {
-
 		$sql = 'DESCRIBE ' . $tableName;
 
 		$res = $this->connection->query( $sql, __METHOD__ );
@@ -184,7 +179,6 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
-
 		if ( !isset( $this->activityLog[$tableName] ) ) {
 			$this->activityLog[$tableName] = [];
 		}
@@ -214,7 +208,6 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
-
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
@@ -223,7 +216,6 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function doUpdateFieldType( $tableName, $fieldName, $position, $oldFieldType, $newFieldType ) {
-
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_UPD;
 
 		// Continue to alter the type but silence the output since we cannot get
@@ -252,7 +244,6 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function doDropField( $tableName, $fieldName ) {
-
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
@@ -268,7 +259,6 @@ class MySQLTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
-
 		$indices = $indexOptions['indices'];
 
 		// First remove possible obsolete indices
@@ -291,7 +281,6 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function doDropObsoleteIndices( $tableName, array &$indices ) {
-
 		$tableName = $this->connection->tableName( $tableName );
 		$currentIndices = $this->getIndexInfo( $tableName );
 
@@ -339,7 +328,6 @@ class MySQLTableBuilder extends TableBuilder {
 	 * @return array indexname => columns
 	 */
 	private function getIndexInfo( $tableName ) {
-
 		$indices = [];
 
 		$res = $this->connection->query( 'SHOW INDEX FROM ' . $tableName, __METHOD__ );
@@ -366,7 +354,6 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
-
 		$tableName = $this->connection->tableName( $tableName );
 		$indexOption = '';
 
@@ -409,7 +396,6 @@ class MySQLTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doOptimize( $tableName ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(

@@ -43,7 +43,6 @@ class PropertyTableRowMapper {
 	 * @return ChangeOp
 	 */
 	public function newChangeOp( $id, SemanticData $semanticData ) {
-
 		list( $dataArray, $textItems, $propertyList, $fixedPropertyList ) = $this->mapToRows(
 			$id,
 			$semanticData
@@ -89,7 +88,6 @@ class PropertyTableRowMapper {
 	 * @return array
 	 */
 	public function mapToRows( $sid, SemanticData $semanticData ) {
-
 		list( $rows, $textItems, $propertyList, $fixedPropertyList ) = $this->mapData(
 			$sid,
 			$semanticData
@@ -137,7 +135,6 @@ class PropertyTableRowMapper {
 	 * @return array
 	 */
 	private function mapData( $sid, SemanticData $semanticData ) {
-
 		$subject = $semanticData->getSubject();
 		$propertyTables = $this->store->getPropertyTables();
 
@@ -276,7 +273,6 @@ class PropertyTableRowMapper {
 	 * @param &array $insertData
 	 */
 	private function mapConceptTable( $sid, &$insertData ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		// Make sure that there is exactly one row to be written:

@@ -17,13 +17,12 @@ class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		StoreFactory::clear();
 		parent::tearDown();
 	}
 
 	public function testGetDefaultStore() {
-
 		$instance = StoreFactory::getStore();
 
 		$this->assertInstanceOf(
@@ -45,7 +44,6 @@ class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDifferentStoreIdInstanceInvocation() {
-
 		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMWSQLStore3' ) );
 		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMWSparqlStore' ) );
 

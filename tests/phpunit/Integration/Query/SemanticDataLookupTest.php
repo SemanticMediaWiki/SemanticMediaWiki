@@ -27,7 +27,7 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 	private $dataValueFactory;
 	private $semanticDataFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -41,8 +41,7 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 		);
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -51,7 +50,6 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 	}
 
 	public function testPropertyValueMatch_Wpg() {
-
 		$store = StoreFactory::getStore();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
@@ -85,7 +83,6 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 	}
 
 	public function testPropertyValueMatch_Wpg_WithSubject() {
-
 		$store = StoreFactory::getStore();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
@@ -117,7 +114,6 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 	}
 
 	public function testPropertyValueMatch_Wpg_Sorted() {
-
 		$store = StoreFactory::getStore();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
@@ -164,7 +160,6 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 	}
 
 	public function testPropertyValueMatch_Txt() {
-
 		$store = StoreFactory::getStore();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(

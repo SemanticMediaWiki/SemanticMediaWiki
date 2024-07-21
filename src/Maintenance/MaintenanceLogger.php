@@ -56,7 +56,6 @@ class MaintenanceLogger {
 	 * @param string $target
 	 */
 	public function logFromArray( array $message, $target = '' ) {
-
 		if ( isset( $message['Options'] ) ) {
 			unset( $message['Options']['with-maintenance-log'] );
 			unset( $message['Options']['memory-limit'] );
@@ -79,7 +78,6 @@ class MaintenanceLogger {
 	 * @param string $target
 	 */
 	public function log( $message, $target = '' ) {
-
 		if ( $target === '' ) {
 			$target = $this->performer;
 		}

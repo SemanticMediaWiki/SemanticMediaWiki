@@ -15,12 +15,11 @@ use SMW\Query\DescriptionBuilderRegistry;
  */
 class DescriptionBuilderRegistryTest extends \PHPUnit_Framework_TestCase {
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DescriptionBuilderRegistry::class,
 			new DescriptionBuilderRegistry()
@@ -28,7 +27,6 @@ class DescriptionBuilderRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSomeValueDescriptionBuilder() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -42,7 +40,6 @@ class DescriptionBuilderRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructTimeValueDescriptionBuilder() {
-
 		$dataValue = $this->getMockBuilder( '\SMWTimeValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -56,7 +53,6 @@ class DescriptionBuilderRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructNumberValueDescriptionBuilder() {
-
 		$dataValue = $this->getMockBuilder( '\SMWNumberValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -70,7 +66,6 @@ class DescriptionBuilderRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructRecordValueDescriptionBuilder() {
-
 		$dataValue = $this->getMockBuilder( '\SMWRecordValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -84,7 +79,6 @@ class DescriptionBuilderRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterAdditionalDescriptionBuilder() {
-
 		$descriptionBuilder = $this->getMockBuilder( '\SMW\Query\DescriptionBuilders\DescriptionBuilder' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isBuilderFor' ] )

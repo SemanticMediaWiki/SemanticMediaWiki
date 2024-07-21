@@ -33,7 +33,6 @@ class StoreFactory {
 	 * @throws StoreNotFoundException
 	 */
 	public static function getStore( $class = null ) {
-
 		if ( $class === null ) {
 			$class = $GLOBALS['smwgDefaultStore'];
 		}
@@ -53,7 +52,6 @@ class StoreFactory {
 	}
 
 	private static function newFromClass( $class ) {
-
 		if ( !class_exists( $class ) ) {
 			throw new RuntimeException( "{$class} was not found!" );
 		}

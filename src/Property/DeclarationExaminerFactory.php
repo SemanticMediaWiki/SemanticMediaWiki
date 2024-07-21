@@ -37,7 +37,6 @@ class DeclarationExaminerFactory {
 	 * @return DeclarationExaminer
 	 */
 	public function newDeclarationExaminer( Store $store, SemanticData $semanticData = null ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

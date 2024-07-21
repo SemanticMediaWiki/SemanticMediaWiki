@@ -19,7 +19,6 @@ class AskArgs extends Query {
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
-
 		$params = $this->extractRequestParams();
 
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );

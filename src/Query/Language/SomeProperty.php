@@ -54,7 +54,6 @@ class SomeProperty extends Description {
 	 * @param integer $hierarchyDepth
 	 */
 	public function setHierarchyDepth( $hierarchyDepth ) {
-
 		if ( $hierarchyDepth > $GLOBALS['smwgQSubpropertyDepth'] ) {
 			$hierarchyDepth = $GLOBALS['smwgQSubpropertyDepth'];
 		}
@@ -78,7 +77,6 @@ class SomeProperty extends Description {
 	 * @return string
 	 */
 	public function getFingerprint() {
-
 		// Avoid a recursive tree
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
@@ -192,7 +190,6 @@ class SomeProperty extends Description {
 	 * @return SomeProperty
 	 */
 	public function prune( &$maxsize, &$maxdepth, &$log ) {
-
 		if ( ( $maxsize <= 0 ) || ( $maxdepth <= 0 ) ) {
 			$log[] = $this->getQueryString();
 			return new ThingDescription();

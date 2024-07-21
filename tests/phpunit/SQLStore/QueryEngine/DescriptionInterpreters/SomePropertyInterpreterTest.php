@@ -29,7 +29,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private QuerySegmentValidator $querySegmentValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -60,7 +60,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SomePropertyInterpreter::class,
 			new SomePropertyInterpreter( $this->store, $this->conditionBuilder, $this->valueMatchConditionBuilder )
@@ -68,7 +67,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testinterpretDescriptionForUnknownTablePropertyId() {
-
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
 			->will( $this->returnValue( '' ) );
@@ -100,7 +98,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testinterpretDescriptionForNonIdSubject() {
-
 		$proptable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'usesIdSubject' ] )
 			->getMock();
@@ -144,7 +141,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testinterpretDescriptionForNonWikiPageTypeInverseProperty() {
-
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -202,7 +198,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testinterpretDescription( $description, $isFixedPropertyTable, $indexField, $sortKeys, $expected ) {
-
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -289,7 +284,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$descriptionFactory = new DescriptionFactory();
 		$dataItemFactory = new DataItemFactory();
 

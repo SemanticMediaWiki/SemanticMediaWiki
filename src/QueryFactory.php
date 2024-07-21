@@ -102,7 +102,6 @@ class QueryFactory {
 	 * @return QueryParser
 	 */
 	public function newLegacyQueryParser( $queryFeatures = false ) {
-
 		if ( $queryFeatures === false ) {
 			$queryFeatures = Applicationfactory::getInstance()->getSettings()->get( 'smwgQFeatures' );
 		}
@@ -125,7 +124,6 @@ class QueryFactory {
 	 * @return QueryResult
 	 */
 	public function newQueryResult( Store $store, Query $query, $results = [], $continue = false ) {
-
 		$queryResult = new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,

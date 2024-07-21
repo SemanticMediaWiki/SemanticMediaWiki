@@ -63,7 +63,6 @@ class FieldChangeOp {
 	 * @throws InvalidArgumentException
 	 */
 	public function get( $key ) {
-
 		if ( $this->has( $key ) ) {
 			return $this->changeOp[$key];
 		}

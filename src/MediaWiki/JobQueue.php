@@ -63,7 +63,6 @@ class JobQueue {
 	 * @return []
 	 */
 	public function runFromQueue( array $list ) {
-
 		$log = [];
 
 		foreach ( $list as $type => $amount ) {
@@ -120,7 +119,6 @@ class JobQueue {
 	 * @param string $type
 	 */
 	public function delete( $type ) {
-
 		$jobQueue = $this->jobQueueGroup->get( $this->mapLegacyType( $type ) );
 		$jobQueue->delete();
 
@@ -145,7 +143,6 @@ class JobQueue {
 	 * @param Job|Job[] $jobs
 	 */
 	public function lazyPush( $jobs ) {
-
 		if ( !method_exists( $this->jobQueueGroup, 'lazyPush' ) ) {
 			return $this->push( $jobs );
 		}
@@ -170,7 +167,6 @@ class JobQueue {
 	 * @return integer
 	 */
 	public function getQueueSize( $type ) {
-
 		$jobQueue = $this->jobQueueGroup->get( $this->mapLegacyType( $type ) );
 
 		if ( $this->disableCache ) {
@@ -201,7 +197,6 @@ class JobQueue {
 	 * @return string
 	 */
 	public static function mapLegacyType( $type ) {
-
 		// Legacy names
 		if ( strpos( $type, 'SMW\\' ) !== false ) {
 			$type = 'smw.' . lcfirst( str_replace( [ 'SMW\\', 'Job' ], '', $type ) );

@@ -35,7 +35,6 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 * @return boolean
 	 */
 	public function isResourceBuilderFor( DIProperty $property ) {
-
 		if ( $this->resourceBuilders === [] ) {
 			$this->initResourceBuilders();
 		}
@@ -66,7 +65,6 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 * @return ResourceBuilder $resourceBuilder
 	 */
 	public function findResourceBuilder( DIProperty $property ) {
-
 		if ( $this->resourceBuilders === [] ) {
 			$this->initResourceBuilders();
 		}
@@ -99,7 +97,6 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	}
 
 	private function initResourceBuilders() {
-
 		$this->addResourceBuilder( new UniquenessConstraintPropertyValueResourceBuilder() );
 
 		$sortPropertyValueResourceBuilder = new SortPropertyValueResourceBuilder();

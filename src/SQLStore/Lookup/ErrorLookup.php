@@ -40,7 +40,6 @@ class ErrorLookup {
 	 * @return array
 	 */
 	public function buildArray( /* iterable */ $res ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$messages = [];
 
@@ -67,7 +66,6 @@ class ErrorLookup {
 	 * @return Iterator/array
 	 */
 	public function findErrorsByType( $errorType, DIWikiPage $subject = null, RequestOptions $requestOptions = null ) {
-
 		if ( $requestOptions === null ) {
 			$requestOptions = new RequestOptions();
 		}
@@ -76,7 +74,6 @@ class ErrorLookup {
 	}
 
 	private function fetchFromTable( $errorType, $subject, $requestOptions ) {
-
 		$checkConstraintErrors = $requestOptions->getOption( 'checkConstraintErrors' );
 
 		/**

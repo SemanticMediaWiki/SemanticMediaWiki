@@ -23,7 +23,6 @@ class SemanticDataFactory {
 	 * @param Title|string $title
 	 */
 	public function setTitle( $title ) {
-
 		if ( is_string( $title ) ) {
 			$title = Title::newFromText( $title );
 		}
@@ -54,7 +53,6 @@ class SemanticDataFactory {
 	 * @throws RuntimeException
 	 */
 	public function newEmptySemanticData( $title = null ) {
-
 		if ( $title instanceof DIWikiPage ) {
 			$this->setSubject( $title );
 		} elseif ( $title !== null ) {

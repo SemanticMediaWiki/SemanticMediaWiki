@@ -16,7 +16,6 @@ use SMW\DataValues\ExternalFormatterUriValue;
 class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExternalFormatterUriValue::class,
 			new ExternalFormatterUriValue()
@@ -24,7 +23,6 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToParseUserValueOnInvalidUrlFormat() {
-
 		$instance = new ExternalFormatterUriValue();
 		$instance->setUserValue( 'foo' );
 
@@ -34,7 +32,6 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToParseUserValueOnMissingPlaceholder() {
-
 		$instance = new ExternalFormatterUriValue();
 		$instance->setUserValue( 'http://example.org' );
 
@@ -44,7 +41,6 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasMultiSubstitute() {
-
 		$instance = new ExternalFormatterUriValue();
 		$instance->setUserValue( 'http://example.org/Foo?a=$1,$2' );
 
@@ -57,7 +53,6 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider uriProvider
 	 */
 	public function testGetFormattedUri( $uri, $replacement, $expected ) {
-
 		$instance = new ExternalFormatterUriValue();
 		$instance->setUserValue( $uri );
 
@@ -71,7 +66,6 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider uriWithParametersProvider
 	 */
 	public function testFormattedUriWithParameters( $uri, $replacement, $parameters, $expected ) {
-
 		$instance = new ExternalFormatterUriValue();
 		$instance->setUserValue( $uri );
 
@@ -82,7 +76,6 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function uriProvider() {
-
 		$provider[] = [
 			'http://example.org/$1',
 			'foo',
@@ -198,7 +191,6 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function uriWithParametersProvider() {
-
 		yield [
 			'http://example.org/$1',
 			'foo',

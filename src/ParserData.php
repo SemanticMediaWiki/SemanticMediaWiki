@@ -124,7 +124,6 @@ class ParserData {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
-
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
@@ -139,7 +138,6 @@ class ParserData {
 	 * @param string $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
@@ -222,7 +220,6 @@ class ParserData {
 	 * @return boolean
 	 */
 	public function hasAnnotationBlock() {
-
 		// ParserOutput::getExtensionData returns null if no value was set for this key
 		if ( $this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) !== null &&
 			$this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) ) {
@@ -304,7 +301,6 @@ class ParserData {
 	 * @param ParserOutput|null
 	 */
 	public function importFromParserOutput( ParserOutput $parserOutput = null ) {
-
 		if ( $parserOutput === null ) {
 			return;
 		}
@@ -324,7 +320,6 @@ class ParserData {
 	 * @since 3.0
 	 */
 	public function copyToParserOutput() {
-
 		// Ensure that errors are reported and recorded
 		$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
 			$this->getSubject()
@@ -352,7 +347,6 @@ class ParserData {
 	 * @since 3.0
 	 */
 	public function markParserOutput() {
-
 		$this->parserOutput->setTimestamp( wfTimestampNow() );
 
 		if ( method_exists( $this->parserOutput, 'setPageProperty' ) ) {
@@ -413,7 +407,6 @@ class ParserData {
 	 * @return boolean
 	 */
 	public function updateStore( $opts = [] ) {
-
 		$isDeferrableUpdate = false;
 
 		// @legacy
@@ -488,7 +481,6 @@ class ParserData {
 	 * if not available create an empty container
 	 */
 	private function initSemanticData() {
-
 		$this->semanticData = $this->parserOutput->getExtensionData( self::DATA_ID );
 
 		if ( !( $this->semanticData instanceof SemanticData ) ) {

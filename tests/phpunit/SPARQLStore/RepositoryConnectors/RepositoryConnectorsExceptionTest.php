@@ -36,7 +36,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 		'SMWSparqlDatabase'
 	];
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->defaultGraph = 'http://foo/myDefaultGraph';
@@ -46,7 +46,6 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testCanConstruct( $httpConnector ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -61,7 +60,6 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoQueryForEmptyQueryEndpointThrowsException( $httpConnector ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -79,7 +77,6 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoUpdateForEmptyUpdateEndpointThrowsException( $httpConnector ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -97,7 +94,6 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoHttpPostForEmptyDataEndpointThrowsException( $httpConnector ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -115,7 +111,6 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoHttpPostForUnreachableDataEndpointThrowsException( $httpConnector ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -134,7 +129,6 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function httpDatabaseConnectorInstanceNameProvider() {
-
 		$provider = [];
 
 		foreach ( $this->databaseConnectors as $databaseConnector ) {

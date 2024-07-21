@@ -20,7 +20,6 @@ class RepositoryResultTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\RepositoryResult',
 			new RepositoryResult()
@@ -33,7 +32,6 @@ class RepositoryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsBooleanTrue() {
-
 		$instance = new RepositoryResult(
 			[],
 			[ [ new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' ) ] ]
@@ -44,7 +42,6 @@ class RepositoryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsBooleanNotTrue() {
-
 		$instance = new RepositoryResult();
 
 		$this->assertFalse(
@@ -53,7 +50,6 @@ class RepositoryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetNumericValue() {
-
 		$instance = new RepositoryResult(
 			[],
 			[ [ new ExpLiteral( '2', 'http://www.w3.org/2001/XMLSchema#integer' ) ] ]
@@ -64,7 +60,6 @@ class RepositoryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetZeroNumericValue() {
-
 		$instance = new RepositoryResult();
 
 		$this->assertSame(
@@ -74,7 +69,6 @@ class RepositoryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetErrorCode() {
-
 		$instance = new RepositoryResult();
 
 		$this->assertEquals(
@@ -93,7 +87,6 @@ class RepositoryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIteration() {
-
 		$rawList = [
 			[
 				new ExpLiteral( '2', 'http://www.w3.org/2001/XMLSchema#integer' ),
@@ -115,7 +108,6 @@ class RepositoryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetComments() {
-
 		$instance = new RepositoryResult(
 			[],
 			[],

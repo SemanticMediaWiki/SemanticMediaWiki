@@ -112,7 +112,6 @@ class Database {
 	 * @return boolean
 	 */
 	public function isType( $type ) {
-
 		if ( $this->type === '' ) {
 			$this->type = $this->connRef->getConnection( 'read' )->getType();
 		}
@@ -141,7 +140,6 @@ class Database {
 	 * @return string
 	 */
 	public function getType() {
-
 		if ( $this->type === '' ) {
 			$this->type = $this->connRef->getConnection( 'read' )->getType();
 		}
@@ -185,7 +183,6 @@ class Database {
 	 * @return string
 	 */
 	public function tablePrefix( $prefix = null ) {
-
 		$connection = $this->connRef->getConnection( 'read' );
 
 		// https://github.com/wikimedia/mediawiki/commit/6ab57b9c2424d9cc01b29908658b273a6ce75489
@@ -226,7 +223,6 @@ class Database {
 	 * @throws UnexpectedValueException
 	 */
 	public function select( $tableName, $fields, $conditions, $fname, array $options = [], $joinConditions = [] ) {
-
 		$tablePrefix = null;
 		$connection = $this->connRef->getConnection( 'read' );
 
@@ -475,7 +471,6 @@ class Database {
 	 * @return int
 	 */
 	function insertId() {
-
 		if ( $this->insertId !== null ) {
 			return $this->insertId;
 		}
@@ -507,7 +502,6 @@ class Database {
 	 * @since 2.4
 	 */
 	function setFlag( $flag ) {
-
 		if ( $flag === self::AUTO_COMMIT ) {
 			return $this->flags = self::AUTO_COMMIT;
 		}
@@ -521,7 +515,6 @@ class Database {
 	 * @since 1.9
 	 */
 	public function insert( $table, $rows, $fname = __METHOD__, $options = [] ) {
-
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$res = $this->connRef->getConnection( 'write' )->insert( $table, $rows, $fname, $options );
@@ -537,7 +530,6 @@ class Database {
 	 * @since 1.9
 	 */
 	function update( $table, $values, $conds, $fname = __METHOD__, $options = [] ) {
-
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$res = $this->connRef->getConnection( 'write' )->update( $table, $values, $conds, $fname, $options );
@@ -553,7 +545,6 @@ class Database {
 	 * @since 3.1
 	 */
 	public function upsert( $table, array $rows, $uniqueIndexes, array $set, $fname = __METHOD__ ) {
-
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$res = $this->connRef->getConnection( 'write' )->upsert( $table, $rows, $uniqueIndexes, $set, $fname );
@@ -569,7 +560,6 @@ class Database {
 	 * @since 1.9
 	 */
 	public function delete( $table, $conds, $fname = __METHOD__ ) {
-
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$res = $this->connRef->getConnection( 'write' )->delete( $table, $conds, $fname );
@@ -585,7 +575,6 @@ class Database {
 	 * @since 2.5
 	 */
 	public function replace( $table, $uniqueIndexes, $rows, $fname = __METHOD__ ) {
-
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$res = $this->connRef->getConnection( 'write' )->replace( $table, $uniqueIndexes, $rows, $fname );
@@ -689,7 +678,6 @@ class Database {
 	 * @throws RuntimeException
 	 */
 	public function beginSectionTransaction( $fname = __METHOD__ ) {
-
 		$this->transactionHandler->markSectionTransaction(
 			$fname
 		);
@@ -703,7 +691,6 @@ class Database {
 	 * @param string $fname
 	 */
 	public function endSectionTransaction( $fname = __METHOD__ ) {
-
 		$this->transactionHandler->detachSectionTransaction(
 			$fname
 		);
@@ -728,7 +715,6 @@ class Database {
 	 * @param string $fname
 	 */
 	public function beginAtomicTransaction( $fname = __METHOD__ ) {
-
 		// Disable all individual atomic transactions as long as a section
 		// transaction is registered.
 		if ( $this->transactionHandler->hasActiveSectionTransaction() ) {
@@ -746,7 +732,6 @@ class Database {
 	 * @return void
 	 */
 	public function endAtomicTransaction( $fname = __METHOD__ ) {
-
 		// Disable all individual atomic transactions as long as a section
 		// transaction is registered.
 		if ( $this->transactionHandler->hasActiveSectionTransaction() ) {
@@ -762,7 +747,6 @@ class Database {
 	 * @param callable $callback
 	 */
 	public function onTransactionResolution( callable $callback, $fname = __METHOD__ ) {
-
 		$connection = $this->connRef->getConnection( 'write' );
 
 		if ( method_exists( $connection, 'onTransactionResolution' ) && $connection->trxLevel() ) {
@@ -776,7 +760,6 @@ class Database {
 	 * @param callable $callback
 	 */
 	public function onTransactionCommitOrIdle( callable $callback ) {
-
 		$connection = $this->connRef->getConnection( 'write' );
 
 		// https://gerrit.wikimedia.org/r/#/c/mediawiki/core/+/432036/
@@ -795,7 +778,6 @@ class Database {
 	 * @return string
 	 */
 	public function escape_bytea( $text ) {
-
 		if ( $this->isType( 'postgres' ) ) {
 			$text = pg_escape_bytea( $text );
 		}
@@ -811,7 +793,6 @@ class Database {
 	 * @return string
 	 */
 	public function unescape_bytea( $text ) {
-
 		if ( $this->isType( 'postgres' ) ) {
 			$text = pg_unescape_bytea( $text );
 		}

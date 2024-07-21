@@ -16,7 +16,6 @@ use SMW\MediaWiki\Jobs\NullJob;
 class NullJobTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\MediaWiki\Jobs\NullJob',
 			new NullJob( null )
@@ -27,7 +26,6 @@ class NullJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testRunJob( $parameters ) {
-
 		$instance = new NullJob(
 			null,
 			$parameters
@@ -39,7 +37,6 @@ class NullJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		$provider[] = [
 			[]
 		];

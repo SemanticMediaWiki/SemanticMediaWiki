@@ -54,7 +54,6 @@ class DuplicateLookupTask extends Task {
 	 * @return array
 	 */
 	public function process( array $parameters ) {
-
 		$cacheTTL = 3600;
 
 		if ( isset( $this->cacheUsage['api.task'] ) ) {

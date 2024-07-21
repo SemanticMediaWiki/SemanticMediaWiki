@@ -16,7 +16,6 @@ use SMW\Query\ResultPrinters\ListResultPrinter\ParameterDictionary;
 class ParameterDictionaryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSetGet() {
-
 		$dict = new ParameterDictionary();
 
 		$dict->set( 'foo', 'Derek' );
@@ -28,7 +27,6 @@ class ParameterDictionaryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetArrayGet() {
-
 		$dict = new ParameterDictionary();
 
 		$dict->set( ['foo' => 'Derek', 'bar' => 'Devin' ] );
@@ -40,7 +38,6 @@ class ParameterDictionaryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetDefaultGet() {
-
 		$dict = new ParameterDictionary();
 
 		$dict->setDefault( 'foo', 'Derek' );
@@ -52,7 +49,6 @@ class ParameterDictionaryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetDefaultArrayGet() {
-
 		$dict = new ParameterDictionary();
 
 		$dict->set( ['foo' => 'Derek', 'bar' => 'Devin' ] );

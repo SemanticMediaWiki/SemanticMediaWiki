@@ -45,7 +45,6 @@ class GlobalsProvider {
 	 * @return mixed
 	 */
 	public function get( $key ) {
-
 		if ( isset( $GLOBALS[$key ] ) ) {
 			return $GLOBALS[$key];
 		}

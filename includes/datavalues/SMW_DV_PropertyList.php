@@ -23,7 +23,6 @@ class SMWPropertyListValue extends SMWDataValue {
 	protected $m_diProperties;
 
 	protected function parseUserValue( $value ) {
-
 		$this->m_diProperties = [];
 		$stringValue = '';
 		$localizer = Localizer::getInstance();
@@ -73,7 +72,6 @@ class SMWPropertyListValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-
 		if ( !$dataItem instanceof SMWDIBlob ) {
 			return false;
 		}

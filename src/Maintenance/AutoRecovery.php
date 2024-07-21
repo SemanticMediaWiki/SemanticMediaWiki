@@ -110,7 +110,6 @@ class AutoRecovery {
 	 * @param mixed $value
 	 */
 	public function set( $key, $value ) {
-
 		if ( !$this->enabled ) {
 			return false;
 		}
@@ -135,7 +134,6 @@ class AutoRecovery {
 	 * @return mixed
 	 */
 	public function get( $key ) {
-
 		if ( !$this->enabled ) {
 			return false;
 		}
@@ -161,7 +159,6 @@ class AutoRecovery {
 	 * @return boolean
 	 */
 	public function has( $key ) {
-
 		if ( !$this->enabled ) {
 			return false;
 		}
@@ -178,7 +175,6 @@ class AutoRecovery {
 	}
 
 	private function initContents( $key ) {
-
 		$file = $this->getFile();
 
 		$this->contents = [

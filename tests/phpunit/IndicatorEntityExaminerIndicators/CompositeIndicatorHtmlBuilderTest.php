@@ -27,7 +27,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private MessageLocalizer $messageLocalizer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -38,13 +38,12 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CompositeIndicatorHtmlBuilder::class,
 			new CompositeIndicatorHtmlBuilder( $this->templateEngine )
@@ -52,7 +51,6 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_Empty() {
-
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
 			->will( $this->returnValue( '__foo__' ) );
@@ -89,7 +87,6 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_TypedIndicator_SEVERITY_ERROR() {
-
 		$typableSeverityIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -135,7 +132,6 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_TypedIndicator_SEVERITY_WARNING() {
-
 		$typableSeverityIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -183,7 +179,6 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_Deferrable() {
-
 		$deferrableIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -224,7 +219,6 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_Composite() {
-
 		$composite = [
 			'abc_123' => [ 'content' => '__content_123', 'title' => '_title_123' ]
 		];

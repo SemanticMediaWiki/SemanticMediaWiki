@@ -95,7 +95,6 @@ class updateEntityCollation extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
 			exit ( $maintenanceCheck->getMessage() );
 		}
@@ -177,7 +176,6 @@ class updateEntityCollation extends \Maintenance {
 	}
 
 	private function informAboutDifferences( $smwgEntityCollation, $wgCategoryCollation ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -208,7 +206,6 @@ class updateEntityCollation extends \Maintenance {
 	}
 
 	private function fetchRows() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$this->lastId = (int)$connection->selectField(
@@ -241,7 +238,6 @@ class updateEntityCollation extends \Maintenance {
 	}
 
 	private function runUpdate( $rows, $count ) {
-
 		$tableFieldUpdater = new TableFieldUpdater(
 			$this->store
 		);
@@ -278,7 +274,6 @@ class updateEntityCollation extends \Maintenance {
 	}
 
 	private function getSortKey( $row, $pv ) {
-
 		if ( $pv !== [] ) {
 			return end( $pv )->getString();
 		}

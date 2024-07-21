@@ -21,7 +21,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SchemaList::class,
 			new SchemaList( [] )
@@ -29,7 +28,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGeList() {
-
 		$instance = new SchemaList( [] );
 
 		$this->assertEquals(
@@ -39,7 +37,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJsonSerialize() {
-
 		$instance = new SchemaList( [] );
 
 		$this->assertInternalType(
@@ -49,7 +46,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFingerprint() {
-
 		$instance = new SchemaList( [] );
 
 		$this->assertInternalType(
@@ -59,7 +55,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAdd() {
-
 		$schemaDefinition = new SchemaDefinition(
 			'Bar',
 			[ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ]
@@ -87,7 +82,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMergedList() {
-
 		$data[] = new SchemaDefinition(
 			'Foo',
 			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
@@ -111,7 +105,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToArray() {
-
 		$data[] = new SchemaDefinition(
 			'Foo',
 			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
@@ -140,7 +133,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_Empty() {
-
 		$data[] = new SchemaDefinition(
 			'Foo',
 			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
@@ -160,7 +152,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewCompartmentIteratorByKey() {
-
 		$data[] = new SchemaDefinition(
 			'Foo',
 			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
@@ -186,7 +177,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewCompartmentIteratorByKey_NoValidKey() {
-
 		$data[] = new SchemaDefinition(
 			'Foo',
 			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
@@ -207,7 +197,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewCompartmentIteratorByKey_Empty() {
-
 		$instance = new SchemaList( [] );
 		$compartmentIterator = $instance->newCompartmentIteratorByKey( 'Foo' );
 

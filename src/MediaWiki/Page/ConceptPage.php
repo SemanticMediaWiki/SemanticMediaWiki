@@ -52,7 +52,6 @@ class ConceptPage extends Page {
 	 * @return string
 	 */
 	protected function getHtml() {
-
 		$context = $this->getContext();
 		$context->getOutput()->addModuleStyles( 'ext.smw.page.styles' );
 
@@ -186,7 +185,6 @@ class ConceptPage extends Page {
 	}
 
 	private function getCachedCount( $store ) {
-
 		$concept = $store->getConceptCacheStatus(
 			$this->getDataItem()
 		);

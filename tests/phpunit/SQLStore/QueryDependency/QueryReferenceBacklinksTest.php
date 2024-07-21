@@ -19,18 +19,17 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$queryDependencyLinksStore = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -42,7 +41,6 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddQueryReferenceBacklinksTo() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', 'foobar' );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -88,7 +86,6 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindQueryReferenceBacklinks() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', '' );
 
 		$queryDependencyLinksStore = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore' )
@@ -112,7 +109,6 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInspectFurtherLinkRequirement() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_ASK' );
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', '' );
 

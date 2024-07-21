@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class TextCatLanguageDetectorTest extends TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\LanguageDetector\TextCatLanguageDetector',
 			new TextCatLanguageDetector()
@@ -25,7 +24,6 @@ class TextCatLanguageDetectorTest extends TestCase {
 	}
 
 	public function testDetectOnMock() {
-
 		$languageCandidates = array( 'en', 'de', 'fr', 'es', 'ja', 'zh' );
 
 		$textCat = $this->getMockBuilder( '\TextCat' )

@@ -41,7 +41,6 @@ class TraversalPropertyLookup {
 	 * {@inheritDoc}
 	 */
 	public function fetchFromTable( PropertyTableDef $propertyTableDef, DataItem $dataItem, RequestOptions $requestOptions = null ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$builder = $connection->newSelectQueryBuilder( 'read' );
 
@@ -114,7 +113,6 @@ class TraversalPropertyLookup {
 	}
 
 	private function buildWhereConds( $builder, $dataItem ) {
-
 		if ( $dataItem == null ) return;
 
 		$dataItemHandler = $this->store->getDataItemHandlerForDIType( $dataItem->getDIType() );

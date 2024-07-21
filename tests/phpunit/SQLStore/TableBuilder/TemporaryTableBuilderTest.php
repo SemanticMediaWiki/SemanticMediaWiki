@@ -18,7 +18,7 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -27,7 +27,6 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TemporaryTableBuilder::class,
 			new TemporaryTableBuilder( $this->connection )
@@ -35,7 +34,6 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateWithoutAutoCommit() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'query' );
 
@@ -47,7 +45,6 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateWithoutAutoCommitOnPostgres() {
-
 		$this->connection->expects( $this->never() )
 			->method( 'setFlag' );
 
@@ -71,7 +68,6 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateWithAutoCommitFlag() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'setFlag' )
 			->with( $this->equalTo( Database::AUTO_COMMIT ) );
@@ -92,7 +88,6 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDropWithoutAutoCommit() {
-
 		$this->connection->expects( $this->never() )
 			->method( 'setFlag' );
 
@@ -111,7 +106,6 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDropWithAutoCommitFlag() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'setFlag' )
 			->with( $this->equalTo( Database::AUTO_COMMIT ) );

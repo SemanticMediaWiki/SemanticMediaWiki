@@ -69,7 +69,6 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getIndexHint( $key ) {
-
 		if ( 'property.subjects' && $this->isDbType( 'mysql' ) ) {
 			return 's_id';
 		}
@@ -125,7 +124,6 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-
 		if ( is_string( $dbkeys ) ) {
 			return DITime::doUnserialize( $dbkeys );
 		}

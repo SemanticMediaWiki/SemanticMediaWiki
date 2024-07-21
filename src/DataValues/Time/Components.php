@@ -66,7 +66,6 @@ class Components {
 	 * @since 3.0
 	 */
 	public function get( $key ) {
-
 		if ( isset( $this->components[$key] ) ) {
 			return $this->components[$key];
 		}

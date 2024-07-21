@@ -76,7 +76,6 @@ class QueryToken {
 	 * @param Description $description
 	 */
 	public function addFromDesciption( Description $description ) {
-
 		if ( $description instanceof Conjunction ) {
 			foreach ( $description->getDescriptions() as $desc ) {
 				return $this->addFromDesciption( $desc );
@@ -124,7 +123,6 @@ class QueryToken {
 	 * @return string
 	 */
 	public function highlight( $text, $type = self::HL_BOLD ) {
-
 		if ( $this->tokens === [] || strpos( strtolower( $this->outputFormat ), '-hl' ) === false ) {
 			return $text;
 		}
@@ -133,7 +131,6 @@ class QueryToken {
 	}
 
 	private function doHighlight( $text, $type, $tokens ) {
-
 		if ( $type === self::HL_BOLD ) {
 			$replacement = "<b>$0</b>";
 		} elseif ( $type === self::HL_UNDERLINE ) {
@@ -152,7 +149,6 @@ class QueryToken {
 	}
 
 	private function addTokensFromText( $text ) {
-
 		// Remove query related chars
 		$text = str_replace(
 			[ '*', '"', '~', '_', '+', '-' ],

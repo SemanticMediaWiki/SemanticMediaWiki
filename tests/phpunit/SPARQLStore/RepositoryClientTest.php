@@ -16,7 +16,6 @@ use SMW\SPARQLStore\RepositoryClient;
 class RepositoryClientTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RepositoryClient::class,
 			new RepositoryClient( '', '', '', '' )
@@ -24,7 +23,6 @@ class RepositoryClientTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFeatureFlag() {
-
 		$instance = new RepositoryClient( 'Foo', 'Bar', 'Nu', 'Vim' );
 		$instance->setFeatureSet( 2 | 4 | 8 );
 
@@ -38,7 +36,6 @@ class RepositoryClientTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPublicAccess() {
-
 		$instance = new RepositoryClient( 'Foo', 'Bar', 'Nu', 'Vim' );
 
 		$this->assertSame(

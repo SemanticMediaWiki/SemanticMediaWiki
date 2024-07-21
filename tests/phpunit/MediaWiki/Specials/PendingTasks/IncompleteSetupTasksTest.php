@@ -19,7 +19,6 @@ class IncompleteSetupTasksTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			IncompleteSetupTasks::class,
 			new IncompleteSetupTasks()
@@ -27,7 +26,6 @@ class IncompleteSetupTasksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTitle() {
-
 		$instance = new IncompleteSetupTasks();
 
 		$this->assertEquals(
@@ -37,7 +35,6 @@ class IncompleteSetupTasksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
 			->disableOriginalConstructor()
 			->getMock();

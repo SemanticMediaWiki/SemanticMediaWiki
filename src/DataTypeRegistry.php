@@ -117,7 +117,6 @@ class DataTypeRegistry {
 	 * @return DataTypeRegistry
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -173,7 +172,6 @@ class DataTypeRegistry {
 	 * @return integer data item ID
 	 */
 	public function getDataItemByType( $typeId ) {
-
 		if ( isset( $this->typeDataItemIds[$typeId] ) ) {
 			return $this->typeDataItemIds[$typeId];
 		}
@@ -199,7 +197,7 @@ class DataTypeRegistry {
 	 *
 	 * @return boolean
 	 */
-	public function isRecordType( string $typeId ) : bool {
+	public function isRecordType( string $typeId ): bool {
 		return strpos( $typeId, '_rec' ) !== false;
 	}
 
@@ -301,7 +299,6 @@ class DataTypeRegistry {
 	 * @return string
 	 */
 	public function findTypeByLabel( $label ) {
-
 		$label = mb_strtolower( $label );
 
 		if ( isset( $this->typeByLabelOrAliasLookup[$label] ) ) {
@@ -320,7 +317,6 @@ class DataTypeRegistry {
 	 * @return string
 	 */
 	public function findTypeByLabelAndLanguage( $label, $languageCode = false ) {
-
 		if ( !$languageCode ) {
 			return $this->findTypeByLabel( $label );
 		}
@@ -346,7 +342,6 @@ class DataTypeRegistry {
 	 * @return string
 	 */
 	public function getFieldType( $type ) {
-
 		if ( isset( $this->typeDataItemIds[$type] ) ) {
 			return $this->defaultDataItemTypeMap[$this->typeDataItemIds[$type]];
 		}
@@ -366,7 +361,6 @@ class DataTypeRegistry {
 	 * @return string
 	 */
 	public function findTypeLabel( $id ) {
-
 		if ( isset( $this->typeLabels[$id] ) ) {
 			return $this->typeLabels[$id];
 		}
@@ -386,7 +380,6 @@ class DataTypeRegistry {
 	 * @return string
 	 */
 	public function findCanonicalLabelById( $id ) {
-
 		if ( isset( $this->canonicalLabels[$id] ) ) {
 			return $this->canonicalLabels[$id];
 		}
@@ -441,7 +434,6 @@ class DataTypeRegistry {
 	 * @return string|null
 	 */
 	public function getDefaultDataItemByType( $typeId ) {
-
 		if ( isset( $this->defaultDataItemTypeMap[$typeId] ) ) {
 			return $this->defaultDataItemTypeMap[$typeId];
 		}
@@ -459,7 +451,6 @@ class DataTypeRegistry {
 	 * @return string|null
 	 */
 	public function getDataTypeClassById( $typeId ) {
-
 		if ( $this->hasDataTypeClassById( $typeId ) ) {
 			return $this->typeClasses[$typeId];
 		}
@@ -477,7 +468,6 @@ class DataTypeRegistry {
 	 * @return boolean
 	 */
 	public function hasDataTypeClassById( $typeId ) {
-
 		if ( !isset( $this->typeClasses[$typeId] ) ) {
 			return false;
 		}
@@ -495,7 +485,6 @@ class DataTypeRegistry {
 	 * factory.
 	 */
 	protected function initDatatypes( array $typeList ) {
-
 		foreach ( $typeList as $id => $definition ) {
 
 			if ( isset( $definition[0] ) ) {
@@ -542,7 +531,6 @@ class DataTypeRegistry {
 	 * @throws RuntimeException
 	 */
 	public function registerCallable( $typeId, $key, callable $callable ) {
-
 		if ( !is_string( $typeId ) || !is_string( $key ) ) {
 			throw new RuntimeException( "`$key`, `$typeId` need to be a string!" );
 		}
@@ -562,7 +550,6 @@ class DataTypeRegistry {
 	 * @return []
 	 */
 	public function getCallablesByTypeId( $typeId ) {
-
 		if ( !isset( $this->callables[$typeId] ) ) {
 			return [];
 		}
@@ -578,7 +565,6 @@ class DataTypeRegistry {
 	}
 
 	private function registerLabels() {
-
 		foreach ( $this->localLanguage->getDatatypeLabels() as $typeId => $typeLabel ) {
 			$this->registerTypeLabel( $typeId, $typeLabel );
 		}

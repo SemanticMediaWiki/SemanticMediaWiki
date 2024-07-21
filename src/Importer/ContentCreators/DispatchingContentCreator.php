@@ -51,7 +51,6 @@ class DispatchingContentCreator implements ContentCreator {
 	 * @param ImportContents $importContents
 	 */
 	public function canCreateContentsFor( ImportContents $importContents ) {
-
 		foreach ( $this->contentCreators as $contentCreator ) {
 			if ( $contentCreator->canCreateContentsFor( $importContents ) ) {
 				return true;
@@ -68,7 +67,6 @@ class DispatchingContentCreator implements ContentCreator {
 	 * @throws RuntimeException
 	 */
 	public function create( ImportContents $importContents ) {
-
 		foreach ( $this->contentCreators as $contentCreator ) {
 			if ( $contentCreator->canCreateContentsFor( $importContents ) ) {
 				$contentCreator->setMessageReporter( $this->messageReporter );

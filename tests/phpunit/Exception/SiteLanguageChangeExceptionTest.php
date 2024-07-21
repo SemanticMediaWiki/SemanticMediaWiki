@@ -16,7 +16,6 @@ use SMW\Exception\SiteLanguageChangeException;
 class SiteLanguageChangeExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SiteLanguageChangeException( 'Foo', 'Bar' );
 
 		$this->assertInstanceof(

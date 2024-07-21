@@ -87,7 +87,6 @@ class Query {
 	 * @throws InvalidArgumentException
 	 */
 	public function type( $type ) {
-
 		$type = strtoupper( $type );
 
 		if ( !in_array( $type, [ self::TYPE_SELECT ] ) ) {
@@ -121,7 +120,6 @@ class Query {
 	 * @return boolean
 	 */
 	public function hasField( $field = '' ) {
-
 		if ( (string)$field === '' ) {
 			return $this->fields !== [];
 		}
@@ -146,7 +144,6 @@ class Query {
 	 * @param string $table
 	 */
 	public function table( ...$table ) {
-
 		if ( strpos( $table[0], 'SELECT' ) !== false ) {
 			$tableName = '(' . $table[0] . ')';
 		} else {
@@ -162,7 +159,6 @@ class Query {
 	 * @param string ...$join
 	 */
 	public function join( ...$join ) {
-
 		if ( strpos( $join[0], 'JOIN' ) === false ) {
 			throw new InvalidArgumentException( "A join type is missing!" );
 		}
@@ -267,7 +263,6 @@ class Query {
 	 * @param string|array $condition
 	 */
 	public function condition( $condition ) {
-
 		if ( $condition === '' ) {
 			return;
 		}
@@ -308,7 +303,6 @@ class Query {
 	 * @return string
 	 */
 	public function __toString() {
-
 		$params = [
 			'tables' => $this->table,
 			'fields' => $this->fields,
@@ -340,7 +334,6 @@ class Query {
 	 * @return string
 	 */
 	public function build() {
-
 		$statement = $this->sql();
 
 		$this->type = '';
@@ -367,7 +360,6 @@ class Query {
 	}
 
 	private function sql() {
-
 		$i = 0;
 		$sql = "";
 		$fields = [];

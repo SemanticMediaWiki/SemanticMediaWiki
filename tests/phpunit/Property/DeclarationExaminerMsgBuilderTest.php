@@ -19,7 +19,7 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $declarationExaminer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
@@ -28,7 +28,6 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DeclarationExaminerMsgBuilder::class,
 			new DeclarationExaminerMsgBuilder()
@@ -39,7 +38,6 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider messageProvider
 	 */
 	public function testBuildHTML( $messages, $expected ) {
-
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
 			->will( $this->returnValue( $messages ) );
@@ -53,7 +51,6 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function messageProvider() {
-
 		if ( version_compare( MW_VERSION, '1.28', '<' ) ) {
 			yield [
 				[ [ 'plain', 'foo' ] ],

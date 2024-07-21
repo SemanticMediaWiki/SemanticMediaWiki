@@ -22,7 +22,6 @@ use Title;
 class SemanticDataSerializationDBIntegrationTest extends DatabaseTestCase {
 
 	public function testRoundtripOfSerializedSemanticDataAfterStoreUpdate() {
-
 		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 		$semanticDataBeforeUpdate = new SemanticData( $subject );
 

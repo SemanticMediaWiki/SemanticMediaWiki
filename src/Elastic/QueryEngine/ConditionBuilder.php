@@ -165,7 +165,6 @@ class ConditionBuilder {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = false ) {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -206,7 +205,6 @@ class ConditionBuilder {
 	 * @return FieldMapper
 	 */
 	public function getFieldMapper() {
-
 		if ( $this->fieldMapper === null ) {
 			$this->fieldMapper = new FieldMapper();
 		}
@@ -274,7 +272,6 @@ class ConditionBuilder {
 	 * @return integer
 	 */
 	public function getID( $dataItem ) {
-
 		if ( $dataItem instanceof DIProperty ) {
 			return (int)$this->store->getObjectIds()->getSMWPropertyID(
 				$dataItem
@@ -313,7 +310,6 @@ class ConditionBuilder {
 	 * @return array
 	 */
 	public function makeFromDescription( Description $description, $isConstantScore = true ) {
-
 		$this->errors = [];
 		$this->queryInfo = [];
 
@@ -376,7 +372,6 @@ class ConditionBuilder {
 	 * @return array
 	 */
 	public function findHierarchyMembers( DataItem $dataItem = null, $hierarchyDepth ) {
-
 		$ids = [];
 
 		if ( $dataItem !== null && ( $members = $this->hierarchyLookup->getConsecutiveHierarchyList( $dataItem ) ) !== [] ) {
@@ -403,7 +398,6 @@ class ConditionBuilder {
 	 * @return array
 	 */
 	public function interpretDescription( Description $description, $isConjunction = false ) {
-
 		$params = [];
 
 		if ( $this->initServices === false ) {
@@ -450,7 +444,6 @@ class ConditionBuilder {
 	 * @return Condition
 	 */
 	public function interpretSomeValue( ValueDescription $description, array &$options ) {
-
 		if ( $this->initServices === false ) {
 			$this->initServices();
 		}
@@ -459,7 +452,6 @@ class ConditionBuilder {
 	}
 
 	private function initServices() {
-
 		$this->somePropertyInterpreter = $this->servicesContainer->get( 'SomePropertyInterpreter', $this );
 		$this->conceptDescriptionInterpreter = $this->servicesContainer->get( 'ConceptDescriptionInterpreter', $this );
 		$this->classDescriptionInterpreter = $this->servicesContainer->get( 'ClassDescriptionInterpreter', $this );

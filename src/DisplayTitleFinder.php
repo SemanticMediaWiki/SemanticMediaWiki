@@ -62,7 +62,6 @@ class DisplayTitleFinder {
 	 * @param SemanticData $semanticData
 	 */
 	public function prefetchFromSemanticData( SemanticData $semanticData ) {
-
 		if ( $this->canUse === false ) {
 			return;
 		}
@@ -114,7 +113,6 @@ class DisplayTitleFinder {
 	 * @param array $dataItems
 	 */
 	public function prefetchFromList( $dataItems ) {
-
 		if ( $this->canUse === false || !is_iterable( $dataItems ) ) {
 			return;
 		}
@@ -198,7 +196,6 @@ class DisplayTitleFinder {
 	 * @return string
 	 */
 	public function findDisplayTitle( DIWikiPage $subject ) {
-
 		if ( $this->canUse === false ) {
 			return '';
 		}
@@ -221,7 +218,6 @@ class DisplayTitleFinder {
 	}
 
 	private function findDisplayTitleFor( $subject ) {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->setCaller( __METHOD__ );
 

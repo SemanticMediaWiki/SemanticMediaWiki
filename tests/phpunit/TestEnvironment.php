@@ -67,7 +67,6 @@ class TestEnvironment {
 	 * @param array $defaultSettingKeys
 	 */
 	public static function loadDefaultSettings( array $defaultSettingKeys = [] ) {
-
 		$settings = require $GLOBALS['smwgIP'] . '/includes/DefaultSettings.php';
 
 		if ( $defaultSettingKeys !== [] ) {
@@ -113,7 +112,6 @@ class TestEnvironment {
 	 * @param string $name
 	 */
 	public function resetMediaWikiService( $name ) {
-
 		// MW 1.27+ (yet 1.27.0.rc has no access to "resetServiceForTesting")
 		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) || !method_exists( \MediaWiki\MediaWikiServices::getInstance(), 'resetServiceForTesting' ) ) {
 			return null;
@@ -140,7 +138,6 @@ class TestEnvironment {
 	 * @param callable $service
 	 */
 	public function redefineMediaWikiService( $name, callable $service ) {
-
 		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) ) {
 			return null;
 		}
@@ -159,7 +156,6 @@ class TestEnvironment {
 	 * @since 3.1
 	 */
 	public static function changePrefix( $prefix ) {
-
 		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 			throw new \RuntimeException( "Your are trying to change the `DomainPrefix` while not being in test!" );
 		}
@@ -180,7 +176,6 @@ class TestEnvironment {
 	 * @since 3.2
 	 */
 	public static function overrideUserPermissions( $user, $permissions = [] ) {
-
 		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) || !method_exists( \MediaWiki\MediaWikiServices::getInstance(), 'getPermissionManager' ) ) {
 			return;
 		}
@@ -202,7 +197,6 @@ class TestEnvironment {
 	 * @return self
 	 */
 	public function resetPoolCacheById( $poolCache ) {
-
 		if ( is_array( $poolCache ) ) {
 			foreach ( $poolCache as $pc ) {
 				$this->resetPoolCacheById( $pc );
@@ -230,7 +224,7 @@ class TestEnvironment {
 	/**
 	 * @since 2.4
 	 */
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->testConfig->reset();
 		$this->applicationFactory->clear();
 		$this->dataValueFactory->clear();
@@ -296,7 +290,6 @@ class TestEnvironment {
 	 * @return string
 	 */
 	public function replaceNamespaceWithLocalizedText( $index, $text ) {
-
 		$namespace = Localizer::getInstance()->getNsText( $index );
 
 		return str_replace(

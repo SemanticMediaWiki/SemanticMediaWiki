@@ -19,7 +19,6 @@ class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Maintenance\MaintenanceHelper',
 			new MaintenanceHelper()
@@ -27,7 +26,6 @@ class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGlobalForValidKey() {
-
 		$GLOBALS['FOObar'] = 42;
 
 		$instance = new MaintenanceHelper();
@@ -49,7 +47,6 @@ class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTrySetGlobalForInvalidKey() {
-
 		$instance = new MaintenanceHelper();
 		$instance->setGlobalToValue( 'FOObar', 99 );
 
@@ -62,7 +59,6 @@ class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider runtimeKeyValueProvider
 	 */
 	public function testRuntimeMonitor( $runtimeKey ) {
-
 		$instance = new MaintenanceHelper();
 
 		$this->assertInternalType(
@@ -81,7 +77,6 @@ class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTransformRuntimeValuesForOutput() {
-
 		$instance = new MaintenanceHelper();
 		$instance->initRuntimeValues();
 
@@ -94,7 +89,6 @@ class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function runtimeKeyValueProvider() {
-
 		$provider = [
 			[ 'time' ],
 			[ 'memory-before' ],

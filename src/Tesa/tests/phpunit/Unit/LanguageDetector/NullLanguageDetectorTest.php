@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class NullLanguageDetectorTest extends TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\LanguageDetector\NullLanguageDetector',
 			new NullLanguageDetector()
@@ -25,7 +24,6 @@ class NullLanguageDetectorTest extends TestCase {
 	}
 
 	public function testIsStopWord() {
-
 		$instance = new NullLanguageDetector();
 
 		$this->assertNull(

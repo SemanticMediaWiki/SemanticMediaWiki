@@ -331,7 +331,6 @@ class SMWQuery implements QueryContext {
 	 * @return string
 	 */
 	public function getQueryString( $fresh = false ) {
-
 		// Mostly relevant on requesting a further results link to
 		// ensure that localized values are transformed into a canonical
 		// representation
@@ -509,7 +508,6 @@ class SMWQuery implements QueryContext {
 	 * @return string
 	 */
 	public function getHash() {
-
 		// Only use elements that directly influence the result list
 		$serialized = [];
 

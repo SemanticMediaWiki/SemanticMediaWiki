@@ -21,7 +21,7 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( [
@@ -40,7 +40,7 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -49,7 +49,6 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryParameterProvider
 	 */
 	public function testQueryParameter( $query, $expected ) {
-
 		$instance = new SpecialBrowse();
 
 		$instance->getContext()->setTitle(
@@ -70,7 +69,6 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryParameterProvider() {
-
 		#0
 		$provider[] = [
 			'',

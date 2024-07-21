@@ -16,7 +16,6 @@ use SMW\Query\Language\ThingDescription;
 class ThingDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ThingDescription',
 			new ThingDescription()
@@ -30,7 +29,6 @@ class ThingDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommonMethods() {
-
 		$instance = new ThingDescription();
 
 		$this->assertEquals( '', $instance->getQueryString() );
@@ -43,7 +41,6 @@ class ThingDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrune() {
-
 		$instance = new ThingDescription();
 
 		$maxsize  = 1;

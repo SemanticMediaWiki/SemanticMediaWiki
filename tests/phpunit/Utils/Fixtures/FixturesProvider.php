@@ -35,7 +35,6 @@ class FixturesProvider {
 	 * @since 2.1
 	 */
 	public function setupDependencies( Store $store ) {
-
 		// This needs to happen before access to a property object is granted
 
 		// $pageCreator = UtilityFactory::getInstance()->newPageCreator();
@@ -97,7 +96,6 @@ class FixturesProvider {
 	 * @throws RuntimeException
 	 */
 	public function getProperty( $id ) {
-
 		$id = strtolower( $id );
 
 		if ( $this->properties === null ) {
@@ -118,7 +116,6 @@ class FixturesProvider {
 	 * @throws RuntimeException
 	 */
 	public function getCategory( $id ) {
-
 		$id = strtolower( $id );
 
 		if ( $this->categories === null ) {
@@ -139,7 +136,6 @@ class FixturesProvider {
 	 * @throws RuntimeException
 	 */
 	public function getFactsheet( $id ) {
-
 		$id = strtolower( $id );
 
 		if ( $this->factsheets === null ) {

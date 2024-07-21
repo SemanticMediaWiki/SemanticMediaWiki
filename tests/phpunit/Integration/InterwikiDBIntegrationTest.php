@@ -31,7 +31,7 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 	private $queryResultValidator;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -50,8 +50,7 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 			->invokeHooksFromRegistry();
 
 		// Manipulate the interwiki prefix on-the-fly
-		$GLOBALS['wgHooks']['InterwikiLoadPrefix'][] = function( $prefix, &$interwiki ) {
-
+		$GLOBALS['wgHooks']['InterwikiLoadPrefix'][] = function ( $prefix, &$interwiki ) {
 			if ( $prefix !== 'iw-test' ) {
 				return true;
 			}
@@ -69,8 +68,7 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 		};
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->subjects );
 		unset( $GLOBALS['wgHooks']['InterwikiLoadPrefix'] );
 
@@ -150,7 +148,6 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function fetchSerializedRdfOutputFor( array $pages ) {
-
 		$this->subjects = $pages;
 		$exporterFactory = new ExporterFactory();
 

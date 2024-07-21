@@ -48,7 +48,6 @@ class PropertyTableHashes {
 	 * @param string[] of hash values with table names as keys
 	 */
 	public function setPropertyTableHashes( $id, $hash = null ) {
-
 		$update = [];
 
 		if ( $hash === null ) {
@@ -103,7 +102,6 @@ class PropertyTableHashes {
 	 * @return array
 	 */
 	public function getPropertyTableHashesById( $id ) {
-
 		if ( $id == 0 ) {
 			return [];
 		}
@@ -156,7 +154,6 @@ class PropertyTableHashes {
 	 * @param string|null $hash
 	 */
 	public function setPropertyTableHashesCache( $id, $hash = null ) {
-
 		// never cache 0
 		if ( $id == 0 ) {
 			return;

@@ -58,7 +58,6 @@ class SMWPageLister {
 	 * @return string
 	 */
 	public function getNavigationLinks( Title $title, $query = [] ) {
-
 		$limitText = Localizer::getInstance()->getUserLanguage()->formatNum( $this->mLimit );
 
 		$resultCount = count( $this->mDiWikiPages );
@@ -211,7 +210,6 @@ class SMWPageLister {
 	 * @return string
 	 */
 	public static function getColumnList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
-
 		if ( $diWikiPages instanceof \Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
@@ -294,7 +292,6 @@ class SMWPageLister {
 	 * @return string
 	 */
 	public static function getShortList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
-
 		if ( $diWikiPages instanceof \Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}

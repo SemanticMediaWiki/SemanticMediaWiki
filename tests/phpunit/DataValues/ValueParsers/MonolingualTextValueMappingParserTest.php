@@ -17,7 +17,6 @@ use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 class MonolingualTextValueMappingParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueParsers\MonolingualTextValueParser',
 			new MonolingualTextValueParser()
@@ -28,7 +27,6 @@ class MonolingualTextValueMappingParserTest extends \PHPUnit_Framework_TestCase 
 	 * @dataProvider fullStringProvider
 	 */
 	public function testFullParsableString( $value, $expectedText, $expectedLanguageCode ) {
-
 		$instance = new MonolingualTextValueParser();
 		list( $text, $languageCode ) = $instance->parse( $value );
 
@@ -44,7 +42,6 @@ class MonolingualTextValueMappingParserTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function testParsableStringWithMissingLanguageCode() {
-
 		$instance = new MonolingualTextValueParser();
 		list( $text, $languageCode ) = $instance->parse( 'FooBar' );
 
@@ -55,7 +52,6 @@ class MonolingualTextValueMappingParserTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function fullStringProvider() {
-
 		$provider[] = [
 			'Foo@DE-FORMAL',
 			'Foo',

@@ -19,7 +19,6 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testPrettifyCanonicalMediaWikiI18NJson() {
-
 		$i18nDir = !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
 				 ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
 				 : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0];
@@ -53,7 +52,6 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider mediawikiI18nFileProvider
 	 */
 	public function testMediaWikiI18NJsonDecodeEncode( $file ) {
-
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 
 		$this->assertInternalType(
@@ -71,7 +69,6 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider semanticMediaWikiI18nFileProvider
 	 */
 	public function testSemanticMediaWikiI18NJsonDecodeEncode( $file ) {
-
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 
 		$this->assertInternalType(
@@ -127,7 +124,6 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function findFilesIn( $location ) {
-
 		$provider = [];
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( $location );

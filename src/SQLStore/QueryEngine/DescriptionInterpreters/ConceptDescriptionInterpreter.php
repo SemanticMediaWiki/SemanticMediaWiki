@@ -84,7 +84,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$query = new QuerySegment();
 		$concept = $description->getConcept();
 
@@ -184,7 +183,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 * Unescaping is the same as in SMW_DV_Conept's getWikiValue().
 	 */
 	private function buildDescription( $conceptQuery ) {
-
 		if ( $this->queryParser === null ) {
 			throw new RuntimeException( 'Missing a QueryParser instance' );
 		}
@@ -195,7 +193,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function findCircularDescription( $concept, &$description ) {
-
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->conditionBuilder->addError(

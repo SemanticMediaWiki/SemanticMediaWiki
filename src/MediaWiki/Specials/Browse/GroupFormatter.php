@@ -97,7 +97,6 @@ class GroupFormatter {
 	 * @param array &$properties
 	 */
 	public function findGroupMembership( array &$properties ) {
-
 		$list = $this->prepareListFromSchema(
 			$this->schemaFinder->getSchemaListByType( 'PROPERTY_GROUP_SCHEMA' )
 		);
@@ -131,7 +130,6 @@ class GroupFormatter {
 	 * @return string
 	 */
 	public function getGroupLink( $group ) {
-
 		if ( !isset( $this->groupLinks[$group] ) || $this->groupLinks[$group] === '' ) {
 			return $group;
 		}
@@ -154,7 +152,6 @@ class GroupFormatter {
 	 * @return string
 	 */
 	public function getMessageClassLink( $id, DIWikiPage $dataItem ) {
-
 		$gr = str_replace( '_', ' ', $dataItem->getDBKey() );
 		$key = mb_strtolower( str_replace( ' ', '-', $gr ) );
 
@@ -169,7 +166,6 @@ class GroupFormatter {
 	}
 
 	private function findGroup( $property, $list ) {
-
 		if ( $this->showGroup === false ) {
 			return '';
 		}

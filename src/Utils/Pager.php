@@ -44,7 +44,6 @@ class Pager {
 	 * @return string
 	 */
 	public static function filter( Title $title, $limit = 0, $offset = 0, $filter = '' ) {
-
 		$form = \Xml::tags(
 			'form',
 			[
@@ -118,7 +117,6 @@ class Pager {
 	 * @return string
 	 */
 	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = [], $prefix = '' ) {
-
 		$list = [];
 		$limit = (int)$limit;
 		$offset = (int)$offset;

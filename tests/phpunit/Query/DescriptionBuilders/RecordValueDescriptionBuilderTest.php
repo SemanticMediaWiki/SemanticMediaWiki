@@ -20,7 +20,6 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RecordValueDescriptionBuilder::class,
 			new RecordValueDescriptionBuilder()
@@ -28,7 +27,6 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsBuilderForTimeValue() {
-
 		$dataValue = $this->getMockBuilder( '\SMWRecordValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -44,7 +42,6 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $propertyDataItems, $decription ) {
-
 		$recordValue = $this->getMockBuilder( '\SMWRecordValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -52,7 +49,7 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$recordValue->expects( $this->any() )
 			->method( 'getValuesFromString' )
 			->with( $this->stringContains( $value ) )
-			->will( $this->returnCallback( function( $value ) {
+			->will( $this->returnCallback( function ( $value ) {
 				 return explode(';', $value );
 			} ) );
 
@@ -69,7 +66,6 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidRecordValueReturnsThingDescription() {
-
 		$recordValue = $this->getMockBuilder( '\SMWRecordValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -91,7 +87,6 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonStringThrowsException() {
-
 		$recordValue = $this->getMockBuilder( '\SMWRecordValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -103,7 +98,6 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		$provider[] = [
 			'Jan;1970',
 			[ new DIProperty( 'Foo' ) ],

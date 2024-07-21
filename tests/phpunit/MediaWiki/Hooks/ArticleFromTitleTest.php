@@ -18,7 +18,7 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -27,7 +27,6 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ArticleFromTitle::class,
 			new ArticleFromTitle( $this->store )
@@ -38,7 +37,6 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceProvider
 	 */
 	public function testProcess( $namespace, $expected ) {
-
 		$title = $this->createMock( Title::class );
 		$title->expects( $this->any() )
 			->method( 'canExist' )
@@ -62,7 +60,6 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceProvider() {
-
 		$provider[] = [
 			SMW_NS_PROPERTY,
 			'SMW\MediaWiki\Page\PropertyPage'

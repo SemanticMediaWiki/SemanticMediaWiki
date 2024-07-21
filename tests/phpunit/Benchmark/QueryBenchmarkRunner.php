@@ -69,7 +69,6 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 	 * @param array $case
 	 */
 	public function run( array $case ) {
-
 		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
@@ -101,7 +100,6 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 	}
 
 	private function doQuery( array $case, $query ) {
-
 		$this->benchmarker->clear();
 
 		$memoryBefore = memory_get_peak_usage( false );
@@ -133,7 +131,6 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 	}
 
 	private function createQuery( array $case, $mode, array $printouts = [] ) {
-
 		$description = $this->queryParser->getQueryDescription(
 			$case['query']['condition']
 		);

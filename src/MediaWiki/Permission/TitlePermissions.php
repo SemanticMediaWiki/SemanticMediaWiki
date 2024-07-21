@@ -74,7 +74,6 @@ class TitlePermissions {
 	 * @return boolean
 	 */
 	public function hasUserPermission( Title $title, User $user, $action ) {
-
 		$this->errors = [];
 
 		if ( $title->getNamespace() === SMW_NS_SCHEMA ) {
@@ -115,7 +114,6 @@ class TitlePermissions {
 	}
 
 	private function checkMwNamespacePatternEditPermission( Title $title, User $user, $action ) {
-
 		// @see https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_pattern
 		if (
 			$title->getDBKey() !== AllowsPatternValue::REFERENCE_PAGE_ID ||
@@ -129,7 +127,6 @@ class TitlePermissions {
 	}
 
 	private function checkSchemaNamespacePermission( Title $title, User $user, $action ) {
-
 		if ( !$this->permissionManager->userHasRight( $user, 'smw-schemaedit' ) ) {
 			$this->errors[] = [ 'smw-schema-namespace-edit-protection', 'smw-schemaedit' ];
 			return false;
@@ -150,7 +147,6 @@ class TitlePermissions {
 	}
 
 	private function checkPropertyNamespaceCreatePermission( Title $title, User $user, $action ) {
-
 		$protectionRight = $this->protectionValidator->getCreateProtectionRight();
 
 		if ( $protectionRight === false ) {
@@ -173,7 +169,6 @@ class TitlePermissions {
 	}
 
 	private function checkPropertyNamespaceEditPermission( Title $title, User $user, $action ) {
-
 		// This renders full protection until the ChangePropagationDispatchJob was run
 		if ( !$this->protectionValidator->hasChangePropagationProtection( $title ) ) {
 			return $this->checkEditPermission( $title, $user, $action );
@@ -185,7 +180,6 @@ class TitlePermissions {
 	}
 
 	private function checkChangePropagationProtection( Title $title, User $user, $action ) {
-
 		// This renders full protection until the ChangePropagationDispatchJob was run
 		if ( !$this->protectionValidator->hasChangePropagationProtection( $title ) ) {
 			return true;
@@ -197,7 +191,6 @@ class TitlePermissions {
 	}
 
 	private function checkEditPermission( Title $title, User $user, $action ) {
-
 		$editProtectionRight = $this->protectionValidator->getEditProtectionRight();
 
 		// @see https://www.semantic-mediawiki.org/wiki/Help:Special_property_Is_edit_protected

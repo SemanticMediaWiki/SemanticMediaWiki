@@ -65,7 +65,6 @@ class UpdateDispatcherJob extends Job {
 	 * @return boolean
 	 */
 	public function run() {
-
 		$this->initServices();
 
 		/**
@@ -113,7 +112,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function initServices() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$this->setStore( $applicationFactory->getStore() );
 
@@ -125,7 +123,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function dispatch_by_id( $id ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
 
@@ -162,7 +159,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function create_secondary_dispatch_run( $jobs ) {
-
 		$origin = $this->getTitle()->getPrefixedText();
 
 		foreach ( array_chunk( $jobs, self::CHUNK_SIZE, true ) as $jobList ) {
@@ -184,7 +180,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function dispatchUpdateForSubject( DIWikiPage $subject ) {
-
 		if ( $this->getParameter( self::RESTRICTED_DISPATCH_POOL ) !== true ) {
 			$this->addUpdateJobsForProperties(
 				$this->store->getProperties( $subject )
@@ -247,7 +242,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function apply_filter( $property, $subjects ) {
-
 		// If the an ID was provided it already restricted the list of references
 		// hence avoid any further work
 		if ( $this->hasParameter( '_id' ) ) {
@@ -283,7 +277,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function addUpdateJobsForSubjectsThatContainTypeError() {
-
 		$subjects = $this->store->getPropertySubjects(
 			new DIProperty( DIProperty::TYPE_ERROR ),
 			DIWikiPage::newFromTitle( $this->getTitle() )
@@ -295,7 +288,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function addUpdateJobsFromDeserializedSemanticData() {
-
 		if ( !$this->hasParameter( 'semanticData' ) ) {
 			return;
 		}
@@ -310,7 +302,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function add_job( $subjects = [] ) {
-
 		foreach ( $subjects as $subject ) {
 
 			// Not trying to get the title here as it is waste of resources
@@ -333,7 +324,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function push_jobs_from_list( array $subjects ) {
-
 		$check_exists = $this->getParameter( 'check_exists', false );
 
 		$parameters = [

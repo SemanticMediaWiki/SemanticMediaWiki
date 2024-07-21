@@ -62,7 +62,6 @@ class CachingLookup {
 	 * @return array
 	 */
 	public function lookup( array $parameters ) {
-
 		Timer::start( __METHOD__ );
 
 		$hash = smwfCacheKey(

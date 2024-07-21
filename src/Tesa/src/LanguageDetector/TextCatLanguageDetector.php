@@ -54,7 +54,6 @@ class TextCatLanguageDetector implements LanguageDetector {
 	 * @return string|null
 	 */
 	public function detect( $text ) {
-
 		$languages = $this->textCat->classify( $text, $this->languageCandidates );
 		reset( $languages );
 

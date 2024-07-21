@@ -60,7 +60,7 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'refreshstore';
 	}
 
@@ -69,7 +69,7 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 
@@ -79,7 +79,6 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$this->htmlFormRenderer
 			->addHeader( 'h4', $this->msg( 'smw_smwadmin_datarefresh' ) )
 			->addParagraph( $this->msg( 'smw_smwadmin_datarefreshdocu' ) );
@@ -126,7 +125,6 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		if ( !$this->hasFeature( SMW_ADM_REFRESH ) ) {
 			return '';
 		}
@@ -166,7 +164,6 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function getRefreshJob() {
-
 		if ( !$this->hasFeature( SMW_ADM_REFRESH ) ) {
 			return null;
 		}

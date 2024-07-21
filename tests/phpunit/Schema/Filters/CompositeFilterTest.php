@@ -19,7 +19,6 @@ use SMW\Schema\CompartmentIterator;
 class CompositeFilterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CompositeFilter::class,
 			new CompositeFilter( [] )
@@ -27,7 +26,6 @@ class CompositeFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilter() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -64,7 +62,6 @@ class CompositeFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSortMatches_Empty() {
-
 		$instance = new CompositeFilter( [] );
 		$instance->sortMatches( 'foo' );
 
@@ -74,7 +71,6 @@ class CompositeFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSortMatches() {
-
 		$rule_1 = $this->getMockBuilder( '\SMW\Schema\Rule' )
 			->disableOriginalConstructor()
 			->setMethods( null )

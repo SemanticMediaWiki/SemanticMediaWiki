@@ -20,7 +20,7 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $parserFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -34,13 +34,12 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$parser = $this->getMockBuilder( '\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -60,7 +59,6 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parserFunctionProvider
 	 */
 	public function testParserFunctionInstance( $instance, $method ) {
-
 		$parser = $this->parserFactory->create( __METHOD__ );
 
 		$parserFunctionFactory = new ParserFunctionFactory( $parser );
@@ -75,7 +73,6 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parserFunctionDefinitionProvider
 	 */
 	public function testParserFunctionDefinition( $method, $expected ) {
-
 		$parser = $this->parserFactory->create( __METHOD__ );
 
 		$parserFunctionFactory = new ParserFunctionFactory( $parser );
@@ -102,7 +99,6 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAskParserFunctionWithParserOption() {
-
 		$this->parserData->expects( $this->at( 0 ) )
 			->method( 'setOption' )
 			->with(
@@ -122,7 +118,6 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parserFunctionProvider() {
-
 		$provider[] = [
 			'\SMW\ParserFunctions\RecurringEventsParserFunction',
 			'getRecurringEventsParser'
@@ -172,7 +167,6 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parserFunctionDefinitionProvider() {
-
 		$provider[] = [
 			'getAskParserFunctionDefinition',
 			'ask'

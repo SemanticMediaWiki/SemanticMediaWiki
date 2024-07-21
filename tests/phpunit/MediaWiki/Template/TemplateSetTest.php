@@ -17,7 +17,6 @@ use SMW\MediaWiki\Template\Template;
 class TemplateSetTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TemplateSet::class,
 			 new TemplateSet()
@@ -25,7 +24,6 @@ class TemplateSetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddTemplate() {
-
 		$instance = new TemplateSet( [ 'foo' ] );
 		$instance->addTemplate( new Template( 'Bar' ) );
 

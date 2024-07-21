@@ -55,7 +55,6 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @param Database $instance
 	 */
 	public static function newUpdate( callable $callback, Database $connection ) {
-
 		$transactionalCallableUpdate = new self( $callback, $connection );
 
 		$transactionalCallableUpdate->isCommandLineMode(
@@ -148,7 +147,6 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @since 3.0
 	 */
 	public function doUpdate() {
-
 		if ( $this->onTransactionIdle ) {
 			return $this->runOnTransactionIdle();
 		}
@@ -194,14 +192,13 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	}
 
 	protected function registerUpdate( $update ) {
-
 		if ( $this->onTransactionIdle ) {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Transactional', 'Added: {origin} (onTransactionIdle)' ],
 				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin() ]
 			);
 
-			return $this->connection->onTransactionCommitOrIdle( function() use( $update ) {
+			return $this->connection->onTransactionCommitOrIdle( function () use( $update ) {
 				$update->onTransactionIdle = false;
 				parent::registerUpdate( $update );
 			} );
@@ -217,7 +214,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	}
 
 	private function runOnTransactionIdle() {
-		$this->connection->onTransactionCommitOrIdle( function() {
+		$this->connection->onTransactionCommitOrIdle( function () {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (onTransactionIdle)' ],
 				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin() ]

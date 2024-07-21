@@ -56,7 +56,6 @@ class Aggregations {
 	 * @return array
 	 */
 	public function toArray() {
-
 		$params = $this->params( $this->parameters );
 
 		foreach ( $this->subAggregations as $subAggregation ) {
@@ -73,7 +72,6 @@ class Aggregations {
 	}
 
 	private function params( &$params ) {
-
 		$aggregation = $params;
 
 		if ( $aggregation instanceof Aggregations ) {

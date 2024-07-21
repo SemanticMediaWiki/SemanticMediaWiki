@@ -23,8 +23,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private DataItemFactory $dataItemFactory;
 	private $conditionBuilder;
 
-	public function setUp() : void {
-
+	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -39,7 +38,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ValueDescriptionInterpreter::class,
 			new ValueDescriptionInterpreter( $this->conditionBuilder )
@@ -50,7 +48,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testInterpretDescription( $dataItem, $comparator, $options, $expected ) {
-
 		$this->conditionBuilder->setOptions( new Options(
 			[
 				'cjk.best.effort.proximity.match' => true,
@@ -80,7 +77,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRestrictedLength() {
-
 		$options = [
 			'property' => $this->dataItemFactory->newDIProperty( 'Bar' ),
 			'pid'   => 'P:42',
@@ -117,7 +113,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$options = [

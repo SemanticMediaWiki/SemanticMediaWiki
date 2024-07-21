@@ -20,7 +20,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,7 +31,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testImmutableMethodAccess() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -66,7 +64,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMutableMethodAccess() {
-
 		// EntityIdTable
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getSMWPageID', 'makeSMWPageID' ] )
@@ -105,7 +102,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbKeysProvider
 	 */
 	public function testDataItemFromDBKeys( $dbKeys ) {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -119,7 +115,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDataItemFromDBKeys_Sort() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -139,7 +134,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbKeysExceptionProvider
 	 */
 	public function testDataItemFromDBKeysThrowsException( $dbKeys ) {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -151,7 +145,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dbKeysProvider() {
-
 		#0 SMW_NS_PROPERTY, user defined property
 		$provider[] = [
 			[ 'Foo', SMW_NS_PROPERTY, 'bar', '', '' ]
@@ -175,7 +168,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dbKeysExceptionProvider() {
-
 		$provider[] = [
 			[ 'Foo' ]
 		];

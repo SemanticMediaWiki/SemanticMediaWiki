@@ -16,7 +16,6 @@ use SMW\Query\QueryComparator;
 class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$comparatorList = '';
 
 		$this->assertInstanceOf(
@@ -34,7 +33,6 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stringComparatorProvider
 	 */
 	public function testGetComparatorFromString( $stringComparator, $expected ) {
-
 		$comparatorList = '';
 
 		$instance = new QueryComparator( $comparatorList, false );
@@ -49,7 +47,6 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stringComparatorProvider
 	 */
 	public function testGetStringForComparator( $stringComparator, $comparator ) {
-
 		$comparatorList = '';
 
 		$instance = new QueryComparator( $comparatorList, false );
@@ -64,7 +61,6 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider extractStringComparatorProvider
 	 */
 	public function testExtractComparatorFromString( $string, $expectedString, $expectedComparator ) {
-
 		$comparatorList = '';
 
 		$instance = new QueryComparator( $comparatorList, true );
@@ -84,7 +80,6 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider containsComparatorProvider
 	 */
 	public function testContainsComparator( $string, $comparator, $expected ) {
-
 		$comparatorList = '';
 
 		$instance = new QueryComparator( $comparatorList, true );
@@ -96,7 +91,6 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function stringComparatorProvider() {
-
 		$provider[] = [
 			'!~',
 			SMW_CMP_NLKE
@@ -106,7 +100,6 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function extractStringComparatorProvider() {
-
 		$provider[] = [
 			'!~Foo',
 			'Foo',
@@ -135,7 +128,6 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function containsComparatorProvider() {
-
 		$provider[] = [
 			'~someThing',
 			SMW_CMP_EQ,

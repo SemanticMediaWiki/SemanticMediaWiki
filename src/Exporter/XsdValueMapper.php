@@ -31,7 +31,6 @@ class XsdValueMapper {
 	 * @throws RuntimeException
 	 */
 	public static function map( DataItem $dataItem ) {
-
 		if ( $dataItem instanceof DIBoolean ) {
 			$val = self::mapBoolean( $dataItem );
 		} elseif ( $dataItem instanceof DINumber ) {
@@ -69,7 +68,6 @@ class XsdValueMapper {
 	}
 
 	private static function mapGregorianCalendarModelTime( DITime $dataItem ) {
-
 		if ( $dataItem->getYear() > 0 ) {
 			$xsdvalue = str_pad( $dataItem->getYear(), 4, "0", STR_PAD_LEFT );
 		} else {

@@ -19,7 +19,6 @@ class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChunkedIterator::class,
 			new ChunkedIterator( [] )
@@ -27,7 +26,6 @@ class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChunkedOnArray() {
-
 		$result = [
 			1, 42, 1001, 9999
 		];
@@ -55,13 +53,11 @@ class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidConstructorArgumentThrowsException() {
-
 		$this->expectException( 'RuntimeException' );
 		$instance = new ChunkedIterator( 2 );
 	}
 
 	public function testInvalidChunkSizeArgumentThrowsException() {
-
 		$this->expectException( 'InvalidArgumentException' );
 		$instance = new ChunkedIterator( [], -1 );
 	}

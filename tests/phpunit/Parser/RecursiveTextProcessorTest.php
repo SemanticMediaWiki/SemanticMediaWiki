@@ -23,7 +23,7 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	private $parserOutput;
 	private $title;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->parser = $this->getMockBuilder( '\Parser' )
@@ -48,7 +48,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RecursiveTextProcessor::class,
 			new RecursiveTextProcessor( $this->parser )
@@ -56,7 +55,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_NO_RecursiveAnnotation() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->title ) );
@@ -81,7 +79,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_NO_RecursiveAnnotationWithAnnotationBlockToRemoveCategories() {
-
 		$this->parserOutput->expects( $this->atLeastOnce() )
 			->method( 'getExtensionData' )
 			->with(	$this->equalTo( \SMW\ParserData::ANNOTATION_BLOCK ) )
@@ -117,7 +114,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_NO_RecursiveAnnotationWithNoAnnotationBlockToRetainCategories() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
 			->will( $this->returnValue( $this->parserOutput ) );
@@ -148,7 +144,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_WITH_RecursiveAnnotation() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->title ) );
@@ -175,7 +170,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_WITH_IncompleteParser() {
-
 		$instance = new RecursiveTextProcessor(
 			$this->parser
 		);
@@ -196,7 +190,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursiveTagParse() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->title ) );
@@ -221,7 +214,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursiveTagParse_WITH_IncompleteParser() {
-
 		$this->parser->expects( $this->once() )
 			->method( 'parse' )
 			->with( $this->equalTo( 'Foo__NOTOC__' ) )
@@ -235,7 +227,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExpandTemplate() {
-
 		$this->parser->expects( $this->once() )
 			->method( 'preprocess' )
 			->with( $this->equalTo( '{{Foo}}' ) );
@@ -248,7 +239,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_ExceededRecursion() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->title ) );
@@ -270,7 +260,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursiveTagParse_ExceededRecursion() {
-
 		$instance = new RecursiveTextProcessor(
 			$this->parser
 		);
@@ -284,7 +273,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTranscludeAnnotationWithoutUniquidThrowsException() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
 			->will( $this->returnValue( $this->parserOutput ) );
@@ -298,7 +286,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTranscludeAnnotation_FALSE() {
-
 		$this->parserOutput->expects( $this->atLeastOnce() )
 			->method( 'setExtensionData' )
 			->with(
@@ -318,7 +305,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReleaseAnnotationBlock() {
-
 		$this->parserOutput->expects( $this->atLeastOnce() )
 			->method( 'getExtensionData' )
 			->with(	$this->equalTo( \SMW\ParserData::ANNOTATION_BLOCK ) )

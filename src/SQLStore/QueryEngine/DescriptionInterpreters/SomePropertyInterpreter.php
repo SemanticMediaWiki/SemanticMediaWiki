@@ -91,7 +91,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$query = new QuerySegment();
 
 		$this->interpretPropertyConditionForDescription(
@@ -117,7 +116,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * @since 1.8
 	 */
 	private function interpretPropertyConditionForDescription( QuerySegment $query, SomeProperty $description ) {
-
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 		$property = $description->getProperty();
 
@@ -238,7 +236,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$query, Description $description, PropertyTableDefinition $proptable,
 			DataItemHandler $diHandler, $operator
 	) {
-
 		if ( $description instanceof ValueDescription ) {
 			$this->mapValueDescription( $query, $description, $diHandler, $operator );
 		} elseif ( ( $description instanceof Conjunction ) ||
@@ -277,7 +274,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
 	private function mapValueDescription( $query, ValueDescription $description, DataItemHandler $diHandler, $operator ) {
-
 		$where = '';
 		$dataItem = $description->getDataItem();
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );

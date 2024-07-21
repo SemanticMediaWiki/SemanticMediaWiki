@@ -48,7 +48,6 @@ class Disjunction extends Description {
 	 * @return string
 	 */
 	public function getFingerprint() {
-
 		// Avoid a recursive tree
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
@@ -71,7 +70,6 @@ class Disjunction extends Description {
 	 * @param integer $hierarchyDepth
 	 */
 	public function setHierarchyDepth( $hierarchyDepth ) {
-
 		$this->fingerprint = null;
 
 		if ( $this->classDescription !== null ) {
@@ -90,7 +88,6 @@ class Disjunction extends Description {
 	}
 
 	public function addDescription( Description $description ) {
-
 		$this->fingerprint = null;
 		$fingerprint = $description->getFingerprint();
 
@@ -129,7 +126,6 @@ class Disjunction extends Description {
 	}
 
 	public function getQueryString( $asValue = false ) {
-
 		if ( $this->isTrue ) {
 			return '+';
 		}
@@ -198,7 +194,6 @@ class Disjunction extends Description {
 	}
 
 	public function prune( &$maxsize, &$maxdepth, &$log ) {
-
 		if ( $maxsize <= 0 ) {
 			$log[] = $this->getQueryString();
 			return new ThingDescription();

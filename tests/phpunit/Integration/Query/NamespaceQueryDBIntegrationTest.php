@@ -33,7 +33,7 @@ class NamespaceQueryDBIntegrationTest extends DatabaseTestCase {
 	private $queryResultValidator;
 	private $subjects = [];
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -46,8 +46,7 @@ class NamespaceQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 		$fixturesCleaner
 			->purgeSubjects( $this->subjects )
@@ -57,7 +56,6 @@ class NamespaceQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testConjunctiveNamespaceQueryThatIncludesSubobject() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 		$this->subjects[] = $semanticData->getSubject();
 

@@ -17,7 +17,6 @@ use Wikimedia\Rdbms\FakeResultWrapper;
 class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -33,7 +32,6 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRebuildStatisticsStoreAndInsertCountRows() {
-
 		$tableName = 'Foobar';
 
 		$uRow = new \stdClass;
@@ -111,7 +109,6 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function newPropertyTable( $propertyTableName, $fixedPropertyTable = false ) {
-
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isFixedPropertyTable', 'getName' ] )

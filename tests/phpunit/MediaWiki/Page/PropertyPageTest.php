@@ -20,7 +20,7 @@ class PropertyPageTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $declarationExaminerFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->declarationExaminerFactory = $this->getMockBuilder( '\SMW\Property\DeclarationExaminerFactory' )
@@ -35,7 +35,6 @@ class PropertyPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyPage::class,
 			new PropertyPage( $this->title, $this->store, $this->declarationExaminerFactory )
@@ -43,7 +42,6 @@ class PropertyPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new PropertyPage(
 			$this->title,
 			$this->store,

@@ -22,7 +22,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $outputPage;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -32,13 +32,12 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\Admin\OutputFormatter',
 			new OutputFormatter( $this->outputPage )
@@ -46,7 +45,6 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSpecialPageLinkWith() {
-
 		$instance = new OutputFormatter( $this->outputPage );
 
 		$this->assertInternalType(
@@ -56,7 +54,6 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEncodeAsJson() {
-
 		$instance = new OutputFormatter( $this->outputPage );
 
 		$this->assertInternalType(
@@ -66,7 +63,6 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddParentLink() {
-
 		$this->outputPage->expects( $this->once() )
 			->method( 'prependHTML' );
 
@@ -75,7 +71,6 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetPageTitle() {
-
 		$this->outputPage->expects( $this->once() )
 			->method( 'setPageTitle' );
 
@@ -84,7 +79,6 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddHTML() {
-
 		$this->outputPage->expects( $this->once() )
 			->method( 'addHTML' );
 
@@ -93,7 +87,6 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddWikiText() {
-
 		if ( method_exists( $this->outputPage, 'addWikiTextAsInterface' ) ) {
 			$this->outputPage->expects( $this->once() )
 				->method( 'addWikiTextAsInterface' );

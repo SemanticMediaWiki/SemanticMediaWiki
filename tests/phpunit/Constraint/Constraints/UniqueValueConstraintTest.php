@@ -27,7 +27,7 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $entityUniquenessLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -52,12 +52,11 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			UniqueValueConstraint::class,
 			new UniqueValueConstraint( $this->store, $this->propertySpecificationLookup )
@@ -65,7 +64,6 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidValueThrowsException() {
-
 		$instance = new UniqueValueConstraint(
 			$this->store,
 			$this->propertySpecificationLookup
@@ -76,7 +74,6 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanNotValidateOnNull() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
@@ -95,7 +92,6 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidate_HasNoConstraintViolation() {
-
 		$property = $this->dataItemFactory->newDIProperty( __METHOD__ );
 
 		$this->entityUniquenessLookup->expects( $this->atLeastOnce() )
@@ -136,7 +132,6 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidate_HasConstraintViolation() {
-
 		$property = $this->dataItemFactory->newDIProperty( __METHOD__ );
 
 		$error = new ConstraintError(

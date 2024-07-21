@@ -20,7 +20,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
@@ -29,7 +29,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\MwCollaboratorFactory',
 			new MwCollaboratorFactory( $this->applicationFactory )
@@ -37,7 +36,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMessageBuilder() {
-
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory
 		);
@@ -58,7 +56,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMagicWordsFinder() {
-
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory
 		);
@@ -70,7 +67,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructRedirectTargetFinder() {
-
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory
 		);
@@ -82,7 +78,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDeepRedirectTargetResolver() {
-
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -102,7 +97,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructHtmlFormRenderer() {
-
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -125,7 +119,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructHtmlTableRenderer() {
-
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$this->assertInstanceOf(
@@ -135,7 +128,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructHtmlColumnListRenderer() {
-
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$this->assertInstanceOf(
@@ -145,7 +137,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructLoadBalancerConnectionProvider() {
-
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$this->assertInstanceOf(
@@ -155,7 +146,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConnectionProvider() {
-
 		$settings = $this->getMockBuilder( '\SMW\Settings' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -187,7 +177,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructPageInfoProvider() {
-
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -210,7 +199,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructEditInfo() {
-
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -239,7 +227,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructWikitextTemplateRenderer() {
-
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory
 		);
@@ -251,7 +238,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructHtmlTemplateRenderer() {
-
 		$parser = $this->getMockBuilder( '\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -267,7 +253,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMediaWikiNsContentReader() {
-
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory
 		);

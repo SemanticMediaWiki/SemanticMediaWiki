@@ -52,7 +52,6 @@ class PageDeleter {
 	 * @param array $poolOfPages
 	 */
 	public function doDeletePoolOfPages( array $poolOfPages ) {
-
 		foreach ( $poolOfPages as $page ) {
 
 			if ( $page instanceof WikiPage || $page instanceof DIWikiPage ) {

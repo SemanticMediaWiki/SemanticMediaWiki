@@ -30,7 +30,6 @@ class ParameterProcessorFactory {
 	 * @return ParserParameterProcessor
 	 */
 	public function newParserParameterProcessor( array $parameters ) {
-
 		if ( isset( $parameters[0] ) && is_object( $parameters[0] ) ) {
 			array_shift( $parameters );
 		}

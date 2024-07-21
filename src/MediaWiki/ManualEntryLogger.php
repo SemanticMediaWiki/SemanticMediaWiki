@@ -54,7 +54,6 @@ class ManualEntryLogger {
 	 * @return integer|null
 	 */
 	public function log( $type, $performer, $target, $comment ) {
-
 		if ( !isset( $this->eventTypes[$type] ) || !$this->eventTypes[$type] ) {
 			return null;
 		}
@@ -74,7 +73,6 @@ class ManualEntryLogger {
 	}
 
 	protected function newManualLogEntryForType( $type ) {
-
 		if ( $this->logEntry !== null ) {
 			return $this->logEntry;
 		}

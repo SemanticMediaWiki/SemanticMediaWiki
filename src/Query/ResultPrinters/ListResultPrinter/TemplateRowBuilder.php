@@ -35,7 +35,6 @@ class TemplateRowBuilder extends RowBuilder {
 	 * @return string
 	 */
 	public function getRowText( array $fields, $rownum = 0 ) {
-
 		$templateRenderer = $this->templateRendererFactory->getTemplateRenderer();
 
 		foreach ( $fields as $column => $field ) {
@@ -63,7 +62,6 @@ class TemplateRowBuilder extends RowBuilder {
 	 * @return string
 	 */
 	private function getFieldLabel( SMWResultArray $field, $column ) {
-
 		if ( $this->get( 'named args' ) === false ) {
 			return intval( $column + 1 );
 		}
