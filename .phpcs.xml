@@ -137,7 +137,6 @@
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.returnValueMap" />
 		<exclude name="Generic.Formatting.SpaceAfterNot.Incorrect" />
 		<exclude name="PSR2.Files.EndFileNewline.TooMany" />
-		<exclude name="Squiz.WhiteSpace.ObjectOperatorSpacing.Before" />
 		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis.SpaceBeforeOpeningParenthesis" />
 		<exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.SpaceBeforeBrace" />
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.ExactlyOnce" />
@@ -177,7 +176,6 @@
 		<exclude name="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.assert" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotParenthesisParamType" />
-		<exclude name="Squiz.WhiteSpace.ObjectOperatorSpacing.After" />
 		<exclude name="Squiz.Classes.SelfMemberReference.SpaceAfter" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.SpacingBeforeReturnType" />
 		<exclude name="PSR2.ControlStructures.SwitchDeclaration.SpaceBeforeColonCASE" />

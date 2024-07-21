@@ -63,7 +63,7 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testToReturnFalseOnMwNamespacePermissionCheck( $title, $permission, $action, $expected ) {
-		$this->protectionValidator ->expects( $this->any() )
+		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasEditProtection' )
 			->will( $this->returnValue( true ) );
 

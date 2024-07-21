@@ -84,7 +84,7 @@ class CompositeFilter implements SchemaFilter {
 
 		$order = strtolower( $order );
 
-		if ( $type === self:: SORT_FILTER_SCORE ) {
+		if ( $type === self::SORT_FILTER_SCORE ) {
 			usort( $this->matches, function ( $a, $b ) use ( $order ) {
 				if ( $order === 'desc' ) {
 					return $b->filterScore <=> $a->filterScore;
