@@ -101,7 +101,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function() use( $fallbackSearchEngine ) {
+		$callback = function () use( $fallbackSearchEngine ) {
 			return $fallbackSearchEngine;
 		};
 
@@ -116,7 +116,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromInvalidCallableThrowsException() {
-		$callback = function() {
+		$callback = function () {
 			return new \stdClass;
 		};
 

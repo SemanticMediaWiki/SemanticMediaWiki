@@ -748,7 +748,7 @@ class SpecificationLookup {
 	 * @return DataValue|null
 	 */
 	private function tryOutFalldownAndInverse( $monolingualTextLookup, $subject, $property, &$languageCode ) {
-		$getDataValue = static function( $value ) use ( $monolingualTextLookup, $subject, $property, &$languageCode ) {
+		$getDataValue = static function ( $value ) use ( $monolingualTextLookup, $subject, $property, &$languageCode ) {
 			 $dataValue = $monolingualTextLookup->newDataValue(
 				$subject,
 				$property,

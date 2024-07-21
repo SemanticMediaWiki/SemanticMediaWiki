@@ -264,7 +264,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -324,7 +324,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -375,7 +375,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -481,7 +481,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -551,7 +551,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'readQuery' )

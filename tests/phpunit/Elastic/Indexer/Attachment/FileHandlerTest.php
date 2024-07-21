@@ -52,7 +52,7 @@ class FileHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->fileRepoFinder
 		);
 
-		$instance->setReadCallback( function( $read_url ) use( $url ) {
+		$instance->setReadCallback( function ( $read_url ) use( $url ) {
 			if ( $read_url !== $url ) {
 				throw new \RuntimeException( "Invalid read URL!" );
 			}

@@ -148,7 +148,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->contentCreator->expects( $this->once() )
 			->method( 'create' )
-			->with( $this->callback( function( $importContents ) {
+			->with( $this->callback( function ( $importContents ) {
 					$importContents->addError( 'BarError from create' );
 					$importContents->addError( [ 'Foo1', 'Foo2' ] );
 					return true;

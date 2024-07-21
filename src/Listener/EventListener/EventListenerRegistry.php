@@ -99,13 +99,13 @@ class EventListenerRegistry implements EventListenerCollection {
 		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
 
 		$this->eventListenerCollection->registerCallback(
-			'exporter.reset', function() {
+			'exporter.reset', function () {
 				Exporter::getInstance()->clear();
 			}
 		);
 
 		$this->eventListenerCollection->registerCallback(
-			'query.comparator.reset', function() {
+			'query.comparator.reset', function () {
 				QueryComparator::getInstance()->clear();
 			}
 		);

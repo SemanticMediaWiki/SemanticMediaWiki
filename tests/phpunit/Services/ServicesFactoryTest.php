@@ -220,7 +220,7 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDeferredCallableUpdate() {
-		$callback = function() {
+		$callback = function () {
 			return null;
 		};
 

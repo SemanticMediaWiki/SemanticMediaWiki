@@ -75,7 +75,7 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function() {
+		$callback = function () {
 			return null;
 		};
 
@@ -107,7 +107,7 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider categoryFilterProvider
 	 */
 	public function testHasMatches_Callback_Compartment( $categories, $compartment, $expected ) {
-		$callback = function() use ( $categories ) {
+		$callback = function () use ( $categories ) {
 			return $categories;
 		};
 

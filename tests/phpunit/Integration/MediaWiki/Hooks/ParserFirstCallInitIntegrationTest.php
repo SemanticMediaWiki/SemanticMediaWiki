@@ -85,7 +85,7 @@ class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnCallback( function( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
+			->will( $this->returnCallback( function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
 				if ( $service === 'SingleEntityQueryLookup' ) {
 					return $singleEntityQueryLookup;
 				}

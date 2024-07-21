@@ -121,7 +121,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushChangePropagationDispatchJob() {
-		$checkJobParameterCallback = function( $job ) {
+		$checkJobParameterCallback = function ( $job ) {
 			return $job->getParameter( 'property_key' ) === 'FOO' && $job->hasParameter( 'schema_change_propagation' );
 		};
 
@@ -144,7 +144,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushChangePropagationDispatchJob_CastAsArray() {
-		$checkJobParameterCallback = function( $job ) {
+		$checkJobParameterCallback = function ( $job ) {
 			return $job->getParameter( 'property_key' ) === 'FOO' && $job->hasParameter( 'schema_change_propagation' );
 		};
 

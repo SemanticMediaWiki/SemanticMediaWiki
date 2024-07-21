@@ -124,7 +124,7 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->registerConstraint( 'foo', function() use( $constraint ) {
+		$instance->registerConstraint( 'foo', function () use( $constraint ) {
 			return $constraint; }
 		);
 

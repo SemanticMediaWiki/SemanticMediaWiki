@@ -50,7 +50,7 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 			->invokeHooksFromRegistry();
 
 		// Manipulate the interwiki prefix on-the-fly
-		$GLOBALS['wgHooks']['InterwikiLoadPrefix'][] = function( $prefix, &$interwiki ) {
+		$GLOBALS['wgHooks']['InterwikiLoadPrefix'][] = function ( $prefix, &$interwiki ) {
 			if ( $prefix !== 'iw-test' ) {
 				return true;
 			}

@@ -271,7 +271,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableOptimizer
 		);
 
-		$callback = function() use( $instance ) {
+		$callback = function () use( $instance ) {
 			$instance->reportMessage( 'Foo' );
 		};
 

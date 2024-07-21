@@ -101,7 +101,7 @@ class EntityUniquenessLookup {
 
 		$result = $this->iteratorFactory->newMappingIterator(
 			$this->iteratorFactory->newResultIterator( $res ),
-			function( $row ) {
+			function ( $row ) {
 				return $this->store->getObjectIds()->getDataItemById( $row->s_id );
 			}
 		);

@@ -61,7 +61,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function( $callback ) {
+			->will( $this->returnCallback( function ( $callback ) {
 				return call_user_func( $callback ); }
 			) );
 
@@ -120,7 +120,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate_WithError() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function( $callback ) {
+			->will( $this->returnCallback( function ( $callback ) {
 				return call_user_func( $callback ); }
 			) );
 
@@ -232,7 +232,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate_ReplaceableOnCreator() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function( $callback ) {
+			->will( $this->returnCallback( function ( $callback ) {
 				return call_user_func( $callback ); }
 			) );
 
@@ -308,7 +308,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate_ReplaceableOnCreator_WithNoAvailableUser() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function( $callback ) {
+			->will( $this->returnCallback( function ( $callback ) {
 				return call_user_func( $callback ); }
 			) );
 

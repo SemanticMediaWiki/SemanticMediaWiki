@@ -63,7 +63,7 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterDatatypeWithCallable() {
-		$callback = function() {
+		$callback = function () {
 			return new FooValue();
 		};
 
@@ -464,7 +464,7 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterCallableGetCallablesByTypeId() {
-		$callback = function() {
+		$callback = function () {
 			return 'foo';
 		};
 

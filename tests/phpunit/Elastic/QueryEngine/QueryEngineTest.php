@@ -38,7 +38,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) use( $database ) {
+		$callback = function ( $type ) use( $database ) {
 			if ( $type === 'mw.db' ) {
 				return $connection;
 			};

@@ -470,7 +470,7 @@ class JsonTestCaseFileHandler {
 	 * @return array
 	 */
 	public function findTestCasesByType( $type ) {
-		return array_filter( $this->getContentsFor( 'tests' ), function( $contents ) use( $type ) {
+		return array_filter( $this->getContentsFor( 'tests' ), function ( $contents ) use( $type ) {
 			return isset( $contents['type'] ) && $contents['type'] === $type;
 		} );
 	}

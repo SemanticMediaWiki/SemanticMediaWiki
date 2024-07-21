@@ -73,11 +73,11 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
+			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
@@ -113,11 +113,11 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
+			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
@@ -161,11 +161,11 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
+			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
@@ -213,11 +213,11 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
+			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 

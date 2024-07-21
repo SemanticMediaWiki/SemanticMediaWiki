@@ -150,7 +150,7 @@ class PageUpdater implements DeferrableUpdate {
 	 */
 	public function doPurgeParserCacheAsPool() {
 		if ( $this->connection !== null ) {
-			$this->connection->onTransactionCommitOrIdle( function() {
+			$this->connection->onTransactionCommitOrIdle( function () {
 				 $this->doPoolPurge();
 			} );
 		} else {
@@ -185,7 +185,7 @@ class PageUpdater implements DeferrableUpdate {
 			return $this->log( __METHOD__ . ' it is not possible to push updates as DeferredTransactionalUpdate)' );
 		}
 
-		$this->transactionalCallableUpdate->setCallback( function(){
+		$this->transactionalCallableUpdate->setCallback( function (){
 			$this->doUpdate();
 		} );
 

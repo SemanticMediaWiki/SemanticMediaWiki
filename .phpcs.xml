@@ -40,10 +40,8 @@
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.NotShortIntVar" />
 		<exclude name="MediaWiki.Commenting.MissingCovers.MissingCovers" />
 		<exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceAfterClosure.NoWhitespaceAfterClosure" />
 		<exclude name="Squiz.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
 		<exclude name="Squiz.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceAfterClosure.NoWhitespaceAfterClosure" />
 		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />
 		<exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
 		<exclude name="MediaWiki.WhiteSpace.MultipleEmptyLines.MultipleEmptyLines" />
@@ -135,7 +133,6 @@
 		<exclude name="MediaWiki.PHPUnit.SpecificAssertions.assertIsArray" />
 		<exclude name="Universal.WhiteSpace.CommaSpacing.NoSpaceAfterInFunctionDeclaration" />
 		<exclude name="MediaWiki.Commenting.DocComment.SyntaxAlignedDocClose" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceAfterClosure.NoWhitespaceAfterArrow" />
 		<exclude name="PSR2.Classes.ClassDeclaration.SpaceBeforeName" />
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.returnValueMap" />
 		<exclude name="Generic.Formatting.SpaceAfterNot.Incorrect" />

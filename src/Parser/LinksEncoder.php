@@ -90,7 +90,7 @@ class LinksEncoder {
 	public static function obfuscateAnnotation( $text ) {
 		return preg_replace_callback(
 			LinksProcessor::getRegexpPattern( false ),
-			function( array $matches ) {
+			function ( array $matches ) {
 				return str_replace( '[', '&#91;', $matches[0] );
 			},
 			self::decodeSquareBracket( $text )

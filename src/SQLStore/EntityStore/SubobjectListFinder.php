@@ -81,7 +81,7 @@ class SubobjectListFinder {
 	 * @return MappingIterator
 	 */
 	private function newMappingIterator( DIWikiPage $subject ) {
-		$callback = function( $row ) use ( $subject ) {
+		$callback = function ( $row ) use ( $subject ) {
 			// #1955
 			if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
 				$property = new DIProperty( $subject->getDBkey() );

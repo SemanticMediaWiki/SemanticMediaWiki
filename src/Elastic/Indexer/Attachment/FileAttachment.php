@@ -165,7 +165,7 @@ class FileAttachment {
 			$attachmentAnnotator->getContainer()
 		);
 
-		$callableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function() use( $semanticData, $attachmentAnnotator ) {
+		$callableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function () use( $semanticData, $attachmentAnnotator ) {
 			// Update the SQLStore with the annotated information which will NOT
 			// trigger another ES index update BUT ...
 			$this->store->updateData( $semanticData );

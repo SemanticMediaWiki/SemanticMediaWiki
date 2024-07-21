@@ -55,7 +55,7 @@ abstract class DataItemTest extends DatabaseTestCase {
 		$phpFails = [ $this, 'newInstance' ];
 
 		return array_map(
-			function( array $args ) use ( $phpFails ) {
+			function ( array $args ) use ( $phpFails ) {
 				return [ call_user_func_array( $phpFails, $args ) ];
 			},
 			$this->constructorProvider()

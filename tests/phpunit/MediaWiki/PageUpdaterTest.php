@@ -256,7 +256,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function( $callback ) {
+			->will( $this->returnCallback( function ( $callback ) {
 				return call_user_func( $callback ); }
 			) );
 

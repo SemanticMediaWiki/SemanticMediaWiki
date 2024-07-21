@@ -101,7 +101,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$conf = [
 			'foo' => [
-				'callback'  => function() use( $db ) {
+				'callback'  => function () use( $db ) {
 					return $db;
 				}
 			]

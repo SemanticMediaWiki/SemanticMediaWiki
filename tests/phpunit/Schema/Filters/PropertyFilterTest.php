@@ -75,7 +75,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function() {
+		$callback = function () {
 			return null;
 		};
 
@@ -107,7 +107,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyFilterProvider
 	 */
 	public function testHasMatches_Callback_Compartment( $properties, $compartment, $expected ) {
-		$callback = function() use ( $properties ) {
+		$callback = function () use ( $properties ) {
 			return $properties;
 		};
 

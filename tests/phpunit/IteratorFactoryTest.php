@@ -39,7 +39,7 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Iterators\MappingIterator',
-			$instance->newMappingIterator( $iterator, function(){
+			$instance->newMappingIterator( $iterator, function (){
 			} )
 		);
 	}

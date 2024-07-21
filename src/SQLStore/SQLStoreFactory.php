@@ -321,7 +321,7 @@ class SQLStoreFactory {
 	 * @return DeferredCallableUpdate
 	 */
 	public function newDeferredCallableCachedListLookupUpdate() {
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function() {
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function () {
 			$this->newPropertyUsageCachedListLookup()->deleteCache();
 			$this->newUnusedPropertyCachedListLookup()->deleteCache();
 			$this->newUndeclaredPropertyCachedListLookup()->deleteCache();
@@ -1173,7 +1173,7 @@ class SQLStoreFactory {
 					'_service' => [ $this, 'newPropertyTypeFinder' ],
 					'_type'    => PropertyTypeFinder::class
 				],
-				'PropertyTableIdReferenceFinder' => function() {
+				'PropertyTableIdReferenceFinder' => function () {
 					static $singleton;
 					return $singleton = $singleton === null ? $this->newPropertyTableIdReferenceFinder() : $singleton;
 				},

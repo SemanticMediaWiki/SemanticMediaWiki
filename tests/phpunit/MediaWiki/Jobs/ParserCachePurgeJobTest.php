@@ -29,7 +29,7 @@ class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
 	public function testRun() {
 		$action = 'Foo';
 
-		$updateParserCacheCallback = function( $parameters ) use( $action ) {
+		$updateParserCacheCallback = function ( $parameters ) use( $action ) {
 			return $parameters['causeAction'] === $action;
 		};
 
