@@ -236,7 +236,7 @@ class RecurringEvents {
 		}
 
 		// Handle 'week number', but only if it's of unit 'month'.
-		if ( $unit == 'month' && ! is_null( $week_num ) ) {
+		if ( $unit == 'month' && !is_null( $week_num ) ) {
 			$unit = 'dayofweekinmonth';
 
 			if ( $week_num < -4 || $week_num > 5 || $week_num == 0 ) {

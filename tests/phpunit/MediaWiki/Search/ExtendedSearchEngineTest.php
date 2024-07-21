@@ -137,7 +137,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTextFromContent() {
-		if ( ! method_exists( 'SearchEngine', 'getTextFromContent' ) ) {
+		if ( !method_exists( 'SearchEngine', 'getTextFromContent' ) ) {
 			$this->markTestSkipped( 'SearchEngine::getTextFromContent() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -173,7 +173,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTextAlreadyUpdatedForIndex() {
-		if ( ! method_exists( 'SearchEngine', 'textAlreadyUpdatedForIndex' ) ) {
+		if ( !method_exists( 'SearchEngine', 'textAlreadyUpdatedForIndex' ) ) {
 			$this->markTestSkipped( 'SearchEngine::textAlreadyUpdatedForIndex() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -237,7 +237,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-		if ( ! method_exists( 'SearchEngine', 'delete' ) ) {
+		if ( !method_exists( 'SearchEngine', 'delete' ) ) {
 			$this->markTestSkipped( 'SearchEngine::delete() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -260,7 +260,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetFeatureData() {
-		if ( ! method_exists( 'SearchEngine', 'delete' ) ) {
+		if ( !method_exists( 'SearchEngine', 'delete' ) ) {
 			$this->markTestSkipped( 'SearchEngine::delete() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -366,7 +366,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetShowSuggestion() {
-		if ( ! method_exists( 'SearchEngine', 'setShowSuggestion' ) ) {
+		if ( !method_exists( 'SearchEngine', 'setShowSuggestion' ) ) {
 			$this->markTestSkipped( 'SearchEngine::setShowSuggestion() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
