@@ -234,10 +234,10 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 
 		yield "'property-6-a', 'property-6-b' NS_MAIN" => [
 			NS_MAIN,
-			function() {
+			function () {
 				return [ 'category-6-a' ];
 			},
-			function(){
+			function (){
 				return [ new DIProperty( 'property-6-a' ), new DIProperty( 'property-6-b' ) ];
 			},
 			[ 'rule_6_2' ]

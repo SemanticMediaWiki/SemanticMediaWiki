@@ -79,7 +79,7 @@ class FileIngestJobTest extends \PHPUnit_Framework_TestCase {
 	public function testPushIngestJob() {
 		$subject = DIWikiPage::newFromText( __METHOD__, NS_FILE );
 
-		$checkJobParameterCallback = function( $job ) use( $subject ) {
+		$checkJobParameterCallback = function ( $job ) use( $subject ) {
 			return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $subject );
 		};
 

@@ -79,7 +79,7 @@ class Sequence {
 
 		$sequence = self::makeSequence( $table, $field );
 
-		$this->connection->onTransactionCommitOrIdle( function() use( $sequence, $seq_num ) {
+		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num ) {
 			$this->connection->query( "ALTER SEQUENCE {$sequence} RESTART WITH {$seq_num}", __METHOD__ );
 		} );
 

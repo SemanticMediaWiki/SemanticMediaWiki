@@ -140,7 +140,7 @@ class RemoteRequest implements QueryEngine {
 		}
 
 		// Add an information note depending on the context before the actual output
-		$callback = function( $result, array $options ) use( $isFromCache, $isDisabled, $source ) {
+		$callback = function ( $result, array $options ) use( $isFromCache, $isDisabled, $source ) {
 			$options['source'] = $source;
 			$options['is.cached'] = $isFromCache;
 			$options['is.disabled'] = $isDisabled;

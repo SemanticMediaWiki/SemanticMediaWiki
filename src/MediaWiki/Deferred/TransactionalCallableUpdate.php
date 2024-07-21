@@ -198,7 +198,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin() ]
 			);
 
-			return $this->connection->onTransactionCommitOrIdle( function() use( $update ) {
+			return $this->connection->onTransactionCommitOrIdle( function () use( $update ) {
 				$update->onTransactionIdle = false;
 				parent::registerUpdate( $update );
 			} );
@@ -214,7 +214,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	}
 
 	private function runOnTransactionIdle() {
-		$this->connection->onTransactionCommitOrIdle( function() {
+		$this->connection->onTransactionCommitOrIdle( function () {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (onTransactionIdle)' ],
 				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin() ]

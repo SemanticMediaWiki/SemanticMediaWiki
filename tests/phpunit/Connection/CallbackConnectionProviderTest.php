@@ -24,7 +24,7 @@ class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-		$callback = function() {};
+		$callback = function () {};
 
 		$this->assertInstanceOf(
 			CallbackConnectionProvider::class,
@@ -37,7 +37,7 @@ class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionFormCallback() {
-		$callback = function() {
+		$callback = function () {
 			return $this->connection;
 		};
 

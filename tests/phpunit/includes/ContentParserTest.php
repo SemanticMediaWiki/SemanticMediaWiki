@@ -60,7 +60,7 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown(): void {
 		if ( $this->contentRenderer !== null ) {
-			$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', fn() => $this->contentRenderer );
+			$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', fn () => $this->contentRenderer );
 		}
 		$this->testEnvironment->tearDown();
 		parent::tearDown();

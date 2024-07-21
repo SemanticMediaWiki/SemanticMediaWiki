@@ -430,7 +430,7 @@ class HtmlFormRenderer {
 	public function addPaging( $limit, $offset, $count, $messageCount = null ) {
 		$title = $this->title;
 
-		$this->content[] = function( $instance ) use ( $title, $limit, $offset, $count, $messageCount ) {
+		$this->content[] = function ( $instance ) use ( $title, $limit, $offset, $count, $messageCount ) {
 			if ( $messageCount === null ) {
 				$messageCount = ( $count > $limit ? $count - 1 : $count );
 			}

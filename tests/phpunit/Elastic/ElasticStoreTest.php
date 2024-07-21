@@ -103,7 +103,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) use( $connection, $database, $client ) {
+		$callback = function ( $type ) use( $connection, $database, $client ) {
 			if ( $type === 'elastic' ) {
 				return $client;
 			};
@@ -179,7 +179,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) use( $connection, $database, $client ) {
+		$callback = function ( $type ) use( $connection, $database, $client ) {
 			if ( $type === 'elastic' ) {
 				return $client;
 			};
@@ -234,7 +234,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 		$subject = DIWikiPage::newFromText( __METHOD__, NS_FILE );
 
 		// Check that the IngestJob is referencing to the same subject instance
-		$checkJobParameterCallback = function( $job ) use( $subject ) {
+		$checkJobParameterCallback = function ( $job ) use( $subject ) {
 			return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $subject );
 		};
 
@@ -295,7 +295,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) use( $connection, $client ) {
+		$callback = function ( $type ) use( $connection, $client ) {
 			if ( $type === 'mw.db' ) {
 				return $connection;
 			};

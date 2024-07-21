@@ -153,7 +153,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 	protected function getPermittedSettings() {
 		parent::getPermittedSettings();
 
-		$elasticsearchConfig = function( $val ) {
+		$elasticsearchConfig = function ( $val ) {
 			if ( $this->getStore() instanceof \SMWElasticStore ) {
 				$config = $this->getStore()->getConnection( 'elastic' )->getConfig();
 
@@ -170,7 +170,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		// Config isolation causes NamespaceInfo to not access the `MainConfig`
 		// therefore reset the services so that it copies the changed setting.
 		// https://github.com/wikimedia/mediawiki/commit/7ada64684e6477be44405dedbfdb0d96242f2e73
-		$capitalLinks = function( $val ) {
+		$capitalLinks = function ( $val ) {
 			$this->testEnvironment->resetMediaWikiService( 'NamespaceInfo' );
 			return $val;
 		};

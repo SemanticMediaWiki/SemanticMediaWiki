@@ -375,7 +375,7 @@ class SpecialAsk extends SpecialPage {
 
 		$htmlForm->setCallbacks(
 			[
-				'code_handler' => function() {
+				'code_handler' => function () {
 					return $this->print_code();
 				}
 			]

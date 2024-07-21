@@ -194,7 +194,7 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function( $callback ) {
+			->will( $this->returnCallback( function ( $callback ) {
 				return call_user_func( $callback );
 			}
 			) );

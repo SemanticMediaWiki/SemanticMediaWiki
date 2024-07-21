@@ -53,7 +53,7 @@ class InfoParserFunction implements HookHandler {
 		if ( strpos( $message, 'smw-highlighter' ) !== '' ) {
 			$message = preg_replace_callback(
 					"/" . "<span class=\"smw-highlighter\"(.*)?>(.*)?<\/span>" . "/m",
-					function( $matches ) {
+					function ( $matches ) {
 						return strip_tags( $matches[0] );
 					},
 					$message

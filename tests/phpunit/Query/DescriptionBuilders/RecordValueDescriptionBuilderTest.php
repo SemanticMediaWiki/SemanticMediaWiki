@@ -49,7 +49,7 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$recordValue->expects( $this->any() )
 			->method( 'getValuesFromString' )
 			->with( $this->stringContains( $value ) )
-			->will( $this->returnCallback( function( $value ) {
+			->will( $this->returnCallback( function ( $value ) {
 				 return explode(';', $value );
 			} ) );
 

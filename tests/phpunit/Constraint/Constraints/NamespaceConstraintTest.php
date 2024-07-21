@@ -67,7 +67,7 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 

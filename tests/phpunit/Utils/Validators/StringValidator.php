@@ -20,7 +20,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $actual
 	 */
 	public function assertThatStringContains( $expected, $actual, $message = '' ) {
-		$callback = function( &$expected, $actual, &$actualCounted ) {
+		$callback = function ( &$expected, $actual, &$actualCounted ) {
 			foreach ( $expected as $key => $pattern ) {
 				if ( $this->isMatch( $pattern, $actual ) ) {
 					$actualCounted++;
@@ -39,7 +39,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $actual
 	 */
 	public function assertThatStringNotContains( $expected, $actual, $message = '' ) {
-		$callback = function( &$expected, $actual, &$actualCounted ) {
+		$callback = function ( &$expected, $actual, &$actualCounted ) {
 			foreach ( $expected as $key => $pattern ) {
 				if ( $this->isMatch( $pattern, $actual ) === false ) {
 					$actualCounted++;

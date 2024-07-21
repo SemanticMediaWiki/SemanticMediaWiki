@@ -527,7 +527,7 @@ class HtmlBuilder {
 
 		// Sort by label instead of the key which may start with `_` or `__`
 		// and thereby distorts the lexicographical order
-		usort ( $properties, function( $a, $b ) {
+		usort ( $properties, function ( $a, $b ) {
 			return strnatcmp( $a->getLabel(), $b->getLabel() );
 		} );
 

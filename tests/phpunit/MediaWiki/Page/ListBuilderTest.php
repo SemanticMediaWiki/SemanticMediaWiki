@@ -115,7 +115,7 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->setItemFormatter( function( $dataValue, $linker ) {
+		$instance->setItemFormatter( function ( $dataValue, $linker ) {
 			return 'Bar';
 		} );
 

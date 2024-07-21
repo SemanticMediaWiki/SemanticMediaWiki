@@ -112,7 +112,7 @@ class UniqueValueConstraint implements Constraint {
 		// Exclude the current page from the result match to check whether another
 		// page matches the condition and if so then the value can no longer be
 		// assigned and is not unique
-		$requestOptions->addExtraCondition( function( $store, $query, $alias ) use( $contextPage ) {
+		$requestOptions->addExtraCondition( function ( $store, $query, $alias ) use( $contextPage ) {
 				return $query->neq( "$alias.s_id", $store->getObjectIds()->getId( $contextPage ) );
 			}
 		);

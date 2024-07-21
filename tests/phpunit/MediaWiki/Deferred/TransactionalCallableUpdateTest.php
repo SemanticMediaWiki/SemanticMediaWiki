@@ -40,7 +40,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-		$callback = function() {
+		$callback = function () {
 			return null;
 		};
 
@@ -64,7 +64,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -110,7 +110,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -136,7 +136,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -164,7 +164,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -180,7 +180,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOrigin() {
-		$callback = function() {
+		$callback = function () {
 		};
 
 		$instance = new TransactionalCallableUpdate(
@@ -207,7 +207,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -237,7 +237,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateOnTransactionIdle() {
-		$callback = function( $callback ) {
+		$callback = function ( $callback ) {
 			return call_user_func( $callback );
 		};
 
@@ -259,7 +259,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -294,7 +294,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -330,7 +330,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -366,7 +366,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->never() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 

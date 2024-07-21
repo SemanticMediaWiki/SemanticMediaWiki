@@ -78,7 +78,7 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
 		$connectionProvider->expects( $this->once() )
 			->method( 'getConnection' );
 
-		$callback = function() use( $connectionProvider ) {
+		$callback = function () use( $connectionProvider ) {
 			return $connectionProvider->getConnection();
 		};
 

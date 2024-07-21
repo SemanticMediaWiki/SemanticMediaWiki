@@ -147,7 +147,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	protected function getPermittedSettings() {
 		// Ensure that the context is set for a selected language
 		// and dependent objects are reset
-		$this->registerConfigValueCallback( 'wgContLang', function( $val ) {
+		$this->registerConfigValueCallback( 'wgContLang', function ( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
 			Localizer::clear();
 			// #4682, Avoid any surprises when the `wgLanguageCode` is changed during a test
@@ -163,7 +163,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 			return $lang;
 		} );
 
-		$this->registerConfigValueCallback( 'wgLang', function( $val ) {
+		$this->registerConfigValueCallback( 'wgLang', function ( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
 			Localizer::clear();
 			\SMW\NamespaceManager::clear();

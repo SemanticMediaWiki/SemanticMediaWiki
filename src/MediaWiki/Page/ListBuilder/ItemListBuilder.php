@@ -190,7 +190,7 @@ class ItemListBuilder {
 	}
 
 	private function getLastItemFormatter( $property, $dataItem ) {
-		return function() use ( $property, $dataItem ) {
+		return function () use ( $property, $dataItem ) {
 			return \Html::element(
 				'a',
 				[

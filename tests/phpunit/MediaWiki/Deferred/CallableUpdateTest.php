@@ -35,7 +35,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-		$callback = function() {
+		$callback = function () {
 			return null;
 		};
 
@@ -54,7 +54,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -69,7 +69,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateThatThrowsExceptionToLogAndRethrow() {
-		$callback = function() {
+		$callback = function () {
 			throw new \Exception("Error Processing Request", 1);
 		};
 
@@ -114,7 +114,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -140,7 +140,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -167,7 +167,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -182,7 +182,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOrigin() {
-		$callback = function() {
+		$callback = function () {
 		};
 
 		$instance = new CallableUpdate(
@@ -206,7 +206,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 

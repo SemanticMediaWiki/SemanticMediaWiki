@@ -41,7 +41,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	public function testRegisteredHandler() {
 		$instance = new Message();
 
-		$instance->registerCallbackHandler( 'Foo', function( $parameters, $language ) {
+		$instance->registerCallbackHandler( 'Foo', function ( $parameters, $language ) {
 			if ( $parameters[0] === 'Foo' && $language === Message::CONTENT_LANGUAGE ) {
 				return 'Foobar';
 			}
@@ -86,7 +86,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Message();
 		$instance->clear();
 
-		$instance->registerCallbackHandler( 'Foo', function( $parameters, $language ) use ( $instanceSpy ){
+		$instance->registerCallbackHandler( 'Foo', function ( $parameters, $language ) use ( $instanceSpy ){
 			$instanceSpy->hasLanguage( $language );
 			return 'UNKNOWN';
 		} );
@@ -99,7 +99,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Message();
 		$instance->clear();
 
-		$instance->registerCallbackHandler( 'SimpleText', function( $parameters, $language ) {
+		$instance->registerCallbackHandler( 'SimpleText', function ( $parameters, $language ) {
 			return 'Foo';
 		} );
 

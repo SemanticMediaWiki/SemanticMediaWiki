@@ -186,7 +186,7 @@ class ParamListProcessor {
 		// request that contains `-3D` string
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
-			function( array $matches ) {
+			function ( array $matches ) {
 				return str_replace( [ '=' ], [ '0x003D' ], $matches[0] );
 			},
 			$param
