@@ -156,7 +156,7 @@ class ContentParser {
 
 		// Avoid "The content model 'xyz' is not registered on this wiki."
 		try {
-			$rev = version_compare( MW_VERSION, '1.42.0' ) < 0 ? $revision->getId() : $revision;
+			$rev = version_compare( MW_VERSION, '1.42', '<' ) ? $revision->getId() : $revision;
 			$services = MediaWikiServices::getInstance();
 			if ( method_exists( $services, 'getContentRenderer' ) ) {
 				$contentRenderer = $services->getContentRenderer();
