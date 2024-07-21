@@ -277,7 +277,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	private function doExecuteDebugQueryResult( $debugFormatter, $query, $rootid, &$entries ) {
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
-		$builder = $this->getInstanceQuery( $connection, $query, $rootid );
+		$builder = $this->getQueryBuilder( $connection, $query, $rootid );
 
 		if ( $builder === null ) {
 			return $entries['SQL Query'] = 'Empty result, no SQL query created.';
@@ -322,7 +322,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$queryResult->setCountValue( 0 );
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
-		$builder = $this->getInstanceQuery( $connection, $query, $rootid, 'count' );
+		$builder = $this->getQueryBuilder( $connection, $query, $rootid, 'count' );
 		if ( $builder === null ) {
 			return $queryResult;
 		}
@@ -361,7 +361,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @return SelectQueryBuilder null if no query required (result is empty)
 	 */
-	private function getInstanceQuery( $connection, $query, $rootid, $mode = '' ) {
+	private function getQueryBuilder( $connection, $query, $rootid, $mode = '' ) {
 		$builder = $connection->newSelectQueryBuilder( 'read' );
 		$qobj = $this->querySegmentList[$rootid];
 		if ( $qobj->joinfield === '' ) return null;
@@ -389,7 +389,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			if ( ! empty( $qobj->sortfields ) ) $builder->select( $qobj->sortfields );
 			$connection->applySqlOptions( $builder, $sql_options );
 		}
-		QuerySegmentListProcessor::applyFrom( $qobj, $builder );
+		QuerySegmentListProcessor::applyFromSegments( $qobj, $builder );
 
 		return $builder;
 	}
@@ -406,7 +406,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	private function getInstanceQueryResult( Query $query, $rootid ) {
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
-		$builder = $this->getInstanceQuery( $connection, $query, $rootid );
+		$builder = $this->getQueryBuilder( $connection, $query, $rootid );
 
 		// Empty result, no query needed
 		if ( $builder === null ) {

@@ -386,7 +386,7 @@ class QuerySegmentListProcessor {
 	 * Apply QuerySegment->fromSegs to a SelectQueryBuilder.
 	 * @since 4.2
 	 */
-	public static function applyFrom( $qobj, $builder ) {
+	public static function applyFromSegments( $qobj, $builder ) {
 		foreach ( $qobj->fromSegs as $seg ) {
 			$joinMethod = 'join';
 			if ( $seg->joinType === 'LEFT'|| $seg->joinType === 'LEFT OUTER' ) {
@@ -406,7 +406,7 @@ class QuerySegmentListProcessor {
 			} else {
 				$grp = new JoinGroup( $seg->alias . 'jg' );
 				$grp->table( $table, $seg->alias );
-				self::applyFrom( $seg, $grp );
+				self::applyFromSegments( $seg, $grp );
 				$builder->{$joinMethod}( $grp, $grp->getAlias(), $seg->where );
 			}
 		}
