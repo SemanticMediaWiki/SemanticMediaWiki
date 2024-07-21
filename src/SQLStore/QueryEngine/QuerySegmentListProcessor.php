@@ -394,11 +394,18 @@ class QuerySegmentListProcessor {
 			} elseif ( ! empty( $seg->joinType ) && $seg->joinType !== 'INNER' ) {
 				throw new RuntimeException( "Unknown QuerySegment->joinType `{$seg->joinType}`" );
 			}
+			$table = $seg->joinTable;
+			if ( $table == $seg->alias ) {
+				// Bug: Temporary table `t1` renamed to `wt1` by MW SQLPlatform,
+				// however join('t1','t1') yields "JOIN `wt1`" instead of "JOIN `wt1` AS `t1`",
+				// causing "Table t1 not found".  Using subquery as workaround.
+				$table = $builder->newSubquery()->select( '*' )->from( $table );
+			}
 			if ( empty( $seg->fromSegs ) ) {
-				$builder->{$joinMethod}( $seg->joinTable, $seg->alias, $seg->where );
+				$builder->{$joinMethod}( $table, $seg->alias, $seg->where );
 			} else {
 				$grp = new JoinGroup( $seg->alias . 'jg' );
-				$grp->table( $seg->joinTable, $seg->alias );
+				$grp->table( $table, $seg->alias );
 				self::applyFrom( $seg, $grp );
 				$builder->{$joinMethod}( $grp, $grp->getAlias(), $seg->where );
 			}
