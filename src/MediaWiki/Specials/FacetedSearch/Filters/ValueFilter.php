@@ -98,15 +98,14 @@ class ValueFilter {
 			}
 
 			$raw = $valueFilters['raw'][$property] ?? [];
-			$valuesParsed = [];
+			$escapedValues = [];
 			foreach( $values as $k => $groupId ) {
 				// Security measure to prevent XSS attacks
-				$k = htmlspecialchars( $k );
-				$valuesParsed[$k] = $groupId;
+				$escapedValues[htmlspecialchars( $k )] = $groupId;
 			}
 
 			$valueFilter = $this->newValueFilter( $property );
-			$cards[$property] = $valueFilter->create( $urlArgs, $property, $valuesParsed, $raw );
+			$cards[$property] = $valueFilter->create( $urlArgs, $property, $escapedValues, $raw );
 		}
 
 		return $cards;
