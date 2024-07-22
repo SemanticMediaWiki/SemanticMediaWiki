@@ -32,7 +32,7 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	public function testSidebarBeforeOutputURLEncoding( $setup, $expected ) {
 		$sidebar  = [];
 
-		foreach ( $setup['settings'] as $key => $value) {
+		foreach ( $setup['settings'] as $key => $value ) {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 		}
 

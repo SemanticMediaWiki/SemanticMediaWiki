@@ -52,8 +52,8 @@ class StoreTest extends DatabaseTestCase {
 
 	public function getPropertyValuesDataProvider() {
 		return [
-			[ Title::newMainPage()->getFullText(), new DIProperty('_MDAT') ],
-			[ Title::newMainPage()->getFullText(), DIProperty::newFromUserLabel('Age') ],
+			[ Title::newMainPage()->getFullText(), new DIProperty( '_MDAT' ) ],
+			[ Title::newMainPage()->getFullText(), DIProperty::newFromUserLabel( 'Age' ) ],
 		];
 	}
 
@@ -72,7 +72,7 @@ class StoreTest extends DatabaseTestCase {
 
 	public function getPropertySubjectsDataProvider() {
 		return [
-			[ new DIProperty('_MDAT'), null ],
+			[ new DIProperty( '_MDAT' ), null ],
 		];
 	}
 

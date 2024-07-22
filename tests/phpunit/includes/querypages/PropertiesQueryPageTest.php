@@ -54,7 +54,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatResultDIError() {
-		$error = $this->dataItemFactory->newDIError( 'Foo');
+		$error = $this->dataItemFactory->newDIError( 'Foo' );
 
 		$instance = new PropertiesQueryPage(
 			$this->store,

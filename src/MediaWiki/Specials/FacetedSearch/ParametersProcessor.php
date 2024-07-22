@@ -473,7 +473,7 @@ class ParametersProcessor {
 	}
 
 	private function addDefaultPrintRequests( string $query ) {
-		preg_match_all('/\[\[(.*?)\]\]/i', $query, $matches );
+		preg_match_all( '/\[\[(.*?)\]\]/i', $query, $matches );
 		$printRequests = [];
 
 		foreach ( $matches[1] as $match ) {

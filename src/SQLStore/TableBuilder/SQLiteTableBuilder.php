@@ -338,7 +338,7 @@ class SQLiteTableBuilder extends TableBuilder {
 			$indexType = 'UNIQUE INDEX';
 		}
 
-		$indexName = $this->connection->tableName(  "{$tableName}_index{$indexName}" );
+		$indexName = $this->connection->tableName( "{$tableName}_index{$indexName}" );
 
 		$this->reportMessage( "   ... creating new $indexType $columns ..." );
 		$this->connection->query( "CREATE $indexType $indexName ON $tableName ($columns)", __METHOD__ );

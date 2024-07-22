@@ -100,7 +100,7 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 		for ( $i = 1; $i <= 10; $i++ ) {
 
 			// Select random array key
-			$name = $keys[rand(0, 2)];
+			$name = $keys[rand( 0, 2 )];
 
 			// Get a random number
 			$random = rand( 10, 500 );

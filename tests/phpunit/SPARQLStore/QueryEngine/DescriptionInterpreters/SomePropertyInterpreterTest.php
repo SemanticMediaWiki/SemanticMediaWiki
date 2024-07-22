@@ -145,7 +145,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
 
 		$description =  new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			new Disjunction()
 		);
 
@@ -168,7 +168,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
 		$description =  new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
 
@@ -214,11 +214,11 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
 		$description =  new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
 
-		$orderByProperty = new DIProperty( 'Foo');
+		$orderByProperty = new DIProperty( 'Foo' );
 		$sortkeys = [];
 
 		$expected = $stringBuilder

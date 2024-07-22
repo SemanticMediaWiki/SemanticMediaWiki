@@ -348,7 +348,7 @@ class SMWSpecialTypes extends SpecialPage {
 				[
 					'class' => 'smw-page-content plainlinks'
 				],
-				implode( '', $errors)
+				implode( '', $errors )
 			);
 		}
 	}
@@ -385,7 +385,7 @@ class SMWSpecialTypes extends SpecialPage {
 			Html::rawElement(
 				'a',
 				[
-					'href' => SpecialPage::getTitleFor( 'Types')->getFullURL()
+					'href' => SpecialPage::getTitleFor( 'Types' )->getFullURL()
 				],
 				$this->msg( 'types' )->escaped()
 			)

@@ -127,7 +127,7 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			'sqlite',
-			[ ]
+			[]
 		];
 
 		$row = [

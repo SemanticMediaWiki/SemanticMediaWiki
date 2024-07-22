@@ -319,7 +319,7 @@ class Indexer {
 		$this->bulk->execute();
 
 		$this->logger->info(
-			[	'Indexer',
+			[ 'Indexer',
 				'Data index completed ({subject}, {id})',
 				'procTime (in sec): {procTime}',
 				'Response: {response}'

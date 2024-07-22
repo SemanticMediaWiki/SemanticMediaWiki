@@ -1,6 +1,6 @@
 <?php
 
-die("Not a valid entry point\n");
+die( "Not a valid entry point\n" );
 
 /**
  * This file does not hold any code. It is used mainly during the doxygen

@@ -94,7 +94,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnArgument( 0 ) );
 
 		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'searchTitle')
+			->method( 'searchTitle' )
 			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
 		$this->store->expects( $this->any() )
@@ -124,7 +124,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnArgument( 0 ) );
 
 		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'searchTitle')
+			->method( 'searchTitle' )
 			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
 		$this->store->expects( $this->any() )
@@ -205,7 +205,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnArgument( 0 ) );
 
 		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'searchText')
+			->method( 'searchText' )
 			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
 		$instance = new ExtendedSearch(
@@ -246,7 +246,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$queryBuilder->expects( $this->any() )
-			->method( 'getQuery')
+			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
@@ -310,7 +310,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$searchSuggestionSet->expects( $this->any() )
-			->method( 'map')
+			->method( 'map' )
 			->will( $this->returnValue( [] ) );
 
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )

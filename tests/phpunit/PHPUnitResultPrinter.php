@@ -37,7 +37,7 @@ class PHPUnitResultPrinter extends PHPUnit_TextUI_ResultPrinter {
 			}
 
 			$i++;
-			$this->write( sprintf("\n%-73s%ss", "- $label", $time ) );
+			$this->write( sprintf( "\n%-73s%ss", "- $label", $time ) );
 		}
 
 		$this->write( "\n\n" );

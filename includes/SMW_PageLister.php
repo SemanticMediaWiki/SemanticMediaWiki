@@ -189,7 +189,7 @@ class SMWPageLister {
 			}
 		}
 
-		if ( count ( $this->mDiWikiPages ) > $cutoff ) {
+		if ( count( $this->mDiWikiPages ) > $cutoff ) {
 			return self::getColumnList( $start, $end, $this->mDiWikiPages, $this->mDiProperty );
 		} elseif ( count( $this->mDiWikiPages ) > 0 ) {
 			return self::getShortList( $start, $end, $this->mDiWikiPages, $this->mDiProperty );

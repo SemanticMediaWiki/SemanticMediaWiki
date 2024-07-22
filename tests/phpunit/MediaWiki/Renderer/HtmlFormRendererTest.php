@@ -151,7 +151,7 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 				'optionlistName',
 				'b',
 				[ 'f' => 'foo', 'b' =>'bar' ],
-				'optionslistId');
+				'optionslistId' );
 
 		$expected = [
 			'form id="smw-form-optionsSelecListForm" name="optionsSelecListForm" method="get"',

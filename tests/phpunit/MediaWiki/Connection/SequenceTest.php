@@ -56,7 +56,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			null,
-			$instance->restart( 'Foo', 'bar')
+			$instance->restart( 'Foo', 'bar' )
 		);
 	}
 

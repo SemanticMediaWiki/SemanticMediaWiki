@@ -162,7 +162,7 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 			[ DataItem::TYPE_BLOB,'smw_di_blob' ],
 			[ DataItem::TYPE_BOOLEAN, 'smw_di_bool' ],
 			[ DataItem::TYPE_URI, 'smw_di_uri' ],
-			[ DataItem::TYPE_TIME, 'smw_di_time'],
+			[ DataItem::TYPE_TIME, 'smw_di_time' ],
 			[ DataItem::TYPE_GEO, 'smw_di_coords' ],
 			[ DataItem::TYPE_WIKIPAGE, 'smw_di_wikipage' ],
 			[ DataItem::TYPE_CONCEPT, '' ],
@@ -186,7 +186,7 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 			[ '_txt','smw_di_blob' ],
 			[ '_boo', 'smw_di_bool' ],
 			[ '_uri', 'smw_di_uri' ],
-			[ '_dat', 'smw_di_time'],
+			[ '_dat', 'smw_di_time' ],
 			[ '_geo', 'smw_di_coords' ],
 			[ '_wpg', 'smw_di_wikipage' ],
 		];

@@ -190,7 +190,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ new DIProperty(  __METHOD__ . 'property' ) ] ) );
+			->will( $this->returnValue( [ new DIProperty( __METHOD__ . 'property' ) ] ) );
 
 		#0 Simple factbox build, returning content
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-content' );
@@ -321,7 +321,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$context = new \RequestContext( );
+		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest() );
 
 		$outputPage->expects( $this->any() )
@@ -358,7 +358,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$context = new \RequestContext( );
+		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
 
 		$outputPage->expects( $this->atLeastOnce() )

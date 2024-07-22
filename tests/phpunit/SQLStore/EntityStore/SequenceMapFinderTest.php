@@ -118,7 +118,7 @@ class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'smw_id', 'smw_seqmap'] ),
+				$this->equalTo( [ 'smw_id', 'smw_seqmap' ] ),
 				$this->equalTo( [ 'smw_id' => [ 42, 1001 ] ] ) )
 			->will( $this->returnValue( [ (object)$row ] ) );
 

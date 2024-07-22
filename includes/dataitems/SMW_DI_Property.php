@@ -537,7 +537,7 @@ class DIProperty extends SMWDataItem {
 	private function newDIWikiPage( string $dbkey, string $subobjectName ): ?DIWikiPage {
 		// If an inverse marker is present just omit the marker so a normal
 		// property page link can be produced independent of its directionality
-		if ( $dbkey !== '' && $dbkey[0] == '-'  ) {
+		if ( $dbkey !== '' && $dbkey[0] == '-' ) {
 			$dbkey = substr( $dbkey, 1 );
 		}
 

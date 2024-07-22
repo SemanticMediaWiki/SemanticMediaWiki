@@ -250,7 +250,7 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			$description
 		);
 
@@ -289,7 +289,7 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			$description
 		);
 

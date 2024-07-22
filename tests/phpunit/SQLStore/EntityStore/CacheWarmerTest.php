@@ -72,7 +72,7 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'smw_hash' => [ '7b6b944694382bfab461675f40a2bda7e71e68e3' ] ]) )
+				$this->equalTo( [ 'smw_hash' => [ '7b6b944694382bfab461675f40a2bda7e71e68e3' ] ] ) )
 			->will( $this->returnValue( [ (object)$row ] ) );
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -144,7 +144,7 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'smw_hash' => [ '909d8ab26ea49adb7e1b106bc47602050d07d19f' ] ]) )
+				$this->equalTo( [ 'smw_hash' => [ '909d8ab26ea49adb7e1b106bc47602050d07d19f' ] ] ) )
 			->will( $this->returnValue( [ (object)$row ] ) );
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

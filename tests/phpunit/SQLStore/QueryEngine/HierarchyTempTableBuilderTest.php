@@ -42,7 +42,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'tableName' )
 			->with(
-				$this->stringContains( 'bar') )
+				$this->stringContains( 'bar' ) )
 			->will( $this->returnValue( '_bar' ) );
 
 		$instance = new HierarchyTempTableBuilder(
@@ -72,7 +72,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'tableName' )
 			->with(
-				$this->stringContains( 'bar') )
+				$this->stringContains( 'bar' ) )
 			->will( $this->returnValue( '_bar' ) );
 
 		$this->connection->expects( $this->atLeastOnce() )

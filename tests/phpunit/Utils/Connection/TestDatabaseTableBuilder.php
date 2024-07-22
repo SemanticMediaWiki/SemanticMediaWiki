@@ -235,7 +235,7 @@ class TestDatabaseTableBuilder {
 	private function createDummyPage() {
 		$pageCreator = new PageCreator();
 		$pageCreator
-			->createPage( Title::newFromText( 'SMWUTDummyPage' )  )
+			->createPage( Title::newFromText( 'SMWUTDummyPage' ) )
 			->doEdit( 'SMW dummy page' );
 	}
 

@@ -122,7 +122,7 @@ class HtmlBuilder {
 				'search' => $this->templateEngine->publish( 'search-form' ),
 				'search-extra-fields' => $this->extraFieldBuilder->buildHTML( $urlArgs ),
 				'intro' => $html,
-				'theme' => $this->profile->get( 'theme')
+				'theme' => $this->profile->get( 'theme' )
 			]
 		);
 
@@ -205,7 +205,7 @@ class HtmlBuilder {
 		if ( $this->profile->get( 'debug_output' ) ) {
 
 			$queryString = str_replace(
-				['<', '>', '=' ],
+				[ '<', '>', '=' ],
 				[ '&lt;', '&gt;', '0x003D' ],
 				$this->resultFetcher->getQueryString()
 			);
@@ -225,7 +225,7 @@ class HtmlBuilder {
 		$this->templateEngine->compile(
 			'facetedsearch-sidebar',
 			[
-				'cards' => $this->templateEngine->publish( 'filter-cards', TemplateEngine::HTML_TIDY  )
+				'cards' => $this->templateEngine->publish( 'filter-cards', TemplateEngine::HTML_TIDY )
 			]
 		);
 
@@ -236,7 +236,7 @@ class HtmlBuilder {
 				'search-extra-fields' => $this->extraFieldBuilder->buildHTML( $urlArgs ),
 				'sidebar' => $this->templateEngine->publish( 'facetedsearch-sidebar' ),
 				'content' => $this->templateEngine->publish( 'facetedsearch-content' ),
-				'theme' => $this->profile->get( 'theme')
+				'theme' => $this->profile->get( 'theme' )
 			]
 		);
 

@@ -68,7 +68,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 		);
 
 		$this->assertTrue(
-			$instance->isTaskFor( 'stats')
+			$instance->isTaskFor( 'stats' )
 		);
 	}
 

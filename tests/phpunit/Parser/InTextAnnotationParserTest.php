@@ -110,7 +110,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$magicWordsFinder = \SMW\ApplicationFactory::getInstance()->create('MagicWordsFinder', $parserData->getOutput() );
+		$magicWordsFinder = \SMW\ApplicationFactory::getInstance()->create( 'MagicWordsFinder', $parserData->getOutput() );
 
 		$instance = new InTextAnnotationParser(
 			$parserData,

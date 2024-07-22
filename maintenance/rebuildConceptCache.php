@@ -206,7 +206,7 @@ class rebuildConceptCache extends \Maintenance {
 
 	private function checkForRebuildState( $rebuildResult ) {
 		if ( !$rebuildResult ) {
-			$this->reportMessage( "\n" . 'Use option --help for usage details.' . "\n"  );
+			$this->reportMessage( "\n" . 'Use option --help for usage details.' . "\n" );
 			return false;
 		}
 

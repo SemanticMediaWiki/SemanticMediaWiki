@@ -180,7 +180,7 @@ class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 		);
 
 		// Required due to how MoveTo/Title uses the `TitleIsMovable` hook
-		if ( version_compare(MW_VERSION, '1.34', '>=' ) ) {
+		if ( version_compare( MW_VERSION, '1.34', '>=' ) ) {
 			$this->assertNull(
 				$this->newRevisionFromTitle( $expectedNewTitle )
 			);

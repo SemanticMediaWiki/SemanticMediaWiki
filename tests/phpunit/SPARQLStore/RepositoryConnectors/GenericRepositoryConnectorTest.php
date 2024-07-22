@@ -54,7 +54,7 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new GenericRepositoryConnector (
+		$instance = new GenericRepositoryConnector(
 			new RepositoryClient(
 				'http://foo/myDefaultGraph',
 				'http://localhost:9999/query',

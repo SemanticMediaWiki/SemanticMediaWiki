@@ -62,7 +62,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource(  'owl', 'sameAs' ) )
+			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'owl', 'sameAs' ) )
 		);
 
 		$expectedResourceElement = new ExpNsResource(

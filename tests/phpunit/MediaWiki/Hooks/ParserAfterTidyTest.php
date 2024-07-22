@@ -341,7 +341,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->process( $text  )
+			$instance->process( $text )
 		);
 
 		$expected = [

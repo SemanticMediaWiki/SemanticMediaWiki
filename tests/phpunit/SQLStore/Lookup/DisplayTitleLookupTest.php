@@ -72,8 +72,8 @@ class DisplayTitleLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->with(
 				$this->equalTo( 'smw_object_ids' ),
-				$this->equalTo(  [ 'smw_id', 'smw_title', 'smw_namespace', 'smw_hash' ] ),
-				$this->equalTo(  [ 'smw_hash' => [
+				$this->equalTo( [ 'smw_id', 'smw_title', 'smw_namespace', 'smw_hash' ] ),
+				$this->equalTo( [ 'smw_hash' => [
 					'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6',
 					'7b6b944694382bfab461675f40a2bda7e71e68e3' ] ] ) )
 			->will( $this->returnValue( [ (object)[ 'smw_hash' => 'foooo', 'smw_id' => 42 ] ] ) );
@@ -82,8 +82,8 @@ class DisplayTitleLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->with(
 				$this->equalTo( 'foo_table' ),
-				$this->equalTo(  [ 's_id', 'o_hash', 'o_blob' ] ),
-				$this->equalTo(  [ 's_id' => [ 42, 1001 ] ] ) )
+				$this->equalTo( [ 's_id', 'o_hash', 'o_blob' ] ),
+				$this->equalTo( [ 's_id' => [ 42, 1001 ] ] ) )
 			->will( $this->returnValue( $rows ) );
 
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )

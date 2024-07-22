@@ -48,7 +48,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCleanUp() {
-		$subject = DIWikiPage::newFromText(__METHOD__, SMW_NS_PROPERTY );
+		$subject = DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->getMockForAbstractClass();

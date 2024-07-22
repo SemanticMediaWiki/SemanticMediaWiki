@@ -370,7 +370,7 @@ class DataRebuilder {
 		$current_id = 0;
 		$max = ( $this->end ? "$this->end" : $maxId );
 
-		while (( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 )) {
+		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
 			if ( $this->autoRecovery !== null ) {
 				$this->autoRecovery->set( self::AUTO_RECOVERY_ID, (int)$id );

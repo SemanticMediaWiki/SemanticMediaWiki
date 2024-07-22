@@ -326,10 +326,10 @@ class TypesRegistry {
 			// '_4'  => [ 26, false, false ],
 			// '_5'  => [ 27, false, false ],
 			'_LIST'  => [ 28, true,  false ],
-			'_MDAT'  => [ 29, false, true  ],
-			'_CDAT'  => [ 30, false, true  ],
-			'_NEWP'  => [ 31, false, true  ],
-			'_LEDT'  => [ 32, false, true  ],
+			'_MDAT'  => [ 29, false, true ],
+			'_CDAT'  => [ 30, false, true ],
+			'_NEWP'  => [ 31, false, true ],
+			'_LEDT'  => [ 32, false, true ],
 
 			// Properties related to query management
 			'_ASK'   => [ 33, true,  false ],
@@ -353,8 +353,8 @@ class TypesRegistry {
 
 			'_SOBJ'   => [ false, true,  false ],
 			'_ASKDU'  => [ false, true,  false ],
-			'_MIME'   => [ false, false, true  ],
-			'_MEDIA'  => [ false, false, true  ],
+			'_MIME'   => [ false, false, true ],
+			'_MEDIA'  => [ false, false, true ],
 
 		];
 

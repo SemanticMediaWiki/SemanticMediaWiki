@@ -52,7 +52,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( ['fetch', 'save', 'saveSub', 'fetchSub', 'associate' ] )
+			->setMethods( [ 'fetch', 'save', 'saveSub', 'fetchSub', 'associate' ] )
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
@@ -229,7 +229,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ new DIProperty(  __METHOD__ . 'property' ) ] ) );
+			->will( $this->returnValue( [ new DIProperty( __METHOD__ . 'property' ) ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -323,7 +323,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getRevisionId' )
 			->will( $this->returnValue( 9001 ) );
 
-		$context = new \RequestContext( );
+		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
 
 		$outputPage->expects( $this->atLeastOnce() )

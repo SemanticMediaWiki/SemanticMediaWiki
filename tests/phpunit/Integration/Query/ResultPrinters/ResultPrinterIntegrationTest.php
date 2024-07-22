@@ -50,7 +50,7 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 
 			$this->pageCreator
 				->createPage( Title::newFromText( $title ) )
-				->doEdit( '[[Category:LimitNullForEmptySearchlabel]]');
+				->doEdit( '[[Category:LimitNullForEmptySearchlabel]]' );
 
 			$this->subjects[] = $this->pageCreator->getPage();
 		}
@@ -85,7 +85,7 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 
 			$this->pageCreator
 				->createPage( Title::newFromText( $title ) )
-				->doEdit( '[[Category:LimitNullForNotEmptySearchlabel]]');
+				->doEdit( '[[Category:LimitNullForNotEmptySearchlabel]]' );
 
 			$this->subjects[] = $this->pageCreator->getPage();
 		}

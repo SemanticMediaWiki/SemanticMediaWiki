@@ -43,7 +43,7 @@ class ResultPrinterReflector {
 	}
 
 	public function invoke( ResultPrinter $instance, $queryResult, $outputMode ) {
-		$reflector = new ReflectionClass(  $instance );
+		$reflector = new ReflectionClass( $instance );
 		$method = $reflector->getMethod( 'getResultText' );
 		$method->setAccessible( true );
 

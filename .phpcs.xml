@@ -34,7 +34,6 @@
 		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword" />
 		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.SingleSpaceBeforeSingleLineComment" />
 		<exclude name="MediaWiki.Usage.StaticClosure.StaticClosure" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis.SingleSpaceBeforeCloseParenthesis" />
 		<exclude name="MediaWiki.Classes.UnusedUseStatement.UnusedUse" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVar" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.NotShortIntVar" />
@@ -63,14 +62,12 @@
 		<exclude name="Squiz.Strings.ConcatenationSpacing.PaddingFound" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCapitalLinks" />
 		<exclude name="Universal.WhiteSpace.CommaSpacing.SpaceBeforeInFunctionCall" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis.SingleSpaceAfterOpenParenthesis" />
 		<exclude name="MediaWiki.PHPUnit.AssertEquals.FalsyString" />
 		<exclude name="Generic.Formatting.DisallowMultipleStatements.SameLine" />
 		<exclude name="Squiz.WhiteSpace.ScopeClosingBrace.ContentBefore" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
 		<exclude name="Squiz.WhiteSpace.ScopeClosingBrace.Indent" />
 		<exclude name="MediaWiki.NamingConventions.ValidGlobalName.allowedPrefix" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis.UnnecessarySpaceBetweenParentheses" />
 		<exclude name="Generic.WhiteSpace.LanguageConstructSpacing.Incorrect" />
 		<exclude name="PSR2.Files.EndFileNewline.NoneFound" />
 		<exclude name="Squiz.WhiteSpace.FunctionSpacing.After" />
@@ -136,7 +133,6 @@
 		<exclude name="PSR2.Classes.ClassDeclaration.SpaceBeforeName" />
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.returnValueMap" />
 		<exclude name="PSR2.Files.EndFileNewline.TooMany" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis.SpaceBeforeOpeningParenthesis" />
 		<exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.SpaceBeforeBrace" />
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.ExactlyOnce" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.ForbiddenTestdox" />

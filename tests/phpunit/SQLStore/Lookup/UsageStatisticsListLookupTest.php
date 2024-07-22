@@ -165,7 +165,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			[ 'OWNPAGE',      'integer' ],
 			[ 'QUERY',        'integer' ],
 			[ 'QUERYSIZE',    'integer' ],
-			[ 'QUERYFORMATS', 'array'   ],
+			[ 'QUERYFORMATS', 'array' ],
 			[ 'CONCEPTS',     'integer' ],
 			[ 'SUBOBJECTS',   'integer' ],
 			[ 'DECLPROPS',    'integer' ],

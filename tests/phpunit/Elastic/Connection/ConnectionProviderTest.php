@@ -43,7 +43,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection_MissingEndpointsThrowsException() {
-		$config = new Config (
+		$config = new Config(
 			[
 				Config::DEFAULT_STORE => 'SMWElasticStore'
 			]
@@ -59,7 +59,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection_DummyClient() {
-		$config = new Config (
+		$config = new Config(
 			[
 				Config::DEFAULT_STORE => 'SMWSQLStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
@@ -84,7 +84,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( "elasticsearch-php dependency is not available." );
 		}
 
-		$config = new Config (
+		$config = new Config(
 			[
 				Config::DEFAULT_STORE => 'SMWElasticStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
@@ -109,7 +109,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( "\Elasticsearch\ClientBuilder is available, no exception is thrown" );
 		}
 
-		$config = new Config (
+		$config = new Config(
 			[
 				Config::DEFAULT_STORE => 'SMWElasticStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]

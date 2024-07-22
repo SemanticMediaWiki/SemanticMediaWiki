@@ -101,7 +101,7 @@ class PropertyTableHashesTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'unescape_bytea' )
-			->will($this->returnArgument( 0 ) );
+			->will( $this->returnArgument( 0 ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )

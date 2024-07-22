@@ -95,7 +95,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$subobject    = new Subobject( $title );
 
 		$instance = $this->acquireInstance( $subobject, $parserOutput );
-		$instance->useFirstElementAsPropertyLabel( $isEnabled  );
+		$instance->useFirstElementAsPropertyLabel( $isEnabled );
 
 		$instance->parse( new ParserParameterFormatter( $parameters ) );
 

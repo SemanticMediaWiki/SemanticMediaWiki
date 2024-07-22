@@ -104,7 +104,7 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaDefinition->expects( $this->any() )
 			->method( 'get' )
-			->with( $this->equalTo( 'groups') )
+			->with( $this->equalTo( 'groups' ) )
 			->will( $this->returnValue( $data ) );
 
 		$this->propertySpecificationLookup->expects( $this->any() )

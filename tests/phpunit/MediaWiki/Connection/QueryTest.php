@@ -29,7 +29,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
-			->will( $this->returnArgument(0) );
+			->will( $this->returnArgument( 0 ) );
 	}
 
 	public function testCanConstruct() {

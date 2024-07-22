@@ -70,7 +70,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateThatThrowsExceptionToLogAndRethrow() {
 		$callback = function () {
-			throw new \Exception("Error Processing Request", 1);
+			throw new \Exception( "Error Processing Request", 1 );
 		};
 
 		$instance = new CallableUpdate(

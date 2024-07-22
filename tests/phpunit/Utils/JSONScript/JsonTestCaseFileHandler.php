@@ -244,7 +244,7 @@ class JsonTestCaseFileHandler {
 
 		foreach ( $skipOn as $id => $reason ) {
 
-			if ( $id !== 'sitelanguage') {
+			if ( $id !== 'sitelanguage' ) {
 				continue;
 			}
 

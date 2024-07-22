@@ -320,7 +320,7 @@ class SMWInfolink {
 						$query = self::encodeCompactLink( $query, false );
 					}
 
-					$link = '[' . $title->getFullURL(  $query ) . " $this->mCaption]";
+					$link = '[' . $title->getFullURL( $query ) . " $this->mCaption]";
 				} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
 
 					if ( $this->isCompactLink ) {

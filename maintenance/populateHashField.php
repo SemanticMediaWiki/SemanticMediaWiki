@@ -161,7 +161,7 @@ class populateHashField extends \Maintenance {
 
 		$text = $localMessageProvider->msg( 'smw-maintenance-populatehashfield-checking-hash-field' );
 
-		$this->reportMessage("\n$text...\n" );
+		$this->reportMessage( "\n$text...\n" );
 
 		$this->populate();
 
@@ -279,7 +279,7 @@ class populateHashField extends \Maintenance {
 			);
 		}
 
-		$this->reportMessage( "\n"  );
+		$this->reportMessage( "\n" );
 		$this->setComplete( true );
 	}
 
