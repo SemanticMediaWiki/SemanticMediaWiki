@@ -19,7 +19,6 @@ class DispatchingDataValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter',
 			new DispatchingDataValueFormatter()
@@ -27,7 +26,6 @@ class DispatchingDataValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDataValueFormatterForMatchableDataValue() {
-
 		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -50,7 +48,6 @@ class DispatchingDataValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDefaultDispatchingDataValueFormatterForMatchableDataValue() {
-
 		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -73,7 +70,6 @@ class DispatchingDataValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrioritizeDispatchableDataValueFormatter() {
-
 		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -104,7 +100,6 @@ class DispatchingDataValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToGetDataValueFormatterForNonDispatchableDataValueThrowsException() {
-
 		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

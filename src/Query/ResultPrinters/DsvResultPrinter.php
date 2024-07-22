@@ -44,7 +44,6 @@ class DsvResultPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	public function getFileName( QueryResult $queryResult ) {
-
 		if ( $this->params['filename'] === '' ) {
 			return 'result.dsv';
 		}
@@ -92,7 +91,6 @@ class DsvResultPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $queryResult, $outputMode ) {
-
 		if ( $outputMode !== SMW_OUTPUT_FILE ) {
 			return $this->getDsvLink( $queryResult, $outputMode );
 		}
@@ -101,7 +99,6 @@ class DsvResultPrinter extends FileExportPrinter {
 	}
 
 	private function getDsvLink( QueryResult $queryResult, $outputMode ) {
-
 		// Can be viewed as HTML if requested, no more parsing needed
 		$this->isHTML = ( $outputMode == SMW_OUTPUT_HTML );
 

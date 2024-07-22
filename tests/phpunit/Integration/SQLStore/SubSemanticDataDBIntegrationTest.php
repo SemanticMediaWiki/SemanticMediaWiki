@@ -38,7 +38,7 @@ class SubSemanticDataDBIntegrationTest extends DatabaseTestCase {
 			->invokeHooksFromRegistry();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$pageDeleter= new PageDeleter();
 
 		$pageDeleter->deletePage( $this->title );
@@ -47,7 +47,6 @@ class SubSemanticDataDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testCreatePageWithSubobject() {
-
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
@@ -90,7 +89,6 @@ class SubSemanticDataDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPredefinedProperty_Canonical_MonolingualText() {
-
 		$this->title = Title::newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
 
 		$pageCreator = new PageCreator();
@@ -131,7 +129,6 @@ class SubSemanticDataDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPredefinedProperty_Key_MonolingualText() {
-
 		$this->title = Title::newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
 
 		$pageCreator = new PageCreator();

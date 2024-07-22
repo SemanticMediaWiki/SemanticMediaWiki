@@ -17,15 +17,13 @@ class StringResultTest extends \PHPUnit_Framework_TestCase {
 
 	private $query;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			StringResult::class,
 			new StringResult( '', $this->query )
@@ -33,7 +31,6 @@ class StringResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetResult() {
-
 		$instance = new StringResult( 'Foobar', $this->query );
 
 		$this->assertEquals(
@@ -43,7 +40,6 @@ class StringResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCount() {
-
 		$instance = new StringResult( 'Foobar', $this->query );
 		$instance->setCount( 42 );
 
@@ -54,7 +50,6 @@ class StringResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasFurtherResults() {
-
 		$instance = new StringResult( 'Foobar', $this->query, true );
 
 		$this->assertTrue(
@@ -63,10 +58,9 @@ class StringResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetResult_PreOutputCallback() {
-
 		$instance = new StringResult( 'Foobar', $this->query );
 
-		$instance->setPreOutputCallback( function( $result, $options ) {
+		$instance->setPreOutputCallback( function ( $result, $options ) {
 			return $result . ' Foo bar';
 		} );
 

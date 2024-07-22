@@ -117,7 +117,6 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-
 		if ( is_string( $dbkeys ) ) {
 			return DIGeoCoord::doUnserialize( $dbkeys );
 		}

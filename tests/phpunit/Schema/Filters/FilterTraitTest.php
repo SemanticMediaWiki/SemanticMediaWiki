@@ -19,7 +19,6 @@ class FilterTraitTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testHasMatches() {
-
 		$instance = $this->newFilterTrait();
 
 		$this->assertInternalType(
@@ -29,7 +28,6 @@ class FilterTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMatches() {
-
 		$instance = $this->newFilterTrait();
 
 		$this->assertInternalType(
@@ -39,7 +37,6 @@ class FilterTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLog() {
-
 		$instance = $this->newFilterTrait();
 
 		$this->assertInternalType(
@@ -49,7 +46,6 @@ class FilterTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetNodeFilter() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -29,7 +29,6 @@ class NamespaceUriFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceProvider() {
-
 		$provider[] = [
 			'Foo',
 			'boolean'

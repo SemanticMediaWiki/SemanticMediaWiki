@@ -21,7 +21,7 @@ class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
 	private $permissionManager;
 	private $user;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->permissionManager = $this->getMockBuilder( '\SMW\MediaWiki\PermissionManager' )
@@ -34,7 +34,6 @@ class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PermissionExaminer::class,
 			new PermissionExaminer( $this->permissionManager )
@@ -42,7 +41,6 @@ class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasPermissionOf() {
-
 		$this->permissionManager->expects( $this->any() )
 			->method( 'userHasRight' )
 			->with(

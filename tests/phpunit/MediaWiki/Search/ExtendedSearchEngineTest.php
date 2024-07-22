@@ -23,7 +23,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->connection = $this->getMockBuilder( 'DatabaseBase' )
@@ -31,13 +31,12 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExtendedSearchEngine::class,
 			new ExtendedSearchEngine()
@@ -45,7 +44,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDefaultFallbackSearchEngineForNullFallbackSearchType() {
-
 		$searchEngine = 'SearchDatabase';
 
 		if ( class_exists( 'SearchEngine' ) ) {
@@ -79,7 +77,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetFallbackSearchEngine() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -97,7 +94,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSupports() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -119,7 +115,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNormalizeText() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -142,8 +137,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTextFromContent() {
-
-		if ( ! method_exists( 'SearchEngine', 'getTextFromContent' ) ) {
+		if ( !method_exists( 'SearchEngine', 'getTextFromContent' ) ) {
 			$this->markTestSkipped( 'SearchEngine::getTextFromContent() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -179,8 +173,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTextAlreadyUpdatedForIndex() {
-
-		if ( ! method_exists( 'SearchEngine', 'textAlreadyUpdatedForIndex' ) ) {
+		if ( !method_exists( 'SearchEngine', 'textAlreadyUpdatedForIndex' ) ) {
 			$this->markTestSkipped( 'SearchEngine::textAlreadyUpdatedForIndex() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -205,7 +198,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -226,7 +218,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateTitle() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -246,8 +237,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
-		if ( ! method_exists( 'SearchEngine', 'delete' ) ) {
+		if ( !method_exists( 'SearchEngine', 'delete' ) ) {
 			$this->markTestSkipped( 'SearchEngine::delete() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -270,8 +260,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetFeatureData() {
-
-		if ( ! method_exists( 'SearchEngine', 'delete' ) ) {
+		if ( !method_exists( 'SearchEngine', 'delete' ) ) {
 			$this->markTestSkipped( 'SearchEngine::delete() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -303,7 +292,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReplacePrefixes() {
-
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
 		);
@@ -315,7 +303,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTransformSearchTerm() {
-
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
 		);
@@ -327,7 +314,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetLimitOffset() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -358,7 +344,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetNamespaces() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -381,8 +366,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetShowSuggestion() {
-
-		if ( ! method_exists( 'SearchEngine', 'setShowSuggestion' ) ) {
+		if ( !method_exists( 'SearchEngine', 'setShowSuggestion' ) ) {
 			$this->markTestSkipped( 'SearchEngine::setShowSuggestion() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -407,7 +391,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearch_OnEligiblePrefix() {
-
 		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -443,7 +426,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearch_NoRelevantPrefix() {
-
 		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -474,7 +456,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearchWithVariants() {
-
 		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
 			->disableOriginalConstructor()
 			->getMock();

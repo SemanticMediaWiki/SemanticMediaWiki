@@ -23,7 +23,7 @@ class RangeValueFilterTest extends \PHPUnit_Framework_TestCase {
 	private $messageLocalizer;
 	private $compartmentIterator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
@@ -44,7 +44,6 @@ class RangeValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RangeValueFilter::class,
 			new RangeValueFilter( $this->templateEngine, $this->compartmentIterator, [] )
@@ -52,7 +51,6 @@ class RangeValueFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate_NoFilter() {
-
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
 			->will( $this->returnValue( '' ) );

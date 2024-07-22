@@ -92,7 +92,6 @@ class PostProcHandler {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = false ) {
-
 		if ( isset( $this->options[$key] ) ) {
 			return $this->options[$key];
 		}
@@ -118,7 +117,6 @@ class PostProcHandler {
 	 * @return string
 	 */
 	public function getHtml( Title $title, WebRequest $webRequest ) {
-
 		$subject = DIWikiPage::newFromTitle(
 			$title
 		);
@@ -221,7 +219,6 @@ class PostProcHandler {
 	 * @param Query $query
 	 */
 	public function addUpdate( Query $query ) {
-
 		// Query:getHash returns a hash based on a fingerprint
 		// (when $smwgQueryResultCacheType is set) that eliminates duplicate
 		// queries, yet for the post processing it is necessary to know each
@@ -249,7 +246,6 @@ class PostProcHandler {
 	 * @param Query $query
 	 */
 	public function addCheck( Query $query ) {
-
 		if ( !isset( $this->options['check-query'] ) || $this->options['check-query'] === false ) {
 			return;
 		}
@@ -279,7 +275,6 @@ class PostProcHandler {
 	}
 
 	private function checkRef( $title, $postEdit ) {
-
 		$key = DependencyLinksUpdateJournal::makeKey( $title );
 
 		// Is a postEdit, mark the update to avoid running in circles
@@ -321,7 +316,6 @@ class PostProcHandler {
 	}
 
 	private function checkDiff( $changeDiff ) {
-
 		$propertyList = $changeDiff->getPropertyList(
 			'flip'
 		);
@@ -361,7 +355,6 @@ class PostProcHandler {
 	}
 
 	private function find_jobs( $jobs ) {
-
 		// Not enabled, no need to invoke a job!
 		if ( isset( $this->options['smwgEnabledQueryDependencyLinksStore'] ) && $this->options['smwgEnabledQueryDependencyLinksStore'] === false ) {
 			unset( $jobs['smw.parserCachePurge'] );

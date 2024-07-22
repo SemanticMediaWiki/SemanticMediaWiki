@@ -39,6 +39,6 @@ interface TypableSeverityIndicatorProvider extends IndicatorProvider {
 	 *
 	 * @return boolean
 	 */
-	public function isSeverityType( string $severityType ) : bool;
+	public function isSeverityType( string $severityType ): bool;
 
 }

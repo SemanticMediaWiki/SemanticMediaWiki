@@ -19,7 +19,6 @@ class SemanticDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstructor() {
-
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\SemanticDataDeserializer',
 			new SemanticDataDeserializer()
@@ -27,7 +26,6 @@ class SemanticDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeserializerInvalidVersionThrowsException() {
-
 		$instance = new SemanticDataDeserializer();
 
 		$this->expectException( 'OutOfBoundsException' );
@@ -38,7 +36,6 @@ class SemanticDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeserializerForInvalidSubjectThrowsException() {
-
 		$instance = new SemanticDataDeserializer();
 
 		$this->expectException( '\SMW\Exception\DataItemDeserializationException' );
@@ -49,7 +46,6 @@ class SemanticDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeserializerForMissingSubjectThrowsException() {
-
 		$instance = new SemanticDataDeserializer();
 
 		$this->expectException( 'RuntimeException' );
@@ -57,7 +53,6 @@ class SemanticDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeserializerForEmptyData() {
-
 		$instance = new SemanticDataDeserializer();
 
 		$this->assertInstanceOf(

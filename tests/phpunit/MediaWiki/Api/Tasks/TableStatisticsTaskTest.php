@@ -20,7 +20,7 @@ class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -35,13 +35,12 @@ class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new TableStatisticsTask( $this->store, $this->cache );
 
 		$this->assertInstanceOf(
@@ -51,7 +50,6 @@ class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$tableStatisticsLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\TableStatisticsLookup' )
 			->disableOriginalConstructor()
 			->getMock();

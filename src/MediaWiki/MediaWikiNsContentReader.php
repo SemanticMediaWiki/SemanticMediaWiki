@@ -36,7 +36,6 @@ class MediaWikiNsContentReader {
 	 * @return string|false
 	 */
 	public function read( $name ) {
-
 		$content = '';
 
 		if ( !$this->skipMessageCache && wfMessage( $name )->exists() ) {
@@ -51,7 +50,6 @@ class MediaWikiNsContentReader {
 	}
 
 	private function readFromDatabase( $name ) {
-
 		$title = Title::makeTitleSafe( NS_MEDIAWIKI, ucfirst( $name ) );
 
 		if ( $title === null ) {

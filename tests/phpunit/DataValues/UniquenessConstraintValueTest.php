@@ -21,7 +21,7 @@ class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -32,12 +32,11 @@ class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\UniquenessConstraintValue',
 			new UniquenessConstraintValue()
@@ -45,7 +44,6 @@ class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorForMissingFeatureSetting() {
-
 		$instance = new UniquenessConstraintValue();
 
 		$instance->setOption( 'smwgDVFeatures', '' );
@@ -57,7 +55,6 @@ class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorForInvalidBoolean() {
-
 		$instance = new UniquenessConstraintValue();
 
 		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVUC );

@@ -21,7 +21,7 @@ class ImporterIntegrationTest extends DatabaseTestCase {
 	private $stringValidator;
 	private $fixtures;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -33,7 +33,6 @@ class ImporterIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testValidTextContent() {
-
 		$importer = $this->importerServiceFactory->newImporter(
 			$this->importerServiceFactory->newJsonContentIterator( [ $this->fixtures . '/ValidTextContent' ] )
 		);
@@ -53,7 +52,6 @@ class ImporterIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testValidXmlContent() {
-
 		$importer = $this->importerServiceFactory->newImporter(
 			$this->importerServiceFactory->newJsonContentIterator( [ $this->fixtures . '/ValidXmlContent' ] )
 		);

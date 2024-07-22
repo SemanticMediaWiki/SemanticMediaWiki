@@ -44,7 +44,7 @@ class PermissionManager {
 		?User $user,
 		Title $title,
 		string $rigor = MwPermissionManager::RIGOR_SECURE
-	) : bool {
+	): bool {
 		if ( !$user instanceof User ) {
 			$user = RequestContext::getMain()->getUser();
 		}
@@ -60,7 +60,7 @@ class PermissionManager {
 	 *
 	 * @return bool
 	 */
-	public function userHasRight( User $user, string $action = '' ) : bool {
+	public function userHasRight( User $user, string $action = '' ): bool {
 		return $this->permissionManager->userHasRight( $user, $action );
 	}
 

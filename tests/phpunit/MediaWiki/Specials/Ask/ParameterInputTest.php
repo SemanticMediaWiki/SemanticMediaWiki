@@ -17,7 +17,6 @@ use SMW\Tests\TestEnvironment;
 class ParameterInputTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$paramDefinition = $this->getMockBuilder( '\ParamProcessor\ParamDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,7 +31,6 @@ class ParameterInputTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider listValueProvider
 	 */
 	public function testGetHtmlOnCheckboxList( $currentValue, $allowedValues, $expected ) {
-
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$paramDefinition = $this->getMockBuilder( '\ParamProcessor\ParamDefinition' )
@@ -59,7 +57,6 @@ class ParameterInputTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function listValueProvider() {
-
 		$provider[] = [
 			'Foo',
 			[ 'Foo', 'Bar' ],

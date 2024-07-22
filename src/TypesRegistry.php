@@ -47,7 +47,6 @@ class TypesRegistry {
 	 * @return array
 	 */
 	public static function getDataTypeList() {
-
 		return [
 
 			// ID => [ Class, DI type, isSubDataType, isBrowsable ]
@@ -249,7 +248,6 @@ class TypesRegistry {
 	 * @return array
 	 */
 	public static function getTypesByGroup( $key = '' ) {
-
 		$groups = [
 			'primitive' => [
 				'_txt', '_boo', '_num', '_dat'
@@ -299,7 +297,6 @@ class TypesRegistry {
 	 * @return array
 	 */
 	public static function getFixedProperties( $key = '' ) {
-
 		// PROP_ID => [ ID (SQL), default_fixed, custom_fixed ]
 		$fixedProperties = [
 
@@ -362,13 +359,13 @@ class TypesRegistry {
 		];
 
 		if ( $key === 'id' ) {
-			array_walk( $fixedProperties, function( &$v, $k ) { $v = $v[0]; } );
+			array_walk( $fixedProperties, function ( &$v, $k ) { $v = $v[0]; } );
 		}
 
 		// Default fixed property table for selected special properties
 		if ( $key === 'default_fixed' ) {
 			$fixedProperties = array_keys(
-				array_filter( $fixedProperties, function( $v ) { return $v[1]; } )
+				array_filter( $fixedProperties, function ( $v ) { return $v[1]; } )
 			);
 		}
 
@@ -376,7 +373,7 @@ class TypesRegistry {
 		// special properties that can have their own fixed property table
 		if ( $key === 'custom_fixed' ) {
 			$fixedProperties = array_keys(
-				array_filter( $fixedProperties, function( $v ) { return $v[2]; } )
+				array_filter( $fixedProperties, function ( $v ) { return $v[2]; } )
 			);
 		}
 
@@ -391,7 +388,6 @@ class TypesRegistry {
 	 * @since 3.1
 	 */
 	public static function getOWLPropertyByType( $type ) {
-
 		$types = [
 			'_anu' => Exporter::OWL_ANNOTATION_PROPERTY,
 

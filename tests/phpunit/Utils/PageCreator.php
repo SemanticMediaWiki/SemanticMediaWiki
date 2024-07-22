@@ -44,7 +44,6 @@ class PageCreator {
 	 * @throws UnexpectedValueException
 	 */
 	public function getPage() {
-
 		if ( $this->page instanceof \WikiPage ) {
 			return $this->page;
 		}
@@ -62,12 +61,10 @@ class PageCreator {
 	 * @return PageCreator
 	 */
 	public function createPage( Title $title, $editContent = '', $pageContentLanguage = '' ) {
-
 		if ( $pageContentLanguage !== '' ) {
 			$services = MediaWikiServices::getInstance();
 			$pageContentLanguage = $services->getLanguageFactory()->getLanguage( $pageContentLanguage );
-			$services->getHookContainer()->register( 'PageContentLanguage', function( $titleByHook, &$pageLang ) use( $title, $pageContentLanguage ) {
-
+			$services->getHookContainer()->register( 'PageContentLanguage', function ( $titleByHook, &$pageLang ) use( $title, $pageContentLanguage ) {
 				// Only change the pageContentLanguage for the selected page
 				if ( $title->getPrefixedDBKey() === $titleByHook->getPrefixedDBKey() ) {
 					$pageLang = $pageContentLanguage;
@@ -98,7 +95,6 @@ class PageCreator {
 	 * @return PageCreator
 	 */
 	public function doEdit( $pageContent = '', $editMessage = '' ) {
-
 		$content = \ContentHandler::makeContent(
 			$pageContent,
 			$this->getPage()->getTitle()
@@ -129,7 +125,6 @@ class PageCreator {
 	 * @return PageCreator
 	 */
 	public function doMoveTo( Title $target, $isRedirect = true ) {
-
 		$reason = "integration test";
 		$source = $this->getPage()->getTitle();
 
@@ -152,7 +147,6 @@ class PageCreator {
 	 * @return EditInfo
 	 */
 	public function getEditInfo() {
-
 		$editInfo = ServicesFactory::getInstance()->newMwCollaboratorFactory()->newEditInfo(
 			$this->getPage()
 		);

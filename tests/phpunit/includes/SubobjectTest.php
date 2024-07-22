@@ -27,7 +27,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -42,7 +42,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -54,7 +53,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetSemanticWithInvalidIdThrowsException() {
-
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -62,7 +60,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetEmptySemanticData() {
-
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 		$instance->setEmptyContainerForId( 'Foo' );
 
@@ -86,7 +83,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getDataProvider
 	 */
 	public function testgetSubobjectId( array $parameters, array $expected ) {
-
 		$instance = $this->acquireInstanceForId(
 			Title::newFromText( __METHOD__ ),
 			$parameters['identifier']
@@ -106,7 +102,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getDataProvider
 	 */
 	public function testGetProperty( array $parameters ) {
-
 		$instance = $this->acquireInstanceForId(
 			Title::newFromText( __METHOD__ ),
 			$parameters['identifier']
@@ -122,7 +117,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getDataProvider
 	 */
 	public function testAddDataValue( array $parameters, array $expected ) {
-
 		$instance = $this->acquireInstanceForId(
 			Title::newFromText( __METHOD__ ),
 			$parameters['identifier']
@@ -153,7 +147,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider newDataValueProvider
 	 */
 	public function testDataValueExaminer( array $parameters, array $expected ) {
-
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -191,7 +184,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddDataValueWithInvalidSemanticDataThrowsException() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -203,7 +195,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticDataInvalidSemanticDataThrowsException() {
-
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
@@ -214,7 +205,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorProvider
 	 */
 	public function testErrorHandlingOnErrors( $errors, $expected ) {
-
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		foreach ( $errors as $error ) {
@@ -243,7 +233,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function getDataProvider() {
-
 		$provider = [];
 
 		// #0 / asserting conditions for a named identifier
@@ -360,7 +349,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function newDataValueProvider() {
-
 		$provider = [];
 
 		// #0 Bug 49530
@@ -388,7 +376,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @return Subobject
 	 */
 	private function acquireInstanceForId( Title $title, $id = '' ) {
-
 		$instance = new Subobject( $title );
 
 		if ( $id === '' && $id !== null ) {
@@ -401,7 +388,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function errorProvider() {
-
 		$provider = [];
 
 		#0

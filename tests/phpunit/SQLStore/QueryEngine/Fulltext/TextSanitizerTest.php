@@ -17,15 +17,13 @@ class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
 
 	private $sanitizerFactory;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->sanitizerFactory = $this->getMockBuilder( '\Onoi\Tesa\SanitizerFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer',
 			new TextSanitizer( $this->sanitizerFactory )
@@ -36,7 +34,6 @@ class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textOnMockProvider
 	 */
 	public function testSanitizs( $text, $expected ) {
-
 		$sanitizer = $this->getMockBuilder( '\Onoi\Tesa\Sanitizer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -84,7 +81,6 @@ class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textOnMockProvider() {
-
 		$provider[] = [
 			'foo',
 			'foo'

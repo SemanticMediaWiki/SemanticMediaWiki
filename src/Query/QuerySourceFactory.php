@@ -62,7 +62,6 @@ class QuerySourceFactory {
 	 * @throws RuntimeException
 	 */
 	public function get( $source = null ) {
-
 		$params = [];
 
 		if ( $source !== '' && isset( $this->querySources[$source] ) ) {
@@ -106,7 +105,6 @@ class QuerySourceFactory {
 	 * @return string
 	 */
 	public function toString( $source = null ) {
-
 		if ( $source === 'sql_store' ) {
 			return 'SMWSQLStore';
 		}

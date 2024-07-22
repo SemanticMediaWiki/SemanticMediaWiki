@@ -85,7 +85,6 @@ class UniqueValueConstraint implements Constraint {
 	 * {@inheritDoc}
 	 */
 	public function checkConstraint( array $constraint, $dataValue ) {
-
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -100,7 +99,6 @@ class UniqueValueConstraint implements Constraint {
 	}
 
 	private function check( $dataValue ) {
-
 		$property = $dataValue->getProperty();
 		$contextPage = $dataValue->getContextPage();
 
@@ -114,7 +112,7 @@ class UniqueValueConstraint implements Constraint {
 		// Exclude the current page from the result match to check whether another
 		// page matches the condition and if so then the value can no longer be
 		// assigned and is not unique
-		$requestOptions->addExtraCondition( function( $store, $query, $alias ) use( $contextPage ) {
+		$requestOptions->addExtraCondition( function ( $store, $query, $alias ) use( $contextPage ) {
 				return $query->neq( "$alias.s_id", $store->getObjectIds()->getId( $contextPage ) );
 			}
 		);
@@ -172,7 +170,6 @@ class UniqueValueConstraint implements Constraint {
 	}
 
 	private function isKnown( $dataValue ) {
-
 		$contextPage = $dataValue->getContextPage();
 		$dataItem = $dataValue->getDataItem();
 		$property = $dataValue->getProperty();
@@ -191,7 +188,6 @@ class UniqueValueConstraint implements Constraint {
 	}
 
 	private function hasAnnotation( $dataValue ) {
-
 		$key = $dataValue->getProperty()->getKey();
 		$hash = $dataValue->getContextPage()->getHash();
 

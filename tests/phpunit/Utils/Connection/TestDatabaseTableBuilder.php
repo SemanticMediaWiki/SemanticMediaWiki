@@ -80,7 +80,6 @@ class TestDatabaseTableBuilder {
 	 * @return self
 	 */
 	public static function getInstance( Store $store ) {
-
 		if ( self::$instance === null ) {
 			self::$instance = new self( $store, new TestDatabaseConnectionProvider() );
 		}
@@ -106,7 +105,6 @@ class TestDatabaseTableBuilder {
 	 * @throws RuntimeException
 	 */
 	public function doBuild() {
-
 		if ( !$this->isAvailableDatabaseType() ) {
 			throw new RuntimeException( 'Requested DB type is not available through this installer' );
 		}
@@ -154,7 +152,6 @@ class TestDatabaseTableBuilder {
 	 * @see MediaWikiTestCase::listTables
 	 */
 	protected function generateListOfTables() {
-
 		$dbConnection = $this->getDBConnection();
 
 		$tables = $dbConnection->listTables(
@@ -187,7 +184,6 @@ class TestDatabaseTableBuilder {
 	}
 
 	private function setupDatabaseTables() {
-
 		if ( $this->dbSetup ) {
 			return true;
 		}
@@ -200,39 +196,43 @@ class TestDatabaseTableBuilder {
 	}
 
 	private function cloneDatabaseTables() {
-
 		$tablesToBeCloned = $this->generateListOfTables();
 
 		// MW's DatabaseSqlite does some magic on its own therefore
 		// we force our way
 		if ( $this->getDBConnection()->getType() === 'sqlite' ) {
-			CloneDatabase::changePrefix( self::$MWDB_PREFIX );
+			CloneDatabase::changePrefix( "" );
+
+			$this->cloneDatabase = new CloneDatabase(
+				$this->getDBConnection(),
+				$tablesToBeCloned,
+				""
+			);
+		} else {
+			$this->cloneDatabase = new CloneDatabase(
+				$this->getDBConnection(),
+				$tablesToBeCloned,
+				$this->getDBPrefix()
+			);
+	
+			// Ensure no leftovers
+			if ( $this->getDBConnection()->getType() === 'postgres' ) {
+				$this->cloneDatabase->destroy( true );
+			}
+	
+			// Rebuild the DB (in order to exclude temporary table usage)
+			// otherwise some tests will fail with
+			// "Error: 1137 Can't reopen table" on MySQL (see Issue #80)
+			$this->cloneDatabase->useTemporaryTables( false );
+			$this->cloneDatabase->cloneTableStructure();
+	
+			// #3197
+			// @see https://github.com/wikimedia/mediawiki/commit/6badc7415684df54d6672098834359223b859507
+			CloneDatabase::changePrefix( self::$UTDB_PREFIX );
 		}
-
-		$this->cloneDatabase = new CloneDatabase(
-			$this->getDBConnection(),
-			$tablesToBeCloned,
-			$this->getDBPrefix()
-		);
-
-		// Ensure no leftovers
-		if ( $this->getDBConnection()->getType() === 'postgres' ) {
-			$this->cloneDatabase->destroy( true );
-		}
-
-		// Rebuild the DB (in order to exclude temporary table usage)
-		// otherwise some tests will fail with
-		// "Error: 1137 Can't reopen table" on MySQL (see Issue #80)
-		$this->cloneDatabase->useTemporaryTables( false );
-		$this->cloneDatabase->cloneTableStructure();
-
-		// #3197
-		// @see https://github.com/wikimedia/mediawiki/commit/6badc7415684df54d6672098834359223b859507
-		CloneDatabase::changePrefix( self::$UTDB_PREFIX );
 	}
 
 	private function createDummyPage() {
-
 		$pageCreator = new PageCreator();
 		$pageCreator
 			->createPage( Title::newFromText( 'SMWUTDummyPage' )  )
@@ -240,7 +240,6 @@ class TestDatabaseTableBuilder {
 	}
 
 	private function destroyDatabaseTables() {
-
 		if ( !$this->cloneDatabase instanceof CloneDatabase ) {
 			throw new RuntimeException( 'CloneDatabase instance is missing, unable to destory the database tables' );
 		}
@@ -251,7 +250,6 @@ class TestDatabaseTableBuilder {
 	}
 
 	private function rollbackOpenDatabaseTransactions() {
-
 		if ( $this->getDBConnection() ) {
 
 			while ( $this->getDBConnection()->trxLevel() > 0 ) {

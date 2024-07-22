@@ -21,7 +21,6 @@ use SMW\Query\Language\ValueDescription;
 class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +45,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider somePropertyProvider
 	 */
 	public function testCommonMethods( $property, $description, $expected ) {
-
 		$instance = new SomeProperty( $property, $description );
 
 		$this->assertEquals(
@@ -99,7 +97,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider comparativeHashProvider
 	 */
 	public function testGetFingerprint( $description, $compareTo, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			$description->getFingerprint() === $compareTo->getFingerprint()
@@ -107,7 +104,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function somePropertyProvider() {
-
 		#0
 		$property = new DIProperty( 'Foo' );
 
@@ -233,7 +229,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrune() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -266,7 +261,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStableFingerprint() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -286,7 +280,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHierarchyDepthToBeCeiledOnMaxQSubpropertyDepthSetting() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -308,7 +301,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryStringWithHierarchyDepth() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -330,7 +322,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVaryingHierarchyDepthCausesDifferentFingerprint() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -358,7 +349,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function comparativeHashProvider() {
-
 		// Same property, different description === different hash
 		$provider[] = [
 			new SomeProperty(

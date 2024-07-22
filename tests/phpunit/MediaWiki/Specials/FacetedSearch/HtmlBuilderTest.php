@@ -27,7 +27,7 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $resultFetcher;
 	private $exploreListBuilder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->profile = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\Profile' )
@@ -60,7 +60,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			HtmlBuilder::class,
 			new HtmlBuilder( $this->profile, $this->templateEngine, $this->optionsBuilder, $this->extraFieldBuilder, $this->facetBuilder, $this->resultFetcher, $this->exploreListBuilder )

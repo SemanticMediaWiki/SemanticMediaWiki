@@ -110,7 +110,6 @@ class Stats {
 	 * @return array
 	 */
 	public function getStats() {
-
 		if ( ( $stats = $this->cache->fetch( $this->makeCacheKey( $this->id ) ) ) === false ) {
 			return [];
 		}
@@ -124,7 +123,6 @@ class Stats {
 	 * @param string|array $key
 	 */
 	public function incr( $key ) {
-
 		if ( !isset( $this->stats[$key] ) ) {
 			$this->stats[$key] = 0;
 		}
@@ -162,7 +160,6 @@ class Stats {
 	 * @param integer $value
 	 */
 	public function calcMedian( $key, $value ) {
-
 		if ( !isset( $this->stats[$key] ) ) {
 			$this->stats[$key] = $value;
 		} else {
@@ -176,7 +173,6 @@ class Stats {
 	 * @since 2.5
 	 */
 	public function saveStats() {
-
 		if ( $this->stats === [] ) {
 			return;
 		}
@@ -223,7 +219,6 @@ class Stats {
 	 * @param boolean $asPending
 	 */
 	public function recordStats( $asPending = false ) {
-
 		if ( $this->shouldRecord === false ) {
 			return $this->stats = [];
 		}

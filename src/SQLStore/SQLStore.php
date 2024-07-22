@@ -195,7 +195,6 @@ class SQLStore extends Store {
 	 * @throws RuntimeException if no handler exists for the given type
 	 */
 	public function getDataItemHandlerForDIType( $diType ) {
-
 		if ( $this->dataItemHandlerFactory === null ) {
 			$this->dataItemHandlerFactory = $this->factory->newDataItemHandlerFactory();
 		}
@@ -211,7 +210,6 @@ class SQLStore extends Store {
 	 * {@inheritDoc}
 	 */
 	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
-
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -225,7 +223,6 @@ class SQLStore extends Store {
 	 * {@inheritDoc}
 	 */
 	public function getPropertyValues( $subject, DIProperty $property, $requestOptions = null ) {
-
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -239,7 +236,6 @@ class SQLStore extends Store {
 	 * {@inheritDoc}
 	 */
 	public function getProperties( DIWikiPage $subject, $requestOptions = null ) {
-
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -253,7 +249,6 @@ class SQLStore extends Store {
 	 * {@inheritDoc}
 	 */
 	public function getPropertySubjects( DIProperty $property, $dataItem, $requestOptions = null ) {
-
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -267,7 +262,6 @@ class SQLStore extends Store {
 	 * {@inheritDoc}
 	 */
 	public function getAllPropertySubjects( DIProperty $property, $requestoptions = null ) {
-
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -281,7 +275,6 @@ class SQLStore extends Store {
 	 * {@inheritDoc}
 	 */
 	public function getInProperties( DataItem $value, $requestoptions = null ) {
-
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -293,7 +286,6 @@ class SQLStore extends Store {
 
 
 	public function deleteSubject( Title $title ) {
-
 		if ( $this->updater === null ) {
 			$this->updater = $this->factory->newUpdater();
 		}
@@ -310,7 +302,6 @@ class SQLStore extends Store {
 	}
 
 	protected function doDataUpdate( SemanticData $semanticData ) {
-
 		if ( $this->updater === null ) {
 			$this->updater = $this->factory->newUpdater();
 		}
@@ -325,7 +316,6 @@ class SQLStore extends Store {
 	}
 
 	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
-
 		if ( $this->updater === null ) {
 			$this->updater = $this->factory->newUpdater();
 		}
@@ -347,7 +337,6 @@ class SQLStore extends Store {
 	}
 
 	private function doDeferredCachedListLookupUpdate( DIWikiPage $subject ) {
-
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY ) {
 			return null;
 		}
@@ -372,7 +361,6 @@ class SQLStore extends Store {
 	 * @return QueryResult|string|integer depends on $query->querymode
 	 */
 	public function getQueryResult( Query $query ) {
-
 		$result = null;
 		$start = microtime( true );
 
@@ -435,7 +423,6 @@ class SQLStore extends Store {
 	 * {@inheritDoc}
 	 */
 	public function service( $service, ...$args ) {
-
 		if ( $this->servicesContainer === null ) {
 			$this->servicesContainer = $this->newServicesContainer();
 		}
@@ -449,7 +436,6 @@ class SQLStore extends Store {
 	 * {@inheritDoc}
 	 */
 	public function setup( $verbose = true ) {
-
 		$installer = $this->factory->newInstaller();
 		$installer->setMessageReporter( $this->messageReporter );
 
@@ -462,7 +448,6 @@ class SQLStore extends Store {
 	 * {@inheritDoc}
 	 */
 	public function drop( $verbose = true ) {
-
 		$installer = $this->factory->newInstaller();
 		$installer->setMessageReporter( $this->messageReporter );
 
@@ -470,7 +455,6 @@ class SQLStore extends Store {
 	}
 
 	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ): Rebuilder {
-
 		$rebuilder = $this->factory->newRebuilder();
 
 		$rebuilder->setDispatchRangeLimit( $count );
@@ -651,7 +635,6 @@ class SQLStore extends Store {
 	 * @return array
 	 */
 	public function getInfo( $type = null ) {
-
 		if ( $type === 'store' ) {
 			return 'SMWSQLStore';
 		}
@@ -684,7 +667,6 @@ class SQLStore extends Store {
 	 * @return PropertyTableInfoFetcher
 	 */
 	public function getPropertyTableInfoFetcher() {
-
 		if ( $this->propertyTableInfoFetcher === null ) {
 			$this->propertyTableInfoFetcher = $this->factory->newPropertyTableInfoFetcher();
 		}
@@ -698,7 +680,6 @@ class SQLStore extends Store {
 	 * @return PropertyTableIdReferenceFinder
 	 */
 	public function getPropertyTableIdReferenceFinder() {
-
 		if ( $this->propertyTableIdReferenceFinder === null ) {
 			$this->propertyTableIdReferenceFinder = $this->factory->newPropertyTableIdReferenceFinder();
 		}

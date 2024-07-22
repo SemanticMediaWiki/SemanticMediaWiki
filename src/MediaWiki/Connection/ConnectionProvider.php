@@ -61,7 +61,6 @@ class ConnectionProvider implements IConnectionProvider {
 	 * @return Database
 	 */
 	public function getConnection() {
-
 		if ( $this->connection !== null ) {
 			return $this->connection;
 		}
@@ -85,7 +84,6 @@ class ConnectionProvider implements IConnectionProvider {
 	 * @since 2.1
 	 */
 	public function releaseConnection() {
-
 		if ( $this->connection !== null ) {
 			$this->connection->releaseConnection();
 		}
@@ -94,7 +92,6 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function createConnection( $conf ) {
-
 		if ( isset( $conf['callback'] ) && is_callable( $conf['callback'] ) ) {
 			return call_user_func( $conf['callback'] );
 		}
@@ -127,7 +124,6 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function newConnRef( $conf ) {
-
 		$read = $this->newLoadBalancerConnectionProvider( $conf['read'] );
 
 		if ( $conf['read'] !== $conf['write'] ) {
@@ -149,7 +145,6 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function newTransactionHandler() {
-
 		$transactionHandler = new TransactionHandler(
 			ServicesFactory::getInstance()->create( 'DBLoadBalancerFactory' )
 		);

@@ -29,7 +29,6 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $query ) {
-
 		$this->setHeaders();
 		$output = $this->getOutput();
 
@@ -84,7 +83,6 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
 		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
 			return 'smw_group';
 		}
@@ -94,7 +92,6 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 	}
 
 	private function buildHTML( $count, $contents ) {
-
 		$htmlColumns = new HtmlColumns();
 		$htmlColumns->setContents( $contents, HtmlColumns::INDEXED_LIST );
 
@@ -134,7 +131,6 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 	}
 
 	private static function makeSpecialPageBreadcrumbLink( $query = [] ) {
-
 		return Html::rawElement(
 			'div',
 			[

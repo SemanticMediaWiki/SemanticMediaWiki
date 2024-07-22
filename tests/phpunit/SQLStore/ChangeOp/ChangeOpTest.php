@@ -20,7 +20,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangeOp::class,
 			new ChangeOp()
@@ -28,7 +27,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSerialize() {
-
 		$instance = new ChangeOp(
 			DIWikiPage::newFromText( __METHOD__ ),
 			[]
@@ -46,7 +44,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider diffDataProvider
 	 */
 	public function testDiff( $diff, $fixedPropertyRecord, $expectedOrdered, $expectedList ) {
-
 		$instance = new ChangeOp(
 			DIWikiPage::newFromText( __METHOD__ ),
 			$diff
@@ -74,7 +71,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTableChangeOps() {
-
 		$diff = [
 			0 => [
 				'insert' => [
@@ -124,7 +120,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetListOfChangedEntitiesByType() {
-
 		$diff = [
 			0 => [
 				'insert' => [
@@ -186,7 +181,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToGetTableChangeOpForSingleTable() {
-
 		$diff = [];
 
 		$instance = new ChangeOp(
@@ -200,7 +194,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHash() {
-
 		$diff = [];
 
 		$instance = new ChangeOp(
@@ -215,7 +208,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function diffDataProvider() {
-
 		$provider[] = [
 			[],
 			[ 'foo', [] ],

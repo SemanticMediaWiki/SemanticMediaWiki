@@ -57,7 +57,6 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = [] ) {
-
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "DELETE" .
@@ -81,7 +80,6 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ) {
-
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "MODIFY" .
@@ -103,7 +101,6 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertData( $triples, $extraNamespaces = [] ) {
-
 		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
@@ -131,7 +128,6 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function deleteData( $triples, $extraNamespaces = [] ) {
-
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -154,7 +150,6 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @return boolean
 	 */
 	public function doUpdate( $sparql ) {
-
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}

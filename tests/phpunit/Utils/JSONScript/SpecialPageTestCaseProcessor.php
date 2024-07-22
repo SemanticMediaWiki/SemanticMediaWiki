@@ -73,7 +73,6 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param array $case
 	 */
 	public function process( array $case ) {
-
 		if ( !isset( $case['special-page'] ) ) {
 			return;
 		}
@@ -135,7 +134,6 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertOutputForCase( $case, $text ) {
-
 		// Avoid issue with \r carriage return and \n new line
 		$text = str_replace( "\r\n", "\n", $text );
 
@@ -178,7 +176,6 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @return RequestContext
 	 */
 	private function makeRequestContext( \WebRequest $request, $user, $title ) {
-
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 
 		$context = new RequestContext();

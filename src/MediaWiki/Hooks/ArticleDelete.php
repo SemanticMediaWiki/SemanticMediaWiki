@@ -60,8 +60,7 @@ class ArticleDelete implements HookListener {
 	 * @return true
 	 */
 	public function process( Title $title ) {
-
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title ) {
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function () use( $title ) {
 			$this->doDelete( $title );
 		} );
 
@@ -77,7 +76,6 @@ class ArticleDelete implements HookListener {
 	 * @param Title $title
 	 */
 	public function doDelete( Title $title ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$subject = DIWikiPage::newFromTitle( $title );
 

@@ -88,7 +88,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return boolean
 	 */
-	public function isDeferredMode() : bool {
+	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
 	}
 
@@ -97,7 +97,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'deferrablecompoundintegrityexaminer';
 	}
 
@@ -141,7 +141,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	}
 
 	private function checkIndicators( $subject, $options ) {
-
 		$indicatorProviders = [];
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 		$options['error_count'] = 0;
@@ -183,7 +182,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	}
 
 	private function buildHTML( $subject, array $indicatorProviders, array $options ) {
-
 		$this->templateEngine = new TemplateEngine();
 
 		$this->templateEngine->bulkLoad(
@@ -236,7 +234,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	}
 
 	private function getContent( $indicatorProvider, array $args ) {
-
 		if ( $this->isDeferredMode ) {
 			$args += $indicatorProvider->getIndicators();
 			$args['checked'] = $args['count'] == 1 ? 'checked' : '';

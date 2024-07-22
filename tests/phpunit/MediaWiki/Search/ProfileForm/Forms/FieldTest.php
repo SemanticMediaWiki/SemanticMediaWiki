@@ -19,7 +19,6 @@ class FieldTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testTooltip() {
-
 		$instance = new Field();
 
 		$this->assertContains(
@@ -29,7 +28,6 @@ class FieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate() {
-
 		$instance = new Field();
 
 		$this->assertContains(
@@ -44,7 +42,6 @@ class FieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSelect() {
-
 		$instance = new Field();
 
 		$attr = [
@@ -77,7 +74,6 @@ class FieldTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider inputAttributeProvider
 	 */
 	public function testInput( $attr, $expected ) {
-
 		$instance = new Field();
 
 		$this->assertContains(
@@ -87,7 +83,6 @@ class FieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function inputAttributeProvider() {
-
 		yield [
 			[ 'name' => 'Foobar' ],
 			'<div class="smw-input-field"><input name="Foobar" placeholder=""/></div>'

@@ -30,7 +30,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	private $contentCreator;
 	private $messageReporter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->jsonImportContentsFileDirReader = $this->getMockBuilder( JsonImportContentsFileDirReader::class )
@@ -51,7 +51,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Importer\Importer',
 			new Importer( $this->contentIterator, $this->contentCreator )
@@ -59,7 +58,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisabled() {
-
 		$instance = new Importer(
 			new JsonContentIterator( $this->jsonImportContentsFileDirReader ),
 			$this->contentCreator
@@ -77,7 +75,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunImport() {
-
 		$importContents = new ImportContents();
 
 		$importContents->setName( 'Foo' );
@@ -110,7 +107,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testrunImportWithError() {
-
 		$importContents = new ImportContents();
 
 		$importContents->addError( 'Bar' );
@@ -139,7 +135,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testrunImportWithErrorDuringCreation() {
-
 		$importContents = new ImportContents();
 		$importContents->setVersion( 1 );
 
@@ -153,7 +148,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->contentCreator->expects( $this->once() )
 			->method( 'create' )
-			->with( $this->callback( function( $importContents ) {
+			->with( $this->callback( function ( $importContents ) {
 					$importContents->addError( 'BarError from create' );
 					$importContents->addError( [ 'Foo1', 'Foo2' ] );
 					return true;

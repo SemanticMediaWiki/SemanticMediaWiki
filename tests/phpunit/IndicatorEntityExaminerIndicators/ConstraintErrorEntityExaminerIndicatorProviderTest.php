@@ -26,7 +26,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	private $entityCache;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -57,13 +57,12 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 			->will( $this->returnValue( 'foo' ) );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerIndicatorProvider',
 			new ConstraintErrorEntityExaminerIndicatorProvider( $this->store, $this->entityCache )
@@ -76,7 +75,6 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testGetName() {
-
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
 			$this->entityCache
@@ -89,7 +87,6 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testGetIndicators() {
-
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
 			$this->entityCache
@@ -102,7 +99,6 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testGetModules() {
-
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
 			$this->entityCache
@@ -115,7 +111,6 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testGetInlineStyle() {
-
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
 			$this->entityCache
@@ -128,7 +123,6 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testHasIndicator_DisabledCheck() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
@@ -146,7 +140,6 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testHasIndicator_FromErrorLookup() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );
@@ -179,7 +172,6 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testHasIndicator_FromErrorLookup_NoErrors() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );
@@ -217,7 +209,6 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testHasIndicator_FromCache() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( [ 'Foo' ] ) );

@@ -22,7 +22,6 @@ class ResultPrinterReflector {
 	 * @return ResultPrinter
 	 */
 	public function addParameters( ResultPrinter $instance, array $parameters ) {
-
 		$reflector = new ReflectionClass( $instance );
 		$params = $reflector->getProperty( 'params' );
 		$params->setAccessible( true );
@@ -44,7 +43,6 @@ class ResultPrinterReflector {
 	}
 
 	public function invoke( ResultPrinter $instance, $queryResult, $outputMode ) {
-
 		$reflector = new ReflectionClass(  $instance );
 		$method = $reflector->getMethod( 'getResultText' );
 		$method->setAccessible( true );

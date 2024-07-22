@@ -21,7 +21,7 @@ class ItemListBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
@@ -32,7 +32,6 @@ class ItemListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ItemListBuilder::class,
 			new ItemListBuilder( $this->store )
@@ -40,7 +39,6 @@ class ItemListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateEmptyList() {
-
 		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -57,7 +55,6 @@ class ItemListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateHtml() {
-
 		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
 			->disableOriginalConstructor()
 			->getMock();

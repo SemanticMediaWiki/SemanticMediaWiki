@@ -26,8 +26,7 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $descriptionFactory;
 	private $dataItemFactory;
 
-	public function setUp() : void {
-
+	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -44,7 +43,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SomeValueInterpreter::class,
 			new SomeValueInterpreter( $this->conditionBuilder )
@@ -52,7 +50,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_MissingPropertyThrowsException() {
-
 		$instance = new SomeValueInterpreter(
 			$this->conditionBuilder
 		);
@@ -68,7 +65,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_MissingPIDThrowsException() {
-
 		$instance = new SomeValueInterpreter(
 			$this->conditionBuilder
 		);
@@ -89,7 +85,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider numberValueProvider
 	 */
 	public function testInterpretDescription_NumberValue( $dataItem, $comparator, $options, $expected ) {
-
 		$instance = new SomeValueInterpreter(
 			$this->conditionBuilder
 		);
@@ -115,7 +110,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider timeValueProvider
 	 */
 	public function testInterpretDescription_TimeValue( $dataItem, $comparator, $options, $expected ) {
-
 		$instance = new SomeValueInterpreter(
 			$this->conditionBuilder
 		);
@@ -141,7 +135,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textValueProvider
 	 */
 	public function testInterpretDescription_TextValue( $dataItem, $comparator, $options, $expected ) {
-
 		$instance = new SomeValueInterpreter(
 			$this->conditionBuilder
 		);
@@ -167,7 +160,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider pageValueProvider
 	 */
 	public function testInterpretDescription_PageValue( $dataItem, $comparator, $options, $expected ) {
-
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
 			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
@@ -201,7 +193,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function numberValueProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$options = [
@@ -273,7 +264,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function timeValueProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$options = [
@@ -301,7 +291,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textValueProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$options = [
@@ -329,7 +318,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function pageValueProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$options = [

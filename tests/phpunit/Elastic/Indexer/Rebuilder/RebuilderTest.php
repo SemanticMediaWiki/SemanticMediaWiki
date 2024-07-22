@@ -25,8 +25,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	private $installer;
 	private $messageReporter;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -57,7 +56,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Rebuilder::class,
 			new Rebuilder( $this->connection, $this->indexer, $this->fileIndexer, $this->documentCreator, $this->installer )
@@ -65,7 +63,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSelect() {
-
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -94,7 +91,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteAndSetupIndices() {
-
 		$this->installer->expects( $this->once() )
 			->method( 'drop' );
 
@@ -117,7 +113,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasIndices() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'hasIndex' )
 			->will( $this->returnValue( false ) );
@@ -189,7 +184,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'delete' );
 
@@ -205,7 +199,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRebuild() {
-
 		$options = $this->getMockBuilder( '\SMW\Options' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -252,7 +245,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRefresh() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'hasIndex' )
 			->will( $this->returnValue( true ) );

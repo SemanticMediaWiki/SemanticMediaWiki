@@ -34,7 +34,6 @@ class SearchInPageDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testSearchForPageValueAsTerm() {
-
 		$propertyPage = Title::newFromText( 'Has some page value', SMW_NS_PROPERTY );
 		$targetPage = Title::newFromText( __METHOD__ );
 
@@ -69,7 +68,6 @@ class SearchInPageDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testSearchForGeographicCoordinateValueAsTerm() {
-
 		if ( !ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 			$this->markTestSkipped( "Requires 'Geographic coordinate' to be a supported data type (see Semantic Maps)" );
 		}

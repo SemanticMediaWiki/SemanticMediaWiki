@@ -35,7 +35,6 @@ class ServicesContainer {
 	 * @return mixed
 	 */
 	public function get( $key, ...$args ) {
-
 		if ( !isset( $this->services[$key] ) ) {
 			throw new ServiceNotFoundException( "$key is an unknown service!" );
 		}

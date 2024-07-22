@@ -164,7 +164,6 @@ class ParameterInput {
 	 * @return string
 	 */
 	protected function getNumberInput() {
-
 		$attributes = [
 			'class' => 'parameter-number-input',
 			'size' => 6,
@@ -191,7 +190,6 @@ class ParameterInput {
 	 * @return string
 	 */
 	protected function getStrInput() {
-
 		$attributes = [
 			'class' => 'parameter-string-input',
 			'size' => 20,
@@ -218,7 +216,6 @@ class ParameterInput {
 	 * @return string
 	 */
 	protected function getBooleanInput() {
-
 		$attributes = [
 			'class' => 'parameter-boolean-input'
 		];

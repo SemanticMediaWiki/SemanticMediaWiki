@@ -25,7 +25,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $user;
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$testEnvironment = new TestEnvironment();
@@ -43,7 +43,6 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EditProtectionUpdater::class,
 			new EditProtectionUpdater( $this->wikiPage, $this->user )
@@ -51,7 +50,6 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoUpdateFromWithNoRestrictionsNoEditProtection() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
 		$this->wikiPage->expects( $this->once() )
@@ -83,7 +81,6 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoUpdateFromWithNoRestrictionsAnActiveEditProtection() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
 		$this->wikiPage->expects( $this->once() )

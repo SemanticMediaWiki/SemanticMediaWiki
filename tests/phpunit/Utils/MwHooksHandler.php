@@ -93,7 +93,6 @@ class MwHooksHandler {
 	 * @return MwHooksHandler
 	 */
 	public function deregisterListedHooks() {
-
 		$listOfHooks = array_merge(
 			$this->listOfSmwHooks,
 			$this->getHookRegistry()->getHandlerList()
@@ -114,7 +113,6 @@ class MwHooksHandler {
 	 * @return MwHooksHandler
 	 */
 	public function restoreListedHooks() {
-
 		foreach ( $this->inTestRegisteredHooks as $hook ) {
 			$this->hookContainer->clear( $hook );
 		}
@@ -133,7 +131,6 @@ class MwHooksHandler {
 	 * @return MwHooksHandler
 	 */
 	public function register( $name, callable $callback ) {
-
 		$listOfHooks = array_merge(
 			$this->listOfSmwHooks,
 			$this->getHookRegistry()->getHandlerList()
@@ -160,7 +157,6 @@ class MwHooksHandler {
 	 * @return Hooks
 	 */
 	public function getHookRegistry(): Hooks {
-
 		if ( $this->hookRegistry === null ) {
 			 $this->hookRegistry = new Hooks();
 		}

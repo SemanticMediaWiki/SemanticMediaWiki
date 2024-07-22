@@ -19,7 +19,6 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TimeValueDescriptionBuilder::class,
 			new TimeValueDescriptionBuilder()
@@ -27,7 +26,6 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsBuilderForTimeValue() {
-
 		$dataValue = $this->getMockBuilder( '\SMWTimeValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -43,7 +41,6 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $decription ) {
-
 		$timeValue = $this->getMockBuilder( '\SMWTimeValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -69,7 +66,6 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidTimeValueReturnsThingDescription() {
-
 		$timeValue = $this->getMockBuilder( '\SMWTimeValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -87,7 +83,6 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonStringThrowsException() {
-
 		$timeValue = $this->getMockBuilder( '\SMWTimeValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -99,7 +94,6 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		$provider[] = [
 			'Jan 1970',
 			'\SMW\Query\Language\ValueDescription'

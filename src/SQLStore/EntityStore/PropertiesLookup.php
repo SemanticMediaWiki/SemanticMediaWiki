@@ -37,7 +37,6 @@ class PropertiesLookup {
 	 * @return RequestOptions|null
 	 */
 	public function newRequestOptions( RequestOptions $requestOptions = null ) {
-
 		if ( $requestOptions !== null ) {
 			$clone = clone $requestOptions;
 			$clone->limit = $requestOptions->limit + $requestOptions->offset;
@@ -57,7 +56,6 @@ class PropertiesLookup {
 	 * {@inheritDoc}
 	 */
 	public function fetchFromTable( DIWikiPage $subject, TableDefinition $propertyTable, RequestOptions $requestOptions = null ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 
@@ -103,7 +101,6 @@ class PropertiesLookup {
 	}
 
 	private function fetchFromFixedTable( $query, $title ) {
-
 		// just check if subject occurs in table
 		$query->options(
 			[ 'LIMIT' => 1 ]

@@ -16,7 +16,6 @@ use SMW\MediaWiki\Hooks\ExtensionTypes;
 class ExtensionTypesTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExtensionTypes::class,
 			new ExtensionTypes()
@@ -24,7 +23,6 @@ class ExtensionTypesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$extensionTypes = [];
 
 		$instance = new ExtensionTypes();

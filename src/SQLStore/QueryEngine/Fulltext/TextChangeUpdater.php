@@ -107,7 +107,6 @@ class TextChangeUpdater {
 	 * @param ChangeOp $changeOp
 	 */
 	public function pushUpdates( ChangeOp $changeOp ) {
-
 		if ( !$this->searchTableUpdater->isEnabled() ) {
 			return;
 		}
@@ -155,7 +154,6 @@ class TextChangeUpdater {
 	 * @param array|boolan $parameters
 	 */
 	public function pushUpdatesFromJobParameters( $parameters ) {
-
 		if ( !$this->searchTableUpdater->isEnabled() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === false ) {
 			return;
 		}
@@ -187,7 +185,6 @@ class TextChangeUpdater {
 	 * @param ChangeOp $changeOp
 	 */
 	public function doUpdateFromChangeDiff( ChangeDiff $changeDiff = null ) {
-
 		if ( !$this->searchTableUpdater->isEnabled() || $changeDiff === null ) {
 			return;
 		}
@@ -247,7 +244,6 @@ class TextChangeUpdater {
 	}
 
 	private function collectUpdates( $sid, array $textItem, $changeList, &$updates ) {
-
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 
 		foreach ( $textItem as $pid => $text ) {
@@ -271,7 +267,6 @@ class TextChangeUpdater {
 	}
 
 	private function doDeleteFromTableChangeOp( TableChangeOp $tableChangeOp ) {
-
 		foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $fieldChangeOp ) {
 
 			// Replace s_id for subobjects etc. with the o_id
@@ -292,7 +287,6 @@ class TextChangeUpdater {
 	}
 
 	private function canPostUpdate( $changeOp ) {
-
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 		$canPostUpdate = false;
 

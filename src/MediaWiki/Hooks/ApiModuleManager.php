@@ -21,7 +21,6 @@ class ApiModuleManager implements HookListener {
 	 * @param ApiModuleManager $apiModuleManager
 	 */
 	public function process( \ApiModuleManager $apiModuleManager ) {
-
 		if ( $this->getOption( 'SMW_EXTENSION_LOADED' ) === false ) {
 			return;
 		}

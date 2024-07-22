@@ -41,7 +41,6 @@ class FileIngestJob extends Job {
 	 * @param File|null $file
 	 */
 	public static function pushIngestJob( Title $title, array $params = [] ) {
-
 		if ( $title->getNamespace() !== NS_FILE ) {
 			return;
 		}
@@ -62,7 +61,6 @@ class FileIngestJob extends Job {
 	 * @since  3.0
 	 */
 	public function run() {
-
 		// Make sure the script is only executed from the command line to avoid
 		// Special:RunJobs to execute a queued job
 		if ( $this->waitOnCommandLineMode() ) {
@@ -91,7 +89,6 @@ class FileIngestJob extends Job {
 	 * @since 3.2
 	 */
 	public function runFileIndexer() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$elasticFactory = $applicationFactory->singleton( 'ElasticFactory' );
 
@@ -122,7 +119,6 @@ class FileIngestJob extends Job {
 	}
 
 	private function requeueRetry( $config ) {
-
 		// Give up!
 		if ( $this->getParameter( 'retryCount' ) >= $config->dotGet( 'indexer.job.file.ingest.retries' ) ) {
 			return true;

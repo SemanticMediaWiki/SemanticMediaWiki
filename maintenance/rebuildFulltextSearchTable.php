@@ -66,7 +66,6 @@ class rebuildFulltextSearchTable extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( $this->canExecute() !== true ) {
 			exit;
 		}
@@ -185,7 +184,6 @@ class rebuildFulltextSearchTable extends \Maintenance {
 	}
 
 	private function reportConfiguration( $searchTableRebuilder, $textSanitizer ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage( "\n" );
@@ -229,7 +227,6 @@ class rebuildFulltextSearchTable extends \Maintenance {
 	}
 
 	private function canExecute() {
-
 		if ( !Setup::isEnabled() ) {
 			return $this->reportMessage(
 				"\nYou need to have SMW enabled in order to run the maintenance script!\n"

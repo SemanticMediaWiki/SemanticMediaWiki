@@ -20,7 +20,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			HtmlBuilder::class,
 			new HtmlBuilder()
@@ -31,7 +30,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider buildParamsProvider
 	 */
 	public function testBuild( $key, $params ) {
-
 		$instance = new HtmlBuilder();
 
 		$this->assertInternalType(
@@ -41,7 +39,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function buildParamsProvider() {
-
 		yield [
 			'schema_head',
 			[

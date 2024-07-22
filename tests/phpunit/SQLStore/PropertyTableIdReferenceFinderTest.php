@@ -22,7 +22,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -31,7 +31,6 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\PropertyTableIdReferenceFinder',
 			new PropertyTableIdReferenceFinder( $this->store )
@@ -39,7 +38,6 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindAtLeastOneActiveReferenceById() {
-
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -74,7 +72,6 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToFindAtLeastOneReferenceForProperty() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -115,7 +112,6 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasResidualPropertyTableReference() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -143,7 +139,6 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasResidualReferenceFor() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -171,7 +166,6 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchAllTablesToFindAtLeastOneReferenceById() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -199,7 +193,6 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConfirmBorderId() {
-
 		$instance = new PropertyTableIdReferenceFinder(
 			$this->store
 		);

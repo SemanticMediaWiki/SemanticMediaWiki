@@ -19,7 +19,6 @@ class MaintenanceCheckTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Maintenance\MaintenanceCheck',
 			new MaintenanceCheck()
@@ -27,7 +26,6 @@ class MaintenanceCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanExecute() {
-
 		$instance = new MaintenanceCheck();
 
 		$this->assertInternalType(
@@ -37,7 +35,6 @@ class MaintenanceCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMessage() {
-
 		$instance = new MaintenanceCheck();
 
 		$this->assertInternalType(

@@ -16,7 +16,6 @@ use SMW\StringCondition;
 class StringConditionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new StringCondition( 'Foo', StringCondition::STRCOND_PRE, true );
 
 		$this->assertInstanceOf(

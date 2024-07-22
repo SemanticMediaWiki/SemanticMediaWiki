@@ -79,7 +79,6 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 * @return boolean
 	 */
 	public function isStopWord( $word ) {
-
 		if ( $this->cdb !== null && $this->cdb->get( $word ) !== false ) {
 			return true;
 		}
@@ -96,7 +95,6 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 * @return boolean
 	 */
 	public static function createCdbByLanguage( $location, $language ) {
-
 		$language = strtolower( $language );
 		$source = $location . $language . '.json';
 

@@ -53,7 +53,6 @@ class RedirectTargetLookup {
 	 * @param array $list
 	 */
 	public function prepareCache( array $list ) {
-
 		$ids = array_keys( $list );
 
 		if ( $ids === [] ) {
@@ -107,7 +106,6 @@ class RedirectTargetLookup {
 	 * @return DIWikiPage|false
 	 */
 	public function findRedirectSource( DIWikiPage $target, ?string $flag = null ) {
-
 		$cache = $this->inMemoryCacheManager->get(
 			IdCacheManager::REDIRECT_SOURCE
 		);

@@ -90,7 +90,6 @@ class SMWQuantityValue extends SMWNumberValue {
 	}
 
 	protected function makeUserValue() {
-
 		 // The normalised string of a known unit to use for printouts
 		$printunit = false;
 		$unitfactor = 1;
@@ -166,7 +165,6 @@ class SMWQuantityValue extends SMWNumberValue {
 	 * This method initializes $m_unitfactors, $m_unitids, and $m_mainunit.
 	 */
 	protected function initConversionData() {
-
 		if ( $this->m_unitids !== false ) {
 			return;
 		}

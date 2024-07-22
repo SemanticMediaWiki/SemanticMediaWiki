@@ -20,7 +20,7 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $requestOptions;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -35,7 +35,6 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ItemFetcher::class,
 			new ItemFetcher( $this->store )
@@ -43,7 +42,6 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHighlightTokens() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 
 		$instance = new ItemFetcher(
@@ -57,7 +55,6 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHighlightTokens_Blob() {
-
 		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -99,7 +96,6 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchFromLegacy() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
 
@@ -127,7 +123,6 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchFromPrefetchCache() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
 

@@ -20,8 +20,7 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $searchTable;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
@@ -34,7 +33,6 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder',
 			new ValueMatchConditionBuilder( $this->textSanitizer, $this->searchTable )
@@ -42,7 +40,6 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsEnabled() {
-
 		$this->searchTable->expects( $this->once() )
 			->method( 'isEnabled' )
 			->will( $this->returnValue( false ) );
@@ -58,7 +55,6 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTableName() {
-
 		$this->searchTable->expects( $this->once() )
 			->method( 'getTableName' )
 			->will( $this->returnValue( 'Foo' ) );
@@ -75,7 +71,6 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasMinTokenLength() {
-
 		$this->searchTable->expects( $this->once() )
 			->method( 'hasMinTokenLength' )
 			->will( $this->returnValue( false ) );
@@ -91,7 +86,6 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSortIndexField() {
-
 		$this->searchTable->expects( $this->once() )
 			->method( 'getSortField' )
 			->will( $this->returnValue( 'bar' ) );
@@ -108,7 +102,6 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanApplyFulltextSearchMatchCondition() {
-
 		$instance = new ValueMatchConditionBuilder(
 			$this->textSanitizer,
 			$this->searchTable
@@ -124,7 +117,6 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetWhereConditionWithPropertyOnTempTable() {
-
 		$instance = new ValueMatchConditionBuilder(
 			$this->textSanitizer,
 			$this->searchTable

@@ -18,7 +18,7 @@ class StringValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataValueServiceFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
@@ -35,7 +35,6 @@ class StringValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			StringValue::class,
 			new StringValue( '_txt' )
@@ -43,7 +42,6 @@ class StringValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLength() {
-
 		$instance = new StringValue( '_txt' );
 
 		$stringValueFormatter = new StringValueFormatter();

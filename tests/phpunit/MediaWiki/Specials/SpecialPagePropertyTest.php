@@ -20,7 +20,7 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -38,13 +38,12 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 		$this->stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\SpecialPageProperty',
 			new SpecialPageProperty()
@@ -55,7 +54,6 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryParameterProvider
 	 */
 	public function testQueryParameter( $query, $expected ) {
-
 		$instance = new SpecialPageProperty();
 
 		$instance->getContext()->setTitle(
@@ -71,7 +69,6 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRequestParameter() {
-
 		$request = [
 			'type' => 'Has subobject',
 			'from' => 'Bar'
@@ -100,7 +97,6 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryParameterProvider() {
-
 		#0
 		$provider[] = [
 			'Has page::Has prop',

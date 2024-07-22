@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class NullSynonymizerTest extends TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Synonymizer\NullSynonymizer',
 			new NullSynonymizer()
@@ -25,7 +24,6 @@ class NullSynonymizerTest extends TestCase {
 	}
 
 	public function testSynonymize() {
-
 		$instance = new NullSynonymizer();
 
 		$this->assertEquals(

@@ -21,7 +21,7 @@ class RebuildFulltextSearchTableTest extends DatabaseTestCase {
 	private $runnerFactory;
 	private $titleValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->runnerFactory  = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
@@ -40,13 +40,12 @@ class RebuildFulltextSearchTableTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->flushPages( $this->importedTitles );
 		parent::tearDown();
 	}
 
 	public function testCanRun() {
-
 		$this->importedTitles = [
 			'De Finibus Bonorum et Malorum'
 		];

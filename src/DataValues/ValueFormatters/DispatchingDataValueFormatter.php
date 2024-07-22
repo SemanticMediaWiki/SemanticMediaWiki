@@ -57,7 +57,6 @@ class DispatchingDataValueFormatter {
 	 * @throws RuntimeException
 	 */
 	public function getDataValueFormatterFor( DataValue $dataValue ) {
-
 		foreach ( $this->dataValueFormatters as $dataValueFormatter ) {
 			if ( $dataValueFormatter->isFormatterFor( $dataValue ) ) {
 				$dataValueFormatter->setDataValue( $dataValue );

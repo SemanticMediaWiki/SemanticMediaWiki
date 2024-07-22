@@ -70,7 +70,6 @@ abstract class DataItemHandler {
 	 * @param boolean
 	 */
 	public function isDbType( $dbType ) {
-
 		if ( $this->dbType === null ) {
 			$this->dbType = $this->store->getConnection( 'mw.db' )->getType();
 		}

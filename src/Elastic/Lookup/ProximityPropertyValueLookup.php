@@ -54,7 +54,6 @@ class ProximityPropertyValueLookup {
 	 * @return array
 	 */
 	public function lookup( DIProperty $property, $value, RequestOptions $opts ) {
-
 		$connection = $this->store->getConnection( 'elastic' );
 		$continueOffset = 0;
 
@@ -173,7 +172,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function aggs_filter( $diType, $pid, $field, $limit, $property, $value ) {
-
 		// A field on ES to a property can can all different kind of values and
 		// the request is only interested in those values that match a certain
 		// prefix or affix hence use `include` to only return aggregated values
@@ -232,7 +230,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function match_aggregations( $res, $diType, $limit ) {
-
 		$isNumeric = $diType === DataItem::TYPE_NUMBER;
 		$list = [];
 		$i = 0;
@@ -270,7 +267,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function match_hits( $res, $pid, $field, $limit ) {
-
 		$list = [];
 		$i = 0;
 

@@ -22,7 +22,7 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -39,7 +39,6 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DIBlobHandler::class,
 			new DIBlobHandler( $this->store )
@@ -47,7 +46,6 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testImmutableMethodAccess() {
-
 		$instance = new DIBlobHandler(
 			$this->store
 		);
@@ -79,7 +77,6 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMutableMethodAccess() {
-
 		$blob = new DIBlob( 'Foo' );
 
 		$instance = new DIBlobHandler(
@@ -101,7 +98,6 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider fieldTypeProvider
 	 */
 	public function testMutableOnFieldTypeFeature( $fieldTypeFeatures, $expected ) {
-
 		$instance = new DIBlobHandler(
 			$this->store
 		);
@@ -122,7 +118,6 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMutableInsertValuesOnVariableLength() {
-
 		$instance = new DIBlobHandler( $this->store );
 
 		$s72  = 'zcqaBHr1jV7mINGovktU8bD6zYjgKMqfaCxQlPcT4J6h4197dQpSW5PK5f8HigRk0yEsLC2F';
@@ -156,7 +151,6 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbKeysProvider
 	 */
 	public function testDataItemFromDBKeys( $dbKeys ) {
-
 		$instance = new DIBlobHandler(
 			$this->store
 		);
@@ -171,7 +165,6 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbKeysExceptionProvider
 	 */
 	public function testDataItemFromDBKeysThrowsException( $dbKeys ) {
-
 		$instance = new DIBlobHandler(
 			$this->store
 		);
@@ -181,7 +174,6 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dbKeysProvider() {
-
 		$provider[] = [
 			[ 'Foo', '' ]
 		];
@@ -194,7 +186,6 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dbKeysExceptionProvider() {
-
 		$provider[] = [
 			[ '' ]
 		];
@@ -207,7 +198,6 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function fieldTypeProvider() {
-
 		$provider[] = [
 			SMW_FIELDT_NONE,
 			[

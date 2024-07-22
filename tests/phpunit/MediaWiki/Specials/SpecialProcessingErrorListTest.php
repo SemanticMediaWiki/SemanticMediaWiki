@@ -20,7 +20,7 @@ class SpecialProcessingErrorListTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -33,13 +33,12 @@ class SpecialProcessingErrorListTest extends \PHPUnit_Framework_TestCase {
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanExecute() {
-
 		$instance = new SpecialProcessingErrorList();
 
 		$instance->getContext()->setTitle(
@@ -52,7 +51,6 @@ class SpecialProcessingErrorListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLocalAskRedirectUrl() {
-
 		$instance = new SpecialProcessingErrorList();
 
 		$instance->getContext()->setTitle(

@@ -154,7 +154,6 @@ class Deserializer {
 	}
 
 	private static function isCategory( $text ) {
-
 		$text = mb_convert_case( $text, MB_CASE_TITLE );
 
 		// Check for the canonical form (singular, plural)
@@ -166,7 +165,6 @@ class Deserializer {
 	}
 
 	private static function getPartsFromText( $text ) {
-
 		// #1464
 		// Temporary encode "=" within a <> entity (<span>...</span>)
 		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", function ( $matches ) {

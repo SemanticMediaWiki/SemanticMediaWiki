@@ -22,8 +22,7 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $connection;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -38,7 +37,6 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableSchemaManager::class,
 			new TableSchemaManager( $this->store )
@@ -46,7 +44,6 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTablesWithEmptyPropertyTableDefinition() {
-
 		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -83,7 +80,6 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindTableDefinitionWithNoCaseFeature() {
-
 		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -122,7 +118,6 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindTableFullTextTable_Disabled() {
-
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
@@ -137,7 +132,6 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindTableFullTextTable_Enabled() {
-
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
@@ -159,7 +153,6 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPropertyTable_UniqueIndex() {
-
 		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -214,7 +207,6 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPropertyTable_FixedTable() {
-
 		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();

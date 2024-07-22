@@ -217,7 +217,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() !== DataItem::TYPE_PROPERTY ) {
 			return false;
 		}
@@ -267,7 +266,6 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	public function setOutputFormat( $formatstring ) {
-
 		if ( $formatstring === false || $formatstring === '' ) {
 			return;
 		}
@@ -291,7 +289,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return SMWWikiPageValue or null
 	 */
 	public function getWikiPageValue() {
-
 		if ( isset( $this->m_wikipage ) ) {
 			return $this->m_wikipage;
 		}
@@ -327,7 +324,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	public function isRestricted() {
-
 		if ( !$this->isValid() ) {
 			return true;
 		}
@@ -358,7 +354,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortWikiText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -372,7 +367,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -386,7 +380,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongWikiText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -400,7 +393,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -414,7 +406,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getWikiValue() {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -432,7 +423,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getFormattedLabel( $format = DataValueFormatter::VALUE, $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -455,7 +445,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getSearchLabel() {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -472,7 +461,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getPropertyTypeID() {
-
 		if ( !$this->isValid() ) {
 			return '__err';
 		}
@@ -481,7 +469,6 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	private function createDataItemFrom( $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ) {
-
 		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
 
 		// Probe on capitalizedFirstChar because we only want predefined

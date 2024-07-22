@@ -31,6 +31,6 @@ interface DeferrableIndicatorProvider extends IndicatorProvider {
 	 *
 	 * @return boolean
 	 */
-	public function isDeferredMode() : bool;
+	public function isDeferredMode(): bool;
 
 }

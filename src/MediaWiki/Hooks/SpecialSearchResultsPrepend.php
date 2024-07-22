@@ -62,7 +62,6 @@ class SpecialSearchResultsPrepend implements HookListener {
 	 * @return boolean
 	 */
 	public function process( $term ) {
-
 		if ( !$this->specialSearch->getSearchEngine() instanceof ExtendedSearchEngine ) {
 			return true;
 		}
@@ -106,7 +105,6 @@ class SpecialSearchResultsPrepend implements HookListener {
 	}
 
 	private function search_sheet() {
-
 		$text = $this->element( 'smw-search-help-intro' );
 		$text .= $this->section( 'smw-search-input' );
 

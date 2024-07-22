@@ -63,7 +63,6 @@ class QueryBuilder {
 	 * @return Query|null
 	 */
 	public function getQuery( $term ) {
-
 		if ( !is_string( $term ) || trim( $term ) === '' ) {
 			return null;
 		}
@@ -92,7 +91,6 @@ class QueryBuilder {
 	 * @param array $searchableNamespaces
 	 */
 	public function addNamespaceCondition( Query $query = null, $searchableNamespaces = [] ) {
-
 		if ( $query === null ) {
 			return;
 		}
@@ -121,7 +119,6 @@ class QueryBuilder {
 	 * @param Query $query
 	 */
 	public function addSort( Query $query = null ) {
-
 		if ( $query === null ) {
 			return;
 		}
@@ -146,7 +143,6 @@ class QueryBuilder {
 	 * @return []
 	 */
 	public function getQueryString( Store $store, $term ) {
-
 		// Special invisible char which is set by the JS component to allow to
 		// push a forms submit through the SearchEngine without an actual "search
 		// term" to avoid being blocked on an empty request which only contains
@@ -215,7 +211,6 @@ class QueryBuilder {
 	 * @return []
 	 */
 	public function fetchFieldValues( $form, array $data ) {
-
 		$fieldValues = [];
 
 		if ( !isset( $data['forms'] ) ) {

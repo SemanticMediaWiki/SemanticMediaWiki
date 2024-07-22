@@ -21,8 +21,7 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $entityCache;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getWikiPageSortKey', 'service' ] )
@@ -34,7 +33,6 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DisplayTitleFinder::class,
 			new DisplayTitleFinder( $this->store, $this->entityCache )
@@ -42,7 +40,6 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindDisplayTitle_WithoutSubobject() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -78,7 +75,6 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindDisplayTitle_WithSubobject() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN, '', 'abc' );
 
 		$this->store->expects( $this->any() )
@@ -119,7 +115,6 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoDisplayTitle_Empty() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN, '', 'abc' );
 
 		$this->store->expects( $this->any() )
@@ -162,7 +157,6 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrefetchFromSemanticData() {
-
 		$subSemanticData =  $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -224,7 +218,6 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrefetchFromList() {
-
 		$subjects = [
 			DIWikiPage::newFromText( 'Foo' ),
 			DIWikiPage::doUnserialize( 'Foo#0##abc' ),
@@ -274,7 +267,6 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrefetchFromList_Subobject_Base() {
-
 		$subjects = [
 			DIWikiPage::doUnserialize( 'Foo#0##abc' ),
 		];

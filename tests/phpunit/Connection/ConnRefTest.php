@@ -19,7 +19,6 @@ class ConnRefTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConnRef::class,
 			new ConnRef( [] )
@@ -27,7 +26,6 @@ class ConnRefTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAndReleaseConnection() {
-
 		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -54,7 +52,6 @@ class ConnRefTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoMatchableConnectionProviderThrowsException() {
-
 		$instance = new ConnRef(
 			[
 				'Foo' => 'Bar'
@@ -66,7 +63,6 @@ class ConnRefTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoMatchableKeyThrowsException() {
-
 		$instance = new ConnRef( [] );
 
 		$this->expectException( 'RuntimeException' );

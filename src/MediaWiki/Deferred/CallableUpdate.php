@@ -85,7 +85,6 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @param callable|null $callback
 	 */
 	public function __construct( callable $callback = null ) {
-
 		if ( $callback === null ) {
 			$callback = [ $this, 'emptyCallback' ];
 		}
@@ -215,7 +214,6 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @return string
 	 */
 	public function getOrigin() {
-
 		if ( is_string( $this->origin ) ) {
 			$this->origin = [ $this->origin ];
 		}
@@ -250,7 +248,6 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @since 2.4
 	 */
 	public function doUpdate() {
-
 		if ( $this->catchExceptionAndRethrow ) {
 			$this->attemptUpdate();
 		} else {
@@ -267,7 +264,6 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @since 2.5
 	 */
 	public function pushUpdate() {
-
 		if ( $this->fingerprint !== null && isset( self::$queueList[$this->fingerprint] ) ) {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Push: {origin} (fingerprint: {fingerprint} is already listed, skip)' ],
@@ -296,7 +292,6 @@ class CallableUpdate implements DeferrableUpdate {
 	}
 
 	protected function registerUpdate( $update ) {
-
 		$this->logger->info(
 			[ 'DeferrableUpdate', 'Added: {ctx}' ],
 			[ 'method' => __METHOD__, 'role' => 'developer', 'ctx' => $this->loggableContext() ]
@@ -327,7 +322,6 @@ class CallableUpdate implements DeferrableUpdate {
 	}
 
 	private function attemptUpdate() {
-
 		$e = null;
 
 		try {

@@ -16,7 +16,6 @@ use SMW\MediaWiki\Content\SchemaContentHandler;
 class SchemaContentHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			'\JsonContentHandler',
 			new SchemaContentHandler()

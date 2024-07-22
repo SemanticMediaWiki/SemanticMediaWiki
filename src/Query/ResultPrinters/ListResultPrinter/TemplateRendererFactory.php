@@ -41,7 +41,6 @@ class TemplateRendererFactory {
 	 * @return WikitextTemplateRenderer
 	 */
 	public function getTemplateRenderer() {
-
 		if ( $this->templateRenderer === null ) {
 			$this->templateRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newWikitextTemplateRenderer();
 			$this->addCommonTemplateFields( $this->templateRenderer );
@@ -54,7 +53,6 @@ class TemplateRendererFactory {
 	 * @param WikitextTemplateRenderer $templateRenderer
 	 */
 	private function addCommonTemplateFields( WikitextTemplateRenderer $templateRenderer ) {
-
 		if ( $this->userparam !== '' ) {
 
 			$templateRenderer->addField(
@@ -98,7 +96,6 @@ class TemplateRendererFactory {
 	 * @return int
 	 */
 	private function getRowCount() {
-
 		if ( $this->numberOfPages === null ) {
 
 			$queryResult = $this->getQueryResult();

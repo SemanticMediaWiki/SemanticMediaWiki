@@ -15,7 +15,6 @@ use SMW\Utils\FileFetcher;
 class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRoundTrip() {
-
 		$found = false;
 
 		$fileFetcher = new FileFetcher( __DIR__ );
@@ -36,7 +35,6 @@ class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRoundTrip_Sort_Asc() {
-
 		$fileFetcher = new FileFetcher(
 			FileFetcher::normalize( __DIR__ . '/../../Fixtures/Utils/' )
 		);
@@ -56,7 +54,6 @@ class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRoundTrip_Sort_Desc() {
-
 		$fileFetcher = new FileFetcher(
 			FileFetcher::normalize( __DIR__ . '/../../Fixtures/Utils/' )
 		);
@@ -76,7 +73,6 @@ class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRoundTrip_Sort_Desc_SubDir() {
-
 		$fileFetcher = new FileFetcher(
 			FileFetcher::normalize( SMW_PHPUNIT_DIR . '/Fixtures/Utils/' )
 		);

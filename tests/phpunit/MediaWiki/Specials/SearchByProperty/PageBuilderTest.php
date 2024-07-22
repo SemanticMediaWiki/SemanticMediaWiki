@@ -24,7 +24,7 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $stringValidator;
 	private $localizer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
@@ -32,7 +32,6 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$HtmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -52,7 +51,6 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtmlForExactValueSearch() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -103,7 +101,6 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtmlForNearbyResultsSearch() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

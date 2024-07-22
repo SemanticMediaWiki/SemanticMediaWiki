@@ -38,7 +38,6 @@ class JsonTestCaseFileHandler {
 	 * @return boolean
 	 */
 	public function isIncomplete() {
-
 		$meta = $this->getFileContentsFor( 'meta' );
 		$isIncomplete = isset( $meta['is-incomplete'] ) ? (bool)$meta['is-incomplete'] : false;
 
@@ -55,7 +54,6 @@ class JsonTestCaseFileHandler {
 	 * @return boolean
 	 */
 	public function getDebugMode() {
-
 		$meta = $this->getFileContentsFor( 'meta' );
 
 		return isset( $meta['debug'] ) ? (bool)$meta['debug'] : false;
@@ -67,7 +65,6 @@ class JsonTestCaseFileHandler {
 	 * @return boolean
 	 */
 	public function hasAllRequirements( $dependencyDef = [] ) {
-
 		$requires = $this->getContentsFor( 'requires' );
 
 		if ( $requires === [] ) {
@@ -104,7 +101,6 @@ class JsonTestCaseFileHandler {
 	 * @return boolean
 	 */
 	public function requiredToSkipFor( array $case, $identifier ) {
-
 		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : [];
 		$identifier = strtolower( $identifier );
 
@@ -210,7 +206,6 @@ class JsonTestCaseFileHandler {
 	 * @return boolean
 	 */
 	public function requiredToSkipForConnector( $connectorId ) {
-
 		$connectorId = strtolower( $connectorId );
 		$meta = $this->getFileContentsFor( 'meta' );
 
@@ -229,7 +224,6 @@ class JsonTestCaseFileHandler {
 	 * @return boolean
 	 */
 	public function requiredToSkipForJsonVersion( $version ) {
-
 		$meta = $this->getFileContentsFor( 'meta' );
 
 		if ( version_compare( $version, $meta['version'], 'ne' ) ) {
@@ -245,7 +239,6 @@ class JsonTestCaseFileHandler {
 	 * @return boolean
 	 */
 	public function requiredToSkipOnSiteLanguage( $siteLanguage ) {
-
 		$meta = $this->getFileContentsFor( 'meta' );
 		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
@@ -270,7 +263,6 @@ class JsonTestCaseFileHandler {
 	 * @return boolean
 	 */
 	public function requiredToSkipForMwVersion( $mwVersion ) {
-
 		$meta = $this->getFileContentsFor( 'meta' );
 		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
@@ -319,7 +311,6 @@ class JsonTestCaseFileHandler {
 	 * @return booleam
 	 */
 	public function hasSetting( $key ) {
-
 		$settings = $this->getFileContentsFor( 'settings' );
 
 		return isset( $settings[$key] );
@@ -332,7 +323,6 @@ class JsonTestCaseFileHandler {
 	 * @throws RuntimeException
 	 */
 	public function getSettingsFor( $key, $callback = null ) {
-
 		$settings = $this->getFileContentsFor( 'settings' );
 
 		if ( isset( $settings[$key] ) && is_callable( $callback ) ) {
@@ -440,7 +430,6 @@ class JsonTestCaseFileHandler {
 	 * @return array
 	 */
 	public function getContentsFor( $key ) {
-
 		try{
 			$contents = $this->getFileContentsFor( $key );
 		} catch( \Exception $e ) {
@@ -481,7 +470,7 @@ class JsonTestCaseFileHandler {
 	 * @return array
 	 */
 	public function findTestCasesByType( $type ) {
-		return array_filter( $this->getContentsFor( 'tests' ), function( $contents ) use( $type ) {
+		return array_filter( $this->getContentsFor( 'tests' ), function ( $contents ) use( $type ) {
 			return isset( $contents['type'] ) && $contents['type'] === $type;
 		} );
 	}
@@ -498,7 +487,6 @@ class JsonTestCaseFileHandler {
 	}
 
 	private function getFileContentsFor( $index ) {
-
 		$contents = $this->fileReader->read();
 
 		if ( isset( $contents[$index] ) ) {

@@ -148,7 +148,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * @return mixed depends on $query->querymode
 	 */
 	public function getQueryResult( Query $query ) {
-
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 		     $query->querymode != Query::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
@@ -242,7 +241,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * @return string
 	 */
 	private function getDebugQueryResult( Query $query, $rootid ) {
-
 		$qobj = $this->querySegmentList[$rootid] ?? 0;
 		$entries = [];
 
@@ -278,7 +276,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	private function doExecuteDebugQueryResult( $debugFormatter, $qobj, $sqlOptions, &$entries ) {
-
 		if ( !isset( $qobj->joinfield ) || $qobj->joinfield === '' ) {
 			return $entries['SQL Query'] = 'Empty result, no SQL query created.';
 		}
@@ -328,7 +325,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * @return integer
 	 */
 	private function getCountQueryResult( Query $query, $rootid ) {
-
 		$queryResult = $this->queryFactory->newQueryResult(
 			$this->store,
 			$query,
@@ -390,7 +386,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * @return QueryResult
 	 */
 	private function getInstanceQueryResult( Query $query, $rootid ) {
-
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 		$qobj = $this->querySegmentList[$rootid];
 
@@ -504,7 +499,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	private function applyExtraWhereCondition( $connection, $qid ) {
-
 		if ( !isset( $this->querySegmentList[$qid] ) ) {
 			return null;
 		}
@@ -537,7 +531,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * @return array
 	 */
 	private function getSQLOptions( Query $query, $rootId ) {
-
 		$result = [
 			'LIMIT' => $query->getLimit() + 5,
 			'OFFSET' => $query->getOffset()
@@ -575,7 +568,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	private function log( $message, $context = [] ) {
-
 		if ( $this->logger === null ) {
 			return;
 		}

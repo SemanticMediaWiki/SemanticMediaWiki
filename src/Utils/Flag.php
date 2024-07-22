@@ -31,7 +31,7 @@ class Flag {
 	 *
 	 * @return boolean
 	 */
-	public function is( $flag ) : bool {
+	public function is( $flag ): bool {
 		return ( ( (int)$this->flag & $flag ) == $flag );
 	}
 
@@ -42,7 +42,7 @@ class Flag {
 	 *
 	 * @return boolean
 	 */
-	public function not( $flag ) : bool {
+	public function not( $flag ): bool {
 		return !$this->is( $flag );
 	}
 

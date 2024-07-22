@@ -111,7 +111,6 @@ class RDFXMLSerializer extends Serializer {
 	 * {@inheritDoc}
 	 */
 	public function serializeExpData( ExpData $expData ) {
-
 		$this->serializeNestedExpData( $expData, '' );
 		$this->serializeNamespaces();
 
@@ -125,7 +124,7 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function flushContent() : string {
+	public function flushContent(): string {
 		$result = parent::flushContent();
 
 		// must not be done before calling the parent method (which may declare
@@ -140,7 +139,6 @@ class RDFXMLSerializer extends Serializer {
 	 * {@inheritDoc}
 	 */
 	protected function serializeNamespace( $shortname, $uri ) {
-
 		if ( $this->namespaces_are_global ) {
 			$this->global_namespaces[$shortname] = true;
 			$this->pre_ns_buffer .= "\n\t";
@@ -232,7 +230,6 @@ class RDFXMLSerializer extends Serializer {
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
 	protected function serializeExpLiteral( ExpNsResource $expResourceProperty, ExpLiteral $expLiteral, $indent ) {
-
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 
 		// https://www.w3.org/TR/rdf-syntax-grammar/#section-Syntax-languages
@@ -293,7 +290,6 @@ class RDFXMLSerializer extends Serializer {
 	 * @bug Individual resources are not serialised properly.
 	 */
 	protected function serializeExpCollection( ExpNsResource $expResourceProperty, array $collection, $indent, $isClassTypeProp ) {
-
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName() . " rdf:parseType=\"Collection\">\n";
 
 		foreach ( $collection as $expElement ) {

@@ -19,7 +19,7 @@ class ContentModellerTest extends \PHPUnit_Framework_TestCase {
 	private $contentModeller;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->contentModeller = new ContentModeller();
@@ -28,7 +28,6 @@ class ContentModellerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ContentModeller::class,
 			new ContentModeller()
@@ -36,7 +35,6 @@ class ContentModellerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeContentList() {
-
 		$contents = [
 			'description' => '...',
 			'import' => [

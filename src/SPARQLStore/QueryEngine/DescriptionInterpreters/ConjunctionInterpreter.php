@@ -60,7 +60,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
@@ -100,7 +99,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function doPreliminarySubDescriptionCheck( $subDescriptions, $joinVariable, $orderByProperty ) {
-
 		$count = count( $subDescriptions );
 
 		// empty conjunction: true
@@ -126,7 +124,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function doResolveSubDescriptionsRecursively( $subDescriptions, $joinVariable ) {
-
 		// Using a stdClass as data container for simpler handling in follow-up tasks
 		// and as the class is not exposed publicly we don't need to create
 		// an extra "real" class to manage its elements
@@ -195,7 +192,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createConditionFromSubConditionElements( $subConditionElements ) {
-
 		if ( $subConditionElements->singletonMatchElement instanceof ExpElement ) {
 			return $this->createSingletonCondition( $subConditionElements );
 		}
@@ -208,7 +204,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createSingletonCondition( $subConditionElements ) {
-
 		if ( $subConditionElements->filter !== '' ) {
 			$subConditionElements->condition .= "FILTER( $subConditionElements->filter )";
 		}
@@ -231,7 +226,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createWhereCondition( $subConditionElements ) {
-
 		if ( $subConditionElements->filter !== '' ) {
 			$subConditionElements->condition .= "FILTER( $subConditionElements->filter )";
 		}

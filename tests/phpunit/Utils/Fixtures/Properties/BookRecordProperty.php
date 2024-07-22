@@ -30,7 +30,6 @@ class BookRecordProperty extends FixtureProperty {
 	 * @return SemanticData
 	 */
 	public function getDependencies() {
-
 		$semanticData = parent::getDependencies();
 
 		$titleProperty = new TitleProperty();

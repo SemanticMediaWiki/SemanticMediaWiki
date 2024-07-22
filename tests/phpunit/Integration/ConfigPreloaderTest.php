@@ -21,8 +21,7 @@ class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
 
 	private $gl = [];
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		foreach ( $GLOBALS as $key => $value ) {
 			if ( is_callable( $value ) ) {
 				continue;
@@ -32,7 +31,7 @@ class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		foreach ( $this->gl as $key => $value ) {
 			$GLOBALS[$key] = $value;
 		}
@@ -42,7 +41,6 @@ class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
 	 *@dataProvider configFileProvider
 	 */
 	public function testLoadDefaultConfigFrom( $file ) {
-
 		$instance = new ConfigPreloader();
 
 		$this->assertInstanceOf(
@@ -55,7 +53,6 @@ class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
 	 *@dataProvider configFileProvider
 	 */
 	public function testLoadConfigFrom( $file ) {
-
 		$instance = new ConfigPreloader();
 
 		$this->assertInstanceOf(
@@ -65,7 +62,6 @@ class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLoadingInvalidConfigFile_ThrowsException() {
-
 		$instance = new ConfigPreloader();
 
 		$this->expectException( '\SMW\Exception\ConfigPreloadFileNotReadableException' );
@@ -73,7 +69,6 @@ class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function configFileProvider() {
-
 		$fileFetcher = new FileFetcher( $GLOBALS['smwgDir'] . '/data/config/' );
 		$iterator = $fileFetcher->findByExtension( 'php' );
 

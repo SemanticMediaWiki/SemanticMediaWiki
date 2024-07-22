@@ -22,7 +22,6 @@ class Site {
 	 * @return boolean
 	 */
 	public static function isReadOnly() {
-
 		// MediaWiki\Services\ServiceDisabledException from line 340 of
 		// ...\ServiceContainer.php: Service disabled: DBLoadBalancer
 		try {
@@ -40,7 +39,6 @@ class Site {
 	 * @return boolean
 	 */
 	public static function isReady() {
-
 		// #3341
 		// When running as part of the install don't try to access the DB
 		// or update the Store
@@ -98,7 +96,6 @@ class Site {
 	 * @return boolean
 	 */
 	public static function isCommandLineMode() {
-
 		// MW 1.27 wgCommandLineMode isn't set correctly
 		if ( ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
 			return true;
@@ -122,7 +119,6 @@ class Site {
 	 * @return int
 	 */
 	public static function getCacheExpireTime( $key ) {
-
 		if ( $key === 'parser' ) {
 			return $GLOBALS['wgParserCacheExpireTime'];
 		}
@@ -137,8 +133,7 @@ class Site {
 	 *
 	 * @return string
 	 */
-	public static function id( string $affix = '' ) : string {
-
+	public static function id( string $affix = '' ): string {
 		if ( $affix !== '' && $affix[0] !== ':' ) {
 			$affix = ':' . $affix;
 		}
@@ -170,7 +165,6 @@ class Site {
 	 * @return array
 	 */
 	public static function getJobClasses( $typeFilter = '' ) {
-
 		if ( $typeFilter === 'SMW' ) {
 			$typeFilter = 'smw.';
 		}

@@ -58,7 +58,6 @@ class ScoreSet {
 	 * @param string|integer $score
 	 */
 	public function addScore( $hash, $score, $pos = null ) {
-
 		if ( $hash instanceof DIWikiPage ) {
 			$hash = $hash->getHash();
 		}
@@ -78,7 +77,6 @@ class ScoreSet {
 	 * @return string|integer|false
 	 */
 	public function getScore( $hash ) {
-
 		if ( $hash instanceof DIWikiPage ) {
 			$hash = $hash->getHash();
 		}
@@ -107,13 +105,11 @@ class ScoreSet {
 	 * @param boolean $usort
 	 */
 	public function usort( $usort ) {
-
 		if ( !$usort || $this->scores === [] ) {
 			return;
 		}
 
-		usort( $this->scores, function( $a, $b ) {
-
+		usort( $this->scores, function ( $a, $b ) {
 			if ( $a[1] == $b[1] ) {
 				return 0;
 			}
@@ -130,7 +126,6 @@ class ScoreSet {
 	 * @return string
 	 */
 	public function asTable( $class = '' ) {
-
 		if ( $this->scores === [] ) {
 			return '';
 		}

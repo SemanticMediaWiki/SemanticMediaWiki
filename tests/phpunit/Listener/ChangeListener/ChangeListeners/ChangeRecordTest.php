@@ -23,7 +23,7 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	private $key;
 	private $changeRecord;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
@@ -32,7 +32,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CallableChangeListener::class,
 			new CallableChangeListener()
@@ -40,7 +39,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanTrigger() {
-
 		$instance = new CallableChangeListener();
 		$instance->addListenerCallback( 'foo', [ $this, 'observeChange' ] );
 
@@ -55,7 +53,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTrigger() {
-
 		$instance = new CallableChangeListener();
 		$instance->addListenerCallback( 'foo', [ $this, 'observeChange' ] );
 

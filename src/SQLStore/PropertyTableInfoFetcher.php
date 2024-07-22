@@ -119,7 +119,6 @@ class PropertyTableInfoFetcher {
 	 * @return string
 	 */
 	public static function findTableIdForDataItemTypeId( $dataItemId ) {
-
 		if ( array_key_exists( $dataItemId, self::$defaultDiTypeTableIdMap ) ) {
 			return self::$defaultDiTypeTableIdMap[$dataItemId];
 		}
@@ -144,7 +143,6 @@ class PropertyTableInfoFetcher {
 	 * @return boolean
 	 */
 	public function isFixedTableProperty( DIProperty $property ) {
-
 		if ( $this->fixedPropertyTableIds === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}
@@ -163,7 +161,6 @@ class PropertyTableInfoFetcher {
 	 * @return string
 	 */
 	public function findTableIdForProperty( DIProperty $property ) {
-
 		if ( $this->fixedPropertyTableIds === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}
@@ -190,7 +187,6 @@ class PropertyTableInfoFetcher {
 	 * @return TableDefinition[]
 	 */
 	public function getPropertyTableDefinitions() {
-
 		if ( $this->propertyTableDefinitions === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}
@@ -207,7 +203,6 @@ class PropertyTableInfoFetcher {
 	}
 
 	private function buildDefinitionsForPropertyTables() {
-
 		$enabledSpecialProperties = TypesRegistry::getFixedProperties( 'default_fixed' );
 
 		$customFixedSpecialPropertyList = array_flip(

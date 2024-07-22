@@ -90,7 +90,6 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 	 * {@inheritDoc}
 	 */
 	public function validate( $dataValue ) {
-
 		$this->hasConstraintViolation = false;
 
 		if ( !$dataValue instanceof DataValue || $dataValue->getProperty() === null ) {
@@ -144,7 +143,6 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 	}
 
 	private function triggerDeferredCheck( $contextPage ) {
-
 		if ( $contextPage === null || $this->isCommandLineMode ) {
 			return;
 		}

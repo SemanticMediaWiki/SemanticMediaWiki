@@ -44,7 +44,6 @@ class SkinTemplateNavigationUniversal implements HookListener {
 	 * @return true
 	 */
 	public function process() {
-
 		if ( $this->skinTemplate->getUser()->isAllowed( 'purge' ) ) {
 			$this->skinTemplate->getOutput()->addModules( 'ext.smw.purge' );
 			$this->links['actions']['purge'] = [

@@ -36,7 +36,6 @@ class ArticleAugmentor {
 	 * @return array
 	 */
 	public function augment( array &$res, array $parameters ) {
-
 		if ( !isset( $res['query'] ) && $res['query'] === [] ) {
 			return;
 		}

@@ -123,7 +123,6 @@ class Factbox {
 	 * @return Factbox
 	 */
 	public function doBuild() {
-
 		$this->content = $this->fetchContent(
 			$this->getMagicWords()
 		);
@@ -172,7 +171,6 @@ class Factbox {
 	 * @return string
 	 */
 	public function getAttachmentContent() {
-
 		if ( $this->attachments === [] || !$this->hasFeature( SMW_FACTBOX_DISPLAY_ATTACHMENT ) ) {
 			return '';
 		}
@@ -208,7 +206,6 @@ class Factbox {
 	 * @return string
 	 */
 	public static function tabs( $list, $attachment = '', $derived = '' ) {
-
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setActiveTab(
 			$list !== '' ? 'facts-list' : 'facts-attachment'
@@ -267,7 +264,6 @@ class Factbox {
 	 * @return string|null
 	 */
 	protected function getMagicWords() {
-
 		if ( $this->checkMagicWords === null ) {
 			return SMW_FACTBOX_HIDDEN;
 		}
@@ -309,7 +305,6 @@ class Factbox {
 	 * @return string|null
 	 */
 	protected function fetchContent( $showFactbox = SMW_FACTBOX_NONEMPTY ) {
-
 		if ( $showFactbox === SMW_FACTBOX_HIDDEN ) {
 			return '';
 		}
@@ -341,7 +336,6 @@ class Factbox {
 	 * @return string|null
 	 */
 	protected function createTable( SemanticData $semanticData ) {
-
 		$html = '';
 
 		$this->displayTitleFinder->prefetchFromSemanticData( $semanticData );
@@ -379,7 +373,6 @@ class Factbox {
 	}
 
 	private function createHeader( DIWikiPage $subject ) {
-
 		$dataValue = $this->dataValueFactory->newDataValueByItem( $subject, null );
 
 		$browselink = SMWInfolink::newBrowsingLink(
@@ -410,7 +403,6 @@ class Factbox {
 	}
 
 	private function createRows( SemanticData $semanticData ) {
-
 		$rows = '';
 		$attributes = [];
 
@@ -506,7 +498,6 @@ class Factbox {
 	}
 
 	private function isEmpty( SemanticData $semanticData ) {
-
 		// MW's internal Parser does iterate the ParserOutput object several times
 		// which can leave a '_SKEY' property while in fact the container is empty.
 		$semanticData->removeProperty(

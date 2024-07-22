@@ -16,7 +16,6 @@ use SMW\MediaWiki\Api\Browse\ArticleLookup;
 class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -35,7 +34,6 @@ class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider articleSearchProvider
 	 */
 	public function testLookup( $search, $row, $condition, $expected ) {
-
 		$articleAugmentor = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\ArticleAugmentor' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -74,7 +72,6 @@ class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function articleSearchProvider() {
-
 		$row = new \stdClass;
 		$row->page_title = 'Foo';
 		$row->page_id = 42;

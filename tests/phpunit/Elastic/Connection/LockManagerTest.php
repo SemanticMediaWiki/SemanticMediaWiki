@@ -21,15 +21,13 @@ class LockManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $cache;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			LockManager::class,
 			new LockManager( $this->cache )
@@ -37,7 +35,6 @@ class LockManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasMaintenanceLock() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->with( $this->stringContains( 'smw:elastic:57cb773ae7a82c8c8aae12fa8f8d7abd' ) )
@@ -51,7 +48,6 @@ class LockManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetMaintenanceLock() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with( $this->stringContains( 'smw:elastic:57cb773ae7a82c8c8aae12fa8f8d7abd' ) );
@@ -64,7 +60,6 @@ class LockManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetLock() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
@@ -79,7 +74,6 @@ class LockManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasLock() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( '123' ) );
@@ -94,7 +88,6 @@ class LockManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLock() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( 2 ) );
@@ -110,7 +103,6 @@ class LockManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReleaseLock() {
-
 		$this->cache->expects( $this->at( 0 ) )
 			->method( 'delete' );
 

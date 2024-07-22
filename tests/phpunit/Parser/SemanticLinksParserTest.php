@@ -17,7 +17,6 @@ use SMW\Parser\SemanticLinksParser;
 class SemanticLinksParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$linksProcessor = $this->getMockBuilder( 'SMW\Parser\LinksProcessor' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -34,7 +33,6 @@ class SemanticLinksParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textProvider
 	 */
 	public function testParse( $text, $expected ) {
-
 		$instance = new SemanticLinksParser(
 			new LinksProcessor()
 		);
@@ -46,7 +44,6 @@ class SemanticLinksParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-
 		$provider = [];
 
 		$provider[] = [

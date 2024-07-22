@@ -17,7 +17,7 @@ interface ActionableTask {
 	 *
 	 * @return string
 	 */
-	public function getTask() : string;
+	public function getTask(): string;
 
 	/**
 	 * @since 3.2
@@ -26,7 +26,7 @@ interface ActionableTask {
 	 *
 	 * @return boolean
 	 */
-	public function isTaskFor( string $action ) : bool;
+	public function isTaskFor( string $action ): bool;
 
 	/**
 	 * @since 3.2

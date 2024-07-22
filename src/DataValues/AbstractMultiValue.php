@@ -63,7 +63,6 @@ abstract class AbstractMultiValue extends DataValue {
 	 * @return DataItem[]|null
 	 */
 	public function getDataItems() {
-
 		if ( !$this->isValid() ) {
 			return [];
 		}
@@ -93,7 +92,6 @@ abstract class AbstractMultiValue extends DataValue {
 	 * @return DataItem[]|null
 	 */
 	public function getDataItemByIndex( $index ) {
-
 		if ( is_numeric( $index ) ) {
 			$pos = $index - 1;
 			$dataItems = $this->getDataItems();
@@ -119,7 +117,6 @@ abstract class AbstractMultiValue extends DataValue {
 	 * @return DIProperty|null
 	 */
 	public function getPropertyDataItemByIndex( $index ) {
-
 		$properties = $this->getPropertyDataItems();
 
 		if ( is_numeric( $index ) ) {
@@ -147,7 +144,6 @@ abstract class AbstractMultiValue extends DataValue {
 	 * @return DIProperty[]|[]
 	 */
 	protected function getFieldProperties( DIProperty $property = null ) {
-
 		if ( $property === null || $property->getDiWikiPage() === null ) {
 			return [];
 		}

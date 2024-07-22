@@ -45,8 +45,7 @@ class Config extends Options {
 	 *
 	 * @return boolean
 	 */
-	public function isDefaultStore() : bool {
-
+	public function isDefaultStore(): bool {
 		$defaultStore = $this->get(
 			Config::DEFAULT_STORE
 		);
@@ -62,7 +61,6 @@ class Config extends Options {
 	 * @param array $deprecatedKeys
 	 */
 	public function setDeprectedKeys( array $deprecatedKeys ) {
-
 		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 			return;
 		}
@@ -92,7 +90,6 @@ class Config extends Options {
 	 * @param string $data
 	 */
 	public function loadFromJSON( $data ) {
-
 		if ( $data === false ) {
 			return;
 		}
@@ -123,7 +120,6 @@ class Config extends Options {
 	 * @throws RuntimeException
 	 */
 	public function readFile( $file ) {
-
 		if ( $file === false ) {
 			return false;
 		}

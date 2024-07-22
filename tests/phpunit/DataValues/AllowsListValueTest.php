@@ -25,7 +25,7 @@ class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 	private $dataValueServiceFactory;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -40,12 +40,11 @@ class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AllowsListValue::class,
 			new AllowsListValue()
@@ -53,7 +52,6 @@ class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortWikiText() {
-
 		$instance = new AllowsListValue();
 
 		$instance->setDataValueServiceFactory(
@@ -71,7 +69,6 @@ class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLongHtmlText() {
-
 		$instance = new AllowsListValue();
 
 		$instance->setDataValueServiceFactory(
@@ -89,7 +86,6 @@ class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortHtmlText() {
-
 		$instance = new AllowsListValue();
 
 		$instance->setDataValueServiceFactory(

@@ -30,7 +30,7 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	private $propertySpecificationLookup;
 	private $dataValueFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -56,13 +56,12 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -74,7 +73,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInfolinkTextOnNumberValue() {
-
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getSpecification' )
 			->will( $this->returnValue( [] ) );
@@ -108,7 +106,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInfolinkTextOnStringValue() {
-
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getSpecification' )
 			->will( $this->returnValue( [] ) );
@@ -142,7 +139,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInfolinkTextOnSobValue() {
-
 		$stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
 
 		$sobValue = $this->dataValueFactory->newDataValueByType( '__sob' );
@@ -166,7 +162,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInfolinkTextOnTimeValueWithoutLocalizedOutput() {
-
 		$timeValue = $this->dataValueFactory->newDataValueByType( '_dat' );
 
 		$timeValue->setOption( $timeValue::OPT_USER_LANGUAGE, 'fr' );
@@ -204,7 +199,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInfolinkTextOnStringValueWithServiceLinks() {
-
 		$service = 'testGetInfolinkTextOnStringValueWithServiceLinks';
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )

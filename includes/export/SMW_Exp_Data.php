@@ -78,7 +78,6 @@ class SMWExpData implements Element {
 	 * @return string
 	 */
 	public function getHash() {
-
 		if ( $this->hash !== null ) {
 			return $this->hash;
 		}
@@ -110,7 +109,6 @@ class SMWExpData implements Element {
 	 * @return SMWExpData
 	 */
 	public static function makeCollection( array $elements ) {
-
 		if ( count( $elements ) == 0 ) {
 			return new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'nil' ) );
 		}
@@ -153,7 +151,6 @@ class SMWExpData implements Element {
 	 * @param Element $child
 	 */
 	public function addPropertyObjectValue( SMWExpNsResource $property, Element $child ) {
-
 		$this->hash = null;
 
 		if ( !array_key_exists( $property->getUri(), $this->m_edges ) ) {
@@ -181,7 +178,6 @@ class SMWExpData implements Element {
 	 * @return array of SMWExpElement
 	 */
 	public function getValues( SMWExpResource $property ) {
-
 		if ( array_key_exists( $property->getUri(), $this->m_children ) ) {
 			return $this->m_children[$property->getUri()];
 		}

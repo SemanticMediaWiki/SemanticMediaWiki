@@ -129,7 +129,6 @@ class ConditionBuilder {
 	 * @throws OutOfBoundsException
 	 */
 	public function findQuerySegment( $id ) {
-
 		if ( !is_int( $id ) ) {
 			throw new InvalidArgumentException( '$id needs to be an integer' );
 		}
@@ -194,7 +193,6 @@ class ConditionBuilder {
 	 * @return integer
 	 */
 	public function buildCondition( Query $query ) {
-
 		$this->sortKeys = $query->sortkeys;
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 
@@ -262,7 +260,6 @@ class ConditionBuilder {
 	 * @return integer
 	 */
 	public function buildFromDescription( Description $description ) {
-
 		$fingerprint = $description->getFingerprint();
 
 		// Get membership of descriptions that are resolved recursively
@@ -316,7 +313,6 @@ class ConditionBuilder {
 	}
 
 	private function findDuplicates( $fingerprint ) {
-
 		if ( $this->errors !== [] || $this->isFilterDuplicates === false ) {
 			return false;
 		}

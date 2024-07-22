@@ -25,7 +25,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataValidator;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -40,13 +40,12 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -66,7 +65,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider categoriesDataProvider
 	 */
 	public function testAddCategoriesAnnotation( array $parameters, array $expected ) {
-
 		$semanticData = $this->semanticDataFactory
 			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
@@ -104,7 +102,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider categoriesDataProvider
 	 */
 	public function testAddCategoriesWithParserDataUpdate( array $parameters, array $expected ) {
-
 		$semanticData = $this->semanticDataFactory
 			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
@@ -149,7 +146,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider hiddenCategoriesDataProvider
 	 */
 	public function testAddCategoriesWithHiddenCategories( array $parameters, array $expected ) {
-
 		$expectedPageLookup = $parameters['settings']['showHiddenCategories'] ? $this->never() : $this->atLeastOnce();
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
@@ -207,7 +203,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddCategoryOnInvalidRedirect() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
@@ -246,7 +241,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function categoriesDataProvider() {
-
 		$provider = [];
 
 		// Standard category
@@ -292,7 +286,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function hiddenCategoriesDataProvider() {
-
 		$provider = [];
 
 		$hidCategory = MockTitle::buildMock( __METHOD__ );

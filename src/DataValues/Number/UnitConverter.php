@@ -119,7 +119,6 @@ class UnitConverter {
 	 * @param NumberValue $numberValue
 	 */
 	public function loadConversionData( NumberValue $numberValue ) {
-
 		$this->errors = [];
 		$property = $numberValue->getProperty();
 
@@ -145,7 +144,6 @@ class UnitConverter {
 	 * @param NumberValue $numberValue
 	 */
 	public function fetchConversionData( NumberValue $numberValue ) {
-
 		$property = $numberValue->getProperty();
 
 		$this->unitIds = [];
@@ -201,7 +199,6 @@ class UnitConverter {
 	}
 
 	private function initConversionData( $subject, $key, $numberValue ) {
-
 		$this->fetchConversionData( $numberValue );
 
 		foreach ( $this->errors as $error ) {

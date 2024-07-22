@@ -22,7 +22,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 	private $applicationFactory;
 	private FactboxText $factboxText;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -39,14 +39,13 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$this->factboxText = $this->applicationFactory->getFactboxText();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -58,7 +57,6 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToPerformUpdateOnNullSkin() {
-
 		$data = '';
 		$instance = new SkinAfterContent( null );
 
@@ -113,7 +111,6 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function outputDataProvider() {
-
 		$text = __METHOD__ . 'text-0';
 
 		#0 Retrieve content from outputPage property

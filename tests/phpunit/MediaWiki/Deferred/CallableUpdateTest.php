@@ -22,21 +22,20 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->clearPendingDeferredUpdates();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
-		$callback = function() {
+		$callback = function () {
 			return null;
 		};
 
@@ -47,7 +46,6 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -56,7 +54,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -71,8 +69,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateThatThrowsExceptionToLogAndRethrow() {
-
-		$callback = function() {
+		$callback = function () {
 			throw new \Exception("Error Processing Request", 1);
 		};
 
@@ -93,7 +90,6 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateOnEmptyCallback() {
-
 		$instance = new CallableUpdate();
 
 		$instance->setLogger( $this->spyLogger );
@@ -108,7 +104,6 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateOnLateCallback() {
-
 		$instance = new CallableUpdate();
 
 		$test = $this->getMockBuilder( '\stdClass' )
@@ -119,7 +114,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -137,7 +132,6 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWaitableUpdate() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -146,7 +140,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -165,7 +159,6 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateWithDisabledDeferredUpdate() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -174,7 +167,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -189,8 +182,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOrigin() {
-
-		$callback = function() {
+		$callback = function () {
 		};
 
 		$instance = new CallableUpdate(
@@ -206,7 +198,6 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilterDuplicateQueueEntryByFingerprint() {
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'doTest' ] )
@@ -215,7 +206,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function() use ( $test ) {
+		$callback = function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -243,7 +234,6 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStage() {
-
 		$instance = new CallableUpdate();
 
 		$this->assertEquals(

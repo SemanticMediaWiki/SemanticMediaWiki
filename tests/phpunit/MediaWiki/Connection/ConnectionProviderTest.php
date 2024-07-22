@@ -27,7 +27,6 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection() {
-
 		$instance = new ConnectionProvider();
 		$instance->setLogger(
 			TestEnvironment::newSpyLogger()
@@ -54,7 +53,6 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionOnFixedConfWithSameIndex() {
-
 		$instance = new ConnectionProvider(
 			'foo'
 		);
@@ -93,7 +91,6 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionOnCallback() {
-
 		$db = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -104,7 +101,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$conf = [
 			'foo' => [
-				'callback'  => function() use( $db ) {
+				'callback'  => function () use( $db ) {
 					return $db;
 				}
 			]
@@ -123,7 +120,6 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionOnIncompleteConfThrowsException() {
-
 		$instance = new ConnectionProvider(
 			'foo'
 		);

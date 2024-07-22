@@ -18,7 +18,6 @@ use SMWDIUri as DIUri;
 class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataItemFactory',
 			new DataItemFactory()
@@ -26,7 +25,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDIError() {
-
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
@@ -36,7 +34,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDIProperty() {
-
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
@@ -46,7 +43,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDIWikiPage() {
-
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
@@ -56,7 +52,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDIWikiPageFromTitle() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -74,7 +69,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDIContainer() {
-
 		$containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -88,7 +82,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructContainerSemanticData() {
-
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -102,7 +95,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDINumber() {
-
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
@@ -112,7 +104,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDIBlob() {
-
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
@@ -122,7 +113,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDIBoolean() {
-
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
@@ -132,7 +122,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDIConcept() {
-
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
@@ -142,7 +131,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDIUri() {
-
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
@@ -152,7 +140,6 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDITime() {
-
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(

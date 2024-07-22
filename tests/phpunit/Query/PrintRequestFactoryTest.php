@@ -18,7 +18,6 @@ use SMW\Query\PrintRequestFactory;
 class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Query\PrintRequestFactory',
 			new PrintRequestFactory()
@@ -26,7 +25,6 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructPrintRequestFromProperty() {
-
 		$instance = new PrintRequestFactory();
 
 		$printRequest = $instance->newFromProperty(
@@ -45,7 +43,6 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructPrintRequestFromText() {
-
 		$instance = new PrintRequestFactory();
 
 		$printRequest = $instance->newFromText(
@@ -59,7 +56,6 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrintRequestFromTextToReturnNullOnInvalidText() {
-
 		$instance = new PrintRequestFactory();
 
 		$printRequest = $instance->newFromText(
@@ -73,7 +69,6 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructThisPrintRequest() {
-
 		$instance = new PrintRequestFactory();
 
 		$printRequest = $instance->newThisPrintRequest(

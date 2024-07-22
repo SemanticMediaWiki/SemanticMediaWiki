@@ -15,7 +15,6 @@ namespace SMW\Tests\Utils\Mock;
 class MockTitle extends \PHPUnit_Framework_TestCase {
 
 	public static function buildMock( $text = __METHOD__ ) {
-
 		$instance = new self();
 
 		$contentModel = defined( 'CONTENT_MODEL_WIKITEXT' ) ? CONTENT_MODEL_WIKITEXT : null;
@@ -43,7 +42,6 @@ class MockTitle extends \PHPUnit_Framework_TestCase {
 	}
 
 	public static function buildMockForMainNamespace( $text = __METHOD__ ) {
-
 		$instance = new self();
 
 		$title = $instance->buildMock( $text );

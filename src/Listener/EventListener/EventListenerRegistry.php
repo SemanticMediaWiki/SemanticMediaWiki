@@ -44,7 +44,6 @@ class EventListenerRegistry implements EventListenerCollection {
 	 * @since 2.2
 	 */
 	public function getCollection() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$logger = $applicationFactory->getMediaWikiLogger();
 
@@ -97,17 +96,16 @@ class EventListenerRegistry implements EventListenerCollection {
 	}
 
 	private function addListenersToCollection() {
-
 		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
 
 		$this->eventListenerCollection->registerCallback(
-			'exporter.reset', function() {
+			'exporter.reset', function () {
 				Exporter::getInstance()->clear();
 			}
 		);
 
 		$this->eventListenerCollection->registerCallback(
-			'query.comparator.reset', function() {
+			'query.comparator.reset', function () {
 				QueryComparator::getInstance()->clear();
 			}
 		);

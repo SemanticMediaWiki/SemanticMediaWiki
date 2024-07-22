@@ -58,7 +58,7 @@ class FormsFactory {
 	 *
 	 * @return NamespaceForm
 	 */
-	public function newNamespaceForm() : NamespaceForm {
+	public function newNamespaceForm(): NamespaceForm {
 		return new NamespaceForm(
 			ApplicationFactory::getInstance()->singleton( 'NamespaceInfo' ),
 			Localizer::getInstance()

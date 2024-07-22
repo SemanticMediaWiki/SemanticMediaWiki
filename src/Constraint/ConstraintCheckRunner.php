@@ -78,7 +78,6 @@ class ConstraintCheckRunner {
 	 * @param Schema|SchemaList $schema
 	 */
 	public function load( $key, $schema ) {
-
 		$this->hasViolation = false;
 		$this->constraints = [];
 
@@ -114,7 +113,6 @@ class ConstraintCheckRunner {
 	 * @param mixed $dataValue
 	 */
 	public function check( $dataValue ) {
-
 		$this->hasDeferrableConstraint = false;
 		$this->hasViolation = false;
 
@@ -136,7 +134,6 @@ class ConstraintCheckRunner {
 	}
 
 	private function checkConstraint( $key, $value, $dataValue ) {
-
 		$constraint = $this->constraintRegistry->getConstraintByKey(
 			$key
 		);

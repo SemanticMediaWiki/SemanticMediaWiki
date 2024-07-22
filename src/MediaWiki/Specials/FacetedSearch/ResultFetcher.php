@@ -104,7 +104,7 @@ class ResultFetcher {
 	 *
 	 * @return int
 	 */
-	public function getTotalCount() : int {
+	public function getTotalCount(): int {
 		return $this->totalCount;
 	}
 
@@ -113,7 +113,7 @@ class ResultFetcher {
 	 *
 	 * @return int
 	 */
-	public function getLimit() : int {
+	public function getLimit(): int {
 		return $this->limit;
 	}
 
@@ -122,7 +122,7 @@ class ResultFetcher {
 	 *
 	 * @return int
 	 */
-	public function getOffset() : int {
+	public function getOffset(): int {
 		return $this->offset;
 	}
 
@@ -131,7 +131,7 @@ class ResultFetcher {
 	 *
 	 * @return bool
 	 */
-	public function hasFurtherResults() : bool {
+	public function hasFurtherResults(): bool {
 		return $this->hasFurtherResults;
 	}
 
@@ -140,7 +140,7 @@ class ResultFetcher {
 	 *
 	 * @return string
 	 */
-	public function getQueryString() : string {
+	public function getQueryString(): string {
 		return $this->queryString;
 	}
 
@@ -149,7 +149,7 @@ class ResultFetcher {
 	 *
 	 * @return QueryResult|null
 	 */
-	public function getQueryResult() : ?QueryResult {
+	public function getQueryResult(): ?QueryResult {
 		return $this->queryResult;
 	}
 
@@ -158,7 +158,7 @@ class ResultFetcher {
 	 *
 	 * @return []
 	 */
-	public function getPropertyFilters() : array {
+	public function getPropertyFilters(): array {
 		return $this->propertyFilters;
 	}
 
@@ -167,7 +167,7 @@ class ResultFetcher {
 	 *
 	 * @return []
 	 */
-	public function getCategoryFilters() : array {
+	public function getCategoryFilters(): array {
 		return $this->categoryFilters;
 	}
 
@@ -176,7 +176,7 @@ class ResultFetcher {
 	 *
 	 * @return array
 	 */
-	public function getValueFilters() : array {
+	public function getValueFilters(): array {
 		return $this->valueFilters;
 	}
 
@@ -185,8 +185,7 @@ class ResultFetcher {
 	 *
 	 * @return string
 	 */
-	public function getHtml() : string {
-
+	public function getHtml(): string {
 		if ( $this->errors !== [] ) {
 			$msg = '';
 			foreach ( $this->errors as $error ) {
@@ -221,7 +220,6 @@ class ResultFetcher {
 	 * @param ParametersProcessor $parametersProcessor
 	 */
 	public function fetchQueryResult( ParametersProcessor $parametersProcessor ) {
-
 		[ $queryString, $parameters, $printRequests ] = QueryProcessor::getComponentsFromFunctionParams(
 			$parametersProcessor->getParameters(),
 			false
@@ -353,7 +351,6 @@ class ResultFetcher {
 	}
 
 	private function findValueFilters( $results, $valueFilterResult, array $propertyFilters ) {
-
 		if ( $propertyFilters === [] ) {
 			return;
 		}

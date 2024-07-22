@@ -75,7 +75,6 @@ class QueryLinksTableDisposer {
 	 * @return ResultIterator
 	 */
 	public function newOutdatedQueryLinksResultIterator() {
-
 		$res = $this->connection->select(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			's_id as id',
@@ -101,7 +100,6 @@ class QueryLinksTableDisposer {
 	 * @return ResultIterator
 	 */
 	public function newUnassignedQueryLinksResultIterator() {
-
 		$res = $this->connection->select(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			's_id as id',
@@ -124,7 +122,6 @@ class QueryLinksTableDisposer {
 	 * @param stdClass|integer $id
 	 */
 	public function cleanUpTableEntriesById( $id ) {
-
 		$fname = __METHOD__;
 
 		if ( isset( $id->id ) ) {
@@ -132,7 +129,7 @@ class QueryLinksTableDisposer {
 		}
 
 		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionCommitOrIdle( function() use ( $id, $fname ) {
+			return $this->connection->onTransactionCommitOrIdle( function () use ( $id, $fname ) {
 				$this->connection->delete(
 					SQLStore::QUERY_LINKS_TABLE,
 					[

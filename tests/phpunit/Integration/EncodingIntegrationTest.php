@@ -30,7 +30,6 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sidebarBeforeOutputDataProvider
 	 */
 	public function testSidebarBeforeOutputURLEncoding( $setup, $expected ) {
-
 		$sidebar  = [];
 
 		foreach ( $setup['settings'] as $key => $value) {
@@ -58,7 +57,6 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function sidebarBeforeOutputDataProvider() {
-
 		$specialName = str_replace( '%3A', ':',
 			\SMW\Encoder::encode( \SpecialPage::getTitleFor( 'Browse' )->getPrefixedText() )
 		);
@@ -74,7 +72,6 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function newSidebarBeforeOutputSetup( $text ) {
-
 		$settings = [
 			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 			'smwgBrowseFeatures'           => SMW_BROWSE_TLINK

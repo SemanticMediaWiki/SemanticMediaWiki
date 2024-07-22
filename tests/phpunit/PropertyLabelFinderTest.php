@@ -19,7 +19,7 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -36,7 +36,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$languageIndependentPropertyLabels = [];
 		$canonicalPropertyLabels = [];
 
@@ -47,7 +46,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPreLoadedPropertyLabel() {
-
 		$languageIndependentPropertyLabels = [ '_Foo' => 'Bar' ];
 		$canonicalPropertyLabels = [];
 
@@ -69,7 +67,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterPropertyLabel() {
-
 		$languageIndependentPropertyLabels = [];
 		$canonicalPropertyLabels = [];
 
@@ -106,7 +103,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPreventKnownPropertyLabelToBeRegisteredAsCanonicalWithDifferentId() {
-
 		$languageIndependentPropertyLabels = [];
 
 		$canonicalPropertyLabels = [
@@ -132,7 +128,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchPropertyIdForNonRegisteredLabel() {
-
 		$languageIndependentPropertyLabels = [];
 		$canonicalPropertyLabels = [];
 
@@ -153,7 +148,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPropertyLabelByLanguageCode() {
-
 		$languageIndependentPropertyLabels = [];
 		$canonicalPropertyLabels = [];
 
@@ -175,7 +169,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPropertyListFromLabelByLanguageCode() {
-
 		$instance = new PropertyLabelFinder(
 			$this->store
 		);
@@ -187,7 +180,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPreferredPropertyLabelByLanguageCode() {
-
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getPreferredPropertyLabelByLanguageCode' )
 			->with( $this->equalTo( 'Foo' ) )

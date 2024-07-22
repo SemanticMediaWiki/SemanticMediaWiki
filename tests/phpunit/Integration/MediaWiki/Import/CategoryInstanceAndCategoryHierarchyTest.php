@@ -29,7 +29,7 @@ class CategoryInstanceAndCategoryHierarchyTest extends DatabaseTestCase {
 	private $titleValidator;
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
@@ -46,8 +46,7 @@ class CategoryInstanceAndCategoryHierarchyTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -55,7 +54,6 @@ class CategoryInstanceAndCategoryHierarchyTest extends DatabaseTestCase {
 	}
 
 	public function testCategoryHierarchies() {
-
 		$this->importedTitles = [
 			'Category:Regression test',
 			'Category:Regression test category',

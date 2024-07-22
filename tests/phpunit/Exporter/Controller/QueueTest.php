@@ -17,7 +17,6 @@ use SMW\Exporter\Controller\Queue;
 class QueueTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Queue::class,
 			new Queue()
@@ -25,7 +24,6 @@ class QueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMembers() {
-
 		$dataItem = DIWikiPage::newFromText( 'Foo' );
 		$instance = new Queue();
 
@@ -38,7 +36,6 @@ class QueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReset() {
-
 		$dataItem = DIWikiPage::newFromText( 'Foo' );
 		$instance = new Queue();
 
@@ -55,7 +52,6 @@ class QueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDone() {
-
 		$dataItem = DIWikiPage::newFromText( 'Foo' );
 		$instance = new Queue();
 
@@ -71,7 +67,6 @@ class QueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAndCount() {
-
 		$dataItem = DIWikiPage::newFromText( 'Foo' );
 
 		$instance = new Queue();

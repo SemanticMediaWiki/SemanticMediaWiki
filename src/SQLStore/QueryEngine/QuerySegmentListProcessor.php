@@ -103,7 +103,6 @@ class QuerySegmentListProcessor {
 	 * @throws RuntimeException
 	 */
 	public function process( $id ) {
-
 		$this->hierarchyTempTableBuilder->emptyHierarchyCache();
 		$this->executedQueries = [];
 
@@ -116,7 +115,6 @@ class QuerySegmentListProcessor {
 	}
 
 	private function segment( QuerySegment &$query ) {
-
 		switch ( $query->type ) {
 			case QuerySegment::Q_TABLE: // .
 				$this->table( $query );
@@ -140,7 +138,6 @@ class QuerySegmentListProcessor {
 	 * Resolves normal queries with possible conjunctive subconditions
 	 */
 	private function table( QuerySegment &$query ) {
-
 		foreach ( $query->components as $qid => $joinField ) {
 			$subQuery = $this->querySegmentList[$qid];
 			$this->segment( $subQuery );
@@ -230,7 +227,6 @@ class QuerySegmentListProcessor {
 	}
 
 	private function disjunction( QuerySegment &$query ) {
-
 		if ( $this->queryMode !== Query::MODE_NONE ) {
 			$this->temporaryTableBuilder->create( $this->connection->tableName( $query->alias ) );
 		}
@@ -294,7 +290,6 @@ class QuerySegmentListProcessor {
 	 * @param QuerySegment $query
 	 */
 	private function hierarchy( QuerySegment &$query ) {
-
 		switch ( $query->type ) {
 			case QuerySegment::Q_PROP_HIERARCHY:
 				$type = 'property';

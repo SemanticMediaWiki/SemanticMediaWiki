@@ -21,7 +21,7 @@ class TemplateExpanderTest extends \PHPUnit_Framework_TestCase {
 
 	private $parser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->parser = $this->getMockBuilder( '\Parser' )
@@ -30,7 +30,6 @@ class TemplateExpanderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TemplateExpander::class,
 			 new TemplateExpander( $this->parser )
@@ -38,7 +37,6 @@ class TemplateExpanderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExpand() {
-
 		$template = new Template( 'Foo' );
 
 		$this->parser->expects( $this->once() )
@@ -53,7 +51,6 @@ class TemplateExpanderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExpandOnInvalidParserThrowsException() {
-
 		$instance = new TemplateExpander(
 			'Foo'
 		);

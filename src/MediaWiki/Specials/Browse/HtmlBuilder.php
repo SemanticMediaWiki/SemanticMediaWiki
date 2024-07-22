@@ -140,7 +140,6 @@ class HtmlBuilder {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
-
 		if ( isset( $this->options[$key] ) ) {
 			return $this->options[$key];
 		}
@@ -154,7 +153,6 @@ class HtmlBuilder {
 	 * @return string
 	 */
 	public function legacy() {
-
 		$subject = [
 			'dbkey' => $this->subject->getDBKey(),
 			'ns' => $this->subject->getNamespace(),
@@ -178,7 +176,6 @@ class HtmlBuilder {
 	 * @return string
 	 */
 	public function placeholder() {
-
 		$subject = [
 			'dbkey' => $this->subject->getDBKey(),
 			'ns' => $this->subject->getNamespace(),
@@ -232,7 +229,6 @@ class HtmlBuilder {
 	 * @return string
 	 */
 	public function buildHTML() {
-
 		if ( ( $offset = $this->getOption( 'offset' ) ) ) {
 			$this->offset = $offset;
 		}
@@ -269,7 +265,6 @@ class HtmlBuilder {
 	 * @return string
 	 */
 	public function buildEmptyHTML() {
-
 		$html = '';
 		$form = '';
 
@@ -307,7 +302,6 @@ class HtmlBuilder {
 	 * parameters in the execute comment.
 	 */
 	private function createHTML() {
-
 		$html = "<div class=\"smwb-datasheet smwb-theme-light\">";
 
 		$leftside = true;
@@ -396,7 +390,6 @@ class HtmlBuilder {
 	 * Creates the HTML table displaying the data of one subject.
 	 */
 	private function displayData( SemanticData $semanticData, $left = true, $incoming = false, $isLoading = false ) {
-
 		// Some of the CSS classes are different for the left or the right side.
 		// In this case, there is an "i" after the "smwb-". This is set here.
 		$dirPrefix = $left ? 'smwb-' : 'smwb-i';
@@ -511,7 +504,6 @@ class HtmlBuilder {
 	 * display of assigned values.
 	 */
 	private function buildHtmlFromData( $semanticData, $properties, $group, $incoming, $left, $dirPrefix, &$noresult ) {
-
 		$html = '';
 		$group = mb_strtolower( str_replace( ' ', '-', $group ) );
 
@@ -535,7 +527,7 @@ class HtmlBuilder {
 
 		// Sort by label instead of the key which may start with `_` or `__`
 		// and thereby distorts the lexicographical order
-		usort ( $properties, function( $a, $b ) {
+		usort ( $properties, function ( $a, $b ) {
 			return strnatcmp( $a->getLabel(), $b->getLabel() );
 		} );
 
@@ -706,7 +698,6 @@ class HtmlBuilder {
 	 * navigation options.
 	 */
 	private function displayActions() {
-
 		$html = '';
 		$group = $this->getOption( 'group' );
 		$article = $this->dataValue->getLongWikiText();
@@ -794,7 +785,6 @@ class HtmlBuilder {
 	 * navigation options.
 	 */
 	private function displayBottom( $more ) {
-
 		$article = $this->dataValue->getLongWikiText();
 
 		$open = HtmlDivTable::open(
@@ -859,7 +849,6 @@ class HtmlBuilder {
 	 * usual outgoing properties.
 	 */
 	private function getInData() {
-
 		$indata = new SemanticData(
 			$this->dataValue->getDataItem()
 		);
@@ -925,7 +914,6 @@ class HtmlBuilder {
 	 * linked to a property group.
 	 */
 	private function getGroupMessageClassLinks( $groupFormatter, $semanticData, $dirPrefix ) {
-
 		$contextPage = $semanticData->getSubject();
 
 		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new DIProperty( '_PPGR' ) ) ) {

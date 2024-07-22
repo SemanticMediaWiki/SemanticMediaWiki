@@ -28,7 +28,6 @@ class PageRefresher {
 	 * @return PageRefresher
 	 */
 	public function doRefresh( $title ) {
-
 		if ( $title instanceof WikiPage || $title instanceof DIWikiPage ) {
 			$title = $title->getTitle();
 		}
@@ -74,7 +73,6 @@ class PageRefresher {
 	 * @return PageRefresher
 	 */
 	public function doRefreshByUpdateJob( $title ) {
-
 		if ( $title instanceof WikiPage || $title instanceof DIWikiPage ) {
 			$title = $title->getTitle();
 		}

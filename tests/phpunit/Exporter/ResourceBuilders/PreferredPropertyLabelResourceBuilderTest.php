@@ -24,7 +24,7 @@ class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestC
 	private $dataValueFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -33,13 +33,12 @@ class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestC
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			PreferredPropertyLabelResourceBuilder::class,
 			new PreferredPropertyLabelResourceBuilder()
@@ -47,7 +46,6 @@ class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestC
 	}
 
 	public function testIsNotResourceBuilderForNonPreferredPropertyLabelProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new PreferredPropertyLabelResourceBuilder();
@@ -58,7 +56,6 @@ class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestC
 	}
 
 	public function testAddResourceValueForValidProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_PPLB' );
 
 		$monolingualTextValue = $this->dataValueFactory->newDataValueByProperty(

@@ -29,7 +29,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	private $hookDispatcher;
 	private $setupFile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyMessageReporter = MessageReporterFactory::getInstance()->newSpyMessageReporter();
@@ -70,7 +70,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$this->tableBuilder,
@@ -86,7 +85,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInstall() {
-
 		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -128,7 +126,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInstall_FailsMinimumRequirement() {
-
 		$this->versionExaminer->expects( $this->once() )
 			->method( 'meetsVersionMinRequirement' )
 			->will( $this->returnValue( false ) );
@@ -149,7 +146,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInstallWithSupplementJobs() {
-
 		$this->jobQueue->expects( $this->exactly( 2 ) )
 			->method( 'push' );
 
@@ -198,7 +194,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInstallNonVerbose() {
-
 		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -234,7 +229,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUninstall() {
-
 		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -269,7 +263,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReportMessage() {
-
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$this->tableBuilder,
@@ -278,7 +271,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableOptimizer
 		);
 
-		$callback = function() use( $instance ) {
+		$callback = function () use( $instance ) {
 			$instance->reportMessage( 'Foo' );
 		};
 

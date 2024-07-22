@@ -38,12 +38,11 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'namespace';
 	}
 
 	private function match( Compartment $compartment ) {
-
 		$namespaces = $compartment->get( 'if.namespace' );
 
 		// In case the filter was marked as elective allows sets to remain in
@@ -70,7 +69,6 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 	}
 
 	private function matchOneOf( array $namespaces ) {
-
 		if ( $this->namespace === null ) {
 			return false;
 		}

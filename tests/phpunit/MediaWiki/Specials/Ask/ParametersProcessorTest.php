@@ -19,7 +19,6 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testEmpty() {
-
 		$request = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +30,6 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParameters() {
-
 		$request = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,7 +48,6 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParameters_Printrequest_PlusPipe() {
-
 		$request = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -69,7 +66,6 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParameters_Printrequest_WikiLink() {
-
 		$request = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -88,7 +84,6 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParameters_Printrequest_WikiLink_PlusPipe() {
-
 		$request = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -107,7 +102,6 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParametersWithDefaults() {
-
 		$request = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -135,7 +129,6 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParameters_Sort_FirstEmpty() {
-
 		$request = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -171,7 +164,6 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParameters_Sort_FirstNotEmpty() {
-
 		$request = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -207,7 +199,6 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParametersOn_p_Array_Request() {
-
 		$request = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();

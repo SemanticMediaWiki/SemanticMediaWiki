@@ -58,7 +58,6 @@ class TermParser {
 	 * @return string
 	 */
 	public function parse( $term ) {
-
 		$hash = md5( $term );
 
 		if ( isset( self::$cache[$hash] ) ) {
@@ -176,7 +175,6 @@ class TermParser {
 	}
 
 	private function close( &$custom, $prefix ) {
-
 		// Standard closing
 		if ( $custom === '' ) {
 			return "]]";
@@ -210,7 +208,6 @@ class TermParser {
 	}
 
 	private function normalize_compact_form( $exp, $pattern, &$term ) {
-
 		if ( strpos( $term, "$exp:(" ) === false ) {
 			return;
 		}

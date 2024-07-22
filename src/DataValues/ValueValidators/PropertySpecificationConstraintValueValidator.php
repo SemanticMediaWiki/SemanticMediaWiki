@@ -39,7 +39,6 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 	 * {@inheritDoc}
 	 */
 	public function validate( $dataValue ) {
-
 		$this->hasConstraintViolation = false;
 
 		if (
@@ -56,7 +55,6 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 	}
 
 	private function doValidateCodifiedPreferredPropertyLabelConstraints( $dataValue ) {
-
 		// Annotated but not enabled
 		if ( !$dataValue->isEnabledFeature( SMW_DV_PPLB ) ) {
 			return $dataValue->addErrorMsg(
@@ -84,7 +82,6 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 	}
 
 	private function isKnownByLabelAndLanguage( $value, $dbkey ) {
-
 		$lang = isset( $value['_LCODE'] ) ? $value['_LCODE'] : false;
 
 		if ( !isset( self::$inMemoryLabelToLanguageTracer[$dbkey] ) ) {

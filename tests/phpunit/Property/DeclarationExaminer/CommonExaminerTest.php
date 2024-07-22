@@ -25,7 +25,7 @@ class CommonExaminerTest extends \PHPUnit_Framework_TestCase {
 	private $entityManager;
 	private $semanticData;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->entityManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
@@ -46,7 +46,6 @@ class CommonExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CommonExaminer::class,
 			new CommonExaminer( $this->store, $this->semanticData )
@@ -54,7 +53,6 @@ class CommonExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckNamespace() {
-
 		$instance = new CommonExaminer(
 			$this->store
 		);
@@ -74,7 +72,6 @@ class CommonExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckReservedName() {
-
 		$instance = new CommonExaminer(
 			$this->store
 		);
@@ -98,7 +95,6 @@ class CommonExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckUniqueness() {
-
 		$this->entityManager->expects( $this->any() )
 			->method( 'isUnique' )
 			->will( $this->returnValue( false ) );
@@ -120,7 +116,6 @@ class CommonExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorOnCompetingTypes() {
-
 		$dataItemFactory = new DataItemFactory();
 		$subject = $dataItemFactory->newDIWikiPage( 'Test', NS_MAIN );
 
@@ -154,7 +149,6 @@ class CommonExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindErrMessages() {
-
 		$dataItemFactory = new DataItemFactory();
 		$subject = $dataItemFactory->newDIWikiPage( 'Test', NS_MAIN );
 

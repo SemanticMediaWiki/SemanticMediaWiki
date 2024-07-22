@@ -37,7 +37,6 @@ class ClassDescriptionInterpreter {
 	 * @return Condition
 	 */
 	public function interpretDescription( ClassDescription $description, $isConjunction = false ) {
-
 		$pid = 'P:' . $this->conditionBuilder->getID( new DIProperty( '_INST' ) );
 		$field = 'wpgID';
 

@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class JaCompoundGroupTokenizerTest extends TestCase {
 
 	public function testUnknownOption() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\JaCompoundGroupTokenizer',
 			new JaCompoundGroupTokenizer()
@@ -28,7 +27,6 @@ class JaCompoundGroupTokenizerTest extends TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testTokenize( $string, $expected ) {
-
 		if ( version_compare( phpversion(), '5.4', '<' ) ) {
 			$this->markTestSkipped(
 				"Boo, PHP 5.3 returns with unexpected results"
@@ -44,7 +42,6 @@ class JaCompoundGroupTokenizerTest extends TestCase {
 	}
 
 	public function testTokenizeWithOption() {
-
 		if ( version_compare( phpversion(), '5.4', '<' ) ) {
 			$this->markTestSkipped(
 				"Ehh, PHP 5.3 returns with unexpected results"
@@ -79,7 +76,6 @@ class JaCompoundGroupTokenizerTest extends TestCase {
 	}
 
 	public function stringProvider() {
-
 		$provider[] = array(
 			'と歓声を上げていました。 十勝農業改良普及センターによりますと',
 			array( '歓声', '上', '十勝農業改良普及', 'センター' )

@@ -57,7 +57,7 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'stats/table';
 	}
 
@@ -66,7 +66,7 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 
@@ -76,7 +76,6 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-operational-table-statistics-short-title' ),
 			[ 'action' => $this->getTask() ]
@@ -100,7 +99,6 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-operational-table-statistics-title' ) ] )
 		);
@@ -114,7 +112,6 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function outputStatistics() {
-
 		$this->outputFormatter->addHTML(
 			Html::rawElement( 'p', [], $this->msg( 'smw-admin-supplementary-operational-table-statistics-explain' ) )
 		);

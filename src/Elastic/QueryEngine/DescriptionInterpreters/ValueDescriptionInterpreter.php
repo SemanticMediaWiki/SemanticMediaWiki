@@ -46,7 +46,6 @@ class ValueDescriptionInterpreter {
 	 * @return Condition
 	 */
 	public function interpretDescription( ValueDescription $description, $isConjunction = false ) {
-
 		$dataItem = $description->getDataItem();
 		$comparator = $description->getComparator();
 
@@ -154,7 +153,6 @@ class ValueDescriptionInterpreter {
 	}
 
 	private function proximity_bool( $field, $value ) {
-
 		$params = [];
 		$hasWildcard = strpos( $value, '*' ) !== false;
 
@@ -220,7 +218,6 @@ class ValueDescriptionInterpreter {
 	 * worse off hence remove `*` in case of CJK usage.
 	 */
 	private function isCJK( &$text ) {
-
 		// Only use the examiner on the standard index_def since ICU provides
 		// better CJK and may handle `*` more sufficiently
 		if ( !$this->conditionBuilder->getOption( 'cjk.best.effort.proximity.match', false ) ) {

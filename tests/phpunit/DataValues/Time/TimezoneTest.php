@@ -20,7 +20,6 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Timezone::class,
 			new Timezone()
@@ -28,7 +27,6 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListShortAbbreviations() {
-
 		$this->assertInternalType(
 			'array',
 			Timezone::listShortAbbreviations()
@@ -39,7 +37,6 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider timezoneProvider
 	 */
 	public function testIsValidAndIsMilitary( $abbrevation, $isValid, $isMilitary ) {
-
 		$this->assertEquals(
 			$isValid,
 			Timezone::isValid( $abbrevation )
@@ -55,7 +52,6 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider timezoneProvider
 	 */
 	public function testGetIdByAbbreviation( $abbrevation, $isValid, $isMilitary, $expectedId ) {
-
 		$this->assertEquals(
 			$expectedId,
 			Timezone::getIdByAbbreviation( $abbrevation )
@@ -66,7 +62,6 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider offsetProvider
 	 */
 	public function testGetOffsetByAbbreviation( $abbrevation, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			Timezone::getOffsetByAbbreviation( $abbrevation )
@@ -74,7 +69,6 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetModifiedTime() {
-
 		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
 		$tz = 'Asia/Tokyo';
 
@@ -87,7 +81,6 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function timezoneProvider() {
-
 		$provider[] = [
 			'UTC',
 			true,
@@ -134,7 +127,6 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function offsetProvider() {
-
 		$provider[] = [
 			'UTC',
 			0

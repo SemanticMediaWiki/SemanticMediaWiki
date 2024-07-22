@@ -18,15 +18,13 @@ class SubjectLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SubjectLookup::class,
 			new SubjectLookup( $this->store )
@@ -34,7 +32,6 @@ class SubjectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_HTML() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -76,7 +73,6 @@ class SubjectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_JSON() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();

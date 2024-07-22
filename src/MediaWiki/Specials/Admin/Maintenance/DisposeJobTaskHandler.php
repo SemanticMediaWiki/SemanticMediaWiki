@@ -75,7 +75,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'dispose';
 	}
 
@@ -84,7 +84,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 
@@ -94,7 +94,6 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$subject = DIWikiPage::newFromTitle( \SpecialPage::getTitleFor( 'SMWAdmin' ) );
 
 		// smw-admin-outdateddisposal
@@ -155,7 +154,6 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		if ( !$this->hasFeature( SMW_ADM_DISPOSAL ) || $this->hasPendingJob() || $this->isApiTask() ) {
 			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 		}

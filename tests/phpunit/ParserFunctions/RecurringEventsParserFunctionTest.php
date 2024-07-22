@@ -25,7 +25,6 @@ use Title;
 class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
@@ -51,7 +50,6 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider recurringEventsDataProvider
 	 */
 	public function testParse( array $params, array $expected ) {
-
 		$recurringEvents = new RecurringEvents();
 		$recurringEvents->setDefaultNumRecurringEvents( 100 );
 		$recurringEvents->setMaxNumRecurringEvents( 100 );
@@ -80,7 +78,6 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function recurringEventsDataProvider() {
-
 		$provider = [];
 
 		// #0

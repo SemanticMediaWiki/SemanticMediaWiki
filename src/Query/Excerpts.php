@@ -51,7 +51,6 @@ class Excerpts {
 	 * @param string|integer $score
 	 */
 	public function addExcerpt( $hash, $excerpt ) {
-
 		if ( $hash instanceof DIWikiPage ) {
 			$hash = $hash->getHash();
 		}
@@ -67,7 +66,6 @@ class Excerpts {
 	 * @return string|integer|false
 	 */
 	public function getExcerpt( $hash ) {
-
 		if ( $hash instanceof DIWikiPage ) {
 			$hash = $hash->getHash();
 		}

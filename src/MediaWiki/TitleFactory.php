@@ -24,7 +24,6 @@ class TitleFactory {
 	 * @return Title|null
 	 */
 	public function newFromText( $text, $namespace = null ) {
-
 		if ( $namespace === null ) {
 			$namespace = NS_MAIN;
 		}

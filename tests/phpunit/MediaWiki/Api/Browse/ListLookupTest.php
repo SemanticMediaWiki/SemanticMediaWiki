@@ -16,7 +16,6 @@ use SMW\MediaWiki\Api\Browse\ListLookup;
 class ListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -35,7 +34,6 @@ class ListLookupTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceProvider
 	 */
 	public function testLookup( $ns, $title, $expected ) {
-
 		$row = new \stdClass;
 		$row->smw_title = $title;
 		$row->smw_id = 42;
@@ -84,7 +82,6 @@ class ListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceProvider() {
-
 		$provider[] = [
 			SMW_NS_PROPERTY,
 			'Foo',

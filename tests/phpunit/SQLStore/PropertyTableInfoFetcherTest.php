@@ -22,7 +22,7 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 
 	private $propertyTypeFinder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->propertyTypeFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTypeFinder' )
@@ -31,7 +31,6 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\PropertyTableInfoFetcher',
 			new PropertyTableInfoFetcher( $this->propertyTypeFinder )
@@ -39,7 +38,6 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyTableDefinitions() {
-
 		$instance = new PropertyTableInfoFetcher(
 			$this->propertyTypeFinder
 		);
@@ -56,7 +54,6 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyProvider
 	 */
 	public function testFindTableIdForProperty( $property, $expected ) {
-
 		$property = DIProperty::newFromUserLabel( $property );
 
 		$instance = new PropertyTableInfoFetcher(
@@ -77,7 +74,6 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider defaultDiTypeProvider
 	 */
 	public function testFindTableIdForDataItemTypeId( $diType, $expected ) {
-
 		$instance = new PropertyTableInfoFetcher(
 			$this->propertyTypeFinder
 		);
@@ -96,7 +92,6 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataTypeProvider
 	 */
 	public function testFindTableIdForDataTypeTypeId( $dataType, $expected ) {
-
 		$instance = new PropertyTableInfoFetcher(
 			$this->propertyTypeFinder
 		);
@@ -112,7 +107,6 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function propertyProvider() {
-
 		$provider = [];
 
 		// Pre-defined property
@@ -160,7 +154,6 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function defaultDiTypeProvider() {
-
 		$provider = [];
 
 		// Known
@@ -185,7 +178,6 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataTypeProvider() {
-
 		$provider = [];
 
 		// Known

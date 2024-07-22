@@ -16,7 +16,6 @@ use SMW\Query\ResultPrinters\FeedExportPrinter;
 class FeedExportPrinterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FeedExportPrinter::class,
 			new FeedExportPrinter( 'feed' )
@@ -27,7 +26,6 @@ class FeedExportPrinterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textDataProvider
 	 */
 	public function testFeedItemDescription( $setup, $expected, $message ) {
-
 		$instance = new FeedExportPrinter( 'feed' );
 
 		$reflector = new ReflectionClass( '\SMW\Query\ResultPrinters\FeedExportPrinter' );
@@ -44,7 +42,6 @@ class FeedExportPrinterTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function textDataProvider() {
-
 		$provider = [];
 
 		// #0

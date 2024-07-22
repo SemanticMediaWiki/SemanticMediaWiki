@@ -19,7 +19,7 @@ class RdfResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	private $queryResult;
 	private $resultPrinterReflector;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
@@ -30,7 +30,6 @@ class RdfResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RdfResultPrinter::class,
 			new RdfResultPrinter( 'rdf' )
@@ -43,7 +42,6 @@ class RdfResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMimeType() {
-
 		$instance = new RdfResultPrinter( 'json' );
 
 		$this->assertEquals(

@@ -25,8 +25,7 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Fr
 	private $repositoryConnection;
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = ApplicationFactory::getInstance()->getStore();
 
 		if ( !$this->store instanceof SPARQLStore ) {
@@ -45,7 +44,6 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Fr
 	 * @dataProvider resourceProvider
 	 */
 	public function testRedirectTargetLookupForNonExistingEntry( $expNsResource ) {
-
 		$instance = new RepositoryRedirectLookup( $this->repositoryConnection );
 		$instance->reset();
 
@@ -60,7 +58,6 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Fr
 	}
 
 	public function testRedirectTargetLookupForExistingEntry() {
-
 		$property = new DIProperty( 'TestRepositoryRedirectLookup' );
 
 		$semanticData = new SemanticData( new DIWikiPage( __METHOD__, NS_MAIN ) );
@@ -91,7 +88,6 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Fr
 	}
 
 	public function resourceProvider() {
-
 		$provider[] = [
 			Exporter::getInstance()->getSpecialNsResource( 'rdf', 'type' )
 		];

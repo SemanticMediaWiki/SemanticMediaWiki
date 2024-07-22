@@ -100,7 +100,6 @@ class PropertyValueParser implements ValueParser {
 	 * @return array
 	 */
 	public function parse( $userValue ) {
-
 		$this->errors = [];
 
 		// #1727 <Foo> or <Foo-<Bar> are not permitted but
@@ -117,7 +116,6 @@ class PropertyValueParser implements ValueParser {
 	}
 
 	private function hasValidCharacters( $value ) {
-
 		if ( trim( $value ) === '' ) {
 			$this->errors[] = [ 'smw_emptystring' ];
 			return false;
@@ -161,7 +159,6 @@ class PropertyValueParser implements ValueParser {
 	}
 
 	private function getNormalizedValueFrom( $value ) {
-
 		$inverse = false;
 		$capitalizedName = '';
 		$value = (string)$value;
@@ -188,7 +185,6 @@ class PropertyValueParser implements ValueParser {
 	}
 
 	private function doNormalize( $text, $isCapitalLinks ) {
-
 		$text = trim( $text );
 
 		if ( $isCapitalLinks ) {

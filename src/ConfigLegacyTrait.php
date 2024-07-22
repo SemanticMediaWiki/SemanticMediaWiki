@@ -34,7 +34,6 @@ trait ConfigLegacyTrait {
 	 * with the new mapping to this section.
 	 */
 	private static function setLegacyMappings( &$configuration ) {
-
 		if ( isset( $GLOBALS['smwgAdminRefreshStore'] ) && $GLOBALS['smwgAdminRefreshStore'] === false ) {
 			$configuration['smwgAdminFeatures'] = $configuration['smwgAdminFeatures'] & ~SMW_ADM_REFRESH;
 		}
@@ -224,7 +223,6 @@ trait ConfigLegacyTrait {
 	 * section.
 	 */
 	private static function fillDeprecationNotices() {
-
 		$jobQueueWatchlist = [];
 
 		// FIXME Remove with 3.1

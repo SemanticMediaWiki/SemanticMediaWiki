@@ -28,7 +28,6 @@ class DescriptionInterpreterFactory {
 	 * @return DispatchingDescriptionInterpreter
 	 */
 	public function newDispatchingDescriptionInterpreter( ConditionBuilder $conditionBuilder ) {
-
 		$dispatchingDescriptionInterpreter = new DispatchingDescriptionInterpreter();
 
 		$dispatchingDescriptionInterpreter->addDefaultInterpreter(

@@ -16,7 +16,6 @@ use SMW\Utils\TemplateEngine;
 class TemplateEngineRoundTripTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRoundTrip() {
-
 		$contents = '<div>{{abc}}</div><span>{{#ABC}}</span>';
 		$tempFile = new TempFile();
 
@@ -44,7 +43,6 @@ class TemplateEngineRoundTripTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRoundTrip_FileWithExtraSlash() {
-
 		$contents = '{{abc}}-{{#ABC}}-{{abc}}';
 		$tempFile = new TempFile();
 

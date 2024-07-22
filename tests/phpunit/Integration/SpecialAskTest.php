@@ -21,7 +21,7 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 	private $oldBodyText;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment(
@@ -31,7 +31,7 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -42,7 +42,6 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 	 * @param $skipFUSEKI
 	 */
 	public function testProducesWellformedHtml( $params, $skipFUSEKI ) {
-
 		$instance = new RepositoryConnectionProvider( 'fuSEKi' );
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector',

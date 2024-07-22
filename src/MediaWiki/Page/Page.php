@@ -61,7 +61,6 @@ abstract class Page extends Article {
 	 * @see Article::view
 	 */
 	public function view() {
-
 		$outputPage = $this->getContext()->getOutput();
 		$outputPage->addModuleStyles( 'ext.smw.page.styles' );
 
@@ -114,7 +113,6 @@ abstract class Page extends Article {
 	 * @return mixed
 	 */
 	public function getOption( $key ) {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -129,7 +127,6 @@ abstract class Page extends Article {
 	 * @param mixed $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -177,7 +174,6 @@ abstract class Page extends Article {
 	 * Main method for adding all additional HTML to the output stream.
 	 */
 	protected function showList() {
-
 		$outputPage = $this->getContext()->getOutput();
 		$request = $this->getContext()->getRequest();
 

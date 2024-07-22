@@ -78,8 +78,7 @@ class TreeBuilder {
 	 *
 	 * @return []
 	 */
-	public function getHierarchyList( array $subjects, string $type ) : array {
-
+	public function getHierarchyList( array $subjects, string $type ): array {
 		if ( $subjects === []) {
 			return [];
 		}
@@ -130,7 +129,6 @@ class TreeBuilder {
 	 * @param string $type
 	 */
 	public function buildFrom( array $subjects, string $type ) {
-
 		$hierarchyList = $this->getHierarchyList(
 			$subjects,
 			$type
@@ -167,7 +165,6 @@ class TreeBuilder {
 	}
 
 	public function hasNode( $id ) {
-
 		if ( $this->nodes === [] || $this->nodes === null ) {
 			return false;
 		}
@@ -186,7 +183,6 @@ class TreeBuilder {
 	}
 
 	public function getNode( $id ) {
-
 		if ( isset( $this->nodes[$id] ) ) {
 			return $this->nodes[$id];
 		}
@@ -199,7 +195,6 @@ class TreeBuilder {
 	}
 
 	public function getTree() {
-
 		$text = '';
 
 		if ( $this->nodes === [] || $this->nodes === null ) {
@@ -226,7 +221,6 @@ class TreeBuilder {
 			}
 
 			public function hasNode( $id ) {
-
 				if ( isset( $this->children[$id] ) ) {
 					return $this->children[$id];
 				}
@@ -241,7 +235,6 @@ class TreeBuilder {
 			}
 
 			public function getNode( $id ) {
-
 				if ( isset( $this->children[$id] ) ) {
 					return $this->children[$id];
 				}
@@ -258,7 +251,6 @@ class TreeBuilder {
 			}
 
 			public function getString() {
-
 				if ( is_array( $this->content ) ) {
 					$text = implode('', $this->content );
 				} else {

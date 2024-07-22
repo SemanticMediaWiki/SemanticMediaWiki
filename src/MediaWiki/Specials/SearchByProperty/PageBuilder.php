@@ -71,7 +71,6 @@ class PageBuilder {
 	 * @return string
 	 */
 	public function getHtml() {
-
 		$this->pageRequestOptions->initialize();
 		$this->messageBuilder = $this->htmlFormRenderer->getMessageBuilder();
 
@@ -105,7 +104,6 @@ class PageBuilder {
 	}
 
 	private function getHtmlForm( $resultMessage, $resultCount ) {
-
 		// Precaution to avoid any inline breakage caused by a div element
 		// within a paragraph (e.g Highlighter content)
 		$resultMessage = str_replace( 'div', 'span', $resultMessage );
@@ -138,7 +136,6 @@ class PageBuilder {
 	}
 
 	private function getResultHtml() {
-
 		$resultList = '';
 		$resultMessage = '';
 
@@ -189,7 +186,6 @@ class PageBuilder {
 	}
 
 	private function getNearbyResults( $exactResults, $exactCount ) {
-
 		$resultList = '';
 
 		$greaterResults = $this->queryResultLookup->doQueryForNearbyResults(
@@ -263,7 +259,6 @@ class PageBuilder {
 	 * @return string  HTML with the bullet list, including header
 	 */
 	private function makeResultList( $results, $number, $first, $highlight = false ) {
-
 		if ( $number > 0 ) {
 			$results = $first ?
 				array_slice( $results, 0, $number ) :
@@ -334,7 +329,6 @@ class PageBuilder {
 	}
 
 	private function canShowSearchByPropertyLink( DataValue $dataValue ) {
-
 		$dataTypeClass = DataTypeRegistry::getInstance()->getDataTypeClassById(
 			$dataValue->getTypeID()
 		);
@@ -343,7 +337,6 @@ class PageBuilder {
 	}
 
 	private function tryToFindAtLeastOnePropertyTableReferenceFor( DIProperty $property ) {
-
 		$resultList = '';
 		$resultMessage = '';
 		$resultCount = 0;

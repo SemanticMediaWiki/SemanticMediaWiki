@@ -174,7 +174,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * Returns the HTML necessary for getting information about the
 	 * "connecting property" within the Page Schemas 'editschema' page.
 	 */
-	public static function getTemplateEditingHTML( $psTemplate) {
+	public static function getTemplateEditingHTML( $psTemplate ) {
 		// Only display this if the Semantic Internal Objects extension
 		// isn't displaying something similar.
 		if ( class_exists( 'SIOPageSchemas' ) ) {
@@ -201,7 +201,6 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * semantic property within the Page Schemas 'editschema' page.
 	 */
 	public static function getFieldEditingHTML( $psTemplateField ) {
-
 		$smwgContLang = smwfContLang();
 
 		$prop_array = [];
@@ -310,7 +309,6 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * Creates the text for a property page.
 	 */
 	static public function createPropertyText( $propertyType, $allowedValues, $linkedForm = null ) {
-
 		$smwgContLang = smwfContLang();
 
 		$propLabels = $smwgContLang->getPropertyLabels();

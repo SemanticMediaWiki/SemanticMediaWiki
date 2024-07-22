@@ -20,7 +20,6 @@ use User;
 class ParserFactory {
 
 	public static function create( $title, User $user = null ) {
-
 		if ( is_string( $title ) ) {
 			$title = Title::newFromText( $title );
 		}
@@ -33,7 +32,6 @@ class ParserFactory {
 	}
 
 	public static function newFromTitle( Title $title, User $user = null ) {
-
 		if ( $user === null ) {
 			$user = new MockSuperUser();
 		}

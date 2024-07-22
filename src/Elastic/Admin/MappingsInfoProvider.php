@@ -32,7 +32,6 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-mappings-title' ),
 			[ 'action' => $this->getTask() ]
@@ -56,7 +55,6 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle( 'Elasticsearch mappings' );
 
 		$this->outputFormatter->addParentLink(
@@ -68,7 +66,6 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	}
 
 	private function outputInfo() {
-
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
 		$mappings = [
@@ -141,7 +138,6 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	}
 
 	private function getSummary( $mappings ) {
-
 		$summary = [
 			ElasticClient::TYPE_DATA => [
 				'fields' => [
@@ -169,7 +165,6 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	}
 
 	private function countFields( $mapping, $type, &$count ) {
-
 		foreach ( $mapping['properties'] as $k => $val ) {
 			foreach ( $val as $p => $v ) {
 				if ( $p === 'properties' ) {

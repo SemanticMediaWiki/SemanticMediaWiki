@@ -80,7 +80,6 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	 * @param SemanticData $semanticData
 	 */
 	public function pushAnnotationsTo( SemanticData $semanticData ) {
-
 		$this->addAnnotation();
 
 		$semanticData->addPropertyObjectValue(

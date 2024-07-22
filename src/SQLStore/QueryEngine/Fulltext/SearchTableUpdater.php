@@ -80,7 +80,6 @@ class SearchTableUpdater {
 	 * @return boolean
 	 */
 	public function optimize() {
-
 		if ( !$this->connection->isType( 'mysql' ) ) {
 			return false;
 		}
@@ -102,7 +101,6 @@ class SearchTableUpdater {
 	 * @return boolean
 	 */
 	public function exists( $sid, $pid ) {
-
 		$row = $this->connection->selectRow(
 			$this->searchTable->getTableName(),
 			[ 's_id' ],
@@ -150,7 +148,6 @@ class SearchTableUpdater {
 	 * @param string $text
 	 */
 	public function update( $sid, $pid, $text ) {
-
 		if ( trim( $text ) === '' || ( $indexableText = $this->textSanitizer->sanitize( $text ) ) === '' ) {
 			return $this->delete( $sid, $pid );
 		}

@@ -25,8 +25,7 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	private $entityCache;
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -55,7 +54,6 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ReplicationInfoProvider::class,
 			new ReplicationInfoProvider( $this->outputFormatter, $this->replicationCheck, $this->entityCache )
@@ -63,7 +61,6 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTask() {
-
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
 			$this->replicationCheck,
@@ -82,7 +79,6 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
 			$this->replicationCheck,
@@ -96,7 +92,6 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesHandleRequest_NoFailures() {
-
 		$this->outputFormatter->expects( $this->once() )
 			->method( 'addParentLink' )
 			->with(	$this->equalTo( [ 'action' => 'elastic' ] ) );
@@ -116,7 +111,6 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequest_WithFailuresOnPages() {
-
 		$ns = NS_FILE;
 
 		$this->replicationCheck->expects( $this->once() )

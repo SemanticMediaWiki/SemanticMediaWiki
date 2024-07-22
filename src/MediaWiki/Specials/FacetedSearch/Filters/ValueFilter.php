@@ -74,8 +74,7 @@ class ValueFilter {
 	 *
 	 * @return array
 	 */
-	public function create( UrlArgs $urlArgs, array $valueFilters ) : array {
-
+	public function create( UrlArgs $urlArgs, array $valueFilters ): array {
 		$cards = [];
 		$filters = $valueFilters['filter'] ?? [];
 
@@ -114,7 +113,6 @@ class ValueFilter {
 	}
 
 	private function newValueFilter( $property ) {
-
 		$prop = DIProperty::newFromUserLabel(
 			$property
 		);
@@ -178,7 +176,6 @@ class ValueFilter {
 	}
 
 	private function getType( $property ) {
-
 		$type = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyValueType()
 		);

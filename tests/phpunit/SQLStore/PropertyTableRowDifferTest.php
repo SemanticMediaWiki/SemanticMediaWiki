@@ -23,8 +23,7 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 	private $propertyTableRowMapper;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->propertyTableRowMapper = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableRowMapper' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -35,7 +34,6 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -47,7 +45,6 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testComputeTableRowDiffForEmptyPropertyTables() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
 
@@ -78,7 +75,6 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChangeOp() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
 
@@ -111,7 +107,6 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChangeOpWithUnknownFixedProperty() {
-
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -168,7 +163,6 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChangeOpWithUnknownFixedProperty_Ghost() {
-
 		$row = [
 			'smw_proptable_hash' => null
 		];

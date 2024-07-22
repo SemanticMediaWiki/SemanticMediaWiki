@@ -24,8 +24,7 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 	private $user;
 	private $stringValidator;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -66,7 +65,6 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ProfileForm::class,
 			new ProfileForm( $this->store, $this->specialSearch )
@@ -74,14 +72,12 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsValidProfile() {
-
 		$this->assertFalse(
 			ProfileForm::isValidProfile( 'foo' )
 		);
 	}
 
 	public function testAddProfile() {
-
 		$profile = [];
 		$options = [
 			'default_namespaces' => []
@@ -96,7 +92,6 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildForm() {
-
 		$form = '';
 		$opts = [];
 
@@ -149,7 +144,6 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPrefixMap() {
-
 		$data = [
 			'term_parser' => [
 				'prefix' => [

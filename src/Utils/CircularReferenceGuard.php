@@ -49,7 +49,6 @@ class CircularReferenceGuard {
 	 * @param string $hash
 	 */
 	public function mark( $hash ) {
-
 		if ( !isset( self::$circularRefGuard[$this->namespace][$hash] ) ) {
 			self::$circularRefGuard[$this->namespace][$hash] = 0;
 		}
@@ -63,7 +62,6 @@ class CircularReferenceGuard {
 	 * @param string $hash
 	 */
 	public function unmark( $hash ) {
-
 		if ( isset( self::$circularRefGuard[$this->namespace][$hash] ) && self::$circularRefGuard[$this->namespace][$hash] > 0 ) {
 			return self::$circularRefGuard[$this->namespace][$hash]--;
 		}
@@ -90,7 +88,6 @@ class CircularReferenceGuard {
 	 * @return integer
 	 */
 	public function get( $hash ) {
-
 		if ( isset( self::$circularRefGuard[$this->namespace][$hash] ) ) {
 			return self::$circularRefGuard[$this->namespace][$hash];
 		}

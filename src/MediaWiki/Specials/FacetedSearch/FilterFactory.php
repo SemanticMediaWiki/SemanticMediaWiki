@@ -55,7 +55,7 @@ class FilterFactory {
 	 *
 	 * @return PropertyFilter
 	 */
-	public function newPropertyFilter( array $params ) : PropertyFilter {
+	public function newPropertyFilter( array $params ): PropertyFilter {
 		return new PropertyFilter( $this->templateEngine, $this->treeBuilder, $params );
 	}
 
@@ -66,7 +66,7 @@ class FilterFactory {
 	 *
 	 * @return CategoryFilter
 	 */
-	public function newCategoryFilter( array $params ) : CategoryFilter {
+	public function newCategoryFilter( array $params ): CategoryFilter {
 		return new CategoryFilter( $this->templateEngine, $this->treeBuilder, $params );
 	}
 
@@ -78,8 +78,7 @@ class FilterFactory {
 	 *
 	 * @return ValueFilter
 	 */
-	public function newValueFilter( array $params ) : ValueFilter {
-
+	public function newValueFilter( array $params ): ValueFilter {
 		$valueFilterFactory = new ValueFilterFactory(
 			$this->templateEngine
 		);

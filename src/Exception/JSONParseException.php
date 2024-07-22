@@ -25,7 +25,7 @@ class JSONParseException extends RuntimeException {
 	/**
 	 * @since 3.2
 	 */
-	public function getTidyMessage() : string {
+	public function getTidyMessage(): string {
 		return str_replace( "\n", '', $this->getMessage() );
 	}
 
@@ -40,7 +40,6 @@ class JSONParseException extends RuntimeException {
 	 * JSON.
 	 */
 	protected function getParseError( $json ) {
-
 		$parser = new JsonParser();
 
 		try {

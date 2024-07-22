@@ -130,7 +130,6 @@ class HtmlColumnListRenderer {
 	 * @return HtmlColumnListRenderer
 	 */
 	public function setListType( $listType, $olType = '' ) {
-
 		if ( in_array( $listType, [ 'ul', 'ol' ] ) ) {
 			$this->listType = $listType;
 		}
@@ -166,7 +165,6 @@ class HtmlColumnListRenderer {
 	 * @return HtmlColumnListRenderer
 	 */
 	public function addContentsByNoIndex( array $contentsByNoIndex ) {
-
 		$contentsByEmptyIndex[''] = [];
 
 		foreach ( $contentsByNoIndex as $value ) {
@@ -195,7 +193,6 @@ class HtmlColumnListRenderer {
 	 * @return string
 	 */
 	public function getHtml() {
-
 		$result = '';
 		$usedColumnCloser = false;
 		$this->numRows = 0;
@@ -240,7 +237,6 @@ class HtmlColumnListRenderer {
 	}
 
 	private function makeList( $key, $listContinuesAbbrev, $items, &$usedColumnCloser ) {
-
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';

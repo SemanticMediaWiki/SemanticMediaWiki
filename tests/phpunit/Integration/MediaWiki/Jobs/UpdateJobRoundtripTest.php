@@ -34,7 +34,7 @@ class UpdateJobRoundtripTest extends DatabaseTestCase {
 	private $jobQueueRunner;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -69,8 +69,7 @@ class UpdateJobRoundtripTest extends DatabaseTestCase {
 		$this->jobQueueRunner->deleteAllJobs();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$this->pageDeleter->doDeletePoolOfPages(
 			$this->deletePoolOfPages
 		);
@@ -82,7 +81,6 @@ class UpdateJobRoundtripTest extends DatabaseTestCase {
 	}
 
 	public function testPageMoveTriggersUpdateJob() {
-
 		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
 		$newTitle = Title::newFromText( __METHOD__ . '-new' );
 
@@ -105,7 +103,6 @@ class UpdateJobRoundtripTest extends DatabaseTestCase {
 	}
 
 	public function testSQLStoreRefreshDataTriggersUpdateJob() {
-
 		$index = 1; //pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
@@ -116,7 +113,6 @@ class UpdateJobRoundtripTest extends DatabaseTestCase {
 	 * @dataProvider jobFactoryProvider
 	 */
 	public function testJobFactory( $jobName, $type ) {
-
 		$job = Job::factory(
 			$jobName,
 			Title::newFromText( __METHOD__ . $jobName ),
@@ -127,7 +123,6 @@ class UpdateJobRoundtripTest extends DatabaseTestCase {
 	}
 
 	public function jobFactoryProvider() {
-
 		$provider = [];
 
 		$provider[] = [ 'SMW\UpdateJob', 'smw.update' ];
@@ -142,7 +137,6 @@ class UpdateJobRoundtripTest extends DatabaseTestCase {
 	}
 
 	public function titleProvider() {
-
 		$provider = [];
 
 		// #0 Simple property reference
@@ -171,7 +165,6 @@ class UpdateJobRoundtripTest extends DatabaseTestCase {
 	}
 
 	protected function assertJob( $type, Job &$job = null ) {
-
 		if ( $job === null ) {
 			$job = $this->jobQueueRunner->pop_type( $type );
 		}
@@ -190,7 +183,6 @@ class UpdateJobRoundtripTest extends DatabaseTestCase {
 	 * Issue 617
 	 */
 	public function testNoInfiniteUpdateJobsForCircularRedirect() {
-
 		$this->skipTestForMediaWikiVersionLowerThan( '1.20' );
 
 		$this->pageCreator

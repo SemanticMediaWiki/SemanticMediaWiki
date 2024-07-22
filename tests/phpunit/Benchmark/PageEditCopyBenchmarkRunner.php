@@ -86,7 +86,6 @@ class PageEditCopyBenchmarkRunner {
 	 * @param array $case
 	 */
 	public function run( array $case ) {
-
 		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
@@ -133,7 +132,6 @@ class PageEditCopyBenchmarkRunner {
 	}
 
 	private function doEdit( $editTitle, array $case ) {
-
 		$copyText = $this->pageReader->getContentAsText( $editTitle );
 		$this->benchmarker->clear();
 

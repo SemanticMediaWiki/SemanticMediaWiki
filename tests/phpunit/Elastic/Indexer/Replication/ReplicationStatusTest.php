@@ -21,15 +21,13 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ReplicationStatus::class,
 			new ReplicationStatus( $this->connection )
@@ -37,7 +35,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_OnUnknownKeyThrowsException() {
-
 		$instance = new ReplicationStatus(
 			$this->connection
 		);
@@ -47,7 +44,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_refresh_interval() {
-
 		$settings = [
 			'Foo' => [
 				'settings' => [
@@ -73,7 +69,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_exists() {
-
 		$params = [
 			'index' => 'FOO',
 			'id' => 1001
@@ -98,7 +93,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_last_update() {
-
 		$res = [
 			'hits' => [
 				'hits' => [
@@ -128,7 +122,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAssociatedRev() {
-
 		$doc = [
 			'_source' => [
 				'subject' =>[
@@ -167,7 +160,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAssociatedRev_NotExists() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
 			->will( $this->returnValue( false ) );
@@ -183,7 +175,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAssociatedRev_NoMatch() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
@@ -199,7 +190,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_associated_revision() {
-
 		$doc = [
 			'_source' => [
 				'subject' =>[
@@ -238,7 +228,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_modification_date_associated_revision() {
-
 		$doc = [
 			'_source' => [
 				'subject' => [
@@ -283,7 +272,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_modification_date_associated_revision_not_exists() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
 			->will( $this->returnValue( false ) );
@@ -302,7 +290,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_modification_date_associated_revision_no_match() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
@@ -321,7 +308,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetModificationDate_NoMatch() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
@@ -337,7 +323,6 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetModificationDate() {
-
 		$doc = [
 			'_source' => [
 				'subject' => [

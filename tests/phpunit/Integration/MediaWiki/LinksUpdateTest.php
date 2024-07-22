@@ -28,7 +28,7 @@ class LinksUpdateTest extends DatabaseTestCase {
 	private $pageCreator;
 	private $revisionGuard;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
@@ -47,7 +47,7 @@ class LinksUpdateTest extends DatabaseTestCase {
 		$this->revisionGuard = ApplicationFactory::getInstance()->singleton( 'RevisionGuard' );
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
@@ -57,7 +57,6 @@ class LinksUpdateTest extends DatabaseTestCase {
 	}
 
 	public function testUpdateToSetPredefinedAnnotations() {
-
 		$this->pageCreator
 			->createPage( $this->title );
 
@@ -84,7 +83,6 @@ class LinksUpdateTest extends DatabaseTestCase {
 	 * @depends testUpdateToSetPredefinedAnnotations
 	 */
 	public function testDoUpdateUsingUserdefinedAnnotations() {
-
 		$this->pageCreator
 			->createPage( $this->title )
 			->doEdit( '[[HasFirstLinksUpdatetest::testDoUpdate]] [[HasSecondLinksUpdatetest::testDoUpdate]]' );
@@ -150,7 +148,6 @@ class LinksUpdateTest extends DatabaseTestCase {
 	 * @depends testDoUpdateUsingUserdefinedAnnotations
 	 */
 	public function testDoUpdateUsingNoAnnotations( $firstRunRevision ) {
-
 		$this->pageCreator
 			->createPage( $this->title )
 			->doEdit( 'no annotation' );
@@ -189,7 +186,6 @@ class LinksUpdateTest extends DatabaseTestCase {
 	 * @depends testDoUpdateUsingNoAnnotations
 	 */
 	public function testReparseFirstRevision( $firstRunRevision ) {
-
 		$contentParser = $this->applicationFactory->newContentParser( $this->title );
 		$contentParser->setRevision( $firstRunRevision );
 		$contentParser->parse();

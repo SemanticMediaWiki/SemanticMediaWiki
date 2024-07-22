@@ -28,7 +28,6 @@ class AppendIterator extends \AppendIterator implements Countable {
 	 * @param Traversable|array $iterator
 	 */
 	public function add( $iterable ) {
-
 		if ( is_array( $iterable ) ) {
 			$iterable = new ArrayIterator( $iterable );
 		}
@@ -56,7 +55,6 @@ class AppendIterator extends \AppendIterator implements Countable {
 	 * {@inheritDoc}
 	 */
 	public function append( Iterator $iterable ): void {
-
 		if ( $iterable instanceof Countable ) {
 			$this->count += $iterable->count();
 		}

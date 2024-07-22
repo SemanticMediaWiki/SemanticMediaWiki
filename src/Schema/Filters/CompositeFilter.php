@@ -50,7 +50,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasMatches() : bool {
+	public function hasMatches(): bool {
 		return $this->matches !== [];
 	}
 
@@ -59,7 +59,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMatches() : iterable {
+	public function getMatches(): iterable {
 		return $this->matches;
 	}
 
@@ -78,16 +78,14 @@ class CompositeFilter implements SchemaFilter {
 	 * {@inheritDoc}
 	 */
 	public function sortMatches( $type, $order = 'desc' ) {
-
 		if ( $this->matches === [] ) {
 			return;
 		}
 
 		$order = strtolower( $order );
 
-		if ( $type === self:: SORT_FILTER_SCORE ) {
-			usort( $this->matches, function( $a, $b ) use ( $order ) {
-
+		if ( $type === self::SORT_FILTER_SCORE ) {
+			usort( $this->matches, function ( $a, $b ) use ( $order ) {
 				if ( $order === 'desc' ) {
 					return $b->filterScore <=> $a->filterScore;
 				}
@@ -103,7 +101,6 @@ class CompositeFilter implements SchemaFilter {
 	 * {@inheritDoc}
 	 */
 	public function filter( iterable $compartments ) {
-
 		$nodeFilter = null;
 
 		foreach ( $this->filters as $filter ) {

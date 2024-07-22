@@ -50,7 +50,6 @@ class RevisionGuard {
 	 * @return boolean
 	 */
 	public function isSkippableUpdate( Title $title, &$latestRevID = null ) {
-
 		// MW 1.34+
 		// https://github.com/wikimedia/mediawiki/commit/b65e77a385c7423ce03a4d21c141d96c28291a60
 		if ( defined( 'Title::READ_LATEST' ) && Title::GAID_FOR_UPDATE == 512 ) {
@@ -80,7 +79,6 @@ class RevisionGuard {
 	 * @return integer
 	 */
 	public function getLatestRevID( Title $title ) {
-
 		// MW 1.34+
 		// https://github.com/wikimedia/mediawiki/commit/b65e77a385c7423ce03a4d21c141d96c28291a60
 		if ( defined( 'Title::READ_LATEST' ) && Title::GAID_FOR_UPDATE == 512 ) {
@@ -108,8 +106,7 @@ class RevisionGuard {
 	 *
 	 * @return ?RevisionRecord
 	 */
-	public function newRevisionFromPage( WikiPage $page ) : ?RevisionRecord {
-
+	public function newRevisionFromPage( WikiPage $page ): ?RevisionRecord {
 		return $page->getRevisionRecord();
 	}
 
@@ -123,7 +120,6 @@ class RevisionGuard {
 	 * @return ?RevisionRecord
 	 */
 	public function newRevisionFromTitle( Title $title, $revId = 0, $flags = 0 ): ?RevisionRecord {
-
 		return $this->revisionLookup->getRevisionByTitle(
 			$title,
 			$revId,
@@ -139,8 +135,7 @@ class RevisionGuard {
 	 *
 	 * @return ?RevisionRecord
 	 */
-	public function getRevision( Title $title, ?RevisionRecord $revision ) : ?RevisionRecord {
-
+	public function getRevision( Title $title, ?RevisionRecord $revision ): ?RevisionRecord {
 		if ( $revision === null ) {
 			$revision = $this->newRevisionFromTitle( $title, false, IDBAccessObject::READ_NORMAL );
 		}
@@ -165,7 +160,6 @@ class RevisionGuard {
 	 * @return File|null
 	 */
 	public function getFile( Title $title, File $file = null ) {
-
 		$origFile = $file;
 
 		$this->hookDispatcher->onChangeFile( $title, $file );

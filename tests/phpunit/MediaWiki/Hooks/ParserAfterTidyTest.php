@@ -31,7 +31,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 	private $revisionGuard;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$settings = [
@@ -77,13 +77,12 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ParserAfterTidy::class,
 			new ParserAfterTidy( $this->parser, $this->namespaceExaminer, $this->cache )
@@ -91,7 +90,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsNotReady_DoNothing() {
-
 		$this->parser->expects( $this->never() )
 			->method( 'getTitle' );
 
@@ -110,7 +108,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNotEnabledNamespace() {
-
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( false ) );
@@ -145,7 +142,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function newMockCache( $id, $containsStatus, $fetchStatus ) {
-
 		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey( $id );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -169,7 +165,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleDataProvider
 	 */
 	public function testProcess( $parameters ) {
-
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( true ) );
@@ -248,7 +243,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanPerformOnExternalEvent() {
-
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -307,7 +301,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSemanticDataParserOuputUpdateIntegration() {
-
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( true ) );
@@ -369,7 +362,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleDataProvider() {
-
 		#0 Runs store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()

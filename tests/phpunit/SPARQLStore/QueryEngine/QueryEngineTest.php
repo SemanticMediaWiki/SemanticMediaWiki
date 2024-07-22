@@ -22,7 +22,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -42,7 +41,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmptyGetQueryResultWhereQueryContainsErrors() {
-
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -81,7 +79,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConditionBuilderReturnsErrors() {
-
 		$condition = $this->getMockForAbstractClass( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' );
 
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
@@ -134,7 +131,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmptyGetQueryResultWhereQueryModeIsNone() {
-
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -169,7 +165,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSorkeyThrowsException() {
-
 		$sortKeys = [ 'Foo', 'Bar' ];
 
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
@@ -218,7 +213,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testtestGetQueryResultForDebugQueryMode() {
-
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -264,7 +258,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSuccessCountQueryResultForMockedCompostion() {
-
 		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -317,7 +310,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInstanceQueryResultForMockedCompostion() {
-
 		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -371,7 +363,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetImmediateEmptyQueryResultForLimitLessThanOne() {
-
 		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -410,7 +401,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInstanceQueryResultForMockedSingletonCompostion() {
-
 		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -472,7 +462,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDebugQueryResultForMockedCompostion() {
-
 		// PHPUnit 3.7 goes drumming when trying to add a method on an
 		// interface hence the use of the concrete class
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )

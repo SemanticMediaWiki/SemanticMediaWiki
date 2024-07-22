@@ -17,7 +17,6 @@ use SMW\Maintenance\ConceptCacheRebuilder;
 class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockForAbstractClass( '\SMW\Store' );
 
 		$settings = $this->getMockBuilder( '\SMW\Settings' )
@@ -34,7 +33,6 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @depends testCanConstruct
 	 */
 	public function testRebuildWithoutOptionsAndActions() {
-
 		$store = $this->getMockForAbstractClass( '\SMW\Store' );
 
 		$settings = $this->getMockBuilder( '\SMW\Settings' )
@@ -53,7 +51,6 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider actionProvider
 	 */
 	public function testRebuildFullConceptWithoutRangeSelectionOnMockStore( $action ) {
-
 		$concept = new DIConcept( 'Foo', '', '', '', '' );
 
 		$concept->setCacheStatus( 'full' );
@@ -73,7 +70,6 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider actionProvider
 	 */
 	public function testRebuildEmptyConceptWithoutRangeSelectionOnMockStore( $action ) {
-
 		$concept = new DIConcept( 'Foo', '', '', '', '' );
 		$concept->setCacheStatus( 'empty' );
 
@@ -90,7 +86,6 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider actionProvider
 	 */
 	public function testRebuildFullConceptWithRangeSelectionOnMockStore( $action ) {
-
 		$concept = new DIConcept( 'Foo', '', '', '', '' );
 
 		$concept->setCacheStatus( 'full' );
@@ -112,7 +107,6 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider actionProvider
 	 */
 	public function testRebuildSingleEmptyConceptWithRangeSelectionOnMockStore( $action ) {
-
 		$concept = new DIConcept( 'Foo', '', '', '', '' );
 		$concept->setCacheStatus( 'empty' );
 
@@ -131,7 +125,6 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider actionProvider
 	 */
 	public function testRebuildSingleFullConceptOnMockStore( $action ) {
-
 		$concept = new DIConcept( 'Foo', '', '', '', '' );
 
 		$concept->setCacheStatus( 'full' );
@@ -153,7 +146,6 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider actionProvider
 	 */
 	public function testRebuildWithNullConceptOnMockStore( $action ) {
-
 		$instance = $this->acquireInstanceFor( null );
 
 		$instance->setParameters( [
@@ -165,7 +157,6 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function acquireInstanceFor( $concept = null ) {
-
 		$expectedToRun = $concept !== null ? $this->any() : $this->never();
 		$refreshConceptCacheReturn = $concept !== null ? $concept->getConceptQuery() : null;
 

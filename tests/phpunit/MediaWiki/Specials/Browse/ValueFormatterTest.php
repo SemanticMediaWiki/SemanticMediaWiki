@@ -22,7 +22,7 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -34,13 +34,12 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testGetFormattedSubject() {
-
 		$dataItem = \SMW\DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
@@ -63,7 +62,6 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFormattedValue() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -83,7 +81,6 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyLabel() {
-
 		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();

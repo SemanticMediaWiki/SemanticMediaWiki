@@ -17,15 +17,13 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 	private $client;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Bulk::class,
 			new Bulk( $this->client )
@@ -33,7 +31,6 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJsonSerialize() {
-
 		$instance = new Bulk( $this->client );
 
 		$this->assertEquals(
@@ -43,7 +40,6 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsEmpty() {
-
 		$instance = new Bulk( $this->client );
 		$instance->clear();
 
@@ -53,7 +49,6 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
 		$expected = [
 			'body' => [ [ 'delete' => [ '_id' => 42, '_head_foo' => '_head_bar'] ] ]
 		];
@@ -85,7 +80,6 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIndex() {
-
 		$expected = [
 			'body' => [ [ 'index' => [ '_id' => 42, '_head_foo' => '_head_bar' ] ], [ '_source' ] ]
 		];
@@ -112,7 +106,6 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpsert() {
-
 		$expected = [
 			'body' => [
 				[ 'update' => [ '_id' => 42, '_head_foo' => '_head_bar' ] ],
@@ -142,7 +135,6 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInfuseDocument_Insert() {
-
 		$subDocument = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -201,7 +193,6 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInfuseDocument_Delete_Index() {
-
 		$subDocument = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -261,7 +252,6 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInfuseDocument_Delete_Upsert_Index() {
-
 		$subDocument = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
 			->disableOriginalConstructor()
 			->getMock();

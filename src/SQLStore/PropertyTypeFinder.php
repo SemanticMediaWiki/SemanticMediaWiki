@@ -52,7 +52,6 @@ class PropertyTypeFinder {
 	 * @return integer
 	 */
 	public function countByType( $type ) {
-
 		if ( strpos( 'http://semantic-mediawiki.org/swivt/1.0#', $type ) === false ) {
 			$type = 'http://semantic-mediawiki.org/swivt/1.0#' . $type;
 		}
@@ -78,7 +77,6 @@ class PropertyTypeFinder {
 	 * @throws RuntimeException
 	 */
 	public function findTypeID( DIProperty $property ) {
-
 		try {
 			$row = $this->connection->selectRow(
 				SQLStore::ID_TABLE,

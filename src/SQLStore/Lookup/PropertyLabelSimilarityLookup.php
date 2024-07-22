@@ -79,7 +79,6 @@ class PropertyLabelSimilarityLookup {
 	 * @param string $exemptionProperty
 	 */
 	public function setExemptionProperty( $exemptionProperty ) {
-
 		if ( $exemptionProperty === '' ) {
 			return;
 		}
@@ -128,7 +127,6 @@ class PropertyLabelSimilarityLookup {
 	 * @return array
 	 */
 	public function compareAndFindLabels( RequestOptions $requestOptions = null ) {
-
 		$withType = false;
 		$propertyList = $this->getPropertyList( $requestOptions );
 
@@ -151,7 +149,6 @@ class PropertyLabelSimilarityLookup {
 	}
 
 	private function matchLabels( $propertyList, $withType ) {
-
 		$similarities = [];
 		$lookupComplete = [];
 
@@ -202,7 +199,6 @@ class PropertyLabelSimilarityLookup {
 	 * @return boolean
 	 */
 	private function isExempted( DIProperty $first, DIProperty $second ) {
-
 		if ( $this->exemptionProperty === null ) {
 			return false;
 		}
@@ -233,7 +229,6 @@ class PropertyLabelSimilarityLookup {
 	}
 
 	private function getHash( DIProperty $first, DIProperty $second ) {
-
 		$hashing = [];
 		$hashing[] = $first->getKey();
 		$hashing[] = $second->getKey();
@@ -244,7 +239,6 @@ class PropertyLabelSimilarityLookup {
 	}
 
 	private function getSummary( DIProperty $first, DIProperty $second, $percent, $withType ) {
-
 		$summary = [];
 
 		if ( $withType ) {
@@ -272,7 +266,6 @@ class PropertyLabelSimilarityLookup {
 	}
 
 	private function getPropertyList( RequestOptions $requestOptions = null ) {
-
 		$propertyList = [];
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong

@@ -28,7 +28,6 @@ class ResultLimiter {
 	 * @param RequestOptions $requestOptions
 	 */
 	public function calcSize( RequestOptions $requestOptions ) {
-
 		$this->size = -1;
 		$this->counter = [];
 
@@ -59,7 +58,6 @@ class ResultLimiter {
 	 * @return boolean
 	 */
 	public function canSkip( $id ) {
-
 		if ( $this->size < 0 ) {
 			return false;
 		}

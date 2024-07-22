@@ -57,7 +57,6 @@ class PredefinedProperties {
 	 * @param array $opts
 	 */
 	public function check( array $opts = [] ) {
-
 		// now write actual properties; do that each time, it is cheap enough
 		// and we can update sortkeys by current language
 		$this->messageReporter->reportMessage( "Checking predefined properties ...\n" );
@@ -83,7 +82,6 @@ class PredefinedProperties {
 	}
 
 	private function doUpdate( $property, $id ) {
-
 		$connection = $this->store->getConnection( DB_MASTER );
 
 		// Try to find the ID for a non-fixed predefined property

@@ -28,7 +28,7 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends DatabaseTestCase {
 	private $mwHooksHandler;
 	private $subjects = [];
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
@@ -37,8 +37,7 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends DatabaseTestCase {
 		$this->mwHooksHandler->deregisterListedHooks();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->subjects );
 		$this->mwHooksHandler->restoreListedHooks();
@@ -47,7 +46,6 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testSubjectSortKeySetter() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$subject = $semanticData->getSubject();
@@ -73,7 +71,6 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testDefinedSortKeyTakesPrecedenceOverSubjectSortKey() {
-
 		$semanticData = $this->semanticDataFactory
 			->newEmptySemanticData( __METHOD__ );
 

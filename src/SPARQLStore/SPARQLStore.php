@@ -134,7 +134,6 @@ class SPARQLStore extends Store {
 	 * @since 1.6
 	 */
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
-
 		$oldWikiPage = DIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = DIWikiPage::newFromTitle( $newtitle );
 		$oldExpResource = Exporter::getInstance()->newExpElement( $oldWikiPage );
@@ -185,7 +184,6 @@ class SPARQLStore extends Store {
 	 * @param SemanticData $semanticData
 	 */
 	public function doSparqlDataUpdate( SemanticData $semanticData ) {
-
 		$connection = $this->getConnection( 'sparql' );
 
 		if (
@@ -220,7 +218,6 @@ class SPARQLStore extends Store {
 	 * @param TurtleTriplesBuilder $turtleTriplesBuilder
 	 */
 	private function doSparqlFlatDataUpdate( SemanticData $semanticData, TurtleTriplesBuilder $turtleTriplesBuilder ) {
-
 		$turtleTriplesBuilder->doBuildTriplesFrom( $semanticData );
 
 		if ( !$turtleTriplesBuilder->hasTriples() ) {
@@ -259,7 +256,6 @@ class SPARQLStore extends Store {
 	 * @return boolean
 	 */
 	public function doSparqlDataDelete( DataItem $dataItem ) {
-
 		$extraNamespaces = [];
 
 		$expResource = Exporter::getInstance()->newExpElement( $dataItem );
@@ -288,7 +284,6 @@ class SPARQLStore extends Store {
 	 * @since 1.6
 	 */
 	public function getQueryResult( Query $query ) {
-
 		// Use a fallback QueryEngine in case the QueryEndpoint is inaccessible
 		if ( !$this->hasQueryEndpoint() ) {
 			return $this->baseStore->getQueryResult( $query );
@@ -490,7 +485,6 @@ class SPARQLStore extends Store {
 	 * @return array
 	 */
 	public function getInfo( $type = null ) {
-
 		$respositoryConnetion = $this->getConnection( 'sparql' );
 		$repositoryClient = $respositoryConnetion->getRepositoryClient();
 

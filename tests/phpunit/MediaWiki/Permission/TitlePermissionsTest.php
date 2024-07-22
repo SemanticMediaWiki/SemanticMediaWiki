@@ -19,7 +19,7 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	private $protectionValidator;
 	private $permissionManager;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->protectionValidator = $this->getMockBuilder( '\SMW\Protection\ProtectionValidator' )
@@ -32,7 +32,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TitlePermissions::class,
 			new TitlePermissions( $this->protectionValidator, $this->permissionManager )
@@ -40,7 +39,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGrantPermissionToMainNamespace() {
-
 		$title = Title::newFromText( 'Foo', NS_MAIN );
 
 		$user = $this->getMockBuilder( '\User' )
@@ -65,8 +63,7 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testToReturnFalseOnMwNamespacePermissionCheck( $title, $permission, $action, $expected ) {
-
-		$this->protectionValidator ->expects( $this->any() )
+		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasEditProtection' )
 			->will( $this->returnValue( true ) );
 
@@ -99,7 +96,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoUserPermissionOnNamespaceWithEditPermissionCheck() {
-
 		$editProtectionRight = 'Foo';
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -157,7 +153,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFalseEditProtectionRightToNeverCheckPermissionOnNonMwNamespace() {
-
 		$editProtectionRight = false;
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -195,7 +190,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoUserPermissionOnPropertyNamespaceWithCreateProtectionCheck() {
-
 		$createProtectionRight = 'Foo';
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -238,7 +232,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoUserPermissionOnPropertyNamespaceWithCreateProtectionCheck_TitleExists() {
-
 		$createProtectionRight = 'Foo';
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -281,7 +274,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoUserPermissionOnCategoryNamespaceWithChangePropagationProtectionCheck() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -324,7 +316,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUserPermissionOnCategoryNamespaceWithChangePropagationProtectionCheck() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -365,7 +356,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoUserEditPermissionOnMissingRight_SchemaNamespace() {
-
 		$editProtectionRight = 'Foo';
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -413,7 +403,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEditPermissionOnImportPerformer_SchemaNamespace() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -463,7 +452,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoEditcontentmodelPermissionForAnyUser_SchemaNamespace() {
-
 		$editProtectionRight = 'Foo';
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -511,7 +499,6 @@ class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleProvider() {
-
 		$provider[] = [
 			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',

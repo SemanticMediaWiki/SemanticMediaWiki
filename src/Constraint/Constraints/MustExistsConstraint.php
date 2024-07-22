@@ -50,7 +50,6 @@ class MustExistsConstraint implements Constraint {
 	 * {@inheritDoc}
 	 */
 	public function checkConstraint( array $constraint, $dataValue ) {
-
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -65,7 +64,6 @@ class MustExistsConstraint implements Constraint {
 	}
 
 	private function check( $must_exists, $dataValue ) {
-
 		$dataItem = $dataValue->getDataItem();
 
 		if ( $must_exists === false || $dataItem->getDIType() !== DataItem::TYPE_WIKIPAGE ) {
@@ -80,7 +78,6 @@ class MustExistsConstraint implements Constraint {
 	}
 
 	private function reportError( $dataValue ) {
-
 		$this->hasViolation = true;
 
 		$dataValue->addError(

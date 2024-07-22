@@ -23,7 +23,7 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 	private $querySegmentValidator;
 	private $descriptionFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -47,7 +47,6 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DisjunctionConjunctionInterpreter::class,
 			new DisjunctionConjunctionInterpreter( $this->conditionBuilder )
@@ -58,7 +57,6 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 	 * @dataProvider descriptionProvider
 	 */
 	public function testInterpretDescription( $description, $expected ) {
-
 		$queryEngineFactory = new QueryEngineFactory(
 			$this->store
 		);
@@ -78,7 +76,6 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function descriptionProvider() {
-
 		$descriptionFactory = new DescriptionFactory();
 
 		#0 Disjunction

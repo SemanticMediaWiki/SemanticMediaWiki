@@ -101,7 +101,6 @@ class ChangePropagationNotifier {
 	 * @param DIWikiPage $subject
 	 */
 	public function notify( DIWikiPage $subject ) {
-
 		if ( !$this->hasDiff() || !$this->inNamespace( $subject ) ) {
 			return false;
 		}
@@ -136,7 +135,6 @@ class ChangePropagationNotifier {
 	 * @since 1.9
 	 */
 	public function checkAndNotify( SemanticData &$semanticData ) {
-
 		if ( !$this->inNamespace( $semanticData->getSubject() ) ) {
 			return;
 		}
@@ -169,7 +167,6 @@ class ChangePropagationNotifier {
 	}
 
 	private function doCompare( $semanticData, $key ) {
-
 		$property = new DIProperty( $key );
 
 		$newValues = $semanticData->getPropertyValues( $property );
@@ -183,7 +180,6 @@ class ChangePropagationNotifier {
 	}
 
 	private function setDiff( $hasDiff, $key ) {
-
 		if ( !$hasDiff || $this->hasDiff ) {
 			return;
 		}
@@ -203,7 +199,6 @@ class ChangePropagationNotifier {
 	 * @return boolean
 	 */
 	private function isEqual( array $oldDataValue, array $newDataValue ) {
-
 		// The hashes of all values of both arrays are taken, then sorted
 		// and finally concatenated, thus creating one long hash out of each
 		// of the data value arrays. These are compared.
@@ -227,7 +222,6 @@ class ChangePropagationNotifier {
 	}
 
 	private function doNotifyAndPostpone( SemanticData &$semanticData ) {
-
 		if ( !$this->hasDiff() ) {
 			return;
 		}

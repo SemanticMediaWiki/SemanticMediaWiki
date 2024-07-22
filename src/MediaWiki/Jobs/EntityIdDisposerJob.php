@@ -58,7 +58,6 @@ class EntityIdDisposerJob extends Job {
 	 * @return ResultIterator
 	 */
 	public function newOutdatedEntitiesResultIterator( RequestOptions $requestOptions = null ) {
-
 		if ( $this->propertyTableIdReferenceDisposer === null ) {
 			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
 		}
@@ -74,7 +73,6 @@ class EntityIdDisposerJob extends Job {
 	 * @return ResultIterator
 	 */
 	public function newByNamespaceInvalidEntitiesResultIterator( RequestOptions $requestOptions = null ) {
-
 		if ( $this->propertyTableIdReferenceDisposer === null ) {
 			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
 		}
@@ -88,7 +86,6 @@ class EntityIdDisposerJob extends Job {
 	 * @return ResultIterator
 	 */
 	public function newOutdatedQueryLinksResultIterator() {
-
 		if ( $this->queryLinksTableDisposer === null ) {
 			$this->queryLinksTableDisposer = $this->newQueryLinksTableDisposer();
 		}
@@ -102,7 +99,6 @@ class EntityIdDisposerJob extends Job {
 	 * @return ResultIterator
 	 */
 	public function newUnassignedQueryLinksResultIterator() {
-
 		if ( $this->queryLinksTableDisposer === null ) {
 			$this->queryLinksTableDisposer = $this->newQueryLinksTableDisposer();
 		}
@@ -116,7 +112,6 @@ class EntityIdDisposerJob extends Job {
 	 * @param integer|stdClass $id
 	 */
 	public function disposeQueryLinks( $id ) {
-
 		if ( $this->queryLinksTableDisposer === null ) {
 			$this->queryLinksTableDisposer = $this->newQueryLinksTableDisposer();
 		}
@@ -130,7 +125,6 @@ class EntityIdDisposerJob extends Job {
 	 * @param integer|stdClass $id
 	 */
 	public function dispose( $id ) {
-
 		if ( $this->propertyTableIdReferenceDisposer === null ) {
 			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
 		}
@@ -148,7 +142,6 @@ class EntityIdDisposerJob extends Job {
 	 * @since 2.5
 	 */
 	public function run() {
-
 		if ( $this->hasParameter( 'id' ) ) {
 			$this->dispose( $this->getParameter( 'id' ) );
 		} else {
@@ -159,7 +152,6 @@ class EntityIdDisposerJob extends Job {
 	}
 
 	private function disposeOutdatedEntities() {
-
 		// Make sure the script is only executed from the command line to avoid
 		// Special:RunJobs to execute a queued job
 		if ( $this->waitOnCommandLineMode() ) {
@@ -214,7 +206,6 @@ class EntityIdDisposerJob extends Job {
 	}
 
 	private function newQueryLinksTableDisposer() {
-
 		$store = ApplicationFactory::getInstance()->getStore();
 		$queryDependencyLinksStoreFactory = $store->service( 'QueryDependencyLinksStoreFactory' );
 

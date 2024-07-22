@@ -17,7 +17,6 @@ use SMW\SQLStore\ChangeOp\ChangeDiff;
 class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangeDiff::class,
 			new ChangeDiff( DIWikiPage::newFromText( 'Foo' ), [], [], [] )
@@ -25,7 +24,6 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSubject() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$instance = new ChangeDiff(
 			$subject,
@@ -41,7 +39,6 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyList() {
-
 		$instance = new ChangeDiff(
 			DIWikiPage::newFromText( 'Foo' ),
 			[],
@@ -61,7 +58,6 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyList_SortById() {
-
 		$instance = new ChangeDiff(
 			DIWikiPage::newFromText( 'Foo' ),
 			[],
@@ -76,7 +72,6 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSave() {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -102,7 +97,6 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetch() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -131,7 +125,6 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChangeList() {
-
 		$instance = new ChangeDiff(
 			DIWikiPage::newFromText( 'Foo' ),
 			[],
@@ -148,7 +141,6 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAssociatedRev() {
-
 		$instance = new ChangeDiff(
 			DIWikiPage::newFromText( 'Foo' ),
 			[],
@@ -165,7 +157,6 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function FetchFromCache() {
-
 		$changeDiff = ChangeDiff::fetch(
 			\SMW\ApplicationFactory::getInstance()->getCache(),
 			DIWikiPage::newFromText( 'DifferentSort' )

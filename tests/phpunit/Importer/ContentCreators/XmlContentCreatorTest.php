@@ -20,7 +20,7 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	private $wikiImporter;
 	private $messageReporter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if ( !interface_exists( '\ImportSource' ) ) {
@@ -53,7 +53,6 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Importer\ContentCreators\XmlContentCreator',
 			new XmlContentCreator( $this->importerServiceFactory )
@@ -61,7 +60,6 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanCreateContentsFor() {
-
 		$instance = new XmlContentCreator(
 			$this->importerServiceFactory
 		);
@@ -75,7 +73,6 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoCreateFrom() {
-
 		$this->wikiImporter->expects( $this->atLeastOnce() )
 			->method( 'doImport' );
 

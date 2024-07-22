@@ -249,7 +249,6 @@ class ExtendedSearch {
 	 * @return SearchResultSet|null
 	 */
 	public function searchTitle( $term ) {
-
 		if ( $this->getSearchQuery( $term ) !== null ) {
 			return null;
 		}
@@ -266,7 +265,6 @@ class ExtendedSearch {
 	 * @return SearchResultSet|\Status|null
 	 */
 	public function searchText( $term ) {
-
 		if ( $this->getSearchQuery( $term ) !== null ) {
 			return $this->newSearchResultSet( $term );
 		}
@@ -282,7 +280,6 @@ class ExtendedSearch {
 	 * @return SearchSuggestionSet
 	 */
 	public function completionSearch( $search ) {
-
 		$searchResultSet = null;
 		$minLen = 3;
 
@@ -314,7 +311,6 @@ class ExtendedSearch {
 	}
 
 	private function hasPrefixAndMinLenForCompletionSearch( $search, $minLen ) {
-
 		// Only act on when `in:foo`, `has:SomeProperty`, or `phrase:some text`
 		// is actively used as prefix
 		$defaultPrefixMap = [ 'in', 'has', 'phrase', 'not' ];
@@ -339,7 +335,6 @@ class ExtendedSearch {
 	}
 
 	private function newSearchResultSet( $term, $count = true, $highlight = true ) {
-
 		$query = $this->getSearchQuery( $term );
 
 		if ( $query === null ) {
@@ -380,7 +375,6 @@ class ExtendedSearch {
 	 * @return SMWQuery | null
 	 */
 	private function getSearchQuery( $term ) {
-
 		if ( $this->queryBuilder === null ) {
 			$this->queryBuilder = new QueryBuilder();
 		}
@@ -405,7 +399,6 @@ class ExtendedSearch {
 	}
 
 	private function searchFallbackSearchEngine( $term, $fulltext ) {
-
 		$this->fallbackSearchEngine->prefix = $this->prefix;
 		$this->fallbackSearchEngine->namespaces = $this->namespaces;
 

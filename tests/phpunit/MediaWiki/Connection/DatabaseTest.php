@@ -26,7 +26,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	private $connRef;
 	private $transactionHandler;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connRef = $this->getMockBuilder( '\SMW\Connection\ConnRef' )
@@ -39,7 +39,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Database::class,
 			new Database( $this->connRef, $this->transactionHandler )
@@ -47,7 +46,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewQuery() {
-
 		$instance = new Database(
 			$this->connRef,
 			$this->transactionHandler
@@ -60,7 +58,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddQuotesMethod() {
-
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'addQuotes' ] )
@@ -98,7 +95,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbTypeProvider
 	 */
 	public function testTableNameMethod( $type ) {
-
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'tableName' ] )
@@ -132,7 +128,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSelectMethod() {
-
 		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -170,7 +165,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSelectFieldMethod() {
-
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'selectField' ] )
@@ -208,7 +202,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider querySqliteProvider
 	 */
 	public function testQueryOnSQLite( $query, $expected ) {
-
 		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -265,7 +258,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function querySqliteProvider() {
-
 		$provider = [
 			[ 'TEMPORARY', 'TEMP' ],
 			[ 'RAND', 'RANDOM' ],
@@ -277,7 +269,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSelectThrowsException() {
-
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'select' ] )
@@ -312,7 +303,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryThrowsException() {
-
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'query' ] )
@@ -347,7 +337,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetEmptyTransactionTicket() {
-
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -373,7 +362,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommitAndWaitForReplication() {
-
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -399,7 +387,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBeginSectionTransaction() {
-
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -455,7 +442,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBeginEndSectionTransaction() {
-
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -516,7 +502,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListTables() {
-
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -545,7 +530,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoQueryWithAutoCommit() {
-
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getFlag', 'clearFlag', 'setFlag', 'getType', 'query' ] )

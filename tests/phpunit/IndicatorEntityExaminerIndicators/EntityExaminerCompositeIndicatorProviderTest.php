@@ -26,7 +26,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	private PermissionExaminer $permissionExaminer;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -40,13 +40,12 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$indicatorProviders = [];
 
 		$this->assertInstanceOf(
@@ -66,7 +65,6 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testGetName() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerCompositeIndicatorProvider(
@@ -81,7 +79,6 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testGetIndicators() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerCompositeIndicatorProvider(
@@ -96,7 +93,6 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testGetModules() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerCompositeIndicatorProvider(
@@ -111,7 +107,6 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testGetInlineStyle() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerCompositeIndicatorProvider(
@@ -126,7 +121,6 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testHasIndicator_Empty() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
@@ -157,7 +151,6 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testHasIndicator_Option_ActionEdit() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
@@ -179,7 +172,6 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testHasIndicator_Option_Diff() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
@@ -201,7 +193,6 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testHasIndicator_SomeContent() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->compositeIndicatorHtmlBuilder->expects( $this->once() )
@@ -236,7 +227,6 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testNoIndicatorOnFailedPermission() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->compositeIndicatorHtmlBuilder->expects( $this->never() )
@@ -268,7 +258,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	private function newPermissionAwareIndicatorProvider() {
 		return new class() implements \SMW\Indicator\IndicatorProvider, \SMW\MediaWiki\Permission\PermissionAware {
 
-			public function getName() : string {
+			public function getName(): string {
 				return '';
 			}
 
@@ -276,7 +266,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 				return '';
 			}
 
-			public function hasIndicator( \SMW\DIWikiPage $subject, array $options) {
+			public function hasIndicator( \SMW\DIWikiPage $subject, array $options ) {
 				return false;
 			}
 
@@ -288,7 +278,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 				return [];
 			}
 
-			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ) : bool {
+			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ): bool {
 				return $permissionExaminer->hasPermissionOf( 'Foo' );
 			}
 		};

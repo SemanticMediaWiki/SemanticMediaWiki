@@ -23,8 +23,7 @@ class ElasticClientTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $webRequest;
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -44,7 +43,6 @@ class ElasticClientTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ElasticClientTaskHandler::class,
 			new ElasticClientTaskHandler( $this->outputFormatter )
@@ -52,7 +50,6 @@ class ElasticClientTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsTask() {
-
 		$task = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -74,7 +71,6 @@ class ElasticClientTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml_OnAvailableNodes() {
-
 		$this->outputFormatter->expects( $this->once() )
 			->method( 'createSpecialPageLink' );
 
@@ -108,7 +104,6 @@ class ElasticClientTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequest_OnNoAvailableNodes() {
-
 		$this->outputFormatter->expects( $this->once() )
 			->method( 'addParentLink' )
 			->with(	$this->equalTo( [ 'tab' => 'supplement' ] ) );

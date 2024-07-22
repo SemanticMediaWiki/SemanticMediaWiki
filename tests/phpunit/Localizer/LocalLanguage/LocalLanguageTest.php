@@ -18,7 +18,7 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 
 	private $languageContents;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->languageContents = $this->getMockBuilder( LanguageContents::class )
@@ -26,13 +26,12 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		LocalLanguage::clear();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			LocalLanguage::class,
 			new LocalLanguage( $this->languageContents )
@@ -47,7 +46,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetNamespaces() {
-
 		$contents = [
 			"SMW_NS_PROPERTY" => "Property"
 		];
@@ -70,7 +68,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetNamespaceAliases() {
-
 		$contents = [
 			"Property" => "SMW_NS_PROPERTY"
 		];
@@ -93,7 +90,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPreferredDateFormatByPrecisionOnMatchedPrecision() {
-
 		$contents = [
 			"SMW_PREC_YMDT" => "d m Y"
 		];
@@ -116,7 +112,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPreferredDateFormatOnNotMatchablePrecision() {
-
 		$contents = [
 			"Foo" => "d m Y"
 		];
@@ -139,7 +134,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDatatypeLabels() {
-
 		$contents = [
 			"Foo" => "Bar"
 		];
@@ -162,7 +156,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindDatatypeByLabel() {
-
 		$contents = [
 			"Bar" => "_foo"
 		];
@@ -182,7 +175,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyIdByLabel() {
-
 		$this->languageContents->expects( $this->at( 0 ) )
 			->method( 'get' )
 			->with(
@@ -216,7 +208,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyLabelList() {
-
 		$propertyLabels = [
 			'_Foo'  => 'Bar',
 			'_Foo2' => 'Baar',
@@ -244,7 +235,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDateFormats() {
-
 		$contents = [
 			[ 'SMW_Y' ],
 			[ 'SMW_MY', 'SMW_YM' ]
@@ -268,7 +258,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindMonthNumberByLabelWithCaseInsensitiveSearch() {
-
 		$contents = [
 			[ 'January', 'Jan' ],
 			[ 'February', 'Feb' ],
@@ -293,7 +282,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMonthLabelByNumber() {
-
 		$contents = [
 			[ 'January', 'Jan' ],
 			[ 'February', 'Feb' ],

@@ -19,7 +19,6 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -38,7 +37,6 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFilterMap() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -64,7 +62,6 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVerifyThatAfterSerializeToArrayResultNextCanBeUsed() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -98,7 +95,6 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsFromCache() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -129,7 +125,6 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHash() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();

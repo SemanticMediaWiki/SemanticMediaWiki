@@ -22,8 +22,7 @@ class TextSanitizer {
 	 *
 	 * @return string
 	 */
-	public static function removeLinks( $text ) : string {
-
+	public static function removeLinks( $text ): string {
 		if ( $text === '' ) {
 			return $text;
 		}

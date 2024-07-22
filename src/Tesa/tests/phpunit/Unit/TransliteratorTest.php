@@ -20,7 +20,6 @@ class TransliteratorTest extends TestCase {
 	 * @dataProvider characterProvider
 	 */
 	public function testTransliteration( $input, $flag, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			Transliterator::transliterate( $input, $flag )
@@ -28,7 +27,6 @@ class TransliteratorTest extends TestCase {
 	}
 
 	public function testTransliterationWithoutOptionFlag() {
-
 		$this->assertEquals(
 			'aaaaaea',
 			Transliterator::transliterate( 'àáâãäå' )
@@ -36,7 +34,6 @@ class TransliteratorTest extends TestCase {
 	}
 
 	public function characterProvider() {
-
 		$provider[] = array(
 			'Foo',
 			'unknownFlag',

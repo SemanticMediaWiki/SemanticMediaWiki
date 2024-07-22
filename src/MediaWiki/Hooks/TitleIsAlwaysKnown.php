@@ -45,7 +45,6 @@ class TitleIsAlwaysKnown implements HookListener {
 	 * @return boolean
 	 */
 	public function process() {
-
 		// Two possible ways of going forward:
 		//
 		// The FIRST seen here is to use the hook to override the known status

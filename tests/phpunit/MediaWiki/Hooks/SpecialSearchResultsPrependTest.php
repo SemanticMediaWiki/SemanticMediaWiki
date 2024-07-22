@@ -18,8 +18,7 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 	private $preferenceExaminer;
 	private $messageLocalizer;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -30,7 +29,6 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +44,6 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$this->preferenceExaminer->expects( $this->at( 1 ) )
 			->method( 'hasPreferenceOf' )
 			->with( $this->equalTo( 'smw-prefs-general-options-suggester-textinput' ) )
@@ -91,7 +88,6 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_DisabledInfo() {
-
 		$this->preferenceExaminer->expects( $this->at( 2 ) )
 			->method( 'hasPreferenceOf' )
 			->with( $this->equalTo( 'smw-prefs-general-options-disable-search-info' ) )

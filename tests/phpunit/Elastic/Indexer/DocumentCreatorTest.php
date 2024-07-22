@@ -23,15 +23,13 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DocumentCreator::class,
 			new DocumentCreator( $this->store )
@@ -39,7 +37,6 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDocumentCreationDuration() {
-
 		$instance = new DocumentCreator( $this->store );
 
 		$this->assertInternalType(
@@ -49,7 +46,6 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFromSemanticData_RedirectDelete() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
@@ -114,7 +110,6 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemsProvider
 	 */
 	public function testNewFromSemanticData( $dataItems ) {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
@@ -169,7 +164,6 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemsProvider
 	 */
 	public function testNewFromSemanticData_SubDataType( $dataItems ) {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
@@ -221,7 +215,6 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataItemsProvider() {
-
 		yield 'page_type' => [
 			[ DIWikiPage::newFromText( 'Bar' ) ]
 		];

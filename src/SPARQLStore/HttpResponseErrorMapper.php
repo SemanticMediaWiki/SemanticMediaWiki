@@ -69,7 +69,6 @@ class HttpResponseErrorMapper {
 	}
 
 	private function createResponseToHttpError( $httpCode, $endpoint, $sparql ) {
-
 		/// TODO We are guessing the meaning of HTTP codes here -- the SPARQL 1.1 spec does not yet provide this information for updates (April 15 2011)
 
 		if ( $httpCode == 400 ) { // malformed query

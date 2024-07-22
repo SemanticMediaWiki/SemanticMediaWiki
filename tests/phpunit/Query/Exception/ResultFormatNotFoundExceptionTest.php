@@ -16,7 +16,6 @@ use SMW\Query\Exception\ResultFormatNotFoundException;
 class ResultFormatNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new ResultFormatNotFoundException();
 
 		$this->assertInstanceof(

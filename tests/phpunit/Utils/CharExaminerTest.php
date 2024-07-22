@@ -26,7 +26,6 @@ class CharExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToContainJapaneseCharacters() {
-
 		$this->assertTrue(
 			CharExaminer::contains( CharExaminer::LATIN, '脳のIQテスト' )
 		);
@@ -41,7 +40,6 @@ class CharExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToContainChineseCharacters() {
-
 		$this->assertFalse(
 			CharExaminer::contains( CharExaminer::LATIN, '才可以过关' )
 		);
@@ -56,7 +54,6 @@ class CharExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToContainCyrillic() {
-
 		$this->assertFalse(
 			CharExaminer::contains( CharExaminer::LATIN, 'Привет' )
 		);

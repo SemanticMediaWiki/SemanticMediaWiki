@@ -58,7 +58,6 @@ class EntityCache {
 	 * @return string
 	 */
 	public static function makeCacheKey( ...$params ) {
-
 		$namespace = self::CACHE_NAMESPACE;
 
 		if ( is_string( $params[0] ) && $params[0][0] === ':' ) {
@@ -143,7 +142,6 @@ class EntityCache {
 	 * @param mixed $value
 	 */
 	public function fetchSub( $key, $sub ) {
-
 		$res = $this->cache->fetch( $key );
 		$sub = md5( $sub );
 
@@ -163,7 +161,6 @@ class EntityCache {
 	 * @param integer $ttl
 	 */
 	public function saveSub( $key, $sub, $value = null, $ttl = 0 ) {
-
 		$res = $this->cache->fetch( $key );
 		$sub = md5( $sub );
 
@@ -185,7 +182,6 @@ class EntityCache {
 	 * @param integer $ttl
 	 */
 	public function overrideSub( $key, $sub, $value = null, $ttl = 0 ) {
-
 		$res = [
 			md5( $sub ) => $value
 		];
@@ -201,7 +197,6 @@ class EntityCache {
 	 * @param integer $ttl
 	 */
 	public function deleteSub( $key, $sub, $ttl = 0 ) {
-
 		$res = $this->cache->fetch( $key );
 		$sub = md5( $sub );
 
@@ -223,7 +218,6 @@ class EntityCache {
 	 * @param DIWikiPage|Title $subject
 	 */
 	public function associate( $subject, $key ) {
-
 		if ( $subject === null ) {
 			return;
 		}
@@ -265,7 +259,6 @@ class EntityCache {
 	 * @param DIWikiPage|Title $subject
 	 */
 	public function invalidate( $subject = null ) {
-
 		if ( $subject === null ) {
 			return;
 		}

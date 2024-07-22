@@ -55,7 +55,6 @@ class Timer {
 	 * @since 3.2
 	 */
 	public function stop( $name ) {
-
 		if ( isset( $this->times[$name] ) ) {
 			$this->times[$name] = microtime( true ) - $this->times[$name];
 		}
@@ -79,7 +78,6 @@ class Timer {
 	 * @return float|integer
 	 */
 	public static function getElapsedTime( $name, $round = null ) {
-
 		if ( !isset( self::$start[$name] ) ) {
 			return 0;
 		}

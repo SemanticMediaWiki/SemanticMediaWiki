@@ -29,14 +29,13 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -48,7 +47,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBuildConditionFor() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Conjunction' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -68,7 +66,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testConjunctionCondition( $description, $orderByProperty, $sortkeys, $expectedConditionType, $expectedConditionString ) {
-
 		$resultVariable = 'result';
 
 		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -93,7 +90,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0

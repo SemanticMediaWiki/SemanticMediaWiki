@@ -21,16 +21,15 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Api\ApiRequestParameterFormatter',
 			new ApiRequestParameterFormatter( [] )
@@ -38,7 +37,6 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAskArgsApiForEmptyParameter() {
-
 		$nstance = new ApiRequestParameterFormatter( [] );
 
 		$this->assertEmpty( $nstance->getAskArgsApiParameter( 'conditions' ) );
@@ -50,7 +48,6 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider requestArgsApiParametersDataProvider
 	 */
 	public function testGetAskArgsApiParameter( $parameters, $type, $expected ) {
-
 		$nstance = new ApiRequestParameterFormatter( $parameters );
 
 		$this->assertEquals(
@@ -63,7 +60,6 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider requestAskApiParametersDataProvider
 	 */
 	public function testGetAskApiParameters( $parameters, $expected ) {
-
 		$instance = new ApiRequestParameterFormatter( $parameters );
 		$result = $instance->getAskApiParameters();
 

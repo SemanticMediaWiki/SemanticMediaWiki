@@ -22,7 +22,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Exporter\Element\ExpLiteral',
 			new ExpLiteral( '', '', '', null )
@@ -39,7 +38,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constructorProvider
 	 */
 	public function testAccessToMethods( $lexicalForm, $datatype, $lang, $dataItem ) {
-
 		$instance = new ExpLiteral(
 			$lexicalForm,
 			$datatype,
@@ -72,7 +70,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constructorProvider
 	 */
 	public function testSerializiation( $lexicalForm, $datatype, $lang, $dataItem, $expected ) {
-
 		$instance = new ExpLiteral(
 			$lexicalForm,
 			$datatype,
@@ -95,7 +92,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider invalidConstructorProvider
 	 */
 	public function testInvalidConstructorThrowsException( $lexicalForm, $datatype, $lang, $dataItem ) {
-
 		$this->expectException( 'InvalidArgumentException' );
 
 		$instance = new ExpLiteral(
@@ -110,7 +106,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider serializationMissingElementProvider
 	 */
 	public function testDeserializiationForMissingElementThrowsException( $serialization ) {
-
 		$this->expectException( 'RuntimeException' );
 
 		ExpElement::newFromSerialization(
@@ -119,7 +114,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function constructorProvider() {
-
 		#0
 		$provider[] = [
 			'', '', '', null,
@@ -190,7 +184,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function invalidConstructorProvider() {
-
 		#0
 		$provider[] = [
 			[], '', '', null
@@ -210,7 +203,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function serializationMissingElementProvider() {
-
 		#0
 		$provider[] = [
 			[]

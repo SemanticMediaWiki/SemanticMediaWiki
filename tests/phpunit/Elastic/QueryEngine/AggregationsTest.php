@@ -17,7 +17,6 @@ use SMW\Elastic\QueryEngine\FieldMapper;
 class AggregationsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Aggregations::class,
 			new Aggregations()
@@ -28,7 +27,6 @@ class AggregationsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testResolve( $parameters, $expected ) {
-
 		$instance = new Aggregations( $parameters );
 
 		$this->assertEquals(
@@ -38,7 +36,6 @@ class AggregationsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		$fieldMapper = new FieldMapper();
 
 		yield [

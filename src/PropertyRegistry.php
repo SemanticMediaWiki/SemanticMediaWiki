@@ -66,7 +66,6 @@ class PropertyRegistry {
 	 * @return PropertyRegistry
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -112,7 +111,6 @@ class PropertyRegistry {
 	 * @param array $dataTypePropertyExemptionList
 	 */
 	public function __construct( DataTypeRegistry $datatypeRegistry, PropertyLabelFinder $propertyLabelFinder, PropertyAliasFinder $propertyAliasFinder, array $dataTypePropertyExemptionList = [] ) {
-
 		$this->datatypeLabels = $datatypeRegistry->getKnownTypeLabels();
 		$this->propertyLabelFinder = $propertyLabelFinder;
 		$this->propertyAliasFinder = $propertyAliasFinder;
@@ -178,7 +176,6 @@ class PropertyRegistry {
 	 * @param boolean $isDeclarative
 	 */
 	public function registerProperty( $id, $valueType, $label = false, $isVisible = false, $isAnnotable = true, $isDeclarative = false ) {
-
 		$signature = [ $valueType, $isVisible, $isAnnotable, $isDeclarative ];
 
 		// Don't override an existing property registration with a different signature
@@ -268,7 +265,6 @@ class PropertyRegistry {
 	 * @return string
 	 */
 	public function findPropertyLabelById( $id ) {
-
 		// This is a hack but there is no other good way to make it work without
 		// open a whole new can of worms
 		// '__' indicates predefined properties of extensions that contain alias
@@ -324,7 +320,6 @@ class PropertyRegistry {
 	 * @return string
 	 */
 	public function getPropertyValueTypeById( $id ) {
-
 		if ( $this->isRegistered( $id ) ) {
 			return $this->propertyList[$id][0];
 		}
@@ -357,7 +352,6 @@ class PropertyRegistry {
 	 * @return mixed string property ID or false
 	 */
 	public function findPropertyIdByLabel( $label, $useAlias = true ) {
-
 		$id = $this->propertyLabelFinder->searchPropertyIdByLabel( $label );
 
 		if ( $id !== false ) {
@@ -378,7 +372,6 @@ class PropertyRegistry {
 	 * @return mixed string property ID or false
 	 */
 	public function findPropertyIdFromLabelByLanguageCode( $label, $languageCode = '' ) {
-
 		$languageCode = mb_strtolower( trim( $languageCode ) );
 
 		// Match the canonical form
@@ -417,7 +410,6 @@ class PropertyRegistry {
 	 * @return string
 	 */
 	public function findPreferredPropertyLabelFromIdByLanguageCode( $id, $languageCode = '' ) {
-
 		if ( $languageCode === false || $languageCode === '' ) {
 			$languageCode = Localizer::getInstance()->getUserLanguage()->getCode();
 		}
@@ -480,7 +472,6 @@ class PropertyRegistry {
 	 * @return boolean
 	 */
 	public function isDeclarative( $id ) {
-
 		if ( !$this->isRegistered( $id ) ) {
 			return false;
 		}
@@ -495,7 +486,6 @@ class PropertyRegistry {
 	 * below.
 	 */
 	protected function initProperties( array $propertyList ) {
-
 		$this->propertyList = $propertyList;
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

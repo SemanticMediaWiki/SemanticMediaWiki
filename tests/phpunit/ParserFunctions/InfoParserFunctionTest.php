@@ -19,7 +19,6 @@ class InfoParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\ParserFunctions\InfoParserFunction',
 			new InfoParserFunction()
@@ -27,7 +26,6 @@ class InfoParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandle() {
-
 		$instance = new InfoParserFunction();
 
 		$parser = $this->getMockBuilder( '\Parser' )

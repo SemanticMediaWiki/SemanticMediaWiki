@@ -152,7 +152,6 @@ class CategoryResultPrinter extends ResultPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
-
 		$this->initServices();
 		$contents = $this->getContents( $res, $outputMode );
 
@@ -242,7 +241,6 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	private function first_letter( QueryResult $res, DataItem $dataItem ) {
-
 		$sortKey = $dataItem->getSortKey();
 
 		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {
@@ -253,7 +251,6 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	private function row_to_contents( $row, &$first_col ) {
-
 		// has anything but the first column been printed?
 		$found_values = false;
 		$result = '';
@@ -300,7 +297,6 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	private function row_to_template( $row, $res, &$first_col ) {
-
 		// explicitly number parameters for more robust parsing (values may contain "=")
 		$i = 0;
 

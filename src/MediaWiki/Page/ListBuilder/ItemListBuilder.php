@@ -140,7 +140,6 @@ class ItemListBuilder {
 	 * @return string
 	 */
 	public function buildHTML( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ) {
-
 		$subjectList = $this->store->getPropertySubjects(
 			$property,
 			$dataItem,
@@ -191,7 +190,7 @@ class ItemListBuilder {
 	}
 
 	private function getLastItemFormatter( $property, $dataItem ) {
-		return function() use ( $property, $dataItem ) {
+		return function () use ( $property, $dataItem ) {
 			return \Html::element(
 				'a',
 				[

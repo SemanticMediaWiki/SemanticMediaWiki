@@ -30,7 +30,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private SpecificationLookup $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -41,13 +41,12 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstructor() {
-
 		$this->assertInstanceOf(
 			'\SMW\Serializers\QueryResultSerializer',
 			new QueryResultSerializer()
@@ -55,7 +54,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSerializeOutOfBoundsException() {
-
 		$this->expectException( 'OutOfBoundsException' );
 
 		$instance = new QueryResultSerializer();
@@ -81,7 +79,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryResultSerializerForRecordType() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -140,7 +137,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSerializeFormatForTimeValue() {
-
 		$property = \SMW\DIProperty::newFromUserLabel( 'Foo' );
 		$property->setPropertyTypeId( '_dat' );
 
@@ -163,7 +159,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryResultSerializerOnMockOnDIWikiPageNonTitle() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -191,7 +186,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function numberDataProvider() {
-
 		$provider = [];
 
 		$setup = [
@@ -218,7 +212,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @return QueryResult
 	 */
 	private function buildMockQueryResult( $setup ) {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -275,7 +268,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function newMockBuilder() {
-
 		$builder = new MockObjectBuilder();
 		$builder->registerRepository( new CoreMockObjectRepository() );
 		$builder->registerRepository( new MediaWikiMockObjectRepository() );

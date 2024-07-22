@@ -64,7 +64,6 @@ class TextContentCreator implements ContentCreator {
 	 * @param ImportContents $importContents
 	 */
 	public function create( ImportContents $importContents ) {
-
 		if ( !class_exists( 'ContentHandler' ) ) {
 			return $this->messageReporter->reportMessage( "\nContentHandler doesn't exist therefore importing is not possible.\n" );
 		}
@@ -138,13 +137,12 @@ class TextContentCreator implements ContentCreator {
 		// Avoid a possible "Notice: WikiPage::doEditContent: Transaction already
 		// in progress (from DatabaseUpdater::doUpdates), performing implicit
 		// commit ..."
-		$this->connection->onTransactionCommitOrIdle( function() use ( $page, $title, $importContents, $action ) {
+		$this->connection->onTransactionCommitOrIdle( function () use ( $page, $title, $importContents, $action ) {
 			$this->doCreateContent( $page, $title, $importContents, $action );
 		} );
 	}
 
 	private function doCreateContent( $page, $title, $importContents, $action ) {
-
 		$content = ContentHandler::makeContent(
 			$this->fetchContents( $importContents ),
 			$title
@@ -195,7 +193,6 @@ class TextContentCreator implements ContentCreator {
 	}
 
 	private function fetchContents( $importContents ) {
-
 		if ( $importContents->getContentsFile() === '' ) {
 			return $importContents->getContents();
 		}
@@ -215,7 +212,6 @@ class TextContentCreator implements ContentCreator {
 	}
 
 	private function isCreatorLastEditor( $page ) {
-
 		$lastEditor = User::newFromID(
 			$page->getUser()
 		);

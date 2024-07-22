@@ -66,7 +66,6 @@ class PropertyTableIdReferenceFinder {
 	 * @return DataItem|false
 	 */
 	public function tryToFindAtLeastOneReferenceForProperty( DIProperty $property ) {
-
 		$dataItem = $property->getDiWikiPage();
 
 		$sid = $this->store->getObjectIds()->getSMWPageID(
@@ -98,7 +97,6 @@ class PropertyTableIdReferenceFinder {
 	 * @return boolean
 	 */
 	public function hasResidualPropertyTableReference( $id ) {
-
 		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
 			return true;
 		}
@@ -114,7 +112,6 @@ class PropertyTableIdReferenceFinder {
 	 * @return boolean
 	 */
 	public function hasResidualReferenceForId( $id ) {
-
 		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
 			return true;
 		}
@@ -130,7 +127,6 @@ class PropertyTableIdReferenceFinder {
 	 * @return array
 	 */
 	public function searchAllTablesToFindAtLeastOneReferenceById( $id ) {
-
 		$references = [];
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
@@ -157,7 +153,6 @@ class PropertyTableIdReferenceFinder {
 	 * @return DataItem|false
 	 */
 	public function findAtLeastOneActiveReferenceById( $id, $secondary_ref = true ) {
-
 		$reference = false;
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
@@ -198,7 +193,6 @@ class PropertyTableIdReferenceFinder {
 	}
 
 	private function findReferenceByPropertyTable( $proptable, $id ) {
-
 		$row = false;
 
 		if ( $proptable->usesIdSubject() ) {
@@ -250,7 +244,6 @@ class PropertyTableIdReferenceFinder {
 	}
 
 	private function findQueryLinksTableReferenceById( $id ) {
-
 		// If the query table contains a reference then we keep the object (could
 		// be a subject, property, or printrequest) where in case the query is
 		// removed the object will also loose its reference

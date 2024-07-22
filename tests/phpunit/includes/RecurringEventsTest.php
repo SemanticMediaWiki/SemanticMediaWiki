@@ -17,7 +17,6 @@ use SMW\RecurringEvents;
 class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RecurringEvents::class,
 			new RecurringEvents()
@@ -30,7 +29,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetErrors( array $params, array $expected ) {
-
 		$parameters = new ParserParameterFormatter( $params );
 
 		$instance = new RecurringEvents();
@@ -47,7 +45,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetProperty( array $params, array $expected ) {
-
 		$parameters = new ParserParameterFormatter( $params );
 
 		$instance = new RecurringEvents();
@@ -65,7 +62,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetParameters( array $params, array $expected ) {
-
 		$parameters = new ParserParameterFormatter( $params );
 
 		$instance = new RecurringEvents();
@@ -83,7 +79,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetDates( array $params, array $expected ) {
-
 		$parameters = new ParserParameterFormatter( $params );
 
 		$instance = new RecurringEvents();
@@ -124,7 +119,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.
 	 */
 	public function testMassInsert( array $params, array $expected ) {
-
 		$parameters = new ParserParameterFormatter( $params );
 
 		$instance = new RecurringEvents();
@@ -164,7 +158,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function getParametersDataProvider() {
-
 		// {{#set_recurring_event:property=Has birthday
 		// |start=01 Feb 1970
 		// |has title= Birthday

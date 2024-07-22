@@ -16,7 +16,6 @@ use SMW\Factbox\CheckMagicWords;
 class CheckMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CheckMagicWords::class,
 			new CheckMagicWords( [] )
@@ -27,7 +26,6 @@ class CheckMagicWordsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider magicWordsProvider
 	 */
 	public function testGetMagicWords( $magicWords, $options, $expected ) {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,7 +45,6 @@ class CheckMagicWordsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function magicWordsProvider() {
-
 		yield [
 			[ 'SMW_SHOWFACTBOX' ],
 			[],

@@ -134,7 +134,6 @@ class Rebuilder {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = false ) {
-
 		if ( isset( $this->options[$key] ) ) {
 			return $this->options[$key];
 		}
@@ -166,7 +165,6 @@ class Rebuilder {
 	 * @return integer
 	 */
 	public function getMaxId() {
-
 		$db = $this->store->getConnection( 'mw.db' );
 
 		$maxByPageId = (int)$db->selectField(
@@ -216,7 +214,6 @@ class Rebuilder {
 	 * @param integer &$id
 	 */
 	public function rebuild( &$id ) {
-
 		$this->updateJobs = [];
 		$this->dispatchedEntities = [];
 
@@ -255,7 +252,6 @@ class Rebuilder {
 	}
 
 	private function matchAsTitle( $id ) {
-
 		// Update by MediaWiki page id --> make sure we get all pages.
 		$tids = [];
 
@@ -281,7 +277,6 @@ class Rebuilder {
 	}
 
 	private function matchAsSubject( $id, &$emptyRange ) {
-
 		// update by internal SMW id --> make sure we get all objects in SMW
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -332,7 +327,6 @@ class Rebuilder {
 	}
 
 	private function checkRow( $row ) {
-
 		// Find page to refresh, even for special properties:
 		if ( $row->smw_title != '' && $row->smw_title[0] != '_' ) {
 			$titleKey = $row->smw_title;
@@ -429,7 +423,6 @@ class Rebuilder {
 	}
 
 	private function removeDuplicates( $row, $duplicates ) {
-
 		// Instead of copying ID's across DB tables have the re-parse to ensure
 		// that all property value ID's are reassigned together while the duplicate
 		// is marked for removal until the next run
@@ -447,7 +440,6 @@ class Rebuilder {
 	}
 
 	private function next_position( &$id, $emptyRange ) {
-
 		$nextPosition = $id + $this->iterationLimit;
 		$db = $this->store->getConnection( 'mw.db' );
 
@@ -482,7 +474,6 @@ class Rebuilder {
 	}
 
 	private function hasSkippableRevision( $title, $row = false ) {
-
 		if ( $this->getOption( 'force-update' ) ) {
 			return false;
 		}
@@ -495,7 +486,6 @@ class Rebuilder {
 	}
 
 	private function addJob( $title, $row = false ) {
-
 		$hash = $title->getDBKey() . '#' . $title->getNamespace();
 		$this->lru->set( $hash, true );
 

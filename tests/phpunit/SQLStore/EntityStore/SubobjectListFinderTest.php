@@ -19,14 +19,13 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $iteratorFactory;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->iteratorFactory = ApplicationFactory::getInstance()->getIteratorFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -45,7 +44,6 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider subjectProvider
 	 */
 	public function testNewMappingIterator( $subject ) {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -78,7 +76,6 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider subjectProvider
 	 */
 	public function testIterateOn( $subject ) {
-
 		$row = new \stdClass;
 		$row->smw_id = 42;
 		$row->smw_sortkey = 'sort';
@@ -121,7 +118,6 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function subjectProvider() {
-
 		$provider[] = [
 			DIWikiPage::newFromText( 'Foo' )
 		];

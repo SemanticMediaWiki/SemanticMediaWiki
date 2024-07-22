@@ -20,7 +20,7 @@ class FilterMapTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $entityIdManager;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
@@ -38,7 +38,6 @@ class FilterMapTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FilterMap::class,
 			new FilterMap( $this->store, [] )
@@ -46,7 +45,6 @@ class FilterMapTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCountListByType() {
-
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'preload' )
 			->with( $this->equalTo( [ 'Foo' ] ) );

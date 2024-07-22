@@ -35,7 +35,6 @@ class DisjunctionInterpreter {
 	 * @return Condition|[]
 	 */
 	public function interpretDescription( Disjunction $description, $isConjunction = false ) {
-
 		$params = [];
 		$notConditionFields = [];
 
@@ -93,7 +92,7 @@ class DisjunctionInterpreter {
 
 		// We wrap the intermediary `should` clause in an extra `must` to ensure
 		// those properties are exists for the returned documents.
-		$condition = $this->conditionBuilder->newCondition( [ $condition, $existsConditions ] );
+		$condition = $this->conditionBuilder->newCondition( [ $condition, ...$existsConditions ] );
 		$condition->type( 'must' );
 
 		return $condition;

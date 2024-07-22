@@ -22,20 +22,19 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 
 	private $mwHooksHandler;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mwHooksHandler = new MwHooksHandler();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}
 
 	public function testRunNamespaceManagerWithNoConstantsDefined() {
-
 		$this->mwHooksHandler->deregisterListedHooks();
 
 		$default = [
@@ -60,7 +59,6 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanonicalNames() {
-
 		$this->mwHooksHandler->deregisterListedHooks();
 		$applicationFactory = ApplicationFactory::getInstance();
 		$namespaceInfo = $applicationFactory->singleton( 'NamespaceInfo' );

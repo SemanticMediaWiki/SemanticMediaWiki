@@ -60,7 +60,6 @@ class TableChangeOp {
 	 * @return null|string
 	 */
 	public function getFixedPropertyValByField( $field ) {
-
 		if ( $this->isFixedPropertyOp() && isset( $this->changeOps['property'][$field] ) ) {
 			return $this->changeOps['property'][$field];
 		}
@@ -100,7 +99,6 @@ class TableChangeOp {
 	 * @return FieldChangeOp[]|[]
 	 */
 	public function getFieldChangeOps( $opType = null, $filter = [] ) {
-
 		if ( $opType !== null && !$this->hasChangeOp( $opType ) ) {
 			return [];
 		}

@@ -22,7 +22,7 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 	private $apiFactory;
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -35,13 +35,12 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 		$this->apiFactory = UtilityFactory::getInstance()->newMwApiFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->applicationFactory->clear();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new BrowseByProperty(
 			$this->apiFactory->newApiMain( [] ),
 			'browsebyproperty'
@@ -54,7 +53,6 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecute() {
-
 		$list[] = [
 			new DIProperty( 'Foo' ),
 			42

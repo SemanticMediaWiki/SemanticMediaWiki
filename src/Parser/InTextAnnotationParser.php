@@ -287,7 +287,6 @@ class InTextAnnotationParser {
 	}
 
 	protected function addRedirectTargetAnnotationFromText( $text ) {
-
 		if ( !$this->isEnabledNamespace ) {
 			return;
 		}
@@ -343,7 +342,6 @@ class InTextAnnotationParser {
 	 * @return string
 	 */
 	public function preprocess( array $semanticLink ) {
-
 		$semanticLinks = $this->linksProcessor->preprocess( $semanticLink );
 
 		if ( is_string( $semanticLinks ) ) {
@@ -362,7 +360,6 @@ class InTextAnnotationParser {
 	 * @return string
 	 */
 	protected function process( array $semanticLink ) {
-
 		$valueCaption = false;
 		$property = '';
 		$value = '';
@@ -399,7 +396,6 @@ class InTextAnnotationParser {
 	 * @return string
 	 */
 	protected function addPropertyValue( $subject, array $properties, $value, $valueCaption ) {
-
 		$origValue = $value;
 
 		if ( $this->stripMarkerDecoder !== null ) {
@@ -445,7 +441,6 @@ class InTextAnnotationParser {
 	}
 
 	protected function doStripMagicWordsFromText( &$text ) {
-
 		$words = [];
 
 		$this->magicWordsFinder->setOutput( $this->parserData->getOutput() );
@@ -471,7 +466,6 @@ class InTextAnnotationParser {
 	}
 
 	private function makePropertyLink( $subject, $properties, $value, $caption ) {
-
 		$property = end( $properties );
 		$linker = smwfGetLinker();
 		$class = 'smw-property';

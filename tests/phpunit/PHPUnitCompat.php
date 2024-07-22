@@ -35,7 +35,6 @@ trait PHPUnitCompat {
 	 * or assertStringContainsStringIgnoringCase() instead."
 	 */
 	public static function assertContains( $needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false ): void {
-
 		if ( is_callable( [ 'PHPUnit_Framework_TestCase', 'assertStringContainsString' ] ) ) {
 			if ( is_array( $haystack ) ) {
 				$haystack = implode( ' ', $haystack );
@@ -52,7 +51,6 @@ trait PHPUnitCompat {
 	 * or assertStringNotContainsStringIgnoringCase() instead."
 	 */
 	public static function assertNotContains( $needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false ): void {
-
 		if ( is_callable( [ 'PHPUnit_Framework_TestCase', 'assertStringNotContainsString' ] ) ) {
 			if ( is_array( $haystack ) ) {
 				$haystack = implode( ' ', $haystack );
@@ -71,7 +69,6 @@ trait PHPUnitCompat {
 	 * instead."
 	 */
 	public static function assertInternalType( $expected, $actual, $message = '' ): void {
-
 		if ( is_callable( [ 'PHPUnit_Framework_TestCase', 'assertIsArray' ] ) ) {
 			if ( $expected === 'array' ) {
 				parent::assertIsArray( $actual, $message );

@@ -24,8 +24,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	private $propertyStatisticsStore;
 	private $requestOptions;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +39,6 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\Lookup\UnusedPropertyListLookup',
 			new UnusedPropertyListLookup( $this->store, $this->propertyStatisticsStore, null )
@@ -48,7 +46,6 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListLookupInterfaceMethodAccess() {
-
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
 			$this->propertyStatisticsStore,
@@ -71,7 +68,6 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupIdentifierChangedByRequestOptions() {
-
 		$requestOptions = new RequestOptions();
 
 		$instance = new UnusedPropertyListLookup(
@@ -97,7 +93,6 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryTofetchListForMissingOptionsThrowsException() {
-
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
 			$this->propertyStatisticsStore
@@ -108,7 +103,6 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForValidProperty() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -156,7 +150,6 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForInvalidProperty() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();

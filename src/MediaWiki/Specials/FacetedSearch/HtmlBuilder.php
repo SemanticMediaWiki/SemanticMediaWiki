@@ -81,8 +81,7 @@ class HtmlBuilder {
 	 * @param Title $title
 	 * @param UrlArgs $urlArgs
 	 */
-	public function buildEmptyHTML( Title $title, UrlArgs $urlArgs ) : string {
-
+	public function buildEmptyHTML( Title $title, UrlArgs $urlArgs ): string {
 		$profileName = $this->profile->getProfileName();
 
 		$this->templateEngine->compile(
@@ -136,8 +135,7 @@ class HtmlBuilder {
 	 * @param Title $title
 	 * @param UrlArgs $urlArgs
 	 */
-	public function buildHTML( Title $title, UrlArgs $urlArgs ) : string {
-
+	public function buildHTML( Title $title, UrlArgs $urlArgs ): string {
 		$result = $this->resultFetcher->getHtml();
 		$profileName = $urlArgs->get( 'profile', 'default' );
 

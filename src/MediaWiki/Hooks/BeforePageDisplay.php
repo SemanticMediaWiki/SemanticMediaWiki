@@ -33,7 +33,6 @@ class BeforePageDisplay implements HookListener {
 	 * @param OutputPage $outputPage
 	 */
 	public function informAboutExtensionAvailability( OutputPage $outputPage ) {
-
 		if (
 			$this->getOption( 'SMW_EXTENSION_LOADED' ) ||
 			$this->getOption( 'smwgIgnoreExtensionRegistrationCheck' ) ) {
@@ -63,7 +62,6 @@ class BeforePageDisplay implements HookListener {
 	 * @return boolean
 	 */
 	public function process( OutputPage $outputPage, Skin $skin ) {
-
 		$title = $outputPage->getTitle();
 		$user = $outputPage->getUser();
 
@@ -112,7 +110,6 @@ class BeforePageDisplay implements HookListener {
 	}
 
 	private function createIncompleteSetupTaskNotification( $title ) {
-
 		$disallowSpecialPages = [
 			'Userlogin',
 			'PendingTaskList',

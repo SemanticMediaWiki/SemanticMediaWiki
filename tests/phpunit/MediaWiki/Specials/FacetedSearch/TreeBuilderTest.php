@@ -21,7 +21,7 @@ class TreeBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -30,7 +30,6 @@ class TreeBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TreeBuilder::class,
 			new TreeBuilder( $this->store )

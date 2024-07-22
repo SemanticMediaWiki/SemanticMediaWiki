@@ -19,7 +19,6 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testToString() {
-
 		$instance = new UrlArgs();
 
 		$instance->set( 'foo', 42 );
@@ -33,7 +32,6 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$instance = new UrlArgs();
 
 		$instance->set( 'foo', 42 );
@@ -55,7 +53,6 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
 		$instance = new UrlArgs();
 
 		$instance->set( 'foo', 42 );
@@ -74,7 +71,6 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInt() {
-
 		$instance = new UrlArgs(
 			[
 				'Foo' => '42'
@@ -97,7 +93,6 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetArray() {
-
 		$instance = new UrlArgs(
 			[
 				'Foo' => '42'
@@ -116,7 +111,6 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testClone() {
-
 		$instance = new UrlArgs(
 			[
 				'Foo' => '42'

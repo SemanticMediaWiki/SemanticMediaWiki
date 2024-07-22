@@ -20,15 +20,13 @@ class DisplayTitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DisplayTitleLookup::class,
 			new DisplayTitleLookup( $this->store )
@@ -36,7 +34,6 @@ class DisplayTitleLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrefetchFromList() {
-
 		$subjects = [
 			DIWikiPage::newFromText( 'Foo' ),
 			DIWikiPage::newFromText( 'Bar' )

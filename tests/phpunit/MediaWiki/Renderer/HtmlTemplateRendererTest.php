@@ -17,7 +17,6 @@ use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 class HtmlTemplateRendererTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$wikitextTemplateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -33,7 +32,6 @@ class HtmlTemplateRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRenderTemplate() {
-
 		$parser = $this->getMockBuilder( '\Parser' )
 			->disableOriginalConstructor()
 			->getMock();

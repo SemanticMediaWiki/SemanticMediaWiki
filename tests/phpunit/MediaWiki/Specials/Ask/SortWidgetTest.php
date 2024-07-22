@@ -21,14 +21,13 @@ class SortWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$testEnvironment = new TestEnvironment();
 
 		$this->stringValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}
 
 	public function testDisabled() {
-
 		SortWidget::setSortingSupport( false );
 
 		$this->assertEmpty(
@@ -37,7 +36,6 @@ class SortWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEnabledWithEmptyParameters() {
-
 		SortWidget::setSortingSupport( true );
 
 		$this->assertContains(
@@ -47,7 +45,6 @@ class SortWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEnabledWithParameters() {
-
 		SortWidget::setSortingSupport( true );
 		SortWidget::setRandSortingSupport( true );
 

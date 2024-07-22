@@ -63,7 +63,6 @@ class ChangePropagationEntityLookup {
 	 * @throws RuntimeException
 	 */
 	public function findAll( $entity ) {
-
 		if ( $entity instanceof DIProperty ) {
 			return $this->findByProperty( $entity );
 		} elseif ( $entity instanceof DIWikiPage ) {
@@ -81,7 +80,6 @@ class ChangePropagationEntityLookup {
 	 * @return Iterator
 	 */
 	public function findByProperty( DIProperty $property ) {
-
 		$dataItems = [];
 		$appendIterator = $this->iteratorFactory->newAppendIterator();
 
@@ -119,7 +117,6 @@ class ChangePropagationEntityLookup {
 	 * @return Iterator
 	 */
 	public function findByCategory( DIWikiPage $category ) {
-
 		$appendIterator = $this->iteratorFactory->newAppendIterator();
 
 		$property = new DIProperty( '_INST' );
@@ -144,7 +141,6 @@ class ChangePropagationEntityLookup {
 	}
 
 	private function fetchOtherReferencesOnTypePropagation( $property ) {
-
 		// Find other references only on a type propagation (which causes a
 		// change of table/id assignments) for entity references
 		if ( $this->isTypePropagation === false ) {

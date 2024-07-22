@@ -21,7 +21,7 @@ class InvalidateEntityCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 	private $entityCache;
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
@@ -31,12 +31,11 @@ class InvalidateEntityCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			InvalidateEntityCacheEventListener::class,
 			new InvalidateEntityCacheEventListener( $this->entityCache )
@@ -44,7 +43,6 @@ class InvalidateEntityCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testExecute_OnSubject() {
-
 		$context = DispatchContext::newFromArray(
 			[
 				'subject' => DIWikiPage::newFromText( __METHOD__ ),
@@ -67,7 +65,6 @@ class InvalidateEntityCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testExecute_OnTitle() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

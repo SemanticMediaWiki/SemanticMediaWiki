@@ -48,7 +48,6 @@ class TemporaryTableBuilder {
 	 * @param string $tableName
 	 */
 	public function create( $tableName ) {
-
 		if ( $this->autoCommitFlag ) {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
@@ -66,7 +65,6 @@ class TemporaryTableBuilder {
 	 * @param string $tableName
 	 */
 	public function drop( $tableName ) {
-
 		if ( $this->autoCommitFlag ) {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}

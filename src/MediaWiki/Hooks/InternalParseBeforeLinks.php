@@ -68,7 +68,6 @@ class InternalParseBeforeLinks implements HookListener {
 	 * @return true
 	 */
 	public function process( &$text ) {
-
 		if ( !$this->canPerformUpdate( $text, $this->parser->getTitle() ) ) {
 			return true;
 		}
@@ -77,7 +76,6 @@ class InternalParseBeforeLinks implements HookListener {
 	}
 
 	private function canPerformUpdate( $text, $title ) {
-
 		if ( $this->getRedirectTarget() !== null ) {
 			return true;
 		}
@@ -109,7 +107,6 @@ class InternalParseBeforeLinks implements HookListener {
 	}
 
 	private function performUpdate( &$text ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		/**
@@ -153,7 +150,6 @@ class InternalParseBeforeLinks implements HookListener {
 	 * #656 / MW 1.24+
 	 */
 	private function getRedirectTarget() {
-
 		if ( method_exists( $this->parser->getOptions(), 'getRedirectTarget' ) ) {
 			return $this->parser->getOptions()->getRedirectTarget();
 		}

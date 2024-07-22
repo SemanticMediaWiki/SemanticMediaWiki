@@ -67,7 +67,7 @@ class MessageFormatter {
 	 *
 	 * @return MessageFormatter
 	 */
-	public static function newFromArray( Language $language, array $messages =  [] ) {
+	public static function newFromArray( Language $language, array $messages = [] ) {
 		$instance = new self( $language );
 		return $instance->addFromArray( $messages );
 	}
@@ -105,7 +105,6 @@ class MessageFormatter {
 	 * @return MessageFormatter
 	 */
 	public function addFromArray( array $messages ) {
-
 		$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
 		foreach ( $messages as $message ) {
@@ -245,7 +244,6 @@ class MessageFormatter {
 	 * @return string
 	 */
 	protected function getString( $html = true ) {
-
 		if ( $this->escape ) {
 			$messages = array_map( 'htmlspecialchars', array_values( $this->doFormat( $this->messages ) ) );
 		} else {
@@ -274,7 +272,6 @@ class MessageFormatter {
 	 * @return string
 	 */
 	public function getHtml() {
-
 		if ( $this->exists() ) {
 
 			$highlighter = Highlighter::factory( $this->type );

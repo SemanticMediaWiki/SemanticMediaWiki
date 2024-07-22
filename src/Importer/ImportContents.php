@@ -149,7 +149,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getImportPerformer() : string {
+	public function getImportPerformer(): string {
 		return $this->importPerformer;
 	}
 
@@ -185,8 +185,7 @@ class ImportContents {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() : string {
-
+	public function getFingerprint(): string {
 		$fingerprint = md5( $this->contents );
 
 		if ( $this->contentsFile !== '' ) {

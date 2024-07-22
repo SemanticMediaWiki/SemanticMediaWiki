@@ -16,7 +16,6 @@ use SMW\Schema\Exception\SchemaConstructionFailedException;
 class SchemaConstructionFailedExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SchemaConstructionFailedException( 'foo' );
 
 		$this->assertInstanceof(

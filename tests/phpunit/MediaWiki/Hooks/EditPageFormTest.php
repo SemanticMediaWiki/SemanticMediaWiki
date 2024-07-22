@@ -24,7 +24,7 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	private $preferenceExaminer;
 	private $messageLocalizer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
@@ -45,7 +45,6 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EditPageForm::class,
 			new EditPageForm( $this->namespaceExaminer, $this->permissionExaminer, $this->preferenceExaminer )
@@ -53,7 +52,6 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisabledHelp() {
-
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -76,7 +74,6 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisabledOnUserPreference() {
-
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
 			->will( $this->returnValue( true ) );
@@ -115,7 +112,6 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testExtendEditFormPageTop( $title, $namespaces, $isSemanticEnabled, $expected ) {
-
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
 			->will( $this->returnValue( true ) );
@@ -165,7 +161,6 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleProvider() {
-
 		$provider[] = [
 			Title::newFromText( 'Foo', SMW_NS_PROPERTY ),
 			SMW_NS_PROPERTY,

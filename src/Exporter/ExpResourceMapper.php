@@ -88,7 +88,6 @@ class ExpResourceMapper {
 	 * @param DIWikiPage $subject
 	 */
 	public function invalidateCache( DIWikiPage $subject ) {
-
 		$hash = $subject->getHash();
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheById(
@@ -121,7 +120,6 @@ class ExpResourceMapper {
 	 * @throws RuntimeException
 	 */
 	public function mapPropertyToResourceElement( DIProperty $property, $useAuxiliaryModifier = false, $seekImportVocabulary = true ) {
-
 		// We want the a canonical representation to ensure that resources
 		// are language independent
 		$this->seekImportVocabulary = $seekImportVocabulary;
@@ -157,7 +155,6 @@ class ExpResourceMapper {
 	 * @return ExpResource
 	 */
 	public function mapWikiPageToResourceElement( DIWikiPage $diWikiPage, $useAuxiliaryModifier = false ) {
-
 		$modifier = $useAuxiliaryModifier ? self::AUX_MARKER : '';
 
 		$hash = $diWikiPage->getHash() . $modifier . $this->seekImportVocabulary;
@@ -186,7 +183,6 @@ class ExpResourceMapper {
 	}
 
 	private function newExpNsResource( $diWikiPage, $modifier ) {
-
 		$importDataItem = $this->findImportDataItem( $diWikiPage, $modifier );
 
 		if ( $this->seekImportVocabulary && $importDataItem instanceof DataItem ) {
@@ -213,7 +209,6 @@ class ExpResourceMapper {
 	}
 
 	private function defineElementsForImportDataItem( DataItem $dataItem ) {
-
 		$importValue = $this->dataValueFactory->newDataValueByItem(
 			$dataItem,
 			new DIProperty( '_IMPO' )
@@ -227,7 +222,6 @@ class ExpResourceMapper {
 	}
 
 	private function defineElementsForDiWikiPage( DIWikiPage $diWikiPage, $modifier ) {
-
 		$localName = '';
 		$hasFixedNamespace = false;
 
@@ -274,7 +268,6 @@ class ExpResourceMapper {
 	}
 
 	private function findImportDataItem( DIWikiPage $diWikiPage, $modifier ) {
-
 		$importDataItems = null;
 
 		// Only try to find an import vocab for a matchable entity

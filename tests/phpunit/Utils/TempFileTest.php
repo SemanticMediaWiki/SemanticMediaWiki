@@ -19,7 +19,6 @@ class TempFileTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testGenerate() {
-
 		$instance = new TempFile();
 
 		$this->assertContains(

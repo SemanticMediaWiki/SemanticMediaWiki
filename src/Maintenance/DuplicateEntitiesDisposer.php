@@ -56,7 +56,6 @@ class DuplicateEntitiesDisposer {
 	 * @param Iterator|array $duplicates
 	 */
 	public function verifyAndDispose( $duplicates ) {
-
 		if ( !$this->is_iterable( $duplicates ) ) {
 			return;
 		}
@@ -75,7 +74,6 @@ class DuplicateEntitiesDisposer {
 	}
 
 	private function doDispose( $duplicates ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 		$logs = [];
 
@@ -147,7 +145,6 @@ class DuplicateEntitiesDisposer {
 	}
 
 	private function wikipage_table( $table, $duplicates, &$log ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$log[] = "   ... $table ...";
 		$i = 0;
@@ -188,7 +185,6 @@ class DuplicateEntitiesDisposer {
 	}
 
 	private function redi_table( $table, $duplicates, &$log ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$log[] = "   ... $table ...";
 		$i = 0;
@@ -233,7 +229,6 @@ class DuplicateEntitiesDisposer {
 	}
 
 	private function id_table( $table, $duplicates, &$log ) {
-
 		$propertyTableIdReferenceDisposer = $this->store->service( 'PropertyTableIdReferenceDisposer' );
 		$propertyTableIdReferenceDisposer->setRedirectRemoval( true );
 

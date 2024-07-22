@@ -23,13 +23,12 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	private $cat_name;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->cat_name = Localizer::getInstance()->getNsText( NS_CATEGORY );
 	}
 
 	public function testCanConstruct() {
-
 		$class = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,14 +46,12 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructThrowsException() {
-
 		$this->expectException( 'Exception' );
 
 		new ClassDescription( new \stdClass );
 	}
 
 	public function testCommonMethods() {
-
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$class = new DIWikiPage( 'Foo', NS_CATEGORY );
@@ -74,7 +71,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddDescription() {
-
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
@@ -92,7 +88,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddClass() {
-
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
@@ -110,7 +105,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsMergableDescription() {
-
 		$cat = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$instance = new ClassDescription(
@@ -129,7 +123,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testClass_Negation() {
-
 		$cat = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$instance = new ClassDescription(
@@ -157,7 +150,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFingerprint() {
-
 		$instance = new ClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY )
 		);
@@ -194,7 +186,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrune() {
-
 		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
 
 		$maxsize  = 1;
@@ -217,7 +208,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStableFingerprint() {
-
 		$instance = new ClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY )
 		);
@@ -229,7 +219,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHierarchyDepthToBeCeiledOnMaxQSubcategoryDepthSetting() {
-
 		$instance = new ClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY )
 		);
@@ -243,7 +232,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryStringWithHierarchyDepth() {
-
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$instance = new ClassDescription(
@@ -259,7 +247,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVaryingHierarchyDepthCausesDifferentFingerprint() {
-
 		$instance = new ClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY )
 		);

@@ -19,7 +19,6 @@ class LocalMessageProviderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			LocalMessageProvider::class,
 			new LocalMessageProvider( 'Foo', 'en' )
@@ -27,7 +26,6 @@ class LocalMessageProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMsg() {
-
 		$instance = new LocalMessageProvider( 'test.json', 'en' );
 		$instance->setLanguageFileDir( SMW_PHPUNIT_DIR . '/Fixtures/Localizer' );
 		$instance->setLanguageCode( 'ja' );
@@ -40,7 +38,6 @@ class LocalMessageProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMsg_Fallback() {
-
 		$instance = new LocalMessageProvider( 'test.json', 'en' );
 		$instance->setLanguageFileDir( SMW_PHPUNIT_DIR . '/Fixtures/Localizer' );
 		$instance->setLanguageCode( 'foo' );
@@ -53,7 +50,6 @@ class LocalMessageProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMsg_WithArgs() {
-
 		$instance = new LocalMessageProvider( 'test.json', 'en' );
 		$instance->setLanguageFileDir( SMW_PHPUNIT_DIR . '/Fixtures/Localizer' );
 		$instance->setLanguageCode( 'ja' );
@@ -66,7 +62,6 @@ class LocalMessageProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMsg_NoValidKey() {
-
 		$instance = new LocalMessageProvider( 'test.json', 'en' );
 		$instance->setLanguageFileDir( SMW_PHPUNIT_DIR . '/Fixtures/Localizer' );
 		$instance->loadMessages();

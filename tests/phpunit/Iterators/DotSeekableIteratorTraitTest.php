@@ -20,7 +20,6 @@ class DotSeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testSeek_MultiAssociative_Dot() {
-
 		$container = [
 			'foo' => 1, 'bar' => [ 'foo' => [ 'foobar' => 42 ] ], 'foobar' => 1001
 		];
@@ -38,7 +37,6 @@ class DotSeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSeek_MultiInstanceAssociative_Dot() {
-
 		$container = [
 			'foo' => $this->newDotSeekableIterator( [ 1 ] ),
 			'bar' => $this->newDotSeekableIterator( [ 'foo' => [ 'foobar' => 42 ], 'foobar' => 1001 ] )
@@ -60,7 +58,6 @@ class DotSeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSeekPositionThrowsException() {
-
 		$instance = $this->newDotSeekableIterator();
 
 		$this->expectException( 'OutOfBoundsException' );

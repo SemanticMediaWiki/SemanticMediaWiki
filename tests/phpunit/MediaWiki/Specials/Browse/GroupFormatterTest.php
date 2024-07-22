@@ -23,7 +23,7 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	private $propertySpecificationLookup;
 	private $schemaFinder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
@@ -36,7 +36,6 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			GroupFormatter::class,
 			new GroupFormatter( $this->propertySpecificationLookup, $this->schemaFinder )
@@ -44,7 +43,6 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindGroupMembership() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyGroup' )
 			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_CATEGORY ) ) );
@@ -92,7 +90,6 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindGroupMembershipFromSchema() {
-
 		$data = [
 			[ 'properties' => [ 'Foo' ], 'group_name' => 'Foo schema' ]
 		];
@@ -157,7 +154,6 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindGroupMembershipWhereShowGroupIsDisabled() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyGroup' )
 			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_CATEGORY ) ) );
@@ -197,7 +193,6 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMessageClassLink() {
-
 		$instance = new GroupFormatter(
 			$this->propertySpecificationLookup,
 			$this->schemaFinder

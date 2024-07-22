@@ -22,7 +22,7 @@ class KeywordPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	private $dataItemFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->testEnvironment = new TestEnvironment();
@@ -30,13 +30,12 @@ class KeywordPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			KeywordPropertyValueResourceBuilder::class,
 			new KeywordPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class KeywordPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	}
 
 	public function testIsNotResourceBuilderForNonExternalIdentifierTypedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new KeywordPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class KeywordPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	}
 
 	public function testAddResourceValueForValidProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_keyw' );
 

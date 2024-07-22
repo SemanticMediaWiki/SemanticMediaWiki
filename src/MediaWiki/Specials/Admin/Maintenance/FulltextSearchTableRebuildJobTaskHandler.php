@@ -70,7 +70,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'fulltrebuild';
 	}
 
@@ -79,7 +79,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 
@@ -89,7 +89,6 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$subject = DIWikiPage::newFromTitle( \SpecialPage::getTitleFor( 'SMWAdmin' ) );
 
 		if ( $this->hasFeature( SMW_ADM_FULLT ) && !$this->hasPendingJob() ) {
@@ -140,7 +139,6 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		if ( !$this->hasFeature( SMW_ADM_FULLT ) || $this->hasPendingJob() || $this->isApiTask() ) {
 			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 		}

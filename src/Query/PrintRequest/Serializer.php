@@ -55,7 +55,6 @@ class Serializer {
 	}
 
 	private static function doSerializeCat( $printRequest, $parameters ) {
-
 		$catlabel = Localizer::getInstance()->getNsText( NS_CATEGORY );
 		$result = '?' . $catlabel;
 
@@ -67,7 +66,6 @@ class Serializer {
 	}
 
 	private static function doSerializeCcat( $printRequest, $parameters ) {
-
 		$printname = $printRequest->getData()->getPrefixedText();
 		$result = '?' . $printname;
 
@@ -83,7 +81,6 @@ class Serializer {
 	}
 
 	private static function doSerializeProp( $printRequest, $parameters ) {
-
 		$printname = '';
 
 		$label = $printRequest->getLabel();
@@ -132,7 +129,6 @@ class Serializer {
 	}
 
 	private static function doSerializeThis( $printRequest, $parameters ) {
-
 		$result = '?';
 
 		// Has leading ?#

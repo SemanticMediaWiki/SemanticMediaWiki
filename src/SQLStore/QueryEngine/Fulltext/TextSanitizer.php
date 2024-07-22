@@ -46,7 +46,6 @@ class TextSanitizer {
 	 * @return array
 	 */
 	public function getVersions() {
-
 		$languageDetector = '(Disabled)';
 
 		if ( isset( $this->languageDetection['TextCatLanguageDetector'] ) ) {
@@ -149,7 +148,6 @@ class TextSanitizer {
 	}
 
 	private function predictLanguage( $text ) {
-
 		if ( $this->languageDetection === [] ) {
 			return null;
 		}

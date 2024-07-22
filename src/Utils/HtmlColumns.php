@@ -153,7 +153,6 @@ class HtmlColumns {
 	 * @param string $olType
 	 */
 	public function setListType( $listType, $olType = '' ) {
-
 		if ( in_array( $listType, [ 'ul', 'ol' ] ) ) {
 			$this->listType = $listType;
 		}
@@ -204,7 +203,6 @@ class HtmlColumns {
 	 * @param string $type
 	 */
 	public function setContents( array $cnts, $type = self::PLAIN_LIST ) {
-
 		if ( $type === self::PLAIN_LIST ) {
 			$contents[''] = [];
 
@@ -228,7 +226,6 @@ class HtmlColumns {
 	 * @return string
 	 */
 	public function getHtml() {
-
 		$result = '';
 		$usedColumnCloser = false;
 		$this->numRows = 0;
@@ -288,7 +285,6 @@ class HtmlColumns {
 	}
 
 	private function makeList( $key, $items, $rowsPerColumn, $columns, &$usedColumnCloser ) {
-
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';
@@ -349,7 +345,6 @@ class HtmlColumns {
 	}
 
 	private function element( $type, $attributes, $content ) {
-
 		$attr = '';
 		$attributes = (array)$attributes;
 

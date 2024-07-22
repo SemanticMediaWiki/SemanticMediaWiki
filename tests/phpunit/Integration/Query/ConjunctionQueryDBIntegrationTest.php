@@ -36,7 +36,7 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	private $fixturesProvider;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
@@ -56,8 +56,7 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 		$fixturesCleaner
 			->purgeSubjects( $this->subjectsToBeCleared )
@@ -70,7 +69,6 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	 * {{#ask: [[Category:HappyPlaces]] [[LocatedIn.MemberOf::Wonderland]] }}
 	 */
 	public function testConjunctionForCategoryAndPropertyChainSubqueryThatComparesEqualToSpecifiedValue() {
-
 		/**
 		 * Page ...-neverland annotated with [[LocatedIn::BananaWonderland]]
 		 */
@@ -179,7 +177,6 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testNestedPropertyConjunction() {
-
 		/**
 		 * Page annotated with [[Born in::Paris]]
 		 */

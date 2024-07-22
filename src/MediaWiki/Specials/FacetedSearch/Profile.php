@@ -64,7 +64,7 @@ class Profile {
 	 *
 	 * @return string
 	 */
-	public function getProfileName() : string {
+	public function getProfileName(): string {
 		return $this->profileName;
 	}
 
@@ -73,7 +73,7 @@ class Profile {
 	 *
 	 * @return int
 	 */
-	public function getProfileCount() : int {
+	public function getProfileCount(): int {
 		return count( $this->getProfileList() );
 	}
 
@@ -82,8 +82,7 @@ class Profile {
 	 *
 	 * @return array
 	 */
-	public function getProfileList() : array {
-
+	public function getProfileList(): array {
 		if ( $this->profileList === [] ) {
 			$this->loadProfile();
 		}
@@ -100,7 +99,6 @@ class Profile {
 	 * @return array|string|int
 	 */
 	public function get( string $key, $default = null ) {
-
 		if ( $this->profile === null ) {
 			$this->loadProfile();
 		}
@@ -115,7 +113,6 @@ class Profile {
 	}
 
 	private function loadProfile() {
-
 		$schemaList = $this->schemaFactory->newSchemaFinder()->getSchemaListByType(
 			self::SCHEMA_TYPE
 		);

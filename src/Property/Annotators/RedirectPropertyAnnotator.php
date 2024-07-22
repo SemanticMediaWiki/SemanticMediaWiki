@@ -37,7 +37,6 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
-
 		if ( !$this->redirectTargetFinder->hasRedirectTarget() ) {
 			return;
 		}

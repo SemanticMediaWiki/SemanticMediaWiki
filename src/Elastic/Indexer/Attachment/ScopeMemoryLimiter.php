@@ -35,7 +35,7 @@ class ScopeMemoryLimiter {
 	 *
 	 * @return int
 	 */
-	public function getMemoryLimit() : int {
+	public function getMemoryLimit(): int {
 		return ini_get( 'memory_limit' );
 	}
 
@@ -45,7 +45,6 @@ class ScopeMemoryLimiter {
 	 * @param callable $callable
 	 */
 	public function execute( callable $callable ) {
-
 		$memory_limit = ini_get( 'memory_limit' );
 
 		if ( $this->toInt( $memory_limit ) < $this->toInt( $this->memoryLimit ) ) {

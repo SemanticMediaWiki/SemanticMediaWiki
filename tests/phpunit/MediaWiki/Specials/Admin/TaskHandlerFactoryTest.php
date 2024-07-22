@@ -25,7 +25,7 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $htmlFormRenderer;
 	private $outputFormatter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -50,7 +50,6 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TaskHandlerFactory::class,
 			new TaskHandlerFactory( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
@@ -58,7 +57,6 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewTaskHandlerRegistry() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -85,7 +83,6 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider methodProvider
 	 */
 	public function testCanConstructByFactory( $method, $expected ) {
-
 		$instance = new TaskHandlerFactory(
 			$this->store,
 			$this->htmlFormRenderer,
@@ -99,7 +96,6 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function methodProvider() {
-
 		$provider[] = [
 			'newTableSchemaTaskHandler',
 			'\SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler'

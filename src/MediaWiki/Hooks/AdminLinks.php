@@ -24,7 +24,6 @@ class AdminLinks implements HookListener {
 	 * @return true
 	 */
 	public function process( ALTree $admin_links_tree ) {
-
 		// @codeCoverageIgnoreStart
 		$data_structure_section = new ALSection( wfMessage( 'smw_adminlinks_datastructure' )->text() );
 

@@ -17,7 +17,6 @@ use SMW\Tests\TestEnvironment;
 class DeferrableConstraintTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$deferrableConstraint = $this->getMockBuilder( DeferrableConstraint::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -29,7 +28,6 @@ class DeferrableConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTypeChangeOnCommandLine() {
-
 		$deferrableConstraint = $this->getMockBuilder( DeferrableConstraint::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

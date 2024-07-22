@@ -29,7 +29,6 @@ class StatusProperty extends FixtureProperty {
 	 * @return SemanticData
 	 */
 	public function getDependencies() {
-
 		$semanticData = parent::getDependencies();
 
 		$semanticData->addPropertyObjectValue(

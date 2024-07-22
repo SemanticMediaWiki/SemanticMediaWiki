@@ -57,7 +57,7 @@ class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 	 */
 	protected $deletePagesOnTearDown = true;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -137,7 +137,6 @@ class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
 	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
-
 		$this->pageImportBenchmarkRunner->setTestCaseLocation(
 			$this->getTestCaseLocation()
 		);

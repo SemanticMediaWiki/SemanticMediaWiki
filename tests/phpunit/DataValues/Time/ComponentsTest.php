@@ -19,7 +19,6 @@ class ComponentsTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testPublicProperties() {
-
 		$this->assertInternalType(
 			'array',
 			Components::$months
@@ -32,7 +31,6 @@ class ComponentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$instance = new Components( [ 'foo' => 'bar' ] );
 
 		$this->assertEquals(

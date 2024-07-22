@@ -72,7 +72,6 @@ class purgeEntityCache extends \Maintenance {
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter->reportMessage( $message );
 		}
@@ -84,7 +83,6 @@ class purgeEntityCache extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( $this->canExecute() !== true ) {
 			exit;
 		}
@@ -136,7 +134,6 @@ class purgeEntityCache extends \Maintenance {
 	}
 
 	private function fetchRows() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$this->lastId = (int)$connection->selectField(
@@ -165,7 +162,6 @@ class purgeEntityCache extends \Maintenance {
 	}
 
 	private function canExecute() {
-
 		if ( !Setup::isEnabled() ) {
 			return $this->reportMessage(
 				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
@@ -183,7 +179,6 @@ class purgeEntityCache extends \Maintenance {
 	}
 
 	private function doPurge( \Iterator $rows ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -215,7 +210,6 @@ class purgeEntityCache extends \Maintenance {
 	}
 
 	public function newFromRow( $row ) {
-
 		$namespace = (int)$row->smw_namespace;
 		$title = $row->smw_title;
 

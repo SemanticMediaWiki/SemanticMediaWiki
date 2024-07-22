@@ -106,7 +106,6 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 * @param mixed $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -122,7 +121,6 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 * @return mixed|false
 	 */
 	public function getOption( $key ) {
-
 		if ( $this->options !== null && $this->options->has( $key ) ) {
 			return $this->options->get( $key );
 		}

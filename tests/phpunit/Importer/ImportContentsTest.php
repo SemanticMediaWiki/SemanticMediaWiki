@@ -16,7 +16,6 @@ use SMW\Importer\ImportContents;
 class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Importer\ImportContents',
 			new ImportContents()
@@ -24,7 +23,6 @@ class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDescription() {
-
 		$instance = new ImportContents();
 
 		$instance->setDescription( 'Foo' );
@@ -36,7 +34,6 @@ class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVersion() {
-
 		$instance = new ImportContents();
 
 		$instance->setVersion( '1' );
@@ -48,7 +45,6 @@ class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testName() {
-
 		$instance = new ImportContents();
 
 		$instance->setName( 'Foo' );
@@ -60,7 +56,6 @@ class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testImportPerformer() {
-
 		$instance = new ImportContents();
 
 		$instance->setImportPerformer( 'Foo' );
@@ -72,7 +67,6 @@ class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNamespace() {
-
 		$instance = new ImportContents();
 
 		$instance->setNamespace( 'Foo' );
@@ -84,7 +78,6 @@ class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testContents() {
-
 		$instance = new ImportContents();
 
 		$instance->setContents( 'Foo' );
@@ -96,7 +89,6 @@ class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testContentType() {
-
 		$instance = new ImportContents();
 
 		$instance->setContentType( 'Foo' );
@@ -108,7 +100,6 @@ class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testError() {
-
 		$instance = new ImportContents();
 
 		$instance->addError( 'Foo' );
@@ -120,7 +111,6 @@ class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOptions() {
-
 		$instance = new ImportContents();
 
 		$instance->setOptions( 'Foo' );

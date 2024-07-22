@@ -21,7 +21,6 @@ class HelpWidget {
 	 * @return string
 	 */
 	public static function html() {
-
 		$format = 'broadtable';
 		$text = Message::get( 'smw-ask-help', Message::PARSE, Message::USER_LANGUAGE );
 

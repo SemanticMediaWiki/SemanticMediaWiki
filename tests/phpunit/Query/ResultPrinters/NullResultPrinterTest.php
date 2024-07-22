@@ -16,7 +16,6 @@ use SMW\Query\ResultPrinters\NullResultPrinter;
 class NullResultPrinterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NullResultPrinter::class,
 			new NullResultPrinter( '' )
@@ -24,7 +23,6 @@ class NullResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetResult_Empty() {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();

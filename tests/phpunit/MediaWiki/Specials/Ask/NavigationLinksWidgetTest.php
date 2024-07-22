@@ -20,7 +20,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testNavigation() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +39,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetMaxInlineLimit() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -64,7 +62,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNavigationLinksOnZeroCountResult() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -83,7 +80,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOffsetLimit() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -108,7 +104,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTopLinks() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -125,7 +120,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHiddenTopLinks() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -136,7 +130,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBasicLinks() {
-
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$stringValidator->assertThatStringContains(

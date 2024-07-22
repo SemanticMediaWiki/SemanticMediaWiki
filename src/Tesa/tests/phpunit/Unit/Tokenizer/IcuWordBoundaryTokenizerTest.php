@@ -25,7 +25,6 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\IcuWordBoundaryTokenizer',
 			new IcuWordBoundaryTokenizer()
@@ -36,7 +35,6 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testTokenize( $string, $expected ) {
-
 		$instance = new IcuWordBoundaryTokenizer();
 
 		$this->assertEquals(
@@ -46,7 +44,6 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 	}
 
 	public function testSetOption() {
-
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -65,7 +62,6 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 	}
 
 	public function testGeneralSetters() {
-
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -83,7 +79,6 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 	}
 
 	public function stringProvider() {
-
 		$provider[] = array(
 			"安全テスト",
 			array( '安全', 'テスト' )

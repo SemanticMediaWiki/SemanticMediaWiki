@@ -20,7 +20,7 @@ class DuplicateLookupTaskTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -34,13 +34,12 @@ class DuplicateLookupTaskTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new DuplicateLookupTask( $this->store, $this->cache );
 
 		$this->assertInstanceOf(
@@ -50,7 +49,6 @@ class DuplicateLookupTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();

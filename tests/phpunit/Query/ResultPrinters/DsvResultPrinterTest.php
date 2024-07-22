@@ -19,7 +19,7 @@ class DsvResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	private $queryResult;
 	private $resultPrinterReflector;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
@@ -30,7 +30,6 @@ class DsvResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DsvResultPrinter::class,
 			new DsvResultPrinter( 'dsv' )
@@ -43,7 +42,6 @@ class DsvResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMimeType() {
-
 		$instance = new DsvResultPrinter( 'dsv' );
 
 		$this->assertEquals(
@@ -56,7 +54,6 @@ class DsvResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider filenameDataProvider
 	 */
 	public function testGetFileName( $filename, $expected ) {
-
 		$instance = new DsvResultPrinter( 'dsv' );
 
 		$this->resultPrinterReflector->addParameters(
@@ -71,7 +68,6 @@ class DsvResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function filenameDataProvider() {
-
 		$provider = [];
 
 		$provider[] = [ 'Lala', 'Lala.dsv' ];

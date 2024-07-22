@@ -102,7 +102,6 @@ class DataValueServiceFactory {
 	 * @return DataValue
 	 */
 	public function newDataValueByTypeOrClass( $typeId, $class ) {
-
 		if ( is_callable( $class ) ) {
 			return $class( $typeId );
 		}
@@ -133,7 +132,6 @@ class DataValueServiceFactory {
 	 * @return ValueFormatter
 	 */
 	public function getValueFormatter( DataValue $dataValue ) {
-
 		$id = self::TYPE_FORMATTER . $dataValue->getTypeID();
 
 		if ( $this->containerBuilder->isRegistered( $id ) ) {
@@ -198,7 +196,6 @@ class DataValueServiceFactory {
 	}
 
 	private function getDispatchableValueFormatter( $dataValue ) {
-
 		if ( $this->dispatchingDataValueFormatter === null ) {
 			$this->dispatchingDataValueFormatter = $this->newDispatchingDataValueFormatter();
 		}
@@ -207,7 +204,6 @@ class DataValueServiceFactory {
 	}
 
 	private function newDispatchingDataValueFormatter() {
-
 		$dispatchingDataValueFormatter = new DispatchingDataValueFormatter();
 
 		// To be checked only after DispatchingDataValueFormatter::addDataValueFormatter did

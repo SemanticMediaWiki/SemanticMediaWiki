@@ -18,15 +18,13 @@ class FileRepoFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $repoGroup;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->repoGroup = $this->getMockBuilder( '\RepoGroup' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FileRepoFinder::class,
 			new FileRepoFinder( $this->repoGroup )
@@ -34,7 +32,6 @@ class FileRepoFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFile() {
-
 		$file = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -58,7 +55,6 @@ class FileRepoFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFromArchive() {
-
 		$file = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
 			->getMock();

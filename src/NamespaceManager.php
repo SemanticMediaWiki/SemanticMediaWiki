@@ -53,7 +53,6 @@ class NamespaceManager {
 	 * @since 1.9
 	 */
 	public function init( array $vars ): array {
-
 		if ( !$this->isDefinedConstant( 'SMW_NS_PROPERTY' ) ) {
 			$vars = $this->initCustomNamespace( $vars )['newVars'];
 		}
@@ -88,7 +87,6 @@ class NamespaceManager {
 	 * @param array &$namespaces
 	 */
 	public static function initCanonicalNamespaces( array &$namespaces ) {
-
 		$instance_newVars = self::initCustomNamespace( $GLOBALS );
 		Globals::replace( $instance_newVars['newVars'] );
 		$canonicalNames = $instance_newVars['instance']->getCanonicalNames();
@@ -115,7 +113,6 @@ class NamespaceManager {
 	 * @return array
 	 */
 	public static function getCanonicalNames() {
-
 		$canonicalNames = [
 			SMW_NS_PROPERTY      => 'Property',
 			SMW_NS_PROPERTY_TALK => 'Property_talk',
@@ -138,7 +135,6 @@ class NamespaceManager {
 	 * @return array
 	 */
 	public static function buildNamespaceIndex( $offset ) {
-
 		// 100 and 101 used to be occupied by SMW's now obsolete namespaces
 		// "Relation" and "Relation_Talk"
 
@@ -171,7 +167,6 @@ class NamespaceManager {
 	 * @since 1.9
 	 */
 	public static function initCustomNamespace( array $vars, LocalLanguage $localLanguage = null ): array {
-
 		$instance = new self( $localLanguage );
 
 		$vars['smwgNamespaceIndex'] = $instance->getNamespaceIndex( $vars );
@@ -215,7 +210,6 @@ class NamespaceManager {
 	}
 
 	private function getNamespaceIndex( $vars ) {
-
 		if ( !isset( $vars['smwgNamespaceIndex'] ) ) {
 			return self::$initNamespaceIndex = self::DEFAULT_NAMESPACEINDEX;
 		} elseif ( self::$initNamespaceIndex === null ) {
@@ -228,7 +222,6 @@ class NamespaceManager {
 	}
 
 	private function getLanguageCode( $vars ) {
-
 		if ( self::$initLanguageCode === '' ) {
 			return self::$initLanguageCode = $vars['wgLanguageCode'];
 		} elseif ( self::$initLanguageCode !== '' && self::$initLanguageCode === $vars['wgLanguageCode'] ) {
@@ -246,7 +239,6 @@ class NamespaceManager {
 	}
 
 	private function addNamespaceSettings( &$vars ) {
-
 		/**
 		 * Default settings for the SMW specific NS which can only
 		 * be defined after SMW_NS_PROPERTY is declared
@@ -271,7 +263,6 @@ class NamespaceManager {
 	}
 
 	private function addExtraNamespaceSettings( &$vars ) {
-
 		/**
 		 * Indicating which namespaces allow sub-pages
 		 *

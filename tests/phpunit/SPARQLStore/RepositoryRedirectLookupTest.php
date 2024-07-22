@@ -25,7 +25,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -37,7 +36,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectTargetForBlankNode() {
-
 		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -56,7 +54,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectTargetForDataItemWithSubobject() {
-
 		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -76,7 +73,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectTargetForDBLookupWithNoEntry() {
-
 		$repositoryConnection = $this->createRepositoryConnectionMockToUse( false );
 
 		$instance = new RepositoryRedirectLookup( $repositoryConnection );
@@ -94,7 +90,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectTargetForDBLookupWithSingleEntry() {
-
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
 		$repositoryConnection = $this->createRepositoryConnectionMockToUse( [ $expLiteral ] );
@@ -116,7 +111,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectTargetForDBLookupWithMultipleEntries() {
-
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
 		$repositoryConnection = $this->createRepositoryConnectionMockToUse( [ $expLiteral, null ] );
@@ -138,7 +132,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectTargetForDBLookupWithMultipleEntriesForcesNewResource() {
-
 		$propertyPage = new DIWikiPage( 'Foo', SMW_NS_PROPERTY );
 
 		$resource = new ExpNsResource(
@@ -180,7 +173,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectTargetForDBLookupWithForNonMultipleResourceEntryThrowsException() {
-
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
 		$repositoryConnection = $this->createRepositoryConnectionMockToUse( [ $expLiteral, $expLiteral ] );
@@ -198,7 +190,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectTargetForCachedLookup() {
-
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 
@@ -227,7 +218,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider nonRedirectableResourceProvider
 	 */
 	public function testRedirectTargetForNonRedirectableResource( $expNsResource ) {
-
 		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -244,7 +234,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function createRepositoryConnectionMockToUse( $listReturnValue ) {
-
 		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -265,7 +254,6 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function nonRedirectableResourceProvider() {
-
 		$provider[] = [
 			Exporter::getInstance()->getSpecialPropertyResource( '_INST' )
 		];

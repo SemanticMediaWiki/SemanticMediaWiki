@@ -70,7 +70,6 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 	 * @param array $case
 	 */
 	public function run( array $case ) {
-
 		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
@@ -97,7 +96,6 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 	}
 
 	private function doXmlImport( $file, array $case ) {
-
 		$this->xmlImportRunner->setFile( $file );
 		$this->xmlImportRunner->setVerbose( true );
 

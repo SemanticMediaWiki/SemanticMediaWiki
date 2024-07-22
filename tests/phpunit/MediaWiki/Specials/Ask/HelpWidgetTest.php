@@ -19,7 +19,6 @@ class HelpWidgetTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testSessionFailure() {
-
 		$this->assertContains(
 			'ask-help',
 			HelpWidget::html()

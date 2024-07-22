@@ -23,7 +23,6 @@ class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstructor() {
-
 		$this->assertInstanceOf(
 			'\SMW\Serializers\ExpDataSerializer',
 			new ExpDataSerializer()
@@ -31,7 +30,6 @@ class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSerializerObjectThrowsException() {
-
 		$instance = new ExpDataSerializer();
 
 		$this->expectException( 'OutOfBoundsException' );
@@ -42,7 +40,6 @@ class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider expDataProvider
 	 */
 	public function testSerialize( $data, $expected ) {
-
 		$instance = new ExpDataSerializer();
 
 		$this->assertEquals(
@@ -52,7 +49,6 @@ class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function expDataProvider() {
-
 		#0
 		$expData = new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', null ) );
 

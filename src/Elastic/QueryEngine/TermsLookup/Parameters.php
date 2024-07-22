@@ -41,7 +41,6 @@ class Parameters {
 	 * @param array $value
 	 */
 	public function merge( $key, array $value ) {
-
 		if ( !isset( $this->parameters[$key] ) ) {
 			$this->parameters[$key] = [];
 		}
@@ -69,7 +68,6 @@ class Parameters {
 	 * @throws InvalidArgumentException
 	 */
 	public function get( $key ) {
-
 		if ( $this->has( $key ) ) {
 			return $this->parameters[$key];
 		}

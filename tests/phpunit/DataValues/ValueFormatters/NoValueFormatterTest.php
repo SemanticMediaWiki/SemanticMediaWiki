@@ -19,7 +19,6 @@ class NoValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueFormatters\NoValueFormatter',
 			new NoValueFormatter()
@@ -27,7 +26,6 @@ class NoValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsFormatterForValidation() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -40,7 +38,6 @@ class NoValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormat() {
-
 		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSerialization' ] )
@@ -72,7 +69,6 @@ class NoValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToFormatOnMissingDataValueThrowsException() {
-
 		$instance = new NoValueFormatter();
 
 		$this->expectException( 'RuntimeException' );

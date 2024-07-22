@@ -123,7 +123,6 @@ class FormsBuilder {
 	 * @return []
 	 */
 	public function getPreselectNsList() {
-
 		$activeForm = $this->request->getVal( 'smw-form', $this->defaultForm );
 
 		if ( $activeForm === null ) {
@@ -145,7 +144,6 @@ class FormsBuilder {
 	 * @return string
 	 */
 	public function buildFormList() {
-
 		$list = [];
 		$name = '';
 		$value = '';
@@ -195,7 +193,6 @@ class FormsBuilder {
 	 * @return string
 	 */
 	public function buildForm( array $data ) {
-
 		if ( !isset( $data['forms'] ) ) {
 			throw new RuntimeException( "Missing forms definition" );
 		}
@@ -265,7 +262,6 @@ class FormsBuilder {
 	}
 
 	private function form_fields( $data, $activeForm, $name, $definition ) {
-
 		// Short form, URL query conform
 		$s = self::toLowerCase( $name );
 		$this->formList[$s] = [ 'name' => $name, 'selected' => $activeForm === $s ];
@@ -331,7 +327,6 @@ class FormsBuilder {
 	}
 
 	private function findDescription( $descriptions, $name, $isActiveForm ) {
-
 		if ( !isset( $descriptions[$name] ) ) {
 			return '';
 		}

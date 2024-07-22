@@ -23,8 +23,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	private $loadBalancer;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->loadBalancer = $this->getMockBuilder( '\LoadBalancer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -34,7 +33,6 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			LoadBalancerConnectionProvider::class,
 			new LoadBalancerConnectionProvider( DB_REPLICA )
@@ -42,7 +40,6 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAndReleaseConnection() {
-
 		$database = $this->getMockBuilder( '\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -72,7 +69,6 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAndReleaseConnectionRef() {
-
 		$database = $this->getMockBuilder( '\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -100,7 +96,6 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInvalidConnectionFromLoadBalancerThrowsException() {
-
 		$loadBalancer = $this->getMockBuilder( '\LoadBalancer' )
 			->disableOriginalConstructor()
 			->getMock();

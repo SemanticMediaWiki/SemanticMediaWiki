@@ -204,7 +204,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_CONTAINER ) {
 			// might throw an exception, we just pass it through
 			$dataItem = $dataItem->getSemanticData()->getSubject();
@@ -278,7 +277,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortWikiText( $linked = null ) {
-
 		if ( is_null( $linked ) || $linked === false ||
 			$this->m_outformat == '-' || !$this->isValid() ||
 			$this->m_caption === '' ) {
@@ -345,7 +343,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
-
 		if ( $this->m_fragment !== '' ) {
 			$this->linkAttributes['class'] = 'smw-subobject-entity';
 		}
@@ -441,7 +438,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
-
 		if ( $this->m_fragment !== '' ) {
 			$this->linkAttributes['class'] = 'smw-subobject-entity';
 		}
@@ -490,7 +486,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getWikiValue() {
-
 		if ( $this->getOption( self::SHORT_FORM, false ) ) {
 			$text = $this->getText();
 		} elseif ( $this->getOption( self::PREFIXED_FORM, false ) ) {
@@ -541,7 +536,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return Title
 	 */
 	public function getTitle() {
-
 		if ( $this->m_title !== null ) {
 			return $this->m_title;
 		}
@@ -628,7 +622,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getText() {
-
 		if ( $this->getOption( self::NO_TEXT_TRANSFORMATION, false ) ) {
 			return $this->m_dataitem->getDBkey();
 		}
@@ -643,7 +636,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getPrefixedText() {
-
 		if ( $this->m_prefixedtext !== '' ) {
 			return $this->m_prefixedtext;
 		}
@@ -685,7 +677,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getPreferredCaption() {
-
 		if ( ( $preferredCaption = parent::getPreferredCaption() ) !== '' && $preferredCaption !== false ) {
 			return $preferredCaption;
 		}
@@ -796,7 +787,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getDisplayTitle() {
-
 		if ( $this->m_dataitem === null || !$this->hasFeature( SMW_DV_WPV_DTITLE ) ) {
 			return '';
 		}

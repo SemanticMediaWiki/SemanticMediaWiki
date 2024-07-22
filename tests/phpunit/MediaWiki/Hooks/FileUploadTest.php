@@ -22,7 +22,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( [
@@ -54,13 +54,12 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -75,7 +74,6 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testprocessEnabledNamespace() {
-
 		$title = Title::newFromText( __METHOD__, NS_FILE );
 
 		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
@@ -138,7 +136,6 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToProcessDisabledNamespace() {
-
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )

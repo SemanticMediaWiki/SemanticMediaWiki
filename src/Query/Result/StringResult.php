@@ -111,7 +111,6 @@ class StringResult extends QueryResult {
 	 * @return string
 	 */
 	public function getResults() {
-
 		$result = $this->result;
 
 		if ( is_callable( $this->preOutputCallback ) ) {

@@ -16,7 +16,6 @@ use SMW\Schema\Compartment;
 class CompartmentTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			Compartment::class,
 			new Compartment()
@@ -24,7 +23,6 @@ class CompartmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsEmpty() {
-
 		$instance = new Compartment();
 
 		$this->assertTrue(
@@ -33,7 +31,6 @@ class CompartmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHas() {
-
 		$data = [
 			'Schema' => [
 				'if' => [
@@ -61,7 +58,6 @@ class CompartmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$data = [
 			'Schema' => [
 				'if' => [
@@ -91,7 +87,6 @@ class CompartmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJsonSerialize() {
-
 		$data = [
 			'Schema' => [
 				'if' => [
@@ -116,7 +111,6 @@ class CompartmentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIteratorAggregate() {
-
 		$data = [
 			'section_1' => [
 				'if' => [

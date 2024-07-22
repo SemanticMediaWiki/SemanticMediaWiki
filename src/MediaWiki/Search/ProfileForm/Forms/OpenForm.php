@@ -70,7 +70,6 @@ class OpenForm {
 	 * @param array $definition
 	 */
 	public function makeFields( $definition = [] ) {
-
 		$this->parameters = [];
 
 		$group = '';
@@ -110,7 +109,6 @@ class OpenForm {
 	}
 
 	private function makeFieldGroup( $property, $value, $op ) {
-
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
 
 		$attributes = [

@@ -56,7 +56,6 @@ class SpecialsTest extends DatabaseTestCase {
 	 * @param $specialPageProvider
 	 */
 	public function testSpecial( callable $specialPageProvider ) {
-
 		try {
 			$specialPageProvider()->execute( '' );
 		}
@@ -78,7 +77,6 @@ class SpecialsTest extends DatabaseTestCase {
 	 * @param $specialPageProvider
 	 */
 	public function testSpecialAliasesContLang( callable $specialPageProvider ) {
-
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 
 		// Test for languages
@@ -138,7 +136,7 @@ class SpecialsTest extends DatabaseTestCase {
 		foreach ( $specialPages as $special ) {
 			// Defer instantiating the special pages until the test runs
 			// to avoid prematurely capturing service references that may become stale later.
-			$specialPageCallable = static function() use ( $special, $request ): SpecialPage {
+			$specialPageCallable = static function () use ( $special, $request ): SpecialPage {
 				$specialPage = MediaWikiServices::getInstance()->getSpecialPageFactory()->getPage(
 					$special
 				);
@@ -150,7 +148,7 @@ class SpecialsTest extends DatabaseTestCase {
 				return $specialPage;
 			};
 
-			$specialPageWithSuperUserCallable = static function() use ( $special, $request ): SpecialPage {
+			$specialPageWithSuperUserCallable = static function () use ( $special, $request ): SpecialPage {
 				$specialPage = MediaWikiServices::getInstance()->getSpecialPageFactory()->getPage(
 					$special
 				);

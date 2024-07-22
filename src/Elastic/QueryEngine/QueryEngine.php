@@ -108,7 +108,6 @@ class QueryEngine implements IQueryEngine {
 	 * @return QueryResult
 	 */
 	public function getQueryResult( Query $query ) {
-
 //		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 
 		if ( ( $query->getDescription() instanceof ThingDescription ) &&
@@ -215,7 +214,6 @@ class QueryEngine implements IQueryEngine {
 	}
 
 	private function newDebugQueryResult( $params ) {
-
 		$params['explain'] = $this->options->dotGet( 'query.debug.explain', false );
 
 		$connection = $this->store->getConnection( 'elastic' );
@@ -253,7 +251,6 @@ class QueryEngine implements IQueryEngine {
 	}
 
 	private function newCountQueryResult( $query, $params ) {
-
 		$connection = $this->store->getConnection( 'elastic' );
 		$result = $connection->count( $params );
 
@@ -273,7 +270,6 @@ class QueryEngine implements IQueryEngine {
 	}
 
 	private function newInstanceQueryResult( $query, array $params ) {
-
 		$connection = $this->store->getConnection( 'elastic' );
 		$scoreSet = new ScoreSet();
 		$excerpts = new Excerpts();
@@ -363,7 +359,6 @@ class QueryEngine implements IQueryEngine {
 	}
 
 	private function addHighlight( &$body ) {
-
 		if ( ( $type = $this->options->dotGet( 'query.highlight.fragment.type', false ) ) === false ) {
 			return;
 		}

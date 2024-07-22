@@ -27,7 +27,6 @@ class CharacterExaminer {
 	 * @return boolean
 	 */
 	public static function contains( $type, $text ) {
-
 		if ( $type === self::CYRILLIC ) {
 			return preg_match('/\p{Cyrillic}/u', $text ) > 0;
 		}
