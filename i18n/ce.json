@@ -57,7 +57,7 @@
 	"smw_property_template": "$1 йу тайпа $2, ($3 {{PLURAL:$3|лелор}})",
 	"smw-sp-property-searchform": "Гайта билгалонаш, чулацам болу:",
 	"smw-special-property-searchform-options": "Параметраш",
-	"smw-special-wantedproperties-filter-label": "Луьттург:",
+	"smw-special-wantedproperties-filter-label": "Фильтр:",
 	"smw-special-wantedproperties-filter-none": "ХӀумма а",
 	"smw-special-wantedproperties-filter-unapproved": "тӀечӀагӀданза",
 	"concepts": "Концепташ",
@@ -241,7 +241,7 @@
 	"smw-indicator-revision-mismatch": "Редакци",
 	"smw-facetedsearch-intro-tab-search": "Лахар",
 	"smw-facetedsearch-format-table": "Таблица",
-	"smw-facetedsearch-input-filter-placeholder": "Литтар...",
+	"smw-facetedsearch-input-filter-placeholder": "фильтр...",
 	"smw-search-placeholder": "Лоьху...",
 	"smw-listingcontinuesabbrev": "(кхин дlа)",
 	"smw-showingresults": "Лахахьа {{PLURAL:$1|гойту}} <strong>$1</strong> {{PLURAL:$1|хилам}}, дӀаболало кху № <strong>$2</strong>."
