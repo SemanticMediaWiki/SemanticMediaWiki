@@ -223,7 +223,7 @@ abstract class QueryPage extends \QueryPage {
 
 		if ( $num > 0 ) {
 			$s = [];
-			if ( ! $this->listoutput ) {
+			if ( !$this->listoutput ) {
 				$s[] = $this->openList( $offset );
 			}
 
@@ -234,7 +234,7 @@ abstract class QueryPage extends \QueryPage {
 				}
 			}
 
-			if ( ! $this->listoutput ) {
+			if ( !$this->listoutput ) {
 				$s[] = $this->closeList();
 			}
 			$str = $this->listoutput ? $this->getLanguage()->listToText( $s ) : implode( '', $s );

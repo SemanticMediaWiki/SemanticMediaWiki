@@ -135,7 +135,6 @@
 		<exclude name="MediaWiki.Commenting.DocComment.SyntaxAlignedDocClose" />
 		<exclude name="PSR2.Classes.ClassDeclaration.SpaceBeforeName" />
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.returnValueMap" />
-		<exclude name="Generic.Formatting.SpaceAfterNot.Incorrect" />
 		<exclude name="PSR2.Files.EndFileNewline.TooMany" />
 		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis.SpaceBeforeOpeningParenthesis" />
 		<exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.SpaceBeforeBrace" />
