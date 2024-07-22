@@ -67,7 +67,7 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 		$document = new DOMDocument();
 
 		// https://stackoverflow.com/questions/6090667/php-domdocument-errors-warnings-on-html5-tags
-		libxml_use_internal_errors(true);
+		libxml_use_internal_errors( true );
 		$result = $document->loadHTML( $html );
 		libxml_clear_errors();
 

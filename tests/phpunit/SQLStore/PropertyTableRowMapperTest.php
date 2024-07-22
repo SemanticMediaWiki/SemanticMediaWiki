@@ -91,7 +91,7 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 		$semanticData = new SemanticData( $subject );
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( 'Foo_test_123'),
+			new DIProperty( 'Foo_test_123' ),
 			new DIWikiPage( 'Bar', NS_MAIN )
 		);
 
@@ -163,7 +163,7 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 		$semanticData = new SemanticData( $subject );
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( 'Foo_test_123'),
+			new DIProperty( 'Foo_test_123' ),
 			new DIWikiPage( 'Bar', NS_MAIN )
 		);
 

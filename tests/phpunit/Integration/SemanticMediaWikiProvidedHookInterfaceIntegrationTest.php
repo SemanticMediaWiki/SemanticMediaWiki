@@ -43,7 +43,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will($this->returnCallback( [ $this, 'mockConnection' ] ) );
+			->will( $this->returnCallback( [ $this, 'mockConnection' ] ) );
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
@@ -242,7 +242,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 		$store->expects( $this->any() )
 			->method( 'service' )
-			->will($this->throwException(new \SMW\Services\Exception\ServiceNotFoundException( 'foo' ) ));
+			->will( $this->throwException( new \SMW\Services\Exception\ServiceNotFoundException( 'foo' ) ) );
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -265,7 +265,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue(  NS_MAIN ) );
+			->will( $this->returnValue( NS_MAIN ) );
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
@@ -493,7 +493,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 		$hookDispatcher->expects( $this->once() )
 			->method( 'onBeforeMagicWordsFinder' )
-			->will($this->returnCallback( function ( &$magicWords ) {
+			->will( $this->returnCallback( function ( &$magicWords ) {
 				$magicWords = [ 'Foo' ];
 			} ) );
 

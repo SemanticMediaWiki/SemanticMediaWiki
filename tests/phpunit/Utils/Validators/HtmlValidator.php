@@ -100,11 +100,11 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 
 			if ( is_array( $selector ) ) {
 				$expectedCount = array_pop( $selector );
-				$expectedCountText = ( ( $expected === true) ? '' : 'not ') . $expectedCount;
+				$expectedCountText = ( ( $expected === true ) ? '' : 'not ' ) . $expectedCount;
 				$selector = array_shift( $selector );
 			} else {
 				$expectedCount = false;
-				$expectedCountText = ( $expected === true) ? 'at least 1' : 'none';
+				$expectedCountText = ( $expected === true ) ? 'at least 1' : 'none';
 			}
 
 			$message = "Failed assertion for test case `{$message}` on: \n=====\n$htmlFragment\n=====\nExpected pattern: `$selector`\n";

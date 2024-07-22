@@ -49,7 +49,7 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	public function endTest( PHPUnit_Framework_Test $test, $length ): void {
 		if ( $this->isEnabledToListen && ( $length > $this->slowThreshold ) ) {
 			$className = get_class( $test );
-			$className = substr( $className, strrpos( $className, '\\') + 1 );
+			$className = substr( $className, strrpos( $className, '\\' ) + 1 );
 
 			$label = sprintf( '%s:%s', $className, $test->getName() );
 			$this->slowTests[$label] = round( $length, 3 );

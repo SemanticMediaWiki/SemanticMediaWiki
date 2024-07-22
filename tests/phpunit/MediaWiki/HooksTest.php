@@ -1204,7 +1204,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ &$this->title, &$article  ]
+			[ &$this->title, &$article ]
 		);
 
 		return $handler;
@@ -1221,7 +1221,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ $this->title, &$isMovable  ]
+			[ $this->title, &$isMovable ]
 		);
 
 		return $handler;
@@ -1239,7 +1239,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ $modelId, &$contentHandler  ]
+			[ $modelId, &$contentHandler ]
 		);
 
 		return $handler;

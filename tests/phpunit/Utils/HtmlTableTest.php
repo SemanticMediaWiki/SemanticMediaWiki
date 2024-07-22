@@ -39,7 +39,7 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 	public function testStandardTable_Header_Cell_Row() {
 		$instance = new HtmlTable();
 
-		$instance->header( 'Foo ');
+		$instance->header( 'Foo ' );
 		$instance->cell( 'Bar' );
 		$instance->row();
 

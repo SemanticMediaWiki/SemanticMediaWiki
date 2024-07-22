@@ -190,7 +190,7 @@ class UtilityFactory {
 		// Use to create a copy to avoid having the original file being
 		// deleted after the upload
 		$dummyFileCreator = new DummyFileCreator();
-		$dummyFileCreator->createFileWithCopyFrom(  $desiredDestName, $localUploadPath );
+		$dummyFileCreator->createFileWithCopyFrom( $desiredDestName, $localUploadPath );
 
 		return new LocalFileUpload(
 			$dummyFileCreator->getPath(),

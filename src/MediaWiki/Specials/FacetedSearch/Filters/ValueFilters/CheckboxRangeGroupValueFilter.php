@@ -211,7 +211,7 @@ class CheckboxRangeGroupValueFilter {
 		// Handle {{ ... }} and find replacements, for example:
 		// "within last 50 years": "{{-50 years}}...{{CURRENTTIME}}"
 		if ( strpos( $min, '{{' ) !== false && strpos( $min, '}}' ) !== false ) {
-			preg_match_all('/{{(.*?)}}/', $min, $matches );
+			preg_match_all( '/{{(.*?)}}/', $min, $matches );
 
 			if ( isset( $matches[1][0] ) && $matches[1][0] === 'CURRENTTIME' ) {
 				$min = date( 'Y-m-d' );
@@ -221,7 +221,7 @@ class CheckboxRangeGroupValueFilter {
 		}
 
 		if ( strpos( $max, '{{' ) !== false && strpos( $max, '}}' ) !== false ) {
-			preg_match_all('/{{(.*?)}}/', $max, $matches );
+			preg_match_all( '/{{(.*?)}}/', $max, $matches );
 
 			if ( isset( $matches[1][0] ) && $matches[1][0] === 'CURRENTTIME' ) {
 				$max = date( 'Y-m-d' );

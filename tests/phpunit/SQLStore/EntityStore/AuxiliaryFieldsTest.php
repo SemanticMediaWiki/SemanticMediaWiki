@@ -62,7 +62,7 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 't.smw_hash' => [ 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' ] ]) )
+				$this->equalTo( [ 't.smw_hash' => [ 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' ] ] ) )
 			->will( $this->returnValue( [ (object)$row ] ) );
 
 		$instance = new AuxiliaryFields(

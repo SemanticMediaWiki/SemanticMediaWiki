@@ -180,7 +180,7 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->once() )
 			->method( 'getTableIndexes' )
-			->will( $this->returnValue( [ 'foo', [ 'cols', 'type'], 'foo' ] ) );
+			->will( $this->returnValue( [ 'foo', [ 'cols', 'type' ], 'foo' ] ) );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )

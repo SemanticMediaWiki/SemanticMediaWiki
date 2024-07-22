@@ -68,7 +68,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBulkOnIllegalArgumentErrorThrowsReplicationException() {
-		$options = new Config (
+		$options = new Config(
 			[
 				'replication' => [
 					'throw.exception.on.illegal.argument.error' => true

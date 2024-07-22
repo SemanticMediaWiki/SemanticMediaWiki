@@ -272,7 +272,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 */
 	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
 		$obj = static::doUnserialize( $json['value'] );
-		$obj->options = $json['options'] ? SemanticData::maybeUnserialize($unserializer, $json['options'] ) : null;
+		$obj->options = $json['options'] ? SemanticData::maybeUnserialize( $unserializer, $json['options'] ) : null;
 		return $obj;
 	}
 

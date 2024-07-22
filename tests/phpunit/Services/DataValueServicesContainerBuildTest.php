@@ -101,8 +101,8 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 		$containerBuilder->registerObject( 'Store', $this->store );
 		$containerBuilder->registerObject( 'MediaWikiLogger', $this->logger );
-		$containerBuilder->registerObject( 'SchemaFactory', $this->schemaFactory  );
-		$containerBuilder->registerObject( 'ConstraintFactory', $this->constraintFactory  );
+		$containerBuilder->registerObject( 'SchemaFactory', $this->schemaFactory );
+		$containerBuilder->registerObject( 'ConstraintFactory', $this->constraintFactory );
 		$containerBuilder->registerObject( 'EntityCache', $this->entityCache );
 
 		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'datavalues.php' );

@@ -320,7 +320,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 			[ 'Quantity' , '_qty' ], // #5
 			[ 'Date'     , '_dat' ], // #6
 			[ 'Email'    , '_ema' ], // #7
-			[ ''         , ''     ], // #8
+			[ ''         , '' ], // #8
 		];
 	}
 

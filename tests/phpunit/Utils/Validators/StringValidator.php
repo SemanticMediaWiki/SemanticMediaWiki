@@ -84,7 +84,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 
 	private function isMatch( $pattern, $source ) {
 		// use /.../ indicator to use the preg_match search match
-		if ( strlen( $pattern) >= 2 && substr( $pattern, 0, 1) === '/' && substr( $pattern, -1) === '/' ) {
+		if ( strlen( $pattern ) >= 2 && substr( $pattern, 0, 1 ) === '/' && substr( $pattern, -1 ) === '/' ) {
 
 			return (bool) preg_match( $pattern, $source );
 

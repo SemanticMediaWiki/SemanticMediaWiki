@@ -128,7 +128,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 		$ctype = array( "O", "O", "O" );
 		$o = $this->mb_string_to_array_( $input );
 
-		for ( $i = 0; $i<count($o); ++$i ) {
+		for ( $i = 0; $i<count( $o ); ++$i ) {
 			$seg[] = $o[$i];
 			$ctype[] = $this->ctype_( $o[$i] );
 		}
@@ -144,7 +144,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 		$p2 = "U";
 		$p3 = "U";
 
-		for($i = 4; $i<count($seg)-3; ++$i){
+		for( $i = 4; $i<count( $seg )-3; ++$i ){
 			$score = self::$model["BIAS"];
 			$w1 = $seg[$i-3];
 			$w2 = $seg[$i-2];
@@ -158,49 +158,49 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 			$c4 = $ctype[$i];
 			$c5 = $ctype[$i+1];
 			$c6 = $ctype[$i+2];
-			$score += $this->ts_(@self::$model["UP1"][$p1]);
-			$score += $this->ts_(@self::$model["UP2"][$p2]);
-			$score += $this->ts_(@self::$model["UP3"][$p3]);
-			$score += $this->ts_(@self::$model["BP1"][$p1 . $p2]);
-			$score += $this->ts_(@self::$model["BP2"][$p2 . $p3]);
-			$score += $this->ts_(@self::$model["UW1"][$w1]);
-			$score += $this->ts_(@self::$model["UW2"][$w2]);
-			$score += $this->ts_(@self::$model["UW3"][$w3]);
-			$score += $this->ts_(@self::$model["UW4"][$w4]);
-			$score += $this->ts_(@self::$model["UW5"][$w5]);
-			$score += $this->ts_(@self::$model["UW6"][$w6]);
-			$score += $this->ts_(@self::$model["BW1"][$w2 . $w3]);
-			$score += $this->ts_(@self::$model["BW2"][$w3 . $w4]);
-			$score += $this->ts_(@self::$model["BW3"][$w4 . $w5]);
-			$score += $this->ts_(@self::$model["TW1"][$w1 . $w2 . $w3]);
-			$score += $this->ts_(@self::$model["TW2"][$w2 . $w3 . $w4]);
-			$score += $this->ts_(@self::$model["TW3"][$w3 . $w4 . $w5]);
-			$score += $this->ts_(@self::$model["TW4"][$w4 . $w5 . $w6]);
-			$score += $this->ts_(@self::$model["UC1"][$c1]);
-			$score += $this->ts_(@self::$model["UC2"][$c2]);
-			$score += $this->ts_(@self::$model["UC3"][$c3]);
-			$score += $this->ts_(@self::$model["UC4"][$c4]);
-			$score += $this->ts_(@self::$model["UC5"][$c5]);
-			$score += $this->ts_(@self::$model["UC6"][$c6]);
-			$score += $this->ts_(@self::$model["BC1"][$c2 . $c3]);
-			$score += $this->ts_(@self::$model["BC2"][$c3 . $c4]);
-			$score += $this->ts_(@self::$model["BC3"][$c4 . $c5]);
-			$score += $this->ts_(@self::$model["TC1"][$c1 . $c2 . $c3]);
-			$score += $this->ts_(@self::$model["TC2"][$c2 . $c3 . $c4]);
-			$score += $this->ts_(@self::$model["TC3"][$c3 . $c4 . $c5]);
-			$score += $this->ts_(@self::$model["TC4"][$c4 . $c5 . $c6]);
+			$score += $this->ts_( @self::$model["UP1"][$p1] );
+			$score += $this->ts_( @self::$model["UP2"][$p2] );
+			$score += $this->ts_( @self::$model["UP3"][$p3] );
+			$score += $this->ts_( @self::$model["BP1"][$p1 . $p2] );
+			$score += $this->ts_( @self::$model["BP2"][$p2 . $p3] );
+			$score += $this->ts_( @self::$model["UW1"][$w1] );
+			$score += $this->ts_( @self::$model["UW2"][$w2] );
+			$score += $this->ts_( @self::$model["UW3"][$w3] );
+			$score += $this->ts_( @self::$model["UW4"][$w4] );
+			$score += $this->ts_( @self::$model["UW5"][$w5] );
+			$score += $this->ts_( @self::$model["UW6"][$w6] );
+			$score += $this->ts_( @self::$model["BW1"][$w2 . $w3] );
+			$score += $this->ts_( @self::$model["BW2"][$w3 . $w4] );
+			$score += $this->ts_( @self::$model["BW3"][$w4 . $w5] );
+			$score += $this->ts_( @self::$model["TW1"][$w1 . $w2 . $w3] );
+			$score += $this->ts_( @self::$model["TW2"][$w2 . $w3 . $w4] );
+			$score += $this->ts_( @self::$model["TW3"][$w3 . $w4 . $w5] );
+			$score += $this->ts_( @self::$model["TW4"][$w4 . $w5 . $w6] );
+			$score += $this->ts_( @self::$model["UC1"][$c1] );
+			$score += $this->ts_( @self::$model["UC2"][$c2] );
+			$score += $this->ts_( @self::$model["UC3"][$c3] );
+			$score += $this->ts_( @self::$model["UC4"][$c4] );
+			$score += $this->ts_( @self::$model["UC5"][$c5] );
+			$score += $this->ts_( @self::$model["UC6"][$c6] );
+			$score += $this->ts_( @self::$model["BC1"][$c2 . $c3] );
+			$score += $this->ts_( @self::$model["BC2"][$c3 . $c4] );
+			$score += $this->ts_( @self::$model["BC3"][$c4 . $c5] );
+			$score += $this->ts_( @self::$model["TC1"][$c1 . $c2 . $c3] );
+			$score += $this->ts_( @self::$model["TC2"][$c2 . $c3 . $c4] );
+			$score += $this->ts_( @self::$model["TC3"][$c3 . $c4 . $c5] );
+			$score += $this->ts_( @self::$model["TC4"][$c4 . $c5 . $c6] );
 			//  $score += $this->ts_(@self::$model["TC5"][$c4 . $c5 . $c6]);
-			$score += $this->ts_(@self::$model["UQ1"][$p1 . $c1]);
-			$score += $this->ts_(@self::$model["UQ2"][$p2 . $c2]);
-			$score += $this->ts_(@self::$model["UQ1"][$p3 . $c3]);
-			$score += $this->ts_(@self::$model["BQ1"][$p2 . $c2 . $c3]);
-			$score += $this->ts_(@self::$model["BQ2"][$p2 . $c3 . $c4]);
-			$score += $this->ts_(@self::$model["BQ3"][$p3 . $c2 . $c3]);
-			$score += $this->ts_(@self::$model["BQ4"][$p3 . $c3 . $c4]);
-			$score += $this->ts_(@self::$model["TQ1"][$p2 . $c1 . $c2 . $c3]);
-			$score += $this->ts_(@self::$model["TQ2"][$p2 . $c2 . $c3 . $c4]);
-			$score += $this->ts_(@self::$model["TQ3"][$p3 . $c1 . $c2 . $c3]);
-			$score += $this->ts_(@self::$model["TQ4"][$p3 . $c2 . $c3 . $c4]);
+			$score += $this->ts_( @self::$model["UQ1"][$p1 . $c1] );
+			$score += $this->ts_( @self::$model["UQ2"][$p2 . $c2] );
+			$score += $this->ts_( @self::$model["UQ1"][$p3 . $c3] );
+			$score += $this->ts_( @self::$model["BQ1"][$p2 . $c2 . $c3] );
+			$score += $this->ts_( @self::$model["BQ2"][$p2 . $c3 . $c4] );
+			$score += $this->ts_( @self::$model["BQ3"][$p3 . $c2 . $c3] );
+			$score += $this->ts_( @self::$model["BQ4"][$p3 . $c3 . $c4] );
+			$score += $this->ts_( @self::$model["TQ1"][$p2 . $c1 . $c2 . $c3] );
+			$score += $this->ts_( @self::$model["TQ2"][$p2 . $c2 . $c3 . $c4] );
+			$score += $this->ts_( @self::$model["TQ3"][$p3 . $c1 . $c2 . $c3] );
+			$score += $this->ts_( @self::$model["TQ4"][$p3 . $c2 . $c3 . $c4] );
 
 			$p = "O";
 
@@ -225,7 +225,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 
 		$result[] = $word;
 
-		if ( $encoding !== 'UTF-8') {
+		if ( $encoding !== 'UTF-8' ) {
 			foreach( $result as &$str ) {
 				$str = mb_convert_encoding( $str, $encoding, 'UTF-8' );
 			}

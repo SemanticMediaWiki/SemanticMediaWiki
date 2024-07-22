@@ -50,7 +50,7 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDelete() {
 		$expected = [
-			'body' => [ [ 'delete' => [ '_id' => 42, '_head_foo' => '_head_bar'] ] ]
+			'body' => [ [ 'delete' => [ '_id' => 42, '_head_foo' => '_head_bar' ] ] ]
 		];
 
 		$this->client->expects( $this->once() )
@@ -169,7 +169,7 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 		$document->expects( $this->any() )
 			->method( 'isType' )
-			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ]  )
+			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ] )
 			->will( $this->onConsecutiveCalls( false, false, true ) );
 
 		$expected = [
@@ -227,7 +227,7 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 		$document->expects( $this->any() )
 			->method( 'isType' )
-			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ]  )
+			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ] )
 			->will( $this->onConsecutiveCalls( true, false, true ) );
 
 		$expected = [
@@ -286,7 +286,7 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 		$document->expects( $this->any() )
 			->method( 'isType' )
-			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ]  )
+			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ] )
 			->will( $this->onConsecutiveCalls( true, true, true ) );
 
 		$expected = [

@@ -98,7 +98,7 @@ class Rollover {
 
 		// Shouldn't happen but just in case where the root index is
 		// used as index but not an alias
-		if ( $this->connection->indexExists("$index" ) && !$this->connection->aliasExists( "$index" ) ) {
+		if ( $this->connection->indexExists( "$index" ) && !$this->connection->aliasExists( "$index" ) ) {
 			$this->connection->deleteIndex( "$index" );
 		}
 

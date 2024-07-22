@@ -42,7 +42,7 @@ class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( ['getQueryResult', 'getObjectIds', 'service' ] )
+			->setMethods( [ 'getQueryResult', 'getObjectIds', 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )

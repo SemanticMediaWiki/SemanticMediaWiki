@@ -87,7 +87,7 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains( 'class="mw-nextlink"', $links[0] );
 		$this->assertContains( '>next 20<', $links[0] );
 
-		$nums= [20, 50, 100, 250, 500];
+		$nums= [ 20, 50, 100, 250, 500 ];
 		// On MW 1.39 and newer, the current limit selection is not a link any more.
 		$nums = version_compare( MW_VERSION, '1.39', '>=' ) ? [ 50, 100, 250, 500 ] : $nums;
 		for ( $i = 1; $i < count( $links ); $i++ ) {

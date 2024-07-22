@@ -88,7 +88,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			$parameters['identifier']
 		);
 
-		if ( $expected['identifier'] !== '_'  ) {
+		if ( $expected['identifier'] !== '_' ) {
 			return $this->assertEquals( $expected['identifier'], $instance->getSubobjectId() );
 		}
 

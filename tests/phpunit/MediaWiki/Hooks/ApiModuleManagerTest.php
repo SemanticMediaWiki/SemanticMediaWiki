@@ -50,7 +50,7 @@ class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$apiModuleManager->expects( $this->once() )
 			->method( 'addModules' )
-			 ->with($this->equalTo( $modules ) );
+			 ->with( $this->equalTo( $modules ) );
 
 		$instance = new ApiModuleManager();
 		$instance->process( $apiModuleManager );

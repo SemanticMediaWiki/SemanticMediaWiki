@@ -142,7 +142,7 @@ class SpecialConcepts extends \SpecialPage {
 
 		$html = Html::rawElement(
 				'div',
-				[ 'id' => 'mw-pages'],
+				[ 'id' => 'mw-pages' ],
 			Html::rawElement(
 				'div',
 				[ 'class' => 'smw-page-navigation' ],

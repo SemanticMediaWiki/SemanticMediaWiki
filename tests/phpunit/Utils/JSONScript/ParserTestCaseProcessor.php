@@ -195,7 +195,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		}
 
 		// Strip HTML comments
-		$output = preg_replace('/<!--(.*)-->/Uis', '', $output );
+		$output = preg_replace( '/<!--(.*)-->/Uis', '', $output );
 
 		if ( isset( $case['assert-output']['to-contain'] ) ) {
 			$contains = $case['assert-output']['to-contain'];

@@ -169,42 +169,42 @@ class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 	private function doRunImportBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'import' ) as $case ) {
 			$this->pageImportBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->pageImportBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->pageImportBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 
 	private function doRunContentCopyBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'contentCopy' ) as $case ) {
 			$this->pageContentCopyBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->pageContentCopyBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->pageContentCopyBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 
 	private function doRunEditCopyBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'editCopy' ) as $case ) {
 			$this->pageEditCopyBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->pageEditCopyBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->pageEditCopyBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 
 	private function doRunJobQueueBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'job' ) as $case ) {
 			$this->jobQueueBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->jobQueueBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->jobQueueBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 
 	private function doRunMaintenanceBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'maintenance' ) as $case ) {
 			$this->maintenanceBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->maintenanceBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->maintenanceBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 
 	private function doRunQueryBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'query' ) as $case ) {
 			$this->queryBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->queryBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->queryBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 

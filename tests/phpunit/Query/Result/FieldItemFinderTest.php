@@ -71,7 +71,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_THIS ) )
+			->with( $this->equalTo( PrintRequest::PRINT_THIS ) )
 			->will( $this->returnValue( true ) );
 
 		$instance = new FieldItemFinder(
@@ -99,7 +99,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 1 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_CATS ) )
+			->with( $this->equalTo( PrintRequest::PRINT_CATS ) )
 			->will( $this->returnValue( true ) );
 
 		$instance = new FieldItemFinder(
@@ -127,7 +127,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 2 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_CCAT ) )
+			->with( $this->equalTo( PrintRequest::PRINT_CCAT ) )
 			->will( $this->returnValue( true ) );
 
 		$this->printRequest->expects( $this->once() )
@@ -160,7 +160,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
+			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
 			->will( $this->returnValue( true ) );
 
 		$this->printRequest->expects( $this->any() )
@@ -201,7 +201,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
+			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
 			->will( $this->returnValue( true ) );
 
 		$this->printRequest->expects( $this->any() )
@@ -245,7 +245,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
+			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
 			->will( $this->returnValue( true ) );
 
 		$this->printRequest->expects( $this->any() )
@@ -289,7 +289,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
+			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
 			->will( $this->returnValue( true ) );
 
 		$this->printRequest->expects( $this->any() )

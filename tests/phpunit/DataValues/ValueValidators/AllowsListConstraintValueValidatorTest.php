@@ -148,7 +148,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedListValues' )
-			->will( $this->returnValue( [ ] ) );
+			->will( $this->returnValue( [] ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -240,7 +240,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedListValues' )
-			->will( $this->returnValue( [ ] ) );
+			->will( $this->returnValue( [] ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()

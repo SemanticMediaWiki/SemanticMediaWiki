@@ -77,7 +77,7 @@ class SummaryTableTest extends \PHPUnit_Framework_TestCase {
 				'<div class="smw-table-row"><div class="smw-table-cell smwpropname">Foobar</div>',
 				'<div class="smw-table-cell smwprops">Bar</div></div></div></div></div></div>'
 			],
-			$instance->buildHTML( ['columns' => 2 ] )
+			$instance->buildHTML( [ 'columns' => 2 ] )
 		);
 	}
 
@@ -97,7 +97,7 @@ class SummaryTableTest extends \PHPUnit_Framework_TestCase {
 				'<div class="smw-table-row"><div class="smw-table-cell smwpropname">Foobar</div><div class="smw-table-cell smwprops">Bar</div></div></div></div></div>',
 				'<div class="smw-summarytable-image"><div class="smw-summarytable-item-center"><div class="smw-summarytable-noimage"></div></div></div></div>'
 			],
-			$instance->buildHTML( ['columns' => 2 ] )
+			$instance->buildHTML( [ 'columns' => 2 ] )
 		);
 	}
 

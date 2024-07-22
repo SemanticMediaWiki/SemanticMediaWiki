@@ -159,12 +159,12 @@ class ListValueFilter {
 		foreach ( $list as $c => $l ) {
 			foreach ( $l as $k => $v ) {
 				if ( $k === 'linked' && $v !== [] ) {
-					foreach ( $v as $key => $value) {
+					foreach ( $v as $key => $value ) {
 						$linked[] = $value ;
 					}
 				}
 				if ( $k === 'unlinked' && $v !== [] ) {
-					foreach ( $v as $key => $value) {
+					foreach ( $v as $key => $value ) {
 						$unlinked[] = $value ;
 					}
 				}
@@ -190,7 +190,7 @@ class ListValueFilter {
 
 		if ( isset( $valueFilters[$key] ) && $isClear ) {
 
-			if ( isset($list[$count]['unlinked'][$key] ) ) {
+			if ( isset( $list[$count]['unlinked'][$key] ) ) {
 				return;
 			}
 

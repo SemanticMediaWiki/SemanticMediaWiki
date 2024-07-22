@@ -453,7 +453,7 @@ class SMWTimeValue extends SMWDataValue {
 
 		if ( $presetmodel === 'Gr' || $presetmodel === 'GR' ) {
 			return DITime::CM_GREGORIAN;
-		} elseif (  $presetmodel === 'Jl' || $presetmodel === 'JL' ) {
+		} elseif ( $presetmodel === 'Jl' || $presetmodel === 'JL' ) {
 			return DITime::CM_JULIAN;
 		}
 

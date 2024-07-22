@@ -86,12 +86,12 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->format(  $stringValue, [ StringValueFormatter::HTML_LONG ] )
+			$instance->format( $stringValue, [ StringValueFormatter::HTML_LONG ] )
 		);
 
 		$this->assertEquals(
 			$expected,
-			$instance->format(  $stringValue, [ StringValueFormatter::WIKI_SHORT ] )
+			$instance->format( $stringValue, [ StringValueFormatter::WIKI_SHORT ] )
 		);
 	}
 

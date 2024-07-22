@@ -187,7 +187,7 @@ class purgeEntityCache extends \Maintenance {
 		$i = 0;
 
 		if ( $count == 0 ) {
-			return $this->reportMessage( "   ... no entities selected ...\n"  );
+			return $this->reportMessage( "   ... no entities selected ...\n" );
 		}
 
 		$this->reportMessage(
@@ -206,7 +206,7 @@ class purgeEntityCache extends \Maintenance {
 			$this->entityCache->invalidate( $this->newFromRow( $row ) );
 		}
 
-		$this->reportMessage( "\n"  );
+		$this->reportMessage( "\n" );
 	}
 
 	public function newFromRow( $row ) {

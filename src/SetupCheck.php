@@ -541,7 +541,7 @@ class SetupCheck {
 				$style = str_replace( ': ', ':', $matches[0] );
 
 				// Remove whitespace
-				return str_replace( [ "\r\n", "\r", "\n", "\t", '  ', '    ', '    '], '', $style );
+				return str_replace( [ "\r\n", "\r", "\n", "\t", '  ', '    ', '    ' ], '', $style );
 			},
 			$html
 		);

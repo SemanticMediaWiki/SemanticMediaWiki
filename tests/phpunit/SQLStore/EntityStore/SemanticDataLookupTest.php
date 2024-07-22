@@ -50,7 +50,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
-			->will( $this->returnArgument(0) );
+			->will( $this->returnArgument( 0 ) );
 
 		$this->query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 

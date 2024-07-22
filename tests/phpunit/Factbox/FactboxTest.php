@@ -473,7 +473,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ new DIProperty( '_SKEY') ] ) );
+			->will( $this->returnValue( [ new DIProperty( '_SKEY' ) ] ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'isEmpty' )

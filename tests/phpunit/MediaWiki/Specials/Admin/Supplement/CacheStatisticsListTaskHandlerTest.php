@@ -72,7 +72,7 @@ class CacheStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->isTaskFor( 'stats/cache')
+			$instance->isTaskFor( 'stats/cache' )
 		);
 	}
 

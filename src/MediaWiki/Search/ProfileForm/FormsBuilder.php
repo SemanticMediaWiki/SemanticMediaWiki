@@ -168,7 +168,7 @@ class FormsBuilder {
 				'type' => 'button',
 				'id' => 'smw-search-forms',
 				'class' => 'smw-selectmenu-button is-disabled',
-				'title' => Message::get( 'smw-search-profile-extended-section-form', Message::TEXT, Message::USER_LANGUAGE  ),
+				'title' => Message::get( 'smw-search-profile-extended-section-form', Message::TEXT, Message::USER_LANGUAGE ),
 				'name' => 'smw-form',
 				'value' => $value,
 				'data-list' => json_encode( $list ),

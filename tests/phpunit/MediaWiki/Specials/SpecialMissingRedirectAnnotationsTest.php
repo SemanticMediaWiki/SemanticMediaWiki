@@ -27,7 +27,7 @@ class SpecialMissingRedirectAnnotationsTest extends \PHPUnit_Framework_TestCase 
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( ['service'] )
+			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );

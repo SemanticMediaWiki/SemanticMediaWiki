@@ -163,7 +163,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
 		$description =  new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
 
@@ -221,7 +221,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			$description
 		);
 
@@ -260,7 +260,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			$description
 		);
 
@@ -294,7 +294,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new Conjunction( [
 			new ValueDescription( new DIBlob( 'SomeOtherPropertyBlobValue' ), null, SMW_CMP_LIKE ),
-			new ValueDescription( new DIBlob( 'YetAnotherPropertyBlobValue' ), new DIProperty( 'Foo'), SMW_CMP_NLKE ),
+			new ValueDescription( new DIBlob( 'YetAnotherPropertyBlobValue' ), new DIProperty( 'Foo' ), SMW_CMP_NLKE ),
 			new ThingDescription()
 		] );
 
@@ -335,7 +335,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
-		$description = new Conjunction([
+		$description = new Conjunction( [
 			$description,
 			new ClassDescription( $category )
 		] );

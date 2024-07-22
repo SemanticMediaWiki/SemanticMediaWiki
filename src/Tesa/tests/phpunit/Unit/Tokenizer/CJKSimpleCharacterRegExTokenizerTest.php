@@ -58,7 +58,7 @@ class CJKSimpleCharacterRegExTokenizerTest extends TestCase {
 
 		$instance->setOption(
 			CJKSimpleCharacterRegExTokenizer::REGEX_EXEMPTION,
-			array( '《', '》', '，')
+			array( '《', '》', '，' )
 		);
 
 		$this->assertEquals(

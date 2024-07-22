@@ -393,7 +393,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$subobjectName = $subobject->getSemanticData()->getSubject()->getSubobjectName();
 
 		$this->assertFalse(	$instance->hasSubSemanticData() );
-		$this->assertEmpty(	$instance->findSubSemanticData( $subobjectName ));
+		$this->assertEmpty(	$instance->findSubSemanticData( $subobjectName ) );
 
 		// Adds only a subobject reference to the container
 		$instance->addPropertyObjectValue(
@@ -407,7 +407,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$instance->addSubSemanticData( $subobject->getSemanticData() );
 
 		$this->assertTrue( $instance->hasSubSemanticData( $subobjectName ) );
-		$this->assertNotEmpty($instance->findSubSemanticData( $subobjectName ) );
+		$this->assertNotEmpty( $instance->findSubSemanticData( $subobjectName ) );
 
 		$this->assertInstanceOf(
 			'SMWContainerSemanticData',
@@ -599,7 +599,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		// #0
 		$provider[] = [
 			$title,
-			new DIProperty( '_MDAT'),
+			new DIProperty( '_MDAT' ),
 			DITime::newFromTimestamp( 1272508903 )
 		];
 

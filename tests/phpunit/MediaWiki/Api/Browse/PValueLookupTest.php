@@ -149,7 +149,7 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->with(  $this->equalTo( new DIProperty( 'Foobar' ) ) )
+			->with( $this->equalTo( new DIProperty( 'Foobar' ) ) )
 			->will( $this->returnValue( 42 ) );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )

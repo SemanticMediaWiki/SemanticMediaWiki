@@ -241,7 +241,7 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 				'+sep='
 			],
 			[
-				'Has test 6' => [ '1', '2', '3'],
+				'Has test 6' => [ '1', '2', '3' ],
 				'Has test 7' => [ '7' ],
 				'Has test 8' => [ '9', '10', '11' ]
 			]
@@ -371,7 +371,7 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 		// |Has test 1=One
 		// }}
 		$provider[] = [
-			[ '', 'Has test 1=One'],
+			[ '', 'Has test 1=One' ],
 			[ 'identifier' => null ]
 		];
 

@@ -128,7 +128,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 			'results' => [
 				[
 					'printouts' => [
-						[ 'label' => 'lula', 'lila', '_element' => 'value'	],
+						[ 'label' => 'lula', 'lila', '_element' => 'value' ],
 						'_element' => 'property' ]
 					],
 					'_element' => 'subject'

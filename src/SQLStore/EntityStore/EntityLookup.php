@@ -437,7 +437,7 @@ class EntityLookup implements IEntityLookup {
 			foreach ( $res as $row ) {
 				try {
 					$result[] = new DIProperty( $row->smw_title );
-				} catch ( DataItemException $e) {
+				} catch ( DataItemException $e ) {
 					// has been observed to happen (empty property title); cause unclear; ignore this data
 				}
 			}

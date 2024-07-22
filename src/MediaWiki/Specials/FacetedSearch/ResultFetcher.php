@@ -196,7 +196,7 @@ class ResultFetcher {
 		}
 
 		if ( $this->queryResult === null ) {
-			throw new RuntimeException( "Missing a `QueryResult` object, `ResultFetcher::fetchQueryResult` wasn't executed!");
+			throw new RuntimeException( "Missing a `QueryResult` object, `ResultFetcher::fetchQueryResult` wasn't executed!" );
 		}
 
 		$printer = QueryProcessor::getResultPrinter(

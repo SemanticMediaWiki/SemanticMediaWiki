@@ -248,7 +248,7 @@ class Database {
 				$joinConditions
 			);
 		} catch ( DBError $e ) {
-			throw new RuntimeException ( $e->getMessage() . "\n" . $e->getTraceAsString() );
+			throw new RuntimeException( $e->getMessage() . "\n" . $e->getTraceAsString() );
 		}
 
 		if ( $tablePrefix !== null ) {
@@ -259,7 +259,7 @@ class Database {
 			return $results;
 		}
 
-		throw new UnexpectedValueException (
+		throw new UnexpectedValueException(
 			'Expected a ResultWrapper for ' . "\n" .
 			$tableName . "\n" .
 			$fields . "\n" .

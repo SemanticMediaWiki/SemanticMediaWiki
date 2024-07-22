@@ -492,7 +492,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$classMethods = get_class_methods( HookDispatcher::class );
 
 		// Match all "testOn" to the expected set of methods
-		$testMethods = preg_grep('/^testOn/', get_class_methods( $this ) );
+		$testMethods = preg_grep( '/^testOn/', get_class_methods( $this ) );
 
 		$testMethods = array_flip(
 			str_replace( 'testOn', 'on', $testMethods )

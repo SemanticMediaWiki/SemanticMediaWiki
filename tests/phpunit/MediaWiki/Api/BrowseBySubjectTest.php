@@ -46,7 +46,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 		$instance = new BrowseBySubject(
-			$this->apiFactory->newApiMain( ['subject' => 'Foo' ] ),
+			$this->apiFactory->newApiMain( [ 'subject' => 'Foo' ] ),
 			'browsebysubject'
 		);
 
@@ -97,7 +97,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRawJsonPrintOutput() {
-		$parameters = [ 'subject' => 'Foo', 'subobject' => 'Bar'  ];
+		$parameters = [ 'subject' => 'Foo', 'subobject' => 'Bar' ];
 
 		$dataItem = new DIWikiPage(
 			'Foo',

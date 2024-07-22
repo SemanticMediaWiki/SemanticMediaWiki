@@ -276,7 +276,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( $outputPage ) );
 
-		$context = new \RequestContext( );
+		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'action' => 'edit' ], true ) );
 
 		$skin->expects( $this->atLeastOnce() )
@@ -313,7 +313,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( $outputPage ) );
 
-		$context = new \RequestContext( );
+		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'action' => 'delete' ], true ) );
 
 		$skin->expects( $this->atLeastOnce() )
@@ -350,7 +350,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( $outputPage ) );
 
-		$context = new \RequestContext( );
+		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'action' => 'purge' ], true ) );
 
 		$skin->expects( $this->atLeastOnce() )

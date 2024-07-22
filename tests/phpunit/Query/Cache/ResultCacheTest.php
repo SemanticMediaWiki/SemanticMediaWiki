@@ -68,7 +68,7 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$queryEngine->expects( $this->once() )
 			->method( 'getQueryResult' )
-			->with($this->identicalTo( $query ) );
+			->with( $this->identicalTo( $query ) );
 
 		$instance = new ResultCache(
 			$this->store,
@@ -113,7 +113,7 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$queryEngine->expects( $this->once() )
 			->method( 'getQueryResult' )
-			->with($this->identicalTo( $query ) );
+			->with( $this->identicalTo( $query ) );
 
 		$instance = new ResultCache(
 			$this->store,

@@ -295,7 +295,7 @@ class RecurringEvents {
 
 				$date_str = "$cur_year-$display_month-$cur_day $cur_time";
 				$cur_date = DataValueFactory::getInstance()->newTypeIDValue( '_dat', $date_str );
-				$all_date_strings = array_merge( $all_date_strings, $included_dates);
+				$all_date_strings = array_merge( $all_date_strings, $included_dates );
 				if ( $cur_date->isValid() ) {
 					$cur_date_jd = $cur_date->getDataItem()->getJD();
 				}
@@ -340,7 +340,7 @@ class RecurringEvents {
 							$right_month = $right_week = true;
 						}
 					}
-				} while ( !$right_month || !$right_week);
+				} while ( !$right_month || !$right_week );
 			} else { // $unit == 'day' or 'week'
 				// Assume 'day' if it's none of the above.
 				$cur_date_jd += ( $unit === 'week' ) ? 7 * $period : $period;

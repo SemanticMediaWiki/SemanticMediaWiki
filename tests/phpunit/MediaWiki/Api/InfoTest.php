@@ -171,8 +171,8 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 			[ 'conceptcount',      'integer' ],
 			[ 'querysize',         'integer' ],
 			[ 'subobjectcount',    'integer' ],
-			[ 'formatcount',       'array'   ],
-			[ 'jobcount',          'array'   ]
+			[ 'formatcount',       'array' ],
+			[ 'jobcount',          'array' ]
 		];
 	}
 

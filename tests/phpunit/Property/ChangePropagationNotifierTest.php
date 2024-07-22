@@ -182,12 +182,12 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 			[ [],   $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
 			[ $subject,  $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
 			[ $subject,  [],   [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ $subject,  [],   [ '_PVAL'          ], [ 'diff' => true,  'job' => true ] ],
-			[ $subjects, $subjects, [ '_PVAL'          ], [ 'diff' => false, 'job' => false ] ],
-			[ $subject,  $subject,  [ '_PVAL'          ], [ 'diff' => false, 'job' => false ] ],
+			[ $subject,  [],   [ '_PVAL' ], [ 'diff' => true,  'job' => true ] ],
+			[ $subjects, $subjects, [ '_PVAL' ], [ 'diff' => false, 'job' => false ] ],
+			[ $subject,  $subject,  [ '_PVAL' ], [ 'diff' => false, 'job' => false ] ],
 			[ $subjects, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
 			[ $subject,  $subject,  [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ [ new DIBlob( '>100') ],  [ new DIBlob( '&gt;100') ],  [ '_PVAL', '_PVAL' ], [ 'diff' => false,  'job' => false ] ]
+			[ [ new DIBlob( '>100' ) ],  [ new DIBlob( '&gt;100' ) ],  [ '_PVAL', '_PVAL' ], [ 'diff' => false,  'job' => false ] ]
 		];
 	}
 

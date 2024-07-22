@@ -313,7 +313,7 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->isRecordType(  $typeId )
+			$instance->isRecordType( $typeId )
 		);
 	}
 

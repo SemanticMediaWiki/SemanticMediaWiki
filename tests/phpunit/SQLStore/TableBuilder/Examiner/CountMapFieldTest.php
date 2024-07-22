@@ -64,7 +64,7 @@ class CountMapFieldTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
-		$instance->check( [ 'smw_objects_aux' => [ 'smw_countmap' => 'field.new' ] ]);
+		$instance->check( [ 'smw_objects_aux' => [ 'smw_countmap' => 'field.new' ] ] );
 
 		$this->assertContains(
 			'adding incomplete task for `smw_countmap` conversion',

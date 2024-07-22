@@ -66,7 +66,7 @@ class ConnectionProvider implements IConnectionProvider {
 			throw new MissingEndpointConfigException();
 		}
 
-		$endpoints = array_map( [$this, 'buildHostString'], $endpoints );
+		$endpoints = array_map( [ $this, 'buildHostString' ], $endpoints );
 
 		$params = [
 			'hosts' => $endpoints,
@@ -94,7 +94,7 @@ class ConnectionProvider implements IConnectionProvider {
 			$user = $authentication['user'] ?? $authentication[0];
 			$pass = $authentication['pass'] ?? $authentication[1];
 
-			$params['basicAuthentication'] = [$user, $pass];
+			$params['basicAuthentication'] = [ $user, $pass ];
 		}
 
 		if ( $this->hasAvailableClientBuilder() ) {

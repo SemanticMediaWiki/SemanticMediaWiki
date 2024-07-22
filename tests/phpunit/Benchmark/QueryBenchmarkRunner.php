@@ -72,7 +72,7 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
-		if ( !isset( $case['query'] ) && !is_array( $case['query']  ) ) {
+		if ( !isset( $case['query'] ) && !is_array( $case['query'] ) ) {
 			throw new RuntimeException( 'Query specification is not available.' );
 		}
 

@@ -146,7 +146,7 @@ class QueryTestCaseInterpreter {
 			}
 
 			foreach ( $parameters as $value ) {
-				foreach ( $value as $k => $v) {
+				foreach ( $value as $k => $v ) {
 					$printRequest->setParameter( $k, $v );
 				}
 			}
@@ -201,7 +201,7 @@ class QueryTestCaseInterpreter {
 	public function getExpectedSubjects() {
 		$subjects = [];
 
-		if ( !isset( $this->contents['assert-queryresult']['results'] )  ) {
+		if ( !isset( $this->contents['assert-queryresult']['results'] ) ) {
 			return $subjects;
 		}
 
@@ -220,7 +220,7 @@ class QueryTestCaseInterpreter {
 	public function getExpectedDataItems() {
 		$dataItems = [];
 
-		if ( !isset( $this->contents['assert-queryresult']['dataitems'] )  ) {
+		if ( !isset( $this->contents['assert-queryresult']['dataitems'] ) ) {
 			return $dataItems;
 		}
 
@@ -242,7 +242,7 @@ class QueryTestCaseInterpreter {
 	public function getExpectedDataValues() {
 		$dataValues = [];
 
-		if ( !isset( $this->contents['assert-queryresult']['datavalues'] )  ) {
+		if ( !isset( $this->contents['assert-queryresult']['datavalues'] ) ) {
 			return $dataValues;
 		}
 
@@ -293,7 +293,7 @@ class QueryTestCaseInterpreter {
 	public function getExpectedFormatOuputFor( $id ) {
 		$output = [];
 
-		if ( !isset( $this->contents['assert-output'] ) || !isset( $this->contents['assert-output'][$id] )  ) {
+		if ( !isset( $this->contents['assert-output'] ) || !isset( $this->contents['assert-output'][$id] ) ) {
 			return $output;
 		}
 

@@ -585,7 +585,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->willReturn( new FakeResultWrapper( [] ) );
 
-		$readConnectionProvider = $this->createMock(ConnectionProvider::class );
+		$readConnectionProvider = $this->createMock( ConnectionProvider::class );
 
 		$readConnectionProvider->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )

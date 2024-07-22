@@ -117,7 +117,7 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 		$classMethods = get_class_methods( EntityExaminerIndicatorsFactory::class );
 
 		// Match all "testCanConstruct" to define the expected set of methods
-		$testMethods = preg_grep('/^testCanConstruct/', get_class_methods( $this ) );
+		$testMethods = preg_grep( '/^testCanConstruct/', get_class_methods( $this ) );
 
 		$testMethods = array_flip(
 			str_replace( 'testCanConstruct', 'new', $testMethods )
