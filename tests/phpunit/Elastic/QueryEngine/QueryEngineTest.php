@@ -148,7 +148,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'search' )
-			->will( $this->returnValue( [ $res , $errors ] ) );
+			->will( $this->returnValue( [ $res, $errors ] ) );
 
 		$this->idTable->expects( $this->any() )
 			->method( 'getDataItemsFromList' )

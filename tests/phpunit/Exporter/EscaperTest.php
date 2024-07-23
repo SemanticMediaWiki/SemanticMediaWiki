@@ -102,8 +102,7 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	public function encodePageProvider() {
 		#0
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_MAIN, '', '' )
-			, 'Foo'
+			new DIWikiPage( 'Foo', NS_MAIN, '', '' ), 'Foo'
 		];
 
 		#1

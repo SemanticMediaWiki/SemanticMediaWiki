@@ -126,12 +126,12 @@ class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function getEncodeMessagesDataProvider() {
 		return [
-			[ [ '', '', '' ] , '', '', true ],
-			[ [ 'abc', 'ABC', '<span>Test</span>' ] , '', '', true ],
-			[ [ 'abc', 'ABC', '<span>Test</span>' ] , 'warning', '', true ],
-			[ [ 'abc', 'ABC', '<span>Test</span>' ] , 'info', ',', false ],
-			[ [ 'abc', 'ABC', '<span>Test</span>' ] , null, ',', false ],
-			[ [ 'abc', 'ABC', '<span>Test</span>' ] , '<span>Test</span>', ',', true ],
+			[ [ '', '', '' ], '', '', true ],
+			[ [ 'abc', 'ABC', '<span>Test</span>' ], '', '', true ],
+			[ [ 'abc', 'ABC', '<span>Test</span>' ], 'warning', '', true ],
+			[ [ 'abc', 'ABC', '<span>Test</span>' ], 'info', ',', false ],
+			[ [ 'abc', 'ABC', '<span>Test</span>' ], null, ',', false ],
+			[ [ 'abc', 'ABC', '<span>Test</span>' ], '<span>Test</span>', ',', true ],
 		];
 	}
 }

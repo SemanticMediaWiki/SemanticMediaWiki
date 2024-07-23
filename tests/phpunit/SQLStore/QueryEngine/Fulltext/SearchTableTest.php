@@ -53,7 +53,7 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setPropertyExemptionList(
-			[ '_TEXT','fo oo' ]
+			[ '_TEXT', 'fo oo' ]
 		);
 
 		$this->assertEquals(

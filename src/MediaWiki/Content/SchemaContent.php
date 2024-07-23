@@ -420,7 +420,7 @@ class SchemaContent extends JsonContent {
 		$title_prefix = '';
 
 		if ( strpos( $schemaName, ':' ) !== false ) {
-			list( $title_prefix, ) = explode( ':',  $schemaName );
+			list( $title_prefix, ) = explode( ':', $schemaName );
 		}
 
 		// Allow to use the schema validation against a possible

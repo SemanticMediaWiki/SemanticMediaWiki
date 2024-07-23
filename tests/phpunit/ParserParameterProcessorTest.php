@@ -380,7 +380,7 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 		// |Has test 2=Three;Four|+sep=;
 		// }}
 		$provider[] = [
-			[ 'Foo' , 'Has test 2=Two', 'Has test 2=Three;Four', '+sep=;' ],
+			[ 'Foo', 'Has test 2=Two', 'Has test 2=Three;Four', '+sep=;' ],
 			[ 'identifier' => 'Foo' ]
 		];
 

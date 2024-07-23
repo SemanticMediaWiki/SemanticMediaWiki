@@ -126,7 +126,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	public function parentIdProvider() {
 		$provider = [
 			[ 90001, false ],
-			[ 0 , true ],
+			[ 0, true ],
 			[ null, false ]
 		];
 
@@ -333,7 +333,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		$provider = [
 			[ null, false ],
 			[ false, true ],
-			[ true , false ]
+			[ true, false ]
 		];
 
 		return $provider;

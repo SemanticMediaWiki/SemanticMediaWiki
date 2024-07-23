@@ -265,7 +265,7 @@ class TreeBuilder {
 				// the <ul> becomes part of the <li> element otherwise the elements
 				// aren't correct positioned as per HTML standard.
 				if ( $this->children !== [] && substr( "$text", -5 ) === '</li>' ) {
-					$text = substr_replace( $text ,"", -5 );
+					$text = substr_replace( $text, "", -5 );
 				}
 
 				if ( $this->children !== [] ) {

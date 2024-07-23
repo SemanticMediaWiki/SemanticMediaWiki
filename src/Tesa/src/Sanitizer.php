@@ -134,7 +134,7 @@ class Sanitizer {
 			$pos++;
 		}
 
-		return implode( ' ' , $index );
+		return implode( ' ', $index );
 	}
 
 	/**

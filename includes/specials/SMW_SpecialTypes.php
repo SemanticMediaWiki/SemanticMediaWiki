@@ -263,7 +263,7 @@ class SMWSpecialTypes extends SpecialPage {
 		}
 
 		$html = Html::rawElement(
-			'div' ,
+			'div',
 			[
 				'class' => 'smw-page-navigation'
 			],
@@ -274,7 +274,7 @@ class SMWSpecialTypes extends SpecialPage {
 				$count,
 				[ '_target' => '#smw-list' ]
 			) . Html::rawElement(
-				'div' ,
+				'div',
 				[
 					'class' => 'smw-page-nav-note'
 				],
@@ -422,7 +422,7 @@ class SMWSpecialTypes extends SpecialPage {
 			}
 
 			$text = Html::rawElement(
-				'span' ,
+				'span',
 				[
 					'class' => 'plainlinks',
 					'style' => 'font-size:85%'

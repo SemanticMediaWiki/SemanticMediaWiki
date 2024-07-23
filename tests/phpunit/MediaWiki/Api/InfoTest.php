@@ -146,33 +146,33 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	public function countDataProvider() {
 		return [
 			[ [ 'QUERYFORMATS' => [ 'table' => 3 ] ], 'formatcount', [ 'table' => 3 ] ],
-			[ [ 'PROPUSES'     => 34 ], 'propcount',         34 ],
-			[ [ 'ERRORUSES'    => 42 ], 'errorcount',        42 ],
-			[ [ 'USEDPROPS'    => 51 ], 'usedpropcount',     51 ],
-			[ [ 'TOTALPROPS'   => 52 ], 'totalpropcount',    52 ],
+			[ [ 'PROPUSES'     => 34 ], 'propcount', 34 ],
+			[ [ 'ERRORUSES'    => 42 ], 'errorcount', 42 ],
+			[ [ 'USEDPROPS'    => 51 ], 'usedpropcount', 51 ],
+			[ [ 'TOTALPROPS'   => 52 ], 'totalpropcount', 52 ],
 			[ [ 'DECLPROPS'    => 67 ], 'declaredpropcount', 67 ],
-			[ [ 'OWNPAGE'      => 99 ], 'proppagecount',     99 ],
-			[ [ 'QUERY'        => 11 ], 'querycount',        11 ],
-			[ [ 'QUERYSIZE'    => 24 ], 'querysize',         24 ],
-			[ [ 'CONCEPTS'     => 17 ], 'conceptcount',      17 ],
-			[ [ 'SUBOBJECTS'   => 88 ], 'subobjectcount',    88 ],
+			[ [ 'OWNPAGE'      => 99 ], 'proppagecount', 99 ],
+			[ [ 'QUERY'        => 11 ], 'querycount', 11 ],
+			[ [ 'QUERYSIZE'    => 24 ], 'querysize', 24 ],
+			[ [ 'CONCEPTS'     => 17 ], 'conceptcount', 17 ],
+			[ [ 'SUBOBJECTS'   => 88 ], 'subobjectcount', 88 ],
 		];
 	}
 
 	public function typeDataProvider() {
 		return [
-			[ 'proppagecount',     'integer' ],
-			[ 'propcount',         'integer' ],
-			[ 'errorcount',        'integer' ],
-			[ 'querycount',        'integer' ],
-			[ 'usedpropcount',     'integer' ],
-			[ 'totalpropcount',    'integer' ],
+			[ 'proppagecount', 'integer' ],
+			[ 'propcount', 'integer' ],
+			[ 'errorcount', 'integer' ],
+			[ 'querycount', 'integer' ],
+			[ 'usedpropcount', 'integer' ],
+			[ 'totalpropcount', 'integer' ],
 			[ 'declaredpropcount', 'integer' ],
-			[ 'conceptcount',      'integer' ],
-			[ 'querysize',         'integer' ],
-			[ 'subobjectcount',    'integer' ],
-			[ 'formatcount',       'array' ],
-			[ 'jobcount',          'array' ]
+			[ 'conceptcount', 'integer' ],
+			[ 'querysize', 'integer' ],
+			[ 'subobjectcount', 'integer' ],
+			[ 'formatcount', 'array' ],
+			[ 'jobcount', 'array' ]
 		];
 	}
 

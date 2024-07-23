@@ -275,7 +275,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SUBC',
-				'propertyValues' => [ 'Category:Foo',  'Category:Bar' ],
+				'propertyValues' => [ 'Category:Foo', 'Category:Bar' ],
 			]
 		];
 

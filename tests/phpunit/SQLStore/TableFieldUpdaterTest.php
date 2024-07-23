@@ -152,7 +152,7 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$store
 		);
 
-		$instance->updateIwField( 42,'foo', 'abc1234' );
+		$instance->updateIwField( 42, 'foo', 'abc1234' );
 	}
 
 }

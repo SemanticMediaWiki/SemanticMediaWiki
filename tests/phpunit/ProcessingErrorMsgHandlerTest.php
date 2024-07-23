@@ -316,7 +316,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			[ 'Foo', [ '[2,"smw-title"]' ] ],
-			[ 'Foo' , 'Semantic MediaWiki' ]
+			[ 'Foo', 'Semantic MediaWiki' ]
 		];
 
 		return $provider;
