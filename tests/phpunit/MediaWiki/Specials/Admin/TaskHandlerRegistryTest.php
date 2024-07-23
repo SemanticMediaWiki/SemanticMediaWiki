@@ -74,10 +74,10 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->registerTaskHandlers( [ $taskHandler ] , $user );
+		$instance->registerTaskHandlers( [ $taskHandler ], $user );
 
 		// Can only be used once per instance
-		$instance->registerTaskHandlers( [ $taskHandler ] , $user );
+		$instance->registerTaskHandlers( [ $taskHandler ], $user );
 	}
 
 	/**

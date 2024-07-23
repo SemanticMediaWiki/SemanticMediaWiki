@@ -312,68 +312,68 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function findTypeIdDataProvider() {
 		return [
-			[ 'URL'      , '_uri' ], // #0
-			[ 'Page'     , '_wpg' ], // #1
-			[ 'String'   , '_txt' ], // #2
-			[ 'Text'     , '_txt' ], // #3
-			[ 'Number'   , '_num' ], // #4
-			[ 'Quantity' , '_qty' ], // #5
-			[ 'Date'     , '_dat' ], // #6
-			[ 'Email'    , '_ema' ], // #7
-			[ ''         , '' ], // #8
+			[ 'URL', '_uri' ], // #0
+			[ 'Page', '_wpg' ], // #1
+			[ 'String', '_txt' ], // #2
+			[ 'Text', '_txt' ], // #3
+			[ 'Number', '_num' ], // #4
+			[ 'Quantity', '_qty' ], // #5
+			[ 'Date', '_dat' ], // #6
+			[ 'Email', '_ema' ], // #7
+			[ '', '' ], // #8
 		];
 	}
 
 	public function dataItemIdDataProvider() {
 		return [
-			[ '_txt' , SMWDataItem::TYPE_BLOB ], // #0
-			[ '_wpg' , SMWDataItem::TYPE_WIKIPAGE ], // #1
-			[ '_num' , SMWDataItem::TYPE_NUMBER ], // #2
-			[ '_dat' , SMWDataItem::TYPE_TIME ], // #3
-			[ '_uri' , SMWDataItem::TYPE_URI ], // #4
-			[ '_foo' , SMWDataItem::TYPE_NOTYPE ], // #5
+			[ '_txt', SMWDataItem::TYPE_BLOB ], // #0
+			[ '_wpg', SMWDataItem::TYPE_WIKIPAGE ], // #1
+			[ '_num', SMWDataItem::TYPE_NUMBER ], // #2
+			[ '_dat', SMWDataItem::TYPE_TIME ], // #3
+			[ '_uri', SMWDataItem::TYPE_URI ], // #4
+			[ '_foo', SMWDataItem::TYPE_NOTYPE ], // #5
 		];
 	}
 
 	public function typeIdValueDataProvider() {
 		return [
-			[ '_txt'  , 'Bar'          , 'Bar'          , 'SMWStringValue' ], // #0
-			[ '_txt'  , 'Bar[[ Foo ]]' , 'Bar[[ Foo ]]' , 'SMWStringValue' ], // #1
-			[ '_txt'  , '9001'         , '9001'         , 'SMWStringValue' ], // #2
-			[ '_txt'  , 1001           , '1001'         , 'SMWStringValue' ], // #3
-			[ '_txt'  , '-%&$*'        , '-%&$*'        , 'SMWStringValue' ], // #4
-			[ '_txt'  , '_Bar'         , '_Bar'         , 'SMWStringValue' ], // #5
-			[ '_txt'  , 'bar'          , 'bar'          , 'SMWStringValue' ], // #6
-			[ '-_txt' , 'Bar'          , 'Bar'          , 'SMWErrorValue' ], // #7
+			[ '_txt', 'Bar', 'Bar', 'SMWStringValue' ], // #0
+			[ '_txt', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', 'SMWStringValue' ], // #1
+			[ '_txt', '9001', '9001', 'SMWStringValue' ], // #2
+			[ '_txt', 1001, '1001', 'SMWStringValue' ], // #3
+			[ '_txt', '-%&$*', '-%&$*', 'SMWStringValue' ], // #4
+			[ '_txt', '_Bar', '_Bar', 'SMWStringValue' ], // #5
+			[ '_txt', 'bar', 'bar', 'SMWStringValue' ], // #6
+			[ '-_txt', 'Bar', 'Bar', 'SMWErrorValue' ], // #7
 
-			[ '_wpg'  , 'Bar'          , 'Bar'          , 'SMWWikiPageValue' ], // #8
-			[ '_wpg'  , 'Bar'          , 'Bar'          , 'SMWWikiPageValue' ], // #9
-			[ '_wpg'  , 'Bar[[ Foo ]]' , 'Bar[[ Foo ]]' , 'SMWWikiPageValue' ], // #10
-			[ '_wpg'  , '9001'         , '9001'         , 'SMWWikiPageValue' ], // #11
-			[ '_wpg'  , 1001           , '1001'         , 'SMWWikiPageValue' ], // #12
-			[ '_wpg'  , '-%&$*'        , '-%&$*'        , 'SMWWikiPageValue' ], // #13
-			[ '_wpg'  , '_Bar'         , 'Bar'          , 'SMWWikiPageValue' ], // #14
-			[ '_wpg'  , 'bar'          , 'Bar'          , 'SMWWikiPageValue' ], // #15
-			[ '-_wpg' , 'Bar'          , 'Bar'          , 'SMWErrorValue' ], // #16
+			[ '_wpg', 'Bar', 'Bar', 'SMWWikiPageValue' ], // #8
+			[ '_wpg', 'Bar', 'Bar', 'SMWWikiPageValue' ], // #9
+			[ '_wpg', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', 'SMWWikiPageValue' ], // #10
+			[ '_wpg', '9001', '9001', 'SMWWikiPageValue' ], // #11
+			[ '_wpg', 1001, '1001', 'SMWWikiPageValue' ], // #12
+			[ '_wpg', '-%&$*', '-%&$*', 'SMWWikiPageValue' ], // #13
+			[ '_wpg', '_Bar', 'Bar', 'SMWWikiPageValue' ], // #14
+			[ '_wpg', 'bar', 'Bar', 'SMWWikiPageValue' ], // #15
+			[ '-_wpg', 'Bar', 'Bar', 'SMWErrorValue' ], // #16
 
-			[ '_dat' , '1 Jan 1970'    , '1 Jan 1970'   , 'SMWTimeValue' ], // #0
-			[ '_uri' , 'Foo'           , 'Foo'          , 'SMWURIValue' ], // #0
-			[ '_num' , 9001            , '9001'        , 'SMWNumberValue' ], // #0
-			[ '_num' , 9001.5            , '9001.5'        , 'SMWNumberValue' ], // #0
+			[ '_dat', '1 Jan 1970', '1 Jan 1970', 'SMWTimeValue' ], // #0
+			[ '_uri', 'Foo', 'Foo', 'SMWURIValue' ], // #0
+			[ '_num', 9001, '9001', 'SMWNumberValue' ], // #0
+			[ '_num', 9001.5, '9001.5', 'SMWNumberValue' ], // #0
 		];
 	}
 
 	public function propertyValueDataProvider() {
 		return [
-			[ 'Foo'  , 'Bar'          , 'Bar'          , 'SMWDataValue' ], // #0
-			[ 'Foo'  , 'Bar[[ Foo ]]' , 'Bar[[ Foo ]]' , 'SMWDataValue' ], // #1
-			[ 'Foo'  , '9001'         , '9001'         , 'SMWDataValue' ], // #2
-			[ 'Foo'  , 1001           , '1001'         , 'SMWDataValue' ], // #3
-			[ 'Foo'  , '-%&$*'        , '-%&$*'        , 'SMWDataValue' ], // #4
-			[ 'Foo'  , '_Bar'         , 'Bar'          , 'SMWDataValue' ], // #5
-			[ 'Foo'  , 'bar'          , 'Bar'          , 'SMWDataValue' ], // #6
-			[ '-Foo' , 'Bar'          , ''             , 'SMWErrorValue' ], // #7
-			[ '_Foo' , 'Bar'          , ''             , 'SMWPropertyValue' ], // #8
+			[ 'Foo', 'Bar', 'Bar', 'SMWDataValue' ], // #0
+			[ 'Foo', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', 'SMWDataValue' ], // #1
+			[ 'Foo', '9001', '9001', 'SMWDataValue' ], // #2
+			[ 'Foo', 1001, '1001', 'SMWDataValue' ], // #3
+			[ 'Foo', '-%&$*', '-%&$*', 'SMWDataValue' ], // #4
+			[ 'Foo', '_Bar', 'Bar', 'SMWDataValue' ], // #5
+			[ 'Foo', 'bar', 'Bar', 'SMWDataValue' ], // #6
+			[ '-Foo', 'Bar', '', 'SMWErrorValue' ], // #7
+			[ '_Foo', 'Bar', '', 'SMWPropertyValue' ], // #8
 		];
 	}
 
@@ -382,14 +382,14 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function propertyObjectValueDataProvider() {
 		return [
-			[ 'Foo'  , 'Bar'          , 'Bar'          , 'SMWDataValue' ], // #0
-			[ 'Foo'  , 'Bar[[ Foo ]]' , 'Bar[[ Foo ]]' , 'SMWDataValue' ], // #1
-			[ 'Foo'  , '9001'         , '9001'         , 'SMWDataValue' ], // #2
-			[ 'Foo'  , 1001           , '1001'         , 'SMWDataValue' ], // #3
-			[ 'Foo'  , '-%&$*'        , '-%&$*'        , 'SMWDataValue' ], // #4
-			[ 'Foo'  , '_Bar'         , 'Bar'          , 'SMWDataValue' ], // #5
-			[ 'Foo'  , 'bar'          , 'Bar'          , 'SMWDataValue' ], // #6
-			[ '-Foo' , 'Bar'          , 'Bar'          , 'SMWWikiPageValue' ], // #7
+			[ 'Foo', 'Bar', 'Bar', 'SMWDataValue' ], // #0
+			[ 'Foo', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', 'SMWDataValue' ], // #1
+			[ 'Foo', '9001', '9001', 'SMWDataValue' ], // #2
+			[ 'Foo', 1001, '1001', 'SMWDataValue' ], // #3
+			[ 'Foo', '-%&$*', '-%&$*', 'SMWDataValue' ], // #4
+			[ 'Foo', '_Bar', 'Bar', 'SMWDataValue' ], // #5
+			[ 'Foo', 'bar', 'Bar', 'SMWDataValue' ], // #6
+			[ '-Foo', 'Bar', 'Bar', 'SMWWikiPageValue' ], // #7
 
 			// Will fail with "must be an instance of SMWDIProperty, instance of SMWDIError give"
 			// as propertyDI isn't checked therefore addPropertyValue() should be

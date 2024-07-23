@@ -162,18 +162,18 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function bySegmentDataProvider() {
 		return [
-			[ 'OWNPAGE',      'integer' ],
-			[ 'QUERY',        'integer' ],
-			[ 'QUERYSIZE',    'integer' ],
+			[ 'OWNPAGE', 'integer' ],
+			[ 'QUERY', 'integer' ],
+			[ 'QUERYSIZE', 'integer' ],
 			[ 'QUERYFORMATS', 'array' ],
-			[ 'CONCEPTS',     'integer' ],
-			[ 'SUBOBJECTS',   'integer' ],
-			[ 'DECLPROPS',    'integer' ],
-			[ 'USEDPROPS',    'integer' ],
-			[ 'TOTALPROPS',   'integer' ],
-			[ 'PROPUSES',     'integer' ],
-			[ 'ERRORUSES',    'integer' ],
-			[ 'DELETECOUNT',  'integer' ]
+			[ 'CONCEPTS', 'integer' ],
+			[ 'SUBOBJECTS', 'integer' ],
+			[ 'DECLPROPS', 'integer' ],
+			[ 'USEDPROPS', 'integer' ],
+			[ 'TOTALPROPS', 'integer' ],
+			[ 'PROPUSES', 'integer' ],
+			[ 'ERRORUSES', 'integer' ],
+			[ 'DELETECOUNT', 'integer' ]
 		];
 	}
 

@@ -72,8 +72,8 @@ class dumpRDF extends \Maintenance {
 		$this->addOption( 'properties', 'Export only properties', false );
 		$this->addOption( 'individuals', 'Export only individuals', false );
 
-        $this->addOption( 'namespace','Export only namespaced included in the <namespacelist> with | being used as a separator. ' .
-            'Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE"',false,true );
+        $this->addOption( 'namespace', 'Export only namespaced included in the <namespacelist> with | being used as a separator. ' .
+            'Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE"', false, true );
 
 
         $this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .
@@ -141,7 +141,7 @@ class dumpRDF extends \Maintenance {
 
 		if ( $this->hasOption( 'file' ) ) {
 			$this->reportMessage(
-				$cliMsgFormatter->twoCols( 'File',  $this->getOption( 'file' ) )
+				$cliMsgFormatter->twoCols( 'File', $this->getOption( 'file' ) )
 			);
 		}
 

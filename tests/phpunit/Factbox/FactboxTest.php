@@ -100,7 +100,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'tab-facts-derived',
-			Factbox::tabs( 'Foo', 'Bar','Foobar' )
+			Factbox::tabs( 'Foo', 'Bar', 'Foobar' )
 		);
 	}
 

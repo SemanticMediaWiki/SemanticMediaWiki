@@ -301,22 +301,22 @@ class TypesRegistry {
 		$fixedProperties = [
 
 			// FIXED ID
-			'_TYPE'   => [ 1,  true,  false ],
-			'_URI'    => [ 2,  true,  false ],
-			'_INST'   => [ 4,  true,  false ],
-			'_UNIT'   => [ 7,  true,  false ],
-			'_IMPO'   => [ 8,  true,  false ],
-			'_PPLB'   => [ 9,  true,  false ],
+			'_TYPE'   => [ 1, true, false ],
+			'_URI'    => [ 2, true, false ],
+			'_INST'   => [ 4, true, false ],
+			'_UNIT'   => [ 7, true, false ],
+			'_IMPO'   => [ 8, true, false ],
+			'_PPLB'   => [ 9, true, false ],
 			'_PDESC'  => [ 10, false, false ],
-			'_PREC'   => [ 11, true,  false ],
-			'_CONV'   => [ 12, true,  false ],
-			'_SERV'   => [ 13, true,  false ],
-			'_PVAL'   => [ 14, true,  false ],
-			'_REDI'   => [ 15, true,  false ],
-			'_DTITLE' => [ 16, true,  false ],
-			'_SUBP'   => [ 17, true,  false ],
-			'_SUBC'   => [ 18, true,  false ],
-			'_CONC'   => [ 19, true,  false ],
+			'_PREC'   => [ 11, true, false ],
+			'_CONV'   => [ 12, true, false ],
+			'_SERV'   => [ 13, true, false ],
+			'_PVAL'   => [ 14, true, false ],
+			'_REDI'   => [ 15, true, false ],
+			'_DTITLE' => [ 16, true, false ],
+			'_SUBP'   => [ 17, true, false ],
+			'_SUBC'   => [ 18, true, false ],
+			'_CONC'   => [ 19, true, false ],
 			'_ERRP'   => [ 22, false, false ],
 
 			// Properties for encoding (short) lists
@@ -325,22 +325,22 @@ class TypesRegistry {
 			// '_3'  => [ 25, false, false ],
 			// '_4'  => [ 26, false, false ],
 			// '_5'  => [ 27, false, false ],
-			'_LIST'  => [ 28, true,  false ],
+			'_LIST'  => [ 28, true, false ],
 			'_MDAT'  => [ 29, false, true ],
 			'_CDAT'  => [ 30, false, true ],
 			'_NEWP'  => [ 31, false, true ],
 			'_LEDT'  => [ 32, false, true ],
 
 			// Properties related to query management
-			'_ASK'   => [ 33, true,  false ],
-			'_ASKST' => [ 34, true,  false ],
-			'_ASKFO' => [ 35, true,  false ],
-			'_ASKSI' => [ 36, true,  false ],
-			'_ASKDE' => [ 37, true,  false ],
-			'_ASKPA' => [ 38, true,  false ],
+			'_ASK'   => [ 33, true, false ],
+			'_ASKST' => [ 34, true, false ],
+			'_ASKFO' => [ 35, true, false ],
+			'_ASKSI' => [ 36, true, false ],
+			'_ASKDE' => [ 37, true, false ],
+			'_ASKPA' => [ 38, true, false ],
 			'_ASKSC' => [ 39, false, false ],
-			'_LCODE' => [ 40, true,  false ],
-			'_TEXT'  => [ 41, true,  false ],
+			'_LCODE' => [ 40, true, false ],
+			'_TEXT'  => [ 41, true, false ],
 
 			// Due to the potential size of related links, make it a custom_fixed
 			// when enabled
@@ -351,8 +351,8 @@ class TypesRegistry {
 			// with a fixed ID, add the property to the `id_conversion` array
 			// so that setup can start the conversion task.
 
-			'_SOBJ'   => [ false, true,  false ],
-			'_ASKDU'  => [ false, true,  false ],
+			'_SOBJ'   => [ false, true, false ],
+			'_ASKDU'  => [ false, true, false ],
 			'_MIME'   => [ false, false, true ],
 			'_MEDIA'  => [ false, false, true ],
 

@@ -65,8 +65,8 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function redirectTextProvider() {
 		$provider[] = [ '#REDIRECT [[:Lala]]', true, Title::newFromText( 'Lala' ) ];
-		$provider[] = [ '#REDIRECT [[Lala]]',  true, Title::newFromText( 'Lala' ) ];
-		$provider[] = [ '[[:Lala]]',           false, null ];
+		$provider[] = [ '#REDIRECT [[Lala]]', true, Title::newFromText( 'Lala' ) ];
+		$provider[] = [ '[[:Lala]]', false, null ];
 
 		return $provider;
 	}

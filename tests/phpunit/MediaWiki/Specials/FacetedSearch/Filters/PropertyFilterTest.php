@@ -46,7 +46,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PropertyFilter::class,
-			new PropertyFilter( $this->templateEngine, $this->treeBuilder,  [] )
+			new PropertyFilter( $this->templateEngine, $this->treeBuilder, [] )
 		);
 	}
 

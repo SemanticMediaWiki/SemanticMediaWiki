@@ -134,7 +134,7 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase {
 		yield 'compound_key_takes_precedence_over_array_match' => [
 			[
 				'query' => [
-					'highlight.fragment' => [ 'number' => 1 ,'size' => 100, 'type' => false ],
+					'highlight.fragment' => [ 'number' => 1, 'size' => 100, 'type' => false ],
 					'highlight.fragment.type' => 'foo'
 				]
 

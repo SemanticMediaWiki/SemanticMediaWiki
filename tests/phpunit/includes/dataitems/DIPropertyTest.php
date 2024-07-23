@@ -164,7 +164,7 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$provider['testCreatePropertyFromLabelWithExplicitLanguageCode'] = [
-			'Fecha de modificación', '', 'es' ,
+			'Fecha de modificación', '', 'es',
 			'_MDAT'
 		];
 

@@ -185,9 +185,9 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function getPropertyValueDataProvider() {
 		return [
-			[ 'Foo'  , 'Bar', 0, 1 ],
-			[ '-Foo' , 'Bar', 1, 0 ],
-			[ '_Foo' , 'Bar', 1, 0 ],
+			[ 'Foo', 'Bar', 0, 1 ],
+			[ '-Foo', 'Bar', 1, 0 ],
+			[ '_Foo', 'Bar', 1, 0 ],
 		];
 	}
 

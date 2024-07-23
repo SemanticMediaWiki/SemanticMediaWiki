@@ -35,7 +35,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testdoIterateOnArray() {
 		$expected = [
-			1 , 42
+			1, 42
 		];
 
 		$mappingIterator = new MappingIterator( $expected, function ( $counter ) {
@@ -52,7 +52,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testdoIterateOnArrayIterator() {
 		$expected = [
-			1001 , 42
+			1001, 42
 		];
 
 		$mappingIterator = new MappingIterator( new ArrayIterator( $expected ), function ( $counter ) {

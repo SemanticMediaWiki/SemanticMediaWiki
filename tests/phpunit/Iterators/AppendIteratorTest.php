@@ -54,7 +54,7 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$iterator = new AppendIterator();
-		$iterator->add( [ 0 , 1 ] );
+		$iterator->add( [ 0, 1 ] );
 
 		$provider[] = [
 			$iterator,
@@ -62,7 +62,7 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$iterator = new AppendIterator();
-		$iterator->add( [ 0 , 1 ] );
+		$iterator->add( [ 0, 1 ] );
 		$iterator->add( $iterator );
 
 		$provider[] = [

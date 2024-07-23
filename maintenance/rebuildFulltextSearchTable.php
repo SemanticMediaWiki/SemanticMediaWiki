@@ -134,7 +134,7 @@ class rebuildFulltextSearchTable extends \Maintenance {
 		);
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Rebuild', 3 , '-', true )
+			$cliMsgFormatter->section( 'Rebuild', 3, '-', true )
 		);
 
 		$text = [
