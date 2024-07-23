@@ -203,7 +203,7 @@ class SMWURIValue extends SMWDataValue {
 	 */
 	protected static function isValidTelURI( $s ) {
 		$tel_uri_regex = '<^tel:\+[0-9./-]*[0-9][0-9./-]*(;[0-9a-zA-Z-]+=(%[0-9a-zA-Z][0-9a-zA-Z]|[0-9a-zA-Z._~:/?#[\]@!$&\'()*+,;=-])*)*$>';
-		return (bool) preg_match( $tel_uri_regex, $s );
+		return (bool)preg_match( $tel_uri_regex, $s );
 	}
 
 	/**

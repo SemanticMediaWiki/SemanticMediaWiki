@@ -215,7 +215,7 @@ class SMWPageLister {
 		}
 
 		// Divide list into three equal chunks.
-		$chunk = (int) ( ( $end - $start + 1 ) / 3 );
+		$chunk = (int)( ( $end - $start + 1 ) / 3 );
 
 		// Get and display header.
 		$r = '<table width="100%"><tr valign="top">';
