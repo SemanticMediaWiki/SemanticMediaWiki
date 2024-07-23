@@ -121,7 +121,6 @@
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotPunctuationParamName" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.ParamPassByReference" />
 		<exclude name="PSR2.Namespaces.NamespaceDeclaration.BlankLineAfter" />
-		<exclude name="Generic.Formatting.SpaceAfterCast.TooMuchSpace" />
 		<exclude name="Generic.CodeAnalysis.EmptyPHPStatement.SemicolonWithoutCodeDetected" />
 		<exclude name="PSR2.ControlStructures.SwitchDeclaration.WrongOpenercase" />
 		<exclude name="MediaWiki.Commenting.DocComment.SyntaxAlignedDocClose" />

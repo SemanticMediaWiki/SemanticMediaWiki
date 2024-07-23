@@ -297,7 +297,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 		);
 
 		$this->reportMessage( "\nInspecting documents ...\n" );
-		$cliMsgFormatter->setStartTime( (int) microtime( true ) );
+		$cliMsgFormatter->setStartTime( (int)microtime( true ) );
 
 		foreach ( $rows as $row ) {
 
