@@ -392,7 +392,7 @@ class QuerySegmentListProcessor {
 			$joinMethod = 'join';
 			if ( $seg->joinType === 'LEFT'|| $seg->joinType === 'LEFT OUTER' ) {
 				$joinMethod = 'leftJoin';
-			} elseif ( ! empty( $seg->joinType ) && $seg->joinType !== 'INNER' ) {
+			} elseif ( !empty( $seg->joinType ) && $seg->joinType !== 'INNER' ) {
 				throw new RuntimeException( "Unknown QuerySegment->joinType `{$seg->joinType}`" );
 			}
 			$table = $seg->joinTable;

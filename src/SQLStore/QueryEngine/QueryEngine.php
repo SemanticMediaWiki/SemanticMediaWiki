@@ -382,7 +382,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 					"sortkey" => "$t0.smw_sortkey",
 					]);
 			// Selecting sort fields is required in standard SQL (but MySQL does not require it).
-			if ( ! empty( $qobj->sortfields ) ) $builder->select( $qobj->sortfields );
+			if ( !empty( $qobj->sortfields ) ) $builder->select( $qobj->sortfields );
 			$connection->applySqlOptions( $builder, $sql_options );
 		}
 		QuerySegmentListProcessor::applyFromSegments( $qobj, $builder );
