@@ -42,7 +42,6 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 * @param Iterator|array $res
 	 */
 	public function __construct( $res ) {
-
 		if ( !$res instanceof Iterator && !is_array( $res ) ) {
 			throw new RuntimeException( "Expected an Iterator or array!" );
 		}

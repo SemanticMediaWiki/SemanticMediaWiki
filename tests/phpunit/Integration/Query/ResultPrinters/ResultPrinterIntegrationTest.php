@@ -26,7 +26,7 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 	private $stringBuilder;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -36,7 +36,7 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->subjects );
 		parent::tearDown();
 	}
@@ -46,12 +46,11 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 	 * @query {{#ask: [[Modification date::+]]|limit=0|searchlabel= }}
 	 */
 	public function testLimitNullWithEmptySearchlabel() {
-
 		foreach ( [ 'Foo', 'Bar', 'テスト' ] as $title ) {
 
 			$this->pageCreator
 				->createPage( Title::newFromText( $title ) )
-				->doEdit( '[[Category:LimitNullForEmptySearchlabel]]');
+				->doEdit( '[[Category:LimitNullForEmptySearchlabel]]' );
 
 			$this->subjects[] = $this->pageCreator->getPage();
 		}
@@ -82,12 +81,11 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 	 * @query {{#ask: [[Modification date::+]]|limit=0|searchlabel=do something }}
 	 */
 	public function testLimitNullWithDescriptiveSearchlabel() {
-
 		foreach ( [ 'Foo', 'Bar', 'テスト' ] as $title ) {
 
 			$this->pageCreator
 				->createPage( Title::newFromText( $title ) )
-				->doEdit( '[[Category:LimitNullForNotEmptySearchlabel]]');
+				->doEdit( '[[Category:LimitNullForNotEmptySearchlabel]]' );
 
 			$this->subjects[] = $this->pageCreator->getPage();
 		}

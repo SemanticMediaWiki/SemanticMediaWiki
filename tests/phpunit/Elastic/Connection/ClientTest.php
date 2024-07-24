@@ -22,8 +22,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	private $elasticClient;
 	private $lockManager;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		if ( !class_exists( '\Elasticsearch\Client' ) ) {
 			$this->markTestSkipped( "elasticsearch-php dependency is not available." );
 		}
@@ -38,7 +37,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Client::class,
 			new Client( $this->elasticClient, $this->lockManager )
@@ -46,7 +44,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasMaintenanceLock() {
-
 		$this->lockManager->expects( $this->once() )
 			->method( 'hasMaintenanceLock' );
 
@@ -59,7 +56,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetMaintenanceLock() {
-
 		$this->lockManager->expects( $this->once() )
 			->method( 'setMaintenanceLock' );
 
@@ -72,8 +68,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBulkOnIllegalArgumentErrorThrowsReplicationException() {
-
-		$options = new Config (
+		$options = new Config(
 			[
 				'replication' => [
 					'throw.exception.on.illegal.argument.error' => true

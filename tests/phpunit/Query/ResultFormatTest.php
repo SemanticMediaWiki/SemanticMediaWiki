@@ -16,7 +16,6 @@ use SMW\Query\ResultFormat;
 class ResultFormatTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ResultFormat::class,
 			new ResultFormat( 'type', 'foo' )
@@ -24,9 +23,8 @@ class ResultFormatTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResolveFormatAliases() {
-
 		foreach ( $GLOBALS['smwgResultAliases'] as $mainFormat => $aliases ) {
-			foreach ($aliases as $alias ) {
+			foreach ( $aliases as $alias ) {
 				$this->assertTrue(
 					ResultFormat::resolveFormatAliases( $alias )
 				);

@@ -43,7 +43,6 @@ final class ApiRequestParameterFormatter {
 	 * @return array
 	 */
 	public function getAskApiParameters() {
-
 		if ( $this->results === null ) {
 			$this->results = isset( $this->requestParameters['query'] ) ? preg_split( "/(?<=[^\|])\|(?=[^\|])(?=[^\+])/", $this->requestParameters['query'] ) : [];
 		}
@@ -59,7 +58,6 @@ final class ApiRequestParameterFormatter {
 	 * @return array
 	 */
 	public function getAskArgsApiParameter( $key ) {
-
 		if ( $this->results === null ) {
 			$this->results = $this->formatAskArgs();
 		}
@@ -75,7 +73,6 @@ final class ApiRequestParameterFormatter {
 	 * @return ObjectDictionary
 	 */
 	protected function formatAskArgs() {
-
 		$result = new Options();
 
 		// Set defaults
@@ -106,7 +103,6 @@ final class ApiRequestParameterFormatter {
 	 * @return string
 	 */
 	protected function formatParameters() {
-
 		$parameters = [];
 
 		foreach ( $this->requestParameters['parameters'] as $param ) {

@@ -25,7 +25,6 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\IcuWordBoundaryTokenizer',
 			new IcuWordBoundaryTokenizer()
@@ -36,7 +35,6 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testTokenize( $string, $expected ) {
-
 		$instance = new IcuWordBoundaryTokenizer();
 
 		$this->assertEquals(
@@ -46,7 +44,6 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 	}
 
 	public function testSetOption() {
-
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -65,7 +62,6 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 	}
 
 	public function testGeneralSetters() {
-
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -83,7 +79,6 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 	}
 
 	public function stringProvider() {
-
 		$provider[] = array(
 			"安全テスト",
 			array( '安全', 'テスト' )
@@ -123,7 +118,7 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 		$provider[] = array(
 			"公明執ようなＳＮＳもストーカー行為の対象に",
 			array(
-				'公明', '執よう','な','ＳＮＳ', 'も',
+				'公明', '執よう', 'な', 'ＳＮＳ', 'も',
 				'ストーカー', '行為', 'の', '対象', 'に'
 			)
 		);
@@ -161,7 +156,7 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 			'日本語の新聞記事であれば文字単位で95%程度の精度で分かち書きが行えます。 ',
 			array(
 				'日本語', 'の', '新聞', '記事', 'で',
-				'あれ', 'ば',	'文字', '単位',
+				'あれ', 'ば', '文字', '単位',
 				'で', '95', '%', '程度',
 				'の', '精度', 'で', '分かち書き',
 				'が', '行', 'え', 'ます', '。'

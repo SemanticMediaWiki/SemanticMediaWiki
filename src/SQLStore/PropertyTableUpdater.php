@@ -71,7 +71,6 @@ class PropertyTableUpdater {
 	 * @param Parameters $parameters
 	 */
 	public function update( $id, Parameters $parameters ) {
-
 		$this->stats = [];
 
 		$insert_rows = $parameters->get( 'insert_rows' );
@@ -107,7 +106,6 @@ class PropertyTableUpdater {
 	 * @param array $delete_rows
 	 */
 	private function doUpdate( array $insert_rows, array $delete_rows ) {
-
 		$propertyTables = $this->store->getPropertyTables();
 		$ids = [];
 
@@ -151,7 +149,6 @@ class PropertyTableUpdater {
 	 * @param boolean $insert
 	 */
 	private function update_rows( PropertyTableDefinition $propertyTable, array $rows, $insert ) {
-
 		if ( empty( $rows ) ) {
 			return;
 		}
@@ -191,7 +188,6 @@ class PropertyTableUpdater {
 	}
 
 	private function insert( PropertyTableDefinition $propertyTable, array $rows ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$tableName = $propertyTable->getName();
 
@@ -203,7 +199,6 @@ class PropertyTableUpdater {
 	}
 
 	private function delete( PropertyTableDefinition $propertyTable, array $rows ) {
-
 		$condition = '';
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -246,7 +241,6 @@ class PropertyTableUpdater {
 	}
 
 	private function aggregate_ids( &$ids, $propertyTable, $rows ) {
-
 		$isCategory = false;
 
 		if ( $propertyTable->isFixedPropertyTable() ) {
@@ -273,7 +267,6 @@ class PropertyTableUpdater {
 	}
 
 	private function update_touched( $ids ) {
-
 		if ( $ids === [] ) {
 			return;
 		}

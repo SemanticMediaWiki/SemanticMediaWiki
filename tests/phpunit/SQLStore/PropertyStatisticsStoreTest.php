@@ -36,7 +36,6 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testDeleteAll() {
-
 		$statsTable = new PropertyStatisticsStore(
 			$this->getStore()->getConnection( 'mw.db' )
 		);
@@ -86,7 +85,6 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	 * @dataProvider usageCountProvider
 	 */
 	public function testGetUsageCount( $propId, $usageCount ) {
-
 		$table = $this->getTable();
 
 		$table->insertUsageCount( $propId, $usageCount );
@@ -98,7 +96,6 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testAddToUsageCountWithInvalidCountThrowsException() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -108,12 +105,11 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 			'foo'
 		);
 
-		$this->expectException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException');
+		$this->expectException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException' );
 		$instance->addToUsageCount( 12, 'foo' );
 	}
 
 	public function testAddToUsageCountWithInvalidIdThrowsException() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -122,7 +118,7 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 			$connection
 		);
 
-		$this->expectException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException');
+		$this->expectException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException' );
 		$instance->addToUsageCount( 'Foo', 12 );
 	}
 
@@ -133,7 +129,6 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	 * @param int $usageCount
 	 */
 	public function testInsertUsageCount( $propId, $usageCount ) {
-
 		$table = $this->getTable();
 
 		$this->assertTrue( $table->insertUsageCount( $propId, $usageCount ) );
@@ -154,7 +149,6 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testAddToUsageCounts() {
-
 		$statsTable = new PropertyStatisticsStore(
 			$this->getStore()->getConnection( 'mw.db' )
 		);
@@ -194,14 +188,13 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testAddToUsageCountsOnTransactionIdle() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function( $callback ) {
+			->will( $this->returnCallback( function ( $callback ) {
 				return call_user_func( $callback );
 			}
 			) );
@@ -227,7 +220,6 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testAddToUsageCountsWillNotWaitOnTransactionIdleWhenCommandLineModeIsActive() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -255,7 +247,6 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testInsertUsageCountWithArrayValue() {
-
 		$tableName = 'Foo';
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -283,7 +274,6 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testAddToUsageCountsWithArrayValue() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -315,7 +305,6 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testSetUsageCountWithArrayValue() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -343,7 +332,6 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testUpsertOnInsertUsageCount() {
-
 		$error = $this->getMockBuilder( '\DBQueryError' )
 			->disableOriginalConstructor()
 			->getMock();

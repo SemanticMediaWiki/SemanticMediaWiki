@@ -19,7 +19,6 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textProvider
 	 */
 	public function testTokenize( $text, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			Tokenizer::tokenize( $text )
@@ -27,7 +26,6 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-
 		$provider[] = [
 			'foo',
 			[ 'foo' ]

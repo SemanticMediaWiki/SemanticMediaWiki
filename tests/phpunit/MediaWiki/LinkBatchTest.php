@@ -17,7 +17,6 @@ use SMW\DIWikiPage;
 class LinkBatchTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			LinkBatch::class,
 			 new LinkBatch()
@@ -25,7 +24,6 @@ class LinkBatchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSingleton() {
-
 		$instance = LinkBatch::singleton();
 
 		$this->assertSame(
@@ -37,7 +35,6 @@ class LinkBatchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAdd_NoPage() {
-
 		$instance = new LinkBatch();
 		$instance->add( 'Foo' );
 
@@ -47,7 +44,6 @@ class LinkBatchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAdd_PageButRefuseFirstUnderscore() {
-
 		$subject = DIWikiPage::newFromText( '_ASK' );
 
 		$instance = new LinkBatch();
@@ -59,7 +55,6 @@ class LinkBatchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecute() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$linkBatch = $this->getMockBuilder( '\LinkBatch' )

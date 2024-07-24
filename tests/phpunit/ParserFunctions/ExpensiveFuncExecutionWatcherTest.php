@@ -17,7 +17,7 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 
 	private $parserData;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->parserData = $this->getMockBuilder( '\SMW\ParserData' )
@@ -26,7 +26,6 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\ParserFunctions\ExpensiveFuncExecutionWatcher',
 			new ExpensiveFuncExecutionWatcher( $this->parserData )
@@ -34,7 +33,6 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasReachedExpensiveLimit() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -67,7 +65,6 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIncrementExpensiveCountOnExsitingCounter() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -109,7 +106,6 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIncrementExpensiveCountOnNull() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -24,7 +24,7 @@ class FacetBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $filterFactory;
 	private $resultFetcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->profile = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\Profile' )
@@ -45,7 +45,6 @@ class FacetBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FacetBuilder::class,
 			new FacetBuilder( $this->profile, $this->templateEngine, $this->filterFactory, $this->resultFetcher )

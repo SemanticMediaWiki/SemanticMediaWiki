@@ -58,8 +58,7 @@ class FilterMap {
 	 *
 	 * @return array
 	 */
-	public function getCountListByType( string $type ) : array {
-
+	public function getCountListByType( string $type ): array {
 		if ( $this->fieldList === null ) {
 			$this->fieldList = $this->loadList();
 		}

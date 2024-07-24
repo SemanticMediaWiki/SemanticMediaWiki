@@ -44,8 +44,7 @@ class CopyLocalMessages {
 	 *
 	 * @return array
 	 */
-	public function copyCanonicalMessages() : array {
-
+	public function copyCanonicalMessages(): array {
 		$messages = $this->readJSONFile(
 			$this->languageFileDir . '/' . $this->file
 		);
@@ -83,8 +82,7 @@ class CopyLocalMessages {
 	 *
 	 * @return array
 	 */
-	public function copyTranslatedMessages() : array {
-
+	public function copyTranslatedMessages(): array {
 		$messages = $this->readJSONFile( $this->languageFileDir . '/' . $this->file );
 
 		$fileFetcher = new FileFetcher(
@@ -137,7 +135,6 @@ class CopyLocalMessages {
 	}
 
 	private function readJSONFile( $file ) {
-
 		$file = str_replace( [ '\\', '/', '//', '\\\\' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( !is_readable( $file ) ) {
@@ -154,7 +151,6 @@ class CopyLocalMessages {
 	}
 
 	private function prettify( $json ) {
-
 		// Change the four-space indent to a tab indent
 		$json = str_replace( "\n    ", "\n\t", $json );
 

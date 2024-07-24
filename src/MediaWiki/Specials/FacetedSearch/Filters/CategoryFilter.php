@@ -57,8 +57,7 @@ class CategoryFilter {
 	 *
 	 * @return string
 	 */
-	public function create( UrlArgs $urlArgs, array $filters ) : string {
-
+	public function create( UrlArgs $urlArgs, array $filters ): string {
 		$categories = [];
 
 		$list = [
@@ -123,7 +122,6 @@ class CategoryFilter {
 	}
 
 	private function matchFilter( $categoryFilters, $key, $count, &$list, $clear ) {
-
 		$category = DIWikiPage::newFromText( $key, NS_CATEGORY );
 		$key = str_replace( '_', ' ', $key );
 
@@ -161,7 +159,6 @@ class CategoryFilter {
 	}
 
 	private function createInputField( array $values ) {
-
 		if ( count( $values ) <= $this->params['min_item'] ) {
 			return '';
 		}

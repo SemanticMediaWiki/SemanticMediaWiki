@@ -28,7 +28,6 @@ class SearchEngineFactory {
 	 * @throws SearchEngineInvalidTypeException
 	 */
 	public function newFallbackSearchEngine( DatabaseBase $connection = null ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -68,7 +67,6 @@ class SearchEngineFactory {
 	 * @return ExtendedSearch
 	 */
 	public function newExtendedSearch( \SearchEngine $fallbackSearchEngine ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$searchEngineConfig = $applicationFactory->create( 'SearchEngineConfig' );
 
@@ -94,7 +92,6 @@ class SearchEngineFactory {
 	 * @param $type
 	 */
 	private function isValidSearchDatabaseType( $type ) {
-
 		if ( !class_exists( $type ) ) {
 			throw new ClassNotFoundException( "$type does not exist." );
 		}

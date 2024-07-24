@@ -23,7 +23,7 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	private $propertyAnnotatorFactory;
 	private $schemaFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -69,13 +69,12 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -87,7 +86,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_NoParserOutput() {
-
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -121,7 +119,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_OnSchemaNamespace() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -170,7 +167,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_OnSchemaNamespace_InvalidSchema() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -220,7 +216,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_OnConceptNamespace() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();

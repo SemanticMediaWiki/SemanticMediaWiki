@@ -28,7 +28,6 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @throws RuntimeException
 	 */
 	public function assertThatQueryResultContains( $expected, QueryResult $queryResult ) {
-
 		if ( $expected instanceof DataValue ) {
 			return $this->assertThatDataValueIsSet( $expected, $queryResult );
 		}
@@ -48,7 +47,6 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $message
 	 */
 	public function assertThatDataValueIsSet( $expected, QueryResult $queryResult, $message = '' ) {
-
 		$expected = is_array( $expected ) ? $expected : [ $expected ];
 
 		if ( $expected === [] ) {
@@ -92,7 +90,6 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $message
 	 */
 	public function assertThatDataItemIsSet( $expected, QueryResult $queryResult, $message = '', $checkSorting = false ) {
-
 		$expected = is_array( $expected ) ? $expected : [ $expected ];
 
 		// Keep the key to allow comparing the position
@@ -145,7 +142,6 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $message
 	 */
 	public function assertThatQueryResultHasSubjects( $expectedSubjects, QueryResult $queryResult, $message = '' ) {
-
 		$expectedSubjects = is_array( $expectedSubjects ) ? $expectedSubjects : [ $expectedSubjects ];
 		$expectedToCount  = count( $expectedSubjects );
 		$actualComparedToCount = 0;
@@ -204,8 +200,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @return QueryResultValidator
 	 */
 	public function useWikiValueForDataValueValidation() {
-
-		$this->dataValueValidationMethod = function( DataValue $expectedDataValue, DataValue $dataValue ) {
+		$this->dataValueValidationMethod = function ( DataValue $expectedDataValue, DataValue $dataValue ) {
 			return $expectedDataValue->getWikiValue() === $dataValue->getWikiValue();
 		};
 

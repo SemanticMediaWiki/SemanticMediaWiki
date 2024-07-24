@@ -95,7 +95,6 @@ class Importer implements MessageReporterAware {
 	 * @since 2.5
 	 */
 	public function runImport() {
-
 		if ( $this->isEnabled === false ) {
 			return $this->messageReporter->reportMessage( "\nImport support was not enabled (or skipped), stopping the task.\n" );
 		}
@@ -134,7 +133,6 @@ class Importer implements MessageReporterAware {
 	}
 
 	private function doImport( ImportContents $importContents ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( $importContents->getErrors() === [] ) {

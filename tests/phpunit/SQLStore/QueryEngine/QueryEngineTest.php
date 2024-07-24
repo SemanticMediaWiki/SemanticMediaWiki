@@ -24,8 +24,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	private $querySegmentListProcessor;
 	private $engineOptions;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -44,7 +43,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			QueryEngine::class,
 			new QueryEngine( $this->store, $this->conditionBuilder, $this->querySegmentListProcessor, $this->engineOptions )
@@ -52,7 +50,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResultForDebugQueryMode() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -88,7 +85,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetImmediateEmptyQueryResultForLimitLessThanOne() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();

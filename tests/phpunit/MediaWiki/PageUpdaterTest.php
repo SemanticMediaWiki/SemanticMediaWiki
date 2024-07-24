@@ -22,7 +22,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setup();
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
@@ -33,7 +33,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\PageUpdater',
 			 new PageUpdater()
@@ -41,7 +40,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanUpdate() {
-
 		$instance = new PageUpdater();
 
 		$this->assertInternalType(
@@ -54,7 +52,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider purgeMethodProvider
 	 */
 	public function testPurge( $purgeMethod, $titleMethod ) {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -73,7 +70,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisablePurgeHtmlCache() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -93,7 +89,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilterDuplicatePages() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -116,7 +111,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider purgeMethodProvider
 	 */
 	public function testPurgeOnTransactionIdle( $purgeMethod, $titleMethod ) {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -141,8 +135,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider purgeMethodProvider
 	 */
-	public function testPurgeWillNotWaitOnTransactionIdleForMissingConnection(  $purgeMethod, $titleMethod ) {
-
+	public function testPurgeWillNotWaitOnTransactionIdleForMissingConnection( $purgeMethod, $titleMethod ) {
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -152,7 +145,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'Foo' ) );
 
 		$title->expects( $this->once() )
-			->method(  $titleMethod );
+			->method( $titleMethod );
 
 		$instance = new PageUpdater();
 		$instance->addPage( $title );
@@ -168,7 +161,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider purgeMethodProvider
 	 */
 	public function testPurgeWillNotWaitOnTransactionIdleWhenCommandLineIsTrue( $purgeMethod, $titleMethod ) {
-
 		$this->connection->expects( $this->never() )
 			->method( 'onTransactionCommitOrIdle' );
 
@@ -194,7 +186,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddNullPage() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -211,7 +202,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider purgeMethodProvider
 	 */
 	public function testPushPendingWaitableUpdate( $purgeMethod, $titleMethod ) {
-
 		$transactionalCallableUpdate = $this->getMockBuilder( '\SMW\MediaWiki\Deferred\TransactionalCallableUpdate' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -254,7 +244,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPurgeCacheAsPoolPurge() {
-
 		$row = new \stdClass;
 		$row->page_id = 42;
 
@@ -267,7 +256,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function( $callback ) {
+			->will( $this->returnCallback( function ( $callback ) {
 				return call_user_func( $callback ); }
 			) );
 
@@ -291,7 +280,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function purgeMethodProvider() {
-
 		$provider[] = [
 			'doPurgeParserCache',
 			'invalidateCache'

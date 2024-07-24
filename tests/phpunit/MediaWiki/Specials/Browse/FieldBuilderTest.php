@@ -19,7 +19,6 @@ class FieldBuilderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCreateQueryForm() {
-
 		$this->assertInternalType(
 			'string',
 			FieldBuilder::createQueryForm( 'Foo' )
@@ -27,7 +26,6 @@ class FieldBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateLink() {
-
 		$parameters = [];
 
 		$this->assertInternalType(

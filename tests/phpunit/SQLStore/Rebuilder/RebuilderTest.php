@@ -23,7 +23,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	private $entityValidator;
 	private $propertyTableIdReferenceDisposer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment(
@@ -77,13 +77,12 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -98,7 +97,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider idProvider
 	 */
 	public function testDispatchRebuildForSingleIteration( $id, $expected ) {
-
 		$this->titleFactory->expects( $this->any() )
 			->method( 'newFromIDs' )
 			->will( $this->returnValue( [] ) );
@@ -153,7 +151,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRevisionMode() {
-
 		$this->entityValidator->expects( $this->any() )
 			->method( 'hasLatestRevID' )
 			->will( $this->returnValue( true ) );
@@ -194,7 +191,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( [ (object)$row] ) );
+			->will( $this->returnValue( [ (object)$row ] ) );
 
 		$connection->expects( $this->any() )
 			->method( 'selectField' )
@@ -235,7 +232,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function idProvider() {
-
 		$provider[] = [
 			42, // Within the border Id
 			43

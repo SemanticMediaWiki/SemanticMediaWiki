@@ -17,15 +17,13 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 
 	private $cache;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Stats::class,
 			new Stats( $this->cache, 42 )
@@ -33,7 +31,6 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIncr() {
-
 		$container = [
 			'Foo.bar' => 10
 		];
@@ -58,7 +55,6 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSet() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
@@ -75,7 +71,6 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCalcMedian() {
-
 		$container = [
 			'Foo.bar' => 10
 		];
@@ -100,7 +95,6 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStats_Simple() {
-
 		$container = [
 			'Foo' => 1,
 			'Bar' => 1
@@ -127,7 +121,6 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStats_SimpleHierarchy() {
-
 		$container = [
 			'Foo.foobar' => 1,
 			'Bar' => 1
@@ -154,7 +147,6 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStats_ExtendedHierarchy() {
-
 		$container = [
 			'Foo.foobar' => 5,
 			'Bar' => 1,

@@ -45,7 +45,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 *
 	 * @return boolean
 	 */
-	public function isEmpty() : bool {
+	public function isEmpty(): bool {
 		return $this->data === [];
 	}
 
@@ -106,7 +106,6 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 * @return Iterator
 	 */
 	public function getIterator(): Iterator {
-
 		foreach ( $this->data as $key => $value ) {
 
 			if ( is_string( $value ) ) {

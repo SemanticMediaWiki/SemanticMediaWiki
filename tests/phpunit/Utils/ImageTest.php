@@ -17,7 +17,6 @@ use SMW\DIWikiPage;
 class ImageTest extends \PHPUnit_Framework_TestCase {
 
 	public function testIsImage() {
-
 		$this->assertTrue(
 			Image::isImage( DIWikiPage::newFromText( 'Foo.png', NS_FILE ) )
 		);

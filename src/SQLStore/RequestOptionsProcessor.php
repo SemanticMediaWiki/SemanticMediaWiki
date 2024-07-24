@@ -170,7 +170,6 @@ class RequestOptionsProcessor {
 	 * @return SMWDataItem[]
 	 */
 	public static function applyRequestOptions( Store $store, array $data, RequestOptions $requestOptions = null ) {
-
 		if ( $data === [] || $requestOptions === null ) {
 			return $data;
 		}
@@ -204,7 +203,6 @@ class RequestOptionsProcessor {
 	}
 
 	private static function applyStringConditions( $requestOptions, $label, $keepDataValue ) {
-
 		foreach ( $requestOptions->getStringConditions() as $strcond ) { // apply string conditions
 			switch ( $strcond->condition ) {
 				case StringCondition::STRCOND_PRE:
@@ -250,7 +248,6 @@ class RequestOptionsProcessor {
 	}
 
 	private static function getSortKeyForItem( $store, $item ) {
-
 		if ( $item instanceof DIWikiPage ) {
 			$label = $store->getWikiPageSortKey( $item );
 			$value = $label;
@@ -263,7 +260,6 @@ class RequestOptionsProcessor {
 	}
 
 	private static function applySortRestriction( $requestOptions, &$result, $sortres, $isNumeric ) {
-
 		if ( !$requestOptions->sort ) {
 			return null;
 		}
@@ -291,7 +287,6 @@ class RequestOptionsProcessor {
 	}
 
 	private static function applyLimitRestriction( $requestOptions, &$result ) {
-
 		// In case of a `conditionConstraint` the restriction is set forth by the
 		// SELECT statement.
 		if ( isset( $requestOptions->conditionConstraint ) ) {

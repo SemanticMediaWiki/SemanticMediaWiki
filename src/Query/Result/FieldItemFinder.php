@@ -96,7 +96,6 @@ class FieldItemFinder {
 	 * @param QueryToken|null $queryToken
 	 */
 	public function setQueryToken( QueryToken $queryToken = null ) {
-
 		if ( $queryToken === null ) {
 			return;
 		}
@@ -118,7 +117,6 @@ class FieldItemFinder {
 	 * @param DataItem[]|[]
 	 */
 	public function findFor( DataItem $dataItem ) {
-
 		$content = [];
 
 		if ( $this->printRequest === null ) {
@@ -232,7 +230,6 @@ class FieldItemFinder {
 	}
 
 	private function getResultsForProperty( $dataItem ) {
-
 		$content = $this->fetchContent(
 			$dataItem
 		);
@@ -305,7 +302,6 @@ class FieldItemFinder {
 	}
 
 	private function fetchContent( DataItem $dataItem ) {
-
 		$dataValue = $this->printRequest->getData();
 		$dataItems = [ $dataItem ];
 

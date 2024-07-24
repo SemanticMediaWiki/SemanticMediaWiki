@@ -99,7 +99,6 @@ class ParserAfterTidy implements HookListener {
 	 * @return true
 	 */
 	public function process( &$text ) {
-
 		if ( $this->canPerformUpdate() ) {
 			$this->performUpdate( $text );
 		}
@@ -108,7 +107,6 @@ class ParserAfterTidy implements HookListener {
 	}
 
 	private function canPerformUpdate() {
-
 		// #2432 avoid access to the DBLoadBalancer while being in readOnly mode
 		// when for example Title::isProtected is accessed
 		if ( $this->isReady === false ) {
@@ -165,7 +163,7 @@ class ParserAfterTidy implements HookListener {
 		}
 
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
-			PageInfoProvider::isProtected( $title, 'edit ') ||
+			PageInfoProvider::isProtected( $title, 'edit ' ) ||
 			$parserDefaultSort ) {
 			return true;
 		}
@@ -185,7 +183,6 @@ class ParserAfterTidy implements HookListener {
 	}
 
 	private function performUpdate( &$text ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
@@ -212,7 +209,6 @@ class ParserAfterTidy implements HookListener {
 	}
 
 	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ) {
-
 		$parserOutput = $this->parser->getOutput();
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
@@ -245,7 +241,7 @@ class ParserAfterTidy implements HookListener {
 			$parserOutput
 		);
 
-		if ( method_exists( $parserOutput, 'getPageProperty') ) {
+		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
 			// T301915
 			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
 			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' ) ?? '';
@@ -293,7 +289,6 @@ class ParserAfterTidy implements HookListener {
 	 * work hence the reliance on the cache as temporary persistence marker
 	 */
 	private function checkPurgeRequest( $parserData ) {
-
 		$start = microtime( true );
 		$title = $this->parser->getTitle();
 
@@ -340,7 +335,6 @@ class ParserAfterTidy implements HookListener {
 	}
 
 	private function doAbort() {
-
 		$this->logger->info(
 			"ParserAfterTidy was invoked but the site isn't ready yet, aborting the processing."
 		);

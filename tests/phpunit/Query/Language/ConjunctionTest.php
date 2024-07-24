@@ -21,7 +21,6 @@ use SMW\Query\Language\ValueDescription;
 class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\Query\Language\Conjunction',
 			new Conjunction()
@@ -38,7 +37,6 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider conjunctionProvider
 	 */
 	public function testCommonMethods( $descriptions, $expected ) {
-
 		$instance = new Conjunction( $descriptions );
 
 		$this->assertEquals(
@@ -86,7 +84,6 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider comparativeHashProvider
 	 */
 	public function testGetFingerprint( $descriptions, $compareTo, $expected ) {
-
 		$instance = new Conjunction(
 			$descriptions
 		);
@@ -98,7 +95,6 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function conjunctionProvider() {
-
 		$nsHelp = Localizer::getInstance()->getNsText( NS_HELP );
 
 		$descriptions = [
@@ -155,7 +151,6 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function testPrune() {
-
 		$valueDescriptionFoo = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) );
 		$valueDescriptionBar = new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) );
 
@@ -186,7 +181,6 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function comparativeHashProvider() {
-
 		$descriptions = [
 			new NamespaceDescription( NS_MAIN ),
 			new NamespaceDescription( NS_HELP )

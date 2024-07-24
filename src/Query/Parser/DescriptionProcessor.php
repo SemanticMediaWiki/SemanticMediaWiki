@@ -106,7 +106,6 @@ class DescriptionProcessor {
 	 * @param array|string $error
 	 */
 	public function addError( $error ) {
-
 		if ( !is_array( $error ) ) {
 			$error = (array)$error;
 		}
@@ -134,7 +133,6 @@ class DescriptionProcessor {
 	 * @return Description|null
 	 */
 	public function newDescriptionForPropertyObjectValue( DIProperty $property, $chunk ) {
-
 		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property );
 		$dataValue->setContextPage( $this->contextPage );
 
@@ -157,7 +155,6 @@ class DescriptionProcessor {
 	 * @return Description|null
 	 */
 	public function newDescriptionForWikiPageValueChunk( $chunk ) {
-
 		// Only create a simple WpgValue to initiate the query description target
 		// operation. If the chunk contains something like "≤Issue/1220" then the
 		// WpgValue would return with an error as it cannot parse ≤ as/ legal
@@ -234,7 +231,6 @@ class DescriptionProcessor {
 	 * also be changed (if it was non-NULL).
 	 */
 	private function newCompoundDescription( Description $currentDescription = null, Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ) {
-
 		$notallowedmessage = 'smw_noqueryfeature';
 
 		if ( $newDescription instanceof SomeProperty ) {
@@ -268,7 +264,6 @@ class DescriptionProcessor {
 	}
 
 	private function newCompoundDescriptionByType( $compoundType, $currentDescription, $newDescription ) {
-
 		if ( ( ( $compoundType & SMW_CONJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Conjunction ) ) ||
 		     ( ( $compoundType & SMW_DISJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Disjunction ) ) ) { // use existing container
 			$currentDescription->addDescription( $newDescription );
@@ -281,7 +276,6 @@ class DescriptionProcessor {
 	}
 
 	private function newConjunction( $currentDescription, $newDescription ) {
-
 		if ( $this->queryFeatures & SMW_CONJUNCTION_QUERY ) {
 			return $this->descriptionFactory->newConjunction( [ $currentDescription, $newDescription ] );
 		}
@@ -292,7 +286,6 @@ class DescriptionProcessor {
 	}
 
 	private function newDisjunction( $currentDescription, $newDescription ) {
-
 		if ( $this->queryFeatures & SMW_DISJUNCTION_QUERY ) {
 			return $this->descriptionFactory->newDisjunction( [ $currentDescription, $newDescription ] );
 		}

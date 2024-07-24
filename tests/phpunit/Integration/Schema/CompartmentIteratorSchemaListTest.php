@@ -18,7 +18,7 @@ class CompartmentIteratorSchemaListTest extends \PHPUnit_Framework_TestCase {
 
 	private $schemaList;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->schemaList = new SchemaList( [] );
@@ -39,7 +39,6 @@ class CompartmentIteratorSchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompartmentIterator_Find() {
-
 		$expected = [
 			'89ee4354fb0d6b0a6db5ac190299ded38f25a1e2' => [ 'bar_3_a', 'fake iterator schema' ],
 			'14d81e4f959865b6d4f9ac80c7b614f750823470' => [ 'bar_3_b', 'fake iterator schema' ],
@@ -72,7 +71,6 @@ class CompartmentIteratorSchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompartmentIterator_Find_Empty() {
-
 		$compartmentIterator = $this->schemaList->newCompartmentIteratorByKey(
 			'filter_2'
 		);

@@ -39,7 +39,6 @@ class DescriptionBuilderRegistry {
 	 * @param DescriptionBuilder $descriptionBuilder
 	 */
 	public function registerDescriptionBuilder( DescriptionBuilder $descriptionBuilder ) {
-
 		if ( $this->descriptionBuilders === [] ) {
 			$this->initDescriptionBuilders();
 		}
@@ -56,7 +55,6 @@ class DescriptionBuilderRegistry {
 	 * @throws RuntimeException
 	 */
 	public function getDescriptionBuilder( DataValue $dataValue ) {
-
 		if ( $this->descriptionBuilders === [] ) {
 			$this->initDescriptionBuilders();
 		}
@@ -75,7 +73,6 @@ class DescriptionBuilderRegistry {
 	}
 
 	private function initDescriptionBuilders() {
-
 		$this->descriptionBuilders[] = new TimeValueDescriptionBuilder();
 		$this->descriptionBuilders[] = new NumberValueDescriptionBuilder();
 		$this->descriptionBuilders[] = new RecordValueDescriptionBuilder();

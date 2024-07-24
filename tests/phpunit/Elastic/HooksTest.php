@@ -22,7 +22,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $elasticFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -38,13 +38,12 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'EntityCache', $entityCache );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Hooks::class,
 			new Hooks( $this->elasticFactory )
@@ -52,7 +51,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHandlers() {
-
 		$instance = new Hooks(
 			$this->elasticFactory
 		);
@@ -64,7 +62,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnRegisterTaskHandlers() {
-
 		$infoTaskHandler = $this->getMockBuilder( '\SMW\Elastic\Admin\ElasticClientTaskHandler' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -105,7 +102,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnRegisterEntityExaminerDeferrableIndicatorProviders() {
-
 		$indicatorProviders = [];
 
 		$replicationCheck = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\ReplicationCheck' )
@@ -148,12 +144,11 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConfirmAllCanConstructMethodsWereCalled() {
-
 		// Available class methods to be tested
 		$classMethods = get_class_methods( Hooks::class );
 
 		// Match all "testOn" to define the expected set of methods
-		$testMethods = preg_grep('/^testOn/', get_class_methods( $this ) );
+		$testMethods = preg_grep( '/^testOn/', get_class_methods( $this ) );
 
 		$testMethods = array_flip(
 			str_replace( 'testOn', 'on', $testMethods )

@@ -22,7 +22,7 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	private $entityCache;
 	private $logger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -44,13 +44,12 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DependencyValidator::class,
 			new DependencyValidator( $this->namespaceExaminer, $this->dependencyLinksValidator, $this->entityCache )
@@ -58,7 +57,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasArchaicDependencies() {
-
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( true ) );
@@ -110,7 +108,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasNoArchaicDependencies() {
-
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( true ) );
@@ -143,7 +140,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasNoArchaicDependencies_DisabledNamespace() {
-
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( false ) );
@@ -167,7 +163,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMarkTitle() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$title = $subject->getTitle();
 
@@ -185,7 +180,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanKeepParserCache_NoCache() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
 			->will( $this->returnValue( false ) );
@@ -207,7 +201,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanKeepParserCache_NoCacheOnFetch() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
 			->will( $this->returnValue( true ) );
@@ -233,7 +226,6 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanNotKeepParserCache() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
 			->will( $this->returnValue( true ) );

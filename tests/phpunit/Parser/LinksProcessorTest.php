@@ -16,7 +16,6 @@ use SMW\Parser\LinksProcessor;
 class LinksProcessorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new LinksProcessor();
 
 		$this->assertInstanceOf(
@@ -29,7 +28,6 @@ class LinksProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider semanticPreLinkProvider
 	 */
 	public function testPreprocess( $semanticLink, $expected ) {
-
 		$instance = new LinksProcessor();
 
 		$this->assertEquals(
@@ -42,7 +40,6 @@ class LinksProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider semanticLinkProvider
 	 */
 	public function testProcess( $semanticLink, $expected ) {
-
 		$instance = new LinksProcessor();
 
 		$this->assertEquals(
@@ -52,7 +49,6 @@ class LinksProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function semanticPreLinkProvider() {
-
 		$provider = [];
 
 		$provider[] = [
@@ -85,7 +81,6 @@ class LinksProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function semanticLinkProvider() {
-
 		$provider = [];
 
 		$provider[] = [

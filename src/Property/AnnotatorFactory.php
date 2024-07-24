@@ -65,7 +65,6 @@ class AnnotatorFactory {
 	 * @return SchemaPropertyAnnotator
 	 */
 	public function newSchemaPropertyAnnotator( PropertyAnnotator $propertyAnnotator, Schema $schema = null ) {
-
 		$schemaPropertyAnnotator = new SchemaPropertyAnnotator(
 			$propertyAnnotator,
 			$schema
@@ -83,7 +82,6 @@ class AnnotatorFactory {
 	 * @return AttachmentLinkPropertyAnnotator
 	 */
 	public function newAttachmentLinkPropertyAnnotator( PropertyAnnotator $propertyAnnotator, array $images = [] ) {
-
 		$attachmentLinkPropertyAnnotator = new AttachmentLinkPropertyAnnotator(
 			$propertyAnnotator,
 			$images
@@ -105,7 +103,6 @@ class AnnotatorFactory {
 	 * @return PredefinedPropertyAnnotator
 	 */
 	public function newPredefinedPropertyAnnotator( PropertyAnnotator $propertyAnnotator, PageInfo $pageInfo ) {
-
 		$predefinedPropertyAnnotator = new PredefinedPropertyAnnotator(
 			$propertyAnnotator,
 			$pageInfo
@@ -127,7 +124,6 @@ class AnnotatorFactory {
 	 * @return EditProtectedPropertyAnnotator
 	 */
 	public function newEditProtectedPropertyAnnotator( PropertyAnnotator $propertyAnnotator, Title $title ) {
-
 		$editProtectedPropertyAnnotator = new EditProtectedPropertyAnnotator(
 			$propertyAnnotator,
 			$title
@@ -164,7 +160,6 @@ class AnnotatorFactory {
 	 * @return TranslationPropertyAnnotator
 	 */
 	public function newTranslationPropertyAnnotator( PropertyAnnotator $propertyAnnotator, $translation ) {
-
 		$translationPropertyAnnotator = new TranslationPropertyAnnotator(
 			$propertyAnnotator,
 			$translation
@@ -187,7 +182,6 @@ class AnnotatorFactory {
 	 * @return DisplayTitlePropertyAnnotator
 	 */
 	public function newDisplayTitlePropertyAnnotator( PropertyAnnotator $propertyAnnotator, $displayTitle, $defaultSort ) {
-
 		$displayTitlePropertyAnnotator = new DisplayTitlePropertyAnnotator(
 			$propertyAnnotator,
 			$displayTitle,
@@ -210,7 +204,6 @@ class AnnotatorFactory {
 	 * @return CategoryPropertyAnnotator
 	 */
 	public function newCategoryPropertyAnnotator( PropertyAnnotator $propertyAnnotator, array $categories ) {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$categoryPropertyAnnotator = new CategoryPropertyAnnotator(
@@ -245,7 +238,6 @@ class AnnotatorFactory {
 	 * @return MandatoryTypePropertyAnnotator
 	 */
 	public function newMandatoryTypePropertyAnnotator( PropertyAnnotator $propertyAnnotator ) {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$mandatoryTypePropertyAnnotator = new MandatoryTypePropertyAnnotator(

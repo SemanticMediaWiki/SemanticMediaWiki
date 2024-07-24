@@ -17,7 +17,6 @@ use Title;
 class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\RedirectTargetFinder',
 			new RedirectTargetFinder()
@@ -28,7 +27,6 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider redirectTextProvider
 	 */
 	public function testFindRedirectTargetFromText( $text, $expectedHasTarget, $expectedGetTarget ) {
-
 		$instance = new RedirectTargetFinder();
 		$instance->findRedirectTargetFromText( $text );
 
@@ -48,7 +46,6 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider redirectTextProvider
 	 */
 	public function testInjectedRedirectTargetOverridesTextFinder( $text ) {
-
 		$directRedirectTarget = Title::newFromText( 'Foo' );
 
 		$instance = new RedirectTargetFinder();
@@ -67,10 +64,9 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function redirectTextProvider() {
-
 		$provider[] = [ '#REDIRECT [[:Lala]]', true, Title::newFromText( 'Lala' ) ];
-		$provider[] = [ '#REDIRECT [[Lala]]',  true, Title::newFromText( 'Lala' ) ];
-		$provider[] = [ '[[:Lala]]',           false, null ];
+		$provider[] = [ '#REDIRECT [[Lala]]', true, Title::newFromText( 'Lala' ) ];
+		$provider[] = [ '[[:Lala]]', false, null ];
 
 		return $provider;
 	}

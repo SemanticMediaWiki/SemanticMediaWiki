@@ -96,7 +96,6 @@ class SQLStoreUpdater {
 	 * @param Title $title
 	 */
 	public function deleteSubject( Title $title ) {
-
 		// @deprecated since 2.1, use 'SMW::SQLStore::BeforeDeleteSubjectComplete'
 		$this->hookContainer->run( 'SMWSQLStore3::deleteSubjectBefore', [ $this->store, $title ] );
 
@@ -154,7 +153,6 @@ class SQLStoreUpdater {
 	}
 
 	private function doDelete( $id, $subject, $subobjectListFinder, &$extensionList ) {
-
 		$this->semanticDataLookup->invalidateCache( $id );
 
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
@@ -194,7 +192,6 @@ class SQLStoreUpdater {
 	 * @param SemanticData $data
 	 */
 	public function doDataUpdate( SemanticData $semanticData ) {
-
 		// Deprecated since 3.1, use SMW::SQLStore::BeforeDataUpdateComplete
 		$this->hookContainer->run( 'SMWSQLStore3::updateDataBefore', [ $this->store, $semanticData ] );
 
@@ -403,7 +400,6 @@ class SQLStoreUpdater {
 	}
 
 	private function makeSortKey( $subject, $data ) {
-
 		// Don't mind the delete process
 		if ( $data->getOption( SemanticData::PROC_DELETE ) ) {
 			return '';
@@ -445,7 +441,6 @@ class SQLStoreUpdater {
 	}
 
 	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
-
 		$options = [
 			'page_id' => $pageId,
 			'redirect_id' => $redirectId

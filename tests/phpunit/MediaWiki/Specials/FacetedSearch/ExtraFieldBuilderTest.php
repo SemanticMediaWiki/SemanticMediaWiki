@@ -22,7 +22,7 @@ class ExtraFieldBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $profile;
 	private $templateEngine;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->profile = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\Profile' )
@@ -35,7 +35,6 @@ class ExtraFieldBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExtraFieldBuilder::class,
 			new ExtraFieldBuilder( $this->profile, $this->templateEngine )

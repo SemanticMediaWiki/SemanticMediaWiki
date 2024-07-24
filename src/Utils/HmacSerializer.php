@@ -28,7 +28,6 @@ class HmacSerializer {
 	 * @return string|boolean
 	 */
 	public static function encode( $data, $key = null, $algo = 'md5' ) {
-
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -53,7 +52,6 @@ class HmacSerializer {
 	 * @return string|boolean
 	 */
 	public static function decode( $data, $key = null, $algo = 'md5' ) {
-
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -83,7 +81,6 @@ class HmacSerializer {
 	 * @return string|boolean
 	 */
 	public static function serialize( $data, $key = null, $algo = 'md5' ) {
-
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -108,7 +105,6 @@ class HmacSerializer {
 	 * @return mixed|boolean
 	 */
 	public static function unserialize( $data, $key = null, $algo = 'md5' ) {
-
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -141,7 +137,6 @@ class HmacSerializer {
 	 * @return string|boolean
 	 */
 	public static function compress( $data, $key = null, $algo = 'md5' ) {
-
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}
@@ -161,7 +156,6 @@ class HmacSerializer {
 	 * @return mixed|boolean
 	 */
 	public static function uncompress( $data, $key = null, $algo = 'md5' ) {
-
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}

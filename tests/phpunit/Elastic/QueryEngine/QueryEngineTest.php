@@ -23,7 +23,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	private $elasticClient;
 	private $idTable;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
@@ -38,8 +38,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) use( $database ) {
-
+		$callback = function ( $type ) use( $database ) {
 			if ( $type === 'mw.db' ) {
 				return $connection;
 			};
@@ -66,7 +65,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			QueryEngine::class,
 			new QueryEngine( $this->store, $this->conditionBuilder )
@@ -74,7 +72,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testgetQueryResult_MODE_NONE() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -105,7 +102,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testgetQueryResult_MODE_INSTANCES() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$subject->setId( 42 );
 
@@ -152,7 +148,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'search' )
-			->will( $this->returnValue( [ $res , $errors ] ) );
+			->will( $this->returnValue( [ $res, $errors ] ) );
 
 		$this->idTable->expects( $this->any() )
 			->method( 'getDataItemsFromList' )

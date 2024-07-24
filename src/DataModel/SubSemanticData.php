@@ -136,7 +136,6 @@ class SubSemanticData implements JsonUnserializable {
 	 * @return boolean
 	 */
 	public function hasSubSemanticData( $subobjectName = null ) {
-
 		if ( $this->subSemanticData === [] || $subobjectName === '' ) {
 			return false;
 		}
@@ -154,7 +153,6 @@ class SubSemanticData implements JsonUnserializable {
 	 * @return ContainerSemanticData|null
 	 */
 	public function findSubSemanticData( $subobjectName ) {
-
 		if ( $this->hasSubSemanticData( $subobjectName ) && isset( $this->subSemanticData[$subobjectName] ) ) {
 			return $this->subSemanticData[$subobjectName];
 		}
@@ -177,7 +175,6 @@ class SubSemanticData implements JsonUnserializable {
 	 * @throws SubSemanticDataException if not adding data about a subobject of this data
 	 */
 	public function addSubSemanticData( SemanticData $semanticData ) {
-
 		if ( $semanticData->subContainerDepthCounter > $this->subContainerMaxDepth ) {
 			throw new SubSemanticDataException( "Cannot add further subdata with the depth of {$semanticData->subContainerDepthCounter}. You are trying to add data beyond the max depth of {$this->subContainerMaxDepth} to an SemanticData object." );
 		}
@@ -207,7 +204,6 @@ class SubSemanticData implements JsonUnserializable {
 	 * @param SemanticData $semanticData
 	 */
 	public function removeSubSemanticData( SemanticData $semanticData ) {
-
 		if ( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
 			return;
 		}
@@ -231,7 +227,6 @@ class SubSemanticData implements JsonUnserializable {
 	 * @param $property DIProperty
 	 */
 	public function removeProperty( DIProperty $property ) {
-
 		// Inverse properties cannot be used for an annotation
 		if ( $property->isInverse() ) {
 			return;
@@ -243,7 +238,6 @@ class SubSemanticData implements JsonUnserializable {
 	}
 
 	private function appendSubSemanticData( $semanticData, $subobjectName ) {
-
 		if ( $this->hasSubSemanticData( $subobjectName ) ) {
 			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
 
@@ -283,7 +277,7 @@ class SubSemanticData implements JsonUnserializable {
 		return [
 			'noDuplicates' => $this->noDuplicates,
 			'subject' => $this->subject->jsonSerialize(),
-			'subSemanticData' => array_map( function( $x ) {
+			'subSemanticData' => array_map( function ( $x ) {
 					return $x->jsonSerialize();
 			}, $this->subSemanticData ),
 			'subContainerMaxDepth' => $this->subContainerMaxDepth,
@@ -302,8 +296,8 @@ class SubSemanticData implements JsonUnserializable {
 	 * @return self
 	 */
 	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
-		$obj = new self( SemanticData::maybeUnserialize($unserializer, $json['subject'] ), $json['noDuplicates'] );
-		$obj->subSemanticData = SemanticData::maybeUnserializeArray($unserializer, $json['subSemanticData'] );
+		$obj = new self( SemanticData::maybeUnserialize( $unserializer, $json['subject'] ), $json['noDuplicates'] );
+		$obj->subSemanticData = SemanticData::maybeUnserializeArray( $unserializer, $json['subSemanticData'] );
 		$obj->subContainerMaxDepth = $json['subContainerMaxDepth'];
 		return $obj;
 	}

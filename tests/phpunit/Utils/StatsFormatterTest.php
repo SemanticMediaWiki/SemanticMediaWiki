@@ -22,7 +22,6 @@ class StatsFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider statsProvider
 	 */
 	public function testGetStatsFromFlatKey( $stats, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			StatsFormatter::getStatsFromFlatKey( $stats )
@@ -33,7 +32,6 @@ class StatsFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider formatProvider
 	 */
 	public function testFormat( $stats, $format, $expected ) {
-
 		$this->assertInternalType(
 			$expected,
 			StatsFormatter::format( $stats, $format )
@@ -41,7 +39,6 @@ class StatsFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function formatProvider() {
-
 		$provider[] = [
 			[ 'Foo' => 1, 'Bar' => 1 ],
 			StatsFormatter::FORMAT_PLAIN,
@@ -70,7 +67,6 @@ class StatsFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function statsProvider() {
-
 		$provider[] = [
 			[ 'Foo' => 1, 'Bar' => 1 ],
 			[

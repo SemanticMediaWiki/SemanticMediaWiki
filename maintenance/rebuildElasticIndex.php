@@ -89,7 +89,6 @@ class rebuildElasticIndex extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( $this->canExecute() !== true ) {
 			exit;
 		}
@@ -224,7 +223,6 @@ class rebuildElasticIndex extends \Maintenance {
 	}
 
 	protected function handleTermSignal( $signal ) {
-
 		$this->reportMessage( "\n" . '   ... rebuild was terminated, start recovery process ...' );
 		$this->rebuilder->setDefaults();
 		$this->rebuilder->refresh();
@@ -235,7 +233,6 @@ class rebuildElasticIndex extends \Maintenance {
 	}
 
 	private function canExecute() {
-
 		if ( !Setup::isEnabled() ) {
 			return $this->reportMessage(
 				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
@@ -253,7 +250,6 @@ class rebuildElasticIndex extends \Maintenance {
 	}
 
 	private function otherActivities() {
-
 		if ( $this->hasOption( 'update-settings' ) ) {
 
 			$this->reportMessage(
@@ -303,7 +299,6 @@ class rebuildElasticIndex extends \Maintenance {
 	}
 
 	private function showAbort() {
-
 		$showAbort = !$this->hasOption( 'quick' ) && !$this->hasOption( 's' ) && !$this->hasOption( 'page' ) && !$this->hasOption( 'run-fileindex' );
 
 		if ( $this->hasOption( 'auto-recovery' ) && $this->autoRecovery->has( 'ar_id' ) ) {
@@ -346,7 +341,6 @@ class rebuildElasticIndex extends \Maintenance {
 	}
 
 	private function rebuild() {
-
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Indices rebuild' )
 		);
@@ -453,7 +447,6 @@ class rebuildElasticIndex extends \Maintenance {
 	}
 
 	private function rebuildFromRow( $i, $count, $row, $last ) {
-
 		$progress = $this->cliMsgFormatter->progressCompact( $i, $count, $row->smw_id, $last );
 
 		$this->reportMessage(
@@ -484,7 +477,6 @@ class rebuildElasticIndex extends \Maintenance {
 	}
 
 	private function select_conditions() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$conditions = [];

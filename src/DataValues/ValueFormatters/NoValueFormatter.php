@@ -28,7 +28,6 @@ class NoValueFormatter extends DataValueFormatter {
 	 * {@inheritDoc}
 	 */
 	public function format( $type, $linker = null ) {
-
 		if ( !$this->dataValue instanceof DataValue ) {
 			throw new RuntimeException( "The formatter is missing a valid DataValue object" );
 		}

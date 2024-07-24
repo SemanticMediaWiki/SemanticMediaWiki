@@ -20,8 +20,7 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $searchTable;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
@@ -34,7 +33,6 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\SQLiteValueMatchConditionBuilder',
 			new SQLiteValueMatchConditionBuilder( $this->textSanitizer, $this->searchTable )
@@ -42,7 +40,6 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsEnabled() {
-
 		$this->searchTable->expects( $this->once() )
 			->method( 'isEnabled' )
 			->will( $this->returnValue( true ) );
@@ -58,7 +55,6 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTableName() {
-
 		$this->searchTable->expects( $this->once() )
 			->method( 'getTableName' )
 			->will( $this->returnValue( 'Foo' ) );
@@ -75,7 +71,6 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSortIndexField() {
-
 		$this->searchTable->expects( $this->any() )
 			->method( 'getSortField' )
 			->will( $this->returnValue( 's_id' ) );
@@ -92,7 +87,6 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanApplyFulltextSearchMatchCondition() {
-
 		$this->searchTable->expects( $this->once() )
 			->method( 'isEnabled' )
 			->will( $this->returnValue( true ) );
@@ -138,7 +132,6 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetWhereConditionWithPropertyOnTempTable() {
-
 		$this->textSanitizer->expects( $this->once() )
 			->method( 'sanitize' )
 			->will( $this->returnValue( 'Foo' ) );
@@ -182,7 +175,6 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider searchTermProvider
 	 */
 	public function testGetWhereConditionWithoutProperty( $text, $indexField, $expected ) {
-
 		$this->textSanitizer->expects( $this->once() )
 			->method( 'sanitize' )
 			->will( $this->returnValue( $text ) );
@@ -223,7 +215,6 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function searchTermProvider() {
-
 		$provider[] = [
 			'foooo',
 			'barColumn',

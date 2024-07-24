@@ -42,7 +42,6 @@ class QueryComparator {
 	 * @return self
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 			self::$instance = new self(
 				$GLOBALS['smwgQComparators'],
@@ -84,7 +83,6 @@ class QueryComparator {
 	 * @return integer Item of the SMW_CMP_ enum
 	 */
 	public function getComparatorFromString( $string, $defaultComparator = SMW_CMP_EQ ) {
-
 		if ( $string === '' ) {
 			return SMW_CMP_EQ;
 		}
@@ -115,7 +113,6 @@ class QueryComparator {
 	 * @return integer
 	 */
 	public function extractComparatorFromString( &$value ) {
-
 		$comparator = SMW_CMP_EQ;
 
 		foreach ( $this->getComparatorStrings() as $string ) {
@@ -139,7 +136,6 @@ class QueryComparator {
 	 * @return string
 	 */
 	public function getStringForComparator( $comparator ) {
-
 		if ( $this->reverseCache === [] ) {
 			$this->reverseCache = array_flip( $this->comparators );
 		}
@@ -154,7 +150,6 @@ class QueryComparator {
 	}
 
 	private function getEnabledComparators( $comparatorList, $strictComparators ) {
-
 		// Note: Comparators that contain other comparators at the beginning of
 		// the string need to be at beginning of the array.
 		$comparators = [

@@ -93,7 +93,6 @@ class ResultFormat extends StringParam {
 	 * @return string Array key in $smwgResultFormats
 	 */
 	protected function getDefaultFormat() {
-
 		if ( empty( $this->printRequests ) ) {
 			return 'table';
 		}

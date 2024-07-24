@@ -22,7 +22,6 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -34,7 +33,6 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResultObjectForNullSet() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -57,7 +55,6 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorCodeProvider
 	 */
 	public function testGetQueryResultObjectForCountQuery( $errorCode ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -94,7 +91,6 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorCodeProvider
 	 */
 	public function testGetQueryResultObjectForEmptyInstanceQuery( $errorCode ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -131,7 +127,6 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorCodeProvider
 	 */
 	public function testGetQueryResultObjectForInstanceQuery( $errorCode ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -171,7 +166,6 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertQueryResultErrorCodeForCountValue( $errorCode, QueryResult $queryResult ) {
-
 		if ( $errorCode > 0 ) {
 			$this->assertNotEmpty( $queryResult->getErrors() );
 			return $this->assertNull( $queryResult->getCountValue() );
@@ -182,7 +176,6 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertQueryResultErrorCode( $errorCode, QueryResult $queryResult ) {
-
 		if ( $errorCode > 0 ) {
 			return $this->assertNotEmpty( $queryResult->getErrors() );
 		}
@@ -191,7 +184,6 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function errorCodeProvider() {
-
 		$provider = [
 			[ 0 ],
 			[ 1 ],

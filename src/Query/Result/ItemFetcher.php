@@ -97,7 +97,6 @@ class ItemFetcher {
 	 * @param DataItem|null|false $dataItem
 	 */
 	public function highlightTokens( $dataItem ) {
-
 		if ( !$dataItem instanceof DIBlob || !$this->printRequest instanceof PrintRequest ) {
 			return $dataItem;
 		}
@@ -145,7 +144,6 @@ class ItemFetcher {
 	 * @return array
 	 */
 	public function fetch( array $dataItems, DIProperty $property, RequestOptions $requestOptions ) {
-
 		if ( $this->prefetch === false ) {
 			return $this->legacyFetch( $dataItems, $property, $requestOptions );
 		}
@@ -202,7 +200,7 @@ class ItemFetcher {
 			unset( $pv );
 		}
 
-		array_walk( $propertyValues, function( &$dataItem ) {
+		array_walk( $propertyValues, function ( &$dataItem ) {
 			$dataItem = $this->highlightTokens( $dataItem );
 		} );
 
@@ -210,7 +208,6 @@ class ItemFetcher {
 	}
 
 	private function legacyFetch( $dataItems, $property, $requestOptions ) {
-
 		$propertyValues = [];
 		$requestOptions->setOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, false );
 		$requestOptions->setCaller( __METHOD__ );
@@ -235,7 +232,7 @@ class ItemFetcher {
 			unset( $pv );
 		}
 
-		array_walk( $propertyValues, function( &$dataItem ) {
+		array_walk( $propertyValues, function ( &$dataItem ) {
 			$dataItem = $this->highlightTokens( $dataItem );
 		} );
 

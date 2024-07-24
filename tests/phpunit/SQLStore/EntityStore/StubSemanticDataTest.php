@@ -22,8 +22,7 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $testEnvironment;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -37,12 +36,11 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -60,7 +58,6 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNotToResolveSubobjectsForRedirect() {
-
 		$instance = $this->getMockBuilder( StubSemanticData::class )
 			->setConstructorArgs( [
 				DIWikiPage::newFromText( __METHOD__ ),
@@ -86,7 +83,6 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues() {
-
 		$instance = StubSemanticData::newFromSemanticData(
 			new SemanticData( DIWikiPage::newFromText( __METHOD__ ) ),
 			$this->store
@@ -110,7 +106,6 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyObjectProvider
 	 */
 	public function testPhpSerialization( $property, $dataItem ) {
-
 		$instance = StubSemanticData::newFromSemanticData(
 			new SemanticData( new DIWikiPage( 'Foo', NS_MAIN ) ),
 			$this->store
@@ -133,7 +128,6 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyObjectProvider
 	 */
 	public function testRemovePropertyObjectValue( $property, $dataItem ) {
-
 		$instance = StubSemanticData::newFromSemanticData(
 			new SemanticData( new DIWikiPage( 'Foo', NS_MAIN ) ),
 			$this->store
@@ -147,7 +141,6 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function propertyObjectProvider() {
-
 		$provider = [];
 
 		// #0

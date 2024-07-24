@@ -72,8 +72,8 @@ class dumpRDF extends \Maintenance {
 		$this->addOption( 'properties', 'Export only properties', false );
 		$this->addOption( 'individuals', 'Export only individuals', false );
 
-        $this->addOption('namespace','Export only namespaced included in the <namespacelist> with | being used as a separator. ' .
-            'Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE"',false,true);
+        $this->addOption( 'namespace', 'Export only namespaced included in the <namespacelist> with | being used as a separator. ' .
+            'Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE"', false, true );
 
 
         $this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .
@@ -100,7 +100,6 @@ class dumpRDF extends \Maintenance {
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter->reportMessage( $message );
 		}
@@ -114,7 +113,6 @@ class dumpRDF extends \Maintenance {
 	 * @since 2.0
 	 */
 	public function execute() {
-
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
 			exit ( $maintenanceCheck->getMessage() );
 		}
@@ -141,9 +139,9 @@ class dumpRDF extends \Maintenance {
 			$cliMsgFormatter->section( 'Export task(s)' )
 		);
 
-		if (  $this->hasOption( 'file' ) ) {
+		if ( $this->hasOption( 'file' ) ) {
 			$this->reportMessage(
-				$cliMsgFormatter->twoCols( 'File',  $this->getOption( 'file' )  )
+				$cliMsgFormatter->twoCols( 'File', $this->getOption( 'file' ) )
 			);
 		}
 
@@ -153,7 +151,6 @@ class dumpRDF extends \Maintenance {
 	}
 
 	private function runExport() {
-
 		$delay = 0;
 		$pages = [];
 		$restrictNamespaceTo = false;
@@ -165,7 +162,7 @@ class dumpRDF extends \Maintenance {
 		$delayeach = ( $delay === 0 ) ? 0 : 1;
 
 		if ( $this->hasOption( 'e' ) ) {
-			$delayeach = intval( $this->getOption( 'e' )  );
+			$delayeach = intval( $this->getOption( 'e' ) );
 		}
 
 		if ( $this->hasOption( 'categories' ) ) {
@@ -185,7 +182,7 @@ class dumpRDF extends \Maintenance {
 		}
 
         if ( $this->hasOption( 'namespace' ) ) {
-            $restrictNamespaceTo = array_map('constant', explode( '|', $this->getOption( 'namespace' ) ) );
+            $restrictNamespaceTo = array_map( 'constant', explode( '|', $this->getOption( 'namespace' ) ) );
         }
 
         if ( $this->hasOption( 'server' ) ) {

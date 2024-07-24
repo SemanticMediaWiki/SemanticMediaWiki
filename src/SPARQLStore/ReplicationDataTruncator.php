@@ -37,7 +37,6 @@ class ReplicationDataTruncator {
 	 * @return SemanticData
 	 */
 	public function doTruncate( SemanticData $semanticData ) {
-
 		if ( $this->propertyExemptionList === [] ) {
 			return $semanticData;
 		}

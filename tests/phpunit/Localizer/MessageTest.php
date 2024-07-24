@@ -18,13 +18,12 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->resetPoolCacheById( Message::POOLCACHE_ID );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Message::class,
 			new Message()
@@ -32,7 +31,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmptyStringOnUnregisteredHandler() {
-
 		$instance = new Message();
 
 		$this->assertEmpty(
@@ -41,11 +39,9 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisteredHandler() {
-
 		$instance = new Message();
 
-		$instance->registerCallbackHandler( 'Foo', function( $parameters, $language ) {
-
+		$instance->registerCallbackHandler( 'Foo', function ( $parameters, $language ) {
 			if ( $parameters[0] === 'Foo' && $language === Message::CONTENT_LANGUAGE ) {
 				return 'Foobar';
 			}
@@ -71,7 +67,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisteredHandlerWithLanguage() {
-
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -91,7 +86,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Message();
 		$instance->clear();
 
-		$instance->registerCallbackHandler( 'Foo', function( $parameters, $language ) use ( $instanceSpy ){
+		$instance->registerCallbackHandler( 'Foo', function ( $parameters, $language ) use ( $instanceSpy ){
 			$instanceSpy->hasLanguage( $language );
 			return 'UNKNOWN';
 		} );
@@ -101,11 +96,10 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFromCache() {
-
 		$instance = new Message();
 		$instance->clear();
 
-		$instance->registerCallbackHandler( 'SimpleText', function( $parameters, $language ) {
+		$instance->registerCallbackHandler( 'SimpleText', function ( $parameters, $language ) {
 			return 'Foo';
 		} );
 
@@ -159,7 +153,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider encodeProvider
 	 */
 	public function testEncode( $string, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			Message::encode( $string )
@@ -167,7 +160,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDecode() {
-
 		$this->assertEquals(
 			false,
 			Message::decode( 'Foo' )
@@ -180,7 +172,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function encodeProvider() {
-
 		$provider[] = [
 			'Foo',
 			'[2,"Foo"]'

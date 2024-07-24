@@ -23,7 +23,7 @@ class FixedPropertiesTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
@@ -37,7 +37,6 @@ class FixedPropertiesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FixedProperties::class,
 			new FixedProperties( $this->store )
@@ -45,14 +44,13 @@ class FixedPropertiesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
-			->will($this->onConsecutiveCalls(
+			->will( $this->onConsecutiveCalls(
 				(object)[ 'smw_id' => 99999 ],
 				(object)[ 'smw_id' => 11111 ] ) );
 

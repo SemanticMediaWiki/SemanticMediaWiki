@@ -28,7 +28,7 @@ class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -56,13 +56,12 @@ class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangePropagationExaminer::class,
 			new ChangePropagationExaminer( $this->declarationExaminer, $this->store, $this->semanticData )
@@ -70,7 +69,6 @@ class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsChangePropagation() {
-
 		$dataItemFactory = new DataItemFactory();
 		$subject = $dataItemFactory->newDIWikiPage( 'Test', NS_MAIN );
 
@@ -108,7 +106,6 @@ class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPendingJob() {
-
 		$dataItemFactory = new DataItemFactory();
 		$subject = $dataItemFactory->newDIWikiPage( 'Test', NS_MAIN );
 

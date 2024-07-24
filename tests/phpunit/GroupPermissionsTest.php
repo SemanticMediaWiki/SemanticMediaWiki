@@ -20,7 +20,7 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 
 	private $hookDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
@@ -29,7 +29,6 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInitPermissions() {
-
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onGroupPermissionsBeforeInitializationComplete' );
 
@@ -65,7 +64,6 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoResetOfAlreadyRegisteredGroupPermissions() {
-
 		// Avoid re-setting permissions, refs #1137
 		$vars['wgGroupPermissions']['sysop']['smw-admin'] = false;
 		$vars['wgGroupPermissions']['smwadministrator']['smw-admin'] = false;

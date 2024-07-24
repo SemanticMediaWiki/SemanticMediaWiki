@@ -19,7 +19,6 @@ class CharArmorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider invisibleControlCharactersProvider
 	 */
 	public function testRemoveControlChars( $withControlChar, $expected ) {
-
 		$this->assertFalse(
 			$expected === $withControlChar
 		);
@@ -34,7 +33,6 @@ class CharArmorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider specialCharactersProvider
 	 */
 	public function testRemoveSpecialChars( $withSpecialChar, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			CharArmor::removeSpecialChars( $withSpecialChar )
@@ -42,7 +40,6 @@ class CharArmorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function invisibleControlCharactersProvider() {
-
 		$provider[] = [
 			'[[Left-To-Right Mark::"‎"]]',
 			'[[Left-To-Right Mark::""]]'
@@ -72,7 +69,6 @@ class CharArmorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function specialCharactersProvider() {
-
 		$provider[] = [
 			'visible shy&shy;ness',
 			'visible shyness'

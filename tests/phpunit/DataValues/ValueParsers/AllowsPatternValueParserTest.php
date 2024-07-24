@@ -17,14 +17,13 @@ class AllowsPatternValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	private $mediaWikiNsContentReader;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueParsers\AllowsPatternValueParser',
 			new AllowsPatternValueParser( $this->mediaWikiNsContentReader )
@@ -32,7 +31,6 @@ class AllowsPatternValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParseAndMatchFromResource() {
-
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
 			->will( $this->returnValue( " \nFoo|^(Bar|Foo bar)$\n Bar|^(ABC|DEF)$\n" ) );

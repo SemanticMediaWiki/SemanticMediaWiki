@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class NormalizerTest extends TestCase {
 
 	public function testTransliteration() {
-
 		$this->assertEquals(
 			'AAAAAEAaaaaaeaOOOOOOEOoooooeoEEEEeeeeðCcÐIIIIiiiiUUUUEuuuueNnSsYyyZz',
 			Normalizer::applyTransliteration( 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž' )
@@ -25,7 +24,6 @@ class NormalizerTest extends TestCase {
 	}
 
 	public function testConvertDoubleWidth() {
-
 		$this->assertEquals(
 			'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
 			Normalizer::convertDoubleWidth( '０１２３４５６７８９ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ' )
@@ -33,7 +31,6 @@ class NormalizerTest extends TestCase {
 	}
 
 	public function testReduceLengthTo() {
-
 		$this->assertEquals(
 			'ABC',
 			Normalizer::reduceLengthTo( 'ABCDEF', 3 )
@@ -66,7 +63,6 @@ class NormalizerTest extends TestCase {
 	}
 
 	public function testToLowercase() {
-
 		$this->assertEquals(
 			'abcdef',
 			Normalizer::toLowercase( 'ABCDEF' )

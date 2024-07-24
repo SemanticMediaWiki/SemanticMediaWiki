@@ -46,7 +46,6 @@ class SectionTag {
 	 * @return boolean
 	 */
 	public static function register( Parser $parser, $supportSectionTag = true ) {
-
 		if ( $supportSectionTag === false ) {
 			return false;
 		}
@@ -67,7 +66,6 @@ class SectionTag {
 	 * @return string
 	 */
 	public function parse( $input, array $args ) {
-
 		$attributes = [];
 		$title = $this->parser->getTitle();
 

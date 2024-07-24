@@ -28,8 +28,7 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	private Container $container;
 	private $cacheStats;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -52,7 +51,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ResultCache::class,
 			new ResultCache( $this->store, $this->queryFactory, $this->blobStore, $this->cacheStats )
@@ -60,7 +58,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResultForEmptyQuery() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -71,7 +68,7 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$queryEngine->expects( $this->once() )
 			->method( 'getQueryResult' )
-			->with($this->identicalTo( $query ) );
+			->with( $this->identicalTo( $query ) );
 
 		$instance = new ResultCache(
 			$this->store,
@@ -86,7 +83,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResultFromTempCache() {
-
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
@@ -117,7 +113,7 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$queryEngine->expects( $this->once() )
 			->method( 'getQueryResult' )
-			->with($this->identicalTo( $query ) );
+			->with( $this->identicalTo( $query ) );
 
 		$instance = new ResultCache(
 			$this->store,
@@ -135,7 +131,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPurgeCacheByQueryList() {
-
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
@@ -158,7 +153,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoCache() {
-
 		$this->blobStore->expects( $this->never() )
 			->method( 'read' );
 
@@ -199,7 +193,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMissingQueryEngineThrowsException() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -216,7 +209,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPurgeCacheBySubject() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
@@ -245,7 +237,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPurgeCacheBySubjectWithHasHMutation() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
@@ -275,7 +266,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPurgeCacheBySubjectWith_QUERY() {
-
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -313,7 +303,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStats() {
-
 		$this->cacheStats->expects( $this->once() )
 			->method( 'getStats' );
 

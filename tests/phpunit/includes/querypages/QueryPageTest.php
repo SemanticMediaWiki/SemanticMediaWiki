@@ -30,7 +30,6 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 	 * @return QueryPage
 	 */
 	private function newInstance( $search = '' ) {
-
 		$queryPage = $this->getMockBuilder( '\SMW\QueryPage' )
 			->setMethods( [ 'getResults', 'formatResult' ] )
 			->getMock();
@@ -62,7 +61,6 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 	 * @param $expected
 	 */
 	public function testLinkParameters( $test, $expected ) {
-
 		$search = __METHOD__;
 		$result = $this->newInstance( $test )->linkParameters();
 
@@ -77,7 +75,6 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetSearchForm() {
-
 		$search = __METHOD__;
 		$instance = $this->newInstance();
 
@@ -117,16 +114,15 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 		$param = __METHOD__;
 
 		return [
-			[ ''      , [] ],
-			[ null    , [] ],
-			[ $param , [ 'property' => $param ] ],
-			[ "[{$param}]" , [ 'property' => "[{$param}]" ] ],
-			[ "[&{$param}...]" , [ 'property' => "[&{$param}...]" ] ]
+			[ '', [] ],
+			[ null, [] ],
+			[ $param, [ 'property' => $param ] ],
+			[ "[{$param}]", [ 'property' => "[{$param}]" ] ],
+			[ "[&{$param}...]", [ 'property' => "[&{$param}...]" ] ]
 		];
 	}
 
 	private function newContext( $request = [] ) {
-
 		$context = new \RequestContext();
 
 		if ( $request instanceof \WebRequest ) {

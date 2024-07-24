@@ -120,7 +120,6 @@ class rebuildData extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( $this->canExecute() !== true ) {
 			exit;
 		}
@@ -235,7 +234,7 @@ class rebuildData extends \Maintenance {
 			$this->reportMessage( $cliMsgFormatter->section( 'Poolcache report' ) );
 			$this->reportMessage( "\n" );
 
-			foreach ( $stats as $key => $values) {
+			foreach ( $stats as $key => $values ) {
 				$this->reportMessage( "$key ..." . "\n" );
 
 				foreach ( $values as $k => $v ) {
@@ -261,9 +260,8 @@ class rebuildData extends \Maintenance {
 	}
 
 	private function checkForRebuildState( $rebuildResult ) {
-
 		if ( !$rebuildResult ) {
-			$this->reportMessage( $this->mDescription . "\n\n" . 'Use option --help for usage details.' . "\n"  );
+			$this->reportMessage( $this->mDescription . "\n\n" . 'Use option --help for usage details.' . "\n" );
 			return false;
 		}
 
@@ -271,7 +269,6 @@ class rebuildData extends \Maintenance {
 	}
 
 	private function canExecute() {
-
 		if ( !Setup::isEnabled() ) {
 			return $this->reportMessage(
 				"\nYou need to have SMW enabled in order to run the maintenance script!\n"

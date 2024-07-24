@@ -53,7 +53,6 @@ class CountMapField {
 	 * @param array $log
 	 */
 	public function check( array $log = [] ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

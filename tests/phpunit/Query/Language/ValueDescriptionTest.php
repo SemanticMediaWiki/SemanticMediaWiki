@@ -19,7 +19,6 @@ use SMWDINumber as DINumber;
 class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +39,6 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueDescriptionProvider
 	 */
 	public function testCommonMethods( $dataItem, $property, $comparator, $expected ) {
-
 		$instance = new ValueDescription( $dataItem, $property, $comparator );
 
 		$this->assertEquals(
@@ -98,7 +96,6 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider comparativeHashProvider
 	 */
 	public function testGetFingerprint( $description, $compareTo, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			$description->getFingerprint() === $compareTo->getFingerprint()
@@ -106,7 +103,6 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueDescriptionProvider() {
-
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$provider[] = [
@@ -175,7 +171,6 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function comparativeHashProvider() {
-
 		$provider[] = [
 			new ValueDescription(
 				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ

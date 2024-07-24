@@ -27,7 +27,7 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 	private $resultPrinterReflector;
 	private $aggregatablePrinter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
@@ -42,7 +42,6 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AggregatablePrinter::class,
 			$this->aggregatablePrinter
@@ -58,7 +57,6 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorMessageProvider
 	 */
 	public function testGetResultTextErrorMessage( $setup, $expected ) {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getErrors', 'getNext', 'addErrors' ] )
@@ -91,7 +89,6 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddNumbersForDataItem() {
-
 		$values = [];
 		$expected = [];
 		$keys = [ 'test', 'foo', 'bar' ];
@@ -103,7 +100,7 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 		for ( $i = 1; $i <= 10; $i++ ) {
 
 			// Select random array key
-			$name = $keys[rand(0, 2)];
+			$name = $keys[rand( 0, 2 )];
 
 			// Get a random number
 			$random = rand( 10, 500 );
@@ -133,7 +130,6 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider numberDataProvider
 	 */
 	public function testGetNumericResults( $setup, $expected ) {
-
 		$this->resultPrinterReflector->addParameters(
 			$this->aggregatablePrinter,
 			$setup['parameters']
@@ -161,7 +157,6 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function numberDataProvider() {
-
 		$provider = [];
 
 		$setup = [
@@ -210,7 +205,6 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function errorMessageProvider() {
-
 		$message = wfMessage( 'smw-qp-aggregatable-empty-data' )->inContentLanguage()->text();
 
 		$provider = [];
@@ -242,7 +236,6 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 	 * @return SMWQueryResult
 	 */
 	private function buildMockQueryResult( $setup ) {
-
 		$printRequests = [];
 		$resultArrays   = [];
 

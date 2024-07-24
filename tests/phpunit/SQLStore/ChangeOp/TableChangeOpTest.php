@@ -19,7 +19,6 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableChangeOp::class,
 			new TableChangeOp( 'foo', [] )
@@ -27,7 +26,6 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmptyOps() {
-
 		$diff = [];
 
 		$instance = new TableChangeOp(
@@ -59,7 +57,6 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFixedPropertyOps() {
-
 		$diff = [
 		'property' =>
 			[
@@ -111,7 +108,6 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFieldChangeOpsNoType() {
-
 		$diff = [
 		'property' =>
 			[
@@ -170,7 +166,6 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFieldChangeOps_WithNoOperation() {
-
 		$diff = [
 			[
 				's_id' => 462,
@@ -201,7 +196,6 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToArray() {
-
 		$diff = [
 			[
 				's_id' => 462,
@@ -221,7 +215,7 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertSame(
-			['foo' => $diff ],
+			[ 'foo' => $diff ],
 			$instance->toArray()
 		);
 	}

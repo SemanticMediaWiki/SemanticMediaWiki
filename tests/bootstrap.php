@@ -36,13 +36,13 @@ $autoloader->addClassMap( [
 ] );
 
 define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );
-define( 'SMW_PHPUNIT_TABLE_PREFIX', 'sunittest_' );
+#define( 'SMW_PHPUNIT_TABLE_PREFIX', 'sunittest_' );
+define( 'SMW_PHPUNIT_TABLE_PREFIX', '' );
 
 /**
  * Register a shutdown function the invoke a final clean-up
  */
-register_shutdown_function( function() {
-
+register_shutdown_function( function () {
 	if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 		return;
 	}

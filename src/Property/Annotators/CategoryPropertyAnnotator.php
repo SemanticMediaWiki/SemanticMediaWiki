@@ -106,7 +106,6 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
-
 		$subject = $this->getSemanticData()->getSubject();
 		$namespace = $subject->getNamespace();
 		$property = null;
@@ -143,7 +142,6 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function modifySemanticData( $semanticData, $annotationProcessor, $subject, $property, $catname ) {
-
 		$cat = new DIWikiPage( $catname, NS_CATEGORY );
 
 		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
@@ -182,7 +180,6 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function isHiddenCategory( $catName ) {
-
 		if ( $this->hiddenCategories === null ) {
 
 			$wikipage = ApplicationFactory::getInstance()->newPageCreator()->createPage(
@@ -204,7 +201,6 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function getRedirectTarget( $subject ) {
-
 		if ( $this->useCategoryRedirect ) {
 			return ApplicationFactory::getInstance()->getStore()->getRedirectTarget( $subject );
 		}

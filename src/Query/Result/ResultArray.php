@@ -76,7 +76,6 @@ class ResultArray {
 	 * @return self
 	 */
 	public static function factory( DIWikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ) {
-
 		$resultArray = new self(
 			$resultPage,
 			$printRequest,
@@ -313,7 +312,6 @@ class ResultArray {
 	 * done when needed.
 	 */
 	protected function loadContent() {
-
 		if ( $this->content !== false ) {
 			return;
 		}

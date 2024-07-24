@@ -18,7 +18,6 @@ use SMWDITime as DITime;
 class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$dataItem = $this->getMockBuilder( '\SMWDITime' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -33,7 +32,6 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider formatProvider
 	 */
 	public function testFormat( $serialization, $languageCode, $formatOption, $expected ) {
-
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -53,7 +51,6 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider localizedFormatProvider
 	 */
 	public function testGetLocalizedFormat( $serialization, $languageCode, $flag, $expected ) {
-
 		$instance = new IntlTimeFormatter(
 			DITime::doUnserialize( $serialization ),
 			Localizer::getInstance()->getLanguage( $languageCode )
@@ -66,7 +63,6 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testContainsValidDateFormatRule() {
-
 		$formatOption = 'F Y/m/d H:i:s';
 
 		$language = $this->getMockBuilder( '\Language' )
@@ -84,7 +80,6 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatWithLocalizedMonthReplacement() {
-
 		// F - A full textual representation of a month, such as January or March
 		$formatOption = 'F Y/m/d H:i:s';
 
@@ -109,7 +104,6 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function formatProvider() {
-
 		#0
 		$provider[] = [
 			'1/2000/12/12/1/1/20/200',
@@ -182,7 +176,6 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function localizedFormatProvider() {
-
 		#0
 		$provider[] = [
 			'1/2000/12/12/1/1/20/200',

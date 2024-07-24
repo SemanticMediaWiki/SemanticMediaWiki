@@ -19,7 +19,6 @@ class FileFetcherTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$instance = new FileFetcher();
 
 		$this->assertInstanceOf(
@@ -29,7 +28,6 @@ class FileFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindByExtensionThrowsException() {
-
 		$instance = new FileFetcher();
 
 		$this->expectException( '\RuntimeException' );

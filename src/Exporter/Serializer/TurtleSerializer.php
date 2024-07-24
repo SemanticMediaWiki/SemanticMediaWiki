@@ -105,7 +105,7 @@ class TurtleSerializer extends Serializer {
 				"wiki" => $exporter->expandURI( '&wiki;' ),
 				"category" => $exporter->expandURI( '&category;' ),
 				"property" => $exporter->expandURI( '&property;' ),
-				"xsd" => "http://www.w3.org/2001/XMLSchema#" ,
+				"xsd" => "http://www.w3.org/2001/XMLSchema#",
 				"wikiurl" => $exporter->expandURI( '&wikiurl;' )
 			];
 		} else {
@@ -161,7 +161,6 @@ class TurtleSerializer extends Serializer {
 	 * {@inheritDoc}
 	 */
 	public function serializeExpData( ExpData $expData ) {
-
 		$this->subExpData = [ $expData ];
 
 		while ( count( $this->subExpData ) > 0 ) {
@@ -294,7 +293,6 @@ class TurtleSerializer extends Serializer {
 	}
 
 	protected function serializeExpResource( ExpResource $element ) {
-
 		if ( $element instanceof ExpNsResource ) {
 			$this->requireNamespace( $element->getNamespaceID(), $element->getNamespace() );
 		}
@@ -337,7 +335,6 @@ class TurtleSerializer extends Serializer {
 	}
 
 	private static function getCorrectLexicalForm( $expElement ) {
-
 		$lexicalForm = str_replace( [ '\\', "\n", '"' ], [ '\\\\', "\\n", '\"' ], $expElement->getLexicalForm() );
 
 		if ( $expElement->getLang() !== '' && ( $expElement->getDatatype() === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString' ) ) {

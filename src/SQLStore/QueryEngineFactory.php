@@ -43,7 +43,6 @@ class QueryEngineFactory {
 	 * @return ConditionBuilder
 	 */
 	public function newConditionBuilder() {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 		$orderCondition = new OrderCondition();
 
@@ -78,7 +77,6 @@ class QueryEngineFactory {
 	 * @return QuerySegmentListProcessor
 	 */
 	public function newQuerySegmentListProcessor() {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
@@ -118,7 +116,6 @@ class QueryEngineFactory {
 	 * @return QueryEngine
 	 */
 	public function newQueryEngine() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$queryEngine = new QueryEngine(
@@ -141,7 +138,6 @@ class QueryEngineFactory {
 	 * @return ConceptQuerySegmentBuilder
 	 */
 	public function newConceptQuerySegmentBuilder() {
-
 		$pplicationFactory = ApplicationFactory::getInstance();
 
 		$conceptQuerySegmentBuilder = new ConceptQuerySegmentBuilder(
@@ -159,7 +155,6 @@ class QueryEngineFactory {
 	}
 
 	private function newTemporaryTableBuilder() {
-
 		$temporaryTableBuilder = new TemporaryTableBuilder(
 			$this->store->getConnection( 'mw.db.queryengine' )
 		);

@@ -73,7 +73,6 @@ class SMWSpecialTypes extends SpecialPage {
 	 * @return string
 	 */
 	public function formatItem( $dataValue, $linker ) {
-
 		// Outdated property? Predefined property definition no longer exists?
 		if ( $dataValue->getDataItem()->getInterwiki() === SMW_SQL3_SMWIW_OUTDATED ) {
 			$dataItem = $dataValue->getDataItem();
@@ -100,7 +99,6 @@ class SMWSpecialTypes extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
 		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
 			return 'smw_group';
 		}
@@ -110,7 +108,6 @@ class SMWSpecialTypes extends SpecialPage {
 	}
 
 	private function getTypesList() {
-
 		$this->addHelpLink(
 			Message::get( "smw-specials-types-helplink", Message::ESCAPED, Message::USER_LANGUAGE ),
 			true
@@ -178,7 +175,6 @@ class SMWSpecialTypes extends SpecialPage {
 	}
 
 	private function getPropertiesByType( $typeLabel ) {
-
 		$typeValue = DataValueFactory::getInstance()->newTypeIDValue(
 			TypesValue::TYPE_ID,
 			$typeLabel
@@ -267,7 +263,7 @@ class SMWSpecialTypes extends SpecialPage {
 		}
 
 		$html = Html::rawElement(
-			'div' ,
+			'div',
 			[
 				'class' => 'smw-page-navigation'
 			],
@@ -278,7 +274,7 @@ class SMWSpecialTypes extends SpecialPage {
 				$count,
 				[ '_target' => '#smw-list' ]
 			) . Html::rawElement(
-				'div' ,
+				'div',
 				[
 					'class' => 'smw-page-nav-note'
 				],
@@ -336,7 +332,6 @@ class SMWSpecialTypes extends SpecialPage {
 	}
 
 	private function find_errors( $dataValue, $typeId, $label ) {
-
 		$errors = [];
 
 		if ( $typeId === '_geo' && $dataValue instanceof ErrorValue ) {
@@ -353,13 +348,12 @@ class SMWSpecialTypes extends SpecialPage {
 				[
 					'class' => 'smw-page-content plainlinks'
 				],
-				implode( '', $errors)
+				implode( '', $errors )
 			);
 		}
 	}
 
 	private function find_extras( $dataValue, $typeId, $label ) {
-
 		$html = '';
 
 		if ( $typeId === '_mlt_rec' ) {
@@ -391,7 +385,7 @@ class SMWSpecialTypes extends SpecialPage {
 			Html::rawElement(
 				'a',
 				[
-					'href' => SpecialPage::getTitleFor( 'Types')->getFullURL()
+					'href' => SpecialPage::getTitleFor( 'Types' )->getFullURL()
 				],
 				$this->msg( 'types' )->escaped()
 			)
@@ -399,7 +393,6 @@ class SMWSpecialTypes extends SpecialPage {
 	}
 
 	private function makeTypeList( $typeLabels ) {
-
 		$contents = [];
 		$linker = smwfGetLinker();
 
@@ -429,7 +422,7 @@ class SMWSpecialTypes extends SpecialPage {
 			}
 
 			$text = Html::rawElement(
-				'span' ,
+				'span',
 				[
 					'class' => 'plainlinks',
 					'style' => 'font-size:85%'

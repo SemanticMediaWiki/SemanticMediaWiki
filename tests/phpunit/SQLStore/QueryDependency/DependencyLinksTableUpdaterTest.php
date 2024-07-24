@@ -21,7 +21,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $spyLogger;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -34,13 +34,12 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater',
 			new DependencyLinksTableUpdater( $this->store )
@@ -48,7 +47,6 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddToUpdateList() {
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getId' ] )
 			->getMock();
@@ -112,7 +110,6 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddToUpdateListOnNull_List() {
-
 		$instance = new DependencyLinksTableUpdater(
 			$this->store
 		);
@@ -123,7 +120,6 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddToUpdateListOnZero_Id() {
-
 		$instance = new DependencyLinksTableUpdater(
 			$this->store
 		);
@@ -134,7 +130,6 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddToUpdateListOnEmpty_List() {
-
 		$instance = new DependencyLinksTableUpdater(
 			$this->store
 		);
@@ -145,7 +140,6 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddDependenciesFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getId', 'makeSMWPageID' ] )
 			->getMock();

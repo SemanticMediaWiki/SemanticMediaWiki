@@ -20,7 +20,7 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $exporter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->exporter = $this->getMockBuilder( '\SMWExporter' )
@@ -29,7 +29,6 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExpDataFactory::class,
 			new ExpDataFactory( $this->exporter )
@@ -37,7 +36,6 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSiteExpData() {
-
 		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -61,7 +59,6 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewDefinedExpData() {
-
 		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -85,7 +82,6 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewOntologyExpData() {
-
 		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -101,7 +101,6 @@ class EntityValidator {
 	 * @return boolean
 	 */
 	public function inNamespace( $row ) {
-
 		if ( $this->namespaces === false ) {
 			return true;
 		}
@@ -151,7 +150,6 @@ class EntityValidator {
 	 * @return boolean
 	 */
 	public function isDetachedSubobject( $title, $row ) {
-
 		if ( $row->smw_subobject === '' ) {
 			return false;
 		}
@@ -175,7 +173,6 @@ class EntityValidator {
 	 * @return boolean
 	 */
 	public function isDetachedQueryRef( $row ) {
-
 		if ( $row->smw_subobject === '' || $row->smw_proptable_hash !== null ) {
 			return false;
 		}
@@ -193,7 +190,6 @@ class EntityValidator {
 	 * @return boolean
 	 */
 	public function isPlainObjectValue( $row ) {
-
 		// A rogue title should never happen
 		if ( $row->smw_title === '' && $row->smw_proptable_hash === null ) {
 			return true;
@@ -217,7 +213,6 @@ class EntityValidator {
 	 * @return boolean
 	 */
 	public function hasPropertyInvalidCharacter( $row ) {
-
 		if ( $row->smw_namespace !== SMW_NS_PROPERTY ) {
 			return false;
 		}
@@ -239,7 +234,6 @@ class EntityValidator {
 	 * @return boolean
 	 */
 	public function isRetiredProperty( $row ) {
-
 		if ( $row->smw_namespace !== SMW_NS_PROPERTY ) {
 			return false;
 		}
@@ -268,7 +262,6 @@ class EntityValidator {
 	 * @return []
 	 */
 	public function findDuplicates( $row ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		// Use the sortkey (comparing the label and not the "_..." key) in order
@@ -303,7 +296,6 @@ class EntityValidator {
 	 * @return boolean
 	 */
 	public function hasLatestRevID( Title $title, $row = false ) {
-
 		$latestRevID = $this->revisionGuard->getLatestRevID( $title );
 
 		if ( $row !== false ) {

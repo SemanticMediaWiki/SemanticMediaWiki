@@ -22,7 +22,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyFilter::class,
 			new PropertyFilter()
@@ -30,7 +29,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetName() {
-
 		$instance = new PropertyFilter();
 
 		$this->assertEquals(
@@ -40,7 +38,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIfCondition() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -54,7 +51,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoCondition_FilterNotRequired() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -75,12 +71,11 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilterOnCallbackWhileFailingReturnFormat_ThrowsException() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function() {
+		$callback = function () {
 			return null;
 		};
 
@@ -94,7 +89,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyFilterProvider
 	 */
 	public function testHasMatches_Compartment( $properties, $compartment, $expected ) {
-
 		$instance = new PropertyFilter(
 			$properties
 		);
@@ -113,8 +107,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyFilterProvider
 	 */
 	public function testHasMatches_Callback_Compartment( $properties, $compartment, $expected ) {
-
-		$callback = function() use ( $properties ) {
+		$callback = function () use ( $properties ) {
 			return $properties;
 		};
 
@@ -136,7 +129,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyFilterProvider
 	 */
 	public function testHasMatches_Rule( $properties, $compartment, $expected, $score ) {
-
 		$instance = new PropertyFilter(
 			$properties
 		);
@@ -162,7 +154,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyFilterProvider
 	 */
 	public function testHasMatches_CompartmentIterator( $properties, $compartment, $expected ) {
-
 		$instance = new PropertyFilter(
 			$properties
 		);
@@ -178,7 +169,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function propertyFilterProvider() {
-
 		yield 'oneOf.1: single one_of' => [
 			[ 'NotFoo', 'Bar' ],
 			[

@@ -26,7 +26,6 @@ class RedirectTargetFinder {
 	 * @return Title|null
 	 */
 	public function findRedirectTargetFromText( $text ) {
-
 		if ( $this->redirectTarget === null ) {
 			$this->redirectTarget = $this->findFromText( $text );
 		}
@@ -62,7 +61,6 @@ class RedirectTargetFinder {
 	}
 
 	private function findFromText( $text ) {
-
 		if ( $this->hasContentHandler() ) {
 			return ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
 		}

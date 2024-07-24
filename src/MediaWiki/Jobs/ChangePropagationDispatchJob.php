@@ -72,7 +72,6 @@ class ChangePropagationDispatchJob extends Job {
 	 * @return boolean
 	 */
 	public static function planAsJob( DIWikiPage $subject, $params = [] ) {
-
 		Exporter::getInstance()->resetCacheBy( $subject );
 		ApplicationFactory::getInstance()->getPropertySpecificationLookup()->invalidateCache(
 			$subject
@@ -90,7 +89,6 @@ class ChangePropagationDispatchJob extends Job {
 	 * @param DIWikiPage $subject
 	 */
 	public static function cleanUp( DIWikiPage $subject ) {
-
 		$namespace = $subject->getNamespace();
 
 		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
@@ -113,7 +111,6 @@ class ChangePropagationDispatchJob extends Job {
 	 * @return boolean
 	 */
 	public static function hasPendingJobs( DIWikiPage $subject ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$jobQueue = $applicationFactory->getJobQueue();
 
@@ -153,7 +150,6 @@ class ChangePropagationDispatchJob extends Job {
 	 * @return integer
 	 */
 	public static function getPendingJobsCount( DIWikiPage $subject ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$jobQueue = $applicationFactory->getJobQueue();
 
@@ -192,7 +188,6 @@ class ChangePropagationDispatchJob extends Job {
 	 * @since 3.0
 	 */
 	public function run() {
-
 		$subject = DIWikiPage::newFromTitle( $this->getTitle() );
 
 		if ( $this->hasParameter( 'dataFile' ) ) {
@@ -209,7 +204,6 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function findAndDispatch() {
-
 		$namespace = $this->getTitle()->getNamespace();
 
 		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
@@ -278,7 +272,6 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function pushChangePropagationDispatchJob( $tempFile, $file, $num, $chunk ) {
-
 		$data = [];
 		$file .= "_$num.tmp";
 
@@ -311,7 +304,6 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function dispatchFromFile( $subject, $file ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$cache = $applicationFactory->getCache();
 
@@ -365,7 +357,6 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function dispatchFromSchema( $subject, $property_key ) {
-
 		$store = ApplicationFactory::getInstance()->getStore();
 
 		// Find all properties that point to the schema and hereby require
@@ -390,7 +381,6 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function scheduleChangePropagationUpdateJobFromList( $dataItems ) {
-
 		foreach ( $dataItems as $dataItem ) {
 
 			if ( $dataItem === '' ) {
@@ -411,7 +401,6 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function commitSpecificationChangePropagationAsJob( $subject, $count ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
@@ -451,7 +440,6 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function newChangePropagationUpdateJob( $title, $parameters ) {
-
 		$namespace = $this->getTitle()->getNamespace();
 		$parameters = $parameters + [ 'origin' => 'ChangePropagationDispatchJob' ];
 

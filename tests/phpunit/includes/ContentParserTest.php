@@ -32,7 +32,7 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private $contentRenderer = null;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
@@ -58,16 +58,15 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		if ( $this->contentRenderer !== null ) {
-			$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', fn() => $this->contentRenderer );
+			$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', fn () => $this->contentRenderer );
 		}
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -79,7 +78,6 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunParseOnText() {
-
 		$text = __METHOD__;
 
 		$this->parser->expects( $this->any() )
@@ -105,7 +103,6 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunParseFromRevision() {
-
 		$content = $this->getMockBuilder( '\Content' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

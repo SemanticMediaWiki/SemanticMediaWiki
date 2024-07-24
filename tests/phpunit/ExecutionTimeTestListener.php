@@ -46,11 +46,10 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	/**
 	 * @see PHPUnit_Framework_TestListener::endTest
 	 */
-	public function endTest( PHPUnit_Framework_Test $test, $length ) : void {
-
+	public function endTest( PHPUnit_Framework_Test $test, $length ): void {
 		if ( $this->isEnabledToListen && ( $length > $this->slowThreshold ) ) {
 			$className = get_class( $test );
-			$className = substr( $className, strrpos( $className, '\\') + 1 );
+			$className = substr( $className, strrpos( $className, '\\' ) + 1 );
 
 			$label = sprintf( '%s:%s', $className, $test->getName() );
 			$this->slowTests[$label] = round( $length, 3 );
@@ -66,14 +65,14 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	/**
 	 * @see PHPUnit_Framework_TestListener::startTestSuite
 	 */
-	public function startTestSuite( PHPUnit_Framework_TestSuite $suite ) : void {
+	public function startTestSuite( PHPUnit_Framework_TestSuite $suite ): void {
 		$this->suites++;
 	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::endTestSuite
 	 */
-	public function endTestSuite( PHPUnit_Framework_TestSuite $suite ) : void {
+	public function endTestSuite( PHPUnit_Framework_TestSuite $suite ): void {
 		$this->suites--;
 
 		// Is the last test? Attach the report!
@@ -83,7 +82,6 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	}
 
 	private function reportSlowTests( $suite ) {
-
 		arsort( $this->slowTests );
 
 		// Have the PHPUnitResultPrinter to make the actual output in order to

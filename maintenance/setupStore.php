@@ -118,7 +118,6 @@ class setupStore extends \Maintenance {
 	 * @since 2.0
 	 */
 	public function execute() {
-
 		if ( !Setup::isEnabled() ) {
 			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
 			exit;
@@ -171,7 +170,6 @@ class setupStore extends \Maintenance {
 	}
 
 	protected function initMessageReporter() {
-
 		$messageReporterFactory = MessageReporterFactory::getInstance();
 
 		if ( $this->messageReporter === null && $this->getOption( 'quiet' ) ) {
@@ -210,7 +208,6 @@ class setupStore extends \Maintenance {
 	}
 
 	protected function dropStore( Store $store ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( !$this->hasDeletionVerification() ) {
@@ -235,7 +232,6 @@ class setupStore extends \Maintenance {
 	 * @return boolean
 	 */
 	protected function hasDeletionVerification() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

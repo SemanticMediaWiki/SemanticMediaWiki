@@ -16,7 +16,6 @@ use SMW\MediaWiki\Api\Browse\CachingLookup;
 class CachingLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,7 +31,6 @@ class CachingLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupWithoutCache() {
-
 		$cacheTTL = 42;
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -72,7 +70,6 @@ class CachingLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupWithCache() {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -103,7 +100,6 @@ class CachingLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupWithCacheBeingDisabled() {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();

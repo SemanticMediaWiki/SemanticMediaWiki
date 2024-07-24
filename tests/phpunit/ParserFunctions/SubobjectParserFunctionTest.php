@@ -29,14 +29,13 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
 	public function testCanConstruct() {
-
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
@@ -61,7 +60,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parameterDataProvider
 	 */
 	public function testParse( array $parameters, array $expected ) {
-
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
@@ -77,7 +75,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parameterDataProvider
 	 */
 	public function testInstantiatedSubobject( array $parameters, array $expected ) {
-
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
@@ -92,14 +89,13 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider firstElementDataProvider
 	 */
-	public function testFirstElementAsPropertyLabel( $isEnabled , array $parameters, array $expected ) {
-
+	public function testFirstElementAsPropertyLabel( $isEnabled, array $parameters, array $expected ) {
 		$parserOutput = new ParserOutput();
 		$title        = Title::newFromText( __METHOD__ );
 		$subobject    = new Subobject( $title );
 
 		$instance = $this->acquireInstance( $subobject, $parserOutput );
-		$instance->useFirstElementAsPropertyLabel( $isEnabled  );
+		$instance->useFirstElementAsPropertyLabel( $isEnabled );
 
 		$instance->parse( new ParserParameterFormatter( $parameters ) );
 
@@ -143,7 +139,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSubobjectIdStabilityForFixedSetOfParameters() {
-
 		$parameters = [
 			'Foo=Bar'
 		];
@@ -161,7 +156,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParametersOnBeingSorted() {
-
 		$parameters = [
 			'Foo=Foobar, Bar',
 			'+sep=,'
@@ -186,7 +180,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParametersOnBeingSortedWithRevertedValueOrderProducesSameHash() {
-
 		$parameters = [
 			'Foo=Bar, Foobar',
 			'+sep=,'
@@ -211,7 +204,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParametersIsNotSorted() {
-
 		$parameters = [
 			'Foo=Foobar, Bar',
 			'+sep=,'
@@ -237,7 +229,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateSameIdForNormalizedParametersWithEnabledCapitalLinks() {
-
 		$title = Title::newFromText( __METHOD__ );
 
 		$parametersOne = [
@@ -276,7 +267,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRestrictionOnTooShortFirstPartWhenDotIsUsedForUserNamedSubobject() {
-
 		// #1299, #1302
 		// Has dot restriction
 		// {{#subobject:foo.bar
@@ -297,7 +287,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function setupInstanceAndAssertSemanticData( array $parameters, array $expected ) {
-
 		$title = isset( $expected['embeddedTitle'] ) ? $expected['embeddedTitle'] : __METHOD__;
 
 		$parserOutput = new ParserOutput();
@@ -338,7 +327,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parameterDataProvider() {
-
 		$helpNS = Localizer::getInstance()->getNsText( NS_HELP );
 
 		$provider = [];
@@ -523,7 +511,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function firstElementDataProvider() {
-
 		$provider = [];
 
 		// #0 / asserting that a named identifier was turned into an anonymous id
@@ -562,7 +549,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tokuFixedParameterProvider() {
-
 		$provider = [];
 
 		// #0 @sortkey
@@ -723,7 +709,6 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @return SubobjectParserFunction
 	 */
 	private function acquireInstance( Subobject $subobject, ParserOutput $parserOutput = null ) {
-
 		if ( $parserOutput === null ) {
 			$parserOutput = new ParserOutput();
 		}

@@ -60,8 +60,7 @@ class EntityExaminerTask extends Task implements PermissionExaminerAware {
 	 *
 	 * @return array
 	 */
-	public function process( array $parameters ) : array {
-
+	public function process( array $parameters ): array {
 		if ( $parameters['subject'] === '' ) {
 			return [ 'done' => false ];
 		}
@@ -99,7 +98,6 @@ class EntityExaminerTask extends Task implements PermissionExaminerAware {
 	}
 
 	private function newEntityExaminerDeferrableCompositeIndicatorProvider() {
-
 		$entityExaminerDeferrableCompositeIndicatorProvider = $this->entityExaminerIndicatorsFactory->newEntityExaminerDeferrableCompositeIndicatorProvider(
 			$this->store
 		);
@@ -118,7 +116,6 @@ class EntityExaminerTask extends Task implements PermissionExaminerAware {
 	}
 
 	private function newEntityExaminerIndicatorProvider() {
-
 		$entityExaminerDeferrableCompositeIndicatorProvider = $this->newEntityExaminerDeferrableCompositeIndicatorProvider();
 
 		$entityExaminerCompositeIndicatorProvider = $this->entityExaminerIndicatorsFactory->newEntityExaminerCompositeIndicatorProvider(

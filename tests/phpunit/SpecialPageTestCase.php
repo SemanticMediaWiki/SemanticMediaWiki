@@ -30,13 +30,12 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	protected string $text;
 	protected WebResponse $response;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->obLevel = ob_get_level();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$obLevel = ob_get_level();
 
 		while ( ob_get_level() > $this->obLevel ) {
@@ -62,7 +61,6 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param WebRequest $request Web request that may contain URL parameters, etc
 	 */
 	protected function execute( $sub = '', WebRequest $request = null, $user = null ) {
-
 		$request  = $request === null ? new FauxRequest() : $request;
 		$response = $request->response();
 
@@ -122,7 +120,6 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return RequestContext
 	 */
 	private function makeRequestContext( WebRequest $request, $user, $title ) {
-
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 
 		$context = new RequestContext();
@@ -146,7 +143,7 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return Title
 	 */
 	private function getTitle( SpecialPage $page ) {
-		return method_exists( $page, 'getPageTitle') ? $page->getPageTitle() : $page->getTitle();
+		return method_exists( $page, 'getPageTitle' ) ? $page->getPageTitle() : $page->getTitle();
 	}
 
 }

@@ -12,11 +12,13 @@
 			"Ilham151096",
 			"Irwangatot",
 			"IvanLanin",
+			"Leapofod",
 			"Naval Scene",
 			"Presidenvolksraad",
 			"RXerself",
 			"Rachmat.Wahidi",
 			"Rachmat04",
+			"Rebeccayoga",
 			"Rex",
 			"පසිඳු කාවින්ද",
 			"아라"
@@ -258,6 +260,12 @@
 	"smw_conceptarticlecount": "Menampilkan $1 {{PLURAL:$1|halaman}} berikut.",
 	"smw-livepreview-loading": "Mengunggah...",
 	"smw-datavalue-number-nullnotallowed": "\"$1\" kembali dengan sebuah \"NULL\" yang tidak mengizinkan sebagai nomor.",
+	"smw-processing": "Memproses...",
+	"smw-loading": "Memuat...",
+	"smw-preparing": "Menyiapkan...",
+	"smw-facetedsearch-profile-label-default": "Profil bawaan",
+	"smw-facetedsearch-no-filters": "Tanpa filter.",
+	"smw-search-placeholder": "Cari...",
 	"smw-listingcontinuesabbrev": "samb.",
 	"smw-showingresults": "Di bawah ini ditampilkan hingga {{PLURAL:$1|<strong>1</strong> hasil|<strong>$1</strong> hasil}}, dimulai dari #<strong>$2</strong>."
 }

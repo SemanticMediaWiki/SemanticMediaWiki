@@ -32,7 +32,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $displayTitleFinder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -45,13 +45,12 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCreateTable() {
-
 		$checkMagicWords = new CheckMagicWords(
 			[
 				'smwgShowFactboxEdit' => SMW_FACTBOX_NONEMPTY,
@@ -89,7 +88,6 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTabs() {
-
 		$this->assertContains(
 			'tab-facts-list',
 			Factbox::tabs( 'Foo' )
@@ -102,7 +100,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'tab-facts-derived',
-			Factbox::tabs( 'Foo', 'Bar','Foobar' )
+			Factbox::tabs( 'Foo', 'Bar', 'Foobar' )
 		);
 	}
 
@@ -110,7 +108,6 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider fetchContentDataProvider
 	 */
 	public function testFetchContent( $parserData ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -140,7 +137,6 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider contentDataProvider
 	 */
 	public function testGetContentDataSimulation( $setup, $expected ) {
-
 		$checkMagicWords = new CheckMagicWords(
 			[
 				'smwgShowFactboxEdit' => SMW_FACTBOX_NONEMPTY,
@@ -225,7 +221,6 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function contentDataProvider() {
-
 		$text = __METHOD__;
 		$provider = [];
 
@@ -288,7 +283,6 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTableHeader() {
-
 		$checkMagicWords = new CheckMagicWords(
 			[
 				'smwgShowFactboxEdit' => SMW_FACTBOX_NONEMPTY,
@@ -337,7 +331,6 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider tableContentDataProvider
 	 */
 	public function testGetTableContent( $test, $expected ) {
-
 		$checkMagicWords = new CheckMagicWords(
 			[
 				'smwgShowFactboxEdit' => SMW_FACTBOX_NONEMPTY,
@@ -408,7 +401,6 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tableContentDataProvider() {
-
 		$provider = [];
 
 		$provider[] = [
@@ -450,7 +442,6 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function fetchContentDataProvider() {
-
 		$title = Title::newFromText( __METHOD__ );
 
 		$provider = [];
@@ -482,7 +473,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ new DIProperty( '_SKEY') ] ) );
+			->will( $this->returnValue( [ new DIProperty( '_SKEY' ) ] ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'isEmpty' )
@@ -501,7 +492,6 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function setupParserOutput( $semanticData ) {
-
 		$parserOutput = new ParserOutput();
 		$parserOutput->setExtensionData( 'smwdata', $semanticData );
 		return $parserOutput;

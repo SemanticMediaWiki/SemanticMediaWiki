@@ -59,7 +59,6 @@ class ShapeConstraint implements Constraint {
 	 * {@inheritDoc}
 	 */
 	public function checkConstraint( array $constraints, $dataValue ) {
-
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -80,7 +79,6 @@ class ShapeConstraint implements Constraint {
 	}
 
 	private function check( $constraint, $dataValue ) {
-
 		$errors = [];
 
 		if ( !isset( $constraint['property'] ) ) {
@@ -130,7 +128,6 @@ class ShapeConstraint implements Constraint {
 	}
 
 	private function isType( $type, $property ) {
-
 		$diType = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyTypeId()
 		);
@@ -166,7 +163,6 @@ class ShapeConstraint implements Constraint {
 	}
 
 	private function hasMinLength( $minLength, $property ) {
-
 		$dataItems = $this->semanticData->getPropertyValues(
 			$property
 		);
@@ -190,7 +186,6 @@ class ShapeConstraint implements Constraint {
 	}
 
 	private function hasMaxCardinality( $maxCardinality, $property ) {
-
 		$dataItems = $this->semanticData->getPropertyValues(
 			$property
 		);
@@ -203,7 +198,6 @@ class ShapeConstraint implements Constraint {
 	}
 
 	private function reportError( $dataValue, array $errors ) {
-
 		if ( $errors === [] ) {
 			return;
 		}

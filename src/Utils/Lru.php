@@ -41,7 +41,6 @@ class Lru {
 	 * @param mixed $value
 	 */
 	public function set( $key, $value ) {
-
 		$this->count++;
 
 		if ( isset( $this->cache[$key] ) ) {
@@ -65,7 +64,6 @@ class Lru {
 	 * @return mixed
 	 */
 	public function get( $key, $default = null ) {
-
 		if ( !isset( $this->cache[$key] ) ) {
 			return $default;
 		}
@@ -83,7 +81,6 @@ class Lru {
 	 * @param string|integer $key
 	 */
 	public function delete( $key ) {
-
 		if ( !isset( $this->cache[$key] ) ) {
 			return $default;
 		}

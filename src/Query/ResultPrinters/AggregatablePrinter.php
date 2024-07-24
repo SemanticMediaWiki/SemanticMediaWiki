@@ -117,7 +117,6 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * @param array $data
 	 */
 	protected function applyDistributionParams( array &$data ) {
-
 		if ( $this->params['distributionsort'] == 'asc' ) {
 			asort( $data, SORT_NUMERIC );
 		} elseif ( $this->params['distributionsort'] == 'desc' ) {
@@ -142,7 +141,6 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * @return array label => value
 	 */
 	protected function getResults( QueryResult $queryResult, $outputMode ) {
-
 		if ( $this->params['distribution'] ) {
 			return $this->getDistributionResults( $queryResult, $outputMode );
 		}

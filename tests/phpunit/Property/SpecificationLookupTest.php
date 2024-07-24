@@ -28,7 +28,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $entityCache;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -50,7 +50,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SpecificationLookup::class,
 			new SpecificationLookup( $this->store, $this->entityCache )
@@ -58,7 +57,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSpecification() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -84,7 +82,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSpecification_SkipCache() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -111,7 +108,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFieldList() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'RecordProperty' );
 
 		$this->store->expects( $this->once() )
@@ -141,7 +137,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPreferredPropertyLabel() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'SomeProperty' );
 		$property->setPropertyTypeId( '_mlt_rec' );
 
@@ -172,7 +167,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasUniquenessConstraint() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -198,7 +192,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExternalFormatterUri() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -226,7 +219,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function testGetAllowedPattern() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Has allowed pattern' );
 
 		$this->store->expects( $this->once() )
@@ -254,7 +246,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAllowedListValueBy() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Has list' );
 
 		$this->store->expects( $this->once() )
@@ -282,7 +273,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAllowedValues() {
-
 		$expected =  [
 			$this->dataItemFactory->newDIBlob( 'A' ),
 			$this->dataItemFactory->newDIBlob( 'B' )
@@ -314,7 +304,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDisplayPrecision() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -341,7 +330,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testgetDisplayUnits() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -370,7 +358,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyDescriptionForPredefinedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -400,7 +387,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyDescriptionForPredefinedPropertyViaCacheForLanguageCode() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->entityCache->expects( $this->once() )
@@ -422,7 +408,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToGetLocalPropertyDescriptionForUserdefinedProperty() {
-
 		$stringValue = $this->getMockBuilder( '\SMW\DataValues\StringValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -466,7 +451,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyGroup() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 		$ppgr = $this->dataItemFactory->newDIProperty( '_PPGR' );
 
@@ -505,7 +489,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidateCache() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 
 		$this->entityCache->expects( $this->at( 0 ) )

@@ -24,7 +24,6 @@ use WikiPage;
 class EditInfoTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$wikiPage = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -188,7 +187,6 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function newRevisionStub() {
-
 		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -21,7 +21,7 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 
 	private $profile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->profile = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\Profile' )
@@ -30,7 +30,6 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ParametersProcessor::class,
 			new ParametersProcessor( $this->profile )

@@ -96,7 +96,6 @@ class SpecialStatsAddExtra implements HookListener {
 	 * @return true
 	 */
 	public function process( array &$extraStats ) {
-
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED', false ) ) {
 			return true;
 		}
@@ -107,7 +106,6 @@ class SpecialStatsAddExtra implements HookListener {
 	}
 
 	private function copyStatistics( &$extraStats ) {
-
 		$statistics = $this->store->getStatistics();
 		$statistics['DATATYPECOUNT'] = count( $this->dataTypeLabels );
 
@@ -157,7 +155,6 @@ class SpecialStatsAddExtra implements HookListener {
 	}
 
 	private function addFormats( $key, $statistics ) {
-
 		$i = 0;
 		$formats = [];
 
@@ -180,7 +177,6 @@ class SpecialStatsAddExtra implements HookListener {
 	}
 
 	private function msg( $args ) {
-
 		if ( $this->getOption( 'plain.msg_key', false ) ) {
 			return is_array( $args ) ? implode( '.', $args ) : $args;
 		}

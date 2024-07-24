@@ -683,7 +683,6 @@
 	"smw-type-compound": "Compost",
 	"smw-type-container": "Contenidor",
 	"smw-type-no-group": "Sense classificar",
-	"smw-specials-bytype-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Type_$1",
 	"smw-special-pageproperty-description": "Aquesta pàgina proporciona una interfície de navegació por trobar tots els valors d'una propietat i una pàgina donada. Altres interfícies de cerca disponibles inclouen la [[Special:SearchByProperty|cerca de propietat]] i el [[Special:Ask|constructor de consultes]].",
 	"smw-property-predefined-errc": "«$1» és una propietat predefinida proporcionada per [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] i que representa errors que van aparèixer en connexió amb anotacions de valors o processament d'entrades no adequats.",
 	"smw-property-predefined-long-errc": "Els errors es recullen en un [https://www.semantic-mediawiki.org/wiki/Help:Container contenidor] que pot incloure una referència a la propietat que ha causat la discrepància.",

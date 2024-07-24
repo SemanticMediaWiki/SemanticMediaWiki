@@ -19,7 +19,7 @@ class ChangeTitleUpdateTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $jobFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 
@@ -36,14 +36,13 @@ class ChangeTitleUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->clearPendingDeferredUpdates();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangeTitleUpdate::class,
 			new ChangeTitleUpdate()
@@ -51,7 +50,6 @@ class ChangeTitleUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoUpdate() {
-
 		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
 			->getMock();

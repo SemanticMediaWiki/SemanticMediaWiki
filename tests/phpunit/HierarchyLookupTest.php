@@ -23,8 +23,7 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 	private $spyLogger;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->spyLogger = TestEnvironment::newSpyLogger();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -37,7 +36,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			HierarchyLookup::class,
 			new HierarchyLookup( $this->store, $this->cache )
@@ -45,7 +43,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterPropertyChangeListener() {
-
 		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -75,7 +72,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVerifySubpropertyForOnNonCachedLookup() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -107,7 +103,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindSubpropertyList() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$expected = [
@@ -146,7 +141,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConsecutiveSubpropertyList() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$expected = [
@@ -202,7 +196,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConsecutiveCachedSubpropertyList() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$expected = [
@@ -235,7 +228,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConsecutiveSubcategoryList() {
-
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$expected = [
@@ -291,7 +283,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConsecutiveSuperCategoryList() {
-
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$expected = [
@@ -347,7 +338,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConsecutiveCachedSubcategoryList() {
-
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$expected = [
@@ -380,7 +370,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConsecutiveHierarchyListWithInvaidTypeThrowsException() {
-
 		$instance = new HierarchyLookup(
 			$this->store,
 			$this->cache
@@ -392,7 +381,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindSubcategoryList() {
-
 		$category = DIWikiPage::newFromText( 'Foo', NS_CATEGORY );
 
 		$expected = [
@@ -431,7 +419,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindNearbySuperCategories() {
-
 		$category = DIWikiPage::newFromText( 'Foo', NS_CATEGORY );
 
 		$expected = [
@@ -470,7 +457,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisabledSubpropertyLookup() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -492,7 +478,6 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisabledSubcategoryLookup() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

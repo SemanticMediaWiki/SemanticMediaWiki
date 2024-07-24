@@ -19,8 +19,7 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $circularReferenceGuard;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
@@ -40,7 +39,6 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DescriptionInterpreterFactory::class,
 			new DescriptionInterpreterFactory( $this->store, $this->circularReferenceGuard )
@@ -48,7 +46,6 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDispatchingDescriptionInterpreter() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();

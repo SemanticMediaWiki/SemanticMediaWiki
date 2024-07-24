@@ -91,7 +91,6 @@ class JsonContentsFileReader {
 	 * @return boolean
 	 */
 	public function canReadByLanguageCode( $languageCode ) {
-
 		$canReadByLanguageCode = '';
 
 		try {
@@ -110,7 +109,6 @@ class JsonContentsFileReader {
 	 * @param array $contents
 	 */
 	public function writeByLanguageCode( $languageCode, $contents ) {
-
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		file_put_contents(
@@ -129,7 +127,6 @@ class JsonContentsFileReader {
 	 * @throws RuntimeException
 	 */
 	public function readByLanguageCode( $languageCode, $readFromFile = false ) {
-
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		if ( !$readFromFile && isset( self::$contents[$languageCode] ) ) {
@@ -157,7 +154,6 @@ class JsonContentsFileReader {
 	}
 
 	protected function readJSONFile( $languageCode, $cacheKey ) {
-
 		$contents = json_decode(
 			file_get_contents( $this->getLanguageFile( $languageCode ) ),
 			true
@@ -172,7 +168,6 @@ class JsonContentsFileReader {
 	}
 
 	private function getLanguageFile( $languageCode ) {
-
 		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $languageCode . '.json' );
 
 		if ( is_readable( $file ) ) {

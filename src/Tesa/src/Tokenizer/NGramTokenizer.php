@@ -80,7 +80,6 @@ class NGramTokenizer implements Tokenizer {
 	 * {@inheritDoc}
 	 */
 	public function tokenize( $string ) {
-
 		if ( $this->tokenizer !== null ) {
 			$string = implode( " ", $this->tokenizer->tokenize( $string ) );
 		}
@@ -95,7 +94,6 @@ class NGramTokenizer implements Tokenizer {
 	}
 
 	private function createNGrams( $text, $ngramSize, $withMarker ) {
-
 		$ngramList = array();
 
 		// Identify the beginning-of-word and end-of-word

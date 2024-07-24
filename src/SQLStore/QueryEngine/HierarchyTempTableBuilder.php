@@ -88,7 +88,6 @@ class HierarchyTempTableBuilder {
 	 * @throws RuntimeException
 	 */
 	public function getTableDefinitionByType( $type ) {
-
 		if ( !isset( $this->tableDefinitions[$type] ) ) {
 			throw new RuntimeException( "$type is unknown" );
 		}
@@ -107,7 +106,6 @@ class HierarchyTempTableBuilder {
 	 * @throws RuntimeException
 	 */
 	public function fillTempTable( $type, $tablename, $valueComposite, $depth = null ) {
-
 		$this->temporaryTableBuilder->create( $tablename );
 
 		list( $smwtable, $d ) = $this->getTableDefinitionByType( $type );
@@ -136,7 +134,6 @@ class HierarchyTempTableBuilder {
 	 * obtained in the previous step are relevant. So this is a performance measure.
 	 */
 	private function buildTempTable( $tablename, $values, $smwtable, $depth ) {
-
 		$db = $this->connection;
 
 		$tmpnew = 'smw_new';

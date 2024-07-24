@@ -38,7 +38,6 @@ class InvalidateResultCacheEventListener implements EventListener {
 	 * {@inheritDoc}
 	 */
 	public function execute( DispatchContext $dispatchContext = null ) {
-
 		if ( $dispatchContext === null ) {
 			return;
 		}

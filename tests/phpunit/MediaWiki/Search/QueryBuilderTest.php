@@ -18,8 +18,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $webRequest;
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -30,7 +29,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			QueryBuilder::class,
 			new QueryBuilder( $this->webRequest )
@@ -38,7 +36,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQuery() {
-
 		$instance = new QueryBuilder(
 			$this->webRequest
 		);
@@ -54,10 +51,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddNamespaceCondition() {
-
 		$this->webRequest->expects( $this->any() )
 			->method( 'getCheck' )
-			->with($this->equalTo( 'ns6' ) )
+			->with( $this->equalTo( 'ns6' ) )
 			->will( $this->returnValue( true ) );
 
 		$instance = new QueryBuilder(
@@ -83,10 +79,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddSort() {
-
 		$this->webRequest->expects( $this->any() )
 			->method( 'getVal' )
-			->with($this->equalTo( 'sort' ) )
+			->with( $this->equalTo( 'sort' ) )
 			->will( $this->returnValue( 'recent' ) );
 
 		$instance = new QueryBuilder(
@@ -104,7 +99,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryString_EmptyFieldValues_ReturnsTermOnly() {
-
 		$instance = new QueryBuilder(
 			$this->webRequest,
 			[ 'foo' ]
@@ -117,7 +111,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryString_FormFieldValues() {
-
 		$form_def = [
 			'forms' => [
 				'Foo' => [
@@ -148,7 +141,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryString_DifferentFormsFieldValues() {
-
 		$form_def = [
 			'forms' => [
 				'Foo-1' => [
@@ -182,7 +174,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryString_OpenFormFieldValues() {
-
 		$form_def = [
 			'forms' => [
 				'open'
@@ -197,7 +188,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->webRequest->expects( $this->at( 1 ) )
 			->method( 'getArray' )
 			->with( $this->equalTo( 'property' ) )
-			->will( $this->returnValue(  [ 'Bar' ] ) );
+			->will( $this->returnValue( [ 'Bar' ] ) );
 
 		$this->webRequest->expects( $this->at( 2 ) )
 			->method( 'getArray' )

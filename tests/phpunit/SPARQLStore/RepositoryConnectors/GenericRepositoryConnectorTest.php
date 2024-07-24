@@ -23,7 +23,6 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	}
 
 	public function testShouldPing() {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -51,12 +50,11 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	 * @dataProvider endpointProvider
 	 */
 	public function testGetEndpoint( $endpoint, $expected ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new GenericRepositoryConnector (
+		$instance = new GenericRepositoryConnector(
 			new RepositoryClient(
 				'http://foo/myDefaultGraph',
 				'http://localhost:9999/query',
@@ -73,7 +71,6 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	}
 
 	public function testGetLastErrorCode() {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -98,7 +95,6 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	}
 
 	public function endpointProvider() {
-
 		yield GenericRepositoryConnector::UPDATE_ENDPOINT => [
 			GenericRepositoryConnector::UPDATE_ENDPOINT,
 			'http://localhost:9999/update'

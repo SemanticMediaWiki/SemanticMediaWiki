@@ -17,15 +17,13 @@ class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
 
 	private $namespaceInfo;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ResourceLoaderGetConfigVars::class,
 			new ResourceLoaderGetConfigVars( $this->namespaceInfo )
@@ -33,7 +31,6 @@ class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$vars = [];
 
 		$instance = new ResourceLoaderGetConfigVars(

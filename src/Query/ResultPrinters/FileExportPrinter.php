@@ -49,7 +49,6 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 * @param array $params
 	 */
 	public function outputAsFile( SMWQueryResult $queryResult, array $params ) {
-
 		$result = $this->getFileResult( $queryResult, $params );
 
 		$this->httpHeader(

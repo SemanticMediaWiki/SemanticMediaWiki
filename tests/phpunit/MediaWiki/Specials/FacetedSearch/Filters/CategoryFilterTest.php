@@ -23,7 +23,7 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	private $urlArgs;
 	private $messageLocalizer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
@@ -44,15 +44,13 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CategoryFilter::class,
-			new CategoryFilter( $this->templateEngine, $this->treeBuilder,  [] )
+			new CategoryFilter( $this->templateEngine, $this->treeBuilder, [] )
 		);
 	}
 
 	public function testCreate_NoFilter() {
-
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
 			->will( $this->returnValue( '' ) );
@@ -80,7 +78,6 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate_OneFilter() {
-
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
 			->will( $this->returnValue( '' ) );

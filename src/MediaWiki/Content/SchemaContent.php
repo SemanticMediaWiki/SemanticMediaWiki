@@ -101,7 +101,6 @@ class SchemaContent extends JsonContent {
 	 * @return null|string
 	 */
 	public function toJson() {
-
 		if ( $this->isValid() ) {
 			return json_encode( $this->parse );
 		}
@@ -115,7 +114,6 @@ class SchemaContent extends JsonContent {
 	 * @param boolean
 	 */
 	public function isYaml() {
-
 		if ( $this->isValid() ) {
 			return $this->isYaml;
 		}
@@ -130,7 +128,6 @@ class SchemaContent extends JsonContent {
 	 * {@inheritDoc}
 	 */
 	public function isValid() {
-
 		if ( $this->isValid === null ) {
 			$this->decodeJSONContent();
 		}
@@ -144,7 +141,6 @@ class SchemaContent extends JsonContent {
 	 * {@inheritDoc}
 	 */
 	public function fillParserOutput( Title $title, $revId, ParserOptions $options, $generateHtml, ParserOutput &$output ) {
-
 		if ( !$generateHtml || !$this->isValid() ) {
 			return;
 		}
@@ -244,7 +240,6 @@ class SchemaContent extends JsonContent {
 	 * {@inheritDoc}
 	 */
 	public function prepareSave( WikiPage $page, $flags, $parentRevId, User $user ) {
-
 		$this->initServices();
 		$title = $page->getTitle();
 
@@ -360,7 +355,6 @@ class SchemaContent extends JsonContent {
 	}
 
 	private function initServices() {
-
 		if ( $this->schemaFactory === null ) {
 			$this->schemaFactory = new SchemaFactory();
 		}
@@ -373,7 +367,6 @@ class SchemaContent extends JsonContent {
 	}
 
 	private function decodeJSONContent() {
-
 		// Support either JSON or YAML, if the class is available! Do a quick
 		// check on `{ ... }` to decide whether it is a non-JSON string.
 		if (
@@ -413,7 +406,6 @@ class SchemaContent extends JsonContent {
 	}
 
 	private function setTitlePrefix( Title $title ) {
-
 		if ( $this->parse === null ) {
 			$this->decodeJSONContent();
 		}
@@ -428,7 +420,7 @@ class SchemaContent extends JsonContent {
 		$title_prefix = '';
 
 		if ( strpos( $schemaName, ':' ) !== false ) {
-			list( $title_prefix, ) = explode( ':',  $schemaName );
+			list( $title_prefix, ) = explode( ':', $schemaName );
 		}
 
 		// Allow to use the schema validation against a possible

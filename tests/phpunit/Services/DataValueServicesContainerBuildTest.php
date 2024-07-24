@@ -48,7 +48,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	private ConstraintFactory $constraintFactory;
 	private $entityCache;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -89,7 +89,6 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider servicesProvider
 	 */
 	public function testCanConstruct( $service, $parameters, $expected ) {
-
 		array_unshift( $parameters, $service );
 
 		$containerBuilder = $this->callbackContainerFactory->newCallbackContainerBuilder();
@@ -102,8 +101,8 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 		$containerBuilder->registerObject( 'Store', $this->store );
 		$containerBuilder->registerObject( 'MediaWikiLogger', $this->logger );
-		$containerBuilder->registerObject( 'SchemaFactory', $this->schemaFactory  );
-		$containerBuilder->registerObject( 'ConstraintFactory', $this->constraintFactory  );
+		$containerBuilder->registerObject( 'SchemaFactory', $this->schemaFactory );
+		$containerBuilder->registerObject( 'ConstraintFactory', $this->constraintFactory );
 		$containerBuilder->registerObject( 'EntityCache', $this->entityCache );
 
 		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'datavalues.php' );
@@ -115,7 +114,6 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function servicesProvider() {
-
 		$provider[] = [
 			DataValueServiceFactory::TYPE_PARSER . PropertyValue::TYPE_ID,
 			[],

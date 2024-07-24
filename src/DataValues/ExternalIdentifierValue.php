@@ -46,7 +46,6 @@ class ExternalIdentifierValue extends StringValue {
 	 * @param string $value
 	 */
 	public function getShortWikiText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -88,7 +87,6 @@ class ExternalIdentifierValue extends StringValue {
 	 * @see StringValue::getShortHTMLText
 	 */
 	public function getShortHTMLText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -141,7 +139,6 @@ class ExternalIdentifierValue extends StringValue {
 	 * @return DataItem
 	 */
 	public function getUri() {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -155,7 +152,6 @@ class ExternalIdentifierValue extends StringValue {
 	}
 
 	private function makeUri( $value ) {
-
 		if ( $this->uri !== null ) {
 			return $this->uri;
 		}
@@ -200,7 +196,6 @@ class ExternalIdentifierValue extends StringValue {
 	}
 
 	private function filterParameters( &$value ) {
-
 		$parameters = [];
 		$matches = [];
 

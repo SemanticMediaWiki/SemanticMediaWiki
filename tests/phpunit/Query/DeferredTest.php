@@ -19,7 +19,6 @@ class DeferredTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testRegisterResourceModules() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -34,7 +33,6 @@ class DeferredTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -20,8 +20,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,7 +46,6 @@ class SequenceTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonPostgres() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'getType' )
 			->will( $this->returnValue( 'foo' ) );
@@ -58,19 +56,18 @@ class SequenceTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			null,
-			$instance->restart( 'Foo', 'bar')
+			$instance->restart( 'Foo', 'bar' )
 		);
 	}
 
 	public function testPostgres() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'getType' )
 			->will( $this->returnValue( 'postgres' ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function( $callback ) { return $callback(); } ) );
+			->will( $this->returnCallback( function ( $callback ) { return $callback(); } ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )

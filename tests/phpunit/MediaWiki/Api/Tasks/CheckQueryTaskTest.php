@@ -19,7 +19,7 @@ class CheckQueryTaskTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -29,13 +29,12 @@ class CheckQueryTaskTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new CheckQueryTask( $this->store );
 
 		$this->assertInstanceOf(
@@ -45,7 +44,6 @@ class CheckQueryTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();

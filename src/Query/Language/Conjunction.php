@@ -38,7 +38,6 @@ class Conjunction extends Description {
 	 * @return string
 	 */
 	public function getFingerprint() {
-
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
 		}
@@ -62,7 +61,6 @@ class Conjunction extends Description {
 	}
 
 	public function addDescription( Description $description ) {
-
 		$this->fingerprint = null;
 
 		if ( !( $description instanceof ThingDescription ) ) {

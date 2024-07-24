@@ -339,7 +339,8 @@
 	"smw-help": "Hëllef",
 	"smw-property-predefined-label-skey": "Zortéierschlëssel",
 	"smw-processing": "Verschaffen...",
-	"smw-loading": "Lueden ...",
+	"smw-loading": "Lueden...",
+	"smw-preparing": "Virbereeden...",
 	"smw-expand": "Opklappen",
 	"smw-collapse": "Zesummeklappen",
 	"smw-copy": "Kopéieren",
@@ -369,8 +370,10 @@
 	"smw-entity-examiner-deferred-fake": "Fälschung",
 	"smw-indicator-revision-mismatch": "Revisioun",
 	"smw-facetedsearch-intro-tab-search": "Sichen",
+	"smw-facetedsearch-input-filter-placeholder": "Filteren...",
 	"smw-facetedsearch-no-filters": "Keng Filteren.",
 	"smw-facetedsearch-clear-filters": "{{PLURAL:$1|Filter|Filteren}} zrécksetzen",
+	"smw-search-placeholder": "Sichen...",
 	"smw-listingcontinuesabbrev": "(Fortsetzung)",
 	"smw-showingresults": "Hei gesitt der  {{PLURAL:$1| '''1''' Resultat|'''$1''' Resultater}}, ugefaange mat #'''$2'''."
 }

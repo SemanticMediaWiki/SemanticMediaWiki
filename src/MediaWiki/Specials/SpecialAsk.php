@@ -99,7 +99,6 @@ class SpecialAsk extends SpecialPage {
 	 * @param string $p
 	 */
 	public function execute( $p ) {
-
 		$this->setHeaders();
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
@@ -186,7 +185,6 @@ class SpecialAsk extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
 		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
 			return 'smw_group';
 		}
@@ -269,7 +267,6 @@ class SpecialAsk extends SpecialPage {
 	 * @param string $p
 	 */
 	protected function extractQueryParameters( $p ) {
-
 		$request = $this->getRequest();
 		$this->isEditMode = false;
 
@@ -294,7 +291,6 @@ class SpecialAsk extends SpecialPage {
 	}
 
 	protected function makeHTMLResult() {
-
 		$result = '';
 		$res = null;
 		$settings = ApplicationFactory::getInstance()->getSettings();
@@ -379,7 +375,7 @@ class SpecialAsk extends SpecialPage {
 
 		$htmlForm->setCallbacks(
 			[
-				'code_handler' => function() {
+				'code_handler' => function () {
 					return $this->print_code();
 				}
 			]
@@ -423,7 +419,6 @@ class SpecialAsk extends SpecialPage {
 	}
 
 	private function fetchResults( &$printer, &$queryobj, &$urlArgs ) {
-
 		// Copy the printout to retain the original state while in case of no
 		// specific subject (THIS) request extend the query with a
 		// `PrintRequest::PRINT_THIS` column
@@ -555,7 +550,6 @@ class SpecialAsk extends SpecialPage {
 	 * @return string
 	 */
 	private function print_code() {
-
 		$code = $this->queryString ? $this->queryString . "\n" : "\n";
 
 		foreach ( $this->printouts as $printout ) {
@@ -580,7 +574,6 @@ class SpecialAsk extends SpecialPage {
 	}
 
 	private function print_borrowed_msg( &$html, &$searchInfoText ) {
-
 		if ( !$this->isBorrowedMode ) {
 			return;
 		}
@@ -615,7 +608,6 @@ class SpecialAsk extends SpecialPage {
 	}
 
 	private function newUrlArgs() {
-
 		$urlArgs = new UrlArgs();
 
 		// build parameter strings for URLs, based on current settings
@@ -665,7 +657,6 @@ class SpecialAsk extends SpecialPage {
 	}
 
 	private function fetchQueryResult( $params ) {
-
 		$res = null;
 		$debug = '';
 		$duration = 0;

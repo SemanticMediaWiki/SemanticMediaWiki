@@ -56,7 +56,6 @@ class DataItemFactory {
 	 * @return DIWikiPage
 	 */
 	public function newDIWikiPage( $title, $namespace = NS_MAIN, $interwiki = '', $subobjectName = '' ) {
-
 		if ( $title instanceof Title ) {
 			return DIWikiPage::newFromTitle( $title );
 		}

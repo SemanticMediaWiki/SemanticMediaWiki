@@ -28,7 +28,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemHandler;
 	private $query;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
@@ -50,7 +50,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
-			->will( $this->returnArgument(0) );
+			->will( $this->returnArgument( 0 ) );
 
 		$this->query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
@@ -65,12 +65,11 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->setConnectionManager( $connectionManager );
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SemanticDataLookup::class,
 			new SemanticDataLookup( $this->store )
@@ -78,7 +77,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewStubSemanticData_FromDIWikiPage() {
-
 		$instance = new SemanticDataLookup(
 			$this->store
 		);
@@ -90,7 +88,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewStubSemanticData_FromSemanticData() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -110,7 +107,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewStubSemanticDataThrowsException() {
-
 		$instance = new SemanticDataLookup(
 			$this->store
 		);
@@ -120,7 +116,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTableUsageInfo() {
-
 		$property =  new DIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -147,7 +142,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewRequestOptions_NULL() {
-
 		$property =  new DIProperty( 'Foo' );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
@@ -165,7 +159,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewRequestOptions_AsConditionConstraint_IsFixedPropertyTable() {
-
 		$property =  new DIProperty( 'Foo' );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
@@ -190,7 +183,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSemanticDataFromTable() {
-
 		$row = new \stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
@@ -233,7 +225,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSemanticDataFromTable_WithConstraint() {
-
 		$row = new \stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
@@ -273,7 +264,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -311,7 +302,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_NoDataItem() {
-
 		$row = new \stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
@@ -334,7 +324,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -359,7 +349,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_NoIdSubject() {
-
 		$row = new \stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
@@ -386,7 +375,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -413,7 +402,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_Empty() {
-
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -433,7 +421,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -459,7 +446,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData_NonWikiPage_ThrowsException() {
-
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -473,7 +459,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_NonWikiPageTable_DISTINCT_SELECT() {
-
 		$row = new \stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
@@ -496,7 +481,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -524,7 +509,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData_OnLimit() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -567,7 +551,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'readQuery' )

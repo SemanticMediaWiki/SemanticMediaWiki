@@ -59,7 +59,6 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 * @param ParserOutput
 	 */
 	public function addTopIndicatorTo( ParserOutput $parserOutput ) {
-
 		if ( $this->editProtectionRight === false ) {
 			return false;
 		}
@@ -88,7 +87,6 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
-
 		if ( $this->editProtectionRight === false ) {
 			return false;
 		}
@@ -114,7 +112,6 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function hasEditProtection() {
-
 		//$this->title->flushRestrictions();
 
 		if ( !PageInfoProvider::isProtected( $this->title, 'edit' ) ) {
@@ -129,7 +126,6 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function isEnabledProtection( $property ) {
-
 		if ( !$this->getSemanticData()->hasProperty( $property ) ) {
 			return false;
 		}

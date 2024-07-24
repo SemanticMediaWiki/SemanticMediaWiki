@@ -70,7 +70,6 @@ class EntityLookup implements IEntityLookup {
 	 * {@inheritDoc}
 	 */
 	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
-
 		$idTable = $this->store->getObjectIds();
 
 		// *** Find out if this subject exists ***//
@@ -181,7 +180,6 @@ class EntityLookup implements IEntityLookup {
 	 * {@inheritDoc}
 	 */
 	public function getProperties( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
-
 		$idTable = $this->store->getObjectIds();
 
 		$sid = $idTable->getSMWPageID(
@@ -241,7 +239,6 @@ class EntityLookup implements IEntityLookup {
 	 * {@inheritDoc}
 	 */
 	public function getPropertyValues( DIWikiPage $subject = null, DIProperty $property, RequestOptions $requestOptions = null ) {
-
 		$idTable = $this->store->getObjectIds();
 
 		if ( $property->isInverse() ) { // inverses are working differently
@@ -351,7 +348,6 @@ class EntityLookup implements IEntityLookup {
 	 * {@inheritDoc}
 	 */
 	public function getPropertySubjects( DIProperty $property, DataItem $dataItem = null, RequestOptions $requestOptions = null ) {
-
 		// * @todo This method cannot retrieve subjects for sortkeys, i.e., for
 		// * property _SKEY. Only empty arrays will be returned there.
 
@@ -423,7 +419,6 @@ class EntityLookup implements IEntityLookup {
 	 * {@inheritDoc}
 	 */
 	public function getInProperties( DataItem $object, RequestOptions $requestOptions = null ) {
-
 		$result = [];
 		$diType = $object->getDIType();
 
@@ -442,7 +437,7 @@ class EntityLookup implements IEntityLookup {
 			foreach ( $res as $row ) {
 				try {
 					$result[] = new DIProperty( $row->smw_title );
-				} catch ( DataItemException $e) {
+				} catch ( DataItemException $e ) {
 					// has been observed to happen (empty property title); cause unclear; ignore this data
 				}
 			}

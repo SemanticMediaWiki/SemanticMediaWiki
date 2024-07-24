@@ -139,7 +139,6 @@ class InfoLinksProvider {
 	 * @since 2.4
 	 */
 	public function createInfoLinks() {
-
 		if ( $this->infoLinks !== [] ) {
 			return $this->infoLinks;
 		}
@@ -204,7 +203,6 @@ class InfoLinksProvider {
 	 * @return string
 	 */
 	public function getInfolinkText( $outputformat, $linker = null ) {
-
 		$result = '';
 		$first = true;
 		$extralinks = [];
@@ -244,7 +242,6 @@ class InfoLinksProvider {
 	 * particular datatype in mind.
 	 */
 	public function addServiceLinks() {
-
 		if ( $this->hasServiceLinks ) {
 			return;
 		}
@@ -282,7 +279,6 @@ class InfoLinksProvider {
 	}
 
 	private function makeLink( $dataItem, $args ) {
-
 		if ( !( $dataItem instanceof DIBlob ) ) {
 			return;
 		}

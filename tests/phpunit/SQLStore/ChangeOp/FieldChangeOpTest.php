@@ -19,7 +19,6 @@ class FieldChangeOpTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FieldChangeOp::class,
 			new FieldChangeOp()
@@ -27,7 +26,6 @@ class FieldChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChangeOp() {
-
 		$op = [
 			's_id' => 462,
 			'o_serialized' => '1/2016/6/10/2/3/31/0',
@@ -56,7 +54,6 @@ class FieldChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidGetRequestThrowsException() {
-
 		$instance = new FieldChangeOp();
 
 		$this->expectException( 'InvalidArgumentException' );

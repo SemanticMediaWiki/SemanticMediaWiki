@@ -70,7 +70,6 @@ abstract class QueryPage extends \QueryPage {
 	 * @return array
 	 */
 	public function linkParameters() {
-
 		$parameters = [];
 		$property   = $this->getRequest()->getVal( 'property' );
 
@@ -95,7 +94,6 @@ abstract class QueryPage extends \QueryPage {
 	 * @return MessageFormatter
 	 */
 	public function getMessageFormatter() {
-
 		if ( !isset( $this->msgFormatter ) ) {
 			$this->msgFormatter = new MessageFormatter( $this->getLanguage() );
 		}
@@ -111,7 +109,6 @@ abstract class QueryPage extends \QueryPage {
 	 * @return Linker
 	 */
 	public function getLinker() {
-
 		if ( $this->linker === null ) {
 			$this->linker = smwfGetLinker();
 		}
@@ -129,7 +126,6 @@ abstract class QueryPage extends \QueryPage {
 	 * @return string
 	 */
 	public function getSearchForm( $property = '', $cacheDate = '', $propertySearch = true, $filter = '' ) {
-
 		$this->useSerchForm = true;
 		$this->getOutput()->addModules( 'ext.smw.autocomplete.property' );
 
@@ -227,7 +223,7 @@ abstract class QueryPage extends \QueryPage {
 
 		if ( $num > 0 ) {
 			$s = [];
-			if ( ! $this->listoutput ) {
+			if ( !$this->listoutput ) {
 				$s[] = $this->openList( $offset );
 			}
 
@@ -238,7 +234,7 @@ abstract class QueryPage extends \QueryPage {
 				}
 			}
 
-			if ( ! $this->listoutput ) {
+			if ( !$this->listoutput ) {
 				$s[] = $this->closeList();
 			}
 			$str = $this->listoutput ? $this->getLanguage()->listToText( $s ) : implode( '', $s );

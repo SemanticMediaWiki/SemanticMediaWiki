@@ -44,7 +44,6 @@ class ContainerSemanticData extends SemanticData {
 	 * @param boolean $noDuplicates stating if duplicate data should be avoided
 	 */
 	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ) {
-
 		$containerSemanticData = new ContainerSemanticData(
 			new DIWikiPage( 'SMWInternalObject', NS_SPECIAL, '', 'int' ),
 			$noDuplicates
@@ -94,7 +93,6 @@ class ContainerSemanticData extends SemanticData {
 	 * @return boolean
 	 */
 	public function hasAnonymousSubject() {
-
 		if ( $this->mSubject->getNamespace() == NS_SPECIAL &&
 		     $this->mSubject->getDBkey() == 'SMWInternalObject' &&
 		     $this->mSubject->getInterwiki() === '' &&
@@ -114,7 +112,6 @@ class ContainerSemanticData extends SemanticData {
 	 * @throws DataItemException
 	 */
 	public function getSubject() {
-
 		$error = "This container has been classified as anonymous and by trying to access" .
 		" its subject (that has not been given any) an exception is raised to inform about" .
 		" the incorrect usage. An anonymous container can only be used for a search pattern match.";
@@ -137,7 +134,6 @@ class ContainerSemanticData extends SemanticData {
 	 * @param SemanticData|null $semanticData
 	 */
 	public function copyDataFrom( SemanticData $semanticData = null ) {
-
 		if ( $semanticData === null ) {
 			return;
 		}

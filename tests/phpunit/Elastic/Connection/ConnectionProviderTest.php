@@ -27,8 +27,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	private LockManager $lockManager;
 	private Config $config;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->logger = $this->createMock( LoggerInterface::class );
 
 		$this->lockManager = $this->createMock( LockManager::class );
@@ -37,7 +36,6 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConnectionProvider::class,
 			new ConnectionProvider( $this->lockManager, $this->config )
@@ -45,8 +43,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection_MissingEndpointsThrowsException() {
-
-		$config = new Config (
+		$config = new Config(
 			[
 				Config::DEFAULT_STORE => 'SMWElasticStore'
 			]
@@ -62,8 +59,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection_DummyClient() {
-
-		$config = new Config (
+		$config = new Config(
 			[
 				Config::DEFAULT_STORE => 'SMWSQLStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
@@ -84,12 +80,11 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection_Client() {
-
 		if ( !class_exists( '\Elasticsearch\ClientBuilder' ) ) {
 			$this->markTestSkipped( "elasticsearch-php dependency is not available." );
 		}
 
-		$config = new Config (
+		$config = new Config(
 			[
 				Config::DEFAULT_STORE => 'SMWElasticStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
@@ -110,12 +105,11 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionThrowsExceptionWhenNotInstalled() {
-
 		if ( class_exists( '\Elasticsearch\ClientBuilder' ) ) {
 			$this->markTestSkipped( "\Elasticsearch\ClientBuilder is available, no exception is thrown" );
 		}
 
-		$config = new Config (
+		$config = new Config(
 			[
 				Config::DEFAULT_STORE => 'SMWElasticStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]

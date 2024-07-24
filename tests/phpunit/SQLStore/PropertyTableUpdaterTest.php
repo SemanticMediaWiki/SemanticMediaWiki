@@ -26,7 +26,7 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $propertyStatisticsStore;
 	private $propertyChangeListener;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -63,7 +63,6 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyTableUpdater::class,
 			new PropertyTableUpdater( $this->store, $this->propertyStatisticsStore )
@@ -71,7 +70,6 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate_OnEmptyInsertRows() {
-
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
@@ -96,7 +94,6 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate_WithInsertRows() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'insert' );
 
@@ -147,7 +144,6 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate_Touched() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'timestamp' )
 			->will( $this->returnValue( '19700101000000' ) );
@@ -196,7 +192,6 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate_WithInsertRowsButMissingIdFieldThrowsException() {
-
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [ 'table_foo' => $this->propertyTable ] ) );

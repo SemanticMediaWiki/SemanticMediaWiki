@@ -16,7 +16,6 @@ use SMW\Localizer\MessageLocalizerTrait;
 class MessageLocalizerTraitTest extends \PHPUnit_Framework_TestCase {
 
 	public function testMsg() {
-
 		$messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
 			->disableOriginalConstructor()
 			->getMock();

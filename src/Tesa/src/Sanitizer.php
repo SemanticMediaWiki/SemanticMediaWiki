@@ -56,7 +56,6 @@ class Sanitizer {
 	 * @param mixed $value
 	 */
 	public function setOption( $name, $value ) {
-
 		if ( $name === self::WHITELIST && is_array( $value ) && $value !== array() ) {
 			$this->whiteList = array_fill_keys( $value, true );
 		}
@@ -104,7 +103,6 @@ class Sanitizer {
 	 * @return string
 	 */
 	public function sanitizeWith( Tokenizer $tokenizer, StopwordAnalyzer $stopwordAnalyzer, Synonymizer $synonymizer ) {
-
 		// Treat non-words tokenizers (Ja,Zh*) differently
 		$minLength = $tokenizer->isWordTokenizer() ? $this->minLength : 1;
 
@@ -136,7 +134,7 @@ class Sanitizer {
 			$pos++;
 		}
 
-		return implode( ' ' , $index );
+		return implode( ' ', $index );
 	}
 
 	/**

@@ -24,7 +24,7 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $repositoryRedirectLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->repositoryRedirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryRedirectLookup' )
@@ -33,7 +33,6 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\TurtleTriplesBuilder',
 			new TurtleTriplesBuilder( $this->repositoryRedirectLookup )
@@ -41,7 +40,6 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildTriplesForEmptySemanticDataContainer() {
-
 		$expNsResource = new ExpNsResource(
 			'Redirect',
 			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
@@ -78,7 +76,6 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChunkedTriples() {
-
 		$expNsResource = new ExpNsResource(
 			'Redirect',
 			Exporter::getInstance()->getNamespaceUri( 'wiki' ),

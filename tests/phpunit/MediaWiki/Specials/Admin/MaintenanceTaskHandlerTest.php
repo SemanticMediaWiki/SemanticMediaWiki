@@ -24,7 +24,7 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $outputFormatter;
 	private $fileFetcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -44,13 +44,12 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MaintenanceTaskHandler::class,
 			new MaintenanceTaskHandler( $this->outputFormatter, $this->fileFetcher, [] )
@@ -58,7 +57,6 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -83,7 +81,6 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsTaskFor() {
-
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -107,7 +104,6 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleSubRequest() {
-
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();

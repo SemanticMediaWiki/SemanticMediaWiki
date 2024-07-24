@@ -19,7 +19,6 @@ class JSONParseExceptionTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testGetMessage() {
-
 		$json = '{ "test": 123, }';
 
 		$instance = new JSONParseException(
@@ -33,7 +32,6 @@ class JSONParseExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTidyMessage() {
-
 		$json = '{ "test": 123, }';
 
 		$instance = new JSONParseException(

@@ -35,7 +35,6 @@ class SpecialBrowse extends SpecialPage {
 	 * @param string $query string
 	 */
 	public function execute( $query ) {
-
 		$this->setHeaders();
 		$webRequest = $this->getRequest();
 
@@ -94,7 +93,6 @@ class SpecialBrowse extends SpecialPage {
 	}
 
 	private function buildHTML( $webRequest, $dataValue, $isEmptyRequest ) {
-
 		if ( $isEmptyRequest && !$this->including() ) {
 			return Message::get( 'smw-browse-intro', Message::TEXT, Message::USER_LANGUAGE ) . FieldBuilder::createQueryForm();
 		}
@@ -153,7 +151,6 @@ class SpecialBrowse extends SpecialPage {
 	}
 
 	private function newHtmlBuilder( $webRequest, $dataItem, $store, $settings ) {
-
 		$htmlBuilder = new HtmlBuilder(
 			$store,
 			$dataItem
@@ -191,7 +188,6 @@ class SpecialBrowse extends SpecialPage {
 	}
 
 	private function addExternalHelpLinks( $dataValue ) {
-
 		if ( $this->getRequest()->getVal( 'printable' ) === 'yes' ) {
 			return null;
 		}
@@ -225,7 +221,6 @@ class SpecialBrowse extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
 		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
 			return 'smw_group';
 		}

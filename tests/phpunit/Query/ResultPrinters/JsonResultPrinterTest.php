@@ -23,7 +23,7 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	private $queryResult;
 	private $resultPrinterReflector;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
@@ -34,7 +34,6 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JsonResultPrinter::class,
 			new JsonResultPrinter( 'json' )
@@ -47,7 +46,6 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMimeType() {
-
 		$instance = new JsonResultPrinter( 'json' );
 
 		$this->assertEquals(
@@ -60,7 +58,6 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider filenameDataProvider
 	 */
 	public function testGetFileName( $filename, $expected ) {
-
 		$instance = new JsonResultPrinter( 'json' );
 
 		$this->resultPrinterReflector->addParameters(
@@ -75,7 +72,6 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetResultText() {
-
 		$res = [
 			'lala' => __METHOD__,
 			'lula' => 999388383838
@@ -111,13 +107,12 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function filenameDataProvider() {
-
 		$provider = [];
 
 		$provider[] = [ 'Lala', 'Lala.json' ];
 		$provider[] = [ 'Lala Lilu', 'Lala_Lilu.json' ];
-		$provider[] = [ 'Foo.jso' , 'Foo.jso.json'];
-		$provider[] = [ '' , 'result.json'];
+		$provider[] = [ 'Foo.jso', 'Foo.jso.json' ];
+		$provider[] = [ '', 'result.json' ];
 
 		return $provider;
 	}

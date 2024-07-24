@@ -26,7 +26,7 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 
 	private $schemaList;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->schemaList = new SchemaList( [] );
@@ -56,7 +56,6 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceCategoryFilterProvider
 	 */
 	public function testNamespaceCategoryFilter( $ns, $categories, $expected ) {
-
 		$compartments = $this->schemaList->newCompartmentIteratorByKey(
 			'filter_rules'
 		);
@@ -89,7 +88,6 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNamespaceCategoryFilter_FindBestFilter() {
-
 		$schemaList = new SchemaList(
 			[
 				$this->newSchemaDefinition( 'fake_namespace_category_rule_schema_best_sort_5' )
@@ -136,7 +134,6 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNamespaceCategoryFilter_FindBestFilter_ReverseComposite() {
-
 		$schemaList = new SchemaList(
 			[
 				$this->newSchemaDefinition( 'fake_namespace_category_rule_schema_best_sort_5' )
@@ -186,7 +183,6 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceCategoryPropertyFilterProvider
 	 */
 	public function testNamespaceCategoryPropertyFilterProvider( $ns, $categories, $properties, $expected ) {
-
 		$compartments = $this->schemaList->newCompartmentIteratorByKey(
 			'filter_rules'
 		);
@@ -229,7 +225,6 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceCategoryPropertyFilterProvider() {
-
 		yield "'property-6-a', NS_MAIN" => [
 			NS_MAIN,
 			[],
@@ -239,10 +234,10 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 
 		yield "'property-6-a', 'property-6-b' NS_MAIN" => [
 			NS_MAIN,
-			function() {
+			function () {
 				return [ 'category-6-a' ];
 			},
-			function(){
+			function (){
 				return [ new DIProperty( 'property-6-a' ), new DIProperty( 'property-6-b' ) ];
 			},
 			[ 'rule_6_2' ]
@@ -250,7 +245,6 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCategoryFilter() {
-
 		$expected = [
 			"if" => [ "category" => "Brown fox" ], "then" => [ "action" => "2_4" ],
 			'___assoc_schema'  => 'fake namespace category rule schema 2',
@@ -277,7 +271,6 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceCategoryFilterProvider() {
-
 		yield "NS_MAIN" => [
 			NS_MAIN,
 			[],

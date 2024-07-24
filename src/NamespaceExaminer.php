@@ -51,7 +51,6 @@ class NamespaceExaminer {
 	 * @return boolean
 	 */
 	public function inNamespace( $object ) {
-
 		$namespace = null;
 
 		if ( $object instanceof \Title ) {
@@ -76,7 +75,6 @@ class NamespaceExaminer {
 	 * @throws InvalidArgumentException
 	 */
 	public function isSemanticEnabled( $namespace ) {
-
 		if ( !is_int( $namespace ) ) {
 			throw new InvalidArgumentException( "{$namespace} is not a number" );
 		}

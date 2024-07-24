@@ -24,8 +24,7 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	private $idCacheManager;
 	private Cache $cache;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -38,7 +37,6 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AuxiliaryFields::class,
 			new AuxiliaryFields( $this->connection, $this->idCacheManager )
@@ -46,7 +44,6 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrefetchFieldList() {
-
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
 			->with( $this->equalTo( AuxiliaryFields::COUNTMAP_CACHE_ID ) )
@@ -65,7 +62,7 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 't.smw_hash' => [ 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' ] ]) )
+				$this->equalTo( [ 't.smw_hash' => [ 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' ] ] ) )
 			->will( $this->returnValue( [ (object)$row ] ) );
 
 		$instance = new AuxiliaryFields(
@@ -80,7 +77,6 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetFieldMaps_Empty() {
-
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
 			->with( $this->equalTo( AuxiliaryFields::COUNTMAP_CACHE_ID ) )
@@ -104,7 +100,6 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetFieldMaps() {
-
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
 			->with( $this->equalTo( AuxiliaryFields::COUNTMAP_CACHE_ID ) )

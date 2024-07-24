@@ -104,7 +104,6 @@ class SummaryTable {
 	 * @return string
 	 */
 	public function buildHTML( array $opts = [] ) {
-
 		$html = '';
 		$tables = [];
 
@@ -153,7 +152,6 @@ class SummaryTable {
 	}
 
 	private function tableAndImage( $params ) {
-
 		$html = Html::rawElement(
 			'div',
 			[
@@ -180,7 +178,6 @@ class SummaryTable {
 	}
 
 	private function table( $params ) {
-
 		$rows = '';
 		$html = '';
 

@@ -25,7 +25,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 	private $eventDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -45,7 +45,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->applicationFactory->clear();
 		$this->testEnvironment->tearDown();
 
@@ -56,7 +56,6 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleDataProvider
 	 */
 	public function testProcess( $setup, $expected ) {
-
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
 			->with( $this->equalTo( 'InvalidateEntityCache' ) );
@@ -130,7 +129,6 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleDataProvider() {
-
 		$validIdTitle =  MockTitle::buildMock( 'validIdTitle' );
 
 		$validIdTitle->expects( $this->atLeastOnce() )

@@ -19,7 +19,6 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\EngineOptions',
 			new EngineOptions()
@@ -27,7 +26,6 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInitialState() {
-
 		$instance = new EngineOptions();
 
 		$this->assertInternalType(
@@ -42,7 +40,6 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddOption() {
-
 		$instance = new EngineOptions();
 
 		$this->assertFalse(
@@ -58,7 +55,6 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnregisteredKeyThrowsException() {
-
 		$instance = new EngineOptions();
 
 		$this->expectException( 'InvalidArgumentException' );

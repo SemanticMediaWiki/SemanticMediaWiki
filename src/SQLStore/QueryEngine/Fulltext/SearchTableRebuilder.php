@@ -112,7 +112,6 @@ class SearchTableRebuilder {
 	 * @return boolean
 	 */
 	public function rebuild() {
-
 		if ( !$this->canRebuild() ) {
 			return;
 		}
@@ -141,7 +140,6 @@ class SearchTableRebuilder {
 	 * @return array
 	 */
 	public function getQualifiedTableList() {
-
 		$tableList = [];
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
@@ -174,7 +172,6 @@ class SearchTableRebuilder {
 	}
 
 	private function doOptimize() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -201,7 +198,6 @@ class SearchTableRebuilder {
 	}
 
 	private function doRebuild() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 		$propertyTables = [];
 
@@ -271,7 +267,6 @@ class SearchTableRebuilder {
 	}
 
 	private function doRebuildByPropertyTable( $proptable ) {
-
 		$searchTable = $this->getSearchTable();
 
 		if ( $proptable->getDiType() === DataItem::TYPE_URI ) {
@@ -320,7 +315,6 @@ class SearchTableRebuilder {
 	}
 
 	private function doRebuildFromRows( $searchTable, $table, $pid, $rows ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$i = 0;
@@ -372,7 +366,6 @@ class SearchTableRebuilder {
 	}
 
 	private function getIndexableTextFromRow( $searchTable, $row ) {
-
 		$indexableText = '';
 
 		// Page, Uri, or blob?

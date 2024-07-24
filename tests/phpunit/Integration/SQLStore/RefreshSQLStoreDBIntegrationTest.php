@@ -29,7 +29,7 @@ class RefreshSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	private $pageDeleter;
 	private $pageCreator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mwHooksHandler = new MwHooksHandler();
@@ -37,8 +37,7 @@ class RefreshSQLStoreDBIntegrationTest extends DatabaseTestCase {
 		$this->pageCreator = new PageCreator();
 	}
 
-	public function tearDown() : void {
-
+	public function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 
 		if ( $this->title !== null ) {
@@ -52,12 +51,11 @@ class RefreshSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testAfterPageCreation_StoreHasDataToRefreshWithoutJobs( $ns, $name, $iw ) {
-
 		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->title = Title::makeTitle( $ns, $name, '', $iw );
 
-		$this->pageCreator->createPage( $this->title  );
+		$this->pageCreator->createPage( $this->title );
 
 		$this->assertStoreHasDataToRefresh( false );
 	}
@@ -66,7 +64,6 @@ class RefreshSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testAfterPageCreation_StoreHasDataToRefreshWitJobs( $ns, $name, $iw ) {
-
 		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->title = Title::makeTitle( $ns, $name, '', $iw );

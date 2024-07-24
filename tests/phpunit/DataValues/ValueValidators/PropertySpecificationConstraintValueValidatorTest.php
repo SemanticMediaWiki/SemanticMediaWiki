@@ -20,14 +20,13 @@ class PropertySpecificationConstraintValueValidatorTest extends \PHPUnit_Framewo
 	private $dataItemFactory;
 	private $dataValueFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator',
 			new PropertySpecificationConstraintValueValidator()
@@ -35,7 +34,6 @@ class PropertySpecificationConstraintValueValidatorTest extends \PHPUnit_Framewo
 	}
 
 	public function testHasNoConstraintViolationOnNonRelatedValue() {
-
 		$instance = new PropertySpecificationConstraintValueValidator();
 		$instance->validate( 'Foo' );
 
@@ -45,7 +43,6 @@ class PropertySpecificationConstraintValueValidatorTest extends \PHPUnit_Framewo
 	}
 
 	public function testHasNoConstraintViolationOnDisabledPreferredLabelPropertyButWithError() {
-
 		$dataValue = $this->dataValueFactory->newDataValueByProperty(
 			$this->dataItemFactory->newDIProperty( '_PPLB' )
 		);

@@ -30,7 +30,6 @@ class SpecialPendingTaskList extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $query ) {
-
 		$this->addHelpLink(
 			$this->msg( 'smw-helplink', 'Pending_tasks' )->escaped(),
 			true
@@ -50,7 +49,6 @@ class SpecialPendingTaskList extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
 		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
 			return 'smw_group';
 		}
@@ -60,7 +58,6 @@ class SpecialPendingTaskList extends SpecialPage {
 	}
 
 	private function buildHTML() {
-
 		$isEmpty = true;
 
 		$htmlTabs = new HtmlTabs();

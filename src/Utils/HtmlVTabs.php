@@ -83,7 +83,6 @@ class HtmlVTabs {
 	 * @return string
 	 */
 	public static function nav( $html = '', array $attributes = [] ) {
-
 		$direction = self::$direction === 'right' ? 'nav-right' : 'nav-left';
 
 		$attributes = self::mergeAttributes( "smw-vtab-nav", $attributes );
@@ -109,7 +108,6 @@ class HtmlVTabs {
 	 * @return string
 	 */
 	public static function navLink( $id, $label = '', $flag = false, array $attributes = [] ) {
-
 		if ( $flag === self::IS_HIDDEN ) {
 			return '';
 		}
@@ -153,7 +151,6 @@ class HtmlVTabs {
 	 * @return string
 	 */
 	public static function content( $id, $html = '', array $attributes = [] ) {
-
 		$id = 'tab-' . $id;
 		$attributes['id'] = $id;
 
@@ -175,7 +172,6 @@ class HtmlVTabs {
 	}
 
 	private static function mergeAttributes( $class, $attr ) {
-
 		$attributes = [];
 
 		// A bit of attribute order

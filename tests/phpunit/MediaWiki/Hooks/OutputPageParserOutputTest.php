@@ -36,7 +36,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	private $permissionExaminer;
 	private FactboxText $factboxText;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -69,13 +69,12 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 		$this->factboxText = $this->applicationFactory->getFactboxText();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			OutputPageParserOutput::class,
 			new OutputPageParserOutput( $this->namespaceExaminer, $this->permissionExaminer, $this->factboxText )
@@ -158,7 +157,6 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function outputDataProvider() {
-
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 		$language = $languageFactory->getLanguage( 'en' );
 
@@ -192,7 +190,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ new DIProperty(  __METHOD__ . 'property' ) ] ) );
+			->will( $this->returnValue( [ new DIProperty( __METHOD__ . 'property' ) ] ) );
 
 		#0 Simple factbox build, returning content
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-content' );
@@ -323,7 +321,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$context = new \RequestContext( );
+		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest() );
 
 		$outputPage->expects( $this->any() )
@@ -360,7 +358,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$context = new \RequestContext( );
+		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
 
 		$outputPage->expects( $this->atLeastOnce() )

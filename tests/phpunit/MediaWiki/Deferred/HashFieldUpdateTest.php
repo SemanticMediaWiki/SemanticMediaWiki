@@ -21,7 +21,7 @@ class HashFieldUpdateTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 
@@ -32,13 +32,12 @@ class HashFieldUpdateTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			HashFieldUpdate::class,
 			new HashFieldUpdate( $this->connection, 42, '__hash__' )
@@ -46,7 +45,6 @@ class HashFieldUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddUpdate() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'update' )
 			->with(
@@ -59,7 +57,6 @@ class HashFieldUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoUpdate() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'update' )
 			->with(

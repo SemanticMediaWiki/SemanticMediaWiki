@@ -69,7 +69,6 @@ class MonolingualTextLookup {
 	 * @return DIContainer|null
 	 */
 	public function newDIContainer( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
-
 		if ( $subject->getSubobjectName() !== '' && $languageCode !== null ) {
 			throw new InvalidArgumentException( "Expected for a container reference no language code." );
 		}
@@ -151,7 +150,6 @@ class MonolingualTextLookup {
 	 * @return []
 	 */
 	public function newDataValue( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
-
 		$res = $this->fetchFromTable( $subject, $property, $languageCode );
 		$dataValue = null;
 
@@ -200,7 +198,6 @@ class MonolingualTextLookup {
 	 * @return []
 	 */
 	public function fetchFromTable( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
-
 		/**
 		 * This method avoids access to `Store::getSemanticData` in order to
 		 * optimize the query and produce something like:
@@ -333,7 +330,6 @@ class MonolingualTextLookup {
 	}
 
 	private function getPropertyTable( DIProperty $property ) {
-
 		$propTableId = $this->store->findPropertyTableID(
 			$property
 		);
@@ -348,7 +344,6 @@ class MonolingualTextLookup {
 	}
 
 	private function newContainerSemanticData( $row ) {
-
 		if ( $row instanceof DIWikiPage ) {
 			$subject = $row;
 		} else {

@@ -16,7 +16,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
   die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
 }
 
-return (function() {
+return ( function () {
 	SemanticMediaWiki::setupDefines();
 	$smwgIP = dirname( __DIR__ ) . '/';
 	return [
@@ -590,7 +590,7 @@ return (function() {
 		#
 		# @since 1.0
 		##
-		'smwgQEnabled' => true,   // (De)activates all query related features and interfaces
+		'smwgQEnabled' => true, // (De)activates all query related features and interfaces
 		'smwgQMaxLimit' => 10000, // Max number of results *ever* retrieved, even when using special query pages.
 		#
 		# @since 1.5
@@ -763,14 +763,14 @@ return (function() {
 		#
 		# @since 1.0
 		##
-		'smwgQDefaultLimit' => 50,      // Default number of rows returned in a query. Can be increased with limit=num in #ask
-		'smwgQMaxInlineLimit' => 500,   // Max number of rows ever printed in a single inline query on a single page.
-		'smwgQPrintoutLimit'  => 100,   // Max number of supported printouts (added columns in result table, ?-statements)
+		'smwgQDefaultLimit' => 50, // Default number of rows returned in a query. Can be increased with limit=num in #ask
+		'smwgQMaxInlineLimit' => 500, // Max number of rows ever printed in a single inline query on a single page.
+		'smwgQPrintoutLimit'  => 100, // Max number of supported printouts (added columns in result table, ?-statements)
 		'smwgQDefaultLinking' => 'all', // Default linking behavior. Can be one of "none", "subject" (first column), "all".
 		#
 		# @since 2.1
 		##
-		'smwgQUpperbound' => 5000,      // Max number of rows ever printed in a single inline query on a single page with an offset.
+		'smwgQUpperbound' => 5000, // Max number of rows ever printed in a single inline query on a single page with an offset.
 		##
 
 		###
@@ -1672,7 +1672,7 @@ return (function() {
 		# @since 2.5
 		##
 		'smwgFulltextSearchPropertyExemptionList' => [
-			'_ASKFO', '_ASKST', '_ASKPA','_IMPO', '_LCODE', '_UNIT', '_CONV',
+			'_ASKFO', '_ASKST', '_ASKPA', '_IMPO', '_LCODE', '_UNIT', '_CONV',
 			'_TYPE', '_ERRT', '_INST', '_ASK', '_SOBJ', '_PVAL', '_PVALI',
 			'_REDI', '_CHGPRO'
 		],
@@ -1881,7 +1881,7 @@ return (function() {
 		##
 		'smwgPropertyInvalidCharacterList' => [
 			// Common characters
-			'[', ']' , '|' , '<' , '>', '{', '}', '+', '–', '%', "\r", "\n",
+			'[', ']', '|', '<', '>', '{', '}', '+', '–', '%', "\r", "\n",
 			'?', '*', '!'
 		],
 		##
@@ -2513,4 +2513,4 @@ return (function() {
 		'smwgDetectOutdatedData' => false
 
 	];
-})();
+} )();

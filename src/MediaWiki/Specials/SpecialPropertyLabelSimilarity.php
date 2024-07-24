@@ -28,7 +28,6 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $query ) {
-
 		$this->setHeaders();
 		$output = $this->getOutput();
 		$webRequest = $this->getRequest();
@@ -86,7 +85,6 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
 		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
 			return 'smw_group';
 		}
@@ -96,7 +94,6 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 	}
 
 	private static function makeSpecialPageBreadcrumbLink( $query = [] ) {
-
 		return Html::rawElement(
 			'div',
 			[

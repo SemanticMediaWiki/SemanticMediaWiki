@@ -73,8 +73,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * components therefore add configurations that needs to be initialized before
 	 * any service is created.
 	 */
-	public static function setUpBeforeClass() : void {
-
+	public static function setUpBeforeClass(): void {
 		$defaultSettingKeys = [
 			'smwgQEqualitySupport'
 		];
@@ -82,7 +81,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		TestEnvironment::loadDefaultSettings( $defaultSettingKeys );
 	}
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		// #3916
 		// Reset $wgUser, which is probably 127.0.0.1, as its loaded data is probably not valid
@@ -132,7 +131,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Cache', $fixedInMemoryLruCache );
 
 		if ( !defined( 'SMW_PHPUNIT_DB_VERSION' ) ) {
-			define( 'SMW_PHPUNIT_DB_VERSION',  $this->getDBConnection()->getServerInfo() );
+			define( 'SMW_PHPUNIT_DB_VERSION', $this->getDBConnection()->getServerInfo() );
 		}
 
 		$this->testEnvironment->clearPendingDeferredUpdates();
@@ -151,8 +150,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		$GLOBALS['wgUseDatabaseMessages'] = false;
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		// If setUp is skipped early this might not be initialized
 		if ( $this->testEnvironment !== null ) {
 			$this->testEnvironment->tearDown();
@@ -169,8 +167,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * request a trear down so that the next test can rebuild the tables from
 	 * scratch
 	 */
-	public function run( ?TestResult $result = null ) : TestResult {
-
+	public function run( ?TestResult $result = null ): TestResult {
 		$this->getStore()->clear();
 
 		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
@@ -213,7 +210,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function skipTestForMediaWikiVersionLowerThan( $version, $message = '' ) {
-
 		if ( $message === '' ) {
 			$message = "This test is skipped for MediaWiki version " . MW_VERSION;
 		}
@@ -224,7 +220,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function skipTestForDatabase( $excludedDatabase, $message = '' ) {
-
 		if ( is_string( $excludedDatabase ) ) {
 			$excludedDatabase = [ $excludedDatabase ];
 		}
@@ -239,7 +234,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function skipTestForStore( $excludeStore ) {
-
 		$store = get_class( $this->getStore() );
 
 		if ( $store == $excludeStore ) {
@@ -262,7 +256,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function checkIfDatabaseCanBeUsedOtherwiseSkipTest() {
-
 		if ( !$this->isUsableUnitTestDatabase ) {
 			$this->markTestSkipped(
 				"Database was excluded and is not expected to support the test"
@@ -271,7 +264,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function checkIfStoreCanBeUsedOtherwiseSkipTest() {
-
 		$store = get_class( $this->getStore() );
 
 		if ( in_array( $store, (array)$this->storesToBeExcluded ) ) {
@@ -282,7 +274,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function destroyDatabaseTables( $destroyDatabaseTables ) {
-
 		if ( $this->isUsableUnitTestDatabase && $destroyDatabaseTables ) {
 			try {
 				$this->testDatabaseTableBuilder->doDestroy();

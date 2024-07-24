@@ -36,7 +36,6 @@ class InsertJobTask extends Task {
 	 * @return array
 	 */
 	public function process( array $parameters ) {
-
 		if ( $parameters['subject'] === '' ) {
 			return [ 'done' => false ];
 		}

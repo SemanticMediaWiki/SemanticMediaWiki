@@ -37,6 +37,9 @@
 		}
 	},
 	"meta": {
+		"skip-on": {
+			"sqlite": "Returns a `database is locked`"
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

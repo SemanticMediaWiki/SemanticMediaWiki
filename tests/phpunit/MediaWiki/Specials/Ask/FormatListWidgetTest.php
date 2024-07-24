@@ -17,7 +17,6 @@ use SMW\Tests\TestEnvironment;
 class FormatListWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	public function testEmptyParameters() {
-
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -34,7 +33,6 @@ class FormatListWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetResultFormats() {
-
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$title = $this->getMockBuilder( '\Title' )

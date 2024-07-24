@@ -23,7 +23,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->connection = $this->getMockBuilder( 'DatabaseBase' )
@@ -31,13 +31,12 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExtendedSearchEngine::class,
 			new ExtendedSearchEngine()
@@ -45,7 +44,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDefaultFallbackSearchEngineForNullFallbackSearchType() {
-
 		$searchEngine = 'SearchDatabase';
 
 		if ( class_exists( 'SearchEngine' ) ) {
@@ -79,7 +77,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetFallbackSearchEngine() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -97,13 +94,12 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSupports() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'supports')
+			->method( 'supports' )
 			->with( $this->equalTo( 'Some feature' ) )
 			->will( $this->returnValueMap( [ [ 'Some feature', true ] ] ) );
 
@@ -119,13 +115,12 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNormalizeText() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'normalizeText')
+			->method( 'normalizeText' )
 			->with( $this->equalTo( 'Some text' ) )
 			->will( $this->returnValueMap( [ [ 'Some text', 'Some normalized text' ] ] ) );
 
@@ -142,8 +137,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTextFromContent() {
-
-		if ( ! method_exists( 'SearchEngine', 'getTextFromContent' ) ) {
+		if ( !method_exists( 'SearchEngine', 'getTextFromContent' ) ) {
 			$this->markTestSkipped( 'SearchEngine::getTextFromContent() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -160,7 +154,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'getTextFromContent')
+			->method( 'getTextFromContent' )
 			->with(
 				$this->equalTo( $title ),
 				$this->equalTo( $content ) )
@@ -179,8 +173,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTextAlreadyUpdatedForIndex() {
-
-		if ( ! method_exists( 'SearchEngine', 'textAlreadyUpdatedForIndex' ) ) {
+		if ( !method_exists( 'SearchEngine', 'textAlreadyUpdatedForIndex' ) ) {
 			$this->markTestSkipped( 'SearchEngine::textAlreadyUpdatedForIndex() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -189,7 +182,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'textAlreadyUpdatedForIndex')
+			->method( 'textAlreadyUpdatedForIndex' )
 			->with()
 			->will( $this->returnValue( true ) );
 
@@ -205,13 +198,12 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'update')
+			->method( 'update' )
 			->with(
 				$this->equalTo( 42 ),
 				$this->equalTo( 'Some title' ),
@@ -226,13 +218,12 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateTitle() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'updateTitle')
+			->method( 'updateTitle' )
 			->with(
 				$this->equalTo( 42 ),
 				$this->equalTo( 'Some title' ) );
@@ -246,8 +237,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
-		if ( ! method_exists( 'SearchEngine', 'delete' ) ) {
+		if ( !method_exists( 'SearchEngine', 'delete' ) ) {
 			$this->markTestSkipped( 'SearchEngine::delete() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -256,7 +246,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'delete')
+			->method( 'delete' )
 			->with(
 				$this->equalTo( 42 ),
 				$this->equalTo( 'Some title' ) );
@@ -270,8 +260,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetFeatureData() {
-
-		if ( ! method_exists( 'SearchEngine', 'delete' ) ) {
+		if ( !method_exists( 'SearchEngine', 'delete' ) ) {
 			$this->markTestSkipped( 'SearchEngine::delete() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -280,7 +269,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'setFeatureData')
+			->method( 'setFeatureData' )
 			->with(
 				$this->equalTo( 'Some feature name' ),
 				$this->equalTo( 'Some feature expression' ) );
@@ -303,7 +292,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReplacePrefixes() {
-
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
 		);
@@ -315,7 +303,6 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTransformSearchTerm() {
-
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
 		);
@@ -327,13 +314,12 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetLimitOffset() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'setLimitOffset')
+			->method( 'setLimitOffset' )
 			->with(
 				$this->equalTo( 9001 ),
 				$this->equalTo( 42 ) );
@@ -358,13 +344,12 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetNamespaces() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'setNamespaces')
+			->method( 'setNamespaces' )
 			->with( $this->equalTo( [ 1, 2, 3, 5, 8 ] ) );
 
 		$searchEngine = new ExtendedSearchEngine(
@@ -381,8 +366,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetShowSuggestion() {
-
-		if ( ! method_exists( 'SearchEngine', 'setShowSuggestion' ) ) {
+		if ( !method_exists( 'SearchEngine', 'setShowSuggestion' ) ) {
 			$this->markTestSkipped( 'SearchEngine::setShowSuggestion() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
@@ -391,7 +375,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'setShowSuggestion')
+			->method( 'setShowSuggestion' )
 			->with( $this->equalTo( true ) );
 
 		$searchEngine = new ExtendedSearchEngine(
@@ -407,13 +391,12 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearch_OnEligiblePrefix() {
-
 		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$searchSuggestionSet->expects( $this->any() )
-			->method( 'map')
+			->method( 'map' )
 			->will( $this->returnValue( [] ) );
 
 		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
@@ -443,13 +426,12 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearch_NoRelevantPrefix() {
-
 		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$searchSuggestionSet->expects( $this->any() )
-			->method( 'map')
+			->method( 'map' )
 			->will( $this->returnValue( [] ) );
 
 		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
@@ -474,13 +456,12 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearchWithVariants() {
-
 		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$searchSuggestionSet->expects( $this->any() )
-			->method( 'map')
+			->method( 'map' )
 			->will( $this->returnValue( [] ) );
 
 		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )

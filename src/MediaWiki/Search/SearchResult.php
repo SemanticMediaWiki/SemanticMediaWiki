@@ -35,7 +35,6 @@ class SearchResult extends \SearchResult {
 	 * @see SearchResult::getTextSnippet
 	 */
 	function getTextSnippet( $terms = [] ) {
-
 		if ( $this->hasHighlight ) {
 			return str_replace( [ '<em>', '</em>' ], [ "<span class='searchmatch'>", '</span>' ], $this->mText );
 		}
@@ -47,7 +46,6 @@ class SearchResult extends \SearchResult {
 	 * @see SearchResult::getSectionTitle
 	 */
 	function getSectionTitle() {
-
 		if ( !isset( $this->mTitle ) || $this->mTitle->getFragment() === '' ) {
 			return null;
 		}
@@ -66,7 +64,6 @@ class SearchResult extends \SearchResult {
 	 * @see SearchResult::isMissingRevision
 	 */
 	function isMissingRevision() {
-
 		if ( $this->mTitle == null ) {
 			return true;
 		}
@@ -107,7 +104,6 @@ class SearchResult extends \SearchResult {
 	 * @see SearchResult::getTitleSnippet
 	 */
 	public function getTitleSnippet() {
-
 		if ( !isset( $this->mTitle ) ) {
 			return '';
 		}

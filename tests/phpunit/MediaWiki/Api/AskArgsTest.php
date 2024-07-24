@@ -23,21 +23,20 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 	private $apiFactory;
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->apiFactory = new MwApiFactory();
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		ApplicationFactory::clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new AskArgs(
 			$this->apiFactory->newApiMain( [] ),
 			'askargs'
@@ -53,7 +52,6 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testExecuteOnStore( array $query, array $expected ) {
-
 		$results = $this->apiFactory->doApiRequest( [
 			'action'     => 'askargs',
 			'conditions' => $query['conditions'],
@@ -74,7 +72,6 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecuteOnMockStore() {
-
 		$requestParameters = [
 			'conditions' => 'Foo::+',
 			'printouts'  => 'Bar',
@@ -122,7 +119,6 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function mockStoreQueryResultCallback( $query ) {
-
 		$result = '';
 
 		if ( $query->getQueryString() === '[[Foo::+]]' ) {

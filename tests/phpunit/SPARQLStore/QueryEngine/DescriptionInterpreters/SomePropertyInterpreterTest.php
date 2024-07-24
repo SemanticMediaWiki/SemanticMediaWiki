@@ -29,14 +29,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -48,7 +47,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanInterpretDescription() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\SomeProperty' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -68,7 +66,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testSomeProperty( $description, $orderByProperty, $sortkeys, $expectedConditionType, $expectedConditionString ) {
-
 		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -98,7 +95,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHierarchyPattern() {
-
 		$engineOptions = new EngineOptions();
 		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBP );
 
@@ -143,14 +139,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
 
 		$description =  new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			new Disjunction()
 		);
 
@@ -173,7 +168,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
 		$description =  new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
 
@@ -219,11 +214,11 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
 		$description =  new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
 
-		$orderByProperty = new DIProperty( 'Foo');
+		$orderByProperty = new DIProperty( 'Foo' );
 		$sortkeys = [];
 
 		$expected = $stringBuilder

@@ -19,7 +19,6 @@ use SMW\Schema\CompartmentIterator;
 class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NamespaceFilter::class,
 			new NamespaceFilter( null )
@@ -27,7 +26,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetName() {
-
 		$instance = new NamespaceFilter( null );
 
 		$this->assertEquals(
@@ -37,7 +35,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIfCondition() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -51,7 +48,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoCondition_FilterNotRequired() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -75,7 +71,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceFilterProvider
 	 */
 	public function testHasMatches_Compartment( $ns, $compartment, $expected ) {
-
 		$instance = new NamespaceFilter(
 			$ns
 		);
@@ -94,7 +89,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceFilterProvider
 	 */
 	public function testHasMatches_Rule( $ns, $compartment, $expected ) {
-
 		$instance = new NamespaceFilter(
 			$ns
 		);
@@ -120,7 +114,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceFilterProvider
 	 */
 	public function testHasMatches_CompartmentIterator( $ns, $compartment, $expected ) {
-
 		$instance = new NamespaceFilter(
 			$ns
 		);
@@ -136,7 +129,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceFilterProvider() {
-
 		yield 'oneOf.1: single one_of' => [
 			NS_MAIN,
 			[

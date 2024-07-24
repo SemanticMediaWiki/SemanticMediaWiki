@@ -43,7 +43,6 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 	 * @throws InvalidArgumentException
 	 */
 	public function newDescription( $dataValue, $value ) {
-
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'value needs to be a string' );
 		}
@@ -101,7 +100,6 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 	}
 
 	private function getDescriptionForProperty( $diProperty, $values, &$valueIndex, $propertyIndex ) {
-
 		$values[$valueIndex] = str_replace( "-3B", ";", $values[$valueIndex] );
 		$beforePrepareValue = $values[$valueIndex];
 

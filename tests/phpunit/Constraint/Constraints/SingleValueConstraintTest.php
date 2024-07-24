@@ -21,12 +21,11 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SingleValueConstraint::class,
 			new SingleValueConstraint()
@@ -34,7 +33,6 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new SingleValueConstraint();
 
 		$this->assertEquals(
@@ -44,7 +42,6 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new SingleValueConstraint();
 
 		$this->assertFalse(
@@ -53,7 +50,6 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_single_value_constraint() {
-
 		$constraint = [
 			'single_value_constraint' => true
 		];
@@ -75,11 +71,11 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
+			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
@@ -97,7 +93,6 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_single_value_constraint_ThrowsException() {
-
 		$constraint = [
 			'single_value_constraint' => true
 		];
@@ -109,7 +104,6 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

@@ -68,7 +68,6 @@ class ArticleViewHeader implements HookListener {
 	 * @return bool
 	 */
 	public function process( Page $page, &$outputDone, &$useParserCache ) {
-
 		$title = $page->getTitle();
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
@@ -101,7 +100,6 @@ class ArticleViewHeader implements HookListener {
 	}
 
 	private function updateCategoryTop( $title, $output ) {
-
 		$message = '';
 
 		$subject = DIWikiPage::newFromTitle(

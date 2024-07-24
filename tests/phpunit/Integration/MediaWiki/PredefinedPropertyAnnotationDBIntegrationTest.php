@@ -30,7 +30,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 	private $mwHooksHandler;
 	private $pageCreator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
@@ -46,7 +46,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
@@ -54,7 +54,6 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPredefinedModificationDatePropertyAndChangedDefaultsortForNewPage() {
-
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [ '_MDAT' ] );
 
 		$title   = Title::newFromText( __METHOD__ );
@@ -80,7 +79,6 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testAddedCategoryAndChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
-
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [] );
 
 		$title   = Title::newFromText( __METHOD__ );

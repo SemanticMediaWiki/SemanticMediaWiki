@@ -27,7 +27,6 @@ class CapitalOfProperty extends FixtureProperty {
 	 * @return SemanticData
 	 */
 	public function getDependencies() {
-
 		$semanticData = parent::getDependencies();
 
 		$locatedInProperty = new LocatedInProperty();

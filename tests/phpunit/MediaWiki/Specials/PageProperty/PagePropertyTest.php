@@ -25,7 +25,7 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 	private $htmlFormRenderer;
 	private $options;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -37,13 +37,12 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PageBuilder::class,
 			new PageBuilder( $this->htmlFormRenderer, $this->options )
@@ -51,7 +50,6 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testbuildForm() {
-
 		$methods = [
 			'setName',
 			'withFieldset',
@@ -88,7 +86,6 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testbuildHtml_Empty() {
-
 		$instance = new PageBuilder(
 			$this->htmlFormRenderer,
 			$this->options
@@ -101,7 +98,6 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testbuildHtml_WithResult() {
-
 		$this->options->set( 'limit', 20 );
 		$this->options->set( 'property', 'Bar' );
 

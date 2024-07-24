@@ -44,7 +44,7 @@ abstract class InfoProviderHandler extends TaskHandler implements ActionableTask
 	 *
 	 * @return string
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return $this->getParentTask() . '/' . $this->getSupplementTask();
 	}
 
@@ -53,7 +53,7 @@ abstract class InfoProviderHandler extends TaskHandler implements ActionableTask
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 

@@ -36,7 +36,6 @@ class WikitextTemplateRenderer {
 	 * @param string $templateName
 	 */
 	public function packFieldsForTemplate( $templateName ) {
-
 		$this->template .= '{{' . $templateName;
 
 		foreach ( $this->fields as $key => $value ) {

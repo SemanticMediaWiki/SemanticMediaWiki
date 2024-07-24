@@ -84,7 +84,6 @@ class SchemaFinder {
 	 * @param ChangeRecord $changeRecord
 	 */
 	public function invalidateCache( DIProperty $property, ChangeRecord $changeRecord ) {
-
 		if ( $property->getKey() !== '_SCHEMA_TYPE' ) {
 			return;
 		}
@@ -112,7 +111,6 @@ class SchemaFinder {
 	 * @since 3.1
 	 */
 	public function newSchemaList( DataItem $dataItem, DIProperty $property ): ?SchemaList {
-
 		$dataItems = $this->propertySpecificationLookup->getSpecification(
 			$dataItem,
 			$property
@@ -139,7 +137,6 @@ class SchemaFinder {
 	 * @return SchemaList
 	 */
 	public function getSchemaListByType( $type ) {
-
 		$schemaList = [];
 		$key = smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_LIST, $type ] );
 
@@ -166,7 +163,6 @@ class SchemaFinder {
 	}
 
 	private function findSchemaDefinition( $subject, &$schemaList ) {
-
 		if ( !$subject instanceof DIWikiPage ) {
 			return;
 		}

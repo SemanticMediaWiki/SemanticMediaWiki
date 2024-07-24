@@ -73,7 +73,6 @@ class ParisFactsheet {
 	 * @return SemanticData
 	 */
 	public function asEntity() {
-
 		$semanticData = new SemanticData( $this->asSubject() );
 		$semanticData->addDataValue( $this->getAreaValue() );
 		$semanticData->addDataValue( $this->getAverageHighTemperatureValue() );
@@ -95,7 +94,6 @@ class ParisFactsheet {
 	 * @return DataValue
 	 */
 	public function getLocatedInValue() {
-
 		$locatedInProperty = new LocatedInProperty();
 
 		return $this->dataValueFactory->newDataValueByItem(
@@ -112,7 +110,6 @@ class ParisFactsheet {
 	 * @return DataValue
 	 */
 	public function getAreaValue() {
-
 		$areaProperty = new AreaProperty();
 
 		return $this->dataValueFactory->newDataValueByProperty(
@@ -130,7 +127,6 @@ class ParisFactsheet {
 	 * @return DataValue
 	 */
 	public function getAverageHighTemperatureValue() {
-
 		$temperatureProperty = new TemperatureProperty();
 
 		return $this->dataValueFactory->newDataValueByProperty(
@@ -148,7 +144,6 @@ class ParisFactsheet {
 	 * @return DataValue
 	 */
 	public function getPopulationValue() {
-
 		$populationProperty = new PopulationProperty();
 
 		return $this->dataValueFactory->newDataValueByProperty(
@@ -165,7 +160,6 @@ class ParisFactsheet {
 	 * @return DataValue
 	 */
 	public function getPopulationDensityValue() {
-
 		if ( $this->targetSubject === null ) {
 			throw new RuntimeException( 'Expected a target subject' );
 		}
@@ -188,7 +182,6 @@ class ParisFactsheet {
 	 * @return Subobject
 	 */
 	public function getDemographics() {
-
 		if ( $this->targetSubject === null ) {
 			throw new RuntimeException( 'Expected a target subject' );
 		}
@@ -215,7 +208,6 @@ class ParisFactsheet {
 	 * @since 2.1
 	 */
 	public function purge() {
-
 		$subjects = [];
 
 		$subjects[] = $this->asSubject();

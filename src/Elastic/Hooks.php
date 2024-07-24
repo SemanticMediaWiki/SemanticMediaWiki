@@ -41,7 +41,7 @@ class Hooks {
 	 *
 	 * @return []
 	 */
-	public function getHandlers() : array {
+	public function getHandlers(): array {
 		return [
 			'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders' => [ $this, 'onRegisterEntityExaminerDeferrableIndicatorProviders' ],
 			'SMW::Admin::RegisterTaskHandlers' => [ $this, 'onRegisterTaskHandlers' ],
@@ -53,7 +53,6 @@ class Hooks {
 	 * @since 3.0
 	 */
 	public function onRegisterTaskHandlers( TaskHandlerRegistry $taskHandlerRegistry, Store $store, $outputFormatter, $user ) {
-
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||
 			$connection instanceof DummyClient ) {
@@ -77,7 +76,6 @@ class Hooks {
 	 * @since 3.2
 	 */
 	public function onRegisterEntityExaminerDeferrableIndicatorProviders( Store $store, &$indicatorProviders ) {
-
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||
 			$connection instanceof DummyClient ) {

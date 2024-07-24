@@ -24,7 +24,7 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -37,13 +37,12 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ReferenceValue',
 			new ReferenceValue()
@@ -51,7 +50,6 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyDataItems() {
-
 		$expected = [
 			$this->dataItemFactory->newDIProperty( 'Bar' ),
 			$this->dataItemFactory->newDIProperty( 'Foobar' )
@@ -89,7 +87,6 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParseValue() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
@@ -126,7 +123,6 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParseValueOnMissingValues() {
-
 		$instance = new ReferenceValue();
 		$instance->setProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' )
@@ -141,7 +137,6 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParseValueWithErroredDv() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
@@ -176,7 +171,6 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetValuesFromStringWithEncodedSemicolon() {
-
 		$instance = new ReferenceValue();
 
 		$this->assertEquals(

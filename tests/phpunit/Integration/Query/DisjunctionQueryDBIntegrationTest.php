@@ -34,7 +34,7 @@ class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	private $queryResultValidator;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
@@ -48,8 +48,7 @@ class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	//	$this->getStore()->getSparqlDatabase()->deleteAll();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -61,7 +60,6 @@ class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	 * {{#ask: [[Category:WickedPlaces]] OR [[LocatedIn.MemberOf::Wonderland]] }}
 	 */
 	public function testDisjunctionSubqueryForPageTypePropertyChainThatComparesEqualToValue() {
-
 		/**
 		 * Page ...-dangerland annotated with [[Category:WickedPlaces]]
 		 */
@@ -166,7 +164,6 @@ class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testSubqueryDisjunction() {
-
 		$property = new DIProperty( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 

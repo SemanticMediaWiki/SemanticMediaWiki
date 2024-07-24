@@ -20,14 +20,14 @@ class PrefixParameterProcessor {
 		}
 	}
 
-	private function getMixedResults() : bool {
+	private function getMixedResults(): bool {
 		// this is a basic implementation, possibly to be expanded,
 		// to guess whether result entries are expected to have
 		// homogeneous or mixed prefixes
 		return !( $this->query->getDescription() instanceof NamespaceDescription );
 	}
 
-	public function useLongText( bool $isSubject ) : bool {
+	public function useLongText( bool $isSubject ): bool {
 		$prefix = $this->prefix;
 
 		if ( $prefix === 'all'

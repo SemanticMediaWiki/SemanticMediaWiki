@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class JaTinySegmenterTokenizerTest extends TestCase {
 
 	public function testCanConstruct() {
-
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -32,7 +31,6 @@ class JaTinySegmenterTokenizerTest extends TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testTokenize( $string, $expected ) {
-
 		$instance = new JaTinySegmenterTokenizer();
 
 		$this->assertEquals(
@@ -42,7 +40,6 @@ class JaTinySegmenterTokenizerTest extends TestCase {
 	}
 
 	public function stringProvider() {
-
 		$provider[] = array(
 			'極めてコンパクトな日本語分かち書きソフトウェアです。',
 			array(

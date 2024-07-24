@@ -16,7 +16,6 @@ use SMW\Exception\NamespaceIndexChangeException;
 class NamespaceIndexChangeExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new NamespaceIndexChangeException( 'Foo', 'Bar' );
 
 		$this->assertInstanceof(

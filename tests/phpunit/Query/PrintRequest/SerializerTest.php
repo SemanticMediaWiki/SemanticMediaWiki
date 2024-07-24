@@ -23,7 +23,6 @@ class SerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textProvider
 	 */
 	public function testSerialize( $printRequest, $showParams, $expected ) {
-
 		$this->assertSame(
 			$expected,
 			Serializer::serialize( $printRequest, $showParams )
@@ -31,7 +30,6 @@ class SerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-
 		$category = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$provider['print-cats'] = [

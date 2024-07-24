@@ -29,7 +29,6 @@ class HtmlBuilder {
 	}
 
 	private function schema_head( $params ) {
-
 		$list = [];
 		$text = '';
 		$type_description = '';
@@ -116,7 +115,6 @@ class HtmlBuilder {
 	}
 
 	private function schema_summary( $params ) {
-
 		$html = '';
 		$rows = '';
 		$parameters = [];
@@ -215,7 +213,6 @@ class HtmlBuilder {
 	}
 
 	private function schema_body( $params ) {
-
 		$class = '';
 		$placeholder = '';
 
@@ -285,7 +282,6 @@ class HtmlBuilder {
 	}
 
 	private function schema_error( $params ) {
-
 		$html = Html::rawElement(
 			'span',
 			[
@@ -302,7 +298,6 @@ class HtmlBuilder {
 	}
 
 	private function schema_footer( $params ) {
-
 		$html = Html::rawElement(
 			'div',
 			[

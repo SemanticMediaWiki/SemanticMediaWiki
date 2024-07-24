@@ -411,7 +411,6 @@ class SpecificationLookup {
 	 * @param DIWikiPage $subject
 	 */
 	public function invalidateCache( DIWikiPage $subject ) {
-
 		$this->entityCache->invalidate( $subject );
 
 		$this->entityCache->delete(
@@ -436,7 +435,6 @@ class SpecificationLookup {
 	 * @return []|DataItem[]
 	 */
 	public function getSpecification( $source, DIProperty $target ) {
-
 		if ( $source instanceof DIProperty ) {
 			$subject = $source->getCanonicalDiWikiPage();
 		} elseif ( $source instanceof DIWikiPage ) {
@@ -477,7 +475,6 @@ class SpecificationLookup {
 	 * @return false|DataItem
 	 */
 	public function getFieldListBy( DIProperty $property ) {
-
 		$fieldList = false;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_LIST' ) );
 
@@ -497,7 +494,6 @@ class SpecificationLookup {
 	 * @return string
 	 */
 	public function getPreferredPropertyLabelByLanguageCode( DIProperty $property, $languageCode = '' ) {
-
 		$subject = $property->getCanonicalDiWikiPage();
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject );
 
@@ -525,7 +521,6 @@ class SpecificationLookup {
 	 * @return boolean
 	 */
 	public function hasUniquenessConstraint( DIProperty $property ) {
-
 		$hasUniquenessConstraint = false;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVUC' ) );
 
@@ -544,7 +539,6 @@ class SpecificationLookup {
 	 * @return DataItem|null
 	 */
 	public function getPropertyGroup( DIProperty $property ) {
-
 		$dataItem = null;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_INST' ) );
 
@@ -575,7 +569,6 @@ class SpecificationLookup {
 	 * @return DataItem|null
 	 */
 	public function getExternalFormatterUri( DIProperty $property ) {
-
 		$dataItem = null;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PEFU' ) );
 
@@ -594,7 +587,6 @@ class SpecificationLookup {
 	 * @return string
 	 */
 	public function getAllowedPatternBy( DIProperty $property ) {
-
 		$allowsPattern = '';
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVAP' ) );
 
@@ -613,7 +605,6 @@ class SpecificationLookup {
 	 * @return array
 	 */
 	public function getAllowedValues( DIProperty $property ) {
-
 		$allowsValues = [];
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVAL' ) );
 
@@ -632,7 +623,6 @@ class SpecificationLookup {
 	 * @return array
 	 */
 	public function getAllowedListValues( DIProperty $property ) {
-
 		$allowsListValue = [];
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVALI' ) );
 
@@ -651,7 +641,6 @@ class SpecificationLookup {
 	 * @return integer|false
 	 */
 	public function getDisplayPrecision( DIProperty $property ) {
-
 		$displayPrecision = false;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PREC' ) );
 
@@ -671,7 +660,6 @@ class SpecificationLookup {
 	 * @return array
 	 */
 	public function getDisplayUnits( DIProperty $property ) {
-
 		$units = [];
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_UNIT' ) );
 
@@ -694,7 +682,6 @@ class SpecificationLookup {
 	 * @return string
 	 */
 	public function getPropertyDescriptionByLanguageCode( DIProperty $property, $languageCode = '', $linker = null ) {
-
 		$subject = $property->getCanonicalDiWikiPage();
 		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject );
 
@@ -725,7 +712,6 @@ class SpecificationLookup {
 	}
 
 	private function getPredefinedPropertyDescription( $property, $languageCode, $linker ) {
-
 		$description = '';
 		$key = $property->getKey();
 
@@ -762,7 +748,7 @@ class SpecificationLookup {
 	 * @return DataValue|null
 	 */
 	private function tryOutFalldownAndInverse( $monolingualTextLookup, $subject, $property, &$languageCode ) {
-		$getDataValue = static function( $value ) use ( $monolingualTextLookup, $subject, $property, &$languageCode ) {
+		$getDataValue = static function ( $value ) use ( $monolingualTextLookup, $subject, $property, &$languageCode ) {
 			 $dataValue = $monolingualTextLookup->newDataValue(
 				$subject,
 				$property,
@@ -793,7 +779,6 @@ class SpecificationLookup {
 	}
 
 	private function getTextByLanguageCode( $subject, $property, $languageCode ) {
-
 		try {
 			$monolingualTextLookup = $this->store->service( 'MonolingualTextLookup' );
 		} catch( \SMW\Services\Exception\ServiceNotFoundException $e ) {

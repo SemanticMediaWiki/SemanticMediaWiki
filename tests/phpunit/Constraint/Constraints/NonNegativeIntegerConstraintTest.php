@@ -21,12 +21,11 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NonNegativeIntegerConstraint::class,
 			new NonNegativeIntegerConstraint()
@@ -34,7 +33,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new NonNegativeIntegerConstraint();
 
 		$this->assertEquals(
@@ -44,7 +42,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new NonNegativeIntegerConstraint();
 
 		$this->assertFalse(
@@ -53,7 +50,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_non_negative_integer() {
-
 		$constraint = [
 			'non_negative_integer' => true
 		];
@@ -67,7 +63,7 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
@@ -89,7 +85,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_non_negative_integer_ThrowsException() {
-
 		$constraint = [
 			'non_negative_integer' => true
 		];
@@ -101,7 +96,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

@@ -24,7 +24,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	private $itemFetcher;
 	private $printRequest;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -43,7 +43,6 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FieldItemFinder::class,
 			new FieldItemFinder( $this->store, $this->itemFetcher, $this->printRequest )
@@ -51,7 +50,6 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetRequestOptions() {
-
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
 			->will( $this->returnValue( 42 ) );
@@ -69,12 +67,11 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFor_THIS() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_THIS ) )
+			->with( $this->equalTo( PrintRequest::PRINT_THIS ) )
 			->will( $this->returnValue( true ) );
 
 		$instance = new FieldItemFinder(
@@ -90,7 +87,6 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFor_CATS() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
 
@@ -103,7 +99,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 1 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_CATS ) )
+			->with( $this->equalTo( PrintRequest::PRINT_CATS ) )
 			->will( $this->returnValue( true ) );
 
 		$instance = new FieldItemFinder(
@@ -119,7 +115,6 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFor_CCAT() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
 
@@ -132,7 +127,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 2 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_CCAT ) )
+			->with( $this->equalTo( PrintRequest::PRINT_CCAT ) )
 			->will( $this->returnValue( true ) );
 
 		$this->printRequest->expects( $this->once() )
@@ -152,7 +147,6 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFor_PROP() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
 
@@ -166,7 +160,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
+			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
 			->will( $this->returnValue( true ) );
 
 		$this->printRequest->expects( $this->any() )
@@ -194,7 +188,6 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindForWithIteratorAsValueResultOnPRINT_PROP() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
 
@@ -208,7 +201,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
+			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
 			->will( $this->returnValue( true ) );
 
 		$this->printRequest->expects( $this->any() )
@@ -237,7 +230,6 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindForWithBlobValueResultAndRemovedLink() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIBlob( 'bar' );
 
@@ -253,7 +245,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
+			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
 			->will( $this->returnValue( true ) );
 
 		$this->printRequest->expects( $this->any() )
@@ -281,7 +273,6 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindForWithBlobValueResultAndRetainedLink() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$text = $this->dataItemFactory->newDIBlob( '[[Foo::bar]]' );
 		$expected = $this->dataItemFactory->newDIBlob( '[[Foo::bar]]' );
@@ -298,7 +289,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
+			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
 			->will( $this->returnValue( true ) );
 
 		$this->printRequest->expects( $this->any() )

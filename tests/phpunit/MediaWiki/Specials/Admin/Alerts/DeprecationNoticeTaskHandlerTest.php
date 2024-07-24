@@ -23,7 +23,7 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $outputFormatter;
 	private $messageLocalizer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -37,13 +37,12 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DeprecationNoticeTaskHandler::class,
 			new DeprecationNoticeTaskHandler( $this->outputFormatter )
@@ -51,7 +50,6 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new DeprecationNoticeTaskHandler(
 			$this->outputFormatter
 		);
@@ -67,7 +65,6 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtmlWithFakeDetection() {
-
 		$GLOBALS['deprecationNoticeFoo'] = 'Foo';
 		$GLOBALS['deprecationNoticeFoobar'] = 'Foo';
 		$GLOBALS['deprecationNoticeFooFoo'] = 'Foo';
@@ -112,7 +109,6 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtmlWithFakeDetectionArray() {
-
 		$GLOBALS['deprecationNoticeFoo'] = [ 'Bar' => false ];
 		$GLOBALS['deprecationNoticeFoobar'] = 'Foo';
 		$GLOBALS['deprecationNoticeFooFoo'] = 'Foo';

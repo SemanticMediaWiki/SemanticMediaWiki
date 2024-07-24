@@ -21,14 +21,13 @@ class CompoundConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->spyLogger = TestEnvironment::getUtilityFactory()->newSpyLogger();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new CompoundConstraintValueValidator();
 		$instance->setLogger( $this->spyLogger );
 
@@ -39,7 +38,6 @@ class CompoundConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasConstraintViolation() {
-
 		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -65,7 +63,6 @@ class CompoundConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMissingConstraintValueValidatorRegThrowsException() {
-
 		$instance = new CompoundConstraintValueValidator();
 		$instance->setLogger( $this->spyLogger );
 

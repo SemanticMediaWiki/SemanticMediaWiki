@@ -22,7 +22,6 @@ class HashBuilder {
 	 * @return string
 	 */
 	public static function createFromSemanticData( SemanticData $semanticData ) {
-
 		$hash = [];
 		$hash[] = $semanticData->getSubject()->getSerialization();
 
@@ -52,7 +51,6 @@ class HashBuilder {
 	 * @return string
 	 */
 	public static function createFromContent( $hashableContent, $prefix = '' ) {
-
 		if ( is_string( $hashableContent ) ) {
 			$hashableContent = [ $hashableContent ];
 		}
@@ -151,7 +149,6 @@ class HashBuilder {
 	 * @return DIWikiPage|null
 	 */
 	public static function newDiWikiPageFromHash( $hash ) {
-
 		list( $title, $namespace, $interwiki, $subobjectName ) = explode( '#', $hash, 4 );
 
 		// A leading underscore is an internal SMW convention to describe predefined

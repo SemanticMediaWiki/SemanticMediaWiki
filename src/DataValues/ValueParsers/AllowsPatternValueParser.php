@@ -51,7 +51,6 @@ class AllowsPatternValueParser implements ValueParser {
 	 * @return string|false
 	 */
 	public function parse( $userValue ) {
-
 		$this->errors = [];
 
 		$contentList = $this->doParseContent(
@@ -66,7 +65,6 @@ class AllowsPatternValueParser implements ValueParser {
 	}
 
 	private function doParseContent( $contents ) {
-
 		$list = [];
 
 		if ( $contents === '' ) {

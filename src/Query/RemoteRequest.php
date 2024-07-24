@@ -94,7 +94,6 @@ class RemoteRequest implements QueryEngine {
 	 * @return StringResult|string
 	 */
 	public function getQueryResult( Query $query ) {
-
 		if ( $query->isEmbedded() && $query->getLimit() == 0 ) {
 			return $this->further_link( $query );
 		}
@@ -141,8 +140,7 @@ class RemoteRequest implements QueryEngine {
 		}
 
 		// Add an information note depending on the context before the actual output
-		$callback = function( $result, array $options ) use( $isFromCache, $isDisabled, $source ) {
-
+		$callback = function ( $result, array $options ) use( $isFromCache, $isDisabled, $source ) {
 			$options['source'] = $source;
 			$options['is.cached'] = $isFromCache;
 			$options['is.disabled'] = $isDisabled;
@@ -171,7 +169,6 @@ class RemoteRequest implements QueryEngine {
 	 * @return string
 	 */
 	public function format_result( $result, array $options ) {
-
 		// No changes to any export related output
 		if ( ( isset( $options['is.disabled'] ) && $options['is.disabled'] ) || !$this->hasFeature( SMW_REMOTE_REQ_SHOW_NOTE ) ) {
 			return $result;
@@ -225,7 +222,6 @@ class RemoteRequest implements QueryEngine {
 	}
 
 	private function further_link( $query ) {
-
 		$link = QueryLinker::get( $query );
 
 		// Find remaining parameters, format, template etc.
@@ -248,7 +244,6 @@ class RemoteRequest implements QueryEngine {
 	}
 
 	private function init() {
-
 		if ( $this->httpRequest === null && isset( $this->parameters['cache'] ) ) {
 			$this->httpRequest = new CachedCurlRequest(
 				curl_init(),
@@ -285,7 +280,6 @@ class RemoteRequest implements QueryEngine {
 	}
 
 	private function canConnect( $url ) {
-
 		$this->httpRequest->setOption( CURLOPT_URL, $url );
 
 		if ( self::$isConnected === null ) {
@@ -296,7 +290,6 @@ class RemoteRequest implements QueryEngine {
 	}
 
 	private function fetch( $query ) {
-
 		$parameters = $query->toArray();
 		$default = '';
 		$params = [ 'title' => 'Special:Ask', 'q' => '', 'po' => '', 'p' => [] ];

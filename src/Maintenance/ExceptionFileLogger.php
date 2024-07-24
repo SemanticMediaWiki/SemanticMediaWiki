@@ -62,7 +62,6 @@ class ExceptionFileLogger {
 	 * @param Options $options
 	 */
 	public function setOptions( Options $options ) {
-
 		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 		$this->exceptionFile = __DIR__ . "/../../../";
 
@@ -113,7 +112,6 @@ class ExceptionFileLogger {
 	 * @since 3.0
 	 */
 	public function doWrite() {
-
 		foreach ( $this->exceptionLogMessages as $id => $exception ) {
 			$this->put( $id, $exception );
 		}
@@ -123,7 +121,6 @@ class ExceptionFileLogger {
 	}
 
 	private function put( $id, $exception ) {
-
 		$text = "\n======== EXCEPTION ======\n" .
 			"$id | " . $exception['msg'] . "\n\n" .
 			$exception['trace'] . "\n" .

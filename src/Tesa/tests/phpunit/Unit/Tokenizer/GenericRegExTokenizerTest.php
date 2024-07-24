@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class GenericRegExTokenizerTest extends TestCase {
 
 	public function testUnknownOption() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\Tokenizer\GenericRegExTokenizer',
 			new GenericRegExTokenizer()
@@ -28,7 +27,6 @@ class GenericRegExTokenizerTest extends TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testTokenize( $string, $expected ) {
-
 		$instance = new GenericRegExTokenizer();
 
 		$this->assertEquals(
@@ -38,7 +36,6 @@ class GenericRegExTokenizerTest extends TestCase {
 	}
 
 	public function testTokenizeWithEnabledExemptionList() {
-
 		$string = "It's a test string (that has no);";
 
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
@@ -57,7 +54,7 @@ class GenericRegExTokenizerTest extends TestCase {
 
 		$instance->setOption(
 			GenericRegExTokenizer::REGEX_EXEMPTION,
-			array( '\(', '\)', "'", ';')
+			array( '\(', '\)', "'", ';' )
 		);
 
 		$this->assertEquals(
@@ -67,7 +64,6 @@ class GenericRegExTokenizerTest extends TestCase {
 	}
 
 	public function stringProvider() {
-
 		$provider[] = array(
 			"It's a test string (that has no);deep meaning except0",
 			array( 'It', 's', 'a', 'test', 'string', 'that', 'has', 'no', 'deep', 'meaning', 'except', '0' )

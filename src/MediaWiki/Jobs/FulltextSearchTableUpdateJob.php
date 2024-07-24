@@ -34,7 +34,6 @@ class FulltextSearchTableUpdateJob extends Job {
 	 * @since  2.5
 	 */
 	public function run() {
-
 		$fulltextSearchTableFactory = new FulltextSearchTableFactory();
 
 		$textChangeUpdater = $fulltextSearchTableFactory->newTextChangeUpdater(

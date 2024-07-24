@@ -62,7 +62,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 */
 	protected $connectorId = '';
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -92,8 +92,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		if ( $this->deletePagesOnTearDown ) {
 			$this->testEnvironment->flushPages( $this->itemsMarkedForDeletion );
 		}
@@ -146,10 +145,9 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 * @return array
 	 */
 	protected function getPermittedSettings() {
-
 		// Ensure that the context is set for a selected language
 		// and dependent objects are reset
-		$this->registerConfigValueCallback( 'wgContLang', function( $val ) {
+		$this->registerConfigValueCallback( 'wgContLang', function ( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
 			Localizer::clear();
 			// #4682, Avoid any surprises when the `wgLanguageCode` is changed during a test
@@ -165,7 +163,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 			return $lang;
 		} );
 
-		$this->registerConfigValueCallback( 'wgLang', function( $val ) {
+		$this->registerConfigValueCallback( 'wgLang', function ( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
 			Localizer::clear();
 			\SMW\NamespaceManager::clear();
@@ -203,7 +201,6 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 * @return boolean
 	 */
 	protected function canTestCaseFile( $file ) {
-
 		// Filter specific files on-the-fly
 		$allowedTestCaseFiles = $this->getAllowedTestCaseFiles();
 
@@ -225,7 +222,6 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 * @dataProvider jsonFileProvider
 	 */
 	public function testCaseFile( $file ) {
-
 		if ( !$this->canTestCaseFile( $file ) ) {
 			$this->markTestSkipped( $file . ' excluded from the test run' );
 		}
@@ -238,7 +234,6 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 * @return array
 	 */
 	public function jsonFileProvider() {
-
 		$provider = [];
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider(
@@ -270,7 +265,6 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
 	protected function checkEnvironmentToSkipCurrentTest( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
-
 		if ( $jsonTestCaseFileHandler->isIncomplete() ) {
 			$this->markTestIncomplete( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
@@ -307,7 +301,6 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 * @param integer $defaultNamespace
 	 */
 	protected function createPagesFrom( array $pages, $defaultNamespace = NS_MAIN ) {
-
 		$this->jsonTestCaseContentHandler->skipOn(
 			$this->connectorId
 		);

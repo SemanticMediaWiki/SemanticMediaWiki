@@ -26,7 +26,7 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private Store $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -36,13 +36,12 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			QuerySourceFactory::class,
 			new QuerySourceFactory( $this->store )
@@ -50,7 +49,6 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFromFakeSource() {
-
 		$instance = new QuerySourceFactory(
 			$this->store,
 			[
@@ -65,7 +63,6 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStandardStore() {
-
 		$instance = new QuerySourceFactory(
 			$this->store,
 			[]
@@ -83,7 +80,6 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAsString() {
-
 		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -104,7 +100,6 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFromAnotherFakeSourceThatImplementsStoreAware() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )

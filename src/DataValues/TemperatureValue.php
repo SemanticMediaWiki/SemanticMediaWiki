@@ -33,7 +33,6 @@ class TemperatureValue extends NumberValue {
 	 * NumberValue::convertToMainUnit
 	 */
 	protected function convertToMainUnit( $number, $unit ) {
-
 		$this->m_unitin = $this->getUnitID( $unit );
 
 		if ( ( $value = $this->convertToKelvin( $number, $this->m_unitin ) ) === false ) {
@@ -49,7 +48,6 @@ class TemperatureValue extends NumberValue {
 	 * NumberValue::makeConversionValues
 	 */
 	protected function makeConversionValues() {
-
 		if ( $this->m_unitvalues !== false ) {
 			return; // do this only once
 		}
@@ -81,7 +79,6 @@ class TemperatureValue extends NumberValue {
 	 * NumberValue::makeUserValue
 	 */
 	protected function makeUserValue() {
-
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
 		     ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
 			$printUnit = $this->normalizeUnit( $this->m_outformat );
@@ -161,7 +158,6 @@ class TemperatureValue extends NumberValue {
 	}
 
 	private function getPreferredDisplayUnit() {
-
 		$unit = $this->getUnit();
 
 		if ( $this->getProperty() === null ) {
@@ -180,7 +176,6 @@ class TemperatureValue extends NumberValue {
 	}
 
 	private function convertToKelvin( $number, $unit ) {
-
 		switch ( $unit ) {
 			case 'K':
 				return $number;
@@ -199,7 +194,6 @@ class TemperatureValue extends NumberValue {
 	}
 
 	private function convertToUnit( $number, $unit ) {
-
 		switch ( $unit ) {
 			case 'K':
 				return $number;

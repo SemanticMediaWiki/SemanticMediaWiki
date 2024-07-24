@@ -23,21 +23,20 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	private $apiFactory;
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->apiFactory = new MwApiFactory();
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		ApplicationFactory::clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\Api\Query' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -49,7 +48,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryAndQueryResult() {
-
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\Api\Query' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -74,7 +72,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddQueryResultOnMockStore() {
-
 		// Minimalistic test case to verify executability
 		// For a full coverage, use Api\QueryResultFormatterTest
 		$test = [

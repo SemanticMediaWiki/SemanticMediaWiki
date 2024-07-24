@@ -86,7 +86,6 @@ class SetParserFunction {
 	 * @return string|null
 	 */
 	public function parse( ParserParameterProcessor $parameters ) {
-
 		$count = 0;
 		$template = '';
 		$subject = $this->parserData->getSemanticData()->getSubject();
@@ -149,7 +148,6 @@ class SetParserFunction {
 	}
 
 	private function addFieldsToTemplate( $template, $dataValue, $property, $value, $isLastElement, &$count ) {
-
 		if ( $template === '' || !$dataValue->isValid() ) {
 			return '';
 		}

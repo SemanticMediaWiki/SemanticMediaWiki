@@ -18,7 +18,6 @@ use SMWPropertyValue as PropertyValue;
 class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructPropertyPrintRequest() {
-
 		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -34,7 +33,6 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetLabel() {
-
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( new DIProperty( 'Foo' ) );
 
@@ -77,7 +75,6 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textProvider
 	 */
 	public function testFromText( $text, $showMode, $expectedLabel ) {
-
 		$instance = PrintRequest::newFromText( $text, $showMode );
 
 		$this->assertInstanceOf(
@@ -92,7 +89,6 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFromTextToReturnNullOnInvalidText() {
-
 		$instance = PrintRequest::newFromText( '--[[Foo' );
 
 		$this->assertNull(
@@ -101,7 +97,6 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRemoveParameter() {
-
 		$instance = PrintRequest::newFromText( 'Foo' );
 		$instance->setParameter( 'foo', 123 );
 
@@ -121,7 +116,6 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-
 		#0
 		$provider[] = [
 			'Foo',

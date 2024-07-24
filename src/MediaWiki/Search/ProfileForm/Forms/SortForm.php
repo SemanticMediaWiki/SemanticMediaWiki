@@ -56,7 +56,6 @@ class SortForm {
 	 * @param array $features
 	 */
 	public function makeFields( $features = [] ) {
-
 		$default = isset( $features['best'] ) && $features['best'] ? 'best' : 'title';
 		$sort = $this->request->getVal( 'sort', $default );
 
@@ -103,7 +102,6 @@ class SortForm {
 	}
 
 	private function sortList( $features ) {
-
 		$list = [];
 
 		if ( isset( $features['best'] ) && $features['best'] ) {

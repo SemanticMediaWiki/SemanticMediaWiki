@@ -16,7 +16,6 @@ use SMW\MediaWiki\Specials\FacetedSearch\Exception\ProfileSourceDefinitionConfli
 class ProfileSourceDefinitionConflictExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new ProfileSourceDefinitionConflictException( 'Foo', 'a', 'b' );
 
 		$this->assertInstanceof(

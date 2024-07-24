@@ -19,7 +19,6 @@ class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\MediaWikiNsContentReader',
 			new MediaWikiNsContentReader()
@@ -27,7 +26,6 @@ class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReadFromMessageCache() {
-
 		$instance = new MediaWikiNsContentReader();
 
 		$this->assertInternalType(
@@ -37,7 +35,6 @@ class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToReadForInvalidTitle() {
-
 		$instance = new MediaWikiNsContentReader();
 
 		$this->assertEmpty(
@@ -46,7 +43,6 @@ class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSkipMessageCache() {
-
 		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
 			->disableOriginalConstructor()
 			->getMock();

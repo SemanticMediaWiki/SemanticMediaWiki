@@ -31,7 +31,6 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	 * @see StringValueFormatter::doFormat
 	 */
 	protected function doFormat( $dataValue, $type, $linker ) {
-
 		$abbreviate = $type === self::WIKI_LONG || $type === self::HTML_LONG;
 		$text = $dataValue->getDataItem()->getString();
 
@@ -67,7 +66,6 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	 * @return string
 	 */
 	public static function asJson( $string, $flag = 0 ) {
-
 		if ( $flag > 0 ) {
 			return json_encode( json_decode( $string ), $flag );
 		}
@@ -76,7 +74,6 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	}
 
 	private function isJson( $string ) {
-
 		// Don't bother
 		if ( substr( $string, 0, 1 ) !== '{' ) {
 			return false;

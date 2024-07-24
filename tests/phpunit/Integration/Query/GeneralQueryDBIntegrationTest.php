@@ -35,7 +35,7 @@ class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
 	private $queryResultValidator;
 	private $semanticDataFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -45,8 +45,7 @@ class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -55,7 +54,6 @@ class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPropertyBeforeAfterDataRemoval() {
-
 		$property = new DIProperty( 'SomePagePropertyBeforeAfter' );
 		$property->setPropertyTypeId( '_wpg' );
 
@@ -92,7 +90,6 @@ class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUserDefinedPropertyUsedForInvalidValueAssignment() {
-
 		$property = new DIProperty( 'SomePropertyWithInvalidValueAssignment' );
 		$property->setPropertyTypeId( '_tem' );
 
@@ -114,7 +111,6 @@ class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function searchForResultsThatCompareEqualToOnlySingularPropertyOf( DIProperty $property ) {
-
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( $property );
 

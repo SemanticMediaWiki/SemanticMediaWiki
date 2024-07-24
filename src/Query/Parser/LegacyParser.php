@@ -159,7 +159,6 @@ class LegacyParser implements Parser {
 	 * @param string|null $languageCode
 	 */
 	public function setDefaultPrefix( $languageCode = null ) {
-
 		$localizer = Localizer::getInstance();
 
 		if ( $languageCode === null ) {
@@ -199,7 +198,6 @@ class LegacyParser implements Parser {
 	 * @return boolean
 	 */
 	public function containsSelfReference() {
-
 		if ( $this->selfReference ) {
 			return true;
 		}
@@ -231,7 +229,6 @@ class LegacyParser implements Parser {
 	 * {@inheritDoc}
 	 */
 	public function createCondition( $property, $value ) {
-
 		if ( $property instanceof DIProperty ) {
 			$property = $property->getLabel();
 		}
@@ -249,7 +246,6 @@ class LegacyParser implements Parser {
 	 * @return Description
 	 */
 	public function getQueryDescription( $queryString ) {
-
 		if ( $queryString === '' ) {
 			$this->descriptionProcessor->addErrorWithMsgKey(
 				'smw-query-condition-empty'
@@ -309,7 +305,6 @@ class LegacyParser implements Parser {
 	 * @return Description|null
 	 */
 	private function getSubqueryDescription( &$setNS ) {
-
 		$conjunction = null;      // used for the current inner conjunction
 		$disjuncts = [];     // (disjunctive) array of subquery conjunctions
 
@@ -453,7 +448,6 @@ class LegacyParser implements Parser {
 	 * suitable description.
 	 */
 	private function getClassDescription( &$setNS, $category = true ) {
-
 		// No subqueries allowed here, inline disjunction allowed, wildcards allowed
 		$description = null;
 		$continue = true;
@@ -524,7 +518,6 @@ class LegacyParser implements Parser {
 	 * string.
 	 */
 	private function getPropertyDescription( $propertyName, &$setNS ) {
-
 		// Consume separator ":=" or "::"
 		$this->readChunk();
 		$dataValueFactory = DataValueFactory::getInstance();
@@ -686,7 +679,6 @@ class LegacyParser implements Parser {
 	 * passed as a parameter.
 	 */
 	private function getArticleDescription( $firstChunk, &$setNS ) {
-
 		$chunk = $firstChunk;
 		$description = null;
 
@@ -746,7 +738,6 @@ class LegacyParser implements Parser {
 	}
 
 	private function finishLinkDescription( $chunk, $hasNamespaces, $description, &$setNS ) {
-
 		if ( is_null( $description ) ) { // no useful information or concrete error found
 			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_unexpectedpart', $chunk ); // was smw_badqueryatom
 		} elseif ( !$hasNamespaces && $setNS && !is_null( $this->defaultNamespace ) ) {
@@ -836,7 +827,6 @@ class LegacyParser implements Parser {
 	}
 
 	private function hasClassPrefix( $chunk ) {
-
 		$prefix = [
 			$this->categoryPrefix,
 			$this->conceptPrefix,
@@ -848,7 +838,6 @@ class LegacyParser implements Parser {
 	}
 
 	private function isClass( $chunk ) {
-
 		$chunk = $this->normalizeTitleText( $chunk );
 
 		if (
@@ -860,7 +849,7 @@ class LegacyParser implements Parser {
 		return false;
 	}
 
-	private function normalizeTitleText( string $text ) : string {
+	private function normalizeTitleText( string $text ): string {
 		return Localizer::getInstance()->normalizeTitleText( $text );
 	}
 

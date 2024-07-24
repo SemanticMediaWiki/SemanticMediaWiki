@@ -77,7 +77,6 @@ class EmbeddedResultPrinter extends ResultPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $queryResult, $outputMode ) {
-
 		/**
 		 * @see ResultPrinter::transcludeAnnotation
 		 *
@@ -97,7 +96,6 @@ class EmbeddedResultPrinter extends ResultPrinter {
 	}
 
 	private function buildText( $queryResult, $outputMode ) {
-
 		// REMOVE the parser reference
 		// Use $queryResult->getQuery()->getContextPage()
 		// No page should embed itself, find out who we are:
@@ -136,7 +134,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 
 		// Print all result rows:
 		foreach ( $queryResult->getResults() as $diWikiPage ) {
-			if ( $diWikiPage instanceof DIWikiPage  ) { // ensure that we deal with title-likes
+			if ( $diWikiPage instanceof DIWikiPage ) { // ensure that we deal with title-likes
 				$dvWikiPage = $dataValueFactory->newDataValueByItem( $diWikiPage, null );
 				$result .= $embstart;
 

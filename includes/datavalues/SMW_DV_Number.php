@@ -119,7 +119,6 @@ class SMWNumberValue extends SMWDataValue {
 	 * too large for this platform)
 	 */
 	public function parseNumberValue( $value, &$number, &$unit, &$asPrefix = false ) {
-
 		$intlNumberFormatter = $this->getNumberFormatter();
 
 		// Parse to find $number and (possibly) $unit
@@ -157,7 +156,7 @@ class SMWNumberValue extends SMWDataValue {
 				$numstring = str_replace( $decseparator, '.', $numstring );
 			}
 			list( $number ) = sscanf( $numstring, "%f" );
-			if ( count( $parts ) >= 3  ) {
+			if ( count( $parts ) >= 3 ) {
 				$asPrefix = $parts[0] !== '';
 				$unit = $this->normalizeUnit( $parts[0] !== '' ? $parts[0] : $parts[2] );
 			}
@@ -210,7 +209,6 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_NUMBER ) {
 			return false;
 		}
@@ -230,7 +228,6 @@ class SMWNumberValue extends SMWDataValue {
 	 * @param $string $formatstring
 	 */
 	public function setOutputFormat( $formatstring ) {
-
 		if ( $formatstring == $this->m_outformat ) {
 			return null;
 		}
@@ -254,7 +251,6 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return float
 	 */
 	public function getNumber() {
-
 		if ( !$this->isValid() ) {
 			return 999999999999999;
 		}
@@ -286,7 +282,6 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortWikiText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -302,7 +297,6 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -318,7 +312,6 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongWikiText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -334,7 +327,6 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -350,7 +342,6 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getWikiValue() {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -366,7 +357,6 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return array
 	 */
 	public function getInfolinks() {
-
 		// When generating an infoLink, use the normalized value without any
 		// precision limitation
 		$this->setOption( self::NO_DISP_PRECISION_LIMIT, true );
@@ -524,7 +514,6 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	protected function getPreferredDisplayPrecision() {
-
 		// Don't restrict the value with a display precision
 		if ( $this->getProperty() === null || $this->getOption( self::NO_DISP_PRECISION_LIMIT ) ) {
 			return false;
@@ -540,7 +529,6 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	private function findPrecisionFrom( $formatstring ) {
-
 		if ( strpos( $formatstring, '-' ) === false ) {
 			return $formatstring;
 		}
@@ -562,7 +550,6 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	private function getNumberFormatter() {
-
 		$this->intlNumberFormatter->setOption(
 			IntlNumberFormatter::USER_LANGUAGE,
 			$this->getOption( self::OPT_USER_LANGUAGE )

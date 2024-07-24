@@ -33,7 +33,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 	private $store;
 	private $hierarchyLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -49,14 +49,13 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver',
 			new QueryResultDependencyListResolver( $this->hierarchyLookup )
@@ -64,7 +63,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function testTryTogetDependencyListFromForNonSetQueryResult() {
-
 		$instance = new QueryResultDependencyListResolver(
 			$this->hierarchyLookup
 		);
@@ -75,7 +73,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function testTryTogetDependencyListFromForLimitZeroQuery() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
@@ -117,7 +114,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function testExcludePropertyFromDependencyDetection() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$description = new SomeProperty(
@@ -182,7 +178,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 	 * @dataProvider queryProvider
 	 */
 	public function testgetDependencyListFrom( $query, $expected ) {
-
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -214,7 +209,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function testgetDependencyListByLateRetrievalFrom() {
-
 		$subject = DIWikiPage::newFromText( 'Bar' );
 
 		$description = new ClassDescription(
@@ -259,7 +253,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function testResolvePropertyHierarchy() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$description = new SomeProperty(
@@ -318,7 +311,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function testResolveCategoryHierarchy() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$description = new ClassDescription(
@@ -378,7 +370,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 	}
 
 	public function queryProvider() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		#0

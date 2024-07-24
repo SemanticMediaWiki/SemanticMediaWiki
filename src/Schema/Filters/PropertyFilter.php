@@ -45,12 +45,11 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'property';
 	}
 
 	private function match( Compartment $compartment ) {
-
 		if ( $this->isLoaded === false ) {
 			$this->loadProperties();
 		}
@@ -172,7 +171,6 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 	}
 
 	private function loadProperties() {
-
 		// Allow properties to be lazy loaded when for example those are
 		// fetched from the DB
 		if ( is_callable( $this->properties ) ) {
@@ -199,8 +197,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		$this->isLoaded = true;
 	}
 
-	private function matchOneOf( array $properties ) : bool {
-
+	private function matchOneOf( array $properties ): bool {
 		$count = 0;
 
 		foreach ( $properties as $prop ) {
@@ -216,8 +213,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		return $count == 1;
 	}
 
-	private function matchAllOf( array $properties ) : bool {
-
+	private function matchAllOf( array $properties ): bool {
 		$count = count( $properties );
 
 		foreach ( $properties as $prop ) {
@@ -233,8 +229,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		return $count == 0;
 	}
 
-	private function matchAnyOf( array $properties ) : bool {
-
+	private function matchAnyOf( array $properties ): bool {
 		foreach ( $properties as $prop ) {
 			$prop = DIProperty::newFromUserLabel( $prop );
 

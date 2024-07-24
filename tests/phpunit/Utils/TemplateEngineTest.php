@@ -19,7 +19,6 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testLoad_ThrowsException() {
-
 		$instance = new TemplateEngine();
 
 		$this->expectException( '\SMW\Exception\FileNotReadableException' );
@@ -27,7 +26,6 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCode_ThrowsException() {
-
 		$instance = new TemplateEngine();
 
 		$this->expectException( '\RuntimeException' );
@@ -35,7 +33,6 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLoad() {
-
 		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
 		$instance->load( '/Fixtures/readable.file', 'Foo' );
 
@@ -48,7 +45,6 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBulkLoad() {
-
 		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
 		$instance->clearTemplates();
 
@@ -62,7 +58,6 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHtmlTidy() {
-
 		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
 		$instance->clearTemplates();
 
@@ -84,7 +79,6 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider contentsProvider
 	 */
 	public function testCompileContents( $contents, $args, $expected ) {
-
 		$instance = new TemplateEngine();
 
 		$instance->setContents( __METHOD__, $contents );
@@ -97,7 +91,6 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function contentsProvider() {
-
 		yield [
 			'abc {{FOO}} 123',
 			[

@@ -16,7 +16,6 @@ use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
 class SkinTemplateNavigationUniversalTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -30,7 +29,6 @@ class SkinTemplateNavigationUniversalTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

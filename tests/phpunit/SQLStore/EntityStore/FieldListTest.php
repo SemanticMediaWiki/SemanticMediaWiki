@@ -19,7 +19,6 @@ use SMW\Tests\PHPUnitCompat;
 class FieldListTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FieldList::class,
 			new FieldList( [] )
@@ -27,7 +26,6 @@ class FieldListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCountListByType() {
-
 		$countMaps = [
 			'_hash_0987654321' => [
 				42 => [
@@ -45,7 +43,7 @@ class FieldListTest extends \PHPUnit_Framework_TestCase {
 		$instance = new FieldList( $countMaps );
 
 		$this->assertEquals(
-			['Foo' => 1001 ],
+			[ 'Foo' => 1001 ],
 			$instance->getCountListByType( FieldList::PROPERTY_LIST )
 		);
 
@@ -59,7 +57,6 @@ class FieldListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHashList() {
-
 		$countMaps = [
 			'_hash_0987654321' => [
 				42 => [

@@ -16,7 +16,6 @@ use SMW\MediaWiki\Exception\ExtendedPermissionsError;
 class ExtendedPermissionsErrorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Exception\ExtendedPermissionsError',
 			new ExtendedPermissionsError( 'Foo' )

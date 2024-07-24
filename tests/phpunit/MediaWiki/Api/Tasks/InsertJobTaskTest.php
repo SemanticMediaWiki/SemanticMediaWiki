@@ -19,7 +19,7 @@ class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
 	private $jobFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -29,13 +29,12 @@ class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new InsertJobTask( $this->jobFactory );
 
 		$this->assertInstanceOf(
@@ -45,7 +44,6 @@ class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -65,7 +63,7 @@ class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
 			$this->jobFactory
 		);
 
-		$instance->process( [ 'subject' => 'Foo#0##', 'job' => 'Foobar' ]);
+		$instance->process( [ 'subject' => 'Foo#0##', 'job' => 'Foobar' ] );
 	}
 
 }

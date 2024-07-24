@@ -38,7 +38,6 @@ class DisplayTitleLookup {
 	 * @return Iterator|array
 	 */
 	public function prefetchFromList( array $dataItems ) {
-
 		$list = [];
 		$prefetch = [];
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -107,7 +106,6 @@ class DisplayTitleLookup {
 	}
 
 	private function fetchFromTable( $list ) {
-
 		$property = new DIProperty( '_DTITLE' );
 		$connection = $this->store->getConnection( 'mw.db' );
 

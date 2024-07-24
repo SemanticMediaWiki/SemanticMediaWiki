@@ -23,7 +23,7 @@ class FilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $treeBuilder;
 	private $schemaFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->templateEngine = $this->getMockBuilder( '\SMW\Utils\TemplateEngine' )
@@ -40,7 +40,6 @@ class FilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FilterFactory::class,
 			new FilterFactory( $this->templateEngine, $this->treeBuilder, $this->schemaFactory )

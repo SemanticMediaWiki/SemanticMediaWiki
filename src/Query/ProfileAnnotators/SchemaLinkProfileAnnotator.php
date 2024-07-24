@@ -35,7 +35,6 @@ class SchemaLinkProfileAnnotator extends ProfileAnnotatorDecorator {
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
-
 		if ( $this->schemaLink === '' ) {
 			return;
 		}

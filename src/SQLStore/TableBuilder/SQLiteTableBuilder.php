@@ -19,7 +19,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	public function getStandardFieldType( $fieldType ) {
-
 		// SQLite has no native support for an ENUM type
 		// https://stackoverflow.com/questions/5299267/how-to-create-enum-type-in-sqlite
 		if ( is_array( $fieldType ) && $fieldType[0] === FieldType::TYPE_ENUM ) {
@@ -72,7 +71,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doCreateTable( $tableName, array $attributes = null ) {
-
 		$mode = '';
 		$option = '';
 
@@ -120,7 +118,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doUpdateTable( $tableName, array $attributes = null ) {
-
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -145,7 +142,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	}
 
 	private function getCurrentFields( $tableName ) {
-
 		$sql = 'PRAGMA table_info(' . $tableName . ')';
 
 		$res = $this->connection->query( $sql, __METHOD__ );
@@ -171,7 +167,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	}
 
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
-
 		if ( !isset( $this->activityLog[$tableName] ) ) {
 			$this->activityLog[$tableName] = [];
 		}
@@ -193,7 +188,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	}
 
 	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
-
 		if ( strpos( $tableName, 'ft_search' ) !== false ) {
 			return $this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
 		}
@@ -225,7 +219,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	}
 
 	private function doDropField( $tableName, $fieldName, $attributes ) {
-
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$fields = $attributes['fields'];
@@ -264,7 +257,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
-
 		$indices = $indexOptions['indices'];
 		$ix = [];
 
@@ -296,7 +288,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	}
 
 	private function doDropObsoleteIndices( $tableName, array &$indices ) {
-
 		$currentIndices = $this->getIndexInfo( $tableName );
 
 		// TODO We do not currently get the right column definitions in
@@ -307,7 +298,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	}
 
 	private function getIndexInfo( $tableName ) {
-
 		$tableName = $this->connection->tableName( $tableName );
 		$indices = [];
 
@@ -336,7 +326,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	}
 
 	private function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
-
 		if ( $indexType === 'FULLTEXT' ) {
 			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
 		}
@@ -349,7 +338,7 @@ class SQLiteTableBuilder extends TableBuilder {
 			$indexType = 'UNIQUE INDEX';
 		}
 
-		$indexName = $this->connection->tableName(  "{$tableName}_index{$indexName}" );
+		$indexName = $this->connection->tableName( "{$tableName}_index{$indexName}" );
 
 		$this->reportMessage( "   ... creating new $indexType $columns ..." );
 		$this->connection->query( "CREATE $indexType $indexName ON $tableName ($columns)", __METHOD__ );
@@ -373,7 +362,6 @@ class SQLiteTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doOptimize( $tableName ) {
-
 		$this->reportMessage( "Checking table $tableName ...\n" );
 
 		// https://sqlite.org/lang_analyze.html

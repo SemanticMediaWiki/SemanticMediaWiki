@@ -18,7 +18,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 	private $hookDispatcher;
 	private $permissionExaminer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
@@ -35,7 +35,6 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -52,7 +51,6 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider keyProvider
 	 */
 	public function testProcess( $key ) {
-
 		$this->permissionExaminer->expects( $this->any() )
 			->method( 'hasPermissionOf' )
 			->will( $this->returnValue( true ) );
@@ -87,7 +85,6 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function keyProvider() {
-
 		$provider[] = [
 			'smw-prefs-intro'
 		];

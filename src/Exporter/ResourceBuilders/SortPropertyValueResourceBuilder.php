@@ -49,7 +49,6 @@ class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBu
 	 * {@inheritDoc}
 	 */
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-
 		if ( !$dataItem instanceof DIBlob ) {
 			$dataItem = new DIBlob( $dataItem->getSortKey() );
 		}

@@ -45,7 +45,6 @@ class PHPUnitEnvironment {
 	 * @return boolean|integer
 	 */
 	public function getXdebugInfo() {
-
 		if ( extension_loaded( 'xdebug' ) &&
 			 ( function_exists( 'xdebug_is_enabled' ) || function_exists( 'xdebug_info' ) ) ) {
 			return phpversion( 'xdebug' );
@@ -58,7 +57,6 @@ class PHPUnitEnvironment {
 	 * @return boolean|string
 	 */
 	public function getIntlInfo() {
-
 		if ( extension_loaded( 'intl' ) ) {
 			return phpversion( 'intl' ) . ' / ' . INTL_ICU_VERSION;
 		}
@@ -94,7 +92,6 @@ class PHPUnitEnvironment {
 	 * @return array
 	 */
 	public function getVersion( $id, $extra = [] ) {
-
 		$info = [];
 
 		try {
@@ -138,7 +135,6 @@ class PHPUnitEnvironment {
 	 * @return string
 	 */
 	public function getGitInfo( $id ) {
-
 		if ( $this->gitHead === [] && class_exists( 'GitInfo' ) ) {
 			$this->gitHead = [
 				'mw' => '',
@@ -192,7 +188,6 @@ class PHPUnitEnvironment {
 	 * @param string|array $arg2
 	 */
 	public function writeNewLn( $arg1 = '', $arg2 = '' ) {
-
 		if ( $arg1 === '' && $arg2 === '' ) {
 			fwrite( STDERR, "\n" );
 			return;

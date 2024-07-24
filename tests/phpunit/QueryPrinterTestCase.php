@@ -34,7 +34,6 @@ abstract class QueryPrinterTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return ResultPrinter
 	 */
 	protected function setParameters( ResultPrinter $instance, array $parameters ) {
-
 		$reflector = new ReflectionClass( $this->getClass() );
 		$params = $reflector->getProperty( 'params' );
 		$params->setAccessible( true );

@@ -16,7 +16,6 @@ use SMW\Exception\FileNotReadableException;
 class FileNotReadableExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new FileNotReadableException( 'Foo' );
 
 		$this->assertInstanceof(

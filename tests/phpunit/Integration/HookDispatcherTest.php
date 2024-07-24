@@ -20,7 +20,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -29,19 +29,18 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$this->mwHooksHandler->deregisterListedHooks();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testOnSettingsBeforeInitializationComplete() {
-
 		$configuration = [];
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::Settings::BeforeInitializationComplete', function( &$configuration ) {
+		$this->mwHooksHandler->register( 'SMW::Settings::BeforeInitializationComplete', function ( &$configuration ) {
 			$configuration = [ 'Foo' ];
 		} );
 
@@ -54,12 +53,11 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnSetupAfterInitializationComplete() {
-
 		$vars = [];
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
+		$this->mwHooksHandler->register( 'SMW::Setup::AfterInitializationComplete', function ( &$vars ) {
 			$vars = [ 'Foo' ];
 		} );
 
@@ -72,12 +70,11 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnGroupPermissionsBeforeInitializationComplete() {
-
 		$permissions = [];
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::GroupPermissions::BeforeInitializationComplete', function( &$permissions ) {
+		$this->mwHooksHandler->register( 'SMW::GroupPermissions::BeforeInitializationComplete', function ( &$permissions ) {
 			$permissions = [ 'Foo' ];
 		} );
 
@@ -90,7 +87,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnRegisterTaskHandlers() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$taskHandlerRegistry = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry' )
@@ -116,7 +112,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->mwHooksHandler->register( 'SMW::Admin::RegisterTaskHandlers', function( $taskHandlerRegistry, $store, $outputFormatter, $user ) use ( $taskHandler ) {
+		$this->mwHooksHandler->register( 'SMW::Admin::RegisterTaskHandlers', function ( $taskHandlerRegistry, $store, $outputFormatter, $user ) use ( $taskHandler ) {
 			$taskHandlerRegistry->registerTaskHandler( $taskHandler );
 		} );
 
@@ -124,7 +120,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnRegisterPropertyChangeListeners() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
@@ -138,15 +133,14 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$propertyChangeListener->expects( $this->once() )
 			->method( 'addListenerCallback' );
 
-		$this->mwHooksHandler->register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', function( $propertyChangeListener ) use ( $property ) {
-			$propertyChangeListener->addListenerCallback( $property, function(){} );
+		$this->mwHooksHandler->register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', function ( $propertyChangeListener ) use ( $property ) {
+			$propertyChangeListener->addListenerCallback( $property, function (){} );
 		} );
 
 		$hookDispatcher->onRegisterPropertyChangeListeners( $propertyChangeListener );
 	}
 
 	public function testOnInitConstraints() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$constraintRegistry = $this->getMockBuilder( '\SMW\Constraint\ConstraintRegistry' )
@@ -156,7 +150,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$constraintRegistry->expects( $this->once() )
 			->method( 'registerConstraint' );
 
-		$this->mwHooksHandler->register( 'SMW::Constraint::initConstraints', function( $constraintRegistry ) {
+		$this->mwHooksHandler->register( 'SMW::Constraint::initConstraints', function ( $constraintRegistry ) {
 			$constraintRegistry->registerConstraint( 'foo', 'bar' );
 		} );
 
@@ -164,7 +158,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnRegisterSchemaTypes() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$schemaTypes = $this->getMockBuilder( '\SMW\Schema\SchemaTypes' )
@@ -174,7 +167,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$schemaTypes->expects( $this->once() )
 			->method( 'registerSchemaType' );
 
-		$this->mwHooksHandler->register( 'SMW::Schema::RegisterSchemaTypes', function( $schemaTypes ) {
+		$this->mwHooksHandler->register( 'SMW::Schema::RegisterSchemaTypes', function ( $schemaTypes ) {
 			$schemaTypes->registerSchemaType( 'Foo', [] );
 		} );
 
@@ -182,7 +175,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnGetPreferences() {
-
 		$preferences = [];
 
 		$hookDispatcher = new HookDispatcher();
@@ -191,7 +183,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::GetPreferences', function( $user, &$preferences ) {
+		$this->mwHooksHandler->register( 'SMW::GetPreferences', function ( $user, &$preferences ) {
 			$preferences = [ 'Foo' ];
 		} );
 
@@ -204,12 +196,11 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnBeforeMagicWordsFinder() {
-
 		$magicWords = [];
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::Parser::BeforeMagicWordsFinder', function( &$magicWords ) {
+		$this->mwHooksHandler->register( 'SMW::Parser::BeforeMagicWordsFinder', function ( &$magicWords ) {
 			$magicWords = [ 'Foo' ];
 		} );
 
@@ -222,7 +213,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnAfterLinksProcessingComplete() {
-
 		$text = '';
 
 		$hookDispatcher = new HookDispatcher();
@@ -231,7 +221,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::Parser::AfterLinksProcessingComplete', function( &$text, $annotationProcessor ) {
+		$this->mwHooksHandler->register( 'SMW::Parser::AfterLinksProcessingComplete', function ( &$text, $annotationProcessor ) {
 			$text = 'Foo';
 		} );
 
@@ -244,7 +234,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnParserAfterTidyPropertyAnnotationComplete() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
@@ -258,7 +247,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete', function( $propertyAnnotator, $parserOutput ) {
+		$this->mwHooksHandler->register( 'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete', function ( $propertyAnnotator, $parserOutput ) {
 			$propertyAnnotator->addAnnotation();
 		} );
 
@@ -266,7 +255,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnAfterUpdateEntityCollationComplete() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -280,7 +268,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', function( $store, $messageReporter ) {
+		$this->mwHooksHandler->register( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', function ( $store, $messageReporter ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 
@@ -288,7 +276,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnRegisterEntityExaminerIndicatorProviders() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -297,7 +284,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$indicatorProviders = [];
 
-		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterIndicatorProviders', function( $store, &$indicatorProviders ) {
+		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterIndicatorProviders', function ( $store, &$indicatorProviders ) {
 			$indicatorProviders[] = 'Foo';
 		} );
 
@@ -310,7 +297,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnRegisterEntityExaminerDeferrableIndicatorProviders() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -319,7 +305,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$indicatorProviders = [];
 
-		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders', function( $store, &$indicatorProviders ) {
+		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders', function ( $store, &$indicatorProviders ) {
 			$indicatorProviders[] = 'Foo';
 		} );
 
@@ -332,14 +318,13 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnIsApprovedRevision() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::IsApprovedRevision', function( $title, $latestRevID ) {
+		$this->mwHooksHandler->register( 'SMW::RevisionGuard::IsApprovedRevision', function ( $title, $latestRevID ) {
 			return $latestRevID == 9999 ? false : true ;
 		} );
 
@@ -349,7 +334,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnChangeRevisionID() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -358,7 +342,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$latestRevID = 9999;
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevisionID', function( $title, &$latestRevID ) {
+		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevisionID', function ( $title, &$latestRevID ) {
 			$latestRevID = 1001;
 		} );
 
@@ -371,7 +355,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnChangeFile() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -391,7 +374,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			$file
 		);
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeFile', function( $title, &$file ) use ( $anotherFile ) {
+		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeFile', function ( $title, &$file ) use ( $anotherFile ) {
 			$file = $anotherFile;
 		} );
 
@@ -404,7 +387,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnChangeRevision() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -424,7 +406,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			$anotherRevision
 		);
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevision', function( $title, &$revision ) use ( $anotherRevision ) {
+		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevision', function ( $title, &$revision ) use ( $anotherRevision ) {
 			$revision = $anotherRevision;
 		} );
 
@@ -437,7 +419,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnInstallerBeforeCreateTablesComplete() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$tables = [];
@@ -449,7 +430,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function( $tables, $messageReporter ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function ( $tables, $messageReporter ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 
@@ -457,7 +438,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnInstallerAfterCreateTablesComplete() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
@@ -475,7 +455,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', function( $tableBuilder, $messageReporter, $options ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', function ( $tableBuilder, $messageReporter, $options ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 
@@ -483,7 +463,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnInstallerAfterDropTablesComplete() {
-
 		$hookDispatcher = new HookDispatcher();
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
@@ -501,7 +480,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterDropTablesComplete', function( $tableBuilder, $messageReporter, $options ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterDropTablesComplete', function ( $tableBuilder, $messageReporter, $options ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 
@@ -509,12 +488,11 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConfirmAllOnMethodsWereCalled() {
-
 		// Expected class methods to be tested
 		$classMethods = get_class_methods( HookDispatcher::class );
 
 		// Match all "testOn" to the expected set of methods
-		$testMethods = preg_grep('/^testOn/', get_class_methods( $this ) );
+		$testMethods = preg_grep( '/^testOn/', get_class_methods( $this ) );
 
 		$testMethods = array_flip(
 			str_replace( 'testOn', 'on', $testMethods )

@@ -16,7 +16,6 @@ use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
 class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -28,7 +27,6 @@ class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAugmentOnFullText() {
-
 		$res = [
 			'query' => [
 				'Foo#0' => [
@@ -90,7 +88,6 @@ class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAugmentOnFullURL() {
-
 		$res = [
 			'query' => [
 				'Foo#0' => [

@@ -74,7 +74,6 @@ class SMWRecordValue extends AbstractMultiValue {
 	}
 
 	protected function parseUserValue( $value ) {
-
 		if ( $value === '' ) {
 			$this->addErrorMsg( [ 'smw_novalues' ] );
 			return;
@@ -131,7 +130,7 @@ class SMWRecordValue extends AbstractMultiValue {
 			++$propertyIndex;
 		}
 
-		if ( $empty && $this->getErrors() === []  ) {
+		if ( $empty && $this->getErrors() === [] ) {
 			$this->addErrorMsg( [ 'smw_novalues' ] );
 		}
 
@@ -251,7 +250,6 @@ class SMWRecordValue extends AbstractMultiValue {
 	 * @return array of DIProperty
 	 */
 	public function getPropertyDataItems() {
-
 		if ( $this->m_diProperties !== null ) {
 			return $this->m_diProperties;
 		}
@@ -311,7 +309,6 @@ class SMWRecordValue extends AbstractMultiValue {
 	}
 
 	private function newContainerSemanticData( $value ) {
-
 		if ( $this->m_contextPage === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();

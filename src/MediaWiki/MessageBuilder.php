@@ -136,7 +136,6 @@ class MessageBuilder {
 	 * @return Message
 	 */
 	public function getMessage( $key ) {
-
 		$params = func_get_args();
 		array_shift( $params );
 
@@ -150,7 +149,6 @@ class MessageBuilder {
 	}
 
 	private function getLanguage() {
-
 		if ( $this->language instanceof Language ) {
 			return $this->language;
 		}

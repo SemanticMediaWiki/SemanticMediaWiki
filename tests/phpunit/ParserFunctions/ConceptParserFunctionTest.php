@@ -22,20 +22,19 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -54,7 +53,6 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceDataProvider
 	 */
 	public function testErrorForNonConceptNamespace( $namespace ) {
-
 		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__, $namespace ),
 			new ParserOutput()
@@ -77,7 +75,6 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryParameterProvider
 	 */
 	public function testErrorForOnDoubleParse( array $params ) {
-
 		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
 			new ParserOutput()
@@ -103,7 +100,6 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExistForFoundMessageFormatterEntry() {
-
 		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
 			new ParserOutput()
@@ -137,7 +133,6 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryParameterProvider
 	 */
 	public function testParse( array $params, array $expected ) {
-
 		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
 			new ParserOutput()
@@ -175,7 +170,6 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryParameterProvider() {
-
 		$provider = [];
 
 		// #0

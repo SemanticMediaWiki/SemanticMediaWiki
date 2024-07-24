@@ -146,7 +146,6 @@ class SMWInfolink {
 	 * @return SMWInfolink
 	 */
 	public static function newPropertySearchLink( $caption, $propertyName, $propertyValue, $style = 'smwsearch' ) {
-
 		$infolink = new SMWInfolink(
 			true,
 			$caption,
@@ -175,7 +174,6 @@ class SMWInfolink {
 	 * @return SMWInfolink
 	 */
 	public static function newInversePropertySearchLink( $caption, $subject, $propertyname, $style = false ) {
-
 		return new SMWInfolink(
 			true,
 			$caption,
@@ -195,7 +193,6 @@ class SMWInfolink {
 	 * @return SMWInfolink
 	 */
 	public static function newBrowsingLink( $caption, $titleText, $style = 'smwbrowse' ) {
-
 		return new SMWInfolink(
 			true,
 			$caption,
@@ -265,7 +262,6 @@ class SMWInfolink {
 	 * if needed and not provided.
 	 */
 	public function getText( $outputformat, $linker = null ) {
-
 		if ( $this->isRestricted ) {
 			return '';
 		}
@@ -324,7 +320,7 @@ class SMWInfolink {
 						$query = self::encodeCompactLink( $query, false );
 					}
 
-					$link = '[' . $title->getFullURL(  $query ) . " $this->mCaption]";
+					$link = '[' . $title->getFullURL( $query ) . " $this->mCaption]";
 				} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
 
 					if ( $this->isCompactLink ) {
@@ -381,7 +377,6 @@ class SMWInfolink {
 	 * @return string
 	 */
 	public function getURL() {
-
 		$query = self::encodeParameters( $this->mParams, $this->isCompactLink );
 
 		if ( $this->isCompactLink && $query !== '' ) {
@@ -408,7 +403,6 @@ class SMWInfolink {
 	 * @return string
 	 */
 	public function getLocalURL() {
-
 		$query = self::encodeParameters( $this->mParams, $this->isCompactLink );
 
 		if ( $this->isCompactLink && $query !== '' ) {
@@ -591,7 +585,6 @@ class SMWInfolink {
 	 * @return string|array
 	 */
 	public static function encodeCompactLink( $value, $compound = false ) {
-
 		// Expect to gain on larger strings and set an identifier to
 		// distinguish between compressed and non compressed
 		if ( mb_strlen( $value ) > 150 ) {
@@ -618,7 +611,6 @@ class SMWInfolink {
 	 * @return string
 	 */
 	public static function decodeCompactLink( $value ) {
-
 		if ( !is_string( $value ) || mb_substr( $value, 0, 3 ) !== 'cl:' ) {
 			return $value;
 		}
@@ -635,7 +627,7 @@ class SMWInfolink {
 
 			// Guessing that MediaWiki swallowed the last `_`
 			if ( $val === false ) {
-				$val = @gzinflate( mb_substr( $value , 2 ) . '?' );
+				$val = @gzinflate( mb_substr( $value, 2 ) . '?' );
 			}
 
 			$value = $val;
@@ -644,14 +636,13 @@ class SMWInfolink {
 		// Normalize if nceessary for those that are "encoded for use in a
 		// MediaWiki page title"
 		if ( mb_substr( $value, 0, 2 ) === 'x=' ) {
-			$value = str_replace( [ 'x=', '=-&' , '&', '%2F' ], [ '' , '=-2D&', '/', '/' ], $value );
+			$value = str_replace( [ 'x=', '=-&', '&', '%2F' ], [ '', '=-2D&', '/', '/' ], $value );
 		}
 
 		return $value;
 	}
 
 	private function buildTarget( $query ) {
-
 		$target = $this->mTarget;
 
 		if ( count( $this->mParams ) > 0 ) {

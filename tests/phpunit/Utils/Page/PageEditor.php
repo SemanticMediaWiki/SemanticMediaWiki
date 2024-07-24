@@ -32,7 +32,6 @@ class PageEditor {
 	 * @throws RuntimeException
 	 */
 	public function getPage() {
-
 		if ( $this->page instanceof WikiPage ) {
 			return $this->page;
 		}
@@ -61,7 +60,6 @@ class PageEditor {
 	 * @return PageEditor
 	 */
 	public function doEdit( $pageContent = '', $editMessage = '' ) {
-
 		$content = new \WikitextContent( $pageContent );
 
 		// Simplified implementation of WikiPage::doUserEditContent() from MW 1.36
@@ -82,7 +80,6 @@ class PageEditor {
 	 * @since 2.1
 	 */
 	public function getEditInfo() {
-
 		$editInfo = ServicesFactory::getInstance()->newMwCollaboratorFactory()->newEditInfo(
 			$this->getPage()
 		);

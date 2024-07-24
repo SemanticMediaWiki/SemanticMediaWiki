@@ -23,20 +23,19 @@ class RunImportTest extends TestCase {
 	private $testEnvironment;
 	private $spyMessageReporter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyMessageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessagereporter();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RunImport::class,
 			new RunImport()
@@ -44,7 +43,6 @@ class RunImportTest extends TestCase {
 	}
 
 	public function testExecute() {
-
 		$instance = new RunImport();
 
 		$instance->setMessageReporter(

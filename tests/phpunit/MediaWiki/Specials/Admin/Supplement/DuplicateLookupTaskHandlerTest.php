@@ -22,7 +22,7 @@ class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $outputFormatter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -32,13 +32,12 @@ class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DuplicateLookupTaskHandler::class,
 			new DuplicateLookupTaskHandler( $this->outputFormatter )
@@ -46,7 +45,6 @@ class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new DuplicateLookupTaskHandler(
 			$this->outputFormatter
 		);
@@ -58,7 +56,6 @@ class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequest() {
-
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
 

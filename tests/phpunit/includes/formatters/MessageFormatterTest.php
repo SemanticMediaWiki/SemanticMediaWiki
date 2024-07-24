@@ -205,7 +205,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testEscapedUnescaped() {
 		$instance = $this->getInstance();
-		$instance->addFromArray( [  '<Foo>' ] );
+		$instance->addFromArray( [ '<Foo>' ] );
 
 		$this->assertEquals( '&lt;Foo&gt;', $instance->escape( true )->getPlain() );
 		$this->assertEquals( '<Foo>', $instance->escape( false )->getPlain() );

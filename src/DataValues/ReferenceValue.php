@@ -156,7 +156,6 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getPropertyDataItems() {
-
 		if ( $this->properties === null ) {
 			$this->properties = $this->getFieldProperties( $this->getProperty() );
 
@@ -184,7 +183,6 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	protected function parseUserValue( $value ) {
-
 		if ( $value === '' ) {
 			$this->addErrorMsg( [ 'smw_novalues' ] );
 			return;
@@ -257,7 +255,6 @@ class ReferenceValue extends AbstractMultiValue {
 	 * @see DataValue::loadDataItem
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() === DataItem::TYPE_CONTAINER ) {
 			$this->m_dataitem = $dataItem;
 			return true;
@@ -289,7 +286,6 @@ class ReferenceValue extends AbstractMultiValue {
 	}
 
 	private function newContainerSemanticData( $value ) {
-
 		if ( $this->m_contextPage === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();

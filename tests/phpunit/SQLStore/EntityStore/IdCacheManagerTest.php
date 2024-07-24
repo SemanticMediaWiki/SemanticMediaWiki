@@ -21,8 +21,7 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $caches;
 
- 	protected function setUp() : void {
-
+ 	protected function setUp(): void {
 		$this->caches = [
 			'entity.id' => new FixedInMemoryLruCache(),
 			'entity.sort' => new FixedInMemoryLruCache(),
@@ -32,7 +31,6 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
  	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			IdCacheManager::class,
 			new IdCacheManager( $this->caches )
@@ -40,7 +38,6 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testComputeSha1() {
-
 		$this->assertInternalType(
 			'string',
 			IdCacheManager::computeSha1( [] )
@@ -48,7 +45,6 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$instance = new IdCacheManager( $this->caches );
 
 		$this->assertInstanceOf(
@@ -58,7 +54,6 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetThrowsException() {
-
 		$instance = new IdCacheManager( $this->caches );
 
 		$this->expectException( '\RuntimeException' );
@@ -66,7 +61,6 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetId() {
-
 		$instance = new IdCacheManager( $this->caches );
 
 		$instance->setCache( 'foo', 0, '', '', 42, 'bar' );
@@ -93,7 +87,6 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSort() {
-
 		$instance = new IdCacheManager( $this->caches );
 
 		$instance->setCache( 'foo', 0, '', '', 42, 'bar' );
@@ -110,7 +103,6 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteCache() {
-
 		$instance = new IdCacheManager( $this->caches );
 
 		$instance->setCache( 'foo', 0, '', '', '42', 'bar' );
@@ -134,7 +126,6 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasCache() {
-
 		$instance = new IdCacheManager( $this->caches );
 
 		$instance->setCache( 'foo', 0, '', '', '42', 'bar' );
@@ -152,7 +143,6 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteCacheById() {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -170,19 +160,17 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetCacheOnTitleWithSpace_ThrowsException() {
-
 		$instance = new IdCacheManager( $this->caches );
 
 		$this->expectException( '\RuntimeException' );
-		$instance->setCache( 'foo bar', '', '' , '', '', '' );
+		$instance->setCache( 'foo bar', '', '', '', '', '' );
 	}
 
 	public function testSetCacheOnTitleAsArray_ThrowsException() {
-
 		$instance = new IdCacheManager( $this->caches );
 
 		$this->expectException( '\RuntimeException' );
-		$instance->setCache( [ 'foo bar' ], '', '' , '', '', '' );
+		$instance->setCache( [ 'foo bar' ], '', '', '', '', '' );
 	}
 
 }

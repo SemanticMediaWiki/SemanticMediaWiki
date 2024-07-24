@@ -23,7 +23,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	private $apiFactory;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -36,13 +36,12 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new Info(
 			$this->apiFactory->newApiMain( [] ),
 			'smwinfo'
@@ -58,7 +57,6 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeDataProvider
 	 */
 	public function testExecuteOnStore( $queryParameters, $expectedType ) {
-
 		$result = $this->apiFactory->doApiRequest( [
 				'action' => 'smwinfo',
 				'info' => $queryParameters
@@ -78,7 +76,6 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider countDataProvider
 	 */
 	public function testExecuteOnMockStore( $statistics, $type, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -117,7 +114,6 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testUnknownQueryParameter() {
-
 		$data = $this->apiFactory->doApiRequest( [
 				'action' => 'smwinfo',
 				'info' => 'Foo'
@@ -130,7 +126,6 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJobCount() {
-
 		$this->jobQueue->expects( $this->any() )
 			->method( 'getQueueSize' )
 			->will( $this->returnValue( 1 ) );
@@ -151,33 +146,33 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	public function countDataProvider() {
 		return [
 			[ [ 'QUERYFORMATS' => [ 'table' => 3 ] ], 'formatcount', [ 'table' => 3 ] ],
-			[ [ 'PROPUSES'     => 34 ], 'propcount',         34 ],
-			[ [ 'ERRORUSES'    => 42 ], 'errorcount',        42 ],
-			[ [ 'USEDPROPS'    => 51 ], 'usedpropcount',     51 ],
-			[ [ 'TOTALPROPS'   => 52 ], 'totalpropcount',    52 ],
+			[ [ 'PROPUSES'     => 34 ], 'propcount', 34 ],
+			[ [ 'ERRORUSES'    => 42 ], 'errorcount', 42 ],
+			[ [ 'USEDPROPS'    => 51 ], 'usedpropcount', 51 ],
+			[ [ 'TOTALPROPS'   => 52 ], 'totalpropcount', 52 ],
 			[ [ 'DECLPROPS'    => 67 ], 'declaredpropcount', 67 ],
-			[ [ 'OWNPAGE'      => 99 ], 'proppagecount',     99 ],
-			[ [ 'QUERY'        => 11 ], 'querycount',        11 ],
-			[ [ 'QUERYSIZE'    => 24 ], 'querysize',         24 ],
-			[ [ 'CONCEPTS'     => 17 ], 'conceptcount',      17 ],
-			[ [ 'SUBOBJECTS'   => 88 ], 'subobjectcount',    88 ],
+			[ [ 'OWNPAGE'      => 99 ], 'proppagecount', 99 ],
+			[ [ 'QUERY'        => 11 ], 'querycount', 11 ],
+			[ [ 'QUERYSIZE'    => 24 ], 'querysize', 24 ],
+			[ [ 'CONCEPTS'     => 17 ], 'conceptcount', 17 ],
+			[ [ 'SUBOBJECTS'   => 88 ], 'subobjectcount', 88 ],
 		];
 	}
 
 	public function typeDataProvider() {
 		return [
-			[ 'proppagecount',     'integer' ],
-			[ 'propcount',         'integer' ],
-			[ 'errorcount',        'integer' ],
-			[ 'querycount',        'integer' ],
-			[ 'usedpropcount',     'integer' ],
-			[ 'totalpropcount',    'integer' ],
+			[ 'proppagecount', 'integer' ],
+			[ 'propcount', 'integer' ],
+			[ 'errorcount', 'integer' ],
+			[ 'querycount', 'integer' ],
+			[ 'usedpropcount', 'integer' ],
+			[ 'totalpropcount', 'integer' ],
 			[ 'declaredpropcount', 'integer' ],
-			[ 'conceptcount',      'integer' ],
-			[ 'querysize',         'integer' ],
-			[ 'subobjectcount',    'integer' ],
-			[ 'formatcount',       'array'   ],
-			[ 'jobcount',          'array'   ]
+			[ 'conceptcount', 'integer' ],
+			[ 'querysize', 'integer' ],
+			[ 'subobjectcount', 'integer' ],
+			[ 'formatcount', 'array' ],
+			[ 'jobcount', 'array' ]
 		];
 	}
 

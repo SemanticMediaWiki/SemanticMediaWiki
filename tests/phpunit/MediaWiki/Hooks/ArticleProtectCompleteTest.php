@@ -27,7 +27,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $editInfo;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -65,13 +65,12 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -83,7 +82,6 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnSelfInvokedReason() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -107,7 +105,6 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnMatchableEditProtectionToAddAnnotation() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -157,7 +154,6 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnUnmatchableEditProtectionToRemoveAnnotation() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_SPECIAL )
 		);

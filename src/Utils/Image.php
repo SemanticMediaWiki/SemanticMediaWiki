@@ -47,13 +47,12 @@ class Image {
 	 * @return boolean
 	 */
 	public static function isImage( DIWikiPage $dataItem ) {
-
 		if ( $dataItem->getNamespace() !== NS_FILE || $dataItem->getSubobjectName() !== '' ) {
 			return false;
 		}
 
 		$extension = strtolower(
-			substr( strrchr( $dataItem->getDBKey(), "." ) , 1 )
+			substr( strrchr( $dataItem->getDBKey(), "." ), 1 )
 			// pathinfo( $dataItem->getDBKey(), PATHINFO_EXTENSION )
 		);
 

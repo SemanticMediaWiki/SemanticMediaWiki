@@ -30,7 +30,7 @@ class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 	private $pageCreator;
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment->addConfiguration(
@@ -46,7 +46,7 @@ class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$utilityFactory = UtilityFactory::getInstance();
 		$pageDeleter = $utilityFactory->newPageDeleter();
 
@@ -59,7 +59,6 @@ class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testRedirectParseUsingManualRedirect() {
-
 		$target = Title::newFromText( 'RedirectParseUsingManualRedirect' );
 
 		$this->pageCreator
@@ -82,7 +81,6 @@ class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testRedirectParseUsingMoveToPage() {
-
 		$target = Title::newFromText( 'RedirectParseUsingMoveToPage' );
 
 		$this->pageCreator
@@ -108,7 +106,6 @@ class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testManualRemovalOfRedirectTarget() {
-
 		$source = DIWikiPage::newFromTitle(
 			Title::newFromText( __METHOD__ )
 		);
@@ -158,7 +155,6 @@ class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testDeepRedirectTargetResolverToFindTarget() {
-
 		$this->skipTestForMediaWikiVersionLowerThan(
 			'1.20',
 			"Skipping test because expected target isn't resolved correctly on 1.19"
@@ -209,7 +205,6 @@ class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testDeepRedirectTargetResolverToDetectCircularTarget() {
-
 		$this->skipTestForMediaWikiVersionLowerThan(
 			'1.20',
 			"Skipping test because circular target (RuntimeException) isn't found on 1.19"

@@ -20,7 +20,7 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $querySegmentListProcessor;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
@@ -37,7 +37,6 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder',
 			new ConceptQuerySegmentBuilder( $this->conditionBuilder, $this->querySegmentListProcessor )
@@ -45,7 +44,6 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQuerySegmentFromOnNull() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();

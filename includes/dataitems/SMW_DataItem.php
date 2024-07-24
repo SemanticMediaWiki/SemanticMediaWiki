@@ -216,7 +216,6 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * @param string $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
@@ -233,7 +232,6 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
-
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
@@ -274,7 +272,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 */
 	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
 		$obj = static::doUnserialize( $json['value'] );
-		$obj->options = $json['options'] ? SemanticData::maybeUnserialize($unserializer, $json['options'] ) : null;
+		$obj->options = $json['options'] ? SemanticData::maybeUnserialize( $unserializer, $json['options'] ) : null;
 		return $obj;
 	}
 

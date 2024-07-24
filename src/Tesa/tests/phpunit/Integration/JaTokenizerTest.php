@@ -19,7 +19,6 @@ class JaTokenizerTest extends TestCase {
 	 * @dataProvider icuTextProvider
 	 */
 	public function testIcuWordBoundaryTokenizer( $text, $expected ) {
-
 		$sanitizerFactory = new SanitizerFactory();
 
 		$tokenier = $sanitizerFactory->newIcuWordBoundaryTokenizer(
@@ -40,7 +39,6 @@ class JaTokenizerTest extends TestCase {
 	 * @dataProvider tinyTextProvider
 	 */
 	public function testJaTinySegmenterTokenizer( $text, $expected ) {
-
 		$sanitizerFactory = new SanitizerFactory();
 
 		$tokenier = $sanitizerFactory->newJaTinySegmenterTokenizer(
@@ -54,7 +52,6 @@ class JaTokenizerTest extends TestCase {
 	}
 
 	public function icuTextProvider() {
-
 		// https://github.com/NaturalNode/natural/blob/master/spec/tokenizer_ja_spec.js
 
 		$provider[] = array(
@@ -73,7 +70,7 @@ class JaTokenizerTest extends TestCase {
 				'を', '行う', 'プログラム', 'は', '、', '字句', '解析', '器',
 				'lexical', 'analyzer', '略称', '：',
 				'lexer', 'と', '呼ばれる', '。', '字句', '解析', '器', 'は',
-				'スキャナ', 'scanner', 'と', 'トーク','ナ', 'イザ', 'tokenizer', 'から',
+				'スキャナ', 'scanner', 'と', 'トーク', 'ナ', 'イザ', 'tokenizer', 'から',
 				'構成', 'さ', 'れる', '。'
 			)
 		);
@@ -82,7 +79,6 @@ class JaTokenizerTest extends TestCase {
 	}
 
 	public function tinyTextProvider() {
-
 		// https://github.com/NaturalNode/natural/blob/master/spec/tokenizer_ja_spec.js
 		/*
 			['計算', '機科', '学', 'に', 'おける', '字句', '解析',
@@ -102,7 +98,7 @@ class JaTokenizerTest extends TestCase {
 			"字句解析器はスキャナ (scanner) とトークナイザ (tokenizer) から構成される。\n",
 			//
 			array(
-				'計算', '機科', '学', 'に', 'おける', '字句', '解析', 'じくかい','せき','英',
+				'計算', '機科', '学', 'に', 'おける', '字句', '解析', 'じくかい', 'せき', '英',
 				'Lexical', 'Analysis', 'と', 'は', 'ソースコード', 'を', '構成', 'する',
 				'文字', 'の', '並び', 'を', 'トークン', 'token', 'の', '並び', 'に', '変換',
 				'する', 'こと', 'をいう', 'ここ', 'でいう', 'トークン', 'と', 'は', '意味', 'を',

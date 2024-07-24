@@ -24,7 +24,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	private $subject;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -75,7 +75,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		$this->testEnvironment->clearPendingDeferredUpdates();
 
@@ -83,7 +83,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -103,7 +102,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPruneOutdatedTargetLinks() {
-
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -155,7 +153,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPruneOutdatedTargetLinksBeingDisabled() {
-
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -201,7 +198,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindEmbeddedQueryTargetLinksHashListFrom() {
-
 		$row = new \stdClass;
 		$row->s_id = 1001;
 
@@ -268,7 +264,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindEmbeddedQueryTargetLinksHashListBySubject() {
-
 		$row = new \stdClass;
 		$row->s_id = 1001;
 
@@ -339,7 +334,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCountDependencies() {
-
 		$row = new \stdClass;
 		$row->count = 1001;
 
@@ -385,7 +379,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryDoUpdateDependenciesByWhileBeingDisabled() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -426,7 +419,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateDependencies_ExcludedRequestAction() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -485,7 +477,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryDoUpdateDependenciesByForWhenDependencyListReturnsEmpty() {
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getId' ] )
 			->getMock();
@@ -560,7 +551,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisabledDependenciesUpdateOnNotSupportedNamespace() {
-
 		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -620,7 +610,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testdoUpdateDependenciesByFromQueryResult() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -733,7 +722,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testdoUpdateDependenciesByFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -814,7 +802,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testTryDoUpdateDependenciesByWithinSkewedTime( $title ) {
-
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -898,7 +885,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleProvider() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -22,7 +22,7 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataFactory;
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
@@ -33,7 +33,6 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider annotationDataProvider
 	 */
 	public function testChainableDecoratorAnnotation( array $parameters, array $expected ) {
-
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\PageInfo' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -88,7 +87,6 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function annotationDataProvider() {
-
 		$provider = [];
 
 		// #0
@@ -107,7 +105,7 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 3,
 				'propertyKeys'   => [ '_INST', '_MDAT', '_SKEY' ],
-				'propertyValues' => [ 'Category:Foo',  'Category:Bar', '2010-04-29T02:41:43', 'Lala' ],
+				'propertyValues' => [ 'Category:Foo', 'Category:Bar', '2010-04-29T02:41:43', 'Lala' ],
 			]
 		];
 

@@ -25,7 +25,6 @@ class CharExaminer {
 	 * @return boolean
 	 */
 	public static function isCJK( $text ) {
-
 		if ( self::contains( self::HAN, $text ) ) {
 			return true;
 		}
@@ -55,25 +54,24 @@ class CharExaminer {
 	 * @return boolean
 	 */
 	public static function contains( $type, $text ) {
-
 		if ( $type === self::CYRILLIC ) {
-			return preg_match('/\p{Cyrillic}/u', $text ) > 0;
+			return preg_match( '/\p{Cyrillic}/u', $text ) > 0;
 		}
 
 		if ( $type === self::LATIN ) {
-			return preg_match('/\p{Latin}/u', $text ) > 0;
+			return preg_match( '/\p{Latin}/u', $text ) > 0;
 		}
 
 		if ( $type === self::HAN ) {
-			return preg_match('/\p{Han}/u', $text ) > 0;
+			return preg_match( '/\p{Han}/u', $text ) > 0;
 		}
 
 		if ( $type === self::HIRAGANA_KATAKANA ) {
-			return preg_match('/[\x{3040}-\x{309F}]/u', $text ) > 0 || preg_match('/[\x{30A0}-\x{30FF}]/u', $text ) > 0; // isHiragana || isKatakana
+			return preg_match( '/[\x{3040}-\x{309F}]/u', $text ) > 0 || preg_match( '/[\x{30A0}-\x{30FF}]/u', $text ) > 0; // isHiragana || isKatakana
 		}
 
 		if ( $type === self::HANGUL ) {
-			return preg_match('/[\x{3130}-\x{318F}]/u', $text ) > 0 || preg_match('/[\x{AC00}-\x{D7AF}]/u', $text ) > 0;
+			return preg_match( '/[\x{3130}-\x{318F}]/u', $text ) > 0 || preg_match( '/[\x{AC00}-\x{D7AF}]/u', $text ) > 0;
 		}
 
 		// @see https://en.wikipedia.org/wiki/CJK_Unified_Ideographs
@@ -81,7 +79,7 @@ class CharExaminer {
 		// known as CJK characters
 
 		if ( $type === self::CJK_UNIFIED ) {
-			return preg_match('/[\x{4e00}-\x{9fa5}]/u', $text ) > 0;
+			return preg_match( '/[\x{4e00}-\x{9fa5}]/u', $text ) > 0;
 		}
 
 		return false;

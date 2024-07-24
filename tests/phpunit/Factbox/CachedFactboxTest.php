@@ -35,7 +35,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	private $spyLogger;
 	private FactboxText $factboxText;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -52,7 +52,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( ['fetch', 'save', 'saveSub', 'fetchSub', 'associate' ] )
+			->setMethods( [ 'fetch', 'save', 'saveSub', 'fetchSub', 'associate' ] )
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
@@ -60,13 +60,12 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		$this->factboxText = ApplicationFactory::getInstance()->getFactboxText();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CachedFactbox::class,
 			new CachedFactbox( $this->entityCache, $this->factboxText )
@@ -77,7 +76,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider outputDataProvider
 	 */
 	public function testProcessAndRetrieveContent( $parameters, $expected ) {
-
 		$this->entityCache->expects( $this->any() )
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );
@@ -144,7 +142,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function assertPreProcess( $expected, $result, $outputPage, $instance ) {
-
 		if ( $expected['text'] ) {
 
 			$this->assertContains(
@@ -171,7 +168,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function assertPostProcess( $expected, $result, $outputPage, $instance ) {
-
 		$this->assertEquals(
 			$result,
 			$instance->retrieveContent( $outputPage ),
@@ -200,7 +196,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function outputDataProvider() {
-
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 		$language = $languageFactory->getLanguage( 'en' );
 
@@ -234,7 +229,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ new DIProperty(  __METHOD__ . 'property' ) ] ) );
+			->will( $this->returnValue( [ new DIProperty( __METHOD__ . 'property' ) ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -328,7 +323,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getRevisionId' )
 			->will( $this->returnValue( 9001 ) );
 
-		$context = new \RequestContext( );
+		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
 
 		$outputPage->expects( $this->atLeastOnce() )

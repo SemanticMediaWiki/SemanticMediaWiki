@@ -16,7 +16,6 @@ use SMW\DataValues\PropertyValue;
 class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyValue::class,
 			new PropertyValue()
@@ -27,7 +26,6 @@ class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider featuresProvider
 	 */
 	public function testOptions( $options, $expected ) {
-
 		$instance = new PropertyValue();
 		$instance->setOption( 'smwgDVFeatures', $options );
 
@@ -38,7 +36,6 @@ class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function featuresProvider() {
-
 		$provider[] = [
 			SMW_DV_PROV_REDI,
 			true

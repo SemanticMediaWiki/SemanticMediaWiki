@@ -19,7 +19,6 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -34,7 +33,6 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider curlErrorCodeThatNotThrowsExceptionProvider
 	 */
 	public function testResponseToHttpRequestThatNotThrowsException( $curlErrorCode ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -48,7 +46,6 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResponseToHttpRequestForInvalidErrorCodeThrowsException() {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -67,7 +64,6 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider httpCodeThatThrowsExceptionProvider
 	 */
 	public function testResponseToHttpRequesForHttpErrorThatThrowsException( $httpErrorCode ) {
-
 		// PHP doesn't know CURLE_HTTP_RETURNED_ERROR therefore using 22
 		// http://curl.haxx.se/libcurl/c/libcurl-errors.html
 
@@ -91,7 +87,6 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResponseToHttpRequesForHttpErrorThatNotThrowsException() {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -110,7 +105,6 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function curlErrorCodeThatNotThrowsExceptionProvider() {
-
 		$provider = [
 			[ CURLE_GOT_NOTHING ],
 			[ CURLE_COULDNT_CONNECT ]
@@ -120,7 +114,6 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function httpCodeThatThrowsExceptionProvider() {
-
 		$provider = [
 			[ 400 ],
 			[ 500 ]

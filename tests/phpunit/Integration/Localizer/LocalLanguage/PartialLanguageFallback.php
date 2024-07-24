@@ -20,14 +20,14 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		JsonContentsFileReader::clear();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		JsonContentsFileReader::clear();
 
@@ -35,7 +35,6 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeclarationsLoadedPartiallyFromFallback() {
-
 		$JsonContentsFileReader = new JsonContentsFileReader(
 			null,
 			SMW_PHPUNIT_DIR . '/Fixtures/Localizer/LocalLanguage/'

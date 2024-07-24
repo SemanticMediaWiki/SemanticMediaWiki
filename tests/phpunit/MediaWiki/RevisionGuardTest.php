@@ -21,7 +21,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 
 	private $hookDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
@@ -30,7 +30,6 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RevisionGuard::class,
 			 new RevisionGuard( $this->getRevisionLookupMock() )
@@ -38,7 +37,6 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsSkippableUpdate() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -60,7 +58,6 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsSkippableUpdate_WithID() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -83,7 +80,6 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLatestRevID() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -105,7 +101,6 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewRevisionFromTitle() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -122,7 +117,6 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetRevision() {
-
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onChangeRevision' );
 
@@ -147,7 +141,6 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFile() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

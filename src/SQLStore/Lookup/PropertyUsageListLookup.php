@@ -54,7 +54,6 @@ class PropertyUsageListLookup implements ListLookup {
 	 * @throws RuntimeException
 	 */
 	public function fetchList() {
-
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
 		}
@@ -90,7 +89,6 @@ class PropertyUsageListLookup implements ListLookup {
 	}
 
 	private function doQueryPropertyTable() {
-
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
 		$options = [ 'ORDER BY' => 'smw_sort' ];
 		$search_field = 'smw_sortkey';
@@ -129,7 +127,6 @@ class PropertyUsageListLookup implements ListLookup {
 	}
 
 	private function getPropertyList( $res ) {
-
 		$result = [];
 
 		foreach ( $res as $row ) {

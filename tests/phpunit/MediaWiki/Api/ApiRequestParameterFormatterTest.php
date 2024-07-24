@@ -21,16 +21,15 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Api\ApiRequestParameterFormatter',
 			new ApiRequestParameterFormatter( [] )
@@ -38,7 +37,6 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAskArgsApiForEmptyParameter() {
-
 		$nstance = new ApiRequestParameterFormatter( [] );
 
 		$this->assertEmpty( $nstance->getAskArgsApiParameter( 'conditions' ) );
@@ -50,7 +48,6 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider requestArgsApiParametersDataProvider
 	 */
 	public function testGetAskArgsApiParameter( $parameters, $type, $expected ) {
-
 		$nstance = new ApiRequestParameterFormatter( $parameters );
 
 		$this->assertEquals(
@@ -63,7 +60,6 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider requestAskApiParametersDataProvider
 	 */
 	public function testGetAskApiParameters( $parameters, $expected ) {
-
 		$instance = new ApiRequestParameterFormatter( $parameters );
 		$result = $instance->getAskApiParameters();
 
@@ -73,9 +69,9 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function requestArgsApiParametersDataProvider() {
 		return [
-			[ [ 'conditions' => [ 'Lala' ] ],         'conditions', '[[Lala]]' ],
+			[ [ 'conditions' => [ 'Lala' ] ], 'conditions', '[[Lala]]' ],
 			[ [ 'conditions' => [ 'Lala', 'Lima' ] ], 'conditions', '[[Lala]] [[Lima]]' ],
-			[ [ 'parameters' => [ 'Lila' ] ],         'parameters', [] ],
+			[ [ 'parameters' => [ 'Lila' ] ], 'parameters', [] ],
 			[ [ 'parameters' => [ 'Lila=isFunny' ] ], 'parameters', [ 'Lila' => 'isFunny' ] ],
 			[ [ 'parameters' => [ 'Lila=isFunny', 'Lula=isHappy' ] ], 'parameters', [ 'Lila' => 'isFunny', 'Lula' => 'isHappy' ] ],
 		//	array( array( 'printouts'  => array( '?Linda' ) ),         'printouts', array( $this->newPrintRequest( '?Linda' ) ) ),
@@ -85,10 +81,10 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function requestAskApiParametersDataProvider() {
 		return [
-			[ [],  [] ],
-			[ [ 'query' => '[[Modification date::+]]' ],  [ '[[Modification date::+]]' ] ],
-			[ [ 'query' => '[[Modification date::+]]|?Modification date' ],  [ '[[Modification date::+]]', '?Modification date' ] ],
-			[ [ 'query' => '[[Modification date::+]]|?Modification date|sort=desc' ],  [ '[[Modification date::+]]', '?Modification date', 'sort=desc' ] ],
+			[ [], [] ],
+			[ [ 'query' => '[[Modification date::+]]' ], [ '[[Modification date::+]]' ] ],
+			[ [ 'query' => '[[Modification date::+]]|?Modification date' ], [ '[[Modification date::+]]', '?Modification date' ] ],
+			[ [ 'query' => '[[Modification date::+]]|?Modification date|sort=desc' ], [ '[[Modification date::+]]', '?Modification date', 'sort=desc' ] ],
 		];
 	}
 

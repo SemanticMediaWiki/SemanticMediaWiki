@@ -20,7 +20,7 @@ class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -29,7 +29,6 @@ class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AttachmentFormatter::class,
 			new AttachmentFormatter( $this->store )
@@ -37,7 +36,6 @@ class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_OnEmptyAttachments() {
-
 		$instance = new AttachmentFormatter(
 			$this->store
 		);
@@ -49,7 +47,6 @@ class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_OnAttachments() {
-
 		$item = \SMW\DIWikiPage::newFromText( 'Foo', NS_FILE );
 
 		$instance = new AttachmentFormatter(

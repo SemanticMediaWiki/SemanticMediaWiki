@@ -23,7 +23,7 @@ class HashFieldTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $populateHashField;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
@@ -37,7 +37,6 @@ class HashFieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			HashField::class,
 			new HashField( $this->store )
@@ -45,7 +44,6 @@ class HashFieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_Populate() {
-
 		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -76,7 +74,6 @@ class HashFieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_Incomplete() {
-
 		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();

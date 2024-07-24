@@ -25,7 +25,7 @@ class CountMapFieldTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $setupFile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
@@ -47,7 +47,6 @@ class CountMapFieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CountMapField::class,
 			new CountMapField( $this->store )
@@ -55,7 +54,6 @@ class CountMapFieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_NewFieldTriggerIncompleteTask() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'tableName' )
 			->will( $this->returnValue( 'smw_objects_aux' ) );
@@ -66,7 +64,7 @@ class CountMapFieldTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
-		$instance->check( [ 'smw_objects_aux' => [ 'smw_countmap' => 'field.new' ] ]);
+		$instance->check( [ 'smw_objects_aux' => [ 'smw_countmap' => 'field.new' ] ] );
 
 		$this->assertContains(
 			'adding incomplete task for `smw_countmap` conversion',
@@ -75,7 +73,6 @@ class CountMapFieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckOk() {
-
 		$instance = new CountMapField(
 			$this->store
 		);

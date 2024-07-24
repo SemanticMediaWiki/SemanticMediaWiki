@@ -30,7 +30,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	private $circularReferenceGuard;
 	private $expensiveFuncExecutionWatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -74,13 +74,12 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -95,7 +94,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testParse( array $params ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -115,7 +113,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsQueryDisabled() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -138,7 +135,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasReachedExpensiveLimit() {
-
 		$params = [
 			'[[Modification date::+]]',
 			'?Modification date',
@@ -176,7 +172,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetShowMode() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -199,7 +194,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCircularGuard() {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -230,7 +224,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryIdStabilityForFixedSetOfParametersWithFingerprintMethod() {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -276,7 +269,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testInstantiatedQueryData( array $params, array $expected, array $settings ) {
-
 		foreach ( $settings as $key => $value ) {
 			$this->testEnvironment->addConfiguration( $key, $value );
 		}
@@ -306,7 +298,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmbeddedQueryWithError() {
-
 		$params = [
 			'[[--ABC·|DEF::123]]',
 			'format=table'
@@ -338,7 +329,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWithDisabledQueryProfiler() {
-
 		$params = [
 			'[[Modification date::+]]',
 			'format=table'
@@ -371,7 +361,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoQueryProfileOnSpecialPages() {
-
 		$params = [
 			'[[Modification date::+]]',
 			'format=table'
@@ -404,7 +393,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryWithAnnotationMarker() {
-
 		$params = [
 			'[[Modification date::+]]',
 			'format=table',
@@ -435,7 +423,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryDataProvider() {
-
 		$categoryNS = Localizer::getInstance()->getNsText( NS_CATEGORY );
 		$fileNS = Localizer::getInstance()->getNsText( NS_FILE );
 

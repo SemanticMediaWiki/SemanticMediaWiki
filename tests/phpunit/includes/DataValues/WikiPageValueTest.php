@@ -22,7 +22,7 @@ class WikiPageValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -35,13 +35,12 @@ class WikiPageValueTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			WikiPageValue::class,
 			new WikiPageValue( '' )
@@ -49,7 +48,6 @@ class WikiPageValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisableInfolinksOnSpecialUsernamePrefix() {
-
 		$instance = new WikiPageValue( '_wpg' );
 
 		$this->assertFalse(

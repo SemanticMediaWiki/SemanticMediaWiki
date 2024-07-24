@@ -17,7 +17,7 @@ class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -26,7 +26,6 @@ class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ApiModuleManager::class,
 			new ApiModuleManager()
@@ -34,7 +33,6 @@ class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testApiModuleManager() {
-
 		$modules = [
 			'smwinfo' => '\SMW\MediaWiki\Api\Info',
 			'smwtask' => '\SMW\MediaWiki\Api\Task',
@@ -52,14 +50,13 @@ class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$apiModuleManager->expects( $this->once() )
 			->method( 'addModules' )
-			 ->with($this->equalTo( $modules ) );
+			 ->with( $this->equalTo( $modules ) );
 
 		$instance = new ApiModuleManager();
 		$instance->process( $apiModuleManager );
 	}
 
 	public function testApiModuleManager_Disabled() {
-
 		$apiModuleManager = $this->getMockBuilder( '\ApiModuleManager' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -126,7 +126,6 @@ class QueryDependencyLinksStore {
 	 * @param ChangeOp $changeOp
 	 */
 	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ) {
-
 		if ( !$this->isEnabled() ) {
 			return null;
 		}
@@ -184,7 +183,6 @@ class QueryDependencyLinksStore {
 	 * @return array
 	 */
 	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
-
 		$embeddedQueryIdList = [];
 
 		$dataItems = $this->store->getPropertyValues(
@@ -223,7 +221,6 @@ class QueryDependencyLinksStore {
 	 * @return integer
 	 */
 	public function countDependencies( $id ) {
-
 		$count = 0;
 		$ids = !is_array( $id ) ? (array)$id : $id;
 
@@ -273,7 +270,6 @@ class QueryDependencyLinksStore {
 	 * @return array
 	 */
 	public function findDependencyTargetLinks( array $idlist, RequestOptions $requestOptions ) {
-
 		if ( $idlist === [] || !$this->isEnabled() ) {
 			return [];
 		}
@@ -337,7 +333,6 @@ class QueryDependencyLinksStore {
 	 * @param QueryResult|string $queryResult
 	 */
 	public function updateDependencies( $queryResult ) {
-
 		if ( !$this->canUpdateDependencies( $queryResult ) ) {
 			return null;
 		}
@@ -366,7 +361,7 @@ class QueryDependencyLinksStore {
 		}
 
 		// Executed as DeferredTransactionalUpdate
-		$callback = function() use( $queryResult, $subject, $sid, $hash ) {
+		$callback = function () use( $queryResult, $subject, $sid, $hash ) {
 			$this->doUpdate( $queryResult, $subject, $sid, $hash );
 		};
 
@@ -401,7 +396,6 @@ class QueryDependencyLinksStore {
 	}
 
 	private function doUpdate( $queryResult, $subject, $sid, $hash ) {
-
 		$dependencyList = $this->queryResultDependencyListResolver->getDependencyListFrom(
 			$queryResult
 		);
@@ -447,7 +441,6 @@ class QueryDependencyLinksStore {
 	}
 
 	private function canUpdateDependencies( $queryResult ) {
-
 		if ( !$this->isEnabled() || !$queryResult instanceof QueryResult ) {
 			return false;
 		}
@@ -487,7 +480,6 @@ class QueryDependencyLinksStore {
 	}
 
 	private function isRegistered( $sid, $subject ) {
-
 		static $suppressUpdateCache = [];
 		$hash = $subject->getHash();
 

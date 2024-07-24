@@ -24,7 +24,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $descriptionFactory;
 	private QuerySegmentValidator $querySegmentValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -42,8 +42,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
-
 		$this->assertInstanceOf(
 			NamespaceDescriptionInterpreter::class,
 			new NamespaceDescriptionInterpreter( $this->store, $this->conditionBuilder )
@@ -51,7 +49,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();

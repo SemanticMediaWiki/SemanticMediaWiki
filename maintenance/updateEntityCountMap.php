@@ -83,7 +83,6 @@ class updateEntityCountMap extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
 			exit ( $maintenanceCheck->getMessage() );
 		}
@@ -148,7 +147,6 @@ class updateEntityCountMap extends \Maintenance {
 	}
 
 	private function getCount() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$this->last = (int)$connection->selectField(
@@ -179,7 +177,6 @@ class updateEntityCountMap extends \Maintenance {
 	}
 
 	private function runUpdate() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		for ( $i = 0; $i <= $this->last ; $i++ ) {

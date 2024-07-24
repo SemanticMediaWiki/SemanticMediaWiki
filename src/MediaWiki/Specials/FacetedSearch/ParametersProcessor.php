@@ -79,7 +79,7 @@ class ParametersProcessor {
 	 *
 	 * @return array
 	 */
-	public function getParameters() : array {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 
@@ -88,7 +88,7 @@ class ParametersProcessor {
 	 *
 	 * @return string
 	 */
-	public function getFormat() : string {
+	public function getFormat(): string {
 		return $this->format;
 	}
 
@@ -97,7 +97,7 @@ class ParametersProcessor {
 	 *
 	 * @return array
 	 */
-	public function getFilterConditions() : array {
+	public function getFilterConditions(): array {
 		return $this->filterConditions;
 	}
 
@@ -106,7 +106,7 @@ class ParametersProcessor {
 	 *
 	 * @return array
 	 */
-	public function getValueFilters() : array {
+	public function getValueFilters(): array {
 		return $this->valueFilters;
 	}
 
@@ -115,7 +115,7 @@ class ParametersProcessor {
 	 *
 	 * @return array
 	 */
-	public function getPropertyFilters() : array {
+	public function getPropertyFilters(): array {
 		return $this->propertyFilters;
 	}
 
@@ -125,7 +125,6 @@ class ParametersProcessor {
 	 * @param WebRequest $request
 	 */
 	public function checkRequest( WebRequest $request ) {
-
 		// Was not filtered and the query checksum is different which means
 		// the query string was modified
 		if (
@@ -158,7 +157,6 @@ class ParametersProcessor {
 	 * @param array|null $params
 	 */
 	public function process( WebRequest $request, $params ) {
-
 		$this->parameters = [];
 
 		$query = $request->getVal( 'q' );
@@ -208,7 +206,6 @@ class ParametersProcessor {
 	}
 
 	private function fromQueryParameter( $query ) {
-
 		$params = '';
 
 		// Allow Category:Foo, Property:Bar, Concept:Foobar
@@ -216,15 +213,15 @@ class ParametersProcessor {
 			[ $ns, $v ] = explode( ':', $query, 2 );
 
 			if ( Localizer::getInstance()->getNsIndex( $ns ) === NS_CATEGORY ) {
-				$params = str_replace( '_',' ', "[[Category:$v]]" );
+				$params = str_replace( '_', ' ', "[[Category:$v]]" );
 			}
 
 			if ( Localizer::getInstance()->getNsIndex( $ns ) === SMW_NS_PROPERTY ) {
-				$params = str_replace( '_',' ', "[[$v::+]]" );
+				$params = str_replace( '_', ' ', "[[$v::+]]" );
 			}
 
 			if ( Localizer::getInstance()->getNsIndex( $ns ) === SMW_NS_CONCEPT ) {
-				$params = str_replace( '_',' ', "[[Concept:$v]]" );
+				$params = str_replace( '_', ' ', "[[Concept:$v]]" );
 			}
 		} elseif ( strpos( $query, '/' ) !== false ) {
 			// PropertyFoo/ValueBar
@@ -236,7 +233,6 @@ class ParametersProcessor {
 	}
 
 	private function makeParameters( $query, $request ) {
-
 		$this->queryString = $query[0] ?? '';
 
 		$parameters = [];
@@ -310,7 +306,6 @@ class ParametersProcessor {
 	}
 
 	private function fieldConditions( $fields ) {
-
 		if ( !is_array( $fields ) || $fields === [] ) {
 			return [];
 		}
@@ -344,7 +339,6 @@ class ParametersProcessor {
 	}
 
 	private function propertyFilterConditions( $values, $clear ) {
-
 		$filters = array_keys( (array)$values );
 		$this->propertyFilters = $filters;
 
@@ -372,7 +366,6 @@ class ParametersProcessor {
 	}
 
 	private function categoryFilterConditions( $values, $clear ) {
-
 		$filters = (array)$values;
 		$conditions = [];
 		$printRequests = [];
@@ -395,7 +388,6 @@ class ParametersProcessor {
 	}
 
 	private function valueFilterConditions( $values, $cond, $clear ) {
-
 		if ( is_string( $values ) ) {
 			$filters = array_filter( explode( '|', $values ) );
 		} else {
@@ -481,8 +473,7 @@ class ParametersProcessor {
 	}
 
 	private function addDefaultPrintRequests( string $query ) {
-
-		preg_match_all('/\[\[(.*?)\]\]/i', $query, $matches );
+		preg_match_all( '/\[\[(.*?)\]\]/i', $query, $matches );
 		$printRequests = [];
 
 		foreach ( $matches[1] as $match ) {

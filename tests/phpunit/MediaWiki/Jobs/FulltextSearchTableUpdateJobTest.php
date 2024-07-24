@@ -19,7 +19,7 @@ class FulltextSearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -30,13 +30,12 @@ class FulltextSearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -51,7 +50,6 @@ class FulltextSearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testJobRun( $parameters ) {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new FulltextSearchTableUpdateJob(
@@ -65,7 +63,6 @@ class FulltextSearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		$provider[] = [
 			'diff' => [ 1, 2 ]
 		];

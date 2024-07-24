@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 class ArrayStopwordAnalyzerTest extends TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\Onoi\Tesa\StopwordAnalyzer\ArrayStopwordAnalyzer',
 			new ArrayStopwordAnalyzer()
@@ -28,7 +27,6 @@ class ArrayStopwordAnalyzerTest extends TestCase {
 	 * @dataProvider stopWordsProvider
 	 */
 	public function testIsStopWord( $defaultList, $word, $expected ) {
-
 		$instance = new ArrayStopwordAnalyzer( $defaultList );
 
 		$this->assertEquals(
@@ -38,7 +36,6 @@ class ArrayStopwordAnalyzerTest extends TestCase {
 	}
 
 	public function stopWordsProvider() {
-
 		$defaultList = array( 'Foo', 'かつて', 'bAR' );
 
 		$provider[] = array(

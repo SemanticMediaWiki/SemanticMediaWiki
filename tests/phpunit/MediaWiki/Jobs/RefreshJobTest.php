@@ -22,7 +22,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -34,14 +34,13 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -63,7 +62,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parameterDataProvider
 	 */
 	public function testRunJobOnMockStore( $parameters, $expected ) {
-
 		$title = Title::newFromText( __METHOD__ );
 
 		$expectedToRun = $expected['spos'] === null ? $this->once() : $this->once();
@@ -102,7 +100,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function parameterDataProvider() {
-
 		$provider = [];
 
 		// #0 Empty

@@ -16,7 +16,6 @@ use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
 class ChangeListenerAwareTraitTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRegister_Get_Clear() {
-
 		$changeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListener' )
 			->disableOriginalConstructor()
 			->getMock();

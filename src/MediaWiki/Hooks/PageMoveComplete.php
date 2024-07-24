@@ -51,7 +51,6 @@ class PageMoveComplete implements HookListener {
 		int $oldId,
 		int $newId
 	): bool {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		// Delete all data for a non-enabled target NS

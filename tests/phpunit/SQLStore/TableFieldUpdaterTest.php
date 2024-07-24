@@ -16,7 +16,6 @@ use SMW\SQLStore\TableFieldUpdater;
 class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -28,7 +27,6 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateSortField() {
-
 		$collator = $this->getMockBuilder( '\SMW\MediaWiki\Collator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -69,7 +67,6 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateRevField() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -101,7 +98,6 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateTouchedField() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -133,7 +129,6 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateIwField() {
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -157,7 +152,7 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$store
 		);
 
-		$instance->updateIwField( 42,'foo', 'abc1234' );
+		$instance->updateIwField( 42, 'foo', 'abc1234' );
 	}
 
 }

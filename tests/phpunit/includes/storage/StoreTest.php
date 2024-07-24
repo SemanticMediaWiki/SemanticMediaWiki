@@ -38,7 +38,7 @@ class StoreTest extends DatabaseTestCase {
 	/**
 	* @dataProvider getSemanticDataProvider
 	*/
-	public function testGetSemanticData( $titleText ,$filter = false) {
+	public function testGetSemanticData( $titleText, $filter = false ) {
 		$title = Title::newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
@@ -52,8 +52,8 @@ class StoreTest extends DatabaseTestCase {
 
 	public function getPropertyValuesDataProvider() {
 		return [
-			[ Title::newMainPage()->getFullText(), new DIProperty('_MDAT') ],
-			[ Title::newMainPage()->getFullText(), DIProperty::newFromUserLabel('Age') ],
+			[ Title::newMainPage()->getFullText(), new DIProperty( '_MDAT' ) ],
+			[ Title::newMainPage()->getFullText(), DIProperty::newFromUserLabel( 'Age' ) ],
 		];
 	}
 
@@ -72,7 +72,7 @@ class StoreTest extends DatabaseTestCase {
 
 	public function getPropertySubjectsDataProvider() {
 		return [
-			[ new DIProperty('_MDAT'), null ],
+			[ new DIProperty( '_MDAT' ), null ],
 		];
 	}
 
@@ -188,7 +188,6 @@ class StoreTest extends DatabaseTestCase {
 	}
 
 	public function testConnection() {
-
 		$store = StoreFactory::getStore();
 		$store->setConnectionManager( new ConnectionManager() );
 
@@ -199,7 +198,6 @@ class StoreTest extends DatabaseTestCase {
 	}
 
 	public function testGetRedirectTarget() {
-
 		$wikipage = new DIWikiPage( 'Foo', NS_MAIN );
 		$expected = new DIWikiPage( 'Bar', NS_MAIN );
 

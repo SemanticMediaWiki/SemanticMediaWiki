@@ -21,7 +21,7 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 	private $permissionExaminer;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -39,13 +39,12 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EntityExaminerTask::class,
 			new EntityExaminerTask( $this->store, $this->entityExaminerIndicatorsFactory )
@@ -53,7 +52,6 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_EmptySubject() {
-
 		$instance = new EntityExaminerTask(
 			$this->store,
 			$this->entityExaminerIndicatorsFactory
@@ -66,7 +64,6 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$entityExaminerDeferrableCompositeIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -94,7 +91,6 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_Placeholder() {
-
 		$entityExaminerDeferrableCompositeIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider' )
 			->disableOriginalConstructor()
 			->getMock();

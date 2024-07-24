@@ -16,7 +16,6 @@ use SMW\Utils\Flag;
 class FlagTest extends \PHPUnit_Framework_TestCase {
 
 	public function testIs() {
-
 		$instance = new Flag( 2 | 4 | 16 );
 
 		$this->assertTrue(
@@ -41,7 +40,6 @@ class FlagTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNot() {
-
 		$instance = new Flag( 2 | 4 | 16 );
 
 		$this->assertFalse(

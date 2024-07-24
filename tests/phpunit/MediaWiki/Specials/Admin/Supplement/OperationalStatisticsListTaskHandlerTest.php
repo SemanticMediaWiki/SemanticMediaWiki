@@ -23,7 +23,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 	private $store;
 	private $outputFormatter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -39,13 +39,12 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			OperationalStatisticsListTaskHandler::class,
 			new OperationalStatisticsListTaskHandler( $this->outputFormatter )
@@ -53,7 +52,6 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 	}
 
 	public function testGetHtml() {
-
 		$instance = new OperationalStatisticsListTaskHandler(
 			$this->outputFormatter
 		);
@@ -65,18 +63,16 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 	}
 
 	public function testIsTaskFor() {
-
 		$instance = new OperationalStatisticsListTaskHandler(
 			$this->outputFormatter
 		);
 
 		$this->assertTrue(
-			$instance->isTaskFor( 'stats')
+			$instance->isTaskFor( 'stats' )
 		);
 	}
 
 	public function testHandleRequest() {
-
 		$semanticStatistics = [
 			'PROPUSES' => 0,
 			'ERRORUSES' => 0,
@@ -111,7 +107,6 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 	}
 
 	public function testHandleSubRequest() {
-
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();

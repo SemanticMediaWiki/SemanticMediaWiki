@@ -25,7 +25,6 @@ class QueryLinker {
 	 * @return Infolink
 	 */
 	public static function get( Query $query, array $parameters = [] ) {
-
 		$link = Infolink::newInternalLink( '', ':Special:Ask', false, [] );
 		$link->setCompactLink( $GLOBALS['smwgCompactLinkSupport'] );
 
@@ -52,7 +51,6 @@ class QueryLinker {
 	}
 
 	private static function getParameters( $query ) {
-
 		$params = [ trim( $query->getQueryString( true ) ) ];
 
 		foreach ( $query->getExtraPrintouts() as /* PrintRequest */ $printout ) {

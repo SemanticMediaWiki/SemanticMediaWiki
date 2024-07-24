@@ -93,7 +93,6 @@ class ProtectionValidator {
 	 * @param ChangeRecord $changeRecord
 	 */
 	public function invalidateCache( DIProperty $property, ChangeRecord $changeRecord ) {
-
 		if ( $property->getKey() !== '_CHGPRO' ) {
 			return;
 		}
@@ -184,7 +183,6 @@ class ProtectionValidator {
 	 * @return boolean
 	 */
 	public function hasEditProtectionOnNamespace( Title $title ) {
-
 		$subject = DIWikiPage::newFromTitle(
 			$title
 		);
@@ -208,8 +206,7 @@ class ProtectionValidator {
 	 *
 	 * @return boolean
 	 */
-	public function isClassifiedAsImportPerformerProtected( Title $title, User $user ) : bool {
-
+	public function isClassifiedAsImportPerformerProtected( Title $title, User $user ): bool {
 		if ( $this->importPerformers === [] ) {
 			return false;
 		}
@@ -249,7 +246,6 @@ class ProtectionValidator {
 	 * @return boolean
 	 */
 	public function hasChangePropagationProtection( Title $title ) {
-
 		$subject = DIWikiPage::newFromTitle( $title )->asBase();
 		$namespace = $subject->getNamespace();
 
@@ -272,7 +268,6 @@ class ProtectionValidator {
 	 * @return boolean
 	 */
 	public function hasProtection( Title $title ) {
-
 		$subject = DIWikiPage::newFromTitle(
 			$title
 		);
@@ -288,7 +283,6 @@ class ProtectionValidator {
 	 * @return boolean
 	 */
 	public function hasCreateProtection( Title $title = null ) {
-
 		if ( $title === null ) {
 			return false;
 		}
@@ -311,7 +305,6 @@ class ProtectionValidator {
 	 * @return boolean
 	 */
 	public function hasEditProtection( Title $title = null ) {
-
 		if ( $title === null ) {
 			return false;
 		}
@@ -326,7 +319,6 @@ class ProtectionValidator {
 	}
 
 	private function checkProtection( $subject, $property = null ) {
-
 		if ( $property === null ) {
 			$property = new DIProperty( '_EDIP' );
 		}

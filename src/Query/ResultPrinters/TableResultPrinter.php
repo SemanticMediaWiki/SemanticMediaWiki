@@ -61,7 +61,6 @@ class TableResultPrinter extends ResultPrinter {
 	 * {@inheritDoc}
 	 */
 	public function getParamDefinitions( array $definitions ) {
-
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['class'] = [
@@ -96,7 +95,6 @@ class TableResultPrinter extends ResultPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
-
 		$this->prefixParameterProcessor = new PrefixParameterProcessor( $res->getQuery(),
 			$this->params['prefix'] );
 
@@ -366,7 +364,6 @@ class TableResultPrinter extends ResultPrinter {
 	 * @see ResultPrinter::getResources
 	 */
 	protected function getResources() {
-
 		$class = isset( $this->params['class'] ) ? $this->params['class'] : '';
 
 		if ( strpos( $class, 'datatable' ) === false ) {
@@ -390,7 +387,6 @@ class TableResultPrinter extends ResultPrinter {
 	}
 
 	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ) {
-
 		$tableAttrs['width'] = '100%';
 		$tableAttrs['style'] = 'opacity:.0; display:none;';
 

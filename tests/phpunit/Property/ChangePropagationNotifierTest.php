@@ -25,7 +25,7 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment(
@@ -55,13 +55,12 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangePropagationNotifier::class,
 			new ChangePropagationNotifier( $this->store, $this->serializerFactory )
@@ -72,7 +71,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnProperty( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-
 		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
 			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
 		}
@@ -92,7 +90,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnCategory( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-
 		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
 			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
 		}
@@ -109,7 +106,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function detectChanges( $subject, $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-
 		$this->mockedStoreValues = $mockedStoreValues;
 
 		$expectedToRun = $expected['job'] ? $this->atLeastOnce() : $this->never();
@@ -168,7 +164,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataItemDataProvider() {
-
 		// Single
 		$subject  = [
 			DIWikiPage::newFromText( __METHOD__ )
@@ -183,16 +178,16 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 
 		return [
 			//  $mockedStoreValues, $dataValues, $settings,               $expected
-			[ $subjects, [],   [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ [],   $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ $subject,  $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ $subject,  [],   [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ $subject,  [],   [ '_PVAL'          ], [ 'diff' => true,  'job' => true ] ],
-			[ $subjects, $subjects, [ '_PVAL'          ], [ 'diff' => false, 'job' => false ] ],
-			[ $subject,  $subject,  [ '_PVAL'          ], [ 'diff' => false, 'job' => false ] ],
-			[ $subjects, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ $subject,  $subject,  [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ [ new DIBlob( '>100') ],  [ new DIBlob( '&gt;100') ],  [ '_PVAL', '_PVAL' ], [ 'diff' => false,  'job' => false ] ]
+			[ $subjects, [], [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ [], $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ $subject, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ $subject, [], [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ $subject, [], [ '_PVAL' ], [ 'diff' => true, 'job' => true ] ],
+			[ $subjects, $subjects, [ '_PVAL' ], [ 'diff' => false, 'job' => false ] ],
+			[ $subject, $subject, [ '_PVAL' ], [ 'diff' => false, 'job' => false ] ],
+			[ $subjects, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ $subject, $subject, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ [ new DIBlob( '>100' ) ], [ new DIBlob( '&gt;100' ) ], [ '_PVAL', '_PVAL' ], [ 'diff' => false, 'job' => false ] ]
 		];
 	}
 

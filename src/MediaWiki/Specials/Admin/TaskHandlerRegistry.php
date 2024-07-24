@@ -59,7 +59,6 @@ class TaskHandlerRegistry {
 	 * @param User $user
 	 */
 	public function registerTaskHandlers( array $taskHandlers, User $user ) {
-
 		if ( $this->onRegisterTaskHandlers ) {
 			return;
 		}
@@ -95,7 +94,7 @@ class TaskHandlerRegistry {
 	 *
 	 * @return TaskHandler[]
 	 */
-	public function get( string $type ) : array {
+	public function get( string $type ): array {
 		$taskHandlers = [];
 
 		foreach ( $this->taskHandlers as $taskHandler ) {

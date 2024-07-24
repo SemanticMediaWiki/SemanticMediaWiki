@@ -35,7 +35,6 @@ class RdfResultPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	public function getMimeType( QueryResult $queryResult ) {
-
 		if ( ( $this->params['syntax'] ?? '' ) === 'turtle' ) {
 			return 'application/x-turtle';
 		}
@@ -84,7 +83,6 @@ class RdfResultPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
-
 		if ( $outputMode !== SMW_OUTPUT_FILE ) {
 			return $this->getRdfLink( $res, $outputMode );
 		}
@@ -93,7 +91,6 @@ class RdfResultPrinter extends FileExportPrinter {
 	}
 
 	private function getRdfLink( QueryResult $res, $outputMode ) {
-
 		// Can be viewed as HTML if requested, no more parsing needed
 		$this->isHTML = $outputMode == SMW_OUTPUT_HTML;
 
@@ -106,7 +103,6 @@ class RdfResultPrinter extends FileExportPrinter {
 	}
 
 	private function makeExport( QueryResult $res, $outputMode ) {
-
 		$exporterFactory = new ExporterFactory();
 		$exporter = $exporterFactory->getExporter();
 
@@ -134,7 +130,6 @@ class RdfResultPrinter extends FileExportPrinter {
 	}
 
 	private function makeExportData( $exporter, $row ) {
-
 		$subject = reset( $row )->getResultSubject();
 		$expData = $exporter->makeExportDataForSubject( $subject );
 

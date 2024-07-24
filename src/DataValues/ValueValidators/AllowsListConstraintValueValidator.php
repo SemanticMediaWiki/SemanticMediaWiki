@@ -66,7 +66,6 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	 * {@inheritDoc}
 	 */
 	public function validate( $dataValue ) {
-
 		$this->hasConstraintViolation = false;
 		$this->errorMsg = 'smw-constraint-error-allows-value-list';
 
@@ -129,7 +128,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 
 		// Only the first 10 values otherwise the list may become too long
 		$allowedValueList = implode( ', ', array_slice(
-			array_keys( $allowedValueList ), 0 , 10 )
+			array_keys( $allowedValueList ), 0, 10 )
 		);
 
 		$allowedValueList = str_replace( [ '>', '<' ], [ '%3C', '%3E' ], $allowedValueList );
@@ -148,7 +147,6 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	private function checkConstraintViolation( $dataValue, $allowedValues, &$allowedValueList ) {
-
 		if ( !is_array( $allowedValues ) ) {
 			return true;
 		}
@@ -224,7 +222,6 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	private function check_range( $exp, $value, $allowedValue, &$range, &$isAllowed, &$allowedValueList ) {
-
 		$v = $allowedValue->getString();
 
 		// If a previous range comparison failed then bail-out!
@@ -253,7 +250,6 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	private function check_bounds( $value, $allowedValue, &$isAllowed, &$allowedValueList ) {
-
 		$v = $allowedValue->getString();
 
 		if ( strpos( $v, '...' ) === false ) {

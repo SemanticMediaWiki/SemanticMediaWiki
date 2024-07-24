@@ -58,7 +58,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'elastic';
 	}
 
@@ -67,8 +67,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
-
+	public function isTaskFor( string $action ): bool {
 		// Root
 		$actions = [
 			$this->getTask()
@@ -92,7 +91,6 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-title' ),
 			[ 'action' => $this->getTask() ]
@@ -128,7 +126,6 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$connection = $this->getStore()->getConnection( 'elastic' );
 		$action = $webRequest->getText( 'action' );
 
@@ -153,7 +150,6 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function outputNoNodesAvailable( $connection ) {
-
 		$this->outputHead();
 		$config = $connection->getConfig();
 
@@ -179,7 +175,6 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function outputHead() {
-
 		$this->outputFormatter->setPageTitle( 'Elasticsearch' );
 		$this->outputFormatter->addHelpLink( 'https://www.semantic-mediawiki.org/wiki/Help:ElasticStore' );
 
@@ -197,7 +192,6 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function outputInfo() {
-
 		$connection = $this->getStore()->getConnection( 'elastic' );
 		$html = '';
 

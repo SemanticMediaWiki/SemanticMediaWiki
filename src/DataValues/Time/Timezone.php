@@ -146,7 +146,6 @@ class Timezone {
 	 * @return boolean
 	 */
 	public static function isValid( $identifer ) {
-
 		$identifer = str_replace( ' ', '_', $identifer );
 
 		if ( isset( self::$shortList[strtoupper( $identifer )] ) ) {
@@ -170,7 +169,6 @@ class Timezone {
 	 * @return boolean
 	 */
 	public static function isMilitary( $abbreviation ) {
-
 		$abbreviation = strtoupper( $abbreviation );
 
 		if ( isset( self::$shortList[$abbreviation] ) ) {
@@ -188,7 +186,6 @@ class Timezone {
 	 * @return false|integer
 	 */
 	public static function getIdByAbbreviation( $identifer ) {
-
 		if ( isset( self::$shortList[strtoupper( $identifer )] ) ) {
 			return self::$shortList[strtoupper( $identifer )][0];
 		}
@@ -211,7 +208,6 @@ class Timezone {
 	 * @return false|string
 	 */
 	public static function getTimezoneLiteralById( $identifer ) {
-
 		foreach ( self::$shortList as $abbreviation => $value ) {
 			if ( is_numeric( $identifer ) && $value[0] == $identifer ) {
 				return $abbreviation;
@@ -235,7 +231,6 @@ class Timezone {
 	 * @return false|string
 	 */
 	public static function getOffsetByAbbreviation( $abbreviation ) {
-
 		if ( isset( self::$shortList[strtoupper( $abbreviation )] ) ) {
 			return self::$shortList[strtoupper( $abbreviation )][1];
 		}
@@ -266,7 +261,6 @@ class Timezone {
 	 * @return string
 	 */
 	public static function getNameByAbbreviation( $abbreviation ) {
-
 		$abbreviation = strtoupper( $abbreviation );
 
 		if ( isset( self::$shortList[$abbreviation] ) ) {
@@ -293,7 +287,6 @@ class Timezone {
 	 * @return DateInterval
 	 */
 	public static function newDateIntervalWithOffsetFrom( $abbreviation ) {
-
 		$minutes = 0;
 		$hour = 0;
 
@@ -312,7 +305,6 @@ class Timezone {
 	 * @return false|DateTimeZone
 	 */
 	public static function newDateTimeZone( $abbreviation ) {
-
 		try {
 			$dateTimeZone = new DateTimeZone( $abbreviation );
 		} catch( \Exception $e ) {
@@ -332,7 +324,6 @@ class Timezone {
 	 * @return array
 	 */
 	public static function getDateTimeZoneList() {
-
 		if ( self::$dateTimeZoneList !== [] ) {
 			return self::$dateTimeZoneList;
 		}
@@ -355,7 +346,6 @@ class Timezone {
 	 * @return DateTime
 	 */
 	public static function getModifiedTime( DateTime $dateTime, &$tz = 0 ) {
-
 		if ( ( $timezoneLiteral = self::getTimezoneLiteralById( $tz ) ) === false ) {
 			$tz = $timezoneLiteral;
 			return $dateTime;

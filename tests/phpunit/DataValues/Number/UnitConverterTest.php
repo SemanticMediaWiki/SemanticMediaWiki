@@ -23,7 +23,7 @@ class UnitConverterTest extends \PHPUnit_Framework_TestCase {
 	private $propertySpecificationLookup;
 	private $entityCache;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -37,12 +37,11 @@ class UnitConverterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			UnitConverter::class,
 			new UnitConverter( $this->propertySpecificationLookup, $this->entityCache )
@@ -50,7 +49,6 @@ class UnitConverterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorOnMissingConversionData() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$numberValue = $this->getMockBuilder( '\SMWNumberValue' )
@@ -79,7 +77,6 @@ class UnitConverterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider conversionDataProvider
 	 */
 	public function testFetchConversionData( $thousands, $decimal, $correspondsTo, $unitIds, $unitFactors, $mainUnit, $prefixalUnitPreference ) {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->propertySpecificationLookup->expects( $this->once() )
@@ -134,7 +131,6 @@ class UnitConverterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLoadConversionData() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$data = [
@@ -174,7 +170,6 @@ class UnitConverterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function conversionDataProvider() {
-
 		$provider[] = [
 			',',
 			'.',

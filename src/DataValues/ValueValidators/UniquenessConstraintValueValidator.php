@@ -76,7 +76,6 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	 * {@inheritDoc}
 	 */
 	public function validate( $dataValue ) {
-
 		$this->hasConstraintViolation = false;
 
 		if ( !$this->canValidate( $dataValue ) ) {
@@ -94,7 +93,6 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	private function canValidate( $dataValue ) {
-
 		if ( !$dataValue->isEnabledFeature( SMW_DV_PVUC ) || !$dataValue instanceof DataValue ) {
 			return false;
 		}

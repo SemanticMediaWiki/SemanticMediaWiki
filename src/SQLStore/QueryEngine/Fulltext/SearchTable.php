@@ -95,7 +95,6 @@ class SearchTable {
 	 * @return boolean
 	 */
 	public function isExemptedPropertyById( $id ) {
-
 		$dataItem = $this->getDataItemById( $id );
 
 		if ( !$dataItem instanceof DIWikiPage || $dataItem->getDBKey() === '' ) {
@@ -123,7 +122,6 @@ class SearchTable {
 	 * @return boolean
 	 */
 	public function isExemptedProperty( DIProperty $property ) {
-
 		$dataItemTypeId = DataTypeRegistry::getInstance()->getDataItemId(
 			$property->findPropertyTypeID()
 		);
@@ -144,7 +142,6 @@ class SearchTable {
 	 * @return boolean
 	 */
 	public function isValidByType( $type ) {
-
 		$indexType = SMW_FT_NONE;
 
 		if ( $type === DataItem::TYPE_BLOB ) {

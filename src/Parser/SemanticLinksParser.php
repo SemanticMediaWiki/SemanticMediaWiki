@@ -32,7 +32,6 @@ class SemanticLinksParser {
 	 * @return array
 	 */
 	public function parse( $text ) {
-
 		$matches = [];
 
 		preg_match(

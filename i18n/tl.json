@@ -5,6 +5,7 @@
 			"Brazal.dang",
 			"Emem.calist",
 			"GinawaSaHapon",
+			"Qwrop",
 			"Sky Harbor",
 			"아라"
 		]
@@ -171,7 +172,6 @@
 	"smw_browselink": "Tumingin-tingin sa mga pag-aari",
 	"smw_browse_article": "Ipasok/ilagay ang pangalan ng pahinang pagsisimulan ng pagtingin-tingin.",
 	"smw_browse_go": "Gawin na",
-	"smw_browse_more": "…",
 	"smw_browse_show_incoming": "ipakita ang mga pag-aaring kumakawing (umuugnay) dito",
 	"smw_browse_hide_incoming": "itago ang mga pag-aaring kumakawing (umuugnay) dito",
 	"smw_browse_no_outgoing": "Walang mga pag-aari ang pahinang ito.",
@@ -194,7 +194,7 @@
 	"smw_smwadmin_updatenotstarted": "Mayroon nang isang tumatakbong proseso ng pagsasapanahon.\nHindi na lilikha ng isa pa.\n\nBumalik sa $1.",
 	"smw_smwadmin_updatestopped": "Inihinto ang lahat ng umiiral na mga proseso ng pagsasapanahon.\n\nBumalik sa $1.",
 	"smw_smwadmin_updatenotstopped": "Upang mapahinto ang tumatakbong proseso ng pagsasapanahon, dapat mong pasiglahin ang kahong lagayan ng tsek upang maipahiwatig na talagang nakatitiyak ka.\n\nBumalik sa $1.",
-	"smw-admin-docu": "Tumutulong ang natatanging pahinang ito sa iyo sa panahon ng pagluluklok at pagtataas ng uri ng <a href=\"http://semantic-mediawiki.org\">Semantikong MediaWiki</a>.\nHuwag kalimutang gumawa ng karagdagang sipi ng mahalagang dato bago isagawa ang mga tungkuling pangtagapangasiwa.",
+	"smw-admin-docu": "Tumutulong ang natatanging pahinang ito sa iyo sa panahon ng pagluluklok at pagtataas ng uri ng <a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a>.\nHuwag kalimutang gumawa ng karagdagang sipi ng mahalagang dato bago isagawa ang mga tungkuling pangtagapangasiwa.",
 	"smw-admin-db": "Pagpapanatili ng kalipunan ng datos",
 	"smw-admin-dbdocu": "Nangangailangan ang Semantikong Mediawiki ng ilang mga karugtong sa kalipunan ng dato ng MediaWiki upang maitabi ang datong hinggil sa kahulugan ng mga salita.\nTinitiyak ng tungkuling nasa ibaba na tama ang pagkakahanda ng kalipunan ng dato mo.\nHindi nakakaapekto ang mga pagbabagong ginawa sa hakbang na ito sa iba pang mga bahagi ng kalipunan ng dato ng MediaWiki, at madaling/maginhawang maibabalik kung nanaisin.\nMaaaring isagawa ng maramihang ulit ang tungkulin ng paghahandang ito na hindi nakapagdurulot ng anumang pinsala, subalit isang ulit lamang itong kailangan sa pagluluklok/instalasyon o pagtataas ng uri/grado.",
 	"smw-admin-permissionswarn": "Kapag nabigo ang pagsasagawa na mayroong mga kamalian ng SQL, maaaring walang sapat na mga kapahintulutan ang tagagamit ng kalipunan ng dato na hinirang ng wiki mo (siyasatin ang iyong LocalSettings.php).\nMaaaring pagkalooban ang tagagamit na ito ng karagdagang mga kapahintulutan upang makalikha at makapagbura ng mga talahanayan, pansamantalang ipasok ang panglagda ng iyong ugat ng kalipunan ng dato sa LocalSettings.php, o gamitin ang panitik ng pagpapanatili na <code>setupStore.php</code> na makakagamit ng mga kredensiyal ng isang tagapangasiwa.",

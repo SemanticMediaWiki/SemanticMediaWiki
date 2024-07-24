@@ -101,7 +101,6 @@ class HierarchyLookup {
 	 * @param DIProperty $property
 	 */
 	public function invalidateCache( DIProperty $property ) {
-
 		if ( $property->getKey() === '_SUBP' ) {
 			$this->cache->delete(
 				smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_PROPERTY, self::TYPE_SUB, $this->subpropertyDepth ] )
@@ -149,7 +148,6 @@ class HierarchyLookup {
 	 * @return boolean
 	 */
 	public function hasSubproperty( DIProperty $property ) {
-
 		if ( $this->subpropertyDepth < 1 ) {
 			return false;
 		}
@@ -169,7 +167,6 @@ class HierarchyLookup {
 	 * @return boolean
 	 */
 	public function hasSubcategory( DIWikiPage $category ) {
-
 		if ( $this->subcategoryDepth < 1 ) {
 			return false;
 		}
@@ -189,7 +186,6 @@ class HierarchyLookup {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function findSubpropertyList( DIProperty $property ) {
-
 		if ( $this->subpropertyDepth < 1 ) {
 			return false;
 		}
@@ -205,7 +201,6 @@ class HierarchyLookup {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function findSubcategoryList( DIWikiPage $category ) {
-
 		if ( $this->subcategoryDepth < 1 ) {
 			return [];
 		}
@@ -221,7 +216,6 @@ class HierarchyLookup {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function findNearbySuperCategories( DIWikiPage $category ) {
-
 		if ( $this->subcategoryDepth < 1 ) {
 			return [];
 		}
@@ -237,7 +231,6 @@ class HierarchyLookup {
 	 * @return DIProperty[]|DIWikiPage[]|[]
 	 */
 	public function getConsecutiveHierarchyList( $id, $hierarchyType = self::TYPE_SUB ) {
-
 		$objectType = null;
 
 		if ( $id instanceof DIProperty ) {
@@ -324,7 +317,6 @@ class HierarchyLookup {
 	}
 
 	private function findSubproperties( &$hierarchyMembers, DIProperty $property, $depth ) {
-
 		if ( $depth++ > $this->subpropertyDepth ) {
 			return;
 		}
@@ -348,7 +340,6 @@ class HierarchyLookup {
 	}
 
 	private function findSubcategories( &$hierarchyMembers, DIWikiPage $category, $depth ) {
-
 		if ( $depth++ > $this->subcategoryDepth ) {
 			return;
 		}
@@ -364,7 +355,6 @@ class HierarchyLookup {
 	}
 
 	private function findSuperCategoriesByDepth( &$hierarchyMembers, DIWikiPage $category, $depth ) {
-
 		if ( $depth++ > $this->subcategoryDepth ) {
 			return;
 		}
@@ -380,7 +370,6 @@ class HierarchyLookup {
 	}
 
 	private function lookup( $property, $key, DIWikiPage $subject, $requestOptions ) {
-
 		if ( is_string( $property ) ) {
 			$property = new DIProperty( $property );
 		}

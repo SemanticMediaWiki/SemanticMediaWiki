@@ -33,7 +33,7 @@ class TimeDataTypeTest extends DatabaseTestCase {
 	private $semanticDataValidator;
 	private ByPageSemanticDataFinder $semanticDataFinder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if ( strpos( strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] ), 'virtuoso' ) !== false ) {
@@ -61,8 +61,7 @@ class TimeDataTypeTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -70,7 +69,6 @@ class TimeDataTypeTest extends DatabaseTestCase {
 	}
 
 	public function testImportOfDifferentDateWithAssortmentOfOutputConversion() {
-
 		$this->importedTitles = [
 			'TimeDataTypeRegressionTest',
 			'Property:Has query date',
@@ -233,7 +231,6 @@ class TimeDataTypeTest extends DatabaseTestCase {
 	}
 
 	protected function assertThatDateValuesAreSet( $expected, $semanticData ) {
-
 		$runDateValueAssert = false;
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -254,31 +251,31 @@ class TimeDataTypeTest extends DatabaseTestCase {
 	}
 
 	protected function setWikiValueDateValueFormatter() {
-		return function( $dataValue ) { return $dataValue->getWikiValue();
+		return function ( $dataValue ) { return $dataValue->getWikiValue();
 		};
 	}
 
 	protected function setWikiValueDateWithGRCalendarModelValueFormatter() {
-		return function( $dataValue ) {
+		return function ( $dataValue ) {
 			$dataValue->setOutputFormat( 'GR' );
 			return $dataValue->getWikiValue();
 		};
 	}
 
 	protected function setWikiValueDateWithJLCalendarModelValueFormatter() {
-		return function( $dataValue ) {
+		return function ( $dataValue ) {
 			$dataValue->setOutputFormat( 'JL' );
 			return $dataValue->getWikiValue();
 		};
 	}
 
 	protected function setISO8601DateValueFormatter() {
-		return function( $dataValue ) { return $dataValue->getISO8601Date();
+		return function ( $dataValue ) { return $dataValue->getISO8601Date();
 		};
 	}
 
 	protected function setMediaWikiDateValueFormatter() {
-		return function( $dataValue ) { return $dataValue->getMediaWikiDate();
+		return function ( $dataValue ) { return $dataValue->getMediaWikiDate();
 		};
 	}
 

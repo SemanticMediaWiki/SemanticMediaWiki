@@ -57,7 +57,6 @@ class ConceptQuerySegmentBuilder {
 	 * @return QuerySegment|null
 	 */
 	public function getQuerySegmentFrom( $conceptDescriptionText ) {
-
 		QuerySegment::$qnum = 0;
 
 		$conditionBuilder = $this->conditionBuilder;

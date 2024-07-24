@@ -33,7 +33,6 @@ class ValueFormatter {
 	 * @return string
 	 */
 	public static function getFormattedSubject( DataValue $dataValue ) {
-
 		$extra = '';
 
 		if ( $dataValue->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
@@ -69,7 +68,6 @@ class ValueFormatter {
 	 * @return string
 	 */
 	public static function getFormattedValue( DataValue $dataValue, PropertyValue $propertyValue, $incoming = false, $user = null ) {
-
 		$linker = smwfGetLinker();
 		$dataItem = $dataValue->getContextPage();
 
@@ -140,7 +138,6 @@ class ValueFormatter {
 	 * @return string
 	 */
 	public static function getPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ) {
-
 		$proptext = null;
 
 		$linker = smwfGetLinker();
@@ -159,7 +156,6 @@ class ValueFormatter {
 	}
 
 	private static function findPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ) {
-
 		$property = $propertyValue->getDataItem();
 		$contextPage = $propertyValue->getContextPage();
 
@@ -198,7 +194,6 @@ class ValueFormatter {
 	 * @return string
 	 */
 	public static function addNonBreakingSpace( $text ) {
-
 		$nonBreakingSpace = html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' );
 		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, -1, $count );
 

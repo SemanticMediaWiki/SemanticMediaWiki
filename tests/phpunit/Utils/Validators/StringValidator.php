@@ -20,8 +20,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $actual
 	 */
 	public function assertThatStringContains( $expected, $actual, $message = '' ) {
-
-		$callback = function( &$expected, $actual, &$actualCounted ) {
+		$callback = function ( &$expected, $actual, &$actualCounted ) {
 			foreach ( $expected as $key => $pattern ) {
 				if ( $this->isMatch( $pattern, $actual ) ) {
 					$actualCounted++;
@@ -40,8 +39,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $actual
 	 */
 	public function assertThatStringNotContains( $expected, $actual, $message = '' ) {
-
-		$callback = function( &$expected, $actual, &$actualCounted ) {
+		$callback = function ( &$expected, $actual, &$actualCounted ) {
 			foreach ( $expected as $key => $pattern ) {
 				if ( $this->isMatch( $pattern, $actual ) === false ) {
 					$actualCounted++;
@@ -54,7 +52,6 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function doAssertWith( $expected, $actual, $message, $method, $callback ) {
-
 		if ( !is_array( $expected ) ) {
 			$expected = [ $expected ];
 		}
@@ -86,11 +83,10 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function isMatch( $pattern, $source ) {
-
 		// use /.../ indicator to use the preg_match search match
-		if ( strlen( $pattern) >= 2 && substr( $pattern, 0, 1) === '/' && substr( $pattern, -1) === '/' ) {
+		if ( strlen( $pattern ) >= 2 && substr( $pattern, 0, 1 ) === '/' && substr( $pattern, -1 ) === '/' ) {
 
-			return (bool) preg_match( $pattern, $source );
+			return (bool)preg_match( $pattern, $source );
 
 		}
 
@@ -100,7 +96,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 			$pattern = preg_quote( $pattern, '/' );
 			$pattern = str_replace( '\.\*', '.*?', $pattern );
 
-			return (bool) preg_match( '/' . $pattern . '/', $source );
+			return (bool)preg_match( '/' . $pattern . '/', $source );
 
 		}
 

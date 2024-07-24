@@ -20,7 +20,7 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	private $servicesFileDir;
 	private $titleFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -47,7 +47,6 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider servicesProvider
 	 */
 	public function testCanConstruct( $service, $parameters, $expected ) {
-
 		array_unshift( $parameters, $service );
 
 		$containerBuilder = $this->callbackContainerFactory->newCallbackContainerBuilder();
@@ -69,7 +68,6 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function servicesProvider() {
-
 		$contentIterator = $this->getMockBuilder( '\SMW\Importer\ContentIterator' )
 			->disableOriginalConstructor()
 			->getMock();

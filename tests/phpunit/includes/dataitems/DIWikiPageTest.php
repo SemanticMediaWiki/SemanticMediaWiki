@@ -54,7 +54,6 @@ class DIWikiPageTest extends DataItemTest {
 	 * @dataProvider sortKeyProvider
 	 */
 	public function testSortKeyRoundtrip( $title, $sortkey, $expected ) {
-
 		$instance = new DIWikiPage( $title, NS_MAIN );
 
 		$instance->setSortKey( $sortkey );
@@ -69,7 +68,6 @@ class DIWikiPageTest extends DataItemTest {
 	 * @dataProvider subEntityProvider
 	 */
 	public function testIsSubEntityOf( $dbKey, $subobjectName, $subEntity, $expected ) {
-
 		$instance = new DIWikiPage( $dbKey, NS_MAIN, '', $subobjectName );
 
 		$this->assertEquals(
@@ -79,7 +77,6 @@ class DIWikiPageTest extends DataItemTest {
 	}
 
 	public function testInNamespace() {
-
 		$instance = new DIWikiPage( 'Foo', NS_HELP );
 
 		$this->assertFalse(
@@ -92,7 +89,6 @@ class DIWikiPageTest extends DataItemTest {
 	}
 
 	public function testInNamespace_EmptyDBKey() {
-
 		$instance = new DIWikiPage( '', NS_HELP );
 
 		$this->assertFalse(
@@ -101,8 +97,7 @@ class DIWikiPageTest extends DataItemTest {
 	}
 
 	public function testDoUnserialize() {
-
-		$expected = new DIWikiPage( 'Foo', 0 , '', '' );
+		$expected = new DIWikiPage( 'Foo', 0, '', '' );
 
 		$this->assertEquals(
 			$expected,
@@ -116,7 +111,6 @@ class DIWikiPageTest extends DataItemTest {
 	}
 
 	public function sortKeyProvider() {
-
 		$provider[] = [
 			'Some_title',
 			null,
@@ -145,7 +139,6 @@ class DIWikiPageTest extends DataItemTest {
 	}
 
 	public function subEntityProvider() {
-
 		yield 'empty dbkey' => [
 			'',
 			'_ML-foo',

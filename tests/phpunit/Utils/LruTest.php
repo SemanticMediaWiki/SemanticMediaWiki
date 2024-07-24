@@ -16,7 +16,6 @@ use SMW\Utils\Lru;
 class LruTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSetGet() {
-
 		$instance = new Lru( 3 );
 
 		$instance->set( 'a', 3 );
@@ -65,7 +64,6 @@ class LruTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
 		$instance = new Lru( 3 );
 
 		$instance->set( 'a', 3 );

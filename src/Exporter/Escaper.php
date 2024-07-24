@@ -21,7 +21,6 @@ class Escaper {
 	 * @return string
 	 */
 	static public function encodePage( DIWikiPage $diWikiPage ) {
-
 		$localName = '';
 
 		if ( $diWikiPage->getInterwiki() !== '' ) {
@@ -59,7 +58,6 @@ class Escaper {
 	 * @return string
 	 */
 	static public function encodeUri( $uri ) {
-
 		$uri = $GLOBALS['smwgExportResourcesAsIri'] ? $uri : wfUrlencode( $uri );
 
 		$uri = str_replace(
@@ -85,7 +83,6 @@ class Escaper {
 	 * @return string
 	 */
 	static public function decodeUri( $uri ) {
-
 		$uri = str_replace(
 			[ '-2A', '-2C', '-3B', '-3C', '-3E', '-28', '-29', '-5B', '-5D', '-7B', '-7D', '-5C', '-24', '-5E', '-3A', '-22', '-23', '-26', '-27', '-2B', '-21', '-25', '-' ],
 			[ '*', ',', ';', '<', '>', '(', ')', '[', ']', '{', '}', '\\', '$', '^', ':', '"', '#', '&', "'", '+', '!', '%', '%' ],

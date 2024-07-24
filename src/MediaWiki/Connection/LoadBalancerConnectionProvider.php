@@ -88,7 +88,6 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 * @throws RuntimeException
 	 */
 	public function getConnection() {
-
 		if ( $this->connection !== null ) {
 			return $this->connection;
 		}
@@ -128,7 +127,6 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 * @see wfGetLB
 	 */
 	private function initLoadBalancer( $wiki = false ) {
-
 		$servicesFactory = ServicesFactory::getInstance();
 
 		if ( $wiki === false ) {

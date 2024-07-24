@@ -19,6 +19,6 @@ interface PreferenceAware {
 	 *
 	 * @return bool
 	 */
-	public function hasPreference( PreferenceExaminer $preferenceExaminer ) : bool;
+	public function hasPreference( PreferenceExaminer $preferenceExaminer ): bool;
 
 }

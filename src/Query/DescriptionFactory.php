@@ -121,7 +121,6 @@ class DescriptionFactory {
 	 * @return Description
 	 */
 	public function newFromDataValue( DataValue $dataValue ) {
-
 		if ( !$dataValue->isValid() ) {
 			return $this->newThingDescription();
 		}

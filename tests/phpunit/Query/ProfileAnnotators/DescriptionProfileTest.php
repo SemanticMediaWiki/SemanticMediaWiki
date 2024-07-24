@@ -22,14 +22,13 @@ class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
 	public function testCanConstruct() {
-
 		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -45,7 +44,6 @@ class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateProfile() {
-
 		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
 
 		$container = new DIContainer(

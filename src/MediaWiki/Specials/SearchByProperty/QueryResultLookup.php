@@ -47,7 +47,6 @@ class QueryResultLookup {
 	 * @return array
 	 */
 	public function doQueryLinksReferences( PageRequestOptions $pageRequestOptions ) {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->setLimit( $pageRequestOptions->limit + 1 );
 		$requestOptions->setOffset( $pageRequestOptions->offset );
@@ -87,7 +86,6 @@ class QueryResultLookup {
 	 * first being the entity, and the second the value
 	 */
 	public function doQuery( PageRequestOptions $pageRequestOptions ) {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = $pageRequestOptions->limit + 1;
 		$requestOptions->offset = $pageRequestOptions->offset;
@@ -126,7 +124,6 @@ class QueryResultLookup {
 	 * first being the entity, and the second the value
 	 */
 	public function doQueryForNearbyResults( PageRequestOptions $pageRequestOptions, $count, $greater = true ) {
-
 		$comparator = $greater ? SMW_CMP_GRTR : SMW_CMP_LESS;
 		$sortOrder = $greater ? 'ASC' : 'DESC';
 

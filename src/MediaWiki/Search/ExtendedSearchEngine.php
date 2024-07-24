@@ -93,7 +93,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	 * {@inheritDoc}
 	 */
 	public function searchTitle( $term ) {
-
 		$this->extendedSearch->setNamespaces(
 			$this->namespaces
 		);
@@ -107,7 +106,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	 * {@inheritDoc}
 	 */
 	public function searchText( $term ) {
-
 		$this->extendedSearch->setNamespaces(
 			$this->namespaces
 		);
@@ -196,7 +194,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	 * @return array|null
 	 */
 	public function getFeatureData( $feature ) {
-
 		if ( array_key_exists( $feature, $this->features ) ) {
 			return $this->features[$feature];
 		}
@@ -266,7 +263,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	 * {@inheritDoc}
 	 */
 	public function completionSearchWithVariants( $search ) {
-
 		// #4342
 		//
 		// This method runs before `SearchEngine::completionSearchBackend`.
@@ -291,7 +287,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	 * {@inheritDoc}
 	 */
 	protected function completionSearchBackend( $search ) {
-
 		$this->extendedSearch->setNamespaces(
 			$this->namespaces
 		);

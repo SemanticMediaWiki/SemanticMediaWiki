@@ -45,8 +45,7 @@ class ExtraFieldBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildHTML( UrlArgs $urlArgs = null ) : string {
-
+	public function buildHTML( UrlArgs $urlArgs = null ): string {
 		if ( ( $fieldList = $this->profile->get( 'search.extra_fields.field_list', [] ) ) === [] ) {
 			return '';
 		}
@@ -101,7 +100,7 @@ class ExtraFieldBuilder {
 				'fields' => $html,
 				'css-class' => $cssClass,
 				'section-label' => 'Search fields',
-				'theme' => $this->profile->get( 'theme')
+				'theme' => $this->profile->get( 'theme' )
 			]
 		);
 

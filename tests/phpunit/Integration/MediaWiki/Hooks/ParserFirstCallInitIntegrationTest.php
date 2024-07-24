@@ -23,7 +23,7 @@ class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 	private $store;
 	private $queryResult;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
@@ -42,7 +42,7 @@ class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( ['getQueryResult', 'getObjectIds', 'service' ] )
+			->setMethods( [ 'getQueryResult', 'getObjectIds', 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
@@ -61,7 +61,7 @@ class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 		);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
@@ -85,8 +85,7 @@ class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnCallback( function( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
-
+			->will( $this->returnCallback( function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
 				if ( $service === 'SingleEntityQueryLookup' ) {
 					return $singleEntityQueryLookup;
 				}
@@ -149,7 +148,6 @@ class ParserFirstCallInitIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function textToParseProvider() {
-
 		$provider = [];
 
 		#0 ask

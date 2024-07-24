@@ -19,7 +19,6 @@ class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\Query\QueryLinker',
 			new QueryLinker()
@@ -27,7 +26,6 @@ class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -55,7 +53,6 @@ class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sortOrderProvider
 	 */
 	public function testSort_PredefinedProperty( $sortKeys, $expected ) {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -78,7 +75,6 @@ class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function sortOrderProvider() {
-
 		yield[
 			[ '_MDAT' => 'DESC' ],
 			'&order=desc&sort=Modification%20date'

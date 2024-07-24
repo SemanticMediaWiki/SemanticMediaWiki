@@ -20,8 +20,7 @@ class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
 	private $idCacheManager;
 	private Database $connection;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +39,6 @@ class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SequenceMapFinder::class,
 			new SequenceMapFinder( $this->connection, $this->idCacheManager )
@@ -48,7 +46,6 @@ class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetMap() {
-
 		$row = [
 			'smw_id' => 42,
 			'smw_seqmap' => null
@@ -71,7 +68,6 @@ class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindMapById() {
-
 		$map = \SMW\Utils\HmacSerializer::compress( [ 'Foo' ] );
 
 		$row = [
@@ -105,7 +101,6 @@ class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrefetchSequenceMap() {
-
 		$map = \SMW\Utils\HmacSerializer::compress( [ 'Foo' ] );
 
 		$row = [
@@ -123,7 +118,7 @@ class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'smw_id', 'smw_seqmap'] ),
+				$this->equalTo( [ 'smw_id', 'smw_seqmap' ] ),
 				$this->equalTo( [ 'smw_id' => [ 42, 1001 ] ] ) )
 			->will( $this->returnValue( [ (object)$row ] ) );
 

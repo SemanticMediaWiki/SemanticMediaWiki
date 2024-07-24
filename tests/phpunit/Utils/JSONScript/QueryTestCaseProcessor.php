@@ -85,7 +85,6 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param QueryTestCaseInterpreter $queryTestCaseInterpreter
 	 */
 	public function processQueryCase( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
-
 		if ( !$queryTestCaseInterpreter->hasCondition() ) {
 			$this->markTestSkipped( 'Found no condition for ' . $queryTestCaseInterpreter->isAbout() );
 		}
@@ -178,7 +177,6 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param QueryTestCaseInterpreter $queryTestCaseInterpreter
 	 */
 	public function processConceptCase( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
-
 		if ( !$queryTestCaseInterpreter->hasCondition() ) {
 			$this->markTestSkipped( 'Found no condition for ' . $queryTestCaseInterpreter->isAbout() );
 		}
@@ -236,7 +234,6 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param QueryTestCaseInterpreter $queryTestCaseInterpreter
 	 */
 	public function processFormatCase( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
-
 		if ( $queryTestCaseInterpreter->fetchTextFromOutputSubject() === '' ) {
 			$this->markTestSkipped( 'No content found for ' . $queryTestCaseInterpreter->isAbout() );
 		}
@@ -244,7 +241,7 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		$textOutput = $queryTestCaseInterpreter->fetchTextFromOutputSubject();
 
 		// Strip HTML comments
-		$textOutput = preg_replace('/<!--(.*)-->/Uis', '', $textOutput );
+		$textOutput = preg_replace( '/<!--(.*)-->/Uis', '', $textOutput );
 
 		$this->stringValidator->assertThatStringContains(
 			$queryTestCaseInterpreter->getExpectedFormatOuputFor( 'to-contain' ),
@@ -254,7 +251,6 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function printDescriptionToOutput( $about, $description ) {
-
 		if ( !$this->debug ) {
 			return;
 		}
@@ -264,7 +260,6 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function printQueryResultToOutput( $queryResult ) {
-
 		if ( is_string( $queryResult ) ) {
 			return print_r( str_replace( [ "&#x0020;", "&#x003A;" ], [ " ", ":" ], $queryResult ) );
 		}

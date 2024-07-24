@@ -23,7 +23,7 @@ class SpecialAdminTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -35,13 +35,12 @@ class SpecialAdminTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\SpecialAdmin',
 			new SpecialAdmin()
@@ -49,7 +48,6 @@ class SpecialAdminTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecuteWithValidUser() {
-
 		$user = new MockSuperUser();
 		$this->testEnvironment->overrideUserPermissions( $user, [ 'smw-admin' ] );
 
@@ -79,7 +77,6 @@ class SpecialAdminTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecuteWithInvalidPermissionThrowsException() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();

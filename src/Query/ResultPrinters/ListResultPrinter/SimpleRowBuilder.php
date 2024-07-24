@@ -25,7 +25,6 @@ class SimpleRowBuilder extends RowBuilder {
 	 * @return string
 	 */
 	public function getRowText( array $fields, $rownum = 0 ) {
-
 		$fieldTexts = $this->getFieldTexts( $fields );
 
 		$firstFieldText = array_shift( $fieldTexts );
@@ -56,7 +55,6 @@ class SimpleRowBuilder extends RowBuilder {
 	 * @return array
 	 */
 	private function getFieldTexts( array $fields ) {
-
 		$columnNumber = 0;
 		$fieldTexts = [];
 
@@ -84,7 +82,6 @@ class SimpleRowBuilder extends RowBuilder {
 	 * @return string
 	 */
 	private function getFieldLabel( SMWResultArray $field ) {
-
 		$showHeaders = $this->get( 'show-headers' );
 
 		if ( $showHeaders === SMW_HEADERS_HIDE || $field->getPrintRequest()->getLabel() === '' ) {

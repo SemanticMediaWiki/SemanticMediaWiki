@@ -34,7 +34,6 @@ abstract class FixtureProperty {
 	 * @return SemanticData
 	 */
 	public function getDependencies() {
-
 		$semanticData = new SemanticData( $this->property->getDiWikiPage() );
 
 		$semanticData->addDataValue(

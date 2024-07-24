@@ -145,7 +145,6 @@ class Indexer {
 	 * @return string
 	 */
 	public function getIndexName( $type ) {
-
 		$index = $this->store->getConnection( 'elastic' )->getIndexName( $type );
 
 		// If the rebuilder has set a specific version, use it to avoid writing to
@@ -163,7 +162,6 @@ class Indexer {
 	 * @param array $idList
 	 */
 	public function delete( array $idList, $isConcept = false ) {
-
 		if ( $idList === [] ) {
 			return;
 		}
@@ -223,7 +221,6 @@ class Indexer {
 	 * @param array $data
 	 */
 	public function create( DIWikiPage $dataItem, array $data = [] ) {
-
 		$title = $dataItem->getTitle();
 
 		if ( !$this->canReplicate() ) {
@@ -273,7 +270,6 @@ class Indexer {
 	 * @return string
 	 */
 	public function fetchNativeData( $id ) {
-
 		if ( $id instanceof DIWikiPage ) {
 			$id = $id->getTitle();
 		}
@@ -304,7 +300,6 @@ class Indexer {
 	 * @param string $type
 	 */
 	public function indexDocument( Document $document, $type = self::REQUIRE_SAFE_REPLICATION ) {
-
 		Timer::start( __METHOD__ );
 
 		$subject = $document->getSubject();
@@ -324,7 +319,7 @@ class Indexer {
 		$this->bulk->execute();
 
 		$this->logger->info(
-			[	'Indexer',
+			[ 'Indexer',
 				'Data index completed ({subject}, {id})',
 				'procTime (in sec): {procTime}',
 				'Response: {response}'
@@ -342,7 +337,6 @@ class Indexer {
 	}
 
 	private function canReplicate() {
-
 		$connection = $this->store->getConnection( 'elastic' );
 
 		// Make sure a node is available and is not locked by the rebuilder
@@ -354,7 +348,6 @@ class Indexer {
 	}
 
 	private function makeSubject( DIWikiPage $subject ) {
-
 		$title = $subject->getDBKey();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $title[0] !== '_' ) {

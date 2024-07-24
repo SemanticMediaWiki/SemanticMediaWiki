@@ -179,7 +179,6 @@ class AskParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $functionParams ) {
-
 		// Do we still need this?
 		// Reference found in SRF_Exhibit.php, SRF_Ploticus.php, SRF_Timeline.php, SRF_JitGraph.php
 		$GLOBALS['smwgIQRunningNumber']++;
@@ -219,7 +218,6 @@ class AskParserFunction {
 	}
 
 	private function prepareFunctionParameters( array $functionParams ) {
-
 		// Remove parser object from parameters array
 		if ( isset( $functionParams[0] ) && $functionParams[0] instanceof Parser ) {
 			array_shift( $functionParams );
@@ -285,7 +283,6 @@ class AskParserFunction {
 	}
 
 	private function doFetchResultsFromFunctionParameters( array $functionParams, array $extraKeys ) {
-
 		$contextPage = $this->parserData->getSubject();
 		$action = $this->parserData->getOption( 'request.action' );
 		$status = [];
@@ -400,7 +397,6 @@ class AskParserFunction {
 	}
 
 	private function hasReachedExpensiveExecutionLimit( $query ) {
-
 		if ( $this->expensiveFuncExecutionWatcher->hasReachedExpensiveLimit( $query ) === false ) {
 			return false;
 		}
@@ -412,7 +408,6 @@ class AskParserFunction {
 	}
 
 	private function addQueryProfile( $query, $format, $extraKeys ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -446,7 +441,6 @@ class AskParserFunction {
 	}
 
 	private function addProcessingError( $errors ) {
-
 		if ( $errors === [] ) {
 			return;
 		}

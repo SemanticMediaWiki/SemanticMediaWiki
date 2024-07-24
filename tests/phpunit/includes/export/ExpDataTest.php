@@ -19,7 +19,6 @@ use SMWExpData as ExpData;
 class ExpDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructor() {
-
 		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -34,7 +33,6 @@ class ExpDataTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider expDataHashProvider
 	 */
 	public function testGetHash( $expData, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			$expData->getHash()
@@ -42,7 +40,6 @@ class ExpDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function expDataHashProvider() {
-
 		#0
 		$expData = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )

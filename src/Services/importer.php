@@ -31,7 +31,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'ImporterServiceFactory' => function( $containerBuilder ) {
+	'ImporterServiceFactory' => function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', '\SMW\Services\ImporterServiceFactory' );
 		return new ImporterServiceFactory( $containerBuilder );
 	},
@@ -41,7 +41,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'XmlContentCreator' => function( $containerBuilder ) {
+	'XmlContentCreator' => function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', '\SMW\Importer\ContentCreators\XmlContentCreator' );
 		return new XmlContentCreator( $containerBuilder->create( 'ImporterServiceFactory' ) );
 	},
@@ -51,7 +51,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'TextContentCreator' => function( $containerBuilder ) {
+	'TextContentCreator' => function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', '\SMW\Importer\ContentCreators\TextContentCreator' );
 
 		$connectionManager = $containerBuilder->singleton( 'ConnectionManager' );
@@ -69,7 +69,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'Importer' => function( $containerBuilder, ContentIterator $contentIterator  ) {
+	'Importer' => function ( $containerBuilder, ContentIterator $contentIterator ) {
 		$containerBuilder->registerExpectedReturnType( 'Importer', '\SMW\Importer\Importer' );
 
 		$dispatchingContentCreator = new DispatchingContentCreator(
@@ -96,7 +96,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'JsonContentIterator' => function( $containerBuilder, $importFileDirs ) {
+	'JsonContentIterator' => function ( $containerBuilder, $importFileDirs ) {
 		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', '\SMW\Importer\JsonContentIterator' );
 
 		$jsonImportContentsFileDirReader = new JsonImportContentsFileDirReader(

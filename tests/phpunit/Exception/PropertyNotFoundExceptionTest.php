@@ -16,7 +16,6 @@ use SMW\Exception\PropertyNotFoundException;
 class PropertyNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new PropertyNotFoundException();
 
 		$this->assertInstanceof(

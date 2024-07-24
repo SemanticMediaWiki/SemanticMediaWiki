@@ -19,7 +19,6 @@ use SMW\Tests\TestEnvironment;
 class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
-
 		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +30,6 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidate_InaccessibleFile() {
-
 		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -52,7 +50,6 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidate_IsValid() {
-
 		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -77,7 +74,6 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidate_Error() {
-
 		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -106,7 +102,6 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidate_EmptySchema() {
-
 		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
 			->disableOriginalConstructor()
 			->getMock();

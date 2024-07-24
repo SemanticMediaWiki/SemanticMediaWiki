@@ -78,9 +78,8 @@ class TreeBuilder {
 	 *
 	 * @return []
 	 */
-	public function getHierarchyList( array $subjects, string $type ) : array {
-
-		if ( $subjects === []) {
+	public function getHierarchyList( array $subjects, string $type ): array {
+		if ( $subjects === [] ) {
 			return [];
 		}
 
@@ -130,7 +129,6 @@ class TreeBuilder {
 	 * @param string $type
 	 */
 	public function buildFrom( array $subjects, string $type ) {
-
 		$hierarchyList = $this->getHierarchyList(
 			$subjects,
 			$type
@@ -167,7 +165,6 @@ class TreeBuilder {
 	}
 
 	public function hasNode( $id ) {
-
 		if ( $this->nodes === [] || $this->nodes === null ) {
 			return false;
 		}
@@ -186,7 +183,6 @@ class TreeBuilder {
 	}
 
 	public function getNode( $id ) {
-
 		if ( isset( $this->nodes[$id] ) ) {
 			return $this->nodes[$id];
 		}
@@ -199,7 +195,6 @@ class TreeBuilder {
 	}
 
 	public function getTree() {
-
 		$text = '';
 
 		if ( $this->nodes === [] || $this->nodes === null ) {
@@ -214,7 +209,7 @@ class TreeBuilder {
 	}
 
 	public function newNode( $id, $content = '' ) {
-		return new class (  $id, $content ) {
+		return new class ( $id, $content ) {
 
 			public $id;
 			public $content = '';
@@ -226,7 +221,6 @@ class TreeBuilder {
 			}
 
 			public function hasNode( $id ) {
-
 				if ( isset( $this->children[$id] ) ) {
 					return $this->children[$id];
 				}
@@ -241,7 +235,6 @@ class TreeBuilder {
 			}
 
 			public function getNode( $id ) {
-
 				if ( isset( $this->children[$id] ) ) {
 					return $this->children[$id];
 				}
@@ -258,9 +251,8 @@ class TreeBuilder {
 			}
 
 			public function getString() {
-
 				if ( is_array( $this->content ) ) {
-					$text = implode('', $this->content );
+					$text = implode( '', $this->content );
 				} else {
 					$text = $this->content;
 				}
@@ -273,7 +265,7 @@ class TreeBuilder {
 				// the <ul> becomes part of the <li> element otherwise the elements
 				// aren't correct positioned as per HTML standard.
 				if ( $this->children !== [] && substr( "$text", -5 ) === '</li>' ) {
-					$text = substr_replace( $text ,"", -5 );
+					$text = substr_replace( $text, "", -5 );
 				}
 
 				if ( $this->children !== [] ) {

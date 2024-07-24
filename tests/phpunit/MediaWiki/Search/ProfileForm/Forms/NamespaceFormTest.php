@@ -22,8 +22,7 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 	private $localizer;
 	private $messageLocalizer;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -38,7 +37,6 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NamespaceForm::class,
 			new NamespaceForm( $this->namespaceInfo, $this->localizer )
@@ -46,7 +44,6 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeFields() {
-
 		$instance = new NamespaceForm(
 			$this->namespaceInfo,
 			$this->localizer
@@ -56,7 +53,7 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 			$this->messageLocalizer
 		);
 
-		$instance->setSearchableNamespaces( [ 0 => 'Foo '] );
+		$instance->setSearchableNamespaces( [ 0 => 'Foo ' ] );
 
 		$this->assertContains(
 			"<fieldset id='mw-searchoptions'>",
@@ -65,7 +62,6 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckNamespaceEditToken() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -113,7 +113,6 @@ class DistinctEntityDataRebuilder {
 	 * @return boolean
 	 */
 	public function doRebuild() {
-
 		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .
 		( $this->options->has( 'categories' ) ? 'category' : '' ) .
 		( $this->options->has( 'namespace' ) ? $this->options->get( 'namespace' ) : '' ) .
@@ -180,7 +179,6 @@ class DistinctEntityDataRebuilder {
 	}
 
 	private function doUpdate( $jobFactory, $page ) {
-
 		$updatejob = $jobFactory->newUpdateJob(
 			$page,
 			[
@@ -221,7 +219,6 @@ class DistinctEntityDataRebuilder {
 	}
 
 	private function getPagesFromQuery() {
-
 		if ( !$this->options->has( 'query' ) ) {
 			return [];
 		}
@@ -248,7 +245,6 @@ class DistinctEntityDataRebuilder {
 	}
 
 	private function getPagesFromFilters() {
-
 		$pages = [];
 
 		if ( !$this->hasFilters() ) {
@@ -265,7 +261,6 @@ class DistinctEntityDataRebuilder {
 	}
 
 	private function getRedirectPages() {
-
 		if ( !$this->options->has( 'redirects' ) ) {
 			return [];
 		}
@@ -278,7 +273,6 @@ class DistinctEntityDataRebuilder {
 	}
 
 	private function normalize( $list ) {
-
 		$titleCache = [];
 		$p = [];
 

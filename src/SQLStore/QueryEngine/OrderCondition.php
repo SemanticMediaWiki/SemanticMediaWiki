@@ -101,7 +101,6 @@ class OrderCondition {
 	 * @param integer $qid
 	 */
 	public function addConditions( ConditionBuilder $conditionBuilder, $qid ) {
-
 		if ( !$this->isSupported ) {
 			return $conditionBuilder->getQuerySegmentList();
 		}
@@ -130,7 +129,6 @@ class OrderCondition {
 	}
 
 	private function findDescriptionsFromSortKeys( $querySegment ) {
-
 		$extraDescriptions = [];
 
 		foreach ( $this->sortKeys as $label => $order ) {
@@ -148,7 +146,6 @@ class OrderCondition {
 	}
 
 	private function findDescription( $querySegment, $label, $order ) {
-
 		$description = null;
 
 		// Is assigned, leave ...
@@ -213,7 +210,6 @@ class OrderCondition {
 	}
 
 	private function extendConditions( $conditionBuilder, $querySegment, array $extraDescriptions ) {
-
 		if ( $extraDescriptions === [] ) {
 			return;
 		}

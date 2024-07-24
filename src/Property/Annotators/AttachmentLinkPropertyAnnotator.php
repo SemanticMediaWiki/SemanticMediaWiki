@@ -46,7 +46,6 @@ class AttachmentLinkPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	protected function addPropertyValues() {
-
 		if ( !is_array( $this->attachments ) || !isset( $this->predefinedPropertyList['_ATTCH_LINK'] ) ) {
 			return;
 		}

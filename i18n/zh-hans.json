@@ -17,6 +17,7 @@
 			"Gzdavidwong",
 			"Hanyanbo98",
 			"Hehua",
+			"Huajing",
 			"Hudafu",
 			"Josephine W.",
 			"Lakejason0",
@@ -1165,7 +1166,6 @@
 	"smw-facetedsearch-no-filter-range": "没有筛选范围。",
 	"smw-facetedsearch-no-output": "对于所选的“$1”格式，没有可用的输出。",
 	"smw-facetedsearch-clear-filters": "清除{{PLURAL:$1|筛选}}",
-	"smw-specials-facetedsearch-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:FacetedSearch",
 	"smw-search-placeholder": "搜索...",
 	"smw-listingcontinuesabbrev": "续",
 	"smw-showingresults": "下面正在显示从第<strong>$2</strong>条结果开始的{{PLURAL:$1|<strong>1</strong>|<strong>$1</strong>}}条结果。"

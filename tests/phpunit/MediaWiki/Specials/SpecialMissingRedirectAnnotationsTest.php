@@ -20,26 +20,25 @@ class SpecialMissingRedirectAnnotationsTest extends \PHPUnit_Framework_TestCase 
 	private $testEnvironment;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( ['service'] )
+			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanExecute() {
-
 		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();

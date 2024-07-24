@@ -19,14 +19,14 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->addConfiguration( 'smwgExportResourcesAsIri', false );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -35,7 +35,6 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider encodePageProvider
 	 */
 	public function testEncodePage( $page, $expected ) {
-
 		$this->assertSame(
 			$expected,
 			Escaper::encodePage( $page )
@@ -47,7 +46,6 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider encodeUriProvider
 	 */
 	public function testEncodeUri( $uri, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			Escaper::encodeUri( $uri )
@@ -63,7 +61,6 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider decodeUriProvider
 	 */
 	public function testDecodeUri( $uri, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			Escaper::decodeUri( $uri )
@@ -76,7 +73,6 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function encodeUriProvider() {
-
 		$provider[] = [
 			'Foo:"&+!%#',
 			'Foo-3A-22-26-2B-21-25-23'
@@ -90,7 +86,6 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function decodeUriProvider() {
-
 		$provider[] = [
 			'Foo-3A-22-26-2B-21-25-23',
 			'Foo:"&+!%#'
@@ -105,11 +100,9 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function encodePageProvider() {
-
 		#0
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_MAIN, '', '' )
-			, 'Foo'
+			new DIWikiPage( 'Foo', NS_MAIN, '', '' ), 'Foo'
 		];
 
 		#1

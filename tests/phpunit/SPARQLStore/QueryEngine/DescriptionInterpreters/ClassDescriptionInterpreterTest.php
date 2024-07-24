@@ -24,14 +24,13 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -43,7 +42,6 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBuildConditionFor() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ClassDescription' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -63,7 +61,6 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider categoryProvider
 	 */
 	public function testClassConditionForCategories( $description, $orderByProperty, $expectedConditionType, $expectedConditionString ) {
-
 		$resultVariable = 'result';
 
 		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -87,7 +84,6 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHierarchyPattern() {
-
 		$engineOptions = new EngineOptions();
 		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBC );
 
@@ -132,7 +128,6 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function categoryProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0

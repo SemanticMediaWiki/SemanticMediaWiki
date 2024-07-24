@@ -22,7 +22,6 @@ class FormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider printRequestProvider
 	 */
 	public function testFormat( $printRequest, $linker, $outputType, $expected ) {
-
 		$this->assertSame(
 			$expected,
 			Formatter::format( $printRequest, $linker, $outputType )
@@ -30,7 +29,6 @@ class FormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function printRequestProvider() {
-
 		$provider['print-cats-wiki'] = [
 			new PrintRequest( PrintRequest::PRINT_CATS, 'Foo' ),
 			null,

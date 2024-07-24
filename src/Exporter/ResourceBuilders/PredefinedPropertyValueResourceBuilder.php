@@ -31,7 +31,6 @@ class PredefinedPropertyValueResourceBuilder extends PropertyValueResourceBuilde
 	 * {@inheritDoc}
 	 */
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-
 		$diSubject = $expData->getSubject()->getDataItem();
 
 		if ( $diSubject === null ) {

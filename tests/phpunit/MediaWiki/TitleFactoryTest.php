@@ -19,7 +19,6 @@ class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TitleFactory::class,
 			 new TitleFactory()
@@ -27,7 +26,6 @@ class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateTitleFromText() {
-
 		$instance = new TitleFactory();
 
 		$this->assertInstanceOf(
@@ -37,7 +35,6 @@ class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFromID() {
-
 		$instance = new TitleFactory();
 		$title = $instance->newFromID( 9999999 );
 
@@ -47,7 +44,6 @@ class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFromIDs() {
-
 		$instance = new TitleFactory();
 
 		$this->assertInternalType(
@@ -57,7 +53,6 @@ class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFromIDsEmpty() {
-
 		$instance = new TitleFactory();
 		$input = [];
 
@@ -72,7 +67,6 @@ class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeTitleSafe() {
-
 		$instance = new TitleFactory();
 
 		$this->assertInstanceOf(

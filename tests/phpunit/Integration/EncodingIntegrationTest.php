@@ -30,10 +30,9 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sidebarBeforeOutputDataProvider
 	 */
 	public function testSidebarBeforeOutputURLEncoding( $setup, $expected ) {
-
 		$sidebar  = [];
 
-		foreach ( $setup['settings'] as $key => $value) {
+		foreach ( $setup['settings'] as $key => $value ) {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 		}
 
@@ -58,7 +57,6 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function sidebarBeforeOutputDataProvider() {
-
 		$specialName = str_replace( '%3A', ':',
 			\SMW\Encoder::encode( \SpecialPage::getTitleFor( 'Browse' )->getPrefixedText() )
 		);
@@ -68,13 +66,12 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013/11/05' ), "$specialName/:2013-2F11-2F05" ];
 		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013-06-30' ), "$specialName/:2013-2D06-2D30" ];
 		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013$06&30' ), "$specialName/:2013-2406-2630" ];
-		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013\Foo' ),   "$specialName/:2013-5CFoo" ];
+		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013\Foo' ), "$specialName/:2013-5CFoo" ];
 
 		return $provider;
 	}
 
 	private function newSidebarBeforeOutputSetup( $text ) {
-
 		$settings = [
 			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 			'smwgBrowseFeatures'           => SMW_BROWSE_TLINK

@@ -87,7 +87,6 @@ class SearchResult {
 	 * @return array
 	 */
 	public function getResults( $cutoff = null ) {
-
 		if ( $this->results === null ) {
 			$this->doFilterResults( $this->raw, $cutoff );
 		}
@@ -101,7 +100,6 @@ class SearchResult {
 	 * @return array
 	 */
 	public function get( $key ) {
-
 		if ( isset( $this->container[$key] ) ) {
 			return $this->container[$key];
 		}
@@ -117,7 +115,6 @@ class SearchResult {
 	 * @return []
 	 */
 	public function doFilterResults( array $results, $cutoff = null ) {
-
 		$this->results = [];
 
 		$this->container = [
@@ -152,7 +149,6 @@ class SearchResult {
 	 * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/6.0/_search_operations.html
 	 */
 	private function filterByField( $results, $cutoff, $field ) {
-
 		$res = [];
 		$continue = false;
 

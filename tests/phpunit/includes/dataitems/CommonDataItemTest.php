@@ -16,7 +16,6 @@ namespace SMW\Tests;
 class CommonDataItemTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSerializationToFilterSameStringRepresentation() {
-
 		$items = [];
 
 		foreach ( [ 'Foo', 'Bar', 'Foo' ] as  $value ) {

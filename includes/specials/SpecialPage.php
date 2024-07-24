@@ -84,7 +84,6 @@ class SpecialPage extends \SpecialPage {
 	 * @return Store
 	 */
 	public function getSettings() {
-
 		if ( $this->settings === null ) {
 			$this->settings = ServicesFactory::getInstance()->getSettings();
 		}

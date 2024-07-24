@@ -121,7 +121,6 @@ class Highlighter {
 	 * @return booelan
 	 */
 	public static function hasHighlighterClass( $text, $type = null ) {
-
 		if ( strpos( $text, 'smw-highlighter' ) === false ) {
 			return false;
 		}
@@ -193,7 +192,7 @@ class Highlighter {
 	 */
 	public static function getTypeId( $type ) {
 		// TODO: why do we have a htmlspecialchars here?!
-		switch ( strtolower ( htmlspecialchars ( $type ) ) ) {
+		switch ( strtolower( htmlspecialchars( $type ) ) ) {
 			case 'property':
 			return self::TYPE_PROPERTY;
 			case 'text':
@@ -230,7 +229,6 @@ class Highlighter {
 	 * @return string
 	 */
 	private function getContainer() {
-
 		$captionclass = $this->options['captionclass'];
 
 		// 2.4+ can display context for user-defined properties, here we ensure
@@ -375,7 +373,6 @@ class Highlighter {
 	}
 
 	private function title( $content, $language ) {
-
 		// Pre-process the content when used as title to avoid breaking elements
 		// (URLs etc.)
 		if ( strpos( $content, '[' ) !== false || strpos( $content, '//' ) !== false ) {

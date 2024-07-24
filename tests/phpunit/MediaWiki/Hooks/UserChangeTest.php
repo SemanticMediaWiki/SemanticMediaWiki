@@ -20,7 +20,7 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $jobFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -36,13 +36,12 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			UserChange::class,
 			new UserChange( $this->namespaceExaminer )
@@ -50,7 +49,6 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnEnabledUserNamespace() {
-
 		$job = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -76,7 +74,6 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnEnabledUserNamespace_User() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -110,7 +107,6 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnDisabledUserNamespace() {
-
 		$this->jobFactory->expects( $this->never() )
 			->method( 'newUpdateJob' );
 
