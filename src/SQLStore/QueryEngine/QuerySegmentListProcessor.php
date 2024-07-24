@@ -7,6 +7,8 @@ use SMW\MediaWiki\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMWQuery as Query;
 use Wikimedia\Rdbms\JoinGroup;
+use Wikimedia\Rdbms\JoinGroupBase;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -196,9 +198,9 @@ class QuerySegmentListProcessor {
 			}
 
 			if ( $subQuery->where !== '' && $subQuery->where !== null ) {
-				if ( $subQuery->joinType === 'LEFT' || $subQuery->joinType == 'LEFT OUTER' ) {
+				if ( $subQuery->joinType === 'LEFT' || $subQuery->joinType === 'LEFT OUTER' ) {
 					$query->from .= ' AND (' . $subQuery->where . ')';
-					last( $query->fromSegs )->where .= ' AND (' . $subQuery->where . ')';
+					end( $query->fromSegs )->where .= ' AND (' . $subQuery->where . ')';
 				} else {
 					$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
 				}
@@ -385,18 +387,19 @@ class QuerySegmentListProcessor {
 	 * @param QuerySegment $qobj QuerySegment to build the joins from
 	 * @param JoinGroupBase $builder First call must be SelectQueryBuilder, but become JoinGroup on recursive calls.
 	 * @param SelectQueryBuilder $topBuilder Top level builder passed in from the original call
+	 * @throw InvalidArgumentException if QuerySegment->joinType is not empty, LEFT, LEFT OUTER, or INNER.
 	 */
-	public static function applyFromSegments( $qobj, $builder, $topBuilder = null ) {
-		if ( $topBuilder == null ) $topBuilder = $builder;
+	public static function applyFromSegments( QuerySegment $qobj, JoinGroupBase $builder, SelectQueryBuilder $topBuilder = null ) : void {
+		if ( $topBuilder === null ) $topBuilder = $builder;
 		foreach ( $qobj->fromSegs as $seg ) {
 			$joinMethod = 'join';
 			if ( $seg->joinType === 'LEFT'|| $seg->joinType === 'LEFT OUTER' ) {
 				$joinMethod = 'leftJoin';
 			} elseif ( !empty( $seg->joinType ) && $seg->joinType !== 'INNER' ) {
-				throw new RuntimeException( "Unknown QuerySegment->joinType `{$seg->joinType}`" );
+				throw new InvalidArgumentException( "Unknown QuerySegment->joinType `{$seg->joinType}`" );
 			}
 			$table = $seg->joinTable;
-			if ( $table == $seg->alias ) {
+			if ( $table === $seg->alias ) {
 				// Bug: Temporary table `t1` renamed to `wt1` by MW SQLPlatform,
 				// however join('t1','t1') yields "JOIN `wt1`" instead of "JOIN `wt1` AS `t1`",
 				// causing "Table t1 not found".  Using subquery as workaround.

@@ -9,6 +9,7 @@ use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Query\DebugFormatter;
 use SMW\Iterators\ResultIterator;
+use SMW\MediaWiki\Connection\Database as SMWDatabase;
 use SMW\Query\Language\ThingDescription;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
@@ -293,7 +294,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$qobj = $this->querySegmentList[$rootid] ?? 0;
 		$entries['SQL Explain'] = $debugFormatter->prettifyExplain( new ResultIterator( $res ) );
-		$entries['SQL Query'] = $debugFormatter->prettifySQL( $sql, $qobj->alias );
+		$entries['SQL Query'] = $debugFormatter->prettifySQL( $sql, $qobj->alias ?? '' );
 
 		$res->free();
 	}
@@ -351,16 +352,12 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @since 4.2
 	 *
-	 * @param DBConnRef $connection
-	 * @param Query $query
-	 * @param integer $rootid
-	 *
 	 * @return SelectQueryBuilder null if no query required (result is empty)
 	 */
-	private function getQueryBuilder( $connection, $query, $rootid, $mode = '' ) {
+	private function getQueryBuilder( SMWDatabase $connection, Query $query, int $rootid, string $mode = '' ) : ?\Wikimedia\Rdbms\SelectQueryBuilder {
 		$builder = $connection->newSelectQueryBuilder( 'read' );
-		$qobj = $this->querySegmentList[$rootid];
-		if ( $qobj->joinfield === '' ) return null;
+		$qobj = $this->querySegmentList[$rootid] ?? null;
+		if ( $qobj === null || $qobj->joinfield === '' ) return null;
 
 		$sql_options = $this->getSQLOptions( $query, $rootid );
 
@@ -382,7 +379,9 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 					"sortkey" => "$t0.smw_sortkey",
 					]);
 			// Selecting sort fields is required in standard SQL (but MySQL does not require it).
-			if ( !empty( $qobj->sortfields ) ) $builder->select( $qobj->sortfields );
+			if ( !empty( $qobj->sortfields ) ) {
+				$builder->select( $qobj->sortfields );
+			}
 			$connection->applySqlOptions( $builder, $sql_options );
 		}
 		QuerySegmentListProcessor::applyFromSegments( $qobj, $builder );
