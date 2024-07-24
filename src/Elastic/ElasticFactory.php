@@ -316,7 +316,6 @@ class ElasticFactory {
 		return $documentReplicationExaminer;
 	}
 
-
 	/**
 	 * @since 3.1
 	 *

@@ -195,7 +195,6 @@ abstract class Description {
 		return $this;
 	}
 
-
 	/**
 	 * @since 3.0
 	 *

@@ -58,7 +58,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 		parent::tearDown();
 	}
 
-
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ConstraintSchemaValueValidator::class,

@@ -68,7 +68,6 @@
 		<exclude name="MediaWiki.NamingConventions.ValidGlobalName.allowedPrefix" />
 		<exclude name="Generic.WhiteSpace.LanguageConstructSpacing.Incorrect" />
 		<exclude name="PSR2.Files.EndFileNewline.NoneFound" />
-		<exclude name="Squiz.WhiteSpace.FunctionSpacing.After" />
 		<exclude name="Universal.UseStatements.NoUselessAliases.Found" />
 		<exclude name="PSR12.Files.ImportStatement.LeadingSlash" />
 		<exclude name="Universal.Lists.DisallowLongListSyntax.Found" />
@@ -80,7 +79,6 @@
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.throwException" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotShortBoolReturn" />
 		<exclude name="MediaWiki.Usage.AssignmentInReturn.AssignmentInReturn" />
-		<exclude name="Squiz.WhiteSpace.FunctionSpacing.Before" />
 		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.SpaceBeforeComma" />
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.returnSelf" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.DefaultNullTypeParam" />

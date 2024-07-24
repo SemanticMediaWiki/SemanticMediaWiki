@@ -55,7 +55,6 @@ class SMWQueryProcessorTest extends DatabaseTestCase {
 		$this->expectException( '\SMW\Query\Exception\ResultFormatNotFoundException' );
 		SMWQueryProcessor::getResultPrinter( 'unknown_format' );
 	}
-	
 
 	/**
 	* @dataProvider createQueryDataProvider

@@ -84,6 +84,7 @@ class NGramTokenizerTest extends TestCase {
 			$instance->tokenize( $string )
 		);
 	}
+
 	public function testTokenizeWithOption() {
 		$string = '红色中华';
 

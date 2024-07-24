@@ -145,7 +145,6 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-
 	public function testHtmlJsonPrintOutput() {
 		$parameters = [
 			'subject' => 'Foo',

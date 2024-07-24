@@ -41,7 +41,6 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-
 	/**
 	 * @dataProvider encodeUriProvider
 	 */

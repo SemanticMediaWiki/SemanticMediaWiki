@@ -171,7 +171,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 		return $provider;
 	}
 
-
 	public function likeNotLikeProvider() {
 		$provider[] = [
 			'~Foo'

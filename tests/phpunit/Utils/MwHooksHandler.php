@@ -82,7 +82,6 @@ class MwHooksHandler {
 		'SMW::SQLStore::Installer::AfterDropTablesComplete'
 	];
 
-
 	public function __construct() {
 		$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 	}

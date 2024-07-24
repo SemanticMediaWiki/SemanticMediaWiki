@@ -294,7 +294,6 @@ class ConceptCacheRebuilder {
 		}
 	}
 
-
 	/**
 	 * Copied from wfCountDown as it became deprecated in 1.31
 	 *
