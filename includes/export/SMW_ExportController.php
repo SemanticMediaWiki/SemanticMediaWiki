@@ -606,7 +606,6 @@ class SMWExportController {
 
 	}
 
-
 	/**
 	 * Print basic information about this site.
 	 */

@@ -149,7 +149,6 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 		return $provider;
 	}
 
-
 	public function testPrune() {
 		$valueDescriptionFoo = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) );
 		$valueDescriptionBar = new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) );

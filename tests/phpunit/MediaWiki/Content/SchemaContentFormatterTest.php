@@ -192,7 +192,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-
 	public function schema_get( $key ) {
 		return $key === Schema::SCHEMA_TAG ? [] : '';
 	}

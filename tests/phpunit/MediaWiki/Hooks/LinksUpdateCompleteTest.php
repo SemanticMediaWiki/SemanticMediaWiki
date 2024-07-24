@@ -25,7 +25,6 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	private $spyLogger;
 	private $revisionGuard;
 
-
 	protected function setUp(): void {
 		parent::setUp();
 

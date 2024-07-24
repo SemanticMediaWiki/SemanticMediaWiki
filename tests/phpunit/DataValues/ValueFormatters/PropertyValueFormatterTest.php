@@ -128,7 +128,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-
 	public function testFormatWithCaptionOutputAndHighlighter() {
 		$propertyValue = new PropertyValue();
 		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, false );

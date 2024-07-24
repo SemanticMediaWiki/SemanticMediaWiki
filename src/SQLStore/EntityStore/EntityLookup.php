@@ -230,7 +230,6 @@ class EntityLookup implements IEntityLookup {
 		return $result;
 	}
 
-
 	/**
 	 * @see Store::getPropertyValues
 	 *

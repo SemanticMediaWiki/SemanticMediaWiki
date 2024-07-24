@@ -98,7 +98,6 @@ class ListResultPrinter extends ResultPrinter {
 		return $this->params['template'] !== '' || $this->params['introtemplate'] !== '' || $this->params['outrotemplate'] !== '';
 	}
 
-
 	/**
 	 * Get text for further results link. Used only during getResultText().
 	 *

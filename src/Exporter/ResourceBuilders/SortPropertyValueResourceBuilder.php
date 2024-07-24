@@ -33,7 +33,6 @@ class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBu
 		return $property->getKey() === '_SKEY';
 	}
 
-
 	/**
 	 * @since 3.0
 	 *

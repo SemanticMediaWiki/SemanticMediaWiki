@@ -443,7 +443,6 @@ class GenericRepositoryConnector implements RepositoryConnection {
 		return $this->doUpdate( $sparql );
 	}
 
-
 	/**
 	 * Execute a SPARQL query and return an RepositoryResult object
 	 * that contains the results. The method throws exceptions based on

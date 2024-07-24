@@ -21,6 +21,7 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private NamespaceExaminer $namespaceExaminer;
+
 	protected function setUp(): void {
 		parent::setUp();
 
