@@ -59,7 +59,7 @@ class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticData->expects( $this->once() )
 			->method( 'removeProperty' )
-			->with($this->equalTo( $property ) );
+			->with( $this->equalTo( $property ) );
 
 		$instance = new ReplicationDataTruncator();
 		$instance->setPropertyExemptionList( [ 'Has query' ] );

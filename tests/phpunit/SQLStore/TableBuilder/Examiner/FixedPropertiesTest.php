@@ -50,7 +50,7 @@ class FixedPropertiesTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
-			->will($this->onConsecutiveCalls(
+			->will( $this->onConsecutiveCalls(
 				(object)[ 'smw_id' => 99999 ],
 				(object)[ 'smw_id' => 11111 ] ) );
 

@@ -52,7 +52,7 @@ class Image {
 		}
 
 		$extension = strtolower(
-			substr( strrchr( $dataItem->getDBKey(), "." ) , 1 )
+			substr( strrchr( $dataItem->getDBKey(), "." ), 1 )
 			// pathinfo( $dataItem->getDBKey(), PATHINFO_EXTENSION )
 		);
 

@@ -59,7 +59,7 @@ class UpdateTaskTest extends \PHPUnit_Framework_TestCase {
 			$this->jobFactory
 		);
 
-		$instance->process( [ 'subject' => 'Foo#0##', 'ref' => [ 'Bar' ] ]);
+		$instance->process( [ 'subject' => 'Foo#0##', 'ref' => [ 'Bar' ] ] );
 	}
 
 }

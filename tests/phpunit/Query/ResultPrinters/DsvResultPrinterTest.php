@@ -72,8 +72,8 @@ class DsvResultPrinterTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [ 'Lala', 'Lala.dsv' ];
 		$provider[] = [ 'Lala Lilu', 'Lala_Lilu.dsv' ];
-		$provider[] = [ 'Foo.jso' , 'Foo.jso.dsv'];
-		$provider[] = [ '' , 'result.dsv'];
+		$provider[] = [ 'Foo.jso', 'Foo.jso.dsv' ];
+		$provider[] = [ '', 'result.dsv' ];
 
 		return $provider;
 	}

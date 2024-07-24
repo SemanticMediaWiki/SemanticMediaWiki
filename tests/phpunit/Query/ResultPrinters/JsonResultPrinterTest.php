@@ -111,8 +111,8 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [ 'Lala', 'Lala.json' ];
 		$provider[] = [ 'Lala Lilu', 'Lala_Lilu.json' ];
-		$provider[] = [ 'Foo.jso' , 'Foo.jso.json'];
-		$provider[] = [ '' , 'result.json'];
+		$provider[] = [ 'Foo.jso', 'Foo.jso.json' ];
+		$provider[] = [ '', 'result.json' ];
 
 		return $provider;
 	}

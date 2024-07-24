@@ -32,7 +32,7 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	public function testSidebarBeforeOutputURLEncoding( $setup, $expected ) {
 		$sidebar  = [];
 
-		foreach ( $setup['settings'] as $key => $value) {
+		foreach ( $setup['settings'] as $key => $value ) {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 		}
 
@@ -66,7 +66,7 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013/11/05' ), "$specialName/:2013-2F11-2F05" ];
 		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013-06-30' ), "$specialName/:2013-2D06-2D30" ];
 		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013$06&30' ), "$specialName/:2013-2406-2630" ];
-		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013\Foo' ),   "$specialName/:2013-5CFoo" ];
+		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013\Foo' ), "$specialName/:2013-5CFoo" ];
 
 		return $provider;
 	}

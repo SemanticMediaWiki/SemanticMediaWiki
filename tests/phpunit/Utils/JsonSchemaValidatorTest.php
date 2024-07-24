@@ -97,7 +97,7 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaValidator->expects( $this->any() )
 			->method( 'check' )
-			->will($this->throwException( new ResourceNotFoundException() ) );
+			->will( $this->throwException( new ResourceNotFoundException() ) );
 
 		$instance = new JsonSchemaValidator(
 			$schemaValidator

@@ -110,7 +110,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$magicWordsFinder = \SMW\ApplicationFactory::getInstance()->create('MagicWordsFinder', $parserData->getOutput() );
+		$magicWordsFinder = \SMW\ApplicationFactory::getInstance()->create( 'MagicWordsFinder', $parserData->getOutput() );
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
@@ -354,13 +354,13 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		$result = $method->invoke( $instance, [] );
 		$this->assertEmpty( $result );
 
-		$result = $method->invoke( $instance, [ 'Test::foo', 'SMW' , 'lula' ] );
+		$result = $method->invoke( $instance, [ 'Test::foo', 'SMW', 'lula' ] );
 		$this->assertEmpty( $result );
 
-		$result = $method->invoke( $instance, [ 'Test::bar', 'SMW' , 'on' ] );
+		$result = $method->invoke( $instance, [ 'Test::bar', 'SMW', 'on' ] );
 		$this->assertEmpty( $result );
 
-		$result = $method->invoke( $instance, [ 'Test::lula', 'SMW' , 'off' ] );
+		$result = $method->invoke( $instance, [ 'Test::lula', 'SMW', 'off' ] );
 		$this->assertEmpty( $result );
 	}
 

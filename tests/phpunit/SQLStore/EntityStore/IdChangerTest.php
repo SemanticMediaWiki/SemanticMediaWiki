@@ -127,7 +127,7 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 			$this->jobFactory
 		);
 
-		$expected = ['smw_id' => 9999 ] + $row;
+		$expected = [ 'smw_id' => 9999 ] + $row;
 
 		$this->assertEquals(
 			(object)$expected,
@@ -184,7 +184,7 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 			$this->jobFactory
 		);
 
-		$expected = ['smw_id' => 1001 ] + $row;
+		$expected = [ 'smw_id' => 1001 ] + $row;
 
 		$this->assertEquals(
 			(object)$expected,

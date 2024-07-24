@@ -93,7 +93,7 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'smw-datavalue-keyword-maximum-length',
-			implode( ', ',  $instance->getErrors() )
+			implode( ', ', $instance->getErrors() )
 		);
 	}
 

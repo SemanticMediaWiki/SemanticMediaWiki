@@ -97,7 +97,7 @@ class DIWikiPageTest extends DataItemTest {
 	}
 
 	public function testDoUnserialize() {
-		$expected = new DIWikiPage( 'Foo', 0 , '', '' );
+		$expected = new DIWikiPage( 'Foo', 0, '', '' );
 
 		$this->assertEquals(
 			$expected,

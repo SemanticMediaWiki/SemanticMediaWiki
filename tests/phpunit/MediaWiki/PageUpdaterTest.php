@@ -145,7 +145,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'Foo' ) );
 
 		$title->expects( $this->once() )
-			->method(  $titleMethod );
+			->method( $titleMethod );
 
 		$instance = new PageUpdater();
 		$instance->addPage( $title );

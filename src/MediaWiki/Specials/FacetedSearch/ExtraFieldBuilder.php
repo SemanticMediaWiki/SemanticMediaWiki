@@ -100,7 +100,7 @@ class ExtraFieldBuilder {
 				'fields' => $html,
 				'css-class' => $cssClass,
 				'section-label' => 'Search fields',
-				'theme' => $this->profile->get( 'theme')
+				'theme' => $this->profile->get( 'theme' )
 			]
 		);
 

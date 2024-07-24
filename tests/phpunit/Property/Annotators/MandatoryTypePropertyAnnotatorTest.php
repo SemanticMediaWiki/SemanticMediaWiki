@@ -247,7 +247,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$parent,
-			$semanticData->getOption( MandatoryTypePropertyAnnotator::ENFORCED_PARENTTYPE_INHERITANCE  )
+			$semanticData->getOption( MandatoryTypePropertyAnnotator::ENFORCED_PARENTTYPE_INHERITANCE )
 		);
 	}
 

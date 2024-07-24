@@ -46,7 +46,7 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			CategoryFilter::class,
-			new CategoryFilter( $this->templateEngine, $this->treeBuilder,  [] )
+			new CategoryFilter( $this->templateEngine, $this->treeBuilder, [] )
 		);
 	}
 

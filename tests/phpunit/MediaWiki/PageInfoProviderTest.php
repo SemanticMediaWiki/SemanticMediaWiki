@@ -45,7 +45,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$revision->expects( $this->any() )
-			->method(  'getTimestamp' )
+			->method( 'getTimestamp' )
 			->will( $this->returnValue( 1272508903 ) );
 
 		$title = MockTitle::buildMock( 'Lula' );
@@ -97,7 +97,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$revision->expects( $this->any() )
-			->method(  'getParentId' )
+			->method( 'getParentId' )
 			->will( $this->returnValue( $parentId ) );
 
 		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
@@ -105,13 +105,13 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$revisionGuard->expects( $this->any() )
-			->method(  'newRevisionFromPage' )
+			->method( 'newRevisionFromPage' )
 			->will( $this->returnValue( $revision ) );
 
 		$instance = $this->constructPageInfoProviderInstance(
 			[
 				'wikiPage' => [ 'getRevisionRecord' => $revision ],
-				'revision' => [ ],
+				'revision' => [],
 				'user'     => [],
 			]
 		);
@@ -126,7 +126,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	public function parentIdProvider() {
 		$provider = [
 			[ 90001, false ],
-			[ 0 , true ],
+			[ 0, true ],
 			[ null, false ]
 		];
 
@@ -137,7 +137,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		$userPage = MockTitle::buildMock( 'Lula' );
 
 		$userPage->expects( $this->any() )
-			->method(  'getNamespace' )
+			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_USER ) );
 
 		$instance = $this->constructPageInfoProviderInstance(
@@ -158,7 +158,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $parameters['wikiPage'] as $method => $returnValue ) {
 			$wikiPage->expects( $this->any() )
-				->method(  $method  )
+				->method( $method )
 				->will( $this->returnValue( $returnValue ) );
 		}
 
@@ -168,7 +168,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $parameters['revision'] as $method => $returnValue ) {
 			$revision->expects( $this->any() )
-				->method(  $method  )
+				->method( $method )
 				->will( $this->returnValue( $returnValue ) );
 		}
 
@@ -178,7 +178,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $parameters['user'] as $method => $returnValue ) {
 			$user->expects( $this->any() )
-				->method(  $method  )
+				->method( $method )
 				->will( $this->returnValue( $returnValue ) );
 		}
 
@@ -333,7 +333,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		$provider = [
 			[ null, false ],
 			[ false, true ],
-			[ true , false ]
+			[ true, false ]
 		];
 
 		return $provider;

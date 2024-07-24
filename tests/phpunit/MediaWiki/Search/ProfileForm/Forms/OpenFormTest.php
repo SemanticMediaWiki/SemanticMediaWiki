@@ -37,7 +37,7 @@ class OpenFormTest extends \PHPUnit_Framework_TestCase {
 		$this->webRequest->expects( $this->at( 0 ) )
 			->method( 'getArray' )
 			->with( $this->equalTo( 'property' ) )
-			->will( $this->returnValue(  [ 'Bar' ] ) );
+			->will( $this->returnValue( [ 'Bar' ] ) );
 
 		$this->webRequest->expects( $this->at( 1 ) )
 			->method( 'getArray' )

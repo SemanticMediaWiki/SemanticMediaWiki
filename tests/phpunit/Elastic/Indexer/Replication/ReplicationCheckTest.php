@@ -253,7 +253,7 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckReplication_Exception() {
 		$error = new ReplicationError(
-			ReplicationError::TYPE_EXCEPTION ,
+			ReplicationError::TYPE_EXCEPTION,
 			[
 				'id' => 42,
 				'exception_error' => ''
@@ -427,7 +427,7 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckReplication_FileAttachment() {
 		$error = new ReplicationError(
-			ReplicationError::TYPE_FILE_ATTACHMENT_MISSING ,
+			ReplicationError::TYPE_FILE_ATTACHMENT_MISSING,
 			[
 				'id' => 42
 			]

@@ -215,7 +215,7 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertSame(
-			['foo' => $diff ],
+			[ 'foo' => $diff ],
 			$instance->toArray()
 		);
 	}

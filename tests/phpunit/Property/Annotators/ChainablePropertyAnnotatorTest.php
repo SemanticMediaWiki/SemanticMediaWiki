@@ -105,7 +105,7 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 3,
 				'propertyKeys'   => [ '_INST', '_MDAT', '_SKEY' ],
-				'propertyValues' => [ 'Category:Foo',  'Category:Bar', '2010-04-29T02:41:43', 'Lala' ],
+				'propertyValues' => [ 'Category:Foo', 'Category:Bar', '2010-04-29T02:41:43', 'Lala' ],
 			]
 		];
 

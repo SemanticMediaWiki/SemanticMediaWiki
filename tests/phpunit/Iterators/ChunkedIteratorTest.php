@@ -42,12 +42,12 @@ class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
 		$chunks = iterator_to_array( $instance, false );
 
 		$this->assertEquals(
-			[1, 42],
+			[ 1, 42 ],
 			$chunks[0]
 		);
 
 		$this->assertEquals(
-			[1001, 9999],
+			[ 1001, 9999 ],
 			$chunks[1]
 		);
 	}

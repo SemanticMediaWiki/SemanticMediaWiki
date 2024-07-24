@@ -320,7 +320,7 @@ class SMWInfolink {
 						$query = self::encodeCompactLink( $query, false );
 					}
 
-					$link = '[' . $title->getFullURL(  $query ) . " $this->mCaption]";
+					$link = '[' . $title->getFullURL( $query ) . " $this->mCaption]";
 				} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
 
 					if ( $this->isCompactLink ) {
@@ -627,7 +627,7 @@ class SMWInfolink {
 
 			// Guessing that MediaWiki swallowed the last `_`
 			if ( $val === false ) {
-				$val = @gzinflate( mb_substr( $value , 2 ) . '?' );
+				$val = @gzinflate( mb_substr( $value, 2 ) . '?' );
 			}
 
 			$value = $val;
@@ -636,7 +636,7 @@ class SMWInfolink {
 		// Normalize if nceessary for those that are "encoded for use in a
 		// MediaWiki page title"
 		if ( mb_substr( $value, 0, 2 ) === 'x=' ) {
-			$value = str_replace( [ 'x=', '=-&' , '&', '%2F' ], [ '' , '=-2D&', '/', '/' ], $value );
+			$value = str_replace( [ 'x=', '=-&', '&', '%2F' ], [ '', '=-2D&', '/', '/' ], $value );
 		}
 
 		return $value;

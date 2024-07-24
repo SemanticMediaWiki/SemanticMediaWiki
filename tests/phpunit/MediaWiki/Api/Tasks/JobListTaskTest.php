@@ -53,7 +53,7 @@ class JobListTaskTest extends \PHPUnit_Framework_TestCase {
 			$this->jobQueue
 		);
 
-		$instance->process( [ 'subject' => 'Foo#0##', 'jobs' => [ 'FooJob' => 1 ] ]);
+		$instance->process( [ 'subject' => 'Foo#0##', 'jobs' => [ 'FooJob' => 1 ] ] );
 	}
 
 }

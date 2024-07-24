@@ -72,7 +72,7 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getElasticFactory' )
-			->willReturn($elasticFactory);
+			->willReturn( $elasticFactory );
 	}
 
 	protected function tearDown(): void {
@@ -115,7 +115,7 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IndexerRecoveryJob(
 			$this->title,
-			[ 'create' => 'Foo#0##']
+			[ 'create' => 'Foo#0##' ]
 		);
 
 		$instance->run();
@@ -168,7 +168,7 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IndexerRecoveryJob(
 			$this->title,
-			[ 'index' => 'Foo#0##']
+			[ 'index' => 'Foo#0##' ]
 		);
 
 		$instance->run();
@@ -200,7 +200,7 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IndexerRecoveryJob(
 			$this->title,
-			[ 'index' => 'Foo#0##']
+			[ 'index' => 'Foo#0##' ]
 		);
 
 		$instance->run();

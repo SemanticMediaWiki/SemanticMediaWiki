@@ -79,7 +79,7 @@ class TreeBuilder {
 	 * @return []
 	 */
 	public function getHierarchyList( array $subjects, string $type ): array {
-		if ( $subjects === []) {
+		if ( $subjects === [] ) {
 			return [];
 		}
 
@@ -209,7 +209,7 @@ class TreeBuilder {
 	}
 
 	public function newNode( $id, $content = '' ) {
-		return new class (  $id, $content ) {
+		return new class ( $id, $content ) {
 
 			public $id;
 			public $content = '';
@@ -252,7 +252,7 @@ class TreeBuilder {
 
 			public function getString() {
 				if ( is_array( $this->content ) ) {
-					$text = implode('', $this->content );
+					$text = implode( '', $this->content );
 				} else {
 					$text = $this->content;
 				}
@@ -265,7 +265,7 @@ class TreeBuilder {
 				// the <ul> becomes part of the <li> element otherwise the elements
 				// aren't correct positioned as per HTML standard.
 				if ( $this->children !== [] && substr( "$text", -5 ) === '</li>' ) {
-					$text = substr_replace( $text ,"", -5 );
+					$text = substr_replace( $text, "", -5 );
 				}
 
 				if ( $this->children !== [] ) {

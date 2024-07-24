@@ -130,7 +130,7 @@ class SMWRecordValue extends AbstractMultiValue {
 			++$propertyIndex;
 		}
 
-		if ( $empty && $this->getErrors() === []  ) {
+		if ( $empty && $this->getErrors() === [] ) {
 			$this->addErrorMsg( [ 'smw_novalues' ] );
 		}
 

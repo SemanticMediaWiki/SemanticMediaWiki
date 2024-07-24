@@ -143,7 +143,7 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return Title
 	 */
 	private function getTitle( SpecialPage $page ) {
-		return method_exists( $page, 'getPageTitle') ? $page->getPageTitle() : $page->getTitle();
+		return method_exists( $page, 'getPageTitle' ) ? $page->getPageTitle() : $page->getTitle();
 	}
 
 }

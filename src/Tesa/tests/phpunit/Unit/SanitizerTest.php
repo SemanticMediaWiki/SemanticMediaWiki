@@ -124,7 +124,7 @@ class SanitizerTest extends TestCase {
 
 		$synonymizer->expects( $this->any() )
 			->method( 'synonymize' )
-			->will($this->returnArgument( 0 ) );
+			->will( $this->returnArgument( 0 ) );
 
 		$instance = new Sanitizer( $text );
 
@@ -160,7 +160,7 @@ class SanitizerTest extends TestCase {
 
 		$synonymizer->expects( $this->any() )
 			->method( 'synonymize' )
-			->will($this->returnArgument( 0 ) );
+			->will( $this->returnArgument( 0 ) );
 
 		$instance = new Sanitizer( $text );
 
@@ -199,7 +199,7 @@ class SanitizerTest extends TestCase {
 
 		$synonymizer->expects( $this->any() )
 			->method( 'synonymize' )
-			->will($this->returnArgument( 0 ) );
+			->will( $this->returnArgument( 0 ) );
 
 		$instance = new Sanitizer( $text );
 

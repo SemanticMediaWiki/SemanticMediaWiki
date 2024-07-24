@@ -164,27 +164,27 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 
 		$legend = Html::rawElement(
 			'p',
-			[] ,
+			[],
 			$this->msg( 'smw-admin-supplementary-operational-table-statistics-legend', Message::PARSE )
 		) . Html::rawElement(
 			'p',
-			[] ,
+			[],
 			$this->msg( 'smw-admin-supplementary-operational-table-statistics-legend-general', Message::PARSE )
 		) . Html::rawElement(
 			'h4',
-			[] ,
+			[],
 			'smw_object_ids'
 		) . Html::rawElement(
 			'p',
-			[] ,
+			[],
 			$this->msg( 'smw-admin-supplementary-operational-table-statistics-legend-id-table', Message::PARSE )
 		) . Html::rawElement(
 			'h4',
-			[] ,
+			[],
 			'smw_di_blob'
 		) . Html::rawElement(
 			'p',
-			[] ,
+			[],
 			$this->msg( 'smw-admin-supplementary-operational-table-statistics-legend-blob-table', Message::PARSE )
 		);
 

@@ -175,7 +175,7 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 			$string = implode( " ", $this->tokenizer->tokenize( $string ) );
 		}
 
-		$result = explode( " " , $this->splitByCharacterGroup(
+		$result = explode( " ", $this->splitByCharacterGroup(
 			str_replace( $this->compound, ' ', $string ) )
 		);
 

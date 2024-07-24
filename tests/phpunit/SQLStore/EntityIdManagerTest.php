@@ -596,15 +596,15 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function pageIdandSortProvider() {
-		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', false, false ];
-		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', true, false ];
-		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', true, true ];
-		$provider[] = [ 'Foo', NS_MAIN, 'quy' , '', 'FOO', false, false ];
-		$provider[] = [ 'Foo', NS_MAIN, 'quy' , 'xwoo', 'FOO', false, false ];
+		$provider[] = [ 'Foo', NS_MAIN, '', '', 'FOO', false, false ];
+		$provider[] = [ 'Foo', NS_MAIN, '', '', 'FOO', true, false ];
+		$provider[] = [ 'Foo', NS_MAIN, '', '', 'FOO', true, true ];
+		$provider[] = [ 'Foo', NS_MAIN, 'quy', '', 'FOO', false, false ];
+		$provider[] = [ 'Foo', NS_MAIN, 'quy', 'xwoo', 'FOO', false, false ];
 
-		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', false, false ];
-		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, false ];
-		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, true ];
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '', '', 'PRO', false, false ];
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '', '', 'PRO', true, false ];
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '', '', 'PRO', true, true ];
 
 		return $this->createAssociativeArrayFromProviderDefinition( $provider );
 	}

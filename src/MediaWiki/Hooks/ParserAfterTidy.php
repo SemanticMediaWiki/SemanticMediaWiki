@@ -163,7 +163,7 @@ class ParserAfterTidy implements HookListener {
 		}
 
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
-			PageInfoProvider::isProtected( $title, 'edit ') ||
+			PageInfoProvider::isProtected( $title, 'edit ' ) ||
 			$parserDefaultSort ) {
 			return true;
 		}
@@ -241,7 +241,7 @@ class ParserAfterTidy implements HookListener {
 			$parserOutput
 		);
 
-		if ( method_exists( $parserOutput, 'getPageProperty') ) {
+		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
 			// T301915
 			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
 			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' ) ?? '';

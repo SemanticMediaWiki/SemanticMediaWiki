@@ -114,11 +114,11 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 		$param = __METHOD__;
 
 		return [
-			[ ''      , [] ],
-			[ null    , [] ],
-			[ $param , [ 'property' => $param ] ],
-			[ "[{$param}]" , [ 'property' => "[{$param}]" ] ],
-			[ "[&{$param}...]" , [ 'property' => "[&{$param}...]" ] ]
+			[ '', [] ],
+			[ null, [] ],
+			[ $param, [ 'property' => $param ] ],
+			[ "[{$param}]", [ 'property' => "[{$param}]" ] ],
+			[ "[&{$param}...]", [ 'property' => "[&{$param}...]" ] ]
 		];
 	}
 

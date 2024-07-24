@@ -64,15 +64,15 @@ class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function comparatorProvider() {
-		$provider[] = [ SMW_CMP_EQ,   'Foo%_*?', [ 'comparator' => '=',  'value' => 'Foo%_*?' ] ];
-		$provider[] = [ SMW_CMP_LESS, 'Foo%_*?', [ 'comparator' => '<',  'value' => 'Foo%_*?' ] ];
-		$provider[] = [ SMW_CMP_GRTR, 'Foo%_*?', [ 'comparator' => '>',  'value' => 'Foo%_*?' ] ];
-		$provider[] = [ SMW_CMP_LEQ,  'Foo%_*?', [ 'comparator' => '<=', 'value' => 'Foo%_*?' ] ];
-		$provider[] = [ SMW_CMP_GEQ,  'Foo%_*?', [ 'comparator' => '>=', 'value' => 'Foo%_*?' ] ];
-		$provider[] = [ SMW_CMP_NEQ,  'Foo%_*?', [ 'comparator' => '!=', 'value' => 'Foo%_*?' ] ];
+		$provider[] = [ SMW_CMP_EQ, 'Foo%_*?', [ 'comparator' => '=', 'value' => 'Foo%_*?' ] ];
+		$provider[] = [ SMW_CMP_LESS, 'Foo%_*?', [ 'comparator' => '<', 'value' => 'Foo%_*?' ] ];
+		$provider[] = [ SMW_CMP_GRTR, 'Foo%_*?', [ 'comparator' => '>', 'value' => 'Foo%_*?' ] ];
+		$provider[] = [ SMW_CMP_LEQ, 'Foo%_*?', [ 'comparator' => '<=', 'value' => 'Foo%_*?' ] ];
+		$provider[] = [ SMW_CMP_GEQ, 'Foo%_*?', [ 'comparator' => '>=', 'value' => 'Foo%_*?' ] ];
+		$provider[] = [ SMW_CMP_NEQ, 'Foo%_*?', [ 'comparator' => '!=', 'value' => 'Foo%_*?' ] ];
 
-		$provider[] = [ SMW_CMP_LIKE, 'Foo%_*?\\', [ 'comparator' => ' LIKE ',     'value' => 'Foo\%\_%_\\\\' ] ];
-		$provider[] = [ SMW_CMP_PRIM_LIKE, 'Foo%_*?\\', [ 'comparator' => ' LIKE ',     'value' => 'Foo\%\_%_\\\\' ] ];
+		$provider[] = [ SMW_CMP_LIKE, 'Foo%_*?\\', [ 'comparator' => ' LIKE ', 'value' => 'Foo\%\_%_\\\\' ] ];
+		$provider[] = [ SMW_CMP_PRIM_LIKE, 'Foo%_*?\\', [ 'comparator' => ' LIKE ', 'value' => 'Foo\%\_%_\\\\' ] ];
 		$provider[] = [ SMW_CMP_NLKE, 'Foo%_*?\\', [ 'comparator' => ' NOT LIKE ', 'value' => 'Foo\%\_%_\\\\' ] ];
 		$provider[] = [ SMW_CMP_PRIM_NLKE, 'Foo%_*?\\', [ 'comparator' => ' NOT LIKE ', 'value' => 'Foo\%\_%_\\\\' ] ];
 

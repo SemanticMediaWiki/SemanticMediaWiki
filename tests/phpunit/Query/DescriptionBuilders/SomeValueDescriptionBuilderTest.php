@@ -67,7 +67,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue($this->dataItemFactory->newDITime( 1, '1970' ) ) );
+			->will( $this->returnValue( $this->dataItemFactory->newDITime( 1, '1970' ) ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )

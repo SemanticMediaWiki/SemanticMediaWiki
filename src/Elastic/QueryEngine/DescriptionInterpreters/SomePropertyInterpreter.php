@@ -395,7 +395,7 @@ class SomePropertyInterpreter {
 		}
 
 		if ( $property->isInverse() ) {
-			if ( !is_array($p) ) {
+			if ( !is_array( $p ) ) {
 				$p = $p->toArray();
 			}
 			$parameters = $this->termsLookup->newParameters(

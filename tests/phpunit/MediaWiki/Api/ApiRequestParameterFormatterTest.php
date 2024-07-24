@@ -69,9 +69,9 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function requestArgsApiParametersDataProvider() {
 		return [
-			[ [ 'conditions' => [ 'Lala' ] ],         'conditions', '[[Lala]]' ],
+			[ [ 'conditions' => [ 'Lala' ] ], 'conditions', '[[Lala]]' ],
 			[ [ 'conditions' => [ 'Lala', 'Lima' ] ], 'conditions', '[[Lala]] [[Lima]]' ],
-			[ [ 'parameters' => [ 'Lila' ] ],         'parameters', [] ],
+			[ [ 'parameters' => [ 'Lila' ] ], 'parameters', [] ],
 			[ [ 'parameters' => [ 'Lila=isFunny' ] ], 'parameters', [ 'Lila' => 'isFunny' ] ],
 			[ [ 'parameters' => [ 'Lila=isFunny', 'Lula=isHappy' ] ], 'parameters', [ 'Lila' => 'isFunny', 'Lula' => 'isHappy' ] ],
 		//	array( array( 'printouts'  => array( '?Linda' ) ),         'printouts', array( $this->newPrintRequest( '?Linda' ) ) ),
@@ -81,10 +81,10 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function requestAskApiParametersDataProvider() {
 		return [
-			[ [],  [] ],
-			[ [ 'query' => '[[Modification date::+]]' ],  [ '[[Modification date::+]]' ] ],
-			[ [ 'query' => '[[Modification date::+]]|?Modification date' ],  [ '[[Modification date::+]]', '?Modification date' ] ],
-			[ [ 'query' => '[[Modification date::+]]|?Modification date|sort=desc' ],  [ '[[Modification date::+]]', '?Modification date', 'sort=desc' ] ],
+			[ [], [] ],
+			[ [ 'query' => '[[Modification date::+]]' ], [ '[[Modification date::+]]' ] ],
+			[ [ 'query' => '[[Modification date::+]]|?Modification date' ], [ '[[Modification date::+]]', '?Modification date' ] ],
+			[ [ 'query' => '[[Modification date::+]]|?Modification date|sort=desc' ], [ '[[Modification date::+]]', '?Modification date', 'sort=desc' ] ],
 		];
 	}
 

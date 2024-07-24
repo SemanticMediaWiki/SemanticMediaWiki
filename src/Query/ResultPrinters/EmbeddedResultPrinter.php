@@ -134,7 +134,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 
 		// Print all result rows:
 		foreach ( $queryResult->getResults() as $diWikiPage ) {
-			if ( $diWikiPage instanceof DIWikiPage  ) { // ensure that we deal with title-likes
+			if ( $diWikiPage instanceof DIWikiPage ) { // ensure that we deal with title-likes
 				$dvWikiPage = $dataValueFactory->newDataValueByItem( $diWikiPage, null );
 				$result .= $embstart;
 

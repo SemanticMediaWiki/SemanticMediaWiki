@@ -54,7 +54,7 @@ class GenericRegExTokenizerTest extends TestCase {
 
 		$instance->setOption(
 			GenericRegExTokenizer::REGEX_EXEMPTION,
-			array( '\(', '\)', "'", ';')
+			array( '\(', '\)', "'", ';' )
 		);
 
 		$this->assertEquals(

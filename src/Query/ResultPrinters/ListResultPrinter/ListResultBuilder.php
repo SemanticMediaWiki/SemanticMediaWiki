@@ -243,7 +243,7 @@ class ListResultBuilder {
 		}
 
 		$prefixParameterProcessor = new PrefixParameterProcessor( $this->queryResult->getQuery(),
-			$this->configuration->get('prefix') );
+			$this->configuration->get( 'prefix' ) );
 
 		$valueTextsBuilder = new ValueTextsBuilder( $prefixParameterProcessor );
 		$valueTextsBuilder->setLinker( $this->linker );

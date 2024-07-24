@@ -55,7 +55,7 @@ class RefreshSQLStoreDBIntegrationTest extends DatabaseTestCase {
 
 		$this->title = Title::makeTitle( $ns, $name, '', $iw );
 
-		$this->pageCreator->createPage( $this->title  );
+		$this->pageCreator->createPage( $this->title );
 
 		$this->assertStoreHasDataToRefresh( false );
 	}

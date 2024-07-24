@@ -191,7 +191,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( [ (object)$row] ) );
+			->will( $this->returnValue( [ (object)$row ] ) );
 
 		$connection->expects( $this->any() )
 			->method( 'selectField' )

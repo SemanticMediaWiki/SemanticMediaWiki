@@ -285,7 +285,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 		$errorCount = [];
 
 		if ( $count == 0 ) {
-			return $this->reportMessage( "   ... no entities selected ...\n"  );
+			return $this->reportMessage( "   ... no entities selected ...\n" );
 		}
 
 		$this->reportMessage(
@@ -297,7 +297,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 		);
 
 		$this->reportMessage( "\nInspecting documents ...\n" );
-		$cliMsgFormatter->setStartTime( (int) microtime( true ) );
+		$cliMsgFormatter->setStartTime( (int)microtime( true ) );
 
 		foreach ( $rows as $row ) {
 

@@ -52,7 +52,7 @@ class DIConceptTest extends DataItemTest {
 	 */
 	public function testConceptCacheSetterGetter( $status, $date, $count ) {
 		$reflector = new \ReflectionClass( $this->getClass() );
-		$instance  = $reflector->newInstanceArgs(  [ 'Foo', '', '', '', '' ] );
+		$instance  = $reflector->newInstanceArgs( [ 'Foo', '', '', '', '' ] );
 
 		$instance->setCacheStatus( $status );
 		$instance->setCacheDate( $date );

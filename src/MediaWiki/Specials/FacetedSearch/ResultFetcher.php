@@ -196,7 +196,7 @@ class ResultFetcher {
 		}
 
 		if ( $this->queryResult === null ) {
-			throw new RuntimeException( "Missing a `QueryResult` object, `ResultFetcher::fetchQueryResult` wasn't executed!");
+			throw new RuntimeException( "Missing a `QueryResult` object, `ResultFetcher::fetchQueryResult` wasn't executed!" );
 		}
 
 		$printer = QueryProcessor::getResultPrinter(
@@ -208,7 +208,7 @@ class ResultFetcher {
 		$html = $printer->getResult( $this->queryResult, $this->params, SMW_OUTPUT_HTML );
 
 		if ( $html === '' ) {
-			$html = '<div class="smw-callout smw-callout-warning">' . Message::get( [ 'smw-facetedsearch-no-output',  $this->format ] ) . '</div>';
+			$html = '<div class="smw-callout smw-callout-warning">' . Message::get( [ 'smw-facetedsearch-no-output', $this->format ] ) . '</div>';
 		}
 
 		return $html;

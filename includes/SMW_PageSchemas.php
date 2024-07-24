@@ -67,7 +67,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		foreach ( $psTemplates as $psTemplate ) {
 			$psTemplateFields = $psTemplate->getFields();
 			foreach ( $psTemplateFields as $psTemplateField ) {
-				$prop_array = $psTemplateField->getObject('semanticmediawiki_Property');
+				$prop_array = $psTemplateField->getObject( 'semanticmediawiki_Property' );
 				if ( empty( $prop_array ) ) {
 					continue;
 				}
@@ -144,13 +144,13 @@ class SMWPageSchemas extends PSExtensionHandler {
 			if ( substr( $var, 0, 18 ) == 'smw_property_name_' ) {
 				$fieldNum = substr( $var, 18 );
 				$xml = '<semanticmediawiki_Property name="' . $val . '" >';
-			} elseif ( substr( $var, 0, 18 ) == 'smw_property_type_'){
+			} elseif ( substr( $var, 0, 18 ) == 'smw_property_type_' ){
 				$xml .= '<Type>' . $val . '</Type>';
-			} elseif ( substr( $var, 0, 16 ) == 'smw_linked_form_') {
+			} elseif ( substr( $var, 0, 16 ) == 'smw_linked_form_' ) {
 				if ( $val !== '' ) {
 					$xml .= '<LinkedForm>' . $val . '</LinkedForm>';
 				}
-			} elseif ( substr( $var, 0, 11 ) == 'smw_values_') {
+			} elseif ( substr( $var, 0, 11 ) == 'smw_values_' ) {
 				if ( $val !== '' ) {
 					// replace the comma substitution character that has no chance of
 					// being included in the values list - namely, the ASCII beep
@@ -206,7 +206,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$prop_array = [];
 		$hasExistingValues = false;
 		if ( !is_null( $psTemplateField ) ) {
-			$prop_array = $psTemplateField->getObject('semanticmediawiki_Property');
+			$prop_array = $psTemplateField->getObject( 'semanticmediawiki_Property' );
 			if ( !is_null( $prop_array ) ) {
 				$hasExistingValues = true;
 			}
@@ -219,7 +219,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$datatype_labels = $smwgContLang->getDatatypeLabels();
 		foreach ( $datatype_labels as $label ) {
 			$optionAttrs = [];
-			if ( $label == $propType) {
+			if ( $label == $propType ) {
 				$optionAttrs['selected'] = 'selected';
 			}
 			$select_body .= "\t" . Xml::element( 'option', $optionAttrs, $label ) . "\n";
@@ -323,7 +323,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 			$text .= ' ' . wfMessage( 'sf_property_linkstoform', $defaultFormTag )->inContentLanguage()->text();
 		}
 
-		if ( $allowedValues != null) {
+		if ( $allowedValues != null ) {
 			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', MediaWikiServices::getInstance()->getContentLanguage()->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();
 
 			foreach ( $allowedValues as $value ) {

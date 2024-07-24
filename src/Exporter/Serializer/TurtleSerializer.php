@@ -105,7 +105,7 @@ class TurtleSerializer extends Serializer {
 				"wiki" => $exporter->expandURI( '&wiki;' ),
 				"category" => $exporter->expandURI( '&category;' ),
 				"property" => $exporter->expandURI( '&property;' ),
-				"xsd" => "http://www.w3.org/2001/XMLSchema#" ,
+				"xsd" => "http://www.w3.org/2001/XMLSchema#",
 				"wikiurl" => $exporter->expandURI( '&wikiurl;' )
 			];
 		} else {

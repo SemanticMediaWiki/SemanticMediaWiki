@@ -53,7 +53,7 @@ class CustomFormTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			implode( '', $form ),
-			$instance->makeFields( [ 'Bar property'] )
+			$instance->makeFields( [ 'Bar property' ] )
 		);
 
 		$this->assertEquals(

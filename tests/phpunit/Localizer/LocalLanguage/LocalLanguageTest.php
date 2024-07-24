@@ -182,7 +182,7 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( [ "_FOO" => "Foo" ] ) );
 
-		$this->languageContents->expects( $this->at( 1 )  )
+		$this->languageContents->expects( $this->at( 1 ) )
 			->method( 'get' )
 			->with(
 				$this->equalTo( 'datatype.labels' ),

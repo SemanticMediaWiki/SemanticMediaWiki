@@ -96,7 +96,7 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 
 	public function getTypeDataProvider() {
 		return [
-			[ '' , Highlighter::TYPE_NOTYPE ],
+			[ '', Highlighter::TYPE_NOTYPE ],
 			[ 'property', Highlighter::TYPE_PROPERTY ],
 			[ 'text', Highlighter::TYPE_TEXT ],
 			[ 'info', Highlighter::TYPE_INFO ],

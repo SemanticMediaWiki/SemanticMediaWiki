@@ -135,7 +135,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 
 		$htmlTabs->tab( 'legend', $this->msg( 'smw-legend' ) );
 		$htmlTabs->content( 'legend', Html::rawElement(
-					'p', [] , $this->msg( 'smw-admin-statistics-querycache-legend', Message::PARSE ) ) );
+					'p', [], $this->msg( 'smw-admin-statistics-querycache-legend', Message::PARSE ) ) );
 
 		$html = $htmlTabs->buildHTML( [ 'class' => 'cache-statistics' ] );
 

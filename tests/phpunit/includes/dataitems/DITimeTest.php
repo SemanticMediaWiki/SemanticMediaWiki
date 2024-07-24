@@ -19,7 +19,7 @@ class DITimeTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			'\SMWDITime',
-			new DITime(  DITime::CM_GREGORIAN, 1970 )
+			new DITime( DITime::CM_GREGORIAN, 1970 )
 		);
 	}
 

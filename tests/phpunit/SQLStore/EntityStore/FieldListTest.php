@@ -43,7 +43,7 @@ class FieldListTest extends \PHPUnit_Framework_TestCase {
 		$instance = new FieldList( $countMaps );
 
 		$this->assertEquals(
-			['Foo' => 1001 ],
+			[ 'Foo' => 1001 ],
 			$instance->getCountListByType( FieldList::PROPERTY_LIST )
 		);
 

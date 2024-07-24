@@ -53,7 +53,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testAddNamespaceCondition() {
 		$this->webRequest->expects( $this->any() )
 			->method( 'getCheck' )
-			->with($this->equalTo( 'ns6' ) )
+			->with( $this->equalTo( 'ns6' ) )
 			->will( $this->returnValue( true ) );
 
 		$instance = new QueryBuilder(
@@ -81,7 +81,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testAddSort() {
 		$this->webRequest->expects( $this->any() )
 			->method( 'getVal' )
-			->with($this->equalTo( 'sort' ) )
+			->with( $this->equalTo( 'sort' ) )
 			->will( $this->returnValue( 'recent' ) );
 
 		$instance = new QueryBuilder(
@@ -188,7 +188,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->webRequest->expects( $this->at( 1 ) )
 			->method( 'getArray' )
 			->with( $this->equalTo( 'property' ) )
-			->will( $this->returnValue(  [ 'Bar' ] ) );
+			->will( $this->returnValue( [ 'Bar' ] ) );
 
 		$this->webRequest->expects( $this->at( 2 ) )
 			->method( 'getArray' )

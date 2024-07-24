@@ -189,7 +189,7 @@ class SMWPageLister {
 			}
 		}
 
-		if ( count ( $this->mDiWikiPages ) > $cutoff ) {
+		if ( count( $this->mDiWikiPages ) > $cutoff ) {
 			return self::getColumnList( $start, $end, $this->mDiWikiPages, $this->mDiProperty );
 		} elseif ( count( $this->mDiWikiPages ) > 0 ) {
 			return self::getShortList( $start, $end, $this->mDiWikiPages, $this->mDiProperty );
@@ -215,7 +215,7 @@ class SMWPageLister {
 		}
 
 		// Divide list into three equal chunks.
-		$chunk = (int) ( ( $end - $start + 1 ) / 3 );
+		$chunk = (int)( ( $end - $start + 1 ) / 3 );
 
 		// Get and display header.
 		$r = '<table width="100%"><tr valign="top">';

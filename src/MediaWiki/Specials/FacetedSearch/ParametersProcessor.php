@@ -213,15 +213,15 @@ class ParametersProcessor {
 			[ $ns, $v ] = explode( ':', $query, 2 );
 
 			if ( Localizer::getInstance()->getNsIndex( $ns ) === NS_CATEGORY ) {
-				$params = str_replace( '_',' ', "[[Category:$v]]" );
+				$params = str_replace( '_', ' ', "[[Category:$v]]" );
 			}
 
 			if ( Localizer::getInstance()->getNsIndex( $ns ) === SMW_NS_PROPERTY ) {
-				$params = str_replace( '_',' ', "[[$v::+]]" );
+				$params = str_replace( '_', ' ', "[[$v::+]]" );
 			}
 
 			if ( Localizer::getInstance()->getNsIndex( $ns ) === SMW_NS_CONCEPT ) {
-				$params = str_replace( '_',' ', "[[Concept:$v]]" );
+				$params = str_replace( '_', ' ', "[[Concept:$v]]" );
 			}
 		} elseif ( strpos( $query, '/' ) !== false ) {
 			// PropertyFoo/ValueBar
@@ -473,7 +473,7 @@ class ParametersProcessor {
 	}
 
 	private function addDefaultPrintRequests( string $query ) {
-		preg_match_all('/\[\[(.*?)\]\]/i', $query, $matches );
+		preg_match_all( '/\[\[(.*?)\]\]/i', $query, $matches );
 		$printRequests = [];
 
 		foreach ( $matches[1] as $match ) {

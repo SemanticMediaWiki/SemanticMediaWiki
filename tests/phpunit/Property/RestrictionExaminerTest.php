@@ -52,7 +52,7 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 	public function testRestrictionForPredefinedProperty() {
 		$instance = new RestrictionExaminer();
 
-		$instance->checkRestriction( new DIProperty( '_MDAT' )  );
+		$instance->checkRestriction( new DIProperty( '_MDAT' ) );
 
 		$this->assertTrue(
 			$instance->hasRestriction()
@@ -63,7 +63,7 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RestrictionExaminer();
 		$instance->isQueryContext( true );
 
-		$instance->checkRestriction( new DIProperty( '_MDAT' )  );
+		$instance->checkRestriction( new DIProperty( '_MDAT' ) );
 
 		$this->assertFalse(
 			$instance->hasRestriction()
@@ -76,7 +76,7 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setCreateProtectionRight( false );
 		$instance->setUser( $this->user );
 
-		$instance->checkRestriction( new DIProperty( 'Foo' )  );
+		$instance->checkRestriction( new DIProperty( 'Foo' ) );
 
 		$this->assertFalse(
 			$instance->hasRestriction()
@@ -89,7 +89,7 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setCreateProtectionRight( 'foo' );
 		$instance->setUser( $this->user );
 
-		$instance->checkRestriction( new DIProperty( 'Foo' )  );
+		$instance->checkRestriction( new DIProperty( 'Foo' ) );
 
 		$this->assertTrue(
 			$instance->hasRestriction()
@@ -109,7 +109,7 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setCreateProtectionRight( $right );
 		$instance->setUser( $this->user );
 
-		$instance->checkRestriction( new DIProperty( 'Foo' )  );
+		$instance->checkRestriction( new DIProperty( 'Foo' ) );
 
 		$this->assertFalse(
 			$instance->hasRestriction()

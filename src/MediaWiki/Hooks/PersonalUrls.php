@@ -125,7 +125,7 @@ class PersonalUrls implements HookListener {
 	private function humanReadable( $num, $decimals = 0 ) {
 		if ( $num < 1000 ) {
 			$num = number_format( $num );
-		} else if ( $num < 1000000) {
+		} else if ( $num < 1000000 ) {
 			$num = number_format( $num / 1000, $decimals ) . 'K';
 		} else {
 			$num = number_format( $num / 1000000, $decimals ) . 'M';

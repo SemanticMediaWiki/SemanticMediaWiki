@@ -53,7 +53,7 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 			$this->messageLocalizer
 		);
 
-		$instance->setSearchableNamespaces( [ 0 => 'Foo '] );
+		$instance->setSearchableNamespaces( [ 0 => 'Foo ' ] );
 
 		$this->assertContains(
 			"<fieldset id='mw-searchoptions'>",
