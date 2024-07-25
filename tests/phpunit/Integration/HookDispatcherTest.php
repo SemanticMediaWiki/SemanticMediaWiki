@@ -325,7 +325,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->mwHooksHandler->register( 'SMW::RevisionGuard::IsApprovedRevision', function ( $title, $latestRevID ) {
-			return $latestRevID == 9999 ? false : true ;
+			return $latestRevID == 9999 ? false : true;
 		} );
 
 		$this->assertFalse(
