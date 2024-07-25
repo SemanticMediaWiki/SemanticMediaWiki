@@ -201,7 +201,7 @@ class FacetBuilder {
 				continue;
 			}
 
-			$clear = $urlArgs->getArray( 'clear' ) ;
+			$clear = $urlArgs->getArray( 'clear' );
 
 			if (
 				isset( $pv[$property] ) &&
