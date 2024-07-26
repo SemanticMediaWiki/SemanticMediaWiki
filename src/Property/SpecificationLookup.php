@@ -59,11 +59,6 @@ class SpecificationLookup {
 	private $skipCache = false;
 
 	/**
-	 * @var LanguageFalldownAndInverse
-	 */
-	private $languageFalldownAndInverse;
-
-	/**
 	 * @since 2.4
 	 *
 	 * @param Store $store
