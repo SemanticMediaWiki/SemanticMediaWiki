@@ -4,6 +4,7 @@ namespace SMW\Tests\Property;
 
 use SMW\DataItemFactory;
 use SMW\Property\SpecificationLookup;
+use SMW\Property\LanguageFalldownAndInverse;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMW\Tests\TestEnvironment;
@@ -18,6 +19,9 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
+ 
+ 
+
 class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
@@ -28,7 +32,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $entityCache;
 
-	protected function setUp(): void {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -50,13 +54,75 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
+
 		$this->assertInstanceOf(
 			SpecificationLookup::class,
 			new SpecificationLookup( $this->store, $this->entityCache )
 		);
 	}
 
+	// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5342
+	public function testTryOutFalldownAndInverse() {
+		$property = $this->dataItemFactory->newDIProperty( '_PDESC' );
+		$subject = $property->getDiWikiPage();
+
+		$this->monolingualTextLookup->expects( $this->any() )
+			->method( 'newDataValue' )
+			->with(
+				$this->equalTo( $subject ),
+				$this->equalTo( $property ),
+				$this->anything() )
+
+			->will(
+				$this->returnCallback( static function() {
+   					$args = func_get_args();
+    				switch ( $args[2] ) {
+    					case 'de': return 'de-desc';
+    					case 'de-formal': return 'de-formal-desc';
+    					case 'en': return 'en-desc';
+    				}
+				} )
+			 );
+
+		$instance = new SpecificationLookup(
+			$this->store,
+			$this->entityCache
+		);
+
+		$languageCode = 'de-formal';
+		$languageFalldownAndInverse = new LanguageFalldownAndInverse( $this->monolingualTextLookup, $subject, $property, $languageCode );
+
+		// #1 will return languageFalldown
+		$this->assertEquals(
+			[ 'de-desc', 'de' ],
+			$languageFalldownAndInverse->tryout()
+		);
+		
+
+		$languageCode = 'de';
+		$languageFalldownAndInverse = new LanguageFalldownAndInverse( $this->monolingualTextLookup, $subject, $property, $languageCode );
+
+		// #2 will return the first existing FallbackInverse
+		// (de-formal from de)
+
+		$this->assertEquals(
+			[ 'de-formal-desc', 'de-formal' ],
+			$languageFalldownAndInverse->tryout()
+		);
+
+		$languageCode = 'en';
+		$languageFalldownAndInverse = new LanguageFalldownAndInverse( $this->monolingualTextLookup, $subject, $property, $languageCode );
+
+		// #3 will return null
+		$this->assertEquals(
+			[ null, $GLOBALS['wgLanguageCode'] ],
+			$languageFalldownAndInverse->tryout()
+		);
+
+	}
+
 	public function testGetSpecification() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -82,6 +148,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSpecification_SkipCache() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -108,6 +175,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFieldList() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'RecordProperty' );
 
 		$this->store->expects( $this->once() )
@@ -119,7 +187,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->will(
 				$this->returnValue( [
 					$this->dataItemFactory->newDIBlob( 'Foo' ),
-					$this->dataItemFactory->newDIBlob( 'abc;123' ) ] ) );
+					$this->dataItemFactory->newDIBlob( 'abc;1234' ) ] ) );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
@@ -137,6 +205,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPreferredPropertyLabel() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'SomeProperty' );
 		$property->setPropertyTypeId( '_mlt_rec' );
 
@@ -167,6 +236,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasUniquenessConstraint() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -192,6 +262,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExternalFormatterUri() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -217,7 +288,9 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+
 	public function testGetAllowedPattern() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'Has allowed pattern' );
 
 		$this->store->expects( $this->once() )
@@ -245,6 +318,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAllowedListValueBy() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'Has list' );
 
 		$this->store->expects( $this->once() )
@@ -272,6 +346,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAllowedValues() {
+
 		$expected =  [
 			$this->dataItemFactory->newDIBlob( 'A' ),
 			$this->dataItemFactory->newDIBlob( 'B' )
@@ -303,6 +378,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDisplayPrecision() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -329,6 +405,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testgetDisplayUnits() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -357,6 +434,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyDescriptionForPredefinedProperty() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
@@ -386,6 +464,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyDescriptionForPredefinedPropertyViaCacheForLanguageCode() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->entityCache->expects( $this->once() )
@@ -407,6 +486,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToGetLocalPropertyDescriptionForUserdefinedProperty() {
+
 		$stringValue = $this->getMockBuilder( '\SMW\DataValues\StringValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -450,6 +530,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyGroup() {
+
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 		$ppgr = $this->dataItemFactory->newDIProperty( '_PPGR' );
 
@@ -488,6 +569,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidateCache() {
+
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 
 		$this->entityCache->expects( $this->at( 0 ) )
