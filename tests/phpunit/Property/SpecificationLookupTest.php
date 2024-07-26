@@ -18,6 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  * @since 2.4
  *
  * @author mwjames
+ * @author thomas-topway-it
  */
 class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
