@@ -43,7 +43,7 @@ class JsonView {
 				'class' => 'smw-schema-placeholder-message is-disabled',
 			],
 			$this->msg( 'smw-data-lookup-with-wait' ) .
-			"\n\n\n" .$this->msg( 'smw-preparing' ) . "\n"
+			"\n\n\n" . $this->msg( 'smw-preparing' ) . "\n"
 		);
 
 		return Html::rawElement(

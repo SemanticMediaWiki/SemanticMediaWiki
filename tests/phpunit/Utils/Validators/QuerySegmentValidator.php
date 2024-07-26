@@ -67,7 +67,7 @@ class QuerySegmentValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function formatMessage( $id, $expected, $actual ) {
-		return "Asserts {$id} to be expected [ " . $this->formatAsString( $expected ) . ' ] vs. actual [ ' . $this->formatAsString( $actual ) .' ]';
+		return "Asserts {$id} to be expected [ " . $this->formatAsString( $expected ) . ' ] vs. actual [ ' . $this->formatAsString( $actual ) . ' ]';
 	}
 
 	private function formatAsString( $expected ) {

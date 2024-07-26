@@ -116,7 +116,7 @@ class DistinctEntityDataRebuilder {
 		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .
 		( $this->options->has( 'categories' ) ? 'category' : '' ) .
 		( $this->options->has( 'namespace' ) ? $this->options->get( 'namespace' ) : '' ) .
-		( $this->options->has( 'query' ) ? 'query (' . $this->options->get( 'query' ) .')' : '' ) .
+		( $this->options->has( 'query' ) ? 'query (' . $this->options->get( 'query' ) . ')' : '' ) .
 		( $this->options->has( 'p' ) ? 'property' : '' );
 
 		$pages = [];
