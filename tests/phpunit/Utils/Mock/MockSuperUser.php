@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils\Mock;
 
 use User;
+use MediaWiki\Permissions\PermissionStatus;
 
 /**
  * Instantiate a SuperUser in order to be able to do everything
@@ -40,7 +41,7 @@ class MockSuperUser extends User {
 	# and "isAllowed( string $permission ) : bool" in MW 1.36
 	# The following signature does not emit warnings in any cases
 	# TODO: when SMW will only support MW 1.36+, the new signature can be fixed
-	public function isAllowed( $permission = '' ): bool {
+	public function isAllowed( $permission = '', ?PermissionStatus $status = null ): bool {
 		return true;
 	}
 }
