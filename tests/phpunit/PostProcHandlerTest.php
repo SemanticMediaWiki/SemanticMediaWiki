@@ -257,7 +257,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			[ $key => 42 ]
 		);
 
-		$this->cache->expects( $this->at( 0 ) )
+		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( $changeDiff->serialize() ) );
 
