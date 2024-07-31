@@ -96,7 +96,7 @@ The "docker-compose-ci" repository has already been integrated into the Semantic
 
 Ensure, you have `Make` and `Docker` installed:
 ```
-make --versionFor more information about tests in Semantic MediaWiki in general, see
+make --version
 docker --version
 ```
 
