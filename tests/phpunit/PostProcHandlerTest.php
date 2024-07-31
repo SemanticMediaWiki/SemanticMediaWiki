@@ -88,15 +88,16 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetch' )
 			->will( $this->returnValue( true ) );
 
-		$this->parserOutput->expects( $this->at( 0 ) )
+		$this->parserOutput->expects( $this->exactly( 2 ) )
 			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
-			->will( $this->returnValue( [ 'Bar' => true ] ) );
-
-		$this->parserOutput->expects( $this->at( 1 ) )
-			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::POST_EDIT_CHECK ) )
-			->will( $this->returnValue( [ 'Foobar' ] ) );
+			->withConsecutive(
+				[ $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) ],
+				[ $this->equalTo( PostProcHandler::POST_EDIT_CHECK ) ]
+			)
+			->willReturnOnConsecutiveCalls(
+				[ 'Bar' => true ],
+				[ 'Foobar' ]
+			);
 
 		$instance = new PostProcHandler(
 			$this->parserOutput,

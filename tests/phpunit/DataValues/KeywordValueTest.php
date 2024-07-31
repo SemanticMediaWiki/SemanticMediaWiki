@@ -127,19 +127,22 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
+		$this->propertySpecificationLookup->expects( $this->exactly( 2 ) )
 			->method( 'getSpecification' )
-			->with(
-				$this->anything(),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_FORMAT_SCHEMA' ) ) )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_SCHEMA ) ] ) );
-
-		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
-			->method( 'getSpecification' )
-			->with(
-				$this->anything(),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( $data ) ] ) );
+			->withConsecutive(
+				[
+					$this->anything(),
+					$this->equalTo( $this->dataItemFactory->newDIProperty( '_FORMAT_SCHEMA' ) )
+				],
+				[
+					$this->anything(),
+					$this->equalTo( $this->dataItemFactory->newDIProperty( '_SCHEMA_DEF' ) )
+				]
+			)
+			->willReturnOnConsecutiveCalls(
+				[ $this->dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_SCHEMA ) ],
+				[ $this->dataItemFactory->newDIBlob( $data ) ]
+			);
 
 		$instance = new KeywordValue();
 		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
