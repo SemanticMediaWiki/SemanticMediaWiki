@@ -71,9 +71,44 @@ have a look at the contribution guidelines.
 
 ## Tests
 
-This extension provides unit and integration tests and is usually run by a [continuous integration platform][travis]
-but can also be executed locally using the shortcut command `composer phpunit` from the extension base directory. A more
-comprehensive introduction can be found under the [test section](/tests/README.md#running-tests).
+This extension is tested using [GitHub Actions for Continuous Integration (CI)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions). Each time changes are pushed to the repository, GitHub Actions automatically runs a series of tests to ensure the code remains reliable and functional.
+
+> **INFO**:
+> This repository contains submodules. Make sure to clone with `--recursive` option in Git.
+>
+> ```
+> git clone --recursive <REPO>
+> ```
+> 
+> If not done when cloning, it can be done by
+>
+> ```
+> git submodule init
+> git submodule update
+> ```
+
+### Step 1: Clone the Repository
+
+### Step 2: Ensure test container is running
+This repository supports ["docker-compose-ci" based CI and testing for MediaWiki extensions](https://github.com/gesinn-it-pub/docker-compose-ci).
+
+The "docker-compose-ci" repository has already been integrated into the Semantic MediaWiki repository as a Git submodule. It uses "Make" as main entry point and command line interface.
+
+Ensure, you have `Make` and `Docker` installed:
+```
+make --versionFor more information about tests in Semantic MediaWiki in general, see
+docker --version
+```
+
+### Step 3: Run lint, phpcs and tests
+
+```
+make ci
+```
+
+For more information about
+- docker-compose-ci, see https://github.com/gesinn-it-pub/docker-compose-ci
+- tests in Semantic MediaWiki in general, see the [test documentation](/tests/README.md#running-tests).
 
 ## License
 
