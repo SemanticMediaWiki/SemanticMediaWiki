@@ -18,6 +18,17 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	protected function setUp(): void {
+        parent::setUp();
+        
+        // Mocking global job classes
+        $GLOBALS['wgJobClasses'] = [
+            'smw.indexer' => 'SMWIndexerJob',
+            'smw.updater' => 'SMWUpdaterJob',
+            // Add more mock job classes as necessary for your tests
+        ];
+    }
+
 	public function testIsReadOnly() {
 		$this->assertInternalType(
 			'boolean',
