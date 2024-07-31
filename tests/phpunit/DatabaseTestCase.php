@@ -2,7 +2,6 @@
 
 namespace SMW\Tests;
 
-use BacklinkCache;
 use HashBagOStuff;
 use MediaWiki\MediaWikiServices;
 use ObjectCache;
@@ -106,16 +105,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		StoreFactory::clear();
 		ServicesFactory::clear();
 		SMWQueryProcessor::setRecursiveTextProcessor();
-		if ( !$oldServices->hasService( 'BacklinkCacheFactory' ) ) {
-			// BacklinkCacheFactory is available starting with MW 1.37, reset the legacy singleton otherwise.
-			// Use a mock title for this to avoid premature service realization.
-			$title = $this->createMock( Title::class );
-			$title->expects( $this->any() )
-				->method( 'getPrefixedDBkey' )
-				->willReturn( 'Badtitle/Dummy title for BacklinkCache reset' );
-
-			BacklinkCache::get( $title )->clear();
-		}
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
