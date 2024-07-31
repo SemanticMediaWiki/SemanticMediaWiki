@@ -175,27 +175,20 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyIdByLabel() {
-		$this->languageContents->expects( $this->at( 0 ) )
+		$this->languageContents->expects( $this->exactly( 4 ) )
 			->method( 'get' )
-			->with(
-				$this->equalTo( 'property.labels' ),
-				$this->anything() )
-			->will( $this->returnValue( [ "_FOO" => "Foo" ] ) );
-
-		$this->languageContents->expects( $this->at( 1 ) )
-			->method( 'get' )
-			->with(
-				$this->equalTo( 'datatype.labels' ),
-				$this->anything() )
-			->will( $this->returnValue( [] ) );
-
-		$this->languageContents->expects( $this->at( 2 ) )
-			->method( 'get' )
-			->will( $this->returnValue( [] ) );
-
-		$this->languageContents->expects( $this->at( 3 ) )
-			->method( 'get' )
-			->will( $this->returnValue( [] ) );
+			->withConsecutive(
+				[ $this->equalTo( 'property.labels' ), $this->anything() ],
+				[ $this->equalTo( 'datatype.labels' ), $this->anything() ],
+				[ $this->equalTo( 'property.aliases' ), $this->anything() ],
+				[ $this->equalTo( 'property.aliases' ), $this->anything() ]
+			)
+			->willReturnOnConsecutiveCalls(
+				[ "_FOO" => "Foo" ],
+				[],
+				[],
+				[]
+			);
 
 		$instance = new LocalLanguage(
 			$this->languageContents
