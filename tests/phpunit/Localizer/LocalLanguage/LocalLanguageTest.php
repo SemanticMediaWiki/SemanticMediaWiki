@@ -200,6 +200,52 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetPropertyIdByLabel_NoMatch() {
+		// inverse testing - Mocking the data to ensure that the label does not match any property ID.
+		$this->languageContents->expects( $this->exactly( 4 ) )
+			->method( 'get' )
+			->withConsecutive(
+				[ $this->equalTo( 'property.labels'), $this->anything() ],
+				[ $this->equalTo( 'datatype.labels'), $this->anything() ],
+				[ $this->equalTo( 'property.aliases'), $this->anything() ],
+				[ $this->equalTo( 'property.aliases'), $this->anything() ]
+			)
+			->willReturnOnConsecutiveCalls(
+				[ '_FOO' => 'Bar' ],
+				[],                
+				[],                
+				[]                
+			);
+	
+		$instance = new LocalLanguage($this->languageContents);
+	
+		// Check that the label 'Foo' does not match any property ID
+		$this->assertNull($instance->getPropertyIdByLabel('Foo'));
+	}
+
+	public function testGetPropertyIdByLabel_AllSourcesEmpty() {
+		// inverse testing - Mocking the data to simulate empty arrays from all sources
+		$this->languageContents->expects( $this->exactly( 4 ) )
+			->method( 'get' )
+			->withConsecutive(
+				[ $this->equalTo( 'property.labels' ), $this->anything() ],
+				[ $this->equalTo( 'datatype.labels' ), $this->anything() ],
+				[ $this->equalTo( 'property.aliases' ), $this->anything() ],
+				[ $this->equalTo( 'property.aliases' ), $this->anything() ]
+			)
+			->willReturnOnConsecutiveCalls(
+				[], 
+				[],  
+				[],  
+				[]   
+			);
+	
+		$instance = new LocalLanguage($this->languageContents);
+	
+		// Check that when all data sources are empty, no property ID is found
+		$this->assertNull( $instance->getPropertyIdByLabel( 'Foo' ) );
+	}
+
 	public function testGetPropertyLabelList() {
 		$propertyLabels = [
 			'_Foo'  => 'Bar',
