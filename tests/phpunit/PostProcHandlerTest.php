@@ -88,15 +88,16 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetch' )
 			->will( $this->returnValue( true ) );
 
-		$this->parserOutput->expects( $this->at( 0 ) )
+		$this->parserOutput->expects( $this->exactly( 2 ) )
 			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
-			->will( $this->returnValue( [ 'Bar' => true ] ) );
-
-		$this->parserOutput->expects( $this->at( 1 ) )
-			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::POST_EDIT_CHECK ) )
-			->will( $this->returnValue( [ 'Foobar' ] ) );
+			->withConsecutive(
+				[ $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) ],
+				[ $this->equalTo( PostProcHandler::POST_EDIT_CHECK ) ]
+			)
+			->willReturnOnConsecutiveCalls(
+				[ 'Bar' => true ],
+				[ 'Foobar' ]
+			);
 
 		$instance = new PostProcHandler(
 			$this->parserOutput,
@@ -134,6 +135,65 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'FakeCookie' ) );
 
 		$this->assertContains(
+			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[&quot;Bar&quot;]" data-query="[&quot;Foobar&quot;]"></div>',
+			$instance->getHtml( $title, $webRequest )
+		);
+	}
+
+	public function testGetHtml_DifferentExtensionData() {
+		// inverse testing - Mocking the data to ensure that the html has DifferentExtensionData
+		$this->cache->expects( $this->atLeastOnce() )
+			->method( 'fetch' )
+			->will( $this->returnValue( true ) );
+
+		$this->parserOutput->expects( $this->exactly( 2 ) )
+			->method( 'getExtensionData' )
+			->withConsecutive(
+				[ $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) ],
+				[ $this->equalTo( PostProcHandler::POST_EDIT_CHECK ) ]
+			)
+			->willReturnOnConsecutiveCalls(
+				[ 'TestValue' => true ],
+            	[] 
+			);
+
+		$instance = new PostProcHandler(
+			$this->parserOutput,
+			$this->cache
+		);
+
+		$instance->setOptions(
+			[
+				'check-query' => true
+			]
+		);
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 42 ) );
+
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$webRequest->expects( $this->once() )
+			->method( 'getCookie' )
+			->will( $this->returnValue( 'FakeCookie' ) );
+
+		// Check that the returned HTML does not contain the expected data attributes - inverse testing
+		$this->assertNotContains(
 			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[&quot;Bar&quot;]" data-query="[&quot;Foobar&quot;]"></div>',
 			$instance->getHtml( $title, $webRequest )
 		);
@@ -256,7 +316,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			[ $key => 42 ]
 		);
 
-		$this->cache->expects( $this->at( 0 ) )
+		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( $changeDiff->serialize() ) );
 

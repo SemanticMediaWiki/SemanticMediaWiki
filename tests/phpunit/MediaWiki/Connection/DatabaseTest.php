@@ -274,8 +274,14 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( [ 'select' ] )
 			->getMockForAbstractClass();
 
-		$database->expects( $this->once() )
-			->method( 'select' );
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$database->expects( $this->once() )
+				->method( 'select' )
+				->will($this->throwException( new RuntimeException( 'Database error' ) ) );
+		} else {
+			$database->expects( $this->once() )
+				->method( 'select' );
+		}
 
 		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
