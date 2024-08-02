@@ -54,7 +54,7 @@ class BulkFileProvider {
 
 		foreach ( $iterator as $file => $value ) {
 			$fileInfo = pathinfo( $file );
-			$files[$fileInfo['filename'] . ' (' . substr( md5( $file ), 0, 5 ) .')'] = $file;
+			$files[$fileInfo['filename'] . ' (' . substr( md5( $file ), 0, 5 ) . ')'] = $file;
 		}
 
 		asort( $files );

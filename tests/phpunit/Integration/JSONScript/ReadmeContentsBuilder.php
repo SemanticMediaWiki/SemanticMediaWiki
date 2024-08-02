@@ -59,10 +59,10 @@ class ReadmeContentsBuilder {
 		foreach ( $this->findFilesFor( $path, 'json' ) as $key => $location ) {
 
 			if ( $previousFirstKey !== $key[0] ) {
-				$list .= "\n" . '### ' . ucfirst( $key[0] ). "\n";
+				$list .= "\n" . '### ' . ucfirst( $key[0] ) . "\n";
 			}
 
-			$list .= '* [' . $key .'](' . $urlLocation . '/' . $key . ')';
+			$list .= '* [' . $key . '](' . $urlLocation . '/' . $key . ')';
 
 			$contents = json_decode( file_get_contents( $location ), true );
 
@@ -85,7 +85,7 @@ class ReadmeContentsBuilder {
 
 		$head = "## $title\n\n";
 		$head .= "- Files: $counter (includes $tests tests)\n";
-		$head .= "- Last update: " .  $dateTimeUtc->format( 'Y-m-d' ) . "\n";
+		$head .= "- Last update: " . $dateTimeUtc->format( 'Y-m-d' ) . "\n";
 
 		return $head . $list;
 	}

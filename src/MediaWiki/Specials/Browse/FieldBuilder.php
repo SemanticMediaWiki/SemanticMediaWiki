@@ -37,7 +37,7 @@ class FieldBuilder {
 			$dir = $title->getPageLanguage()->isRTL() ? 'rtl' : 'ltr';
 		}
 
-		$html = "<div class=\"smwb-form\">". Html::rawElement(
+		$html = "<div class=\"smwb-form\">" . Html::rawElement(
 			'div',
 			[ 'style' => 'margin-top:15px;' ],
 			''

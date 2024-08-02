@@ -80,7 +80,7 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 		$file = $this->testCaseLocation . $case['importFrom'];
 
 		if ( !is_readable( $file ) ) {
-			throw new RuntimeException( $file  . ' as import file is not available.' );
+			throw new RuntimeException( $file . ' as import file is not available.' );
 		}
 
 		$ext = pathinfo( $file, PATHINFO_EXTENSION );

@@ -136,16 +136,16 @@ class DebugFormatter {
 		if ( $this->type === 'mysql' ) {
 			$output .= '<div class="smwpre" style="word-break:normal;">' .
 			'<table class="" style="border-spacing: 5px;"><tr>' .
-			'<th style="text-align: left;">ID</th>'.
-			'<th style="text-align: left;">select_type</th>'.
-			'<th style="text-align: left;">table</th>'.
-			'<th style="text-align: left;">type</th>'.
-			'<th style="text-align: left;">possible_keys</th>'.
-			'<th style="text-align: left;">key</th>'.
-			'<th style="text-align: left;">key_len</th>'.
-			'<th style="text-align: left;">ref</th>'.
-			'<th style="text-align: left;">rows</th>'.
-			'<th style="text-align: left;">filtered</th>'.
+			'<th style="text-align: left;">ID</th>' .
+			'<th style="text-align: left;">select_type</th>' .
+			'<th style="text-align: left;">table</th>' .
+			'<th style="text-align: left;">type</th>' .
+			'<th style="text-align: left;">possible_keys</th>' .
+			'<th style="text-align: left;">key</th>' .
+			'<th style="text-align: left;">key_len</th>' .
+			'<th style="text-align: left;">ref</th>' .
+			'<th style="text-align: left;">rows</th>' .
+			'<th style="text-align: left;">filtered</th>' .
 			'<th style="text-align: left;">Extra</th></tr>';
 
 			foreach ( $res as $row ) {
@@ -168,7 +168,7 @@ class DebugFormatter {
 				$output .= "<tr style='vertical-align: top;'><td>" . $row->id .
 				"</td><td>" . $row->select_type .
 				"</td><td>" . $row->table .
-				"</td><td>" . $row->type  .
+				"</td><td>" . $row->type .
 				"</td><td>" . $possible_keys .
 				"</td><td>" . $row->key .
 				"</td><td>" . $row->key_len .

@@ -130,7 +130,7 @@ class RequestOptionsProcessor {
 				$conditionOperator = $strcond->isOr ? ' OR ' : ' AND ';
 
 				if ( $strcond->isNot ) {
-					$sqlConds = " ($sqlConds) AND ($labelCol NOT $condition ". $connection->addQuotes( $string ) . ") ";
+					$sqlConds = " ($sqlConds) AND ($labelCol NOT $condition " . $connection->addQuotes( $string ) . ") ";
 				} else {
 					$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? $conditionOperator : '' ) . "$labelCol $condition " . $connection->addQuotes( $string );
 				}

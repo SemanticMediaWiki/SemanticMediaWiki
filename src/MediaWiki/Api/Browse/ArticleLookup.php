@@ -160,7 +160,7 @@ class ArticleLookup extends Lookup {
 
 			$label = str_replace( '_', ' ', $row->page_title );
 
-			$list[$key.'#'.$row->page_namespace] = [
+			$list[$key . '#' . $row->page_namespace] = [
 				 // Only keep the ID as internal field which is
 				 // removed by the Augmentor
 				'id'    => $row->page_id,

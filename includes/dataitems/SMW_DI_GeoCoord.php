@@ -121,7 +121,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * @see SMWDataItem::getSortKey()
 	 */
 	public function getSortKey() {
-		return $this->latitude . ',' . $this->longitude . ( $this->altitude !== null ? ','. $this->altitude : '' );
+		return $this->latitude . ',' . $this->longitude . ( $this->altitude !== null ? ',' . $this->altitude : '' );
 	}
 
 	/**

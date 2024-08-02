@@ -147,7 +147,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
 		$instance->pushSemanticDataToParserOutput();
 
-		$title = Title::newFromText( __METHOD__ .'-1' );
+		$title = Title::newFromText( __METHOD__ . '-1' );
 
 		$newInstance = new ParserData( $title, $instance->getOutput() );
 

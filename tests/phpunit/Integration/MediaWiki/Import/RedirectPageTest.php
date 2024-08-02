@@ -45,7 +45,7 @@ class RedirectPageTest extends DatabaseTestCase {
 		$this->pageCreator = $this->testEnvironment->getUtilityFactory()->newPageCreator();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			__DIR__ . '/'. 'Fixtures/' . 'RedirectPageTest-Mw-1-19-7.xml'
+			__DIR__ . '/' . 'Fixtures/' . 'RedirectPageTest-Mw-1-19-7.xml'
 		);
 
 		if ( !$importRunner->setVerbose( true )->run() ) {

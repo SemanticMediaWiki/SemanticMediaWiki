@@ -37,7 +37,7 @@ class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 			'<div class="smw-tabs foo-bar">' .
 			'<input id="tab-foo" class="nav-tab" type="radio" name="tabs" checked=""/>' .
 			'<label id="tab-label-foo" for="tab-foo" class="nav-label">FOO</label>' .
-			'<section id="tab-content-foo">< ... bar ... ></section>'.
+			'<section id="tab-content-foo">< ... bar ... ></section>' .
 			'</div>',
 			$instance->buildHTML( [ 'class' => 'foo-bar' ] )
 		);
@@ -72,7 +72,7 @@ class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 			'<div class="smw-tabs foo-bar">' .
 			'<input id="tab-foo" class="nav-tab" type="radio" name="tabs" checked=""/>' .
 			'<label id="tab-label-foo" for="tab-foo" class="nav-label">FOO</label>' .
-			'<section id="tab-content-foo">< ... bar ... ></section>'.
+			'<section id="tab-content-foo">< ... bar ... ></section>' .
 			'</div>',
 			$instance->buildHTML( [ 'class' => 'foo-bar' ] )
 		);

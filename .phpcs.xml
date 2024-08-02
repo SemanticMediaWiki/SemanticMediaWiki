@@ -58,7 +58,6 @@
 		<exclude name="PSR2.Methods.FunctionClosingBrace.SpacingBeforeClose" />
 		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
 		<exclude name="MediaWiki.PHPUnit.AssertEquals.Null" />
-		<exclude name="Squiz.Strings.ConcatenationSpacing.PaddingFound" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCapitalLinks" />
 		<exclude name="MediaWiki.PHPUnit.AssertEquals.FalsyString" />
 		<exclude name="Generic.Formatting.DisallowMultipleStatements.SameLine" />
