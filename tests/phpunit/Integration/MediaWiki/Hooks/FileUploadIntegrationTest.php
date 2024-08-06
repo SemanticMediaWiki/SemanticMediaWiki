@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\DIWikiPage;
 use SMW\Localizer;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use Title;
 
 /**
@@ -21,7 +21,7 @@ use Title;
  *
  * @author mwjames
  */
-class FileUploadIntegrationTest extends DatabaseTestCase {
+class FileUploadIntegrationTest extends SMWIntegrationTestCase {
 
 	private $mwHooksHandler;
 	private $fixturesFileProvider;

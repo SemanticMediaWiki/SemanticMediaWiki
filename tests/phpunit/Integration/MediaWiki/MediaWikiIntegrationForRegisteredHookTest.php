@@ -6,7 +6,7 @@ use RequestContext;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;
@@ -22,7 +22,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class MediaWikiIntegrationForRegisteredHookTest extends DatabaseTestCase {
+class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 
 	private $title;
 	private $semanticDataValidator;
@@ -61,7 +61,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends DatabaseTestCase {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
-		$this->pageDeleter->deletePage( $this->title );
+		// $this->pageDeleter->deletePage( $this->title );
 
 		parent::tearDown();
 	}

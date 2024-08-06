@@ -2,13 +2,14 @@
 
 namespace SMW\Tests;
 
-use MediaWikiIntegrationTestCase;
 use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMW\StoreFactory;
 use SMW\Tests\TestEnvironment;
+use MediaWikiIntegrationTestCase;
+
 /**
  * @group semantic-mediawiki
- * @group mediawiki-database
+ * @group Database
  *
  * @group medium
  *

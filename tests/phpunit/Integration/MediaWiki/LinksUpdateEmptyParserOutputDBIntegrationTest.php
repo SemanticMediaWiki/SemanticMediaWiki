@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 use LinksUpdate;
 use ParserOutput;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use Title;
 
@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class LinksUpdateEmptyParserOutputDBIntegrationTest extends DatabaseTestCase {
+class LinksUpdateEmptyParserOutputDBIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testDoUpdate() {
 		$title   = Title::newFromText( __METHOD__ );
