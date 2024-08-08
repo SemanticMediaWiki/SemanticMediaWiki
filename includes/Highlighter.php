@@ -192,7 +192,7 @@ class Highlighter {
 	 */
 	public static function getTypeId( $type ) {
 		// TODO: why do we have a htmlspecialchars here?!
-		switch ( strtolower( htmlspecialchars( $type ) ) ) {
+		switch ( strtolower( htmlspecialchars( $type ?? '' ) ) ) {
 			case 'property':
 			return self::TYPE_PROPERTY;
 			case 'text':
