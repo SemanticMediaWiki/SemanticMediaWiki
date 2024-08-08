@@ -161,7 +161,7 @@ class DebugFormatter {
 					$possible_keys = implode( ', ', explode( ',', $possible_keys ) );
 				}
 
-				if ( strpos( $ref, ',' ) !== false ) {
+				if ( strpos( $ref ?? '', ',' ) !== false ) {
 					$ref = implode( ', ', explode( ',', $ref ) );
 				}
 
