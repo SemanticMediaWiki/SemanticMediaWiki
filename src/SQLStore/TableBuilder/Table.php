@@ -123,7 +123,7 @@ class Table {
 	public function addIndex( $index, $key = null ) {
 		$val = is_array( $index ) ? $index[0] : $index;
 
-		if ( count( explode( ' ', $val ) ) > 1 ) {
+		if ( count( explode( ' ', $val ?? '' ) ) > 1 ) {
 			throw new RuntimeException( "Index declaration `$val` contains a space!." );
 		}
 

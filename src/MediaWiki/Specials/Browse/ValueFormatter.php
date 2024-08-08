@@ -195,7 +195,7 @@ class ValueFormatter {
 	 */
 	public static function addNonBreakingSpace( $text ) {
 		$nonBreakingSpace = html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' );
-		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, -1, $count );
+		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text ?? '', -1, $count );
 
 		if ( $count > 2 ) {
 			return preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) );

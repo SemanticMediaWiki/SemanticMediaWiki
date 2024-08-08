@@ -119,6 +119,9 @@ class Message {
 		$encode[] = $type;
 
 		foreach ( $message as $value ) {
+			// Ensure $value is a string before using substr()
+			$value = $value ?? '';
+
 			// Check if the value is already encoded, and if decode to keep the
 			// structure intact
 			if ( substr( $value, 0, 1 ) === '[' && ( $dc = json_decode( $value, true ) ) && json_last_error() === JSON_ERROR_NONE ) {

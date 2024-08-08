@@ -71,6 +71,7 @@ class AllowsPatternValueParser implements ValueParser {
 			return null;
 		}
 
+		$contents = $contents ?? '';
 		$parts = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
 
 		// Get definition from first line

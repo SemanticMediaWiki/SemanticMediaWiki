@@ -174,7 +174,7 @@ class SchemaContentFormatter {
 		$usage_lookup = (array)$this->type['usage_lookup'];
 
 		$subject = new DIWikiPage(
-			str_replace( ' ', '_', $schema->getName() ),
+			str_replace( ' ', '_', $schema->getName() ?? '' ),
 			SMW_NS_SCHEMA
 		);
 
@@ -231,7 +231,7 @@ class SchemaContentFormatter {
 		$type = $schema->get( Schema::SCHEMA_TYPE );
 
 		$schema_link = pathinfo(
-			$schema->info( Schema::SCHEMA_VALIDATION_FILE ), PATHINFO_FILENAME
+			$schema->info( Schema::SCHEMA_VALIDATION_FILE ) ?? '', PATHINFO_FILENAME
 		);
 
 		if ( isset( $this->type['type_description'] ) ) {

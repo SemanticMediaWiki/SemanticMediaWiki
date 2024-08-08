@@ -106,7 +106,7 @@ class PageBuilder {
 	private function getHtmlForm( $resultMessage, $resultCount ) {
 		// Precaution to avoid any inline breakage caused by a div element
 		// within a paragraph (e.g Highlighter content)
-		$resultMessage = str_replace( 'div', 'span', $resultMessage );
+		$resultMessage = str_replace( 'div', 'span', $resultMessage ?? '' );
 
 		$html = $this->htmlFormRenderer
 			->setName( 'searchbyproperty' )
@@ -182,7 +182,7 @@ class PageBuilder {
 			$resultList = $this->makeResultList( $exactResults, $this->pageRequestOptions->limit, true );
 		}
 
-		return [ str_replace( '_', ' ', $resultMessage ), $resultList, $exactCount ];
+		return [ str_replace( '_', ' ', $resultMessage ?? '' ), $resultList, $exactCount ];
 	}
 
 	private function getNearbyResults( $exactResults, $exactCount ) {

@@ -39,7 +39,7 @@ class QueryInputWidget {
 			) . HtmlDivTable::cell(
 				"<fieldset><legend>" . Message::get( 'smw_ask_printhead', Message::TEXT, Message::USER_LANGUAGE ) . "</legend>" .
 				'<textarea id="smw-property-input" class="smw-ask-query-printout" name="po" rows="6" placeholder="...">' .
-				htmlspecialchars( $printoutString ) . '</textarea></fieldset>',
+				htmlspecialchars( $printoutString ?? '' ) . '</textarea></fieldset>',
 				[ 'class' => 'smw-ask-printhead slowfade' ]
 			)
 		);

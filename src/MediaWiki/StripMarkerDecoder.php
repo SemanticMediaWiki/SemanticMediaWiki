@@ -58,7 +58,7 @@ class StripMarkerDecoder {
 	 * @return boolean
 	 */
 	public function hasStripMarker( $text ) {
-		return strpos( $text, Parser::MARKER_SUFFIX );
+		return strpos( $text ?? '', Parser::MARKER_SUFFIX );
 	}
 
 	/**
@@ -93,7 +93,7 @@ class StripMarkerDecoder {
 		return str_replace(
 			[ '<', '>', ' ', '[', '{', '=', "'", ':', "\n" ],
 			[ '&lt;', '&gt;', ' ', '&#x005B;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ],
-			$this->doUnstrip( $text )
+			$this->doUnstrip( $text ) ?? ''
 		);
 	}
 
