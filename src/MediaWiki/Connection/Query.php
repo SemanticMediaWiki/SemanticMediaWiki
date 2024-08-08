@@ -144,7 +144,7 @@ class Query {
 	 * @param string $table
 	 */
 	public function table( ...$table ) {
-		if ( strpos( $table[0], 'SELECT' ) !== false ) {
+		if ( strpos( $table[0] ?? '', 'SELECT' ) !== false ) {
 			$tableName = '(' . $table[0] . ')';
 		} else {
 			$tableName = $this->connection->tableName( $table[0] );

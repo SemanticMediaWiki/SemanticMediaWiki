@@ -164,7 +164,7 @@ class NavigationLinksWidget {
 		$offset = (int)$urlArgs->get( 'offset' );
 
 		// Remove any contents that is cruft
-		if ( strpos( $urlArgs->get( 'p' ), 'cl=' ) !== false ) {
+		if ( strpos( $urlArgs->get( 'p' ) ?? '', 'cl=' ) !== false ) {
 			$urlArgs->set( 'p', mb_substr( $urlArgs->get( 'p' ), stripos( $urlArgs->get( 'p' ), '/' ) + 1 ) );
 		}
 
