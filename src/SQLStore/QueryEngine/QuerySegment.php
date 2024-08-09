@@ -110,9 +110,17 @@ class QuerySegment {
 	public $indexField = '';
 
 	/**
+	 * Still used by ConceptCache.  Otherwise replaced by $fromSegs
 	 * @var string
 	 */
 	public $from = '';
+
+	/**
+	 * Array of QuerySegment to build joins (replace $from) for Rdbms.
+	 * @since 4.2
+	 * @var array
+	 */
+	public $fromSegs = [];
 
 	/**
 	 * @var string
@@ -173,4 +181,15 @@ class QuerySegment {
 		self::$qnum++;
 	}
 
+	/**
+	 * @since 4.2
+	 */
+	public function innerToLeftJoin() {
+		foreach ( $this->fromSegs as $seg ) {
+			if ( !$seg->joinType || $seg->joinType == 'INNER' ) {
+				$seg->joinType = 'LEFT';
+			}
+			$seg->innerToLeftJoin();
+		}
+	}
 }
