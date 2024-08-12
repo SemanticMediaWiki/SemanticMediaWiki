@@ -35,11 +35,11 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
         $this->testEnvironment = new TestEnvironment();
 
-        $this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
-			$this->getStore()
-		);
+        // $this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
+		// 	$this->getStore()
+		// );
 
-		$this->testDatabaseTableBuilder->doBuild();
+		// $this->testDatabaseTableBuilder->doBuild();
 
     }
 
@@ -57,5 +57,4 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 			$this->markTestSkipped( $message );
 		}
 	}
-
 }
