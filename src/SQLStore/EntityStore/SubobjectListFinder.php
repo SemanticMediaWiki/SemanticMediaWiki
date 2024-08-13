@@ -118,9 +118,9 @@ class SubobjectListFinder {
 		}
 
 		$conditions = [
-			'smw_title='      . $connection->addQuotes( $key ),
-			'smw_namespace='  . $connection->addQuotes( $subject->getNamespace() ),
-			'smw_iw='         . $connection->addQuotes( $subject->getInterwiki() ),
+			'smw_title=' . $connection->addQuotes( $key ),
+			'smw_namespace=' . $connection->addQuotes( $subject->getNamespace() ),
+			'smw_iw=' . $connection->addQuotes( $subject->getInterwiki() ),
 			'smw_subobject!=' . $connection->addQuotes( '' )
 		];
 

@@ -42,7 +42,7 @@ class JsonTestCaseFileHandler {
 		$isIncomplete = isset( $meta['is-incomplete'] ) ? (bool)$meta['is-incomplete'] : false;
 
 		if ( $isIncomplete ) {
-			$this->reasonToSkip = '"'. $this->getFileContentsFor( 'description' ) . '" has been marked as incomplete.';
+			$this->reasonToSkip = '"' . $this->getFileContentsFor( 'description' ) . '" has been marked as incomplete.';
 		}
 
 		return $isIncomplete;
