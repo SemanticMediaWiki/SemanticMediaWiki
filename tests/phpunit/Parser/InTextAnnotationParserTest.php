@@ -432,7 +432,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 					' [[:Dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
 					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
-					' Aliquam {{volutpat}} arcu ultrices eu Ut quis'.
+					' Aliquam {{volutpat}} arcu ultrices eu Ut quis' .
 					' [[:Http:://www/foo/9001|http:://www/foo/9001]] et Donec.',
 				'propertyCount'  => 3,
 				'propertyLabels' => [ 'Foo', 'Bar', 'FooBar' ],

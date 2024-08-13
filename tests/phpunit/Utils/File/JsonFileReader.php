@@ -87,7 +87,7 @@ class JsonFileReader {
 
 		$json = preg_replace(
 			'~ ("(?:[^\\\"]+|\\\.)*") |' . // preserve strings
-			'/\* (?:[^*]+|\*+(?!/))* \*/ |' .      // strip multi-line comments
+			'/\* (?:[^*]+|\*+(?!/))* \*/ |' . // strip multi-line comments
 			'//\V* ~sx', // strip //-comments
 			'$1', $json );
 

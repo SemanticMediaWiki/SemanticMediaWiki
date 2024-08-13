@@ -179,7 +179,7 @@ class HtmlBuilder {
 		// Remember the "cstate" (aka card state) over the period of one
 		// request by adding hidden elements to the form
 		foreach ( $urlArgs->getArray( 'cstate', [] ) as $key => $value ) {
-			$hidden .= '<input name="' . "cstate[$key]" .'" type="hidden" value="' . $value . '">';
+			$hidden .= '<input name="' . "cstate[$key]" . '" type="hidden" value="' . $value . '">';
 		}
 
 		$this->templateEngine->compile(
