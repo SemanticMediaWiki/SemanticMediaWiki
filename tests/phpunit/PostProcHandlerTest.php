@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMW\PostProcHandler;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\Tests\PHPUnitCompat;
+use SMW\DependencyValidator;
 
 /**
  * @covers \SMW\PostProcHandler
@@ -269,7 +270,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->smwLikelyOutdatedDependencies = true;
+		DependencyValidator:: markTitle( $title );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPrefixedDBKey' )
