@@ -300,7 +300,7 @@
 	"smw-statistics-delete-count-info": "От сущностей, помеченных на удаление, следует избавляться регулярно с помощью скриптов обслуживания.",
 	"smw_uri_doc": "Преобразователь URI осуществляет [$1 W3C поиск http тэгов с использованием Range-14].\nОн обеспечивает доставку RDF-представления (для машин) или вики-страницы (для людей) в зависимости от запроса.",
 	"ask": "Семантический поиск",
-	"smw-ask-help": "Эта секция содержит ссылки, которые помогают объяснить, как использовать синтаксис <code>#ask</code>.\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Selecting pages] описывает выбранные страницы и условия сборки\n\n*[https://www.semantic-mediawiki.org/wiki/Help:Search_operators Search operators] список доступных операторов поиска, включая операторы для запроса диапазона и знаки подстановки\n\n*[https://www.semantic-mediawiki.org/wiki/Help:Displaying_information Displaying information] выделяет использование распечатки условий и опций форматирования",
+	"smw-ask-help": "Этот раздел содержит ссылки, которые помогают объяснить, как использовать синтаксис <code>#ask</code>.\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Selecting pages] описывает, как выбирать страницы и строить условия\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Search_operators Search operators] список доступных операторов поиска, включая операторы для запроса диапазона и знаки подстановки\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Displaying_information Displaying information] выделяет использование распечатки условий и опций форматирования",
 	"smw_ask_sortby": "Сортировать по столбцу (необязательно)",
 	"smw_ask_ascorder": "По возрастанию",
 	"smw_ask_descorder": "По убыванию",
