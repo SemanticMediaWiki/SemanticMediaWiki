@@ -6,6 +6,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMW\StoreFactory;
 use SMW\Tests\TestEnvironment;
 use MediaWikiIntegrationTestCase;
+use PHPUnit\Framework\TestResult;
 
 /**
  * @group semantic-mediawiki
@@ -34,14 +35,23 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		parent::setUp();
 
         $this->testEnvironment = new TestEnvironment();
-
-        // $this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
-		// 	$this->getStore()
-		// );
-
-		// $this->testDatabaseTableBuilder->doBuild();
-
     }
+
+	protected function tearDown() : void {
+		parent::tearDown();
+	}
+
+	public function run( ?TestResult $result = null ) : TestResult {
+		$this->getStore()->clear();
+		if( $GLOBALS['wgDBtype'] == 'mysql' ) {
+
+			// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
+			// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
+			$this->setCliArg( 'use-normal-tables', true );
+		}
+
+		return parent::run( $result );
+	}
 
     protected function getStore() {
 		return StoreFactory::getStore();
