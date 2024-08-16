@@ -11,6 +11,7 @@ use Title;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -35,31 +36,11 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 	private $jobQueueRunner;
 	private $jobQueue;
 
-	/**
-	 * @var TestDatabaseTableBuilder
-	 */
-	protected $testDatabaseTableBuilder;
-
 	protected function setUp(): void {
-		parent::setUp();
-
 		$utilityFactory = UtilityFactory::getInstance();
-
-		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
-
-		$this->mwHooksHandler
-			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
-
-		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
-		$this->pageDeleter = $utilityFactory->newPageDeleter();
-		$this->pageCreator = $utilityFactory->newPageCreator();
-
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		// FIXME Because of SQLStore::Writer::changeTitle
 		$GLOBALS['smwgEnableUpdateJobs'] = true;
-
 		$settings = [
 			'smwgEnableUpdateJobs' => true
 		];
@@ -68,51 +49,46 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
+		parent::runJobs( [ 'minJobs' => 0 ], [ 'complete' => true ] );
+	
 		$this->jobQueue = $this->applicationFactory->getJobQueue();
-
 		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
-		$this->jobQueueRunner->setConnectionProvider( $this->testDatabaseTableBuilder->getConnectionProvider() );
-		$this->jobQueueRunner->deleteAllJobs();
 	}
 
 	protected function tearDown(): void {
-		$this->pageDeleter->doDeletePoolOfPages(
-			$this->deletePoolOfPages
-		);
-
 		$this->applicationFactory->clear();
-		$this->mwHooksHandler->restoreListedHooks();
-
 		parent::tearDown();
 	}
 
-	public function testPageMoveTriggersUpdateJob() {
-		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
+	public function testPageMoveTriggersUpdateJobWithImmediateExecution() {
+		// configured to run immediately, so after it was run, the number of exprected jobs in queue will be 0
+		parent::runJobs([ 'minJobs' => 0, 'complete' => false ]);
+
 		$newTitle = Title::newFromText( __METHOD__ . '-new' );
 
-		$this->pageCreator
-			->createPage( $oldTitle )
-			->doEdit( '[[Has jobqueue test::UpdateJob]]' );
+		$wikiPage = parent::getNonexistingTestPage( __METHOD__ . '-old' );
+		parent::editPage( $wikiPage, '[[Has jobqueue test::UpdateJob]]' );
+		$title = $wikiPage->getTitle();
 
-		$this->pageCreator->doMoveTo( $newTitle, true );
+		// ---- taken from mediawiki/tests/phpunit/includes/page/MovePageTest.php
+		$createRedirect = true;
+		$pageId = $title->getArticleID();
+		$status = $this->getServiceContainer()
+			->getMovePageFactory()
+			->newMovePage( $title, $newTitle )
+			->move( $this->getTestUser()->getUser(), 'move reason', $createRedirect );
+		$this->assertStatusOK( $status );
+		// ====
 
-		// Execute the job directly
-		// $this->assertJob( 'SMW\UpdateJob' );
-
-		$this->assertTrue(
-			$oldTitle->isRedirect()
-		);
-
-		$this->pageDeleter->deletePage(
-			$oldTitle
-		);
+		// expected 0 jobs in jobQueue because the job is run instantly with immediate execution
+		parent::runJobs([ 'numJobs' => 0 ], [ 'type' => 'smw.update' ]);
 	}
 
 	public function testSQLStoreRefreshDataTriggersUpdateJob() {
 		$index = 1; //pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
-		$this->assertJob( 'smw.update' );
+		parent::runJobs([ 'numJobs' => 1 ], [ 'type' => 'smw.update' ]);
 	}
 
 	/**
@@ -185,28 +161,23 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		$this->assertTrue( $job->run() );
 	}
 
-	/**
-	 * Issue 617
-	 */
 	public function testNoInfiniteUpdateJobsForCircularRedirect() {
-		$this->skipTestForMediaWikiVersionLowerThan( '1.20' );
+		$pageA = parent::getNonexistingTestPage( 'Foo-A' );
+		$pageB = parent::getNonexistingTestPage( 'Foo-B' );
+		$pageC = parent::getNonexistingTestPage( 'Foo-C' );
 
-		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo-A' ) )
-			->doEdit( '[[Foo-A::{{PAGENAME}}]] {{#ask: [[Foo-A::{{PAGENAME}}]] }}' )
-			->doEdit( '#REDIRECT [[Foo-B]]' );
+		parent::editPage( $pageA, '[[Foo-A::{{PAGENAME}}]] {{#ask: [[Foo-A::{{PAGENAME}}]] }}' );
+		parent::editPage( $pageA, '#REDIRECT [[Foo-B]]' );
+		$titleA = $pageA->getTitle();
 
-		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo-B' ) )
-			->doEdit( '#REDIRECT [[Foo-C]]' );
+		parent::editPage( $pageB, '#REDIRECT [[Foo-C]]' );
+		$titleB = $pageB->getTitle();
 
-		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo-C' ) )
-			->doEdit( '#REDIRECT [[Foo-A]]' );
+		parent::editPage( $pageC, '#REDIRECT [[Foo-A]]' );
+		$titleC = $pageC->getTitle();
 
-		$this->jobQueueRunner
-			->setType( 'SMW\UpdateJob' )
-			->run();
+		// expected 0 jobs in jobQueue because the job is run instantly with immediate execution
+		parent::runJobs( [ 'minJobs' => 0 ], [ 'type' => 'smw.update' ] );
 
 		foreach ( $this->jobQueueRunner->getStatus() as $status ) {
 			$this->assertTrue( $status['status'] );
@@ -215,12 +186,5 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		$this->assertTrue(
 			Title::newFromText( 'Foo-A' )->isRedirect()
 		);
-
-		$this->deletePoolOfPages = [
-			Title::newFromText( 'Foo-A' ),
-			Title::newFromText( 'Foo-B' ),
-			Title::newFromText( 'Foo-C' )
-		];
 	}
-
 }
