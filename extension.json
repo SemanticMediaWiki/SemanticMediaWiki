@@ -1,6 +1,7 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "4.2.0",
+	"namemsg": "smw-title",
+	"type": "semantic",
 	"author": [
 		"[https://korrekt.org Markus Krötzsch]",
 		"[https://EntropyWins.wtf/mediawiki Jeroen De Dauw]",
@@ -8,39 +9,12 @@
 		"[https://professional.wiki/ Professional Wiki]",
 		"[https://www.semantic-mediawiki.org/wiki/Contributors ...]"
 	],
+	"version": "4.2.0",
 	"url": "https://www.semantic-mediawiki.org",
 	"descriptionmsg": "smw-desc",
-	"namemsg": "smw-title",
 	"license-name": "GPL-2.0-or-later",
-	"type": "semantic",
 	"requires": {
-		"MediaWiki": ">= 1.35"
-	},
-	"MessagesDirs": {
-		"SemanticMediaWiki": [
-			"i18n"
-		]
-	},
-	"AutoloadNamespaces": {
-		"SMW\\": "src/"
-	},
-	"Hooks": {
-		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces",
-		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
-	},
-	"AutoloadClasses": {
-		"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
-	},
-	"callback": "SemanticMediaWiki::initExtension",
-	"ExtensionFunctions": [
-		"SemanticMediaWiki::onExtensionFunction"
-	],
-	"ExtensionMessagesFiles": {
-		"SemanticMediaWikiAlias": "i18n/extra/SemanticMediaWiki.alias.php",
-		"SemanticMediaWikiMagic": "i18n/extra/SemanticMediaWiki.magic.php"
-	},
-	"ContentHandlers": {
-		"smw/schema": "SMW\\MediaWiki\\Content\\SchemaContentHandler"
+		"MediaWiki": ">= 1.39"
 	},
 	"QUnitTestModule": {
 		"ext.smw.tests": {
@@ -71,6 +45,24 @@
 			"remoteExtPath": "SemanticMediaWiki"
 		}
 	},
+	"DefaultUserOptions": {
+		"smw-prefs-general-options-show-entity-issue-panel": true
+	},
+	"ContentHandlers": {
+		"smw/schema": "SMW\\MediaWiki\\Content\\SchemaContentHandler"
+	},
+	"ExtensionFunctions": [
+		"SemanticMediaWiki::onExtensionFunction"
+	],
+	"ExtensionMessagesFiles": {
+		"SemanticMediaWikiAlias": "i18n/extra/SemanticMediaWiki.alias.php",
+		"SemanticMediaWikiMagic": "i18n/extra/SemanticMediaWiki.magic.php"
+	},
+	"MessagesDirs": {
+		"SemanticMediaWiki": [
+			"i18n"
+		]
+	},
 	"SpecialPages": {
 		"ExportRDF": "SMWSpecialOWLExport",
 		"SMWAdmin": "SMW\\MediaWiki\\Specials\\SpecialAdmin",
@@ -90,6 +82,50 @@
 		"Properties": "SMW\\SpecialProperties",
 		"UnusedProperties": "SMW\\SpecialUnusedProperties",
 		"WantedProperties": "SMW\\SpecialWantedProperties"
+	},
+	"AutoloadNamespaces": {
+		"SMW\\": "src/"
+	},
+	"AutoloadClasses": {
+		"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
+	},
+	"TestAutoloadNamespaces": {
+		"SMW\\Test\\": "tests/phpunit",
+		"SMW\\Tests\\": "tests/phpunit",
+		"SMW\\Tests\\Fixtures\\": "tests/phpunit/Fixtures",
+		"SMW\\Tests\\Utils\\": "tests/phpunit/Utils"
+	},
+	"TestAutoloadClasses": {
+		"SMW\\Maintenance\\RebuildConceptCache": "maintenance/rebuildConceptCache.php",
+		"SMW\\Maintenance\\RebuildData": "maintenance/rebuildData.php",
+		"SMW\\Maintenance\\RebuildPropertyStatistics": "maintenance/rebuildPropertyStatistics.php",
+		"SMW\\Maintenance\\RebuildFulltextSearchTable": "maintenance/rebuildFulltextSearchTable.php",
+		"SMW\\Maintenance\\DumpRdf": "maintenance/dumpRDF.php",
+		"SMW\\Maintenance\\SetupStore": "maintenance/setupStore.php",
+		"SMW\\Maintenance\\UpdateEntityCollation": "maintenance/updateEntityCollation.php",
+		"SMW\\Maintenance\\RemoveDuplicateEntities": "maintenance/removeDuplicateEntities.php",
+		"SMW\\Maintenance\\PurgeEntityCache": "maintenance/purgeEntityCache.php",
+		"SMW\\Maintenance\\UpdateQueryDependencies": "maintenance/updateQueryDependencies.php",
+		"SMW\\Maintenance\\RunImport": "maintenance/runImport.php",
+		"SMW\\Maintenance\\DisposeOutdatedEntities": "maintenance/disposeOutdatedEntities.php",
+		"SMW\\Maintenance\\UpdateEntityCountMap": "maintenance/updateEntityCountMap.php",
+		"SMW\\Tests\\DatabaseTestCase": "tests/phpunit/DatabaseTestCase.php",
+		"SMW\\Tests\\DataItemTest": "tests/phpunit/includes/dataitems/DataItemTest.php",
+		"SMW\\Tests\\Integration\\JSONScript\\JSONScriptTestCaseRunnerTest": "tests/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php",
+		"SMW\\Tests\\Integration\\JSONScript\\JsonTestCaseScriptRunnerTest": "tests/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php",
+		"SMW\\Tests\\JSONScriptTestCaseRunner": "tests/phpunit/JSONScriptTestCaseRunner.php",
+		"SMW\\Tests\\JSONScriptServicesTestCaseRunner": "tests/phpunit/JSONScriptServicesTestCaseRunner.php",
+		"SMW\\Tests\\PHPUnitCheckRunnerTest": "tests/phpunit/PHPUnitCheckRunnerTest.php",
+		"SMW\\Tests\\PHPUnitCompat": "tests/phpunit/PHPUnitCompat.php",
+		"SMW\\Tests\\QueryPrinterRegistryTestCase": "tests/phpunit/QueryPrinterRegistryTestCase.php",
+		"SMW\\Tests\\QueryPrinterTestCase": "tests/phpunit/QueryPrinterTestCase.php",
+		"SMW\\Tests\\SPARQLStore\\RepositoryConnectors\\ElementaryRepositoryConnectorTest": "tests/phpunit/Unit/SPARQLStore/RepositoryConnectors/ElementaryRepositoryConnectorTest.php",
+		"SMW\\Tests\\TestConfig": "tests/phpunit/TestConfig.php",
+		"SMW\\Tests\\TestEnvironment": "tests/phpunit/TestEnvironment.php"
+	},
+	"Hooks": {
+		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces",
+		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
 	},
 	"JobClasses": {
 		"smw.update": "SMW\\MediaWiki\\Jobs\\UpdateJob",
@@ -119,9 +155,7 @@
 		"SMWUpdateJob'": "SMW\\MediaWiki\\Jobs\\UpdateJob",
 		"SMWRefreshJob": "SMW\\MediaWiki\\Jobs\\RefreshJob"
 	},
-	"DefaultUserOptions": {
-		"smw-prefs-general-options-show-entity-issue-panel": true
-	},
+	"callback": "SemanticMediaWiki::initExtension",
 	"load_composer_autoloader": true,
 	"manifest_version": 2
 }

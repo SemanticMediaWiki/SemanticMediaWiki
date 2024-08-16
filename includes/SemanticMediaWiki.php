@@ -681,7 +681,8 @@ class SemanticMediaWiki {
 		if ( is_array( $defaultSettings ) ) {
 			foreach ( $defaultSettings as $key => $value ) {
 				if ( !isset( $GLOBALS[$key] ) ) {
-					$GLOBALS[$key] = $value;
+					global $$key;
+					$$key = $value;
 				}
 			}
 		}
