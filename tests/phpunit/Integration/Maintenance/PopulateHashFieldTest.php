@@ -31,7 +31,7 @@ class PopulateHashFieldTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\PopulateHashField'
+			'SMW\Maintenance\populateHashField'
 		);
 
 		$maintenanceRunner->setQuiet();
