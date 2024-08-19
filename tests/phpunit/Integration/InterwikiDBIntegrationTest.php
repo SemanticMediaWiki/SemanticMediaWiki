@@ -4,6 +4,7 @@ namespace SMW\Tests\Integration;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Exporter\ExporterFactory;
@@ -12,6 +13,7 @@ use Title;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -36,10 +38,7 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$utilityFactory = UtilityFactory::getInstance();
 
-		$this->semanticDataFactory = $utilityFactory->newSemanticDataFactory();
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
-
-		$this->pageCreator = $utilityFactory->newPageCreator();
 		$this->stringBuilder = $utilityFactory->newStringBuilder();
 
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
@@ -69,32 +68,28 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	protected function tearDown(): void {
-		UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->subjects );
 		unset( $GLOBALS['wgHooks']['InterwikiLoadPrefix'] );
 
 		parent::tearDown();
 	}
 
 	public function testRdfSerializationForInterwikiAnnotation() {
-
 		if ( version_compare( MW_VERSION, '1.40', '>=' ) ) {
-			$this->markTestSkipped( 'The Serialization for interwiki does not exists for MW 1.40 and newer.' );
+			$this->markTestSkipped( 'The Serialization for interwiki needs to be checked for MW 1.40 and newer.' );
 		}
 
-		$this->stringBuilder
-			->addString( '[[Has type::Page]]' );
+		$titleOne = Title::newFromText( 'Use for interwiki annotation', SMW_NS_PROPERTY );
+		$wikiPageOne = parent::getNonexistingTestPage( $titleOne );
+		parent::editPage( $wikiPageOne, '[[Has type::Page]]' );
 
-		$this->pageCreator
-			->createPage( Title::newFromText( 'Use for interwiki annotation', SMW_NS_PROPERTY ) )
-			->doEdit( $this->stringBuilder->getString() );
+		$titleTwo = Title::newFromText( __METHOD__ );
+		$wikiPageTwo = parent::getNonexistingTestPage( $titleTwo );
 
 		$this->stringBuilder
 			->addString( '[[Use for interwiki annotation::Interwiki link]]' )
 			->addString( '[[Use for interwiki annotation::iw-test:Interwiki link]]' );
 
-		$this->pageCreator
-			->createPage( Title::newFromText( __METHOD__ ) )
-			->doEdit( $this->stringBuilder->getString() );
+		parent::editPage( $wikiPageTwo, $this->stringBuilder->getString() );
 
 		$output = $this->fetchSerializedRdfOutputFor(
 			[ __METHOD__ ]
@@ -112,20 +107,13 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testQueryForInterwikiAnnotation() {
-		$this->stringBuilder
-			->addString( '[[Has type::Page]]' );
+		$titleOne = Title::newFromText( __METHOD__ . '-1' );
+		$wikiPageOne = parent::getNonexistingTestPage( $titleOne );
+		parent::editPage( $wikiPageOne, '[[Use for interwiki annotation::Interwiki link]]' );
 
-		$this->pageCreator
-			->createPage( Title::newFromText( 'Use for interwiki annotation', SMW_NS_PROPERTY ) )
-			->doEdit( $this->stringBuilder->getString() );
-
-		$this->pageCreator
-			->createPage( Title::newFromText( __METHOD__ . '-1' ) )
-			->doEdit( '[[Use for interwiki annotation::Interwiki link]]' );
-
-		$this->pageCreator
-			->createPage( Title::newFromText( __METHOD__ . '-2' ) )
-			->doEdit( '[[Use for interwiki annotation::iw-test:Interwiki link]]' );
+		$titleTwo = Title::newFromText( __METHOD__ . '-2' );
+		$wikiPageTwo = parent::getNonexistingTestPage( $titleTwo );
+		parent::editPage( $wikiPageTwo, '[[Use for interwiki annotation::iw-test:Interwiki link]]' );
 
 		$this->stringBuilder
 			->addString( '[[Use for interwiki annotation::iw-test:Interwiki link]]' );
@@ -142,11 +130,12 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 		$query->setLimit( 10 );
 
 		// Expects only one result with an interwiki being used as differentiator
-		$this->subjects[] = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ . '-2' ) );
-
+		$this->subjects[] = DIWikiPage::newFromTitle( $titleTwo );
+		$queryResult = $this->getStore()->getQueryResult( $query );
+	
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$this->subjects,
-			$this->getStore()->getQueryResult( $query )
+			$queryResult
 		);
 
 		$this->subjects[] = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ . '-1' ) );
@@ -164,5 +153,4 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 		$instance->printPages( $pages );
 		return ob_get_clean();
 	}
-
 }
