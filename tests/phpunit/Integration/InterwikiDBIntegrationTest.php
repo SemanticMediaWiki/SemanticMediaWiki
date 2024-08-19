@@ -23,11 +23,9 @@ use Title;
  */
 class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 
-	private $semanticDataFactory;
 	private $stringValidator;
 	private $subjects = [];
 
-	private $pageCreator;
 	private $stringBuilder;
 
 	private $queryResultValidator;
