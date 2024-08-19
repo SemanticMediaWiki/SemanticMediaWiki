@@ -15,6 +15,7 @@ use Title;
  * @group SMWExtension
  *
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group mediawiki-database
  *
  * @group medium
@@ -37,15 +38,11 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 		$propertyPage = Title::newFromText( 'Has some page value', SMW_NS_PROPERTY );
 		$targetPage = Title::newFromText( __METHOD__ );
 
-		$pageCreator = new PageCreator();
+		$wikiPageOne = parent::getNonexistingTestPage( $propertyPage );
+		parent::editPage( $wikiPageOne, '[[Has type::Page]]' );
 
-		$pageCreator
-			->createPage( $propertyPage )
-			->doEdit( '[[Has type::Page]]' );
-
-		$pageCreator
-			->createPage( $targetPage )
-			->doEdit( '[[Has some page value::Foo]]' );
+		$wikiPageTwo = parent::getNonexistingTestPage( $targetPage );
+		parent::editPage( $wikiPageTwo, '[[Has some page value::Foo]]' );
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
@@ -75,15 +72,13 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 		$propertyPage = Title::newFromText( 'Has coordinates', SMW_NS_PROPERTY );
 		$targetPage = Title::newFromText( __METHOD__ );
 
-		$pageCreator = new PageCreator();
+		// $pageCreator = new PageCreator();
 
-		$pageCreator
-			->createPage( $propertyPage )
-			->doEdit( '[[Has type::Geographic coordinate]]' );
+		$wikiPageOne = parent::getNonexistingTestPage( $propertyPage );
+		parent::editPage( $wikiPageOne, '[[Has type::Geographic coordinate]]' );
 
-		$pageCreator
-			->createPage( $targetPage )
-			->doEdit( "[[Has coordinates::52°31'N, 13°24'E]]" );
+		$wikiPageTwo = parent::getNonexistingTestPage( $targetPage );
+		parent::editPage( $wikiPageTwo, "[[Has coordinates::52°31'N, 13°24'E]]" );
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
@@ -110,5 +105,4 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 		$pageDeleter->deletePage( $targetPage );
 		$pageDeleter->deletePage( $propertyPage );
 	}
-
 }
