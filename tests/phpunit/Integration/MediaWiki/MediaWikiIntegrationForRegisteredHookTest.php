@@ -10,11 +10,13 @@ use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;
+use UnexpectedValueException;
 use Title;
 use WikiPage;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -29,6 +31,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 	private $applicationFactory;
 	private $mwHooksHandler;
 	private $pageDeleter;
+	private $page;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -61,8 +64,6 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
-		// $this->pageDeleter->deletePage( $this->title );
-
 		parent::tearDown();
 	}
 
@@ -74,16 +75,12 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 
 		$this->title = Title::newFromText( __METHOD__ );
 
-		$pageCreator = new PageCreator();
-
-		$pageCreator
-			->createPage( $this->title )
-			->doEdit( '[[Has function hook test::page purge]]' );
+		$this->page = parent::getNonexistingTestPage( $this->title );
+		parent::editPage( $this->page, '[[Has function hook test::page purge]]' );
 
 		$key = $cacheFactory->getPurgeCacheKey( $this->title->getArticleID() );
 
-		$pageCreator
-			->getPage()
+		$this->getPage()
 			->doPurge();
 
 		$this->assertTrue(
@@ -94,11 +91,8 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 	public function testPageDelete() {
 		$this->title = Title::newFromText( __METHOD__ );
 
-		$pageCreator = new PageCreator();
-
-		$pageCreator
-			->createPage( $this->title )
-			->doEdit( '[[Has function hook test::page delete]]' );
+		$this->page = parent::getNonexistingTestPage( $this->title );
+		parent::editPage( $this->page, '[[Has function hook test::page delete]]' );
 
 		$this->semanticDataValidator->assertThatSemanticDataIsNotEmpty(
 			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )
@@ -114,13 +108,10 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 	public function testEditPageToGetNewRevision() {
 		$this->title = Title::newFromText( __METHOD__ );
 
-		$pageCreator = new PageCreator();
+		$this->page = parent::getNonexistingTestPage( $this->title );
+		parent::editPage( $this->page, '[[EditPageToGetNewRevisionHookTest::Foo]]' );
 
-		$pageCreator
-			->createPage( $this->title )
-			->doEdit( '[[EditPageToGetNewRevisionHookTest::Foo]]' );
-
-		$parserOutput = $pageCreator->getEditInfo()->getOutput();
+		$parserOutput = $this->getEditInfo($this->page)->getOutput();
 
 		$this->assertInstanceOf(
 			'ParserOutput',
@@ -145,13 +136,10 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 	public function testOnOutputPageParserOutputeOnDatabase() {
 		$this->title = Title::newFromText( __METHOD__ );
 
-		$pageCreator = new PageCreator();
+		$this->page = parent::getNonexistingTestPage( $this->title );
+		parent::editPage( $this->page, '[[Has function hook test::output page]]' );
 
-		$pageCreator
-			->createPage( $this->title )
-			->doEdit( '[[Has function hook test::output page]]' );
-
-		$parserOutput = $pageCreator->getEditInfo()->getOutput();
+		$parserOutput = $this->getEditInfo($this->page)->getOutput();
 
 		$this->assertInstanceOf(
 			'ParserOutput',
@@ -169,4 +157,30 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 		}
 	}
 
+	/**
+	 * @since 2.0
+	 *
+	 * @return EditInfo
+	 */
+	public function getEditInfo( $page ) {
+		$editInfo = $this->applicationFactory::getInstance()->newMwCollaboratorFactory()->newEditInfo(
+			$this->page
+		);
+
+		return $editInfo->fetchEditInfo();
+	}
+
+	/**
+	 * @since 1.9.1
+	 *
+	 * @return \WikiPage
+	 * @throws UnexpectedValueException
+	 */
+	public function getPage() {
+		if ( $this->page instanceof \WikiPage ) {
+			return $this->page;
+		}
+
+		throw new UnexpectedValueException( 'Expected a WikiPage instance, use createPage first' );
+	}
 }

@@ -26,8 +26,6 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 	use PHPUnitCompat;
 
 	private $deletePoolOfPages = [];
-
-	// private $pageCreator;
 	private $semanticDataValidator;
 
 	protected function setUp(): void {
@@ -39,8 +37,6 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 		);
 
 		$utilityFactory = UtilityFactory::getInstance();
-
-		// $this->pageCreator = $utilityFactory->newPageCreator();
 		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
 
 		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
