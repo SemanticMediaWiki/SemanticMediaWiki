@@ -19,6 +19,7 @@ use Title;
  * @group SMWExtension
  *
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group mediawiki-database
  *
  * @group medium
@@ -37,7 +38,6 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	private $subjects = [];
 
 	private $pageDeleter;
-	private $pageCreator;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -52,7 +52,6 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageDeleter = $utilityFactory->newPageDeleter();
-		$this->pageCreator = $utilityFactory->newPageCreator();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
@@ -205,15 +204,13 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	public function testFetchSemanticDataForPreExistingSimpleRedirect() {
 		$this->applicationFactory->clear();
 
-		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo-B' ) )
-			->doEdit( '#REDIRECT [[Foo-A]]' );
+		$pageOne = parent::getNonexistingTestPage( Title::newFromText( 'Foo-B' ) );
+		parent::editPage( $pageOne, '#REDIRECT [[Foo-A]]' );
 
 		$subject = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
 
-		$this->pageCreator
-			->createPage( $subject->getTitle() )
-			->doEdit( '[[HasNoDisplayRedirectInconsistencyFor::Foo-B]]' );
+		$pageTwo = parent::getNonexistingTestPage( $subject->getTitle() );
+		parent::editPage( $pageTwo, '[[HasNoDisplayRedirectInconsistencyFor::Foo-B]]' );
 
 		$expected = [
 			'propertyCount' => 3,
@@ -232,23 +229,16 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testFetchSemanticDataForPreExistingDoubleRedirect() {
-		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo-B' ) )
-			->doEdit( '#REDIRECT [[Foo-C]]' );
+		$this->applicationFactory->clear();
 
-		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo-C' ) )
-			->doEdit( '#REDIRECT [[Foo-A]]' );
+		$pageB = parent::getNonexistingTestPage( Title::newFromText( 'Foo-B' ) );
+		parent::editPage( $pageB, '#REDIRECT [[Foo-C]]' );
+		$pageB = parent::getNonexistingTestPage( Title::newFromText( 'Foo-C' ) );
 
 		$subject = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
 
-		$this->pageCreator
-			->createPage( $subject->getTitle() )
-			->doEdit( '[[HasNoDisplayRedirectInconsistencyFor::Foo-B]]' );
-
-		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo-C' ) )
-			->doEdit( '[[Has page::{{PAGENAME}}' );
+		$pageSub = parent::getExistingTestPage( $subject->getTitle() );
+		parent::editPage( $pageSub, '[[HasNoDisplayRedirectInconsistencyFor::Foo-B]]' );
 
 		$expected = [
 			'propertyCount' => 3,
@@ -267,21 +257,16 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 		];
 	}
 
-	/**
-	 * Issue 622/619
-	 */
 	public function testPrepareToFetchCorrectSemanticDataFromInternalCache() {
-		$redirect = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
+		$this->applicationFactory->clear();
 
-		$this->pageCreator
-			->createPage( $redirect->getTitle() )
-			->doEdit( '#REDIRECT [[Foo-C]]' );
+		$redirect = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
+		$pageA = parent::getExistingTestPage( $redirect->getTitle() );
 
 		$target = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-C' ) );
 
-		$this->pageCreator
-			->createPage( $target->getTitle() )
-			->doEdit( '{{#subobject:test|HasSomePageProperty=Foo-A}}' );
+		$pageC = parent::getNonexistingTestPage( $target->getTitle() );
+		parent::editPage( $pageC, '{{#subobject:test|HasSomePageProperty=Foo-A}}' );
 
 		$this->assertEmpty(
 			$this->getStore()->getSemanticData( $redirect )->findSubSemanticData( 'test' )
@@ -312,5 +297,4 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 			$target
 		];
 	}
-
 }
