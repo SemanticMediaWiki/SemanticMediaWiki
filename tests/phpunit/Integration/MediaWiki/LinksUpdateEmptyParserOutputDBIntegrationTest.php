@@ -15,6 +15,7 @@ use Title;
  * @group SMWExtension
  * @group semantic-mediawiki-integration
  * @group mediawiki-databaseless
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -28,17 +29,13 @@ class LinksUpdateEmptyParserOutputDBIntegrationTest extends SMWIntegrationTestCa
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$pageCreator = new PageCreator();
-
-		$pageCreator
-			->createPage( $title )
-			->doEdit( '[[Has some property::LinksUpdateCompleteOnEmptyParserOutput]]' );
+		$page = parent::getNonexistingTestPage( $title );
+		parent::editPage( $page, '[[Has some property::LinksUpdateCompleteOnEmptyParserOutput]]' );
 
 		$propertiesCountBeforeUpdate = count( $this->getStore()->getSemanticData( $subject )->getProperties() );
 
 		$linksUpdate = new LinksUpdate( $title, new ParserOutput() );
 		$linksUpdate->doUpdate();
-
 
 		$this->assertCount(
 			$propertiesCountBeforeUpdate,
