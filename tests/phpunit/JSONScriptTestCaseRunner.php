@@ -19,6 +19,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
  * native PHP.
  *
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -94,17 +95,17 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		} elseif ( $this->getStore() instanceof \SMW\Elastic\ElasticStore ) {
 			$this->connectorId = 'elastic';
 		} else {
-			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
+			$this->connectorId = strtolower( 'mysql' );
 		}
 	}
 
 	protected function tearDown(): void {
-		if ( $this->deletePagesOnTearDown ) {
-			$this->testEnvironment->flushPages( $this->itemsMarkedForDeletion );
-		}
+		// if ( $this->deletePagesOnTearDown ) {
+		// 	$this->testEnvironment->flushPages( $this->itemsMarkedForDeletion );
+		// }
 
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
+		// $this->testEnvironment->tearDown();
+		// parent::tearDown();
 	}
 
 	/**
@@ -291,7 +292,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->connectorId ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 

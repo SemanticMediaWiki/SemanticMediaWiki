@@ -20,6 +20,7 @@ use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
  * with (or without) Semantic MediaWiki integration in mind.
  *
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
