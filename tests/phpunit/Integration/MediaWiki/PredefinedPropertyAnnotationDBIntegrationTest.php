@@ -7,6 +7,7 @@ use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
+use UnexpectedValueException;
 use SMWDITime as DITime;
 use Title;
 
@@ -14,6 +15,7 @@ use Title;
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group mediawiki-databaseless
  * @group medium
  *
@@ -28,7 +30,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 	private $applicationFactory;
 	private $dataValueFactory;
 	private $mwHooksHandler;
-	private $pageCreator;
+	private $page;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -40,16 +42,12 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 			->invokeHooksFromRegistry();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
-		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	protected function tearDown(): void {
-		$this->applicationFactory->clear();
-		$this->mwHooksHandler->restoreListedHooks();
-
 		parent::tearDown();
 	}
 
@@ -59,11 +57,11 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$this->pageCreator
-			->createPage( $title, '{{DEFAULTSORT:SortForFoo}}' );
+		$this->page = parent::getNonexistingTestPage( $title );
+		parent::editPage( $this->page, '{{DEFAULTSORT:SortForFoo}}' );
 
 		$dvPageModificationTime = $this->dataValueFactory->newDataValueByItem(
-			DITime::newFromTimestamp( $this->pageCreator->getPage()->getTimestamp() )
+			DITime::newFromTimestamp( $this->getPage()->getTimestamp() )
 		);
 
 		$expected = [
@@ -78,20 +76,17 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 		);
 	}
 
-	public function testAddedCategoryAndChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
+	public function testChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [] );
 
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$this->pageCreator
-			->createPage( $title )
-			->doEdit( '{{DEFAULTSORT:SortForFoo}} [[Category:SingleCategory]]' );
+		$this->page = parent::getExistingTestPage( $title );
 
 		$expected = [
-			'propertyCount'  => 2,
-			'propertyKeys'   => [ '_SKEY', '_INST' ],
-			'propertyValues' => [ 'SortForFoo', 'Category:SingleCategory' ],
+			'propertyCount'  => 1,
+			'propertyKeys'   => [ '_SKEY', '_INST' ]
 		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
@@ -100,4 +95,38 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 		);
 	}
 
+	public function testAddedCategoryAndChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
+		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [] );
+
+		$title   = Title::newFromText( __METHOD__ );
+		$subject = DIWikiPage::newFromTitle( $title );
+
+		$this->page = parent::getExistingTestPage( $title );
+		parent::editPage( $this->page, '[[Category:SingleCategory]] {{DEFAULTSORT:SortForFoo}}' );
+
+		$expected = [
+			'propertyCount'  => 2,
+			'propertyKeys'   => [ '_INST', '_SKEY' ],
+			'propertyValues' => [ 'Category:SingleCategory', 'SortForFoo' ],
+		];
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$this->getStore()->getSemanticData( $subject )
+		);
+	}
+
+	/**
+	 * @since 1.9.1
+	 *
+	 * @return \WikiPage
+	 * @throws UnexpectedValueException
+	 */
+	public function getPage() {
+		if ( $this->page instanceof \WikiPage ) {
+			return $this->page;
+		}
+
+		throw new UnexpectedValueException( 'Expected a WikiPage instance, use createPage first' );
+	}
 }
