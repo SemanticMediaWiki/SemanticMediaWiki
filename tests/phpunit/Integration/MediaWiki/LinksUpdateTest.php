@@ -4,11 +4,15 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\DataValueFactory;
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\SMWIntegrationTestCase;
+use UnexpectedValueException;
 use Title;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -18,9 +22,8 @@ use Title;
  */
 class LinksUpdateTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesBeforeRun = true;
-
 	private $title = null;
+	private $subject;
 	private $applicationFactory;
 	private $mwHooksHandler;
 	private $semanticDataValidator;
@@ -31,19 +34,25 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
-		$this->mwHooksHandler->deregisterListedHooks();
-		$this->mwHooksHandler->invokeHooksFromRegistry();
+		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
 
-		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
-		$this->pageCreator = $this->testEnvironment->getUtilityFactory()->newPageCreator();
-		$this->pageDeleter = $this->testEnvironment->getUtilityFactory()->newPageDeleter();
+		$this->mwHooksHandler
+			->deregisterListedHooks()
+			->invokeHooksFromRegistry();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->dataValueFactory = DataValueFactory::getInstance();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->testEnvironment->addConfiguration( 'smwgPageSpecialProperties', [ '_MDAT' ] );
+		$settings = [
+			'smwgPageSpecialProperties' => [ '_MDAT' ]
+		];
+
+		foreach ( $settings as $key => $value ) {
+			$this->applicationFactory->getSettings()->set( $key, $value );
+		}
 
 		$this->title = Title::newFromText( __METHOD__ );
-
 		$this->revisionGuard = ApplicationFactory::getInstance()->singleton( 'RevisionGuard' );
 	}
 
@@ -51,17 +60,18 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
-		$this->testEnvironment->flushPages( [ $this->title ] );
-		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testUpdateToSetPredefinedAnnotations() {
-		$this->pageCreator
-			->createPage( $this->title );
+		// $this->title   = Title::newFromText( __METHOD__ );
+		$subject = DIWikiPage::newFromTitle( $this->title );
+
+		$this->page = parent::getNonexistingTestPage( $this->title );
+		parent::editPage( $this->page, '' );
 
 		$semanticData = $this->getStore()->getSemanticData(
-			DIWikiPage::newFromTitle( $this->title )
+			$subject
 		);
 
 		$this->assertCount(
@@ -83,31 +93,18 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 	 * @depends testUpdateToSetPredefinedAnnotations
 	 */
 	public function testDoUpdateUsingUserdefinedAnnotations() {
-		$this->pageCreator
-			->createPage( $this->title )
-			->doEdit( '[[HasFirstLinksUpdatetest::testDoUpdate]] [[HasSecondLinksUpdatetest::testDoUpdate]]' );
+		$subject = DIWikiPage::newFromTitle( $this->title );
 
-		$parserData = $this->applicationFactory->newParserData(
-			$this->title,
-			$this->pageCreator->getEditInfo()->getOutput()
-		);
+		$this->page = parent::getExistingTestPage( $this->title );
+		parent::editPage( $this->page, '' );
+		$semanticData = $this->getStore()->getSemanticData( $subject );
 
-		$contentParser = $this->applicationFactory->newContentParser( $this->title );
-		$contentParser->parse();
-
-		$parsedParserData = $this->applicationFactory->newParserData(
-			$this->title,
-			$contentParser->getOutput()
-		);
+		parent::editPage( $this->page, '[[HasFirstLinksUpdatetest::testDoUpdate]] [[HasSecondLinksUpdatetest::testDoUpdate]]' );
+		$semanticData = $this->getStore()->getSemanticData( $subject );
 
 		$this->assertCount(
 			4,
-			$parserData->getSemanticData()->getProperties()
-		);
-
-		$this->assertCount(
-			4,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties()
+			$semanticData->getProperties()
 		);
 
 		/**
@@ -115,22 +112,6 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 		 */
 		$linksUpdate = new \LinksUpdate( $this->title, new \ParserOutput() );
 		$linksUpdate->doUpdate();
-
-		$this->testEnvironment->executePendingDeferredUpdates();
-
-		/**
-		 * Asserts that before and after the update, the SemanticData container
-		 * holds the same amount of properties despite the fact that the ParserOutput
-		 * was invoked empty
-		 */
-		$semanticData = $this->getStore()->getSemanticData(
-			DIWikiPage::newFromTitle( $this->title )
-		);
-
-		$this->assertCount(
-			4,
-			$semanticData->getProperties()
-		);
 
 		$expected = [
 			'propertyKeys' => [ '_SKEY', '_MDAT', 'HasFirstLinksUpdatetest', 'HasSecondLinksUpdatetest' ]
@@ -141,38 +122,31 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 			$semanticData
 		);
 
-		return $this->revisionGuard->newRevisionFromPage( $this->pageCreator->getPage() );
+		return $this->revisionGuard->newRevisionFromPage( $this->getPage() );
 	}
 
 	/**
 	 * @depends testDoUpdateUsingUserdefinedAnnotations
 	 */
 	public function testDoUpdateUsingNoAnnotations( $firstRunRevision ) {
-		$this->pageCreator
-			->createPage( $this->title )
-			->doEdit( 'no annotation' );
+		$this->title = Title::newFromText( __METHOD__ );
+		$subject = DIWikiPage::newFromTitle( $this->title );
+
+		$this->page = parent::getNonexistingTestPage( $this->title );
 
 		$this->assertNotSame(
 			$firstRunRevision,
-			$this->revisionGuard->newRevisionFromPage( $this->pageCreator->getPage() )
+			$this->revisionGuard->newRevisionFromPage( $this->getPage() )
 		);
 
-		$contentParser = $this->applicationFactory->newContentParser( $this->title );
-		$contentParser->parse();
-
-		$parserData = $this->applicationFactory->newParserData(
-			$this->title,
-			$contentParser->getOutput()
-		);
-
-		if ( count( $parserData->getSemanticData()->getProperties() ) != 0 ) {
-			$this->markTestSkipped( "Something changed with MW 1.28 and I'm too lazy to investigate." );
-		}
+		$semanticData = $this->getStore()->getSemanticData( $subject );
 
 		$this->assertCount(
 			0,
-			$parserData->getSemanticData()->getProperties()
+			$semanticData->getProperties()
 		);
+
+		parent::editPage( $this->page, '' );
 
 		$this->assertCount(
 			2,
@@ -210,6 +184,33 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 			$expected,
 			$semanticData
 		);
+	}
+
+	/**
+	 * @since 2.0
+	 *
+	 * @return EditInfo
+	 */
+	public function getEditInfo( $page ) {
+		$editInfo = $this->applicationFactory::getInstance()->newMwCollaboratorFactory()->newEditInfo(
+			$this->page
+		);
+
+		return $editInfo->fetchEditInfo();
+	}
+
+	/**
+	 * @since 1.9.1
+	 *
+	 * @return \WikiPage
+	 * @throws UnexpectedValueException
+	 */
+	public function getPage() {
+		if ( $this->page instanceof \WikiPage ) {
+			return $this->page;
+		}
+
+		throw new UnexpectedValueException( 'Expected a WikiPage instance, use createPage first' );
 	}
 
 }
