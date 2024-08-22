@@ -100,12 +100,12 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	}
 
 	protected function tearDown(): void {
-		// if ( $this->deletePagesOnTearDown ) {
-		// 	$this->testEnvironment->flushPages( $this->itemsMarkedForDeletion );
-		// }
+		if ( $this->deletePagesOnTearDown ) {
+			$this->testEnvironment->flushPages( $this->itemsMarkedForDeletion );
+		}
 
-		// $this->testEnvironment->tearDown();
-		// parent::tearDown();
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	/**
