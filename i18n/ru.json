@@ -519,7 +519,7 @@
 	"smw_adminlinks_datastructure": "Структура данных",
 	"smw_adminlinks_displayingdata": "Отображение данных",
 	"smw_adminlinks_inlinequerieshelp": "Справка по встроенным запросам",
-	"smw-page-indicator-usage-count": "Примерное [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count \nколичество использований]: {{PLURAL:$2|'''$2'''}}",
+	"smw-page-indicator-usage-count": "Примерное [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count количество использований]: {{PLURAL:$2|'''$2'''}}",
 	"smw-property-indicator-type-info": "Свойство, определённое {{PLURAL:$1|участником|системой}}",
 	"smw-property-indicator-last-count-update": "Примерное число использований\nПоследний раз обновлено: $1",
 	"smw-concept-indicator-cache-update": "Счётчик кэша\nОбновлён в $1",
