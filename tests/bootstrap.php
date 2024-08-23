@@ -12,28 +12,15 @@ if ( PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' ) {
 error_reporting( -1 );
 ini_set( 'display_errors', '1' );
 
-$autoloader = require SMW_PHPUNIT_AUTOLOADER_FILE;
+$IP = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
-$autoloader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
-$autoloader->addPsr4( 'SMW\\Tests\\', __DIR__ . '/phpunit' );
+require_once $IP . '/tests/phpunit/bootstrap.php';
 
-$autoloader->addClassMap( [
-	'SMW\Tests\PHPUnitCheckRunnerTest'           => __DIR__ . '/phpunit/PHPUnitCheckRunnerTest.php',
-	'SMW\Tests\DataItemTest'                     => __DIR__ . '/phpunit/includes/dataitems/DataItemTest.php',
-	'SMW\Maintenance\RebuildConceptCache'        => __DIR__ . '/../maintenance/rebuildConceptCache.php',
-	'SMW\Maintenance\RebuildData'                => __DIR__ . '/../maintenance/rebuildData.php',
-	'SMW\Maintenance\RebuildPropertyStatistics'  => __DIR__ . '/../maintenance/rebuildPropertyStatistics.php',
-	'SMW\Maintenance\RebuildFulltextSearchTable' => __DIR__ . '/../maintenance/rebuildFulltextSearchTable.php',
-	'SMW\Maintenance\DumpRdf'                    => __DIR__ . '/../maintenance/dumpRDF.php',
-	'SMW\Maintenance\SetupStore'                 => __DIR__ . '/../maintenance/setupStore.php',
-	'SMW\Maintenance\UpdateEntityCollation'      => __DIR__ . '/../maintenance/updateEntityCollation.php',
-	'SMW\Maintenance\RemoveDuplicateEntities'    => __DIR__ . '/../maintenance/removeDuplicateEntities.php',
-	'SMW\Maintenance\PurgeEntityCache'           => __DIR__ . '/../maintenance/purgeEntityCache.php',
-	'SMW\Maintenance\UpdateQueryDependencies'    => __DIR__ . '/../maintenance/updateQueryDependencies.php',
-	'SMW\Maintenance\RunImport'                  => __DIR__ . '/../maintenance/runImport.php',
-	'SMW\Maintenance\DisposeOutdatedEntities'    => __DIR__ . '/../maintenance/disposeOutdatedEntities.php',
-	'SMW\Maintenance\UpdateEntityCountMap'       => __DIR__ . '/../maintenance/updateEntityCountMap.php'
-] );
+// Convenience function for extensions depending on a SMW specific
+// test infrastructure
+if ( !defined( 'SMW_PHPUNIT_AUTOLOADER_FILE' ) ) {
+	define( 'SMW_PHPUNIT_AUTOLOADER_FILE', __DIR__ . '/autoloader.php' );
+}
 
 define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );
 define( 'SMW_PHPUNIT_TABLE_PREFIX', 'sunittest_' );

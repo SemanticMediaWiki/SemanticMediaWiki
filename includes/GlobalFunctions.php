@@ -7,6 +7,13 @@ use SMW\ProcessingErrorMsgHandler;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\ConfigPreloader;
 
+// Workaround for SemanticMediaWiki/SemanticMediaWiki #5479
+if ( !defined( 'SMW_GLOBAL_FUNCTIONS_LOADED' ) ) {
+	define( 'SMW_GLOBAL_FUNCTIONS_LOADED', 1 );
+} else {
+	return;
+}
+
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
  * tried to fit functions in suitable classes as static methods if they clearly
@@ -25,7 +32,8 @@ use SMW\ConfigPreloader;
  * @return LocalLanguage
  */
 function smwfContLang(): LocalLanguage {
-	return LocalLanguage::getInstance()->fetch( $GLOBALS['wgLanguageCode'] );
+	global $wgLanguageCode;
+	return LocalLanguage::getInstance()->fetch( $wgLanguageCode );
 }
 
 /**
@@ -162,8 +170,9 @@ function &smwfGetStore() {
  * @return string
  */
 function smwfCacheKey( $namespace, $key ) {
-	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ?
-		WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
+	global $wgCachePrefix;
+	$cachePrefix = $wgCachePrefix === false ?
+		WikiMap::getCurrentWikiId() : $wgCachePrefix;
 
 	if ( $namespace[0] !== ':' ) {
 		$namespace = ':' . $namespace;
