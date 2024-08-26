@@ -2,7 +2,6 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMW\StoreFactory;
 use SMW\Tests\TestEnvironment;
 use MediaWikiIntegrationTestCase;
@@ -20,11 +19,6 @@ use PHPUnit\Framework\TestResult;
  * @author mwjames
  */
 abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
-
-    /**
-	 * @var TestDatabaseTableBuilder
-	 */
-	protected $testDatabaseTableBuilder;
 
     /**
 	 * @var TestEnvironment
