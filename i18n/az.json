@@ -34,7 +34,7 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|saniyə|saniyə}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|saniyə|saniyə}}",
 	"smw-help": "Kömək",
-	"smw-processing": "İşləyir ...",
+	"smw-processing": "İşləyir...",
 	"smw-redirect-target-unresolvable": "Hədəf \"$1\" səbəbindən həll olunmayacaq",
 	"smw-listingcontinuesabbrev": "(davam)",
 	"smw-showingresults": "Aşağıda #<strong>$2</strong> ilə başlayan {{PLURAL:$1|<strong>$1</strong>-ə qədər}} nəticə göstərilib."

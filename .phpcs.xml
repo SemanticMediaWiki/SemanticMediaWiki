@@ -58,7 +58,6 @@
 		<exclude name="PSR2.Methods.FunctionClosingBrace.SpacingBeforeClose" />
 		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
 		<exclude name="MediaWiki.PHPUnit.AssertEquals.Null" />
-		<exclude name="Squiz.Strings.ConcatenationSpacing.PaddingFound" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCapitalLinks" />
 		<exclude name="MediaWiki.PHPUnit.AssertEquals.FalsyString" />
 		<exclude name="Generic.Formatting.DisallowMultipleStatements.SameLine" />
@@ -68,7 +67,6 @@
 		<exclude name="MediaWiki.NamingConventions.ValidGlobalName.allowedPrefix" />
 		<exclude name="Generic.WhiteSpace.LanguageConstructSpacing.Incorrect" />
 		<exclude name="PSR2.Files.EndFileNewline.NoneFound" />
-		<exclude name="Squiz.WhiteSpace.FunctionSpacing.After" />
 		<exclude name="Universal.UseStatements.NoUselessAliases.Found" />
 		<exclude name="PSR12.Files.ImportStatement.LeadingSlash" />
 		<exclude name="Universal.Lists.DisallowLongListSyntax.Found" />
@@ -80,7 +78,6 @@
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.throwException" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotShortBoolReturn" />
 		<exclude name="MediaWiki.Usage.AssignmentInReturn.AssignmentInReturn" />
-		<exclude name="Squiz.WhiteSpace.FunctionSpacing.Before" />
 		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.SpaceBeforeComma" />
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.returnSelf" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.DefaultNullTypeParam" />
@@ -98,7 +95,6 @@
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.NotShortBoolVar" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamName" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotClass" />
-		<exclude name="Squiz.WhiteSpace.SemicolonSpacing.Incorrect" />
 		<exclude name="Squiz.PHP.NonExecutableCode.Unreachable" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotShortIntParam" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.ParamNameNoMatch" />

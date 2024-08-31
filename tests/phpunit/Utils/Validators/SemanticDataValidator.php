@@ -136,7 +136,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		$this->assertEmpty(
 			$expected,
-			'Failed asserting that properties array contains [ ' . $this->formatAsString( $expected ) .' ].'
+			'Failed asserting that properties array contains [ ' . $this->formatAsString( $expected ) . ' ].'
 		);
 	}
 

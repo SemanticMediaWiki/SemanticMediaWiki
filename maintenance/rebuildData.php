@@ -131,7 +131,7 @@ class rebuildData extends \Maintenance {
 
 		if ( $this->hasOption( 'namespace' ) && !defined( $this->getOption( 'namespace' ) ) ) {
 			throw new InvalidArgumentException(
-				"Expected a namespace constant, `". $this->getOption( 'namespace' ) . "` is unkown!"
+				"Expected a namespace constant, `" . $this->getOption( 'namespace' ) . "` is unkown!"
 			);
 		}
 

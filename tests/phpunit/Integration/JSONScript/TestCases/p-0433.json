@@ -59,6 +59,9 @@
 		{
 			"type": "parser",
 			"about": "#2",
+			"skip-on": {
+				"mediawiki": [ ">1.39", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "Example/P0433/Q.1",
 			"assert-output": {
 				"to-contain": [

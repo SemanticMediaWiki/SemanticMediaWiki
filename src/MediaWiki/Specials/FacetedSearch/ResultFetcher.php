@@ -252,7 +252,7 @@ class ResultFetcher {
 		$this->errors = $query->getErrors();
 
 		if ( $this->errors !== [] ) {
-			return ;
+			return;
 		}
 
 		/**

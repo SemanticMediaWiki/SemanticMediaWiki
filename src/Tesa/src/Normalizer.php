@@ -60,7 +60,6 @@ class Normalizer {
 		return str_replace( $full, $half, trim( $text ) );
 	}
 
-
 	/**
 	 * @since 0.1
 	 *

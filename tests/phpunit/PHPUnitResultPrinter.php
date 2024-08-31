@@ -2,15 +2,15 @@
 
 namespace SMW\Tests;
 
-use PHPUnit_TextUI_ResultPrinter;
-use PHPUnit_Framework_TestSuite;
+use MediaWikiPHPUnitResultPrinter;
+use PHPUnit\Framework\TestSuite;
 
-class PHPUnitResultPrinter extends PHPUnit_TextUI_ResultPrinter {
+class PHPUnitResultPrinter extends MediaWikiPHPUnitResultPrinter {
 
 	/**
-	 * @see PHPUnit_TextUI_ResultPrinter::endTestSuite
+	 * @see TestSuite::endTestSuite
 	 */
-	public function endTestSuite( PHPUnit_Framework_TestSuite $suite ): void {
+	public function endTestSuite( TestSuite $suite ): void {
 		parent::endTestSuite( $suite );
 
 		$slowTestsReport = ExecutionTimeTestListener::getSlowTestsReport( $suite );
@@ -43,5 +43,4 @@ class PHPUnitResultPrinter extends PHPUnit_TextUI_ResultPrinter {
 		$this->write( "\n\n" );
 		$this->write( sprintf( "%'-80s", '' ) );
 	}
-
 }

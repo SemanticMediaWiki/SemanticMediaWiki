@@ -252,7 +252,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 		$filterVariable = $this->conditionBuilder->getNextVariable();
 
-		$condition->condition = "?$joinVariable " . $skeyExpElement->getQName(). " ?$filterVariable .\n";
+		$condition->condition = "?$joinVariable " . $skeyExpElement->getQName() . " ?$filterVariable .\n";
 		$condition->matchElement = "?$joinVariable";
 
 		$filterCondition = new FilterCondition( "$comparator( ?$filterVariable, \"$pattern\", \"$flag\")", [] );

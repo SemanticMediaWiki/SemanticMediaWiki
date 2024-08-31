@@ -171,6 +171,7 @@ class TestEnvironment {
 
 		$GLOBALS['wgDBprefix'] = $prefix;
 	}
+
 	/**
 	 * @see https://github.com/wikimedia/mediawiki/commit/7b4eafda0d986180d20f37f2489b70e8eca00df4
 	 * @since 3.2

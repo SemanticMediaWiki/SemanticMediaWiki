@@ -179,7 +179,7 @@ class updateEntityCountMap extends \Maintenance {
 	private function runUpdate() {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		for ( $i = 0; $i <= $this->last ; $i++ ) {
+		for ( $i = 0; $i <= $this->last; $i++ ) {
 
 			$row = $connection->selectRow(
 				SQLStore::ID_TABLE,

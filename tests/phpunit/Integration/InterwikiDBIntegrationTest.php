@@ -76,6 +76,11 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testRdfSerializationForInterwikiAnnotation() {
+
+		if ( version_compare( MW_VERSION, '1.40', '>=' ) ) {
+			$this->markTestSkipped( 'The Serialization for interwiki does not exists for MW 1.40 and newer.' );
+		}
+
 		$this->stringBuilder
 			->addString( '[[Has type::Page]]' );
 

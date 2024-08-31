@@ -184,11 +184,11 @@ class ParametersProcessor {
 
 		$this->parameters = $this->makeParameters( $query, $request );
 
-		$this->parameters[] = 'limit='. $limit;
-		$this->parameters[] = 'offset='. $request->getVal( 'offset', 0 );
+		$this->parameters[] = 'limit=' . $limit;
+		$this->parameters[] = 'offset=' . $request->getVal( 'offset', 0 );
 
 		if ( in_array( $request->getVal( 'order', 'asc' ), [ 'asc', 'desc' ] ) ) {
-			$this->parameters[] = 'order='. $request->getVal( 'order', 'asc' );
+			$this->parameters[] = 'order=' . $request->getVal( 'order', 'asc' );
 		} else if ( $request->getVal( 'order', 'asc' ) === 'recent' ) {
 			$this->parameters[] = 'order=desc';
 			$this->parameters[] = 'sort=Modification date';

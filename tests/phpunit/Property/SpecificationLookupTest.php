@@ -217,7 +217,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-
 	public function testGetAllowedPattern() {
 		$property = $this->dataItemFactory->newDIProperty( 'Has allowed pattern' );
 
