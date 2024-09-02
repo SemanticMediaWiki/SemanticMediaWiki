@@ -1,5 +1,7 @@
 # Semantic MediaWiki
 
+
+
 [![CI](https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions/workflows/main.yml/badge.svg)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions/workflows/main.yml)
 ![Latest Stable Version](https://img.shields.io/packagist/v/mediawiki/semantic-media-wiki.svg)
 ![Total Download Count](https://img.shields.io/packagist/dt/mediawiki/semantic-media-wiki.svg)
