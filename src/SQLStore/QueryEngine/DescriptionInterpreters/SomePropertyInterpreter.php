@@ -205,6 +205,10 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 				// Can we prevent that? (PERFORMANCE)
 				$query->from = ' INNER JOIN ' .	$connection->tableName( SQLStore::ID_TABLE ) .
 						" AS ids{$query->alias} ON ids{$query->alias}.smw_id={$query->alias}.{$o_id}";
+				$query->fromTables = [ 'ids' . $query->alias => SQLStore::ID_TABLE ];
+				$query->joinConditions = [
+					'ids' . $query->alias => [ 'INNER JOIN', "ids{$query->alias}.smw_id={$query->alias}.{$o_id}" ]
+				];
 				$query->sortfields[$sortkey] = "ids{$query->alias}.smw_sort";
 			}
 		} else { // non-page value description
