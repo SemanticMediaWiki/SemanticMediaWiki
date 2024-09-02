@@ -20,7 +20,7 @@ jobs:
             php_version: 7.4
             database_type: mysql
             database_image: "mysql:5.7"
-            coverage: false
+            coverage: true
             experimental: false
           - mediawiki_version: '1.39'
             php_version: 8.1
