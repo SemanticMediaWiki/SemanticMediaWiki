@@ -141,16 +141,26 @@ class QuerySegmentListProcessor {
 		foreach ( $query->components as $qid => $joinField ) {
 			$subQuery = $this->querySegmentList[$qid];
 			$this->segment( $subQuery );
+			$alias = $subQuery->alias;
 
 			if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
 				$op = $subQuery->not ? '!' : '';
 
 				$joinType = $subQuery->joinType ? $subQuery->joinType : 'INNER';
 				$t = $this->connection->tableName( $subQuery->joinTable ) . " AS $subQuery->alias";
+				// If the alias is the same as the table name and if there is a prefix, MediaWiki does not declare the unprefixed alias
+				$joinTable = $subQuery->joinTable === $subQuery->alias ? $this->connection->tableName( $subQuery->joinTable ) : $subQuery->joinTable;
 
 				if ( $subQuery->from ) {
 					$t = "($t $subQuery->from)";
+
+					$alias = 'nested' . $subQuery->alias;
+					$query->fromTables[$alias] = array_merge( $subQuery->fromTables, [ $subQuery->alias => $joinTable ] );
+					$query->joinConditions = array_merge( $query->joinConditions, $subQuery->joinConditions );
+				} else {
+					$query->fromTables[$alias] = $joinTable;
 				}
+				$query->joinConditions[$alias] = [ $joinType . ' JOIN', "$joinField$op=" . $subQuery->joinfield ];
 
 				$query->from .= " $joinType JOIN $t ON $joinField$op=" . $subQuery->joinfield;
 
@@ -176,17 +186,22 @@ class QuerySegmentListProcessor {
 
 				$query->where .= ( ( $query->where === '' || $subQuery->where === null ) ? '' : ' AND ' ) . $condition;
 				$query->from .= $subQuery->from;
+				$query->fromTables = array_merge( $query->fromTables, $subQuery->fromTables );
+				$query->joinConditions = array_merge( $query->joinConditions, $subQuery->joinConditions );
 			} else { // interpret empty joinfields as impossible condition (empty result)
 				$query->joinfield = ''; // make whole query false
 				$query->joinTable = '';
 				$query->where = '';
 				$query->from = '';
+				$query->fromTables = [];
+				$query->joinConditions = [];
 				break;
 			}
 
 			if ( $subQuery->where !== '' && $subQuery->where !== null ) {
 				if ( $subQuery->joinType === 'LEFT' || $subQuery->joinType == 'LEFT OUTER' ) {
 					$query->from .= ' AND (' . $subQuery->where . ')';
+					$query->joinConditions[$alias][1] .= ' AND (' . $subQuery->where . ')';
 				} else {
 					$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
 				}
