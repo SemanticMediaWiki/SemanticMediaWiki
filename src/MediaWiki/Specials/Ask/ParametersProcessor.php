@@ -65,7 +65,7 @@ class ParametersProcessor {
 		// Parameters separated by newlines here (compatible with text-input for
 		// printouts)
 		if ( ( $po = $request->getText( 'po' ) ) !== '' ) {
-			$printouts = explode( "\n", $po );
+			$printouts = explode( "\n", $po ?? '' );
 		}
 
 		// Check for param strings in po (printouts), appears in some links

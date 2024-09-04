@@ -269,7 +269,7 @@ class SchemaContent extends JsonContent {
 			);
 
 			$schema_link = pathinfo(
-				$schema->info( Schema::SCHEMA_VALIDATION_FILE ),
+				$schema->info( Schema::SCHEMA_VALIDATION_FILE ) ?? '',
 				PATHINFO_FILENAME
 			);
 		}

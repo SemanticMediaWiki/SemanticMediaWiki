@@ -214,7 +214,7 @@ class PropertyTableIdReferenceFinder {
 		if ( isset( $fields['o_id'] ) ) {
 
 			// This next time someone ... I'm going to Alaska
-			$field = preg_match( '/redi$/', $proptable->getName() ) ? [ 's_title', 's_namespace' ] : [ 's_id' ];
+			$field = preg_match( '/redi$/', $proptable->getName() ?? '' ) ? [ 's_title', 's_namespace' ] : [ 's_id' ];
 
 			$row = $this->connection->selectRow(
 				$proptable->getName(),

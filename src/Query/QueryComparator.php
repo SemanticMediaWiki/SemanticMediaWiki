@@ -116,7 +116,7 @@ class QueryComparator {
 		$comparator = SMW_CMP_EQ;
 
 		foreach ( $this->getComparatorStrings() as $string ) {
-			if ( strpos( $value, $string ) === 0 ) {
+			if ( strpos( $value ?? '', $string ) === 0 ) {
 				$comparator = $this->getComparatorFromString( substr( $value, 0, strlen( $string ) ) );
 				$value = substr( $value, strlen( $string ) );
 				break;

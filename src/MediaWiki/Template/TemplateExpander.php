@@ -96,7 +96,7 @@ class TemplateExpander {
 		$text = str_replace(
 			[ '_&lt;nowiki&gt;_', '_&lt;/nowiki&gt;_', '_&lt;nowiki */&gt;_', '<nowiki>', '</nowiki>' ],
 			'',
-			$text
+			$text ?? ''
 		);
 
 		return $text;
