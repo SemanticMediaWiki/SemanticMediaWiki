@@ -13,9 +13,11 @@ use SMW\Tests\Utils\Validators\IncomingSemanticDataValidator;
 use SMW\Tests\Utils\Validators\SemanticDataValidator;
 use SMW\Tests\Utils\Validators\StringValidator;
 use User;
+use MediaWikiIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -23,7 +25,7 @@ use User;
  *
  * @author mwjames
  */
-class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var Store
