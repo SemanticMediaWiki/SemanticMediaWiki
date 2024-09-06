@@ -441,7 +441,7 @@ class SQLStoreFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		$tableBuilder = TableBuilder::factory(
 			$connection

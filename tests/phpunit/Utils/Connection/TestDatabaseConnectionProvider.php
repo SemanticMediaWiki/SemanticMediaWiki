@@ -23,7 +23,7 @@ class TestDatabaseConnectionProvider implements ConnectionProvider {
 	 *
 	 * @param int $id
 	 */
-	public function __construct( $id = DB_MASTER ) {
+	public function __construct( $id = DB_PRIMARY ) {
 		$this->id = $id;
 	}
 

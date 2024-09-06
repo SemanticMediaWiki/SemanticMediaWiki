@@ -88,7 +88,7 @@ class FixedProperties {
 
 		$target_id = (int)$this->fixedProperties[$prop];
 
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 		$this->messageReporter->reportMessage( "   ... reading `$prop` ...\n" );
 
 		$row = $connection->selectRow(
