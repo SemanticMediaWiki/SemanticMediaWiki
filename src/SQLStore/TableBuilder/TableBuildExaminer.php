@@ -67,7 +67,7 @@ class TableBuildExaminer {
 	 */
 	public function getDatabaseInfo(): string {
 		$connection = $this->store->getConnection(
-			DB_MASTER
+			DB_PRIMARY
 		);
 
 		return $connection->getType() . ' (' . $connection->getServerInfo() . ')';
@@ -174,7 +174,7 @@ class TableBuildExaminer {
 	 * @param TableBuilder $tableBuilder
 	 */
 	public function checkOnPostDestruction( ITableBuilder $tableBuilder ) {
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// Find orphaned tables that have not been removed but were produced and
 		// handled by SMW
@@ -192,7 +192,7 @@ class TableBuildExaminer {
 	}
 
 	private function checkSortField( $log ) {
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		$tableName = $connection->tableName( SQLStore::ID_TABLE );
 		$this->messageReporter->reportMessage( "Checking smw_sortkey, smw_sort fields ...\n" );

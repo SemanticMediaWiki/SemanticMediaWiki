@@ -36,7 +36,7 @@ class TouchedField {
 	 */
 	public function check( array $opts = [] ) {
 		$this->messageReporter->reportMessage( "Checking smw_touched field ...\n" );
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		$row = $connection->selectRow(
 			SQLStore::ID_TABLE,
