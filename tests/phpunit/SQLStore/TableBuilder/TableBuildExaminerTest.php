@@ -146,7 +146,7 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckOnPostDestruction() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'listTables' ] )
 			->getMockForAbstractClass();
@@ -184,7 +184,7 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDatabaseInfo() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getType', 'getServerInfo' ] )
 			->getMockForAbstractClass();

@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
-use DatabaseBase;
 use ReflectionClass;
 use SMW\Tests\PHPUnitCompat;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;

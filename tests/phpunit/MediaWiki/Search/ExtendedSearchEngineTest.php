@@ -26,7 +26,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( 'DatabaseBase' )
+		$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
@@ -55,7 +55,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			}
 		}
 
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();

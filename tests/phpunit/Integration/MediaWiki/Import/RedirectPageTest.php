@@ -139,7 +139,7 @@ class RedirectPageTest extends DatabaseTestCase {
 		$inSemanticData = $inSemanticDataFetcher->getSemanticData( DIWikiPage::newFromTitle( $main ) );
 
 		// When running sqlite, the database select returns an empty result which
-		// is probably due to some DB-prefix issues in MW's DatabaseBaseSqlite
+		// is probably due to some DB-prefix issues in MW's DatabaseSqlite
 		// implementation and for non-sqlite see #212 / bug 62856
 		if ( $inSemanticData->getProperties() === [] ) {
 			$this->markTestSkipped(

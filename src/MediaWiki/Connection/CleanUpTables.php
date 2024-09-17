@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Connection;
 
 use RuntimeException;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @private
@@ -15,7 +16,7 @@ use RuntimeException;
 class CleanUpTables {
 
 	/**
-	 * @var Database
+	 * @var Database|IDatabase
 	 */
 	private $connection;
 
@@ -24,10 +25,8 @@ class CleanUpTables {
 	 */
 	public function __construct( $connection ) {
 		if (
-			!$connection instanceof \SMW\MediaWiki\Database &&
-			!$connection instanceof \Wikimedia\Rdbms\IDatabase &&
-			!$connection instanceof \IDatabase &&
-			!$connection instanceof \DatabaseBase ) {
+			!$connection instanceof Database &&
+			!$connection instanceof IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
 

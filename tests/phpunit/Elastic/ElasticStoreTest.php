@@ -76,7 +76,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -163,7 +163,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
