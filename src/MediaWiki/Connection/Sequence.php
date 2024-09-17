@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Connection;
 
 use SMW\SQLStore\SQLStore;
 use RuntimeException;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -14,7 +15,7 @@ use RuntimeException;
 class Sequence {
 
 	/**
-	 * @var Database
+	 * @var Database|IDatabase
 	 */
 	private $connection;
 
@@ -29,9 +30,7 @@ class Sequence {
 	public function __construct( $connection ) {
 		if (
 			!$connection instanceof Database &&
-			!$connection instanceof DatabaseBase &&
-			!$connection instanceof \IDatabase &&
-			!$connection instanceof \Wikimedia\Rdbms\IDatabase ) {
+			!$connection instanceof IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
 

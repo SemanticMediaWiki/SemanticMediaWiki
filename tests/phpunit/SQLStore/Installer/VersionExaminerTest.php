@@ -35,7 +35,7 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -46,7 +46,7 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRequirements() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();
@@ -76,7 +76,7 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRequirements_InvalidDefined() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();
@@ -97,7 +97,7 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMeetsVersionMinRequirement() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();
@@ -127,7 +127,7 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMeetsVersionMinRequirement_FailsMinimumRequirement() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();

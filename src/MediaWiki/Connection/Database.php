@@ -7,7 +7,9 @@ use Exception;
 use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
+use Wikimedia\Rdbms\Database as MWDatabase;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\Platform\SQLPlatform;
 use Wikimedia\Rdbms\ResultWrapper;
 use Wikimedia\ScopedCallback;
 
@@ -120,7 +122,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::getServerInfo
+	 * @see IDatabase::getServerInfo
 	 *
 	 * @since 3.0
 	 *
@@ -133,7 +135,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::getType
+	 * @see IDatabase::getType
 	 *
 	 * @since 1.9
 	 *
@@ -148,7 +150,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::tableName
+	 * @see IDatabase::tableName
 	 *
 	 * @since 1.9
 	 *
@@ -161,7 +163,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::timestamp
+	 * @see IDatabase::timestamp
 	 *
 	 * @since 3.0
 	 *
@@ -174,7 +176,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::tablePrefix
+	 * @see IDatabase::tablePrefix
 	 *
 	 * @since 3.0
 	 *
@@ -196,7 +198,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::addQuotes
+	 * @see IDatabase::addQuotes
 	 *
 	 * @since 1.9
 	 *
@@ -209,7 +211,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::select
+	 * @see IDatabase::select
 	 *
 	 * @since 1.9
 	 *
@@ -270,7 +272,7 @@ class Database {
 	/**
 	 * Execute a given SQL query on the primary DB.
 	 *
-	 * @see DatabaseBase::query
+	 * @see IDatabase::query
 	 *
 	 * @since 1.9
 	 *
@@ -395,7 +397,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::selectRow
+	 * @see IDatabase::selectRow
 	 *
 	 * @since 1.9
 	 */
@@ -411,7 +413,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::affectedRows
+	 * @see IDatabase::affectedRows
 	 *
 	 * @since 1.9
 	 *
@@ -425,7 +427,7 @@ class Database {
 	 * @note Method was made protected in 1.28, hence the need
 	 * for the DatabaseHelper that copies the functionality.
 	 *
-	 * @see DatabaseBase::makeSelectOptions
+	 * @see SQLPlatform::makeSelectOptions
 	 *
 	 * @since 1.9
 	 *
@@ -438,7 +440,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::nextSequenceValue
+	 * @see removed method IDatabase::nextSequenceValue
 	 *
 	 * @since 1.9
 	 *
@@ -464,7 +466,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::insertId
+	 * @see IDatabase::insertId
 	 *
 	 * @since 1.9
 	 *
@@ -479,7 +481,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::clearFlag
+	 * @see MWDatabase::clearFlag
 	 *
 	 * @since 2.4
 	 */
@@ -488,7 +490,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::getFlag
+	 * @see MWDatabase::getFlag
 	 *
 	 * @since 2.4
 	 */
@@ -497,7 +499,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::setFlag
+	 * @see MWDatabase::setFlag
 	 *
 	 * @since 2.4
 	 */
@@ -510,7 +512,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::insert
+	 * @see IDatabase::insert
 	 *
 	 * @since 1.9
 	 */
@@ -525,7 +527,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::update
+	 * @see IDatabase::update
 	 *
 	 * @since 1.9
 	 */
@@ -540,7 +542,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::upsert
+	 * @see IDatabase::upsert
 	 *
 	 * @since 3.1
 	 */
@@ -555,7 +557,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::delete
+	 * @see IDatabase::delete
 	 *
 	 * @since 1.9
 	 */
@@ -570,7 +572,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::replace
+	 * @see IDatabase::replace
 	 *
 	 * @since 2.5
 	 */
@@ -585,7 +587,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::makeList
+	 * @see IDatabase::makeList
 	 *
 	 * @since 1.9
 	 */
@@ -594,7 +596,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::tableExists
+	 * @see IDatabase::tableExists
 	 *
 	 * @since 1.9
 	 *
@@ -608,7 +610,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::listTables
+	 * @see IDatabase::listTables
 	 *
 	 * @since 3.1
 	 *
@@ -622,7 +624,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::selectField
+	 * @see IDatabase::selectField
 	 *
 	 * @since 1.9.2
 	 */
@@ -631,7 +633,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::estimateRowCount
+	 * @see IDatabase::estimateRowCount
 	 *
 	 * @since 2.1
 	 */

@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils\Connection;
 
-use DatabaseBase;
 use SMW\Services\ServicesFactory;
 use SMW\Connection\ConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;

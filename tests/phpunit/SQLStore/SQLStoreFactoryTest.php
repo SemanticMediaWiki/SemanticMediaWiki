@@ -190,7 +190,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructInstaller() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

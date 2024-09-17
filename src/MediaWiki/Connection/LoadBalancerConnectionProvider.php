@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Connection;
 
-use DatabaseBase;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Services\ServicesFactory;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -19,7 +19,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var DatabaseBase|IDatabase
+	 * @var IDatabase
 	 */
 	private $connection;
 
@@ -84,7 +84,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 1.9
 	 *
-	 * @return DatabaseBase
+	 * @return IDatabase
 	 * @throws RuntimeException
 	 */
 	public function getConnection() {
@@ -102,14 +102,11 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 			$this->connection = $this->loadBalancer->getConnection( $this->id, $this->groups, $this->wiki );
 		}
 
-		if (
-			$this->connection instanceof DatabaseBase ||
-			$this->connection instanceof \IDatabase ||
-			$this->connection instanceof \Wikimedia\Rdbms\IDatabase ) {
+		if ( $this->connection instanceof IDatabase ) {
 			return $this->connection;
 		}
 
-		throw new RuntimeException( 'Expected a DatabaseBase or IDatabase instance!' );
+		throw new RuntimeException( 'Expected a IDatabase instance!' );
 	}
 
 	/**
