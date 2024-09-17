@@ -397,7 +397,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$read = $this->getMockBuilder( '\IDatabase' )
+		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -405,7 +405,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $read ) );
 
-		$write = $this->getMockBuilder( '\IDatabase' )
+		$write = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -452,7 +452,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$read = $this->getMockBuilder( '\IDatabase' )
+		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -460,7 +460,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $read ) );
 
-		$write = $this->getMockBuilder( '\IDatabase' )
+		$write = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Utils\Mock;
 
 use Wikimedia\Rdbms\Database;
-use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @codeCoverageIgnore
