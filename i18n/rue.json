@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Constraque",
 			"Gazeb"
 		]
 	},
@@ -11,6 +12,7 @@
 	"smw_result_results": "Резултаты",
 	"smw_result_noresults": "Жадны ресултаты",
 	"smw_smwadmin_return": "Навернутя до  «$1».",
+	"prefs-extended-search-options": "Розшырене гляданя",
 	"smw-livepreview-loading": "Наладовованя...",
 	"smw-listingcontinuesabbrev": "(дале)",
 	"smw-showingresults": "Ниже {{PLURAL:$1|вказане|вказаны|вказаных}} '''$1''' {{PLURAL:$1|резултат|резултаты|резултатів}}, почінаючіх з №&nbsp;'''$2'''"
