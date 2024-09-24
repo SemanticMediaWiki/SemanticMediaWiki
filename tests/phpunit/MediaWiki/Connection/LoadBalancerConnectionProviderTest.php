@@ -6,6 +6,7 @@ use ReflectionClass;
 use SMW\Tests\PHPUnitCompat;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * @covers \SMW\MediaWiki\Connection\LoadBalancerConnectionProvider
@@ -23,7 +24,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	private $loadBalancer;
 
 	protected function setUp(): void {
-		$this->loadBalancer = $this->getMockBuilder( '\LoadBalancer' )
+		$this->loadBalancer = $this->getMockBuilder( ILoadBalancer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,7 +96,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInvalidConnectionFromLoadBalancerThrowsException() {
-		$loadBalancer = $this->getMockBuilder( '\LoadBalancer' )
+		$loadBalancer = $this->getMockBuilder( ILoadBalancer::class )
 			->disableOriginalConstructor()
 			->getMock();
 

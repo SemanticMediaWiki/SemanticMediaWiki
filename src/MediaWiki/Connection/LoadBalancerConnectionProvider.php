@@ -7,6 +7,7 @@ use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Services\ServicesFactory;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * @license GNU GPL v2+
@@ -39,7 +40,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	private $wiki;
 
 	/**
-	 * @var LoadBalancer
+	 * @var ILoadBalancer
 	 */
 	private $loadBalancer;
 
@@ -75,7 +76,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 *
 	 * @param loadBalancer $loadBalancer
 	 */
-	public function setLoadBalancer( \LoadBalancer $loadBalancer ) {
+	public function setLoadBalancer( ILoadBalancer $loadBalancer ) {
 		$this->loadBalancer = $loadBalancer;
 	}
 
