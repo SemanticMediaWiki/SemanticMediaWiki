@@ -49,7 +49,7 @@ class CleanUpTables {
 
 		foreach ( $tables as $table ) {
 
-			if ( strpos( $table, $tablePrefix ) === false || !$this->connection->tableExists( $table ) ) {
+			if ( strpos( $table, $tablePrefix ) === false || !$this->connection->tableExists( $table, __METHOD__ ) ) {
 				continue;
 			}
 
