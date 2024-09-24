@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\Iterators\ResultIterator;
 use SMW\RequestOptions;
+use Wikimedia\Rdbms\DBError;
 
 /**
  * @private
@@ -323,7 +324,7 @@ class PropertyTableIdReferenceDisposer {
 			if ( $this->fulltextTableUsage ) {
 				$tableExists = $this->connection->tableExists( SQLStore::FT_SEARCH_TABLE );
 			}
-		} catch ( \DBError $e ) {
+		} catch ( DBError $e ) {
 			ApplicationFactory::getInstance()->getMediaWikiLogger()->info( __METHOD__ . ' reported: ' . $e->getMessage() );
 		}
 

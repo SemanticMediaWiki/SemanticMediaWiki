@@ -6,6 +6,7 @@ use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\Tests\PHPUnitCompat;
 use SMW\MediaWiki\Connection\Database;
+use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
@@ -314,7 +315,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( [ 'query' ] )
 			->getMockForAbstractClass();
 
-		$databaseException = new \DBError( $database, 'foo' );
+		$databaseException = new DBError( $database, 'foo' );
 
 		$database->expects( $this->once() )
 			->method( 'query' )
