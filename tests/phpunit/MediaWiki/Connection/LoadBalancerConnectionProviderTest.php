@@ -51,35 +51,6 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			DB_REPLICA
 		);
 
-		$instance->asConnectionRef( false );
-
-		$connection = $instance->getConnection();
-
-		$this->assertInstanceOf(
-			'\Wikimedia\Rdbms\IDatabase',
-			$instance->getConnection()
-		);
-
-		$this->assertTrue(
-			$instance->getConnection() === $connection
-		);
-
-		$instance->releaseConnection();
-	}
-
-	public function testGetAndReleaseConnectionRef() {
-		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->loadBalancer->expects( $this->once() )
-			->method( 'getConnectionRef' )
-			->will( $this->returnValue( $database ) );
-
-		$instance = new LoadBalancerConnectionProvider(
-			DB_REPLICA
-		);
-
 		$connection = $instance->getConnection();
 
 		$this->assertInstanceOf(
@@ -108,7 +79,6 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setLoadBalancer( $loadBalancer );
-		$instance->asConnectionRef( false );
 
 		$this->expectException( 'RuntimeException' );
 		$instance->getConnection();

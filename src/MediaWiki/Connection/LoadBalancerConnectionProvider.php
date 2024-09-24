@@ -44,11 +44,6 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	private $loadBalancer;
 
 	/**
-	 * @var boolean
-	 */
-	private $asConnectionRef = true;
-
-	/**
 	 * @since 1.9
 	 *
 	 * @param int $id
@@ -64,10 +59,11 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	/**
 	 * @since 3.1
 	 *
+	 * @deprecated since 5.0
+	 *
 	 * @param boolean $asConnectionRef
 	 */
 	public function asConnectionRef( $asConnectionRef ) {
-		$this->asConnectionRef = $asConnectionRef;
 	}
 
 	/**
@@ -96,11 +92,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 			$this->initLoadBalancer( $this->wiki );
 		}
 
-		if ( $this->asConnectionRef ) {
-			$this->connection = $this->loadBalancer->getConnectionRef( $this->id, $this->groups, $this->wiki );
-		} else {
-			$this->connection = $this->loadBalancer->getConnection( $this->id, $this->groups, $this->wiki );
-		}
+		$this->connection = $this->loadBalancer->getConnection( $this->id, $this->groups, $this->wiki );
 
 		if ( $this->connection instanceof IDatabase ) {
 			return $this->connection;
