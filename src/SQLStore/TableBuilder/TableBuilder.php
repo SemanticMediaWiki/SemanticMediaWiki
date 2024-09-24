@@ -145,7 +145,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 
 		$this->reportMessage( "Checking table $tableName ...\n" );
 
-		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
+		if ( $this->connection->tableExists( $tableName, __METHOD__ ) === false ) { // create new table
 			$this->reportMessage( "   Table not found, now creating...\n" );
 			$this->doCreateTable( $tableName, $attributes );
 		} else {
@@ -185,7 +185,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 
 		$this->droppedTables[$tableName] = true;
 
-		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
+		if ( $this->connection->tableExists( $tableName, __METHOD__ ) === false ) { // create new table
 			return $this->reportMessage(
 				$cliMsgFormatter->twoCols( "... $tableName (not found) ...", 'SKIPPED', 3 )
 			);
