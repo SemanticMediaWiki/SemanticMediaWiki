@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Connection;
 
-use DBError;
 use Exception;
 use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
 use Wikimedia\Rdbms\Database as MWDatabase;
+use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\Platform\SQLPlatform;
 use Wikimedia\Rdbms\ResultWrapper;
