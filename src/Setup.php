@@ -209,7 +209,7 @@ final class Setup {
 
 		$connectionManager->registerConnectionProvider(
 			DB_REPLICA,
-			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_REPLICA, false )
+			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_REPLICA )
 		);
 
 		$connectionManager->registerConnectionProvider(
