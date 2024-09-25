@@ -10,6 +10,7 @@ use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMWSQLStore3;
 use SMWWikiPageValue;
 use Title;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GNU GPL v2+
@@ -146,7 +147,8 @@ class ConceptCache {
 			$db->tableName( $querySegment->joinTable ) . " AS {$querySegment->alias}" .
 			$querySegment->from .
 			( $where ? ' WHERE ' : '' ) . $where . " LIMIT " . $this->upperLimit,
-			__METHOD__
+			__METHOD__,
+			ISQLPlatform::QUERY_CHANGE_ROWS
 		);
 
 		$db->update(

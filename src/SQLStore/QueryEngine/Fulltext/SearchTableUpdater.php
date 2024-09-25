@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use SMW\MediaWiki\Database;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GNU GPL v2+
@@ -86,7 +87,8 @@ class SearchTableUpdater {
 
 		$this->connection->query(
 			"OPTIMIZE TABLE " . $this->searchTable->getTableName(),
-			__METHOD__
+			__METHOD__,
+			ISQLPlatform::QUERY_CHANGE_SCHEMA
 		);
 
 		return true;
