@@ -16,6 +16,7 @@ use SMWDataItem as DataItem;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 use SMWSQLStore3 as SQLStore;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * Class that implements query answering for SQLStore.
@@ -307,7 +308,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$query = "EXPLAIN $format $sql";
 		}
 
-		$res = $connection->query( $query, __METHOD__ );
+		$res = $connection->query( $query, __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
 
 		$entries['SQL Explain'] = $debugFormatter->prettifyExplain( new ResultIterator( $res ) );
 		$entries['SQL Query'] = $debugFormatter->prettifySQL( $sql, $qobj->alias );

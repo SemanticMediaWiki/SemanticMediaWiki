@@ -9,6 +9,7 @@ use UnexpectedValueException;
 use Wikimedia\Rdbms\Database as MWDatabase;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\Platform\SQLPlatform;
 use Wikimedia\Rdbms\ResultWrapper;
 use Wikimedia\ScopedCallback;
@@ -36,10 +37,10 @@ class Database {
 	/**
 	 * @see IDatabase::TRIGGER_ROLLBACK
 	 */
-	const TRIGGER_ROLLBACK = 3;
+	const TRIGGER_ROLLBACK = IDatabase::TRIGGER_ROLLBACK;
 
-	/** @var IDatabase::LIST_COMMA (Combine list with comma delimeters) */
-	const LIST_COMMA = 0;
+	/** @var ISQLPlatform::LIST_COMMA (Combine list with comma delimeters) */
+	const LIST_COMMA = ISQLPlatform::LIST_COMMA;
 
 	/**
 	 * @var ConnRef
@@ -202,7 +203,7 @@ class Database {
 	 *
 	 * @since 1.9
 	 *
-	 * @param string $tableName
+	 * @param string $value
 	 *
 	 * @return string
 	 */
@@ -278,19 +279,19 @@ class Database {
 	 *
 	 * @param Query|string $sql
 	 * @param string $fname
-	 * @param boolean $ignoreException
+	 * @param int $flags
 	 *
 	 * @return ResultWrapper
 	 * @throws RuntimeException
 	 */
-	public function query( $sql, $fname = __METHOD__, $ignoreException = false ) {
+	public function query( $sql, $fname = __METHOD__, $flags = 0 ) {
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$results = $this->executeQuery(
 			$this->connRef->getConnection( 'write' ),
 			$sql,
 			$fname,
-			$ignoreException
+			$flags
 		);
 
 		ScopedCallback::consume( $scope );
@@ -306,30 +307,32 @@ class Database {
 	 *
 	 * @param Query|string $sql
 	 * @param string $fname
-	 * @param false $ignoreException
+	 * @param int $flags
 	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
 	 * @throws Exception
 	 */
-	public function readQuery( $sql, $fname = __METHOD__, $ignoreException = false ) {
+	public function readQuery( $sql, $fname = __METHOD__, $flags = 0 ) {
 		return $this->executeQuery(
 			$this->connRef->getConnection( 'read' ),
 			$sql,
 			$fname,
-			$ignoreException
+			$flags | ISQLPlatform::QUERY_CHANGE_NONE
 		);
 	}
 
 	/**
 	 * Execute a SQL query using the given DB connection handle.
 	 *
+	 * @see IDatabase::query()
+	 *
 	 * @param IDatabase $connection
 	 * @param Query|string $sql
 	 * @param $fname
-	 * @param $ignoreException
+	 * @param int $flags
 	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
 	 * @throws Exception
 	 */
-	private function executeQuery( IDatabase $connection, $sql, $fname, $ignoreException ) {
+	private function executeQuery( IDatabase $connection, $sql, $fname, $flags ) {
 		if ( $sql instanceof Query ) {
 			$sql = $sql->build();
 		}
@@ -377,7 +380,7 @@ class Database {
 			$results = $connection->query(
 				$sql,
 				$fname,
-				$ignoreException
+				$flags
 			);
 		} catch ( Exception $exception ) {
 		}
@@ -459,7 +462,7 @@ class Database {
 		// MW 1.31+
 		// https://github.com/wikimedia/mediawiki/commit/0a9c55bfd39e22828f2d152ab71789cef3b0897c#diff-278465351b7c14bbcadac82036080e9f
 		$safeseq = str_replace( "'", "''", $seqName );
-		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')" );
+		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
 		$row = $res->fetchRow();
 
 		return $this->insertId = is_null( $row[0] ) ? null : (int)$row[0];

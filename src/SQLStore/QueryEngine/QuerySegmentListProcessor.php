@@ -6,6 +6,7 @@ use RuntimeException;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMWQuery as Query;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GNU GPL v2+
@@ -280,7 +281,8 @@ class QuerySegmentListProcessor {
 				if ( $this->queryMode !== Query::MODE_NONE ) {
 					$this->connection->query(
 						$sql,
-						__METHOD__
+						__METHOD__,
+						ISQLPlatform::QUERY_CHANGE_ROWS
 					);
 				}
 			}

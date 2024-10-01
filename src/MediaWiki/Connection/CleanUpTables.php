@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Connection;
 
 use RuntimeException;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @private
@@ -54,9 +55,9 @@ class CleanUpTables {
 			}
 
 			if ( $this->connection->getType() === 'postgres' ) {
-				$this->connection->query( "DROP TABLE IF EXISTS $table CASCADE", __METHOD__ );
+				$this->connection->query( "DROP TABLE IF EXISTS $table CASCADE", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 			} else {
-				$this->connection->query( "DROP TABLE $table", __METHOD__ );
+				$this->connection->query( "DROP TABLE $table", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 			}
 		}
 	}

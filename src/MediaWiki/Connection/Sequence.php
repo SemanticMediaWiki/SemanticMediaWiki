@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Connection;
 use SMW\SQLStore\SQLStore;
 use RuntimeException;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GNU GPL v2+
@@ -79,7 +80,7 @@ class Sequence {
 		$sequence = self::makeSequence( $table, $field );
 
 		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num ) {
-			$this->connection->query( "ALTER SEQUENCE {$sequence} RESTART WITH {$seq_num}", __METHOD__ );
+			$this->connection->query( "ALTER SEQUENCE {$sequence} RESTART WITH {$seq_num}", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		} );
 
 		return $seq_num;

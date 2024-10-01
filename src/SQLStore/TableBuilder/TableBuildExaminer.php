@@ -16,6 +16,7 @@ use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
 use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
 use SMWSql3SmwIds;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @private
@@ -204,7 +205,7 @@ class TableBuildExaminer {
 
 			$this->messageReporter->reportMessage( "   Table " . SQLStore::ID_TABLE . " ...\n" );
 			$this->messageReporter->reportMessage( "   ... copying $copyField to $emptyField ... " );
-			$connection->query( "UPDATE $tableName SET $emptyField = $copyField", __METHOD__ );
+			$connection->query( "UPDATE $tableName SET $emptyField = $copyField", __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
 			$this->messageReporter->reportMessage( "done.\n" );
 		}
 
