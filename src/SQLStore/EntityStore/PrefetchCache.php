@@ -130,7 +130,7 @@ class PrefetchCache {
 			$requestOptions
 		);
 
-		$this->cache[$key] = $result;
+		$this->cache[$key] = $result + ($this->cache[$key] ?? []);
 		$this->lookupCache[$lookupKey] = true;
 	}
 
