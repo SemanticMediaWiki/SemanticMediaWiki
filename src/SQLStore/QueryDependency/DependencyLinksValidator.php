@@ -119,7 +119,7 @@ class DependencyLinksValidator {
 		$id_table = $connection->tableName( SQLStore::ID_TABLE );
 
 		$rows = $connection->select(
-			[ $proptables[$tableid]->getName(), $id_table . ' AS p', $id_table . ' AS v' ],
+			[ $proptables[$tableid]->getName(), "p" => SQLStore::ID_TABLE, "v" => SQLStore::ID_TABLE ],
 			[
 				'v.smw_id', 'v.smw_subobject', 'v.smw_touched'
 			],
@@ -169,7 +169,7 @@ class DependencyLinksValidator {
 		$links_table = $connection->tableName( SQLStore::QUERY_LINKS_TABLE );
 
 		$row = $connection->selectRow(
-			[ SQLStore::ID_TABLE, $links_table . ' AS p' ],
+			[ SQLStore::ID_TABLE, "p" => SQLStore::QUERY_LINKS_TABLE ],
 			[
 				'smw_id'
 			],
