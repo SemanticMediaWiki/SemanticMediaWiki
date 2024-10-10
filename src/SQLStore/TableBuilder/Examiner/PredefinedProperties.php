@@ -82,7 +82,7 @@ class PredefinedProperties {
 	}
 
 	private function doUpdate( $property, $id ) {
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// Try to find the ID for a non-fixed predefined property
 		if ( $id === null ) {

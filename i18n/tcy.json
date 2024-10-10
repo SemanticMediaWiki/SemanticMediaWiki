@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"BHARATHESHA ALASANDEMAJALU",
+			"ChiK",
 			"Chidananda Kampa",
 			"Kiranpoojary",
 			"Mahaveer Indra",
@@ -35,6 +36,7 @@
 	"smw-ui-tooltip-title-warning": "ದೋಷ",
 	"smw-ui-tooltip-title-note": "ಟಿಪ್ಪಣಿ",
 	"smw-livepreview-loading": "ದಿಂಜಾವೊಂದುಂಡು......",
+	"smw-help": "ಸಕಾಯೊ",
 	"smw-processing": "ಪ್ರಕ್ರಿಯೆ ಆವೊಂದುಂಡು..",
 	"smw-loading": "ದಿಂಜಾವೊಂದುಂಡು...",
 	"smw-fetching": "ಗೆತೊಣೊಂದುಂಡು..",

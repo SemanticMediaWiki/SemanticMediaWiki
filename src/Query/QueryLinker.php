@@ -51,7 +51,7 @@ class QueryLinker {
 	}
 
 	private static function getParameters( $query ) {
-		$params = [ trim( $query->getQueryString( true ) ) ];
+		$params = [ trim( $query->getQueryString( true ) ?? '' ) ];
 
 		foreach ( $query->getExtraPrintouts() as /* PrintRequest */ $printout ) {
 			if ( ( $serialisation = $printout->getSerialisation( true ) ) !== '' ) {

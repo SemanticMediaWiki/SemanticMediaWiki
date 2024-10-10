@@ -32,7 +32,7 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 		$this->messageReporterFactory = MessageReporterFactory::getInstance();
 
 		$this->tableBuilder = TableBuilder::factory(
-			$this->getStore()->getConnection( DB_MASTER )
+			$this->getStore()->getConnection( DB_PRIMARY )
 		);
 
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();

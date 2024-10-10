@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils\Connection;
 
-use DatabaseBase;
 use SMW\Services\ServicesFactory;
 use SMW\Connection\ConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
@@ -23,7 +22,7 @@ class TestDatabaseConnectionProvider implements ConnectionProvider {
 	 *
 	 * @param int $id
 	 */
-	public function __construct( $id = DB_MASTER ) {
+	public function __construct( $id = DB_PRIMARY ) {
 		$this->id = $id;
 	}
 

@@ -124,7 +124,7 @@ class Profile {
 		$compartmentIterator = $schemaList->newCompartmentIteratorByKey( 'profiles' );
 
 		if ( $this->profileName === '' ) {
-			$this->profileName = str_replace( '_profile', '', $schemaList->get( 'default_profile', 'default' ) );
+			$this->profileName = str_replace( '_profile', '', $schemaList->get( 'default_profile', 'default' ) ?? '' );
 		}
 
 		foreach ( $compartmentIterator as $profiles ) {

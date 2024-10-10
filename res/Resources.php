@@ -923,12 +923,12 @@ return [
 	'onoi.dataTables' => $moduleTemplate + [
 		'styles' => [
 			'onoi/jquery.dataTables/dataTables.searchHighlight.css',
-			'onoi/jquery.dataTables/jquery.dataTables.css'
+			'onoi/jquery.dataTables/datatables.min.css'
 		],
 		'scripts' => [
 			'onoi/jquery.highlight/jquery.highlight.js',
 			'onoi/jquery.dataTables/dataTables.searchHighlight.js',
-			'onoi/jquery.dataTables/jquery.dataTables.min.js',
+			'onoi/jquery.dataTables/datatables.min.js',
 			'onoi/jquery.dataTables/dataTables.search.js'
 		],
 		'targets' => [

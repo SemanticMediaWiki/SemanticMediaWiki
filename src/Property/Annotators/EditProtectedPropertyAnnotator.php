@@ -3,6 +3,7 @@
 namespace SMW\Property\Annotators;
 
 use Html;
+use MediaWiki\MediaWikiServices;
 use ParserOutput;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\Message;
@@ -118,7 +119,8 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 			return false;
 		}
 
-		$restrictions = array_flip( $this->title->getRestrictions( 'edit' ) );
+		$restrictionStore = MediaWikiServices::getInstance()->getRestrictionStore();
+		$restrictions = array_flip( $restrictionStore->getRestrictions( $this->title, 'edit' ) );
 
 		// There could by any edit protections but the `Is edit protected` is
 		// bound to the `smwgEditProtectionRight` setting

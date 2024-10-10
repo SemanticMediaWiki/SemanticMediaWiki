@@ -2,12 +2,12 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
-use DatabaseBase;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
 use RuntimeException;
 use SMW\SQLStore\TableBuilder as TableBuilderInterface;
 use SMW\Utils\CliMsgFormatter;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -18,7 +18,7 @@ use SMW\Utils\CliMsgFormatter;
 abstract class TableBuilder implements TableBuilderInterface, MessageReporterAware, MessageReporter {
 
 	/**
-	 * @var DatabaseBase
+	 * @var IDatabase
 	 */
 	protected $connection;
 
@@ -42,7 +42,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	/**
 	 * @since 2.5
 	 *
-	 * @param DatabaseBase $connection
+	 * @param IDatabase $connection
 	 */
 	protected function __construct( $connection ) {
 		$this->connection = $connection;
@@ -51,16 +51,13 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	/**
 	 * @since 2.5
 	 *
-	 * @param DatabaseBase $connection
+	 * @param IDatabase $connection
 	 *
 	 * @return TableBuilder
 	 * @throws RuntimeException
 	 */
 	public static function factory( $connection ) {
-		if (
-			!$connection instanceof \Wikimedia\Rdbms\IDatabase &&
-			!$connection instanceof \IDatabase &&
-			!$connection instanceof \DatabaseBase ) {
+		if ( !$connection instanceof IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
 
@@ -148,7 +145,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 
 		$this->reportMessage( "Checking table $tableName ...\n" );
 
-		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
+		if ( $this->connection->tableExists( $tableName, __METHOD__ ) === false ) { // create new table
 			$this->reportMessage( "   Table not found, now creating...\n" );
 			$this->doCreateTable( $tableName, $attributes );
 		} else {
@@ -188,7 +185,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 
 		$this->droppedTables[$tableName] = true;
 
-		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
+		if ( $this->connection->tableExists( $tableName, __METHOD__ ) === false ) { // create new table
 			return $this->reportMessage(
 				$cliMsgFormatter->twoCols( "... $tableName (not found) ...", 'SKIPPED', 3 )
 			);

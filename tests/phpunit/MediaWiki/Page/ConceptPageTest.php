@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\MediaWiki\Tests\Page;
+namespace SMW\Tests\MediaWiki\Page;
 
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Page\ConceptPage;

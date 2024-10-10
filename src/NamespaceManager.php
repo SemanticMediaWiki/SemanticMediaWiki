@@ -119,9 +119,7 @@ class NamespaceManager {
 			SMW_NS_CONCEPT       => 'Concept',
 			SMW_NS_CONCEPT_TALK  => 'Concept_talk',
 			SMW_NS_SCHEMA        => 'smw/schema',
-			SMW_NS_SCHEMA_TALK   => 'smw/schema_talk',
-			SMW_NS_RULE          => 'Rule',
-			SMW_NS_RULE_TALK     => 'Rule_talk'
+			SMW_NS_SCHEMA_TALK   => 'smw/schema_talk'
 		];
 
 		return $canonicalNames;
@@ -155,9 +153,6 @@ class NamespaceManager {
 
 			'SMW_NS_SCHEMA'        => $offset + 12,
 			'SMW_NS_SCHEMA_TALK'   => $offset + 13,
-
-			'SMW_NS_RULE'          => $offset + 14,
-			'SMW_NS_RULE_TALK'     => $offset + 15,
 		];
 
 		return $namespaceIndex;

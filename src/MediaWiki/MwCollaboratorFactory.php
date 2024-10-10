@@ -118,15 +118,16 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.1
 	 *
+	 * @param int $connectionType
+	 * @param bool $asConnectionRef Deprecated parameter since 5.0
+	 *
+	 * @note The parameter $asConnectionRef is deprecated since 5.0
+	 *
 	 * @return LoadBalancerConnectionProvider
 	 */
 	public function newLoadBalancerConnectionProvider( $connectionType, $asConnectionRef = true ) {
 		$loadBalancerConnectionProvider = new LoadBalancerConnectionProvider(
 			$connectionType
-		);
-
-		$loadBalancerConnectionProvider->asConnectionRef(
-			$asConnectionRef
 		);
 
 		return $loadBalancerConnectionProvider;

@@ -203,13 +203,13 @@ final class Setup {
 		$connectionManager = $applicationFactory->getConnectionManager();
 
 		$connectionManager->registerConnectionProvider(
-			DB_MASTER,
-			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_MASTER )
+			DB_PRIMARY,
+			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_PRIMARY )
 		);
 
 		$connectionManager->registerConnectionProvider(
 			DB_REPLICA,
-			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_REPLICA, false )
+			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_REPLICA )
 		);
 
 		$connectionManager->registerConnectionProvider(

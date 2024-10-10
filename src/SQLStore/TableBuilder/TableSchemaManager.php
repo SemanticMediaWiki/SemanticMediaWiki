@@ -170,7 +170,7 @@ class TableSchemaManager {
 	}
 
 	private function newEntityIdTable() {
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// ID_TABLE
 		$table = new Table( SQLStore::ID_TABLE );

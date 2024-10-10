@@ -68,7 +68,7 @@ class ConnectionProvider implements IConnectionProvider {
 		// Default configuration
 		$conf = [
 			'read'  => DB_REPLICA,
-			'write' => DB_MASTER
+			'write' => DB_PRIMARY
 		];
 
 		if ( isset( $this->localConnectionConf[$this->provider] ) ) {
@@ -114,8 +114,8 @@ class ConnectionProvider implements IConnectionProvider {
 				'role' => 'developer',
 				'provider' => $this->provider,
 				'conf' => [
-					'read'  => $conf['read'] === DB_REPLICA ? 'DB_REPLICA' : 'DB_MASTER',
-					'write' => $conf['write'] === DB_REPLICA ? 'DB_REPLICA' : 'DB_MASTER',
+					'read'  => $conf['read'] === DB_REPLICA ? 'DB_REPLICA' : 'DB_PRIMARY',
+					'write' => $conf['write'] === DB_REPLICA ? 'DB_REPLICA' : 'DB_PRIMARY',
 				]
 			]
 		);
