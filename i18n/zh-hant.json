@@ -485,7 +485,6 @@
 	"smw-admin-supplementary-operational-table-statistics-legend-general": "* <code>total_row_count</code> 為在表格裡的列總數",
 	"smw-admin-supplementary-operational-table-statistics-legend-id-table": "* <code>last_id</code> 目前使用的最新 ID\n* <code>duplicate_count</code> 在 the id_table 找到的重複項數目（可另外參考[[Special:SemanticMediaWiki/duplicate-lookup|重複單元查找]]）\n* <code>rows.rev_count</code> 指示出直接的 wiki 頁面連結，有分配到 revision_id 的列數\n* <code>rows.smw_namespace_group_by_count</code> 在表格裡有使用到的命名空間合計數目\n* <code>rows.smw_proptable_hash.query_match_count</code> 帶有對應表格參照的子物件查詢數目\n* <code>rows.smw_proptable_hash.query_null_count</code> 不帶有表格參照（未連結、浮動參考）的子物件查詢數目",
 	"smw-admin-supplementary-operational-table-statistics-legend-blob-table": "* <code>unique_terms_occurrence_in_percent</code> 唯一項目的百分率（較低的百分率代表著重複的項目佔據著表格內容與索引）\n* <code>rows.terms_occurrence.single_occurrence_total_count</code> 僅出現一次項目的數目\n* <code>rows.terms_occurrence.multi_occurrence_total_count</code> 出現一次以上項目的數目",
-	"smw-admin-supplementary-elastic-title": "Elasticsearch",
 	"smw-admin-supplementary-elastic-version-info": "版本",
 	"smw-admin-supplementary-elastic-section-subtitle": "Elasticsearch",
 	"smw-admin-supplementary-elastic-intro": "<u>$1</u>顯示詳細設定與索引統計",
