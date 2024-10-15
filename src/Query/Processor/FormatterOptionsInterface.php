@@ -5,7 +5,9 @@ namespace SMW\Query\Processor;
 use InvalidArgumentException;
 
 /**
- * @private
+ * The interface is used as custom options formatter used in ask queries
+ * Custom created formatter like MainImage or Link formatter implement 
+ * this interface and use its functions for formating params
  *
  * @license GNU GPL v2+
  * @since 3.0

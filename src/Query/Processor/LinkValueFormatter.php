@@ -3,7 +3,10 @@
 namespace SMW\Query\Processor;
 
 /**
- * @private
+ * The class supports formatter option in ask queries 
+ * set link to none, example ?Main Image=|+link=
+ * The class implements FormatterOptionsInterface which holds the 
+ * functions for adding print requests and handling parameters
  *
  * @license GNU GPL v2+
  * @since 3.0

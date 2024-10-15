@@ -3,7 +3,11 @@
 namespace SMW\Query\Processor;
 
 /**
- * @private
+ * The class supports Main Image formatter option in ask queries 
+ * image size ?Main Image=|+30px
+ * The class implements FormatterOptionsInterface which holds the 
+ * functions for adding print requests and handling parameters
+ * 
  *
  * @license GNU GPL v2+
  * @since 3.0
