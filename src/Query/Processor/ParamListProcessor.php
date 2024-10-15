@@ -125,7 +125,7 @@ class ParamListProcessor {
 			} elseif ( $param[0] == '+') {
 				$labelPreviousPrintout = $serialization['printouts'][$previousPrintout]['label'];
 				// check if picture size is a part of ask query
-				if ( $labelPreviousPrintout === 'Main Image=' && str_contains( $param,'px' )) {
+				if ( str_contains( $labelPreviousPrintout,'Main Image' ) && str_contains( $param,'px' )) {
 					$result = $imageFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
 					$serialization = $result['serialization'];
 				} else if ( str_contains($labelPreviousPrintout, 'Main Image' ) && str_contains( $param,'link' ) ) {

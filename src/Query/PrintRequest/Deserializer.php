@@ -200,7 +200,7 @@ class Deserializer {
 		$outputFormat = isset( $propparts[1] ) ? trim( $propparts[1] ) : false;
 
 		if ( str_contains($outputFormat, 'link') ) {
-			$outputFormat .= '=';
+			$outputFormat = str_replace( 'link', 'link=', $outputFormat );
 		}
 
 		return [ $parts, $outputFormat, Localizer::getInstance()->normalizeTitleText( $printRequestLabel ) ];
