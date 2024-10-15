@@ -126,7 +126,12 @@ class Deserializer {
 
 		// label found, use this instead of default
 		if ( count( $parts ) > 1 ) {
-			$label = trim( $parts[1] );
+			if ( str_contains($parts[0], 'Main Image') ) {
+				$label = $data->getWikiValue();
+			} else{
+				$label = trim( $parts[1] );
+			}
+			
 		}
 
 		if ( $printmode === PrintRequest::PRINT_THIS ) {
@@ -165,6 +170,14 @@ class Deserializer {
 	}
 
 	private static function getPartsFromText( $text ) {
+
+		$count = substr_count($text, '=');
+
+		// check this part for the query as |+30px|+link=|+class=unsortable
+		if ( $count > 1 ) {
+			$parts = explode( '=', $text, 2 );
+		}
+
 		// #1464
 		// Temporary encode "=" within a <> entity (<span>...</span>)
 		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", function ( $matches ) {
@@ -185,6 +198,10 @@ class Deserializer {
 		$propparts = explode( '#', $parts[0], 2 );
 		$printRequestLabel = trim( $propparts[0] );
 		$outputFormat = isset( $propparts[1] ) ? trim( $propparts[1] ) : false;
+
+		if ( str_contains($outputFormat, 'link') ) {
+			$outputFormat .= '=';
+		}
 
 		return [ $parts, $outputFormat, Localizer::getInstance()->normalizeTitleText( $printRequestLabel ) ];
 	}
