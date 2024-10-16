@@ -121,8 +121,26 @@ class TableResultPrinter extends ResultPrinter {
 			$isPlain = $this->mShowHeaders == SMW_HEADERS_PLAIN;
 			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
 				$attributes = [];
+				$parameters = [];
 				$columnClass = str_replace( [ ' ', '_' ], '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
-				$attributes['class'] = $columnClass;
+				// check output format and add param to format table header
+				$outputFormat = $pr->getOutputFormat();
+				if ( isset( $outputFormat ) ) {
+					if ( str_contains( $outputFormat, ';' ) ) {
+						$parts = explode( ';', $outputFormat );
+						foreach ( $parts as $part ) {
+							if ( str_contains( $part, 'class=' ) ) {
+								$headerFormatSplitted = explode( '=', $part ); 
+								$attributes['class'] = $headerFormatSplitted[1];
+							}
+						}
+					} elseif ( str_contains($outputFormat, 'class=') ) {
+						$parts = explode( '=', $outputFormat );
+						$attributes['class'] = $parts[1];
+					}
+				} else {
+					$attributes['class'] = $columnClass;
+				}
 				// Also add this to the array of classes, for
 				// use in displaying each row.
 				$columnClasses[] = $columnClass;
