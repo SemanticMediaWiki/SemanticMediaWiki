@@ -126,16 +126,10 @@ class Deserializer {
 
 		// label found, use this instead of default
 		if ( count( $parts ) > 1 ) {
-			if ( str_contains($parts[0], 'Main Image') ) {
-				$label = $data->getWikiValue();
-			} else{
 				$label = trim( $parts[1] );
-			}
-			
 		}
 
 		if ( $printmode === PrintRequest::PRINT_THIS ) {
-
 			// Cover the case of `?#Test=#-`
 			if ( strrpos( $label, '#' ) !== false ) {
 				list( $label, $outputFormat ) = explode( '#', $label );
@@ -170,14 +164,6 @@ class Deserializer {
 	}
 
 	private static function getPartsFromText( $text ) {
-
-		$count = substr_count($text, '=');
-
-		// check this part for the query as |+30px|+link=|+class=unsortable
-		if ( $count > 1 ) {
-			$parts = explode( '=', $text, 2 );
-		}
-
 		// #1464
 		// Temporary encode "=" within a <> entity (<span>...</span>)
 		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", function ( $matches ) {
@@ -187,11 +173,15 @@ class Deserializer {
 		}, $text );
 
 		$parts = explode( '=', $text, 2 );
-
+		$splittedParts = [];
 		// Restore temporary encoding
 		$parts[0] = str_replace( [ '-3D' ], [ '=' ], $parts[0] );
 
 		if ( isset( $parts[1] ) ) {
+			if (str_contains($parts[1], '#')) {
+				$splittedParts = explode( '#', $parts[1], 2 );
+				$parts[0] = $parts[0] . ' ' . '#' . $splittedParts[1];
+			}
 			$parts[1] = str_replace( [ '-3D' ], [ '=' ], $parts[1] );
 		}
 
@@ -201,6 +191,15 @@ class Deserializer {
 
 		if ( str_contains($outputFormat, 'link') ) {
 			$outputFormat = str_replace( 'link', 'link=', $outputFormat );
+		} 
+		if ( str_contains( $outputFormat, 'class' ) ) {
+			$outputFormat = str_replace( 'class', 'class=', $outputFormat );
+		}
+		if ( str_contains( $parts[0], '#' ) ) {
+			$parts[0] = preg_replace( "/#\w+/", "", $parts[0] );
+		}
+		if ( str_contains( $parts[1], '#' ) ) {
+			$parts[1] = preg_replace( "/#\w+/", "", $parts[1] );
 		}
 
 		return [ $parts, $outputFormat, Localizer::getInstance()->normalizeTitleText( $printRequestLabel ) ];
