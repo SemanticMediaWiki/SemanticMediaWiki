@@ -5,6 +5,7 @@ namespace SMW\Query\Processor;
 use SMW\Query\PrintRequestFactory;
 use SMW\Query\Processor\SizeFormatterOption;
 use SMW\Query\Processor\LinkFormatterOption;
+use SMW\Query\Processor\TableHeaderFormatterOption;
 
 /**
  * @private
@@ -112,17 +113,23 @@ class ParamListProcessor {
 				$this->addThisPrintRequest( $name, $param, $previousPrintout, $serialization );
 			} elseif ( $param[0] == '?' ) {
 				$this->addPrintRequest( $name, $param, $previousPrintout, $serialization );
-			} elseif ( str_contains($param, '+width=') || str_contains($param, '+height=')) {
+			} elseif ( str_contains( $param, '+width=' ) || str_contains( $param, '+height=' ) ) {
 				// Create an instance of SizeFormatterOption
 				$sizeFormatter = new SizeFormatterOption();
 				$result = $sizeFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
-				$serialization = $result['serialization'];
-			} elseif( str_contains($param, '+link=') ) {
+				$serialization = $result[ 'serialization' ];
+			} elseif ( str_contains( $param, '+link=' ) ) {
 				// Create an instance of SizeFormatterOption
 				$linkFormatter = new LinkFormatterOption();
 				$result = $linkFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
-				$serialization = $result['serialization'];
-				$labelPreviousPrintout = $serialization['printouts'][$previousPrintout]['label'];
+				$serialization = $result[ 'serialization' ];
+				$labelPreviousPrintout = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
+			} elseif ( str_contains( $param, '+thclass=' ) ) {
+				// Create an instance of TableHeaderFormatterOption
+				$headerFormatter = new TableHeaderFormatterOption();
+				$result = $headerFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
+				$serialization = $result[ 'serialization' ];
+				$labelPreviousPrintout = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
 			} else {
 				$this->addOtherParameters( $name, $param, $serialization, $showMode );
 			}
