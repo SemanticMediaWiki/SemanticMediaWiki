@@ -384,7 +384,6 @@
 	"smw-admin-supplementary-duplookup-docu": "Esta páxina lista entradas que foron categorizadas como duplicadas na [https://www.semantic-mediawiki.org/wiki/Help:Entity_table táboa de entidades]. As entradas duplicadas só deberían ocurrir (como moito) en raras ocasións potencialmente causadas por un proceso terminado durante unha actualización da base de datos ou unha transacción de reversión non concluída.",
 	"smw-admin-supplementary-operational-statistics-cache-title": "Estatísticas da caché",
 	"smw-admin-supplementary-operational-statistics-cache-intro": "<u>$1</u> amosa estatísticas relacionadas coa caché",
-	"smw-admin-supplementary-elastic-title": "Elasticsearch",
 	"smw-admin-supplementary-elastic-intro": "<u>$1</u> informa sobre configuración e estatísticas de indexación",
 	"smw-admin-supplementary-elastic-functions": "Funcións soportadas",
 	"smw-admin-supplementary-elastic-settings-title": "Configuración (índices)",

@@ -463,7 +463,6 @@
 	"smw-admin-supplementary-operational-table-statistics-legend-general": "* <code>total_row_count</code> – המספר הכולל של שורות בטבלה",
 	"smw-admin-supplementary-operational-table-statistics-legend-id-table": "* <code>last_id</code> המזהה אחרון שבשימוש כרגע\n* <code>duplicate_count</code> מספר הכפולים שנמצאו ב־id_table (ר' גם [[Special:SemanticMediaWiki/duplicate-lookup|חיפוש ישויות כפולות]])\n* <code>rows.rev_count</code> מספר השורות שמושם להן revision_id שמציין קישור ישיר לדף ויקי\n* <code>rows.smw_namespace_group_by_count</code> מספרים של שורות מצטברות עבור מרחבי שמות המשמשים בטבלה\n* <code>rows.smw_proptable_hash.query_match_count</code> מספר עצמי־המשנה של שאילתות עם הפניה תואמת לטבלה\n* <code>rows.smw_proptable_hash.query_null_count</code> מספר עצמי־המשנה של שאילתות ללא הפניה לטבלה (לא מקושר, הפניה צפה)",
 	"smw-admin-supplementary-operational-table-statistics-legend-blob-table": "* <code>unique_terms_occurrence_in_percent</code> אחוז המונחים הייחודיים (שיעור אחוז נמוך מצביע על כך שמונחים שחוזרים על עצמם תופסים את תוכן הטבלה ואת המפתח)\n* <code>rows.terms_occurrence.single_occurrence_total_count</code> מספר מונחים המופיעים פעם אחת בלבד\n* <code>rows.terms_occurrence.multi_occurrence_total_count</code> מספר מונחים המופיעים יותר מפעם אחת",
-	"smw-admin-supplementary-elastic-title": "חיפוש גמיש (Elasticsearch)",
 	"smw-admin-supplementary-elastic-version-info": "גרסה",
 	"smw-admin-supplementary-elastic-section-subtitle": "Elasticsearch",
 	"smw-admin-supplementary-elastic-intro": "<u>$1</u> – מציג פרטים על הגדרות וסטטיסטיקות של מפתוח",
