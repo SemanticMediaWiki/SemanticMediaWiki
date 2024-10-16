@@ -3,8 +3,8 @@
 namespace SMW\Query\Processor;
 
 use SMW\Query\PrintRequestFactory;
-use SMW\Query\Processor\MainImageValueFormatter;
-use SMW\Query\Processor\LinkValueFormatter;
+use SMW\Query\Processor\SizeFormatterOption;
+use SMW\Query\Processor\LinkFormatterOption;
 
 /**
  * @private
@@ -107,34 +107,22 @@ class ParamListProcessor {
 			// |mainlabel=-
 			$isMainlabel = false;
 
-			// Create an instance of MainImageValueFormatter
-			$imageFormatter = new MainImageValueFormatter();
-
 			if ( $param === '' ) {
 			} elseif ( $isMainlabel ) {
 				$this->addThisPrintRequest( $name, $param, $previousPrintout, $serialization );
 			} elseif ( $param[0] == '?' ) {
-				if ( $param === '?Main Image=' ) {
-					// Pass the arguments to MainImageValueFormatter for custom handling
-					$result = $imageFormatter->addPrintRequest( $name, $param, $previousPrintout, $serialization );
-					$serialization = $result['serialization'];
-					$previousPrintout = $result['previousPrintout'];
-				} else {
-					$this->addPrintRequest( $name, $param, $previousPrintout, $serialization );
-				}
-			} elseif ( $param[0] == '+') {
+				$this->addPrintRequest( $name, $param, $previousPrintout, $serialization );
+			} elseif ( str_contains($param, '+width=') || str_contains($param, '+height=')) {
+				// Create an instance of SizeFormatterOption
+				$sizeFormatter = new SizeFormatterOption();
+				$result = $sizeFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
+				$serialization = $result['serialization'];
+			} elseif( str_contains($param, '+link=') ) {
+				// Create an instance of SizeFormatterOption
+				$linkFormatter = new LinkFormatterOption();
+				$result = $linkFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
+				$serialization = $result['serialization'];
 				$labelPreviousPrintout = $serialization['printouts'][$previousPrintout]['label'];
-				// check if picture size is a part of ask query
-				if ( str_contains( $labelPreviousPrintout,'Main Image' ) && str_contains( $param,'px' )) {
-					$result = $imageFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
-					$serialization = $result['serialization'];
-				} else if ( str_contains($labelPreviousPrintout, 'Main Image' ) && str_contains( $param,'link' ) ) {
-					// Create an instance of LinkValueFormatter
-					$noLinkFormatter = new LinkValueFormatter();
-					$result = $noLinkFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
-					$serialization = $result['serialization'];
-					$labelPreviousPrintout = $serialization['printouts'][$previousPrintout]['label'];
-				}
 			} else {
 				$this->addOtherParameters( $name, $param, $serialization, $showMode );
 			}

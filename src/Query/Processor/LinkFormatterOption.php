@@ -4,7 +4,7 @@ namespace SMW\Query\Processor;
 
 /**
  * The class supports formatter option in ask queries 
- * set link to none, example ?Main Image=|+link=
+ * to set link, example ?Main Image=|+link=
  * The class implements FormatterOptionsInterface which holds the 
  * functions for adding print requests and handling parameters
  *
@@ -13,7 +13,7 @@ namespace SMW\Query\Processor;
  *
  * @author milic
  */
-class LinkValueFormatter implements FormatterOptionsInterface {
+class LinkFormatterOption implements FormatterOptionsInterface {
 
     /**
 	 * Format type
@@ -28,17 +28,6 @@ class LinkValueFormatter implements FormatterOptionsInterface {
 
     public function addPrintRequest( $name, $param, $previousPrintout, $serialization ) {}
 
-	 /**
-     * Add a print request to the image formatter options.
-     *
-     * @param string $name The name of the print request.
-     * @param mixed $param Additional parameters for the request.
-     * @param mixed $previousPrintout Data from previous printouts.
-     * @param mixed $serialization Information for serialization.
-     *
-     * @return array The updated serialization array.
-     * @throws InvalidArgumentException if arguments are invalid.
-     */
     public function addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization ) {
         if ( $previousPrintout === null ) {
 			return;
@@ -51,6 +40,7 @@ class LinkValueFormatter implements FormatterOptionsInterface {
 
 			if (strpos($label,'#')) {
 				$labelToSave = $label . ';' . $param;
+				$labelToSave = str_replace( '=', '', $labelToSave );
 			} else {
 				$labelToSave = $label . ' ' . '#' . $param;
 				$labelToSave = str_replace( '=', '', $labelToSave );
