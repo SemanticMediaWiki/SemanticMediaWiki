@@ -3,8 +3,7 @@
 namespace SMW\Query\Processor;
 
 /**
- * The class supports formatter option in ask queries 
- * to set link, example ?Main Image=|+link=
+ * The class supports formatter option to format table headers
  * The class implements FormatterOptionsInterface which holds the 
  * functions for adding print requests and handling parameters
  *
@@ -13,7 +12,7 @@ namespace SMW\Query\Processor;
  *
  * @author milic
  */
-class LinkFormatterOption implements FormatterOptionsInterface {
+class TableHeaderFormatterOption implements FormatterOptionsInterface {
 
     /**
 	 * Format type
@@ -34,16 +33,23 @@ class LinkFormatterOption implements FormatterOptionsInterface {
 		}
 
 		$param = substr( $param, 1 );
+		$param = str_replace( 'thclass=', 'class', $param );
 		
 		if ( isset( $param ) ) {
 			$label = $serialization['printouts'][$previousPrintout]['label'];
+			$label = preg_replace('/=$/', '', $label);
+			$labelParts = explode('=', $label);
 
 			if (strpos($label,'#')) {
 				$labelToSave = $label . ';' . $param;
 				$labelToSave = str_replace( '=', '', $labelToSave );
 			} else {
-				$labelToSave = $label . ' ' . '#' . $param;
-				$labelToSave = str_replace( '=', '', $labelToSave );
+				if (count( $labelParts ) > 1) {
+					$labelToSave = $label . ' ' . '#' . $param;
+				} else {
+					$labelToSave = $label . ' ' . '#' . $param;
+					$labelToSave = str_replace( '=', '', $labelToSave );
+				}	
 			}
 
 			$serialization['printouts'][$previousPrintout] = [
