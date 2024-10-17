@@ -119,7 +119,7 @@ class ParamListProcessor {
 				$result = $sizeFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
 				$serialization = $result[ 'serialization' ];
 			} elseif ( str_contains( $param, '+link=' ) ) {
-				// Create an instance of SizeFormatterOption
+				// Create an instance of LinkFormatterOption
 				$linkFormatter = new LinkFormatterOption();
 				$result = $linkFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
 				$serialization = $result[ 'serialization' ];
