@@ -437,7 +437,7 @@ class HtmlFormRenderer {
 
 			$resultCount = $instance->getMessageBuilder()
 				->getMessage( 'showingresults' )
-				->numParams( $messageCount, $offset + 1 )
+				->numParams( $messageCount, (int) $offset + 1 )
 				->parse();
 
 			$paging = $instance->getMessageBuilder()->prevNextToText(

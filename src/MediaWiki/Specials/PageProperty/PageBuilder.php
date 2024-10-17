@@ -85,7 +85,7 @@ class PageBuilder {
 			return Message::get( 'smw_result_noresults', Message::TEXT, Message::USER_LANGUAGE );
 		}
 
-		$limit = $this->options->get( 'limit' );
+		$limit = (int) $this->options->get( 'limit' );
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		$propertyValue = $dataValueFactory->newPropertyValueByLabel(
@@ -147,8 +147,8 @@ class PageBuilder {
 			->withFieldset()
 			->addParagraph( Message::get( 'smw_pp_docu', Message::TEXT, Message::USER_LANGUAGE ) )
 			->addPaging(
-				$this->options->safeGet( 'limit', 20 ),
-				$this->options->safeGet( 'offset', 0 ),
+				(int) $this->options->safeGet( 'limit', 20 ),
+				(int) $this->options->safeGet( 'offset', 0 ),
 				$count )
 			->addHorizontalRule()
 			->openElement( 'div', [ 'class' => 'smw-special-pageproperty-input' ] )
