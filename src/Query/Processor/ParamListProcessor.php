@@ -102,9 +102,9 @@ class ParamListProcessor {
 			// added in isolation !!??!!
 			// $isMainlabel = strpos( $param, 'mainlabel=' ) !== false;
 
-			// mainlable=Foo |+with=200 ... is currently not support
+			// mainlable=Foo=|+width=40px - is now suportable
 			// use
-			// |?=Foo |+width=200 ...
+			// |?=Foo=|+width=40px|+link= ...
 			// |mainlabel=-
 			$isMainlabel = false;
 
