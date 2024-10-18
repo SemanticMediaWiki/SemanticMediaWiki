@@ -288,6 +288,29 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		yield [
 			[ 	'[[Foo::Bar]]', 
+				'?Foobar',
+				'+link=', 
+				'+height=50px',
+				'+thclass=unsortable' 
+			],
+			false,
+			[
+				'showMode'   => false,
+				'templateArgs' => false,
+				'query'      => '[[Foo::Bar]]',
+				'printouts'  => [
+					'0bfab051cd82c364058617af13e9874a' => [
+						'label'   => "Foobar #x50px;link;classunsortable",
+						'params'  => []
+					]
+				],
+				'parameters' => [],
+				'this'       => []
+			]
+		];
+
+		yield [
+			[ 	'[[Foo::Bar]]', 
 				'?Foobar', 
 				'+link=', 
 				'+height=100px',
