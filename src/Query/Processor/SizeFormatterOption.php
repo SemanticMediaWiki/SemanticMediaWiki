@@ -4,7 +4,7 @@ namespace SMW\Query\Processor;
 
 /**
  * The class supports size formatter option in ask queries 
- * example ?Main Image=|width=+30px
+ * example ?Main Image=|width=+30px or ?Main Image=|height=+30px
  * The class implements FormatterOptionsInterface which holds the 
  * functions for adding print requests and handling parameters
  * 
@@ -34,33 +34,50 @@ class SizeFormatterOption implements FormatterOptionsInterface {
 		}
 
 		$param = substr( $param, 1 );
+        $params = explode( '=', $param );
+        $sizeValue = $serialization[ 'parameters' ][ $previousPrintout ][ $params[0] ];
 
         if ( isset( $param ) ) {
-            $label = $serialization['printouts'][$previousPrintout]['label'];
+            $label = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
 
-            if (strpos($label,'#')) {
+            if ( strpos( $label,'#' ) ) {
                 $labelToSave = $label . ';' . $param;
-                if (str_contains($labelToSave, 'width=')) {
-                    $labelToSave = str_replace('width=', '', $labelToSave);
-                } elseif ( str_contains($labelToSave, 'height=') ) {
-                    $labelToSave = str_replace('height=', '', $labelToSave);
+                if (str_contains( $labelToSave, 'width=' ) ) {
+                    if ( isset( $sizeValue ) ) {
+                        $adjustWidthParam = rtrim( $param, "px" );
+                        $widthParts = explode( '=', $adjustWidthParam );
+                        $adjustedHeight = explode( '#', $label );
+                        $labelToSave = $adjustedHeight[0] . '' . '#' . $widthParts[1] . '' . $adjustedHeight[1];
+                    }
+                    $labelToSave = str_replace( 'width=', '', $labelToSave );
+                } elseif ( str_contains( $labelToSave, 'height=' ) ) {
+                    if ( isset( $sizeValue ) ) {
+                        $adjustedWidth = rtrim( $label, "px" );
+                        $heightParts = explode( '=', $param );
+                        $labelToSave = $adjustedWidth . '' . 'x' . '' . $heightParts[1];
+                    }
+                    $labelToSave = str_replace( 'height=', 'x', $labelToSave );
                 }
             } else {
                 $labelToSave = $label . ' ' . '#' . $param;
-                if (str_contains($labelToSave, 'width=')) {
-                    $labelToSave = str_replace('width=', '', $labelToSave);
+                if ( str_contains( $labelToSave, 'width=' ) ) {
+                    $labelToSave = str_replace( 'width=', '', $labelToSave );
                     $labelToSave = str_replace( '=', '', $labelToSave );
-                } elseif ( str_contains($labelToSave, 'height=') ) {
-                    $labelToSave = str_replace('height=', '', $labelToSave);
+                } elseif ( str_contains( $labelToSave, 'height=' ) ) {
+                    $labelToSave = str_replace( 'height=', 'x', $labelToSave );
                     $labelToSave = str_replace( '=', '', $labelToSave );
                 } else {
                   $labelToSave = str_replace( '=', '', $labelToSave );
                 }
             }
 
-            $serialization['printouts'][$previousPrintout] = [
+            $serialization[ 'printouts' ][ $previousPrintout ] = [
                 'label' => $labelToSave,
                 'params' => []
+            ];
+            $serialization[ 'parameters' ][ $previousPrintout ] = [
+                'width' => $param,
+                'height' => $param
             ];
         } 
 
