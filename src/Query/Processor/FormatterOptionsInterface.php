@@ -6,8 +6,8 @@ use InvalidArgumentException;
 
 /**
  * The interface is used as custom options formatter used in ask queries
- * Custom created formatter like MainImage or Link formatter implement 
- * this interface and use its functions for formating params
+ * Custom created formatter like SizeFormatterOption or LinkFormatterOption implements 
+ * this interface and use its functions for formating options
  *
  * @license GNU GPL v2+
  * @since 3.0
@@ -19,5 +19,4 @@ interface FormatterOptionsInterface {
     public function addPrintRequest( $name, $param, $previousPrintout, $serialization );
 
     public function addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
-
 }
