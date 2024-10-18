@@ -37,14 +37,14 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 		
 		if ( isset( $param ) ) {
 			$label = $serialization['printouts'][$previousPrintout]['label'];
-			$label = preg_replace('/=$/', '', $label);
-			$labelParts = explode('=', $label);
+			$label = preg_replace( '/=$/', '', $label );
+			$labelParts = explode( '=', $label );
 
-			if (strpos($label,'#')) {
+			if ( strpos( $label,'#' ) ) {
 				$labelToSave = $label . ';' . $param;
 				$labelToSave = str_replace( '=', '', $labelToSave );
 			} else {
-				if (count( $labelParts ) > 1) {
+				if (count( $labelParts ) > 1 ) {
 					$labelToSave = $label . ' ' . '#' . $param;
 				} else {
 					$labelToSave = $label . ' ' . '#' . $param;

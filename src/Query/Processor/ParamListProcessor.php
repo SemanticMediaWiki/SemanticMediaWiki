@@ -82,7 +82,7 @@ class ParamListProcessor {
 		];
 
 		// Call the new method to handle width and height parameters
-		$this->handleWidthHeightParameters($parameters);
+		$this->handleWidthHeightParameters( $parameters );
 
 		foreach ( $parameters as $name => $param ) {
 			// special handling for arrays - this can happen if the
@@ -162,40 +162,40 @@ class ParamListProcessor {
 	 * @param array &$parameters The array of parameters to process. 
 	 *                           This will be modified in place.
 	 */
-	private function handleWidthHeightParameters(array &$parameters) {
+	private function handleWidthHeightParameters( array &$parameters ) {
 		$pendingWidth = null;
 		$pendingHeight = null;
 		$lastFieldIndex = null;
 	
-		foreach ($parameters as $index => &$param) {
+		foreach ( $parameters as $index => &$param ) {
 			// Check for width and height definitions
-			if (strpos($param, '+width=') !== false) {
+			if ( strpos( $param, '+width=' ) !== false ) {
 				$pendingWidth = $param; 
-				unset($parameters[$index]);
-			} elseif (strpos($param, '+height=') !== false) {
+				unset( $parameters[ $index ] );
+			} elseif ( strpos( $param, '+height=' ) !== false ) {
 				$pendingHeight = $param;
-				unset($parameters[$index]);
-			} elseif (strpos($param, '?') === 0) {
+				unset( $parameters[ $index ] );
+			} elseif ( strpos( $param, '?' ) === 0 ) {
 				// For each ?parameter, track its index
 				$lastFieldIndex = $index;
 			}
 	
 			// After processing the ?parameter, append width and height if pending
-			if ($lastFieldIndex !== null && ($pendingWidth || $pendingHeight)) {
-				if ($pendingWidth) {
-					array_splice($parameters, $lastFieldIndex + 1, 0, $pendingWidth);
+			if ( $lastFieldIndex !== null && ( $pendingWidth || $pendingHeight ) ) {
+				if ( $pendingWidth ) {
+					array_splice( $parameters, $lastFieldIndex + 1, 0, $pendingWidth );
 					$pendingWidth = null;
 					$lastFieldIndex++;
 				}
-				if ($pendingHeight) {
-					array_splice($parameters, $lastFieldIndex + 1, 0, $pendingHeight);
+				if ( $pendingHeight ) {
+					array_splice( $parameters, $lastFieldIndex + 1, 0, $pendingHeight );
 					$pendingHeight = null;
 					$lastFieldIndex++;
 				}
 			}
 		}
 		// Re-index the array to reset the keys
-		$parameters = array_values($parameters);
+		$parameters = array_values( $parameters );
 	}
 
 	private function legacy_format( array $paramList ) {
