@@ -189,20 +189,25 @@ class Deserializer {
 		$printRequestLabel = trim( $propparts[0] );
 		$outputFormat = isset( $propparts[1] ) ? trim( $propparts[1] ) : false;
 
-		if ( str_contains($outputFormat, 'link') ) {
-			$outputFormat = str_replace( 'link', 'link=', $outputFormat );
-		} 
-		if ( str_contains( $outputFormat, 'class' ) ) {
-			$outputFormat = str_replace( 'class', 'class=', $outputFormat );
+		if ( isset( $outputFormat ) ) {
+			if ( str_contains($outputFormat, 'link') ) {
+				$outputFormat = str_replace( 'link', 'link=', $outputFormat );
+			} 
+			if ( str_contains( $outputFormat, 'class' ) ) {
+				$outputFormat = str_replace( 'class', 'class=', $outputFormat );
+			}
 		}
-		if ( str_contains( $parts[0], '#' ) ) {
-			$parts[0] = preg_replace( "/#\w+/", "", $parts[0] );
+		if ( isset( $parts[0] ) ) {
+			if ( str_contains( $parts[0], '#' ) ) {
+				$parts[0] = preg_replace( "/#\w+/", "", $parts[0] );
+			}
 		}
-		if ( str_contains( $parts[1], '#' ) ) {
-			$parts[1] = preg_replace( "/#\w+/", "", $parts[1] );
+		if ( isset( $parts[1] ) ) {
+			if ( str_contains( $parts[1], '#' ) ) {
+				$parts[1] = preg_replace( "/#\w+/", "", $parts[1] );
+			}
 		}
-
+	
 		return [ $parts, $outputFormat, Localizer::getInstance()->normalizeTitleText( $printRequestLabel ) ];
 	}
-
 }

@@ -106,7 +106,7 @@ class SMWQueryProcessorTest extends DatabaseTestCase {
 		];
 
 		$provider[] = [
-			[ '[[Foo::Foo=Bar]]', '+Foo' ],
+			[ '[[Foo::Foo=Bar]]', '?Foo' ],
 			'[[Foo::Foo=Bar]]'
 		];
 

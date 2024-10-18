@@ -167,12 +167,12 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		#9, 1464
 		$provider[] = [
-			'Has boolean#<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>=Label on (&#10003;,&#10005;)',
+			'Has boolean#<span style="color: green; font-size: 120%;">&10003;</span>,<span style="color: #AA0000; font-size: 120%;">&10005;</span>=Label on (&10003;,&10005;)',
 			false,
-			'Label on (&#10003;,&#10005;)',
+			'Label on (&10003;,&10005;)',
 			PrintRequest::PRINT_PROP,
 			PropertyValue::class,
-			'<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>'
+			'<span style="color: green; font-size: 120%;">&10003;</span>,<span style="color: #AA0000; font-size: 120%;">&10005;</span>'
 		];
 
 		#10
