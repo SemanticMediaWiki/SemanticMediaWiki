@@ -34,29 +34,21 @@ class SizeFormatterOption implements FormatterOptionsInterface {
 		}
 
 		$param = substr( $param, 1 );
-        $params = explode( '=', $param );
-        $sizeValue = $serialization[ 'parameters' ][ $previousPrintout ][ $params[0] ];
-
+    
         if ( isset( $param ) ) {
             $label = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
 
             if ( strpos( $label,'#' ) ) {
                 $labelToSave = $label . ';' . $param;
                 if (str_contains( $labelToSave, 'width=' ) ) {
-                    if ( isset( $sizeValue ) ) {
-                        $adjustWidthParam = rtrim( $param, "px" );
-                        $widthParts = explode( '=', $adjustWidthParam );
-                        $adjustedHeight = explode( '#', $label );
-                        $labelToSave = $adjustedHeight[0] . '' . '#' . $widthParts[1] . '' . $adjustedHeight[1];
-                    }
-                    $labelToSave = str_replace( 'width=', '', $labelToSave );
+                    $adjustWidthParam = rtrim( $param, "px" );
+                    $widthParts = explode( '=', $adjustWidthParam );
+                    $adjustedHeight = explode( '#', $label );
+                    $labelToSave = $adjustedHeight[0] . '' . '#' . $widthParts[1] . '' . $adjustedHeight[1];
                 } elseif ( str_contains( $labelToSave, 'height=' ) ) {
-                    if ( isset( $sizeValue ) ) {
-                        $adjustedWidth = rtrim( $label, "px" );
-                        $heightParts = explode( '=', $param );
-                        $labelToSave = $adjustedWidth . '' . 'x' . '' . $heightParts[1];
-                    }
-                    $labelToSave = str_replace( 'height=', 'x', $labelToSave );
+                    $adjustedWidth = rtrim( $label, "px" );
+                    $heightParts = explode( '=', $param );
+                    $labelToSave = $adjustedWidth . '' . 'x' . '' . $heightParts[1];
                 }
             } else {
                 $labelToSave = $label . ' ' . '#' . $param;
@@ -74,10 +66,6 @@ class SizeFormatterOption implements FormatterOptionsInterface {
             $serialization[ 'printouts' ][ $previousPrintout ] = [
                 'label' => $labelToSave,
                 'params' => []
-            ];
-            $serialization[ 'parameters' ][ $previousPrintout ] = [
-                'width' => $param,
-                'height' => $param
             ];
         } 
 
