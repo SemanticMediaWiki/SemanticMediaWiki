@@ -81,8 +81,10 @@ class ParamListProcessor {
 			'parameters' => []
 		];
 
-		foreach ( $parameters as $name => $param ) {
+		// Call the new method to handle width and height parameters
+		$this->handleWidthHeightParameters($parameters);
 
+		foreach ( $parameters as $name => $param ) {
 			// special handling for arrays - this can happen if the
 			// parameter came from a checkboxes input in Special:Ask:
 			if ( is_array( $param ) ) {
@@ -102,7 +104,7 @@ class ParamListProcessor {
 			// added in isolation !!??!!
 			// $isMainlabel = strpos( $param, 'mainlabel=' ) !== false;
 
-			// mainlable=Foo=|+width=40px - is now suportable
+			// mainlable=Foo=|+width=40px - is now supportable
 			// use
 			// |?=Foo=|+width=40px|+link= ...
 			// |mainlabel=-
@@ -146,6 +148,54 @@ class ParamListProcessor {
 		}
 
 		return $serialization;
+	}
+
+	/**
+	 * Handles width and height parameters in the given array of parameters.
+	 * It looks for parameters starting with '+width=' and '+height=', 
+	 * temporarily removes them from the array, and appends them 
+	 * after the specific '?' parameter in the array.
+	 *
+	 * This function modifies the input parameters array by reference, 
+	 * so no return value is needed.
+	 *
+	 * @param array &$parameters The array of parameters to process. 
+	 *                           This will be modified in place.
+	 */
+	private function handleWidthHeightParameters(array &$parameters) {
+		$pendingWidth = null;
+		$pendingHeight = null;
+		$lastFieldIndex = null;
+	
+		foreach ($parameters as $index => &$param) {
+			// Check for width and height definitions
+			if (strpos($param, '+width=') !== false) {
+				$pendingWidth = $param; 
+				unset($parameters[$index]);
+			} elseif (strpos($param, '+height=') !== false) {
+				$pendingHeight = $param;
+				unset($parameters[$index]);
+			} elseif (strpos($param, '?') === 0) {
+				// For each ?parameter, track its index
+				$lastFieldIndex = $index;
+			}
+	
+			// After processing the ?parameter, append width and height if pending
+			if ($lastFieldIndex !== null && ($pendingWidth || $pendingHeight)) {
+				if ($pendingWidth) {
+					array_splice($parameters, $lastFieldIndex + 1, 0, $pendingWidth);
+					$pendingWidth = null;
+					$lastFieldIndex++;
+				}
+				if ($pendingHeight) {
+					array_splice($parameters, $lastFieldIndex + 1, 0, $pendingHeight);
+					$pendingHeight = null;
+					$lastFieldIndex++;
+				}
+			}
+		}
+		// Re-index the array to reset the keys
+		$parameters = array_values($parameters);
 	}
 
 	private function legacy_format( array $paramList ) {
