@@ -137,6 +137,8 @@ class ParamListProcessor {
 				$result = $headerFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
 				$serialization = $result[ 'serialization' ];
 				$labelPreviousPrintout = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
+			} elseif ( $param[0] == '+' && ( !str_contains( $param, '+link=') || !str_contains( $param, '+thclass=' ) ) ) {
+				$this->addPrintRequestParameter( $name, $param, $previousPrintout, $serialization ); 
 			} else {
 				$this->addOtherParameters( $name, $param, $serialization, $showMode );
 			}
