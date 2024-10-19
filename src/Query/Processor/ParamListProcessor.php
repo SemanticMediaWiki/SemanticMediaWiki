@@ -83,7 +83,7 @@ class ParamListProcessor {
 
 		// Call the new method to handle width and height parameters
 		foreach ( $parameters as $key => $value ) {
-			if ( str_contains( $value, '+width' ) || str_contains( $value, '+height' ) ) {
+			if ( !is_array( $value ) && (str_contains( $value, '+width' ) || str_contains( $value, '+height' )) ) {
 				$this->handleWidthHeightParameters( $parameters );
 				break;
 			}
