@@ -52,21 +52,23 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 				}	
 			}
 
-			// rebuild the final label before save to be in use for Deserializer getPartsFromText()
-			list( $key, $value ) = explode( '=', $labelToSave, 2 );
+			if ( str_contains( $labelToSave, '=' ) ) {
+				// rebuild the final label before save to be in use for Deserializer getPartsFromText()
+				list( $key, $value ) = explode( '=', $labelToSave, 2 );
 
-			// Check if the value contains a '#'
-			if ( strpos( $value, '#' ) !== false ) {
-				// Split the value by '#'
-				list( $mainValue, $class ) = explode( '#', $value, 2 );
-				
-				// Rebuild the string with the class appended to the key
-				$labelToSave = trim( $key . ' #' . $class . '=' . trim( $mainValue ) );
-			} else {
-				// If there's no '#', just use the original format
-				$labelToSave = trim( $labelToSave );
+				// Check if the value contains a '#'
+				if ( strpos( $value, '#' ) !== false ) {
+					// Split the value by '#'
+					list( $mainValue, $class ) = explode( '#', $value, 2 );
+					
+					// Rebuild the string with the class appended to the key
+					$labelToSave = trim( $key . ' #' . $class . '=' . trim( $mainValue ) );
+				} else {
+					// If there's no '#', just use the original format
+					$labelToSave = trim( $labelToSave );
+				}
 			}
-
+			
 			$serialization['printouts'][$previousPrintout] = [
 				'label' => $labelToSave,
 				'params' => []
