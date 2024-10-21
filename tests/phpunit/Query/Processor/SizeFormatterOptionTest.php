@@ -27,7 +27,9 @@ class SizeFormatterOptionTest extends TestCase {
             'printouts' => [
                 'Main Image' => [
                     'label' => 'Main Image #50px', 
-                    'params' => []
+                    'params' => [
+                        'width' => '50px'
+                    ]
                 ],
             ],
         ];
@@ -47,7 +49,9 @@ class SizeFormatterOptionTest extends TestCase {
             'printouts' => [
                 'Main Image' => [
                     'label' => 'Main Image #x90px', 
-                    'params' => []
+                    'params' => [
+                        'height' => '90px'
+                    ]
                 ],
             ],
         ];
