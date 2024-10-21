@@ -123,18 +123,19 @@ class TableResultPrinter extends ResultPrinter {
 				$attributes = [];
 				$parameters = [];
 				$columnClass = str_replace( [ ' ', '_' ], '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
-				// check output format and add param to format table header
+				// check output format and set header to unsortable 
+				// example outputFormat = 40px;class=unsortable
 				$outputFormat = $pr->getOutputFormat();
-				if ( $outputFormat != false ) {
+				if ( str_contains( $outputFormat, 'unsortable' )  ) {
 					if ( str_contains( $outputFormat, ';' ) ) {
 						$parts = explode( ';', $outputFormat );
 						foreach ( $parts as $part ) {
-							if ( str_contains( $part, 'class=' ) ) {
+							if ( str_contains( $part, 'unsortable' ) ) {
 								$headerFormatSplitted = explode( '=', $part ); 
 								$attributes['class'] = $headerFormatSplitted[1];
 							}
 						}
-					} elseif ( str_contains($outputFormat, 'class=') ) {
+					} elseif ( str_contains( $outputFormat, 'unsortable' ) ) {
 						$parts = explode( '=', $outputFormat );
 						$attributes['class'] = $parts[1];
 					}
