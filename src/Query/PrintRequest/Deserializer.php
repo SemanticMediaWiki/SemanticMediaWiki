@@ -173,42 +173,27 @@ class Deserializer {
 		}, $text );
 
 		$parts = explode( '=', $text, 2 );
-		$splittedParts = [];
-
-		if ( isset( $parts[1] ) ) {
-			// Check if there's a '#' symbol in index[1]
-			if ( str_contains($parts[1], '#') && !str_contains($parts[1], '&#') ) {
-				// Extract everything after the '#' from index[1]
-				$afterHash = substr($parts[1], strpos($parts[1], '#'));
-				
-				// Remove everything after the '#' from index[1]
-				$parts[1] = substr($parts[1], 0, strpos($parts[1], '#'));
-				
-				// Append the extracted part to index[0]
-				$parts[0] .= ' ' . $afterHash;
-			}
-		}
 
 		// Restore temporary encoding
 		$parts[0] = str_replace( [ '-3D' ], [ '=' ], $parts[0] );
 
-		if ( isset( $parts[1] ) ) { 
+		if ( isset( $parts[1] ) ) {
 			$parts[1] = str_replace( [ '-3D' ], [ '=' ], $parts[1] );
 		}
-		
+
 		$propparts = explode( '#', $parts[0], 2 );
 		$printRequestLabel = trim( $propparts[0] );
 		$outputFormat = isset( $propparts[1] ) ? trim( $propparts[1] ) : false;
 
 		if ( isset( $outputFormat ) ) {
-			if ( str_contains($outputFormat, 'link') ) {
-				$outputFormat = str_replace( 'link', 'link=', $outputFormat );
-			} 
-			if ( str_contains( $outputFormat, 'class' ) ) {
-				$outputFormat = str_replace( 'class', 'class=', $outputFormat );
-			}
+		if ( str_contains($outputFormat, 'link') ) {
+			$outputFormat = str_replace( 'link', 'link=', $outputFormat );
+		} 
+		if ( str_contains( $outputFormat, 'class' ) ) {
+			$outputFormat = str_replace( 'class', 'class=', $outputFormat );
 		}
-	
+	}
+
 		return [ $parts, $outputFormat, Localizer::getInstance()->normalizeTitleText( $printRequestLabel ) ];
 	}
 }
