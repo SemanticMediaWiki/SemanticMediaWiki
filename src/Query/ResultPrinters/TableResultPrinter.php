@@ -125,7 +125,7 @@ class TableResultPrinter extends ResultPrinter {
 				$columnClass = str_replace( [ ' ', '_' ], '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
 				// check output format and add param to format table header
 				$outputFormat = $pr->getOutputFormat();
-				if ( isset( $outputFormat ) ) {
+				if ( $outputFormat != false ) {
 					if ( str_contains( $outputFormat, ';' ) ) {
 						$parts = explode( ';', $outputFormat );
 						foreach ( $parts as $part ) {

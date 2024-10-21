@@ -334,5 +334,4 @@ class ParamListProcessor {
 			$serialization['query'] .= $param;
 		}
 	}
-
 }
