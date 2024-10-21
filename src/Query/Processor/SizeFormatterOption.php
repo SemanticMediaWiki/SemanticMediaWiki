@@ -34,6 +34,7 @@ class SizeFormatterOption implements FormatterOptionsInterface {
 		}
 
 		$param = substr( $param, 1 );
+        $parts = explode( '=', $param, 2 );
     
         if ( isset( $param ) ) {
             $label = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
@@ -67,6 +68,12 @@ class SizeFormatterOption implements FormatterOptionsInterface {
                 'label' => $labelToSave,
                 'params' => []
             ];
+
+            if ( count( $parts ) == 2 ) {
+				$serialization['printouts'][$previousPrintout]['params'][trim( $parts[0] )] = $parts[1];
+			} else {
+				$serialization['printouts'][$previousPrintout]['params'][trim( $parts[0] )] = null;
+			}
         } 
 
         return [
