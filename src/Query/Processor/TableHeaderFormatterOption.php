@@ -46,6 +46,9 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 			} else {
 				if (count( $labelParts ) > 1 ) {
 					$labelToSave = $label . ' ' . '#' . $param;
+					if ( str_starts_with( $labelToSave, '=' ) ) {
+						$labelToSave = substr( $labelToSave, 1 );
+					}
 				} else {
 					$labelToSave = $label . ' ' . '#' . $param;
 					$labelToSave = str_replace( '=', '', $labelToSave );

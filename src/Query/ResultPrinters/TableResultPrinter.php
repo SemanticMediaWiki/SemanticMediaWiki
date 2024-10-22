@@ -126,16 +126,16 @@ class TableResultPrinter extends ResultPrinter {
 				// check output format and set header to unsortable 
 				// example outputFormat = 40px;class=unsortable
 				$outputFormat = $pr->getOutputFormat();
-				if ( str_contains( $outputFormat, 'unsortable' )  ) {
+				if ( str_contains( $outputFormat, 'class=' )  ) {
 					if ( str_contains( $outputFormat, ';' ) ) {
 						$parts = explode( ';', $outputFormat );
 						foreach ( $parts as $part ) {
-							if ( str_contains( $part, 'unsortable' ) ) {
+							if ( str_contains( $part, 'class=' ) ) {
 								$headerFormatSplitted = explode( '=', $part ); 
 								$attributes['class'] = $headerFormatSplitted[1];
 							}
 						}
-					} elseif ( str_contains( $outputFormat, 'unsortable' ) ) {
+					} elseif ( str_contains( $outputFormat, 'class=' ) ) {
 						$parts = explode( '=', $outputFormat );
 						$attributes['class'] = $parts[1];
 					}
