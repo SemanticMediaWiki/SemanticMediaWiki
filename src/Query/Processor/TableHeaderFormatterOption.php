@@ -36,6 +36,7 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 		$param = str_replace( 'thclass=', 'class', $param );
 		
 		if ( isset( $param ) ) {
+			// check the previous label, remove and split it by '='
 			$label = $serialization['printouts'][$previousPrintout]['label'];
 			$label = preg_replace( '/=$/', '', $label );
 			$labelParts = explode( '=', $label );

@@ -37,8 +37,10 @@ class SizeFormatterOption implements FormatterOptionsInterface {
         $parts = explode( '=', $param, 2 );
     
         if ( isset( $param ) ) {
+            // fetch the previous label
             $label = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
 
+            // check the label and create final label with correct format
             if ( strpos( $label,'#' ) ) {
                 $labelToSave = $label . ';' . $param;
                 if (str_contains( $labelToSave, 'width=' ) ) {
@@ -64,6 +66,7 @@ class SizeFormatterOption implements FormatterOptionsInterface {
                 }
             }
 
+            // save the label as a part of serialization
             $serialization[ 'printouts' ][ $previousPrintout ] = [
                 'label' => $labelToSave,
                 'params' => []

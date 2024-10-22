@@ -123,7 +123,8 @@ class TableResultPrinter extends ResultPrinter {
 				$attributes = [];
 				$parameters = [];
 				$columnClass = str_replace( [ ' ', '_' ], '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
-				// check output format and set header to unsortable 
+				// check outputFormat for thclass option use
+				// if outputFormat has class defined as an option, take the value which class holds and set it as class attribute
 				// example outputFormat = 40px;class=unsortable
 				$outputFormat = $pr->getOutputFormat();
 				if ( str_contains( $outputFormat, 'class=' )  ) {
