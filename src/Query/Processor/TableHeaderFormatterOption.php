@@ -46,9 +46,6 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 			} else {
 				if (count( $labelParts ) > 1 ) {
 					$labelToSave = $label . ' ' . '#' . $param;
-					if ( str_starts_with( $labelToSave, '=' ) ) {
-						$labelToSave = substr( $labelToSave, 1 );
-					}
 				} else {
 					$labelToSave = $label . ' ' . '#' . $param;
 					$labelToSave = str_replace( '=', '', $labelToSave );
@@ -59,7 +56,7 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 				// rebuild the final label before save to be in use for Deserializer getPartsFromText()
 				list( $key, $value ) = explode( '=', $labelToSave, 2 );
 
-				if ( $key != '' ) {
+				if ( isset( $key ) ) {
 					// Check if the value contains a '#'
 					if ( strpos( $value, '#' ) !== false ) {
 						// Split the value by '#'
