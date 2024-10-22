@@ -5,56 +5,41 @@ namespace SMW\Tests\Query\Processor;
 use PHPUnit\Framework\TestCase;
 use SMW\Query\Processor\SizeFormatterOption;
 
-class SizeFormatterOptionTest extends TestCase {
+class SizeFormatterOptionTest extends TestCase
+{
+    private const MAIN_IMAGE = 'Main Image';
 
     /**
-     * Test the addPrintRequestHandleParams method
+     * @dataProvider sizeParameterProvider
      */
-    public function testAddPrintRequestHandleParams() {
+    public function testAddPrintRequestHandleParams( string $parameter, string $value, string $expectedLabel, array $expectedParams ) {
         $formatter = new SizeFormatterOption();
 
-        // Test case 1: check width
         $serialization = [
             'printouts' => [
-                'Main Image' => [
-                    'label' => 'Main Image'
+                self::MAIN_IMAGE => [
+                    'label' => self::MAIN_IMAGE
                 ],
             ],
         ];
-        $result = $formatter->addPrintRequestHandleParams( 'Main Image', '+width=50px', 'Main Image', $serialization );
 
-        $expectedSerialization = [
-            'printouts' => [
-                'Main Image' => [
-                    'label' => 'Main Image #50px', 
-                    'params' => [
-                        'width' => '50px'
-                    ]
-                ],
-            ],
-        ];
-        $this->assertEquals( $expectedSerialization, $result['serialization'] );
+        $result = $formatter->addPrintRequestHandleParams(
+            self::MAIN_IMAGE,
+            "+{$parameter}={$value}",
+            self::MAIN_IMAGE,
+            $serialization
+        );
 
-        // Test case 2: check height
-        $serialization = [
-            'printouts' => [
-                'Main Image' => [
-                    'label' => 'Main Image'
-                ],
-            ],
-        ];
-        $result = $formatter->addPrintRequestHandleParams( 'Main Image', '+height=90px', 'Main Image', $serialization );
+        $this->assertArrayHasKey( self::MAIN_IMAGE, $result['serialization']['printouts'] );
+        $this->assertEquals( $expectedLabel, $result['serialization']['printouts'][self::MAIN_IMAGE]['label'] );
+        $this->assertEquals( $expectedParams, $result['serialization']['printouts'][self::MAIN_IMAGE]['params'] );
+    }
 
-        $expectedSerialization = [
-            'printouts' => [
-                'Main Image' => [
-                    'label' => 'Main Image #x90px', 
-                    'params' => [
-                        'height' => '90px'
-                    ]
-                ],
-            ],
+    public function sizeParameterProvider(): array
+    {
+        return [
+            'width parameter' => [ 'width', '50px', self::MAIN_IMAGE . ' #50px', ['width' => '50px'] ],
+            'height parameter' => [ 'height', '90px', self::MAIN_IMAGE . ' #x90px', ['height' => '90px'] ],
         ];
-        $this->assertEquals( $expectedSerialization, $result['serialization'] );
     }
 }

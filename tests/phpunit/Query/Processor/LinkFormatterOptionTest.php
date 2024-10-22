@@ -10,7 +10,7 @@ class LinkFormatterOptionTest extends TestCase {
     /**
      * Test the addPrintRequestHandleParams method
      */
-    public function testAddPrintRequestHandleParams() {
+    public function testAddPrintRequestHandleParamsWithHashInLabel() {
         $formatter = new LinkFormatterOption();
 
         // Test case 1: Previous printout exists, with '#' in the label
@@ -32,6 +32,13 @@ class LinkFormatterOptionTest extends TestCase {
             ],
         ];
         $this->assertEquals( $expectedSerialization, $result['serialization'] );
+    }
+    
+    /**
+     * Test the addPrintRequestHandleParams method
+     */
+    public function testAddPrintRequestHandleParamsWithoutHashInLabel() {
+        $formatter = new LinkFormatterOption();
 
         // Test case 2: Previous printout exists, without '#' in the label
         $serialization = [
@@ -52,7 +59,14 @@ class LinkFormatterOptionTest extends TestCase {
             ],
         ];
         $this->assertEquals( $expectedSerialization, $result['serialization'] );
-
+    }
+    
+    /**
+     * Test the addPrintRequestHandleParams method
+     */
+    public function testAddPrintRequestHandleParamsWithMultipleParameters() {
+        $formatter = new LinkFormatterOption();
+        
         // Test case 3: Previous printout exists, without '#' in the label, more then 3 params in query
         $serialization = [
             'printouts' => [
@@ -72,6 +86,5 @@ class LinkFormatterOptionTest extends TestCase {
             ],
         ];
         $this->assertEquals( $expectedSerialization, $result['serialization'] );
-
     }
 }
