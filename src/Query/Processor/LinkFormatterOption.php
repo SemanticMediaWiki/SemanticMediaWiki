@@ -40,9 +40,14 @@ class LinkFormatterOption implements FormatterOptionsInterface {
 			$label = $serialization['printouts'][$previousPrintout]['label'];
 
 			// check the label and create final label with correct format
-			if (strpos($label,'#')) {
-				$labelToSave = $label . ';' . $param;
-				$labelToSave = str_replace( '=', '', $labelToSave );
+			if (str_contains($label,'#')) {
+				if (str_contains($label,'=')) {
+					$parts = explode('=', $label);
+					$labelToSave = $parts[0] . ';' . $param . '' . $parts[1];
+				} else {
+					$labelToSave = $label . ';' . $param;
+					$labelToSave = str_replace( '=', '', $labelToSave );
+				}
 			} else {
 				$labelToSave = $label . ' ' . '#' . $param;
 				$labelToSave = str_replace( '=', '', $labelToSave );

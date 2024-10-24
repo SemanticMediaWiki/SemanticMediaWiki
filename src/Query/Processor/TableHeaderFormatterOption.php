@@ -34,41 +34,22 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 
 		$param = substr( $param, 1 );
 		$param = str_replace( 'thclass=', 'class', $param );
+		$parts = [];
 		
 		if ( isset( $param ) ) {
 			// check the previous label, remove and split it by '='
 			$label = $serialization['printouts'][$previousPrintout]['label'];
-			$label = preg_replace( '/=$/', '', $label );
-			$labelParts = explode( '=', $label );
 
 			if ( strpos( $label,'#' ) ) {
 				$labelToSave = $label . ';' . $param;
 				$labelToSave = str_replace( '=', '', $labelToSave );
 			} else {
-				if (count( $labelParts ) > 1 ) {
-					$labelToSave = $label . ' ' . '#' . $param;
-				} else {
-					$labelToSave = $label . ' ' . '#' . $param;
+				$labelToSave = $label . ' ' . '#' . $param;
+				$parts = explode( '=', $labelToSave );
+				if ( $parts[0] === '' ) {
 					$labelToSave = str_replace( '=', '', $labelToSave );
-				}	
-			}
-
-			if ( str_contains( $labelToSave, '=' ) ) {
-				// rebuild the final label before save to be in use for Deserializer getPartsFromText()
-				list( $key, $value ) = explode( '=', $labelToSave, 2 );
-
-				if ( isset( $key ) ) {
-					// Check if the value contains a '#'
-					if ( strpos( $value, '#' ) !== false ) {
-						// Split the value by '#'
-						list( $mainValue, $class ) = explode( '#', $value, 2 );
-						
-						// Rebuild the string with the class appended to the key
-						$labelToSave = trim( $key . ' #' . $class . '=' . trim( $mainValue ) );
-					} else {
-						// If there's no '#', just use the original format
-						$labelToSave = trim( $labelToSave );
-					}
+				} else {
+					$labelToSave = $parts[0] . '' . $parts[2] . '=' . $parts[1];
 				}
 			}
 			

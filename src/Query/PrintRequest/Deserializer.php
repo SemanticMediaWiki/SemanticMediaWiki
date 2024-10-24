@@ -185,15 +185,11 @@ class Deserializer {
 		$printRequestLabel = trim( $propparts[0] );
 		$outputFormat = isset( $propparts[1] ) ? trim( $propparts[1] ) : false;
 
-		// check if $outputFormat has link or class defined as an options and format it
 		if ( isset( $outputFormat ) ) {
-		if ( str_contains($outputFormat, 'link') ) {
-			$outputFormat = str_replace( 'link', 'link=', $outputFormat );
-		} 
-		if ( str_contains( $outputFormat, 'class' ) ) {
-			$outputFormat = str_replace( 'class', 'class=', $outputFormat );
+			if ( str_contains( $outputFormat, 'link' ) || str_contains( $outputFormat, 'class' ) ) {
+				$outputFormat = str_replace( ['link', 'class'], ['link=', 'class='], $outputFormat );
+			}
 		}
-	}
 
 		return [ $parts, $outputFormat, Localizer::getInstance()->normalizeTitleText( $printRequestLabel ) ];
 	}
