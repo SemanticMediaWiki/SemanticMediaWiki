@@ -133,7 +133,11 @@ class TableResultPrinter extends ResultPrinter {
 						foreach ( $parts as $part ) {
 							if ( str_contains( $part, 'class=' ) ) {
 								$headerFormatSplitted = explode( '=', $part ); 
-								$attributes['class'] = $headerFormatSplitted[1];
+								if ( count( $headerFormatSplitted ) >= 2 ) {
+									$attributes['class'] = $headerFormatSplitted[1];
+								} else {
+								    continue;
+								}
 							}
 						}
 					} elseif ( str_contains( $outputFormat, 'class=' ) ) {
