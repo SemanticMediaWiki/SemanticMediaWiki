@@ -36,17 +36,22 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 		$param = str_replace( 'thclass=', 'class', $param );
 		$parts = [];
 		
-		if ( isset( $param ) ) {
+		if ( !empty( $param ) ) {
 			// check the previous label, remove and split it by '='
 			$label = $serialization['printouts'][$previousPrintout]['label'];
 
 			if ( strpos( $label,'#' ) ) {
-				$labelToSave = $label . ';' . $param;
-				$labelToSave = str_replace( '=', '', $labelToSave );
+				$parts = explode( '=', $label );
+				if ( count ($parts) > 1 ) {
+					$labelToSave = $parts[0] . ';' . $param . '=' . $parts[1];
+				} else {
+					$labelToSave = $label . ';' . $param;
+					$labelToSave = str_replace( '=', '', $labelToSave );
+				}
 			} else {
 				$labelToSave = $label . ' ' . '#' . $param;
 				$parts = explode( '=', $labelToSave );
-				if ( $parts[0] === '' ) {
+				if ( count( $parts ) === 1 ) {
 					$labelToSave = str_replace( '=', '', $labelToSave );
 				} else {
 					$labelToSave = $parts[0] . '' . $parts[2] . '=' . $parts[1];

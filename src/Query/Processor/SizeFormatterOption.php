@@ -36,7 +36,7 @@ class SizeFormatterOption implements FormatterOptionsInterface {
 		$param = substr( $param, 1 );
         $parts = explode( '=', $param, 2 );
     
-        if ( isset( $param ) ) {
+        if ( !empty( $param ) ) {
             // fetch the previous label
             $label = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
 

@@ -34,11 +34,12 @@ class LinkFormatterOption implements FormatterOptionsInterface {
 		}
 
 		$param = substr( $param, 1 );
+		// $labelToSave = '';
 		
-		if ( isset( $param ) ) {
+		if ( !empty( $param ) ) {
 			// fetch the previous label
 			$label = $serialization['printouts'][$previousPrintout]['label'];
-
+			$labelToSave = '';
 			// check the label and create final label with correct format
 			if (str_contains($label,'#')) {
 				if (str_contains($label,'=')) {
@@ -49,8 +50,18 @@ class LinkFormatterOption implements FormatterOptionsInterface {
 					$labelToSave = str_replace( '=', '', $labelToSave );
 				}
 			} else {
-				$labelToSave = $label . ' ' . '#' . $param;
-				$labelToSave = str_replace( '=', '', $labelToSave );
+				if ( str_contains($label,'=' ) ) {
+					$parts = explode( '=', $label );
+					if ( $parts[0] != '' ) {
+						$labelToSave = $parts[0] . '#' . $param . '' . $parts[1]; 
+					} else {
+						$labelToSave = $label . ' ' . '#' . $param;
+						$labelToSave = str_replace( '=', '', $labelToSave );
+					}
+				} else {
+					$labelToSave = $label . ' ' . '#' . $param;
+					$labelToSave = str_replace( '=', '', $labelToSave );
+				}
 			}
 
 			// save the label as a part of serialization
