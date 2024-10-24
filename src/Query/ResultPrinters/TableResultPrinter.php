@@ -134,7 +134,7 @@ class TableResultPrinter extends ResultPrinter {
 							if ( str_contains( $part, 'class=' ) ) {
 								$headerFormatSplitted = explode( '=', $part ); 
 								if ( count( $headerFormatSplitted ) >= 2 ) {
-									$attributes['class'] = $headerFormatSplitted[1];
+									$attributes['class'] = htmlspecialchars( $headerFormatSplitted[1], ENT_QUOTES );
 								} else {
 								    continue;
 								}
