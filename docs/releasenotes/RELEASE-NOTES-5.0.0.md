@@ -4,7 +4,7 @@ Released on Octobar 24th, 2024.
 
 ## Summary
 
-This is a [minor release](../RELEASE-POLICY.md). Thus, it contains no breaking changes, only bug fixes and new features.
+This release mainly contains no breaking changes, only bug fixes and new features.
 This release introduces the several modification across multiple classes and test files. 
 
 
@@ -49,7 +49,7 @@ Code Contributors
 
 **Get the new version via Composer:**
 
-* Step 1: if you are upgrading from SMW older than 4.0.0, ensure the SMW version in `composer.json` is `^4.2.0`
+* Step 1: if you are upgrading from SMW older than 4.2.0, ensure the SMW version in `composer.json` is `^5.0.0`
 * Step 2: run composer in your MediaWiki directory: `composer update --no-dev --optimize-autoloader`
 * Step 3: run either MediaWiki's update.php or SemanticMediaWiki's
   [setupStore.php maintenance script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_setupStore.php)
