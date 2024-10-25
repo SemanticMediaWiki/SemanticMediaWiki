@@ -39,25 +39,31 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 		if ( !empty( $param ) ) {
 			// check the previous label, remove and split it by '='
 			$label = $serialization['printouts'][$previousPrintout]['label'];
+			$partsLabel = explode('=', $label);
 
-			if ( strpos( $label,'#' ) ) {
-				$parts = explode( '=', $label );
-				if ( count ($parts) > 1 ) {
-					$labelToSave = $parts[0] . ';' . $param . '=' . $parts[1];
-				} else {
-					$labelToSave = $label . ';' . $param;
-					$labelToSave = str_replace( '=', '', $labelToSave );
-				}
-			} else {
+			if ( isset($partsLabel[1]) && $partsLabel[1] === '' && !strpos( $partsLabel[0],'#' ) ) {
 				$labelToSave = $label . ' ' . '#' . $param;
-				$parts = explode( '=', $labelToSave );
-				if ( count( $parts ) === 1 ) {
-					$labelToSave = str_replace( '=', '', $labelToSave );
+				$labelToSave = str_replace( '=', '', $labelToSave );
+			} else {
+				if ( strpos( $label,'#' ) ) {
+					$parts = explode( '=', $label );
+					if ( count ($parts) > 1 ) {
+						$labelToSave = $parts[0] . ';' . $param . '=' . $parts[1];
+					} else {
+						$labelToSave = $label . ';' . $param;
+						$labelToSave = str_replace( '=', '', $labelToSave );
+					}
 				} else {
-					$labelToSave = $parts[0] . '' . $parts[2] . '=' . $parts[1];
+					$labelToSave = $label . ' ' . '#' . $param;
+					$parts = explode( '=', $labelToSave );
+					if ( count( $parts ) === 1 ) {
+						$labelToSave = str_replace( '=', '', $labelToSave );
+					} else {
+						$labelToSave = $parts[0] . '' . $parts[2] . '=' . $parts[1];
+					}
 				}
 			}
-			
+
 			$serialization['printouts'][$previousPrintout] = [
 				'label' => $labelToSave,
 				'params' => []
