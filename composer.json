@@ -55,7 +55,7 @@
 		"onoi/blob-store": "~1.2",
 		"mediawiki/http-request": "~2.0|~1.1",
 		"onoi/callback-container": "~2.0",
-		"symfony/css-selector": "^5|^4|^3.3",
+		"symfony/css-selector": "^7.1.6",
 		"seld/jsonlint": "^1.7",
 		"justinrainbow/json-schema": "~5.2",
 		"jeroen/file-fetcher": "^6|^5|^4.4",
