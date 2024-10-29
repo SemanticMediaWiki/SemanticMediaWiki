@@ -104,18 +104,6 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput = new ParserOutput();
 		$parserOutput->setTitleText( $title->getPrefixedText() );
 
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
-			->getMock();
-
-		$idTable->expects( $this->atLeastOnce() )
-			->method( 'exists' )
-			->will( $this->returnValue( true ) );
-
-		$idTable->expects( $this->atLeastOnce() )
-			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'clearData', 'getObjectIds' ] )
