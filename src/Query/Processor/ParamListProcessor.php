@@ -87,6 +87,9 @@ class ParamListProcessor {
 			}
 
 			$param = $this->encodeEq( $param );
+			if ( $param === null ) {
+				continue;
+			}
 
 			// #1258 (named_args -> named args)
 			// accept 'name' => 'value' just as '' => 'name=value':
