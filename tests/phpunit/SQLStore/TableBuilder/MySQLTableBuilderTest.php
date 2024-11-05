@@ -50,7 +50,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFactoryWithWrongTypeThrowsException() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

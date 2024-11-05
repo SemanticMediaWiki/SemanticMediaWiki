@@ -67,7 +67,7 @@ class CacheFactory {
 			$key = $key->getArticleID();
 		}
 
-		return self::getCachePrefix() . ':smw:arc:' . md5( $key );
+		return self::getCachePrefix() . ':smw:arc:' . md5( $key ?? '' );
 	}
 
 	/**

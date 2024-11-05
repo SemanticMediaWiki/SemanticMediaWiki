@@ -88,7 +88,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
-			8,
+			6,
 			$result
 		);
 	}
@@ -114,7 +114,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
-			8,
+			6,
 			$result
 		);
 	}
@@ -351,10 +351,6 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'smw/schema'
 		];
 
-		yield [
-			SMW_NS_RULE,
-			'Rule'
-		];
 	}
 
 }

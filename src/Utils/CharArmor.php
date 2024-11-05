@@ -36,7 +36,7 @@ class CharArmor {
 		return str_replace(
 			[ '&shy;', '&lrm;', " ", " ", " " ],
 			[ '', '', ' ', ' ', ' ' ],
-			$text
+			$text ?? ''
 		);
 	}
 

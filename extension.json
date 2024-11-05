@@ -1,6 +1,6 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "4.2.0",
+	"version": "5.0.0-alpha",
 	"author": [
 		"[https://korrekt.org Markus Krötzsch]",
 		"[https://EntropyWins.wtf/mediawiki Jeroen De Dauw]",
@@ -14,7 +14,7 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "semantic",
 	"requires": {
-		"MediaWiki": ">= 1.35"
+		"MediaWiki": ">= 1.39"
 	},
 	"MessagesDirs": {
 		"SemanticMediaWiki": [

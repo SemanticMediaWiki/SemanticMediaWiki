@@ -228,7 +228,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		if ( ctype_digit( $id ) ) {
+		if ( ctype_digit( (string)$id ) ) {
 			$condition = 'smw_id=' . intval( $id );
 		} else {
 			$op = strpos( $id, '*' ) !== false ? ' LIKE ' : '=';
@@ -314,7 +314,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	private function addFulltextInfo( $id, &$references ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		if ( !$connection->tableExists( SQLStore::FT_SEARCH_TABLE ) ) {
+		if ( !$connection->tableExists( SQLStore::FT_SEARCH_TABLE, __METHOD__ ) ) {
 			return;
 		}
 

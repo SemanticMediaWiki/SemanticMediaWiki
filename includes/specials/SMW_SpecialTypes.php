@@ -250,7 +250,7 @@ class SMWSpecialTypes extends SpecialPage {
 		$result = \Html::rawElement(
 			'div',
 			[
-				'class' => 'plainlinks smw-types-intro '. $typeKey
+				'class' => 'plainlinks smw-types-intro ' . $typeKey
 			],
 			wfMessage( $msgKey, str_replace( '_', ' ', $label ) )->parse() .
 			$this->find_extras( $dataValue, $typeId, $label )

@@ -3,6 +3,7 @@
 namespace SMW\Tests\Services;
 
 use Onoi\CallbackContainer\CallbackContainerFactory;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * @group semantic-mediawiki
@@ -56,7 +57,7 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [
 			'DBLoadBalancer',
 			[],
-			'\LoadBalancer'
+			ILoadBalancer::class
 		];
 
 /*

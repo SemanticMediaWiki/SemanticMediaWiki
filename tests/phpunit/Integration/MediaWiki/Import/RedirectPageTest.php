@@ -45,7 +45,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 		$this->pageCreator = $this->testEnvironment->getUtilityFactory()->newPageCreator();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			__DIR__ . '/'. 'Fixtures/' . 'RedirectPageTest-Mw-1-19-7.xml'
+			__DIR__ . '/' . 'Fixtures/' . 'RedirectPageTest-Mw-1-19-7.xml'
 		);
 
 		if ( !$importRunner->setVerbose( true )->run() ) {
@@ -139,7 +139,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 		$inSemanticData = $inSemanticDataFetcher->getSemanticData( DIWikiPage::newFromTitle( $main ) );
 
 		// When running sqlite, the database select returns an empty result which
-		// is probably due to some DB-prefix issues in MW's DatabaseBaseSqlite
+		// is probably due to some DB-prefix issues in MW's DatabaseSqlite
 		// implementation and for non-sqlite see #212 / bug 62856
 		if ( $inSemanticData->getProperties() === [] ) {
 			$this->markTestSkipped(

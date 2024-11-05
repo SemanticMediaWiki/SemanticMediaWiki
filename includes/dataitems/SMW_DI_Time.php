@@ -317,10 +317,10 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 		$seconds = number_format( str_pad( $this->m_seconds, 2, '0', STR_PAD_LEFT ), 7, '.', '' );
 
 		$time = $year . '-' .
-			str_pad( $this->m_month, 2, '0', STR_PAD_LEFT )     . '-' .
-			str_pad( $this->m_day, 2, '0', STR_PAD_LEFT )       . ' ' .
-			str_pad( $this->m_hours, 2, '0', STR_PAD_LEFT )     . ':' .
-			str_pad( $this->m_minutes, 2, '0', STR_PAD_LEFT )   . ':' .
+			str_pad( $this->m_month, 2, '0', STR_PAD_LEFT ) . '-' .
+			str_pad( $this->m_day, 2, '0', STR_PAD_LEFT ) . ' ' .
+			str_pad( $this->m_hours, 2, '0', STR_PAD_LEFT ) . ':' .
+			str_pad( $this->m_minutes, 2, '0', STR_PAD_LEFT ) . ':' .
 			$seconds;
 
 		return new DateTime( $time );

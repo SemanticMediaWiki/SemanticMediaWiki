@@ -189,7 +189,7 @@ class ParamListProcessor {
 			function ( array $matches ) {
 				return str_replace( [ '=' ], [ '0x003D' ], $matches[0] );
 			},
-			$param
+			$param ?? ''
 		);
 	}
 

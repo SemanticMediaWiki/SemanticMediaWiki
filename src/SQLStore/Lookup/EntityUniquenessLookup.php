@@ -12,6 +12,7 @@ use SMW\IteratorFactory;
 use InvalidArgumentException;
 use RuntimeException;
 use SMWDIContainer as DIContainer;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GNU GPL v2+
@@ -96,7 +97,8 @@ class EntityUniquenessLookup {
 
 		$res = $connection->query(
 			$query,
-			__METHOD__
+			__METHOD__,
+			ISQLPlatform::QUERY_CHANGE_NONE
 		);
 
 		$result = $this->iteratorFactory->newMappingIterator(

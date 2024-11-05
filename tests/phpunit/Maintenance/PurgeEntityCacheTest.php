@@ -10,6 +10,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
+use Wikimedia\Rdbms\Database;
 
 /**
  * @covers \SMW\Maintenance\PurgeEntityCache
@@ -33,7 +34,7 @@ class PurgeEntityCacheTest extends TestCase {
 
 		$this->messageReporter = $this->createMock( MessageReporter::class );
 		$this->store = $this->createMock( SQLStore::class );
-		$this->connection = $this->createMock( \Database::class );
+		$this->connection = $this->createMock( Database::class );
 		$this->entityCache = $this->createMock( EntityCache::class );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );

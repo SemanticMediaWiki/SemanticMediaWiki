@@ -69,7 +69,7 @@ class IdBorder {
 	private function findAndMove( $upperbound, $legacyBound ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 		$row = false;
 		$hasUpperBound = false;
 

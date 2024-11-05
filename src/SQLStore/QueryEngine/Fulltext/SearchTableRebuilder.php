@@ -353,7 +353,7 @@ class SearchTableRebuilder {
 				$this->searchTableUpdater->insert( $sid, $pid );
 			}
 
-			$this->searchTableUpdater->update( $sid, $pid, trim( $text ) . ' ' . $indexableText );
+			$this->searchTableUpdater->update( $sid, $pid, trim( $text ?? '' ) . ' ' . $indexableText );
 		}
 
 		$this->reportMessage( "\n" );

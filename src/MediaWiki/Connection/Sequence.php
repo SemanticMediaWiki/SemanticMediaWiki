@@ -4,6 +4,8 @@ namespace SMW\MediaWiki\Connection;
 
 use SMW\SQLStore\SQLStore;
 use RuntimeException;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GNU GPL v2+
@@ -14,7 +16,7 @@ use RuntimeException;
 class Sequence {
 
 	/**
-	 * @var Database
+	 * @var Database|IDatabase
 	 */
 	private $connection;
 
@@ -29,9 +31,7 @@ class Sequence {
 	public function __construct( $connection ) {
 		if (
 			!$connection instanceof Database &&
-			!$connection instanceof DatabaseBase &&
-			!$connection instanceof \IDatabase &&
-			!$connection instanceof \Wikimedia\Rdbms\IDatabase ) {
+			!$connection instanceof IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
 
@@ -80,7 +80,7 @@ class Sequence {
 		$sequence = self::makeSequence( $table, $field );
 
 		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num ) {
-			$this->connection->query( "ALTER SEQUENCE {$sequence} RESTART WITH {$seq_num}", __METHOD__ );
+			$this->connection->query( "ALTER SEQUENCE {$sequence} RESTART WITH {$seq_num}", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		} );
 
 		return $seq_num;

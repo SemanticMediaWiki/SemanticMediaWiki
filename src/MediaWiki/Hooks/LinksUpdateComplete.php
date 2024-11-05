@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use LinksUpdate;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
@@ -68,11 +67,11 @@ class LinksUpdateComplete implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param LinksUpdate $linksUpdate
+	 * @param LinksUpdate|MediaWiki\Deferred\LinksUpdate\LinksUpdate $linksUpdate
 	 *
 	 * @return true
 	 */
-	public function process( LinksUpdate $linksUpdate ) {
+	public function process( $linksUpdate ) {
 		if ( $this->isReady === false ) {
 			return $this->doAbort();
 		}

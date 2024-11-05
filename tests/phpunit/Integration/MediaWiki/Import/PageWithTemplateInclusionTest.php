@@ -37,7 +37,7 @@ class PageWithTemplateInclusionTest extends SMWIntegrationTestCase {
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			__DIR__ . '/'. 'Fixtures/' . 'PageWithTemplateInclusionTest-Mw-1-19-7.xml'
+			__DIR__ . '/' . 'Fixtures/' . 'PageWithTemplateInclusionTest-Mw-1-19-7.xml'
 		);
 
 		if ( !$importRunner->setVerbose( true )->run() ) {

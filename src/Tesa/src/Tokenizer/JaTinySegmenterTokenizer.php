@@ -236,7 +236,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 
 	private function ctype_( $str ) {
 		foreach( $this->patterns_ as $pattern => $type ) {
-			if( preg_match( '/'.$pattern.'/u', $str ) ) {
+			if( preg_match( '/' . $pattern . '/u', $str ) ) {
 				return $type;
 			}
 		}

@@ -47,7 +47,7 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			__DIR__ . '/'. 'Fixtures/' . 'TimeDataTypeTest-Mw-1-19-7.xml'
+			__DIR__ . '/' . 'Fixtures/' . 'TimeDataTypeTest-Mw-1-19-7.xml'
 		);
 
 		// Shoudl be fixed

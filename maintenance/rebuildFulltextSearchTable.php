@@ -121,7 +121,7 @@ class rebuildFulltextSearchTable extends \Maintenance {
 				$cliMsgFormatter->section( 'Notice' )
 			);
 
-			return $this->messageReporter->reportMessage( "\n" . "Full-text search indexing is not enabled or supported." ."\n" );
+			return $this->messageReporter->reportMessage( "\n" . "Full-text search indexing is not enabled or supported." . "\n" );
 		}
 
 		$this->messageReporter->reportMessage(

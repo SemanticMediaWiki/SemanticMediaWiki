@@ -8,6 +8,7 @@ use SMW\Connection\ConnectionProvider;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Store;
 use Title;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -133,7 +134,7 @@ class TestDatabaseTableBuilder {
 	/**
 	 * @since  2.0
 	 *
-	 * @return DatabaseBase
+	 * @return IDatabase
 	 */
 	public function getDBConnection() {
 		return $this->connectionProvider->getConnection();
