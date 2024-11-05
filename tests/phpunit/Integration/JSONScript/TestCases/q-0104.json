@@ -282,8 +282,7 @@
 			"sesame": "Fulltext not supported by SPARQLStore (Sesame).",
 			"virtuoso": "Fulltext not supported by SPARQLStore (Virtuoso).",
 			"fuseki": "Fulltext not supported by SPARQLStore (Fuskei).",
-			"blazegraph": "Fulltext not supported by SPARQLStore (Blazegraph).",
-			"mysql": "Failed assertions, check implementation of MediaWikiIntegrationTestCase."
+			"blazegraph": "Fulltext not supported by SPARQLStore (Blazegraph)."
 		},
 		"version": "2",
 		"is-incomplete": false,

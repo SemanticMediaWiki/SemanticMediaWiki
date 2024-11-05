@@ -156,8 +156,7 @@
 	},
 	"meta": {
 		"skip-on": {
-			"virtuoso": "Virtuoso 6.1 somwhow fails for >/>>",
-			"mysql": "Failed assertions, check implementation of MediaWikiIntegrationTestCase."
+			"virtuoso": "Virtuoso 6.1 somwhow fails for >/>>"
 		},
 		"version": "2",
 		"is-incomplete": false,
