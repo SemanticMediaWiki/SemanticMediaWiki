@@ -8,10 +8,15 @@
 		]
 	},
 	"smw-categories": "ਸ਼੍ਰੇਣੀਆਂ",
+	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|ਪੁੱਛਗਿੱਛ|ਪੁੱਛਗਿੱਛਾਂ}}",
 	"browse": "ਵਿਕੀ ਫਰੋਲੋ",
+	"smw-admin-supplementary-elastic-statistics-intro": "<u>$1</u> ਤਤਕਰਾ ਪੱਧਰ ਦੇ ਅੰਕੜੇ ਵਿਖਾਉਂਦਾ ਹੈ",
+	"smw_adminlinks_inlinequerieshelp": "ਲਕੀਰ-ਅੰਦਰ ਪੁੱਛਗਿੱਛ ਮਦਦ",
 	"smw-ui-tooltip-title-info": "ਜਾਣਕਾਰੀ",
 	"smw-livepreview-loading": "ਲੱਦ ਰਿਹਾ ਹੈ...",
 	"smw-sp-searchbyproperty-resultlist-header": "ਨਤੀਜਿਆਂ ਦੀ ਸੂਚੀ",
+	"smw-search-profile-sort-recent": "ਸਭ ਤੋਂ ਤਾਜ਼ਾ",
+	"smw-clipboard-copy-link": "ਕੜੀ ਦਾ ਉਤਾਰਾ ਚੂੰਢੀ-ਤਖਤੀ 'ਤੇ ਲਿਖੋ",
 	"smw-copy": "ਰੀਸ ਕਰੋ",
 	"smw-listingcontinuesabbrev": "ਜਾਰੀ",
 	"smw-showingresults": "ਹੇਠਾਂ #'''$2''' ਨਾਲ਼ ਸ਼ੁਰੂ ਹੋਣ ਵਾਲ਼ੇ {{PLURAL:\n$1|'''1''' ਨਤੀਜਾ|'''$1''' ਤੱਕ ਨਤੀਜੇ}} ਵਖਾਓ।"
