@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Jobs;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob
@@ -15,14 +16,13 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FulltextSearchTableRebuildJobTest extends \PHPUnit_Framework_TestCase {
+class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
 
-	private $testEnvironment;
+	// private $testEnvironment;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->getMockForAbstractClass();

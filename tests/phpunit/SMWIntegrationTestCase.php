@@ -6,6 +6,7 @@ use SMW\StoreFactory;
 use SMW\Tests\TestEnvironment;
 use MediaWikiIntegrationTestCase;
 use PHPUnit\Framework\TestResult;
+use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 
 /**
  * @group semantic-mediawiki
@@ -24,6 +25,36 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	 * @var TestEnvironment
 	 */
 	protected $testEnvironment;
+
+	/**
+	 * @var TestDatabaseTableBuilder
+	 */
+	protected $testDatabaseTableBuilder;
+
+	/**
+	 * @var array|null
+	 */
+	protected $databaseToBeExcluded = null;
+
+	/**
+	 * @var array|null
+	 */
+	protected $storesToBeExcluded = null;
+
+	/**
+	 * @var boolean
+	 */
+	protected $destroyDatabaseTablesBeforeRun = false;
+
+	/**
+	 * @var boolean
+	 */
+	protected $destroyDatabaseTablesAfterRun = false;
+
+	/**
+	 * @var boolean
+	 */
+	protected $isUsableUnitTestDatabase = true;
 
     protected function setUp() : void {
 		parent::setUp();
@@ -44,7 +75,29 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 			$this->setCliArg( 'use-normal-tables', true );
 		}
 
-		return parent::run( $result );
+		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
+			$this->getStore()
+		);
+
+		$this->testDatabaseTableBuilder->removeAvailableDatabaseType(
+			$this->databaseToBeExcluded
+		);
+
+		$this->destroyDatabaseTables( $this->destroyDatabaseTablesBeforeRun );
+
+		try {
+			$this->testDatabaseTableBuilder->doBuild();
+		} catch ( RuntimeException $e ) {
+			$this->isUsableUnitTestDatabase = false;
+		}
+
+		$testResult = parent::run( $result );
+
+		$this->destroyDatabaseTables( $this->destroyDatabaseTablesAfterRun );
+
+		return $testResult;
+
+		
 	}
 
     protected function getStore() {
@@ -61,4 +114,15 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 			$this->markTestSkipped( $message );
 		}
 	}
+
+	private function destroyDatabaseTables( $destroyDatabaseTables ) {
+		if ( $this->isUsableUnitTestDatabase && $destroyDatabaseTables ) {
+			try {
+				$this->testDatabaseTableBuilder->doDestroy();
+			} catch ( \Exception $e ) { // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.EmptyStatement
+				// Do nothing because an instance was not available
+			} // @codingStandardsIgnoreEnd
+		}
+	}
+	
 }
