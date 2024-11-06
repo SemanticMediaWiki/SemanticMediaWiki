@@ -63,8 +63,27 @@ class FulltextSearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-		$provider[] = [
-			'diff' => [ 1, 2 ]
+		return [
+			[
+				'diff' => [
+					'slot:id' => 'itemName#123#extraData',
+					1,
+					2
+				]
+			],
+			[
+				'diff' => [
+					'slot:id' => 'itemName#123#extraData#additionalInfo',
+					1,
+					2
+				]
+			],
+			[
+				'diff' => [
+					1,
+					2
+				]
+			]
 		];
 
 		return $provider;
