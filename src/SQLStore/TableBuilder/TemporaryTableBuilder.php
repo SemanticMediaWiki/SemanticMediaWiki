@@ -110,7 +110,7 @@ class TemporaryTableBuilder {
 		}
 
 		// MySQL_ just a temporary table, use INSERT IGNORE later
-		return "CREATE TEMPORARY TABLE " . $tableName . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
+		return "CREATE TEMPORARY TABLE IF NOT EXISTS " . $tableName . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
 	}
 
 }
