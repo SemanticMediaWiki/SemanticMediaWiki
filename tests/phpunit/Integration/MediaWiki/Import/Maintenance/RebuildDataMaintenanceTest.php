@@ -23,8 +23,6 @@ use Title;
  */
 class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
-
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;

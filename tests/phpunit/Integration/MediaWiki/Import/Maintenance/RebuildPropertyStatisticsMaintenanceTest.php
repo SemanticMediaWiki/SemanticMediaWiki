@@ -19,8 +19,6 @@ use SMW\Tests\Utils\UtilityFactory;
  */
 class RebuildPropertyStatisticsMaintenanceTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
-
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;

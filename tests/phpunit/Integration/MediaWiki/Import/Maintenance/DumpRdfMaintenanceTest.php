@@ -21,8 +21,6 @@ use SMW\Tests\Utils\UtilityFactory;
  */
 class DumpRdfMaintenanceTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
-
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;

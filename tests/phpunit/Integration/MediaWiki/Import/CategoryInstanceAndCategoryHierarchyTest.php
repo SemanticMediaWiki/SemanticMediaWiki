@@ -22,8 +22,6 @@ use Title;
  */
 class CategoryInstanceAndCategoryHierarchyTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
-
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;

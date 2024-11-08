@@ -24,8 +24,6 @@ use Title;
  */
 class RecordDataTypeTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
-
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;

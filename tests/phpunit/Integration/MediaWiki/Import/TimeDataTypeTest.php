@@ -25,8 +25,6 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 
-	protected $destroyDatabaseTablesAfterRun = true;
-
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;

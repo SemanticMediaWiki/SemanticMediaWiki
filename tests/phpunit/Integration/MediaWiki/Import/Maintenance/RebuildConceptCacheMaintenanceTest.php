@@ -19,9 +19,7 @@ use Title;
  * @author mwjames
  */
 class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
-
+	
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
