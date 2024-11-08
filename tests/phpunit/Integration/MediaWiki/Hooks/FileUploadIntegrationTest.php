@@ -12,6 +12,7 @@ use Title;
  * @group SMWExtension
  *
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group mediawiki-database
  *
  * @group medium

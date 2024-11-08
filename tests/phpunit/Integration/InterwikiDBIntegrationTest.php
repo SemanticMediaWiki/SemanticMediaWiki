@@ -36,8 +36,10 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$utilityFactory = UtilityFactory::getInstance();
 
+		$this->semanticDataFactory = $utilityFactory->newSemanticDataFactory();
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
 		$this->stringBuilder = $utilityFactory->newStringBuilder();
+		$this->pageCreator = $utilityFactory->newPageCreator();
 
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
 		$this->queryParser = ApplicationFactory::getInstance()->newQueryParser();
@@ -76,18 +78,22 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 			$this->markTestSkipped( 'The Serialization for interwiki needs to be checked for MW 1.40 and newer.' );
 		}
 
-		$titleOne = Title::newFromText( 'Use for interwiki annotation', SMW_NS_PROPERTY );
-		$wikiPageOne = parent::getNonexistingTestPage( $titleOne );
-		parent::editPage( $wikiPageOne, '[[Has type::Page]]' );
+		$this->stringBuilder
+			->addString( '[[Has type::Page]]' );
 
-		$titleTwo = Title::newFromText( __METHOD__ );
-		$wikiPageTwo = parent::getNonexistingTestPage( $titleTwo );
+		$this->pageCreator
+			->createPage( Title::newFromText( 'Use for interwiki annotation', SMW_NS_PROPERTY ) )
+			->doEdit( $this->stringBuilder->getString() );
 
 		$this->stringBuilder
 			->addString( '[[Use for interwiki annotation::Interwiki link]]' )
 			->addString( '[[Use for interwiki annotation::iw-test:Interwiki link]]' );
 
-		parent::editPage( $wikiPageTwo, $this->stringBuilder->getString() );
+		// parent::editPage( $wikiPageTwo, $this->stringBuilder->getString() );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( __METHOD__ ) )
+			->doEdit( $this->stringBuilder->getString() );
 
 		$output = $this->fetchSerializedRdfOutputFor(
 			[ __METHOD__ ]
@@ -105,13 +111,18 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testQueryForInterwikiAnnotation() {
-		$titleOne = Title::newFromText( __METHOD__ . '-1' );
-		$wikiPageOne = parent::getNonexistingTestPage( $titleOne );
-		parent::editPage( $wikiPageOne, '[[Use for interwiki annotation::Interwiki link]]' );
+		$this->stringBuilder
+			->addString( '[[Has type::Page]]' );
 
-		$titleTwo = Title::newFromText( __METHOD__ . '-2' );
-		$wikiPageTwo = parent::getNonexistingTestPage( $titleTwo );
-		parent::editPage( $wikiPageTwo, '[[Use for interwiki annotation::iw-test:Interwiki link]]' );
+		$this->pageCreator
+			->createPage( Title::newFromText( 'Use for interwiki annotation', SMW_NS_PROPERTY ) )
+			->doEdit( $this->stringBuilder->getString() );
+		$this->pageCreator
+			->createPage( Title::newFromText( __METHOD__ . '-1' ) )
+			->doEdit( '[[Use for interwiki annotation::Interwiki link]]' );
+		$this->pageCreator
+			->createPage( Title::newFromText( __METHOD__ . '-2' ) )
+			->doEdit( '[[Use for interwiki annotation::iw-test:Interwiki link]]' );
 
 		$this->stringBuilder
 			->addString( '[[Use for interwiki annotation::iw-test:Interwiki link]]' );
@@ -128,12 +139,11 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 		$query->setLimit( 10 );
 
 		// Expects only one result with an interwiki being used as differentiator
-		$this->subjects[] = DIWikiPage::newFromTitle( $titleTwo );
-		$queryResult = $this->getStore()->getQueryResult( $query );
-	
+		$this->subjects[] = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ . '-2' ) );
+
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$this->subjects,
-			$queryResult
+			$this->getStore()->getQueryResult( $query )
 		);
 
 		$this->subjects[] = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ . '-1' ) );

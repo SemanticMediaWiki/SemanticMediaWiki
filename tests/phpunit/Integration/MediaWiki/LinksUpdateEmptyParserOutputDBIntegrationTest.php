@@ -29,8 +29,10 @@ class LinksUpdateEmptyParserOutputDBIntegrationTest extends SMWIntegrationTestCa
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$page = parent::getNonexistingTestPage( $title );
-		parent::editPage( $page, '[[Has some property::LinksUpdateCompleteOnEmptyParserOutput]]' );
+		$pageCreator = new PageCreator();
+		$pageCreator
+			->createPage( $title )
+			->doEdit( '[[Has some property::LinksUpdateCompleteOnEmptyParserOutput]]' );
 
 		$propertiesCountBeforeUpdate = count( $this->getStore()->getSemanticData( $subject )->getProperties() );
 
@@ -42,5 +44,4 @@ class LinksUpdateEmptyParserOutputDBIntegrationTest extends SMWIntegrationTestCa
 			$this->getStore()->getSemanticData( $subject )->getProperties()
 		);
 	}
-
 }
