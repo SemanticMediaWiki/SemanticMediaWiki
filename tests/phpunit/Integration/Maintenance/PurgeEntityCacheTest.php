@@ -16,7 +16,6 @@ use SMW\Tests\TestEnvironment;
  */
 class PurgeEntityCacheTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 
 	protected function setUp(): void {

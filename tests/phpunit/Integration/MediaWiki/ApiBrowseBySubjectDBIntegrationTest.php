@@ -24,8 +24,6 @@ class ApiBrowseBySubjectDBIntegrationTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 
-	protected $destroyDatabaseTablesAfterRun = true;
-
 	private $apiFactory;
 	private $dataValueFactory;
 	private $serializerFactory;

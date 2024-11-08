@@ -7,6 +7,7 @@ use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -16,7 +17,6 @@ use SMW\Tests\TestEnvironment;
  */
 class UpdateQueryDependenciesTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 
 	protected function setUp(): void {

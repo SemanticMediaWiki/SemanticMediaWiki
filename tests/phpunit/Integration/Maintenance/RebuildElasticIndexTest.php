@@ -17,7 +17,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class RebuildElasticIndexTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 	private $spyMessageReporter;
 	private $store;

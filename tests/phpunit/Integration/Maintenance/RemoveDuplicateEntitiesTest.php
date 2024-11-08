@@ -16,7 +16,6 @@ use SMW\Tests\TestEnvironment;
  */
 class RemoveDuplicateEntitiesTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 
 	protected function setUp(): void {

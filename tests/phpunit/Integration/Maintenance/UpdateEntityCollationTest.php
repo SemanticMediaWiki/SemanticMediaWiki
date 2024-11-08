@@ -18,8 +18,7 @@ use SMW\Tests\PHPUnitCompat;
 class UpdateEntityCollationTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
-
-	protected $destroyDatabaseTablesAfterRun = true;
+	
 	private $runnerFactory;
 	private $spyMessageReporter;
 	private $hookDispatcher;

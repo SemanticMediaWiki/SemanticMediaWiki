@@ -24,8 +24,6 @@ use UnexpectedValueException;
  */
 class LinksUpdateSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesBeforeRun = true;
-
 	private $title = null;
 	private $mwHooksHandler;
 	private $semanticDataValidator;
