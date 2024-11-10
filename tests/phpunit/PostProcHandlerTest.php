@@ -156,7 +156,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->willReturnOnConsecutiveCalls(
 				[ 'TestValue' => true ],
             	[] 
-			);
+ );
 
 		$instance = new PostProcHandler(
 			$this->parserOutput,

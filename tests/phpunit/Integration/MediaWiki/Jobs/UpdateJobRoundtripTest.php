@@ -62,7 +62,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 
 	public function testPageMoveTriggersUpdateJobWithImmediateExecution() {
 		// configured to run immediately, so after it was run, the number of exprected jobs in queue will be 0
-		parent::runJobs([ 'minJobs' => 0, 'complete' => false ]);
+		parent::runJobs( [ 'minJobs' => 0, 'complete' => false ] );
 
 		$newTitle = Title::newFromText( __METHOD__ . '-new' );
 
@@ -81,14 +81,14 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		// ====
 
 		// expected 0 jobs in jobQueue because the job is run instantly with immediate execution
-		parent::runJobs([ 'numJobs' => 0 ], [ 'type' => 'smw.update' ]);
+		parent::runJobs( [ 'numJobs' => 0 ], [ 'type' => 'smw.update' ] );
 	}
 
 	public function testSQLStoreRefreshDataTriggersUpdateJob() {
 		$index = 1; //pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
-		parent::runJobs([ 'numJobs' => 1 ], [ 'type' => 'smw.update' ]);
+		parent::runJobs( [ 'numJobs' => 1 ], [ 'type' => 'smw.update' ] );
 	}
 
 	/**

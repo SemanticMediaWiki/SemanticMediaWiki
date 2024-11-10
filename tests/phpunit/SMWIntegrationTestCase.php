@@ -76,15 +76,15 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
         parent::setUpBeforeClass();
 
         // Load default settings specific to SMW
-        TestEnvironment::loadDefaultSettings(['smwgQEqualitySupport']);
+        TestEnvironment::loadDefaultSettings( [ 'smwgQEqualitySupport' ] );
     }
 
-    protected function setUp() : void {
+    protected function setUp(): void {
 		parent::setUp();
 
 		// Clear any cached user to ensure a clean state for each test
         $user = $this->getTestUser()->getUser();
-        $user->clearInstanceCache($user->mFrom);
+        $user->clearInstanceCache( $user->mFrom );
 
         // Reset services and caches that SMW tests rely on
         $this->resetSMWServices();
@@ -173,7 +173,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		parent::tearDown();
     }
 
-	public function run( ?TestResult $result = null ) : TestResult {
+	public function run( ?TestResult $result = null ): TestResult {
 		$this->getStore()->clear();
 		if( $GLOBALS['wgDBtype'] == 'mysql' ) {
 
