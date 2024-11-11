@@ -95,7 +95,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		} elseif ( $this->getStore() instanceof \SMW\Elastic\ElasticStore ) {
 			$this->connectorId = 'elastic';
 		} else {
-			$this->connectorId = strtolower( 'mysql' );
+			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
 		}
 	}
 
@@ -292,11 +292,11 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->connectorId ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->connectorId ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 	}

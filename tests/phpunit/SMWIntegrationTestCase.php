@@ -111,9 +111,12 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
      * Initialize SMW test environment configuration.
      */
     private function initializeTestEnvironment(): void {
+		$fixedInMemoryLruCache = ServicesFactory::getInstance()->create( 'FixedInMemoryLruCache' );
+
         $this->testEnvironment = new TestEnvironment();
         $this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
         $this->testEnvironment->registerObject( 'Store', $this->getStore() );
+		$this->testEnvironment->registerObject( 'Cache', $fixedInMemoryLruCache );
 
         PropertyRegistry::clear();
 
