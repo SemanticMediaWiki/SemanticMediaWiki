@@ -50,9 +50,7 @@ class SPARQLStore extends Store {
 
 	/**
 	 * Underlying store to use for basic read operations.
-  	 * Public in order to allow result format to access
-    	 * the SQLStore since SPARQLStore is not a subclass of
-	 * SQLStore (different from ElasticStore).
+  	 * Public since 5.0. (https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5749)
 	 *
 	 * @since 1.8
 	 * @var Store
