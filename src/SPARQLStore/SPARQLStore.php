@@ -50,11 +50,14 @@ class SPARQLStore extends Store {
 
 	/**
 	 * Underlying store to use for basic read operations.
+  	 * Public in order to allow result format to access
+    	 * the SQLStore since SPARQLStore is not a subclass of
+	 * SQLStore (different from ElasticStore).
 	 *
 	 * @since 1.8
 	 * @var Store
 	 */
-	private $baseStore;
+	public $baseStore;
 
 	/**
 	 * @since 1.8
