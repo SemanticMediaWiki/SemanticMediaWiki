@@ -24,13 +24,13 @@ use PHPUnit\Framework\TestResult;
 /**
  * @group semantic-mediawiki
  * @group Database
- *
  * @group medium
  *
  * @license GNU GPL v2+
  * @since 2.0
  *
- * @author mwjames
+ * @author Marko Ilic
+ * @author Luke Eversfield
  */
 abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 

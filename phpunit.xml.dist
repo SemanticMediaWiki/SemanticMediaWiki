@@ -113,7 +113,6 @@
         <testsuite name="semantic-mediawiki-integration">
             <directory>tests/phpunit/Integration</directory>
             <exclude>tests/phpunit/Integration/MediaWiki/Import</exclude>
-			<!-- <exclude>tests/phpunit/Integration/JSONScript</exclude> -->
         </testsuite>
         <testsuite name="semantic-mediawiki-import">
             <directory>tests/phpunit/Integration/MediaWiki/Import</directory>
