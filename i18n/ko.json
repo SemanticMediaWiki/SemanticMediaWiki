@@ -46,6 +46,8 @@
 	"smw-factbox-facts": "상식",
 	"smw-factbox-attachments": "첨부",
 	"smw-factbox-attachments-value-unknown": "N/A",
+	"smw-factbox-attachments-is-local": "로컬 여부",
+	"smw-factbox-attachments-help": "사용 가능한 첨부 파일을 표시합니다",
 	"smw_isspecprop": "이 속성은 이 위키에 특수한 속성입니다.",
 	"smw-concept-cache-header": "캐시 사용률",
 	"smw-concept-no-cache": "이용 가능한 캐시가 없습니다.",
