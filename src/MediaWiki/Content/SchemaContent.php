@@ -40,12 +40,12 @@ class SchemaContent extends JsonContent {
 	/**
 	 * @var SchemaFactory
 	 */
-	private $schemaFactory;
+	public $schemaFactory;
 
 	/**
 	 * @var SchemaContentFormatter
 	 */
-	private $contentFormatter;
+	public $contentFormatter;
 
 	/**
 	 * @var array
@@ -133,104 +133,6 @@ class SchemaContent extends JsonContent {
 		}
 
 		return $this->isValid;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function fillParserOutput( Title $title, $revId, ParserOptions $options, $generateHtml, ParserOutput &$output ) {
-		if ( !$generateHtml || !$this->isValid() ) {
-			return;
-		}
-
-		$this->initServices();
-
-		$output->addModuleStyles(
-			$this->contentFormatter->getModuleStyles()
-		);
-
-		$output->addModules(
-			$this->contentFormatter->getModules()
-		);
-
-		$parserData = new ParserData( $title, $output );
-		$schema = null;
-
-		$this->contentFormatter->isYaml(
-			$this->isYaml
-		);
-
-		$this->setTitlePrefix( $title );
-
-		try {
-			$schema = $this->schemaFactory->newSchema(
-				$title->getDBKey(),
-				$this->toJson()
-			);
-		} catch ( SchemaTypeNotFoundException $e ) {
-
-			$this->contentFormatter->setUnknownType(
-				$e->getType()
-			);
-
-			$output->setText(
-				$this->contentFormatter->getText( $this->mText )
-			);
-
-			$parserData->addError(
-				[ [ 'smw-schema-error-type-unknown', $e->getType() ] ]
-			);
-
-			$parserData->copyToParserOutput();
-		}
-
-		if ( $schema === null ) {
-			return;
-		}
-
-		$output->setIndicator(
-			'mw-helplink',
-			$this->contentFormatter->getHelpLink( $schema )
-		);
-
-		$errors = $this->schemaFactory->newSchemaValidator()->validate(
-			$schema
-		);
-
-		foreach ( $errors as $error ) {
-			if ( isset( $error['property'] ) && isset( $error['message'] ) ) {
-
-				if ( $error['property'] === 'title_prefix' ) {
-					if ( isset( $error['enum'] ) ) {
-						$group = end( $error['enum'] );
-					} elseif ( isset( $error['const'] ) ) {
-						$group = $error['const'];
-					} else {
-						continue;
-					}
-
-					$error['message'] = Message::get( [ 'smw-schema-error-title-prefix', $group ] );
-				}
-
-				$parserData->addError(
-					[ [ 'smw-schema-error-violation', $error['property'], $error['message'] ] ]
-				);
-			} else {
-				$parserData->addError( (array)$error );
-			}
-		}
-
-		$this->contentFormatter->setType(
-			$this->schemaFactory->getType( $schema->get( 'type' ) )
-		);
-
-		$output->setText(
-			$this->contentFormatter->getText( $this->mText, $schema, $errors )
-		);
-
-		$parserData->copyToParserOutput();
 	}
 
 	/**
@@ -354,7 +256,7 @@ class SchemaContent extends JsonContent {
 		return str_replace( [ "\r\n", "\r" ], "\n", rtrim( $text ) );
 	}
 
-	private function initServices() {
+	public function initServices() {
 		if ( $this->schemaFactory === null ) {
 			$this->schemaFactory = new SchemaFactory();
 		}
@@ -405,7 +307,7 @@ class SchemaContent extends JsonContent {
 		}
 	}
 
-	private function setTitlePrefix( Title $title ) {
+	public function setTitlePrefix( Title $title ) {
 		if ( $this->parse === null ) {
 			$this->decodeJSONContent();
 		}
