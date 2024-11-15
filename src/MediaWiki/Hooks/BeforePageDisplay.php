@@ -65,22 +65,6 @@ class BeforePageDisplay implements HookListener {
 		$title = $outputPage->getTitle();
 		$user = $outputPage->getUser();
 
-		// MW 1.26 / T107399 / Async RL causes style delay
-		$outputPage->addModuleStyles(
-			[
-				'ext.smw.style',
-				'ext.smw.tooltip.styles'
-			]
-		);
-
-		if ( $title->getNamespace() === NS_SPECIAL ) {
-			$outputPage->addModuleStyles(
-				[
-					'ext.smw.special.styles'
-				]
-			);
-		}
-
 		// #2726
 		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
 		if ( $userOptionsLookup->getOption( $user, 'smw-prefs-general-options-suggester-textinput' ) ) {

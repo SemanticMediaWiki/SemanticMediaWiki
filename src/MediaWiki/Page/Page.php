@@ -62,7 +62,10 @@ abstract class Page extends Article {
 	 */
 	public function view() {
 		$outputPage = $this->getContext()->getOutput();
-		$outputPage->addModuleStyles( 'ext.smw.page.styles' );
+		$outputPage->addModuleStyles( [
+			'ext.smw.style',
+			'ext.smw.page.styles'
+		] );
 
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED' ) ) {
 			$outputPage->setPageTitle( $this->getTitle()->getPrefixedText() );

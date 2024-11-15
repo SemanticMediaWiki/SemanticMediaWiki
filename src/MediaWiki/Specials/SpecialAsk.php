@@ -197,10 +197,12 @@ class SpecialAsk extends SpecialPage {
 		$out = $this->getOutput();
 		$request = $this->getRequest();
 
-		$out->addModuleStyles( 'ext.smw.style' );
-		$out->addModuleStyles( 'ext.smw.ask.styles' );
-		$out->addModuleStyles( 'ext.smw.table.styles' );
-		$out->addModuleStyles( 'ext.smw.page.styles' );
+		$out->addModuleStyles( [
+			'ext.smw.style',
+			'ext.smw.ask.styles',
+			'ext.smw.page.styles',
+			'ext.smw.table.styles'
+		] );
 
 		$out->addModuleStyles(
 			HtmlModal::getModuleStyles()
