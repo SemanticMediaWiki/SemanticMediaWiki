@@ -20,14 +20,14 @@ class LogoTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGet_Small() {
 		$this->assertContains(
-			'logo_small.svg',
+			'assets/logo_small.svg',
 			Logo::get( 'small' )
 		);
 	}
 
 	public function testGet_Footer() {
 		$this->assertContains(
-			'logo_footer.svg',
+			'assets/logo_footer.svg',
 			Logo::get( 'footer' )
 		);
 	}
