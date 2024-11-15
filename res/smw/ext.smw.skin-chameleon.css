@@ -26,92 +26,61 @@
  * @author mwjames
  */
 
-/**
- * .skin-vector specific styles
- */
-
-.skin-vector input#smw-property-input.autocomplete-suggestions {
-	height: 1.15em;
-	padding: 2px 2px;
-}
-
-.skin-chameleon .smw-page-indicator {
+.smw-page-indicator {
 	padding: 0.35rem 0.85rem;
 	line-height: 1.55;
 }
 
-/**
- * .skin-chameleon specific styles
- */
-.skin-chameleon input#smw-property-input.autocomplete-suggestions {
+input#smw-property-input.autocomplete-suggestions {
 	height: 30px;
 	padding: 2px 2px;
 }
 
-.skin-chameleon .autocomplete-suggestion {
+.autocomplete-suggestion {
 	padding: 2px 5px;
 	white-space: nowrap;
 	overflow: hidden;
 	font-size: 0.9em;
 }
 
-.skin-chameleon .smwfact td {
+.smwfact td {
 	padding: 5px;
 }
 
-.skin-chameleon .smw-modal-content {
+.smw-modal-content {
 	line-height: 1.8;
 }
 
-.skin-chameleon .smw-tabs section pre {
+.smw-tabs section pre {
 	margin-top: 0px;
 	width: 100%;
 }
 
-.skin-chameleon .smw-jsonview-menu {
+.smw-jsonview-menu {
 	height: 29px;
 	top: 50px;
 }
 
 .smw-ui-input-filter input {
-	padding: .25em .55em .25em .55em !important;
-}
-
-.skin-chameleon .smw-ui-input-filter input {
 	padding: .35em .55em .35em .55em !important;
 }
 
-.skin-chameleon .smw-ui-input-filter-tooltip {
+.smw-ui-input-filter-tooltip {
 	padding: .20em .25em .35em .25em;
 }
 
-.skin-chameleon .smw-callout ul,
-.skin-chameleon .smw-callout ol {
+.smw-callout ul,
+.smw-callout ol {
 	margin-bottom: 0;
 }
 
-.ns-112.skin-chameleon.action-submit .error ul {
+.ns-112.action-submit .error ul {
     margin: 0 0 0 0;
     font-size: 1rem;
 }
 
-.skin-chameleon fieldset legend {
+fieldset legend {
 	width:unset;
 	padding-left: 5px;
 	padding-right: 5px;
-}
-
-/**
- * .skin-foreground specific styles
- */
-.skin-foreground input#smw-property-input.autocomplete-suggestions {
-	height: 32px;
-	padding: 2px 0px 0px 8px;
-}
-
-.skin-foreground .autocomplete-suggestion {
-	padding: 2px 5px;
-	white-space: nowrap;
-	overflow: hidden;
-	font-size: 0.9em;
 }

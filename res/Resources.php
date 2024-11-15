@@ -31,13 +31,17 @@ return [
 	'ext.smw.style' => $moduleTemplate + [
 		'styles' => [
 			'smw/ext.smw.css',
-			'smw/ext.smw.skin.css',
 			'smw/ext.smw.dropdown.css',
 			'smw/ext.smw.table.css',
 			'smw/ext.smw.tabs.css',
 			'smw/factbox/smw.factbox.css',
 			'smw/smw.indicators.css',
 			'smw/smw.jsonview.css'
+		],
+		'skinStyles' => [
+			'chameleon' => [ 'smw/ext.smw.skin-chameleon.css' ],
+			'foreground' => [ 'smw/ext.smw.skin-foreground.css' ],
+			'vector' => [ 'smw/ext.smw.skin-vector.css' ]
 		],
 		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
