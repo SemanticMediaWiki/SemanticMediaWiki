@@ -33,7 +33,7 @@
 
 input#smw-property-input.autocomplete-suggestions {
 	height: 30px;
-	padding: 2px 2px;
+	padding: 2px;
 }
 
 .autocomplete-suggestion {
@@ -62,7 +62,7 @@ input#smw-property-input.autocomplete-suggestions {
 }
 
 .smw-ui-input-filter input {
-	padding: .35em .55em .35em .55em !important;
+	padding: .35em .55em !important;
 }
 
 .smw-ui-input-filter-tooltip {
@@ -75,7 +75,7 @@ input#smw-property-input.autocomplete-suggestions {
 }
 
 .ns-112.action-submit .error ul {
-    margin: 0 0 0 0;
+    margin: 0;
     font-size: 1rem;
 }
 

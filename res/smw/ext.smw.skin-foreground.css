@@ -27,7 +27,7 @@
  */
 
 .smw-ui-input-filter input {
-	padding: .25em .55em .25em .55em !important;
+	padding: .25em .55em !important;
 }
 
 input#smw-property-input.autocomplete-suggestions {
