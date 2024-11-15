@@ -177,7 +177,7 @@ class GetPreferences implements HookListener {
 	}
 
 	private function makeImage( $logo ) {
-		return "<img style='float:right;margin-top: 10px;margin-left:20px;' src='{$logo}' height='63' width='70'>";
+		return "<img style='float:right;margin-top:10px;margin-left:20px;height:auto;width:70px;' src='{$logo}'>";
 	}
 
 	private function getProfileList(): array {
