@@ -156,6 +156,7 @@ class Highlighter {
 	 * @return string
 	 */
 	public function getHtml() {
+		SMWOutputs::requireStyle( 'ext.smw.tooltip.styles' );
 		SMWOutputs::requireResource( 'ext.smw.tooltips' );
 		return $this->getContainer();
 	}
