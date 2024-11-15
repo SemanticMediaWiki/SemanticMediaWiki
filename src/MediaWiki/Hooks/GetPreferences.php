@@ -98,7 +98,7 @@ class GetPreferences implements HookListener {
 		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );
 		$this->permissionExaminer->setUser( $user );
 
-		$html = $this->makeImage( Logo::get( '100x90' ) );
+		$html = $this->makeImage( Logo::get( 'small' ) );
 		$html .= wfMessage( 'smw-prefs-intro-text' )->parseAsBlock();
 
 		// Intro text
