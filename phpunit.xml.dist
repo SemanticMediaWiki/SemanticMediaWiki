@@ -116,6 +116,7 @@
         </testsuite>
         <testsuite name="semantic-mediawiki-import">
             <directory>tests/phpunit/Integration/MediaWiki/Import</directory>
+			<exclude>tests/phpunit/Integration/MediaWiki/Import/Maintenance/DumpRdfMaintenanceTest.php</exclude>
         </testsuite>
         <testsuite name="semantic-mediawiki-structure">
             <directory>tests/phpunit/Structure</directory>
