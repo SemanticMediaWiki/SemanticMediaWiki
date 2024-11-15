@@ -32,6 +32,8 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 		$this->setHeaders();
 		$output = $this->getOutput();
 
+		$output->addModuleStyles( [ 'ext.smw.style' ] );
+
 		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
 
