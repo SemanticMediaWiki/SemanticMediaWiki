@@ -32,7 +32,7 @@ class LogoTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGet_Unkown() {
+	public function testGet_Unknown() {
 		$this->assertNull(
 			Logo::get( 'Foo' )
 		);
