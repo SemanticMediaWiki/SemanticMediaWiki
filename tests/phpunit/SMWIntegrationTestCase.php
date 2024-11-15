@@ -101,7 +101,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
         LinkBatch::reset();
         DataValueFactory::getInstance()->clear();
         Exporter::clear();
-        MediaWikiServices::resetGlobalInstance();
+		MediaWikiServices::getInstance()->resetGlobalInstance();
         StoreFactory::clear();
         ServicesFactory::clear();
         SMWQueryProcessor::setRecursiveTextProcessor();
@@ -117,6 +117,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
         $this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
         $this->testEnvironment->registerObject( 'Store', $this->getStore() );
 		$this->testEnvironment->registerObject( 'Cache', $fixedInMemoryLruCache );
+		$this->testEnvironment->resetDBLoadBalancer();
 
         PropertyRegistry::clear();
 
