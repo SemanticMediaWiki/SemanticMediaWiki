@@ -100,37 +100,39 @@ class SchemaContentHandler extends JsonContentHandler {
 		}
 
 		$content->initServices();
+		$contentFormatter = $content->getContentFormatter();
+		$schemaFactory = $content->getSchemaFactory();
 
 		$output->addModuleStyles(
-			$content->contentFormatter->getModuleStyles()
+			$contentFormatter->getModuleStyles()
 		);
 
 		$output->addModules(
-			$content->contentFormatter->getModules()
+			$contentFormatter->getModules()
 		);
 
 		$parserData = new ParserData( $title, $output );
 		$schema = null;
 
-		$content->contentFormatter->isYaml(
+		$contentFormatter->isYaml(
 			$content->isYaml()
 		);
 
 		$content->setTitlePrefix( $title );
 
 		try {
-			$schema = $content->schemaFactory->newSchema(
+			$schema = $schemaFactory->newSchema(
 				$title->getDBKey(),
 				$content->toJson()
 			);
 		} catch ( SchemaTypeNotFoundException $e ) {
 
-			$content->contentFormatter->setUnknownType(
+			$contentFormatter->setUnknownType(
 				$e->getType()
 			);
 
 			$output->setText(
-				$content->contentFormatter->getText( $content->getText() )
+				$contentFormatter->getText( $content->getText() )
 			);
 
 			$parserData->addError(
@@ -146,10 +148,10 @@ class SchemaContentHandler extends JsonContentHandler {
 
 		$output->setIndicator(
 			'mw-helplink',
-			$content->contentFormatter->getHelpLink( $schema )
+			$contentFormatter->getHelpLink( $schema )
 		);
 
-		$errors = $content->schemaFactory->newSchemaValidator()->validate(
+		$errors = $schemaFactory->newSchemaValidator()->validate(
 			$schema
 		);
 
@@ -176,12 +178,12 @@ class SchemaContentHandler extends JsonContentHandler {
 			}
 		}
 
-		$content->contentFormatter->setType(
-			$content->schemaFactory->getType( $schema->get( 'type' ) )
+		$contentFormatter->setType(
+			$schemaFactory->getType( $schema->get( 'type' ) )
 		);
 
 		$output->setText(
-			$content->contentFormatter->getText( $content->getText(), $schema, $errors )
+			$contentFormatter->getText( $content->getText(), $schema, $errors )
 		);
 
 		$parserData->copyToParserOutput();

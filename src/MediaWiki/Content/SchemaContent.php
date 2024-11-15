@@ -40,12 +40,12 @@ class SchemaContent extends JsonContent {
 	/**
 	 * @var SchemaFactory
 	 */
-	public $schemaFactory;
+	private $schemaFactory;
 
 	/**
 	 * @var SchemaContentFormatter
 	 */
-	public $contentFormatter;
+	private $contentFormatter;
 
 	/**
 	 * @var array
@@ -266,6 +266,24 @@ class SchemaContent extends JsonContent {
 				ApplicationFactory::getInstance()->getStore()
 			);
 		}
+	}
+
+	/**
+	 * Gets the content formatter.
+	 *
+	 * @return SchemaContentFormatter|null The content formatter instance or null if not set.
+	 */
+	public function getContentFormatter() {
+		return $this->contentFormatter;
+	}
+
+	/**
+	 * Gets the schema factory.
+	 *
+	 * @return SchemaFactory The schema factory instance.
+	 */
+	public function getSchemaFactory() {
+		return $this->schemaFactory;
 	}
 
 	private function decodeJSONContent() {
