@@ -270,7 +270,9 @@ class RemoteRequest implements QueryEngine {
 		$params = func_get_args();
 
 		return Html::errorBox(
-			Message::get( $params, Message::PARSE, Message::USER_LANGUAGE )
+			Message::get( $params, Message::PARSE, Message::USER_LANGUAGE ),
+			'',
+			$params[0]
 		);
 	}
 
