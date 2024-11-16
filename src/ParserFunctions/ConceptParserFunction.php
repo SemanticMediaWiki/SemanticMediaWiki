@@ -132,12 +132,9 @@ class ConceptParserFunction {
 		$message = '';
 
 		if ( wfMessage( 'smw-concept-introductory-message' )->exists() ) {
-			$message = Html::rawElement(
-				'div',
-				[
-					'class' => 'plainlinks smw-callout smw-callout-info'
-				],
-				wfMessage( 'smw-concept-introductory-message', $title->getText() )->text()
+			$message = Html::noticeBox(
+				wfMessage( 'smw-concept-introductory-message', $title->getText() )->text(),
+				'plainlinks'
 			);
 		}
 

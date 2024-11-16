@@ -269,12 +269,7 @@ class RemoteRequest implements QueryEngine {
 	private function error() {
 		$params = func_get_args();
 
-		return Html::rawElement(
-			'div',
-			[
-				'id' => $params[0],
-				'class' => 'smw-callout smw-callout-error'
-			],
+		return Html::errorBox(
 			Message::get( $params, Message::PARSE, Message::USER_LANGUAGE )
 		);
 	}

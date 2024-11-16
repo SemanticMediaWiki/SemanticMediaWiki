@@ -200,11 +200,7 @@ class HtmlBuilder {
 				Html::rawElement(
 					'noscript',
 					[],
-					Html::rawElement(
-						'div',
-						[
-							'class' => 'smw-callout smw-callout-error',
-						],
+					Html::errorBox(
 						Message::get( 'smw-noscript', Message::PARSE, $this->language )
 					)
 				)

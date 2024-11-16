@@ -140,14 +140,14 @@ class ArticleViewHeader implements HookListener {
 	}
 
 	private function message( $type, array $message ) {
-		return Html::rawElement(
-			'div',
-			[
-				'id' => $message[0],
-				'class' => 'plainlinks ' . ( $type !== '' ? 'smw-callout smw-callout-' . $type : '' )
-			],
-			Message::get( $message, Message::PARSE, Message::USER_LANGUAGE )
-		);
+		$content = Message::get( $message, Message::PARSE, Message::USER_LANGUAGE );
+		switch ( $type ) {
+			case 'error':
+				return Html::errorBox( $content );
+			case 'warning':
+				return Html::warningBox( $content );
+			default:
+				return Html::noticeBox( $content, '' );
+		}
 	}
-
 }

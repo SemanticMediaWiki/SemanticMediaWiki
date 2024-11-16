@@ -45,12 +45,11 @@ class BeforePageDisplay implements HookListener {
 			return;
 		}
 
-		$outputPage->prependHTML(
-			'<div class="errorbox" style="display:block;">Semantic MediaWiki ' .
-			'was installed but not enabled on this wiki. Please consult the ' .
-			'<a href="https://www.semantic-mediawiki.org/wiki/Extension_registration">help page</a> for ' .
-			'instructions and further assistances.</div>'
-		);
+		$outputPage->prependHTML( Html::errorBox(
+			'Semantic MediaWiki was installed but not enabled on this wiki. ' .
+			'Please consult the <a href="https://www.semantic-mediawiki.org/wiki/Extension_registration">help page</a> ' .
+			'for instructions and further assistances.'
+		) );
 	}
 
 	/**
@@ -111,26 +110,25 @@ class BeforePageDisplay implements HookListener {
 		$is_upgrade = $this->getOption( 'is_upgrade' ) !== null ? 2 : 1;
 		$count = count( $this->getOption( 'incomplete_tasks' ) );
 
-		return Html::rawElement(
-			'div',
+		// TODO: Refactor message content HTML generation into Mustache or another class
+		$title = Html::rawElement( 'strong', [], Message::get( 'smw-title' ) );
+		$note = Html::rawElement( 'span',
 			[
-				'class' => 'smw-callout smw-callout-error plainlinks'
+				'style' => 'color: var( --color-subtle, #54595d ); font-size: 0.75rem;'
 			],
-			Html::rawElement(
-				'div',
-				[
-					'style' => 'font-size: 10px;text-align: right;margin-top: 5px;margin-bottom: -5px; float:right;'
-				],
-				Message::get( [ 'smw-install-incomplete-intro-note' ], Message::PARSE, Message::USER_LANGUAGE )
-			) . Html::rawElement(
-				'div',
-				[
-					'class' => 'title'
-				],
-				Message::get( 'smw-title' )
-			) .
-			Message::get( [ 'smw-install-incomplete-intro', $is_upgrade, $count ], Message::PARSE, Message::USER_LANGUAGE )
+			Message::get( [ 'smw-install-incomplete-intro-note' ], Message::PARSE, Message::USER_LANGUAGE )
+		);
+		$header = Html::rawElement( 'div',
+			[
+				'style' => 'display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 0.5rem;'
+			],
+			$title . $note
+		);
+		$content = Message::get( [ 'smw-install-incomplete-intro', $is_upgrade, $count ], Message::PARSE, Message::USER_LANGUAGE );
+
+		return Html::errorBox(
+			$header .
+			Html::rawElement( 'p', [], $content )
 		);
 	}
-
 }
