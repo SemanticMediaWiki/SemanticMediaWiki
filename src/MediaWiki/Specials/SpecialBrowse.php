@@ -104,12 +104,10 @@ class SpecialBrowse extends SpecialPage {
 				$error .= Message::decode( $error, Message::TEXT, Message::USER_LANGUAGE );
 			}
 
-			$html = Html::rawElement(
-				'div',
-				[
-					'class' => 'smw-callout smw-callout-error'
-				],
-				Message::get( [ 'smw-browse-invalid-subject', $error ], Message::TEXT, Message::USER_LANGUAGE )
+			$html = Html::errorBox(
+				Message::get( [ 'smw-browse-invalid-subject', $error ], Message::TEXT, Message::USER_LANGUAGE ),
+				'',
+				'smw-error-browse'
 			);
 
 			if ( !$this->including() ) {

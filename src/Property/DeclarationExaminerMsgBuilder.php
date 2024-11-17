@@ -86,18 +86,19 @@ class DeclarationExaminerMsgBuilder {
 			return;
 		}
 
-		if ( $type !== 'plain' ) {
-			$class = "smw-callout smw-callout-$type";
+		$class = "plainlinks $msgKey";
+		switch ( $type ) {
+			case 'plain':
+				return Html::rawElement( 'div', [ 'class' => $class ], $msg );
+			case 'error':
+				return Html::errorBox( $msg, '', $class );
+			case 'info':
+				return Html::noticeBox( $msg, $class );
+			case 'warning':
+				return Html::warningBox( $msg, $class );
+			default:
+				return '';
 		}
-
-		return Html::rawElement(
-			'div',
-			[
-				'id' => "$msgKey",
-				'class' => "plainlinks $msgKey $class"
-			],
-			$msg
-		);
 	}
 
 	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ) {

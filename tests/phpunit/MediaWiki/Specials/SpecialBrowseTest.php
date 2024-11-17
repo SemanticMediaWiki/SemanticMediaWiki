@@ -72,13 +72,13 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 		#0
 		$provider[] = [
 			'',
-			[ 'smw-callout smw-callout-error' ]
+			[ 'smw-error-browse' ]
 		];
 
 		#1
 		$provider[] = [
 			':Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
-			[ 'smw-callout smw-callout-error' ]
+			[ 'smw-error-browse' ]
 		];
 
 		#2

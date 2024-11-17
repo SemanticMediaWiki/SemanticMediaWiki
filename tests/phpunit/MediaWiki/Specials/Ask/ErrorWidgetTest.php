@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use Html;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\Tests\PHPUnitCompat;
 
@@ -57,6 +58,18 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * Return an error box using core MW method
+	 * This is required because the output is different depending on the MW version
+	 *
+	 * @param string $message
+	 * @return $string HTML of the error message box
+	 * @since 5.0.0
+	 */
+	private function getErrorMessageHTML( $message ) {
+		return Html::errorBox( $message, '', 'smw-error-result-error' );
+	}
+
 	public function queryErrorProvider() {
 		$provider[] = [
 			'',
@@ -65,23 +78,23 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			[ 'Foo' ],
-			'<div id="result-error" class="smw-callout smw-callout-error">Foo</div>'
+			$this->getErrorMessageHTML( 'Foo' )
 		];
 
 		$provider[] = [
 			[ 'Foo', 'Bar' ],
-			'<div id="result-error" class="smw-callout smw-callout-error"><ul><li>Foo</li><li>Bar</li></ul></div>'
+			$this->getErrorMessageHTML( '<ul><li>Foo</li><li>Bar</li></ul>' )
 		];
 
 		$provider[] = [
 			[ 'Foo', [ 'Bar' ] ],
-			'<div id="result-error" class="smw-callout smw-callout-error"><ul><li>Foo</li><li>Bar</li></ul></div>'
+			$this->getErrorMessageHTML( '<ul><li>Foo</li><li>Bar</li></ul>' )
 		];
 
 		// Filter duplicate
 		$provider[] = [
 			[ 'Foo', [ 'Bar' ], 'Bar' ],
-			'<div id="result-error" class="smw-callout smw-callout-error"><ul><li>Foo</li><li>Bar</li></ul></div>'
+			$this->getErrorMessageHTML( '<ul><li>Foo</li><li>Bar</li></ul>' )
 		];
 
 		return $provider;

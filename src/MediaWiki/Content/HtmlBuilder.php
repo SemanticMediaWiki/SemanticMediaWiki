@@ -346,13 +346,7 @@ class HtmlBuilder {
 	}
 
 	private function schema_unknown_type( $params ) {
-		return Html::rawElement(
-			'p',
-			[
-				'class' => 'smw-callout smw-callout-error plainlinks'
-			],
-			$params['msg']
-		);
+		return Html::errorBox( $params['msg'] );
 	}
 
 	private function schema_help_link( $params ) {
