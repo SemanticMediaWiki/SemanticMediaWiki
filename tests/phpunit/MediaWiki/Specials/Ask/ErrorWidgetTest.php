@@ -64,6 +64,7 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @param string $message
 	 * @return $string HTML of the error message box
+	 * @since 5.0.0
 	 */
 	private function getErrorMessageHTML( $message ) {
 		return Html::errorBox( $message, '', 'smw-error-result-error' );

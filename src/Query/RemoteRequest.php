@@ -98,11 +98,11 @@ class RemoteRequest implements QueryEngine {
 			return $this->further_link( $query );
 		}
 
+		$source = $query->getQuerySource();
 		if ( !isset( $this->parameters['url'] ) ) {
 			throw new RuntimeException( "Missing a remote URL for $source" );
 		}
 
-		$source = $query->getQuerySource();
 		$this->init();
 
 		if ( !$this->canConnect( $this->parameters['url'] ) ) {

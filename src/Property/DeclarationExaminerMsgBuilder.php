@@ -87,7 +87,7 @@ class DeclarationExaminerMsgBuilder {
 		}
 
 		$class = "plainlinks $msgKey";
-		switch( $type ) {
+		switch ( $type ) {
 			case 'plain':
 				return Html::rawElement( 'div', [ 'class' => $class ], $msg );
 			case 'error':

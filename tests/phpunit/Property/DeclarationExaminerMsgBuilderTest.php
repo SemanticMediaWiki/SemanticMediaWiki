@@ -62,7 +62,7 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private function getMessageBoxHTML( $type, $key, $content ) {
 		$class = "plainlinks $key";
-		switch( $type ) {
+		switch ( $type ) {
 			case 'plain':
 				return Html::rawElement( 'div', [ 'class' => $class ], $content );
 			case 'error':
@@ -82,25 +82,25 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->getMessageBoxHTML( 'plain', 'foo', '⧼foo⧽' )
 		];
 
-		// ranking
+		// Test message ranking: error messages should appear before plain messages
 		yield [
 			[ [ 'plain', 'bar' ], [ 'error', 'foo' ] ],
 			$this->getMessageBoxHTML( 'error', 'foo', '⧼foo⧽' ) . $this->getMessageBoxHTML( 'plain', 'bar', '⧼bar⧽' )
 		];
 
-		//_list
+		// Test list rendering: messages with _list should generate HTML unordered lists
 		yield [
 			[ [ 'error', '_msgkey' => 'foo', '_list' => [ 'a', 'b' ] ] ],
 			$this->getMessageBoxHTML( 'error', 'foo', '⧼foo⧽<ul><li>a</li><li>b</li></ul>' )
 		];
 
-		// _merge
+		// Test message merging: multiple messages should be combined with proper spacing
 		yield [
 			[ [ 'error', '_merge' => [ 'a', 'b' ] ] ],
 			$this->getMessageBoxHTML( 'error', 'a-b', '⧼a⧽&nbsp;⧼b⧽' )
 		];
 
-		// Unknown type
+		// Test unknown type
 		yield [
 			[ [ '__foobar__', 'foo' ] ],
 			''
