@@ -218,8 +218,7 @@ return [
 			'libs/tippy/tippy.css',
 			'libs/tippy/light-border.css',
 			'libs/tippy/light.css',
-			'smw/util/smw.tippy.css',
-			'smw/util/ext.smw.util.tooltip.css'
+			'smw/util/smw.tippy.css'
 		],
 		'scripts'  => [
 			'libs/tippy/popper.min.js',

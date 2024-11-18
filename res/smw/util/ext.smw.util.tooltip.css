@@ -118,7 +118,3 @@ big .smwtticon {
 .smwtticon.note {
 	background-image: url( ../assets/smw-icon-tooltip-question.png );
 }
-
-.qtip-bootstrap {
-    border-radius: 3px !important;
-}
