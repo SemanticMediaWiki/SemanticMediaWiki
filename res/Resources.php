@@ -864,8 +864,7 @@ return [
 			'smw/util/smw.entityexaminer.js'
 		],
 		'dependencies'  => [
-			'mediawiki.api',
-			'smw.tippy',
+			'mediawiki.api'
 		],
 		'targets' => [
 			'mobile',
