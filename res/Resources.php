@@ -513,8 +513,10 @@ return [
 	'ext.smw.browse.styles' => $moduleTemplate + [
 		'styles' => [
 			'smw/ext.smw.table.css',
-			'smw/special/ext.smw.special.browse.css',
-			'smw/special/ext.smw.special.browse.skin.css',
+			'smw/special/ext.smw.special.browse.css'
+		],
+		'skinStyles' => [
+			'chameleon' => [ 'smw/special/ext.smw.special.browse.skin-chameleon.css' ]
 		],
 		'position' => 'top',
 		'targets' => [
@@ -617,8 +619,10 @@ return [
 			'smw/printer/ext.smw.tableprinter.js'
 		],
 		'styles'   => [
-			'smw/printer/ext.smw.tableprinter.css',
-			'smw/printer/ext.smw.tableprinter.skin.css'
+			'smw/printer/ext.smw.tableprinter.css'
+		],
+		'skinStyles' => [
+			'chameleon' => [ 'smw/printer/ext.smw.tableprinter.skin-chameleon.css' ]
 		],
 		'dependencies' => [
 			'onoi.dataTables',
@@ -649,8 +653,10 @@ return [
 
 	'smw.tableprinter.datatable.styles' => $moduleTemplate + [
 		'styles'   => [
-			'smw/printer/ext.smw.tableprinter.css',
-			'smw/printer/ext.smw.tableprinter.skin.css'
+			'smw/printer/ext.smw.tableprinter.css'
+		],
+		'skinStyles' => [
+			'chameleon' => [ 'smw/printer/ext.smw.tableprinter.skin-chameleon.css' ]
 		],
 		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
@@ -660,8 +666,7 @@ return [
 	'ext.smw.deferred.styles'  => $moduleTemplate + [
 		'position' => 'top',
 		'styles'   => [
-			'smw/deferred/ext.smw.deferred.css',
-			'smw/deferred/ext.smw.deferred.skin.css'
+			'smw/deferred/ext.smw.deferred.css'
 		],
 		'targets' => [
 			'mobile',
@@ -672,8 +677,7 @@ return [
 	'ext.smw.deferred'  => $moduleTemplate + [
 		'position' => 'top',
 		'styles'   => [
-			'smw/deferred/ext.smw.deferred.css',
-			'smw/deferred/ext.smw.deferred.skin.css'
+			'smw/deferred/ext.smw.deferred.css'
 		],
 		'scripts'  => [ 'smw/deferred/ext.smw.deferred.js' ],
 		'dependencies'  => [
