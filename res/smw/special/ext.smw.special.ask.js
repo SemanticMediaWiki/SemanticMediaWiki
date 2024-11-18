@@ -118,11 +118,15 @@
 		var msg = this.messages[key];
 		var msgType = msg[1];
 		var messageBox = this.messageBox;
-		var className = messageBox.attr( 'class' ).replace( '-' + this.messageBoxType, '-' + msgType );
-		messageBox.attr( 'class', className );
-		messageBox.removeClass( 'smw-message--hidden' );
+		// Remove old type class and add new one
+		messageBox.removeClass( 'smw-message-' + this.messageBoxType )
+			.addClass( 'smw-message-' + msgType );
 		messageBox.id = 'status-format-change';
-		messageBox.find( '.smw-message-content' ).append( mw.msg( msg[0], this.name ) );
+		// Clear existing content before adding new message
+		messageBox.find( '.smw-message-content' )
+			.empty()
+			.append( mw.msg( msg[0], this.name ) );
+		messageBox.removeClass( 'smw-message--hidden' );
 		this.messageBoxType = msgType;
 	};
 
@@ -139,10 +143,11 @@
 		// Reset message box to inital state
 		var msgType = 'notice';
 		var messageBox = this.messageBox;
-		var className = messageBox.attr( 'class' ).replace( '-' + this.messageBoxType, '-' + msgType );
-		messageBox.attr( 'class', className );
 		messageBox.addClass( 'smw-message--hidden' );
-		messageBox.find( '.smw-message-content' ).empty( '' );
+		// Remove old type class and add new one
+		messageBox.removeClass( 'smw-message-' + this.messageBoxType )
+			.addClass( 'smw-message-' + msgType );
+		messageBox.find( '.smw-message-content' ).empty();
 		this.messageBoxType = msgType;
 	};
 
