@@ -96,27 +96,27 @@ big .smwtticon {
 
 /* New tooltip, Individual assigned icons ( inline-block is important because the icon <span> is empty) */
 .smwtticon.info {
-	background-image: url( assets/smw-icon-tooltip-info.png );
+	background-image: url( ../assets/smw-icon-tooltip-info.png );
 }
 
 .smwtticon.question {
-	background-image: url( assets/smw-icon-tooltip-question.png );
+	background-image: url( ../assets/smw-icon-tooltip-question.png );
 }
 
 .smwtticon.service {
-	background-image: url( assets/smw-icon-tooltip-question.png );
+	background-image: url( ../assets/smw-icon-tooltip-question.png );
 }
 
 .smwtticon.warning {
-	background-image: url( assets/smw-icon-tooltip-warning.png );
+	background-image: url( ../assets/smw-icon-tooltip-warning.png );
 }
 
 .smwtticon.error {
-	background-image: url( assets/smw-icon-tooltip-error.png );
+	background-image: url( ../assets/smw-icon-tooltip-error.png );
 }
 
 .smwtticon.note {
-	background-image: url( assets/smw-icon-tooltip-question.png );
+	background-image: url( ../assets/smw-icon-tooltip-question.png );
 }
 
 .qtip-bootstrap {
