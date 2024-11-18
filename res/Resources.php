@@ -43,7 +43,6 @@ return [
 			'foreground' => [ 'smw/ext.smw.skin-foreground.css' ],
 			'vector' => [ 'smw/ext.smw.skin-vector.css' ]
 		],
-		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
@@ -65,7 +64,6 @@ return [
 			'jquery/jquery.selectmenu.css',
 			'smw/smw.selectmenu.css'
 		],
-		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
@@ -73,7 +71,6 @@ return [
 		'styles' => [
 			'smw/smw.summarytable.css'
 		],
-		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
@@ -81,7 +78,6 @@ return [
 		'styles' => [
 			'smw/special/ext.smw.special.css'
 		],
-		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
@@ -89,9 +85,8 @@ return [
 	'jquery.selectmenu' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.selectmenu.js',
 		'dependencies' => [
-		'jquery.selectmenu.styles'
+			'jquery.selectmenu.styles'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -103,7 +98,6 @@ return [
 			'jquery/jquery.selectmenu.css',
 			'smw/smw.selectmenu.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -113,7 +107,6 @@ return [
 	'jquery.jsonview' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.jsonview.js',
 		'styles' => 'jquery/jquery.jsonview.css',
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -275,10 +268,9 @@ return [
 			'smw-purge-failed',
 			'smw-purge-update-dependencies'
 		],
-		'position' => 'top',
-		'dependencies' => array_merge( [
-			'mediawiki.api',
-		], version_compare( MW_VERSION, '1.35', '<' ) ? [ 'mediawiki.notify' ] : [] ),
+		'dependencies' => [
+			'mediawiki.api'
+		],
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -290,7 +282,6 @@ return [
 		'styles' => [
 			'smw/util/ext.smw.vertical.tabs.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -305,7 +296,6 @@ return [
 		'scripts' => [
 			'smw/util/ext.smw.vertical.tabs.js'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -317,7 +307,6 @@ return [
 		'styles' => [
 			'smw/util/ext.smw.modal.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -332,7 +321,6 @@ return [
 		'scripts' => [
 			'smw/util/ext.smw.modal.js'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -342,7 +330,6 @@ return [
 	// Special:Search
 	'smw.special.search.styles' => $moduleTemplate + [
 		'styles' => 'smw/special.search/search.css',
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -356,7 +343,6 @@ return [
 			'smw/special.search/search.form.js'
 		],
 		'styles' => 'smw/special.search/search.css',
-		'position' => 'top',
 		'dependencies' => [
 			'ext.smw',
 			'smw.ui'
@@ -374,13 +360,12 @@ return [
 	// Postproc resources
 	'ext.smw.postproc' => $moduleTemplate + [
 		'scripts' => 'smw/util/ext.smw.util.postproc.js',
-		'position' => 'top',
 		'messages' => [
 			'smw-postproc-queryref'
 		],
-		'dependencies' => array_merge( [
-			'mediawiki.api',
-		], version_compare( MW_VERSION, '1.35', '<' ) ? [ 'mediawiki.notify' ] : [] ),
+		'dependencies' => [
+			'mediawiki.api'
+		],
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -390,7 +375,6 @@ return [
 	// https://github.com/ichord/Caret.js
 	'ext.jquery.caret' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.caret.js',
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -401,7 +385,6 @@ return [
 	'ext.jquery.atwho' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.atwho.js',
 		'styles' => 'jquery/jquery.atwho.css',
-		'position' => 'top',
 		'dependencies' => [
 			'ext.jquery.caret'
 		],
@@ -413,7 +396,6 @@ return [
 
 	'ext.smw.suggester' => $moduleTemplate + [
 		'scripts' => 'smw/suggester/ext.smw.suggester.js',
-		'position' => 'top',
 		'dependencies' => [
 			'ext.smw',
 			'ext.jquery.atwho'
@@ -426,7 +408,6 @@ return [
 
 	'ext.smw.suggester.textInput' => $moduleTemplate + [
 		'scripts' => 'smw/suggester/ext.smw.suggester.textInput.js',
-		'position' => 'top',
 		'dependencies' => [
 			'ext.smw',
 			'ext.smw.suggester'
@@ -443,7 +424,6 @@ return [
 			'mediawiki.util',
 			'ext.jquery.autocomplete'
 		],
-		'position' => 'bottom',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
@@ -457,14 +437,12 @@ return [
 			'mediawiki.util',
 			'ext.jquery.autocomplete'
 		],
-		'position' => 'bottom',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
 	// Special:Ask
 	'ext.smw.ask.styles' => $moduleTemplate + [
 		'styles' => 'smw/special/ext.smw.special.ask.css',
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -490,7 +468,6 @@ return [
 			'smw-section-expand',
 			'smw-section-collapse'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -502,7 +479,6 @@ return [
 		'styles' => [
 			'smw/ext.smw.table.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -518,7 +494,6 @@ return [
 		'skinStyles' => [
 			'chameleon' => [ 'smw/special/ext.smw.special.browse.skin-chameleon.css' ]
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -531,7 +506,6 @@ return [
 			'mediawiki.api',
 			'ext.smw.style'
 		],
-		'position' => 'top',
 		'messages' => [
 			'smw-browse-api-subject-serialization-invalid'
 		],
@@ -563,7 +537,6 @@ return [
 			'smw-no-data-available',
 			'smw-list-count'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -573,7 +546,6 @@ return [
 	// Special:FactedSearch
 	'smw.special.facetedsearch.styles' => $moduleTemplate + [
 		'styles' => 'smw/special/smw.special.facetedsearch.css',
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -587,7 +559,6 @@ return [
 			'onoi.rangeslider',
 			//'vue'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -606,7 +577,6 @@ return [
 			'smw-personal-jobqueue-watchlist-explain',
 			'brackets'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -628,7 +598,6 @@ return [
 			'onoi.dataTables',
 			'ext.smw.query'
 		],
-		'position' => 'top',
 		'messages' => [
 			"smw-format-datatable-emptytable",
 			"smw-format-datatable-info",
@@ -658,13 +627,11 @@ return [
 		'skinStyles' => [
 			'chameleon' => [ 'smw/printer/ext.smw.tableprinter.skin-chameleon.css' ]
 		],
-		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
 	// Deferred
 	'ext.smw.deferred.styles'  => $moduleTemplate + [
-		'position' => 'top',
 		'styles'   => [
 			'smw/deferred/ext.smw.deferred.css'
 		],
@@ -675,7 +642,6 @@ return [
 	],
 
 	'ext.smw.deferred'  => $moduleTemplate + [
-		'position' => 'top',
 		'styles'   => [
 			'smw/deferred/ext.smw.deferred.css'
 		],
@@ -701,7 +667,6 @@ return [
 			'smw/ext.smw.table.css',
 			'smw/smw.jsonview.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -709,7 +674,6 @@ return [
 	],
 
 	'smw.property.page'  => $moduleTemplate + [
-		'position' => 'top',
 		'scripts'  => [ 'smw/util/smw.property.page.js' ],
 		'dependencies'  => [
 			'mediawiki.api',
@@ -732,7 +696,6 @@ return [
 			'smw/content/smw.schema.css',
 			'smw/ext.smw.table.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -753,7 +716,6 @@ return [
 		'dependencies'  => [
 			'smw.jsonview'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -761,7 +723,6 @@ return [
 	],
 
 	'jquery.mark.js'  => $moduleTemplate + [
-		'position' => 'top',
 		'scripts'  => [
 			'jquery/jquery.mark.js'
 		],
@@ -775,7 +736,6 @@ return [
 		'styles' => [
 			'smw/smw.jsonview.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -803,7 +763,6 @@ return [
 			'jquery.mark.js',
 			'ext.smw'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -811,7 +770,6 @@ return [
 	],
 
 	'ext.libs.tippy'  => $moduleTemplate + [
-		'position' => 'top',
 		'styles' => [
 			'libs/tippy/tippy.css',
 			'libs/tippy/light-border.css',
@@ -828,7 +786,6 @@ return [
 	],
 
 	'smw.tippy'  => $moduleTemplate + [
-		'position' => 'top',
 		'styles' => [
 			'smw/util/smw.tippy.css'
 		],
@@ -860,7 +817,6 @@ return [
 	],
 
 	'smw.entityexaminer'  => $moduleTemplate + [
-		'position' => 'top',
 		'styles' => [
 			'smw/util/smw.entityexaminer.css'
 		],
