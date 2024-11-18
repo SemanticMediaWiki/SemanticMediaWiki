@@ -13,12 +13,6 @@
 	font-size: 14px;
 }
 
-.smw-datatable .dataTables_wrapper select,
-.smw-datatable .dataTables_wrapper select:focus,
-.smw-datatable .dataTables_wrapper select:active {
-	/*padding: 0.15rem 0.5rem;*/
-}
-
 .smw-datatable .dataTables_wrapper .dataTables_filter input {
 	line-height: 1.35;
 }
