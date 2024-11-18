@@ -206,7 +206,7 @@ return [
 	// Critical CSS for ext.smw.tooltip
 	'ext.smw.tooltip.styles' => $moduleTemplate + [
 		'styles' => [
-			'smw/util/ext.smw.util.tooltip.css'
+			'smw/util/ext.smw.tooltip.css'
 		],
 		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
@@ -218,12 +218,12 @@ return [
 			'libs/tippy/tippy.css',
 			'libs/tippy/light-border.css',
 			'libs/tippy/light.css',
-			'smw/util/smw.tippy.css'
+			'smw/util/ext.smw.tooltip.tippy.css'
 		],
 		'scripts'  => [
 			'libs/tippy/popper.min.js',
 			'libs/tippy/tippy.js',
-			'smw/util/smw.tippy.js'
+			'smw/util/ext.smw.tooltip.tippy.js'
 		],
 		'dependencies'  => [
 			'ext.smw',
