@@ -118,7 +118,7 @@ class Highlighter {
 	 * @param string $text
 	 * @param string|null $type
 	 *
-	 * @return booelan
+	 * @return boolean
 	 */
 	public static function hasHighlighterClass( $text, $type = null ) {
 		if ( strpos( $text, 'smw-highlighter' ) === false ) {
