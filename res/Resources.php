@@ -216,15 +216,6 @@ return [
 	],
 
 	// Tooltip
-	'ext.smw.tooltip.styles' => $moduleTemplate + [
-		'styles' => [
-			'smw/util/ext.smw.util.tooltip.css'
-		],
-		'position' => 'top',
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// Tooltip
 	'ext.smw.tooltip.old' => $moduleTemplate + [
 		'scripts' => 'smw/util/ext.smw.util.tooltip.js',
 		'dependencies' => [
@@ -244,21 +235,51 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	// Tooltip
-	'ext.smw.tooltip' => $moduleTemplate + [
-		'dependencies' => [
-			'ext.smw.tooltip.styles',
-			'smw.tippy'
+	// Critical CSS for ext.smw.tooltip
+	'ext.smw.tooltip.styles' => $moduleTemplate + [
+		'styles' => [
+			'smw/util/ext.smw.util.tooltip.css'
 		],
+		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	'ext.smw.tooltips' => $moduleTemplate + [
-		'dependencies' => [
-			'ext.smw.style',
-			'smw.tippy'
+	'ext.smw.tooltip'  => $moduleTemplate + [
+		'position' => 'top',
+		'styles' => [
+			'libs/tippy/tippy.css',
+			'libs/tippy/light-border.css',
+			'libs/tippy/light.css',
+			'smw/util/smw.tippy.css',
+			'smw/util/ext.smw.util.tooltip.css'
 		],
-		'targets' => [ 'mobile', 'desktop' ]
+		'scripts'  => [
+			'libs/tippy/popper.min.js',
+			'libs/tippy/tippy.js',
+			'smw/util/smw.tippy.js'
+		],
+		'dependencies'  => [
+			'ext.smw',
+			'ext.smw.tooltip.styles',
+			'mediawiki.api'
+		],
+		'messages' => [
+			'smw-ui-tooltip-title-property',
+			'smw-ui-tooltip-title-quantity',
+			'smw-ui-tooltip-title-info',
+			'smw-ui-tooltip-title-service',
+			'smw-ui-tooltip-title-warning',
+			'smw-ui-tooltip-title-parameter',
+			'smw-ui-tooltip-title-event',
+			'smw-ui-tooltip-title-error',
+			'smw-ui-tooltip-title-note',
+			'smw-ui-tooltip-title-legend',
+			'smw-ui-tooltip-title-reference'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
 	],
 
 	// Autocomplete resources
@@ -800,42 +821,6 @@ return [
 			'ext.smw'
 		],
 		'position' => 'top',
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'smw.tippy'  => $moduleTemplate + [
-		'position' => 'top',
-		'styles' => [
-			'libs/tippy/tippy.css',
-			'libs/tippy/light-border.css',
-			'libs/tippy/light.css',
-			'smw/util/smw.tippy.css'
-		],
-		'scripts'  => [
-			'libs/tippy/popper.min.js',
-			'libs/tippy/tippy.js',
-			'smw/util/smw.tippy.js'
-		],
-		'dependencies'  => [
-			'ext.smw',
-			'mediawiki.api'
-		],
-		'messages' => [
-			'smw-ui-tooltip-title-property',
-			'smw-ui-tooltip-title-quantity',
-			'smw-ui-tooltip-title-info',
-			'smw-ui-tooltip-title-service',
-			'smw-ui-tooltip-title-warning',
-			'smw-ui-tooltip-title-parameter',
-			'smw-ui-tooltip-title-event',
-			'smw-ui-tooltip-title-error',
-			'smw-ui-tooltip-title-note',
-			'smw-ui-tooltip-title-legend',
-			'smw-ui-tooltip-title-reference'
-		],
 		'targets' => [
 			'mobile',
 			'desktop'
