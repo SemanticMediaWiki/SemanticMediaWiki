@@ -135,7 +135,7 @@
 			text = '<b>' + status.error.code + '</b><br\>' + status.error.info.replace(/#/g, "<br\>#" );
 		}
 
-		this.context.find( '.smwb-status' ).append( text ).addClass( 'smw-callout smw-callout-error' );
+		this.context.find( '.smwb-status' ).append( text ).addClass( 'error' );
 	}
 
 	/**
