@@ -316,8 +316,7 @@ class InTextAnnotationParser {
 	 */
 	protected function getModules() {
 		return [
-			'ext.smw.style',
-			'ext.smw.tooltip'
+			'ext.smw.style'
 		];
 	}
 
