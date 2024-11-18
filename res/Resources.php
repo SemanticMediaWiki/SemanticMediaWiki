@@ -203,18 +203,6 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	// Tooltip qtip2 resources
-	'ext.jquery.qtip.styles' => $moduleTemplate + [
-		'styles' => 'jquery/jquery.qtip.css',
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// Tooltip qtip2 resources
-	'ext.jquery.qtip' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.qtip.js',
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
 	// Critical CSS for ext.smw.tooltip
 	'ext.smw.tooltip.styles' => $moduleTemplate + [
 		'styles' => [
@@ -817,21 +805,6 @@ return [
 		],
 		'dependencies'  => [
 			'mediawiki.api'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'onoi.qtip' => $moduleTemplate + [
-		'styles' => [
-			'onoi/jquery.qtip/core/jquery.qtip.css',
-			'onoi/jquery.qtip/extended/jquery.qtip.css'
-		],
-		'scripts' => [
-			'onoi/jquery.qtip/core/jquery.qtip.js',
-			'onoi/jquery.qtip/extended/jquery.qtip.js'
 		],
 		'targets' => [
 			'mobile',
