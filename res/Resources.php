@@ -215,26 +215,6 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	// Tooltip
-	'ext.smw.tooltip.old' => $moduleTemplate + [
-		'scripts' => 'smw/util/ext.smw.util.tooltip.js',
-		'dependencies' => [
-			'ext.smw.tooltip.styles',
-			'ext.smw',
-			'ext.jquery.qtip'
-		],
-		'messages' => [
-			'smw-ui-tooltip-title-property',
-			'smw-ui-tooltip-title-quantity',
-			'smw-ui-tooltip-title-info',
-			'smw-ui-tooltip-title-service',
-			'smw-ui-tooltip-title-warning',
-			'smw-ui-tooltip-title-parameter',
-			'smw-ui-tooltip-title-event',
-		],
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
 	// Critical CSS for ext.smw.tooltip
 	'ext.smw.tooltip.styles' => $moduleTemplate + [
 		'styles' => [
