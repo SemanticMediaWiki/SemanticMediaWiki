@@ -806,35 +806,22 @@ return [
 		]
 	],
 
-	'ext.libs.tippy'  => $moduleTemplate + [
+	'smw.tippy'  => $moduleTemplate + [
 		'position' => 'top',
 		'styles' => [
 			'libs/tippy/tippy.css',
 			'libs/tippy/light-border.css',
-			'libs/tippy/light.css'
-		],
-		'scripts'  => [
-			'libs/tippy/popper.min.js',
-			'libs/tippy/tippy.js'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'smw.tippy'  => $moduleTemplate + [
-		'position' => 'top',
-		'styles' => [
+			'libs/tippy/light.css',
 			'smw/util/smw.tippy.css'
 		],
 		'scripts'  => [
+			'libs/tippy/popper.min.js',
+			'libs/tippy/tippy.js',
 			'smw/util/smw.tippy.js'
 		],
 		'dependencies'  => [
 			'ext.smw',
-			'mediawiki.api',
-			'ext.libs.tippy',
+			'mediawiki.api'
 		],
 		'messages' => [
 			'smw-ui-tooltip-title-property',
