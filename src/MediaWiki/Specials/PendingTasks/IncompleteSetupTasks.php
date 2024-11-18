@@ -56,8 +56,7 @@ class IncompleteSetupTasks {
 			$html = Html::rawElement(
 				'p',
 				[
-					'style' => 'margin-top:10px;color:#888',
-					//'class' => 'smw-callout smw-callout-error'
+					'style' => 'margin-top:10px;color:#888'
 				],
 				Message::get( [ 'smw-pendingtasks-setup-intro', $count ], Message::PARSE, Message::USER_LANGUAGE )
 			) . $this->buildList( $incompleteTasks );

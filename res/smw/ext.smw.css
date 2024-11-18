@@ -80,6 +80,15 @@
 	line-height: 1.42857143;
 }
 
+/**
+ * Use to hide server-rendered message boxes
+ * For example, an error box is rendered in DuplicateLookupTaskHandler.php server-side,
+ * then being enabled in ext.smw.special.admin.js client-side.
+ */
+ .smw-message--hidden {
+	display: none !important;
+}
+
 .client-nojs .smw-placeholder::after {
 	content: "JavaScript is disabled or could not be detected!";
 	top: 80%;
@@ -471,103 +480,6 @@ label.smw-form-checkbox {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 14px;
 	line-height: 1.42857143;
-}
-
-/* Thanks to the bootstrap css*/
-.smw-callout {
-	padding: 10px;
-	margin: 0.5em 0;
-	/*border: 1px solid #eee;*/
-	border-left-width: 5px;
-	border-radius: 1px;
-}
-
-.smw-callout p {
-	margin: 5px 0 5px 0;
-}
-
-.smw-callout-info {
-	/*border: 1px solid #d9edf7;
-	background-color: #d9edf7;
-	border-left-width: 5px;
-	border-left-color: #1b809e;*/
-
-	padding: .8em 1em;
-	background: #d9edf7;
-	margin: 0.5rem 0;
-	border-left: 5px solid #1b809e;
-}
-
-.smw-callout-info .title {
-	color: #1b809e;
-}
-
-.smw-callout-info-light {
-	/*border: 1px solid #f9f9f9;
-	background-color: #f9f9f9;
-	border-left-width: 5px;
-	border-left-color: #ddd;*/
-
-	padding: .8em 1em;
-	background: #f9f9f9;
-	margin: 0.5rem 0;
-	border-left: 5px solid #ddd;
-}
-
-.smw-callout-info-light .title {
-	color: #1b809e;
-}
-
-.smw-callout-warning {
-	/*border: 1px solid #fcf8e3;
-	background-color: #fcf8e3;
-	border-left-width: 5px;
-	border-left-color: #aa6708;*/
-
-	padding: .8em 1em;
-	background: #fcf8e3;
-	margin: 0.5rem 0;
-	border-left: 5px solid #aa6708;
-}
-
-.smw-callout-warning .title {
-	color: #aa6708;
-}
-
-.smw-callout-success {
-	/*border: 1px solid #dff0d8;
-	background-color: #dff0d8;
-	border-left-width: 5px;
-	border-left-color: #3c763d;*/
-
-	padding: .8em 1em;
-	background: #dff0d8;
-	margin: 0.5rem 0;
-	border-left: 5px solid #3c763d;
-}
-
-.smw-callout-success .title {
-	color: #3c763d;
-}
-
-.smw-callout-error {
-	/*border: 1px solid #f2dede;
-	background-color: #f2dede;
-	border-left-width: 5px;
-	border-left-color: #ce4844;*/
-
-	padding: .8em 1em;
-	background: #f2dede;
-	margin: 0.5rem 0;
-	border-left: 5px solid #ce4844;
-}
-
-.smw-callout .title {
-	margin-top: 0;
-	margin-bottom: 5px;
-	font-size: 16px;
-	font-family: inherit;
-	font-weight: 500;
 }
 
 .smw-svg-icon {

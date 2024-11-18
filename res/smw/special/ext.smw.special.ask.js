@@ -42,6 +42,10 @@
 		this.messages = {};
 
 		this.html = mw.html;
+		// Message box is server-rendered in LinksWidget.php
+		this.messageBox = $( '.smw-ask-change-info' );
+		// Default state is "notice"
+		this.messageBoxType = 'notice';
 
 		this.hideList = '#ask-embed, #inlinequeryembed, #ask-showhide,' +
 		'#ask-debug, #ask-clipboard, #ask-navinfo, #ask-cache, #result,' +
@@ -109,21 +113,21 @@
 	 */
 	change.prototype.show = function( key ) {
 
-		var msg = this.messages[key];
-
-		var html = this.html.element(
-			'div',
-			{
-				id: 'status-format-change',
-				class: 'smw-callout smw-callout-' + msg[1]
-			},
-			mw.msg( msg[0], this.name )
-		);
-
 		$( this.hideList ).hide();
 
-		$( '#status-format-change' ).remove();
-		$( '#ask-change-info' ).append( html );
+		var msg = this.messages[key];
+		var msgType = msg[1];
+		var messageBox = this.messageBox;
+		// Remove old type class and add new one
+		messageBox.removeClass( 'smw-message-' + this.messageBoxType )
+			.addClass( 'smw-message-' + msgType );
+		messageBox.attr( 'id', 'status-format-change' );
+		// Clear existing content before adding new message
+		messageBox.find( '.smw-message-content' )
+			.empty()
+			.append( mw.msg( msg[0], this.name ) );
+		messageBox.removeClass( 'smw-message--hidden' );
+		this.messageBoxType = msgType;
 	};
 
 	/**
@@ -133,10 +137,19 @@
 	change.prototype.hide = function() {
 
 		$( this.hideList ).show();
-		$( '#status-format-change' ).remove();
-
 		$( '#inlinequeryembed, #embed_hide' ).hide();
 		$( '#embed_show' ).show();
+
+		// Reset message box to inital state
+		var msgType = 'notice';
+		var messageBox = this.messageBox;
+		messageBox.addClass( 'smw-message--hidden' );
+		// Remove old type class and add new one
+		messageBox.removeClass( 'smw-message-' + this.messageBoxType )
+			.addClass( 'smw-message-' + msgType );
+		messageBox.removeAttr( 'id' );
+		messageBox.find( '.smw-message-content' ).empty();
+		this.messageBoxType = msgType;
 	};
 
 	/**

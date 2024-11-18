@@ -69,11 +69,6 @@ input#smw-property-input.autocomplete-suggestions {
 	padding: .20em .25em .35em .25em;
 }
 
-.smw-callout ul,
-.smw-callout ol {
-	margin-bottom: 0;
-}
-
 .ns-112.action-submit .error ul {
     margin: 0;
     font-size: 1rem;
