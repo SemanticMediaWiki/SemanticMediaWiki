@@ -121,7 +121,7 @@
 		// Remove old type class and add new one
 		messageBox.removeClass( 'smw-message-' + this.messageBoxType )
 			.addClass( 'smw-message-' + msgType );
-		messageBox.id = 'status-format-change';
+		messageBox.attr( 'id', 'status-format-change' );
 		// Clear existing content before adding new message
 		messageBox.find( '.smw-message-content' )
 			.empty()
@@ -147,6 +147,7 @@
 		// Remove old type class and add new one
 		messageBox.removeClass( 'smw-message-' + this.messageBoxType )
 			.addClass( 'smw-message-' + msgType );
+		messageBox.removeAttr( 'id' );
 		messageBox.find( '.smw-message-content' ).empty();
 		this.messageBoxType = msgType;
 	};
