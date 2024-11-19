@@ -85,21 +85,21 @@
     padding: 0;
 }
 
-.tippy-tooltip.light-border-theme[x-placement^=bottom] .tippy-arrow,
-.tippy-tooltip.light-theme[x-placement^=bottom] .tippy-arrow,
-.tippy-tooltip.light-border-theme[x-placement^=bottom] .tippy-arrow:after,
-.tippy-tooltip.light-theme[x-placement^=bottom] .tippy-arrow:after {
+.tippy-tooltip.light-border-theme[data-placement^=bottom] .tippy-arrow,
+.tippy-tooltip.light-theme[data-placement^=bottom] .tippy-arrow,
+.tippy-tooltip.light-border-theme[data-placement^=bottom] .tippy-arrow:after,
+.tippy-tooltip.light-theme[data-placement^=bottom] .tippy-arrow:after {
      border-bottom-color: #f7f7f7
 }
 
-.tippy-tooltip.light-border-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow,
-.tippy-tooltip.light-border-theme.square-border-light[x-placement^=bottom] .tippy-arrow,
-.tippy-tooltip.light-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow,
-.tippy-tooltip.light-theme.square-border-light[x-placement^=bottom] .tippy-arrow,
-.tippy-tooltip.light-border-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow:after,
-.tippy-tooltip.light-border-theme.square-border-light[x-placement^=bottom] .tippy-arrow:after,
-.tippy-tooltip.light-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow:after,
-.tippy-tooltip.light-theme.square-border-light[x-placement^=bottom] .tippy-arrow:after {
+.tippy-tooltip.light-border-theme.square-border-transparent-arrow[data-placement^=bottom] .tippy-arrow,
+.tippy-tooltip.light-border-theme.square-border-light[data-placement^=bottom] .tippy-arrow,
+.tippy-tooltip.light-theme.square-border-transparent-arrow[data-placement^=bottom] .tippy-arrow,
+.tippy-tooltip.light-theme.square-border-light[data-placement^=bottom] .tippy-arrow,
+.tippy-tooltip.light-border-theme.square-border-transparent-arrow[data-placement^=bottom] .tippy-arrow:after,
+.tippy-tooltip.light-border-theme.square-border-light[data-placement^=bottom] .tippy-arrow:after,
+.tippy-tooltip.light-theme.square-border-transparent-arrow[data-placement^=bottom] .tippy-arrow:after,
+.tippy-tooltip.light-theme.square-border-light[data-placement^=bottom] .tippy-arrow:after {
      border-bottom-color: #fff;
 }
 

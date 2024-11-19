@@ -49,6 +49,7 @@
 	var options = {
 		target: '.smw-highlighter',
 		arrow: true,
+		appendTo: document.body,
 		interactive: true,
 		placement: "top",
 		flipOnUpdate: true,
@@ -56,7 +57,7 @@
 		animation: 'scale',
 		hideOnClick: false,
 		ignoreAttributes: true,
-		maxWidth:260,
+		maxWidth: 260,
 
 		/**
 		 * Function invoked when the tippy begins to transition in
@@ -261,8 +262,7 @@
 		};
 
 		options.target = target;
-
-		tippy( context, options );
+		tippy.delegate( context, options );
 	};
 
 	/**

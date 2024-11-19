@@ -215,14 +215,13 @@ return [
 	'ext.smw.tooltip'  => $moduleTemplate + [
 		'position' => 'top',
 		'styles' => [
-			'libs/tippy/tippy.css',
 			'libs/tippy/light-border.css',
-			'libs/tippy/light.css',
+			'libs/tippy/scale.css',
 			'smw/util/ext.smw.tooltip.tippy.css'
 		],
 		'scripts'  => [
 			'libs/tippy/popper.min.js',
-			'libs/tippy/tippy.js',
+			'libs/tippy/tippy.min.js',
 			'smw/util/ext.smw.tooltip.tippy.js'
 		],
 		'dependencies'  => [
