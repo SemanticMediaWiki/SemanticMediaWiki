@@ -108,9 +108,6 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 * @since 1.9
 	 */
 	public function releaseConnection() {
-		if ( $this->loadBalancer !== null && $this->connection !== null ) {
-			$this->loadBalancer->reuseConnection( $this->connection );
-		}
 	}
 
 	/**
