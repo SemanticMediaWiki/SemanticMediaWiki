@@ -46,13 +46,6 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	'ext.smw.special.styles' => $moduleTemplate + [
-		'styles' => [
-			'smw/special/smw.special.preferences.css'
-		],
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
 	'smw.ui' => $moduleTemplate + [
 		'scripts' => 'smw/smw.ui.js',
 		'dependencies' => [ 'ext.smw', 'jquery.selectmenu' ],
@@ -76,7 +69,8 @@ return [
 
 	'ext.smw.special.styles' => $moduleTemplate + [
 		'styles' => [
-			'smw/special/ext.smw.special.css'
+			'smw/special/ext.smw.special.css',
+			'smw/special/ext.smw.special.preferences.css'
 		],
 		'targets' => [ 'mobile', 'desktop' ]
 	],
