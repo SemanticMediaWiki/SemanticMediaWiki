@@ -349,10 +349,9 @@ class ParserData {
 	public function markParserOutput() {
 		$this->parserOutput->setTimestamp( wfTimestampNow() );
 
-		// ParserOutput::setExtensionData can only take scalar values
 		$this->parserOutput->setExtensionData(
 			'smw-semanticdata-status',
-			$this->semanticData->getProperties() !== [] ? 'true' : 'false'
+			$this->semanticData->getProperties() !== []
 		);
 	}
 
@@ -371,7 +370,7 @@ class ParserData {
 	 * @return boolean
 	 */
 	public static function hasSemanticData( ParserOutput $parserOutput ) {
-		return $parserOutput->getExtensionData( 'smw-semanticdata-status' ) === 'true';
+		return $parserOutput->getExtensionData( 'smw-semanticdata-status' );
 	}
 
 	/**
