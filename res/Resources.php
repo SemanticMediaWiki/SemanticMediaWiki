@@ -210,7 +210,7 @@ return [
 		'styles' => [
 			'libs/tippy/light-border.css',
 			'libs/tippy/scale.css',
-			'smw/util/ext.smw.tooltip.tippy.css'
+			'smw/util/ext.smw.tooltip.tippy.less'
 		],
 		'scripts'  => [
 			'libs/tippy/popper.min.js',
