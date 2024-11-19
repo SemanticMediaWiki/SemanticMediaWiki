@@ -349,9 +349,10 @@ class ParserData {
 	public function markParserOutput() {
 		$this->parserOutput->setTimestamp( wfTimestampNow() );
 
-		$this->parserOutput->setPageProperty(
+		// ParserOutput::setExtensionData can only take scalar values
+		$this->parserOutput->setExtensionData(
 			'smw-semanticdata-status',
-			$this->semanticData->getProperties() !== []
+			$this->semanticData->getProperties() !== [] ? 'true' : 'false'
 		);
 	}
 
@@ -370,14 +371,7 @@ class ParserData {
 	 * @return boolean
 	 */
 	public static function hasSemanticData( ParserOutput $parserOutput ) {
-		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
-			// T301915
-			return (bool)( $parserOutput->getPageProperty( 'smw-semanticdata-status' ) ?? false );
-		} else {
-			// MW < 1.38
-			return (bool)$parserOutput->getProperty( 'smw-semanticdata-status' );
-		}
-
+		return (bool)( $parserOutput->getExtensionData( 'smw-semanticdata-status' ) ?? false );
 	}
 
 	/**

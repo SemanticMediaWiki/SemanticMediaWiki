@@ -216,7 +216,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$displayTitle = isset( $parameters['displaytitle'] ) ? $parameters['displaytitle'] : false;
 
-		$parserOutput->setPageProperty( 'smw-semanticdata-status', $parameters['data-status'] );
+		$parserOutput->setExtensionData( 'smw-semanticdata-status', $parameters['data-status'] ? 'true' : 'false' );
 		$parserOutput->setPageProperty( 'displaytitle', $displayTitle );
 
 		$text   = '';
@@ -316,7 +316,8 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput->addCategory( 'Foo', 'Foo' );
 		$parserOutput->addCategory( 'Bar', 'Bar' );
-		$parserOutput->setPageProperty( 'smw-semanticdata-status', true );
+		// ParserOutput::setExtensionData can only take scalar values
+		$parserOutput->setExtensionData( 'smw-semanticdata-status', 'true' );
 
 		$instance = new ParserAfterTidy(
 			$parser,
