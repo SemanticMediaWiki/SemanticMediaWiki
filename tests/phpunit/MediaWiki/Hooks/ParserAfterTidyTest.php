@@ -216,14 +216,8 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$displayTitle = isset( $parameters['displaytitle'] ) ? $parameters['displaytitle'] : false;
 
-		if ( method_exists( $parserOutput, 'setPageProperty' ) ) {
-			$parserOutput->setPageProperty( 'smw-semanticdata-status', $parameters['data-status'] );
-			$parserOutput->setPageProperty( 'displaytitle', $displayTitle );
-		} else {
-			// MW < 1.38
-			$parserOutput->setProperty( 'smw-semanticdata-status', $parameters['data-status'] );
-			$parserOutput->setProperty( 'displaytitle', $displayTitle );
-		}
+		$parserOutput->setPageProperty( 'smw-semanticdata-status', $parameters['data-status'] );
+		$parserOutput->setPageProperty( 'displaytitle', $displayTitle );
 
 		$text   = '';
 
@@ -322,13 +316,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput->addCategory( 'Foo', 'Foo' );
 		$parserOutput->addCategory( 'Bar', 'Bar' );
-		if ( method_exists( $parserOutput, 'setPageProperty' ) ) {
-			$parserOutput->setPageProperty( 'smw-semanticdata-status', true );
-		} else {
-			// MW < 1.38
-			$parserOutput->setProperty( 'smw-semanticdata-status', true );
-		}
-
+		$parserOutput->setPageProperty( 'smw-semanticdata-status', true );
 
 		$instance = new ParserAfterTidy(
 			$parser,

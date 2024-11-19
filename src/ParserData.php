@@ -349,18 +349,10 @@ class ParserData {
 	public function markParserOutput() {
 		$this->parserOutput->setTimestamp( wfTimestampNow() );
 
-		if ( method_exists( $this->parserOutput, 'setPageProperty' ) ) {
-			$this->parserOutput->setPageProperty(
-				'smw-semanticdata-status',
-				$this->semanticData->getProperties() !== []
-			);
-		} else {
-			// MW < 1.38
-			$this->parserOutput->setProperty(
-				'smw-semanticdata-status',
-				$this->semanticData->getProperties() !== []
-			);
-		}
+		$this->parserOutput->setPageProperty(
+			'smw-semanticdata-status',
+			$this->semanticData->getProperties() !== []
+		);
 	}
 
 	/**
