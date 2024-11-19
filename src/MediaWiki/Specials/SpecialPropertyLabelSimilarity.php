@@ -32,7 +32,7 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 		$output = $this->getOutput();
 		$webRequest = $this->getRequest();
 
-		$output->addModuleStyles( [ 'ext.smw.style' ] );
+		$output->addModuleStyles( [ 'ext.smw.styles' ] );
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );

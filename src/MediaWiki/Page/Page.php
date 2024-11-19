@@ -63,7 +63,7 @@ abstract class Page extends Article {
 	public function view() {
 		$outputPage = $this->getContext()->getOutput();
 		$outputPage->addModuleStyles( [
-			'ext.smw.style',
+			'ext.smw.styles',
 			'ext.smw.page.styles'
 		] );
 

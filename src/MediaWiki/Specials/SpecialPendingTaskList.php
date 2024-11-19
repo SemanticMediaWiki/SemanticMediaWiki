@@ -36,7 +36,7 @@ class SpecialPendingTaskList extends SpecialPage {
 		);
 
 		$output = $this->getOutput();
-		$output->addModuleStyles( 'ext.smw.special.style' );
+		$output->addModuleStyles( 'ext.smw.special.styles' );
 
 		$this->setHeaders();
 

@@ -165,7 +165,7 @@ class SpecialPageProperty extends SpecialPage {
 		$output = $this->getOutput();
 		$output->setPagetitle( wfMessage( 'pageproperty' )->text() );
 
-		$output->addModuleStyles( 'ext.smw.special.style' );
+		$output->addModuleStyles( 'ext.smw.special.styles' );
 		$output->addModules( 'ext.smw.tooltip' );
 
 		$output->addModules( 'ext.smw.autocomplete.property' );

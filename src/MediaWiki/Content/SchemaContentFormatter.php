@@ -87,7 +87,7 @@ class SchemaContentFormatter {
 			'mediawiki.helplink',
 			'smw.content.schema',
 			'mediawiki.content.json',
-			'ext.smw.style',
+			'ext.smw.styles',
 			'ext.smw.table.styles',
 		], SummaryTable::getModuleStyles() );
 	}

@@ -42,7 +42,7 @@ class SpecialWantedProperties extends SpecialPage {
 		$out = $this->getOutput();
 
 		$out->addModuleStyles( [
-			'ext.smw.special.style'
+			'ext.smw.special.styles'
 		] );
 
 		$out->setPageTitle( $this->msg( 'wantedproperties' )->text() );

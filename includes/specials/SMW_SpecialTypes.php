@@ -45,7 +45,7 @@ class SMWSpecialTypes extends SpecialPage {
 		$out = $this->getOutput();
 
 		$out->addModuleStyles( [
-			'ext.smw.style',
+			'ext.smw.styles',
 			'ext.smw.page.styles'
 		] );
 		$out->addModules( 'smw.property.page' );
