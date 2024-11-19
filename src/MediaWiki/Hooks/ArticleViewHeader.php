@@ -76,11 +76,6 @@ class ArticleViewHeader implements HookListener {
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		// Preload data most likely to be used during a request hereby providing
-		// a possibility to bundle relevant data objects early given that this
-		// hook runs before any other GET request
-		$this->store->getObjectIds()->preload( [ $subject ] );
-
 		$changePropagationWatchlist = array_flip(
 			$this->getOption( 'smwgChangePropagationWatchlist', [] )
 		);
