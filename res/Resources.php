@@ -46,7 +46,7 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	'ext.smw.special.styless' => $moduleTemplate + [
+	'ext.smw.special.styles' => $moduleTemplate + [
 		'styles' => [
 			'smw/special/smw.special.preferences.css'
 		],
