@@ -85,10 +85,10 @@
      border-bottom-color: #f7f7f7
 }
 
-.tippy-box[data-theme~='light-border'].square-border-transparent-arrow[data-placement^=bottom] .tippy-arrow::before
+.tippy-box[data-theme~='light-border'].square-border-transparent-arrow[data-placement^=bottom] .tippy-arrow::before,
 .tippy-box[data-theme~='light-border'].square-border-light[data-placement^=bottom] .tippy-arrow::before,
 .tippy-box[data-theme~='light-border'].square-border-transparent-arrow[data-placement^=bottom] .tippy-arrow::after,
-.tippy-box[data-theme~='light-border'].square-border-light[data-placement^=bottom] .tippy-arrow::after,
+.tippy-box[data-theme~='light-border'].square-border-light[data-placement^=bottom] .tippy-arrow::after {
      border-bottom-color: #fff;
 }
 
