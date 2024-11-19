@@ -196,34 +196,31 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	// Tooltip qtip2 resources
-	'ext.jquery.qtip.styles' => $moduleTemplate + [
-		'styles' => 'jquery/jquery.qtip.css',
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// Tooltip qtip2 resources
-	'ext.jquery.qtip' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.qtip.js',
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// Tooltip
+	// Critical CSS for ext.smw.tooltip
 	'ext.smw.tooltip.styles' => $moduleTemplate + [
 		'styles' => [
-			'smw/util/ext.smw.util.tooltip.css'
+			'smw/util/ext.smw.tooltip.css'
 		],
 		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	// Tooltip
-	'ext.smw.tooltip.old' => $moduleTemplate + [
-		'scripts' => 'smw/util/ext.smw.util.tooltip.js',
-		'dependencies' => [
-			'ext.smw.tooltip.styles',
+	'ext.smw.tooltip'  => $moduleTemplate + [
+		'position' => 'top',
+		'styles' => [
+			'libs/tippy/light-border.css',
+			'libs/tippy/scale.css',
+			'smw/util/ext.smw.tooltip.tippy.css'
+		],
+		'scripts'  => [
+			'libs/tippy/popper.min.js',
+			'libs/tippy/tippy.min.js',
+			'smw/util/ext.smw.tooltip.tippy.js'
+		],
+		'dependencies'  => [
 			'ext.smw',
-			'ext.jquery.qtip'
+			'ext.smw.tooltip.styles',
+			'mediawiki.api'
 		],
 		'messages' => [
 			'smw-ui-tooltip-title-property',
@@ -233,25 +230,15 @@ return [
 			'smw-ui-tooltip-title-warning',
 			'smw-ui-tooltip-title-parameter',
 			'smw-ui-tooltip-title-event',
+			'smw-ui-tooltip-title-error',
+			'smw-ui-tooltip-title-note',
+			'smw-ui-tooltip-title-legend',
+			'smw-ui-tooltip-title-reference'
 		],
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// Tooltip
-	'ext.smw.tooltip' => $moduleTemplate + [
-		'dependencies' => [
-			'ext.smw.tooltip.styles',
-			'smw.tippy'
-		],
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	'ext.smw.tooltips' => $moduleTemplate + [
-		'dependencies' => [
-			'ext.smw.style',
-			'smw.tippy'
-		],
-		'targets' => [ 'mobile', 'desktop' ]
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
 	],
 
 	// Autocomplete resources
@@ -769,53 +756,6 @@ return [
 		]
 	],
 
-	'ext.libs.tippy'  => $moduleTemplate + [
-		'styles' => [
-			'libs/tippy/tippy.css',
-			'libs/tippy/light-border.css',
-			'libs/tippy/light.css'
-		],
-		'scripts'  => [
-			'libs/tippy/popper.min.js',
-			'libs/tippy/tippy.js'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'smw.tippy'  => $moduleTemplate + [
-		'styles' => [
-			'smw/util/smw.tippy.css'
-		],
-		'scripts'  => [
-			'smw/util/smw.tippy.js'
-		],
-		'dependencies'  => [
-			'ext.smw',
-			'mediawiki.api',
-			'ext.libs.tippy',
-		],
-		'messages' => [
-			'smw-ui-tooltip-title-property',
-			'smw-ui-tooltip-title-quantity',
-			'smw-ui-tooltip-title-info',
-			'smw-ui-tooltip-title-service',
-			'smw-ui-tooltip-title-warning',
-			'smw-ui-tooltip-title-parameter',
-			'smw-ui-tooltip-title-event',
-			'smw-ui-tooltip-title-error',
-			'smw-ui-tooltip-title-note',
-			'smw-ui-tooltip-title-legend',
-			'smw-ui-tooltip-title-reference'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
 	'smw.entityexaminer'  => $moduleTemplate + [
 		'styles' => [
 			'smw/util/smw.entityexaminer.css'
@@ -824,23 +764,7 @@ return [
 			'smw/util/smw.entityexaminer.js'
 		],
 		'dependencies'  => [
-			'mediawiki.api',
-			'smw.tippy',
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'onoi.qtip' => $moduleTemplate + [
-		'styles' => [
-			'onoi/jquery.qtip/core/jquery.qtip.css',
-			'onoi/jquery.qtip/extended/jquery.qtip.css'
-		],
-		'scripts' => [
-			'onoi/jquery.qtip/core/jquery.qtip.js',
-			'onoi/jquery.qtip/extended/jquery.qtip.js'
+			'mediawiki.api'
 		],
 		'targets' => [
 			'mobile',

@@ -51,7 +51,8 @@ class SpecialFacetedSearch extends SpecialPage {
 				'jquery.makeCollapsible.styles',
 				'smw.ui.styles',
 				'smw.special.search.styles',
-				'ext.smw.style'
+				'ext.smw.style',
+				'ext.smw.tooltip.styles'
 			]
 		);
 
@@ -61,7 +62,7 @@ class SpecialFacetedSearch extends SpecialPage {
 				'jquery.makeCollapsible',
 				'ext.smw.suggester.textInput',
 				'ext.smw.suggester',
-				'ext.smw.tooltips',
+				'ext.smw.tooltip',
 				'smw.tableprinter.datatable',
 				'ext.smw.autocomplete.property'
 			]

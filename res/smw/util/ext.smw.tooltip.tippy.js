@@ -48,15 +48,16 @@
 
 	var options = {
 		target: '.smw-highlighter',
+		allowHTML: true,
 		arrow: true,
+		appendTo: document.body,
 		interactive: true,
 		placement: "top",
-		flipOnUpdate: true,
 		theme: 'light-border',
 		animation: 'scale',
 		hideOnClick: false,
 		ignoreAttributes: true,
-		maxWidth:260,
+		maxWidth: 260,
 
 		/**
 		 * Function invoked when the tippy begins to transition in
@@ -109,7 +110,7 @@
 				}
 
 				if ( tip.reference.getAttribute( "data-tooltipclass" ) ) {
-					tip.popperChildren.tooltip.classList.add( tip.reference.getAttribute( "data-tooltipclass" ) );
+					tip.popper.firstElementChild.tooltip.classList.add( tip.reference.getAttribute( "data-tooltipclass" ) );
 				}
 
 				if ( tip.reference.getAttribute( "data-theme" ) ) {
@@ -261,8 +262,7 @@
 		};
 
 		options.target = target;
-
-		tippy( context, options );
+		tippy.delegate( context, options );
 	};
 
 	/**
@@ -306,9 +306,9 @@
 
 	// Running in default mode which would be on
 	// $( document ).ready( function() { ... } ); when relying on jQuery
-	tippy( '#bodyContent', options )
-	tippy( '#mw-data-after-content', options )
-	tippy( '.mw-indicators', options )
+	tippy.delegate( '#bodyContent', options )
+	tippy.delegate( '#mw-data-after-content', options )
+	tippy.delegate( '.mw-indicators', options )
 
 	/**
 	 * Factory

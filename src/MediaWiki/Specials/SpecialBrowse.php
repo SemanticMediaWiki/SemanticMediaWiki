@@ -77,12 +77,14 @@ class SpecialBrowse extends SpecialPage {
 			'mediawiki.ui',
 			'mediawiki.ui.button',
 			'mediawiki.ui.input',
+			'ext.smw.style',
+			'ext.smw.tooltip.styles',
 			'ext.smw.browse.styles'
 		] );
 
 		$out->addModules( [
 			'ext.smw.browse',
-			'ext.smw.tooltips'
+			'ext.smw.tooltip'
 		] );
 
 		$out->addHTML(
