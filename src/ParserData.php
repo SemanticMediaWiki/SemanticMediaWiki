@@ -351,7 +351,7 @@ class ParserData {
 
 		$this->parserOutput->setExtensionData(
 			'smw-semanticdata-status',
-			$this->semanticData->getProperties() !== [] ?? false
+			$this->semanticData->getProperties() !== []
 		);
 	}
 
@@ -370,7 +370,7 @@ class ParserData {
 	 * @return boolean
 	 */
 	public static function hasSemanticData( ParserOutput $parserOutput ) {
-		return $parserOutput->getExtensionData( 'smw-semanticdata-status' );
+		return $parserOutput->getExtensionData( 'smw-semanticdata-status' ) ?? false;
 	}
 
 	/**
