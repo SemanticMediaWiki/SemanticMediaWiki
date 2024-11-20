@@ -68,7 +68,7 @@
 
 			// Set a possinle maxwidth before accessing the props
 			if ( tip.reference.getAttribute( "data-maxwidth" ) ) {
-				tip.set( { maxWidth: parseInt( tip.reference.getAttribute( "data-maxwidth" ) ) } );
+				tip.setProps( { maxWidth: parseInt( tip.reference.getAttribute( "data-maxwidth" ) ) } );
 			}
 
 			// Move away from the `bodyContent` border
@@ -83,11 +83,11 @@
 				var center = ( tip.props.maxWidth / 2 ) - ( tip.reference.offsetWidth / 2 );
 
 				if ( distance == 0 ) {
-					tip.set( { offset: center } );
+					tip.setProps( { offset: center } );
 				} else if ( distance < center && isRTL ) {
-					tip.set( { offset: -center + distance } );
+					tip.setProps( { offset: -center + distance } );
 				} else if ( distance < center ) {
-					tip.set( { offset: center - distance } );
+					tip.setProps( { offset: center - distance } );
 				}
 			}
 
