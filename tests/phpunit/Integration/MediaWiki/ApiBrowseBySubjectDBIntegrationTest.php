@@ -135,15 +135,9 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 			'browsebysubject'
 		);
 
-		// Went away with 1.26/1.27
-		if ( function_exists( 'setRawMode' ) && $asRawMode ) {
-			$instance->getMain()->getResult()->setRawMode();
-		}
-
 		$instance->execute();
 
-		// MW 1.25
-		return method_exists( $instance, 'getResult' ) ? $instance->getResult() : $instance;
+		return $instance->getResult();
 	}
 
 }

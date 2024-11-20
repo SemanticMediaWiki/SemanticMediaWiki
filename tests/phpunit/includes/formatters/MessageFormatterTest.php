@@ -110,11 +110,8 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		foreach ( $messages as $msg ) {
 			$this->assertInstanceOf( '\Message', $msg );
 
-			// getParams() only got added in MW 1.21
-			if ( method_exists( $msg, 'getParams' ) ) {
-				foreach ( $msg->getParams() as $result ) {
-					$this->assertEquals( $param, $result );
-				}
+			foreach ( $msg->getParams() as $result ) {
+				$this->assertEquals( $param, $result );
 			}
 		}
 	}

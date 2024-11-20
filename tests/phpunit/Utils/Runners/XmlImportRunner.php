@@ -84,24 +84,20 @@ class XmlImportRunner {
 			$config = \ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
 		}
 
-		if ( version_compare( MW_VERSION, '1.37', '<' ) ) {
-			$importer = new WikiImporter( $source->value, $config );
-		} else {
-			$services = MediaWikiServices::getInstance();
-			$importer = new WikiImporter(
-				$source->value,
-				$config,
-				$services->getHookContainer(),
-				$services->getContentLanguage(),
-				$services->getNamespaceInfo(),
-				$services->getTitleFactory(),
-				$services->getWikiPageFactory(),
-				$services->getWikiRevisionUploadImporter(),
-				$services->getPermissionManager(),
-				$services->getContentHandlerFactory(),
-				$services->getSlotRoleRegistry()
-			);
-		}
+		$services = MediaWikiServices::getInstance();
+		$importer = new WikiImporter(
+			$source->value,
+			$config,
+			$services->getHookContainer(),
+			$services->getContentLanguage(),
+			$services->getNamespaceInfo(),
+			$services->getTitleFactory(),
+			$services->getWikiPageFactory(),
+			$services->getWikiRevisionUploadImporter(),
+			$services->getPermissionManager(),
+			$services->getContentHandlerFactory(),
+			$services->getSlotRoleRegistry()
+		);
 		$importer->setDebug( $this->verbose );
 
 		$reporter = new ImportReporter(

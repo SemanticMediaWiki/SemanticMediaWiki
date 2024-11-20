@@ -312,6 +312,7 @@ return [
 		],
 		'styles' => 'smw/special.search/search.css',
 		'dependencies' => [
+			'ext.smw.styles',
 			'ext.smw',
 			'smw.ui'
 		],
@@ -745,6 +746,7 @@ return [
 			'smw/util/smw.entityexaminer.js'
 		],
 		'dependencies'  => [
+			'ext.smw',
 			'mediawiki.api'
 		],
 		'targets' => [

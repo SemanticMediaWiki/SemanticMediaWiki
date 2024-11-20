@@ -297,12 +297,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 			$jobs[] = new PSCreatePageJob( $propTitle, $jobParams );
 		}
 
-		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
-			// MW 1.37+
-			MediaWikiServices::getInstance()->getJobQueueGroup()->push( $jobs );
-		} else {
-			JobQueueGroup::singleton()->push( $jobs );
-		}
+		MediaWikiServices::getInstance()->getJobQueueGroup()->push( $jobs );
 	}
 
 	/**

@@ -146,15 +146,8 @@ class InternalParseBeforeLinks implements HookListener {
 		return true;
 	}
 
-	/**
-	 * #656 / MW 1.24+
-	 */
 	private function getRedirectTarget() {
-		if ( method_exists( $this->parser->getOptions(), 'getRedirectTarget' ) ) {
-			return $this->parser->getOptions()->getRedirectTarget();
-		}
-
-		return null;
+		return $this->parser->getOptions()->getRedirectTarget();
 	}
 
 }

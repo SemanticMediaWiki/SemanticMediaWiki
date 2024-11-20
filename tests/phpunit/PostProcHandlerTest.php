@@ -260,11 +260,9 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		if ( version_compare( MW_VERSION, '1.39', '>=' ) ) {
-			$this->markTestSkipped(
-				"Check smwLikelyOutdatedDependencies set up for MW >= 1.39"
-			);
-		}
+		$this->markTestSkipped(
+			"Check smwLikelyOutdatedDependencies set up for MW >= 1.39"
+		);
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()

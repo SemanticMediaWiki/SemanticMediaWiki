@@ -38,18 +38,15 @@ class SearchEngineFactory {
 		$type = $settings->get( 'smwgFallbackSearchType' );
 		$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
 
-		// https://github.com/wikimedia/mediawiki/commit/f92a1a6db3b659d9943ca66eacff99b5e4133c7b
-		if ( version_compare( MW_VERSION, '1.34', '>=' ) ) {
-			$connection = $applicationFactory->create( 'DBLoadBalancer' );
-		}
+		$dbLoadBalancer = $applicationFactory->create( 'DBLoadBalancer' );
 
 		if ( is_callable( $type ) ) {
 			// #3939
-			$fallbackSearchEngine = $type( $connection );
+			$fallbackSearchEngine = $type( $dbLoadBalancer );
 		} elseif ( $type !== null && $this->isValidSearchDatabaseType( $type ) ) {
-			$fallbackSearchEngine = new $type( $connection );
+			$fallbackSearchEngine = new $type( $dbLoadBalancer );
 		} else {
-			$fallbackSearchEngine = new $defaultSearchEngine( $connection );
+			$fallbackSearchEngine = new $defaultSearchEngine( $dbLoadBalancer );
 		}
 
 		if ( !$fallbackSearchEngine instanceof SearchEngine ) {
