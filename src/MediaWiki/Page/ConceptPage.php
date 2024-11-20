@@ -54,7 +54,7 @@ class ConceptPage extends Page {
 	protected function getHtml() {
 		$context = $this->getContext();
 		$context->getOutput()->addModuleStyles( [
-			'ext.smw.style',
+			'ext.smw.styles',
 			'ext.smw.page.styles'
 		] );
 

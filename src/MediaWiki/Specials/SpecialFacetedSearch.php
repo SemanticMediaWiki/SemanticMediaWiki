@@ -47,11 +47,11 @@ class SpecialFacetedSearch extends SpecialPage {
 		$output->addModuleStyles(
 			[
 				'smw.special.facetedsearch.styles',
-				'ext.smw.special.style',
+				'ext.smw.special.styles',
 				'jquery.makeCollapsible.styles',
 				'smw.ui.styles',
 				'smw.special.search.styles',
-				'ext.smw.style',
+				'ext.smw.styles',
 				'ext.smw.tooltip.styles'
 			]
 		);

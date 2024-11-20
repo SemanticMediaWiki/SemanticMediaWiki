@@ -198,7 +198,7 @@ class SpecialAsk extends SpecialPage {
 		$request = $this->getRequest();
 
 		$out->addModuleStyles( [
-			'ext.smw.style',
+			'ext.smw.styles',
 			'ext.smw.ask.styles',
 			'ext.smw.page.styles',
 			'ext.smw.table.styles'

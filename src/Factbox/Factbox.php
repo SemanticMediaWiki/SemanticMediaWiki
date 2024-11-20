@@ -284,7 +284,7 @@ class Factbox {
 	 */
 	public static function getModules() {
 		return [
-			'ext.smw.style',
+			'ext.smw.styles',
 			'ext.smw.table.styles',
 			'smw.factbox'
 		];

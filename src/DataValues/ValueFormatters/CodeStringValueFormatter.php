@@ -38,7 +38,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 		// HTML-safe (it will also work in wiki context). The result will
 		// contain mark-up that must not be escaped again.
 
-		Outputs::requireResource( 'ext.smw.style' );
+		Outputs::requireResource( 'ext.smw.styles' );
 
 		if ( $this->isJson( $text ) ) {
 			$result = self::asJson( $text );

@@ -28,7 +28,7 @@ return [
 	// Resource is loaded at the top otherwise the stylesheet will only
 	// become active after all content is loaded with icons appearing with a
 	// delay due to missing stylesheet definitions at the time of the display
-	'ext.smw.style' => $moduleTemplate + [
+	'ext.smw.styles' => $moduleTemplate + [
 		'styles' => [
 			'smw/ext.smw.css',
 			'smw/ext.smw.dropdown.css',
@@ -42,13 +42,6 @@ return [
 			'chameleon' => [ 'smw/ext.smw.skin-chameleon.css' ],
 			'foreground' => [ 'smw/ext.smw.skin-foreground.css' ],
 			'vector' => [ 'smw/ext.smw.skin-vector.css' ]
-		],
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	'ext.smw.special.styles' => $moduleTemplate + [
-		'styles' => [
-			'smw/special/smw.special.preferences.css'
 		],
 		'targets' => [ 'mobile', 'desktop' ]
 	],
@@ -74,9 +67,10 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	'ext.smw.special.style' => $moduleTemplate + [
+	'ext.smw.special.styles' => $moduleTemplate + [
 		'styles' => [
-			'smw/special/ext.smw.special.css'
+			'smw/special/ext.smw.special.css',
+			'smw/special/ext.smw.special.preferences.css'
 		],
 		'targets' => [ 'mobile', 'desktop' ]
 	],
@@ -441,7 +435,7 @@ return [
 		'scripts' => 'smw/special/ext.smw.special.ask.js',
 		'dependencies' => [
 			'ext.smw.tooltip',
-			'ext.smw.style',
+			'ext.smw.styles',
 			'ext.smw.ask.styles',
 			'ext.smw.suggester'
 		],
@@ -491,7 +485,7 @@ return [
 		'scripts' => 'smw/special/ext.smw.special.browse.js',
 		'dependencies' => [
 			'mediawiki.api',
-			'ext.smw.style'
+			'ext.smw.styles'
 		],
 		'messages' => [
 			'smw-browse-api-subject-serialization-invalid'
