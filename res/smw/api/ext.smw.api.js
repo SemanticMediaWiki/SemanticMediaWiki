@@ -115,7 +115,7 @@
 				// with this key can be reused
 				var hash = md5( queryString );
 
-				var resultObject = $.jStorage.get( hash );
+				var resultObject = mw.storage.get( hash );
 				if ( resultObject !== null ) {
 					var results = self.parse( resultObject );
 					results.isCached = true;
@@ -136,9 +136,7 @@
 					// Store only the string as we want to return a typed object
 					// If useCache is not a number use 15 min as default ttl
 					if ( useCache ){
-						$.jStorage.set( hash, data, {
-							TTL: $.type( useCache ) === 'number' ? useCache : 900000
-						} );
+						mw.storage.set( hash, data, ( typeof useCache === 'number' ) ? useCache : 900000 );
 					}
 
 					var results;
