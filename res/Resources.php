@@ -114,11 +114,6 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	// md5 hash key generator
-	'ext.jquery.md5' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.md5.js'
-	],
-
 	// dataItem representation
 	'ext.smw.dataItem' => $moduleTemplate + [
 		'scripts' => [
@@ -172,8 +167,7 @@ return [
 			'mediawiki.storage',
 			'mediawiki.util',
 			'ext.smw.data',
-			'ext.smw.query',
-			'ext.jquery.md5'
+			'ext.smw.query'
 		]
 	],
 
