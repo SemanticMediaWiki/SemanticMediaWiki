@@ -78,8 +78,19 @@
 			return $.parseJSON( data );
 		},
 
-		// @see https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript/52171480#52171480
+		/**
+		 * Generates a 53-bit string hash using the cyrb53 algorithm.
+		 *
+		 * @param {string} str - The string to hash
+		 * @param {number} [seed=0] - An optional seed value
+		 * @return {number} A 53-bit integer hash of the string
+		 * @throws {Error} If str is not a string
+		 * @see https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript/52171480#52171480
+		 */
 		hash: function( str, seed = 0 ) {
+			if (typeof str !== 'string') {
+				throw new Error( 'Input must be a string' );
+			}
 			var h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
 			for(var i = 0, ch; i < str.length; i++) {
 				ch = str.charCodeAt(i);
