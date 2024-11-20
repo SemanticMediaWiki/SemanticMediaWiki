@@ -325,6 +325,7 @@ return [
 		],
 		'styles' => 'smw/special.search/search.css',
 		'dependencies' => [
+			'ext.smw.styles',
 			'ext.smw',
 			'smw.ui'
 		],
