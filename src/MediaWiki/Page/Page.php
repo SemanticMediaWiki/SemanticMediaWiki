@@ -88,7 +88,6 @@ abstract class Page extends Article {
 		$diffOnly = $request->getBool( 'diffonly', $userOptionsLookup->getOption( $user, 'diffonly' ) );
 
 		if ( !isset( $diff ) || !$diffOnly ) {
-			$outputPage->setIndicators( $indicators );
 			$outputPage->addHTML( $this->initHtml() );
 			$outputPage->addHTML( $this->beforeView() );
 		}
@@ -140,15 +139,6 @@ abstract class Page extends Article {
 	 */
 	protected function getRedirectTargetURL() {
 		return false;
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return string
-	 */
-	protected function getTopIndicators() {
-		return '';
 	}
 
 	/**
