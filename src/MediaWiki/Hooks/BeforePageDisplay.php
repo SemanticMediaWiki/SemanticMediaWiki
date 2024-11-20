@@ -63,7 +63,6 @@ class BeforePageDisplay implements HookListener {
 	public function process( OutputPage $outputPage, Skin $skin ) {
 		$title = $outputPage->getTitle();
 		$user = $outputPage->getUser();
-
 		// #2726
 		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
 		if ( $userOptionsLookup->getOption( $user, 'smw-prefs-general-options-suggester-textinput' ) ) {
@@ -75,7 +74,11 @@ class BeforePageDisplay implements HookListener {
 		}
 
 		// Add export link to the head
-		if ( $title instanceof Title && !$title->isSpecialPage() ) {
+		if (
+			$this->getOption( 'smwgEnableExportRDFLink' ) &&
+			$title instanceof Title &&
+			!$title->isSpecialPage()
+		) {
 			$link['rel']   = 'alternate';
 			$link['type']  = 'application/rdf+xml';
 			$link['title'] = $title->getPrefixedText();
