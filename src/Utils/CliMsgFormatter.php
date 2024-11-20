@@ -206,7 +206,7 @@ class CliMsgFormatter {
 		// "...osx uses \r as carriage return and line feed ..." hence using
 		// `\033[0G` instead
 
-		return ( version_compare( PHP_VERSION, '7.3', '<' ) ? "\r" : "\033[0G" ) . ( sprintf( "%-{$len}s%s", "$firstCol" . sprintf( "%'{$placeHolder}{$placeholderLen}s", ' ' ), $secondCol ) );
+		return "\033[0G" . ( sprintf( "%-{$len}s%s", "$firstCol" . sprintf( "%'{$placeHolder}{$placeholderLen}s", ' ' ), $secondCol ) );
 	}
 
 	/**

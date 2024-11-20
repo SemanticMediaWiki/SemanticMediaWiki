@@ -1036,9 +1036,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function callPersonalUrls( $instance ) {
-		if ( version_compare( MW_VERSION, '1.37', '>=' ) ) {
-			$this->markTestSkipped( 'The PersonalUrls hook does not exist on MW 1.37 and newer.' );
-		}
+		$this->markTestSkipped( 'The PersonalUrls hook does not exist on MW 1.37 and newer.' );
 
 		$preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
 			->disableOriginalConstructor()

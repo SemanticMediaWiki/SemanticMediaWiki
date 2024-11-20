@@ -117,8 +117,7 @@ return [
 	// Avoid "Warning: Use of the json module is deprecated since MediaWiki 1.29"
 	// jStorage was added in MW 1.20
 	'ext.jquery.jStorage' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.jstorage.js',
-		'dependencies' => version_compare( MW_VERSION, '1.29', '<' ) ? 'json' : [],
+		'scripts' => 'jquery/jquery.jstorage.js'
 	],
 
 	// md5 hash key generator

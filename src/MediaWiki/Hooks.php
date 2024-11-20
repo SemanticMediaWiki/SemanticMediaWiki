@@ -314,12 +314,6 @@ class Hooks {
 			'AdminLinks' => [ $this, 'onAdminLinks' ],
 			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]
 		];
-
-		if ( version_compare( MW_VERSION, '1.37', '<' ) ) {
-			$this->handlers += [
-				'PersonalUrls' => [ $this, 'onPersonalUrls' ]
-			];
-		}
 	}
 
 	/**
