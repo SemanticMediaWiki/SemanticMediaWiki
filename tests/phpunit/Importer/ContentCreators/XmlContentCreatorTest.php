@@ -23,10 +23,6 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		if ( !interface_exists( '\ImportSource' ) ) {
-			$this->markTestSkipped( "ImportSource interface is unknown (MW 1.25-)" );
-		}
-
 		$importStreamSource = $this->getMockBuilder( '\ImportStreamSource' )
 			->disableOriginalConstructor()
 			->getMock();

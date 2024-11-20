@@ -135,7 +135,7 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->registerAliasByMsgKey( '_Foo', 'smw-bar' );
 
-		$msgKey = version_compare( MW_VERSION, '1.28', '<' ) ? '<smw-bar>' : '⧼smw-bar⧽';
+		$msgKey = '⧼smw-bar⧽';
 
 		$this->assertEquals(
 			[ $msgKey => '_Foo' ],

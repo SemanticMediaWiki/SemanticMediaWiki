@@ -76,12 +76,6 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function testReduceLengthToNearestWholeWordForNonLatinString() {
-		if ( version_compare( phpversion(), '5.4', '<' ) ) {
-			$this->markTestSkipped(
-				"Boo, PHP 5.3 returns with `Failed asserting that 9 matches expected 3`"
-			);
-		}
-
 		$instance = new Sanitizer( '一　二　三' );
 		$instance->reduceLengthTo( 3 );
 
