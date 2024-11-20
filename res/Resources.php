@@ -759,6 +759,7 @@ return [
 			'smw/util/smw.entityexaminer.js'
 		],
 		'dependencies'  => [
+			'ext.smw',
 			'mediawiki.api'
 		],
 		'targets' => [
