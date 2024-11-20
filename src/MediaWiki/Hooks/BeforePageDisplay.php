@@ -83,12 +83,6 @@ class BeforePageDisplay implements HookListener {
 			$outputPage->addLink( $link );
 		}
 
-		$request = $skin->getContext()->getRequest();
-
-		if ( in_array( $request->getVal( 'action' ), [ 'delete', 'edit', 'protect', 'unprotect', 'diff', 'history' ] ) || $request->getVal( 'diff' ) ) {
-			return true;
-		}
-
 		return true;
 	}
 
