@@ -89,42 +89,6 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	// dataItem representation
-	'ext.smw.dataItem' => $moduleTemplate + [
-		'scripts' => [
-			'smw/data/ext.smw.dataItem.wikiPage.js',
-			'smw/data/ext.smw.dataItem.uri.js',
-			'smw/data/ext.smw.dataItem.time.js',
-			'smw/data/ext.smw.dataItem.property.js',
-			'smw/data/ext.smw.dataItem.unknown.js',
-			'smw/data/ext.smw.dataItem.number.js',
-			'smw/data/ext.smw.dataItem.text.js',
-			'smw/data/ext.smw.dataItem.geo.js',
-		],
-		'dependencies' => [
-			'ext.smw',
-			'mediawiki.Title',
-			'mediawiki.Uri'
-		]
-	],
-
-	// dataValue representation
-	'ext.smw.dataValue' => $moduleTemplate + [
-		'scripts' => [
-			'smw/data/ext.smw.dataValue.quantity.js',
-		],
-		'dependencies' => 'ext.smw.dataItem'
-	],
-
-	// dataItem representation
-	'ext.smw.data' => $moduleTemplate + [
-		'scripts' => 'smw/data/ext.smw.data.js',
-		'dependencies' => [
-			'ext.smw.dataItem',
-			'ext.smw.dataValue'
-		]
-	],
-
 	// Query
 	'ext.smw.query' => $moduleTemplate + [
 		'scripts' => 'smw/query/ext.smw.query.js',
@@ -137,10 +101,24 @@ return [
 
 	// API
 	'ext.smw.api' => $moduleTemplate + [
-		'scripts' => 'smw/api/ext.smw.api.js',
+		'scripts' => [
+			'smw/data/ext.smw.dataItem.wikiPage.js',
+			'smw/data/ext.smw.dataItem.uri.js',
+			'smw/data/ext.smw.dataItem.time.js',
+			'smw/data/ext.smw.dataItem.property.js',
+			'smw/data/ext.smw.dataItem.unknown.js',
+			'smw/data/ext.smw.dataItem.number.js',
+			'smw/data/ext.smw.dataItem.text.js',
+			'smw/data/ext.smw.dataItem.geo.js',
+			'smw/data/ext.smw.dataValue.quantity.js',
+			'smw/data/ext.smw.data.js',
+			'smw/api/ext.smw.api.js'
+		],
 		'dependencies' => [
+			'mediawiki.Title',
 			'mediawiki.storage',
 			'mediawiki.util',
+			'ext.smw',
 			'ext.smw.data',
 			'ext.smw.query'
 		]
