@@ -26,7 +26,14 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		if ( version_compare( MW_VERSION, '1.40', '>' ) ) {
+			$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+				->disableOriginalConstructor()
+				->getMockForAbstractClass();
+			return;
+		}
+
+		$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
