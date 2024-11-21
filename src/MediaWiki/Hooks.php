@@ -461,7 +461,8 @@ class Hooks {
 		$beforePageDisplay->setOptions(
 			[
 				'incomplete_tasks' => $setupFile->findIncompleteTasks(),
-				'is_upgrade' => $setupFile->get( SetupFile::PREVIOUS_VERSION )
+				'is_upgrade' => $setupFile->get( SetupFile::PREVIOUS_VERSION ),
+				'smwgEnableExportRDFLink' => $GLOBALS['smwgEnableExportRDFLink'],
 			]
 		);
 
