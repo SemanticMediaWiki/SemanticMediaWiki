@@ -691,16 +691,6 @@ return [
 		]
 	],
 
-	'jquery.mark.js'  => $moduleTemplate + [
-		'scripts'  => [
-			'jquery/jquery.mark.js'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
 	'smw.jsonview.styles' => $moduleTemplate + [
 		'styles' => [
 			'smw/smw.jsonview.css'
@@ -713,6 +703,7 @@ return [
 
 	'smw.jsonview' => $moduleTemplate + [
 		'scripts' => [
+			'jquery/jquery.mark.js',
 			'smw/smw.jsonview.js'
 		],
 		'styles' => [
@@ -729,7 +720,6 @@ return [
 		],
 		'dependencies'  => [
 			'jquery.jsonview',
-			'jquery.mark.js',
 			'ext.smw'
 		],
 		'targets' => [
