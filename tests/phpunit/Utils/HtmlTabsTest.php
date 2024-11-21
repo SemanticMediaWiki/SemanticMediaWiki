@@ -57,7 +57,11 @@ class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 
 		$actual = $instance->buildHTML( [ 'class' => 'foo-bar' ] );
 		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
-		$actual = str_replace( '/&gt;', '&gt;', $actual );
+		$actual = str_replace(
+			html_entity_encode( '/>' ),
+			html_entity_encode( '>' ),
+			$actual
+		);
 
 		$this->assertContains(
 			'<div class="smw-tabs smw-subtab foo-bar" ' .
