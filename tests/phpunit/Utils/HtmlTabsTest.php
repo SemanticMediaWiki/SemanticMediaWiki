@@ -67,7 +67,7 @@ class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 			'id=\&quot;tab-label-foo\&quot; for=\&quot;tab-foo\&quot; ' .
 			'class=\&quot;nav-label\&quot;&gt;FOO&lt;\/label&gt;&quot;">' .
 			'<div id="tab-content-foo" class="subtab-content">< ... bar ... ></div></div>',
-			$instance->buildHTML( [ 'class' => 'foo-bar' ] )
+			$actual
 		);
 	}
 
