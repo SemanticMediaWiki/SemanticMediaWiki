@@ -114,17 +114,6 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	// Avoid "Warning: Use of the json module is deprecated since MediaWiki 1.29"
-	// jStorage was added in MW 1.20
-	'ext.jquery.jStorage' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.jstorage.js'
-	],
-
-	// md5 hash key generator
-	'ext.jquery.md5' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.md5.js'
-	],
-
 	// dataItem representation
 	'ext.smw.dataItem' => $moduleTemplate + [
 		'scripts' => [
@@ -175,11 +164,10 @@ return [
 	'ext.smw.api' => $moduleTemplate + [
 		'scripts' => 'smw/api/ext.smw.api.js',
 		'dependencies' => [
+			'mediawiki.storage',
 			'mediawiki.util',
 			'ext.smw.data',
-			'ext.smw.query',
-			'ext.jquery.jStorage',
-			'ext.jquery.md5'
+			'ext.smw.query'
 		]
 	],
 
