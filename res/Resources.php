@@ -46,9 +46,16 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
+	// https://github.com/TerryZ/SelectMenu
 	'smw.ui' => $moduleTemplate + [
-		'scripts' => 'smw/smw.ui.js',
-		'dependencies' => [ 'ext.smw', 'jquery.selectmenu' ],
+		'scripts' => [
+			'jquery/jquery.selectmenu.js',
+			'smw/smw.ui.js'
+		],
+		'dependencies' => [
+			'ext.smw',
+			'smw.ui.styles'
+		],
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
@@ -75,79 +82,11 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	// https://github.com/TerryZ/SelectMenu
-	'jquery.selectmenu' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.selectmenu.js',
-		'dependencies' => [
-			'jquery.selectmenu.styles'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'jquery.selectmenu.styles' => $moduleTemplate + [
-		'styles' => [
-			'jquery/jquery.selectmenu.css',
-			'smw/smw.selectmenu.css'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'jquery.jsonview' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.jsonview.js',
-		'styles' => 'jquery/jquery.jsonview.css',
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
 	// Load the module explicitly, otherwise mobile will complain with
 	// "Uncaught Error: Unknown dependency: jquery.async"
 	'ext.jquery.async' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.async.js',
 		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// dataItem representation
-	'ext.smw.dataItem' => $moduleTemplate + [
-		'scripts' => [
-			'smw/data/ext.smw.dataItem.wikiPage.js',
-			'smw/data/ext.smw.dataItem.uri.js',
-			'smw/data/ext.smw.dataItem.time.js',
-			'smw/data/ext.smw.dataItem.property.js',
-			'smw/data/ext.smw.dataItem.unknown.js',
-			'smw/data/ext.smw.dataItem.number.js',
-			'smw/data/ext.smw.dataItem.text.js',
-			'smw/data/ext.smw.dataItem.geo.js',
-		],
-		'dependencies' => [
-			'ext.smw',
-			'mediawiki.Title',
-			'mediawiki.Uri'
-		]
-	],
-
-	// dataValue representation
-	'ext.smw.dataValue' => $moduleTemplate + [
-		'scripts' => [
-			'smw/data/ext.smw.dataValue.quantity.js',
-		],
-		'dependencies' => 'ext.smw.dataItem'
-	],
-
-	// dataItem representation
-	'ext.smw.data' => $moduleTemplate + [
-		'scripts' => 'smw/data/ext.smw.data.js',
-		'dependencies' => [
-			'ext.smw.dataItem',
-			'ext.smw.dataValue'
-		]
 	],
 
 	// Query
@@ -162,11 +101,24 @@ return [
 
 	// API
 	'ext.smw.api' => $moduleTemplate + [
-		'scripts' => 'smw/api/ext.smw.api.js',
+		'scripts' => [
+			'smw/data/ext.smw.dataItem.wikiPage.js',
+			'smw/data/ext.smw.dataItem.uri.js',
+			'smw/data/ext.smw.dataItem.time.js',
+			'smw/data/ext.smw.dataItem.property.js',
+			'smw/data/ext.smw.dataItem.unknown.js',
+			'smw/data/ext.smw.dataItem.number.js',
+			'smw/data/ext.smw.dataItem.text.js',
+			'smw/data/ext.smw.dataItem.geo.js',
+			'smw/data/ext.smw.dataValue.quantity.js',
+			'smw/data/ext.smw.data.js',
+			'smw/api/ext.smw.api.js'
+		],
 		'dependencies' => [
+			'mediawiki.Title',
 			'mediawiki.storage',
 			'mediawiki.util',
-			'ext.smw.data',
+			'ext.smw',
 			'ext.smw.query'
 		]
 	],
@@ -342,29 +294,16 @@ return [
 	],
 
 	// https://github.com/ichord/Caret.js
-	'ext.jquery.caret' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.caret.js',
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
 	// https://github.com/ichord/At.js
-	'ext.jquery.atwho' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.atwho.js',
-		'styles' => 'jquery/jquery.atwho.css',
-		'dependencies' => [
-			'ext.jquery.caret'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
 	'ext.smw.suggester' => $moduleTemplate + [
-		'scripts' => 'smw/suggester/ext.smw.suggester.js',
+		'scripts' => [
+			'jquery/jquery.caret.js',
+			'jquery/jquery.atwho.js',
+			'smw/suggester/ext.smw.suggester.js'
+		],
+		'styles' => [
+			'jquery/jquery.atwho.css'
+		],
 		'dependencies' => [
 			'ext.smw',
 			'ext.jquery.atwho'
@@ -689,16 +628,6 @@ return [
 		]
 	],
 
-	'jquery.mark.js'  => $moduleTemplate + [
-		'scripts'  => [
-			'jquery/jquery.mark.js'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
 	'smw.jsonview.styles' => $moduleTemplate + [
 		'styles' => [
 			'smw/smw.jsonview.css'
@@ -711,9 +640,12 @@ return [
 
 	'smw.jsonview' => $moduleTemplate + [
 		'scripts' => [
+			'jquery/jquery.jsonview.js',
+			'jquery/jquery.mark.js',
 			'smw/smw.jsonview.js'
 		],
 		'styles' => [
+			'jquery/jquery.jsonview.css',
 			'smw/smw.jsonview.css'
 		],
 		'messages' => [
@@ -726,8 +658,6 @@ return [
 			'smw-jsonview-search-label'
 		],
 		'dependencies'  => [
-			'jquery.jsonview',
-			'jquery.mark.js',
 			'ext.smw'
 		],
 		'targets' => [
