@@ -617,7 +617,6 @@ return [
 		'scripts'  => [ 'smw/deferred/ext.smw.deferred.js' ],
 		'dependencies'  => [
 			'mediawiki.api',
-			'mediawiki.api.parse',
 			'onoi.rangeslider'
 		],
 		'messages' => [
@@ -646,7 +645,6 @@ return [
 		'scripts'  => [ 'smw/util/smw.property.page.js' ],
 		'dependencies'  => [
 			'mediawiki.api',
-			'mediawiki.api.parse',
 			'ext.smw.tooltip',
 			'smw.jsonview'
 		],
