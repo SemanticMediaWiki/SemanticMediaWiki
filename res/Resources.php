@@ -98,15 +98,6 @@ return [
 		]
 	],
 
-	'jquery.jsonview' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.jsonview.js',
-		'styles' => 'jquery/jquery.jsonview.css',
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
 	// Load the module explicitly, otherwise mobile will complain with
 	// "Uncaught Error: Unknown dependency: jquery.async"
 	'ext.jquery.async' => $moduleTemplate + [
@@ -703,10 +694,12 @@ return [
 
 	'smw.jsonview' => $moduleTemplate + [
 		'scripts' => [
+			'jquery/jquery.jsonview.js',
 			'jquery/jquery.mark.js',
 			'smw/smw.jsonview.js'
 		],
 		'styles' => [
+			'jquery/jquery.jsonview.css',
 			'smw/smw.jsonview.css'
 		],
 		'messages' => [
@@ -719,7 +712,6 @@ return [
 			'smw-jsonview-search-label'
 		],
 		'dependencies'  => [
-			'jquery.jsonview',
 			'ext.smw'
 		],
 		'targets' => [
