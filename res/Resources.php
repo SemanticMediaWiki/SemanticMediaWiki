@@ -333,29 +333,16 @@ return [
 	],
 
 	// https://github.com/ichord/Caret.js
-	'ext.jquery.caret' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.caret.js',
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
 	// https://github.com/ichord/At.js
-	'ext.jquery.atwho' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.atwho.js',
-		'styles' => 'jquery/jquery.atwho.css',
-		'dependencies' => [
-			'ext.jquery.caret'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
 	'ext.smw.suggester' => $moduleTemplate + [
-		'scripts' => 'smw/suggester/ext.smw.suggester.js',
+		'scripts' => [
+			'jquery/jquery.caret.js',
+			'jquery/jquery.atwho.js',
+			'smw/suggester/ext.smw.suggester.js'
+		],
+		'styles' => [
+			'jquery/jquery.atwho.css'
+		],
 		'dependencies' => [
 			'ext.smw',
 			'ext.jquery.atwho'
