@@ -24,6 +24,12 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
+		// Don't know why this is undefined but it is required by
+		// testReadFromFile_InvalidJSON_ThrowsException()
+		if ( !defined( 'SMW_PHPUNIT_DIR' ) ) {
+			define( 'SMW_PHPUNIT_DIR', __DIR__ );
+		}
+
 		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
 			->disableOriginalConstructor()
 			->getMock();
