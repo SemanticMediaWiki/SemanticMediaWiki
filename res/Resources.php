@@ -119,7 +119,6 @@ return [
 			'mediawiki.storage',
 			'mediawiki.util',
 			'ext.smw',
-			'ext.smw.data',
 			'ext.smw.query'
 		]
 	],
