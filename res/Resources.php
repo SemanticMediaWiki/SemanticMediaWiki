@@ -46,9 +46,16 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
+	// https://github.com/TerryZ/SelectMenu
 	'smw.ui' => $moduleTemplate + [
-		'scripts' => 'smw/smw.ui.js',
-		'dependencies' => [ 'ext.smw', 'jquery.selectmenu' ],
+		'scripts' => [
+			'jquery/jquery.selectmenu.js',
+			'smw/smw.ui.js'
+		],
+		'dependencies' => [
+			'ext.smw',
+			'smw.ui.styles'
+		],
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
@@ -73,29 +80,6 @@ return [
 			'smw/special/ext.smw.special.preferences.css'
 		],
 		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// https://github.com/TerryZ/SelectMenu
-	'jquery.selectmenu' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.selectmenu.js',
-		'dependencies' => [
-			'jquery.selectmenu.styles'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'jquery.selectmenu.styles' => $moduleTemplate + [
-		'styles' => [
-			'jquery/jquery.selectmenu.css',
-			'smw/smw.selectmenu.css'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
 	],
 
 	// Load the module explicitly, otherwise mobile will complain with
