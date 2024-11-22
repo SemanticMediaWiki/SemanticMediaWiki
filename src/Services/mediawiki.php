@@ -137,11 +137,15 @@ return [
 
 	/**
 	 * DBLoadBalancer
+	 * $dbProviderOrdbOrLb is:
+	 * - IConnectionProvider when MW >= 1.41
+	 * - IDatabase | ILoadBalancer when MW < 1.41
+	 * https://phabricator.wikimedia.org/T326274
 	 *
 	 * @return callable
 	 */
-	'DefaultSearchEngineTypeForDB' => function ( $containerBuilder, IDatabase $db ) {
-		return MediaWikiServices::getInstance()->getSearchEngineFactory()->getSearchEngineClass( $db );
+	'DefaultSearchEngineTypeForDB' => function ( $containerBuilder, $dbProviderOrdbOrLb ) {
+		return MediaWikiServices::getInstance()->getSearchEngineFactory()->getSearchEngineClass( $dbProviderOrdbOrLb );
 	},
 
 	/**
