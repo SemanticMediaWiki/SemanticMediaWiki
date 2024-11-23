@@ -305,8 +305,7 @@ return [
 			'jquery/jquery.atwho.css'
 		],
 		'dependencies' => [
-			'ext.smw',
-			'ext.jquery.atwho'
+			'ext.smw'
 		],
 		'targets' => [
 			'mobile',
