@@ -66,11 +66,11 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwb-ivalue\"><a href=\".*/Example/S0028/2\"",
-					"<span class=\"smwb-ivalue\"><a href=\".*/Example/S0028/3\""
+					"<span class=\"smwb-value\"><a href=\".*/Example/S0028/2\"",
+					"<span class=\"smwb-value\"><a href=\".*/Example/S0028/3\""
 				],
 				"not-contain": [
-					"<span class=\"smwb-ivalue\"><a href=\".*/Example/S0028/4\""
+					"<span class=\"smwb-value\"><a href=\".*/Example/S0028/4\""
 				]
 			}
 		}
