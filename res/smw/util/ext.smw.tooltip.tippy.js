@@ -105,8 +105,6 @@
 					title: ''
 				};
 
-				console.log( tip.popper.firstElementChild );
-
 				if ( tip.reference.getAttribute( "data-state" ) ) {
 					tip.smw.isPersistent = tip.reference.getAttribute( "data-state" ) === 'persistent';
 				}
