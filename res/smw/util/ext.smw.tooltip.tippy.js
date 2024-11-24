@@ -110,7 +110,7 @@
 				}
 
 				if ( tip.reference.getAttribute( "data-tooltipclass" ) ) {
-					tip.popper.firstElementChild.tooltip.classList.add( tip.reference.getAttribute( "data-tooltipclass" ) );
+					tip.popper.firstElementChild.classList.add( tip.reference.getAttribute( "data-tooltipclass" ) );
 				}
 
 				if ( tip.reference.getAttribute( "data-theme" ) ) {
