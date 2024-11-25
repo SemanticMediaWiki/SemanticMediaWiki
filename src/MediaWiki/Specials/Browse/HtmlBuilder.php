@@ -298,7 +298,7 @@ class HtmlBuilder {
 	 * parameters in the execute comment.
 	 */
 	private function createHTML() {
-		$html = "<div class=\"smwb-datasheet smwb-theme-light\">";
+		$html = '<div class="smwb-datasheet">';
 
 		$leftside = true;
 		$modules = [];
@@ -338,8 +338,6 @@ class HtmlBuilder {
 
 			$html .= $this->displayData( $semanticData, $leftside );
 		}
-
-		$html .= $this->displayCenter();
 
 		if ( $this->showincoming ) {
 			list( $indata, $more ) = $this->getInData();
@@ -388,6 +386,7 @@ class HtmlBuilder {
 	private function displayData( SemanticData $semanticData, $left = true, $incoming = false, $isLoading = false ) {
 		// Some of the CSS classes are different for the left or the right side.
 		// In this case, there is an "i" after the "smwb-". This is set here.
+		// This is only applied to the factbox class
 		$dirPrefix = $left ? 'smwb-' : 'smwb-i';
 		$noresult = true;
 
@@ -432,7 +431,7 @@ class HtmlBuilder {
 				$html .= HtmlDivTable::row(
 					$c,
 					[
-						"class" => "{$dirPrefix}propvalue"
+						"class" => "smwb-propvalue"
 					]
 				);
 
@@ -452,7 +451,6 @@ class HtmlBuilder {
 				$group,
 				$incoming,
 				$left,
-				$dirPrefix,
 				$noresult
 			);
 		}
@@ -460,8 +458,7 @@ class HtmlBuilder {
 		if ( !$isLoading && !$incoming && $showGroup ) {
 			$html .= $this->getGroupMessageClassLinks(
 				$groupFormatter,
-				$semanticData,
-				$dirPrefix
+				$semanticData
 			);
 		}
 
@@ -485,7 +482,7 @@ class HtmlBuilder {
 			$html .= HtmlDivTable::row(
 				( $left ? ( $rColumn . $lColumn ) : ( $lColumn . $rColumn ) ),
 				[
-					"class" => "{$dirPrefix}propvalue"
+					"class" => "smwb-propvalue"
 				]
 			);
 		}
@@ -499,7 +496,7 @@ class HtmlBuilder {
 	 * Builds HTML content that matches a group of properties and creates the
 	 * display of assigned values.
 	 */
-	private function buildHtmlFromData( $semanticData, $properties, $group, $incoming, $left, $dirPrefix, &$noresult ) {
+	private function buildHtmlFromData( $semanticData, $properties, $group, $incoming, $left, &$noresult ) {
 		$html = '';
 		$group = mb_strtolower( str_replace( ' ', '-', $group ) );
 
@@ -590,7 +587,7 @@ class HtmlBuilder {
 				$list[] = Html::rawElement(
 					'span',
 					[
-						'class' => "{$dirPrefix}value"
+						'class' => 'smwb-value'
 					],
 					ValueFormatter::getFormattedValue( $dv, $dvProperty, $incoming )
 				);
@@ -662,7 +659,7 @@ class HtmlBuilder {
 			$html .= HtmlDivTable::row(
 				( $left ? ( $head . $body ) : ( $body . $head ) ),
 				[
-					"class" => "{$dirPrefix}propvalue"
+					"class" => 'smwb-propvalue'
 				]
 			);
 
@@ -721,7 +718,6 @@ class HtmlBuilder {
 			}
 
 			$html .= FieldBuilder::createLink( $linkMsg, $parameters, $this->language );
-			$html .= '<span class="smwb-action-separator">&nbsp;</span>';
 		}
 
 		if ( $this->showoutgoing ) {
@@ -762,25 +758,15 @@ class HtmlBuilder {
 		);
 	}
 
-	private function displayCenter() {
-		return HtmlDivTable::table(
-			HtmlDivTable::row(
-				"&#160;\n",
-				[
-					'class' => 'smwb-center'
-				]
-			),
-			[
-				'class' => 'smwb-factbox'
-			]
-		);
-	}
-
 	/**
 	 * Creates the HTML for the bottom bar including the links with further
 	 * navigation options.
 	 */
 	private function displayBottom( $more ) {
+		if ( $this->getOption( 'showAll' ) ) {
+			return '';
+		}
+
 		$article = $this->dataValue->getLongWikiText();
 
 		$open = HtmlDivTable::open(
@@ -797,10 +783,6 @@ class HtmlBuilder {
 		);
 
 		$close = HtmlDivTable::close();
-
-		if ( $this->getOption( 'showAll' ) ) {
-			return $open . $html . $close;
-		}
 
 		if ( ( $this->offset > 0 ) || $more ) {
 			$offset = max( $this->offset - $this->incomingPropertiesCount + 1, 0 );
@@ -909,7 +891,7 @@ class HtmlBuilder {
 	 * Returns HTML fragments for message classes in connection with categories
 	 * linked to a property group.
 	 */
-	private function getGroupMessageClassLinks( $groupFormatter, $semanticData, $dirPrefix ) {
+	private function getGroupMessageClassLinks( $groupFormatter, $semanticData ) {
 		$contextPage = $semanticData->getSubject();
 
 		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new DIProperty( '_PPGR' ) ) ) {
@@ -951,7 +933,7 @@ class HtmlBuilder {
 			$group .= HtmlDivTable::row(
 				$h,
 				[
-					"class" => "{$dirPrefix}propvalue"
+					"class" => 'smwb-propvalue'
 				]
 			);
 		}
@@ -972,7 +954,7 @@ class HtmlBuilder {
 			$html = HtmlDivTable::row(
 				$h,
 				[
-					"class" => "{$dirPrefix}propvalue smwb-group-links"
+					"class" => 'smwb-propvalue smwb-group-links'
 				]
 			) . $group;
 		}

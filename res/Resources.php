@@ -396,7 +396,7 @@ return [
 	'ext.smw.browse.styles' => $moduleTemplate + [
 		'styles' => [
 			'smw/ext.smw.table.css',
-			'smw/special/ext.smw.special.browse.css'
+			'smw/special/ext.smw.special.browse.less'
 		],
 		'skinStyles' => [
 			'chameleon' => [ 'smw/special/ext.smw.special.browse.skin-chameleon.css' ]

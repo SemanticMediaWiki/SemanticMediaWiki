@@ -28,11 +28,13 @@
  * @author mwjames
  */
 
+@import '../tokens.less';
+
 .tippy-box[data-theme~='light-border'] {
     padding: 0;
-    color: var( --color-base, #202122 ); /* @color-base */
-    background-color: var( --background-color-base, #fff ); /* @background-color-base */
-    border-color: var( --border-color-muted, #dadde3 ); /* @border-color-muted */
+    color: @color-base;
+    background-color: @background-color-base;
+    border-color: @border-color-muted;
 
     &.square-border,
     &.square-border-light,
@@ -44,7 +46,7 @@
         .tippy-arrow {
             &::before,
             &::after {
-                border-top-color: var( --background-color-neutral-subtle, #f8f9fa );
+                border-top-color: @background-color-neutral-subtle;
             }
         }
 
@@ -53,7 +55,7 @@
             .tippy-arrow {
                 &::before,
                 &::after {
-                    border-top-color: var( --background-color-base, #fff ); /* @background-color-base */
+                    border-top-color: @background-color-base;
                 }
             }
         }
@@ -63,7 +65,7 @@
         .tippy-arrow {
             &::before,
             &::after {
-                border-bottom-color: var( --background-color-neutral-subtle, #f8f9fa );
+                border-bottom-color: @background-color-neutral-subtle;
             }
         }
 
@@ -72,7 +74,7 @@
             .tippy-arrow {
                 &::before,
                 &::after {
-                    border-bottom-color: var( --background-color-base, #fff ); /* @background-color-base */
+                    border-bottom-color: @background-color-base;
                 }
             }
         }
@@ -88,19 +90,19 @@
 .tippy-top,
 .tippy-content-container,
 .tippy-bottom {
-    padding-inline: 0.75rem;
+    padding-inline: @spacing-75;
 }
 
 .tippy-header {
-    padding-block-start: 0.5rem;
-    padding-block-end: 0.25rem;
-    background-color: var( --background-color-neutral-subtle, #f8f9fa );
-    border-bottom: 1px solid var( --border-color-muted, #dadde3 ); /* @border-color-muted */
+    padding-block-start: @spacing-50;
+    padding-block-end: @spacing-25;
+    background-color: @background-color-neutral-subtle;
+    border-bottom: 1px solid @border-color-muted;
     border-top-left-radius: calc(.3em - 1px);
     border-top-right-radius: calc(.3em - 1px);
 
     .square-border-light & {
-        background-color: var( --background-color-base, #fff ); /* @background-color-base */
+        background-color: @background-color-base;
     }
 
     &.accordion-popup {
@@ -113,19 +115,19 @@
 }
 
 .tippy-top {
-    padding-block-start: 0.5rem;
-    padding-block-end: 0rem;
-    font-size: 0.75rem; /* @font-size-x-small */
+    padding-block-start: @spacing-50;
+    padding-block-end: @spacing-0;
+    font-size: @font-size-x-small;
 
     &.accordion-popup {
         text-align: justify;
-        padding: 0.5rem;
+        padding: @spacing-50;
     }
 }
 
 .tippy-bottom {
-    padding-block: 0.5rem;
-    border-top: 1px solid var( --border-color-muted, #dadde3 ); /* @border-color-muted */
+    padding-block: @spacing-50;
+    border-top: 1px solid @border-color-muted;
     border-bottom-left-radius: calc(.3em - 1px);
     border-bottom-right-radius: calc(.3em - 1px);
 
@@ -135,7 +137,7 @@
 }
 
 .tippy-content-container {
-    padding-block: 0.5rem;
+    padding-block: @spacing-50;
     word-break: break-word;
     /* max-width: 260px; */
     max-height: 250px;
@@ -144,7 +146,7 @@
     ul {
         padding-inline-start: 10px;
         margin: 0.3em 0.3em 0.3em 0.5em;
-        font-size: 0.75rem /* @font-size-x-small */
+        font-size: @font-size-x-small;
     }
 
     code {
@@ -176,8 +178,8 @@
     font-size: 20px;
     font-weight: bold;
     line-height: 18px;
-    color: var( --color-emphasized, #101418 ); /* @color-emphasized */
-    opacity: var( --opacity-icon-base, 0.87 ); /* @opacity-icon-base */
+    color: @color-emphasized;
+    opacity: @opacity-icon-base;
     margin-left: 10px;
     cursor: pointer;
 
@@ -186,7 +188,7 @@
     }
 
     &:hover {
-        opacity: var( --opacity-icon-base--hover, 0.74 ); /* @opacity-icon-base--hover */
+        opacity: @opacity-icon-base--hover;
     }
 }
 
@@ -194,7 +196,7 @@
     float: right;
     height: 10px;
     width: 10px;
-    background-color: var( --color-icon-warning, #ab7f2a ); /* @color-icon-warning */
+    background-color: @color-icon-warning;
     display: inline-block;
     margin-top: 3.5px;
     margin-left: 15px;
@@ -205,7 +207,7 @@
     float: right;
     height: 10px;
     width: 10px;
-    background-color: var( --color-icon-error, #f54739 ); /* @color-icon-error */
+    background-color: @color-icon-error;
     display: inline-block;
     margin-top: 3.5px;
     margin-left: 15px;
