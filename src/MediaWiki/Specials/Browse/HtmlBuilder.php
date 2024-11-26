@@ -278,7 +278,6 @@ class HtmlBuilder {
 		}
 
 		$factboxHtml .= $this->displayData( $semanticData, true, false, true );
-		$factboxHtml .= $this->displayBottom( false );
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
 			$form = FieldBuilder::createQueryForm( $this->articletext, $this->language );
@@ -287,7 +286,8 @@ class HtmlBuilder {
 		$templateParser = new TemplateParser( __DIR__ . '/../../../../templates' );
 		$data = [
 			'data-header' => $this->getHeaderData(),
-			'html-factbox' => $factboxHtml
+			'html-factbox' => $factboxHtml,
+			'data-pagination' => $this->getPaginationData( false )
 		];
 		return $templateParser->processTemplate( 'Factbox', $data ) . $form;
 	}
@@ -341,7 +341,6 @@ class HtmlBuilder {
 			}
 
 			$factboxHtml .= $this->displayData( $indata, $leftside, true );
-			$factboxHtml .= $this->displayBottom( $more );
 		}
 
 		$this->articletext = $this->dataValue->getWikiValue();
@@ -349,7 +348,8 @@ class HtmlBuilder {
 		$templateParser = new TemplateParser( __DIR__ . '/../../../../templates' );
 		$data = [
 			'data-header' => $this->getHeaderData(),
-			'html-factbox' => $factboxHtml
+			'html-factbox' => $factboxHtml,
+			'data-pagination' => $this->getPaginationData( $more )
 		];
 		$html = $templateParser->processTemplate( 'Factbox', $data );
 
@@ -669,70 +669,6 @@ class HtmlBuilder {
 	}
 
 	/**
-	 * Creates the HTML for the bottom bar including the links with further
-	 * navigation options.
-	 */
-	private function displayBottom( $more ) {
-		if ( $this->getOption( 'showAll' ) ) {
-			return '';
-		}
-
-		$article = $this->dataValue->getLongWikiText();
-
-		$open = HtmlDivTable::open(
-			[
-				'class' => 'smw-factbox-group'
-			]
-		);
-
-		$html = HtmlDivTable::row(
-			'&#160;',
-			[
-				'class' => 'smwb-center'
-			]
-		);
-
-		$close = HtmlDivTable::close();
-
-		if ( ( $this->offset > 0 ) || $more ) {
-			$offset = max( $this->offset - $this->incomingPropertiesCount + 1, 0 );
-
-			$parameters = [
-				'offset'  => $offset,
-				'dir'     => $this->showoutgoing ? 'both' : 'in',
-				'article' => $article
-			];
-
-			$linkMsg = 'smw_result_prev';
-
-			$html .= ( $this->offset == 0 ) ? wfMessage( $linkMsg )->escaped() : FieldBuilder::createLink( $linkMsg, $parameters, $this->language );
-
-			$offset = $this->offset + $this->incomingPropertiesCount - 1;
-
-			$parameters = [
-				'offset'  => $offset,
-				'dir'     => $this->showoutgoing ? 'both' : 'in',
-				'article' => $article
-			];
-
-			$linkMsg = 'smw_result_next';
-
-			$html .= " &#160;&#160;&#160;  <strong>" . wfMessage( 'smw_result_results' )->escaped() . " " . ( $this->offset + 1 ) .
-					 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
-			$html .= $more ? FieldBuilder::createLink( $linkMsg, $parameters, $this->language ) : wfMessage( $linkMsg )->escaped();
-
-			$html = HtmlDivTable::row(
-				$html,
-				[
-					'class' => 'smwb-center'
-				]
-			);
-		}
-
-		return $open . $html . $close;
-	}
-
-	/**
 	 * Creates a Semantic Data object with the incoming properties instead of the
 	 * usual outgoing properties.
 	 */
@@ -928,6 +864,52 @@ class HtmlBuilder {
 		return [
 			'html-title' => ValueFormatter::getFormattedSubject( $this->dataValue ),
 			'html-actions' => $actionsHtml
+		];
+	}
+
+	/**
+	 * Build the factbox pagination data for Mustache to build the HTML
+	 * This includes the links with further navigation options
+	 */
+	private function getPaginationData( bool $more ): array {
+		if (
+			!$more ||
+			$this->offset <= 0 ||
+			$this->getOption( 'showAll' )
+		) {
+			return [];
+		}
+
+		$article = $this->dataValue->getLongWikiText();
+
+		$offset = max( $this->offset - $this->incomingPropertiesCount + 1, 0 );
+		$parameters = [
+			'offset'  => $offset,
+			'dir'     => $this->showoutgoing ? 'both' : 'in',
+			'article' => $article
+		];
+		$linkMsg = 'smw_result_prev';
+		$prevHtml = ( $this->offset == 0 ) ? wfMessage( $linkMsg )->escaped() : FieldBuilder::createLink( $linkMsg, $parameters, $this->language );
+
+		$offset = $this->offset + $this->incomingPropertiesCount - 1;
+		$parameters = [
+			'offset'  => $offset,
+			'dir'     => $this->showoutgoing ? 'both' : 'in',
+			'article' => $article
+		];
+		$linkMsg = 'smw_result_next';
+		$nextHtml = $more ? FieldBuilder::createLink( $linkMsg, $parameters, $this->language ) : wfMessage( $linkMsg )->escaped();
+
+		$status = sprintf( '%s %d – %d',
+			wfMessage( 'smw_result_results' )->escaped(),
+			$this->offset + 1,
+			$offset
+		);
+
+		return [
+			'html-pagination-prev' => $prevHtml,
+			'footer-content' => $status,
+			'html-pagination-next' => $nextHtml
 		];
 	}
 

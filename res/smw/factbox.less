@@ -33,19 +33,24 @@
 	border-radius: @border-radius-base;
 	line-height: @line-height-xx-small;
 
-	&-header {
-		padding: @spacing-100 @spacing-75;
+	&-header,
+	&-pagination {
+		padding-inline: @spacing-75;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 		flex-wrap: wrap;
 		column-gap: @spacing-100;
+	}
+
+	&-header {
+		padding-block: @spacing-100;
 	}
 
 	&-title {
 		line-height: @line-height-xxx-small;
 		font-size: @font-size-x-large;
 		font-weight: @font-weight-bold;
-		flex-grow: 1;
 	}
 
 	&-actions {
@@ -55,6 +60,15 @@
 			margin-inline-start: @spacing-50;
 			border-inline-start: @border-subtle;
 			padding-inline-start: @spacing-50;
+		}
+	}
+
+	&-pagination {
+		border-top: @border-subtle;
+		padding-block: @spacing-75;
+
+		&-status {
+			color: @color-subtle;
 		}
 	}
 }
