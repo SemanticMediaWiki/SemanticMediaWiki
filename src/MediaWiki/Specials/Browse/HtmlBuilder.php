@@ -299,6 +299,7 @@ class HtmlBuilder {
 	private function createHTML() {
 		$factboxHtml = '';
 		$leftside = true;
+		$more = false;
 
 		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$this->subject
@@ -870,10 +871,14 @@ class HtmlBuilder {
 	/**
 	 * Build the factbox pagination data for Mustache to build the HTML
 	 * This includes the links with further navigation options
+	 *
+	 * @todo Pass required data into Mustache to build the button instead
+	 * building them in FieldBuilder::createLink
+	 * @todo Switch pagination button to icon buttons
 	 */
 	private function getPaginationData( bool $more ): array {
 		if (
-			!$more ||
+			$more === false ||
 			$this->offset <= 0 ||
 			$this->getOption( 'showAll' )
 		) {
