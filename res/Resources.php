@@ -395,7 +395,7 @@ return [
 	// Facts and browse
 	'ext.smw.browse.styles' => $moduleTemplate + [
 		'styles' => [
-			'smw/ext.smw.table.css',
+			'smw/factbox.less',
 			'smw/special/ext.smw.special.browse.less'
 		],
 		'skinStyles' => [

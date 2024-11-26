@@ -14,6 +14,7 @@ use SMW\SemanticData;
 use SMW\Store;
 use SMW\Utils\HtmlDivTable;
 use SMWDataValue;
+use TemplateParser;
 
 /**
  * @license GNU GPL v2+
@@ -261,7 +262,7 @@ class HtmlBuilder {
 	 * @return string
 	 */
 	public function buildEmptyHTML() {
-		$html = '';
+		$factboxHtml = '';
 		$form = '';
 
 		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -276,21 +277,19 @@ class HtmlBuilder {
 			$this->showincoming = true;
 		}
 
-		$html .= $this->displayHead();
-		$html .= $this->displayActions();
-		$html .= $this->displayData( $semanticData, true, false, true );
-		$html .= $this->displayBottom( false );
+		$factboxHtml .= $this->displayData( $semanticData, true, false, true );
+		$factboxHtml .= $this->displayBottom( false );
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
 			$form = FieldBuilder::createQueryForm( $this->articletext, $this->language );
 		}
 
-		return Html::rawElement(
-			'div',
-			[
-				'class' => 'smwb-content'
-			], $html
-		) . $form;
+		$templateParser = new TemplateParser( __DIR__ . '/../../../../templates' );
+		$data = [
+			'data-header' => $this->getHeaderData(),
+			'html-factbox' => $factboxHtml
+		];
+		return $templateParser->processTemplate( 'Factbox', $data ) . $form;
 	}
 
 	/**
@@ -298,17 +297,15 @@ class HtmlBuilder {
 	 * parameters in the execute comment.
 	 */
 	private function createHTML() {
-		$html = '<div class="smwb-datasheet">';
-
+		$factboxHtml = '';
 		$leftside = true;
-		$modules = [];
 
 		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$this->subject
 		);
 
 		if ( !$this->dataValue->isValid() ) {
-			return $html;
+			return '';
 		}
 
 		$semanticData = new SemanticData(
@@ -316,9 +313,6 @@ class HtmlBuilder {
 		);
 
 		$this->dataValue->setOption( $this->dataValue::OPT_USER_LANGUAGE, $this->language );
-
-		$html .= $this->displayHead();
-		$html .= $this->displayActions();
 
 		if ( $this->showoutgoing ) {
 
@@ -336,7 +330,7 @@ class HtmlBuilder {
 				$requestOptions
 			);
 
-			$html .= $this->displayData( $semanticData, $leftside );
+			$factboxHtml .= $this->displayData( $semanticData, $leftside );
 		}
 
 		if ( $this->showincoming ) {
@@ -346,12 +340,18 @@ class HtmlBuilder {
 				$leftside = !$leftside;
 			}
 
-			$html .= $this->displayData( $indata, $leftside, true );
-			$html .= $this->displayBottom( $more );
+			$factboxHtml .= $this->displayData( $indata, $leftside, true );
+			$factboxHtml .= $this->displayBottom( $more );
 		}
 
 		$this->articletext = $this->dataValue->getWikiValue();
-		$html .= "</div>";
+
+		$templateParser = new TemplateParser( __DIR__ . '/../../../../templates' );
+		$data = [
+			'data-header' => $this->getHeaderData(),
+			'html-factbox' => $factboxHtml
+		];
+		$html = $templateParser->processTemplate( 'Factbox', $data );
 
 		MediaWikiServices::getInstance()
 			->getHookContainer()
@@ -387,7 +387,7 @@ class HtmlBuilder {
 		// Some of the CSS classes are different for the left or the right side.
 		// In this case, there is an "i" after the "smwb-". This is set here.
 		// This is only applied to the factbox class
-		$dirPrefix = $left ? 'smwb-' : 'smwb-i';
+		$factboxGroupClass = $left ? 'smw-factbox-group' : 'smw-factbox-group smw-factbox-group--inversed';
 		$noresult = true;
 
 		$contextPage = $semanticData->getSubject();
@@ -406,7 +406,7 @@ class HtmlBuilder {
 
 		$html = HtmlDivTable::open(
 			[
-				'class' => "{$dirPrefix}factbox" . ( $groupFormatter->hasGroups() ? '' : ' smwb-bottom' )
+				'class' => $factboxGroupClass
 			]
 		);
 
@@ -424,7 +424,7 @@ class HtmlBuilder {
 				$html .= HtmlDivTable::close();
 				$html .= HtmlDivTable::open(
 					[
-						'class' => "{$dirPrefix}factbox smwb-group"
+						'class' => "{$factboxGroupClass} smwb-group"
 					]
 				);
 
@@ -436,11 +436,10 @@ class HtmlBuilder {
 				);
 
 				$html .= HtmlDivTable::close();
-				$class = ( $groupFormatter->isLastGroup( $group ) ? ' smwb-bottom' : '' );
 
 				$html .= HtmlDivTable::open(
 					[
-						'class' => "{$dirPrefix}factbox{$class}"
+						'class' => $factboxGroupClass
 					]
 				);
 			}
@@ -670,95 +669,6 @@ class HtmlBuilder {
 	}
 
 	/**
-	 * Displays the subject that is currently being browsed to.
-	 */
-	private function displayHead() {
-		return HtmlDivTable::table(
-			HtmlDivTable::row(
-				ValueFormatter::getFormattedSubject( $this->dataValue ),
-				[
-					'class' => 'smwb-title'
-				]
-			),
-			[
-				'class' => 'smwb-factbox'
-			]
-		);
-	}
-
-	/**
-	 * Creates the HTML for the center bar including the links with further
-	 * navigation options.
-	 */
-	private function displayActions() {
-		$html = '';
-		$group = $this->getOption( 'group' );
-		$article = $this->dataValue->getLongWikiText();
-
-		if ( $this->getOption( 'showGroup' ) ) {
-
-			if ( $group === 'hide' ) {
-				$parameters = [
-					'offset'  => 0,
-					'dir'     => $this->showincoming ? 'both' : 'out',
-					'article' => $article,
-					'group'   => 'show'
-				];
-
-				$linkMsg = 'smw-browse-show-group';
-			} else {
-				$parameters = [
-					'offset'  => $this->offset,
-					'dir'     => $this->showincoming ? 'both' : 'out',
-					'article' => $article,
-					'group'   => 'hide'
-				];
-
-				$linkMsg = 'smw-browse-hide-group';
-			}
-
-			$html .= FieldBuilder::createLink( $linkMsg, $parameters, $this->language );
-		}
-
-		if ( $this->showoutgoing ) {
-
-			if ( $this->showincoming ) {
-				$parameters = [
-					'offset'  => 0,
-					'dir'     => 'out',
-					'article' => $article,
-					'group'   => $group
-				];
-
-				$linkMsg = 'smw_browse_hide_incoming';
-			} else {
-				$parameters = [
-					'offset'  => $this->offset,
-					'dir'     => 'both',
-					'article' => $article,
-					'group'   => $group
-				];
-
-				$linkMsg = 'smw_browse_show_incoming';
-			}
-
-			$html .= FieldBuilder::createLink( $linkMsg, $parameters, $this->language );
-		}
-
-		return HtmlDivTable::table(
-			HtmlDivTable::row(
-				$html . "&#160;\n",
-				[
-					'class' => 'smwb-actions'
-				]
-			),
-			[
-				'class' => 'smwb-factbox'
-			]
-		);
-	}
-
-	/**
 	 * Creates the HTML for the bottom bar including the links with further
 	 * navigation options.
 	 */
@@ -771,7 +681,7 @@ class HtmlBuilder {
 
 		$open = HtmlDivTable::open(
 			[
-				'class' => 'smwb-factbox'
+				'class' => 'smw-factbox-group'
 			]
 		);
 
@@ -960,6 +870,65 @@ class HtmlBuilder {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Build the factbox header data for Mustache to build the HTML
+	 * This includes the title and the actions
+	 */
+	private function getHeaderData(): array {
+		$actionsHtml = '';
+		$group = $this->getOption( 'group' );
+		$article = $this->dataValue->getLongWikiText();
+
+		if ( $this->getOption( 'showGroup' ) ) {
+			if ( $group === 'hide' ) {
+				$parameters = [
+					'offset'  => 0,
+					'dir'     => $this->showincoming ? 'both' : 'out',
+					'article' => $article,
+					'group'   => 'show'
+				];
+
+				$linkMsg = 'smw-browse-show-group';
+			} else {
+				$parameters = [
+					'offset'  => $this->offset,
+					'dir'     => $this->showincoming ? 'both' : 'out',
+					'article' => $article,
+					'group'   => 'hide'
+				];
+				$linkMsg = 'smw-browse-hide-group';
+			}
+			$actionsHtml .= FieldBuilder::createLink( $linkMsg, $parameters, $this->language );
+		}
+
+		if ( $this->showoutgoing ) {
+			if ( $this->showincoming ) {
+				$parameters = [
+					'offset'  => 0,
+					'dir'     => 'out',
+					'article' => $article,
+					'group'   => $group
+				];
+
+				$linkMsg = 'smw_browse_hide_incoming';
+			} else {
+				$parameters = [
+					'offset'  => $this->offset,
+					'dir'     => 'both',
+					'article' => $article,
+					'group'   => $group
+				];
+				$linkMsg = 'smw_browse_show_incoming';
+			}
+			$actionsHtml .= FieldBuilder::createLink( $linkMsg, $parameters, $this->language );
+		}
+
+		return [
+			'html-title' => ValueFormatter::getFormattedSubject( $this->dataValue ),
+			'html-actions' => $actionsHtml
+		];
 	}
 
 }

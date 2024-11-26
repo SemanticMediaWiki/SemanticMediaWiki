@@ -528,20 +528,11 @@ label.smw-form-checkbox {
 	background-position: center;
 }
 
-.smwb-group {
-	font-style: normal;
-	font-weight: normal;
-	font-size: 100%;
-}
-
 /* Handling Long Words and URLs (Forcing Breaks, Hyphenation, Ellipsis */
 .smwb-value,
 .smwprops,
 .smwpropname,
-.smwb-factbox .smwtype_wpg,
-.smwtype_uri,
-.smwb-ivalue,
-.smwb-title {
+.smwtype_uri {
 	word-break: break-word;
 	word-wrap: break-word;
 	-webkit-hyphens: auto;
@@ -553,8 +544,7 @@ label.smw-form-checkbox {
 
 /* Only apply when less then 350*/
 @media (max-width: 400px) {
-	.smwb-propvalue,
-	.smwb-ipropvalue {
+	.smwb-propvalue {
 		word-break: break-word;
 		word-wrap: break-word;
 		-webkit-hyphens: auto;

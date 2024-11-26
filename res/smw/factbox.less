@@ -1,0 +1,110 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @since 3.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+@import 'tokens.less';
+
+.smw-factbox {
+	border: @border-base;
+	border-radius: @border-radius-base;
+	line-height: @line-height-xx-small;
+
+	&-header {
+		padding: @spacing-100 @spacing-75;
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		column-gap: @spacing-100;
+	}
+
+	&-title {
+		line-height: @line-height-xxx-small;
+		font-size: @font-size-x-large;
+		font-weight: @font-weight-bold;
+		flex-grow: 1;
+	}
+
+	&-actions {
+		white-space: nowrap;
+
+		a + a {
+			margin-inline-start: @spacing-50;
+			border-inline-start: @border-subtle;
+			padding-inline-start: @spacing-50;
+		}
+	}
+}
+
+.smw-factbox-group {
+	border: 0;
+
+	&.smwb-group .smwb-cell {
+		padding-block: @spacing-75;
+		font-weight: @font-weight-bold;
+	}
+
+	.smwb-cell {
+		border: 0;
+		border-top: @border-subtle;
+		padding: @spacing-50 @spacing-75;
+		vertical-align: top;
+	}
+
+	.smwb-prophead {
+		background-color: @background-color-neutral-subtle;
+		font-weight: @font-weight-bold;
+		text-align: end;
+
+		@media ( min-width: @min-width-breakpoint-tablet ) {
+			width: 30%;
+		}
+
+		a {
+			hyphens: auto;
+		}
+	}
+
+	.smwb-propvalue {
+		text-align: start;
+	}
+
+	&.smw-factbox-group--inversed {
+		.smwb-prophead {
+			text-align: start;
+		}
+	
+		.smwb-propvalue {
+			text-align: end;
+		}
+	
+		.smwb-cell {
+			@media ( max-width: @max-width-breakpoint-tablet ) {
+				justify-content: flex-end;
+			}
+		}
+	}
+}

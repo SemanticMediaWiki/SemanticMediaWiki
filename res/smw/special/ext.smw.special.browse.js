@@ -99,7 +99,7 @@
 
 			self.context.find( '.smwb-form' ).remove();
 			self.context.find( '.smwb-modules' ).remove();
-			self.context.find( '.smwb-datasheet' ).replaceWith( data.query );
+			self.context.find( '.smw-factbox' ).replaceWith( data.query );
 
 			self.triggerEvents();
 		} ).fail ( function( xhr, status, error ) {
