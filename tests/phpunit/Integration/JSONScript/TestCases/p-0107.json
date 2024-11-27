@@ -25,7 +25,7 @@
 	"tests": [
 		{
 			"type": "parser",
-			"about": "#0 (1.31+) (#1019)",
+			"about": "#0 (#1019)",
 			"subject": "smwdoc-table",
 			"assert-output": {
 				"to-contain": [
@@ -36,7 +36,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#1 (1.31+) (#1019)",
+			"about": "#1 (#1019)",
 			"subject": "smwdoc-csv",
 			"assert-output": {
 				"to-contain": [
@@ -47,7 +47,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#2 (1.31+) (#1019)",
+			"about": "#2 (#1019)",
 			"subject": "smwdoc-list",
 			"assert-output": {
 				"to-contain": [

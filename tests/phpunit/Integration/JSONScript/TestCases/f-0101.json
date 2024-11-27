@@ -58,7 +58,7 @@
 		},
 		{
 			"type": "format",
-			"about": "#1 (1.31+) desc template output using unnamed arguments",
+			"about": "#1 desc template output using unnamed arguments",
 			"subject": "template-001-desc-order-unnamed-args",
 			"assert-output": {
 				"to-contain": [
