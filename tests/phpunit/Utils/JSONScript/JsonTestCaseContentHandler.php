@@ -146,7 +146,7 @@ class JsonTestCaseContentHandler {
 		} else {
 			$contents = $page['contents'];
 		}
-
+		// check this part - possible gives us error like Table doesn't exist
 		$this->pageCreator->createPage( $title, $contents, $pageContentLanguage );
 
 		$this->pages[] = $this->pageCreator->getPage();

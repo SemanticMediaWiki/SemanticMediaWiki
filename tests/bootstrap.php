@@ -36,7 +36,7 @@ $autoloader->addClassMap( [
 ] );
 
 define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );
-define( 'SMW_PHPUNIT_TABLE_PREFIX', 'sunittest_' );
+// define( 'SMW_PHPUNIT_TABLE_PREFIX', 'sunittest_' );
 // define( 'SMW_PHPUNIT_TABLE_PREFIX', '' );
 
 /**
@@ -47,24 +47,24 @@ register_shutdown_function( function () {
 		return;
 	}
 
-	$connectionManager = ApplicationFactory::getInstance()->getConnectionManager();
-	$connection = $connectionManager->getConnection( 'mw.db' );
+	// $connectionManager = ApplicationFactory::getInstance()->getConnectionManager();
+	// $connection = $connectionManager->getConnection( 'mw.db' );
 
-	// Reset any sequence modified during the test
-	$sequence = new Sequence(
-		$connection
-	);
+	// // Reset any sequence modified during the test
+	// $sequence = new Sequence(
+	// 	$connection
+	// );
 
-	try {
-		$sequence->tablePrefix( '' );
-		$sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
-	} catch( \Wikimedia\Rdbms\DBConnectionError $e ) {
-		return;
-	}
+	// try {
+	// 	$sequence->tablePrefix( '' );
+	// 	$sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
+	// } catch( \Wikimedia\Rdbms\DBConnectionError $e ) {
+	// 	return;
+	// }
 
-	$cleanUpTables = new CleanUpTables(
-		$connection
-	);
+	// $cleanUpTables = new CleanUpTables(
+	// 	$connection
+	// );
 
-	$cleanUpTables->dropTables( SMW_PHPUNIT_TABLE_PREFIX );
+	// $cleanUpTables->dropTables( SMW_PHPUNIT_TABLE_PREFIX );
 } );

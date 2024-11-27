@@ -278,7 +278,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
 			$database->expects( $this->once() )
 				->method( 'select' )
-				->will($this->throwException( new RuntimeException( 'Database error' ) ) );
+				->will( $this->throwException( new RuntimeException( 'Database error' ) ) );
 		} else {
 			$database->expects( $this->once() )
 				->method( 'select' );

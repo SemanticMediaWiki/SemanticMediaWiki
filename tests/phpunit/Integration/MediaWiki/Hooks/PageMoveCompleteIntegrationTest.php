@@ -7,7 +7,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 use Title;
@@ -15,6 +15,7 @@ use WikiPage;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -22,7 +23,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
+class PageMoveCompleteIntegrationTest extends SMWIntegrationTestCase {
 
 	private $mwHooksHandler;
 	private $queryResultValidator;

@@ -3,9 +3,11 @@
 namespace SMW\Tests\Utils\JSONScript;
 
 use SMW\Tests\Utils\File\ContentsReader;
+use MediaWikiIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -13,7 +15,7 @@ use SMW\Tests\Utils\File\ContentsReader;
  *
  * @author mwjames
  */
-class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class ApiTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var MwApiFactory

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -14,11 +14,9 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SetupStoreMaintenanceTest extends DatabaseTestCase {
+class SetupStoreMaintenanceTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
-
-	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = [];
 	private $runnerFactory;

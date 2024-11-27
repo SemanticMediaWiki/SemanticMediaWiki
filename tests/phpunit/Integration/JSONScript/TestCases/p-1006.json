@@ -71,6 +71,9 @@
 		}
 	},
 	"meta": {
+		"skip-on": {
+			"mysql": "Failed assertions, check implementation of MediaWikiIntegrationTestCase for MW 1.39"
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

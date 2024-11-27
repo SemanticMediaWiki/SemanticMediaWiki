@@ -3,9 +3,11 @@
 namespace SMW\Tests\Utils\JSONScript;
 
 use SMW\Exporter\ExporterFactory;
+use MediaWikiIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -13,7 +15,7 @@ use SMW\Exporter\ExporterFactory;
  *
  * @author mwjames
  */
-class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class RdfTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var Store
