@@ -86,6 +86,7 @@ class SpecialBrowse extends SpecialPage {
 		$data = $this->getTemplateData( $webRequest, $dataValue, $isEmptyRequest );
 		$out->addHTML( $templateParser->processTemplate( 'SpecialBrowse', $data ) );
 
+		/** @todo Move RDF link into factbox like how bottom factboxes are */
 		$this->addExternalHelpLinks( $dataValue );
 	}
 

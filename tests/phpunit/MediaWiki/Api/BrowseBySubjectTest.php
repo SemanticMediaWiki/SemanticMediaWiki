@@ -197,7 +197,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 		$out = ob_get_clean();
 
 		$this->stringValidator->assertThatStringContains(
-			'"query":"<article class=\"smw-factbox.*\"><header class=\"smw-factbox-header\">',
+			'"query":"<article class=\"smw-factbox\">\n\t<header class=\"smw-factbox-header\">',
 			$out
 		);
 	}
