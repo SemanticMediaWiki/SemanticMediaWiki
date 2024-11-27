@@ -94,7 +94,7 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [
 			':Main-20Page-23_QUERY140d50d705e9566904fc4a877c755964',
 			[
-				'data-mw-smw-browse--subject="{&quot;dbkey&quot;:&quot;Main_Page&quot;,&quot;ns&quot;:0,&quot;iw&quot;:&quot;&quot;,&quot;subobject&quot;:&quot;_QUERY140d50d705e9566904fc4a877c755964&quot;}"',
+				'data-mw-smw-browse-subject="{&quot;dbkey&quot;:&quot;Main_Page&quot;,&quot;ns&quot;:0,&quot;iw&quot;:&quot;&quot;,&quot;subobject&quot;:&quot;_QUERY140d50d705e9566904fc4a877c755964&quot;}"',
 				'data-mw-smw-browse-options="{&quot;dir&quot;:null,&quot;lang&quot;:&quot;en&quot;,&quot;group&quot;:null,&quot;printable&quot;:null,&quot;offset&quot;:null,&quot;including&quot;:null,&quot;showInverse&quot;:false,&quot;showAll&quot;:true,&quot;showGroup&quot;:false,&quot;showSort&quot;:false,&quot;api&quot;:true,&quot;valuelistlimit.out&quot;:&quot;30&quot;,&quot;valuelistlimit.in&quot;:&quot;20&quot;}"'
 			]
 		];
