@@ -82,23 +82,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#1 (1.31-)",
-			"skip-on": {
-				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
-			"subject": "Example/P0434/Q1.2",
-			"assert-output": {
-				"to-contain": [
-					"<td class=\"smwtype_wpg\">Example/P0434/1</td><td class=\"Date smwtype_dat\" data-sort-value=\"2440587.5\">1 January 1970</td></tr></table>"
-				]
-			}
-		},
-		{
-			"type": "parser",
-			"about": "#1 (1.31+)",
-			"skip-on": {
-				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#1",
 			"subject": "Example/P0434/Q1.2",
 			"assert-output": {
 				"to-contain": [
