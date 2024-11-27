@@ -33,11 +33,18 @@
 	top: 40%;
 }
 
-.smwb-input {
+.smw-browse-search {
+	margin-block: @spacing-100;
 	display: flex;
-	gap: @spacing-50;
 
-	.input-field {
-		flex-grow: 1;
+	&-input.mw-ui-input {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+
+	&-button.mw-ui-button {
+		margin-inline-start: -@border-width-base;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
 	}
 }

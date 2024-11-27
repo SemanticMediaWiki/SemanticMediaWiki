@@ -97,7 +97,7 @@
 			self.context.removeClass( 'is-disabled' );
 			self.context.find( '#smw-wait' ).remove();
 
-			self.context.find( '.smwb-form' ).remove();
+			self.context.find( '.smw-browse-search' ).remove();
 			self.context.find( '.smwb-modules' ).remove();
 			self.context.find( '.smw-factbox' ).replaceWith( data.query );
 
@@ -145,7 +145,7 @@
 	browse.prototype.triggerEvents = function() {
 
 		var self = this;
-		var form = self.context.find( '.smwb-form' );
+		var form = self.context.find( '.smw-browse-search' );
 
 		form.trigger( 'smw.page.autocomplete' , {
 			'context': form
@@ -200,7 +200,7 @@
 			instance.setContext( $( this ) ).requestHTML();
 		} );
 
-		var form = $( this ).find( '.smwb-form' );
+		var form = $( this ).find( '.smw-browse-search' );
 
 		mw.loader.using( [ 'ext.smw.browse', 'ext.smw.browse.autocomplete' ] ).done( function () {
 			form.trigger( 'smw.page.autocomplete' , {

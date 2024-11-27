@@ -103,6 +103,23 @@ class FieldBuilder {
 	}
 
 	/**
+	 * Get the Mustache data for the query form in order to quickly switch to a specific article.
+	 *
+	 * @since 5.0
+	 */
+	public static function getQueryFormData( $articletext = '', $lang = Message::USER_LANGUAGE ): array {
+		$title = SpecialPage::getTitleFor( 'Browse' );
+
+		return [
+			'button-value' => Message::get( 'smw_browse_go', Message::ESCAPED, $lang ),
+			'form-action' => htmlspecialchars( $title->getLocalURL() ),
+			'form-title' => $title->getPrefixedText(),
+			'input-placeholder' => Message::get( 'smw_browse_article', Message::ESCAPED, $lang ),
+			'input-value' => htmlspecialchars( $articletext )
+		];
+	}
+
+	/**
 	 * Creates the HTML for a link to this page, with some parameters set.
 	 *
 	 * @since 2.5

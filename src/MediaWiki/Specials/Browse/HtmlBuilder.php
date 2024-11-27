@@ -262,8 +262,6 @@ class HtmlBuilder {
 	 * @return string
 	 */
 	public function buildEmptyHTML() {
-		$form = '';
-
 		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$this->subject
 		);
@@ -276,23 +274,26 @@ class HtmlBuilder {
 			$this->showincoming = true;
 		}
 
-		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$form = FieldBuilder::createQueryForm( $this->articletext, $this->language );
-		}
-
 		$msg = Message::get( 'smw-browse-from-backend', Message::ESCAPED, $this->language );
 
 		$templateParser = new TemplateParser( __DIR__ . '/../../../../templates' );
 		$data = [
-			'data-header' => $this->getHeaderData(),
-			'array-sections' => [
-				[
-					'html-section' => Html::noticeBox( $msg, 'smw-factbox-message' )
-				]
-			],
-			'data-pagination' => $this->getPaginationData( false )
+			'data-factbox' => [
+				'data-header' => $this->getHeaderData(),
+				'array-sections' => [
+					[
+						'html-section' => Html::noticeBox( $msg, 'smw-factbox-message' )
+					]
+				],
+				'data-pagination' => $this->getPaginationData( false )
+			]
 		];
-		return $templateParser->processTemplate( 'Factbox', $data ) . $form;
+
+		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
+			$data['data-form'] = FieldBuilder::getQueryFormData( $this->articletext, $this->language );
+		}
+
+		return $templateParser->processTemplate( 'SpecialBrowse', $data );
 	}
 
 	/**
@@ -352,11 +353,16 @@ class HtmlBuilder {
 
 		$templateParser = new TemplateParser( __DIR__ . '/../../../../templates' );
 		$data = [
-			'data-header' => $this->getHeaderData(),
-			'array-sections' => $contentData,
-			'data-pagination' => $this->getPaginationData( $more )
+			'data-factbox' => [
+				'data-header' => $this->getHeaderData(),
+				'array-sections' => $contentData,
+				'data-pagination' => $this->getPaginationData( $more )
+			]
 		];
-		$html = $templateParser->processTemplate( 'Factbox', $data );
+		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
+			$data['data-form'] = FieldBuilder::getQueryFormData( $this->articletext, $this->language );
+		}
+		$html = $templateParser->processTemplate( 'SpecialBrowse', $data );
 
 		MediaWikiServices::getInstance()
 			->getHookContainer()
@@ -369,10 +375,6 @@ class HtmlBuilder {
 					&$this->extraModules
 				]
 			);
-
-		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$html .= FieldBuilder::createQueryForm( $this->articletext, $this->language );
-		}
 
 		$html .= Html::element(
 			'div',

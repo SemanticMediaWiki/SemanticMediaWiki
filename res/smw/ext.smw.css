@@ -659,11 +659,6 @@ label.smw-form-checkbox {
     background-repeat: no-repeat;
 }
 
-.mw-ui-input.autocomplete-loading {
-	vertical-align: unset;
-	padding: 0.57142857em 0.57142857em 0.5em;
-}
-
 .autocomplete-arrow {
 	background-image: url( assets/smw-icon-arrow-down.svg );
 	background-repeat: no-repeat;
