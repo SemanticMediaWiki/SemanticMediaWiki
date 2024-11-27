@@ -262,7 +262,6 @@ class HtmlBuilder {
 	 * @return string
 	 */
 	public function buildEmptyHTML() {
-		$factboxHtml = '';
 		$form = '';
 
 		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -277,16 +276,20 @@ class HtmlBuilder {
 			$this->showincoming = true;
 		}
 
-		$factboxHtml .= $this->displayData( $semanticData, true, false, true );
-
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
 			$form = FieldBuilder::createQueryForm( $this->articletext, $this->language );
 		}
 
+		$msg = Message::get( 'smw-browse-from-backend', Message::ESCAPED, $this->language );
+
 		$templateParser = new TemplateParser( __DIR__ . '/../../../../templates' );
 		$data = [
 			'data-header' => $this->getHeaderData(),
-			'html-factbox' => $factboxHtml,
+			'array-sections' => [
+				[
+					'html-section' => Html::noticeBox( $msg, 'smw-factbox-message' )
+				]
+			],
 			'data-pagination' => $this->getPaginationData( false )
 		];
 		return $templateParser->processTemplate( 'Factbox', $data ) . $form;
@@ -297,7 +300,6 @@ class HtmlBuilder {
 	 * parameters in the execute comment.
 	 */
 	private function createHTML() {
-		$factboxHtml = '';
 		$leftside = true;
 		$more = false;
 
@@ -308,6 +310,8 @@ class HtmlBuilder {
 		if ( !$this->dataValue->isValid() ) {
 			return '';
 		}
+
+		$contentData = [];
 
 		$semanticData = new SemanticData(
 			$this->dataValue->getDataItem()
@@ -331,7 +335,7 @@ class HtmlBuilder {
 				$requestOptions
 			);
 
-			$factboxHtml .= $this->displayData( $semanticData, $leftside );
+			$contentData = array_merge( $contentData, $this->getSectionsData( $semanticData, $leftside ) );
 		}
 
 		if ( $this->showincoming ) {
@@ -341,7 +345,7 @@ class HtmlBuilder {
 				$leftside = !$leftside;
 			}
 
-			$factboxHtml .= $this->displayData( $indata, $leftside, true );
+			$contentData = array_merge( $contentData, $this->getSectionsData( $indata, $leftside, true ) );
 		}
 
 		$this->articletext = $this->dataValue->getWikiValue();
@@ -349,7 +353,7 @@ class HtmlBuilder {
 		$templateParser = new TemplateParser( __DIR__ . '/../../../../templates' );
 		$data = [
 			'data-header' => $this->getHeaderData(),
-			'html-factbox' => $factboxHtml,
+			'array-sections' => $contentData,
 			'data-pagination' => $this->getPaginationData( $more )
 		];
 		$html = $templateParser->processTemplate( 'Factbox', $data );
@@ -377,294 +381,6 @@ class HtmlBuilder {
 				'data-modules' => json_encode( $this->extraModules )
 			]
 		);
-
-		return $html;
-	}
-
-	/**
-	 * Creates the HTML table displaying the data of one subject.
-	 */
-	private function displayData( SemanticData $semanticData, $left = true, $incoming = false, $isLoading = false ) {
-		// Some of the CSS classes are different for the left or the right side.
-		// In this case, there is an "i" after the "smwb-". This is set here.
-		// This is only applied to the factbox class
-		$factboxGroupClass = $left ? 'smw-factbox-group' : 'smw-factbox-group smw-factbox-group--inversed';
-		$noresult = true;
-
-		$contextPage = $semanticData->getSubject();
-		$diProperties = $semanticData->getProperties();
-
-		$showGroup = $this->getOption( 'showGroup' ) && $this->getOption( 'group' ) !== 'hide';
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$groupFormatter = new GroupFormatter(
-			$applicationFactory->getPropertySpecificationLookup(),
-			$applicationFactory->singleton( 'SchemaFactory' )->newSchemaFinder( $this->store )
-		);
-
-		$groupFormatter->showGroup( $showGroup );
-		$groupFormatter->findGroupMembership( $diProperties );
-
-		$html = HtmlDivTable::open(
-			[
-				'class' => $factboxGroupClass
-			]
-		);
-
-		foreach ( $diProperties as $group => $properties ) {
-
-			if ( $group !== '' ) {
-
-				$c = HtmlDivTable::cell(
-					$groupFormatter->getGroupLink( $group ) . '<span></span>',
-					[
-						"class" => 'smwb-cell smwb-propval'
-					]
-				);
-
-				$html .= HtmlDivTable::close();
-				$html .= HtmlDivTable::open(
-					[
-						'class' => "{$factboxGroupClass} smwb-group"
-					]
-				);
-
-				$html .= HtmlDivTable::row(
-					$c,
-					[
-						"class" => "smwb-propvalue"
-					]
-				);
-
-				$html .= HtmlDivTable::close();
-
-				$html .= HtmlDivTable::open(
-					[
-						'class' => $factboxGroupClass
-					]
-				);
-			}
-
-			$html .= $this->buildHtmlFromData(
-				$semanticData,
-				$properties,
-				$group,
-				$incoming,
-				$left,
-				$noresult
-			);
-		}
-
-		if ( !$isLoading && !$incoming && $showGroup ) {
-			$html .= $this->getGroupMessageClassLinks(
-				$groupFormatter,
-				$semanticData
-			);
-		}
-
-		if ( $noresult ) {
-			$noMsgKey = $incoming ? 'smw_browse_no_incoming' : 'smw_browse_no_outgoing';
-
-			$rColumn = HtmlDivTable::cell(
-				'',
-				[
-					"class" => 'smwb-cell smwb-prophead'
-				]
-			);
-
-			$lColumn = HtmlDivTable::cell(
-				Message::get( $isLoading ? 'smw-browse-from-backend' : $noMsgKey, Message::ESCAPED, $this->language ),
-				[
-					"class" => 'smwb-cell smwb-propval'
-				]
-			);
-
-			$html .= HtmlDivTable::row(
-				( $left ? ( $rColumn . $lColumn ) : ( $lColumn . $rColumn ) ),
-				[
-					"class" => "smwb-propvalue"
-				]
-			);
-		}
-
-		$html .= HtmlDivTable::close();
-
-		return $html;
-	}
-
-	/**
-	 * Builds HTML content that matches a group of properties and creates the
-	 * display of assigned values.
-	 */
-	private function buildHtmlFromData( $semanticData, $properties, $group, $incoming, $left, &$noresult ) {
-		$html = '';
-		$group = mb_strtolower( str_replace( ' ', '-', $group ) );
-
-		$contextPage = $semanticData->getSubject();
-		$showInverse = $this->getOption( 'showInverse' );
-		$showSort = $this->getOption( 'showSort' );
-
-		$comma = Message::get(
-			'comma-separator',
-			Message::ESCAPED,
-			$this->language
-		);
-
-		$and = Message::get(
-			'and',
-			Message::ESCAPED,
-			$this->language
-		);
-
-		$dataValueFactory = DataValueFactory::getInstance();
-
-		// Sort by label instead of the key which may start with `_` or `__`
-		// and thereby distorts the lexicographical order
-		usort( $properties, function ( $a, $b ) {
-			return strnatcmp( $a->getLabel(), $b->getLabel() );
-		} );
-
-		foreach ( $properties as $diProperty ) {
-
-			$dvProperty = $dataValueFactory->newDataValueByItem(
-				$diProperty,
-				null
-			);
-
-			$dvProperty->setOption( $this->dataValue::OPT_USER_LANGUAGE, $this->language );
-
-			$dvProperty->setContextPage(
-				$contextPage
-			);
-
-			$propertyLabel = ValueFormatter::getPropertyLabel(
-				$dvProperty,
-				$incoming,
-				$showInverse
-			);
-
-			// Make the sortkey visible which is otherwise hidden from the user
-			if ( $showSort && $diProperty->getKey() === '_SKEY' ) {
-				$propertyLabel = Message::get( 'smw-property-predefined-label-skey', Message::TEXT, $this->language );
-			}
-
-			if ( $propertyLabel === null ) {
-				continue;
-			}
-
-			$head = HtmlDivTable::cell(
-				$propertyLabel,
-				[
-					"class" => 'smwb-cell smwb-prophead' . ( $group !== '' ? " smwb-group-$group" : '' )
-				]
-			);
-
-			$values = $semanticData->getPropertyValues( $diProperty );
-
-			if ( $incoming && ( count( $values ) >= $this->incomingValuesCount ) ) {
-				$moreIncoming = true;
-				$moreOutgoing = false;
-				array_pop( $values );
-			} elseif ( !$incoming && ( count( $values ) >= $this->outgoingValuesCount ) ) {
-				$moreIncoming = false;
-				$moreOutgoing = true;
-				array_pop( $values );
-			} else {
-				$moreIncoming = false;
-				$moreOutgoing = false;
-			}
-
-			$list = [];
-			$value_html = '';
-
-			foreach ( $values as $dataItem ) {
-				if ( $incoming ) {
-					$dv = $dataValueFactory->newDataValueByItem( $dataItem, null );
-				} else {
-					$dv = $dataValueFactory->newDataValueByItem( $dataItem, $diProperty );
-				}
-
-				$list[] = Html::rawElement(
-					'span',
-					[
-						'class' => 'smwb-value'
-					],
-					ValueFormatter::getFormattedValue( $dv, $dvProperty, $incoming )
-				);
-			}
-
-			$last = array_pop( $list );
-			$value_html = implode( $comma, $list );
-
-			if ( ( $moreOutgoing || $moreIncoming ) && $last !== '' ) {
-				$value_html .= $comma . $last;
-			} elseif ( $list !== [] && $last !== '' ) {
-				$value_html .= '&nbsp;' . $and . '&nbsp;' . $last;
-			} else {
-				$value_html .= $last;
-			}
-
-			$hook = false;
-
-			if ( $moreIncoming ) {
-				// Added in 2.3
-				// link to the remaining incoming pages
-				MediaWikiServices::getInstance()
-					->getHookContainer()
-					->run(
-						'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate',
-						[
-							$diProperty,
-							$contextPage,
-							&$value_html,
-							$this->store
-						]
-					);
-			}
-
-			if ( $hook ) {
-				$value_html .= Html::element(
-					'a',
-					[
-						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( [
-							 'property' => $dvProperty->getWikiValue(),
-							 'value' => $this->dataValue->getWikiValue()
-						] )
-					],
-					wfMessage( 'smw_browse_more' )->text()
-				);
-			}
-
-			if ( $moreOutgoing ) {
-				$value_html .= Html::element(
-					'a',
-					[
-						'href' => \SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL( [
-							 'type' => $dvProperty->getWikiValue(),
-							 'from' => $this->dataValue->getWikiValue()
-						] )
-					],
-					wfMessage( 'smw_browse_more' )->text()
-				);
-			}
-
-			$body = HtmlDivTable::cell(
-				$value_html,
-				[
-					"class" => 'smwb-cell smwb-propval'
-				]
-			);
-
-			// display row
-			$html .= HtmlDivTable::row(
-				( $left ? ( $head . $body ) : ( $body . $head ) ),
-				[
-					"class" => 'smwb-propvalue'
-				]
-			);
-
-			$noresult = false;
-		}
 
 		return $html;
 	}
@@ -732,81 +448,6 @@ class HtmlBuilder {
 			);
 
 		return [ $indata, $more ];
-	}
-
-	/**
-	 * Returns HTML fragments for message classes in connection with categories
-	 * linked to a property group.
-	 */
-	private function getGroupMessageClassLinks( $groupFormatter, $semanticData ) {
-		$contextPage = $semanticData->getSubject();
-
-		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new DIProperty( '_PPGR' ) ) ) {
-			return '';
-		}
-
-		$group = '';
-		$html = '';
-
-		$list = [
-			'label' => $groupFormatter->getMessageClassLink(
-				GroupFormatter::MESSAGE_GROUP_LABEL,
-				$contextPage
-			),
-			'description' => $groupFormatter->getMessageClassLink(
-				GroupFormatter::MESSAGE_GROUP_DESCRIPTION,
-				$contextPage
-			)
-		];
-
-		foreach ( $list as $k => $val ) {
-
-			if ( $val === '' ) {
-				continue;
-			}
-
-			$h = HtmlDivTable::cell(
-				wfMessage( 'smw-browse-property-group-' . $k )->text(),
-				[
-					"class" => 'smwb-cell smwb-prophead'
-				]
-			) . HtmlDivTable::cell(
-				$val,
-				[
-					"class" => 'smwb-cell smwb-propval'
-				]
-			);
-
-			$group .= HtmlDivTable::row(
-				$h,
-				[
-					"class" => 'smwb-propvalue'
-				]
-			);
-		}
-
-		if ( $group !== '' ) {
-			$h = HtmlDivTable::cell(
-				wfMessage( 'smw-browse-property-group-title' )->text(),
-				[
-					"class" => 'smwb-cell smwb-propval'
-				]
-			) . HtmlDivTable::cell(
-				'',
-				[
-					"class" => 'smwb-cell smwb-propval'
-				]
-			);
-
-			$html = HtmlDivTable::row(
-				$h,
-				[
-					"class" => 'smwb-propvalue smwb-group-links'
-				]
-			) . $group;
-		}
-
-		return $html;
 	}
 
 	/**
@@ -916,6 +557,287 @@ class HtmlBuilder {
 			'footer-content' => $status,
 			'html-pagination-next' => $nextHtml
 		];
+	}
+
+	/**
+	 * Build the factbox section data for Mustache to build the HTML
+	 */
+	private function getSectionsData(
+		SemanticData $semanticData,
+		bool $left = true,
+		bool $incoming = false
+	): array {
+		$noresult = true;
+
+		$diProperties = $semanticData->getProperties();
+
+		$showGroup = $this->getOption( 'showGroup' ) && $this->getOption( 'group' ) !== 'hide';
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$groupFormatter = new GroupFormatter(
+			$applicationFactory->getPropertySpecificationLookup(),
+			$applicationFactory->singleton( 'SchemaFactory' )->newSchemaFinder( $this->store )
+		);
+
+		$groupFormatter->showGroup( $showGroup );
+		$groupFormatter->findGroupMembership( $diProperties );
+
+		$data = [];
+
+		foreach ( $diProperties as $group => $properties ) {
+			$props = $this->getPropertiesData(
+				$semanticData,
+				$properties,
+				$incoming,
+				$noresult
+			);
+
+			if ( !$props ) {
+				continue;
+			}
+
+			$sectionData = [
+				'direction' => $left ? 'start' : 'end',
+				'array-properties' => $props
+			];
+
+			if ( $group !== '' ) {
+				$sectionData['group'] = $group;
+				$sectionData['html-heading'] = $groupFormatter->getGroupLink( $group );
+			}
+
+			$data[] = $sectionData;
+		}
+
+		if ( !$incoming && $showGroup ) {
+			$groupLinks = $this->getGroupMessageClassLinksData(
+				$groupFormatter,
+				$semanticData
+			);
+			if ( count( $groupLinks ) > 0 ) {
+				$data[] = $groupLinks;
+			}
+		}
+
+		if ( $noresult ) {
+			$noMsgKey = $incoming ? 'smw_browse_no_incoming' : 'smw_browse_no_outgoing';
+			$msg = Message::get( $noMsgKey, Message::ESCAPED, $this->language );
+			$data[]['html-section'] = Html::noticeBox( $msg, 'smw-factbox-message' );
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Return the Mustache data to build the html that 
+	 * matches a group of properties and creates the display of assigned values.
+	 */
+	private function getPropertiesData(
+		SemanticData $semanticData,
+		array $properties,
+		bool $incoming,
+		bool &$noresult
+	): array {
+		$data = [];
+
+		$contextPage = $semanticData->getSubject();
+		$showInverse = $this->getOption( 'showInverse' );
+		$showSort = $this->getOption( 'showSort' );
+
+		$comma = Message::get(
+			'comma-separator',
+			Message::ESCAPED,
+			$this->language
+		);
+
+		$and = Message::get(
+			'and',
+			Message::ESCAPED,
+			$this->language
+		);
+
+		$dataValueFactory = DataValueFactory::getInstance();
+
+		// Sort by label instead of the key which may start with `_` or `__`
+		// and thereby distorts the lexicographical order
+		usort( $properties, function ( $a, $b ) {
+			return strnatcmp( $a->getLabel(), $b->getLabel() );
+		} );
+
+		foreach ( $properties as $diProperty ) {
+			$dvProperty = $dataValueFactory->newDataValueByItem(
+				$diProperty,
+				null
+			);
+
+			$dvProperty->setOption( $this->dataValue::OPT_USER_LANGUAGE, $this->language );
+
+			$dvProperty->setContextPage(
+				$contextPage
+			);
+
+			$propertyLabel = ValueFormatter::getPropertyLabel(
+				$dvProperty,
+				$incoming,
+				$showInverse
+			);
+
+			// Make the sortkey visible which is otherwise hidden from the user
+			if ( $showSort && $diProperty->getKey() === '_SKEY' ) {
+				$propertyLabel = Message::get( 'smw-property-predefined-label-skey', Message::TEXT, $this->language );
+			}
+
+			if ( $propertyLabel === null ) {
+				continue;
+			}
+
+			$values = $semanticData->getPropertyValues( $diProperty );
+
+			if ( $incoming && ( count( $values ) >= $this->incomingValuesCount ) ) {
+				$moreIncoming = true;
+				$moreOutgoing = false;
+				array_pop( $values );
+			} elseif ( !$incoming && ( count( $values ) >= $this->outgoingValuesCount ) ) {
+				$moreIncoming = false;
+				$moreOutgoing = true;
+				array_pop( $values );
+			} else {
+				$moreIncoming = false;
+				$moreOutgoing = false;
+			}
+
+			$list = [];
+			$value_html = '';
+
+			foreach ( $values as $dataItem ) {
+				if ( $incoming ) {
+					$dv = $dataValueFactory->newDataValueByItem( $dataItem, null );
+				} else {
+					$dv = $dataValueFactory->newDataValueByItem( $dataItem, $diProperty );
+				}
+
+				$list[] = Html::rawElement(
+					'span',
+					[
+						'class' => 'smw-factbox-value'
+					],
+					ValueFormatter::getFormattedValue( $dv, $dvProperty, $incoming )
+				);
+			}
+
+			$last = array_pop( $list );
+			$value_html = implode( $comma, $list );
+
+			if ( ( $moreOutgoing || $moreIncoming ) && $last !== '' ) {
+				$value_html .= $comma . $last;
+			} elseif ( $list !== [] && $last !== '' ) {
+				$value_html .= '&nbsp;' . $and . '&nbsp;' . $last;
+			} else {
+				$value_html .= $last;
+			}
+
+			$hook = false;
+
+			if ( $moreIncoming ) {
+				// Added in 2.3
+				// link to the remaining incoming pages
+				MediaWikiServices::getInstance()
+					->getHookContainer()
+					->run(
+						'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate',
+						[
+							$diProperty,
+							$contextPage,
+							&$value_html,
+							$this->store
+						]
+					);
+			}
+
+			if ( $hook ) {
+				$value_html .= Html::element(
+					'a',
+					[
+						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( [
+							 'property' => $dvProperty->getWikiValue(),
+							 'value' => $this->dataValue->getWikiValue()
+						] )
+					],
+					wfMessage( 'smw_browse_more' )->text()
+				);
+			}
+
+			if ( $moreOutgoing ) {
+				$value_html .= Html::element(
+					'a',
+					[
+						'href' => \SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL( [
+							 'type' => $dvProperty->getWikiValue(),
+							 'from' => $this->dataValue->getWikiValue()
+						] )
+					],
+					wfMessage( 'smw_browse_more' )->text()
+				);
+			}
+
+			$noresult = false;
+
+			$data[] = [
+				'html-name' => $propertyLabel,
+				'html-values' => $value_html
+			];
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Returns the Mustache data to build the HTML for message classes
+	 * in connection with categories linked to a property group.
+	 */
+	private function getGroupMessageClassLinksData( $groupFormatter, $semanticData ): array {
+		$data = [];
+		$contextPage = $semanticData->getSubject();
+
+		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new DIProperty( '_PPGR' ) ) ) {
+			return $data;
+		}
+
+		$list = [
+			'label' => $groupFormatter->getMessageClassLink(
+				GroupFormatter::MESSAGE_GROUP_LABEL,
+				$contextPage
+			),
+			'description' => $groupFormatter->getMessageClassLink(
+				GroupFormatter::MESSAGE_GROUP_DESCRIPTION,
+				$contextPage
+			)
+		];
+
+		$props = [];
+		foreach ( $list as $k => $val ) {
+			if ( $val === '' ) {
+				continue;
+			}
+
+			$props[] = [
+				'html-name' => wfMessage( 'smw-browse-property-group-' . $k )->text(),
+				'html-values' => $val
+			];
+		}
+
+		if ( count( $props ) === 0 ) {
+			return $data;
+		}
+
+		$msg = wfMessage( 'smw-browse-property-group-title' )->text();
+		$data = [
+			'group' => $msg,
+			'html-heading' => $msg,
+			'array-properties' => $props
+		];
+
+		return $data;
 	}
 
 }

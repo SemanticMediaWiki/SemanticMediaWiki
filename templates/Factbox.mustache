@@ -1,11 +1,11 @@
 <article class="smw-factbox">
 	{{#data-header}}
 	<header class="smw-factbox-header">
-		<div class="smw-factbox-title">{{{html-title}}}</div>
+		<div class="smw-factbox-title" role="heading" aria-level="2">{{{html-title}}}</div>
 		<div class="smw-factbox-actions">{{{html-actions}}}</div>
 	</header>
 	{{/data-header}}
-	{{{html-factbox}}}
+	{{#array-sections}}{{>FactboxSection}}{{/array-sections}}
 	{{#data-pagination}}
 	<div class="smw-factbox-pagination">
 		{{{html-pagination-prev}}}
