@@ -529,7 +529,6 @@ label.smw-form-checkbox {
 }
 
 /* Handling Long Words and URLs (Forcing Breaks, Hyphenation, Ellipsis */
-.smwb-value,
 .smwprops,
 .smwpropname,
 .smwtype_uri {
@@ -540,19 +539,6 @@ label.smw-form-checkbox {
 	hyphens: auto;
 	box-decoration-break: clone;
 	-webkit-box-decoration-break: clone;
-}
-
-/* Only apply when less then 350*/
-@media (max-width: 400px) {
-	.smwb-propvalue {
-		word-break: break-word;
-		word-wrap: break-word;
-		-webkit-hyphens: auto;
-		-moz-hyphens: auto;
-		hyphens: auto;
-		box-decoration-break: clone;
-		-webkit-box-decoration-break: clone;
-	}
 }
 
 /* Distinguish subobjects from other titles */
