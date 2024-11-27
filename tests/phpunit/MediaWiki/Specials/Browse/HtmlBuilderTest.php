@@ -96,7 +96,7 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testPlaceholder() {
+	public function testGetPlaceholderData() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->any() )
@@ -109,8 +109,8 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInternalType(
-			'string',
-			$instance->placeholder()
+			'array',
+			$instance->getPlaceholderData()
 		);
 	}
 
