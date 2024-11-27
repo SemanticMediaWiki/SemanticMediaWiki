@@ -212,10 +212,7 @@
 		},
 		{
 			"type": "api",
-			"about": "#8 (1.38+) `smwbrowse` subject lookup, HTML",
-			"skip-on": {
-				"mediawiki": [ "<1.37.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#8 `smwbrowse` subject lookup, HTML",
 			"api": {
 				"parameters": {
 					"action": "smwbrowse",
