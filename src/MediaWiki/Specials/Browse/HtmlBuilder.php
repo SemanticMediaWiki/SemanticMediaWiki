@@ -12,7 +12,6 @@ use SMW\Message;
 use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\Store;
-use SMW\Utils\HtmlDivTable;
 use SMWDataValue;
 use TemplateParser;
 
