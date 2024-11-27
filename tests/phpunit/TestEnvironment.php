@@ -180,6 +180,24 @@ class TestEnvironment {
 		$permissionManager->overrideUserRightsForTesting( $user, $permissions );
 	}
 
+	public function resetDBLoadBalancer() {
+		try {
+			// Get the MediaWiki service container
+			$services = \MediaWiki\MediaWikiServices::getInstance();
+			
+			// Check if DBLoadBalancer is available
+			if ( $services->has( 'DBLoadBalancer' ) ) {
+				return;  // DBLoadBalancer is already initialized
+			}
+	
+			// Reinitialize DBLoadBalancer if missing
+			$services->set( 'DBLoadBalancer', new DBLoadBalancer() );
+		} catch ( \Exception $e ) {
+			// Handle exception or log
+			error_log( 'Error resetting DBLoadBalancer: ' . $e->getMessage() );
+		}
+	}
+
 	/**
 	 * @since 2.4
 	 *

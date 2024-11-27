@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use ExtensionRegistry;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;
@@ -16,6 +16,7 @@ use Title;
  *
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
+ * @group Database
  *
  * @group medium
  *
@@ -24,7 +25,7 @@ use Title;
  *
  * @author mwjames
  */
-class SearchInPageDBIntegrationTest extends DatabaseTestCase {
+class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();

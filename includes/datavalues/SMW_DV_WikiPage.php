@@ -546,7 +546,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				return $this->m_title = $title;
 			}
 
-			// #3278, Special handling of `>` in the user namespace, MW (1.31+)
+			// #3278, Special handling of `>` in the user namespace
 			// added a prefix to users that originate from imported content
 			if (
 				$this->m_dataitem->getNamespace() === NS_USER &&

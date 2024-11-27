@@ -8,9 +8,11 @@ use SMW\Tests\Utils\Validators\QueryResultValidator;
 use SMW\Tests\Utils\Validators\StringValidator;
 use SMWQuery as Query;
 use Title;
+use MediaWikiIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -18,7 +20,7 @@ use Title;
  *
  * @author mwjames
  */
-class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class QueryTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var Store
