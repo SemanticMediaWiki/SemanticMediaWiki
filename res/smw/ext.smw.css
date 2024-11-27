@@ -632,7 +632,7 @@ label.smw-form-checkbox {
 
 .autocomplete-loading {
 	background: url( assets/smw-icon-autocomplete-loading.gif ) no-repeat left center;
-	padding: 5px 0 5px 35px;
+	padding-right: 30px;
 	vertical-align: middle;
 	background-position: right 10px center;
 }
