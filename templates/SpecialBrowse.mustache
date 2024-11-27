@@ -1,3 +1,19 @@
+{{!
+  Special:Browse template
+
+  Required data:
+  - subject: string - encoded JSON for ajax loading
+  - options: string - encoded JSON for ajax loading
+  - html-output: string - Raw HTML that does not belong to any elements below
+  - html-noscript: string - HTML of the noscript message box
+  - data-factbox: object - Factbox data (see Factbox.mustache)
+  - data-form: object - SMW browse search form
+    - form-action: string
+	- input-value: string
+	- input-placeholder: string
+	- button-value: string
+	- form-title: string
+}}
 <div
 	class="smw-browse"
 	{{#subject}}data-mw-smw-browse-subject="{{.}}"{{/subject}}
@@ -8,7 +24,7 @@
 	<div class="smw-browse-content">
 		{{#data-factbox}}{{>Factbox}}{{/data-factbox}}
 		{{#data-form}}
-		<form class="smw-browse-search" name="smwbrowse" action="{{{form-action}}}" method="get">
+		<form class="smw-browse-search" name="smwbrowse" action="{{{form-action}}}" method="get" role="search">
 			<input
 				name="article"
 				id="smw-page-input"

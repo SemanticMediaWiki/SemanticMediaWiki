@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  *
- * @since 3.0
+ * @since 5.0
  *
  * @file
  * @ingroup SMW
@@ -28,6 +28,10 @@
 
 @import 'tokens.less';
 
+/**
+ * Factbox component
+ * Used primarily in Special:Browse
+ */
 .smw-factbox {
 	border: @border-base;
 	border-radius: @border-radius-base;
@@ -158,14 +162,14 @@
 		}
 	}
 
-	&-loading {
+	&[ aria-busy = "true" ] {
 		.smw-factbox-header {
 			position: relative;
 			padding-block: @spacing-100;
 			overflow: hidden;
 	
 			&::after {
-				content: 'loading';
+				content: '';
 				position: absolute;
 				bottom: 0;
 				width: 33.33%;

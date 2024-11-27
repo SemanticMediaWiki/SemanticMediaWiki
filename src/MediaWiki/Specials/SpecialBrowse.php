@@ -100,8 +100,8 @@ class SpecialBrowse extends SpecialPage {
 
 		if ( !$dataValue->isValid() ) {
 			$error = '';
-			foreach ( $dataValue->getErrors() as $error ) {
-				$error .= Message::decode( $error, Message::TEXT, Message::USER_LANGUAGE );
+			foreach ( $dataValue->getErrors() as $err ) {
+				$error .= Message::decode( $err, Message::TEXT, Message::USER_LANGUAGE );
 			}
 			$data['html-output'] = Html::errorBox(
 				Message::get( [ 'smw-browse-invalid-subject', $error ], Message::TEXT, Message::USER_LANGUAGE ),

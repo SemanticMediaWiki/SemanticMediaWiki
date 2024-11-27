@@ -206,7 +206,7 @@ class HtmlBuilder {
 				Message::get( 'smw-noscript', Message::PARSE, $this->language )
 			),
 			'data-factbox' => [
-				'class' => 'smw-factbox-loading',
+				'is-loading' => true,
 				'data-header' => $this->getHeaderData(),
 				'array-sections' => [
 					[
@@ -264,7 +264,7 @@ class HtmlBuilder {
 	 * Create and output HTML including the complete factbox, based on the extracted
 	 * parameters in the execute comment.
 	 */
-	private function createHTML() {
+	private function createHTML(): string {
 		$leftside = true;
 		$more = false;
 
@@ -355,7 +355,7 @@ class HtmlBuilder {
 	 * Creates a Semantic Data object with the incoming properties instead of the
 	 * usual outgoing properties.
 	 */
-	private function getInData() {
+	private function getInData(): array {
 		$indata = new SemanticData(
 			$this->dataValue->getDataItem()
 		);
@@ -494,23 +494,24 @@ class HtmlBuilder {
 
 		$article = $this->dataValue->getLongWikiText();
 
-		$offset = max( $this->offset - $this->incomingPropertiesCount + 1, 0 );
-		$parameters = [
-			'offset'  => $offset,
-			'dir'     => $this->showoutgoing ? 'both' : 'in',
-			'article' => $article
+		$directions = [
+			'prev' => max( $this->offset - $this->incomingPropertiesCount + 1, 0 ),
+			'next' => $this->offset + $this->incomingPropertiesCount - 1,
 		];
-		$linkMsg = 'smw_result_prev';
-		$prevHtml = ( $this->offset == 0 ) ? wfMessage( $linkMsg )->escaped() : FieldBuilder::createLink( $linkMsg, $parameters, $this->language );
 
-		$offset = $this->offset + $this->incomingPropertiesCount - 1;
-		$parameters = [
-			'offset'  => $offset,
-			'dir'     => $this->showoutgoing ? 'both' : 'in',
-			'article' => $article
-		];
-		$linkMsg = 'smw_result_next';
-		$nextHtml = $more ? FieldBuilder::createLink( $linkMsg, $parameters, $this->language ) : wfMessage( $linkMsg )->escaped();
+		foreach ( [ 'prev', 'next' ] as $dir ) {
+			$offset = $directions[$dir];
+			$parameters = [
+				'offset'  => $offset,
+				'dir'     => $this->showoutgoing ? 'both' : 'in',
+				'article' => $article,
+			];
+			$linkMsg = 'smw_result_' . $dir;
+			$condition = ($dir === 'prev') ? $this->offset > 0 : $more;
+			${$dir . 'Html'} = $condition
+				? FieldBuilder::createLink( $linkMsg, $parameters, $this->language )
+				: wfMessage( $linkMsg )->escaped();
+		}
 
 		$status = sprintf( '%s %d – %d',
 			wfMessage( 'smw_result_results' )->escaped(),
