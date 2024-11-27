@@ -60,18 +60,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testBuildEmptyHTML() {
-		$instance = new HtmlBuilder(
-			$this->store,
-			DIWikiPage::newFromText( 'Foo' )
-		);
-
-		$this->assertInternalType(
-			'string',
-			$instance->buildEmptyHTML()
-		);
-	}
-
 	public function testBuildHTML() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 

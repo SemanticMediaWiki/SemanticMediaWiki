@@ -172,11 +172,11 @@ class HtmlBuilder {
 	}
 
 	/**
-	 * @since 3.0
+	 * Return the Mustache data for the placeholder state 
 	 *
-	 * @return string
+	 * @since 5.0
 	 */
-	public function placeholder() {
+	public function getPlaceholderData(): array {
 		$subject = [
 			'dbkey' => $this->subject->getDBKey(),
 			'ns' => $this->subject->getNamespace(),
@@ -186,38 +186,43 @@ class HtmlBuilder {
 
 		$this->language = $this->getOption( 'lang' ) !== null ? $this->getOption( 'lang' ) : Message::USER_LANGUAGE;
 
-		return Html::rawElement(
-			'div',
-			[
-				'class' => 'smwb-container',
-				'data-subject' => json_encode( $subject, JSON_UNESCAPED_UNICODE ),
-				'data-options' => json_encode( $this->options )
-			],
-			Html::rawElement(
-				'div',
-				[
-					'class' => 'smwb-status'
-				],
-				Html::rawElement(
-					'noscript',
-					[],
-					Html::errorBox(
-						Message::get( 'smw-noscript', Message::PARSE, $this->language )
-					)
-				)
-			) . Html::rawElement(
-				'div',
-				[
-					'class' => 'smwb-emptysheet is-disabled'
-				],
-				Html::rawElement(
-					'span',
-					[
-						'class' => 'smw-overlay-spinner large inline'
-					]
-				) . $this->buildEmptyHTML()
-			)
+		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+			$this->subject
 		);
+
+		$semanticData = new SemanticData( $this->subject );
+		$this->articletext = $this->dataValue->getWikiValue();
+
+		if ( $this->getOption( 'showAll' ) ) {
+			$this->showoutgoing = true;
+			$this->showincoming = true;
+		}
+
+		$msg = Message::get( 'smw-browse-from-backend', Message::ESCAPED, $this->language );
+
+		$data = [
+			'subject' => json_encode( $subject, JSON_UNESCAPED_UNICODE ),
+			'options' => json_encode( $this->options ),
+			'html-noscript' => Html::errorBox(
+				Message::get( 'smw-noscript', Message::PARSE, $this->language )
+			),
+			'data-factbox' => [
+				'class' => 'smw-factbox-loading',
+				'data-header' => $this->getHeaderData(),
+				'array-sections' => [
+					[
+						'html-section' => Html::noticeBox( $msg, 'smw-factbox-message' )
+					]
+				],
+				'data-pagination' => $this->getPaginationData( false )
+			]
+		];
+
+		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
+			$data['data-form'] = FieldBuilder::getQueryFormData( $this->articletext, $this->language );
+		}
+
+		return $data;
 	}
 
 	/**
@@ -254,46 +259,6 @@ class HtmlBuilder {
 		}
 
 		return $this->createHTML();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return string
-	 */
-	public function buildEmptyHTML() {
-		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-			$this->subject
-		);
-
-		$semanticData = new SemanticData( $this->subject );
-		$this->articletext = $this->dataValue->getWikiValue();
-
-		if ( $this->getOption( 'showAll' ) ) {
-			$this->showoutgoing = true;
-			$this->showincoming = true;
-		}
-
-		$msg = Message::get( 'smw-browse-from-backend', Message::ESCAPED, $this->language );
-
-		$templateParser = new TemplateParser( __DIR__ . '/../../../../templates' );
-		$data = [
-			'data-factbox' => [
-				'data-header' => $this->getHeaderData(),
-				'array-sections' => [
-					[
-						'html-section' => Html::noticeBox( $msg, 'smw-factbox-message' )
-					]
-				],
-				'data-pagination' => $this->getPaginationData( false )
-			]
-		];
-
-		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$data['data-form'] = FieldBuilder::getQueryFormData( $this->articletext, $this->language );
-		}
-
-		return $templateParser->processTemplate( 'SpecialBrowse', $data );
 	}
 
 	/**
@@ -379,7 +344,7 @@ class HtmlBuilder {
 		$html .= Html::element(
 			'div',
 			[
-				'class' => 'smwb-modules',
+				'class' => 'smw-browse-modules',
 				'data-modules' => json_encode( $this->extraModules )
 			]
 		);

@@ -110,7 +110,7 @@ class SpecialBrowse extends SpecialPage {
 				'smw-error-browse'
 			);
 			if ( !$this->including() ) {
-				$data['data-form'] = FieldBuilder::createQueryForm( $webRequest->getVal( 'article', '' ) );
+				$data['data-form'] = FieldBuilder::getQueryFormData( $webRequest->getVal( 'article', '' ) );
 			}
 			return $data;
 		}
@@ -142,8 +142,7 @@ class SpecialBrowse extends SpecialPage {
 		}
 
 		// Ajax/API is doing the data fetch
-		$data['html-output'] = $htmlBuilder->placeholder();
-		return $data;
+		return $htmlBuilder->getPlaceholderData();
 	}
 
 	private function newHtmlBuilder( $webRequest, $dataItem, $store, $settings ) {

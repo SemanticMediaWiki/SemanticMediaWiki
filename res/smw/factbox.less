@@ -157,4 +157,35 @@
 			color: @color-subtle;
 		}
 	}
+
+	&-loading {
+		.smw-factbox-header {
+			position: relative;
+			padding-block: @spacing-100;
+			overflow: hidden;
+	
+			&::after {
+				content: 'loading';
+				position: absolute;
+				bottom: 0;
+				width: 33.33%;
+				height: 2px;
+				background-color: @background-color-progressive;
+				animation-name: cdx-progress-bar-inline;
+				animation-duration: @animation-duration-medium;
+				animation-timing-function: @animation-timing-function-base;
+				animation-iteration-count: @animation-iteration-count-base;
+			}
+		}
+	}
+}
+
+@keyframes cdx-progress-bar-inline {
+	0% {
+		transform: translate( -100% );
+	}
+
+	100% {
+		transform: translate( 300% );
+	}
 }

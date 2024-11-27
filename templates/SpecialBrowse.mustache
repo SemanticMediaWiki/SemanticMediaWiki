@@ -1,15 +1,24 @@
-{{#html-output}}{{{.}}}{{/html-output}}
-{{#data-factbox}}{{>Factbox}}{{/data-factbox}}
-{{#data-form}}
-<form class="smw-browse-search" name="smwbrowse" action="{{{form-action}}}" method="get">
-	<input
-		name="article"
-		id="smw-page-input"
-		class="smw-browse-search-input smw-page-input autocomplete-arrow mw-ui-input"
-		value="{{{input-value}}}"
-		placeholder="{{{input-placeholder}}}"
-		autocomplete="off">
-	<input type="submit" class="smw-browse-search-button mw-ui-button" value="{{{button-value}}}">
-	<input type="hidden" name="title" value="{{{form-title}}}">
-</form>
-{{/data-form}}
+<div
+	class="smw-browse"
+	{{#subject}}data-mw-smw-browse-subject="{{.}}"{{/subject}}
+	{{#options}}data-mw-smw-browse-options="{{.}}"{{/options}}
+>
+	{{#html-output}}{{{.}}}{{/html-output}}
+	{{#html-noscript}}<noscript>{{{.}}}</noscript>{{/html-noscript}}
+	<div class="smw-browse-content">
+		{{#data-factbox}}{{>Factbox}}{{/data-factbox}}
+		{{#data-form}}
+		<form class="smw-browse-search" name="smwbrowse" action="{{{form-action}}}" method="get">
+			<input
+				name="article"
+				id="smw-page-input"
+				class="smw-browse-search-input smw-page-input autocomplete-arrow mw-ui-input"
+				value="{{{input-value}}}"
+				placeholder="{{{input-placeholder}}}"
+				autocomplete="off">
+			<input type="submit" class="smw-browse-search-button mw-ui-button" value="{{{button-value}}}">
+			<input type="hidden" name="title" value="{{{form-title}}}">
+		</form>
+		{{/data-form}}
+	</div>
+</div>
