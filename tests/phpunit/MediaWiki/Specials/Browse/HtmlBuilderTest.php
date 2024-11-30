@@ -120,82 +120,58 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function buildHTMLProvider() {
+	public function buildHTMLProvider(): array {
 		return [
-			// No options
-			[
-				[]
-			],
-			// Basic options with showAll enabled
-			[
-				[
-					'offset' => 0,
-					'showAll' => true,
-					'showInverse' => false,
-					'dir' => 'both',
-					'printable' => ''
-				]
-			],
-			// Options with offset and printable set to yes
-			[
-				[
-					'offset' => 10,
-					'showAll' => false,
-					'showInverse' => true,
-					'dir' => 'incoming',
-					'printable' => 'yes'
-				]
-			],
-			// Options with showInverse enabled
-			[
-				[
-					'offset' => 5,
-					'showAll' => false,
-					'showInverse' => true,
-					'dir' => 'outgoing',
-					'printable' => 'no'
-				]
-			],
-			// Options with different direction
-			[
-				[
-					'offset' => 15,
-					'showAll' => false,
-					'showInverse' => false,
-					'dir' => 'incoming',
-					'printable' => ''
-				]
-			],
-			// Options with printable set to an empty string
-			[
-				[
-					'offset' => 20,
-					'showAll' => true,
-					'showInverse' => false,
-					'dir' => 'both',
-					'printable' => ''
-				]
-			],
-			// Options with maximum offset
-			[
-				[
-					'offset' => 100,
-					'showAll' => false,
-					'showInverse' => false,
-					'dir' => 'both',
-					'printable' => 'no'
-				]
-			],
-			// Options with all features enabled
-			[
-				[
-					'offset' => 0,
-					'showAll' => true,
-					'showInverse' => true,
-					'dir' => 'both',
-					'printable' => 'yes'
-				]
-			]
+			'noOptions' => [[]],
+			'basicOptionsShowAll' => [[
+				'offset' => 0,
+				'showAll' => true,
+				'showInverse' => false,
+				'dir' => 'both',
+				'printable' => ''
+			]],
+			'offsetAndPrintableYes' => [[
+				'offset' => 10,
+				'showAll' => false,
+				'showInverse' => true,
+				'dir' => 'incoming',
+				'printable' => 'yes'
+			]],
+			'showInverseEnabled' => [[
+				'offset' => 5,
+				'showAll' => false,
+				'showInverse' => true,
+				'dir' => 'outgoing',
+				'printable' => 'no'
+			]],
+			'differentDirection' => [[
+				'offset' => 15,
+				'showAll' => false,
+				'showInverse' => false,
+				'dir' => 'incoming',
+				'printable' => ''
+			]],
+			'printableEmptyString' => [[
+				'offset' => 20,
+				'showAll' => true,
+				'showInverse' => false,
+				'dir' => 'both',
+				'printable' => ''
+			]],
+			'maximumOffset' => [[
+				'offset' => 100,
+				'showAll' => false,
+				'showInverse' => false,
+				'dir' => 'both',
+				'printable' => 'no'
+			]],
+			'allFeaturesEnabled' => [[
+				'offset' => 0,
+				'showAll' => true,
+				'showInverse' => true,
+				'dir' => 'both',
+				'printable' => 'yes'
+			]]
 		];
 	}
 
