@@ -108,16 +108,72 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			$subject
 		);
 
-		$this->assertInternalType(
-			'array',
-			$instance->getPlaceholderData()
+		$options = [
+			'lang' => 'fr',
+			'showAll' => true,
+			'printable' => 'no',
+			'including' => false
+		];
+
+		$instance->setOptions( $options );
+
+		$placeholderData = $instance->getPlaceholderData();
+
+		// Assert that the result is an array
+		$this->assertIsArray( $placeholderData );
+
+		// Assert specific keys exist in the result
+		$this->assertArrayHasKey( 'subject', $placeholderData );
+		$this->assertArrayHasKey( 'options', $placeholderData );
+		$this->assertArrayHasKey( 'html-noscript', $placeholderData );
+		$this->assertArrayHasKey( 'data-factbox', $placeholderData );
+
+		// Assert that 'subject' is correctly encoded
+		$expectedSubject = [
+			'dbkey' => $subject->getDBKey(),
+			'ns' => $subject->getNamespace(),
+			'iw' => $subject->getInterwiki(),
+			'subobject' => $subject->getSubobjectName(),
+		];
+		$this->assertEquals(
+			json_encode( $expectedSubject, JSON_UNESCAPED_UNICODE ),
+			$placeholderData['subject']
 		);
+
+		// Assert that 'options' are correctly encoded
+		$this->assertEquals(
+			json_encode( $options ),
+			$placeholderData['options']
+		);
+
+		// Assert that 'html-noscript' contains the smw-noscript class
+		// Since Html::errorBox output can be different depending on the MW version
+		$this->assertStringContainsString(
+			'smw-noscript',
+			$placeholderData['html-noscript']
+		);
+
+		// Assert that 'data-factbox' contains expected structure
+		$this->assertArrayHasKey( 'is-loading', $placeholderData['data-factbox'] );
+		$this->assertTrue( $placeholderData['data-factbox']['is-loading'] );
+
+		// Check if 'data-form' is present when 'printable' is not 'yes' and 'including' is false
+		$this->assertArrayHasKey( 'data-form', $placeholderData );
+		// Define the expected keys from getQueryFormData
+		$expectedDataFormKeys = [
+			'button-value',
+			'form-action',
+			'form-title',
+			'input-placeholder',
+			'input-value'
+		];
+		// Check if all expected keys are present in the data-form array
+		foreach ( $expectedDataFormKeys as $key ) {
+			$this->assertArrayHasKey( $key, $placeholderData['data-form'] );
+		}
 	}
 
-	/**
-	 * @dataProvider htmlOptionsProvider
-	 */
-	public function testBuildHTMLWithOptions( $options ) {
+	public function testBuildHTMLWithOptions() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->any() )
@@ -149,20 +205,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			'string',
 			$instance->buildHTML()
 		);
-	}
-
-	public function htmlOptionsProvider() {
-		return [
-			[
-				[
-					'offset' => 0,
-					'showAll' => true,
-					'showInverse' => false,
-					'dir' => 'both',
-					'printable' => ''
-				]
-			]
-		];
 	}
 
 	public function testOptions() {
