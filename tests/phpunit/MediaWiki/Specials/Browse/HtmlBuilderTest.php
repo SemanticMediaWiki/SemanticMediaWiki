@@ -60,22 +60,141 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testBuildHTML() {
+	public function testOptions() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
-
-		$this->store->expects( $this->any() )
-			->method( 'getSemanticData' )
-			->will( $this->returnValue( new SemanticData( $subject ) ) );
 
 		$instance = new HtmlBuilder(
 			$this->store,
 			$subject
 		);
 
-		$this->assertInternalType(
-			'string',
+		$options = [
+			'Foo' => 42
+		];
+
+		$instance->setOptions(
+			$options
+		);
+
+		$instance->setOption(
+			'Bar',
+			1001
+		);
+
+		$this->assertEquals(
+			42,
+			$instance->getOption( 'Foo' )
+		);
+
+		$this->assertEquals(
+			1001,
+			$instance->getOption( 'Bar' )
+		);
+	}
+
+	/**
+	 * @dataProvider buildHTMLProvider
+	 */
+	public function testBuildHTML( $options ) {
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( new SemanticData( $subject ) ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getInProperties' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new HtmlBuilder(
+			$this->store,
+			$subject
+		);
+
+		$instance->setOptions(
+			$options
+		);
+
+		$this->assertIsString(
 			$instance->buildHTML()
 		);
+	}
+
+	public function buildHTMLProvider() {
+		return [
+			// No options
+			[],
+			// Basic options with showAll enabled
+			[
+				[
+					'offset' => 0,
+					'showAll' => true,
+					'showInverse' => false,
+					'dir' => 'both',
+					'printable' => ''
+				]
+			],
+			// Options with offset and printable set to yes
+			[
+				[
+					'offset' => 10,
+					'showAll' => false,
+					'showInverse' => true,
+					'dir' => 'incoming',
+					'printable' => 'yes'
+				]
+			],
+			// Options with showInverse enabled
+			[
+				[
+					'offset' => 5,
+					'showAll' => false,
+					'showInverse' => true,
+					'dir' => 'outgoing',
+					'printable' => 'no'
+				]
+			],
+			// Options with different direction
+			[
+				[
+					'offset' => 15,
+					'showAll' => false,
+					'showInverse' => false,
+					'dir' => 'incoming',
+					'printable' => ''
+				]
+			],
+			// Options with printable set to an empty string
+			[
+				[
+					'offset' => 20,
+					'showAll' => true,
+					'showInverse' => false,
+					'dir' => 'both',
+					'printable' => ''
+				]
+			],
+			// Options with maximum offset
+			[
+				[
+					'offset' => 100,
+					'showAll' => false,
+					'showInverse' => false,
+					'dir' => 'both',
+					'printable' => 'no'
+				]
+			],
+			// Options with all features enabled
+			[
+				[
+					'offset' => 0,
+					'showAll' => true,
+					'showInverse' => true,
+					'dir' => 'both',
+					'printable' => 'yes'
+				]
+			]
+		];
 	}
 
 	public function testLegacy() {
@@ -171,72 +290,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 		foreach ( $expectedDataFormKeys as $key ) {
 			$this->assertArrayHasKey( $key, $placeholderData['data-form'] );
 		}
-	}
-
-	public function testBuildHTMLWithOptions() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
-
-		$this->store->expects( $this->any() )
-			->method( 'getSemanticData' )
-			->will( $this->returnValue( new SemanticData( $subject ) ) );
-
-		$this->store->expects( $this->any() )
-			->method( 'getInProperties' )
-			->will( $this->returnValue( [] ) );
-
-		$instance = new HtmlBuilder(
-			$this->store,
-			$subject
-		);
-
-		$options = [
-			'offset' => 0,
-			'showAll' => true,
-			'showInverse' => false,
-			'dir' => 'both',
-			'printable' => ''
-		];
-
-		$instance->setOptions(
-			$options
-		);
-
-		$this->assertInternalType(
-			'string',
-			$instance->buildHTML()
-		);
-	}
-
-	public function testOptions() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
-
-		$instance = new HtmlBuilder(
-			$this->store,
-			$subject
-		);
-
-		$options = [
-			'Foo' => 42
-		];
-
-		$instance->setOptions(
-			$options
-		);
-
-		$instance->setOption(
-			'Bar',
-			1001
-		);
-
-		$this->assertEquals(
-			42,
-			$instance->getOption( 'Foo' )
-		);
-
-		$this->assertEquals(
-			1001,
-			$instance->getOption( 'Bar' )
-		);
 	}
 
 }
