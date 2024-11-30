@@ -114,7 +114,10 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testBuildHTMLWithOptions() {
+	/**
+	 * @dataProvider htmlOptionsProvider
+	 */
+	public function testBuildHTMLWithOptions( $options ) {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->any() )
@@ -146,6 +149,20 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			'string',
 			$instance->buildHTML()
 		);
+	}
+
+	public function htmlOptionsProvider() {
+		return [
+			[
+				[
+					'offset' => 0,
+					'showAll' => true,
+					'showInverse' => false,
+					'dir' => 'both',
+					'printable' => ''
+				]
+			]
+		];
 	}
 
 	public function testOptions() {
