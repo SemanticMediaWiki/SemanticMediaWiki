@@ -123,7 +123,9 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function buildHTMLProvider() {
 		return [
 			// No options
-			[],
+			[
+				[]
+			],
 			// Basic options with showAll enabled
 			[
 				[
