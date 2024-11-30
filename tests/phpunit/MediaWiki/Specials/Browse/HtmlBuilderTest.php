@@ -146,10 +146,10 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			$placeholderData['options']
 		);
 
-		// Assert that 'html-noscript' contains the smw-noscript class
-		// Since Html::errorBox output can be different depending on the MW version
+		// Assert that 'html-noscript' contains the noscript link
+		// Since Html::errorBox output can be different depending on the MW version and language
 		$this->assertStringContainsString(
-			'smw-noscript',
+			'<a rel="nofollow" class="external text" href="https://www.semantic-mediawiki.org/wiki/Help:Noscript">',
 			$placeholderData['html-noscript']
 		);
 
