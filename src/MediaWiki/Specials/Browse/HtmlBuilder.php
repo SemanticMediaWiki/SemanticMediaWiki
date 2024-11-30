@@ -189,7 +189,6 @@ class HtmlBuilder {
 			$this->subject
 		);
 
-		$semanticData = new SemanticData( $this->subject );
 		$this->articletext = $this->dataValue->getWikiValue();
 
 		if ( $this->getOption( 'showAll' ) ) {
