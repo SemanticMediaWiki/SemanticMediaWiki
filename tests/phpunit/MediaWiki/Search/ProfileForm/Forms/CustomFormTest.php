@@ -48,12 +48,16 @@ class CustomFormTest extends \PHPUnit_Framework_TestCase {
 		$form = [
 			'<div class="smw-input-field" style="display:inline-block;">',
 			'<input class="smw-input" name="barproperty[]" value="1001" placeholder="Bar property ..." ',
-			'data-property="Bar property" title="Bar property"/></div>'
+			'data-property="Bar property" title="Bar property"></div>'
 		];
+
+		$actual = $instance->makeFields( [ 'Bar property' ] );
+		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
+		$actual = str_replace( '/>', '>', $actual );
 
 		$this->assertContains(
 			implode( '', $form ),
-			$instance->makeFields( [ 'Bar property' ] )
+			$actual
 		);
 
 		$this->assertEquals(

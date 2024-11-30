@@ -297,11 +297,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 			);
 			$output .= '<pre>' . $this->outputFormatter->encodeAsJson( $references ) . '</pre>';
 		} else {
-			$error .= Html::element(
-				'div',
-				[
-					'class' => 'smw-callout smw-callout-warning'
-				],
+			$error .= Html::warningBox(
 				$this->msg( [ 'smw-admin-iddispose-no-references', $id ] )
 			);
 

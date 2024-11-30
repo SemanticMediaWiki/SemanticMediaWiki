@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\InSemanticDataFetcher;
 use Title;
 use SMW\Tests\PHPUnitCompat;
@@ -21,11 +21,9 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RedirectPageTest extends DatabaseTestCase {
+class RedirectPageTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
-
-	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = [];
 	private $runnerFactory;

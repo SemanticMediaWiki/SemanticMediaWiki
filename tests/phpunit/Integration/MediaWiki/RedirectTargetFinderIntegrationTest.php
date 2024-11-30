@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\PHPUnitCompat;
 use Title;
@@ -13,6 +13,7 @@ use Title;
 /**
  * @group semantic-mediawiki-integration
  * @group mediawiki-databas
+ * @group Database
  *
  * @group medium
  *
@@ -21,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
+class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 

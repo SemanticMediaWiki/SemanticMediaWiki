@@ -338,7 +338,7 @@ class SemanticMediaWiki {
 		define( 'SMW_HEADER_TOOLTIP', 2 );
 		/// @deprecated Module removed. Vanishes in SMW 1.7 at the latest.
 		define( 'SMW_HEADER_SORTTABLE', 3 );
-		/// @deprecated Use module 'ext.smw.style', see SMW_Ouptuts.php. Vanishes in SMW 1.7 at the
+		/// @deprecated Use module 'ext.smw.styles', see SMW_Ouptuts.php. Vanishes in SMW 1.7 at the
 		/// latest.
 		define( 'SMW_HEADER_STYLE', 4 );
 		/**@}*/

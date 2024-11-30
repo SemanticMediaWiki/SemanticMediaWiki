@@ -267,7 +267,7 @@ class SMWInfolink {
 		}
 
 		if ( $this->mStyle !== false ) {
-			SMWOutputs::requireResource( 'ext.smw.style' );
+			SMWOutputs::requireResource( 'ext.smw.styles' );
 			$start = "<span class=\"$this->mStyle\">";
 			$end = '</span>';
 		} else {

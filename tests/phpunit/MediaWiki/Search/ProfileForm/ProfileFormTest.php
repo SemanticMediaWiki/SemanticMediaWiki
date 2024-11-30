@@ -132,14 +132,17 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = [
 			'<fieldset id="smw-searchoptions">',
-			'<input type="hidden" name="ns-list"/>',
+			'<input type="hidden" name="ns-list">',
 			'<div class="smw-search-options">',
 			'<div class="smw-search-sort"><button type="button" id="smw-search-sort" class="smw-selectmenu-button is-disabled" name="sort"',
 		];
 
+		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
+		$actual = str_replace( '/>', '>', $form );
+
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$form
+			$actual
 		);
 	}
 

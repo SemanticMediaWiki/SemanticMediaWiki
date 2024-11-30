@@ -2510,7 +2510,16 @@ return ( function () {
 		 *
 		 * @since 3.2
 		 */
-		'smwgDetectOutdatedData' => false
+		'smwgDetectOutdatedData' => false,
+
+		/**
+		 * Whether Special:ExportRDF <link> element is added to the <head> element
+		 * Used to avoid bots scraping ExportRDF by not advertising on every page
+		 * Because the page is not a cheap call
+		 *
+		 * @since 5.0
+		 */
+		'smwgEnableExportRDFLink' => true
 
 	];
 } )();

@@ -28,7 +28,7 @@
 					"parameters": {}
 				},
 				"to-contain": [
-					"<div id=\"smw-property-req-violation-forced-removal-annotated-type\" class=\"plainlinks smw-property-req-violation-forced-removal-annotated-type smw-callout smw-callout-error\">"
+					"plainlinks smw-property-req-violation-forced-removal-annotated-type"
 				]
 			}
 		},

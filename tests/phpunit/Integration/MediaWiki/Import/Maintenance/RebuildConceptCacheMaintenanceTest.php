@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
@@ -18,10 +18,8 @@ use Title;
  *
  * @author mwjames
  */
-class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
-
+class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
+	
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;

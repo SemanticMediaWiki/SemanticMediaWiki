@@ -96,12 +96,7 @@ class Site {
 	 * @return boolean
 	 */
 	public static function isCommandLineMode() {
-		// MW 1.27 wgCommandLineMode isn't set correctly
-		if ( ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
-			return true;
-		}
-
-		return $GLOBALS['wgCommandLineMode'];
+		return MW_ENTRY_POINT === 'cli' || defined( 'MEDIAWIKI_JOB_RUNNER' );
 	}
 
 	/**

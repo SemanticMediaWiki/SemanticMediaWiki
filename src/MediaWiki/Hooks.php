@@ -314,12 +314,6 @@ class Hooks {
 			'AdminLinks' => [ $this, 'onAdminLinks' ],
 			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]
 		];
-
-		if ( version_compare( MW_VERSION, '1.37', '<' ) ) {
-			$this->handlers += [
-				'PersonalUrls' => [ $this, 'onPersonalUrls' ]
-			];
-		}
 	}
 
 	/**
@@ -467,7 +461,8 @@ class Hooks {
 		$beforePageDisplay->setOptions(
 			[
 				'incomplete_tasks' => $setupFile->findIncompleteTasks(),
-				'is_upgrade' => $setupFile->get( SetupFile::PREVIOUS_VERSION )
+				'is_upgrade' => $setupFile->get( SetupFile::PREVIOUS_VERSION ),
+				'smwgEnableExportRDFLink' => $GLOBALS['smwgEnableExportRDFLink'],
 			]
 		);
 
@@ -862,7 +857,7 @@ class Hooks {
 	 */
 	public function onSpecialStatsAddExtra( &$extraStats, IContextSource $context ) {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$context->getOutput()->addModules( 'smw.tippy' );
+		$context->getOutput()->addModules( 'ext.smw.tooltip' );
 
 		$specialStatsAddExtra = new SpecialStatsAddExtra(
 			$applicationFactory->getStore()
@@ -1241,12 +1236,7 @@ class Hooks {
 		);
 
 		$userChange->setOrigin( 'BlockIpComplete' );
-		if ( method_exists( $block, 'getTargetUserIdentity' ) ) {
-			// MW 1.37+
-			$userChange->process( $block->getTargetUserIdentity() );
-		} else {
-			$userChange->process( $block->getTarget() );
-		}
+		$userChange->process( $block->getTargetUserIdentity() );
 
 		return true;
 	}
@@ -1264,12 +1254,7 @@ class Hooks {
 		);
 
 		$userChange->setOrigin( 'UnblockUserComplete' );
-		if ( method_exists( $block, 'getTargetUserIdentity' ) ) {
-			// MW 1.37+
-			$userChange->process( $block->getTargetUserIdentity() );
-		} else {
-			$userChange->process( $block->getTarget() );
-		}
+		$userChange->process( $block->getTargetUserIdentity() );
 
 		return true;
 	}

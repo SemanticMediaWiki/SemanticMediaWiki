@@ -40,6 +40,7 @@ class SpecialSearchByProperty extends SpecialPage {
 		$request = $this->getRequest();
 
 		$output->setPageTitle( $this->msg( 'searchbyproperty' )->text() );
+		$output->addModuleStyles( 'ext.smw.styles' );
 		$output->addModules( 'ext.smw.tooltip' );
 		$output->addModules( 'ext.smw.autocomplete.property' );
 
@@ -82,23 +83,13 @@ class SpecialSearchByProperty extends SpecialPage {
 
 	private function getLimitOffset() {
 		$request = $this->getRequest();
-		if ( method_exists( $request, 'getLimitOffsetForUser' ) ) {
-			// MW 1.35+
-			return $request->getLimitOffsetForUser( $this->getUser() );
-		} else {
-			return $request->getLimitOffset();
-		}
+		return $request->getLimitOffsetForUser( $this->getUser() );
 	}
 
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/search';
 	}
 

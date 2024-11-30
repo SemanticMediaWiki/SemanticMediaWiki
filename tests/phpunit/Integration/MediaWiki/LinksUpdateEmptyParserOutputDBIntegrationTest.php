@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 use LinksUpdate;
 use ParserOutput;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use Title;
 
@@ -15,6 +15,7 @@ use Title;
  * @group SMWExtension
  * @group semantic-mediawiki-integration
  * @group mediawiki-databaseless
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -22,14 +23,13 @@ use Title;
  *
  * @author mwjames
  */
-class LinksUpdateEmptyParserOutputDBIntegrationTest extends DatabaseTestCase {
+class LinksUpdateEmptyParserOutputDBIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testDoUpdate() {
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$pageCreator = new PageCreator();
-
 		$pageCreator
 			->createPage( $title )
 			->doEdit( '[[Has some property::LinksUpdateCompleteOnEmptyParserOutput]]' );
@@ -39,11 +39,9 @@ class LinksUpdateEmptyParserOutputDBIntegrationTest extends DatabaseTestCase {
 		$linksUpdate = new LinksUpdate( $title, new ParserOutput() );
 		$linksUpdate->doUpdate();
 
-
 		$this->assertCount(
 			$propertiesCountBeforeUpdate,
 			$this->getStore()->getSemanticData( $subject )->getProperties()
 		);
 	}
-
 }

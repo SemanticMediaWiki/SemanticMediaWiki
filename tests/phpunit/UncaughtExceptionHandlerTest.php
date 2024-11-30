@@ -101,7 +101,7 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		yield[
 			[ 'msg' => 'SemanticFoobar', 'type' => 'incompatible-php' ],
-			( version_compare( MW_VERSION, '1.32', '<' ) ? \SMW\SetupCheck::ERROR_EXTENSION_DEPENDENCY : \SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE )
+			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];
 
 		yield[

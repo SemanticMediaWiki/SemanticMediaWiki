@@ -77,12 +77,14 @@ class SpecialBrowse extends SpecialPage {
 			'mediawiki.ui',
 			'mediawiki.ui.button',
 			'mediawiki.ui.input',
+			'ext.smw.styles',
+			'ext.smw.tooltip.styles',
 			'ext.smw.browse.styles'
 		] );
 
 		$out->addModules( [
 			'ext.smw.browse',
-			'ext.smw.tooltips'
+			'ext.smw.tooltip'
 		] );
 
 		$out->addHTML(
@@ -104,12 +106,10 @@ class SpecialBrowse extends SpecialPage {
 				$error .= Message::decode( $error, Message::TEXT, Message::USER_LANGUAGE );
 			}
 
-			$html = Html::rawElement(
-				'div',
-				[
-					'class' => 'smw-callout smw-callout-error'
-				],
-				Message::get( [ 'smw-browse-invalid-subject', $error ], Message::TEXT, Message::USER_LANGUAGE )
+			$html = Html::errorBox(
+				Message::get( [ 'smw-browse-invalid-subject', $error ], Message::TEXT, Message::USER_LANGUAGE ),
+				'',
+				'smw-error-browse'
 			);
 
 			if ( !$this->including() ) {
@@ -221,11 +221,6 @@ class SpecialBrowse extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/search';
 	}
 

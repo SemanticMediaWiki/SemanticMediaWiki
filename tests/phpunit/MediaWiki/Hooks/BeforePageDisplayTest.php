@@ -216,6 +216,12 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new BeforePageDisplay();
 
+		$instance->setOptions(
+			[
+				'smwgEnableExportRDFLink' => true
+			]
+		);
+
 		$this->assertTrue(
 			$instance->process( $this->outputPage, $this->skin )
 		);

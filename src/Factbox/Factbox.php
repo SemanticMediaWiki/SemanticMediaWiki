@@ -284,7 +284,7 @@ class Factbox {
 	 */
 	public static function getModules() {
 		return [
-			'ext.smw.style',
+			'ext.smw.styles',
 			'ext.smw.table.styles',
 			'smw.factbox'
 		];
@@ -341,8 +341,6 @@ class Factbox {
 		$this->displayTitleFinder->prefetchFromSemanticData( $semanticData );
 
 		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
-		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
-		$hookContainer->run( 'smwShowFactbox', [ &$html, $semanticData ] );
 
 		// Hook since 1.9
 		if ( $hookContainer->run( 'SMW::Factbox::BeforeContentGeneration', [ &$html, $semanticData ] ) ) {
