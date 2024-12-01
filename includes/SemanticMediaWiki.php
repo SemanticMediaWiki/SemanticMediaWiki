@@ -32,11 +32,6 @@ class SemanticMediaWiki {
 			require_once ( dirname( __DIR__ ) . "/includes/GlobalFunctions.php" );
 		}
 
-		// https://phabricator.wikimedia.org/T212738
-		if ( !defined( 'MW_VERSION' ) ) {
-			define( 'MW_VERSION', $GLOBALS['wgVersion'] );
-		}
-
 		// We're moving away from enableSemantics, so set this here.
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			define( 'SMW_EXTENSION_LOADED', true );
