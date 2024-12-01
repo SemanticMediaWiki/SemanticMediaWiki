@@ -61,16 +61,20 @@ class ConceptPage extends Page {
 		$request = $context->getRequest();
 		$store = ApplicationFactory::getInstance()->getStore();
 
+		$limit = $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
+		$offset = $request->getVal( 'offset', '0' );
+
 		// limit==0: configuration setting to disable this completely
 		if ( $this->limit > 0 ) {
+			$dataItem = $this->getDataItem();
 			$descriptionFactory = ApplicationFactory::getInstance()->getQueryFactory()->newDescriptionFactory();
 
-			$description = $descriptionFactory->newConceptDescription( $this->getDataItem() );
+			$description = $descriptionFactory->newConceptDescription( $dataItem );
 			$query = \SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
 
-			$query->setLimit( $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) ) );
-			$query->setOffset( $request->getVal( 'offset', '0' ) );
-			$query->setContextPage( $this->getDataItem() );
+			$query->setLimit( $limit );
+			$query->setOffset( $offset );
+			$query->setContextPage( $dataItem );
 			$query->setOption( $query::NO_DEPENDENCY_TRACE, true );
 			$query->setOption( $query::NO_CACHE, true );
 
@@ -89,13 +93,11 @@ class ConceptPage extends Page {
 		}
 
 		// Make navigation point to the result list.
-		$this->getTitle()->setFragment( '#smw-result' );
+		$title = $this->getTitle();
+		$title->setFragment( '#smw-result' );
 		$isRTL = $context->getLanguage()->isRTL();
 
 		$resultCount = count( $diWikiPages );
-
-		$limit = $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
-		$offset = $request->getVal( 'offset', '0' );
 
 		$query = [
 			'from' => $request->getVal( 'from', '' ),
@@ -113,7 +115,7 @@ class ConceptPage extends Page {
 				[
 					'class' => 'clearfix'
 				],
-				Pager::pagination( $this->getTitle(), $limit, $offset, $resultCount,
+				Pager::pagination( $title, $limit, $offset, $resultCount,
 					$query + [ '_target'	=> '#smw-result' ] )
 			) . Html::rawElement(
 				'div',
@@ -132,7 +134,7 @@ class ConceptPage extends Page {
 			$isRTL
 		);
 
-		if ( $this->getTitle()->exists() ) {
+		if ( $title->exists() ) {
 
 			$listBuilder = new ListBuilder(
 				$store
