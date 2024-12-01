@@ -61,8 +61,8 @@ class ConceptPage extends Page {
 		$request = $context->getRequest();
 		$store = ApplicationFactory::getInstance()->getStore();
 
-		$limit = $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
-		$offset = $request->getVal( 'offset', '0' );
+		$limit = (int)$request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
+		$offset = (int)$request->getVal( 'offset', '0' );
 
 		// limit==0: configuration setting to disable this completely
 		if ( $this->limit > 0 ) {
