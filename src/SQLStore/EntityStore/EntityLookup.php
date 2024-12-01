@@ -244,26 +244,19 @@ class EntityLookup implements IEntityLookup {
 			$noninverse = new DIProperty( $property->getKey(), false );
 			$result = $this->getPropertySubjects( $noninverse, $subject, $requestOptions );
 		} elseif ( $subject !== null ) { // subject given, use semantic data cache
-			$sid = $idTable->getSMWPageID(
+			$sortKey = '';
+			$sid = $idTable->getSMWPageIDandSort(
 				$subject->getDBkey(),
 				$subject->getNamespace(),
 				$subject->getInterwiki(),
 				$subject->getSubobjectName(),
+				$sortKey,
 				true
 			);
 
 			if ( $sid == 0 ) {
 				$result = [];
 			} elseif ( $property->getKey() == '_SKEY' ) {
-				$idTable->getSMWPageIDandSort(
-					$subject->getDBkey(),
-					$subject->getNamespace(),
-					$subject->getInterwiki(),
-					$subject->getSubobjectName(),
-					$sortKey,
-					true
-				);
-
 				$sortKeyDi = new DIBlob( $sortKey );
 				$result = $this->store->applyRequestOptions( [ $sortKeyDi ], $requestOptions );
 			} else {
