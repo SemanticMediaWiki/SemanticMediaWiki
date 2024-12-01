@@ -3,13 +3,10 @@
 namespace SMW\MediaWiki\Page;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DataValueFactory;
 use SMW\DIConcept;
-use SMW\DIProperty;
-use SMW\MediaWiki\Collator;
 use SMW\Message;
-use SMWDataItem as DataItem;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\Pager;
 use SMW\MediaWiki\Page\ListBuilder;
@@ -23,35 +20,18 @@ use SMW\MediaWiki\Page\ListBuilder;
 class ConceptPage extends Page {
 
 	/**
-	 * @var DIProperty
-	 */
-	private $property;
-
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var DataValue
-	 */
-	private $propertyValue;
-
-	/**
 	 * @see Page::initParameters()
 	 *
 	 * @note We use a smaller limit here; property pages might become large.
 	 */
-	protected function initParameters() {
+	protected function initParameters(): void {
 		$this->limit = $this->getOption( 'pagingLimit' );
 	}
 
 	/**
 	 * Returns the HTML which is added to $wgOut after the article text.
-	 *
-	 * @return string
 	 */
-	protected function getHtml() {
+	protected function getHtml(): string {
 		$context = $this->getContext();
 		$context->getOutput()->addModuleStyles( [
 			'ext.smw.styles',
@@ -189,7 +169,7 @@ class ConceptPage extends Page {
 		);
 	}
 
-	private function getCachedCount( $store ) {
+	private function getCachedCount( Store $store ): string {
 		$concept = $store->getConceptCacheStatus(
 			$this->getDataItem()
 		);
@@ -214,7 +194,7 @@ class ConceptPage extends Page {
 		);
 	}
 
-	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
+	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $params, $type, $lang );
 	}
 
