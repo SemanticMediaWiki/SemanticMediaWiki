@@ -150,10 +150,8 @@ class Message {
 	 * @since 2.5
 	 *
 	 * @param string $messageId
-	 *
-	 * @return boolean
 	 */
-	public static function exists( $message ) {
+	public static function exists( $message ): bool {
 		return wfMessage( $message )->exists();
 	}
 
@@ -201,7 +199,7 @@ class Message {
 	 *
 	 * @return string
 	 */
-	public static function get( $parameters, $type = null, $language = null ) {
+	public static function get( $parameters, $type = null, $language = null ): string {
 		$handler = null;
 		$parameters = (array)$parameters;
 
@@ -243,10 +241,8 @@ class Message {
 	 * @param array $parameters
 	 * @param integer $type
 	 * @param integer|string|Language $language
-	 *
-	 * @return string
 	 */
-	public static function getHash( $parameters, $type = null, $language = null ) {
+	public static function getHash( $parameters, $type = null, $language = null ): string {
 		if ( $language instanceof Language ) {
 			$language = $language->getCode();
 		}
