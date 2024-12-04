@@ -6,6 +6,7 @@ use Content;
 use MediaWiki\Content\Renderer\ContentParseParams;
 use MediaWiki\Content\Transform\PreSaveTransformParams;
 use JsonContentHandler;
+use SMW\ParserData;
 use Title;
 use ParserOutput;
 
@@ -93,12 +94,98 @@ class SchemaContentHandler extends JsonContentHandler {
 		ParserOutput &$output
 	) {
 		$title = Title::castFromPageReference( $cpoParams->getPage() );
-		$content->fillParserOutput(
-			$title,
-			$cpoParams->getRevId(),
-			$cpoParams->getParserOptions(),
-			$cpoParams->getGenerateHtml(),
-			$output
+
+		if ( !$cpoParams->getGenerateHtml() || !$content->isValid() ) {
+			return;
+		}
+
+		$content->initServices();
+		$contentFormatter = $content->getContentFormatter();
+		$schemaFactory = $content->getSchemaFactory();
+
+		$output->addModuleStyles(
+			$contentFormatter->getModuleStyles()
 		);
+
+		$output->addModules(
+			$contentFormatter->getModules()
+		);
+
+		$parserData = new ParserData( $title, $output );
+		$schema = null;
+
+		$contentFormatter->isYaml(
+			$content->isYaml()
+		);
+
+		$content->setTitlePrefix( $title );
+
+		try {
+			$schema = $schemaFactory->newSchema(
+				$title->getDBKey(),
+				$content->toJson()
+			);
+		} catch ( SchemaTypeNotFoundException $e ) {
+
+			$contentFormatter->setUnknownType(
+				$e->getType()
+			);
+
+			$output->setText(
+				$contentFormatter->getText( $content->getText() )
+			);
+
+			$parserData->addError(
+				[ [ 'smw-schema-error-type-unknown', $e->getType() ] ]
+			);
+
+			$parserData->copyToParserOutput();
+		}
+
+		if ( $schema === null ) {
+			return;
+		}
+
+		$output->setIndicator(
+			'mw-helplink',
+			$contentFormatter->getHelpLink( $schema )
+		);
+
+		$errors = $schemaFactory->newSchemaValidator()->validate(
+			$schema
+		);
+
+		foreach ( $errors as $error ) {
+			if ( isset( $error['property'] ) && isset( $error['message'] ) ) {
+
+				if ( $error['property'] === 'title_prefix' ) {
+					if ( isset( $error['enum'] ) ) {
+						$group = end( $error['enum'] );
+					} elseif ( isset( $error['const'] ) ) {
+						$group = $error['const'];
+					} else {
+						continue;
+					}
+
+					$error['message'] = Message::get( [ 'smw-schema-error-title-prefix', $group ] );
+				}
+
+				$parserData->addError(
+					[ [ 'smw-schema-error-violation', $error['property'], $error['message'] ] ]
+				);
+			} else {
+				$parserData->addError( (array)$error );
+			}
+		}
+
+		$contentFormatter->setType(
+			$schemaFactory->getType( $schema->get( 'type' ) )
+		);
+
+		$output->setText(
+			$contentFormatter->getText( $content->getText(), $schema, $errors )
+		);
+
+		$parserData->copyToParserOutput();
 	}
 }
