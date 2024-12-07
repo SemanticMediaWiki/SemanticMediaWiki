@@ -528,20 +528,10 @@ label.smw-form-checkbox {
 	background-position: center;
 }
 
-.smwb-group {
-	font-style: normal;
-	font-weight: normal;
-	font-size: 100%;
-}
-
 /* Handling Long Words and URLs (Forcing Breaks, Hyphenation, Ellipsis */
-.smwb-value,
 .smwprops,
 .smwpropname,
-.smwb-factbox .smwtype_wpg,
-.smwtype_uri,
-.smwb-ivalue,
-.smwb-title {
+.smwtype_uri {
 	word-break: break-word;
 	word-wrap: break-word;
 	-webkit-hyphens: auto;
@@ -549,20 +539,6 @@ label.smw-form-checkbox {
 	hyphens: auto;
 	box-decoration-break: clone;
 	-webkit-box-decoration-break: clone;
-}
-
-/* Only apply when less then 350*/
-@media (max-width: 400px) {
-	.smwb-propvalue,
-	.smwb-ipropvalue {
-		word-break: break-word;
-		word-wrap: break-word;
-		-webkit-hyphens: auto;
-		-moz-hyphens: auto;
-		hyphens: auto;
-		box-decoration-break: clone;
-		-webkit-box-decoration-break: clone;
-	}
 }
 
 /* Distinguish subobjects from other titles */
@@ -656,7 +632,7 @@ label.smw-form-checkbox {
 
 .autocomplete-loading {
 	background: url( assets/smw-icon-autocomplete-loading.gif ) no-repeat left center;
-	padding: 5px 0 5px 35px;
+	padding-right: 30px;
 	vertical-align: middle;
 	background-position: right 10px center;
 }
@@ -667,11 +643,6 @@ label.smw-form-checkbox {
     background-position: calc(100% - 17px) calc(1em + 2px), calc(100% - 12px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
     background-size: 5px 5px, 5px 5px, 1px 1.5em;
     background-repeat: no-repeat;
-}
-
-.mw-ui-input.autocomplete-loading {
-	vertical-align: unset;
-	padding: 0.57142857em 0.57142857em 0.5em;
 }
 
 .autocomplete-arrow {
