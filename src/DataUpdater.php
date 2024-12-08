@@ -166,17 +166,7 @@ class DataUpdater {
 	 * @return boolean
 	 */
 	public function isSkippable( Title $title, ?int &$latestRevID = null ) {
-		if ( $this->revisionGuard->isSkippableUpdate( $title, $latestRevID ) ) {
-			return true;
-		}
-
-		$associatedRev = $this->store->getObjectIds()->findAssociatedRev(
-			$title->getDBKey(),
-			$title->getNamespace(),
-			$title->getInterwiki()
-		);
-
-		return $associatedRev == $latestRevID;
+		return $this->revisionGuard->isSkippableUpdate( $title, $latestRevID );
 	}
 
 	/**
