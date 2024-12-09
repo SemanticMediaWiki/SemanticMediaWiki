@@ -33,6 +33,7 @@
 	"smw-search-profile-sort-recent": "ਸਭ ਤੋਂ ਤਾਜ਼ਾ",
 	"smw-clipboard-copy-link": "ਕੜੀ ਦਾ ਉਤਾਰਾ ਚੂੰਢੀ-ਤਖਤੀ 'ਤੇ ਲਿਖੋ",
 	"smw-format-datatable-search": "ਖੋਜੋ:",
+	"smw-api-invalid-parameters": "ਗਲਤ ਮਾਪਦੰਡ, \"$1\"",
 	"smw-help": "ਮਦਦ",
 	"smw-copy": "ਰੀਸ ਕਰੋ",
 	"smw-jsonview-search-label": "ਖੋਜੋ:",
