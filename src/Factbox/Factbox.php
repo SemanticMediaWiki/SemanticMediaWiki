@@ -347,36 +347,6 @@ class Factbox {
 		return $html;
 	}
 
-	private function createHeader( DIWikiPage $subject ): string {
-		$dataValue = $this->dataValueFactory->newDataValueByItem( $subject, null );
-
-		$browselink = SMWInfolink::newBrowsingLink(
-			$dataValue->getPreferredCaption(),
-			$dataValue->getWikiValue(),
-			''
-		);
-
-		$header = Html::rawElement(
-			'div',
-			[ 'class' => 'smwfactboxhead' ],
-			Message::get( [ 'smw-factbox-head', $browselink->getWikiText() ], Message::TEXT, Message::USER_LANGUAGE )
-		);
-
-		$rdflink = SMWInfolink::newInternalLink(
-			Message::get( 'smw_viewasrdf', Message::TEXT, Message::USER_LANGUAGE ),
-			Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $dataValue->getWikiValue(),
-			'rdflink'
-		);
-
-		$header .= Html::rawElement(
-			'div',
-			[ 'class' => 'smwrdflink' ],
-			$rdflink->getWikiText()
-		);
-
-		return $header;
-	}
-
 	private function isEmpty( SemanticData $semanticData ): bool {
 		// MW's internal Parser does iterate the ParserOutput object several times
 		// which can leave a '_SKEY' property while in fact the container is empty.
