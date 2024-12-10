@@ -272,4 +272,11 @@ class PropertiesQueryPage extends QueryPage {
 		return $this->listLookup->fetchList();
 	}
 
+	/**
+	 * @return array|bool
+	 */
+	public function getQueryInfo() {
+		return false;
+	}
+
 }
