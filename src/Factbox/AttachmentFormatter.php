@@ -130,8 +130,7 @@ class AttachmentFormatter {
 		$pv = is_array( $pv ) ? end( $pv ) : '';
 
 		$this->htmlTable->cell(
-			$pv instanceof DIBlob ? $pv->getString() : $unknown,
-			[ 'style' => 'word-break: break-word;' ]
+			$pv instanceof DIBlob ? $pv->getString() : $unknown
 		);
 
 		$prop = new DIProperty( '_MDAT' );
