@@ -138,32 +138,6 @@
 	-webkit-box-decoration-break: clone;
 }
 
-/**
- * Tabbed factbox
- */
-.smw-factbox #tab-facts-list:checked ~ #tab-content-facts-list,
-.smw-factbox #tab-facts-attachment:checked ~ #tab-content-facts-attachment,
-.smw-factbox #tab-facts-derived:checked ~ #tab-content-facts-derived {
-	display: block;
-}
-
-.smw-factbox label.nav-label {
-	padding: 3px 25px 3px 25px;
-}
-
-.smw-factbox input.nav-tab:checked + label.nav-label {
-	border: 1px solid #aaa;
-	border-top: 2px solid orange;
-	border-bottom: 1px solid #fff;
-	background: #fff;
-}
-
-.smw-factbox input.nav-tab:checked + label#tab-label-facts-attachment.nav-label {
-	border: 1px solid #aaa;
-	border-top: 2px solid #42c0fb;
-	border-bottom: 1px solid #fff;
-}
-
 .smw-factbox .smwfact {
 	border:none;
 	background-color: #fff;
@@ -185,52 +159,6 @@
 
 .smw-factbox .smwpropname, .smw-factbox .smwprops, .smw-factbox .smwspecname, .smw-factbox .smwspecs {
 	padding: 0.4em;
-}
-
-/**
- * #4146
- *
- * `#mw-data-after-content` defines when the content is outside of the
- * `#bodyContent`
- *
- * `#bodyContent #mw-data-after-content` negates previous CSS when it is part of
- * the #bodyContent (being inside)
- */
-.smw-factbox-view.skin-vector #mw-data-after-content .smw-factbox {
-	background: #fff;
-	padding: 0px 24px 24px 24px;
-	border-left: 1px solid #a7d7f9;
-	/*border-top: 1px solid #a7d7f9;*/
-	border-bottom: 1px solid #a7d7f9;
-	font-size: 0.875em;
-	line-height: 1.6;
-	margin-top: -10px;
-}
-
-.smw-factbox-view.skin-vector #bodyContent #mw-data-after-content .smw-factbox {
-	background: unset;
-	padding: unset;
-	border-left: 0px solid #a7d7f9;
-	/* border-top: 0px solid #a7d7f9; */
-	border-bottom: 0px solid #a7d7f9;
-	font-size: unset;
-	line-height: unset;
-	margin-top: 15px;
-}
-
-/**
- * Responsive settings (#see smw.table.css)
- */
-@media screen and (max-width: 980px) {
-	.smw-factbox-view.skin-vector #mw-data-after-content .smw-factbox {
-		padding: 16px;
-		margin-top: -16px;
-	}
-
-	.smw-factbox-view.skin-vector #bodyContent #mw-data-after-content .smw-factbox {
-		padding: unset;
-		margin-top: 16px;
-	}
 }
 
 @media screen and (max-width: 800px) {
