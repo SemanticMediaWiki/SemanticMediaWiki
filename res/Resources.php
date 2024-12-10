@@ -402,6 +402,17 @@ return [
 		]
 	],
 
+	// Load sortable script for attachment table
+	'ext.smw.factbox' => $moduleTemplate + [
+		'scripts' => [
+			'smw/ext.smw.factbox.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
 	// Special:Browse
 	'ext.smw.browse.styles' => $moduleTemplate + [
 		'styles' => [

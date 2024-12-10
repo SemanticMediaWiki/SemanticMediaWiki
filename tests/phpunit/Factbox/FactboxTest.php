@@ -50,7 +50,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 		parent::tearDown();
 	}
 
-	public function testCreateTable() {
+	public function testBuildHTML() {
 		$checkMagicWords = new CheckMagicWords(
 			[
 				'smwgShowFactboxEdit' => SMW_FACTBOX_NONEMPTY,
@@ -78,12 +78,12 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
-		$createTable  = $reflector->getMethod( 'createTable' );
-		$createTable->setAccessible( true );
+		$buildHTML  = $reflector->getMethod( 'buildHTML' );
+		$buildHTML->setAccessible( true );
 
 		$this->assertInternalType(
-			'string',
-			$createTable->invoke( $instance, $parserData->getSemanticData() )
+			'array',
+			$buildHTML->invoke( $instance, $parserData->getSemanticData() )
 		);
 	}
 

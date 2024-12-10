@@ -182,6 +182,23 @@
 			}
 		}
 	}
+
+	&-container {
+		.smw-factbox {
+			font-size: @font-size-small;
+		}
+	}
+
+	&-table-wrapper {
+		overflow-x: auto;
+		margin: -@border-width-base; // hide table border since we have border at factbox
+
+		.wikitable {
+			margin: 0;
+			width: 100%;
+			display: table; // enforce table layout because we already have a wrapper to handle responsiveness
+		}
+	}
 }
 
 /**
