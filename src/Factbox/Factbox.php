@@ -4,7 +4,6 @@ namespace SMW\Factbox;
 
 use Html;
 use MediaWiki\MediaWikiServices;
-use Sanitizer;
 use Title;
 use SMW\DataValueFactory;
 use SMW\DisplayTitleFinder;
@@ -13,16 +12,10 @@ use SMW\DIWikiPage;
 use SMW\Localizer;
 use SMW\Message;
 use SMW\ParserData;
-use SMW\Profiler;
 use SMW\SemanticData;
 use SMW\Store;
-use SMW\Utils\HtmlDivTable;
 use SMW\Utils\HtmlTabs;
 use SMWInfolink;
-use SMWSemanticData;
-use SMWDIBlob as DIBlob;
-use SMWDataItem as DataItem;
-use SMW\PropertyRegistry;
 use TemplateParser;
 
 /**
@@ -102,7 +95,7 @@ class Factbox {
 	 *
 	 * @param integer $featureSet
 	 */
-	public function setFeatureSet( $featureSet ) {
+	public function setFeatureSet( $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
@@ -111,7 +104,7 @@ class Factbox {
 	 *
 	 * @param CheckMagicWords $checkMagicWords
 	 */
-	public function setCheckMagicWords( CheckMagicWords $checkMagicWords ) {
+	public function setCheckMagicWords( CheckMagicWords $checkMagicWords ): void {
 		$this->checkMagicWords = $checkMagicWords;
 	}
 
@@ -142,10 +135,8 @@ class Factbox {
 	 * Returns Title object
 	 *
 	 * @since 1.9
-	 *
-	 * @return string|null
 	 */
-	public function getTitle() {
+	public function getTitle(): Title {
 		return $this->parserData->getTitle();
 	}
 
@@ -163,7 +154,7 @@ class Factbox {
 	 *
 	 * @param array $attachments
 	 */
-	public function setAttachments( array $attachments ) {
+	public function setAttachments( array $attachments ): void {
 		$this->attachments = $attachments;
 	}
 
@@ -191,10 +182,8 @@ class Factbox {
 	 * Returns if content is visible
 	 *
 	 * @since 1.9
-	 *
-	 * @return boolean
 	 */
-	public function isVisible() {
+	public function isVisible(): bool {
 		return $this->isVisible;
 	}
 
@@ -203,10 +192,8 @@ class Factbox {
 	 *
 	 * @param string $rendered
 	 * @param string $derived
-	 *
-	 * @return string
 	 */
-	public static function tabs( $list, $attachment = '', $derived = '' ) {
+	public static function tabs( $list, $attachment = '', $derived = '' ): string {
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setActiveTab(
 			$list !== '' ? 'facts-list' : 'facts-attachment'
