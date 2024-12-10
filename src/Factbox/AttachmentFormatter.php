@@ -2,17 +2,15 @@
 
 namespace SMW\Factbox;
 
+use Html;
 use SMW\Store;
 use SMW\DataValueFactory;
 use SMW\PropertyRegistry;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Message;
-use SMW\Utils\HtmlDivTable;
 use SMW\Utils\HtmlTable;
 use SMWDIBlob as DIBlob;
 use SMWDataItem as DataItem;
-use Html;
 
 /**
  * @license GNU GPL v2+
