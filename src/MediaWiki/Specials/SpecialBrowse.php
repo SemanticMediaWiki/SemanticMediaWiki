@@ -74,6 +74,7 @@ class SpecialBrowse extends SpecialPage {
 			'mediawiki.ui',
 			'mediawiki.ui.button',
 			'mediawiki.ui.input',
+			'ext.smw.factbox.styles',
 			'ext.smw.browse.styles'
 		] );
 

@@ -184,6 +184,26 @@
 	}
 }
 
+/**
+ * Tab styles required for on page factbox
+ * TODO: This shouldn't be here and the tab implementation is quite hacky,
+ * remove this when we rework tabs
+ */
+.smw-factbox-container.smw-tabs {
+	.nav-label {
+		margin-bottom: 0; // disable negative margin from smw-tabs
+	}
+
+	section {
+		border: 0; // border is handled by factbox, no need for another one
+	}
+
+	#tab-facts-list:checked ~ #tab-content-facts-list ,
+	#tab-facts-attachment:checked ~ #tab-content-facts-attachment {
+		display: block;
+	}
+}
+
 @keyframes cdx-progress-bar-inline {
 	0% {
 		transform: translate( -100% );
