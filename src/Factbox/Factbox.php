@@ -172,7 +172,7 @@ class Factbox {
 	 * @return string
 	 */
 	public function getAttachmentContent() {
-		if ( $this->attachments === [] || !$this->hasFeature( SMW_FACTBOX_DISPLAY_ATTACHMENT ) ) {
+		if ( empty( $this->attachments ) || !$this->hasFeature( SMW_FACTBOX_DISPLAY_ATTACHMENT ) ) {
 			return '';
 		}
 
@@ -299,11 +299,9 @@ class Factbox {
 	 *
 	 * @since 1.9
 	 *
-	 * @return integer $showFactbox
-	 *
-	 * @return string|null
+	 * @param string|integer|null $showFactbox
 	 */
-	protected function fetchContent( $showFactbox = SMW_FACTBOX_NONEMPTY ) {
+	protected function fetchContent( $showFactbox = SMW_FACTBOX_NONEMPTY ): string {
 		if ( $showFactbox === SMW_FACTBOX_HIDDEN ) {
 			return '';
 		}
@@ -335,9 +333,10 @@ class Factbox {
 	 * @return string
 	 */
 	protected function createTable( SemanticData $semanticData ): string {
+		$html = '';
 		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		if ( !$hookContainer->run( 'SMW::Factbox::BeforeContentGeneration', [ &$html, $semanticData ] ) ) {
-			return '';
+			return $html;
 		}
 
 		$this->displayTitleFinder->prefetchFromSemanticData( $semanticData );
@@ -350,7 +349,7 @@ class Factbox {
 			]
 		];
 
-		$html = $templateParser->processTemplate( 'Factbox', $data );
+		$html .= $templateParser->processTemplate( 'Factbox', $data );
 
 		return $html;
 	}
@@ -385,102 +384,7 @@ class Factbox {
 		return $header;
 	}
 
-	private function createRows( SemanticData $semanticData ) {
-		$rows = '';
-		$attributes = [];
-
-		$comma = Message::get(
-			'comma-separator',
-			Message::ESCAPED,
-			Message::USER_LANGUAGE
-		);
-
-		$and = Message::get(
-			'and',
-			Message::ESCAPED,
-			Message::USER_LANGUAGE
-		);
-
-		foreach ( $semanticData->getProperties() as $property ) {
-
-			if ( $property->getKey() === '_SOBJ' && !$this->hasFeature( SMW_FACTBOX_DISPLAY_SUBOBJECT ) ) {
-				continue;
-			}
-
-			$key = $property->getKey();
-			$propertyDv = $this->dataValueFactory->newDataValueByItem( $property, null );
-			$row = '';
-
-			if ( !$property->isShown() ) {
-				// showing this is not desired, hide
-				continue;
-			} elseif ( $property->isUserDefined() ) {
-				$propertyDv->setCaption( $propertyDv->getWikiValue() );
-				$attributes['property'] = [ 'class' => 'smwpropname' ];
-				$attributes['values'] = [ 'class' => 'smwprops' ];
-			} elseif ( $propertyDv->isVisible() ) {
-				// Predefined property
-				$attributes['property'] = [ 'class' => 'smwspecname' ];
-				$attributes['values'] = [ 'class' => 'smwspecs' ];
-			} else {
-				// predefined, internal property
-				// @codeCoverageIgnoreStart
-				continue;
-				// @codeCoverageIgnoreEnd
-			}
-
-			$list = [];
-			$html = '';
-
-			foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
-
-				if ( $key === '_ATTCH_LINK' ) {
-					$this->attachments[] = $dataItem;
-				} else {
-					$dataValue = $this->dataValueFactory->newDataValueByItem( $dataItem, $property );
-
-					$outputFormat = $dataValue->getOutputFormat();
-					$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
-
-					$dataValue->setOption( $dataValue::OPT_DISABLE_SERVICELINKS, true );
-
-					if ( $dataValue->isValid() ) {
-						$list[] = $dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
-					}
-				}
-			}
-
-			if ( $list !== [] ) {
-				$last = array_pop( $list );
-
-				if ( $list === [] ) {
-					$html = $last;
-				} else {
-					$html = implode( $comma, $list ) . '&nbsp;' . $and . '&nbsp;' . $last;
-				}
-			} else {
-				continue;
-			}
-
-			$row .= HtmlDivTable::cell(
-				$propertyDv->getShortWikiText( true ),
-				$attributes['property']
-			);
-
-			$row .= HtmlDivTable::cell(
-				$html,
-				$attributes['values']
-			);
-
-			$rows .= HtmlDivTable::row(
-				$row
-			);
-		}
-
-		return $rows;
-	}
-
-	private function isEmpty( SemanticData $semanticData ) {
+	private function isEmpty( SemanticData $semanticData ): bool {
 		// MW's internal Parser does iterate the ParserOutput object several times
 		// which can leave a '_SKEY' property while in fact the container is empty.
 		$semanticData->removeProperty(
@@ -490,7 +394,7 @@ class Factbox {
 		return $semanticData->isEmpty();
 	}
 
-	private function hasFeature( $feature ) {
+	private function hasFeature( string $feature ): bool {
 		return ( (int)$this->featureSet & $feature ) != 0;
 	}
 
