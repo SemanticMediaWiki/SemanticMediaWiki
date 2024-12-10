@@ -624,15 +624,10 @@ return [
 		]
 	],
 
-	'smw.factbox'  => $moduleTemplate + [
-		'scripts'  => [
-			'libs/tinysort/tinysort.min.js',
-			'smw/factbox/smw.factbox.js'
-		]
-	],
-
 	'smw.content.schemaview' => $moduleTemplate + [
 		'scripts' => [
+			'libs/tinysort/tinysort.min.js',
+			'smw/factbox/smw.factbox.js',
 			'smw/content/smw.schemaview.js'
 		],
 		'dependencies'  => [
