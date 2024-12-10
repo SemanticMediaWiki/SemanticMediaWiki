@@ -129,6 +129,7 @@ class Factbox {
 		);
 
 		if ( $this->content !== '' || $this->attachments !== [] ) {
+			$this->parserData->getOutput()->addModuleStyles( self::getModuleStyles() );
 			$this->parserData->getOutput()->addModules( self::getModules() );
 			$this->parserData->pushSemanticDataToParserOutput();
 			$this->isVisible = true;
@@ -168,23 +169,22 @@ class Factbox {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return string
 	 */
-	public function getAttachmentContent() {
+	public function getAttachmentHTML(): string {
 		if ( empty( $this->attachments ) || !$this->hasFeature( SMW_FACTBOX_DISPLAY_ATTACHMENT ) ) {
 			return '';
 		}
 
-		$this->attachmentFormatter->setHeader(
-			$this->createHeader( DIWikiPage::newFromTitle( $this->getTitle() ) )
-		);
-
-		$html = $this->attachmentFormatter->buildHTML(
-			$this->attachments
-		);
-
-		return $html;
+		$templateParser = new TemplateParser( __DIR__ . '/../../templates' );
+		$data = [
+			'data-header' => $this->getHeaderData( DIWikiPage::newFromTitle( $this->getTitle() ) ),
+			'array-sections' => [
+				'html-section' => $this->attachmentFormatter->buildHTML(
+					$this->attachments
+				)
+			]
+		];
+		return $templateParser->processTemplate( 'Factbox', $data );
 	}
 
 	/**
@@ -277,15 +277,25 @@ class Factbox {
 	}
 
 	/**
-	 * Returns required resource modules
+	 * Returns required resource module styles
 	 *
-	 * @since 1.9
-	 *
-	 * @return array
+	 * @since 5.0
 	 */
-	public static function getModules() {
+	public static function getModuleStyles(): array {
 		return [
 			'ext.smw.factbox.styles'
+		];
+	}
+
+	/**
+	 * Returns required resource modules
+	 *
+	 * @todo: figure out a way to load this module only when attachments exist 
+	 * @since 1.9
+	 */
+	public static function getModules(): array {
+		return [
+			'ext.smw.factbox'
 		];
 	}
 
@@ -320,19 +330,15 @@ class Factbox {
 			return '';
 		}
 
-		return $this->createTable( $semanticData );
+		return $this->buildHTML( $semanticData );
 	}
 
 	/**
-	 * Returns a formatted factbox table
+	 * Returns the HTML of the factbox
 	 *
 	 * @since 1.9
-	 *
-	 * @param SMWSemanticData $semanticData
-	 *
-	 * @return string
 	 */
-	protected function createTable( SemanticData $semanticData ): string {
+	protected function buildHTML( SemanticData $semanticData ): string {
 		$html = '';
 		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		if ( !$hookContainer->run( 'SMW::Factbox::BeforeContentGeneration', [ &$html, $semanticData ] ) ) {
@@ -354,7 +360,7 @@ class Factbox {
 		return $html;
 	}
 
-	private function createHeader( DIWikiPage $subject ) {
+	private function createHeader( DIWikiPage $subject ): string {
 		$dataValue = $this->dataValueFactory->newDataValueByItem( $subject, null );
 
 		$browselink = SMWInfolink::newBrowsingLink(

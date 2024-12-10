@@ -188,6 +188,7 @@ class CachedFactbox {
 			return;
 		}
 
+		$outputPage->addModuleStyles( Factbox::getModuleStyles() );
 		$outputPage->addModules( Factbox::getModules() );
 		$title = $outputPage->getTitle();
 
@@ -342,7 +343,7 @@ class CachedFactbox {
 
 		$attachmentContent = '';
 
-		if ( ( $attachmentContent = $factbox->getAttachmentContent() ) !== '' ) {
+		if ( ( $attachmentContent = $factbox->getAttachmentHTML() ) !== '' ) {
 			$contentParser->parse( $attachmentContent );
 			$attachmentContent = $contentParser->getOutput()->getText();
 		}

@@ -9,6 +9,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\Utils\HtmlDivTable;
+use SMW\Utils\HtmlTable;
 use SMWDIBlob as DIBlob;
 use SMWDataItem as DataItem;
 use Html;
@@ -27,9 +28,9 @@ class AttachmentFormatter {
 	private $store;
 
 	/**
-	 * @var string
+	 * @var HtmlTable
 	 */
-	private $header = '';
+	private $htmlTable;
 
 	/**
 	 * @since 3.1
@@ -45,29 +46,18 @@ class AttachmentFormatter {
 	 *
 	 * @return string
 	 */
-	public function setHeader( $header ) {
-		$this->header = $header;
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @return string
-	 */
-	public function buildHTML( array $attachments = [] ) {
+	public function buildHTML( array $attachments = [] ): string {
 		if ( $attachments === [] ) {
 			return '';
 		}
 
 		$dataValueFactory = DataValueFactory::getInstance();
 
-		$html = '';
-		$rows = '';
-
 		$property = new DIProperty( '_ATTCH_LINK' );
+		$this->htmlTable = new HtmlTable();
 
 		foreach ( $attachments as $dataItem ) {
-			$rows .= HtmlDivTable::row( $this->buildRow( $property, $dataItem ) );
+			$this->buildRow( $property, $dataItem );
 		}
 
 		$propertyRegistry = PropertyRegistry::getInstance();
@@ -106,31 +96,22 @@ class AttachmentFormatter {
 			Message::USER_LANGUAGE
 		);
 
-		$html .= Html::rawElement(
-			'div',
-			[
-				'class' => 'smwfact',
-				'style' => 'display:block;'
-			],
-			$this->header . HtmlDivTable::table(
-				HtmlDivTable::header(
-					HtmlDivTable::cell( '&nbsp;', [ 'style' => 'width:50%;' ] ) .
-					HtmlDivTable::cell( $mime->getShortWikiText(), [ 'style' => 'width:20%;' ] ) .
-					HtmlDivTable::cell( $mdat->getShortWikiText(), [ 'style' => 'width:20%;' ] ) .
-					HtmlDivTable::cell( $isLocalMsg, [ 'style' => 'width:10%;text-align:center' ] )
-				) . HtmlDivTable::body( $rows ),
-				[
-					// ID is used for the sorting JS!
-					'id'    => 'smw-factbox-attachments',
-					'class' => 'smwfacttable'
-				]
-			)
-		);
+		$this->htmlTable->header( '&nbsp;' );
+		$this->htmlTable->header( $mime->getShortWikiText() );
+		$this->htmlTable->header( $mdat->getShortWikiText(), );
+		$this->htmlTable->header( $isLocalMsg );
 
-		return $html;
+		return Html::rawElement(
+			'div',
+			[ 'class' => 'smw-factbox-table-wrapper' ],
+			$this->htmlTable->table( [
+				'id' => 'smw-factbox-attachments',
+				'class' => 'wikitable sortable'
+			] )
+		);
 	}
 
-	private function buildRow( $property, $dataItem ) {
+	private function buildRow( $property, $dataItem ): void {
 		$unknown = Message::get(
 			'smw-factbox-attachments-value-unknown',
 			Message::TEXT,
@@ -145,12 +126,12 @@ class AttachmentFormatter {
 		$dataValue->setOption( $dataValue::NO_IMAGE, true );
 		$attachment = $dataValue->getShortWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
 
-		$row = HtmlDivTable::cell( $attachment );
+		$this->htmlTable->cell( $attachment );
 
 		$pv = $this->store->getPropertyValues( $dataItem, new DIProperty( '_MIME' ) );
 		$pv = is_array( $pv ) ? end( $pv ) : '';
 
-		$row .= HtmlDivTable::cell(
+		$this->htmlTable->cell(
 			$pv instanceof DIBlob ? $pv->getString() : $unknown,
 			[ 'style' => 'word-break: break-word;' ]
 		);
@@ -167,7 +148,7 @@ class AttachmentFormatter {
 			$text = $dv->getShortWikiText();
 		}
 
-		$row .= HtmlDivTable::cell( $text );
+		$this->htmlTable->cell( $text );
 
 		// Instead of relying on the MDAT, use the File instance and check for
 		// `File::isLocal`
@@ -177,9 +158,12 @@ class AttachmentFormatter {
 			$isLocal = '✗';
 		}
 
-		$row .= HtmlDivTable::cell( $isLocal, [ 'style' => 'text-align:center' ] );
+		$this->htmlTable->cell(
+			$isLocal,
+			[ 'style' => 'text-align:center' ]
+		);
 
-		return $row;
+		$this->htmlTable->row();
 	}
 
 }
