@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Exception;
 
-use SMW_PHPUNIT_DIR;
 use SMW\Exception\JSONFileParseException;
 use SMW\Tests\PHPUnitCompat;
+use const SMW_PHPUNIT_DIR;
 
 /**
  * @covers \SMW\Exception\JSONFileParseException
