@@ -354,7 +354,7 @@ class Factbox {
 			new DIProperty( '_SKEY' )
 		);
 
-		return $semanticData->isEmpty();
+		return (bool)$semanticData->isEmpty();
 	}
 
 	private function hasFeature( string $feature ): bool {

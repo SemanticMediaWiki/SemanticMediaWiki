@@ -729,10 +729,8 @@ class SemanticData implements JsonUnserializable {
 	 * data for subobjects.
 	 *
 	 * @since 1.8
-	 *
-	 * @return boolean
 	 */
-	public function isEmpty() {
+	public function isEmpty(): bool {
 		return $this->getProperties() === [] && $this->getSubSemanticData() === [];
 	}
 
