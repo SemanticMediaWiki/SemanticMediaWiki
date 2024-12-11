@@ -173,7 +173,8 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
-	public function current(): mixed {
+	#[\ReturnTypeWillChange]
+	public function current() {
 		return current( $this->data );
 	}
 
