@@ -38,7 +38,7 @@ class RunnerFactory {
 	public function newMaintenanceRunner( $maintenanceClass ) {
 		switch ( $maintenanceClass ) {
 			case 'rebuildPropertyStatistics':
-				$maintenanceClass = 'SMW\Maintenance\RebuildPropertyStatistics';
+				$maintenanceClass = 'SMW\Maintenance\rebuildPropertyStatistics';
 				break;
 			case 'rebuildData':
 				$maintenanceClass = 'SMW\Maintenance\RebuildData';
