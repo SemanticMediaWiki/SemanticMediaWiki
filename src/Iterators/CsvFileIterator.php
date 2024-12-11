@@ -119,7 +119,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function rewind() {
+	public function rewind(): rewind {
 		$this->key = 0;
 		$this->file->rewind();
 	}
@@ -131,7 +131,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function current() {
+	public function current(): mixed {
 		// First iteration to match the header
 		if ( $this->parseHeader && $this->key == 0 ) {
 			$this->header = $this->file->fgetcsv( $this->delimiter );
@@ -150,7 +150,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function key() {
+	public function key(): mixed {
 		return $this->key;
 	}
 
@@ -161,7 +161,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function next() {
+	public function next(): void {
 		return !$this->file->eof();
 	}
 
@@ -172,7 +172,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function valid() {
+	public function valid(): bool {
 		if ( $this->next() ) {
 			return true;
 		}
