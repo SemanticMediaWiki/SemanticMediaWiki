@@ -5,7 +5,7 @@ namespace SMW\Tests\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\EntityCache;
-use SMW\Maintenance\purgeEntityCache;
+use SMW\Maintenance\PurgeEntityCache;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
@@ -13,7 +13,7 @@ use SMW\DIWikiPage;
 use Wikimedia\Rdbms\Database;
 
 /**
- * @covers \SMW\Maintenance\purgeEntityCache
+ * @covers \SMW\Maintenance\PurgeEntityCache
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -48,8 +48,8 @@ class PurgeEntityCacheTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			purgeEntityCache::class,
-			new purgeEntityCache()
+			PurgeEntityCache::class,
+			new PurgeEntityCache()
 		);
 	}
 
@@ -85,7 +85,7 @@ class PurgeEntityCacheTest extends TestCase {
 			->method( 'invalidate' )
 			->with( $this->equalTo( $subject ) );
 
-		$instance = new purgeEntityCache();
+		$instance = new PurgeEntityCache();
 
 		$instance->setMessageReporter(
 			$this->messageReporter
