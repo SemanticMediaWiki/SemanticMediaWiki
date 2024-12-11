@@ -37,6 +37,10 @@ if ( !defined( 'SMW_PHPUNIT_FIRST_COLUMN_WIDTH' ) ) {
 	define( 'SMW_PHPUNIT_FIRST_COLUMN_WIDTH', 20 );
 }
 
+if ( !defined( 'SMW_PHPUNIT_DIR' ) ) {
+	define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );
+}
+
 require __DIR__ . '/phpUnitEnvironment.php';
 $phpUnitEnvironment = new PHPUnitEnvironment();
 
