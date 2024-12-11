@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use RuntimeException;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 use SMW\Tests\PHPUnitCompat;
 
