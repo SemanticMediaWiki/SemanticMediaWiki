@@ -119,7 +119,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function rewind(): rewind {
+	public function rewind(): void {
 		$this->key = 0;
 		$this->file->rewind();
 	}
