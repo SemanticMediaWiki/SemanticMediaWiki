@@ -396,6 +396,9 @@ return [
 		'styles' => [
 			'smw/factbox.less'
 		],
+		'skinStyles' => [
+			'vector-2022' => [ 'smw/factbox-vector-2022.less' ]
+		],
 		'targets' => [
 			'mobile',
 			'desktop'
