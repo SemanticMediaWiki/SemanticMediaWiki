@@ -21,6 +21,8 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $parserFactory;
 
+	private $testEnvironment;
+
 	protected function setUp(): void {
 		parent::setUp();
 
