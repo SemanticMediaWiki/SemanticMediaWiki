@@ -27,7 +27,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class purgeEntityCache extends \Maintenance {
+class PurgeEntityCache extends \Maintenance {
 
 	/**
 	 * @var Store
