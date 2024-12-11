@@ -55,7 +55,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author James Hong Kong
  */
-class setupStore extends \Maintenance {
+class SetupStore extends \Maintenance {
 
 	/**
 	 * Name of the store class configured in the "LocalSettings.php" file. Stored to
@@ -269,5 +269,5 @@ class setupStore extends \Maintenance {
 
 }
 
-$maintClass = setupStore::class;
+$maintClass = SetupStore::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );
