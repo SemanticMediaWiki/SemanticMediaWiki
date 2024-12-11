@@ -221,6 +221,22 @@
 	}
 }
 
+/** TODO: Icon should be handled somewhere else, remove this when we rework icons */
+.smw-factbox-actions .rdflink a {
+	display: flex;
+	align-items: center;
+	gap: @spacing-50;
+
+	&::before {
+		content: '';
+		display: block;
+		min-width: @min-size-icon-small;
+		min-height: @min-size-icon-small;
+		background-size: contain;
+		background-image: url( assets/smw-icon-rdf.svg );
+	}
+}
+
 @keyframes cdx-progress-bar-inline {
 	0% {
 		transform: translate( -100% );
