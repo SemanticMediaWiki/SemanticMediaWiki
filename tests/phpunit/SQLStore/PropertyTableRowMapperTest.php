@@ -11,6 +11,7 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\SQLStore\PropertyTableRowMapper
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 3.0

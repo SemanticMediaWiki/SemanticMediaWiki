@@ -12,6 +12,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
 /**
  * @covers \SMW\SQLStore\RedirectStore
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since   2.1

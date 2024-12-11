@@ -8,6 +8,7 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\ParserFunctionFactory
  * @group smenatic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9

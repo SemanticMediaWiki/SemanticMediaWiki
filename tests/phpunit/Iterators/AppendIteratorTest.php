@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Iterators;
 
+use RuntimeException;
 use SMW\Iterators\AppendIterator;
 use SMW\Tests\PHPUnitCompat;
 

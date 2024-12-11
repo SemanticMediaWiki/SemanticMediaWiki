@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use RuntimeException;
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
 use SMW\Tests\PHPUnitCompat;
 

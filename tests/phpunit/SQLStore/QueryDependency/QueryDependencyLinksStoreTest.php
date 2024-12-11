@@ -10,6 +10,7 @@ use SMW\Tests\TestEnvironment;
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryDependencyLinksStore
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 2.3
