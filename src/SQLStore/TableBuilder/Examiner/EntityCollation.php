@@ -6,7 +6,7 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder;
 use SMW\SetupFile;
-use SMW\Maintenance\updateEntityCollation as UpdateEntityCollation;
+use SMW\Maintenance\UpdateEntityCollation as UpdateEntityCollation;
 use SMW\Utils\CliMsgFormatter;
 
 /**
