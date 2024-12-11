@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Connection;
 
+use RuntimeException;
 use SMW\Connection\ConnectionManager;
 use SMW\Tests\PHPUnitCompat;
 
