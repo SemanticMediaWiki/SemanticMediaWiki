@@ -65,7 +65,7 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 
 		$info = [
-			SchemaDefinition::SCHEMA_VALIDATION_FILE => \SMW_PHPUNIT_DIR . '/Fixtures/Schema/empty_schema.json'
+			SchemaDefinition::SCHEMA_VALIDATION_FILE => SMW\Tests\SMW_PHPUNIT_DIR . '/Fixtures/Schema/empty_schema.json'
 		];
 
 		$this->assertEmpty(
@@ -93,7 +93,7 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 
 		$info = [
-			SchemaDefinition::SCHEMA_VALIDATION_FILE => \SMW_PHPUNIT_DIR . '/Fixtures/Schema/empty_schema.json'
+			SchemaDefinition::SCHEMA_VALIDATION_FILE => SMW\Tests\SMW_PHPUNIT_DIR . '/Fixtures/Schema/empty_schema.json'
 		];
 
 		$this->assertNotEmpty(
