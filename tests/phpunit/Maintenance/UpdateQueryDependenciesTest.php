@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Maintenance;
 
-use SMW\Maintenance\updateQueryDependencies;
+use SMW\Maintenance\UpdateQueryDependencies;
 use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
- * @covers \SMW\Maintenance\updateQueryDependencies
+ * @covers \SMW\Maintenance\UpdateQueryDependencies
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -54,8 +54,8 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			updateQueryDependencies::class,
-			new updateQueryDependencies()
+			UpdateQueryDependencies::class,
+			new UpdateQueryDependencies()
 		);
 	}
 
@@ -109,7 +109,7 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->connection ) );
 
-		$instance = new updateQueryDependencies();
+		$instance = new UpdateQueryDependencies();
 
 		$instance->setMessageReporter(
 			$this->messageReporter
