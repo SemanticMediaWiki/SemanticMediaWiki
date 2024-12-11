@@ -30,7 +30,7 @@ class RebuildConceptCacheTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RebuildConceptCache'
+			'\SMW\Maintenance\RebuildConceptCache'
 		);
 
 		$maintenanceRunner->setQuiet();
