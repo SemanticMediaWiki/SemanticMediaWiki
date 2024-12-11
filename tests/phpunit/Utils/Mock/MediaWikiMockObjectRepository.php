@@ -316,10 +316,10 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	/**
 	 * @since 1.9
 	 *
-	 * @return LinksUpdate
+	 * @return \MediaWiki\Deferred\LinksUpdate\LinksUpdate
 	 */
 	public function LinksUpdate() {
-		$linksUpdate = $this->getMockBuilder( 'LinksUpdate' )
+		$linksUpdate = $this->getMockBuilder( '\MediaWiki\Deferred\LinksUpdate\LinksUpdate' )
 			->disableOriginalConstructor()
 			->getMock();
 
