@@ -183,7 +183,8 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
-	public function next(): void {
+	#[\ReturnTypeWillChange]
+	public function next() {
 		return next( $this->data );
 	}
 
