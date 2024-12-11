@@ -4,10 +4,10 @@ namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\Store;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\SQLStore\PropertyStatisticsStore;
-use SMW\Store;
 use SMW\Localizer\LocalMessageProvider;
 
 /**
@@ -114,7 +114,7 @@ class MaintenanceFactory {
 	 * @return RebuildPropertyStatistics
 	 */
 	public function newRebuildPropertyStatistics() {
-		return new RebuildPropertyStatistics();
+		return new rebuildPropertyStatistics();
 	}
 
 	/**
