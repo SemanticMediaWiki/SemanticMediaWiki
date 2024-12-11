@@ -111,7 +111,7 @@ class MaintenanceFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @return RebuildPropertyStatistics
+	 * @return rebuildPropertyStatistics
 	 */
 	public function newRebuildPropertyStatistics() {
 		return new rebuildPropertyStatistics();
