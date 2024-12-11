@@ -19,9 +19,11 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
-	private $parserFactory;
-
 	private $testEnvironment;
+
+	private $parserData;
+
+	private $parserFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
