@@ -25,7 +25,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class runLocalMessageCopy extends \Maintenance {
+class RunLocalMessageCopy extends \Maintenance {
 
 	/**
 	 * @var MessageReporter
@@ -174,5 +174,5 @@ class runLocalMessageCopy extends \Maintenance {
 
 }
 
-$maintClass = runLocalMessageCopy::class;
+$maintClass = RunLocalMessageCopy::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
