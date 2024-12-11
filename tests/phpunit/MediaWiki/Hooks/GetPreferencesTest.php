@@ -17,6 +17,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 	private $hookDispatcher;
 	private $permissionExaminer;
+	private $schemaFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
