@@ -12,6 +12,8 @@ if ( PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' ) {
 error_reporting( -1 );
 ini_set( 'display_errors', '1' );
 
+define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );
+
 $autoloader = require SMW_PHPUNIT_AUTOLOADER_FILE;
 
 $autoloader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
@@ -35,7 +37,6 @@ $autoloader->addClassMap( [
 	'SMW\Maintenance\UpdateEntityCountMap'       => __DIR__ . '/../maintenance/updateEntityCountMap.php'
 ] );
 
-define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );
 // define( 'SMW_PHPUNIT_TABLE_PREFIX', 'sunittest_' );
 // define( 'SMW_PHPUNIT_TABLE_PREFIX', '' );
 
