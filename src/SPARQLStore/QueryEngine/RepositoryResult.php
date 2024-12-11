@@ -173,7 +173,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
-	public function current() {
+	public function current(): mixed {
 		return current( $this->data );
 	}
 
@@ -183,7 +183,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
-	public function next() {
+	public function next(): void {
 		return next( $this->data );
 	}
 
@@ -193,7 +193,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
-	public function key() {
+	public function key(): mixed {
 		return key( $this->data );
 	}
 
