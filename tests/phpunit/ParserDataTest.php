@@ -23,6 +23,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 	private $dataValueFactory;
+	private $revisionGuard;
 	private $testEnvironment;
 
 	protected function setUp(): void {
