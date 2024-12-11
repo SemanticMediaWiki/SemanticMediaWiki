@@ -194,7 +194,8 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
-	public function key(): mixed {
+	#[\ReturnTypeWillChange]
+	public function key() {
 		return key( $this->data );
 	}
 
