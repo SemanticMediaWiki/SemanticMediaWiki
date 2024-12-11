@@ -21,6 +21,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 	private $varsEnvironment;
 	private $localLanguage;
 	private $default;
+	private $testEnvironment;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
