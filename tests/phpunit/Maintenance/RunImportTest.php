@@ -3,12 +3,12 @@
 namespace SMW\Tests\Maintenance;
 
 use PHPUnit\Framework\TestCase;
-use SMW\Maintenance\runImport;
+use SMW\Maintenance\RunImport;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Maintenance\runImport
+ * @covers \SMW\Maintenance\RunImport
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -37,13 +37,13 @@ class RunImportTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			runImport::class,
-			new runImport()
+			RunImport::class,
+			new RunImport()
 		);
 	}
 
 	public function testExecute() {
-		$instance = new runImport();
+		$instance = new RunImport();
 
 		$instance->setMessageReporter(
 			$this->spyMessageReporter
