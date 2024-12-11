@@ -41,13 +41,13 @@ class RunnerFactory {
 				$maintenanceClass = 'SMW\Maintenance\rebuildPropertyStatistics';
 				break;
 			case 'rebuildData':
-				$maintenanceClass = 'SMW\Maintenance\RebuildData';
+				$maintenanceClass = 'SMW\Maintenance\rebuildData';
 				break;
 			case 'rebuildConceptCache';
-				$maintenanceClass = 'SMW\Maintenance\RebuildConceptCache';
+				$maintenanceClass = 'SMW\Maintenance\rebuildConceptCache';
 				break;
 			case 'setupStore';
-				$maintenanceClass = 'SMW\Maintenance\SetupStore';
+				$maintenanceClass = 'SMW\Maintenance\setupStore';
 				break;
 		}
 
