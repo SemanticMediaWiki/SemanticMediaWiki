@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\StoreFactory;
 use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;

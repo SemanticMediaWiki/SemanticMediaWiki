@@ -2,8 +2,9 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\TitleLookup;
+use RuntimeException;
 use Title;
+use SMW\MediaWiki\TitleLookup;
 use SMW\Tests\PHPUnitCompat;
 
 /**

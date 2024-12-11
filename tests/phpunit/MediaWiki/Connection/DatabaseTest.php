@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
+use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\Tests\PHPUnitCompat;
