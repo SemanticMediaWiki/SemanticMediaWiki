@@ -44,7 +44,7 @@ class RebuildElasticMissingDocumentsTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RebuildElasticMissingDocuments'
+			'\SMW\Maintenance\rebuildElasticMissingDocuments'
 		);
 
 		$maintenanceRunner->setMessageReporter( $this->spyMessageReporter );

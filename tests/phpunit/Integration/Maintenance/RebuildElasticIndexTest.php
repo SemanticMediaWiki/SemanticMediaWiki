@@ -42,7 +42,7 @@ class RebuildElasticIndexTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RebuildElasticIndex'
+			'\SMW\Maintenance\rebuildElasticIndex'
 		);
 
 		$maintenanceRunner->setMessageReporter( $this->spyMessageReporter );

@@ -91,7 +91,7 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 			]
 		];
 
-		$this->maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildData' );
+		$this->maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildData' );
 		$this->maintenanceRunner->setQuiet();
 
 		$this->semanticDataFinder = new ByPageSemanticDataFinder;

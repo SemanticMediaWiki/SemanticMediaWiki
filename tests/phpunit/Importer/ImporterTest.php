@@ -106,7 +106,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 		$instance->runImport();
 	}
 
-	public function testrunImportWithError() {
+	public function testRunImportWithError() {
 		$importContents = new ImportContents();
 
 		$importContents->addError( 'Bar' );
@@ -134,7 +134,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 		$instance->runImport();
 	}
 
-	public function testrunImportWithErrorDuringCreation() {
+	public function testRunImportWithErrorDuringCreation() {
 		$importContents = new ImportContents();
 		$importContents->setVersion( 1 );
 
