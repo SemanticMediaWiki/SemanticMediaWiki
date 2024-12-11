@@ -8,7 +8,7 @@ use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Maintenance\disposeOutdatedEntities
+ * @covers \SMW\Maintenance\DisposeOutdatedEntities
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
