@@ -17,6 +17,7 @@ use SMWExpResource as ExpResource;
  *
  * @group SMW
  * @group SMWExtension
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
