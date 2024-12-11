@@ -22,7 +22,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class rebuildPropertyStatistics extends \Maintenance {
+class RebuildPropertyStatistics extends \Maintenance {
 
 	public function __construct() {
 		parent::__construct();
@@ -94,5 +94,5 @@ class rebuildPropertyStatistics extends \Maintenance {
 
 }
 
-$maintClass = rebuildPropertyStatistics::class;
+$maintClass = RebuildPropertyStatistics::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );
