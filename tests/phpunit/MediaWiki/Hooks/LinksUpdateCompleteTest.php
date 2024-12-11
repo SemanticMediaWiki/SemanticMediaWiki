@@ -168,7 +168,7 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'ParserData', $parserData );
 
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
+		$linksUpdate = $this->getMockBuilder( '\MediaWiki\Deferred\LinksUpdate\LinksUpdate' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -218,7 +218,7 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'ParserData', $parserData );
 
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
+		$linksUpdate = $this->getMockBuilder( '\MediaWiki\Deferred\LinksUpdate\LinksUpdate' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -250,7 +250,7 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsNotReady_DoNothing() {
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
+		$linksUpdate = $this->getMockBuilder( '\MediaWiki\Deferred\LinksUpdate\LinksUpdate' )
 			->disableOriginalConstructor()
 			->getMock();
 
