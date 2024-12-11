@@ -24,7 +24,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class runImport extends \Maintenance {
+class RunImport extends \Maintenance {
 
 	/**
 	 * @var MessageReporter
@@ -126,5 +126,5 @@ class runImport extends \Maintenance {
 
 }
 
-$maintClass = runImport::class;
+$maintClass = RunImport::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
