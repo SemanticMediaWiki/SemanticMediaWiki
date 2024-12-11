@@ -27,7 +27,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class populateHashField extends \Maintenance {
+class PopulateHashField extends \Maintenance {
 
 	/**
 	 * Threshold as the when the `populateHashField.php` should be used by an
@@ -285,5 +285,5 @@ class populateHashField extends \Maintenance {
 
 }
 
-$maintClass = populateHashField::class;
+$maintClass = PopulateHashField::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
