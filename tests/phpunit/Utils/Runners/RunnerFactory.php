@@ -43,10 +43,10 @@ class RunnerFactory {
 			case 'rebuildData':
 				$maintenanceClass = '\SMW\Maintenance\RebuildData';
 				break;
-			case 'rebuildConceptCache';
+			case 'rebuildConceptCache':
 				$maintenanceClass = '\SMW\Maintenance\RebuildConceptCache';
 				break;
-			case 'setupStore';
+			case 'setupStore':
 				$maintenanceClass = '\SMW\Maintenance\SetupStore';
 				break;
 		}
