@@ -47,7 +47,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * @author Markus Krötzsch
  * @author mwjames
  */
-class dumpRDF extends \Maintenance {
+class DumpRDF extends \Maintenance {
 
 	/**
 	 * @var MessageReporter
@@ -220,5 +220,5 @@ class dumpRDF extends \Maintenance {
 
 }
 
-$maintClass = dumpRDF::class;
+$maintClass = DumpRDF::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );
