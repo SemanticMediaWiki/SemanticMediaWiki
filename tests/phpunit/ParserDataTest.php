@@ -12,6 +12,7 @@ use Title;
 /**
  * @covers \SMW\ParserData
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
