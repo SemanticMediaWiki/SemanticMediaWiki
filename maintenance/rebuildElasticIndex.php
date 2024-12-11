@@ -25,7 +25,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class rebuildElasticIndex extends \Maintenance {
+class RebuildElasticIndex extends \Maintenance {
 
 	/**
 	 * @var Store
@@ -540,5 +540,5 @@ class rebuildElasticIndex extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\rebuildElasticIndex';
+$maintClass = RebuildElasticIndex::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
