@@ -173,6 +173,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 		return current( $this->data );
 	}
@@ -183,6 +184,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
+	#[\ReturnTypeWillChange]
 	public function next() {
 		return next( $this->data );
 	}
@@ -193,6 +195,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
+	#[\ReturnTypeWillChange]
 	public function key() {
 		return key( $this->data );
 	}
