@@ -357,7 +357,7 @@ class Factbox {
 		return (bool)$semanticData->isEmpty();
 	}
 
-	private function hasFeature( string $feature ): bool {
+	private function hasFeature( ?int $feature ): bool {
 		return ( (int)$this->featureSet & $feature ) != 0;
 	}
 
