@@ -234,5 +234,5 @@ class PurgeEntityCache extends \Maintenance {
 
 }
 
-$maintClass = purgeEntityCache::class;
+$maintClass = PurgeEntityCache::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
