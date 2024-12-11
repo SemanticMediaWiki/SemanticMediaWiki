@@ -1389,7 +1389,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	public function callBlockIpComplete( $instance ) {
 		$handler = 'BlockIpComplete';
 
-		$block = $this->getMockBuilder( '\Block' )
+		$block = $this->getMockBuilder( '\MediaWiki\Block\Block' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1425,7 +1425,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	public function callUnblockUserComplete( $instance ) {
 		$handler = 'UnblockUserComplete';
 
-		$block = $this->getMockBuilder( '\Block' )
+		$block = $this->getMockBuilder( '\MediaWiki\Block\Block' )
 			->disableOriginalConstructor()
 			->getMock();
 
