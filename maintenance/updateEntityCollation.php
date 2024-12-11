@@ -31,7 +31,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class updateEntityCollation extends \Maintenance {
+class UpdateEntityCollation extends \Maintenance {
 
 	/**
 	 * Incomplete task message
@@ -293,5 +293,5 @@ class updateEntityCollation extends \Maintenance {
 
 }
 
-$maintClass = updateEntityCollation::class;
+$maintClass = UpdateEntityCollation::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
