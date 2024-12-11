@@ -56,7 +56,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * @author Yaron Koren
  * @author Markus Krötzsch
  */
-class rebuildData extends \Maintenance {
+class RebuildData extends \Maintenance {
 
 	public function __construct() {
 		parent::__construct();
@@ -287,5 +287,5 @@ class rebuildData extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\rebuildData';
+$maintClass = RebuildData::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );
