@@ -8,6 +8,7 @@ namespace SMW\Tests;
  * @group SMW
  * @group SMWExtension
  * @group SMWDataItems
+ * @group Database
  *
  * @license GNU GPL v2+
  * @author mwjames

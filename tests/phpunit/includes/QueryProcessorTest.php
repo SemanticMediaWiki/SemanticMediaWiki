@@ -20,6 +20,7 @@ use SMW\Tests\PHPUnitCompat;
  * @group SMWExtension
  * @group SMWQueries
  * @group SMWQueryProcessorTest
+ * @group Database
  *
  * @author Nischay Nahata
  */

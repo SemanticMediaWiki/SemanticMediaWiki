@@ -13,6 +13,7 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\DataUpdater
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9

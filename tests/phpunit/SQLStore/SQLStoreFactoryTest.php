@@ -11,6 +11,7 @@ use SMWSQLStore3;
 /**
  * @covers \SMW\SQLStore\SQLStoreFactory
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 2.2
