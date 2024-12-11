@@ -83,6 +83,7 @@
 		"psr-4": {
 			"SMW\\": "src/",
 			"SMW\\Maintenance\\": "maintenance/",
+			"SMW\\Tests\\": "tests/phpunit/",
 			"Onoi\\Tesa\\": "src/Tesa/src/"
 		},
 		"psr-0": {
@@ -92,14 +93,7 @@
 			"includes/GlobalFunctions.php"
 		],
 		"classmap" : [
-			"includes/"
-		]
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"SMW\\Tests\\": "tests/phpunit/"
-		},
-		"classmap" : [
+			"includes/",
 			"tests/phpunit/includes/"
 		]
 	},
