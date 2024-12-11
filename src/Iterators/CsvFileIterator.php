@@ -161,7 +161,8 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function next(): void {
+	#[\ReturnTypeWillChange]
+	public function next() {
 		return !$this->file->eof();
 	}
 
