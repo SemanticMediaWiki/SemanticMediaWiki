@@ -898,7 +898,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_SPECIAL ) );
 
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
+		$linksUpdate = $this->getMockBuilder( '\MediaWiki\Deferred\LinksUpdate\LinksUpdate;' )
 			->disableOriginalConstructor()
 			->getMock();
 
