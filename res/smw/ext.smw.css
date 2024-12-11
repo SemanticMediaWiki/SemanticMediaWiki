@@ -309,12 +309,6 @@ span.smwwarning {
  * TODO: Change icons to #000 and toggle them by opacity and scale instead of using multiple version
  * TODO: Perhaps we can use Codex/OOUI icons
  */
- span.smwsearchicon {
-	padding-right: 16px;
-	margin-right: 2px;
-	color: #888;
-	background: url( assets/smw-icon-search.svg ) center right no-repeat;
-}
 
 span.smwsearch a,
 span.smwbrowse a {
