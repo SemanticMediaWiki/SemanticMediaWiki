@@ -81,7 +81,7 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\rebuildPropertyStatistics',
+			'\SMW\Maintenance\RebuildPropertyStatistics',
 			$instance->newRebuildPropertyStatistics()
 		);
 	}
