@@ -20,7 +20,7 @@ class JSONFileParseExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 		$instance = new JSONFileParseException(
-			\SMW_PHPUNIT_DIR . '/Fixtures/Exception/invalid.trailing.comma.json'
+			SMW\Tests\SMW_PHPUNIT_DIR . '/Fixtures/Exception/invalid.trailing.comma.json'
 		);
 
 		$this->assertContains(
