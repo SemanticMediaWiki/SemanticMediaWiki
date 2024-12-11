@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use LinksUpdate;
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use ParserOutput;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\Tests\TestEnvironment;
