@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use LinksUpdate;
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use ParserOutput;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\Tests\TestEnvironment;
@@ -168,9 +168,7 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'ParserData', $parserData );
 
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
-			->disableOriginalConstructor()
-			->getMock();
+		$linksUpdate = $this->createMock( LinksUpdate::class );
 
 		$linksUpdate->expects( $this->any() )
 			->method( 'getTitle' )
@@ -218,9 +216,7 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'ParserData', $parserData );
 
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
-			->disableOriginalConstructor()
-			->getMock();
+		$linksUpdate = $this->createMock( LinksUpdate::class );
 
 		$linksUpdate->expects( $this->any() )
 			->method( 'getTitle' )
@@ -250,9 +246,7 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsNotReady_DoNothing() {
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
-			->disableOriginalConstructor()
-			->getMock();
+		$linksUpdate = $this->createMock( LinksUpdate::class );
 
 		$linksUpdate->expects( $this->never() )
 			->method( 'getTitle' );
