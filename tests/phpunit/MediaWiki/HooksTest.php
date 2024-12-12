@@ -899,7 +899,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_SPECIAL ) );
 
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
+		$linksUpdate = $this->getMockBuilder( '\MediaWiki\Deferred\LinksUpdate\LinksUpdate' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1392,20 +1392,15 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$block = $this->createMock( Block::class );
 
-		if ( method_exists( $block, 'getTarget' ) ) {
-			$block->expects( $this->any() )
-				->method( 'getTarget' )
-				->will( $this->returnValue( 'Foo' ) );
-		} else {
-			$user = $this->createMock( UserIdentity::class );
-			$user->expects( $this->any() )
-				->method( 'getName' )
-				->willReturn( 'Foo' );
+		$user = $this->createMock( UserIdentity::class );
+		$user->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'Foo' );
 
-			$block->expects( $this->any() )
-				->method( 'getTargetUserIdentity' )
-				->willReturn( $user );
-		}
+		$block->expects( $this->any() )
+			->method( 'getTargetUserIdentity' )
+			->willReturn( $user );
+
 		$performer = '';
 		$priorBlock = '';
 
@@ -1426,20 +1421,15 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$block = $this->createMock( Block::class );
 
-		if ( method_exists( $block, 'getTarget' ) ) {
-			$block->expects( $this->any() )
-				->method( 'getTarget' )
-				->will( $this->returnValue( 'Foo' ) );
-		} else {
-			$user = $this->createMock( UserIdentity::class );
-			$user->expects( $this->any() )
-				->method( 'getName' )
-				->willReturn( 'Foo' );
 
-			$block->expects( $this->any() )
-				->method( 'getTargetUserIdentity' )
-				->willReturn( $user );
-		}
+		$user = $this->createMock( UserIdentity::class );
+		$user->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'Foo' );
+
+		$block->expects( $this->any() )
+			->method( 'getTargetUserIdentity' )
+			->willReturn( $user );
 
 		$performer = '';
 		$priorBlock = '';
