@@ -1390,9 +1390,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	public function callBlockIpComplete( $instance ) {
 		$handler = 'BlockIpComplete';
 
-		$block = $this->createMock( Block::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$block = $this->createMock( Block::class );
 
 		if ( method_exists( $block, 'getTarget' ) ) {
 			$block->expects( $this->any() )
@@ -1426,9 +1424,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	public function callUnblockUserComplete( $instance ) {
 		$handler = 'UnblockUserComplete';
 
-		$block = $this->createMock( Block::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$block = $this->createMock( Block::class );
 
 		if ( method_exists( $block, 'getTarget' ) ) {
 			$block->expects( $this->any() )
