@@ -899,9 +899,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_SPECIAL ) );
 
-		$linksUpdate = $this->createMock( LinksUpdate::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$linksUpdate = $this->createMock( LinksUpdate::class );
 
 		$linksUpdate->expects( $this->any() )
 			->method( 'getTitle' )
