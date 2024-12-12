@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
@@ -112,7 +113,7 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 		/**
 		 * See #347 and LinksUpdateComplete
 		 */
-		$linksUpdate = new \LinksUpdate( $this->title, new \ParserOutput() );
+		$linksUpdate = new LinksUpdate( $this->title, new \ParserOutput() );
 		$linksUpdate->doUpdate();
 
 		$this->testEnvironment->executePendingDeferredUpdates();
