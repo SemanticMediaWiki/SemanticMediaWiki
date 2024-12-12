@@ -569,6 +569,7 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
 
+		$user = User::newFromIdentity( $user );
 		$editInfo = $mwCollaboratorFactory->newEditInfo(
 			$wikiPage,
 			$revision,

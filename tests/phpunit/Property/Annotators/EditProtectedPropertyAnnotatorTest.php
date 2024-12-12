@@ -97,11 +97,6 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$title->expects( $this->once() )
-			->method( 'isProtected' )
-			->with( $this->equalTo( 'edit' ) )
-			->will( $this->returnValue( true ) );
-
-		$title->expects( $this->once() )
 			->method( 'getRestrictions' )
 			->will( $this->returnValue( [ 'Foo' ] ) );
 
@@ -126,11 +121,6 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
 			->will( $this->returnValue( 0 ) );
-
-		$title->expects( $this->any() )
-			->method( 'isProtected' )
-			->with( $this->equalTo( 'edit' ) )
-			->will( $this->returnValue( true ) );
 
 		$title->expects( $this->any() )
 			->method( 'getRestrictions' )

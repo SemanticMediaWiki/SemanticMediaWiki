@@ -12,6 +12,7 @@ use Title;
 /**
  * @covers \SMW\ParserData
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -22,6 +23,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 	private $dataValueFactory;
+	private $revisionGuard;
 	private $testEnvironment;
 
 	protected function setUp(): void {

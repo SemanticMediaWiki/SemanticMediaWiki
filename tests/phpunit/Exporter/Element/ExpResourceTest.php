@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter\Element;
 
+use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpResource;

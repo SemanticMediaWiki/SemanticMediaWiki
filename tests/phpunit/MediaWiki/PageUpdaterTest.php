@@ -291,11 +291,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 			'touchLinks'
 		];
 
-		$provider[] = [
-			'doPurgeWebCache',
-			'purgeSquid'
-		];
-
 		return $provider;
 	}
 

@@ -8,6 +8,7 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\ParserFunctionFactory
  * @group smenatic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -17,6 +18,10 @@ use SMW\Tests\PHPUnitCompat;
 class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
+
+	private $testEnvironment;
+
+	private $parserData;
 
 	private $parserFactory;
 

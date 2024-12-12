@@ -18,10 +18,10 @@ class FieldBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
-	public function testCreateQueryForm() {
+	public function testGetQueryFormData() {
 		$this->assertInternalType(
-			'string',
-			FieldBuilder::createQueryForm( 'Foo' )
+			'array',
+			FieldBuilder::getQueryFormData( 'Foo' )
 		);
 	}
 

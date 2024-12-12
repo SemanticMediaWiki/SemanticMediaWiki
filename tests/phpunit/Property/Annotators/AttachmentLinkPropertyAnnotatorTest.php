@@ -22,7 +22,7 @@ class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 	private $dataItemFactory;
-	private $nsFileName;
+	private $fileNS;
 
 	protected function setUp(): void {
 		parent::setUp();

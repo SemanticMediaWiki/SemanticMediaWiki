@@ -146,13 +146,17 @@ class PrefetchCache {
 	public function getPropertyValues( DIWikiPage $subject, DIProperty $property, RequestOptions $requestOptions ) {
 		$key = $this->makeCacheKey( $property, $requestOptions );
 
-		$sid = $this->store->getObjectIds()->getSMWPageID(
-			$subject->getDBkey(),
-			$subject->getNamespace(),
-			$subject->getInterwiki(),
-			$subject->getSubobjectName(),
-			true
-		);
+		// 0 is the default ID of the subject, if it already has an ID,
+		// there is no need to do a DB query for the ID.
+		$sid = $subject->getId() !== 0
+			? $subject->getId()
+			: $this->store->getObjectIds()->getSMWPageID(
+				$subject->getDBkey(),
+				$subject->getNamespace(),
+				$subject->getInterwiki(),
+				$subject->getSubobjectName(),
+				true
+			);
 
 		if ( !isset( $this->cache[$key][$sid] ) ) {
 			return [];

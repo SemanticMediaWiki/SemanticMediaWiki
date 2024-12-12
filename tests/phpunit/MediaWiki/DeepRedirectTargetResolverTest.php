@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use RuntimeException;
 use SMW\MediaWiki\DeepRedirectTargetResolver;
 use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\Tests\PHPUnitCompat;

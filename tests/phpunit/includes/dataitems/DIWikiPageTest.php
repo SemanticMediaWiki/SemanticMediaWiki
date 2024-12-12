@@ -11,6 +11,7 @@ use SMW\DIWikiPage;
  * @group SMW
  * @group SMWExtension
  * @group SMWDataItems
+ * @group Database
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */

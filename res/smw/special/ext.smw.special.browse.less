@@ -28,99 +28,19 @@
 
 @import '../tokens.less';
 
-.smwb-container .smw-overlay-spinner {
-	left: 45%;
-	top: 40%;
-}
-
-.smwb-datasheet {
-	border: @border-base;
-	border-radius: @border-radius-base;
-	line-height: @line-height-xx-small;
-}
-
-.smwb-factbox,
-.smwb-ifactbox {
-	border: 0;
-
-	.smwb-title {
-		display: block;
-		padding-top: @spacing-100;
-		padding-inline: @spacing-75;
-		line-height: @line-height-xxx-small;
-		font-size: @font-size-x-large;
-		font-weight: @font-weight-bold;
-	}
-
-	.smwb-actions { 
-		display: block;
-		padding-inline: @spacing-75;
-		padding-bottom: @spacing-100;
-
-		a + a {
-			margin-inline-start: @spacing-50;
-			border-inline-start: @border-subtle;
-			padding-inline-start: @spacing-50;
-		}
-	}
-
-	&.smwb-group .smwb-cell {
-		padding-block: @spacing-75;
-		font-weight: @font-weight-bold;
-	}
-
-	.smwb-cell {
-		border: 0;
-		border-top: @border-subtle;
-		padding: @spacing-50 @spacing-75;
-		vertical-align: top;
-	}
-
-	.smwb-prophead {
-		background-color: @background-color-neutral-subtle;
-		font-weight: @font-weight-bold;
-
-		@media ( min-width: @min-width-breakpoint-tablet ) {
-			width: 30%;
-		}
-
-		a {
-			hyphens: auto;
-		}
-	}
-}
-
-.smwb-factbox {
-	.smwb-prophead {
-		text-align: end;
-	}
-
-	.smwb-propvalue {
-		text-align: start;
-	}
-}
-
-.smwb-ifactbox {
-	.smwb-prophead {
-		text-align: start;
-	}
-
-	.smwb-propvalue {
-		text-align: end;
-	}
-
-	.smwb-cell {
-		@media ( max-width: @max-width-breakpoint-tablet ) {
-			justify-content: flex-end;
-		}
-	}
-}
-
-.smwb-input {
+.smw-browse-search {
+	margin-block: @spacing-100;
 	display: flex;
-	gap: @spacing-50;
 
-	.input-field {
-		flex-grow: 1;
+	// Remove right border radius to create a seamless connection with the button
+	&-input.mw-ui-input {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+
+	&-button.mw-ui-button {
+		margin-inline-start: -@border-width-base;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
 	}
 }

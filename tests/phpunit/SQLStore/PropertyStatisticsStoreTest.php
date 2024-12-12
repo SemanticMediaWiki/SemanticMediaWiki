@@ -12,6 +12,7 @@ use SMW\Tests\PHPUnitCompat;
  * @group semantic-mediawiki
  *
  * @group medium
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9

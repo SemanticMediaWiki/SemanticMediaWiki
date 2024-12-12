@@ -563,7 +563,7 @@
 	"smw-prefs-help-general-options-suggester-textinput": "Falls aktiviert, ist es von Eingabefeldern aus möglich, eine [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Eingabehilfe] zu Attributen, Konzepten und Kategorien aufzurufen.",
 	"smw-prefs-general-options-show-entity-issue-panel": "Problemanzeige zu Daten anzeigen",
 	"smw-prefs-help-general-options-show-entity-issue-panel": "Sofern aktiviert, werden auf jeder Seite Prüfungen zur Datenintegrität durchgeführt und deren Ergebnisse über die [https://www.semantic-mediawiki.org/wiki/Help:Entity_issue_panel Problemanzeige zu Daten] angezeigt.",
-	"smw-prefs-factedsearch-profile": "Wähle ein [[Special:FacetedSearch|Facettensuche]] Standardprofil:",
+	"smw-prefs-factedsearch-profile": "Standardprofil für die [[Special:FacetedSearch|Facettensuche]]:",
 	"smw-ui-tooltip-title-property": "Attribut",
 	"smw-ui-tooltip-title-quantity": "Einheitenumrechnung",
 	"smw-ui-tooltip-title-info": "Information",

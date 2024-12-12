@@ -19,6 +19,7 @@ use SMWExporter as Exporter;
  *
  * @group SMW
  * @group SMWExtension
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 2.0
