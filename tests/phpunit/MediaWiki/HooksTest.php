@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Edit\PreparedEdit;
 use MediaWiki\User\UserIdentity;
 use ParserOptions;
@@ -898,7 +899,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_SPECIAL ) );
 
-		$linksUpdate = $this->getMockBuilder( '\MediaWiki\Deferred\LinksUpdate\LinksUpdate' )
+		$linksUpdate = $this->createMock( LinksUpdate::class )
 			->disableOriginalConstructor()
 			->getMock();
 
