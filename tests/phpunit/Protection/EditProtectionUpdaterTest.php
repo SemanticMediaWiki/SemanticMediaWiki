@@ -129,11 +129,6 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$title->expects( $this->once() )
-			->method( 'isProtected' )
-			->with( $this->equalTo( 'edit' ) )
-			->will( $this->returnValue( true ) );
-
-		$title->expects( $this->once() )
 			->method( 'getRestrictions' )
 			->will( $this->returnValue( [ 'Foo' ] ) );
 
@@ -183,11 +178,6 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$title->expects( $this->once() )
-			->method( 'isProtected' )
-			->with( $this->equalTo( 'edit' ) )
-			->will( $this->returnValue( true ) );
 
 		$title->expects( $this->once() )
 			->method( 'getRestrictions' )
