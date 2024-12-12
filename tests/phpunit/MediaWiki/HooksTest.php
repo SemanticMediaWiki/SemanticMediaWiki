@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Block\Block;
 use MediaWiki\Edit\PreparedEdit;
 use MediaWiki\User\UserIdentity;
 use ParserOptions;
@@ -1389,7 +1390,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	public function callBlockIpComplete( $instance ) {
 		$handler = 'BlockIpComplete';
 
-		$block = $this->getMockBuilder( '\MediaWiki\Block\Block' )
+		$block = $this->createMock( Block::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1425,7 +1426,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	public function callUnblockUserComplete( $instance ) {
 		$handler = 'UnblockUserComplete';
 
-		$block = $this->getMockBuilder( '\MediaWiki\Block\Block' )
+		$block = $this->createMock( Block::class )
 			->disableOriginalConstructor()
 			->getMock();
 
