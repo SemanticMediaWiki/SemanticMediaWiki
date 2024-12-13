@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
-use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Search\SearchEngineFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
