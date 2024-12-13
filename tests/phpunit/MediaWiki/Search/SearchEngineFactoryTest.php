@@ -2,10 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Search\SearchEngineFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 use SMWQuery;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchEngineFactory
@@ -22,13 +24,12 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $connection;
+	private $connectionProvider;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+		$this->connectionProvider = $this->createMock( IConnectionProvider::class );
 	}
 
 	protected function tearDown(): void {
@@ -93,7 +94,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 		$searchEngineFactory = new SearchEngineFactory();
 
 		$this->expectException( 'RuntimeException' );
-		$searchEngineFactory->newFallbackSearchEngine( $this->connection );
+		$searchEngineFactory->newFallbackSearchEngine( $this->connectionProvider );
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromCallable() {
@@ -111,7 +112,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$fallbackSearchEngine,
-			$searchEngineFactory->newFallbackSearchEngine( $this->connection )
+			$searchEngineFactory->newFallbackSearchEngine( $this->connectionProvider )
 		);
 	}
 
@@ -125,7 +126,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 		$searchEngineFactory = new SearchEngineFactory();
 
 		$this->expectException( '\SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException' );
-		$searchEngineFactory->newFallbackSearchEngine( $this->connection );
+		$searchEngineFactory->newFallbackSearchEngine( $this->connectionProvider );
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromString() {
@@ -135,7 +136,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SearchDatabase',
-			$searchEngineFactory->newFallbackSearchEngine( $this->connection )
+			$searchEngineFactory->newFallbackSearchEngine( $this->connectionProvider )
 		);
 	}
 
@@ -145,7 +146,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 		$searchEngineFactory = new SearchEngineFactory();
 
 		$this->expectException( '\SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException' );
-		$searchEngineFactory->newFallbackSearchEngine( $this->connection );
+		$searchEngineFactory->newFallbackSearchEngine( $this->connectionProvider );
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromStringInvalidClassThrowsException() {
@@ -154,7 +155,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 		$searchEngineFactory = new SearchEngineFactory();
 
 		$this->expectException( '\SMW\Exception\ClassNotFoundException' );
-		$searchEngineFactory->newFallbackSearchEngine( $this->connection );
+		$searchEngineFactory->newFallbackSearchEngine( $this->connectionProvider );
 	}
 
 }
