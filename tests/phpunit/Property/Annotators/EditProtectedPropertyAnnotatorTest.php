@@ -158,11 +158,6 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( 0 ) );
 
-		$title->expects( $this->any() )
-			->method( 'isProtected' )
-			->with( $this->equalTo( 'edit' ) )
-			->will( $this->returnValue( true ) );
-
 		#2
 		$provider[] = [
 			$title,
@@ -185,11 +180,6 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
 			->will( $this->returnValue( 0 ) );
-
-		$title->expects( $this->any() )
-			->method( 'isProtected' )
-			->with( $this->equalTo( 'edit' ) )
-			->will( $this->returnValue( false ) );
 
 		#3
 		$provider[] = [
