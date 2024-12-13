@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use LinksUpdate;
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use ParserOutput;
 use SMW\DIWikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
