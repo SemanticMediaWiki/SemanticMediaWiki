@@ -103,10 +103,7 @@ class LockManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReleaseLock() {
-		$this->cache->expects( $this->at( 0 ) )
-			->method( 'delete' );
-
-		$this->cache->expects( $this->at( 1 ) )
+		$this->cache
 			->method( 'delete' )
 			->with( $this->stringContains( 'smw:elastic:57cb773ae7a82c8c8aae12fa8f8d7abd' ) );
 
