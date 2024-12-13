@@ -24,7 +24,7 @@ $autoloader->addClassMap( [
 	'SMW\Maintenance\rebuildData'                => __DIR__ . '/../maintenance/rebuildData.php',
 	'SMW\Maintenance\rebuildPropertyStatistics'  => __DIR__ . '/../maintenance/rebuildPropertyStatistics.php',
 	'SMW\Maintenance\rebuildFulltextSearchTable' => __DIR__ . '/../maintenance/rebuildFulltextSearchTable.php',
-	'SMW\Maintenance\dumpRdf'                    => __DIR__ . '/../maintenance/dumpRDF.php',
+	'SMW\Maintenance\dumpRDF'                    => __DIR__ . '/../maintenance/dumpRDF.php',
 	'SMW\Maintenance\setupStore'                 => __DIR__ . '/../maintenance/setupStore.php',
 	'SMW\Maintenance\updateEntityCollation'      => __DIR__ . '/../maintenance/updateEntityCollation.php',
 	'SMW\Maintenance\removeDuplicateEntities'    => __DIR__ . '/../maintenance/removeDuplicateEntities.php',
