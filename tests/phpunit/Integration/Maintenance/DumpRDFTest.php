@@ -35,7 +35,7 @@ class DumpRDFTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\dumpRDF'
+			'\SMW\Maintenance\dumpRDF'
 		);
 
 		$maintenanceRunner->setMessageReporter(

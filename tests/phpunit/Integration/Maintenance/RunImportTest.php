@@ -38,7 +38,7 @@ class RunImportTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RunImport'
+			'\SMW\Maintenance\runImport'
 		);
 
 		$maintenanceRunner->setMessageReporter(

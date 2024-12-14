@@ -40,7 +40,7 @@ class UpdateEntityCollationTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\UpdateEntityCollation'
+			'\SMW\Maintenance\updateEntityCollation'
 		);
 
 		$maintenanceRunner->setMessageReporter(

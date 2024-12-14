@@ -31,7 +31,7 @@ class UpdateQueryDependenciesTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\UpdateQueryDependencies'
+			'\SMW\Maintenance\updateQueryDependencies'
 		);
 
 		$maintenanceRunner->setQuiet();
