@@ -30,7 +30,7 @@ class RemoveDuplicateEntitiesTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RemoveDuplicateEntities'
+			'\SMW\Maintenance\removeDuplicateEntities'
 		);
 
 		$maintenanceRunner->setQuiet();

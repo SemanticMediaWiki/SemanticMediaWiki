@@ -61,7 +61,7 @@ use SMW\MediaWiki\Hooks\DeleteAccount;
 use SMW\MediaWiki\Hooks\AdminLinks;
 use SMW\MediaWiki\Hooks\SpecialPageList;
 use SMW\MediaWiki\Hooks\ApiModuleManager;
-use SMW\Maintenance\RunImport;
+use SMW\Maintenance\runImport;
 use StubGlobalUser;
 use User;
 

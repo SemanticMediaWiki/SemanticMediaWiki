@@ -79,7 +79,7 @@ class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
 		$conceptPage = $this->createConceptPage( 'Lorem ipsum concept', '[[Category:Lorem ipsum]]' );
 	 	$this->importedTitles[] = $conceptPage;
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildConceptCache' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildConceptCache' );
 		$maintenanceRunner->setQuiet();
 
 		$maintenanceRunner

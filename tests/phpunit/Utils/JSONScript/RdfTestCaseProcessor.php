@@ -71,7 +71,7 @@ class RdfTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	}
 
 	private function assertDumpRdfOutputForCase( $case ) {
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\DumpRdf' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\dumpRDF' );
 		$maintenanceRunner->setQuiet();
 
 		$maintenanceRunner->setOptions( $case['dumpRDF']['parameters'] );

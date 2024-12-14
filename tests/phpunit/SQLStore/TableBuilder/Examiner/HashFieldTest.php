@@ -31,7 +31,7 @@ class HashFieldTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->populateHashField = $this->getMockBuilder( '\SMW\Maintenance\PopulateHashField' )
+		$this->populateHashField = $this->getMockBuilder( '\SMW\Maintenance\populateHashField' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

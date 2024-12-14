@@ -50,7 +50,7 @@ class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildFulltextSearchTable' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildFulltextSearchTable' );
 		$maintenanceRunner->setQuiet()->run();
 	}
 
