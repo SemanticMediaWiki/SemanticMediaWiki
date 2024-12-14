@@ -15,9 +15,6 @@ use JsonContent;
 use Title;
 use User;
 use ParserOptions;
-use ParserOutput;
-use WikiPage;
-use Status;
 
 /**
  * The content model supports both JSON and YAML (as a superset of JSON), allowing
@@ -133,82 +130,6 @@ class SchemaContent extends JsonContent {
 		}
 
 		return $this->isValid;
-	}
-
-	/**
-	 * @see Content::prepareSave
-	 * @since 3.1
-	 *
-	 * {@inheritDoc}
-	 */
-	public function prepareSave( WikiPage $page, $flags, $parentRevId, User $user ) {
-		$this->initServices();
-		$title = $page->getTitle();
-
-		$this->setTitlePrefix( $title );
-
-		$errors = [];
-		$schema = null;
-
-		try {
-			$schema = $this->schemaFactory->newSchema(
-				$title->getDBKey(),
-				$this->toJson()
-			);
-		} catch ( SchemaTypeNotFoundException $e ) {
-			if ( !$this->isValid && $this->errorMsg !== '' ) {
-				$errors[] = [ 'smw-schema-error-json', $this->errorMsg ];
-			} elseif ( $e->getType() === '' || $e->getType() === null ) {
-				$errors[] = [ 'smw-schema-error-type-missing' ];
-			} else {
-				$errors[] = [ 'smw-schema-error-type-unknown', $e->getType() ];
-			}
-		}
-
-		if ( $schema !== null ) {
-			$errors = $this->schemaFactory->newSchemaValidator()->validate(
-				$schema
-			);
-
-			$schema_link = pathinfo(
-				$schema->info( Schema::SCHEMA_VALIDATION_FILE ) ?? '',
-				PATHINFO_FILENAME
-			);
-		}
-
-		$status = Status::newGood();
-
-		if ( $errors !== [] && $schema === null ) {
-			array_unshift( $errors, [ 'smw-schema-error-input' ] );
-		} elseif ( $errors !== [] ) {
-			array_unshift( $errors, [ 'smw-schema-error-input-schema', $schema_link ] );
-		}
-
-		foreach ( $errors as $error ) {
-
-			if ( isset( $error['property'] ) && $error['property'] === 'title_prefix' ) {
-
-				if ( isset( $error['enum'] ) ) {
-					$group = end( $error['enum'] );
-				} elseif ( isset( $error['const'] ) ) {
-					$group = $error['const'];
-				} else {
-					continue;
-				}
-
-				$error = [ 'smw-schema-error-title-prefix', "$group:" ];
-			}
-
-			if ( isset( $error['message'] ) ) {
-				$status->fatal( 'smw-schema-error-violation', $error['property'], $error['message'] );
-			} elseif ( is_string( $error ) ) {
-				$status->fatal( $error );
-			} else {
-				$status->fatal( ...$error );
-			}
-		}
-
-		return $status;
 	}
 
 	/**
@@ -349,4 +270,7 @@ class SchemaContent extends JsonContent {
 		$this->parse->title_prefix = $title_prefix;
 	}
 
+	public function getErrorMsg() {
+		return $this->errorMsg;
+	}
 }
