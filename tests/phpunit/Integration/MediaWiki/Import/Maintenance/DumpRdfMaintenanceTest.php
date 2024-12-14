@@ -82,7 +82,7 @@ class DumpRdfMaintenanceTest extends SMWIntegrationTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\DumpRdf' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\dumpRDF' );
 		$maintenanceRunner->setQuiet();
 
 		$this->doExportForDefaultOptions( $maintenanceRunner );
