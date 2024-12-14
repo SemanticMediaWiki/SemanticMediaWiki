@@ -17,7 +17,7 @@ use SMW\Schema\SchemaFinder;
  *
  * @author mwjames
  */
-class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
+class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $propertySpecificationLookup;

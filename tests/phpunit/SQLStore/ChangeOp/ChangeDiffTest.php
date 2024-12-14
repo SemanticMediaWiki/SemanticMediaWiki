@@ -14,7 +14,7 @@ use SMW\SQLStore\ChangeOp\ChangeDiff;
  *
  * @author mwjames
  */
-class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
+class ChangeDiffTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

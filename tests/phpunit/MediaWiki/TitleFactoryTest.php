@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
+class TitleFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

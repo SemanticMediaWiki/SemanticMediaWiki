@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $querySegmentValidator;
 	private $descriptionInterpreterFactory;

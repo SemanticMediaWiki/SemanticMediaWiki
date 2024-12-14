@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class JSONFileParseExceptionTest extends \PHPUnit_Framework_TestCase {
+class JSONFileParseExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -17,7 +17,7 @@ use SMWPropertyValue as PropertyValue;
  *
  * @author mwjames
  */
-class DeserializerTest extends \PHPUnit_Framework_TestCase {
+class DeserializerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider textProvider

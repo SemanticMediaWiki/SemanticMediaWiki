@@ -13,7 +13,7 @@ use SMW\Services\ServicesFactory;
  *
  * @author mwjames
  */
-class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
+class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private ServicesFactory $servicesFactory;
 

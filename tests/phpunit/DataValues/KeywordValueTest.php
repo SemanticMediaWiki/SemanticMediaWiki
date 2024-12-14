@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class KeywordValueTest extends \PHPUnit_Framework_TestCase {
+class KeywordValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

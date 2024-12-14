@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
+class EntityExaminerIndicatorsFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $entityCache;

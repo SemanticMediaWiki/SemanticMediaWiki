@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
+class ElementFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

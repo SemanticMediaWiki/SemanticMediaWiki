@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class TableSchemaTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $store;

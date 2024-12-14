@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CopyLocalMessagesTest extends \PHPUnit_Framework_TestCase {
+class CopyLocalMessagesTest extends \PHPUnit\Framework\TestCase {
 
 	private $canonicalMessages;
 	private $translatedMessages;

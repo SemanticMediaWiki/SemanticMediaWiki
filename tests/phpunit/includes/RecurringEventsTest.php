@@ -14,7 +14,7 @@ use SMW\RecurringEvents;
  *
  * @author mwjames
  */
-class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
+class RecurringEventsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

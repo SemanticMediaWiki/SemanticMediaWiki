@@ -14,7 +14,7 @@ use SMW\SQLStore\Lookup\RedirectTargetLookup;
  *
  * @author mwjames
  */
-class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
+class RedirectTargetLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $idCacheManager;

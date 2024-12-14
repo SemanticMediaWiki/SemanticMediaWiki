@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

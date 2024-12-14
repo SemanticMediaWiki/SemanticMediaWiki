@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SchemaFilterFactoryTest extends \PHPUnit_Framework_TestCase {
+class SchemaFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructCompositeFilter() {
 		$instance = new SchemaFilterFactory();

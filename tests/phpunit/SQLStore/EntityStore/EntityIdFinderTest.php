@@ -18,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
+class EntityIdFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $cache;

@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
+class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

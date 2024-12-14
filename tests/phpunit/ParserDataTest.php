@@ -19,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class ParserDataTest extends \PHPUnit_Framework_TestCase {
+class ParserDataTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $dataValueFactory;

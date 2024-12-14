@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
+class PropertyStatisticsRebuildJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 

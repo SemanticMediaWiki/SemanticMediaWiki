@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SchemaLinkProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class SchemaLinkProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

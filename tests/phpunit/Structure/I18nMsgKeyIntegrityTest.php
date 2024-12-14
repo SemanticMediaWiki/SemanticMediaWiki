@@ -13,7 +13,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class I18nMsgKeyIntegrityTest extends \PHPUnit_Framework_TestCase {
+class I18nMsgKeyIntegrityTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider mediawikiI18nFileProvider

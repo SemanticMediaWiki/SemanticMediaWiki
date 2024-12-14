@@ -14,7 +14,7 @@ use SMW\DataValues\ValueParsers\TimeValueParser;
  *
  * @author mwjames
  */
-class TimeValueParserTest extends \PHPUnit_Framework_TestCase {
+class TimeValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

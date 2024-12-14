@@ -14,7 +14,7 @@ use SMW\Utils\HtmlTable;
  *
  * @author mwjames
  */
-class HtmlTableTest extends \PHPUnit_Framework_TestCase {
+class HtmlTableTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 

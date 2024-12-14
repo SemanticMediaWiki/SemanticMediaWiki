@@ -14,7 +14,7 @@ use SMW\Exporter\DataItemMatchFinder;
  *
  * @author mwjames
  */
-class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
+class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\Store' )

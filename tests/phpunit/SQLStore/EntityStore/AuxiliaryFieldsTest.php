@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
+class AuxiliaryFieldsTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 	private $idCacheManager;

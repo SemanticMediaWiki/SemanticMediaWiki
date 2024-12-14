@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DownloadLinksWidgetTest extends \PHPUnit_Framework_TestCase {
+class DownloadLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

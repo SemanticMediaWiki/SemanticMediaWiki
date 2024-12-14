@@ -13,7 +13,7 @@ use SMW\StoreFactory;
  *
  * @author mwjames
  */
-class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
+class StoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

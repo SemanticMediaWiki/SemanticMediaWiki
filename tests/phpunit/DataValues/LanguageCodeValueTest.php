@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
+class LanguageCodeValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

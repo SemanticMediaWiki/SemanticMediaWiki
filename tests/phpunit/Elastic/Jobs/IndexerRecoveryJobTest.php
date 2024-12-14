@@ -16,7 +16,7 @@ use SMW\Elastic\Indexer\Document;
  *
  * @author mwjames
  */
-class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
+class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 
 	private TestEnvironment $testEnvironment;
 	private $connection;

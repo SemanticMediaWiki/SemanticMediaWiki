@@ -13,7 +13,7 @@ use SMW\Query\QueryStringifier;
  *
  * @author mwjames
  */
-class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
+class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider queryProvider

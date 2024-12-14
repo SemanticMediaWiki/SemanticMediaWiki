@@ -13,7 +13,7 @@ use SMW\MediaWiki\Pipetrick;
  *
  * @author Morgon Kanter
  */
-class PipetrickTest extends \PHPUnit_Framework_TestCase {
+class PipetrickTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider textProvider

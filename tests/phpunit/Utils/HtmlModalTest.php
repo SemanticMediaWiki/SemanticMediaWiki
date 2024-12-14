@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HtmlModalTest extends \PHPUnit_Framework_TestCase {
+class HtmlModalTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

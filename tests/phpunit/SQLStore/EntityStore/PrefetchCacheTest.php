@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PrefetchCacheTest extends \PHPUnit_Framework_TestCase {
+class PrefetchCacheTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

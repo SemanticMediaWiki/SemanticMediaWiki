@@ -14,7 +14,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
+class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	private $indicatorProvider;
 	private $permissionExaminer;

@@ -16,7 +16,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
+class BrowseByPropertyTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $apiFactory;

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
+class HttpResponseErrorMapperTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

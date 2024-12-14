@@ -13,7 +13,7 @@ use SMW\Utils\TemplateEngine;
  *
  * @author mwjames
  */
-class TemplateEngineRoundTripTest extends \PHPUnit_Framework_TestCase {
+class TemplateEngineRoundTripTest extends \PHPUnit\Framework\TestCase {
 
 	public function testRoundTrip() {
 		$contents = '<div>{{abc}}</div><span>{{#ABC}}</span>';

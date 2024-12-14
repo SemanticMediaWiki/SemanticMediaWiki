@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
+class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $store;

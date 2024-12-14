@@ -13,7 +13,7 @@ use SMW\Utils\Stats;
  *
  * @author mwjames
  */
-class StatsTest extends \PHPUnit_Framework_TestCase {
+class StatsTest extends \PHPUnit\Framework\TestCase {
 
 	private $cache;
 

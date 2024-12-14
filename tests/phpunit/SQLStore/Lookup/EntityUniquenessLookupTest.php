@@ -14,7 +14,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class EntityUniquenessLookupTest extends \PHPUnit_Framework_TestCase {
+class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $connection;

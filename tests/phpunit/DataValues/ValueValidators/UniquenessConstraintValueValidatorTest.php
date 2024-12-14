@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
+class UniquenessConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;

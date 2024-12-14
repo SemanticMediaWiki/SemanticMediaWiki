@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;

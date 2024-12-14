@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
+class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

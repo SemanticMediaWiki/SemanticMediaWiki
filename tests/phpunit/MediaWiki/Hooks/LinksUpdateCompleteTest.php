@@ -18,7 +18,7 @@ use TitleValue;
  *
  * @author mwjames
  */
-class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
+class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $namespaceExaminer;

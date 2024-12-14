@@ -18,7 +18,7 @@ use \Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
+class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

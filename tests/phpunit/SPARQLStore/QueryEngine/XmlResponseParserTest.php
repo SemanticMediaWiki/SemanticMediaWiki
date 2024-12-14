@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
+class XmlResponseParserTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

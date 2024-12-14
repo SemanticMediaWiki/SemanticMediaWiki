@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
+class ElasticFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private MessageReporter $messageReporter;
 	private $store;

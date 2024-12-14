@@ -15,7 +15,7 @@ use SMW\Query\Result\ItemJournal;
  *
  * @author mwjames
  */
-class ItemJournalTest extends \PHPUnit_Framework_TestCase {
+class ItemJournalTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
+class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

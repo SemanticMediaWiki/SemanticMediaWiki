@@ -15,7 +15,7 @@ use SMW\Settings;
  *
  * @author mwjames
  */
-class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
+class ImporterServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $containerBuilder;
 

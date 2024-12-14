@@ -14,7 +14,7 @@ use SMW\Query\QueryToken;
  *
  * @author mwjames
  */
-class QueryTokenTest extends \PHPUnit_Framework_TestCase {
+class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 

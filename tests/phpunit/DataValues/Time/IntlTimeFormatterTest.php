@@ -15,7 +15,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
+class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$dataItem = $this->getMockBuilder( '\SMWDITime' )

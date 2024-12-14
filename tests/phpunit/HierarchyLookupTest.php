@@ -15,7 +15,7 @@ use SMW\HierarchyLookup;
  *
  * @author mwjames
  */
-class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
+class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

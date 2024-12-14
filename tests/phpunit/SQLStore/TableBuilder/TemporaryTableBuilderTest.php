@@ -14,7 +14,7 @@ use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
  *
  * @author mwjames
  */
-class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class TemporaryTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 

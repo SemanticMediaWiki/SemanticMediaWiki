@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
+class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 	private $outputPage;
 	private $request;

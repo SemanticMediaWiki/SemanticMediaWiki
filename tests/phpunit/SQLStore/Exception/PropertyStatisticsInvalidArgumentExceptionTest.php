@@ -13,7 +13,7 @@ use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
  *
  * @author mwjames
  */
-class PropertyStatisticsInvalidArgumentExceptionTest extends \PHPUnit_Framework_TestCase {
+class PropertyStatisticsInvalidArgumentExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new PropertyStatisticsInvalidArgumentException();

@@ -15,7 +15,7 @@ use SMW\Query\Result\FilterMap;
  *
  * @author mwjames
  */
-class FilterMapTest extends \PHPUnit_Framework_TestCase {
+class FilterMapTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $entityIdManager;

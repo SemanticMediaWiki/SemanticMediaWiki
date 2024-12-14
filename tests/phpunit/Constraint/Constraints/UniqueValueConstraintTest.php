@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
+class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

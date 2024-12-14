@@ -13,7 +13,7 @@ use SMW\Maintenance\DuplicateEntitiesDisposer;
  *
  * @author mwjames
  */
-class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
+class DuplicateEntitiesDisposerTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $cache;

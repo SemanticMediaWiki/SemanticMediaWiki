@@ -16,7 +16,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class DisplayTitleLookupTest extends \PHPUnit_Framework_TestCase {
+class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 

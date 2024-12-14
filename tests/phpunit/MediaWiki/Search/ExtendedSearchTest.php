@@ -15,7 +15,7 @@ use SMWQuery;
  *
  * @author Stephan Gambke
  */
-class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
+class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $store;

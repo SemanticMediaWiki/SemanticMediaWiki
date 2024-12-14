@@ -13,7 +13,7 @@ use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
  *
  * @author mwjames
  */
-class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
+class ScopeMemoryLimiterTest extends \PHPUnit\Framework\TestCase {
 
 	private $testCaller;
 	private $memoryLimitFromCallable;

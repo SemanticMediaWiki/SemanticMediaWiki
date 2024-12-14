@@ -10,7 +10,7 @@ namespace SMW\Tests;
  *
  * @author mwjames
  */
-class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
+class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @covers ::smwfGetLinker

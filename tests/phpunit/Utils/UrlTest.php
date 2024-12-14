@@ -13,7 +13,7 @@ use SMW\Utils\Url;
  *
  * @author mwjames
  */
-class UrlTest extends \PHPUnit_Framework_TestCase {
+class UrlTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider urlProvider

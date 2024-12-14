@@ -13,7 +13,7 @@ use SMW\Exception\FileNotReadableException;
  *
  * @author mwjames
  */
-class FileNotReadableExceptionTest extends \PHPUnit_Framework_TestCase {
+class FileNotReadableExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new FileNotReadableException( 'Foo' );

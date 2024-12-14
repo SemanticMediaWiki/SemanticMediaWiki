@@ -16,7 +16,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableDefinitionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $propertyTypeFinder;
 	private $mwHooksHandler;

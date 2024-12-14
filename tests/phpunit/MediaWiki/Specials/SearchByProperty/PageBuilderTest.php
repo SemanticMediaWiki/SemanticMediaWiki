@@ -19,7 +19,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class PageBuilderTest extends \PHPUnit_Framework_TestCase {
+class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 	private $localizer;

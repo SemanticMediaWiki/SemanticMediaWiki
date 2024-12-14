@@ -13,7 +13,7 @@ use SMW\MediaWiki\Content\SchemaContentHandler;
  *
  * @author mwjames
  */
-class SchemaContentHandlerTest extends \PHPUnit_Framework_TestCase {
+class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceof(

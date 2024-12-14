@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class IdChangerTest extends \PHPUnit_Framework_TestCase {
+class IdChangerTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $store;

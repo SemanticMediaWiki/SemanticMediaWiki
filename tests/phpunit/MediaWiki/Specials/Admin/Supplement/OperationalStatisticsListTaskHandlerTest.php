@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

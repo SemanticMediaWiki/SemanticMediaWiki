@@ -14,7 +14,7 @@ use SMW\Schema\SchemaDefinition;
  *
  * @author mwjames
  */
-class CompartmentIteratorSchemaListTest extends \PHPUnit_Framework_TestCase {
+class CompartmentIteratorSchemaListTest extends \PHPUnit\Framework\TestCase {
 
 	private $schemaList;
 

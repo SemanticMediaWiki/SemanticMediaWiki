@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
+class SubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

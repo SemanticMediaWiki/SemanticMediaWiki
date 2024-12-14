@@ -13,7 +13,7 @@ use SMW\DataValues\ValueParsers\PropertyValueParser;
  *
  * @author mwjames
  */
-class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
+class PropertyValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

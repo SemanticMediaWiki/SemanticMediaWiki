@@ -21,7 +21,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class EditInfoTest extends \PHPUnit_Framework_TestCase {
+class EditInfoTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$wikiPage = $this->getMockBuilder( WikiPage::class )

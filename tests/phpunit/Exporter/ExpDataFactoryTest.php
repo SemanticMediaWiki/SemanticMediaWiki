@@ -16,7 +16,7 @@ use SMW\Serializers\ExpDataSerializer;
  *
  * @author mwjames
  */
-class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
+class ExpDataFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $exporter;
 

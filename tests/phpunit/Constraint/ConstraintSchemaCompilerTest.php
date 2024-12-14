@@ -17,7 +17,7 @@ use SMW\Message;
  *
  * @author mwjames
  */
-class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
+class ConstraintSchemaCompilerTest extends \PHPUnit\Framework\TestCase {
 
 	private $schemaFinder;
 	private $propertySpecificationLookup;

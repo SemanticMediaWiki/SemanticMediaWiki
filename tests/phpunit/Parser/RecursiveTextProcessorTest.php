@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
+class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -20,7 +20,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -13,7 +13,7 @@ use SMW\Utils\Tokenizer;
  *
  * @author mwjames
  */
-class TokenizerTest extends \PHPUnit_Framework_TestCase {
+class TokenizerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider textProvider

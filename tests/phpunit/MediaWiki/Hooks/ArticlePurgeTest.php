@@ -18,7 +18,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
+class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
 
 	private $applicationFactory;
 	private $testEnvironment;

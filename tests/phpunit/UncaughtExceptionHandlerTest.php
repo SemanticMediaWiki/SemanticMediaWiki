@@ -13,7 +13,7 @@ use SMW\UncaughtExceptionHandler;
  *
  * @author mwjames
  */
-class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
+class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $setupCheck;
 

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class FileFetcherTest extends \PHPUnit_Framework_TestCase {
+class FileFetcherTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

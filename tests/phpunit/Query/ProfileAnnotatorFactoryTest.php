@@ -15,7 +15,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
+class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

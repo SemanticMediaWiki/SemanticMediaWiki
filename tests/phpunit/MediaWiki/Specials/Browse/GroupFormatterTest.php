@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
+class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

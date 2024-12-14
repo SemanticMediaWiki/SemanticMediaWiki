@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SingletonConditionTest extends \PHPUnit_Framework_TestCase {
+class SingletonConditionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

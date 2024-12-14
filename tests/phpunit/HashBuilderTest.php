@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HashBuilderTest extends \PHPUnit_Framework_TestCase {
+class HashBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

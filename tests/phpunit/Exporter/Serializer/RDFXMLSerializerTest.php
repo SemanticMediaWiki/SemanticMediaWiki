@@ -19,7 +19,7 @@ use SMW\Exporter\Element\ExpLiteral;
  *
  * @author mwjames
  */
-class RDFXMLSerializerTest extends \PHPUnit_Framework_TestCase {
+class RDFXMLSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

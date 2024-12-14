@@ -13,7 +13,7 @@ use SMW\Utils\HtmlDivTable;
  *
  * @author mwjames
  */
-class HtmlDivTableTest extends \PHPUnit_Framework_TestCase {
+class HtmlDivTableTest extends \PHPUnit\Framework\TestCase {
 
 	public function testOpenClose() {
 		$this->assertEquals(

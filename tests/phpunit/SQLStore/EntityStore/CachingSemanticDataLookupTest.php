@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CachingSemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
+class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

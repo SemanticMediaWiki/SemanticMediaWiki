@@ -13,7 +13,7 @@ use SMW\Encoder;
  *
  * @author mwjames
  */
-class EncoderTest extends \PHPUnit_Framework_TestCase {
+class EncoderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

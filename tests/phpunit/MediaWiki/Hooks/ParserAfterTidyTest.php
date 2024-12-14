@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
+class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $applicationFactory;

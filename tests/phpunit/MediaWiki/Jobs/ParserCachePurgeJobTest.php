@@ -13,7 +13,7 @@ use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
  *
  * @author mwjames
  */
-class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
+class ParserCachePurgeJobTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$title = $this->getMockBuilder( 'Title' )

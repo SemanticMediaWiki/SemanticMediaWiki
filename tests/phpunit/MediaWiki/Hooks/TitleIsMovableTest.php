@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class TitleIsMovableTest extends \PHPUnit_Framework_TestCase {
+class TitleIsMovableTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$title = $this->getMockBuilder( '\Title' )
