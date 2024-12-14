@@ -251,7 +251,7 @@ abstract class QueryPage extends \QueryPage {
 	/**
 	 * @return array|null
 	 */
-	public function getQueryInfo() {
+	public function getQueryInfo(): ?array {
 		return null;
 	}
 }
