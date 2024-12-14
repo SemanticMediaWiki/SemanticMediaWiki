@@ -247,4 +247,11 @@ abstract class QueryPage extends \QueryPage {
 
 		return $num;
 	}
+
+	/**
+	 * @return array|bool
+	 */
+	public function getQueryInfo() {
+		return null;
+	}
 }
