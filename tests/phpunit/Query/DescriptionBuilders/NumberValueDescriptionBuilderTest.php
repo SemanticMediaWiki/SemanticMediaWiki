@@ -13,7 +13,7 @@ use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
  *
  * @author mwjames
  */
-class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
+class NumberValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

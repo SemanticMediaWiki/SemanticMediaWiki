@@ -15,7 +15,7 @@ use SMW\SPARQLStore\RepositoryConnectionProvider;
  *
  * @author Stephan Gambke
  */
-class SpecialAskTest extends \PHPUnit_Framework_TestCase {
+class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 
 	private $oldRequestValues;
 	private $oldBodyText;

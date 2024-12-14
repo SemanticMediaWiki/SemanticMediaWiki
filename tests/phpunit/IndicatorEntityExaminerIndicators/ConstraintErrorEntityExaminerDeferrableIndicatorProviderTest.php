@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
+class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

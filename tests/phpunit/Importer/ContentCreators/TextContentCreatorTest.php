@@ -15,7 +15,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
+class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $titleFactory;
 	private $connection;

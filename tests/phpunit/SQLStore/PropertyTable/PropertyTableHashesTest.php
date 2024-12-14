@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PropertyTableHashesTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableHashesTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 	private $idCacheManager;

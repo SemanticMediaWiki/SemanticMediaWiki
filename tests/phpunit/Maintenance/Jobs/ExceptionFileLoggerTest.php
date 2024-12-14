@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
+class ExceptionFileLoggerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TaskFactoryTest extends \PHPUnit_Framework_TestCase {
+class TaskFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

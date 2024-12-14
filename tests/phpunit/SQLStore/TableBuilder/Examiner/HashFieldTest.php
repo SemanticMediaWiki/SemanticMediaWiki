@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HashFieldTest extends \PHPUnit_Framework_TestCase {
+class HashFieldTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ProfileFormTest extends \PHPUnit_Framework_TestCase {
+class ProfileFormTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $specialSearch;

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SiteTest extends \PHPUnit_Framework_TestCase {
+class SiteTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -14,7 +14,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class ClientBuilderNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class ClientBuilderNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

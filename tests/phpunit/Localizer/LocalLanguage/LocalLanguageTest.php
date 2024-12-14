@@ -14,7 +14,7 @@ use SMW\Localizer\LocalLanguage\LanguageContents;
  *
  * @author mwjames
  */
-class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
+class LocalLanguageTest extends \PHPUnit\Framework\TestCase {
 
 	private $languageContents;
 

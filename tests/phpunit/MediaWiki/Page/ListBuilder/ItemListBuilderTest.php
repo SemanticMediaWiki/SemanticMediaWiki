@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ItemListBuilderTest extends \PHPUnit_Framework_TestCase {
+class ItemListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $stringValidator;

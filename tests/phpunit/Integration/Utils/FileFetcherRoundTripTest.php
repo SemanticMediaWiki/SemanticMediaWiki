@@ -12,7 +12,7 @@ use SMW\Utils\FileFetcher;
  *
  * @author mwjames
  */
-class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
+class FileFetcherRoundTripTest extends \PHPUnit\Framework\TestCase {
 
 	public function testRoundTrip() {
 		$found = false;

@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
+class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $connection;

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TimerTest extends \PHPUnit_Framework_TestCase {
+class TimerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -13,7 +13,7 @@ use SMW\Utils\Lru;
  *
  * @author mwjames
  */
-class LruTest extends \PHPUnit_Framework_TestCase {
+class LruTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSetGet() {
 		$instance = new Lru( 3 );

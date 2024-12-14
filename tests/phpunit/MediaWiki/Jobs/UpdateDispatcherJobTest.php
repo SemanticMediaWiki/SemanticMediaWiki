@@ -19,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
+class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 	protected $expectedProperty;
 	protected $expectedSubjects;

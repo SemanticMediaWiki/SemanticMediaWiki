@@ -13,7 +13,7 @@ use SMW\Exception\NamespaceIndexChangeException;
  *
  * @author mwjames
  */
-class NamespaceIndexChangeExceptionTest extends \PHPUnit_Framework_TestCase {
+class NamespaceIndexChangeExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new NamespaceIndexChangeException( 'Foo', 'Bar' );

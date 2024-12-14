@@ -17,7 +17,7 @@ use SMWQueryProcessor;
  *
  * @author mwjames
  */
-class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
+class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 

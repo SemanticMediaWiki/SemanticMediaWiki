@@ -13,7 +13,7 @@ use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
  *
  * @author mwjames
  */
-class SearchEngineInvalidTypeExceptionTest extends \PHPUnit_Framework_TestCase {
+class SearchEngineInvalidTypeExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SearchEngineInvalidTypeException( 'Foo' );

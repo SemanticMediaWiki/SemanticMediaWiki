@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class LogoTest extends \PHPUnit_Framework_TestCase {
+class LogoTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

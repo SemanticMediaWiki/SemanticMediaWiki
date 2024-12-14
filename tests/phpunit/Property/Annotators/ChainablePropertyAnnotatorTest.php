@@ -17,7 +17,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class ChainablePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;

@@ -16,7 +16,7 @@ use SMWDataValue;
  *
  * @author mwjames
  */
-class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
+class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

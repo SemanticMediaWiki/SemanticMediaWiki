@@ -16,7 +16,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class SortKeyPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;

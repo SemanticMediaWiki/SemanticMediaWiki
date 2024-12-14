@@ -18,7 +18,7 @@ use SMW\DataValues\PropertyValue;
  *
  * @author mwjames
  */
-class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

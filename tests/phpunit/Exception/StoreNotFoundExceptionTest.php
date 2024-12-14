@@ -13,7 +13,7 @@ use SMW\Exception\StoreNotFoundException;
  *
  * @author mwjames
  */
-class StoreNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class StoreNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new StoreNotFoundException();

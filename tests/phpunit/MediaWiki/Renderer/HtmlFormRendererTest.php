@@ -14,7 +14,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
+class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 

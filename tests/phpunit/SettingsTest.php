@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SettingsTest extends \PHPUnit_Framework_TestCase {
+class SettingsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

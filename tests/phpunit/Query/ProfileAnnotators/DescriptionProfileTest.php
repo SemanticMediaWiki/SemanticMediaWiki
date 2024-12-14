@@ -18,7 +18,7 @@ use SMWDIContainer as DIContainer;
  *
  * @author mwjames
  */
-class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
+class DescriptionProfileTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 

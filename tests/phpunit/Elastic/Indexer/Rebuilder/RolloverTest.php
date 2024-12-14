@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RolloverTest extends \PHPUnit_Framework_TestCase {
+class RolloverTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

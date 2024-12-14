@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RebuilderTest extends \PHPUnit_Framework_TestCase {
+class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $titleFactory;

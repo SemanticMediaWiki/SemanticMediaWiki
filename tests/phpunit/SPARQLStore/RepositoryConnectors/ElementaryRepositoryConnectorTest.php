@@ -13,7 +13,7 @@ use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
  *
  * @author mwjames
  */
-class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
+class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 
 	public function getRepositoryConnectors() {
 		// Legacy and should be removed once obsolete

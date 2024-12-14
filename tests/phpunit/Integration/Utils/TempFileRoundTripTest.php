@@ -12,7 +12,7 @@ use SMW\Utils\TempFile;
  *
  * @author mwjames
  */
-class TempFileRoundTripTest extends \PHPUnit_Framework_TestCase {
+class TempFileRoundTripTest extends \PHPUnit\Framework\TestCase {
 
 	public function testRoundTrip() {
 		$expected = 'Test write file';

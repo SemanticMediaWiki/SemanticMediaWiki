@@ -13,7 +13,7 @@ use SMW\SQLStore\TableFieldUpdater;
  *
  * @author mwjames
  */
-class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
+class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
+class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $stringValidator;

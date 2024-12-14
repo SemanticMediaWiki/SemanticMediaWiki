@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RecordValueTest extends \PHPUnit_Framework_TestCase {
+class RecordValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

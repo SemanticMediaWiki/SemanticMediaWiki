@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConstraintCheckRunnerTest extends \PHPUnit_Framework_TestCase {
+class ConstraintCheckRunnerTest extends \PHPUnit\Framework\TestCase {
 
 	private $constraintRegistry;
 

@@ -15,7 +15,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class PSubjectLookupTest extends \PHPUnit_Framework_TestCase {
+class PSubjectLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 

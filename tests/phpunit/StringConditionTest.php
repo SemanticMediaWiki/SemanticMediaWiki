@@ -13,7 +13,7 @@ use SMW\StringCondition;
  *
  * @author mwjames
  */
-class StringConditionTest extends \PHPUnit_Framework_TestCase {
+class StringConditionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new StringCondition( 'Foo', StringCondition::STRCOND_PRE, true );

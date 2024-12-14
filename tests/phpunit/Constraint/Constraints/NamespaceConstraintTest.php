@@ -15,7 +15,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
+class NamespaceConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;

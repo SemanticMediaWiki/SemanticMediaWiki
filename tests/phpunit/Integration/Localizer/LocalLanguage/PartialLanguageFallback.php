@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
+class PartialLanguageFallback extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 

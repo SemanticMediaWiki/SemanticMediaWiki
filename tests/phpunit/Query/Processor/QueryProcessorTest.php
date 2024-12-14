@@ -13,7 +13,7 @@ use SMWQueryProcessor as QueryProcessor;
  *
  * @author mwjames
  */
-class QueryProcessorTest extends \PHPUnit_Framework_TestCase {
+class QueryProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider limitOffsetParamsProvider

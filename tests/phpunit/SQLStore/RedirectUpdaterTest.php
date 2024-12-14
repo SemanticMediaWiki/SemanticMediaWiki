@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
+class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $tableFieldUpdater;

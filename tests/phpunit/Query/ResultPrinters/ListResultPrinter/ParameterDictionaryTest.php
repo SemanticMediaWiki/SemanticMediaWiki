@@ -13,7 +13,7 @@ use SMW\Query\ResultPrinters\ListResultPrinter\ParameterDictionary;
  *
  * @author Stephan Gambke
  */
-class ParameterDictionaryTest extends \PHPUnit_Framework_TestCase {
+class ParameterDictionaryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSetGet() {
 		$dict = new ParameterDictionary();

@@ -13,7 +13,7 @@ use SMW\DataValues\PropertyValue;
  *
  * @author mwjames
  */
-class PropertyValueTest extends \PHPUnit_Framework_TestCase {
+class PropertyValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

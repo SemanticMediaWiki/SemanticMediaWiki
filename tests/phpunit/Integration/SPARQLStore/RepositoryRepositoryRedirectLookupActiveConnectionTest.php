@@ -20,7 +20,7 @@ use SMWExporter as Exporter;
  *
  * @author mwjames
  */
-class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Framework_TestCase {
+class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit\Framework\TestCase {
 
 	private $repositoryConnection;
 	private $store;

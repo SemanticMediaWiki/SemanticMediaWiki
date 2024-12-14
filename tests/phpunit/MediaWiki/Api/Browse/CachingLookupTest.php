@@ -13,7 +13,7 @@ use SMW\MediaWiki\Api\Browse\CachingLookup;
  *
  * @author mwjames
  */
-class CachingLookupTest extends \PHPUnit_Framework_TestCase {
+class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )

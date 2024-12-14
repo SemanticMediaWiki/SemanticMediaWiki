@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
+class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

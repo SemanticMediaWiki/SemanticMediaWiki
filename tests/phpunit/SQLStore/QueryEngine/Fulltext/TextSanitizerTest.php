@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
  *
  * @author mwjames
  */
-class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
+class TextSanitizerTest extends \PHPUnit\Framework\TestCase {
 
 	private $sanitizerFactory;
 

@@ -14,7 +14,7 @@ use SMW\Query\ResultPrinters\ListResultPrinter;
  * @author Máté Szabó
  * @author Stephan Gambke
  */
-class ListResultPrinterTest extends \PHPUnit_Framework_TestCase {
+class ListResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider allFormatsProvider

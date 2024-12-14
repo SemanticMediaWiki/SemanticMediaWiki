@@ -21,7 +21,7 @@ use Title;
  *
  * @author mwjames
  */
-class SemanticDataTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

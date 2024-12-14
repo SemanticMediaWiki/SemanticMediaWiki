@@ -13,7 +13,7 @@ use SMW\Parser\LinksEncoder;
  *
  * @author mwjames
  */
-class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
+class LinksEncoderTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider obfuscateProvider

@@ -15,7 +15,7 @@ use Wikimedia\Rdbms\ILBFactory;
  *
  * @author mwjames
  */
-class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
+class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

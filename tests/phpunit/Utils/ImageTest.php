@@ -14,7 +14,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class ImageTest extends \PHPUnit_Framework_TestCase {
+class ImageTest extends \PHPUnit\Framework\TestCase {
 
 	public function testIsImage() {
 		$this->assertTrue(

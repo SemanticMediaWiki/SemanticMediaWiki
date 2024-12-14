@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
+class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

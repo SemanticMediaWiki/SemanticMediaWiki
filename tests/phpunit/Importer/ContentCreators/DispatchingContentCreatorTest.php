@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
+class DispatchingContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

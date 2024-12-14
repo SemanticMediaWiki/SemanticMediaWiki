@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
+class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private NamespaceExaminer $namespaceExaminer;

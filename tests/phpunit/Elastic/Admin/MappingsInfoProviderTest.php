@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class MappingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
+class MappingsInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

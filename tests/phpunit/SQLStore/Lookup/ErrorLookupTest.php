@@ -15,7 +15,7 @@ use SMW\RequestOptions;
  *
  * @author mwjames
  */
-class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
+class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $connection;

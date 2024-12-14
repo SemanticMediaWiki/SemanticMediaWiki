@@ -13,7 +13,7 @@ use SMW\MediaWiki\Api\Browse\ListLookup;
  *
  * @author mwjames
  */
-class ListLookupTest extends \PHPUnit_Framework_TestCase {
+class ListLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

@@ -13,7 +13,7 @@ use SMW\Utils\Normalizer;
  *
  * @author mwjames
  */
-class NormalizerTest extends \PHPUnit_Framework_TestCase {
+class NormalizerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testReduceLengthTo() {
 		$this->assertEquals(

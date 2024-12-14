@@ -12,7 +12,7 @@ use SMW\Utils\FileFetcher;
  *
  * @author mwjames
  */
-class PHPUnitCheckRunnerTest extends \PHPUnit_Framework_TestCase {
+class PHPUnitCheckRunnerTest extends \PHPUnit\Framework\TestCase {
 
 	private static $iterator;
 

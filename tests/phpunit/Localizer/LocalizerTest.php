@@ -18,7 +18,7 @@ use SMW\Localizer\Localizer;
  *
  * @author mwjames
  */
-class LocalizerTest extends \PHPUnit_Framework_TestCase {
+class LocalizerTest extends \PHPUnit\Framework\TestCase {
 
 	private $language;
 	private $namespaceInfo;

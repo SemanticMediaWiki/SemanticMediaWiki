@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
+class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

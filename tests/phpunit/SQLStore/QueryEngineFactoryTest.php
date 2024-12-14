@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngineFactory;
  *
  * @author mwjames
  */
-class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
+class QueryEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 

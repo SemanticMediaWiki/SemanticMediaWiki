@@ -13,7 +13,7 @@ use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundExcepti
  *
  * @author mwjames
  */
-class DefaultProfileNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class DefaultProfileNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new DefaultProfileNotFoundException();

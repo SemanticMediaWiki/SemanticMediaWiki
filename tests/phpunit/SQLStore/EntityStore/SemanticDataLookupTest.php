@@ -19,7 +19,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

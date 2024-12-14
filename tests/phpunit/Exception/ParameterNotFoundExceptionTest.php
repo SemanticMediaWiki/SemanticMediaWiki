@@ -13,7 +13,7 @@ use SMW\Exception\ParameterNotFoundException;
  *
  * @author mwjames
  */
-class ParameterNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class ParameterNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new ParameterNotFoundException( 'foo' );

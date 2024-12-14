@@ -18,7 +18,7 @@ use SMW\Query\Language\ValueDescription;
  *
  * @author mwjames
  */
-class SomePropertyTest extends \PHPUnit_Framework_TestCase {
+class SomePropertyTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )

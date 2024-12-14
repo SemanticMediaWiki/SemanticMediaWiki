@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CountMapFieldTest extends \PHPUnit_Framework_TestCase {
+class CountMapFieldTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

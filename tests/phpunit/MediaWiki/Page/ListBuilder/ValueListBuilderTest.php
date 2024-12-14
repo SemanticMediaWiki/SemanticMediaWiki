@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
+class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $prefetchItemLookup;

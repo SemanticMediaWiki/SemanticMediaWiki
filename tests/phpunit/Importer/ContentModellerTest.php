@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ContentModellerTest extends \PHPUnit_Framework_TestCase {
+class ContentModellerTest extends \PHPUnit\Framework\TestCase {
 
 	private $contentModeller;
 	private $testEnvironment;

@@ -24,7 +24,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
+class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -14,7 +14,7 @@ use SMW\StringCondition;
  *
  * @author mwjames
  */
-class QueryFactoryTest extends \PHPUnit_Framework_TestCase {
+class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
+class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

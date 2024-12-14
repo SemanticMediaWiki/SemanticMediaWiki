@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
+class PropertyListByApiRequestTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;

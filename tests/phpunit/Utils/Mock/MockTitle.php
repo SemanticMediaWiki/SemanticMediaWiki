@@ -12,7 +12,7 @@ namespace SMW\Tests\Utils\Mock;
  *
  * @author mwjames
  */
-class MockTitle extends \PHPUnit_Framework_TestCase {
+class MockTitle extends \PHPUnit\Framework\TestCase {
 
 	public static function buildMock( $text = __METHOD__ ) {
 		$instance = new self();

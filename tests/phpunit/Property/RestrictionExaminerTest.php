@@ -15,7 +15,7 @@ use SMW\Property\RestrictionExaminer;
  *
  * @author mwjames
  */
-class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
+class RestrictionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	private $user;
 

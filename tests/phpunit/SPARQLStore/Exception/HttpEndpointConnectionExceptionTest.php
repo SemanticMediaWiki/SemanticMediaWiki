@@ -13,7 +13,7 @@ use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
  *
  * @author mwjames
  */
-class HttpEndpointConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
+class HttpEndpointConnectionExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

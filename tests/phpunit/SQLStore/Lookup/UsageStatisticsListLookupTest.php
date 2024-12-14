@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
+class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

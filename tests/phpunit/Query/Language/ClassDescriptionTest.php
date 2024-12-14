@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

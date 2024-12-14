@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
+class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

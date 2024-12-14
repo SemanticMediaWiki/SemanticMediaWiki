@@ -13,7 +13,7 @@ use SMW\Schema\Exception\SchemaConstructionFailedException;
  *
  * @author mwjames
  */
-class SchemaConstructionFailedExceptionTest extends \PHPUnit_Framework_TestCase {
+class SchemaConstructionFailedExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SchemaConstructionFailedException( 'foo' );

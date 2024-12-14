@@ -14,7 +14,7 @@ use SMW\DataValues\ValueParsers\ImportValueParser;
  *
  * @author mwjames
  */
-class ImportValueTest extends \PHPUnit_Framework_TestCase {
+class ImportValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataValueServiceFactory;
 

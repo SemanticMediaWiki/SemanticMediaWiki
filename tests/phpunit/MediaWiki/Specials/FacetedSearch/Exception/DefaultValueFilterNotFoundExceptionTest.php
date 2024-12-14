@@ -13,7 +13,7 @@ use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultValueFilterNotFoundExc
  *
  * @author mwjames
  */
-class DefaultValueFilterNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class DefaultValueFilterNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new DefaultValueFilterNotFoundException( 'Foo' );
