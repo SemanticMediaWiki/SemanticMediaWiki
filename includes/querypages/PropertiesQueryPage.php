@@ -276,7 +276,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return array|bool
 	 */
 	public function getQueryInfo() {
-		return false;
+		return null;
 	}
 
 }
