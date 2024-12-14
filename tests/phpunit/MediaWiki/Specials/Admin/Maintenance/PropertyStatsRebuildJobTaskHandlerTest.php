@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;

@@ -15,7 +15,7 @@ use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
  *
  * @author mwjames
  */
-class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class DispatchingResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 

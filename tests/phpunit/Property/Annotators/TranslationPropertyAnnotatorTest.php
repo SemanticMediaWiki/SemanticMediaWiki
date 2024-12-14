@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TranslationPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class TranslationPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $dataItemFactory;

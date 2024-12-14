@@ -25,7 +25,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
+class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 

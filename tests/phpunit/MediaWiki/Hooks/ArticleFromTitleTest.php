@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
+class ArticleFromTitleTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 

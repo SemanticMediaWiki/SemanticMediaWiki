@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
+class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DeleteAccountTest extends \PHPUnit_Framework_TestCase {
+class DeleteAccountTest extends \PHPUnit\Framework\TestCase {
 
 	private $namespaceExaminer;
 	private $articleDelete;

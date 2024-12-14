@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
  *
  * @author mwjames
  */
-class TitleIsAlwaysKnownTest extends \PHPUnit_Framework_TestCase {
+class TitleIsAlwaysKnownTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$title = $this->getMockBuilder( '\Title' )

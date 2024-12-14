@@ -13,7 +13,7 @@ use SMW\Utils\CharExaminer;
  *
  * @author mwjames
  */
-class CharExaminerTest extends \PHPUnit_Framework_TestCase {
+class CharExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testToContainKoreanCharacters() {
 		$this->assertTrue(

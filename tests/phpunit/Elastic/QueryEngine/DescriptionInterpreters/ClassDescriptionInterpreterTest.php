@@ -15,7 +15,7 @@ use SMW\Query\DescriptionFactory;
  *
  * @author mwjames
  */
-class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $conditionBuilder;
 

@@ -19,7 +19,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class NullQueryResultTest extends \PHPUnit_Framework_TestCase {
+class NullQueryResultTest extends \PHPUnit\Framework\TestCase {
 
 	public function testNullQueryResult() {
 		$term = '[[Some_string_to_query]]';

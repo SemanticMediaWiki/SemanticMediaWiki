@@ -15,7 +15,7 @@ use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
  *
  * @author mwjames
  */
-class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
+class QueryReferenceBacklinksTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 

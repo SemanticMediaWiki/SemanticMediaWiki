@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
+class JsonResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

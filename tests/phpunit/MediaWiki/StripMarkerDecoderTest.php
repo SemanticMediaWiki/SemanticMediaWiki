@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class StripMarkerDecoderTest extends \PHPUnit_Framework_TestCase {
+class StripMarkerDecoderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$stripState = $this->getMockBuilder( '\StripState' )

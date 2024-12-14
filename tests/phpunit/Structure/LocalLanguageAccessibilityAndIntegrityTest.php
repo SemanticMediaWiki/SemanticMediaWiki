@@ -13,7 +13,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase {
+class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
+class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 
 	private $mwHooksHandler;
 

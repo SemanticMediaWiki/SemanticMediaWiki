@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class PagerTest extends \PHPUnit_Framework_TestCase {
+class PagerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
+class DebugFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

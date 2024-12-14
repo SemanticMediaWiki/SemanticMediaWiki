@@ -15,7 +15,7 @@ use SMW\SQLStore\EntityStore\SubobjectListFinder;
  *
  * @author mwjames
  */
-class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
+class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $iteratorFactory;
 

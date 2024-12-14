@@ -14,7 +14,7 @@ use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
  *
  * @author mwjames
  */
-class FallbackFinderTest extends \PHPUnit_Framework_TestCase {
+class FallbackFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $jsonContentsFileReader;
 

@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;

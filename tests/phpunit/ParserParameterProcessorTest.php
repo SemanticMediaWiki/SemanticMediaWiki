@@ -13,7 +13,7 @@ use SMW\ParserParameterProcessor;
  *
  * @author mwjames
  */
-class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
+class ParserParameterProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider parametersDataProvider

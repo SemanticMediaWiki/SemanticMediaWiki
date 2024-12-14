@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
+class SchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )

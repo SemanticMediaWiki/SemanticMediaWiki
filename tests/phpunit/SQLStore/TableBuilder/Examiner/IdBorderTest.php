@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class IdBorderTest extends \PHPUnit_Framework_TestCase {
+class IdBorderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

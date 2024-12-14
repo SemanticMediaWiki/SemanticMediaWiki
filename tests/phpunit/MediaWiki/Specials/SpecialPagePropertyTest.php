@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
+class SpecialPagePropertyTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;

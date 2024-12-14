@@ -13,7 +13,7 @@ use SMW\Schema\Rule;
  *
  * @author mwjames
  */
-class RuleTest extends \PHPUnit_Framework_TestCase {
+class RuleTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceof(

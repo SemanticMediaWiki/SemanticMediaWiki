@@ -14,7 +14,7 @@ use SMW\DIWikiPage;
  *
  * @author Stephan Gambke
  */
-class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
+class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @var SearchResultSet The search result set under test

@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

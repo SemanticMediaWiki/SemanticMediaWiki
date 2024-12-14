@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FulltextSearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
+class FulltextSearchTableUpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 

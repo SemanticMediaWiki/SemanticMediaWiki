@@ -15,7 +15,7 @@ use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator
  *
  * @author mwjames
  */
-class PropertySpecificationConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
+class PropertySpecificationConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;

@@ -13,7 +13,7 @@ use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
  *
  * @author mwjames
  */
-class WikitextTemplateRendererTest extends \PHPUnit_Framework_TestCase {
+class WikitextTemplateRendererTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

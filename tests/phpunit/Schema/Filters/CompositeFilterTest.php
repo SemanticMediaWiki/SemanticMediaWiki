@@ -16,7 +16,7 @@ use SMW\Schema\CompartmentIterator;
  *
  * @author mwjames
  */
-class CompositeFilterTest extends \PHPUnit_Framework_TestCase {
+class CompositeFilterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

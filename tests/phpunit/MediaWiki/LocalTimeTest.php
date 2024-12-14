@@ -14,7 +14,7 @@ use SMW\MediaWiki\LocalTime;
  *
  * @author mwjames
  */
-class LocalTimeTest extends \PHPUnit_Framework_TestCase {
+class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 
 	public function testNoModifiedLocalTime() {
 		$dateTime = LocalTime::getLocalizedTime(

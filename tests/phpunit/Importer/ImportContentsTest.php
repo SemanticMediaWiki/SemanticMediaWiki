@@ -13,7 +13,7 @@ use SMW\Importer\ImportContents;
  *
  * @author mwjames
  */
-class ImportContentsTest extends \PHPUnit_Framework_TestCase {
+class ImportContentsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

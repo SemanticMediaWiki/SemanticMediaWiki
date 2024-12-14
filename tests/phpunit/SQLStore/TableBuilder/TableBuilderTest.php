@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TableBuilderTest extends \PHPUnit_Framework_TestCase {
+class TableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

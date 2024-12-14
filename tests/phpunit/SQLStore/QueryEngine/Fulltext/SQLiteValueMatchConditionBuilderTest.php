@@ -14,7 +14,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\SQLiteValueMatchConditionBuilder;
  *
  * @author mwjames
  */
-class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
+class SQLiteValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $textSanitizer;
 	private $searchTable;

@@ -19,7 +19,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
+class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private Database $connection;

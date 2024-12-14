@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class UrlArgsTest extends \PHPUnit_Framework_TestCase {
+class UrlArgsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

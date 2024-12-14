@@ -12,7 +12,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class DITimeTest extends \PHPUnit_Framework_TestCase {
+class DITimeTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

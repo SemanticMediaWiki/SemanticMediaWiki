@@ -13,7 +13,7 @@ use SMW\Utils\HmacSerializer;
  *
  * @author mwjames
  */
-class HmacSerializerTest extends \PHPUnit_Framework_TestCase {
+class HmacSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testEncodeWithDifferentKey() {
 		$instance = new HmacSerializer();

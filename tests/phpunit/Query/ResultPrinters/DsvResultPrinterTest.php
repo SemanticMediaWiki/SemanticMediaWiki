@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DsvResultPrinterTest extends \PHPUnit_Framework_TestCase {
+class DsvResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	private $queryResult;
 	private $resultPrinterReflector;

@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TaskTest extends \PHPUnit_Framework_TestCase {
+class TaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $apiFactory;
 	private $testEnvironment;

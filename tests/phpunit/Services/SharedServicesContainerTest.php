@@ -13,7 +13,7 @@ use SMW\Services\SharedServicesContainer;
  *
  * @author mwjames
  */
-class SharedServicesContainerTest extends \PHPUnit_Framework_TestCase {
+class SharedServicesContainerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

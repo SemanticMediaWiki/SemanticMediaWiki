@@ -15,7 +15,7 @@ use SMWDIUri as DIUri;
  *
  * @author mwjames
  */
-class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
+class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

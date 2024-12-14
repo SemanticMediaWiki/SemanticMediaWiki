@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class CompoundConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
+class CompoundConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

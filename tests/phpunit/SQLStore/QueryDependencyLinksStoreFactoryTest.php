@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryDependencyLinksStoreFactory;
  *
  * @author mwjames
  */
-class QueryDependencyLinksStoreFactoryTest extends \PHPUnit_Framework_TestCase {
+class QueryDependencyLinksStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

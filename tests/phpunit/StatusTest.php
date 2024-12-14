@@ -13,7 +13,7 @@ use SMW\Status;
  *
  * @author mwjames
  */
-class StatusTest extends \PHPUnit_Framework_TestCase {
+class StatusTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -15,7 +15,7 @@ use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
  *
  * @author mwjames
  */
-class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
+class DependencyLinksValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $dataItemFactory;

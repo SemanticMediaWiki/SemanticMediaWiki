@@ -17,7 +17,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
+class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $entityCache;

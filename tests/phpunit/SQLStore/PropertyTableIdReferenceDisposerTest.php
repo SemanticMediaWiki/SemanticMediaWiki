@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;

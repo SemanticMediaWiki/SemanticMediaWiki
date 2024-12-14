@@ -13,7 +13,7 @@ use SMW\ParameterProcessorFactory;
  *
  * @author mwjames
  */
-class ParameterProcessorFactoryTest extends \PHPUnit_Framework_TestCase {
+class ParameterProcessorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

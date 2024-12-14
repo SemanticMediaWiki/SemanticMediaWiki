@@ -15,7 +15,7 @@ use SMWStringCondition as StringCondition;
  *
  * @author mwjames
  */
-class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
+class RequestOptionsProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 

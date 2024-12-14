@@ -16,7 +16,7 @@ use SMW\Query\DescriptionFactory;
  *
  * @author mwjames
  */
-class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
+class ConceptMapperTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionFactory;
 

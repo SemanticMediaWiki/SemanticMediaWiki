@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class InstallerTest extends \PHPUnit_Framework_TestCase {
+class InstallerTest extends \PHPUnit\Framework\TestCase {
 
 	private $rollover;
 

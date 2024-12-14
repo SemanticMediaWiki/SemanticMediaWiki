@@ -16,7 +16,7 @@ use SMW\MediaWiki\MwCollaboratorFactory;
  *
  * @author mwjames
  */
-class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
+class MwCollaboratorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $applicationFactory;
 

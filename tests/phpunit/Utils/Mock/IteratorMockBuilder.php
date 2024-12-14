@@ -13,7 +13,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
+class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 
 	private $iteratorClass;
 	private $items = [];

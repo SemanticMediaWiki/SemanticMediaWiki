@@ -24,7 +24,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class FactboxTest extends \PHPUnit_Framework_TestCase {
+class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

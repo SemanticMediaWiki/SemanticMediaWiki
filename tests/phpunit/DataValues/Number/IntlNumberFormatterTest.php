@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
+class IntlNumberFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -20,7 +20,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 

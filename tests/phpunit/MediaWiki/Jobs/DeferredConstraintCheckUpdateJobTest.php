@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DeferredConstraintCheckUpdateJobTest extends \PHPUnit_Framework_TestCase {
+class DeferredConstraintCheckUpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $jobQueue;

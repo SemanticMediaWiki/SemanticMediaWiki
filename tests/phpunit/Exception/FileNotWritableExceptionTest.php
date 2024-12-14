@@ -13,7 +13,7 @@ use SMW\Exception\FileNotWritableException;
  *
  * @author mwjames
  */
-class FileNotWritableExceptionTest extends \PHPUnit_Framework_TestCase {
+class FileNotWritableExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new FileNotWritableException( 'Foo' );

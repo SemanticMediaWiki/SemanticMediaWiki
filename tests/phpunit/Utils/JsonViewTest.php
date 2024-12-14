@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class JsonViewTest extends \PHPUnit_Framework_TestCase {
+class JsonViewTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

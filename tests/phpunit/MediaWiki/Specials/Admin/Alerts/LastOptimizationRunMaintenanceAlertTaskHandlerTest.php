@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class LastOptimizationRunMaintenanceAlertTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class LastOptimizationRunMaintenanceAlertTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

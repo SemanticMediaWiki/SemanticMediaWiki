@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SchemaListTest extends \PHPUnit_Framework_TestCase {
+class SchemaListTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

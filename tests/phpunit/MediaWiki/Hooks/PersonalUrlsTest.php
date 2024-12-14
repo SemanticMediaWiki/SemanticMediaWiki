@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\PersonalUrls;
  *
  * @author mwjames
  */
-class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
+class PersonalUrlsTest extends \PHPUnit\Framework\TestCase {
 
 	private $skinTemplate;
 	private $jobQueue;

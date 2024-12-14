@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FileIngestJobTest extends \PHPUnit_Framework_TestCase {
+class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

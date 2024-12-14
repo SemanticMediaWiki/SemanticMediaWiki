@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FileIndexerTest extends \PHPUnit_Framework_TestCase {
+class FileIndexerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

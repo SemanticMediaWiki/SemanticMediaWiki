@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ElasticClientTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

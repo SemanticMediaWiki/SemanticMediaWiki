@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 

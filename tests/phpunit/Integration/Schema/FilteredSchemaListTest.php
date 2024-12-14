@@ -22,7 +22,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
+class FilteredSchemaListTest extends \PHPUnit\Framework\TestCase {
 
 	private $schemaList;
 

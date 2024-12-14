@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HtmlFormTest extends \PHPUnit_Framework_TestCase {
+class HtmlFormTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

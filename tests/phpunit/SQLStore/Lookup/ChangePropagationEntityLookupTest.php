@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
+class ChangePropagationEntityLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

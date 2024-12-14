@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
+class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

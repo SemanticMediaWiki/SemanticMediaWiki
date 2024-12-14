@@ -18,7 +18,7 @@ use SMWSQLStore3;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
+class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;

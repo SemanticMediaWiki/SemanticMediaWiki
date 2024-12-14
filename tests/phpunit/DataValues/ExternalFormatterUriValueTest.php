@@ -13,7 +13,7 @@ use SMW\DataValues\ExternalFormatterUriValue;
  *
  * @author mwjames
  */
-class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
+class ExternalFormatterUriValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
+class UpdateQueryDependenciesTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $messageReporter;

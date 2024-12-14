@@ -17,7 +17,7 @@ use SMW\DependencyValidator;
  *
  * @author mwjames
  */
-class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
+class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

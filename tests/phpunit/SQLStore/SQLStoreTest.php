@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SQLStoreTest extends \PHPUnit_Framework_TestCase {
+class SQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

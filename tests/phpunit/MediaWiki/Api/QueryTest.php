@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QueryTest extends \PHPUnit_Framework_TestCase {
+class QueryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

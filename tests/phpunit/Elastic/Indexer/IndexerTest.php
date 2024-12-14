@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class IndexerTest extends \PHPUnit_Framework_TestCase {
+class IndexerTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $bulk;

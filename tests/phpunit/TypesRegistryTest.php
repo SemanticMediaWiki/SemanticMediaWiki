@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
+class TypesRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
+class CsvFileIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

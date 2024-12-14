@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
+class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

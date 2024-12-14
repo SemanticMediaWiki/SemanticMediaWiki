@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
+class InsertJobTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $jobFactory;
 	private $testEnvironment;

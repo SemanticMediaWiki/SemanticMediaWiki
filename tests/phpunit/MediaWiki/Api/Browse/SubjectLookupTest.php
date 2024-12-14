@@ -14,7 +14,7 @@ use SMW\MediaWiki\Api\Browse\SubjectLookup;
  *
  * @author mwjames
  */
-class SubjectLookupTest extends \PHPUnit_Framework_TestCase {
+class SubjectLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 

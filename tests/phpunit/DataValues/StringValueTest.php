@@ -14,7 +14,7 @@ use SMW\DataValues\ValueFormatters\StringValueFormatter;
  *
  * @author mwjames
  */
-class StringValueTest extends \PHPUnit_Framework_TestCase {
+class StringValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataValueServiceFactory;
 

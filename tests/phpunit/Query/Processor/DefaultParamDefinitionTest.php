@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DefaultParamDefinitionTest extends \PHPUnit_Framework_TestCase {
+class DefaultParamDefinitionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

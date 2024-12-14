@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
+class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -13,7 +13,7 @@ use SMW\Elastic\Indexer\Bulk;
  *
  * @author mwjames
  */
-class BulkTest extends \PHPUnit_Framework_TestCase {
+class BulkTest extends \PHPUnit\Framework\TestCase {
 
 	private $client;
 

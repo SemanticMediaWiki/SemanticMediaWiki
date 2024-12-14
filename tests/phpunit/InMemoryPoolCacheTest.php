@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
+class InMemoryPoolCacheTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

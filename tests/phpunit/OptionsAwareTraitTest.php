@@ -13,7 +13,7 @@ use SMW\OptionsAwareTrait;
  *
  * @author mwjames
  */
-class OptionsAwareTraitTest extends \PHPUnit_Framework_TestCase {
+class OptionsAwareTraitTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSetGetOptions() {
 		$instance = $this->newOptionsAware();

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
+class CliMsgFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

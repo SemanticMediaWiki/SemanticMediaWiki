@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CsvFileExportPrinterTest extends \PHPUnit_Framework_TestCase {
+class CsvFileExportPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -14,7 +14,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
+class HtmlColumnListRendererTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 

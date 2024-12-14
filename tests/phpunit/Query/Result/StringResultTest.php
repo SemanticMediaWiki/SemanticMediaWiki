@@ -13,7 +13,7 @@ use SMW\Query\Result\StringResult;
  *
  * @author mwjames
  */
-class StringResultTest extends \PHPUnit_Framework_TestCase {
+class StringResultTest extends \PHPUnit\Framework\TestCase {
 
 	private $query;
 

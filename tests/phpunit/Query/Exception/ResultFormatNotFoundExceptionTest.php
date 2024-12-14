@@ -13,7 +13,7 @@ use SMW\Query\Exception\ResultFormatNotFoundException;
  *
  * @author mwjames
  */
-class ResultFormatNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class ResultFormatNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new ResultFormatNotFoundException();

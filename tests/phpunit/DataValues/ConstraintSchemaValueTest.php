@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
+class ConstraintSchemaValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

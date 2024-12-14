@@ -33,7 +33,7 @@ use WebRequest;
  *
  * @author mwjames
  */
-abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
+abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Returns the name of the deriving class being tested

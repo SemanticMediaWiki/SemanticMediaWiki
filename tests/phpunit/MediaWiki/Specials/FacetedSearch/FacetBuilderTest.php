@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class FacetBuilderTest extends \PHPUnit_Framework_TestCase {
+class FacetBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

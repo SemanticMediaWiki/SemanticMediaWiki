@@ -15,7 +15,7 @@ use SMWURIValue as UriValue;
  *
  * @author mwjames
  */
-class UriValueTest extends \PHPUnit_Framework_TestCase {
+class UriValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

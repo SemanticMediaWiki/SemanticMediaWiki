@@ -17,7 +17,7 @@ use SMW\Tests\Utils\GlobalsProvider;
  *
  * @author mwjames
  */
-class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCase {
+class InstallationGlobalsProviderIntegrityTest extends \PHPUnit\Framework\TestCase {
 
 	private $globalsProvider;
 	private $applicationFactory;

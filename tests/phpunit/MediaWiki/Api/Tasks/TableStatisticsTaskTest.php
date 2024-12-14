@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
+class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $cache;

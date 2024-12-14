@@ -16,7 +16,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
+class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 

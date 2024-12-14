@@ -16,7 +16,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryEngineTest extends \PHPUnit_Framework_TestCase {
+class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $conditionBuilder;

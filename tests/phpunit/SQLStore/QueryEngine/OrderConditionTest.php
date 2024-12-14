@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class OrderConditionTest extends \PHPUnit_Framework_TestCase {
+class OrderConditionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

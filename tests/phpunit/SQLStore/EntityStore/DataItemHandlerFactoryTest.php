@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
+class DataItemHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

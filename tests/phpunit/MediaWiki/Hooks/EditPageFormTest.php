@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class EditPageFormTest extends \PHPUnit_Framework_TestCase {
+class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

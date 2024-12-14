@@ -14,7 +14,7 @@ use SMW\Maintenance\ConceptCacheRebuilder;
  *
  * @author mwjames
  */
-class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
+class ConceptCacheRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$store = $this->getMockForAbstractClass( '\SMW\Store' );

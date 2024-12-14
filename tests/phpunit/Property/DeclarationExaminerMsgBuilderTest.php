@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
+class DeclarationExaminerMsgBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $declarationExaminer;
 

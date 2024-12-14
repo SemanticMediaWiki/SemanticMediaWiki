@@ -13,7 +13,7 @@ use SMW\Factbox\CheckMagicWords;
  *
  * @author mwjames
  */
-class CheckMagicWordsTest extends \PHPUnit_Framework_TestCase {
+class CheckMagicWordsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

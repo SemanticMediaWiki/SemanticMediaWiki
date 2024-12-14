@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
  *
  * @author mwjames
  */
-class BeforeDisplayNoArticleTextTest extends \PHPUnit_Framework_TestCase {
+class BeforeDisplayNoArticleTextTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )

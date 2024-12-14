@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
+class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dependencyValidator;

@@ -17,7 +17,7 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class RedirectPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class RedirectPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $testEnvironment;

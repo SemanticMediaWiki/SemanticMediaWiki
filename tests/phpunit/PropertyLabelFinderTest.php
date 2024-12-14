@@ -13,7 +13,7 @@ use SMW\PropertyLabelFinder;
  *
  * @author mwjames
  */
-class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
+class PropertyLabelFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;
