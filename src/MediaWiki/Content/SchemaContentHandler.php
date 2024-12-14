@@ -104,7 +104,8 @@ class SchemaContentHandler extends JsonContentHandler {
 		if ( !( $page instanceof WikiPage ) ) {
 			$services = MediaWikiServices::getInstance();
 			$wikiPageFactory = $services->getWikiPageFactory();
-			$page = $wikiPageFactory->newFromTitle( $page );
+			$title = Title::castFromPageIdentity( $page );
+			$page = $wikiPageFactory->newFromTitle( $title );
 		}
 
 		$title = $page->getTitle();
