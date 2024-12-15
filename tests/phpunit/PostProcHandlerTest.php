@@ -74,9 +74,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
-		$webRequest = $this->getMockBuilder( WebRequest::class );
-			->disableOriginalConstructor()
-			->getMock();
+		$webRequest = $this->createMock( WebRequest::class );
 
 		$webRequest->expects( $this->once() )
 			->method( 'getCookie' )
@@ -290,7 +288,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'get' )
 			->will( $this->returnValue( 42 ) );
 
-		$tableChangeOp = $this->getMockBuilder( TableChangeOp::class );
+		$tableChangeOp = $this->createMock( TableChangeOp::class );
 
 		$tableChangeOp->expects( $this->any() )
 			->method( 'getFieldChangeOps' )
