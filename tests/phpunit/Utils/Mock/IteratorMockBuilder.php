@@ -75,7 +75,7 @@ class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @since  2.0
 	 *
-	 * @return PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit\Framework\MockObject\MockObject
 	 * @throws RuntimeException
 	 */
 	public function getMockForIterator() {
@@ -120,5 +120,4 @@ class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 	public function getLastCounter() {
 		return $this->counter;
 	}
-
 }
