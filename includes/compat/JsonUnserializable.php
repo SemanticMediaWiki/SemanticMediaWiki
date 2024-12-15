@@ -2,7 +2,7 @@
 
 namespace MediaWiki\Json;
 
-if( !interface_exists( 'MediaWiki\Json\JsonUnserializable' ) ) {
+if( !interface_exists( 'JsonUnserializable' ) ) {
 
 	/**
 	 * This interface was introduced in MediaWiki 1.36 and some classes need to implement it.
