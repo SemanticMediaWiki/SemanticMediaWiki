@@ -260,10 +260,6 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->markTestSkipped(
-			"Check smwLikelyOutdatedDependencies set up for MW >= 1.39"
-		);
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
