@@ -383,7 +383,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		$expected['@valueHint'][] = $value;
 
 		if ( $this->strictModeForValueMatch ) {
-
+			// Test
 			$this->assertContains(
 				$value,
 				$expected['propertyValues'],
