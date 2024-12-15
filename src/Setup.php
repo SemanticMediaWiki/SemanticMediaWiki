@@ -168,7 +168,7 @@ final class Setup {
 		}
 
 		if ( !defined( 'SMW_PHPUNIT_DIR' ) ) {
-			define( 'SMW_PHPUNIT_DIR', __DIR__ . '/../phpunit' );
+			define( 'SMW_PHPUNIT_DIR', __DIR__ . '/../tests/phpunit' );
 		}
 
 		$vars['wgLogTypes'][] = 'smw';
