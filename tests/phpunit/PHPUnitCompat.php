@@ -11,7 +11,7 @@ namespace SMW\Tests;
 trait PHPUnitCompat {
 
 	/**
-	 * @see PHPUnit_Framework_TestCase::setExpectedException
+	 * @see \PHPUnit\Framework\TestCase::setExpectedException
 	 */
 	public function setExpectedException( $name, $message = '', $code = null ) {
 		if ( is_callable( [ $this, 'expectException' ] ) ) {
