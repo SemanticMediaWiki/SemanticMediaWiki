@@ -354,8 +354,8 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCleanUp_Redirect() {
-		if ( !method_exists( '\PHPUnit\Framework\MockObject\Builder', 'withConsecutive' ) ) {
-			$this->markTestSkipped( 'PHPUnit\Framework\MockObject\Builder::withConsecutive requires PHPUnit 5.7+.' );
+		if ( !method_exists( '\PHPUnit\Framework\MockObject\Builder\InvocationMocker', 'withConsecutive' ) ) {
+			$this->markTestSkipped( 'PHPUnit\Framework\MockObject\Builder\InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
 		}
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
