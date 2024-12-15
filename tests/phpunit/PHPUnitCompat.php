@@ -46,7 +46,7 @@ trait PHPUnitCompat {
 	}
 
 	/**
-	 * "UUsing assertNotContains() with string haystacks is deprecated and will
+	 * "Using assertNotContains() with string haystacks is deprecated and will
 	 * not be supported in PHPUnit 9. Refactor your test to use assertStringNotContainsString()
 	 * or assertStringNotContainsStringIgnoringCase() instead."
 	 */
