@@ -18,7 +18,7 @@ class PHPUnitCheckRunnerTest extends \PHPUnit\Framework\TestCase {
 
 	public static function setUpBeforeClass(): void {
 		$fileFetcher = new FileFetcher(
-			SMW_PHPUNIT_DIR
+			\SMW_PHPUNIT_DIR
 		);
 
 		self::$iterator = $fileFetcher->findByExtension( 'php' );
