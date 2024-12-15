@@ -26,7 +26,7 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testPrepareSave() {
+	public function testValidateSave() {
 		$schema = $this->createMock( '\SMW\Schema\SchemaDefinition' );
 
 		$schemaValidator = $this->createMock( '\SMW\Schema\SchemaValidator' );
@@ -79,7 +79,7 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testPrepareSave_InvalidJSON() {
+	public function testValidateSave_InvalidJSON() {
 		$schema = $this->createMock( '\SMW\Schema\SchemaDefinition' );
 
 		$schemaValidator = $this->createMock( '\SMW\Schema\SchemaValidator' );
