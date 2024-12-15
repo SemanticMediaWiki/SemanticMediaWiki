@@ -167,6 +167,10 @@ final class Setup {
 			define( 'SMW_PHPUNIT_AUTOLOADER_FILE', "$smwDir/tests/autoloader.php" );
 		}
 
+		if ( !defined( 'SMW_PHPUNIT_DIR' ) ) {
+			define( 'SMW_PHPUNIT_DIR', __DIR__ . '/../phpunit' );
+		}
+
 		$vars['wgLogTypes'][] = 'smw';
 		$vars['wgFilterLogTypes']['smw'] = true;
 
