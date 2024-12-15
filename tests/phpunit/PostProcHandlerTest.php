@@ -2,11 +2,18 @@
 
 namespace SMW\Tests;
 
+use Title;
 use SMW\DIWikiPage;
+use SMW\EntityCache;
+use SMW\NamespaceExaminer;
 use SMW\PostProcHandler;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
+use SMW\SQLStore\ChangeOp\FieldChangeOp;
+use SMW\SQLStore\ChangeOp\TableChangeOp;
+use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use SMW\Tests\PHPUnitCompat;
 use SMW\DependencyValidator;
+use WebRequest;
 
 /**
  * @covers \SMW\PostProcHandler
@@ -70,7 +77,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class );
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -111,9 +118,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = $this->createMock( Title::class );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getDBKey' )
@@ -127,9 +132,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
-			->disableOriginalConstructor()
-			->getMock();
+		$webRequest = $this->createMock( WebRequest::class );
 
 		$webRequest->expects( $this->once() )
 			->method( 'getCookie' )
@@ -185,9 +188,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
-			->disableOriginalConstructor()
-			->getMock();
+		$webRequest = $this->createMock( WebRequest::class );
 
 		$webRequest->expects( $this->once() )
 			->method( 'getCookie' )
@@ -212,9 +213,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = $this->createMock( Title::class );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getDBKey' )
@@ -228,9 +227,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
-			->disableOriginalConstructor()
-			->getMock();
+		$webRequest = $this->createMock( WebRequest::class );
 
 		$webRequest->expects( $this->once() )
 			->method( 'getCookie' )
@@ -260,11 +257,11 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$title = $this->createMock( '\Title' );
+		$title = $this->createMock( Title::class );
 
-		$dependencyLinksValidator = $this->createMock( '\SMW\SQLStore\QueryDependency\DependencyLinksValidator' );
-		$namespaceExaminer = $this->createMock( '\SMW\NamespaceExaminer' );
-		$entityCache = $this->createMock( '\SMW\EntityCache' );
+		$dependencyLinksValidator = $this->createMock( DependencyLinksValidator::class );
+		$namespaceExaminer = $this->createMock( NamespaceExaminer::class );
+		$entityCache = $this->createMock( EntityCache::class );
 		$dependencyValidator = new DependencyValidator(
 			$namespaceExaminer,
 			$dependencyLinksValidator,
@@ -280,7 +277,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
-		$webRequest = $this->createMock( '\WebRequest' );
+		$webRequest = $this->createMock( WebRequest::class );
 
 		$this->assertContains(
 			'<div class="smw-postproc page-purge" data-subject="#0##" data-title="Foo" data-msg="smw-purge-update-dependencies" data-forcelinkupdate="1"></div>',
@@ -292,17 +289,13 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider validPropertyKey
 	 */
 	public function testGetHtmlOnCookieAndValidChangeDiff( $key ) {
-		$fieldChangeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\FieldChangeOp' )
-			->disableOriginalConstructor()
-			->getMock();
+		$fieldChangeOp = $this->createMock( FieldChangeOp::class );
 
 		$fieldChangeOp->expects( $this->any() )
 			->method( 'get' )
 			->will( $this->returnValue( 42 ) );
 
-		$tableChangeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\TableChangeOp' )
-			->disableOriginalConstructor()
-			->getMock();
+		$tableChangeOp = $this->getMockBuilder( TableChangeOp::class );
 
 		$tableChangeOp->expects( $this->any() )
 			->method( 'getFieldChangeOps' )
@@ -329,9 +322,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->cache
 		);
 
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = $this->createMock( Title::class );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getDBKey' )
@@ -345,9 +336,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
-			->disableOriginalConstructor()
-			->getMock();
+		$webRequest = $this->createMock( WebRequest::class );
 
 		$webRequest->expects( $this->once() )
 			->method( 'getCookie' )
