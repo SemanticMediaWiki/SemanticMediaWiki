@@ -2,10 +2,9 @@
 
 namespace SMW\Tests;
 
-use Onoi\Cache\Cache;
 use ParserOutput;
+use Onoi\Cache\Cache;
 use SMWQuery;
-use Title;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
 use SMW\NamespaceExaminer;
@@ -16,6 +15,7 @@ use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use SMW\Tests\PHPUnitCompat;
 use SMW\DependencyValidator;
+use Title;
 use WebRequest;
 
 /**
