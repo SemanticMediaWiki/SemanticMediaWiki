@@ -321,9 +321,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	}
 
 	public function testUpsertOnInsertUsageCount() {
-		$error = $this->createMock( DBQueryError::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$error = $this->createMock( DBQueryError::class );
 
 		$connection = $this->createMock( Database::class );
 
