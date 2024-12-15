@@ -90,6 +90,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	public function specialPropertiesDataProvider() {
 		$provider = [];
 
+		// Test
 		#0 Unknown
 		$provider[] = [
 			[
