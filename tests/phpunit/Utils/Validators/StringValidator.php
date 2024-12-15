@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class StringValidator extends \PHPUnit_Framework_Assert {
+class StringValidator extends \PHPUnit\Framework\Assert {
 
 	use PHPUnitCompat;
 

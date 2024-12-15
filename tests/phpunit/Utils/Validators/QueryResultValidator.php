@@ -15,7 +15,7 @@ use SMWQueryResult as QueryResult;
  *
  * @author mwjames
  */
-class QueryResultValidator extends \PHPUnit_Framework_Assert {
+class QueryResultValidator extends \PHPUnit\Framework\Assert {
 
 	private $dataValueValidationMethod = null;
 
