@@ -11,7 +11,7 @@ use SMWExpResource as ExpResource;
  *
  * @author mwjames
  */
-class ExportDataValidator extends \PHPUnit_Framework_Assert {
+class ExportDataValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @since 2.0
