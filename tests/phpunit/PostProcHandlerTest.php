@@ -260,11 +260,17 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = $this->createMock( '\Title' );
 
-		DependencyValidator:: markTitle( $title );
+		$dependencyLinksValidator = $this->createMock( '\SMW\SQLStore\QueryDependency\DependencyLinksValidator' );
+		$namespaceExaminer = $this->createMock( '\SMW\NamespaceExaminer' );
+		$entityCache = $this->createMock( '\SMW\EntityCache' );
+		$dependencyValidator = new DependencyValidator(
+			$namespaceExaminer,
+			$dependencyLinksValidator,
+			$entityCache
+		);
+		$dependencyValidator->markTitle( $title );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPrefixedDBKey' )
@@ -274,9 +280,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
-			->disableOriginalConstructor()
-			->getMock();
+		$webRequest = $this->createMock( '\WebRequest' );
 
 		$this->assertContains(
 			'<div class="smw-postproc page-purge" data-subject="#0##" data-title="Foo" data-msg="smw-purge-update-dependencies" data-forcelinkupdate="1"></div>',
