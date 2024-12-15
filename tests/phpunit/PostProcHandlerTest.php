@@ -2,6 +2,9 @@
 
 namespace SMW\Tests;
 
+use Onoi\Cache\Cache;
+use ParserOutput;
+use SMWQuery;
 use Title;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
@@ -34,13 +37,9 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->parserOutput = $this->getMockBuilder( '\ParserOutput' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->parserOutput = $this->createMock( ParserOutput::class );
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->cache = $this->createMock( Cache::class );
 	}
 
 	public function testCanConstruct() {
@@ -61,9 +60,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->cache
 		);
 
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = $this->createMock( Title::class );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getDBKey' )
@@ -172,9 +169,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = $this->createMock( Title::class );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getDBKey' )
@@ -399,9 +394,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function queryProvider() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
-			->disableOriginalConstructor()
-			->getMock();
+		$query = $this->createMock( SMWQuery::class );
 
 		$query->expects( $this->any() )
 			->method( 'toArray' )
