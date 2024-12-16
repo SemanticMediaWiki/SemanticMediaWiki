@@ -10,7 +10,7 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
  *
  * @author mwjames
  */
-class QuerySegmentValidator extends \PHPUnit_Framework_Assert {
+class QuerySegmentValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @since 2.1
