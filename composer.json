@@ -106,8 +106,8 @@
 	},
 	"scripts": {
 		"test": [
-			"@lint .",
-			"@phpcs .",
+			"@lint",
+			"@phpcs",
 			"minus-x check ."
 		],
 		"test-coverage": [
