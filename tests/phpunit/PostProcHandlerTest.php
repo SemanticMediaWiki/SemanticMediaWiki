@@ -268,7 +268,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		DependencyValidator:: markTitle( $title );
+		DependencyValidator::markTitle( $title );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPrefixedDBKey' )

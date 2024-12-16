@@ -106,7 +106,9 @@
 	},
 	"scripts": {
 		"test": [
-			"@phpunit"
+			"@lint .",
+			"@phpcs .",
+			"minus-x check ."
 		],
 		"test-coverage": [
 			"@phpunit-coverage"
@@ -119,8 +121,8 @@
 			"@phpcs-fix"
 		],
 		"lint": "parallel-lint . --exclude vendor --exclude node_modules",
-		"phpcs": "phpcs -ps -d memory_limit=2G",
-		"phpcs-fix": "phpcbf -p",
+		"phpcs": "phpcs -ps --cache -d memory_limit=2G",
+		"phpcs-fix": "phpcbf",
 		"phpunit": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"phpunit-coverage": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist --testdox --coverage-text --coverage-html coverage/php --coverage-clover coverage/php/coverage.xml",
 		"phpdbg": "phpdbg -qrr ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
@@ -134,15 +136,16 @@
 		"quick-benchmark": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark",
 		"cs-standalone": [
 			"composer validate --no-interaction",
-			"vendor/bin/phpcs src/* includes/* tests/* --standard=phpcs.xml --extensions=php -sp"
+			"@phpcs"
 		],
 		"cs": [
+			"@lint",
 			"composer cs-standalone",
 			"vendor/bin/phpmd src/,includes/,tests/ text phpmd.xml"
 		],
 		"ci": [
-			"composer phpunit",
-			"composer cs"
+			"composer cs",
+			"composer phpunit"
 		]
 	}
 }
