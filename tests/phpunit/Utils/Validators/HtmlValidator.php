@@ -11,7 +11,7 @@ use Symfony\Component\CssSelector\CssSelectorConverter;
  *
  * @author Stephan Gambke
  */
-class HtmlValidator extends \PHPUnit_Framework_Assert {
+class HtmlValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @var array
