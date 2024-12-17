@@ -108,7 +108,9 @@
 		"test": [
 			"@lint",
 			"@phpcs",
-			"minus-x check ."
+			"minus-x check .",
+			"@phpunit:unit",
+			"@phpunit:integration"
 		],
 		"test-coverage": [
 			"@phpunit-coverage"
@@ -123,13 +125,9 @@
 		"lint": "parallel-lint . --exclude vendor --exclude node_modules",
 		"phpcs": "phpcs -ps --cache -d memory_limit=2G",
 		"phpcs-fix": "phpcbf",
-		"phpunit": [
-			"@phpunit:unit",
-			"@phpunit:integration"
-		],
-		"phpunit-cli": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
-		"phpunit:unit": "@phpunit-cli --testsuite=semantic-mediawiki-unit",
-		"phpunit:integration": "@phpunit-cli --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
+		"phpunit": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
+		"phpunit:unit": "@phpunit --testsuite=semantic-mediawiki-unit",
+		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
 		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-html coverage/php --coverage-clover coverage/php/coverage.xml",
 		"phpdbg": "phpdbg -qrr ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"minus-x": "minus-x check .",

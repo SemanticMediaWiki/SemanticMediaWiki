@@ -68,7 +68,7 @@ jobs:
       - name: Update submodules
         run: git submodule update --init --remote
 
-      - name: Run unit tests
+      - name: Run tests
         run: make ci
         if: matrix.coverage == false
 
@@ -86,4 +86,3 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/php/coverage.xml
         if: matrix.coverage == true
-
