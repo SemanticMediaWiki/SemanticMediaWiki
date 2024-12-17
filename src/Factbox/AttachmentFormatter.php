@@ -25,10 +25,7 @@ class AttachmentFormatter {
 	 */
 	private $store;
 
-	/**
-	 * @var HtmlTable
-	 */
-	private $htmlTable;
+	private HtmlTable $htmlTable;
 
 	/**
 	 * @since 3.1
