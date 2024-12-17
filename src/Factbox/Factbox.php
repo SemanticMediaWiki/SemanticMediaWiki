@@ -162,7 +162,7 @@ class Factbox {
 	 * @since 3.1
 	 */
 	public function getAttachmentHTML(): string {
-		if ( empty( $this->attachments ) || !$this->hasFeature( SMW_FACTBOX_DISPLAY_ATTACHMENT ) ) {
+		if ( $this->attachments === [] || !$this->hasFeature( SMW_FACTBOX_DISPLAY_ATTACHMENT ) ) {
 			return '';
 		}
 
@@ -452,7 +452,7 @@ class Factbox {
 				);
 			}
 
-			if ( empty( $list ) ) {
+			if ( $list === [] ) {
 				continue;
 			}
 
