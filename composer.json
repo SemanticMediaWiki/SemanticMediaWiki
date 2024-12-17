@@ -123,29 +123,17 @@
 		"lint": "parallel-lint . --exclude vendor --exclude node_modules",
 		"phpcs": "phpcs -ps --cache -d memory_limit=2G",
 		"phpcs-fix": "phpcbf",
-		"phpunit": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
-		"phpunit-coverage": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist --testdox --coverage-text --coverage-html coverage/php --coverage-clover coverage/php/coverage.xml",
+		"phpunit": [
+			"@phpunit:unit",
+			"@phpunit:integration"
+		],
+		"phpunit-cli": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
+		"phpunit:unit": "@phpunit-cli --testsuite=semantic-mediawiki-unit",
+		"phpunit:integration": "@phpunit-cli --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
+		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-html coverage/php --coverage-clover coverage/php/coverage.xml",
 		"phpdbg": "phpdbg -qrr ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"minus-x": "minus-x check .",
-		"unit": [
-			"composer dump-autoload",
-			"composer phpunit -- --testsuite=semantic-mediawiki-unit"
-		],
-		"integration": "composer phpunit -- --testsuite=semantic-mediawiki-integration",
 		"benchmark": "composer phpunit  -- --group semantic-mediawiki-benchmark",
-		"quick-benchmark": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark",
-		"cs-standalone": [
-			"composer validate --no-interaction",
-			"@phpcs"
-		],
-		"cs": [
-			"@lint",
-			"composer cs-standalone",
-			"vendor/bin/phpmd src/,includes/,tests/ text phpmd.xml"
-		],
-		"ci": [
-			"composer cs",
-			"composer phpunit"
-		]
+		"quick-benchmark": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark"
 	}
 }
