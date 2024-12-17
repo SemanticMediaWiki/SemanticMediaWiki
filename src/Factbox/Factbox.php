@@ -295,10 +295,8 @@ class Factbox {
 	 * displaying the given data at all.
 	 *
 	 * @since 1.9
-	 *
-	 * @param string|integer|null $showFactbox
 	 */
-	protected function fetchContent( $showFactbox = SMW_FACTBOX_NONEMPTY ): string {
+	protected function fetchContent( int $showFactbox = SMW_FACTBOX_NONEMPTY ): string {
 		if ( $showFactbox === SMW_FACTBOX_HIDDEN ) {
 			return '';
 		}
