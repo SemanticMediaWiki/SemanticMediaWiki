@@ -86,3 +86,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/php/coverage.xml
         if: matrix.coverage == true
+
