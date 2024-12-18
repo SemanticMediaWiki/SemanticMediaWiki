@@ -149,7 +149,7 @@ class TermParser {
 				$term = str_replace( 'has:', "$next::+$last", $term );
 			}
 
-			if ( $continue && $last === ']]' || $new === '(' || $new === '||' ) {
+			if ( ( $continue && $last === ']]' ) || $new === '(' || $new === '||' ) {
 				continue;
 			}
 

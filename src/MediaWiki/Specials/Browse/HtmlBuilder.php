@@ -506,7 +506,7 @@ class HtmlBuilder {
 				'article' => $article,
 			];
 			$linkMsg = 'smw_result_' . $dir;
-			$condition = ($dir === 'prev') ? $this->offset > 0 : $more;
+			$condition = ( $dir === 'prev' ) ? $this->offset > 0 : $more;
 			${$dir . 'Html'} = $condition
 				? FieldBuilder::createLink( $linkMsg, $parameters, $this->language )
 				: wfMessage( $linkMsg )->escaped();

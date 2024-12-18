@@ -228,7 +228,7 @@ class ParametersWidget {
 
 			if ( $name == 'source' && (
 					count( $allowedValues ) == 0 ||
-					in_array( 'default', $allowedValues ) && count( $allowedValues ) < 2
+					( in_array( 'default', $allowedValues ) && count( $allowedValues ) < 2 )
 				) ) {
 
 				continue;
