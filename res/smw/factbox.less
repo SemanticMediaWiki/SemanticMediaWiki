@@ -55,7 +55,16 @@
 	}
 
 	&-header {
+		position: sticky;
+		top: 0;
+		z-index: @z-index-sticky;
 		padding-block: @spacing-100;
+		background-color: @background-color-base;
+	}
+
+	&-header,
+	&-section {
+		border-bottom: @border-base;
 	}
 
 	&-title,
@@ -79,7 +88,9 @@
 	}
 
 	&-section {
-		border-top: @border-subtle;
+		&:last-child {
+			border-bottom: 0;
+		}
 
 		.smw-factbox-property {
 			flex-direction: row;
