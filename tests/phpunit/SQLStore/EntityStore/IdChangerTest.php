@@ -71,8 +71,8 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMove_ZeroTarget() {
-		if ( !method_exists( '\PHPUnit_Framework_MockObject_Builder_InvocationMocker', 'withConsecutive' ) ) {
-			$this->markTestSkipped( 'PHPUnit_Framework_MockObject_Builder_InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
+		if ( !method_exists( '\PHPUnit\Framework\MockObject\Builder\InvocationMocker', 'withConsecutive' ) ) {
+			$this->markTestSkipped( 'PHPUnit\Framework\MockObject\Builder\InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
 		}
 
 		$row = [
@@ -136,8 +136,8 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMove_Target() {
-		if ( !method_exists( '\PHPUnit_Framework_MockObject_Builder_InvocationMocker', 'withConsecutive' ) ) {
-			$this->markTestSkipped( 'PHPUnit_Framework_MockObject_Builder_InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
+		if ( !method_exists( '\PHPUnit\Framework\MockObject\Builder\InvocationMocker', 'withConsecutive' ) ) {
+			$this->markTestSkipped( 'PHPUnit\Framework\MockObject\Builder\InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
 		}
 
 		$row = [
