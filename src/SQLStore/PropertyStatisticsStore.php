@@ -6,6 +6,7 @@ use MWException;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
+use Wikimedia\Rdbms\DBQueryError;
 
 /**
  * Simple implementation of PropertyStatisticsTable using MediaWikis
@@ -110,7 +111,7 @@ class PropertyStatisticsStore {
 				],
 				__METHOD__
 			);
-		} catch ( \DBQueryError $e ) {
+		} catch ( DBQueryError $e ) {
 			// #2345 Do nothing as it most likely an "Error: 1264 Out of range
 			// value for column" in strict mode
 			// As an unsigned int, we expected it to be 0
@@ -248,7 +249,7 @@ class PropertyStatisticsStore {
 				],
 				__METHOD__
 			);
-		} catch ( \DBQueryError $e ) {
+		} catch ( DBQueryError $e ) {
 			// Most likely hit "Error: 1062 Duplicate entry ..."
 			$this->setUsageCount( $propertyId, $value );
 		}
