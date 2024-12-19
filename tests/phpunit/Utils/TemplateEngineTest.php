@@ -33,7 +33,7 @@ class TemplateEngineTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testLoad() {
-		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
+		$instance = new TemplateEngine( \SMW_PHPUNIT_DIR );
 		$instance->load( '/Fixtures/readable.file', 'Foo' );
 
 		$instance->compile( 'Foo', [] );
@@ -45,7 +45,7 @@ class TemplateEngineTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBulkLoad() {
-		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
+		$instance = new TemplateEngine( \SMW_PHPUNIT_DIR );
 		$instance->clearTemplates();
 
 		$instance->bulkLoad( [ '/Fixtures/readable.file' => 'Foo' ] );
@@ -58,7 +58,7 @@ class TemplateEngineTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHtmlTidy() {
-		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
+		$instance = new TemplateEngine( \SMW_PHPUNIT_DIR );
 		$instance->clearTemplates();
 
 		$instance->setContents( __METHOD__, "{{foo}}<span>\n    </span>" );
