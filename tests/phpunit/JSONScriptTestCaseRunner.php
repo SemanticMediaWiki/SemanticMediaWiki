@@ -7,7 +7,6 @@ use SMW\Localizer\Localizer;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 
 /**
  * The `JSONScriptTestCaseRunner` is a convenience provider for `Json` formatted
@@ -28,11 +27,6 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
  * @author mwjames
  */
 abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
-
-	/**
-	 * @var TestDatabaseTableBuilder
-	 */
-	protected $testDatabaseTableBuilder;
 
 	/**
 	 * @var FileReader
