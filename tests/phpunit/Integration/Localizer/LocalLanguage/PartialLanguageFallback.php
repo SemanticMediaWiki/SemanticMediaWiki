@@ -37,7 +37,7 @@ class PartialLanguageFallback extends \PHPUnit\Framework\TestCase {
 	public function testDeclarationsLoadedPartiallyFromFallback() {
 		$JsonContentsFileReader = new JsonContentsFileReader(
 			null,
-			SMW_PHPUNIT_DIR . '/Fixtures/Localizer/LocalLanguage/'
+			\SMW_PHPUNIT_DIR . '/Fixtures/Localizer/LocalLanguage/'
 		);
 
 		$languageContents = new LanguageContents(
