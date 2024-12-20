@@ -2,7 +2,6 @@
 
 namespace SMW\Tests;
 
-use MediaWikiIntegrationTestCase;
 use Title;
 use BacklinkCache;
 use HashBagOStuff;
@@ -32,7 +31,7 @@ use PHPUnit\Framework\TestResult;
  * @author Marko Ilic
  * @author Luke Eversfield
  */
-abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
+abstract class SMWIntegrationTestCase extends \PHPUnit\Framework\TestCase {
 
     /**
 	 * @var TestEnvironment
