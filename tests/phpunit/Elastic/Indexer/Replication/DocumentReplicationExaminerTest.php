@@ -79,7 +79,7 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'equals' )
 			->will( $this->returnValue( true ) );
 
-		$this->idTable->expects( $this->at( 1 ) )
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->will( $this->returnValue( 42 ) );
 
@@ -266,11 +266,11 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
 			->will( $this->returnValue( $replicationStatus ) );
 
-		$this->idTable->expects( $this->at( 1 ) )
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->will( $this->returnValue( 42 ) );
 
-		$this->store->expects( $this->at( 1 ) )
+		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [ $time ] ) );
 
@@ -308,71 +308,75 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testCheck_MissingFileAttachment() {
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
 		$time = DITime::newFromTimestamp( 1272508903 );
-
+	
 		$config = $this->getMockBuilder( '\SMW\Options' )
 			->disableOriginalConstructor()
 			->getMock();
-
+	
 		$config->expects( $this->any() )
 			->method( 'dotGet' )
-			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
+			->with( $this->equalTo( 'indexer.experimental.file.ingest' ) )
 			->will( $this->returnValue( true ) );
-
+	
 		$this->elasticClient->expects( $this->once() )
 			->method( 'getConfig' )
 			->will( $this->returnValue( $config ) );
-
+	
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
 			->will( $this->returnValue( false ) );
-
+	
 		$replicationStatus = [
 			'modification_date' => $time,
 			'associated_revision' => 99999
 		];
-
+	
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
+			->with( $this->equalTo( 'modification_date_associated_revision' ) )
 			->will( $this->returnValue( $replicationStatus ) );
-
-		$this->idTable->expects( $this->at( 1 ) )
+	
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
+			->with( $this->equalTo( 42 ) )
 			->will( $this->returnValue( 99999 ) );
-
-		$this->store->expects( $this->at( 1 ) )
+	
+		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $time ] ) );
-
-		$this->store->expects( $this->at( 4 ) )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
-
+			->withConsecutive(
+				[$this->anything()], 
+				[$this->equalTo()] 
+			)
+			->willReturnOnConsecutiveCalls(
+				[$time], 
+				[]   
+			);
+	
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->elasticClient ) );
-
+	
 		$instance = new DocumentReplicationExaminer(
 			$this->store,
 			$this->replicationStatus
 		);
-
+	
 		$params = [
 			DocumentReplicationExaminer::CHECK_MISSING_FILE_ATTACHMENT => true
 		];
-
+	
 		$result = $instance->check( $subject, $params );
-
+	
 		$this->assertInstanceOf(
 			ReplicationError::class,
 			$result
 		);
-
+	
 		$this->assertEquals(
 			ReplicationError::TYPE_FILE_ATTACHMENT_MISSING,
 			$result->getType()
 		);
-
+	
 		$this->assertEquals(
 			[
 				'id' => 42
@@ -380,65 +384,69 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			$result->getData()
 		);
 	}
-
+	
 	public function testCheck_NoMissingFileAttachment() {
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
 		$time = DITime::newFromTimestamp( 1272508903 );
-
+	
 		$config = $this->getMockBuilder( '\SMW\Options' )
 			->disableOriginalConstructor()
 			->getMock();
-
+	
 		$config->expects( $this->any() )
 			->method( 'dotGet' )
-			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
+			->with( $this->equalTo( 'indexer.experimental.file.ingest' ) )
 			->will( $this->returnValue( true ) );
-
+	
 		$this->elasticClient->expects( $this->once() )
 			->method( 'getConfig' )
 			->will( $this->returnValue( $config ) );
-
+	
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
 			->will( $this->returnValue( false ) );
-
+	
 		$replicationStatus = [
 			'modification_date' => $time,
 			'associated_revision' => 99999
 		];
-
+	
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
+			->with( $this->equalTo( 'modification_date_associated_revision' ) )
 			->will( $this->returnValue( $replicationStatus ) );
 
-		$this->idTable->expects( $this->at( 1 ) )
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
+			->with( $this->equalTo( 42 ) )
 			->will( $this->returnValue( 99999 ) );
-
-		$this->store->expects( $this->at( 1 ) )
+	
+		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $time ] ) );
-
-		$this->store->expects( $this->at( 4 ) )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
-
+			->withConsecutive(
+				[$this->anything()],
+				[$this->equalTo( $subject )]
+			)
+			->willReturnOnConsecutiveCalls(
+				[$time],
+				['Foo']
+			);
+	
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->elasticClient ) );
-
+	
 		$instance = new DocumentReplicationExaminer(
 			$this->store,
 			$this->replicationStatus
 		);
-
+	
 		$params = [
 			DocumentReplicationExaminer::CHECK_MISSING_FILE_ATTACHMENT => true
 		];
-
+	
 		$result = $instance->check( $subject, $params );
-
+	
 		$this->assertNull(
 			$result
 		);
@@ -475,11 +483,11 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
 			->will( $this->returnValue( $replicationStatus ) );
 
-		$this->idTable->expects( $this->at( 1 ) )
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->will( $this->returnValue( 99999 ) );
 
-		$this->store->expects( $this->at( 1 ) )
+		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [ $time ] ) );
 
@@ -521,11 +529,11 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
 			->will( $this->returnValue( $replicationStatus ) );
 
-		$this->idTable->expects( $this->at( 1 ) )
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->will( $this->returnValue( 99999 ) );
 
-		$this->store->expects( $this->at( 1 ) )
+		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [ $time ] ) );
 
@@ -544,5 +552,4 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			$result
 		);
 	}
-
 }
