@@ -79,10 +79,10 @@ abstract class SMWIntegrationTestCase extends \PHPUnit\Framework\TestCase {
     }
 
     protected function setUp(): void {
-		parent::setUp();
+	parent::setUp();
 
-		// Clear any cached user to ensure a clean state for each test
-        $user = $this->getTestUser()->getUser();
+	// Clear any cached user to ensure a clean state for each test
+        $user = RequestContext::getMain()->getUser();
         $user->clearInstanceCache( $user->mFrom );
 
         // Reset services and caches that SMW tests rely on
