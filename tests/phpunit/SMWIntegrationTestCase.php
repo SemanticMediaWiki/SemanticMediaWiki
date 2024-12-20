@@ -34,6 +34,11 @@ use PHPUnit\Framework\TestResult;
  */
 abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
+	/**
+	 * Table name prefix.
+	 */
+	public const DB_PREFIX = 'sunittest_';
+
     /**
 	 * @var TestEnvironment
 	 */
