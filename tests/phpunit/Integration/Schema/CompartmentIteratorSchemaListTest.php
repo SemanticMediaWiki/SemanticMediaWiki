@@ -25,14 +25,14 @@ class CompartmentIteratorSchemaListTest extends \PHPUnit\Framework\TestCase {
 
 		$schema = new SchemaDefinition(
 			'fake_iterator_schema',
-			json_decode( file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
+			json_decode( file_get_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
 		);
 
 		$this->schemaList->add( $schema );
 
 		$schema = new SchemaDefinition(
 			'fake_iterator_schema_extra',
-			json_decode( file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
+			json_decode( file_get_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
 		);
 
 		$this->schemaList->add( $schema );

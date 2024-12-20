@@ -35,7 +35,6 @@ $autoloader->addClassMap( [
 	'SMW\Maintenance\updateEntityCountMap'       => __DIR__ . '/../maintenance/updateEntityCountMap.php'
 ] );
 
-define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );
 // define( 'SMW_PHPUNIT_TABLE_PREFIX', 'sunittest_' );
 // define( 'SMW_PHPUNIT_TABLE_PREFIX', '' );
 

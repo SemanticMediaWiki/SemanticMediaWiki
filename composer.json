@@ -106,7 +106,11 @@
 	},
 	"scripts": {
 		"test": [
-			"@phpunit"
+			"@lint",
+			"@phpcs",
+			"minus-x check .",
+			"@phpunit:unit",
+			"@phpunit:integration"
 		],
 		"test-coverage": [
 			"@phpunit-coverage"
@@ -119,30 +123,15 @@
 			"@phpcs-fix"
 		],
 		"lint": "parallel-lint . --exclude vendor --exclude node_modules",
-		"phpcs": "phpcs -ps -d memory_limit=2G",
-		"phpcs-fix": "phpcbf -p",
+		"phpcs": "phpcs -ps --cache -d memory_limit=2G",
+		"phpcs-fix": "phpcbf",
 		"phpunit": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
-		"phpunit-coverage": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist --testdox --coverage-text --coverage-html coverage/php --coverage-clover coverage/php/coverage.xml",
+		"phpunit:unit": "@phpunit --testsuite=semantic-mediawiki-unit",
+		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
+		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-html coverage/php --coverage-clover coverage/php/coverage.xml",
 		"phpdbg": "phpdbg -qrr ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"minus-x": "minus-x check .",
-		"unit": [
-			"composer dump-autoload",
-			"composer phpunit -- --testsuite=semantic-mediawiki-unit"
-		],
-		"integration": "composer phpunit -- --testsuite=semantic-mediawiki-integration",
 		"benchmark": "composer phpunit  -- --group semantic-mediawiki-benchmark",
-		"quick-benchmark": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark",
-		"cs-standalone": [
-			"composer validate --no-interaction",
-			"vendor/bin/phpcs src/* includes/* tests/* --standard=phpcs.xml --extensions=php -sp"
-		],
-		"cs": [
-			"composer cs-standalone",
-			"vendor/bin/phpmd src/,includes/,tests/ text phpmd.xml"
-		],
-		"ci": [
-			"composer phpunit",
-			"composer cs"
-		]
+		"quick-benchmark": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark"
 	}
 }

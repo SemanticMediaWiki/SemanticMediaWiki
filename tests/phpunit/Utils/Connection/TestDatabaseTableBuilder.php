@@ -160,7 +160,12 @@ class TestDatabaseTableBuilder {
 			__METHOD__
 		);
 
-		if ( $dbConnection->getType() === 'mysql' && method_exists( $dbConnection, 'listViews' ) ) {
+		// MW < 1.42
+		if (
+			version_compare( MW_VERSION, '1.42', '<' ) &&
+			$dbConnection->getType() === 'mysql' &&
+			method_exists( $dbConnection, 'listViews' )
+		) {
 
 			# bug 43571: cannot clone VIEWs under MySQL
 			$views = $dbConnection->listViews(

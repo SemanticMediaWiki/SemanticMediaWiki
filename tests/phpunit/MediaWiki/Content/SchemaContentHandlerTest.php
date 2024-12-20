@@ -5,8 +5,15 @@ namespace SMW\Tests\MediaWiki\Content;
 use MediaWiki\Content\ValidationParams;
 use MediaWiki\Page\PageIdentity;
 use MediaWiki\Page\PageIdentityValue;
+use ParserOptions;
 use SMW\MediaWiki\Content\SchemaContent;
 use SMW\MediaWiki\Content\SchemaContentHandler;
+use SMW\Schema\SchemaDefinition;
+use SMW\Schema\SchemaFactory;
+use SMW\Schema\SchemaValidator;
+use Title;
+use User;
+use WikiPage;
 
 /**
  * @covers \SMW\MediaWiki\Content\SchemaContentHandler
@@ -26,18 +33,16 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testPrepareSave() {
-		$schema = $this->createMock( '\SMW\Schema\SchemaDefinition' );
+	public function testValidateSave() {
+		$schema = $this->createMock( SchemaDefinition::class );
 
-		$schemaValidator = $this->createMock( '\SMW\Schema\SchemaValidator' );
+		$schemaValidator = $this->createMock( SchemaValidator::class );
 
 		$schemaValidator->expects( $this->once() )
 			->method( 'validate' )
 			->will( $this->returnValue( [] ) );
 
-		$schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
-			->disableOriginalConstructor()
-			->getMock();
+		$schemaFactory = $this->createMock( SchemaFactory::class );
 
 		$schemaFactory->expects( $this->any() )
 			->method( 'newSchema' )
@@ -47,21 +52,21 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newSchemaValidator' )
 			->will( $this->returnValue( $schemaValidator ) );
 
-		$title = $this->createMock( '\Title' );
+		$title = $this->createMock( Title::class );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$page = $this->createMock( '\WikiPage' );
+		$page = $this->createMock( WikiPage::class );
 
 		$page->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$user = $this->createMock( '\User' );
+		$user = $this->createMock( User::class );
 
-		$parserOptions = $this->createMock( '\ParserOptions' );
+		$parserOptions = $this->createMock( ParserOptions::class );
 
 		$schemaContent = new SchemaContent(
 			json_encode( [ 'Foo' => 42 ] )
@@ -79,16 +84,16 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testPrepareSave_InvalidJSON() {
-		$schema = $this->createMock( '\SMW\Schema\SchemaDefinition' );
+	public function testValidateSave_InvalidJSON() {
+		$schema = $this->createMock( SchemaDefinition::class );
 
-		$schemaValidator = $this->createMock( '\SMW\Schema\SchemaValidator' );
+		$schemaValidator = $this->createMock( SchemaValidator::class );
 
 		$schemaValidator->expects( $this->once() )
 			->method( 'validate' )
 			->will( $this->returnValue( [] ) );
 
-		$schemaFactory = $this->createMock( '\SMW\Schema\SchemaFactory' );
+		$schemaFactory = $this->createMock( SchemaFactory::class );
 
 		$schemaFactory->expects( $this->any() )
 			->method( 'newSchema' )
@@ -98,21 +103,21 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newSchemaValidator' )
 			->will( $this->returnValue( $schemaValidator ) );
 
-		$title = $this->createMock( '\Title' );
+		$title = $this->createMock( Title::class );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$page = $this->createMock( '\WikiPage' );
+		$page = $this->createMock( WikiPage::class );
 
 		$page->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$user = $this->createMock( '\User' );
+		$user = $this->createMock( User::class );
 
-		$parserOptions = $this->createMock( '\ParserOptions' );
+		$parserOptions = $this->createMock( ParserOptions::class );
 
 		$schemaContent = new SchemaContent(
 			'Foo'
@@ -129,21 +134,21 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSerializationOfClassInstance() {
-		$title = $this->createMock( '\Title' );
+		$title = $this->createMock( Title::class );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$page = $this->createMock( '\WikiPage' );
+		$page = $this->createMock( WikiPage::class );
 
 		$page->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$user = $this->createMock( '\User' );
+		$user = $this->createMock( User::class );
 
-		$parserOptions = $this->createMock( '\ParserOptions' );
+		$parserOptions = $this->createMock( ParserOptions::class );
 
 		$schemaContent = new SchemaContent(
 			json_encode( [ 'Foo' => 42 ] )
@@ -152,7 +157,7 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 		// Use an actual factory instance to ensure a "real" DB instance is
 		// invoked and would force a "RuntimeException: Database serialization
 		// may cause problems, since the connection is not restored on wakeup."
-		$schemaContent->setServices( new \SMW\Schema\SchemaFactory() );
+		$schemaContent->setServices( new SchemaFactory() );
 
 		$instance = new SchemaContentHandler();
 		$page = new PageIdentityValue( 0, 1, 'Foo', PageIdentity::LOCAL );
