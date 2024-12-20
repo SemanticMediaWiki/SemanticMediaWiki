@@ -78,7 +78,7 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasPermissionOf' )
 			->will( $this->returnValue( true ) );
 
-		$this->preferenceExaminer->expects( $this->at( 0 ) )
+		$this->preferenceExaminer->expects( $this->atLeastOnce() )
 			->method( 'hasPreferenceOf' )
 			->with( $this->equalTo( 'smw-prefs-general-options-disable-editpage-info' ) )
 			->will( $this->returnValue( true ) );
@@ -116,7 +116,7 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasPermissionOf' )
 			->will( $this->returnValue( true ) );
 
-		$this->preferenceExaminer->expects( $this->at( 0 ) )
+		$this->preferenceExaminer->expects( $this->atLeastOnce() )
 			->method( 'hasPreferenceOf' )
 			->with( $this->equalTo( 'smw-prefs-general-options-disable-editpage-info' ) )
 			->will( $this->returnValue( false ) );
