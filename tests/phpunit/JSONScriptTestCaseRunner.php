@@ -26,7 +26,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
+abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 
 	/**
 	 * @var FileReader
