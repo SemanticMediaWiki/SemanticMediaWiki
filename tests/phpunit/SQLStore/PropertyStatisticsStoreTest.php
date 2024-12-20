@@ -2,10 +2,12 @@
 
 namespace SMW\Tests\SQLStore;
 
+use SMW\MediaWiki\Database;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\PHPUnitCompat;
+use Wikimedia\Rdbms\DBQueryError;
 
 /**
  * @covers \SMW\SQLStore\PropertyStatisticsStore
@@ -97,9 +99,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	}
 
 	public function testAddToUsageCountWithInvalidCountThrowsException() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$instance = new PropertyStatisticsStore(
 			$connection,
@@ -111,9 +111,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	}
 
 	public function testAddToUsageCountWithInvalidIdThrowsException() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$instance = new PropertyStatisticsStore(
 			$connection
@@ -189,9 +187,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	}
 
 	public function testAddToUsageCountsOnTransactionIdle() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
@@ -221,9 +217,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	}
 
 	public function testAddToUsageCountsWillNotWaitOnTransactionIdleWhenCommandLineModeIsActive() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->never() )
 			->method( 'onTransactionCommitOrIdle' );
@@ -250,9 +244,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	public function testInsertUsageCountWithArrayValue() {
 		$tableName = 'Foo';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->once() )
 			->method( 'insert' )
@@ -275,9 +267,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	}
 
 	public function testAddToUsageCountsWithArrayValue() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
@@ -306,9 +296,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	}
 
 	public function testSetUsageCountWithArrayValue() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->once() )
 			->method( 'update' )
@@ -333,13 +321,9 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	}
 
 	public function testUpsertOnInsertUsageCount() {
-		$error = $this->getMockBuilder( '\DBQueryError' )
-			->disableOriginalConstructor()
-			->getMock();
+		$error = $this->createMock( DBQueryError::class );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->once() )
 			->method( 'insert' )
@@ -363,5 +347,4 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 
 		$instance->insertUsageCount( 42, 12 );
 	}
-
 }
