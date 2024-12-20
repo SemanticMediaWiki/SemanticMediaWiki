@@ -134,141 +134,132 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
-
+	
 		$idTable->expects( $this->any() )
 			->method( 'findIdsByTitle' )
-			->will( $this->returnValue( [] ) );
-
-		$idTable->expects( $this->at( 0 ) )
+			->willReturn( [] );
+	
+		$idTable->expects( $this->exactly(2) )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 1 ) );
-
-		$idTable->expects( $this->at( 1 ) )
-			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 5 ) );
-
-		$idTable->expects( $this->at( 1 ) )
+			->willReturnOnConsecutiveCalls( 1, 5 );
+	
+		$idTable->expects( $this->once() )
 			->method( 'findRedirect' )
-			->will( $this->returnValue( 0 ) );
-
+			->willReturn( 0 );
+	
 		$idTable->expects( $this->never() )
 			->method( 'deleteRedirect' );
-
+	
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
+	
 		$connection->expects( $this->once() )
 			->method( 'query' )
-			->will( $this->returnValue( true ) );
-
+			->willReturn( true );
+	
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
-
+	
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
-
+	
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
-
+			->willReturn( $propertyTableInfoFetcher );
+	
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
-
+			->willReturn( $idTable );
+	
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
+			->willReturn( $connection );
+	
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
-
+			->willReturn( [] );
+	
 		$store->expects( $this->any() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( new \SMW\Options() ) );
-
+			->willReturn( new \SMW\Options() );
+	
 		$instance = new RedirectUpdater(
 			$store,
 			$this->idChanger,
 			$this->tableFieldUpdater,
 			$this->propertyStatisticsStore
 		);
-
+	
 		$instance->doUpdate(
 			DIWikiPage::newFromText( __METHOD__ . '-old', NS_MAIN ),
 			DIWikiPage::newFromText( __METHOD__ . '-new', NS_MAIN ),
-			[ 'page_id' => 9999, 'redirect_id' => 0 ]
+			['page_id' => 9999, 'redirect_id' => 0]
 		);
 	}
-
+	
 	public function testChangeTitleForMainNamespaceWithRedirectId() {
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
-
+	
 		$idTable->expects( $this->any() )
 			->method( 'findIdsByTitle' )
-			->will( $this->returnValue( [] ) );
-
-		$idTable->expects( $this->at( 0 ) )
+			->willReturn( [] );
+	
+		$idTable->expects( $this->exactly(2) )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 1 ) );
-
-		$idTable->expects( $this->at( 1 ) )
-			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 5 ) );
-
+			->willReturnOnConsecutiveCalls( 1, 5 );
+	
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
+	
 		$database->expects( $this->once() )
 			->method( 'query' )
-			->will( $this->returnValue( true ) );
-
+			->willReturn( true );
+	
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
-
+	
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
-
+	
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
-
+			->willReturn( $propertyTableInfoFetcher );
+	
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
-
+			->willReturn( $idTable );
+	
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
-
+			->willReturn( $database );
+	
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
-
+			->willReturn( [] );
+	
 		$store->expects( $this->any() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( new \SMW\Options() ) );
-
+			->willReturn( new \SMW\Options() );
+	
 		$instance = new RedirectUpdater(
 			$store,
 			$this->idChanger,
 			$this->tableFieldUpdater,
 			$this->propertyStatisticsStore
 		);
-
+	
 		$instance->doUpdate(
 			DIWikiPage::newFromText( __METHOD__ . '-old', NS_MAIN ),
 			DIWikiPage::newFromText( __METHOD__ . '-new', NS_MAIN ),
-			[ 'page_id' => 9999, 'redirect_id' => 1111 ]
+			['page_id' => 9999, 'redirect_id' => 1111]
 		);
 	}
-
 }
