@@ -64,21 +64,19 @@ class ListBuilderTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( 'Foo' ),
 			DIWikiPage::newFromText( 'ABC' )
 		];
-
-		$this->sortLetter->expects( $this->at( 0 ) )
-			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
-
-		$this->sortLetter->expects( $this->at( 1 ) )
-			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'A' ) );
-
-		$instance = new ListBuilder(
-			$this->store
-		);
-
+	
+		$this->sortLetter->expects( $this->exactly( 2 ) )
+        ->method( 'getFirstLetter' )
+        ->withConsecutive(
+            [$this->isInstanceOf( 'SMW\DIWikiPage' )],
+            [$this->isInstanceOf( 'SMW\DIWikiPage' )]
+        )
+        ->willReturnOnConsecutiveCalls( 'F', 'A' );
+	
+		$instance = new ListBuilder( $this->store );
+	
 		$this->assertEquals(
-			[ 'A', 'F' ],
+			['A', 'F'],
 			array_keys( $instance->getList( $list ) )
 		);
 	}
