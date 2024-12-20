@@ -64,52 +64,54 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateTableWithNewField() {
-		$this->connection->expects( $this->any() )
-			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
-
-		$this->connection->expects( $this->at( 3 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'SELECT a.attname as' ) )
-			->will( $this->returnValue( [] ) );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD "bar" TEXT' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
-		$instance = PostgresTableBuilder::factory( $this->connection );
-
-		$table = new Table( 'foo' );
-		$table->addColumn( 'bar', 'text' );
-
-		$instance->create( $table );
+		$this->connection->expects($this->any())
+			->method('tableExists')
+			->will($this->returnValue(true));
+	
+		$this->connection->expects($this->exactly(2))
+			->method('query')
+			->withConsecutive(
+				[$this->stringContains('SELECT a.attname as')], 
+				[$this->stringContains('ALTER TABLE foo ADD "bar" TEXT')] 
+			)
+			->willReturnOnConsecutiveCalls(
+				[], 
+				new FakeResultWrapper([])
+			);
+	
+		$instance = PostgresTableBuilder::factory($this->connection);
+	
+		$table = new Table('foo');
+		$table->addColumn('bar', 'text');
+	
+		$instance->create($table);
 	}
-
+	
 	public function testUpdateTableWithNewFieldAndDefault() {
-		$this->connection->expects( $this->any() )
-			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
-
-		$this->connection->expects( $this->at( 3 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'SELECT a.attname as' ) )
-			->will( $this->returnValue( [] ) );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD "bar" TEXT' . " DEFAULT '0'" ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
-		$instance = PostgresTableBuilder::factory( $this->connection );
-
-		$table = new Table( 'foo' );
-		$table->addColumn( 'bar', 'text' );
-		$table->addDefault( 'bar', 0 );
-
-		$instance->create( $table );
+		$this->connection->expects($this->any())
+			->method('tableExists')
+			->will($this->returnValue(true));
+	
+		$this->connection->expects($this->exactly(2))
+			->method('query')
+			->withConsecutive(
+				[$this->stringContains('SELECT a.attname as')],
+				[$this->stringContains('ALTER TABLE foo ADD "bar" TEXT DEFAULT \'0\'')]
+			)
+			->willReturnOnConsecutiveCalls(
+				[],
+				new FakeResultWrapper([])
+			);
+	
+		$instance = PostgresTableBuilder::factory($this->connection);
+	
+		$table = new Table('foo');
+		$table->addColumn('bar', 'text');
+		$table->addDefault('bar', 0);
+	
+		$instance->create($table);
 	}
-
+	
 	public function testCreateIndex() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )

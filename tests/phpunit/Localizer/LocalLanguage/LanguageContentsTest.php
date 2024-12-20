@@ -81,31 +81,33 @@ class LanguageContentsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetContentsByLanguage_ID_Depth_2() {
 		$languageCode = 'Foo';
-
-		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
+	
+		$this->jsonContentsFileReader->expects( $this->once() )
 			->method( 'readByLanguageCode' )
 			->with( $this->equalTo( $languageCode ) )
 			->will( $this->returnValue( [ 'Foo' => [ 'Bar' => 123 ] ] ) );
-
+	
+		// The fallbackFinder is expected to be called at least once
 		$this->fallbackFinder->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalFallbackLanguageCode' )
 			->will( $this->returnValue( 'en' ) );
-
+	
 		$instance = new LanguageContents(
 			$this->jsonContentsFileReader,
 			$this->fallbackFinder
 		);
-
+	
 		$this->assertEquals(
 			123,
 			$instance->get( 'Foo.Bar', $languageCode )
 		);
 	}
+	
 
 	public function testGetContentsByLanguage_ID_Depth_3() {
 		$languageCode = 'Foo';
 
-		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
+		$this->jsonContentsFileReader->expects( $this->once() )
 			->method( 'readByLanguageCode' )
 			->with( $this->equalTo( $languageCode ) )
 			->will( $this->returnValue( [ 'Foo' => [ 'Bar' => [ 'Foobar' => 456 ] ] ] ) );
@@ -128,30 +130,32 @@ class LanguageContentsTest extends \PHPUnit\Framework\TestCase {
 	public function testGetContentsByLanguageWithIndexWithFallback() {
 		$languageCode = 'Foo';
 		$fallback = 'Foobar';
-
-		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
+	
+		$this->jsonContentsFileReader->expects(  $this->exactly(2) )
 			->method( 'readByLanguageCode' )
-			->with( $this->equalTo( $languageCode ) )
-			->will( $this->returnValue( [] ) );
-
-		$this->jsonContentsFileReader->expects( $this->at( 1 ) )
-			->method( 'readByLanguageCode' )
-			->with( $this->equalTo( $fallback ) )
-			->will( $this->returnValue( [ 'Bar' => 123 ] ) );
-
+			->withConsecutive(
+				[$this->equalTo( $languageCode ) ],
+				[$this->equalTo( $fallback ) ]
+			)
+			->willReturnOnConsecutiveCalls(
+				[],
+				[ 'Bar' => 123 ]
+			);
+	
 		$this->fallbackFinder->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalFallbackLanguageCode' )
-			->will( $this->returnValue( 'en' ) );
-
-		$this->fallbackFinder->expects( $this->at( 1 ) )
+			->willReturn( 'en' );
+	
+		$this->fallbackFinder->expects( $this->exactly(1) )
 			->method( 'getFallbackLanguageBy' )
-			->will( $this->returnValue( $fallback ) );
-
+			->with( $this->equalTo( $languageCode ) )
+			->willReturn( $fallback );
+	
 		$instance = new LanguageContents(
 			$this->jsonContentsFileReader,
 			$this->fallbackFinder
 		);
-
+	
 		$this->assertEquals(
 			123,
 			$instance->get( 'Bar', $languageCode )

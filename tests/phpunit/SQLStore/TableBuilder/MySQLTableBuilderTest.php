@@ -103,29 +103,31 @@ class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->create( $table );
 	}
-
+	
 	public function testUpdateExistingTableWithNewFieldAndDefault() {
-		$this->connection->expects( $this->any() )
-			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
-
-		$this->connection->expects( $this->at( 3 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'DESCRIBE' ) )
-			->will( $this->returnValue( [] ) );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD `bar` text' . " DEFAULT '0'" . ' FIRST' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
-		$instance = MySQLTableBuilder::factory( $this->connection );
-
-		$table = new Table( 'foo' );
-		$table->addColumn( 'bar', 'text' );
-		$table->addDefault( 'bar', 0 );
-
-		$instance->create( $table );
+		$this->connection->expects($this->any())
+			->method('tableExists')
+			->will($this->returnValue(true));
+	
+		// Use withConsecutive to specify the expected query calls in order
+		$this->connection->expects($this->exactly(2))
+			->method('query')
+			->withConsecutive(
+				[$this->stringContains('DESCRIBE')],  // First query: DESCRIBE
+				[$this->stringContains("ALTER TABLE foo ADD `bar` text DEFAULT '0' FIRST")]  // Second query: ALTER TABLE ADD COLUMN with default value
+			)
+			->willReturnOnConsecutiveCalls(
+				[],  // Simulate empty result for DESCRIBE query
+				new FakeResultWrapper([])  // Simulate result for ALTER TABLE query
+			);
+	
+		$instance = MySQLTableBuilder::factory($this->connection);
+	
+		$table = new Table('foo');
+		$table->addColumn('bar', 'text');  // Add the new column 'bar' to the table
+		$table->addDefault('bar', 0);  // Add a default value to the 'bar' column
+	
+		$instance->create($table);  // Create the table with the new column and default value
 	}
 
 	public function testCreateIndex() {
@@ -151,6 +153,7 @@ class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->create( $table );
 	}
+	
 
 	public function testDropTable() {
 		$this->connection->expects( $this->once() )
@@ -169,20 +172,21 @@ class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOptimizeTable() {
-		$this->connection->expects( $this->at( 2 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ANALYZE TABLE foo' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
-		$this->connection->expects( $this->at( 3 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'OPTIMIZE TABLE foo' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
-		$instance = MySQLTableBuilder::factory( $this->connection );
-
-		$table = new Table( 'foo' );
-		$instance->optimize( $table );
+		$this->connection->expects($this->exactly(2))  // Expecting exactly 2 calls to 'query'
+			->method('query')
+			->withConsecutive(
+				[$this->stringContains('ANALYZE TABLE foo')],  // First query: ANALYZE TABLE foo
+				[$this->stringContains('OPTIMIZE TABLE foo')]  // Second query: OPTIMIZE TABLE foo
+			)
+			->willReturnOnConsecutiveCalls(
+				new FakeResultWrapper([]),  // Simulate result for ANALYZE query
+				new FakeResultWrapper([])   // Simulate result for OPTIMIZE query
+			);
+	
+		$instance = MySQLTableBuilder::factory($this->connection);
+	
+		$table = new Table('foo');
+		$instance->optimize($table);  // Perform the optimization
 	}
-
+	
 }
