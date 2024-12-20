@@ -22,6 +22,7 @@ use Title;
 /**
  * @group semantic-mediawiki
  * @group mediawiki-database
+ * @group Database
  *
  * @group medium
  *
