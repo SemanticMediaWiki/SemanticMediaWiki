@@ -345,7 +345,7 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->withConsecutive(
 				[$this->anything()], 
-				[$this->equalTo()] 
+				[$this->equalTo( $subject )] 
 			)
 			->willReturnOnConsecutiveCalls(
 				[$time], 
