@@ -47,17 +47,18 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyChangeListener->expects( $this->at( 0 ) )
-			->method( 'addListenerCallback' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBP' ) ),
-				$this->anything() );
-
-		$propertyChangeListener->expects( $this->at( 1 ) )
-			->method( 'addListenerCallback' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBC' ) ),
-				$this->anything() );
+		$propertyChangeListener->expects($this->exactly(2)) // Expect addListenerCallback to be called twice
+		->method('addListenerCallback')
+		->withConsecutive(
+			[
+				$this->equalTo(new DIProperty('_SUBP')),
+				$this->anything()
+			],
+			[
+				$this->equalTo(new DIProperty('_SUBC')),
+				$this->anything()
+			]
+		);
 
 		$instance = new HierarchyLookup(
 			$this->store,
@@ -141,57 +142,57 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetConsecutiveSubpropertyList() {
-		$property = new DIProperty( 'Foo' );
+		$property = new DIProperty('Foo');
 
 		$expected = [
-			new DIProperty( 'Bar' ),
-			new DIProperty( 'Foobar' )
+			new DIProperty('Bar'),
+			new DIProperty('Foobar')
 		];
 
-		$a = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
+		$a = DIWikiPage::newFromText('Bar', SMW_NS_PROPERTY);
+		$b = DIWikiPage::newFromText('Foobar', SMW_NS_PROPERTY);
 
-		$this->store->expects( $this->at( 0 ) )
-			->method( 'getPropertySubjects' )
+		$this->store->expects($this->exactly(2))
+			->method('getPropertySubjects')
+			->withConsecutive(
+				[
+					$this->equalTo(new DIProperty('_SUBP')),
+					$this->equalTo($property->getDiWikiPage()),
+					$this->anything()
+				],
+				[
+					$this->equalTo(new DIProperty('_SUBP')),
+					$this->equalTo($a),
+					$this->anything()
+				]
+			)
+			->willReturnOnConsecutiveCalls(
+				[$a],
+				[$b]
+			);
+
+		$this->cache->expects($this->once())
+			->method('fetch')
+			->willReturn(false);
+
+		$this->cache->expects($this->once())
+			->method('save')
 			->with(
-				$this->equalTo( new DIProperty( '_SUBP' ) ),
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->anything() )
-			->will( $this->returnValue( [ $a ] ) );
-
-		$b = DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY );
-
-		$this->store->expects( $this->at( 1 ) )
-			->method( 'getPropertySubjects' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBP' ) ),
-				$this->equalTo( $a ),
-				$this->anything() )
-			->will( $this->returnValue( [ $b ] ) );
-
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
-
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				$this->stringContains( ':smw:hierarchy:2d440b72499319439ab5f466701f13fa' ),
-				$this->anything() );
+				$this->stringContains(':smw:hierarchy:2d440b72499319439ab5f466701f13fa'),
+				$this->anything()
+			);
 
 		$instance = new HierarchyLookup(
 			$this->store,
 			$this->cache
 		);
 
-		$instance->setLogger(
-			$this->spyLogger
-		);
-
-		$instance->setSubpropertyDepth( 2 );
+		$instance->setLogger($this->spyLogger);
+		$instance->setSubpropertyDepth(2);
 
 		$this->assertEquals(
 			$expected,
-			$instance->getConsecutiveHierarchyList( $property )
+			$instance->getConsecutiveHierarchyList($property)
 		);
 	}
 
@@ -228,112 +229,112 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetConsecutiveSubcategoryList() {
-		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$category = new DIWikiPage('Foo', NS_CATEGORY);
 
 		$expected = [
-			new DIWikiPage( 'Bar', NS_CATEGORY ),
-			new DIWikiPage( 'Foobar', NS_CATEGORY )
+			new DIWikiPage('Bar', NS_CATEGORY),
+			new DIWikiPage('Foobar', NS_CATEGORY)
 		];
 
-		$a = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );
+		$a = DIWikiPage::newFromText('Bar', NS_CATEGORY);
+		$b = DIWikiPage::newFromText('Foobar', NS_CATEGORY);
 
-		$this->store->expects( $this->at( 0 ) )
-			->method( 'getPropertySubjects' )
+		$this->store->expects($this->exactly(2))
+			->method('getPropertySubjects')
+			->withConsecutive(
+				[
+					$this->equalTo(new DIProperty('_SUBC')),
+					$this->equalTo($category),
+					$this->anything()
+				],
+				[
+					$this->equalTo(new DIProperty('_SUBC')),
+					$this->equalTo($a),
+					$this->anything()
+				]
+			)
+			->willReturnOnConsecutiveCalls(
+				[$a],
+				[$b]
+			);
+
+		$this->cache->expects($this->once())
+			->method('fetch')
+			->willReturn(false);
+
+		$this->cache->expects($this->once())
+			->method('save')
 			->with(
-				$this->equalTo( new DIProperty( '_SUBC' ) ),
-				$this->equalTo( $category ),
-				$this->anything() )
-			->will( $this->returnValue( [ $a ] ) );
-
-		$b = DIWikiPage::newFromText( 'Foobar', NS_CATEGORY );
-
-		$this->store->expects( $this->at( 1 ) )
-			->method( 'getPropertySubjects' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBC' ) ),
-				$this->equalTo( $a ),
-				$this->anything() )
-			->will( $this->returnValue( [ $b ] ) );
-
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
-
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				$this->stringContains( ':smw:hierarchy:78c9d3ed63c959981731afeef22cc8e9' ),
-				$this->anything() );
+				$this->stringContains(':smw:hierarchy:78c9d3ed63c959981731afeef22cc8e9'),
+				$this->anything()
+			);
 
 		$instance = new HierarchyLookup(
 			$this->store,
 			$this->cache
 		);
 
-		$instance->setLogger(
-			$this->spyLogger
-		);
-
-		$instance->setSubcategoryDepth( 2 );
+		$instance->setLogger($this->spyLogger);
+		$instance->setSubcategoryDepth(2);
 
 		$this->assertEquals(
 			$expected,
-			$instance->getConsecutiveHierarchyList( $category )
+			$instance->getConsecutiveHierarchyList($category)
 		);
 	}
 
 	public function testGetConsecutiveSuperCategoryList() {
-		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$category = new DIWikiPage('Foo', NS_CATEGORY);
 
 		$expected = [
-			new DIWikiPage( 'Bar', NS_CATEGORY ),
-			new DIWikiPage( 'Foobar', NS_CATEGORY )
+			new DIWikiPage('Bar', NS_CATEGORY),
+			new DIWikiPage('Foobar', NS_CATEGORY)
 		];
 
-		$a = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );
+		$a = DIWikiPage::newFromText('Bar', NS_CATEGORY);
+		$b = DIWikiPage::newFromText('Foobar', NS_CATEGORY);
 
-		$this->store->expects( $this->at( 0 ) )
-			->method( 'getPropertySubjects' )
+		$this->store->expects($this->exactly(2))
+			->method('getPropertySubjects')
+			->withConsecutive(
+				[
+					$this->equalTo(new DIProperty('_SUBC', true)),
+					$this->equalTo($category),
+					$this->anything()
+				],
+				[
+					$this->equalTo(new DIProperty('_SUBC', true)),
+					$this->equalTo($a),
+					$this->anything()
+				]
+			)
+			->willReturnOnConsecutiveCalls(
+				[$a],
+				[$b]
+			);
+
+		$this->cache->expects($this->once())
+			->method('fetch')
+			->willReturn(false);
+
+		$this->cache->expects($this->once())
+			->method('save')
 			->with(
-				$this->equalTo( new DIProperty( '_SUBC', true ) ),
-				$this->equalTo( $category ),
-				$this->anything() )
-			->will( $this->returnValue( [ $a ] ) );
-
-		$b = DIWikiPage::newFromText( 'Foobar', NS_CATEGORY );
-
-		$this->store->expects( $this->at( 1 ) )
-			->method( 'getPropertySubjects' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBC', true ) ),
-				$this->equalTo( $a ),
-				$this->anything() )
-			->will( $this->returnValue( [ $b ] ) );
-
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
-
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				$this->stringContains( ':smw:hierarchy:c61e6ee84187efaafbb31878af471432' ),
-				$this->anything() );
+				$this->stringContains(':smw:hierarchy:c61e6ee84187efaafbb31878af471432'),
+				$this->anything()
+			);
 
 		$instance = new HierarchyLookup(
 			$this->store,
 			$this->cache
 		);
 
-		$instance->setLogger(
-			$this->spyLogger
-		);
-
-		$instance->setSubcategoryDepth( 2 );
+		$instance->setLogger($this->spyLogger);
+		$instance->setSubcategoryDepth(2);
 
 		$this->assertEquals(
 			$expected,
-			$instance->getConsecutiveHierarchyList( $category, HierarchyLookup::TYPE_SUPER )
+			$instance->getConsecutiveHierarchyList($category, HierarchyLookup::TYPE_SUPER)
 		);
 	}
 

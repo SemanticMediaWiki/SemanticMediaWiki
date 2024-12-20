@@ -237,25 +237,24 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInvalidate() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = DIWikiPage::newFromText('Foo');
 
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar', '__assoc' => [ 'Foo' => true ] ] ) );
-
-		$this->cache->expects( $this->at( 1 ) )
-			->method( 'delete' )
-			->with(	$this->stringContains( 'Foo' ) );
-
-		$this->cache->expects( $this->at( 2 ) )
-			->method( 'delete' )
-			->with(	$this->stringContains( 'smw:entity:44ab375ee7ebac04b8e4471a70180dc5' ) );
+		$this->cache->expects($this->once())
+			->method('fetch')
+			->willReturn([md5('bar') => 'Foobar', '__assoc' => ['Foo' => true]]);
+			
+		$this->cache->expects($this->exactly(2))
+			->method('delete')
+			->withConsecutive(
+				[$this->stringContains('Foo')],
+				[$this->stringContains('smw:entity:44ab375ee7ebac04b8e4471a70180dc5')]
+			);
 
 		$instance = new EntityCache(
 			$this->cache
 		);
 
-		$instance->invalidate( $subject );
+		$instance->invalidate($subject);
 	}
 
 	public function testInvalidate_NoValidSubject() {

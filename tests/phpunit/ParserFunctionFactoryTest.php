@@ -104,11 +104,18 @@ class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAskParserFunctionWithParserOption() {
-		$this->parserData->expects( $this->at( 0 ) )
-			->method( 'setOption' )
-			->with(
-				$this->equalTo( \SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE ),
-				$this->anything() );
+		$this->parserData->expects($this->exactly(2))
+        ->method('setOption')
+        ->withConsecutive(
+            [
+                $this->equalTo(\SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE),
+                $this->anything()
+            ],
+            [
+                $this->equalTo('request.action'),
+                $this->isNull()
+            ]
+        );
 
 		$parser = $this->parserFactory->create( __METHOD__ );
 		// TODO: Illegal dynamic property (#5421)

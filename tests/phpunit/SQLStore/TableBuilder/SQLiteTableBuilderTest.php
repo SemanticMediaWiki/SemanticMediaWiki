@@ -65,75 +65,81 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateTableWithNewField() {
-		$this->connection->expects( $this->any() )
-			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
-
-		$this->connection->expects( $this->at( 3 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'PRAGMA table_info(foo)' ) )
-			->will( $this->returnValue( [] ) );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD `bar` text' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
-		$instance = SQLiteTableBuilder::factory( $this->connection );
-
-		$table = new Table( 'foo' );
-		$table->addColumn( 'bar', 'text' );
-
-		$instance->create( $table );
+		$this->connection->expects($this->any())
+			->method('tableExists')
+			->willReturn(true);
+	
+		$this->connection->expects($this->exactly(2))
+			->method('query')
+			->withConsecutive(
+				[$this->stringContains('PRAGMA table_info(foo)')],
+				[$this->stringContains('ALTER TABLE foo ADD `bar` text')]
+			)
+			->willReturnOnConsecutiveCalls(
+				[], // Empty array for the first query
+				new FakeResultWrapper([]) // Fake result for the second query
+			);
+	
+		$instance = SQLiteTableBuilder::factory($this->connection);
+	
+		$table = new Table('foo');
+		$table->addColumn('bar', 'text');
+	
+		$instance->create($table);
 	}
-
+	
 	public function testUpdateTableWithNewFieldAndDefault() {
-		$this->connection->expects( $this->any() )
-			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
-
-		$this->connection->expects( $this->at( 3 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'PRAGMA table_info(foo)' ) )
-			->will( $this->returnValue( [] ) );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD `bar` text' . " DEFAULT '0'" ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
-		$instance = SQLiteTableBuilder::factory( $this->connection );
-
-		$table = new Table( 'foo' );
-		$table->addColumn( 'bar', 'text' );
-		$table->addDefault( 'bar', 0 );
-
-		$instance->create( $table );
+		$this->connection->expects($this->any())
+			->method('tableExists')
+			->willReturn(true);
+	
+		$this->connection->expects($this->exactly(2))
+			->method('query')
+			->withConsecutive(
+				[$this->stringContains('PRAGMA table_info(foo)')],
+				[$this->stringContains("ALTER TABLE foo ADD `bar` text DEFAULT '0'")]
+			)
+			->willReturnOnConsecutiveCalls(
+				[], // Empty array for the first query
+				new FakeResultWrapper([]) // Fake result for the second query
+			);
+	
+		$instance = SQLiteTableBuilder::factory($this->connection);
+	
+		$table = new Table('foo');
+		$table->addColumn('bar', 'text');
+		$table->addDefault('bar', 0);
+	
+		$instance->create($table);
 	}
-
+	
 	public function testCreateIndex() {
-		$this->connection->expects( $this->any() )
-			->method( 'tableExists' )
-			->will( $this->returnValue( false ) );
-
-		$this->connection->expects( $this->at( 5 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'PRAGMA index_list(foo)' ) )
-			->will( $this->returnValue( [] ) );
-
-		$this->connection->expects( $this->at( 7 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'CREATE INDEX foo_index0' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
-		$instance = SQLiteTableBuilder::factory( $this->connection );
-
-		$table = new Table( 'foo' );
-		$table->addColumn( 'bar', 'text' );
-		$table->addIndex( 'bar' );
-
-		$instance->create( $table );
+		$this->connection->expects($this->any())
+			->method('tableExists')
+			->will($this->returnValue(false));
+	
+		$this->connection->expects($this->exactly(3))
+			->method('query')
+			->withConsecutive(
+				[$this->stringContains('CREATE TABLE foo(bar TEXT)')],
+				[$this->stringContains('PRAGMA index_list(foo)')],
+				[$this->stringContains('CREATE INDEX foo_index0')]
+			)
+			->willReturnOnConsecutiveCalls(
+				new FakeResultWrapper([]), // For 'CREATE TABLE'
+				[],                        // For 'PRAGMA index_list(foo)'
+				new FakeResultWrapper([])   // For 'CREATE INDEX'
+			);
+	
+		$instance = SQLiteTableBuilder::factory($this->connection);
+	
+		$table = new Table('foo');
+		$table->addColumn('bar', 'text');
+		$table->addIndex('bar');
+	
+		$instance->create($table);
 	}
+	
 
 	public function testDropTable() {
 		$this->connection->expects( $this->once() )
@@ -152,15 +158,18 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOptimizeTable() {
-		$this->connection->expects( $this->at( 2 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ANALYZE foo' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
-		$instance = SQLiteTableBuilder::factory( $this->connection );
-
-		$table = new Table( 'foo' );
-		$instance->optimize( $table );
+		$this->connection->expects($this->exactly(1))
+			->method('query')
+			->withConsecutive(
+				[$this->stringContains('ANALYZE foo')]
+			)
+			->willReturnOnConsecutiveCalls(
+				new FakeResultWrapper([]) // Fake result for the query
+			);
+	
+		$instance = SQLiteTableBuilder::factory($this->connection);
+	
+		$table = new Table('foo');
+		$instance->optimize($table);
 	}
-
 }
