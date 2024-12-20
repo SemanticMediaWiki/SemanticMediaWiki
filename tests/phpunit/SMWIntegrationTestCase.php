@@ -178,12 +178,6 @@ abstract class SMWIntegrationTestCase extends \PHPUnit\Framework\TestCase {
 
 	public function run( ?TestResult $result = null ): TestResult {
 		$this->getStore()->clear();
-		if( $GLOBALS['wgDBtype'] == 'mysql' ) {
-
-			// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
-			// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
-			$this->setCliArg( 'use-normal-tables', true );
-		}
 
 		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
 			$this->getStore()
