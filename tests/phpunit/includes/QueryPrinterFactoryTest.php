@@ -16,7 +16,7 @@ use SMWListResultPrinter;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
+class QueryPrinterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

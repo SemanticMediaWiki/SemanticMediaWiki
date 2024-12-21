@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\Mock;
 
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use Wikimedia\Rdbms\Database;
 
 /**
@@ -16,7 +17,7 @@ use Wikimedia\Rdbms\Database;
  *
  * @author mwjames
  */
-class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implements MockObjectRepository {
+class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implements MockObjectRepository {
 
 	/** @var MockObjectBuilder */
 	protected $builder;
@@ -316,12 +317,10 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	/**
 	 * @since 1.9
 	 *
-	 * @return LinksUpdate
+	 * @return \MediaWiki\Deferred\LinksUpdate\LinksUpdate
 	 */
 	public function LinksUpdate() {
-		$linksUpdate = $this->getMockBuilder( 'LinksUpdate' )
-			->disableOriginalConstructor()
-			->getMock();
+		$linksUpdate = $this->createMock( LinksUpdate::class );
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
 

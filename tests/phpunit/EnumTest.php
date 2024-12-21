@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class EnumTest extends \PHPUnit_Framework_TestCase {
+class EnumTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

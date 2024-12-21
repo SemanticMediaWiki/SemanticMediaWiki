@@ -22,7 +22,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
+class FilteredSchemaListTest extends \PHPUnit\Framework\TestCase {
 
 	private $schemaList;
 
@@ -48,7 +48,7 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 	private function newSchemaDefinition( $name ) {
 		return new SchemaDefinition(
 			$name,
-			json_decode( file_get_contents( SMW_PHPUNIT_DIR . "/Fixtures/Schema/$name.json" ), true )
+			json_decode( file_get_contents( \SMW_PHPUNIT_DIR . "/Fixtures/Schema/$name.json" ), true )
 		);
 	}
 

@@ -36,7 +36,7 @@ use SMWResultArray;
  *
  * @author mwjames
  */
-class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements MockObjectRepository {
+class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements MockObjectRepository {
 
 	/** @var MockObjectBuilder */
 	protected $builder;

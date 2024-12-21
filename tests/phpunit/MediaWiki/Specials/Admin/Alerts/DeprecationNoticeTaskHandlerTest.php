@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class DeprecationNoticeTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

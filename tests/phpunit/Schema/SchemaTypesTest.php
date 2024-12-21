@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
+class SchemaTypesTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

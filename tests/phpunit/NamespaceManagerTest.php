@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
+class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

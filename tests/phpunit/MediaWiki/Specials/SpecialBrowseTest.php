@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
+class SpecialBrowseTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;

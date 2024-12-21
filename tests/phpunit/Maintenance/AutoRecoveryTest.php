@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
+class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $file;

@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ListBuilderTest extends \PHPUnit_Framework_TestCase {
+class ListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $sortLetter;

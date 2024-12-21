@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
+class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

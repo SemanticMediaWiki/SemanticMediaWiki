@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
+class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

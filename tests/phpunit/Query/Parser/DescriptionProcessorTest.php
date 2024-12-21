@@ -17,7 +17,7 @@ use SMW\Query\Parser\DescriptionProcessor;
  *
  * @author mwjames
  */
-class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
+class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class StatsFormatterTest extends \PHPUnit_Framework_TestCase {
+class StatsFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

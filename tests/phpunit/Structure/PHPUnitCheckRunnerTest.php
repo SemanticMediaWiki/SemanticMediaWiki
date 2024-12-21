@@ -12,13 +12,13 @@ use SMW\Utils\FileFetcher;
  *
  * @author mwjames
  */
-class PHPUnitCheckRunnerTest extends \PHPUnit_Framework_TestCase {
+class PHPUnitCheckRunnerTest extends \PHPUnit\Framework\TestCase {
 
 	private static $iterator;
 
 	public static function setUpBeforeClass(): void {
 		$fileFetcher = new FileFetcher(
-			SMW_PHPUNIT_DIR
+			\SMW_PHPUNIT_DIR
 		);
 
 		self::$iterator = $fileFetcher->findByExtension( 'php' );

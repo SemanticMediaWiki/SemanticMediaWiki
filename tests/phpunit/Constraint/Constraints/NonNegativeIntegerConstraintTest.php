@@ -15,7 +15,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
+class NonNegativeIntegerConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

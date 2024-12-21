@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class LockManagerTest extends \PHPUnit_Framework_TestCase {
+class LockManagerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

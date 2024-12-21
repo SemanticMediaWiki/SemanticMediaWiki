@@ -17,7 +17,7 @@ use SMW\Options;
  *
  * @author mwjames
  */
-class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private DescriptionFactory $descriptionFactory;
 	private DataItemFactory $dataItemFactory;

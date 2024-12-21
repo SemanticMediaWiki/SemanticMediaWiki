@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
+class HtmlTabsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

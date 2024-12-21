@@ -419,7 +419,7 @@ class ParametersProcessor {
 
 			foreach ( $filter as $value ) {
 
-				if ( $value === '' || isset( $clear['v'] ) && $clear['v'] === $value ) {
+				if ( $value === '' || ( isset( $clear['v'] ) && $clear['v'] === $value ) ) {
 					continue;
 				}
 

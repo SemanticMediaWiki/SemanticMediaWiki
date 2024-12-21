@@ -13,7 +13,7 @@ use SMW\Query\QueryComparator;
  *
  * @author mwjames
  */
-class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
+class QueryComparatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$comparatorList = '';

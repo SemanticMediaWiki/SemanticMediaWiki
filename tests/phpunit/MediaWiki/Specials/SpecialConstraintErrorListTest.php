@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialConstraintErrorListTest extends \PHPUnit_Framework_TestCase {
+class SpecialConstraintErrorListTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;

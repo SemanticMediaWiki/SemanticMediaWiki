@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
+class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

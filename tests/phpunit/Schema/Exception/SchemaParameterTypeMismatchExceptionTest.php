@@ -13,7 +13,7 @@ use SMW\Schema\Exception\SchemaParameterTypeMismatchException;
  *
  * @author mwjames
  */
-class SchemaParameterTypeMismatchExceptionTest extends \PHPUnit_Framework_TestCase {
+class SchemaParameterTypeMismatchExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SchemaParameterTypeMismatchException( 'foo', 'array' );

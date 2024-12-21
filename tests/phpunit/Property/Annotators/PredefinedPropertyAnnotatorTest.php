@@ -20,7 +20,7 @@ use Title;
  *
  * @author mwjames
  */
-class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class PredefinedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;

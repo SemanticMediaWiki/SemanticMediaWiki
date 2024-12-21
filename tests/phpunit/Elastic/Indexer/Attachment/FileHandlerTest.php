@@ -13,7 +13,7 @@ use SMW\Elastic\Indexer\Attachment\FileHandler;
  *
  * @author mwjames
  */
-class FileHandlerTest extends \PHPUnit_Framework_TestCase {
+class FileHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $fileRepoFinder;
 

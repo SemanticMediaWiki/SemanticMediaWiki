@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CleanUpTablesTest extends \PHPUnit_Framework_TestCase {
+class CleanUpTablesTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

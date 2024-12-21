@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RebuilderTest extends \PHPUnit_Framework_TestCase {
+class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

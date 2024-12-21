@@ -16,7 +16,7 @@ use SMW\Query\Result\FieldItemFinder;
  *
  * @author mwjames
  */
-class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
+class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;

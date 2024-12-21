@@ -16,7 +16,7 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class ExpDataTest extends \PHPUnit_Framework_TestCase {
+class ExpDataTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructor() {
 		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )

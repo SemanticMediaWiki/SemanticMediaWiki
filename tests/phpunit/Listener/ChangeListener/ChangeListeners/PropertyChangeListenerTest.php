@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
+class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

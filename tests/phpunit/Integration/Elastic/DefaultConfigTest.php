@@ -10,7 +10,7 @@ use SMW\Exception\JSONParseException;
  *
  * @author mwjames
  */
-class DefaultConfigTest extends \PHPUnit_Framework_TestCase {
+class DefaultConfigTest extends \PHPUnit\Framework\TestCase {
 
 	private $contents;
 

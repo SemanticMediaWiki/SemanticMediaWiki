@@ -66,7 +66,7 @@ class RebuildPropertyStatisticsMaintenanceTest extends SMWIntegrationTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildPropertyStatistics' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildPropertyStatistics' );
 		$maintenanceRunner->setQuiet()->run();
 	}
 

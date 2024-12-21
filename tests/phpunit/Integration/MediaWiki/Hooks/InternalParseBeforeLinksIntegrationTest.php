@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class InternalParseBeforeLinksIntegrationTest extends \PHPUnit_Framework_TestCase {
+class InternalParseBeforeLinksIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	private $mwHooksHandler;
 	private $parserAfterTidyHook;

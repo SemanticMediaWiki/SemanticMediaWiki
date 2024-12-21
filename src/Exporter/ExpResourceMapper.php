@@ -271,7 +271,7 @@ class ExpResourceMapper {
 		$importDataItems = null;
 
 		// Only try to find an import vocab for a matchable entity
-		if ( $this->seekImportVocabulary && $diWikiPage->getNamespace() === NS_CATEGORY || $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
+		if ( ( $this->seekImportVocabulary && $diWikiPage->getNamespace() === NS_CATEGORY ) || $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
 			$importDataItems = $this->store->getPropertyValues(
 				$diWikiPage,
 				new DIProperty( '_IMPO' )

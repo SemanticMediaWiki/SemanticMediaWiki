@@ -13,7 +13,7 @@ use SMW\MediaWiki\Specials\FacetedSearch\Exception\ProfileSourceDefinitionConfli
  *
  * @author mwjames
  */
-class ProfileSourceDefinitionConflictExceptionTest extends \PHPUnit_Framework_TestCase {
+class ProfileSourceDefinitionConflictExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new ProfileSourceDefinitionConflictException( 'Foo', 'a', 'b' );

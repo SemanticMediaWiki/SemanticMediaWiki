@@ -13,7 +13,7 @@ use SMW\Property\Annotators\NullPropertyAnnotator;
  *
  * @author mwjames
  */
-class NullPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class NullPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )

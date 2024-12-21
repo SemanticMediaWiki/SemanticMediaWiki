@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
+class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

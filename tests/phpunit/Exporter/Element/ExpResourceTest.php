@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ExpResourceTest extends \PHPUnit_Framework_TestCase {
+class ExpResourceTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

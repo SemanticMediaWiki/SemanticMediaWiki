@@ -13,7 +13,7 @@ use SMW\Schema\Compartment;
  *
  * @author mwjames
  */
-class CompartmentTest extends \PHPUnit_Framework_TestCase {
+class CompartmentTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceof(

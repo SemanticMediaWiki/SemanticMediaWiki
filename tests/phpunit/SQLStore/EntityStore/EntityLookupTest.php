@@ -16,7 +16,7 @@ use SMW\SQLStore\EntityStore\EntityLookup;
  *
  * @author mwjames
  */
-class EntityLookupTest extends \PHPUnit_Framework_TestCase {
+class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $factory;

@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
+class TitleQuickPermissionsTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $titlePermissions;

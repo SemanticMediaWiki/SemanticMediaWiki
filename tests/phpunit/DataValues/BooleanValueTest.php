@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class BooleanValueTest extends \PHPUnit_Framework_TestCase {
+class BooleanValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

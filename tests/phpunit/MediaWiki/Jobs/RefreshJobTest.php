@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class RefreshJobTest extends \PHPUnit_Framework_TestCase {
+class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 
 	/** @var integer */
 	protected $controlRefreshDataIndex;

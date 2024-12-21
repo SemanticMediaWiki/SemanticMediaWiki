@@ -13,7 +13,7 @@ use SMW\MediaWiki\Api\Browse\ArticleLookup;
  *
  * @author mwjames
  */
-class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
+class ArticleLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )

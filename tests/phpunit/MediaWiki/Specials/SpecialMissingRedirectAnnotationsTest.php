@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialMissingRedirectAnnotationsTest extends \PHPUnit_Framework_TestCase {
+class SpecialMissingRedirectAnnotationsTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $store;

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
+class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

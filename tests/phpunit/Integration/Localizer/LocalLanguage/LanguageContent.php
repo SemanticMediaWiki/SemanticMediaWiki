@@ -12,7 +12,7 @@ use SMW\Localizer\LocalLanguage\LocalLanguage;
  *
  * @author mwjames
  */
-class LanguageContent extends \PHPUnit_Framework_TestCase {
+class LanguageContent extends \PHPUnit\Framework\TestCase {
 
 	protected function tearDown(): void {
 		LocalLanguage::clear();

@@ -14,25 +14,25 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CopyLocalMessagesTest extends \PHPUnit_Framework_TestCase {
+class CopyLocalMessagesTest extends \PHPUnit\Framework\TestCase {
 
 	private $canonicalMessages;
 	private $translatedMessages;
 
 	protected function setUp(): void {
-		$this->canonicalMessages = file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Localizer/en.json' );
-		$this->translatedMessages = file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Localizer/test.json' );
+		$this->canonicalMessages = file_get_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Localizer/en.json' );
+		$this->translatedMessages = file_get_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Localizer/test.json' );
 	}
 
 	protected function tearDown(): void {
-		file_put_contents( SMW_PHPUNIT_DIR . '/Fixtures/Localizer/en.json', $this->canonicalMessages );
-		file_put_contents( SMW_PHPUNIT_DIR . '/Fixtures/Localizer/test.json', $this->translatedMessages );
+		file_put_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Localizer/en.json', $this->canonicalMessages );
+		file_put_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Localizer/test.json', $this->translatedMessages );
 	}
 
 	public function testCopyCanonicalMessages() {
 		$instance = new CopyLocalMessages(
 			'test.json',
-			SMW_PHPUNIT_DIR . '/Fixtures/Localizer'
+			\SMW_PHPUNIT_DIR . '/Fixtures/Localizer'
 		);
 
 		$this->assertEquals(
@@ -41,7 +41,7 @@ class CopyLocalMessagesTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$canonicalMessages = json_decode(
-			file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Localizer/en.json' ),
+			file_get_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Localizer/en.json' ),
 			true
 		);
 
@@ -60,7 +60,7 @@ class CopyLocalMessagesTest extends \PHPUnit_Framework_TestCase {
 	public function tesCopyTranslatedMessages() {
 		$instance = new CopyLocalMessages(
 			'test.json',
-			SMW_PHPUNIT_DIR . '/Fixtures/Localizer'
+			\SMW_PHPUNIT_DIR . '/Fixtures/Localizer'
 		);
 
 		$this->assertEquals(
@@ -72,7 +72,7 @@ class CopyLocalMessagesTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$translatedMessages = json_decode(
-			file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Localizer/test.json' ),
+			file_get_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Localizer/test.json' ),
 			true
 		);
 

@@ -26,7 +26,7 @@ use SMWExporter as Exporter;
  *
  * @author mwjames
  */
-class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
+class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $dataValueFactory;

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
+class CompartmentIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -27,7 +27,7 @@ use SMW\Options;
  *
  * @author mwjames
  */
-class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
+class MockObjectBuilder extends \PHPUnit\Framework\TestCase {
 
 	/** @var ObjectDictionary */
 	protected $configuration;

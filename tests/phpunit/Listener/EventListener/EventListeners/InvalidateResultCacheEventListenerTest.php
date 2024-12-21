@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase {
+class InvalidateResultCacheEventListenerTest extends \PHPUnit\Framework\TestCase {
 
 	private $resultCache;
 	private $spyLogger;

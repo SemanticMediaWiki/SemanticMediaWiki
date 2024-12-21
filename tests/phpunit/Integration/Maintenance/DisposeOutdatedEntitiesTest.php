@@ -38,7 +38,7 @@ class DisposeOutdatedEntitiesTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\DisposeOutdatedEntities'
+			'\SMW\Maintenance\disposeOutdatedEntities'
 		);
 
 		$maintenanceRunner->setMessageReporter(

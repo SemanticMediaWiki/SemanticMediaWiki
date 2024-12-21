@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
+class JsonImportContentsFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

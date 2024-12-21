@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Framework_TestCase {
+class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $mwHooksHandler;

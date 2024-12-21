@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
+class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

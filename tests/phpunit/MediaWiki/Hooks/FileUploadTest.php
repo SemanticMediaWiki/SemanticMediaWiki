@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-class FileUploadTest extends \PHPUnit_Framework_TestCase {
+class FileUploadTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $propertySpecificationLookup;

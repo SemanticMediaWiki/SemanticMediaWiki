@@ -15,7 +15,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
+class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

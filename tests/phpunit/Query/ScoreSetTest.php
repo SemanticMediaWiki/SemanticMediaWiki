@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ScoreSetTest extends \PHPUnit_Framework_TestCase {
+class ScoreSetTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

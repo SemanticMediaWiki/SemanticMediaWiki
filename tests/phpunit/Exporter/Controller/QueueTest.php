@@ -14,7 +14,7 @@ use SMW\Exporter\Controller\Queue;
  *
  * @author mwjames
  */
-class QueueTest extends \PHPUnit_Framework_TestCase {
+class QueueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

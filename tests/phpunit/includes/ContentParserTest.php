@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ContentParserTest extends \PHPUnit_Framework_TestCase {
+class ContentParserTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

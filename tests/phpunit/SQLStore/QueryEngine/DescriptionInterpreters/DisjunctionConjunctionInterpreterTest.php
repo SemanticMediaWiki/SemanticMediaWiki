@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class DisjunctionConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $conditionBuilder;

@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
  *
  * @author mwjames
  */
-class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
+class SearchTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 	private $searchTable;

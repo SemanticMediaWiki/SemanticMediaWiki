@@ -13,7 +13,7 @@ use SMW\SQLStore\Lookup\CachedListLookup;
  *
  * @author mwjames
  */
-class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
+class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )

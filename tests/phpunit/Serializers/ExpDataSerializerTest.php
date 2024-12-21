@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
+class ExpDataSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

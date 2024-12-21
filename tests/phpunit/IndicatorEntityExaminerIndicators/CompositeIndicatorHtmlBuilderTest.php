@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
+class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

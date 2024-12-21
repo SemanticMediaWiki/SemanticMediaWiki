@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
+class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $connection;

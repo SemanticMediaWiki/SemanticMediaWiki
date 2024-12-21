@@ -20,7 +20,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
+class InfoLinksProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

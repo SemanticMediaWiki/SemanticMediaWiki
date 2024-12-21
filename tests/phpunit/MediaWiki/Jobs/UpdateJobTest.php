@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class UpdateJobTest extends \PHPUnit_Framework_TestCase {
+class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $semanticDataFactory;

@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
+class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

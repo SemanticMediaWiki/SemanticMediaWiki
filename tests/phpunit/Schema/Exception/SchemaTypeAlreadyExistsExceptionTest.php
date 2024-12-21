@@ -13,7 +13,7 @@ use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
  *
  * @author mwjames
  */
-class SchemaTypeAlreadyExistsExceptionTest extends \PHPUnit_Framework_TestCase {
+class SchemaTypeAlreadyExistsExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SchemaTypeAlreadyExistsException( 'foo' );

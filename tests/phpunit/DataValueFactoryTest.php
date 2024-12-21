@@ -17,7 +17,7 @@ use SMWDataItem;
  *
  * @author mwjames
  */
-class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
+class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

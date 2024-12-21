@@ -13,7 +13,7 @@ use SMW\MediaWiki\Search\ProfileForm\FormsFactory;
  *
  * @author mwjames
  */
-class FormsFactoryTest extends \PHPUnit_Framework_TestCase {
+class FormsFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $webRequest;
 

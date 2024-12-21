@@ -13,7 +13,7 @@ use SMW\SQLStore\TableBuilder\FieldType;
  *
  * @author mwjames
  */
-class FieldTypeTest extends \PHPUnit_Framework_TestCase {
+class FieldTypeTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider fieldTypeProvider

@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SpecialConceptsTest extends \PHPUnit_Framework_TestCase {
+class SpecialConceptsTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 	private $testEnvironment;

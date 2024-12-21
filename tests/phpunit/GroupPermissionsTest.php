@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
+class GroupPermissionsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

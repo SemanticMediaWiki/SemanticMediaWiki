@@ -18,7 +18,7 @@ use SMW\InMemoryPoolCache;
  *
  * @author mwjames
  */
-class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
+class ExpResourceMapperTest extends \PHPUnit\Framework\TestCase {
 
 	private $inMemoryPoolCache;
 

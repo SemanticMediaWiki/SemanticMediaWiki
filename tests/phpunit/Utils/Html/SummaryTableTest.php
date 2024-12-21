@@ -14,7 +14,7 @@ use SMW\Utils\Html\SummaryTable;
  *
  * @author mwjames
  */
-class SummaryTableTest extends \PHPUnit_Framework_TestCase {
+class SummaryTableTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 

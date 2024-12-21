@@ -13,7 +13,7 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
  *
  * @author mwjames
  */
-class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
+class DescriptionInterpreterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

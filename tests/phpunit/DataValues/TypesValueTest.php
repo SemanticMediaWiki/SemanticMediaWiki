@@ -14,7 +14,7 @@ use SMW\DataValues\ValueParsers\TypesValueParser;
  *
  * @author mwjames
  */
-class TypesValueTest extends \PHPUnit_Framework_TestCase {
+class TypesValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

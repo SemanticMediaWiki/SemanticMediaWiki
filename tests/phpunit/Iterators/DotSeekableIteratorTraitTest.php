@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DotSeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
+class DotSeekableIteratorTraitTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

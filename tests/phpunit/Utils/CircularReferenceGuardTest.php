@@ -13,7 +13,7 @@ use SMW\Utils\CircularReferenceGuard;
  *
  * @author mwjames
  */
-class CircularReferenceGuardTest extends \PHPUnit_Framework_TestCase {
+class CircularReferenceGuardTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

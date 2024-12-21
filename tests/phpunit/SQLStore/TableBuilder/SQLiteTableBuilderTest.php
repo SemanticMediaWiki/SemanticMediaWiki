@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\IMaintainableDatabase;
  *
  * @author mwjames
  */
-class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 

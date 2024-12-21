@@ -13,7 +13,7 @@ use SMW\Utils\Csv;
  *
  * @author mwjames
  */
-class CsvTest extends \PHPUnit_Framework_TestCase {
+class CsvTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider rowsProvider

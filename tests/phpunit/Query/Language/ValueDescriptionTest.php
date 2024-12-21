@@ -16,7 +16,7 @@ use SMWDINumber as DINumber;
  *
  * @author mwjames
  */
-class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
+class ValueDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )

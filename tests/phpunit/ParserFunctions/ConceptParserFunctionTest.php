@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	private $applicationFactory;
 

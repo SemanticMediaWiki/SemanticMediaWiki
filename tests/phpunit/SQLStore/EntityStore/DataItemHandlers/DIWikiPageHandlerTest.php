@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
+class DIWikiPageHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
