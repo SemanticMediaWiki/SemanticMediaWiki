@@ -50,13 +50,13 @@ return [
 	 * @see $smwgJobQueueWatchlist
 	 */
 	'smwgJobQueueWatchlist' => [
-	    'smw.update',
-	    'smw.fulltextSearchTableUpdate',
-	    'smw.changePropagationUpdate',
-	    'smw.changePropagationClassUpdate',
-	    'smw.changePropagationDispatch',
-	    'smw.elasticIndexerRecovery',
-	    'smw.elasticFileIngest'
+		'smw.update',
+		'smw.fulltextSearchTableUpdate',
+		'smw.changePropagationUpdate',
+		'smw.changePropagationClassUpdate',
+		'smw.changePropagationDispatch',
+		'smw.elasticIndexerRecovery',
+		'smw.elasticFileIngest'
 	]
 
 ];

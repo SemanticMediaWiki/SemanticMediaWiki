@@ -240,9 +240,9 @@ class ExpResourceMapper {
 		}
 
 		if ( ( $localName === '' ) ||
-		     ( in_array( $localName[0], [ '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ] ) ) ||
-		     ( $hasFixedNamespace && strpos( $localName, '/' ) !== false )
-		     ) {
+			 ( in_array( $localName[0], [ '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ] ) ) ||
+			 ( $hasFixedNamespace && strpos( $localName, '/' ) !== false )
+			 ) {
 			$namespace = Exporter::getInstance()->getNamespaceUri( 'wiki' );
 			$namespaceId = 'wiki';
 			$localName = Escaper::encodePage( $diWikiPage );

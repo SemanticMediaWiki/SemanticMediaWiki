@@ -402,7 +402,7 @@ class SMWExporter {
 			$diSubject = $expData->getSubject()->getDataItem();
 			// subject wikipage required for disambiguating special properties:
 			if ( is_null( $diSubject ) ||
-			     $diSubject->getDIType() != SMWDataItem::TYPE_WIKIPAGE ) {
+				 $diSubject->getDIType() != SMWDataItem::TYPE_WIKIPAGE ) {
 				return;
 			}
 
@@ -419,7 +419,7 @@ class SMWExporter {
 				// Basic namespace filtering to ensure that types match for redirects etc.
 				/// TODO: currently no full check for avoiding OWL DL illegal redirects is done (OWL property type ignored)
 				if ( $filterNamespace && !( $dataItem instanceof SMWDIUri ) &&
-				     ( !( $dataItem instanceof DIWikiPage ) ) ) {
+					 ( !( $dataItem instanceof DIWikiPage ) ) ) {
 					continue;
 				}
 
@@ -570,9 +570,9 @@ class SMWExporter {
 	public function expandURI( $uri ) {
 		self::initBaseURIs();
 		$uri = str_replace( [ '&wiki;', '&wikiurl;', '&property;', '&category;', '&owl;', '&rdf;', '&rdfs;', '&swivt;', '&export;' ],
-		                    [ self::$m_ent_wiki, self::$m_ent_wikiurl, self::$m_ent_property, self::$m_ent_category, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
-		                    self::$m_exporturl ],
-		                    $uri );
+							[ self::$m_ent_wiki, self::$m_ent_wikiurl, self::$m_ent_property, self::$m_ent_category, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
+							self::$m_exporturl ],
+							$uri );
 		return $uri;
 	}
 

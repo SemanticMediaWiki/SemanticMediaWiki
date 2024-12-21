@@ -50,7 +50,7 @@ class SPARQLStore extends Store {
 
 	/**
 	 * Underlying store to use for basic read operations.
-  	 * Public since 5.0. (https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5749)
+	 * Public since 5.0. (https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5749)
 	 *
 	 * @since 1.8
 	 * @var Store

@@ -85,18 +85,18 @@ class ExpDataSerializerTest extends \PHPUnit\Framework\TestCase {
 				'data' => [
 					'LaLi' => [
 						 'property' => [
-						 	'type' => 1,
-						 	'uri' => 'Li|La|Lu',
-						 	'dataitem' => null
+							'type' => 1,
+							'uri' => 'Li|La|Lu',
+							'dataitem' => null
 						 ],
 						 'children' => [
-						 	[
-						 		'type' => 2,
-						 		'lexical' => 'Foo',
-						 		'datatype' => 'Bar',
-						 		'lang' => '',
-						 		'dataitem' => null
-						 	]
+							[
+								'type' => 2,
+								'lexical' => 'Foo',
+								'datatype' => 'Bar',
+								'lang' => '',
+								'dataitem' => null
+							]
 						 ]
 					]
 				],
@@ -129,32 +129,32 @@ class ExpDataSerializerTest extends \PHPUnit\Framework\TestCase {
 				'data' => [
 					'LaLi' => [
 						 'property' => [
-						 	'type' => 1,
-						 	'uri' => 'Li|La|Lu',
-						 	'dataitem' => [ // DIBlob
-						 		'type' => 2,
-						 		'item' => 'SomeText'
-						 	]
+							'type' => 1,
+							'uri' => 'Li|La|Lu',
+							'dataitem' => [ // DIBlob
+								'type' => 2,
+								'item' => 'SomeText'
+							]
 						 ],
 						 'children' => [
-						 	[ // ExpLiteral
-						 		'type' => 2,
-						 		'lexical' => 'Foo',
-						 		'datatype' => 'Bar',
-						 		'lang' => '',
-						 		'dataitem' => null
-						 	],
-						 	[ // ExpData
+							[ // ExpLiteral
+								'type' => 2,
+								'lexical' => 'Foo',
+								'datatype' => 'Bar',
+								'lang' => '',
+								'dataitem' => null
+							],
+							[ // ExpData
 								'subject' => [
 								'type' => 1,
 								'uri' => 'Foo|Bar|Mo',
-							 	'dataitem' => [
-							 		'type' => 2,
-							 		'item' => 'SomeOtherText'
-							 		]
+								'dataitem' => [
+									'type' => 2,
+									'item' => 'SomeOtherText'
+									]
 								],
 								'data' => []
-						 	]
+							]
 						 ]
 					]
 				],

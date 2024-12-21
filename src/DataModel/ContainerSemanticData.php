@@ -94,9 +94,9 @@ class ContainerSemanticData extends SemanticData {
 	 */
 	public function hasAnonymousSubject() {
 		if ( $this->mSubject->getNamespace() == NS_SPECIAL &&
-		     $this->mSubject->getDBkey() == 'SMWInternalObject' &&
-		     $this->mSubject->getInterwiki() === '' &&
-		     $this->mSubject->getSubobjectName() === 'int' ) {
+			 $this->mSubject->getDBkey() == 'SMWInternalObject' &&
+			 $this->mSubject->getInterwiki() === '' &&
+			 $this->mSubject->getSubobjectName() === 'int' ) {
 			return true;
 		}
 

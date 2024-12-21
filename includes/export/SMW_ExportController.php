@@ -200,7 +200,7 @@ class SMWExportController {
 
 		if ( $recursiondepth != 0 ) {
 			$subrecdepth = $recursiondepth > 0 ? ( $recursiondepth - 1 ) :
-			               ( $recursiondepth == 0 ? 0 : -1 );
+						   ( $recursiondepth == 0 ? 0 : -1 );
 
 			foreach ( $expData->getProperties() as $property ) {
 				if ( $property->getDataItem() instanceof SMWWikiPageValue ) {
@@ -518,7 +518,7 @@ class SMWExportController {
 
 				foreach ( $members as $key => $diaux ) {
 					if ( !$this->isSemanticEnabled( $diaux->getNamespace() ) ||
-					     !self::fitsNsRestriction( $ns_restriction, $diaux->getNamespace() ) ) {
+						 !self::fitsNsRestriction( $ns_restriction, $diaux->getNamespace() ) ) {
 						// Note: we do not need to check the cache to guess if an element was already
 						// printed. If so, it would not be included in the queue in the first place.
 						$d_count += 1; // DEBUG
@@ -570,8 +570,8 @@ class SMWExportController {
 			}
 		}
 		$res = $db->select( $db->tableName( 'page' ),
-		                    'page_id,page_title,page_namespace', $query,
-		                    'SMW::RDF::PrintPageList', [ 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ] );
+							'page_id,page_title,page_namespace', $query,
+							'SMW::RDF::PrintPageList', [ 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ] );
 		$foundpages = false;
 
 		foreach ( $res as $row ) {

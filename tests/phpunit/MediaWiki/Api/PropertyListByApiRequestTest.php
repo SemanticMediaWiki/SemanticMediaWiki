@@ -33,7 +33,7 @@ class PropertyListByApiRequestTest extends \PHPUnit\Framework\TestCase {
 
 	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
- 	}
+	}
 
 	public function testCanConstruct() {
 		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )

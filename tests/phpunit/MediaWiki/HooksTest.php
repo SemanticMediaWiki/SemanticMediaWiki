@@ -187,9 +187,9 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 		self::$handlers[] = call_user_func_array( [ $this, $method ], [ $instance ] );
 	}
 
-    /**
-     * @depends testRegister
-     */
+	/**
+	 * @depends testRegister
+	 */
 	public function testCheckOnMissingHandlers() {
 		$disabled = [
 			'PageSchemasRegisterHandlers',

@@ -354,9 +354,9 @@ abstract class Serializer {
 			return ( $locname == 'type' );
 		} elseif ( $property->getNamespaceID() == 'owl' ) {
 			return ( $locname == 'intersectionOf' ) || ( $locname == 'unionOf' ) ||
-			       ( $locname == 'equivalentClass' ) ||
-			       ( $locname == 'complementOf' ) || ( $locname == 'someValuesFrom' ) ||
-			       ( $locname == 'allValuesFrom' ) || ( $locname == 'onClass' );
+				   ( $locname == 'equivalentClass' ) ||
+				   ( $locname == 'complementOf' ) || ( $locname == 'someValuesFrom' ) ||
+				   ( $locname == 'allValuesFrom' ) || ( $locname == 'onClass' );
 		} elseif ( $property->getNamespaceID() == 'rdfs' ) {
 			return ( $locname == 'subClassOf' ) || ( $locname == 'range' ) || ( $locname == 'domain' );
 		}

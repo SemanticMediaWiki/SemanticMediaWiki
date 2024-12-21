@@ -169,7 +169,7 @@ class JsonTestCaseFileHandler {
 				$version = defined( 'HHVM_VERSION' ) ? HHVM_VERSION : 0;
 			} elseif ( strpos( $id, 'php' ) !== false ) {
 				$version = defined( 'PHP_VERSION' ) ? PHP_VERSION : 0;
- 			}
+			}
 
 			if ( $versionToSkip !== '' && ( $versionToSkip[0] === '<' || $versionToSkip[0] === '>' ) ) {
 				$compare = $versionToSkip[0];

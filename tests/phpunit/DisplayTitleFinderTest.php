@@ -201,15 +201,15 @@ class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( 'SubFoo' )
 		];
 
- 		$instance = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
- 			->setConstructorArgs(
- 				[
+		$instance = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
+			->setConstructorArgs(
+				[
 					$this->store,
 					$this->entityCache
- 				]
- 			)
- 			->setMethods( [ 'prefetchFromList' ] )
- 			->getMock();
+				]
+			)
+			->setMethods( [ 'prefetchFromList' ] )
+			->getMock();
 
 		$instance->expects( $this->any() )
 			->method( 'prefetchFromList' )
