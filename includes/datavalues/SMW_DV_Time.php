@@ -354,7 +354,7 @@ class SMWTimeValue extends SMWDataValue {
 
 		// Old Style is a special case of Julian calendar model where the change of the year was 25 March:
 		if ( ( $calendarmodel == 'OS' ) &&
-		     ( ( $date['m'] < 3 ) || ( ( $date['m'] == 3 ) && ( $date['d'] < 25 ) ) ) ) {
+			 ( ( $date['m'] < 3 ) || ( ( $date['m'] == 3 ) && ( $date['d'] < 25 ) ) ) ) {
 			$date['y']++;
 		}
 
@@ -371,7 +371,7 @@ class SMWTimeValue extends SMWDataValue {
 		// not make sense for prehistoric dates, and our calendar
 		// conversion would not be reliable if JD numbers get too huge:
 		if ( ( $date['y'] <= self::PREHISTORY ) &&
-		     ( ( $this->m_dataitem->getPrecision() > DITime::PREC_Y ) || ( $calendarmodel !== false ) ) ) {
+			 ( ( $this->m_dataitem->getPrecision() > DITime::PREC_Y ) || ( $calendarmodel !== false ) ) ) {
 			$this->addErrorMsg( [ 'smw-datavalue-time-invalid-prehistoric', $this->m_wikivalue ] );
 			return false;
 		}
@@ -458,8 +458,8 @@ class SMWTimeValue extends SMWDataValue {
 		}
 
 		if ( ( $year > 1582 ) ||
-		     ( ( $year == 1582 ) && ( $month > 10 ) ) ||
-		     ( ( $year == 1582 ) && ( $month == 10 ) && ( $day > 4 ) ) ) {
+			 ( ( $year == 1582 ) && ( $month > 10 ) ) ||
+			 ( ( $year == 1582 ) && ( $month == 10 ) && ( $day > 4 ) ) ) {
 			return DITime::CM_GREGORIAN;
 		} elseif ( $year > self::PREHISTORY ) {
 			return DITime::CM_JULIAN;

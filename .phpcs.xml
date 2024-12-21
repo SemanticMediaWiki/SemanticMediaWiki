@@ -41,7 +41,6 @@
 		<exclude name="Squiz.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
 		<exclude name="Squiz.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
 		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />
-		<exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
 		<exclude name="MediaWiki.WhiteSpace.MultipleEmptyLines.MultipleEmptyLines" />
 		<exclude name="MediaWiki.PHPUnit.AssertionOrder.WrongOrder" />
 		<exclude name="MediaWiki.PHPUnit.SetMethods.SetMethods" />

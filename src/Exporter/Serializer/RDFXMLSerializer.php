@@ -171,7 +171,7 @@ class RDFXMLSerializer extends Serializer {
 		// else: blank node, no "rdf:about"
 		if (
 			$expData->getSubject() instanceof ExpResource &&
-		    !$expData->getSubject()->isBlankNode() ) {
+			!$expData->getSubject()->isBlankNode() ) {
 			$this->post_ns_buffer .= ' rdf:about="' . $expData->getSubject()->getUri() . '"';
 		}
 

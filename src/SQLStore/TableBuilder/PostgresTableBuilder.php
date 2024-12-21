@@ -133,12 +133,12 @@ SELECT
 		case when a.attnotnull THEN 'NO'::text else 'YES'::text END as "Null", a.attnum
 	FROM pg_catalog.pg_attribute a
 	WHERE a.attrelid = (
-	    SELECT c.oid
-	    FROM pg_catalog.pg_class c
-	    LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-	    WHERE c.relname ~ '^($tableName)$'
-	    AND pg_catalog.pg_table_is_visible(c.oid)
-	    LIMIT 1
+		SELECT c.oid
+		FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+		WHERE c.relname ~ '^($tableName)$'
+		AND pg_catalog.pg_table_is_visible(c.oid)
+		LIMIT 1
 	 ) AND a.attnum > 0 AND NOT a.attisdropped
 	 ORDER BY a.attnum
 EOT;

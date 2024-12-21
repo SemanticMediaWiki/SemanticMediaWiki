@@ -133,8 +133,8 @@ class RepositoryResult implements Iterator {
 			$row = reset( $this->data );
 			$expElement = reset( $row );
 			if ( ( count( $row ) == 1 ) && ( $expElement instanceof ExpLiteral ) &&
-			     ( $expElement->getLexicalForm() == 'true' ) &&
-			     ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#boolean' ) ) {
+				 ( $expElement->getLexicalForm() == 'true' ) &&
+				 ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#boolean' ) ) {
 				return true;
 			}
 		}
@@ -154,7 +154,7 @@ class RepositoryResult implements Iterator {
 			$row = reset( $this->data );
 			$expElement = reset( $row );
 			if ( ( count( $row ) == 1 ) && ( $expElement instanceof ExpLiteral ) &&
-			     ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#integer' ) ) {
+				 ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#integer' ) ) {
 				return (int)$expElement->getLexicalForm();
 			}
 		}

@@ -21,14 +21,14 @@ class IdCacheManagerTest extends \PHPUnit\Framework\TestCase {
 
 	private $caches;
 
- 	protected function setUp(): void {
+	protected function setUp(): void {
 		$this->caches = [
 			'entity.id' => new FixedInMemoryLruCache(),
 			'entity.sort' => new FixedInMemoryLruCache(),
 			'entity.lookup' => new FixedInMemoryLruCache(),
 			'propertytable.hash' => new FixedInMemoryLruCache()
 		];
- 	}
+	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

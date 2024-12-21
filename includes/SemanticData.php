@@ -757,7 +757,7 @@ class SemanticData implements JsonUnserializable {
 		// Shortcut when copying into empty objects that don't ask for
 		// more duplicate elimination:
 		if ( count( $this->mProperties ) == 0 &&
-		     ( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
+			 ( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
 
 			$this->mProperties = $semanticData->getProperties();
 			$this->sequenceMap = $semanticData->getSequenceMap();

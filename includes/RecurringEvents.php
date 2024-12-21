@@ -291,7 +291,7 @@ class RecurringEvents {
 				} elseif ( $cur_day > 30 ) {
 					// Check whether 31 is a valid day of a month
 					$cur_day = ( $display_month - 1 ) % 7 % 2 ? 30 : 31;
- 				}
+				}
 
 				$date_str = "$cur_year-$display_month-$cur_day $cur_time";
 				$cur_date = DataValueFactory::getInstance()->newTypeIDValue( '_dat', $date_str );

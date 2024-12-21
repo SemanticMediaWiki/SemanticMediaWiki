@@ -166,8 +166,8 @@ class XmlResponseParser implements HttpResponseParser {
 		switch ( $elementTag ) {
 			case 'binding' && ( $prevTag == 'result' ):
 					if ( ( array_key_exists( 'name', $attributes ) ) &&
-					     ( array_key_exists( $attributes['name'], $this->header ) ) ) {
-						 $this->xmlBindIndex = $this->header[$attributes['name']];
+						 ( array_key_exists( $attributes['name'], $this->header ) ) ) {
+				 $this->xmlBindIndex = $this->header[$attributes['name']];
 					}
 				break;
 			case 'result' && ( $prevTag == 'results' ):

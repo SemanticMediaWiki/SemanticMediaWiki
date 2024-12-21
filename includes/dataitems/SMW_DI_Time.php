@@ -122,7 +122,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @todo Implement more validation here.
 	 */
 	public function __construct( $calendarmodel, $year, $month = false, $day = false,
-	                             $hour = false, $minute = false, $second = false, $timezone = false ) {
+								 $hour = false, $minute = false, $second = false, $timezone = false ) {
 		if ( ( $calendarmodel != self::CM_GREGORIAN ) && ( $calendarmodel != self::CM_JULIAN ) ) {
 			throw new DataItemException( "Unsupported calendar model constant \"$calendarmodel\"." );
 		}
@@ -548,7 +548,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 			return ( $astroyear % 4 ) == 0;
 		} else {
 			return ( ( $astroyear % 400 ) == 0 ) ||
-			       ( ( ( $astroyear % 4 ) == 0 ) && ( ( $astroyear % 100 ) != 0 ) );
+				   ( ( ( $astroyear % 4 ) == 0 ) && ( ( $astroyear % 100 ) != 0 ) );
 		}
 	}
 

@@ -31,10 +31,10 @@ class LinkBatch {
 	 */
 	private $batch = [];
 
-    /**
-     * @var \LinkBatch|null
-     */
-    private $linkBatch;
+	/**
+	 * @var \LinkBatch|null
+	 */
+	private $linkBatch;
 
 	/**
 	 * @since 3.1
