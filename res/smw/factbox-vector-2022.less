@@ -1,0 +1,20 @@
+@import 'tokens.less';
+
+.smw-factbox-container {
+	/* Don't extend beyone end column */
+	.vector-feature-appearance-pinned-clientpref-1 &,
+	.vector-feature-page-tools-pinned-enabled & {
+		@media screen and ( min-width: @min-width-breakpoint-desktop ) {
+			margin-inline-end: ~'calc( 12.25rem + 24px )';
+		}
+
+		@media screen and ( min-width: @min-width-breakpoint-desktop-wide ) {
+			margin-inline-end: ~'calc( 15.5rem + 24px )';
+		}
+	}
+
+	/* 59.25rem is the max-width in limited width mode */
+	.vector-feature-limited-width-clientpref-1 & {
+		max-width: 59.25rem;
+	}
+}
