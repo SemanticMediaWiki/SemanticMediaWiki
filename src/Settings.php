@@ -209,7 +209,9 @@ class Settings extends Options {
 			'smwgCheckForConstraintErrors' => $GLOBALS['smwgCheckForConstraintErrors'],
 			'smwgPlainList' => $GLOBALS['smwgPlainList'],
 			'smwgDetectOutdatedData' => $GLOBALS['smwgDetectOutdatedData'],
-		];
+			'smwgIgnoreUpgradeKeyCheck' => $GLOBALS['smwgIgnoreUpgradeKeyCheck'],
+			'smwgEnableExportRDFLink' => $GLOBALS['smwgEnableExportRDFLink']
+ 		];
 
 		$this->isLoaded = true;
 

@@ -15,7 +15,7 @@ use ReflectionClass;
  *
  * @author mwjames
  */
-class ConfigPreloadTableListPrimaryKeysCompleteTest extends \PHPUnit_Framework_TestCase {
+class ConfigPreloadTableListPrimaryKeysCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	const FILENAME = 'db-primary-keys.php';
 
@@ -33,7 +33,7 @@ class ConfigPreloadTableListPrimaryKeysCompleteTest extends \PHPUnit_Framework_T
 		$tableKeys = $reflectionClass->getConstant( 'PRIMARY_KEYS' );
 
 		$unlistedTables = [];
-		$connection = $store->getConnection( DB_MASTER );
+		$connection = $store->getConnection( DB_PRIMARY );
 
 		$tableSchemaManager = new TableSchemaManager(
 			$store

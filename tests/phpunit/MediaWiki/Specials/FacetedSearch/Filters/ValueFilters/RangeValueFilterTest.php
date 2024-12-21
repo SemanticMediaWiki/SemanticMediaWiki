@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RangeValueFilterTest extends \PHPUnit_Framework_TestCase {
+class RangeValueFilterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

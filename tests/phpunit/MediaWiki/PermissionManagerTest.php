@@ -16,7 +16,7 @@ use User;
  *
  * @author mwjames
  */
-class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
+class PermissionManagerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testUserCan_PermissionManager() {
 		$title = $this->createMock( Title::class );

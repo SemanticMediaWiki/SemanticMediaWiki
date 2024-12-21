@@ -10,13 +10,14 @@ use SMWDIBlob as DIBlob;
 /**
  * @covers \SMW\DisplayTitleFinder
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since   3.1
  *
  * @author mwjames
  */
-class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
+class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $entityCache;

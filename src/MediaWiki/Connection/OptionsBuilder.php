@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki\Connection;
 
+use Wikimedia\Rdbms\Platform\SQLPlatform;
+
 /**
  * https://phabricator.wikimedia.org/T147550
  *
@@ -41,7 +43,7 @@ class OptionsBuilder {
 	}
 
 	/**
-	 * @see Database::makeSelectOptions
+	 * @see SQLPlatform::makeSelectOptions
 	 */
 	public static function makeSelectOptions( Database $connection, $options ) {
 		$preLimitTail = $postLimitTail = '';

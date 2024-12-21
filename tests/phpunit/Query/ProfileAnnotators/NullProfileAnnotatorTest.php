@@ -16,7 +16,7 @@ use SMWDIContainer as DIContainer;
  *
  * @author mwjames
  */
-class NullProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class NullProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$container = $this->getMockBuilder( '\SMWDIContainer' )

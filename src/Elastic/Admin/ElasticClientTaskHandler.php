@@ -161,7 +161,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 			'p',
 			[],
 			$this->msg( [ 'smw-admin-supplementary-elastic-no-connection' ], Message::PARSE )
-		). Html::rawElement(
+		) . Html::rawElement(
 			'h4',
 			[ 'class' => 'smw-title' ],
 			$this->msg( [ 'smw-admin-supplementary-elastic-endpoints' ] )

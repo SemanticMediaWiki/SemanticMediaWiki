@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Utils\Mock;
 
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
+use Wikimedia\Rdbms\Database;
+
 /**
  * @codeCoverageIgnore
  *
@@ -14,7 +17,7 @@ namespace SMW\Tests\Utils\Mock;
  *
  * @author mwjames
  */
-class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implements MockObjectRepository {
+class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implements MockObjectRepository {
 
 	/** @var MockObjectBuilder */
 	protected $builder;
@@ -314,12 +317,10 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	/**
 	 * @since 1.9
 	 *
-	 * @return LinksUpdate
+	 * @return \MediaWiki\Deferred\LinksUpdate\LinksUpdate
 	 */
 	public function LinksUpdate() {
-		$linksUpdate = $this->getMockBuilder( 'LinksUpdate' )
-			->disableOriginalConstructor()
-			->getMock();
+		$linksUpdate = $this->createMock( LinksUpdate::class );
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
@@ -369,10 +370,10 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	/**
 	 * @since 1.9
 	 *
-	 * @return DatabaseBase
+	 * @return Database
 	 */
-	public function DatabaseBase() {
-		// DatabaseBase is an abstract class, use setMethods to implement
+	public function Database() {
+		// Database is an abstract class, use setMethods to implement
 		// required abstract methods
 		$requiredAbstractMethods = [
 			'selectField',
@@ -399,20 +400,20 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 
 		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 
-		$databaseBase = $this->getMockBuilder( 'DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( $methods )
 			->getMock();
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
-			$databaseBase->expects( $this->any() )
+			$database->expects( $this->any() )
 				->method( $method )
 				->will( $this->builder->setCallback( $method ) );
 
 		}
 
-		return $databaseBase;
+		return $database;
 	}
 
 	/**

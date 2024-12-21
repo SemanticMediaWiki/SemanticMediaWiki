@@ -10,13 +10,14 @@ use SMW\Tests\TestEnvironment;
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryDependencyLinksStore
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 2.3
  *
  * @author mwjames
  */
-class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
+class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $spyLogger;

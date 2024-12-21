@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,9 +14,8 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RebuildConceptCacheTest extends DatabaseTestCase {
+class RebuildConceptCacheTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 
 	protected function setUp(): void {
@@ -31,7 +30,7 @@ class RebuildConceptCacheTest extends DatabaseTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RebuildConceptCache'
+			'\SMW\Maintenance\rebuildConceptCache'
 		);
 
 		$maintenanceRunner->setQuiet();

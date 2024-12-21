@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
+class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

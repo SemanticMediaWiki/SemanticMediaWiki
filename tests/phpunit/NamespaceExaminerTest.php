@@ -13,7 +13,7 @@ use SMW\NamespaceExaminer;
  *
  * @author mwjames
  */
-class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
+class NamespaceExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HashFieldTest extends \PHPUnit_Framework_TestCase {
+class HashFieldTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -31,7 +31,7 @@ class HashFieldTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->populateHashField = $this->getMockBuilder( '\SMW\Maintenance\PopulateHashField' )
+		$this->populateHashField = $this->getMockBuilder( '\SMW\Maintenance\populateHashField' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

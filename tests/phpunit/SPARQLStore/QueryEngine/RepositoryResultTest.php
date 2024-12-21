@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RepositoryResultTest extends \PHPUnit_Framework_TestCase {
+class RepositoryResultTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

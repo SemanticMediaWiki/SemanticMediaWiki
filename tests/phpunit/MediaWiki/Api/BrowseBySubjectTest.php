@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
+class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -145,7 +145,6 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-
 	public function testHtmlJsonPrintOutput() {
 		$parameters = [
 			'subject' => 'Foo',
@@ -198,7 +197,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 		$out = ob_get_clean();
 
 		$this->stringValidator->assertThatStringContains(
-			'"query":"<div class=\"smwb-datasheet.*\"><div class=\"smw-table smwb-factbox\">',
+			'"query":"<div\n\tclass=\"smw-browse\"\n\t\n\t\n>\n\t\n\t\n\t<div class=\"smw-browse-content\">\n\t\t<article class=\"smw-factbox\">\n\t<header class=\"smw-factbox-header\">',
 			$out
 		);
 	}

@@ -44,7 +44,10 @@ class SMWSpecialTypes extends SpecialPage {
 		$this->setHeaders();
 		$out = $this->getOutput();
 
-		$out->addModuleStyles( 'ext.smw.page.styles' );
+		$out->addModuleStyles( [
+			'ext.smw.styles',
+			'ext.smw.page.styles'
+		] );
 		$out->addModules( 'smw.property.page' );
 
 		$params = Infolink::decodeParameters( $param ?? '', false );
@@ -99,11 +102,6 @@ class SMWSpecialTypes extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/properties-concepts-types';
 	}
 
@@ -250,7 +248,7 @@ class SMWSpecialTypes extends SpecialPage {
 		$result = \Html::rawElement(
 			'div',
 			[
-				'class' => 'plainlinks smw-types-intro '. $typeKey
+				'class' => 'plainlinks smw-types-intro ' . $typeKey
 			],
 			wfMessage( $msgKey, str_replace( '_', ' ', $label ) )->parse() .
 			$this->find_extras( $dataValue, $typeId, $label )

@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
+class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 
 	private $mwHooksHandler;
 
@@ -325,7 +325,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->mwHooksHandler->register( 'SMW::RevisionGuard::IsApprovedRevision', function ( $title, $latestRevID ) {
-			return $latestRevID == 9999 ? false : true ;
+			return $latestRevID == 9999 ? false : true;
 		} );
 
 		$this->assertFalse(

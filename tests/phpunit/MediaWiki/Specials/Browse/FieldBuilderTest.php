@@ -14,14 +14,14 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class FieldBuilderTest extends \PHPUnit_Framework_TestCase {
+class FieldBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
-	public function testCreateQueryForm() {
+	public function testGetQueryFormData() {
 		$this->assertInternalType(
-			'string',
-			FieldBuilder::createQueryForm( 'Foo' )
+			'array',
+			FieldBuilder::getQueryFormData( 'Foo' )
 		);
 	}
 

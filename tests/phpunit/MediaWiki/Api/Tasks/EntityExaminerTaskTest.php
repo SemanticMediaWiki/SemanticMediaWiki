@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
+class EntityExaminerTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $entityExaminerIndicatorsFactory;

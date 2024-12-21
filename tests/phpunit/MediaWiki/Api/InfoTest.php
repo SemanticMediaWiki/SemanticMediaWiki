@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class InfoTest extends \PHPUnit_Framework_TestCase {
+class InfoTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -93,8 +93,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->execute();
 
-		// MW 1.25
-		$result = method_exists( $instance->getResult(), 'getResultData' ) ? $instance->getResult()->getResultData() : $instance->getResultData();
+		$result = $instance->getResult()->getResultData();
 
 		// This came with 1.25, no idea what this suppose to be
 		unset( $result['_type'] );

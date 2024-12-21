@@ -10,13 +10,14 @@ use SMWDataItem;
 /**
  * @covers \SMW\DataValueFactory
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
+class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

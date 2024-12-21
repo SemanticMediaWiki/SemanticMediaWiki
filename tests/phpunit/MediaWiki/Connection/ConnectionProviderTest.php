@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
+use RuntimeException;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
@@ -15,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
+class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

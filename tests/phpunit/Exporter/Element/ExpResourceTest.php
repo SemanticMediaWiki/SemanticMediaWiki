@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter\Element;
 
+use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpResource;
@@ -17,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ExpResourceTest extends \PHPUnit_Framework_TestCase {
+class ExpResourceTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

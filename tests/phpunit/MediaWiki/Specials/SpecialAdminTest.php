@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialAdminTest extends \PHPUnit_Framework_TestCase {
+class SpecialAdminTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

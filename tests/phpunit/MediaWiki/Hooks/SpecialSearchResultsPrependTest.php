@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
  *
  * @author mwjames
  */
-class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
+class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 
 	private $preferenceExaminer;
 	private $messageLocalizer;

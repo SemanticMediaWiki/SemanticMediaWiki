@@ -13,7 +13,7 @@ use SMW\SQLStore\PropertyTypeFinder;
  *
  * @author mwjames
  */
-class PropertyTypeFinderTest extends \PHPUnit_Framework_TestCase {
+class PropertyTypeFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 

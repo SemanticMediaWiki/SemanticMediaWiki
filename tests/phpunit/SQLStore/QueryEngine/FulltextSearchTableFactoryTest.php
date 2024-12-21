@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
  *
  * @author mwjames
  */
-class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
+class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 

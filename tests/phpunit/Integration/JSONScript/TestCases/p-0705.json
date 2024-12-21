@@ -51,6 +51,9 @@
 		{
 			"type": "parser",
 			"about": "#0",
+			"skip-on": {
+				"mediawiki": [ ">1.39", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "Example/P0705/Q.1",
 			"assert-output": {
 				"to-contain": [
@@ -65,6 +68,9 @@
 		{
 			"type": "parser",
 			"about": "#1 with options",
+			"skip-on": {
+				"mediawiki": [ ">1.39", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "Example/P0705/Q.2",
 			"assert-output": {
 				"to-contain": [
@@ -81,6 +87,9 @@
 		{
 			"type": "parser",
 			"about": "#2 (subobject is displayed as normal link and not with an image reference)",
+			"skip-on": {
+				"mediawiki": [ ">1.39", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "Example/P0705/Q.3",
 			"assert-output": {
 				"to-contain": [
@@ -92,6 +101,9 @@
 		{
 			"type": "parser",
 			"about": "#3 (#noimage)",
+			"skip-on": {
+				"mediawiki": [ ">1.39", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "Example/P0705/Q.4",
 			"assert-output": {
 				"to-contain": [

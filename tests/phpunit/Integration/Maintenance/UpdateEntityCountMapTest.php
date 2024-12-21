@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 
@@ -15,11 +15,10 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class UpdateEntityCountMapTest extends DatabaseTestCase {
+class UpdateEntityCountMapTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 
-	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 	private $spyMessageReporter;
 
@@ -36,7 +35,7 @@ class UpdateEntityCountMapTest extends DatabaseTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\UpdateEntityCountMap'
+			'\SMW\Maintenance\updateEntityCountMap'
 		);
 
 		$maintenanceRunner->setMessageReporter(

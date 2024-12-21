@@ -13,7 +13,7 @@ use SMW\Factbox\FactboxFactory;
  *
  * @author mwjames
  */
-class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
+class FactboxFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -14,7 +14,7 @@ use SMW\SQLStore\EntityStore\SequenceMapFinder;
  *
  * @author mwjames
  */
-class SequenceMapFinderTest extends \PHPUnit_Framework_TestCase {
+class SequenceMapFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $cache;
 	private $idCacheManager;

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
+class QuerySegmentListProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

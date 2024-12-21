@@ -15,7 +15,7 @@ use SMW\Site;
  *
  * @author mwjames
  */
-class HashFieldUpdateTest extends \PHPUnit_Framework_TestCase {
+class HashFieldUpdateTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $connection;

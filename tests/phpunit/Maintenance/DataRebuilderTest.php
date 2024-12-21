@@ -18,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
+class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

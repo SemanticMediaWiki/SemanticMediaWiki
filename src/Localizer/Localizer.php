@@ -283,7 +283,9 @@ class Localizer {
 	 * @return string a string representation of the namespace
 	 */
 	public function convertNamespace( $ns, $variant = null ): string {
-		return $this->contentLanguage->getConverter()->convertNamespace( $ns, $variant );
+		$services = MediaWikiServices::getInstance();
+		$langConverter = $services->getLanguageConverterFactory()->getLanguageConverter( $this->contentLanguage );
+		return $langConverter->convertNamespace( $ns, $variant );
 	}
 
 	/**

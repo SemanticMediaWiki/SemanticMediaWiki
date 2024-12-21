@@ -15,7 +15,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
+class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $titleFactory;
 	private $connection;
@@ -65,9 +65,15 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 				return call_user_func( $callback ); }
 			) );
 
-		$status = $this->getMockBuilder( '\Status' )
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			$status = $this->getMockBuilder( '\Status' )
 			->disableOriginalConstructor()
 			->getMock();
+		} else {
+			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+			->disableOriginalConstructor()
+			->getMock();
+		}
 
 		$status->expects( $this->any() )
 			->method( 'isOK' )
@@ -124,10 +130,16 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 				return call_user_func( $callback ); }
 			) );
 
-		$status = $this->getMockBuilder( '\Status' )
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			$status = $this->getMockBuilder( '\Status' )
 			->disableOriginalConstructor()
 			->getMock();
-
+		} else {
+			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+			->disableOriginalConstructor()
+			->getMock();
+		}
+	
 		$status->expects( $this->any() )
 			->method( 'isOK' )
 			->will( $this->returnValue( false ) );
@@ -236,10 +248,16 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 				return call_user_func( $callback ); }
 			) );
 
-		$status = $this->getMockBuilder( '\Status' )
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			$status = $this->getMockBuilder( '\Status' )
 			->disableOriginalConstructor()
 			->getMock();
-
+		} else {
+			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+			->disableOriginalConstructor()
+			->getMock();
+		}
+	
 		$status->expects( $this->any() )
 			->method( 'isOK' )
 			->will( $this->returnValue( true ) );
@@ -312,10 +330,16 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 				return call_user_func( $callback ); }
 			) );
 
-		$status = $this->getMockBuilder( '\Status' )
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			$status = $this->getMockBuilder( '\Status' )
 			->disableOriginalConstructor()
 			->getMock();
-
+		} else {
+			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+			->disableOriginalConstructor()
+			->getMock();
+		}
+	
 		$status->expects( $this->any() )
 			->method( 'isOK' )
 			->will( $this->returnValue( true ) );

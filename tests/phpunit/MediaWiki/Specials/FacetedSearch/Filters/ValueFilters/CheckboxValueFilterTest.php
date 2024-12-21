@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CheckboxValueFilterTest extends \PHPUnit_Framework_TestCase {
+class CheckboxValueFilterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

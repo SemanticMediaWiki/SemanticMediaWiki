@@ -13,7 +13,7 @@ use SMW\PropertyRegistry;
  *
  * @author mwjames
  */
-class PropertyLabelCanonicalMatchTest extends \PHPUnit_Framework_TestCase {
+class PropertyLabelCanonicalMatchTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider canonicalLabelProvider

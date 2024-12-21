@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SemanticDataDeserializerTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataDeserializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

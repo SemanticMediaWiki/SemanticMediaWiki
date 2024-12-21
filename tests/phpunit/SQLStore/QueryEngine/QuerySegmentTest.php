@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
  *
  * @author mwjames
  */
-class QuerySegmentTest extends \PHPUnit_Framework_TestCase {
+class QuerySegmentTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -18,7 +18,7 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;

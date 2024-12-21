@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
+class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -170,7 +170,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		return $provider;
 	}
-
 
 	public function likeNotLikeProvider() {
 		$provider[] = [

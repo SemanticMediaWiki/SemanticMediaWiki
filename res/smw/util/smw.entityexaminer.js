@@ -194,7 +194,7 @@
 		}
 	};
 
-	mw.loader.using( [ 'mediawiki.api', 'smw.tippy', 'ext.smw.style' ] ).then( function () {
+	mw.loader.using( [ 'mediawiki.api', 'ext.smw.tooltip', 'ext.smw.styles' ] ).then( function () {
 
 		var entityexaminer = new smw.entityexaminer();
 

@@ -2,10 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
+use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\Tests\PHPUnitCompat;
 use SMW\MediaWiki\Connection\Database;
+use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
@@ -19,7 +21,7 @@ use Wikimedia\Rdbms\IResultWrapper;
  *
  * @author mwjames
  */
-class DatabaseTest extends \PHPUnit_Framework_TestCase {
+class DatabaseTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -58,7 +60,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddQuotesMethod() {
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'addQuotes' ] )
 			->getMockForAbstractClass();
@@ -95,7 +97,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbTypeProvider
 	 */
 	public function testTableNameMethod( $type ) {
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'tableName' ] )
 			->getMockForAbstractClass();
@@ -132,7 +134,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'select' ] )
 			->getMockForAbstractClass();
@@ -165,7 +167,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSelectFieldMethod() {
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'selectField' ] )
 			->getMockForAbstractClass();
@@ -206,7 +208,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$read = $this->getMockBuilder( '\DatabaseBase' )
+		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getType' ] )
 			->getMockForAbstractClass();
@@ -223,7 +225,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $read ) );
 
-		$write = $this->getMockBuilder( '\DatabaseBase' )
+		$write = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'query' ] )
 			->getMockForAbstractClass();
@@ -269,13 +271,19 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSelectThrowsException() {
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'select' ] )
 			->getMockForAbstractClass();
 
-		$database->expects( $this->once() )
-			->method( 'select' );
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$database->expects( $this->once() )
+				->method( 'select' )
+				->will( $this->throwException( new RuntimeException( 'Database error' ) ) );
+		} else {
+			$database->expects( $this->once() )
+				->method( 'select' );
+		}
 
 		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
@@ -303,12 +311,12 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryThrowsException() {
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'query' ] )
 			->getMockForAbstractClass();
 
-		$databaseException = new \DBError( $database, 'foo' );
+		$databaseException = new DBError( $database, 'foo' );
 
 		$database->expects( $this->once() )
 			->method( 'query' )
@@ -391,7 +399,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$read = $this->getMockBuilder( '\IDatabase' )
+		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -399,7 +407,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $read ) );
 
-		$write = $this->getMockBuilder( '\IDatabase' )
+		$write = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -446,7 +454,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$read = $this->getMockBuilder( '\IDatabase' )
+		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -454,7 +462,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $read ) );
 
-		$write = $this->getMockBuilder( '\IDatabase' )
+		$write = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -506,7 +514,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$read = $this->getMockBuilder( '\DatabaseBase' )
+		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -530,7 +538,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoQueryWithAutoCommit() {
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getFlag', 'clearFlag', 'setFlag', 'getType', 'query' ] )
 			->getMockForAbstractClass();

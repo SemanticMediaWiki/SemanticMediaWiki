@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RemoteRequestTest extends \PHPUnit_Framework_TestCase {
+class RemoteRequestTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

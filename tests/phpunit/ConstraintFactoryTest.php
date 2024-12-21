@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
+class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

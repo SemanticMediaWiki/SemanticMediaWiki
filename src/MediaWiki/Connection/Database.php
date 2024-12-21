@@ -2,12 +2,15 @@
 
 namespace SMW\MediaWiki\Connection;
 
-use DBError;
 use Exception;
 use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
+use Wikimedia\Rdbms\Database as MWDatabase;
+use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
+use Wikimedia\Rdbms\Platform\SQLPlatform;
 use Wikimedia\Rdbms\ResultWrapper;
 use Wikimedia\ScopedCallback;
 
@@ -34,10 +37,10 @@ class Database {
 	/**
 	 * @see IDatabase::TRIGGER_ROLLBACK
 	 */
-	const TRIGGER_ROLLBACK = 3;
+	const TRIGGER_ROLLBACK = IDatabase::TRIGGER_ROLLBACK;
 
-	/** @var IDatabase::LIST_COMMA (Combine list with comma delimeters) */
-	const LIST_COMMA = 0;
+	/** @var ISQLPlatform::LIST_COMMA (Combine list with comma delimeters) */
+	const LIST_COMMA = ISQLPlatform::LIST_COMMA;
 
 	/**
 	 * @var ConnRef
@@ -120,7 +123,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::getServerInfo
+	 * @see IDatabase::getServerInfo
 	 *
 	 * @since 3.0
 	 *
@@ -133,7 +136,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::getType
+	 * @see IDatabase::getType
 	 *
 	 * @since 1.9
 	 *
@@ -148,7 +151,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::tableName
+	 * @see IDatabase::tableName
 	 *
 	 * @since 1.9
 	 *
@@ -161,7 +164,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::timestamp
+	 * @see IDatabase::timestamp
 	 *
 	 * @since 3.0
 	 *
@@ -174,7 +177,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::tablePrefix
+	 * @see IDatabase::tablePrefix
 	 *
 	 * @since 3.0
 	 *
@@ -196,11 +199,11 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::addQuotes
+	 * @see IDatabase::addQuotes
 	 *
 	 * @since 1.9
 	 *
-	 * @param string $tableName
+	 * @param string $value
 	 *
 	 * @return string
 	 */
@@ -209,7 +212,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::select
+	 * @see IDatabase::select
 	 *
 	 * @since 1.9
 	 *
@@ -270,25 +273,25 @@ class Database {
 	/**
 	 * Execute a given SQL query on the primary DB.
 	 *
-	 * @see DatabaseBase::query
+	 * @see IDatabase::query
 	 *
 	 * @since 1.9
 	 *
 	 * @param Query|string $sql
 	 * @param string $fname
-	 * @param boolean $ignoreException
+	 * @param int $flags
 	 *
 	 * @return ResultWrapper
 	 * @throws RuntimeException
 	 */
-	public function query( $sql, $fname = __METHOD__, $ignoreException = false ) {
+	public function query( $sql, $fname = __METHOD__, $flags = 0 ) {
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$results = $this->executeQuery(
 			$this->connRef->getConnection( 'write' ),
 			$sql,
 			$fname,
-			$ignoreException
+			$flags
 		);
 
 		ScopedCallback::consume( $scope );
@@ -304,30 +307,32 @@ class Database {
 	 *
 	 * @param Query|string $sql
 	 * @param string $fname
-	 * @param false $ignoreException
+	 * @param int $flags
 	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
 	 * @throws Exception
 	 */
-	public function readQuery( $sql, $fname = __METHOD__, $ignoreException = false ) {
+	public function readQuery( $sql, $fname = __METHOD__, $flags = 0 ) {
 		return $this->executeQuery(
 			$this->connRef->getConnection( 'read' ),
 			$sql,
 			$fname,
-			$ignoreException
+			$flags | ISQLPlatform::QUERY_CHANGE_NONE
 		);
 	}
 
 	/**
 	 * Execute a SQL query using the given DB connection handle.
 	 *
+	 * @see IDatabase::query()
+	 *
 	 * @param IDatabase $connection
 	 * @param Query|string $sql
 	 * @param $fname
-	 * @param $ignoreException
+	 * @param int $flags
 	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
 	 * @throws Exception
 	 */
-	private function executeQuery( IDatabase $connection, $sql, $fname, $ignoreException ) {
+	private function executeQuery( IDatabase $connection, $sql, $fname, $flags ) {
 		if ( $sql instanceof Query ) {
 			$sql = $sql->build();
 		}
@@ -375,7 +380,7 @@ class Database {
 			$results = $connection->query(
 				$sql,
 				$fname,
-				$ignoreException
+				$flags
 			);
 		} catch ( Exception $exception ) {
 		}
@@ -395,7 +400,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::selectRow
+	 * @see IDatabase::selectRow
 	 *
 	 * @since 1.9
 	 */
@@ -411,7 +416,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::affectedRows
+	 * @see IDatabase::affectedRows
 	 *
 	 * @since 1.9
 	 *
@@ -425,7 +430,7 @@ class Database {
 	 * @note Method was made protected in 1.28, hence the need
 	 * for the DatabaseHelper that copies the functionality.
 	 *
-	 * @see DatabaseBase::makeSelectOptions
+	 * @see SQLPlatform::makeSelectOptions
 	 *
 	 * @since 1.9
 	 *
@@ -438,7 +443,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::nextSequenceValue
+	 * @see removed method IDatabase::nextSequenceValue
 	 *
 	 * @since 1.9
 	 *
@@ -457,14 +462,14 @@ class Database {
 		// MW 1.31+
 		// https://github.com/wikimedia/mediawiki/commit/0a9c55bfd39e22828f2d152ab71789cef3b0897c#diff-278465351b7c14bbcadac82036080e9f
 		$safeseq = str_replace( "'", "''", $seqName );
-		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')" );
+		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
 		$row = $res->fetchRow();
 
 		return $this->insertId = is_null( $row[0] ) ? null : (int)$row[0];
 	}
 
 	/**
-	 * @see DatabaseBase::insertId
+	 * @see IDatabase::insertId
 	 *
 	 * @since 1.9
 	 *
@@ -479,7 +484,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::clearFlag
+	 * @see MWDatabase::clearFlag
 	 *
 	 * @since 2.4
 	 */
@@ -488,7 +493,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::getFlag
+	 * @see MWDatabase::getFlag
 	 *
 	 * @since 2.4
 	 */
@@ -497,7 +502,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::setFlag
+	 * @see MWDatabase::setFlag
 	 *
 	 * @since 2.4
 	 */
@@ -510,7 +515,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::insert
+	 * @see IDatabase::insert
 	 *
 	 * @since 1.9
 	 */
@@ -525,7 +530,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::update
+	 * @see IDatabase::update
 	 *
 	 * @since 1.9
 	 */
@@ -540,7 +545,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::upsert
+	 * @see IDatabase::upsert
 	 *
 	 * @since 3.1
 	 */
@@ -555,7 +560,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::delete
+	 * @see IDatabase::delete
 	 *
 	 * @since 1.9
 	 */
@@ -570,7 +575,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::replace
+	 * @see IDatabase::replace
 	 *
 	 * @since 2.5
 	 */
@@ -585,7 +590,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::makeList
+	 * @see IDatabase::makeList
 	 *
 	 * @since 1.9
 	 */
@@ -594,7 +599,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::tableExists
+	 * @see IDatabase::tableExists
 	 *
 	 * @since 1.9
 	 *
@@ -608,7 +613,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::listTables
+	 * @see IDatabase::listTables
 	 *
 	 * @since 3.1
 	 *
@@ -622,7 +627,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::selectField
+	 * @see IDatabase::selectField
 	 *
 	 * @since 1.9.2
 	 */
@@ -631,7 +636,7 @@ class Database {
 	}
 
 	/**
-	 * @see DatabaseBase::estimateRowCount
+	 * @see IDatabase::estimateRowCount
 	 *
 	 * @since 2.1
 	 */

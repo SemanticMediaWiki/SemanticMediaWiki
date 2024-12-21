@@ -414,7 +414,6 @@ class SQLStore extends Store {
 		return $this->factory->newUsageStatisticsCachedListLookup()->fetchList();
 	}
 
-
 ///// Setup store /////
 
 	/**
@@ -469,7 +468,6 @@ class SQLStore extends Store {
 		return $rebuilder;
 	}
 
-
 ///// Concept caching /////
 
 	/**
@@ -513,7 +511,6 @@ class SQLStore extends Store {
 	public function getConceptCacheStatus( $concept ) {
 		return $this->factory->newSlaveConceptCache()->getStatus( $concept );
 	}
-
 
 ///// Helper methods, mostly protected /////
 

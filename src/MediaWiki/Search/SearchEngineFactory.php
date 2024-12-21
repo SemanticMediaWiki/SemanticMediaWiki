@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Search;
 
-use DatabaseBase;
 use RuntimeException;
 use SearchEngine;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -10,6 +9,7 @@ use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Exception\ClassNotFoundException;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -22,12 +22,12 @@ class SearchEngineFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param \DatabaseBase $connection
+	 * @param IDatabase $connection
 	 *
 	 * @return SearchEngine
 	 * @throws SearchEngineInvalidTypeException
 	 */
-	public function newFallbackSearchEngine( DatabaseBase $connection = null ) {
+	public function newFallbackSearchEngine( IDatabase $connection = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -38,18 +38,15 @@ class SearchEngineFactory {
 		$type = $settings->get( 'smwgFallbackSearchType' );
 		$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
 
-		// https://github.com/wikimedia/mediawiki/commit/f92a1a6db3b659d9943ca66eacff99b5e4133c7b
-		if ( version_compare( MW_VERSION, '1.34', '>=' ) ) {
-			$connection = $applicationFactory->create( 'DBLoadBalancer' );
-		}
+		$dbLoadBalancer = $applicationFactory->create( 'DBLoadBalancer' );
 
 		if ( is_callable( $type ) ) {
 			// #3939
-			$fallbackSearchEngine = $type( $connection );
+			$fallbackSearchEngine = $type( $dbLoadBalancer );
 		} elseif ( $type !== null && $this->isValidSearchDatabaseType( $type ) ) {
-			$fallbackSearchEngine = new $type( $connection );
+			$fallbackSearchEngine = new $type( $dbLoadBalancer );
 		} else {
-			$fallbackSearchEngine = new $defaultSearchEngine( $connection );
+			$fallbackSearchEngine = new $defaultSearchEngine( $dbLoadBalancer );
 		}
 
 		if ( !$fallbackSearchEngine instanceof SearchEngine ) {

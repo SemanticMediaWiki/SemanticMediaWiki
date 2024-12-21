@@ -13,10 +13,11 @@ use SMW\MediaWiki\Hooks\GetPreferences;
  *
  * @author mwjames
  */
-class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
+class GetPreferencesTest extends \PHPUnit\Framework\TestCase {
 
 	private $hookDispatcher;
 	private $permissionExaminer;
+	private $schemaFactory;
 
 	protected function setUp(): void {
 		parent::setUp();

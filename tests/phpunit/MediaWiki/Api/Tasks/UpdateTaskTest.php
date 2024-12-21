@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UpdateTaskTest extends \PHPUnit_Framework_TestCase {
+class UpdateTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $jobFactory;
 	private $testEnvironment;

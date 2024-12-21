@@ -13,7 +13,7 @@ use SMW\Parser\LinksProcessor;
  *
  * @author mwjames
  */
-class LinksProcessorTest extends \PHPUnit_Framework_TestCase {
+class LinksProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new LinksProcessor();

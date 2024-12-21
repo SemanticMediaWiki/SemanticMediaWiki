@@ -2,6 +2,8 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
+
 /**
  * @license GNU GPL v2+
  * @since 2.5
@@ -107,7 +109,7 @@ class SQLiteTableBuilder extends TableBuilder {
 			$sql = 'CREATE VIRTUAL TABLE ' . $tableName . ' USING ' . strtolower( $mode ) . '(' . implode( ',', $fieldSql ) . $option . ') ';
 		}
 
-		$this->connection->query( $sql, __METHOD__ );
+		$this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
 	/** Update */
@@ -144,7 +146,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	private function getCurrentFields( $tableName ) {
 		$sql = 'PRAGMA table_info(' . $tableName . ')';
 
-		$res = $this->connection->query( $sql, __METHOD__ );
+		$res = $this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$currentFields = [];
 
 		foreach ( $res as $row ) {
@@ -209,7 +211,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
-		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $default", __METHOD__ );
+		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $default", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
@@ -238,14 +240,14 @@ class SQLiteTableBuilder extends TableBuilder {
 
 		$this->reportMessage( "   ... field $fieldName is obsolete ...\n" );
 		$this->reportMessage( "       ... creating a temporary table ...\n" );
-		$this->connection->query( 'DROP TABLE IF EXISTS ' . $temp_table, __METHOD__ );
-		$this->connection->query( 'CREATE TABLE ' . $temp_table . ' (' . implode( ',', $field_def ) . ') ', __METHOD__ );
+		$this->connection->query( 'DROP TABLE IF EXISTS ' . $temp_table, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
+		$this->connection->query( 'CREATE TABLE ' . $temp_table . ' (' . implode( ',', $field_def ) . ') ', __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "       ... copying table contents ...\n" );
-		$this->connection->query( 'INSERT INTO ' . $temp_table . ' SELECT ' . implode( ',', $field_list ) . ' FROM ' . $tableName, __METHOD__ );
+		$this->connection->query( 'INSERT INTO ' . $temp_table . ' SELECT ' . implode( ',', $field_list ) . ' FROM ' . $tableName, __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
 		$this->reportMessage( "       ... dropping table with obsolete field definitions ...\n" );
-		$this->connection->query( 'DROP TABLE IF EXISTS ' . $tableName, __METHOD__ );
+		$this->connection->query( 'DROP TABLE IF EXISTS ' . $tableName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "       ... renaming temporary table to $tableName ...\n" );
-		$this->connection->query( 'ALTER TABLE ' . $temp_table . ' RENAME TO ' . $tableName, __METHOD__ );
+		$this->connection->query( 'ALTER TABLE ' . $temp_table . ' RENAME TO ' . $tableName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "       ... done.\n" );
 	}
 
@@ -301,7 +303,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		$tableName = $this->connection->tableName( $tableName );
 		$indices = [];
 
-		$res = $this->connection->query( 'PRAGMA index_list(' . $tableName . ')', __METHOD__ );
+		$res = $this->connection->query( 'PRAGMA index_list(' . $tableName . ')', __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 
 		if ( !$res ) {
 			return [];
@@ -321,7 +323,7 @@ class SQLiteTableBuilder extends TableBuilder {
 
 	private function doDropIndex( $tableName, $indexName, $columns ) {
 		$this->reportMessage( "   ... removing index $columns ..." );
-		$this->connection->query( 'DROP INDEX ' . $indexName, __METHOD__ );
+		$this->connection->query( 'DROP INDEX ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
@@ -341,7 +343,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		$indexName = $this->connection->tableName( "{$tableName}_index{$indexName}" );
 
 		$this->reportMessage( "   ... creating new $indexType $columns ..." );
-		$this->connection->query( "CREATE $indexType $indexName ON $tableName ($columns)", __METHOD__ );
+		$this->connection->query( "CREATE $indexType $indexName ON $tableName ($columns)", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
@@ -353,7 +355,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doDropTable( $tableName ) {
-		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
 	/**
@@ -366,7 +368,7 @@ class SQLiteTableBuilder extends TableBuilder {
 
 		// https://sqlite.org/lang_analyze.html
 		$this->reportMessage( "   ... analyze " );
-		$this->connection->query( 'ANALYZE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+		$this->connection->query( 'ANALYZE ' . $this->connection->tableName( $tableName ), __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 
 		$this->reportMessage( "done.\n" );
 	}

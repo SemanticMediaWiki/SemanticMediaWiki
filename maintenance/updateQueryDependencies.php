@@ -159,7 +159,7 @@ class updateQueryDependencies extends \Maintenance {
 			$i++;
 
 			$this->reportMessage(
-				"\r". sprintf( "%-55s%s", "   ... update ...", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
+				"\r" . sprintf( "%-55s%s", "   ... update ...", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
 			);
 
 			$updateJob = $jobFactory->newUpdateJob(
@@ -179,5 +179,5 @@ class updateQueryDependencies extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\updateQueryDependencies';
+$maintClass = updateQueryDependencies::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );

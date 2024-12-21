@@ -23,7 +23,7 @@ use Title;
  *
  * @author mwjames
  */
-class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

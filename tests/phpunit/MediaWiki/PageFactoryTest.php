@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use RuntimeException;
 use SMW\MediaWiki\PageFactory;
 use SMW\Tests\PHPUnitCompat;
 
@@ -14,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PageFactoryTest extends \PHPUnit_Framework_TestCase {
+class PageFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

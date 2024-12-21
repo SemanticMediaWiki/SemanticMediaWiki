@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
+class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -191,7 +191,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 			$usage
 		);
 	}
-
 
 	public function schema_get( $key ) {
 		return $key === Schema::SCHEMA_TAG ? [] : '';

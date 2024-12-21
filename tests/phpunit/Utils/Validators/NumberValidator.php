@@ -10,7 +10,7 @@ use SMW\Query\QueryComparator;
  *
  * @author mwjames
  */
-class NumberValidator extends \PHPUnit_Framework_Assert {
+class NumberValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @since 2.5

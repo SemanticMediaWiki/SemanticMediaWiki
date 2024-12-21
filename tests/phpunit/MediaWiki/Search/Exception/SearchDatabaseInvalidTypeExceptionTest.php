@@ -13,7 +13,7 @@ use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
  *
  * @author mwjames
  */
-class SearchDatabaseInvalidTypeExceptionTest extends \PHPUnit_Framework_TestCase {
+class SearchDatabaseInvalidTypeExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SearchDatabaseInvalidTypeException( 'Foo' );

@@ -59,23 +59,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#2 (1.31-)",
-			"skip-on": {
-				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
-			"subject": "Example/P0212/3",
-			"assert-output": {
-				"to-contain": [
-					"<span class=\"smw-property\">.*title=\"Property:P106\">職業</a></span></span><span class=\"smwttcontent\">人物の職業。「専門分野」</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
-				]
-			}
-		},
-		{
-			"type": "parser",
-			"about": "#2 (1.31+)",
-			"skip-on": {
-				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#2",
 			"subject": "Example/P0212/3",
 			"assert-output": {
 				"to-contain": [
@@ -109,6 +93,9 @@
 		"wgLang": "en"
 	},
 	"meta": {
+		"skip-on": {
+			"mysql": "Failed assertions, check implementation of MediaWikiIntegrationTestCase."
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

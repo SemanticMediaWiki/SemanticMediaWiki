@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
+class MediaWikiNsContentReaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

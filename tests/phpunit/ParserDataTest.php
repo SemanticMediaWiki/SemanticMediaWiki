@@ -12,16 +12,18 @@ use Title;
 /**
  * @covers \SMW\ParserData
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ParserDataTest extends \PHPUnit_Framework_TestCase {
+class ParserDataTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $dataValueFactory;
+	private $revisionGuard;
 	private $testEnvironment;
 
 	protected function setUp(): void {
@@ -147,7 +149,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
 		$instance->pushSemanticDataToParserOutput();
 
-		$title = Title::newFromText( __METHOD__ .'-1' );
+		$title = Title::newFromText( __METHOD__ . '-1' );
 
 		$newInstance = new ParserData( $title, $instance->getOutput() );
 

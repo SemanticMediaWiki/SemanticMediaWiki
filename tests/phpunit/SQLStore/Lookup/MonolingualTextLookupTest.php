@@ -16,7 +16,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
+class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -105,7 +105,7 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 		yield 'Foo' => [
 			new DIWikiPage( 'Foo', NS_MAIN, '', '' ),
 			'fr',
-			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,'.
+			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,' .
 			' t2.o_hash AS text_short, t2.o_blob AS text_long, t3.o_hash AS lcode FROM  AS t0' .
 			' INNER JOIN smw_object_ids AS o0 ON t0.o_id=o0.smw_id' .
 			' INNER JOIN smw_object_ids AS o1 ON t0.s_id=o1.smw_id' .
@@ -119,7 +119,7 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 		yield 'Foo#_ML123' => [
 			new DIWikiPage( 'Foo', NS_MAIN, '', '_ML123' ),
 			'en',
-			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,'.
+			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,' .
 			' t2.o_hash AS text_short, t2.o_blob AS text_long, t3.o_hash AS lcode FROM  AS t0' .
 			' INNER JOIN smw_object_ids AS o0 ON t0.o_id=o0.smw_id' .
 			' INNER JOIN smw_object_ids AS t1 ON t0.p_id=t1.smw_id' .

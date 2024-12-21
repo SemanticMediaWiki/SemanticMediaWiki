@@ -13,7 +13,7 @@ use SMW\Exception\DataItemDeserializationException;
  *
  * @author mwjames
  */
-class DataItemDeserializationExceptionTest extends \PHPUnit_Framework_TestCase {
+class DataItemDeserializationExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new DataItemDeserializationException();

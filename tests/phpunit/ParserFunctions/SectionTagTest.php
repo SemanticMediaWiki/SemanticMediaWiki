@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SectionTagTest extends \PHPUnit_Framework_TestCase {
+class SectionTagTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

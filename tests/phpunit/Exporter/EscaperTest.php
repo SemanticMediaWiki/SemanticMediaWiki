@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EscaperTest extends \PHPUnit_Framework_TestCase {
+class EscaperTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
@@ -40,7 +40,6 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 			Escaper::encodePage( $page )
 		);
 	}
-
 
 	/**
 	 * @dataProvider encodeUriProvider

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,9 +14,8 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PurgeEntityCacheTest extends DatabaseTestCase {
+class PurgeEntityCacheTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 
 	protected function setUp(): void {
@@ -31,7 +30,7 @@ class PurgeEntityCacheTest extends DatabaseTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\PurgeEntityCache'
+			'\SMW\Maintenance\purgeEntityCache'
 		);
 
 		$maintenanceRunner->setQuiet();

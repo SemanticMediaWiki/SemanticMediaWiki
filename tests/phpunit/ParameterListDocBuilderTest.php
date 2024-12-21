@@ -14,7 +14,7 @@ use SMW\Tests\Utils\Validators\StringValidator;
  * @license GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
+class ParameterListDocBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @var ParameterListDocBuilder

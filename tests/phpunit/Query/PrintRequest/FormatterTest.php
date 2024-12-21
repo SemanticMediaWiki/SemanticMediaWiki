@@ -16,7 +16,7 @@ use SMW\Query\PrintRequest\Formatter;
  *
  * @author mwjames
  */
-class FormatterTest extends \PHPUnit_Framework_TestCase {
+class FormatterTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider printRequestProvider

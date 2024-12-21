@@ -27,7 +27,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase {
+class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -172,7 +172,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			$instance->getDependencyListFrom( $queryResult )
 		);
 	}
-
 
 	/**
 	 * @dataProvider queryProvider

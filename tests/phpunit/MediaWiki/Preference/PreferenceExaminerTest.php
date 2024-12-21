@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PreferenceExaminerTest extends \PHPUnit_Framework_TestCase {
+class PreferenceExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

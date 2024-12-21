@@ -13,7 +13,7 @@ use SMW\SortLetter;
  *
  * @author mwjames
  */
-class SortLetterTest extends \PHPUnit_Framework_TestCase {
+class SortLetterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $collator;

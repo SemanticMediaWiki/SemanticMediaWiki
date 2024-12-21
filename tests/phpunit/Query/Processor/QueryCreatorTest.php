@@ -14,7 +14,7 @@ use SMW\Query\Processor\QueryCreator;
  *
  * @author mwjames
  */
-class QueryCreatorTest extends \PHPUnit_Framework_TestCase {
+class QueryCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$queryFactory = $this->getMockBuilder( '\SMW\QueryFactory' )

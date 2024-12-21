@@ -38,7 +38,10 @@ class SpecialConcepts extends \SpecialPage {
 	public function execute( $param ) {
 		$this->setHeaders();
 		$out = $this->getOutput();
-		$out->addModuleStyles( 'ext.smw.page.styles' );
+		$out->addModuleStyles( [
+			'ext.smw.styles',
+			'ext.smw.page.styles'
+		] );
 
 		$limit = $this->getRequest()->getVal( 'limit', 50 );
 		$offset = $this->getRequest()->getVal( 'offset', 0 );
@@ -172,11 +175,6 @@ class SpecialConcepts extends \SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/properties-concepts-types';
 	}
 

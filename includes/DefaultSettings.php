@@ -175,18 +175,18 @@ return ( function () {
 		# Available DB index as provided by MediaWiki:
 		#
 		# - DB_REPLICA (1.27.4+)
-		# - DB_MASTER
+		# - DB_PRIMARY
 		#
 		# @since 2.5.3
 		##
 		'smwgLocalConnectionConf' => [
 			'mw.db' => [
 				'read'  => DB_REPLICA,
-				'write' => DB_MASTER
+				'write' => DB_PRIMARY
 			],
 			'mw.db.queryengine' => [
 				'read'  => DB_REPLICA,
-				'write' => DB_MASTER
+				'write' => DB_PRIMARY
 			]
 		],
 		##
@@ -2510,7 +2510,16 @@ return ( function () {
 		 *
 		 * @since 3.2
 		 */
-		'smwgDetectOutdatedData' => false
+		'smwgDetectOutdatedData' => false,
+
+		/**
+		 * Whether Special:ExportRDF <link> element is added to the <head> element
+		 * Used to avoid bots scraping ExportRDF by not advertising on every page
+		 * Because the page is not a cheap call
+		 *
+		 * @since 5.0
+		 */
+		'smwgEnableExportRDFLink' => true
 
 	];
 } )();

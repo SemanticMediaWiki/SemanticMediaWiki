@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use SMW\DIProperty;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
@@ -21,11 +21,9 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TimeDataTypeTest extends DatabaseTestCase {
+class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
-
-	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -47,7 +45,7 @@ class TimeDataTypeTest extends DatabaseTestCase {
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			__DIR__ . '/'. 'Fixtures/' . 'TimeDataTypeTest-Mw-1-19-7.xml'
+			__DIR__ . '/' . 'Fixtures/' . 'TimeDataTypeTest-Mw-1-19-7.xml'
 		);
 
 		// Shoudl be fixed

@@ -2,8 +2,9 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\TitleLookup;
+use RuntimeException;
 use Title;
+use SMW\MediaWiki\TitleLookup;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -15,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TitleLookupTest extends \PHPUnit_Framework_TestCase {
+class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

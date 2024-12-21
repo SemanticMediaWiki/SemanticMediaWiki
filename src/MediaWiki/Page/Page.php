@@ -62,7 +62,10 @@ abstract class Page extends Article {
 	 */
 	public function view() {
 		$outputPage = $this->getContext()->getOutput();
-		$outputPage->addModuleStyles( 'ext.smw.page.styles' );
+		$outputPage->addModuleStyles( [
+			'ext.smw.styles',
+			'ext.smw.page.styles'
+		] );
 
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED' ) ) {
 			$outputPage->setPageTitle( $this->getTitle()->getPrefixedText() );
@@ -85,11 +88,6 @@ abstract class Page extends Article {
 		$diffOnly = $request->getBool( 'diffonly', $userOptionsLookup->getOption( $user, 'diffonly' ) );
 
 		if ( !isset( $diff ) || !$diffOnly ) {
-			// MW 1.25+
-			if ( method_exists( $outputPage, 'setIndicators' ) && ( $indicators = $this->getTopIndicators() ) !== '' ) {
-				$outputPage->setIndicators( $indicators );
-			}
-
 			$outputPage->addHTML( $this->initHtml() );
 			$outputPage->addHTML( $this->beforeView() );
 		}
@@ -141,15 +139,6 @@ abstract class Page extends Article {
 	 */
 	protected function getRedirectTargetURL() {
 		return false;
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return string
-	 */
-	protected function getTopIndicators() {
-		return '';
 	}
 
 	/**

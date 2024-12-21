@@ -20,7 +20,7 @@ use SMWDIUri as DIUri;
  *
  * @author mwjames
  */
-class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class MandatoryTypePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;

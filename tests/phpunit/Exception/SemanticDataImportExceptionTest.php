@@ -13,7 +13,7 @@ use SMW\Exception\SemanticDataImportException;
  *
  * @author mwjames
  */
-class SemanticDataImportExceptionTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataImportExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SemanticDataImportException();

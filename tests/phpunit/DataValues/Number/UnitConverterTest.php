@@ -16,7 +16,7 @@ use SMWNumberValue as NumberValue;
  *
  * @author mwjames
  */
-class UnitConverterTest extends \PHPUnit_Framework_TestCase {
+class UnitConverterTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;

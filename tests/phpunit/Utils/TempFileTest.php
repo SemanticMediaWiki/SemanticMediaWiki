@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TempFileTest extends \PHPUnit_Framework_TestCase {
+class TempFileTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

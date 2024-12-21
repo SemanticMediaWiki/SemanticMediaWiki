@@ -8,15 +8,27 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\Site
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since   3.0
  *
  * @author mwjames
  */
-class SiteTest extends \PHPUnit_Framework_TestCase {
+class SiteTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
+
+	protected function setUp(): void {
+        parent::setUp();
+        
+        // Mocking global job classes
+        $GLOBALS['wgJobClasses'] = [
+            'smw.indexer' => 'SMWIndexerJob',
+            'smw.updater' => 'SMWUpdaterJob',
+            // Add more mock job classes as necessary for your tests
+        ];
+    }
 
 	public function testIsReadOnly() {
 		$this->assertInternalType(

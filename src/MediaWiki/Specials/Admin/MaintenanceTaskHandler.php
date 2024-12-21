@@ -202,7 +202,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 					'href' => $this->msg( [ 'smw-helplink', $name ] )
 				],
 				$name
-			) . ":&nbsp;". $description;
+			) . ":&nbsp;" . $description;
 		}
 
 		$list = '';

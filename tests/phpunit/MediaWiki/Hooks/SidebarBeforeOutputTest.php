@@ -11,7 +11,7 @@ use Title;
  *
  * @license GNU GPL v2+
  */
-class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
+class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 
 	private $namespaceExaminer;
 

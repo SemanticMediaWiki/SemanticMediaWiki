@@ -267,7 +267,7 @@ class SMWInfolink {
 		}
 
 		if ( $this->mStyle !== false ) {
-			SMWOutputs::requireResource( 'ext.smw.style' );
+			SMWOutputs::requireResource( 'ext.smw.styles' );
 			$start = "<span class=\"$this->mStyle\">";
 			$end = '</span>';
 		} else {
@@ -497,7 +497,7 @@ class SMWInfolink {
 
 			foreach ( $params as $name => $value ) {
 				if ( is_string( $name ) && ( $name !== '' ) ) {
-					$value = rawurlencode( $name ) . '=' . rawurlencode( $value );
+					$value = rawurlencode( $name ?? '' ) . '=' . rawurlencode( $value ?? '' );
 
 					if ( $result !== '' ) {
 						$result .= '&';

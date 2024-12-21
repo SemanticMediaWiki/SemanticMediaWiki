@@ -305,7 +305,7 @@ class Indexer {
 		$subject = $document->getSubject();
 
 		if ( $type === self::REQUIRE_SAFE_REPLICATION && !$this->canReplicate() ) {
-			return IndexerRecoveryJob::pushFromDocument( $document ) ;
+			return IndexerRecoveryJob::pushFromDocument( $document );
 		}
 
 		$params = [

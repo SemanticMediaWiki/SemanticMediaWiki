@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
+class HtmlTabsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -33,13 +33,17 @@ class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 		$instance->tab( 'foo', 'FOO' );
 		$instance->content( 'foo', '< ... bar ... >' );
 
+		$actual = $instance->buildHTML( [ 'class' => 'foo-bar' ] );
+		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
+		$actual = str_replace( '/>', '>', $actual );
+
 		$this->assertContains(
 			'<div class="smw-tabs foo-bar">' .
-			'<input id="tab-foo" class="nav-tab" type="radio" name="tabs" checked=""/>' .
+			'<input id="tab-foo" class="nav-tab" type="radio" name="tabs" checked="">' .
 			'<label id="tab-label-foo" for="tab-foo" class="nav-label">FOO</label>' .
-			'<section id="tab-content-foo">< ... bar ... ></section>'.
+			'<section id="tab-content-foo">< ... bar ... ></section>' .
 			'</div>',
-			$instance->buildHTML( [ 'class' => 'foo-bar' ] )
+			$actual
 		);
 	}
 
@@ -51,15 +55,23 @@ class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 		$instance->tab( 'foo', 'FOO' );
 		$instance->content( 'foo', '< ... bar ... >' );
 
+		$actual = $instance->buildHTML( [ 'class' => 'foo-bar' ] );
+		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
+		$actual = str_replace(
+			htmlspecialchars( '/>' ),
+			htmlspecialchars( '>' ),
+			$actual
+		);
+
 		$this->assertContains(
 			'<div class="smw-tabs smw-subtab foo-bar" ' .
 			'data-subtab="&quot;&lt;input id=\&quot;tab-foo\&quot; ' .
 			'class=\&quot;nav-tab\&quot; type=\&quot;radio\&quot; ' .
-			'name=\&quot;tabs\&quot; checked=\&quot;\&quot;\/&gt;&lt;label ' .
+			'name=\&quot;tabs\&quot; checked=\&quot;\&quot;\&gt;&lt;label ' .
 			'id=\&quot;tab-label-foo\&quot; for=\&quot;tab-foo\&quot; ' .
 			'class=\&quot;nav-label\&quot;&gt;FOO&lt;\/label&gt;&quot;">' .
 			'<div id="tab-content-foo" class="subtab-content">< ... bar ... ></div></div>',
-			$instance->buildHTML( [ 'class' => 'foo-bar' ] )
+			$actual
 		);
 	}
 
@@ -68,13 +80,17 @@ class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 		$instance->tab( 'foo', 'FOO' );
 		$instance->content( 'foo', '< ... bar ... >' );
 
+		$actual = $instance->buildHTML( [ 'class' => 'foo-bar' ] );
+		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
+		$actual = str_replace( '/>', '>', $actual );
+
 		$this->assertContains(
 			'<div class="smw-tabs foo-bar">' .
-			'<input id="tab-foo" class="nav-tab" type="radio" name="tabs" checked=""/>' .
+			'<input id="tab-foo" class="nav-tab" type="radio" name="tabs" checked="">' .
 			'<label id="tab-label-foo" for="tab-foo" class="nav-label">FOO</label>' .
-			'<section id="tab-content-foo">< ... bar ... ></section>'.
+			'<section id="tab-content-foo">< ... bar ... ></section>' .
 			'</div>',
-			$instance->buildHTML( [ 'class' => 'foo-bar' ] )
+			$actual
 		);
 	}
 

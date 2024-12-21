@@ -14,14 +14,14 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CleanUpTablesTest extends \PHPUnit_Framework_TestCase {
+class CleanUpTablesTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $connection;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\DatabaseBase' )
+		$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -39,7 +39,7 @@ class CleanUpTablesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonPostgres() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'listTables', 'query', 'tableExists' ] )
 			->getMockForAbstractClass();
@@ -64,7 +64,7 @@ class CleanUpTablesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPostgres() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'listTables', 'query', 'getType', 'tableExists' ] )
 			->getMockForAbstractClass();

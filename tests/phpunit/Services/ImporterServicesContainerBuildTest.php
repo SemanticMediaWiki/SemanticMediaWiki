@@ -13,7 +13,7 @@ use SMW\Settings;
  *
  * @author mwjames
  */
-class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
+class ImporterServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 
 	private $callbackContainerFactory;
 	private $connectionManager;

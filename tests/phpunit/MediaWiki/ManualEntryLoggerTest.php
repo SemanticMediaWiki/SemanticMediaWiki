@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
+class ManualEntryLoggerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

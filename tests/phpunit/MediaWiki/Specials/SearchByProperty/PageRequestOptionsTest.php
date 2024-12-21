@@ -13,7 +13,7 @@ use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
  *
  * @author mwjames
  */
-class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
+class PageRequestOptionsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$queryString = '';

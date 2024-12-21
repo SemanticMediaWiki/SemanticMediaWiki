@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
+class I18nJsonFileIntegrityTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

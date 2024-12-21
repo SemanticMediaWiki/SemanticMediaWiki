@@ -18,7 +18,7 @@ use SMW\Query\Language\ValueDescription;
  *
  * @author mwjames
  */
-class ConjunctionTest extends \PHPUnit_Framework_TestCase {
+class ConjunctionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -148,7 +148,6 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 
 		return $provider;
 	}
-
 
 	public function testPrune() {
 		$valueDescriptionFoo = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) );

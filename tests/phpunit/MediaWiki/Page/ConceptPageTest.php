@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\MediaWiki\Tests\Page;
+namespace SMW\Tests\MediaWiki\Page;
 
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Page\ConceptPage;
@@ -14,7 +14,7 @@ use SMW\MediaWiki\Page\ConceptPage;
  *
  * @author mwjames
  */
-class ConceptPageTest extends \PHPUnit_Framework_TestCase {
+class ConceptPageTest extends \PHPUnit\Framework\TestCase {
 
 	private $title;
 

@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 
@@ -98,7 +98,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->at( 4 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD "bar" TEXT'. " DEFAULT '0'" ) )
+			->with( $this->stringContains( 'ALTER TABLE foo ADD "bar" TEXT' . " DEFAULT '0'" ) )
 			->willReturn( new FakeResultWrapper( [] ) );
 
 		$instance = PostgresTableBuilder::factory( $this->connection );

@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ContentParserTest extends \PHPUnit_Framework_TestCase {
+class ContentParserTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -53,9 +53,7 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
-			$this->contentRenderer = MediaWikiServices::getInstance()->getContentRenderer();
-		}
+		$this->contentRenderer = MediaWikiServices::getInstance()->getContentRenderer();
 	}
 
 	protected function tearDown(): void {
@@ -107,23 +105,17 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		if ( version_compare( MW_VERSION, '1.38', '<' ) ) {
-			$content->expects( $this->any() )
+		$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', function () {
+			$contentRenderer = $this->getMockBuilder( '\MediaWiki\Content\Renderer\ContentRenderer' )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$contentRenderer->expects( $this->any() )
 				->method( 'getParserOutput' )
 				->will( $this->returnValue( $this->parserOutput ) );
-		} else {
-			$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', function () {
-				$contentRenderer = $this->getMockBuilder( '\MediaWiki\Content\Renderer\ContentRenderer' )
-					->disableOriginalConstructor()
-					->getMock();
 
-				$contentRenderer->expects( $this->any() )
-					->method( 'getParserOutput' )
-					->will( $this->returnValue( $this->parserOutput ) );
-
-				return $contentRenderer;
-			} );
-		}
+			return $contentRenderer;
+		} );
 
 		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()

@@ -13,7 +13,7 @@ use SMW\Services\Exception\ServiceNotFoundException;
  *
  * @author mwjames
  */
-class ServiceNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class ServiceNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new ServiceNotFoundException( 'foo' );

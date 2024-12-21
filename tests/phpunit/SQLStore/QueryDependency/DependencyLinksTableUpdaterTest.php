@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
+class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $spyLogger;

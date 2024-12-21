@@ -11,13 +11,14 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\SQLStore\PropertyTableRowDiffer
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 2.3
  *
  * @author mwjames
  */
-class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

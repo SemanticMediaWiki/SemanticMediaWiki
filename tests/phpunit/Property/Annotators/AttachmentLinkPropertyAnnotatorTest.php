@@ -18,11 +18,11 @@ use SMW\Localizer;
  *
  * @author mwjames
  */
-class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $dataItemFactory;
-	private $nsFileName;
+	private $fileNS;
 
 	protected function setUp(): void {
 		parent::setUp();

@@ -14,7 +14,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
  *
  * @author mwjames
  */
-class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
+class ValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $textSanitizer;
 	private $searchTable;

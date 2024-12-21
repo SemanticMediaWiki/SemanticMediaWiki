@@ -174,21 +174,24 @@ class RedirectStore {
 			}
 
 			$query = [
-				'from' => '',
-				'fields' => ''
+				'from' => [],
+				'fields' => [],
+				'condition' => [],
+				'options' => [],
+				'join' => [],
 			];
 
 			$query['condition'] = [ 'p_id' => $id ];
 
+			$query['from'] = [ $proptable->getName() ];
 			if ( $proptable->usesIdSubject() ) {
-				$query['from'] .= $connection->tableName( $proptable->getName() );
-				$query['from'] .= ' INNER JOIN ';
-				$query['from'] .= $connection->tableName( SQLStore::ID_TABLE ) . ' ON s_id=smw_id';
-				$query['fields'] = 'DISTINCT smw_title AS t,smw_namespace AS ns';
+				$query['from'][] = SQLStore::ID_TABLE;
+				$query['join'] = [ SQLStore::ID_TABLE => [ 'INNER JOIN', 's_id=smw_id' ] ];
+				$query['fields'] = [ 't' => 'smw_title', 'ns' => 'smw_namespace' ];
 			} else {
-				$query['from'] = $connection->tableName( $proptable->getName() );
-				$query['fields'] = 'DISTINCT s_title AS t,s_namespace AS ns';
+				$query['fields'] = [ 't' => 's_title', 'ns' => 's_namespace' ];
 			}
+			$query['options'] = [ 'DISTINCT' ];
 
 			if ( $namespace === SMW_NS_PROPERTY && !$proptable->isFixedPropertyTable() ) {
 				$this->findUpdateJobs( $connection, $query, $jobs );
@@ -317,7 +320,9 @@ class RedirectStore {
 			$query['from'],
 			$query['fields'],
 			$query['condition'],
-			__METHOD__
+			__METHOD__,
+			$query['options'],
+			$query['join']
 		);
 
 		foreach ( $res as $row ) {

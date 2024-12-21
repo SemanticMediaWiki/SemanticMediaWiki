@@ -17,7 +17,7 @@ use SMW\PropertyRegistry;
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DIPropertyTest extends \PHPUnit_Framework_TestCase {
+class DIPropertyTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	protected function tearDown(): void {

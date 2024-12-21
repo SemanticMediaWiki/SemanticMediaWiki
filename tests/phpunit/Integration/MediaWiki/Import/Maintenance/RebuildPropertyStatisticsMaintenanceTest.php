@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -17,9 +17,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class RebuildPropertyStatisticsMaintenanceTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -68,7 +66,7 @@ class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildPropertyStatistics' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildPropertyStatistics' );
 		$maintenanceRunner->setQuiet()->run();
 	}
 

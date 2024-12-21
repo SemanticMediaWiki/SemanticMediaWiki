@@ -2,9 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use RuntimeException;
 use SMW\DIWikiPage;
+use SMW\StoreFactory;
 use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob
@@ -15,19 +18,36 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FulltextSearchTableRebuildJobTest extends \PHPUnit_Framework_TestCase {
+class FulltextSearchTableRebuildJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
+
+	/**
+	 * @var TestDatabaseTableBuilder
+	 */
+	protected $testDatabaseTableBuilder;
+
+	/**
+	 * @var boolean
+	 */
+	protected $isUsableUnitTestDatabase = true;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->getMockForAbstractClass();
+		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
+			$this->getStore()
+		);
 
-		$this->testEnvironment->registerObject( 'Store', $store );
+		try {
+			$this->testDatabaseTableBuilder->doBuild();
+		} catch ( RuntimeException $e ) {
+			$this->isUsableUnitTestDatabase = false;
+		}
+
+		$this->testEnvironment->registerObject( 'Store', $this->getStore() );
 	}
 
 	protected function tearDown(): void {
@@ -76,6 +96,10 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return $provider;
+	}
+
+	protected function getStore() {
+		return StoreFactory::getStore();
 	}
 
 }

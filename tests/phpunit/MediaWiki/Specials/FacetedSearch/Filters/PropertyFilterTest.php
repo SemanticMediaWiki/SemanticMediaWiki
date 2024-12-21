@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
+class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

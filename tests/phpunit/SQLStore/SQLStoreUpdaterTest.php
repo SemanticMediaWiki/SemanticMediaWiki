@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
+class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $factory;

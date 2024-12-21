@@ -28,6 +28,8 @@ class SMWDIError extends SMWDataItem {
 	 */
 	private $userValue;
 
+	public int $id;
+
 	public function __construct( $errors, $userValue = '' ) {
 		$this->m_errors = $errors;
 		$this->userValue = $userValue;

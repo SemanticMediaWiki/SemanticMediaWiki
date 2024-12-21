@@ -15,7 +15,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
+class SingleValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

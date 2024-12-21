@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialPendingTaskListTest extends \PHPUnit_Framework_TestCase {
+class SpecialPendingTaskListTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;

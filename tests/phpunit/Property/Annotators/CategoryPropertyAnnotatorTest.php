@@ -19,7 +19,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;

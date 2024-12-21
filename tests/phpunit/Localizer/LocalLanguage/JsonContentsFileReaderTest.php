@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Localizer\LocalLanguage;
 
+use RuntimeException;
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
 use SMW\Tests\PHPUnitCompat;
 
@@ -14,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
+class JsonContentsFileReaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

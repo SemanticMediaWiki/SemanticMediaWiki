@@ -16,7 +16,7 @@ use SMW\SQLStore\EntityStore\EntityLookup;
  *
  * @author mwjames
  */
-class EntityLookupTest extends \PHPUnit_Framework_TestCase {
+class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $factory;
@@ -163,7 +163,7 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->idTable->expects( $this->once() )
-			->method( 'getSMWPageID' )
+			->method( 'getSMWPageIDandSort' )
 			->will( $this->returnValue( 1001 ) );
 
 		$this->store->expects( $this->once() )

@@ -13,7 +13,7 @@ use SMW\MediaWiki\Collator;
  *
  * @author mwjames
  */
-class CollatorTest extends \PHPUnit_Framework_TestCase {
+class CollatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

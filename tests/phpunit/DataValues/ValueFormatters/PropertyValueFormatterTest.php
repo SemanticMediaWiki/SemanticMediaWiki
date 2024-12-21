@@ -18,7 +18,7 @@ use SMW\DataValues\PropertyValue;
  *
  * @author mwjames
  */
-class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -127,7 +127,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			$instance->format( $propertyValue, [ PropertyValueFormatter::HTML_SHORT ] )
 		);
 	}
-
 
 	public function testFormatWithCaptionOutputAndHighlighter() {
 		$propertyValue = new PropertyValue();

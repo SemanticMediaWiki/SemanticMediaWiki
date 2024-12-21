@@ -11,13 +11,14 @@ use SMWSQLStore3;
 /**
  * @covers \SMW\SQLStore\SQLStoreFactory
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 2.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
+class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;
@@ -190,7 +191,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructInstaller() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

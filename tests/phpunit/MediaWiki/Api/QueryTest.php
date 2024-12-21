@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QueryTest extends \PHPUnit_Framework_TestCase {
+class QueryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -116,8 +116,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$method->invoke( $instance, $queryResult );
 
-		// MW 1.25
-		$result = method_exists( $apiResult, 'getResultData' ) ? $apiResult->getResultData() : $instance->getData();
+		$result = $apiResult->getResultData();
 
 		// This came with 1.25, no idea what this suppose to be
 		unset( $result['warnings'] );

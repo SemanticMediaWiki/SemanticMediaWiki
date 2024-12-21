@@ -18,7 +18,7 @@ use Onoi\BlobStore\Container;
  *
  * @author mwjames
  */
-class ResultCacheTest extends \PHPUnit_Framework_TestCase {
+class ResultCacheTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

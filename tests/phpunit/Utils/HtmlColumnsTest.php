@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
+class HtmlColumnsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -90,7 +90,7 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 			'<ul><li>Foo</li><li>Bar</li></ul>',
 			'<div class="smw-column-header">B</div><ul><li>Baz</li></ul></div> <!-- end column -->',
 			'<div class="smw-column" style="width:50%;" dir="ltr">',
-			'<div class="smw-column-header">B ' . $listContinuesAbbrev .'</div>',
+			'<div class="smw-column-header">B ' . $listContinuesAbbrev . '</div>',
 			'<ul start=4><li>Fom</li><li>Fin</li><li>Fum</li></ul></div> <!-- end column -->',
 			'<br style="clear: both;"/></div>'
 		];

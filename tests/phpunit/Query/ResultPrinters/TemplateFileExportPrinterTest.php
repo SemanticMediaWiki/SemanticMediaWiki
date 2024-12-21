@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TemplateFileExportPrinterTest extends \PHPUnit_Framework_TestCase {
+class TemplateFileExportPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

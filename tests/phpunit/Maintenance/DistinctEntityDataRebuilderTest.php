@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
+class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	protected $obLevel;
 	private $connectionManager;

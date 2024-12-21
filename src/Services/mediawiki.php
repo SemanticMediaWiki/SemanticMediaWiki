@@ -55,24 +55,20 @@ return [
 	 */
 	'WikiImporter' => function ( $containerBuilder, \ImportSource $importSource ) {
 		$containerBuilder->registerExpectedReturnType( 'WikiImporter', '\WikiImporter' );
-		if ( version_compare( MW_VERSION, '1.37', '<' ) ) {
-			return new WikiImporter( $importSource, $containerBuilder->create( 'MainConfig' ) );
-		} else {
-			$services = MediaWikiServices::getInstance();
-			return new WikiImporter(
-				$importSource,
-				$containerBuilder->create( 'MainConfig' ),
-				$services->getHookContainer(),
-				$services->getContentLanguage(),
-				$services->getNamespaceInfo(),
-				$services->getTitleFactory(),
-				$services->getWikiPageFactory(),
-				$services->getWikiRevisionUploadImporter(),
-				$services->getPermissionManager(),
-				$services->getContentHandlerFactory(),
-				$services->getSlotRoleRegistry()
-			);
-		}
+		$services = MediaWikiServices::getInstance();
+		return new WikiImporter(
+			$importSource,
+			$containerBuilder->create( 'MainConfig' ),
+			$services->getHookContainer(),
+			$services->getContentLanguage(),
+			$services->getNamespaceInfo(),
+			$services->getTitleFactory(),
+			$services->getWikiPageFactory(),
+			$services->getWikiRevisionUploadImporter(),
+			$services->getPermissionManager(),
+			$services->getContentHandlerFactory(),
+			$services->getSlotRoleRegistry()
+		);
 	},
 
 	/**
@@ -141,11 +137,15 @@ return [
 
 	/**
 	 * DBLoadBalancer
+	 * $dbProviderOrdbOrLb is:
+	 * - IConnectionProvider when MW >= 1.41
+	 * - IDatabase | ILoadBalancer when MW < 1.41
+	 * https://phabricator.wikimedia.org/T326274
 	 *
 	 * @return callable
 	 */
-	'DefaultSearchEngineTypeForDB' => function ( $containerBuilder, IDatabase $db ) {
-		return MediaWikiServices::getInstance()->getSearchEngineFactory()->getSearchEngineClass( $db );
+	'DefaultSearchEngineTypeForDB' => function ( $containerBuilder, $dbProviderOrdbOrLb ) {
+		return MediaWikiServices::getInstance()->getSearchEngineFactory()->getSearchEngineClass( $dbProviderOrdbOrLb );
 	},
 
 	/**
@@ -192,12 +192,7 @@ return [
 	'JobQueueGroup' => function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'JobQueueGroup', '\JobQueueGroup' );
 
-		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
-			// MW 1.37+
-			return MediaWikiServices::getInstance()->getJobQueueGroup();
-		} else {
-			return JobQueueGroup::singleton();
-		}
+		return MediaWikiServices::getInstance()->getJobQueueGroup();
 	},
 
 	/**

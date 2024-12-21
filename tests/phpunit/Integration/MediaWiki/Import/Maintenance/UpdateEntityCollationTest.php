@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -14,9 +14,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class UpdateEntityCollationTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class UpdateEntityCollationTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -77,7 +75,7 @@ class UpdateEntityCollationTest extends DatabaseTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\UpdateEntityCollation' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\updateEntityCollation' );
 		$maintenanceRunner->setQuiet()->run();
 	}
 

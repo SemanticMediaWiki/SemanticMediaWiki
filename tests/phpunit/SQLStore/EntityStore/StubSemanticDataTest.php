@@ -17,7 +17,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
+class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;

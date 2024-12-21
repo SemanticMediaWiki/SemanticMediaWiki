@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class FieldTest extends \PHPUnit_Framework_TestCase {
+class FieldTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -76,21 +76,25 @@ class FieldTest extends \PHPUnit_Framework_TestCase {
 	public function testInput( $attr, $expected ) {
 		$instance = new Field();
 
+		$actual = $instance->input( $attr );
+		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
+		$actual = str_replace( '/>', '>', $actual );
+
 		$this->assertContains(
 			$expected,
-			$instance->input( $attr )
+			$actual
 		);
 	}
 
 	public function inputAttributeProvider() {
 		yield [
 			[ 'name' => 'Foobar' ],
-			'<div class="smw-input-field"><input name="Foobar" placeholder=""/></div>'
+			'<div class="smw-input-field"><input name="Foobar" placeholder=""></div>'
 		];
 
 		yield [
 			[ 'name' => 'Foobar', 'multifield' => true ],
-			'<div class="smw-input-field"><input name="Foobar[]" placeholder=""/></div>'
+			'<div class="smw-input-field"><input name="Foobar[]" placeholder=""></div>'
 		];
 	}
 

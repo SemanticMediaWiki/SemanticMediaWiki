@@ -19,7 +19,7 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit\Framework\TestCase {
 
 	private function newSerializerInstance() {
 		return new SemanticDataSerializer();

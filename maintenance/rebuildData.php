@@ -131,7 +131,7 @@ class rebuildData extends \Maintenance {
 
 		if ( $this->hasOption( 'namespace' ) && !defined( $this->getOption( 'namespace' ) ) ) {
 			throw new InvalidArgumentException(
-				"Expected a namespace constant, `". $this->getOption( 'namespace' ) . "` is unkown!"
+				"Expected a namespace constant, `" . $this->getOption( 'namespace' ) . "` is unkown!"
 			);
 		}
 
@@ -287,5 +287,5 @@ class rebuildData extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\rebuildData';
+$maintClass = rebuildData::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );

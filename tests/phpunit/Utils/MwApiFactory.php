@@ -34,10 +34,6 @@ class MwApiFactory {
 	 * @return ApiResult
 	 */
 	public function newApiResult( array $params ) {
-		if ( version_compare( MW_VERSION, '1.25', '<' ) ) {
-			return new ApiResult( $this->newApiMain( $params ) );
-		}
-
 		$result = new ApiResult( 5 );
 
 		$errorFormatter = new \ApiErrorFormatter_BackCompat( $result );

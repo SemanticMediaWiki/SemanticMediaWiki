@@ -50,6 +50,7 @@ class HookDispatcher {
 		$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		return $this->hookContainer;
 	}
+
 	/**
 	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.admin.registertaskhandlers.md
 	 * @since 3.2

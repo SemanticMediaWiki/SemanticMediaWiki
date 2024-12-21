@@ -87,6 +87,9 @@ class ParamListProcessor {
 			}
 
 			$param = $this->encodeEq( $param );
+			if ( $param === null ) {
+				continue;
+			}
 
 			// #1258 (named_args -> named args)
 			// accept 'name' => 'value' just as '' => 'name=value':
@@ -189,7 +192,7 @@ class ParamListProcessor {
 			function ( array $matches ) {
 				return str_replace( [ '=' ], [ '0x003D' ], $matches[0] );
 			},
-			$param
+			$param ?? ''
 		);
 	}
 

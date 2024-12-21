@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
+class SpecialSearchByPropertyTest extends \PHPUnit\Framework\TestCase {
 
 	private $applicationFactory;
 	private $stringValidator;

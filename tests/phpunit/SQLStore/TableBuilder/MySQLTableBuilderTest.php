@@ -17,7 +17,7 @@ use Wikimedia\Rdbms\IMaintainableDatabase;
  *
  * @author mwjames
  */
-class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -50,7 +50,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFactoryWithWrongTypeThrowsException() {
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

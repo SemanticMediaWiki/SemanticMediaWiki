@@ -167,6 +167,10 @@ final class Setup {
 			define( 'SMW_PHPUNIT_AUTOLOADER_FILE', "$smwDir/tests/autoloader.php" );
 		}
 
+		if ( !defined( 'SMW_PHPUNIT_DIR' ) ) {
+			define( 'SMW_PHPUNIT_DIR', __DIR__ . '/../tests/phpunit' );
+		}
+
 		$vars['wgLogTypes'][] = 'smw';
 		$vars['wgFilterLogTypes']['smw'] = true;
 
@@ -182,18 +186,6 @@ final class Setup {
 				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include( $file ) );
 			}
 		}
-
-		// #3626
-		//
-		// Required due to support of LTS (1.31)
-		// Do replace `mediawiki.api.parse` (Resources.php) with `mediawiki.api`
-		// starting with the next supported LTS (likely MW 1.35)
-		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
-			$vars['wgResourceModules']['mediawiki.api.parse'] = [
-				'dependencies' => 'mediawiki.api',
-				'targets' => [ 'desktop', 'mobile' ]
-			];
-		}
 	}
 
 	private function initConnectionProviders() {
@@ -203,13 +195,13 @@ final class Setup {
 		$connectionManager = $applicationFactory->getConnectionManager();
 
 		$connectionManager->registerConnectionProvider(
-			DB_MASTER,
-			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_MASTER )
+			DB_PRIMARY,
+			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_PRIMARY )
 		);
 
 		$connectionManager->registerConnectionProvider(
 			DB_REPLICA,
-			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_REPLICA, false )
+			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_REPLICA )
 		);
 
 		$connectionManager->registerConnectionProvider(

@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
+class ArticleDeleteTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $jobFactory;

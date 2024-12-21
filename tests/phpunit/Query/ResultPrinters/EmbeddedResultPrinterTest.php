@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EmbeddedResultPrinterTest extends \PHPUnit_Framework_TestCase {
+class EmbeddedResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	private $queryResult;
 	private $resultPrinterReflector;

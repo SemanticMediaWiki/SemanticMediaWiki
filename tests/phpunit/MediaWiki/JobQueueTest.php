@@ -13,7 +13,7 @@ use SMW\MediaWiki\JobQueue;
  *
  * @author mwjames
  */
-class JobQueueTest extends \PHPUnit_Framework_TestCase {
+class JobQueueTest extends \PHPUnit\Framework\TestCase {
 
 	private $jobQueueGroup;
 

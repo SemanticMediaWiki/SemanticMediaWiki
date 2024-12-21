@@ -13,7 +13,7 @@ use SMW\SQLStore\Lookup\MissingRedirectLookup;
  *
  * @author mwjames
  */
-class MissingRedirectLookupTest extends \PHPUnit_Framework_TestCase {
+class MissingRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 

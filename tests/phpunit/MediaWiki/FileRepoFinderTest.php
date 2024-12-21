@@ -14,7 +14,7 @@ use SMW\MediaWiki\FileRepoFinder;
  *
  * @author mwjames
  */
-class FileRepoFinderTest extends \PHPUnit_Framework_TestCase {
+class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $repoGroup;
 

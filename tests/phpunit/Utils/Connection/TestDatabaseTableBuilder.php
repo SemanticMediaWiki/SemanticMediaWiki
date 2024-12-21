@@ -8,6 +8,7 @@ use SMW\Connection\ConnectionProvider;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Store;
 use Title;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GNU GPL v2+
@@ -133,7 +134,7 @@ class TestDatabaseTableBuilder {
 	/**
 	 * @since  2.0
 	 *
-	 * @return DatabaseBase
+	 * @return IDatabase
 	 */
 	public function getDBConnection() {
 		return $this->connectionProvider->getConnection();
@@ -159,7 +160,12 @@ class TestDatabaseTableBuilder {
 			__METHOD__
 		);
 
-		if ( $dbConnection->getType() === 'mysql' && method_exists( $dbConnection, 'listViews' ) ) {
+		// MW < 1.42
+		if (
+			version_compare( MW_VERSION, '1.42', '<' ) &&
+			$dbConnection->getType() === 'mysql' &&
+			method_exists( $dbConnection, 'listViews' )
+		) {
 
 			# bug 43571: cannot clone VIEWs under MySQL
 			$views = $dbConnection->listViews(

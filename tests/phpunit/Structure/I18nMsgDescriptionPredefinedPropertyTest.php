@@ -13,7 +13,7 @@ use SMW\TypesRegistry;
  *
  * @author mwjames
  */
-class I18nMsgDescriptionPredefinedPropertyTest extends \PHPUnit_Framework_TestCase {
+class I18nMsgDescriptionPredefinedPropertyTest extends \PHPUnit\Framework\TestCase {
 
 	const MSG_KEY_PREFIX = 'smw-property-predefined';
 

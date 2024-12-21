@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
+class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 
 	private $protectionValidator;
 	private $permissionManager;

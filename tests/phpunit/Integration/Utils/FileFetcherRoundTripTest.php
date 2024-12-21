@@ -12,7 +12,7 @@ use SMW\Utils\FileFetcher;
  *
  * @author mwjames
  */
-class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
+class FileFetcherRoundTripTest extends \PHPUnit\Framework\TestCase {
 
 	public function testRoundTrip() {
 		$found = false;
@@ -74,7 +74,7 @@ class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRoundTrip_Sort_Desc_SubDir() {
 		$fileFetcher = new FileFetcher(
-			FileFetcher::normalize( SMW_PHPUNIT_DIR . '/Fixtures/Utils/' )
+			FileFetcher::normalize( \SMW_PHPUNIT_DIR . '/Fixtures/Utils/' )
 		);
 
 		$fileFetcher->sort( 'desc' );
@@ -84,9 +84,9 @@ class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[
-				[ FileFetcher::normalize( SMW_PHPUNIT_DIR . '/Fixtures/Utils/zzz.json' ) ],
-				[ FileFetcher::normalize( SMW_PHPUNIT_DIR . '/Fixtures/Utils/subDir/bbb.json' ) ],
-				[ FileFetcher::normalize( SMW_PHPUNIT_DIR . '/Fixtures/Utils/aaa.json' ) ]
+				[ FileFetcher::normalize( \SMW_PHPUNIT_DIR . '/Fixtures/Utils/zzz.json' ) ],
+				[ FileFetcher::normalize( \SMW_PHPUNIT_DIR . '/Fixtures/Utils/subDir/bbb.json' ) ],
+				[ FileFetcher::normalize( \SMW_PHPUNIT_DIR . '/Fixtures/Utils/aaa.json' ) ]
 			],
 			$files
 		);

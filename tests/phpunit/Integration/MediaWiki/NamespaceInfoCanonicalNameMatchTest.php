@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
+class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

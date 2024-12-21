@@ -15,7 +15,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
+class MandatoryPropertiesConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

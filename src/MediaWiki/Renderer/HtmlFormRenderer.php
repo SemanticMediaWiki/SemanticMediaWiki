@@ -437,7 +437,7 @@ class HtmlFormRenderer {
 
 			$resultCount = $instance->getMessageBuilder()
 				->getMessage( 'showingresults' )
-				->numParams( $messageCount, $offset + 1 )
+				->numParams( $messageCount, (int)$offset + 1 )
 				->parse();
 
 			$paging = $instance->getMessageBuilder()->prevNextToText(
@@ -483,7 +483,7 @@ class HtmlFormRenderer {
 			'action' => htmlspecialchars( $this->actionUrl ? $this->actionUrl : $GLOBALS['wgScript'] )
 		], Html::hidden(
 			'title',
-			strtok( $this->title->getPrefixedText(), '/' )
+			strtok( $this->title->getPrefixedText() ?? '', '/' )
 		) . $content );
 
 		$this->clear();

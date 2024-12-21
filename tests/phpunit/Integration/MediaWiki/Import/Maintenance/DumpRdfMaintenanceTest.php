@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Listener\EventListener\EventHandler;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -19,9 +19,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class DumpRdfMaintenanceTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class DumpRdfMaintenanceTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -84,7 +82,7 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\DumpRdf' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\dumpRDF' );
 		$maintenanceRunner->setQuiet();
 
 		$this->doExportForDefaultOptions( $maintenanceRunner );

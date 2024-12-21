@@ -22,7 +22,6 @@ class StatusProperty extends FixtureProperty {
 		$this->property->setPropertyTypeId( '_txt' );
 	}
 
-
 	/**
 	 * @since 2.1
 	 *

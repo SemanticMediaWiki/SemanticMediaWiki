@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
+class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $parserFactory;

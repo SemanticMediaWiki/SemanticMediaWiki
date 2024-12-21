@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
+class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -216,7 +216,6 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			$instance->getExternalFormatterUri( $property )
 		);
 	}
-
 
 	public function testGetAllowedPattern() {
 		$property = $this->dataItemFactory->newDIProperty( 'Has allowed pattern' );

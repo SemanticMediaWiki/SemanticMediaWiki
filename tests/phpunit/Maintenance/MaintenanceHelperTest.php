@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
+class MaintenanceHelperTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

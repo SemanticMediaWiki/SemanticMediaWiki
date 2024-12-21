@@ -14,7 +14,7 @@ use SMW\SPARQLStore\ReplicationDataTruncator;
  *
  * @author mwjames
  */
-class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
+class ReplicationDataTruncatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticData;
 

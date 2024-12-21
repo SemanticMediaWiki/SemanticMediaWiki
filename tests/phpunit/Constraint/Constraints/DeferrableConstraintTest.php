@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DeferrableConstraintTest extends \PHPUnit_Framework_TestCase {
+class DeferrableConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$deferrableConstraint = $this->getMockBuilder( DeferrableConstraint::class )

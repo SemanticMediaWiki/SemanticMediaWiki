@@ -17,7 +17,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
+class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 	private $applicationFactory;
 	private FactboxText $factboxText;

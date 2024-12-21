@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SemanticDataValidator extends \PHPUnit_Framework_Assert {
+class SemanticDataValidator extends \PHPUnit\Framework\Assert {
 
 	use PHPUnitCompat;
 
@@ -136,7 +136,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		$this->assertEmpty(
 			$expected,
-			'Failed asserting that properties array contains [ ' . $this->formatAsString( $expected ) .' ].'
+			'Failed asserting that properties array contains [ ' . $this->formatAsString( $expected ) . ' ].'
 		);
 	}
 

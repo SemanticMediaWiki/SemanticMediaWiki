@@ -15,7 +15,7 @@ use SMWPropertyValue as PropertyValue;
  *
  * @author mwjames
  */
-class PrintRequestTest extends \PHPUnit_Framework_TestCase {
+class PrintRequestTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructPropertyPrintRequest() {
 		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )

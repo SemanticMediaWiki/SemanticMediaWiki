@@ -13,7 +13,7 @@ use SMW\SPARQLStore\SPARQLStoreFactory;
  *
  * @author mwjames
  */
-class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
+class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 

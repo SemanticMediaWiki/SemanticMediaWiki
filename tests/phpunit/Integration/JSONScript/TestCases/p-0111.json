@@ -16,7 +16,7 @@
 			"assert-output": {
 				"onPageView": {},
 				"to-contain": [
-					"<div id=\"smw-property-name-reserved\" class=\"plainlinks smw-property-name-reserved smw-callout smw-callout-error\">"
+					"plainlinks smw-property-name-reserved"
 				]
 			}
 		}

@@ -21,6 +21,9 @@
 		{
 			"type": "special",
 			"about": "#0 (display image in table with 50px|thumb|123)",
+			"skip-on": {
+				"mediawiki": [ ">1.39", "MediaWiki changed the HTML Tidy" ]
+			},
 			"special-page": {
 				"page": "Ask",
 				"query-parameters": "-5B-5BCategory:S0012-5D-5D/-3FHas-20file#50px;thumb;123/mainlabel=-/offset=0/format=broadtable/link=all/headers=show",

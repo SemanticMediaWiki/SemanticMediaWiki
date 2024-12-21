@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
+class ChunkedIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

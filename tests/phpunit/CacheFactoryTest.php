@@ -15,7 +15,7 @@ use SMW\CacheFactory;
  *
  * @author mwjames
  */
-class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
+class CacheFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

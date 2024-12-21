@@ -11,6 +11,7 @@ use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use SMWDITime as DITime;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GNU GPL v2+
@@ -118,7 +119,8 @@ class ProximityPropertyValueLookup {
 
 		$res = $connection->query(
 			$query,
-			__METHOD__
+			__METHOD__,
+			ISQLPlatform::QUERY_CHANGE_NONE
 		);
 
 		foreach ( $res as $row ) {
@@ -209,7 +211,8 @@ class ProximityPropertyValueLookup {
 
 		$res = $connection->query(
 			$query,
-			__METHOD__
+			__METHOD__,
+			ISQLPlatform::QUERY_CHANGE_NONE
 		);
 
 		$list = [];

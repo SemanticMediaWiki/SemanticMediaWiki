@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class EntityCollationTest extends \PHPUnit_Framework_TestCase {
+class EntityCollationTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -22,7 +22,7 @@ use SMW\Tests\Utils\Validators\QuerySegmentValidator;
  *
  * @author mwjames
  */
-class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
+class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
+class CliMsgFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -66,7 +66,7 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testTwoColsOverride() {
 		$instance = new CliMsgFormatter();
 
-		$op = ( version_compare( PHP_VERSION, '7.3', '<' ) ? "\r" : "\033[0G" );
+		$op = "\033[0G";
 
 		$this->assertEquals(
 			"{$op}Foo                                                                     Bar",

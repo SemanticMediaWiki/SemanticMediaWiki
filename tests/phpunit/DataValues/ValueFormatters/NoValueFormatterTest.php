@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use RuntimeException;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 use SMW\Tests\PHPUnitCompat;
 
@@ -14,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class NoValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class NoValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

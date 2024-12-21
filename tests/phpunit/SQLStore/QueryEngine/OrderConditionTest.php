@@ -9,13 +9,14 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\SQLStore\QueryEngine\OrderCondition
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 2.5
  *
  * @author mwjames
  */
-class OrderConditionTest extends \PHPUnit_Framework_TestCase {
+class OrderConditionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -13,7 +13,7 @@ use SMW\Exception\PredefinedPropertyLabelMismatchException;
  *
  * @author mwjames
  */
-class PredefinedPropertyLabelMismatchExceptionTest extends \PHPUnit_Framework_TestCase {
+class PredefinedPropertyLabelMismatchExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new PredefinedPropertyLabelMismatchException();

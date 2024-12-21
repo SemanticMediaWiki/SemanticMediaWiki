@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
+class ConstraintSchemaValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -57,7 +57,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
-
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -19,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class SubobjectTest extends \PHPUnit_Framework_TestCase {
+class SubobjectTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

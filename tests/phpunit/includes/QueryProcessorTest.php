@@ -6,7 +6,7 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMWQueryProcessor;
 use SMW\Tests\PHPUnitCompat;
 
@@ -20,10 +20,11 @@ use SMW\Tests\PHPUnitCompat;
  * @group SMWExtension
  * @group SMWQueries
  * @group SMWQueryProcessorTest
+ * @group Database
  *
  * @author Nischay Nahata
  */
-class SMWQueryProcessorTest extends DatabaseTestCase {
+class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 	
@@ -55,7 +56,6 @@ class SMWQueryProcessorTest extends DatabaseTestCase {
 		$this->expectException( '\SMW\Query\Exception\ResultFormatNotFoundException' );
 		SMWQueryProcessor::getResultPrinter( 'unknown_format' );
 	}
-	
 
 	/**
 	* @dataProvider createQueryDataProvider

@@ -10,13 +10,14 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\ProcessingErrorMsgHandler
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 2.5
  *
  * @author mwjames
  */
-class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
+class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

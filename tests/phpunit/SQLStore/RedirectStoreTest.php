@@ -12,13 +12,14 @@ use Wikimedia\Rdbms\FakeResultWrapper;
 /**
  * @covers \SMW\SQLStore\RedirectStore
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since   2.1
  *
  * @author mwjames
  */
-class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
+class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private Database $connection;

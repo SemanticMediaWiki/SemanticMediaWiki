@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
  *
  * @author mwjames
  */
-class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
+class DescriptionInterpreterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $connection;

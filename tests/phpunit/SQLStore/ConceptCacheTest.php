@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
+class ConceptCacheTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $conceptQuerySegmentBuilder;

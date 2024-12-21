@@ -10,9 +10,11 @@ use RequestContext;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
+use MediaWikiIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -20,7 +22,7 @@ use SpecialPage;
  *
  * @author mwjames
  */
-class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var Store

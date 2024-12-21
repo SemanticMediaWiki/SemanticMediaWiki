@@ -13,7 +13,7 @@ use SMW\Query\Parser\TermParser;
  *
  * @author mwjames
  */
-class TermParserTest extends \PHPUnit_Framework_TestCase {
+class TermParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

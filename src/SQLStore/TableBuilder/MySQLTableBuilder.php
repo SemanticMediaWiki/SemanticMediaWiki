@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\TableBuilder;
 
 use SMW\Utils\CliMsgFormatter;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @license GNU GPL v2+
@@ -82,7 +83,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$sql .= 'CREATE TABLE ' . $dbName . $tableName . ' (' . implode( ',', $fieldSql ) . ') ';
 		$sql .= $this->sql_from( $attributes );
 
-		$this->connection->query( $sql, __METHOD__ );
+		$this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
 	private function sql_from( array $attributes ) {
@@ -143,7 +144,7 @@ class MySQLTableBuilder extends TableBuilder {
 	private function getCurrentFields( $tableName ) {
 		$sql = 'DESCRIBE ' . $tableName;
 
-		$res = $this->connection->query( $sql, __METHOD__ );
+		$res = $this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$currentFields = [];
 
 		foreach ( $res as $row ) {
@@ -211,7 +212,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
-		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $default $position", __METHOD__ );
+		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $default $position", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
@@ -229,15 +230,15 @@ class MySQLTableBuilder extends TableBuilder {
 
 		// To avoid Error: 1068 Multiple primary key defined when a PRIMARY is involved
 		if ( strpos( $newFieldType, 'AUTO_INCREMENT' ) !== false ) {
-			$this->connection->query( "ALTER TABLE $tableName DROP PRIMARY KEY", __METHOD__ );
+			$this->connection->query( "ALTER TABLE $tableName DROP PRIMARY KEY", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		}
 
-		$this->connection->query( "ALTER TABLE $tableName CHANGE `$fieldName` `$fieldName` $newFieldType $position", __METHOD__ );
+		$this->connection->query( "ALTER TABLE $tableName CHANGE `$fieldName` `$fieldName` $newFieldType $position", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 
 		// http://stackoverflow.com/questions/1873085/how-to-convert-from-varbinary-to-char-varchar-in-mysql
 		// http://bugs.mysql.com/bug.php?id=34564
 		if ( strpos( $oldFieldType, 'VARBINARY' ) !== false && strpos( $newFieldType, 'VARCHAR' ) !== false ) {
-		//	$this->connection->query( "SELECT CAST($fieldName AS CHAR) from $tableName", __METHOD__ );
+		//	$this->connection->query( "SELECT CAST($fieldName AS CHAR) from $tableName", __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
 		}
 
 		$this->reportMessage( "done.\n" );
@@ -247,7 +248,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
-		$this->connection->query( "ALTER TABLE $tableName DROP COLUMN `$fieldName`", __METHOD__ );
+		$this->connection->query( "ALTER TABLE $tableName DROP COLUMN `$fieldName`", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
@@ -330,7 +331,11 @@ class MySQLTableBuilder extends TableBuilder {
 	private function getIndexInfo( $tableName ) {
 		$indices = [];
 
-		$res = $this->connection->query( 'SHOW INDEX FROM ' . $tableName, __METHOD__ );
+		$res = $this->connection->query(
+			'SHOW INDEX FROM ' . $tableName,
+			__METHOD__,
+			ISQLPlatform::QUERY_CHANGE_SCHEMA
+		);
 
 		if ( !$res ) {
 			return $indices;
@@ -349,7 +354,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 	private function doDropIndex( $tableName, $indexName, $columns ) {
 		$this->reportMessage( "   ... removing index $columns ..." );
-		$this->connection->query( 'DROP INDEX ' . $indexName . ' ON ' . $tableName, __METHOD__ );
+		$this->connection->query( 'DROP INDEX ' . $indexName . ' ON ' . $tableName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
@@ -371,9 +376,9 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 
 		if ( $indexType === 'FULLTEXT' ) {
-			$this->connection->query( "ALTER TABLE $tableName ADD $indexType $columns ($columns) $indexOption", __METHOD__ );
+			$this->connection->query( "ALTER TABLE $tableName ADD $indexType $columns ($columns) $indexOption", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		} else {
-			$this->connection->query( "ALTER TABLE $tableName ADD $indexType ($columns)", __METHOD__ );
+			$this->connection->query( "ALTER TABLE $tableName ADD $indexType ($columns)", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		}
 
 		$this->reportMessage( "done.\n" );
@@ -387,7 +392,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doDropTable( $tableName ) {
-		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
 	/**
@@ -411,7 +416,7 @@ class MySQLTableBuilder extends TableBuilder {
 			$cliMsgFormatter->positionCol( "[ANALYZE", 56 )
 		);
 
-		$this->connection->query( "ANALYZE TABLE $tableName", __METHOD__ );
+		$this->connection->query( "ANALYZE TABLE $tableName", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 
 		// https://dev.mysql.com/doc/refman/5.7/en/optimize-table.html
 		// Reorganizes the physical storage of table data and associated index data,
@@ -420,7 +425,7 @@ class MySQLTableBuilder extends TableBuilder {
 			$cliMsgFormatter->positionCol( ", OPTIMIZE]" )
 		);
 
-		$this->connection->query( "OPTIMIZE TABLE $tableName", __METHOD__ );
+		$this->connection->query( "OPTIMIZE TABLE $tableName", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 
 		$this->reportMessage( "\n" );
 	}

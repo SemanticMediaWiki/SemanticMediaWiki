@@ -11,7 +11,7 @@ namespace SMW\Tests\Query\ResultPrinters;
  *
  * @author mwjames
  */
-class FileExportPrinterTest extends \PHPUnit_Framework_TestCase {
+class FileExportPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testOutputAsFile_AccessSequence() {
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )

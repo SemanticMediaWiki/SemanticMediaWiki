@@ -14,13 +14,14 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
+class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $varsEnvironment;
 	private $localLanguage;
 	private $default;
+	private $testEnvironment;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
@@ -88,7 +89,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
-			8,
+			6,
 			$result
 		);
 	}
@@ -114,7 +115,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
-			8,
+			6,
 			$result
 		);
 	}
@@ -351,10 +352,6 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'smw/schema'
 		];
 
-		yield [
-			SMW_NS_RULE,
-			'Rule'
-		];
 	}
 
 }

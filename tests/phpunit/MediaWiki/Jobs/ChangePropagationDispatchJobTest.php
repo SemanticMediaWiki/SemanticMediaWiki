@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
+class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 

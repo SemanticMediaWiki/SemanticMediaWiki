@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;

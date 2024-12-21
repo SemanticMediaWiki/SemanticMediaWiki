@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
+class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 	private $outputPage;
 	private $request;
@@ -215,6 +215,12 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addLink' );
 
 		$instance = new BeforePageDisplay();
+
+		$instance->setOptions(
+			[
+				'smwgEnableExportRDFLink' => true
+			]
+		);
 
 		$this->assertTrue(
 			$instance->process( $this->outputPage, $this->skin )

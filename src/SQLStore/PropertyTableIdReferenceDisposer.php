@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\Iterators\ResultIterator;
 use SMW\RequestOptions;
+use Wikimedia\Rdbms\DBError;
 
 /**
  * @private
@@ -321,9 +322,9 @@ class PropertyTableIdReferenceDisposer {
 		// Error: 126 Incorrect key file for table '.\mw@002d25@002d01\smw_ft_search.MYI'; ...
 		try {
 			if ( $this->fulltextTableUsage ) {
-				$tableExists = $this->connection->tableExists( SQLStore::FT_SEARCH_TABLE );
+				$tableExists = $this->connection->tableExists( SQLStore::FT_SEARCH_TABLE, __METHOD__ );
 			}
-		} catch ( \DBError $e ) {
+		} catch ( DBError $e ) {
 			ApplicationFactory::getInstance()->getMediaWikiLogger()->info( __METHOD__ . ' reported: ' . $e->getMessage() );
 		}
 

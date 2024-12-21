@@ -25,7 +25,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 

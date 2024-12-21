@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ValueFilterFactoryTest extends \PHPUnit_Framework_TestCase {
+class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

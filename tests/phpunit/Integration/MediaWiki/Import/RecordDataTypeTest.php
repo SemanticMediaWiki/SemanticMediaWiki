@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
@@ -22,9 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class RecordDataTypeTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class RecordDataTypeTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -39,7 +37,7 @@ class RecordDataTypeTest extends DatabaseTestCase {
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			__DIR__ . '/'. 'Fixtures/' . 'RecordDataTypeTest-Mw-1-19-7.xml'
+			__DIR__ . '/' . 'Fixtures/' . 'RecordDataTypeTest-Mw-1-19-7.xml'
 		);
 
 		if ( !$importRunner->setVerbose( true )->run() ) {

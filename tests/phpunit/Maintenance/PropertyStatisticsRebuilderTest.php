@@ -14,7 +14,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
+class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\Store' )

@@ -85,11 +85,6 @@ class SpecialPageProperty extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/search';
 	}
 
@@ -140,8 +135,8 @@ class SpecialPageProperty extends SpecialPage {
 		} else {
 
 			$requestOptions = new RequestOptions();
-			$requestOptions->setLimit( $options->get( 'limit' ) + 1 );
-			$requestOptions->setOffset( $options->get( 'offset' ) );
+			$requestOptions->setLimit( (int)$options->get( 'limit' ) + 1 );
+			$requestOptions->setOffset( (int)$options->get( 'offset' ) );
 			$requestOptions->sort = !SequenceMap::canMap( $propertyValue->getDataItem() );
 
 			// Restrict the request otherwise the entire SemanticData record
@@ -165,7 +160,7 @@ class SpecialPageProperty extends SpecialPage {
 		$output = $this->getOutput();
 		$output->setPagetitle( wfMessage( 'pageproperty' )->text() );
 
-		$output->addModuleStyles( 'ext.smw.special.style' );
+		$output->addModuleStyles( 'ext.smw.special.styles' );
 		$output->addModules( 'ext.smw.tooltip' );
 
 		$output->addModules( 'ext.smw.autocomplete.property' );

@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
+class PartialLanguageFallback extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
@@ -37,7 +37,7 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 	public function testDeclarationsLoadedPartiallyFromFallback() {
 		$JsonContentsFileReader = new JsonContentsFileReader(
 			null,
-			SMW_PHPUNIT_DIR . '/Fixtures/Localizer/LocalLanguage/'
+			\SMW_PHPUNIT_DIR . '/Fixtures/Localizer/LocalLanguage/'
 		);
 
 		$languageContents = new LanguageContents(

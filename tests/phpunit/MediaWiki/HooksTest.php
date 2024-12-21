@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Block\Block;
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Edit\PreparedEdit;
 use MediaWiki\User\UserIdentity;
 use ParserOptions;
@@ -23,7 +25,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HooksTest extends \PHPUnit_Framework_TestCase {
+class HooksTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -245,7 +247,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callMaintenanceUpdateAddParams' ],
 			[ 'callResourceLoaderGetConfigVars' ],
 			[ 'callGetPreferences' ],
-			[ 'callPersonalUrls' ],
 			[ 'callSkinTemplateNavigation' ],
 			[ 'callLoadExtensionSchemaUpdates' ],
 			[ 'callExtensionTypes' ],
@@ -899,9 +900,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_SPECIAL ) );
 
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
-			->disableOriginalConstructor()
-			->getMock();
+		$linksUpdate = $this->createMock( LinksUpdate::class );
 
 		$linksUpdate->expects( $this->any() )
 			->method( 'getTitle' )
@@ -1032,53 +1031,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			$instance->getHandlerFor( $handler ),
 			[ $user, &$preferences ]
 		);
-		return $handler;
-	}
-
-	public function callPersonalUrls( $instance ) {
-		if ( version_compare( MW_VERSION, '1.37', '>=' ) ) {
-			$this->markTestSkipped( 'The PersonalUrls hook does not exist on MW 1.37 and newer.' );
-		}
-
-		$preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$preferenceExaminer->expects( $this->any() )
-			->method( 'hasPreferenceOf' )
-			->will( $this->returnValue( false ) );
-
-		$this->testEnvironment->registerObject( 'PreferenceExaminer', $preferenceExaminer );
-
-		$handler = 'PersonalUrls';
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$skinTemplate->expects( $this->any() )
-			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
-
-		$personal_urls = [];
-
-		$this->assertTrue(
-			$instance->isRegistered( $handler )
-		);
-
-		$this->assertThatHookIsExcutable(
-			$instance->getHandlerFor( $handler ),
-			[ &$personal_urls, $title, $skinTemplate ]
-		);
-
 		return $handler;
 	}
 
@@ -1437,24 +1389,17 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	public function callBlockIpComplete( $instance ) {
 		$handler = 'BlockIpComplete';
 
-		$block = $this->getMockBuilder( '\Block' )
-			->disableOriginalConstructor()
-			->getMock();
+		$block = $this->createMock( Block::class );
 
-		if ( method_exists( $block, 'getTarget' ) ) {
-			$block->expects( $this->any() )
-				->method( 'getTarget' )
-				->will( $this->returnValue( 'Foo' ) );
-		} else {
-			$user = $this->createMock( UserIdentity::class );
-			$user->expects( $this->any() )
-				->method( 'getName' )
-				->willReturn( 'Foo' );
+		$user = $this->createMock( UserIdentity::class );
+		$user->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'Foo' );
 
-			$block->expects( $this->any() )
-				->method( 'getTargetUserIdentity' )
-				->willReturn( $user );
-		}
+		$block->expects( $this->any() )
+			->method( 'getTargetUserIdentity' )
+			->willReturn( $user );
+
 		$performer = '';
 		$priorBlock = '';
 
@@ -1473,24 +1418,17 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	public function callUnblockUserComplete( $instance ) {
 		$handler = 'UnblockUserComplete';
 
-		$block = $this->getMockBuilder( '\Block' )
-			->disableOriginalConstructor()
-			->getMock();
+		$block = $this->createMock( Block::class );
 
-		if ( method_exists( $block, 'getTarget' ) ) {
-			$block->expects( $this->any() )
-				->method( 'getTarget' )
-				->will( $this->returnValue( 'Foo' ) );
-		} else {
-			$user = $this->createMock( UserIdentity::class );
-			$user->expects( $this->any() )
-				->method( 'getName' )
-				->willReturn( 'Foo' );
 
-			$block->expects( $this->any() )
-				->method( 'getTargetUserIdentity' )
-				->willReturn( $user );
-		}
+		$user = $this->createMock( UserIdentity::class );
+		$user->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'Foo' );
+
+		$block->expects( $this->any() )
+			->method( 'getTargetUserIdentity' )
+			->willReturn( $user );
 
 		$performer = '';
 		$priorBlock = '';

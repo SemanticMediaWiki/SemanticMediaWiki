@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SpecialURIResolverTest extends \PHPUnit_Framework_TestCase {
+class SpecialURIResolverTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

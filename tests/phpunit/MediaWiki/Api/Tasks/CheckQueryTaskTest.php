@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class CheckQueryTaskTest extends \PHPUnit_Framework_TestCase {
+class CheckQueryTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;
