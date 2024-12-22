@@ -89,7 +89,7 @@ class ScopeMemoryLimiterTest extends \PHPUnit\Framework\TestCase {
 		$converter = new ScopeMemoryLimiter();
 
 		if ( $memoryLimitBefore === "-1" ) {
-			$memoryLimitBefore = memory_get_usage() + $converter->toInt( '10M' );
+			$memoryLimitBefore = memory_get_usage() + $converter->toInt( '20M' );
 			ini_set( 'memory_limit', $memoryLimitBefore );
 		}
 		$this->testCaller = $this->getMockBuilder( '\stdClass' )
