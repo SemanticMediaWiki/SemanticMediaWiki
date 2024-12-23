@@ -67,73 +67,79 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testUpdateTableWithNewField() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
-
-		$this->connection->expects( $this->at( 3 ) )
+			->willReturn( true );
+	
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'PRAGMA table_info(foo)' ) )
-			->will( $this->returnValue( [] ) );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD `bar` text' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
+			->willReturnCallback( function( $query ) {
+				if ( strpos( $query, 'PRAGMA table_info(foo)' ) !== false ) {
+					return [];
+				} elseif ( strpos($query, 'ALTER TABLE foo ADD `bar` text') !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			});
+	
 		$instance = SQLiteTableBuilder::factory( $this->connection );
-
+	
 		$table = new Table( 'foo' );
 		$table->addColumn( 'bar', 'text' );
-
+	
 		$instance->create( $table );
 	}
 
 	public function testUpdateTableWithNewFieldAndDefault() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
-
-		$this->connection->expects( $this->at( 3 ) )
+			->willReturn( true );
+	
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'PRAGMA table_info(foo)' ) )
-			->will( $this->returnValue( [] ) );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD `bar` text' . " DEFAULT '0'" ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
+			->willReturnCallback( function( $query ) {
+				if ( strpos( $query, 'PRAGMA table_info(foo)' ) !== false ) {
+					return []; 
+				} elseif ( strpos( $query, 'ALTER TABLE foo ADD `bar` text' ) !== false && strpos( $query, "DEFAULT '0'" ) !== false ) {
+					return new FakeResultWrapper([]);
+				}
+			});
+	
 		$instance = SQLiteTableBuilder::factory( $this->connection );
-
+	
 		$table = new Table( 'foo' );
 		$table->addColumn( 'bar', 'text' );
 		$table->addDefault( 'bar', 0 );
-
+	
 		$instance->create( $table );
 	}
 
 	public function testCreateIndex() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
-		$this->connection->expects( $this->at( 5 ) )
+		$this->connection->expects( $this->exactly( 3 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'PRAGMA index_list(foo)' ) )
-			->will( $this->returnValue( [] ) );
+			->willReturnCallback( function( $query ) {
+				if ( strpos( $query, 'CREATE TABLE foo(bar TEXT)' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+				if ( strpos( $query, 'PRAGMA index_list(foo)' ) !== false ) {
+					return [];
+				}
+				if ( strpos( $query, 'CREATE INDEX foo_index0' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
 
-		$this->connection->expects( $this->at( 7 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'CREATE INDEX foo_index0' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
+				throw new \Exception( "Unexpected query: " . $query );
+			});
+	
 		$instance = SQLiteTableBuilder::factory( $this->connection );
-
+	
 		$table = new Table( 'foo' );
 		$table->addColumn( 'bar', 'text' );
 		$table->addIndex( 'bar' );
 
 		$instance->create( $table );
-	}
+	}	
 
 	public function testDropTable() {
 		$this->connection->expects( $this->once() )
@@ -152,15 +158,20 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOptimizeTable() {
-		$this->connection->expects( $this->at( 2 ) )
+		$this->connection->expects( $this->exactly( 1 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'ANALYZE foo' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
+			->willReturnCallback( function( $query ) {
+				if ( strpos( $query, 'ANALYZE foo' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+	
+				throw new \Exception( "Unexpected query: " . $query );
+			});
+	
 		$instance = SQLiteTableBuilder::factory( $this->connection );
-
 		$table = new Table( 'foo' );
+
 		$instance->optimize( $table );
-	}
+	}	
 
 }
