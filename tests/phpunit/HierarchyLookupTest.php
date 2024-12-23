@@ -46,30 +46,35 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$propertyChangeListener->expects( $this->at( 0 ) )
+	
+		$propertyChangeListener->expects( $this->exactly( 2 ) )
 			->method( 'addListenerCallback' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBP' ) ),
-				$this->anything() );
-
-		$propertyChangeListener->expects( $this->at( 1 ) )
-			->method( 'addListenerCallback' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBC' ) ),
-				$this->anything() );
-
+			->willReturnCallback( function ( $property, $callback ) {
+				static $invocationCount = 0;
+				$invocationCount++;
+	
+				match ( $invocationCount ) {
+					1 => $this->assertEquals( new DIProperty( '_SUBP' ), $property, 'First invocation property should be _SUBP' ),
+					2 => $this->assertEquals( new DIProperty( '_SUBC' ), $property, 'Second invocation property should be _SUBC' ),
+					default => throw new LogicException( 'Unexpected invocation count' ),
+				};
+	
+				// Optionally validate the callback if needed
+				$this->assertNotNull( $callback, 'Callback should not be null' );
+			});
+	
 		$instance = new HierarchyLookup(
 			$this->store,
 			$this->cache
 		);
-
+	
 		$instance->setLogger(
 			$this->spyLogger
 		);
-
+	
 		$instance->registerPropertyChangeListener( $propertyChangeListener );
 	}
+	
 
 	public function testVerifySubpropertyForOnNonCachedLookup() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -142,53 +147,57 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetConsecutiveSubpropertyList() {
 		$property = new DIProperty( 'Foo' );
-
+	
 		$expected = [
 			new DIProperty( 'Bar' ),
 			new DIProperty( 'Foobar' )
 		];
-
+	
 		$a = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
-
-		$this->store->expects( $this->at( 0 ) )
-			->method( 'getPropertySubjects' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBP' ) ),
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->anything() )
-			->will( $this->returnValue( [ $a ] ) );
-
 		$b = DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY );
-
-		$this->store->expects( $this->at( 1 ) )
+	
+		// Track invocation count
+		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertySubjects' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBP' ) ),
-				$this->equalTo( $a ),
-				$this->anything() )
-			->will( $this->returnValue( [ $b ] ) );
-
+			->willReturnCallback( function ( $diProperty, $wikiPage, $options ) use ( $a, $b, $property ) {
+				static $invocationCount = 0;
+				$invocationCount++;
+	
+				// Adjusting to use match correctly with return value
+				return match ( $invocationCount ) {
+					1 => [
+						$this->assertEquals( new DIProperty( '_SUBP' ), $diProperty, 'First invocation property should be _SUBP' ),
+						$this->assertEquals( $property->getDiWikiPage(), $wikiPage, 'First invocation wikiPage should match the given property' ),
+						$a
+					],
+					2 => [
+						$this->assertEquals( new DIProperty( '_SUBP' ), $diProperty, 'Second invocation property should be _SUBP' ),
+						$this->assertEquals( $a, $wikiPage, 'Second invocation wikiPage should match the first property (Bar)' ),
+						$b
+					],
+					default => throw new LogicException( 'Unexpected invocation count' ),
+				};
+			});
+	
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
-
+			->willReturn( false );
+	
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
 				$this->stringContains( ':smw:hierarchy:2d440b72499319439ab5f466701f13fa' ),
-				$this->anything() );
-
+				$this->anything()
+			);
+	
 		$instance = new HierarchyLookup(
 			$this->store,
 			$this->cache
 		);
-
-		$instance->setLogger(
-			$this->spyLogger
-		);
-
+	
+		$instance->setLogger( $this->spyLogger );
 		$instance->setSubpropertyDepth( 2 );
-
+	
 		$this->assertEquals(
 			$expected,
 			$instance->getConsecutiveHierarchyList( $property )
@@ -228,109 +237,116 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetConsecutiveSubcategoryList() {
-		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
-
+		$category = new DIWikiPage('Foo', NS_CATEGORY);
+	
 		$expected = [
-			new DIWikiPage( 'Bar', NS_CATEGORY ),
-			new DIWikiPage( 'Foobar', NS_CATEGORY )
+			new DIWikiPage('Bar', NS_CATEGORY),
+			new DIWikiPage('Foobar', NS_CATEGORY)
 		];
-
-		$a = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );
-
-		$this->store->expects( $this->at( 0 ) )
-			->method( 'getPropertySubjects' )
+	
+		$a = DIWikiPage::newFromText('Bar', NS_CATEGORY);
+		$b = DIWikiPage::newFromText('Foobar', NS_CATEGORY);
+	
+		// Track invocation count
+		$this->store->expects($this->exactly(2))
+			->method('getPropertySubjects')
+			->willReturnCallback(function ($diProperty, $wikiPage, $options) use ($a, $b, $category) {
+				static $invocationCount = 0;
+				$invocationCount++;
+	
+				// Adjusting to use match correctly with return value
+				return match ($invocationCount) {
+					1 => [
+						$this->assertEquals(new DIProperty('_SUBC'), $diProperty, 'First invocation property should be _SUBC'),
+						$this->assertEquals($category, $wikiPage, 'First invocation wikiPage should match the given category'),
+						$a
+					],
+					2 => [
+						$this->assertEquals(new DIProperty('_SUBC'), $diProperty, 'Second invocation property should be _SUBC'),
+						$this->assertEquals($a, $wikiPage, 'Second invocation wikiPage should match the first category (Bar)'),
+						$b
+					],
+					default => throw new LogicException('Unexpected invocation count'),
+				};
+			});
+	
+		$this->cache->expects($this->once())
+			->method('fetch')
+			->willReturn(false);
+	
+		$this->cache->expects($this->once())
+			->method('save')
 			->with(
-				$this->equalTo( new DIProperty( '_SUBC' ) ),
-				$this->equalTo( $category ),
-				$this->anything() )
-			->will( $this->returnValue( [ $a ] ) );
-
-		$b = DIWikiPage::newFromText( 'Foobar', NS_CATEGORY );
-
-		$this->store->expects( $this->at( 1 ) )
-			->method( 'getPropertySubjects' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBC' ) ),
-				$this->equalTo( $a ),
-				$this->anything() )
-			->will( $this->returnValue( [ $b ] ) );
-
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
-
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				$this->stringContains( ':smw:hierarchy:78c9d3ed63c959981731afeef22cc8e9' ),
-				$this->anything() );
-
+				$this->stringContains(':smw:hierarchy:78c9d3ed63c959981731afeef22cc8e9'),
+				$this->anything()
+			);
+	
 		$instance = new HierarchyLookup(
 			$this->store,
 			$this->cache
 		);
-
-		$instance->setLogger(
-			$this->spyLogger
-		);
-
-		$instance->setSubcategoryDepth( 2 );
-
+	
+		$instance->setLogger($this->spyLogger);
+		$instance->setSubcategoryDepth(2);
+	
 		$this->assertEquals(
 			$expected,
-			$instance->getConsecutiveHierarchyList( $category )
+			$instance->getConsecutiveHierarchyList($category)
 		);
-	}
+	}	
 
 	public function testGetConsecutiveSuperCategoryList() {
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
-
+	
 		$expected = [
 			new DIWikiPage( 'Bar', NS_CATEGORY ),
 			new DIWikiPage( 'Foobar', NS_CATEGORY )
 		];
-
+	
 		$a = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );
-
-		$this->store->expects( $this->at( 0 ) )
-			->method( 'getPropertySubjects' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBC', true ) ),
-				$this->equalTo( $category ),
-				$this->anything() )
-			->will( $this->returnValue( [ $a ] ) );
-
 		$b = DIWikiPage::newFromText( 'Foobar', NS_CATEGORY );
-
-		$this->store->expects( $this->at( 1 ) )
+	
+		// Track invocation count
+		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertySubjects' )
-			->with(
-				$this->equalTo( new DIProperty( '_SUBC', true ) ),
-				$this->equalTo( $a ),
-				$this->anything() )
-			->will( $this->returnValue( [ $b ] ) );
-
+			->willReturnCallback( function ( $diProperty, $wikiPage, $options ) use ( $a, $b, $category ) {
+				static $invocationCount = 0;
+				$invocationCount++;
+	
+				return match ( $invocationCount ) {
+					1 => [
+						$this->assertEquals( new DIProperty( '_SUBC', true ), $diProperty, 'First invocation property should be _SUBC with true flag' ),
+						$this->assertEquals( $category, $wikiPage, 'First invocation wikiPage should match the given category' ),
+						$a
+					],
+					2 => [
+						$this->assertEquals( new DIProperty( '_SUBC', true ), $diProperty, 'Second invocation property should be _SUBC with true flag' ),
+						$this->assertEquals( $a, $wikiPage, 'Second invocation wikiPage should match the first category (Bar)' ),
+						$b
+					],
+					default => throw new LogicException( 'Unexpected invocation count' ),
+				};
+			});
+	
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
-
+			->willReturn( false );
+	
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
 				$this->stringContains( ':smw:hierarchy:c61e6ee84187efaafbb31878af471432' ),
-				$this->anything() );
-
+				$this->anything()
+			);
+	
 		$instance = new HierarchyLookup(
 			$this->store,
 			$this->cache
 		);
-
-		$instance->setLogger(
-			$this->spyLogger
-		);
-
+	
+		$instance->setLogger( $this->spyLogger );
 		$instance->setSubcategoryDepth( 2 );
-
+	
 		$this->assertEquals(
 			$expected,
 			$instance->getConsecutiveHierarchyList( $category, HierarchyLookup::TYPE_SUPER )
