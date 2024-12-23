@@ -246,12 +246,15 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 				'__assoc' => ['Foo' => true],
 			]);
 	
-		$matcher = $this->exactly( 2 );
-	
-		$this->cache->expects( $matcher )
+		// Use a static counter to track invocations manually
+		static $invocationCount = 0;
+		
+		$this->cache->expects( $this->exactly( 2 ) )
 			->method( 'delete' )
-			->willReturnCallback( function ( string $key ) use ( $matcher ) {
-				match ( $matcher->numberOfInvocations() ) {
+			->willReturnCallback( function ( string $key ) use ( &$invocationCount ) {
+				$invocationCount++;
+	
+				match ( $invocationCount ) {
 					1 => $this->assertStringContainsString( 'Foo', $key ),
 					2 => $this->assertStringContainsString( 'smw:entity:44ab375ee7ebac04b8e4471a70180dc5', $key ),
 					default => throw new LogicException( 'Unexpected invocation count' ),
