@@ -238,26 +238,31 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 
 	public function testInvalidate() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
-
+	
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar', '__assoc' => [ 'Foo' => true ] ] ) );
-
-		$this->cache->expects( $this->at( 1 ) )
+			->willReturn([
+				md5( 'bar' ) => 'Foobar',
+				'__assoc' => ['Foo' => true],
+			]);
+	
+		$matcher = $this->exactly( 2 );
+	
+		$this->cache->expects( $matcher )
 			->method( 'delete' )
-			->with(	$this->stringContains( 'Foo' ) );
-
-		$this->cache->expects( $this->at( 2 ) )
-			->method( 'delete' )
-			->with(	$this->stringContains( 'smw:entity:44ab375ee7ebac04b8e4471a70180dc5' ) );
-
-		$instance = new EntityCache(
-			$this->cache
-		);
-
+			->willReturnCallback( function ( string $key ) use ( $matcher ) {
+				match ( $matcher->numberOfInvocations() ) {
+					1 => $this->assertStringContainsString( 'Foo', $key ),
+					2 => $this->assertStringContainsString( 'smw:entity:44ab375ee7ebac04b8e4471a70180dc5', $key ),
+					default => throw new LogicException( 'Unexpected invocation count' ),
+				};
+			});
+	
+		$instance = new EntityCache( $this->cache );
+	
 		$instance->invalidate( $subject );
 	}
-
+	
 	public function testInvalidate_NoValidSubject() {
 		$this->cache->expects( $this->never() )
 			->method( 'fetch' );
