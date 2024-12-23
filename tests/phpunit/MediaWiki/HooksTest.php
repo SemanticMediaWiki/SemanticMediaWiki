@@ -1420,7 +1420,6 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$block = $this->createMock( Block::class );
 
-
 		$user = $this->createMock( UserIdentity::class );
 		$user->expects( $this->any() )
 			->method( 'getName' )

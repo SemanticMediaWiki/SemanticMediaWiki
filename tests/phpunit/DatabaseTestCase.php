@@ -114,7 +114,7 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase {
 				$title->expects( $this->any() )
 					->method( 'getPrefixedDBkey' )
 					->willReturn( 'Badtitle/Dummy title for BacklinkCache reset' );
-	
+
 				BacklinkCache::get( $title )->clear();
 			}
 		}

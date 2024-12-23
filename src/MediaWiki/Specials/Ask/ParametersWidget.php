@@ -271,7 +271,7 @@ class ParametersWidget {
 			Html::rawElement(
 				'span',
 				[
-					'class'     =>  $class,
+					'class'     => $class,
 					'word-wrap' => 'break-word',
 					'data-info' => $info
 				],

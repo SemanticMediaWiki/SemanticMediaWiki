@@ -35,7 +35,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	public function __construct( $target ) {
 		try {
 			$this->cdb = Reader::open( $target );
-		} catch( Exception $e ) {
+		} catch ( Exception $e ) {
 			// Do nothing
 		}
 	}

@@ -66,5 +66,4 @@ class TableOptimizerTest extends \PHPUnit\Framework\TestCase {
 		$instance->runForTables( [ $table ] );
 	}
 
-
 }

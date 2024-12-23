@@ -166,5 +166,4 @@ class ExpDataSerializerTest extends \PHPUnit\Framework\TestCase {
 		return $provider;
 	}
 
-
 }

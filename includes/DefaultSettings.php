@@ -13,7 +13,7 @@
  * @codeCoverageIgnore
  */
 if ( !defined( 'MEDIAWIKI' ) ) {
-  die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
+	die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
 }
 
 return ( function () {
@@ -2202,7 +2202,7 @@ return ( function () {
 				'data' => $smwgIP . '/data/elastic/smw-data-standard.json',
 				'lookup' => $smwgIP . '/data/elastic/smw-lookup.json'
 			],
-			'connection' =>[
+			'connection' => [
 				'quick_ping' => true,
 
 				// Number of times the client tries to reconnect before throwing an

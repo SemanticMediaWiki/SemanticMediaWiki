@@ -23,7 +23,7 @@ class ValueTextsBuilder {
 	private $linker;
 	private $prefixParameterProcessor;
 
-	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {		
+	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {
 		$this->prefixParameterProcessor = $prefixParameterProcessor;
 	}
 

@@ -106,7 +106,7 @@ class TypesRegistryTest extends \PHPUnit\Framework\TestCase {
 				continue;
 			}
 
-			yield[ $key, $def ];
+			yield [ $key, $def ];
 		}
 	}
 
@@ -119,7 +119,7 @@ class TypesRegistryTest extends \PHPUnit\Framework\TestCase {
 				continue;
 			}
 
-			yield[ $key, $def ];
+			yield [ $key, $def ];
 		}
 	}
 

@@ -617,7 +617,6 @@ class SharedServicesContainer implements CallbackContainer {
 			$settings = $containerBuilder->singleton( 'Settings' );
 			$cacheType = $cacheType === null ? $settings->get( 'smwgQueryResultCacheType' ) : $cacheType;
 
-
 			// Explicitly use the CACHE_DB to access a SqlBagOstuff instance
 			// for a bit more persistence
 			$cacheStats = new CacheStats(

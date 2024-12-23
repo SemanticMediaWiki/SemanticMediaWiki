@@ -304,7 +304,7 @@ class SMWSpecialTypes extends SpecialPage {
 		);
 
 		$htmlTabs->setActiveTab(
-			$errors !==  null ? 'smw-type-errors' : 'smw-type-list'
+			$errors !== null ? 'smw-type-errors' : 'smw-type-list'
 		);
 
 		$htmlTabs->tab( 'smw-type-list', $this->msg( 'smw-type-tab-properties' ) . $itemCount );

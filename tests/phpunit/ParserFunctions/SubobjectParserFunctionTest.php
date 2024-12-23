@@ -110,7 +110,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		// setting
 		$expected['propertyValues'][] = $title->getText();
 
-		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ){
+		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ) {
 			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,
 				$containerSemanticData
@@ -313,7 +313,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			);
 		}
 
-		foreach ( $subSemanticData as $key => $semanticData ){
+		foreach ( $subSemanticData as $key => $semanticData ) {
 
 			if ( strpos( $semanticData->getSubject()->getSubobjectName(), '_ERR' ) !== false ) {
 				continue;

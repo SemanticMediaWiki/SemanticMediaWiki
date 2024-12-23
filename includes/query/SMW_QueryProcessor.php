@@ -196,7 +196,7 @@ class SMWQueryProcessor implements QueryContext {
 
 		$hasMainlabel = array_key_exists( 'mainlabel', $rawParams );
 
-		if  ( !$hasMainlabel || trim( $rawParams['mainlabel'] ) !== '-' ) {
+		if ( !$hasMainlabel || trim( $rawParams['mainlabel'] ) !== '-' ) {
 			$printRequest = new PrintRequest(
 				PrintRequest::PRINT_THIS,
 				$hasMainlabel ? $rawParams['mainlabel'] : ''

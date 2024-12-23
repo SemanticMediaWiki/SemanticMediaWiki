@@ -193,7 +193,7 @@ class DIWikiPageHandler extends DataItemHandler {
 
 			try {
 				$property = new DIProperty( $dbkeys[0] );
-			} catch( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				// Most likely an outdated, no longer existing predefined
 				// property, mark it as outdate
 				$dbkeys[2] = SMW_SQL3_SMWIW_OUTDATED;

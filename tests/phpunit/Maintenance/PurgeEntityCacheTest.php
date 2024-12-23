@@ -30,7 +30,7 @@ class PurgeEntityCacheTest extends TestCase {
 	private $entityCache;
 
 	protected function setUp(): void {
-		$this->testEnvironment =  new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->messageReporter = $this->createMock( MessageReporter::class );
 		$this->store = $this->createMock( SQLStore::class );

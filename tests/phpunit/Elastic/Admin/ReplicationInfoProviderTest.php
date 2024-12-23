@@ -127,5 +127,4 @@ class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
 		$instance->handleRequest( $this->webRequest );
 	}
 
-
 }

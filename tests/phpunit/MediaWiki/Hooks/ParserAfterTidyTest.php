@@ -472,7 +472,6 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 3001 ) );
 
-
 		$provider[] = [
 			[
 				'store'    => $store,

@@ -75,7 +75,7 @@ class runLocalMessageCopy extends \Maintenance {
 	 */
 	public function execute() {
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
-			exit ( $maintenanceCheck->getMessage() );
+			exit( $maintenanceCheck->getMessage() );
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();

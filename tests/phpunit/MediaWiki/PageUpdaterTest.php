@@ -257,7 +257,8 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function ( $callback ) {
-				return call_user_func( $callback ); }
+				return call_user_func( $callback );
+			}
 			) );
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -284,7 +285,6 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 			'doPurgeParserCache',
 			'invalidateCache'
 		];
-
 
 		$provider[] = [
 			'doPurgeHtmlCache',

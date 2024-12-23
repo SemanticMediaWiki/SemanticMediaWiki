@@ -115,7 +115,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 			$requestOptions
 		);
 
-
 		$this->assertNotSame(
 			$lookupIdentifier,
 			$instance->getHash()

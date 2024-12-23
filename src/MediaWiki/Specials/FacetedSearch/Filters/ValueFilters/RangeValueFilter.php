@@ -134,7 +134,7 @@ class RangeValueFilter {
 				'data-to' => $to,
 				'data-step' => $defaults['step_size'],
 				'data-min-interval' => $defaults['min_interval'],
-				'data-postfix' => $postFix !== '' ? "&nbsp;$postFix": '',
+				'data-postfix' => $postFix !== '' ? "&nbsp;$postFix" : '',
 				'data-property' => $property,
 				'name' => "pv[$property][]",
 				'value' => "$min|$max",

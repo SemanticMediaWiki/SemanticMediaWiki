@@ -153,8 +153,8 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			)
 			->willReturnOnConsecutiveCalls(
 				[ 'TestValue' => true ],
-				[] 
- );
+				[]
+		);
 
 		$instance = new PostProcHandler(
 			$this->parserOutput,
@@ -398,13 +398,13 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'toArray' )
 			->will( $this->returnValue( [ 'Foo' ] ) );
 
-		$provider[] =[
+		$provider[] = [
 			null,
 			[ 'Foo' => true ],
 			$query
 		];
 
-		$provider[] =[
+		$provider[] = [
 			[ 'Bar' => true ],
 			[ 'Bar' => true, 'Foo' => true ],
 			$query

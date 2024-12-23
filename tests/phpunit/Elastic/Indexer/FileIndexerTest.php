@@ -31,7 +31,7 @@ class FileIndexerTest extends \PHPUnit\Framework\TestCase {
 	private Store $store;
 
 	protected function setUp(): void {
-		$this->testEnvironment =  new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
 			->disableOriginalConstructor()

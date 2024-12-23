@@ -93,7 +93,6 @@ class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $this->semanticData ) );
 
-
 		$instance = new PredefinedPropertyExaminer(
 			$this->declarationExaminer
 		);

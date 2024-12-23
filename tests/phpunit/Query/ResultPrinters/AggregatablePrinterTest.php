@@ -83,7 +83,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertEmpty( $result );
 
-		foreach( $queryResult->getErrors() as $error ) {
+		foreach ( $queryResult->getErrors() as $error ) {
 			$this->assertEquals( $expected['message'], $error );
 		}
 	}

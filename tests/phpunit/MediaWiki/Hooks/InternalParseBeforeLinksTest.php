@@ -321,7 +321,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
 
-
 		#2
 		$provider[] = [ $title ];
 

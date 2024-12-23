@@ -129,7 +129,7 @@ class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function titleDataProvider() {
-		$validIdTitle =  MockTitle::buildMock( 'validIdTitle' );
+		$validIdTitle = MockTitle::buildMock( 'validIdTitle' );
 
 		$validIdTitle->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
@@ -160,7 +160,7 @@ class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		#1 Disabled setting
-		$validIdTitle =  MockTitle::buildMock( 'Disabled' );
+		$validIdTitle = MockTitle::buildMock( 'Disabled' );
 
 		$validIdTitle->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
@@ -190,7 +190,7 @@ class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		// #2 No Id
-		$nullIdTitle =  MockTitle::buildMock( 'NullId' );
+		$nullIdTitle = MockTitle::buildMock( 'NullId' );
 
 		$nullIdTitle->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )

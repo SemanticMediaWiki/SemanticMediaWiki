@@ -140,7 +140,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			$sep = '';
 
 			if ( $this->m_outformat != '-u' ) {
-				$sep =  ( $this->m_outformat != '-' ? '&#160;' : ' ' );
+				$sep = ( $this->m_outformat != '-' ? '&#160;' : ' ' );
 			}
 
 			$this->m_caption = $asPrefix ? $printunit . $sep . $this->m_caption : $this->m_caption . $sep . $printunit;

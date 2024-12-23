@@ -287,7 +287,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->parse( $params );
 
-		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ){
+		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ) {
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
 
 			$this->semanticDataValidator->assertThatPropertiesAreSet(

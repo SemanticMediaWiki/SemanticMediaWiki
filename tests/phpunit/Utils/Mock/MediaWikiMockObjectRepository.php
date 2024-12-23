@@ -73,7 +73,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implemen
 			->disableOriginalConstructor()
 			->getMock();
 
-
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
 			$parserOutput->expects( $this->any() )

@@ -78,5 +78,4 @@ class SupportListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		$instance->getHtml();
 	}
 
-
 }

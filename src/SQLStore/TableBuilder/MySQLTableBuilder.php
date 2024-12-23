@@ -193,7 +193,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
 			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
-		} elseif ( !$this->areFieldTypesEqual( $fieldType, $currentFields[$fieldName] ) )  {
+		} elseif ( !$this->areFieldTypesEqual( $fieldType, $currentFields[$fieldName] ) ) {
 			$this->doUpdateFieldType( $tableName, $fieldName, $position, $currentFields[$fieldName], $fieldType );
 		} else {
 			$this->reportMessage( "   ... field $fieldName is fine.\n" );

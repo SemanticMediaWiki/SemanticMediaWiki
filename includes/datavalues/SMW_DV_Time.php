@@ -254,7 +254,7 @@ class SMWTimeValue extends SMWDataValue {
 				$msgKey .= '-empty';
 			} elseif ( count( $propercomponents ) > 3 ) {
 				$msgKey .= '-three';
-			} else{
+			} else {
 				$msgKey .= '-common';
 			}
 
@@ -415,7 +415,7 @@ class SMWTimeValue extends SMWDataValue {
 			} else { // number can just be a year
 				return SMW_YEAR;
 			}
-		} elseif ( $component [0] == 'd' ) { // already marked as day
+		} elseif ( $component[0] == 'd' ) { // already marked as day
 			if ( is_numeric( substr( $component, 1 ) ) ) {
 				$numvalue = intval( substr( $component, 1 ) );
 				return ( ( $numvalue >= 1 ) && ( $numvalue <= 31 ) ) ? SMW_DAY : 0;

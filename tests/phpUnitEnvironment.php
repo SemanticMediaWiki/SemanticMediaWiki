@@ -96,7 +96,7 @@ class PHPUnitEnvironment {
 
 		try {
 			$store_info = json_encode( smwfGetStore()->getInfo(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
-		} catch( \Wikimedia\Rdbms\DBConnectionError $e ) {
+		} catch ( \Wikimedia\Rdbms\DBConnectionError $e ) {
 			$store_info = 'No connection';
 		}
 
@@ -157,7 +157,7 @@ class PHPUnitEnvironment {
 					exec( "git ls-remote https://github.com/wikimedia/mediawiki $refs", $output );
 				}
 
-				$this->gitHead['mw'] = isset( $output[0] ) ? substr( $output[0], 0, 7 ) . " ($refs)"  : 'n/a';
+				$this->gitHead['mw'] = isset( $output[0] ) ? substr( $output[0], 0, 7 ) . " ($refs)" : 'n/a';
 			} else {
 				$this->gitHead['mw'] = 'N/A';
 			}

@@ -67,7 +67,8 @@ class SequenceTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) { return $callback(); } ) );
+			->will( $this->returnCallback( function ( $callback ) { return $callback();
+			} ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )

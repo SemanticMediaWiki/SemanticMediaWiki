@@ -187,7 +187,7 @@ class GetPreferences implements HookListener {
 
 		try {
 			$profileList = $facetedSearchProfile->getProfileList();
-		} catch ( DefaultProfileNotFoundException|SchemaTypeNotFoundException $e ) {
+		} catch ( DefaultProfileNotFoundException | SchemaTypeNotFoundException $e ) {
 			$profileList = [];
 		}
 

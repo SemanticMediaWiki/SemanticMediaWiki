@@ -272,7 +272,7 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetAllowedValues() {
-		$expected =  [
+		$expected = [
 			$this->dataItemFactory->newDIBlob( 'A' ),
 			$this->dataItemFactory->newDIBlob( 'B' )
 		];

@@ -45,7 +45,7 @@ class DIBooleanHandler extends DataItemHandler {
 			'p_id'
 		];
 	}
-	
+
 	/**
 	 * @since 1.8
 	 *

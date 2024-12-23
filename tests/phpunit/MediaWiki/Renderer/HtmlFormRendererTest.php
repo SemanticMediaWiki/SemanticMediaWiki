@@ -150,7 +150,7 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 				'optionlistLabel',
 				'optionlistName',
 				'b',
-				[ 'f' => 'foo', 'b' =>'bar' ],
+				[ 'f' => 'foo', 'b' => 'bar' ],
 				'optionslistId' );
 
 		$expected = [

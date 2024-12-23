@@ -445,7 +445,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		);
 
 		while ( ( $count < $query->getLimit() ) && ( $row = $res->fetchObject() ) ) {
-			if ( $row->iw === '' || $row->iw[0] != ':' )  {
+			if ( $row->iw === '' || $row->iw[0] != ':' ) {
 
 				// Catch exception for non-existing predefined properties that
 				// still registered within non-updated pages (@see bug 48711)

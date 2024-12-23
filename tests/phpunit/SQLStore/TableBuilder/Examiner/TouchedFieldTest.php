@@ -71,5 +71,4 @@ class TouchedFieldTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-
 }

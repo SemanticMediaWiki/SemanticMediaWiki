@@ -68,7 +68,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$this->assertSame(
-			json_encode( $constraintSchema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES |JSON_UNESCAPED_UNICODE ),
+			json_encode( $constraintSchema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ),
 			$instance->prettify( $constraintSchema )
 		);
 	}

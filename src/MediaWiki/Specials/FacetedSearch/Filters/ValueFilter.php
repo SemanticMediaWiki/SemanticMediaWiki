@@ -99,7 +99,7 @@ class ValueFilter {
 
 			$raw = $valueFilters['raw'][$property] ?? [];
 			$escapedValues = [];
-			foreach( $values as $k => $groupId ) {
+			foreach ( $values as $k => $groupId ) {
 				// Security measure to prevent XSS attacks
 				$escapedValues[htmlspecialchars( $k )] = $groupId;
 			}

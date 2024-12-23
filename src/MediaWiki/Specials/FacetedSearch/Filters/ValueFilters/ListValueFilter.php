@@ -237,9 +237,9 @@ class ListValueFilter {
 			'filter-items-condition',
 			[
 				'property' => $property,
-				'or-selected' => $condition === 'or' ? 'selected': '',
-				'and-selected' => $condition === 'and' ? 'selected': '',
-				'not-selected' => $condition === 'not' ? 'selected': ''
+				'or-selected' => $condition === 'or' ? 'selected' : '',
+				'and-selected' => $condition === 'and' ? 'selected' : '',
+				'not-selected' => $condition === 'not' ? 'selected' : ''
 			]
 		);
 

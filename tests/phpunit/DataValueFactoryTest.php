@@ -86,7 +86,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 			$dataValue
 		);
 
-		if ( $dataValue->getErrors() === [] ){
+		if ( $dataValue->getErrors() === [] ) {
 			return $this->assertEquals(
 				$expectedValue,
 				$dataValue->getWikiValue()
@@ -111,10 +111,10 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		// Check the returned instance
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
-		if ( $dataValue->getErrors() === [] ){
+		if ( $dataValue->getErrors() === [] ) {
 			$this->assertInstanceOf( 'SMWDIProperty', $dataValue->getProperty() );
 			$this->assertContains( $propertyName, $dataValue->getProperty()->getLabel() );
-			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
+			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}
 		} else {
@@ -144,10 +144,10 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		// Check the returned instance
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
-		if ( $dataValue->getErrors() === [] ){
+		if ( $dataValue->getErrors() === [] ) {
 			$this->assertInstanceOf( 'SMWDIProperty', $dataValue->getProperty() );
 			$this->assertContains( $propertyName, $dataValue->getProperty()->getLabel() );
-			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
+			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}
 		} else {

@@ -50,7 +50,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		}
 
 		parent::runJobs( [ 'minJobs' => 0 ], [ 'complete' => true ] );
-	
+
 		$this->jobQueue = $this->applicationFactory->getJobQueue();
 		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
 	}

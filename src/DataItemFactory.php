@@ -9,7 +9,7 @@ use SMWDIContainer as DIContainer;
 use SMWDIError as DIError;
 use SMWDINumber as DINumber;
 use SMWDIUri as DIUri;
-use SMWDITime  as DITime;
+use SMWDITime as DITime;
 use Title;
 
 /**

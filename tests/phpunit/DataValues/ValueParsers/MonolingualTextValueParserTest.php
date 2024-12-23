@@ -64,7 +64,7 @@ class MonolingualTextValueParserTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$provider[] = [
-			[ 'EN' =>'Foo' ],
+			[ 'EN' => 'Foo' ],
 			'Foo',
 			'en'
 		];

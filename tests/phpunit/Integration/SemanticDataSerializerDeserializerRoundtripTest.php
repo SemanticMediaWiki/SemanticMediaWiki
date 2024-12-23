@@ -40,7 +40,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit\Framework
 			$this->newSerializerInstance()->serialize( $this->newDeserializerInstance()->deserialize( $serialized ) )
 		);
 
-
 		$this->assertEquals(
 			$data->getHash(),
 			$this->newDeserializerInstance()->deserialize( $serialized )->getHash()

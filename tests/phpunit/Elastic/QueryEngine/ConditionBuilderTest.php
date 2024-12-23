@@ -94,5 +94,4 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$instance->prepareCache( [] );
 	}
 
-
 }

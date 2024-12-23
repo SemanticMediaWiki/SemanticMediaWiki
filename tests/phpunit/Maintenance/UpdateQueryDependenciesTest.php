@@ -25,7 +25,7 @@ class UpdateQueryDependenciesTest extends \PHPUnit\Framework\TestCase {
 	private $entityCache;
 
 	protected function setUp(): void {
-		$this->testEnvironment =  new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
 			->disableOriginalConstructor()

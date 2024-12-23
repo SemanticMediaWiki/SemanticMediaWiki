@@ -164,7 +164,6 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-
 		#4 Strip tags
 		$provider[] = [
 			'Foo',

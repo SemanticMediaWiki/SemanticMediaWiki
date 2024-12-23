@@ -124,22 +124,26 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::createIndex
 	 */
-	public function createIndex( $type ) {}
+	public function createIndex( $type ) {
+	}
 
 	/**
 	 * @see Client::deleteIndex
 	 */
-	public function deleteIndex( $index ) {}
+	public function deleteIndex( $index ) {
+	}
 
 	/**
 	 * @see Client::putSettings
 	 */
-	public function putSettings( array $params ) {}
+	public function putSettings( array $params ) {
+	}
 
 	/**
 	 * @see Client::putMapping
 	 */
-	public function putMapping( array $params ) {}
+	public function putMapping( array $params ) {
+	}
 
 	/**
 	 * @see Client::getMapping
@@ -158,7 +162,8 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::refresh
 	 */
-	public function refresh( array $params ) {}
+	public function refresh( array $params ) {
+	}
 
 	/**
 	 * @see Client::validate
@@ -205,17 +210,20 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::update
 	 */
-	public function update( array $params ) {}
+	public function update( array $params ) {
+	}
 
 	/**
 	 * @see Client::index
 	 */
-	public function index( array $params ) {}
+	public function index( array $params ) {
+	}
 
 	/**
 	 * @see Client::bulk
 	 */
-	public function bulk( array $params ) {}
+	public function bulk( array $params ) {
+	}
 
 	/**
 	 * @see Client::count
@@ -241,7 +249,8 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::updateAliases
 	 */
-	public function updateAliases( array $params ) {}
+	public function updateAliases( array $params ) {
+	}
 
 	/**
 	 * @see Client::indexExists
@@ -260,12 +269,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::openIndex
 	 */
-	public function openIndex( string $index ) {}
+	public function openIndex( string $index ) {
+	}
 
 	/**
 	 * @see Client::closeIndex
 	 */
-	public function closeIndex( string $index ) {}
+	public function closeIndex( string $index ) {
+	}
 
 	/**
 	 * @see Client::hasMaintenanceLock
@@ -277,12 +288,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::setMaintenanceLock
 	 */
-	public function setMaintenanceLock() {}
+	public function setMaintenanceLock() {
+	}
 
 	/**
 	 * @see Client::setLock
 	 */
-	public function setLock( $type, $version ) {}
+	public function setLock( $type, $version ) {
+	}
 
 	/**
 	 * @see Client::hasLock
@@ -301,6 +314,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getLock
 	 */
-	public function releaseLock( $type ) {}
+	public function releaseLock( $type ) {
+	}
 
 }

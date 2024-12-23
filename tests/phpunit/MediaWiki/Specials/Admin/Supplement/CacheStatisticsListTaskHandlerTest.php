@@ -91,5 +91,4 @@ class CacheStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		$instance->handleRequest( $webRequest );
 	}
 
-
 }

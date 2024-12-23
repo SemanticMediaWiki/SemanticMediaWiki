@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
 class UpdateEntityCollationTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
-	
+
 	private $runnerFactory;
 	private $spyMessageReporter;
 	private $hookDispatcher;

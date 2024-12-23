@@ -44,7 +44,7 @@ class DescriptionProfileTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCreateProfile() {
-		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
+		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
 
 		$container = new DIContainer(
 			new ContainerSemanticData( $subject	)

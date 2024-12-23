@@ -30,7 +30,7 @@ class DocumentationParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$processedParam = $this->getMockBuilder( ProcessedParam::class )
 			->disableOriginalConstructor()
 			->getMock();
-		
+
 		$language = $this->getMockBuilder( ProcessedParam::class )
 			->disableOriginalConstructor()
 			->getMock();

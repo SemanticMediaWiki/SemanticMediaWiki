@@ -212,13 +212,13 @@ class LocalLanguageTest extends \PHPUnit\Framework\TestCase {
 			)
 			->willReturnOnConsecutiveCalls(
 				[ '_FOO' => 'Bar' ],
-				[],                
-				[],                
-				[]                
- );
-	
+				[],
+				[],
+				[]
+		);
+
 		$instance = new LocalLanguage( $this->languageContents );
-	
+
 		// Check that the label 'Foo' does not match any property ID
 		$this->assertNull( $instance->getPropertyIdByLabel( 'Foo' ) );
 	}
@@ -234,14 +234,14 @@ class LocalLanguageTest extends \PHPUnit\Framework\TestCase {
 				[ $this->equalTo( 'property.aliases' ), $this->anything() ]
 			)
 			->willReturnOnConsecutiveCalls(
-				[], 
-				[],  
-				[],  
-				[]   
- );
-	
+				[],
+				[],
+				[],
+				[]
+		);
+
 		$instance = new LocalLanguage( $this->languageContents );
-	
+
 		// Check that when all data sources are empty, no property ID is found
 		$this->assertNull( $instance->getPropertyIdByLabel( 'Foo' ) );
 	}

@@ -94,7 +94,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 				if ( $service === 'MonolingualTextLookup' ) {
 					return $monolingualTextLookup;
 				}
-			 } ) );
+			} ) );
 
 		$expectedNullOutputFor = [
 			'concept',

@@ -65,7 +65,7 @@ class MonolingualTextValueMappingParserTest extends \PHPUnit\Framework\TestCase 
 		];
 
 		$provider[] = [
-			[ 'DE-FORMAL' =>'Foo' ],
+			[ 'DE-FORMAL' => 'Foo' ],
 			'Foo',
 			'de-formal'
 		];

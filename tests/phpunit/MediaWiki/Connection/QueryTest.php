@@ -312,7 +312,6 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 				$this->equalTo( $instance ),
 				$this->equalTo( 'Foo' ) );
 
-
 		$instance->execute( 'Foo' );
 	}
 

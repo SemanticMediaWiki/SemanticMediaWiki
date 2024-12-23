@@ -57,7 +57,7 @@ class XmlResponseParserTest extends \PHPUnit\Framework\TestCase {
 
 	protected function assertResultFormat( $expectedResultRowItemInstance, $results ) {
 		if ( !is_array( $expectedResultRowItemInstance ) ) {
-			$expectedResultRowItemInstance =  [ $expectedResultRowItemInstance ];
+			$expectedResultRowItemInstance = [ $expectedResultRowItemInstance ];
 		}
 
 		foreach ( $results as $key => $row ) {

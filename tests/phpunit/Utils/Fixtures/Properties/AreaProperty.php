@@ -43,7 +43,7 @@ class AreaProperty extends FixtureProperty {
 
 		$dataValueFactory = DataValueFactory::getInstance();
 
-		foreach( $this->conversionValues as $conversionValue ) {
+		foreach ( $this->conversionValues as $conversionValue ) {
 			$semanticData->addDataValue(
 				$dataValueFactory->newDataValueByProperty(
 					new DIProperty( '_CONV' ),

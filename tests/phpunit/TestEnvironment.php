@@ -114,7 +114,7 @@ class TestEnvironment {
 	public function resetMediaWikiService( $name ) {
 		try {
 			\MediaWiki\MediaWikiServices::getInstance()->resetServiceForTesting( $name );
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			// Do nothing just avoid a
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
 		}
@@ -141,7 +141,7 @@ class TestEnvironment {
 
 		try {
 			\MediaWiki\MediaWikiServices::getInstance()->redefineService( $name, $service );
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			// Do nothing just avoid a
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
 		}
@@ -184,12 +184,12 @@ class TestEnvironment {
 		try {
 			// Get the MediaWiki service container
 			$services = \MediaWiki\MediaWikiServices::getInstance();
-			
+
 			// Check if DBLoadBalancer is available
 			if ( $services->has( 'DBLoadBalancer' ) ) {
 				return;  // DBLoadBalancer is already initialized
 			}
-	
+
 			// Reinitialize DBLoadBalancer if missing
 			$services->set( 'DBLoadBalancer', new DBLoadBalancer() );
 		} catch ( \Exception $e ) {

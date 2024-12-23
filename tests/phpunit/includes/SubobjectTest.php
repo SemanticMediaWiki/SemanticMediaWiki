@@ -122,7 +122,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 			$parameters['identifier']
 		);
 
-		foreach ( $parameters['properties'] as $property => $value ){
+		foreach ( $parameters['properties'] as $property => $value ) {
 
 			$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 				$property,

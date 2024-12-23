@@ -30,7 +30,7 @@ class NullProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMethodAccess() {
-		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', '_QUERYadcb944aa33b2c972470b73964c547c0' );
+		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', '_QUERYadcb944aa33b2c972470b73964c547c0' );
 
 		$container = new DIContainer(
 			new ContainerSemanticData( $subject	)

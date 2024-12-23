@@ -374,7 +374,7 @@ class LinksWidget {
 					'data-onoi-clipboard-field' => 'value',
 					'class' => 'clipboard smw-icon-bookmark',
 					'value' => $infolink->getURL(),
-					'title' =>  wfMessage( 'smw-clipboard-copy-link' )->text()
+					'title' => wfMessage( 'smw-clipboard-copy-link' )->text()
 				]
 			)
 		);
