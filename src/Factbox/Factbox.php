@@ -458,7 +458,6 @@ class Factbox {
 			 * @todo: PHP does not have Intl.ListFormat() like in JS.
 			 * Considered that we use this a lot in SMW, it should be refactored into
 			 * an shared utility method.
-			 *
 			 */
 			$valueHtml = '';
 			if ( count( $list ) === 1 ) {
