@@ -277,7 +277,7 @@ class Factbox {
 	/**
 	 * Returns required resource modules
 	 *
-	 * @todo: figure out a way to load this module only when attachments exist 
+	 * @todo: figure out a way to load this module only when attachments exist
 	 * @since 1.9
 	 */
 	public static function getModules(): array {
@@ -458,7 +458,8 @@ class Factbox {
 			 * @todo: PHP does not have Intl.ListFormat() like in JS.
 			 * Considered that we use this a lot in SMW, it should be refactored into
 			 * an shared utility method.
-			 * */
+			 *
+			 */
 			$valueHtml = '';
 			if ( count( $list ) === 1 ) {
 				$valueHtml = $list[0];
