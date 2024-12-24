@@ -34,7 +34,6 @@ return [
 			'smw/ext.smw.dropdown.css',
 			'smw/ext.smw.table.css',
 			'smw/ext.smw.tabs.css',
-			'smw/factbox/smw.factbox.css',
 			'smw/smw.indicators.css',
 			'smw/smw.jsonview.css'
 		],
@@ -392,10 +391,34 @@ return [
 		]
 	],
 
-	// Facts and browse
+	// Factbox styles
+	'ext.smw.factbox.styles' => $moduleTemplate + [
+		'styles' => [
+			'smw/factbox.less'
+		],
+		'skinStyles' => [
+			'vector-2022' => [ 'smw/factbox-vector-2022.less' ]
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	// Load sortable script for attachment table
+	'ext.smw.factbox' => $moduleTemplate + [
+		'packagedFiles' => [
+			'smw/ext.smw.factbox.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	// Special:Browse
 	'ext.smw.browse.styles' => $moduleTemplate + [
 		'styles' => [
-			'smw/factbox.less',
 			'smw/special/ext.smw.special.browse.less'
 		],
 		'targets' => [
@@ -601,13 +624,6 @@ return [
 		'targets' => [
 			'mobile',
 			'desktop'
-		]
-	],
-
-	'smw.factbox'  => $moduleTemplate + [
-		'scripts'  => [
-			'libs/tinysort/tinysort.min.js',
-			'smw/factbox/smw.factbox.js'
 		]
 	],
 

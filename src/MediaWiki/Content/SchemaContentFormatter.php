@@ -98,7 +98,7 @@ class SchemaContentFormatter {
 	 * @return []
 	 */
 	public function getModules() {
-		return [ 'smw.content.schemaview', 'smw.factbox' ];
+		return [ 'smw.content.schemaview' ];
 	}
 
 	/**

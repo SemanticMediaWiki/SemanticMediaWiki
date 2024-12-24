@@ -50,7 +50,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 		parent::tearDown();
 	}
 
-	public function testCreateTable() {
+	public function testBuildHTML() {
 		$checkMagicWords = new CheckMagicWords(
 			[
 				'smwgShowFactboxEdit' => SMW_FACTBOX_NONEMPTY,
@@ -78,12 +78,11 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
-		$createTable  = $reflector->getMethod( 'createTable' );
-		$createTable->setAccessible( true );
+		$buildHTML  = $reflector->getMethod( 'buildHTML' );
+		$buildHTML->setAccessible( true );
 
-		$this->assertInternalType(
-			'string',
-			$createTable->invoke( $instance, $parserData->getSemanticData() )
+		$this->assertIsString(
+			$buildHTML->invoke( $instance, $parserData->getSemanticData() )
 		);
 	}
 
@@ -123,8 +122,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
 		$fetchContent->setAccessible( true );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
 			$fetchContent->invoke( $instance, SMW_FACTBOX_NONEMPTY )
 		);
 
@@ -188,7 +186,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 				$parserData,
 				$this->displayTitleFinder
 			] )
-			->setMethods( [ 'createTable' ] )
+			->setMethods( [ 'buildHTML' ] )
 			->getMock();
 
 		$factbox->setCheckMagicWords(
@@ -196,15 +194,14 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$factbox->expects( $this->any() )
-			->method( 'createTable' )
+			->method( 'buildHTML' )
 			->will( $this->returnValue( $setup['invokedContent'] ) );
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
 		$fetchContent->setAccessible( true );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
 			$fetchContent->invoke( $factbox )
 		);
 
@@ -321,7 +318,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			[
-				'div class="smwrdflink"'
+				'span class="rdflink"'
 			],
 			$instance->getContent()
 		);
@@ -408,7 +405,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 				'isShown'       => true,
 				'isUserDefined' => true,
 			],
-			[ 'class="smw-table-cell smwprops"' ]
+			[ 'class="smw-factbox-value"' ]
 		];
 
 		$provider[] = [
@@ -424,7 +421,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 				'isShown'       => true,
 				'isUserDefined' => false,
 			],
-			[ 'class="smw-table-cell smwspecs"' ]
+			[ 'class="smw-factbox-value"' ]
 		];
 
 		$provider[] = [
