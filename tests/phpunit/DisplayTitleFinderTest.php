@@ -158,7 +158,7 @@ class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPrefetchFromSemanticData() {
-		$subSemanticData =  $this->getMockBuilder( '\SMW\SemanticData' )
+		$subSemanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 

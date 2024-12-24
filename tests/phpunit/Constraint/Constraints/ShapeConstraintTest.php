@@ -73,7 +73,8 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
+			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData;
+			} ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
@@ -113,7 +114,8 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
+			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData;
+			} ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
@@ -161,7 +163,8 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
+			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData;
+			} ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
@@ -213,7 +216,8 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
+			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData;
+			} ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )

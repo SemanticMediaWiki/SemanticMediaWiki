@@ -211,5 +211,4 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-
 }

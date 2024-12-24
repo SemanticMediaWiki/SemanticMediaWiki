@@ -82,7 +82,7 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 			'smw_iw' => '',
 			'smw_subobject' => '',
 			'smw_sortkey' => 'FOO',
-			'smw_sort' =>'FOO',
+			'smw_sort' => 'FOO',
 			'smw_hash' => 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6'
 		];
 
@@ -147,7 +147,7 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 			'smw_iw' => '',
 			'smw_subobject' => '',
 			'smw_sortkey' => 'FOO',
-			'smw_sort' =>'FOO',
+			'smw_sort' => 'FOO',
 			'smw_hash' => 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6'
 		];
 

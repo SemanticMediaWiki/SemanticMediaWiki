@@ -69,7 +69,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 		$dataItem = $dataValue->getDataItem();
 		$properties = array_flip( $properties );
 
-		//PHP 7.0+ $semanticData = $dataValue->getCallable( SemanticData::class )();
+		// PHP 7.0+ $semanticData = $dataValue->getCallable( SemanticData::class )();
 		$semanticData = $dataValue->getCallable( SemanticData::class );
 		$semanticData = $semanticData();
 

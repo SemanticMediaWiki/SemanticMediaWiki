@@ -65,7 +65,7 @@ class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit\Framework\Test
 	public function testCompareMonthAndLabel( $langcode ) {
 		$class = $this->loadLanguageFileAndConstructClass( $langcode );
 
-		for ( $i=1; $i <= 12; $i++ ) {
+		for ( $i = 1; $i <= 12; $i++ ) {
 
 			$label = call_user_func( [ $class, 'getMonthLabel' ], $i );
 			$month = call_user_func( [ $class, 'findMonth' ], $label );

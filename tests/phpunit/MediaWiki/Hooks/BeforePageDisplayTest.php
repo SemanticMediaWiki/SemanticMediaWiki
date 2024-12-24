@@ -228,7 +228,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function titleDataProvider() {
-		#0 Standard title
+		# 0 Standard title
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -250,7 +250,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1 as SpecialPage
+		# 1 as SpecialPage
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

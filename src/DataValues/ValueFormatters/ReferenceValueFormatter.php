@@ -82,7 +82,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 			'span',
 			[
 				'class' => $class,
-				'data-title'   =>  Message::get( 'smw-ui-tooltip-title-reference', Message::TEXT, Message::USER_LANGUAGE ),
+				'data-title'   => Message::get( 'smw-ui-tooltip-title-reference', Message::TEXT, Message::USER_LANGUAGE ),
 				'data-content' => '<ul><li>' . implode( '</li><li>', $results ) . '</li></ul>',
 				'title' => strip_tags( implode( ', ', $results ) )
 			]

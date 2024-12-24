@@ -305,7 +305,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return DIWikiPage|null
 	 */
-	public function getCanonicalDiWikiPage( string $subobjectName = '' ): ?DIWikiPage  {
+	public function getCanonicalDiWikiPage( string $subobjectName = '' ): ?DIWikiPage {
 		if ( $this->isUserDefined() ) {
 			$dbkey = $this->m_key;
 		} elseif ( $this->m_key === $this->findPropertyTypeID() ) {
@@ -550,7 +550,7 @@ class DIProperty extends SMWDataItem {
 
 	/**
 	 * Implements \JsonSerializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @return array
@@ -564,7 +564,7 @@ class DIProperty extends SMWDataItem {
 
 	/**
 	 * Implements JsonUnserializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @param JsonUnserializer $unserializer Unserializer

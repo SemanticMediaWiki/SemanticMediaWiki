@@ -66,7 +66,6 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertInternalType( 'array', $result );
 		$this->assertEquals( $expected, $result );
-
 	}
 
 	/**

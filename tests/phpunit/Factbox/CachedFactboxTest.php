@@ -235,7 +235,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		#0 Factbox build, being visible
+		# 0 Factbox build, being visible
 		$title = MockTitle::buildMock( __METHOD__ . 'title-being-visible' );
 
 		$title->expects( $this->atLeastOnce() )
@@ -288,7 +288,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1 Factbox build, being visible, using WebRequest oldid
+		# 1 Factbox build, being visible, using WebRequest oldid
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-oldid' );
 
 		$title->expects( $this->atLeastOnce() )
@@ -344,7 +344,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#2 Factbox is expected not to be visible
+		# 2 Factbox is expected not to be visible
 		$title = MockTitle::buildMock( __METHOD__ . 'title-ns-disabled' );
 
 		$title->expects( $this->atLeastOnce() )
@@ -388,7 +388,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#3 No semantic data
+		# 3 No semantic data
 		$title = MockTitle::buildMock( __METHOD__ . 'title-empty-semanticdata' );
 
 		$title->expects( $this->atLeastOnce() )
@@ -547,7 +547,6 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 		$parserOutput = new ParserOutput();
 		$parserOutput->setExtensionData( 'smwdata', $semanticData );
 		return $parserOutput;
-
 	}
 
 }

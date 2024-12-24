@@ -26,7 +26,7 @@ class Site {
 		// ...\ServiceContainer.php: Service disabled: DBLoadBalancer
 		try {
 			$isReadOnly = MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly();
-		} catch( \MediaWiki\Services\ServiceDisabledException $e ) {
+		} catch ( \MediaWiki\Services\ServiceDisabledException $e ) {
 			$isReadOnly = true;
 		}
 

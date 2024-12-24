@@ -160,7 +160,7 @@ class RecurringEvents {
 		foreach ( $parameters as $name => $values ) {
 
 			foreach ( $values as $value ) {
-				switch( $name ) {
+				switch ( $name ) {
 					case 'property':
 						$this->property = $value;
 						break;
@@ -189,7 +189,7 @@ class RecurringEvents {
 						// it should be include=...;...|+sep=; because the
 						// ParameterParser class is conditioned to split those
 						// parameter accordingly
-						if ( strpos( $value, ';' ) ){
+						if ( strpos( $value, ';' ) ) {
 							$included_dates = explode( ';', $value );
 						} else {
 							$included_dates[] = $value;
@@ -197,7 +197,7 @@ class RecurringEvents {
 						break;
 					case 'exclude':
 						// Some as above
-						if ( strpos( $value, ';' ) ){
+						if ( strpos( $value, ';' ) ) {
 							$excluded_dates = explode( ';', $value );
 						} else {
 							$excluded_dates[] = $value;

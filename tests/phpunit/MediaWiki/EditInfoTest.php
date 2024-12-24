@@ -120,7 +120,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 			  ->method( 'canExist' )
 			  ->will( $this->returnValue( true ) );
 
-		#0 No parserOutput object
+		# 0 No parserOutput object
 		$editInfo = (object)[];
 		$editInfo->output = null;
 

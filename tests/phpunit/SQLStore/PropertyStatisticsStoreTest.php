@@ -258,7 +258,6 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 					] ),
 				$this->anything() );
 
-
 		$instance = new PropertyStatisticsStore(
 			$connection
 		);

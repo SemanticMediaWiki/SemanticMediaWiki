@@ -97,7 +97,7 @@ class SpecialPagePropertyTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function queryParameterProvider() {
-		#0
+		# 0
 		$provider[] = [
 			'Has page::Has prop',
 			[ 'type=Has+prop', 'from=Has+page' ]

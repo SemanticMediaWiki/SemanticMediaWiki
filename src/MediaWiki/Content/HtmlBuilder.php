@@ -174,7 +174,6 @@ class HtmlBuilder {
 
 		$html = $summaryTable->buildHTML();
 
-
 		if ( isset( $params['error_params'] ) && $params['error_params'] !== [] ) {
 			$parameters = [];
 			$attributes = [];

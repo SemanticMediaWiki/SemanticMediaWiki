@@ -90,7 +90,6 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-
 		// #2 Invalid free text
 		$provider[] = [
 			[ 'text' => '#REDIR [[:Lala]]' ],

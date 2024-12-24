@@ -169,7 +169,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function validMatchTypeContent() {
-		#0
+		# 0
 		$provider[] = [
 			"http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n",
 			'Foaf:name',
@@ -182,7 +182,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			" http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n   name|Type:Text\n",
 			'Foaf:name',
@@ -195,7 +195,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#2 mbox_sha1sum
+		# 2 mbox_sha1sum
 		$provider[] = [
 			" http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n   mbox_sha1sum|Type:Text\n",
 			'Foaf:mbox_sha1sum',

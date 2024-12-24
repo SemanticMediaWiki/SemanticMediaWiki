@@ -105,7 +105,6 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 				'href' => 'Foo'
 			]
 		];
-
 	}
 
 }

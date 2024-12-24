@@ -117,7 +117,6 @@ class AttachmentAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			[ '_source' => [ 'attachment' => [ 'keywords' => '1001' ] ] ],
 			'_CONT_KEYW'
 		];
-
 	}
 
 }

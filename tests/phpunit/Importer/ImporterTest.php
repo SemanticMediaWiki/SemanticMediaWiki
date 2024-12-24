@@ -152,7 +152,7 @@ class ImporterTest extends \PHPUnit\Framework\TestCase {
 					$importContents->addError( 'BarError from create' );
 					$importContents->addError( [ 'Foo1', 'Foo2' ] );
 					return true;
-				}
+			}
 			) );
 
 		$instance = new Importer(

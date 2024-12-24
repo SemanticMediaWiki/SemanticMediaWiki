@@ -160,5 +160,4 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 	}
 
-
 }

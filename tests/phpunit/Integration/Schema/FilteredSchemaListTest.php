@@ -321,7 +321,6 @@ class FilteredSchemaListTest extends \PHPUnit\Framework\TestCase {
 			[ 'Foo', 'Bar', 'Foobar-1' ],
 			[ 3 /* unnamed_rule_schema_3 */ ]
 		];
-
 	}
 
 }

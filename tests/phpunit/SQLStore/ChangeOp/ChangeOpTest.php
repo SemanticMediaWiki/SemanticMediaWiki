@@ -242,7 +242,7 @@ class ChangeOpTest extends \PHPUnit\Framework\TestCase {
 				'smw_fpt_mdat' =>
 				  [],
 				],
-			  ],
+				],
 			],
 			[
 			  'smw_fpt_mdat',
@@ -261,7 +261,7 @@ class ChangeOpTest extends \PHPUnit\Framework\TestCase {
 					'o_sortkey' => '123',
 				  ],
 				],
-			  ],
+				],
 			  'smw_fpt_mdat' => [
 				'property' =>
 				[
@@ -275,7 +275,7 @@ class ChangeOpTest extends \PHPUnit\Framework\TestCase {
 					'o_sortkey' => '2457250.8948958',
 				  ],
 				],
-			  ],
+				],
 			],
 			[
 			  0 => 61,
@@ -402,6 +402,5 @@ class ChangeOpTest extends \PHPUnit\Framework\TestCase {
 
 		return $provider;
 	}
-
 
 }

@@ -82,7 +82,7 @@ class PropertyTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			$this->propertyStatisticsStore
 		);
 
-		$params= new Parameters(
+		$params = new Parameters(
 			[
 				'insert_rows' => [],
 				'delete_rows' => [],
@@ -201,7 +201,7 @@ class PropertyTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			$this->propertyStatisticsStore
 		);
 
-		$params= new Parameters(
+		$params = new Parameters(
 			[
 				'insert_rows' => [
 					'table_foo' => []

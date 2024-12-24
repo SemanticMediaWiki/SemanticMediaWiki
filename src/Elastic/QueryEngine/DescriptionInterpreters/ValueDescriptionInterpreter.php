@@ -72,7 +72,7 @@ class ValueDescriptionInterpreter {
 			$field = "$pid.$field";
 		}
 
-		//$description->getHierarchyDepth(); ??
+		// $description->getHierarchyDepth(); ??
 		$hierarchyDepth = null;
 
 		$hierarchy = $this->conditionBuilder->findHierarchyMembers(

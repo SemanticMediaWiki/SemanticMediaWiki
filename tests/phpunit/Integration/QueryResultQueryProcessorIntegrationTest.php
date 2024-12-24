@@ -147,7 +147,7 @@ class QueryResultQueryProcessorIntegrationTest extends SMWIntegrationTestCase {
 		$provider = [];
 
 		// #1 Standard query
-		$provider[] =[
+		$provider[] = [
 			[ 'query' => [
 				'[[Modification date::+]]',
 				'?Modification date',
@@ -156,7 +156,7 @@ class QueryResultQueryProcessorIntegrationTest extends SMWIntegrationTestCase {
 			],
 			[
 				[
-					'label'=> '',
+					'label' => '',
 					'typeid' => '_wpg',
 					'mode' => 2,
 					'format' => false,
@@ -164,7 +164,7 @@ class QueryResultQueryProcessorIntegrationTest extends SMWIntegrationTestCase {
 					'redi' => ''
 				],
 				[
-					'label'=> 'Modification date',
+					'label' => 'Modification date',
 					'typeid' => '_dat',
 					'mode' => 1,
 					'format' => '',
@@ -175,7 +175,7 @@ class QueryResultQueryProcessorIntegrationTest extends SMWIntegrationTestCase {
 		];
 
 		// #2 Query containing a printrequest formatting
-		$provider[] =[
+		$provider[] = [
 			[ 'query' => [
 				'[[Modification date::+]]',
 				'?Modification date#ISO',
@@ -184,7 +184,7 @@ class QueryResultQueryProcessorIntegrationTest extends SMWIntegrationTestCase {
 			],
 			[
 				[
-					'label'=> '',
+					'label' => '',
 					'typeid' => '_wpg',
 					'mode' => 2,
 					'format' => false,
@@ -192,7 +192,7 @@ class QueryResultQueryProcessorIntegrationTest extends SMWIntegrationTestCase {
 					'redi' => ''
 				],
 				[
-					'label'=> 'Modification date',
+					'label' => 'Modification date',
 					'typeid' => '_dat',
 					'mode' => 1,
 					'format' => 'ISO',

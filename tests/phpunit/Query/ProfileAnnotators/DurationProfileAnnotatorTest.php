@@ -43,7 +43,7 @@ class DurationProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider durationDataProvider
 	 */
 	public function testCreateProfile( $duration, $expected ) {
-		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
+		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
 
 		$container = new DIContainer(
 			new ContainerSemanticData( $subject	)

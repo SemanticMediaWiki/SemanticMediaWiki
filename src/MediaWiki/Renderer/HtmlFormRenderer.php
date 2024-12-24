@@ -358,7 +358,7 @@ class HtmlFormRenderer {
 		foreach ( $options as $internalId => $name ) {
 			$optionsHtml[] = Html::element(
 				'option', [
-				//	'disabled' => false,
+				// 'disabled' => false,
 					'value' => $internalId,
 					'selected' => $internalId == $inputValue,
 				], $name

@@ -311,7 +311,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 			[
 				'id' => 42,
 				'time_es' => DITime::newFromTimestamp( 1272508900 )->asDateTime()->format( 'Y-m-d H:i:s' ),
-				'time_store' =>DITime::newFromTimestamp( 1272508903 )->asDateTime()->format( 'Y-m-d H:i:s' )
+				'time_store' => DITime::newFromTimestamp( 1272508903 )->asDateTime()->format( 'Y-m-d H:i:s' )
 			]
 		);
 

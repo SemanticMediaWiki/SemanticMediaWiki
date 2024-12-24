@@ -66,7 +66,6 @@ class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 		$instance = new PropertyChangeListener( $this->store );
 		$instance->addListenerCallback( $property, [ $this, 'observeChange' ] );
 
-
 		$this->assertFalse(
 			$instance->canTrigger( 'bar' )
 		);

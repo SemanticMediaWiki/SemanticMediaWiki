@@ -281,7 +281,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 		];
 	}
 
-//SMW::Maintenance::AfterUpdateEntityCollationComplete
+// SMW::Maintenance::AfterUpdateEntityCollationComplete
 	public function callParserAfterTidy( $instance ) {
 		$handler = 'ParserAfterTidy';
 
@@ -1419,7 +1419,6 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 		$handler = 'UnblockUserComplete';
 
 		$block = $this->createMock( Block::class );
-
 
 		$user = $this->createMock( UserIdentity::class );
 		$user->expects( $this->any() )

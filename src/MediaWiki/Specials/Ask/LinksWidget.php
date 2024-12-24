@@ -56,7 +56,7 @@ class LinksWidget {
 			return '';
 		}
 
-		//show|hide inline embed code
+		// show|hide inline embed code
 		$embedShow = "document.getElementById('inlinequeryembed').style.display='block';" .
 			"document.getElementById('embed_hide').style.display='inline';" .
 			"document.getElementById('embed_show').style.display='none';" .
@@ -374,7 +374,7 @@ class LinksWidget {
 					'data-onoi-clipboard-field' => 'value',
 					'class' => 'clipboard smw-icon-bookmark',
 					'value' => $infolink->getURL(),
-					'title' =>  wfMessage( 'smw-clipboard-copy-link' )->text()
+					'title' => wfMessage( 'smw-clipboard-copy-link' )->text()
 				]
 			)
 		);

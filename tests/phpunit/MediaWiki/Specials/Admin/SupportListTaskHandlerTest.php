@@ -25,7 +25,7 @@ class SupportListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-		//	->setMEthods( [ 'getInfo' ] )
+		// ->setMEthods( [ 'getInfo' ] )
 			->getMockForAbstractClass();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -77,6 +77,5 @@ class SupportListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->getHtml();
 	}
-
 
 }

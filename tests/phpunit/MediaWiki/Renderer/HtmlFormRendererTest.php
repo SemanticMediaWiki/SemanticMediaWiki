@@ -110,7 +110,7 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 			'input name="foo" size="333" value="Foo" id="FooId"',
 			'input name="AnotherInputFieldName" size="20" value="AnotherInputFieldValue" id="AnotherInputFieldName"',
 			'input type="submit" value="FindFoo"',
-			//'<br />&nbsp;' MW 1.27 <br/>&nbsp;
+			// '<br />&nbsp;' MW 1.27 <br/>&nbsp;
 		];
 
 		$this->stringValidator->assertThatStringContains(
@@ -150,7 +150,7 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 				'optionlistLabel',
 				'optionlistName',
 				'b',
-				[ 'f' => 'foo', 'b' =>'bar' ],
+				[ 'f' => 'foo', 'b' => 'bar' ],
 				'optionslistId' );
 
 		$expected = [

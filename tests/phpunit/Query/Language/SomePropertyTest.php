@@ -104,7 +104,7 @@ class SomePropertyTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function somePropertyProvider() {
-		#0
+		# 0
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -127,7 +127,7 @@ class SomePropertyTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -150,7 +150,7 @@ class SomePropertyTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#2
+		# 2
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -173,7 +173,7 @@ class SomePropertyTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#3, 1096
+		# 3, 1096
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -199,7 +199,7 @@ class SomePropertyTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#4, 1096
+		# 4, 1096
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(

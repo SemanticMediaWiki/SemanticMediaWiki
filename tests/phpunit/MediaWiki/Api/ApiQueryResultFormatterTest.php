@@ -194,7 +194,6 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-
 		// #4 Extended subject data + XML
 		$provider[] = [
 			[
@@ -215,7 +214,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 				'furtherResults' => true
 			],
 			[
-				'result' =>  [
+				'result' => [
 					'results' => [
 						[
 							'printouts' => [
@@ -256,7 +255,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 				'furtherResults' => true
 			],
 			[
-				'result' =>  [
+				'result' => [
 					'results' => [
 						[
 							'printouts' => [ '_element' => 'property' ],
@@ -290,7 +289,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 				'furtherResults' => false
 			],
 			[
-				'result' =>  [
+				'result' => [
 					'results' => [],
 					'printrequests' => [ 'Bar', '_element' => 'printrequest' ],
 					'meta' => [
@@ -314,7 +313,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 		// #0
 		$provider[] = [
 			[
-				'rawMode'=> false,
+				'rawMode' => false,
 				'errors' => $errors
 			],
 			[
@@ -325,7 +324,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 		// #1
 		$provider[] = [
 			[
-				'rawMode'=> true,
+				'rawMode' => true,
 				'errors' => $errors
 			],
 			[

@@ -256,7 +256,7 @@ class SMWRecordValue extends AbstractMultiValue {
 
 		$this->m_diProperties = $this->getFieldProperties( $this->m_property );
 
-		if ( $this->m_diProperties  === [] ) { // TODO internalionalize
+		if ( $this->m_diProperties === [] ) { // TODO internalionalize
 			$this->addError( 'The list of properties to be used for the data fields has not been specified properly.' );
 		}
 

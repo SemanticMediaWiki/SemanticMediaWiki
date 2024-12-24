@@ -10,8 +10,6 @@ use SMW\Exporter\Element;
  * @ingroup SMW
  */
 
-
-
 /**
  * SMWExpData is a data container for export-ready semantic content. It is
  * organised as a tree-shaped data structure with one root subject and zero
@@ -264,7 +262,7 @@ class SMWExpData implements Element {
 						return $restlist;
 					}
 				} elseif ( ( $rest instanceof SMWExpResource ) &&
-						   ( $rest->getUri() == $rdfnilUri ) )  {
+						   ( $rest->getUri() == $rdfnilUri ) ) {
 					return [ $first ];
 				} else {
 					return false;

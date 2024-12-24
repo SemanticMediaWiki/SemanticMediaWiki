@@ -345,7 +345,6 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->mockConnection( 'mw.db' ) ) );
 
-
 		$null = 0;
 
 		$reachedTheBeforeChangeTitleCompleteHook = false;

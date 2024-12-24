@@ -381,7 +381,7 @@ class SetupFile {
 
 		try {
 			$this->repo->saveSmwJson( $vars['smwgConfigFileDir'], $vars[self::SMW_JSON] );
-		} catch( RuntimeException $e ) {
+		} catch ( RuntimeException $e ) {
 			// Users may not have `wgShowExceptionDetails` enabled and would
 			// therefore not see the exception error message hence we fail hard
 			// and die

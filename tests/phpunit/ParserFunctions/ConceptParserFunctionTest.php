@@ -154,7 +154,7 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			$parserData->getSemanticData()->getProperties()
 		);
 
-		foreach ( $parserData->getSemanticData()->getProperties() as $property ){
+		foreach ( $parserData->getSemanticData()->getProperties() as $property ) {
 
 			if ( $property->getKey() !== '_CONC' ) {
 				continue;
@@ -228,7 +228,6 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		return $provider;
-
 	}
 
 	public function namespaceDataProvider() {

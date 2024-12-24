@@ -125,7 +125,8 @@ class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$instance->registerConstraint( 'foo', function () use( $constraint ) {
-			return $constraint; }
+			return $constraint;
+		}
 		);
 
 		$this->assertInstanceOf(

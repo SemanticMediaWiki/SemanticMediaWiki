@@ -193,7 +193,6 @@ class SetupTest extends \PHPUnit\Framework\TestCase {
 		$this->assertFalse(
 			$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
-
 	}
 
 	public function testRegisterParamDefinitions() {

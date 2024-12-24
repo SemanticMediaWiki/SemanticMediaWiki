@@ -122,7 +122,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 			$parameters['identifier']
 		);
 
-		foreach ( $parameters['properties'] as $property => $value ){
+		foreach ( $parameters['properties'] as $property => $value ) {
 
 			$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 				$property,
@@ -390,7 +390,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 	public function errorProvider() {
 		$provider = [];
 
-		#0
+		# 0
 		$provider[] = [
 			[
 				'Foo',
@@ -399,7 +399,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 			1
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			[
 				'Foo',
@@ -408,7 +408,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 			2
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			[
 				[ 'Foo' => 'Bar' ],
@@ -417,7 +417,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 			1
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			[
 				[ 'Foo' => 'Bar' ],

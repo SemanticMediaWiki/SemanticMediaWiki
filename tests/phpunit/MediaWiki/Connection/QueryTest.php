@@ -226,7 +226,6 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 			'SELECT f AS a FROM foo WHERE (foo_bar) GROUP BY _foo HAVING COUNT(Foo) > 5 LIMIT 42',
 			$instance->build()
 		);
-
 	}
 
 	public function testTable() {
@@ -311,7 +310,6 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 			->with(
 				$this->equalTo( $instance ),
 				$this->equalTo( 'Foo' ) );
-
 
 		$instance->execute( 'Foo' );
 	}

@@ -163,8 +163,6 @@ class TextContentCreator implements ContentCreator {
 			EDIT_FORCE_BOT
 		);
 
-
-
 		if ( !$status->isOk() ) {
 			$action = 'FAILED';
 

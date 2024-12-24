@@ -136,7 +136,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		// Display title goes before a translated label (but not preferred)
 		if ( $preferredLabel === '' && $displayTitle !== '' ) {
 			$label = $displayTitle;
-			//	$canonicalLabel = $displayTitle;
+			// $canonicalLabel = $displayTitle;
 		}
 
 		// Internal format only used by PropertyValue

@@ -56,7 +56,7 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function queryProvider() {
-		#0
+		# 0
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -88,7 +88,7 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D'
 		];
 
-		#1
+		# 1
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -125,7 +125,7 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csource%3DBaz'
 		];
 
-		#2
+		# 2
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -163,7 +163,7 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%7Corder%3Ddesc'
 		];
 
-		#3
+		# 3
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -201,7 +201,7 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%2CFoobaz%7Corder%3Ddesc%2Casc'
 		];
 
-		#4
+		# 4
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -247,7 +247,7 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7C%3FABC%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D'
 		];
 
-		#5 (#show returns with an extra =)
+		# 5 (#show returns with an extra =)
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
 			->getMock();

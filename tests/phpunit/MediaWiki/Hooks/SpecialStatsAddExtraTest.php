@@ -130,7 +130,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 			'PROPUSES' => 1001
 		];
 
-		#0
+		# 0
 		$provider[] = [
 			[
 				'extraStats' => [],
@@ -141,7 +141,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1 unknown
+		# 1 unknown
 		$provider[] = [
 			[
 				'extraStats' => [],
@@ -152,7 +152,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#2 MW 1.21+
+		# 2 MW 1.21+
 		$provider[] = [
 			[
 				'extraStats' => [],
@@ -163,7 +163,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#3 MW 1.21+ - unknown
+		# 3 MW 1.21+ - unknown
 		$provider[] = [
 			[
 				'extraStats' => [],

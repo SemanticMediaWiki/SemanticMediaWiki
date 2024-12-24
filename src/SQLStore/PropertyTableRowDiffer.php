@@ -141,7 +141,7 @@ class PropertyTableRowDiffer {
 
 			try {
 				$fixedProperties[] = new DIProperty( $propertyTable->getFixedProperty() );
-			} catch( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				// Do nothing!
 			}
 		}

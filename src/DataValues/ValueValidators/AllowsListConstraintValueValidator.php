@@ -95,7 +95,6 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			$allowedValueList
 		);
 
-
 		if ( $isAllowed ) {
 			return;
 

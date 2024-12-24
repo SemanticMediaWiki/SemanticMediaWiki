@@ -83,7 +83,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertEmpty( $result );
 
-		foreach( $queryResult->getErrors() as $error ) {
+		foreach ( $queryResult->getErrors() as $error ) {
 			$this->assertEquals( $expected['message'], $error );
 		}
 	}
@@ -212,7 +212,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 		$provider[] = [
 			[
 				'parameters'  => [ 'distribution' => true ],
-		//		'queryResult' => $queryResult
+		// 'queryResult' => $queryResult
 				],
 			[
 				'message'     => $message
@@ -223,7 +223,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 		$provider[] = [
 			[
 				'parameters'  => [ 'distribution' => false ],
-			//	'queryResult' => $queryResult
+			// 'queryResult' => $queryResult
 				],
 			[
 				'message'     => $message

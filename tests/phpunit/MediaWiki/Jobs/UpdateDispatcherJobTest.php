@@ -329,10 +329,10 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$count = count( $subjects ) - 1; // eliminate duplicate count
-		$title =  Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
+		$title = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
-		#0
+		# 0
 		$provider[] = [
 			[
 				'title'      => $title,
@@ -349,7 +349,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
-		#1
+		# 1
 		$provider[] = [
 			[
 				'title'      => $title,
@@ -363,8 +363,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-
-		#2
+		# 2
 		$duplicate = DIWikiPage::newFromText( 'Foo' );
 
 		$subjects = [
@@ -377,7 +376,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		];
 
-		$title =  Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
+		$title = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
 		$provider[] = [

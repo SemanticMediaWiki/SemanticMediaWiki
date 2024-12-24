@@ -59,6 +59,5 @@ class AttachmentLinkPropertyAnnotator extends PropertyAnnotatorDecorator {
 				$this->dataItemFactory->newDIWikiPage( $attachment, NS_FILE )
 			);
 		}
-
 	}
 }

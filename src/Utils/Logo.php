@@ -1,6 +1,7 @@
 <?php
 
 namespace SMW\Utils;
+
 use MediaWiki\MediaWikiServices;
 
 /**

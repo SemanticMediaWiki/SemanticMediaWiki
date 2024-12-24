@@ -93,7 +93,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$descriptionFactory = new DescriptionFactory();
 		$dataItemFactory = new DataItemFactory();
 
-		#0
+		# 0
 		$pageId = 42;
 
 		$description = $descriptionFactory->newClassDescription(
@@ -111,7 +111,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			$expected
 		];
 
-		#1 Empty
+		# 1 Empty
 		$pageId = 0;
 
 		$description = $descriptionFactory->newClassDescription(

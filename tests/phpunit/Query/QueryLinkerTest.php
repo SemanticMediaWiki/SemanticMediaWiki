@@ -75,26 +75,25 @@ class QueryLinkerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function sortOrderProvider() {
-		yield[
+		yield [
 			[ '_MDAT' => 'DESC' ],
 			'&order=desc&sort=Modification%20date'
 		];
 
-		yield[
+		yield [
 			[ '' => 'ASC' ],
 			'&mainlabel=&source=&offset='
 		];
 
-		yield[
+		yield [
 			[ 'Foo_bar' => 'ASC' ],
 			'&mainlabel=&source=&offset=&order=asc&sort=Foo%20bar'
 		];
 
-		yield[
+		yield [
 			[ '' => 'ASC', 'Foo_bar' => 'DESC' ],
 			'&mainlabel=&source=&offset=&order=asc%2Cdesc&sort=%2CFoo%20bar'
 		];
-
 	}
 
 }

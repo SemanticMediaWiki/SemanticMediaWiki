@@ -105,7 +105,7 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revisionLookup =  $this->getRevisionLookupMock();
+		$revisionLookup = $this->getRevisionLookupMock();
 		$revisionLookup->expects( $this->once() )
 			->method( 'getRevisionByTitle' );
 

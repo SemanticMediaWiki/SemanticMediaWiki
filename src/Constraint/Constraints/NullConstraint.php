@@ -35,6 +35,7 @@ class NullConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkConstraint( array $constraint, $value ) {}
+	public function checkConstraint( array $constraint, $value ) {
+	}
 
 }

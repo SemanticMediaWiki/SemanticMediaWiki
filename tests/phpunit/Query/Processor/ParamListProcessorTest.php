@@ -296,7 +296,6 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-
 		// #3196
 		yield [
 			[ 'Foo=Bar', 'link=none', 'intro=[[File:Foo.png|link=Bar]]' ],
@@ -355,7 +354,6 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'this'       => []
 			]
 		];
-
 	}
 
 	public function legacyParametersProvider() {
@@ -398,7 +396,6 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'this'       => []
 			]
 		];
-
 	}
 
 }

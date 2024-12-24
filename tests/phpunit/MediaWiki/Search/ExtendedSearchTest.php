@@ -285,7 +285,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$instance->setExtraPrefixMap(
-			[ 'abc', 'cat'=> 'bar' ]
+			[ 'abc', 'cat' => 'bar' ]
 		);
 
 		$instance->setQueryBuilder(

@@ -155,7 +155,6 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		return $provider;
-
 	}
 
 	/**

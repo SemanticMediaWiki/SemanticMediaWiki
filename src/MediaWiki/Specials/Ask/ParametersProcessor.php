@@ -76,7 +76,7 @@ class ParametersProcessor {
 			$printouts
 		);
 
-		list( $queryString, $parameters, $printouts ) =  QueryProcessor::getComponentsFromFunctionParams(
+		list( $queryString, $parameters, $printouts ) = QueryProcessor::getComponentsFromFunctionParams(
 			$parameterList,
 			false
 		);
@@ -204,7 +204,7 @@ class ParametersProcessor {
 		foreach ( $printouts as $param ) {
 			$param = trim( $param );
 
-			if ( ( $param !== '' ) && ( $param [0] != '?' ) ) {
+			if ( ( $param !== '' ) && ( $param[0] != '?' ) ) {
 				$param = '?' . $param;
 			}
 

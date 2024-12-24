@@ -33,7 +33,7 @@ class RestrictionExaminerTest extends \PHPUnit\Framework\TestCase {
 			new RestrictionExaminer()
 		);
 
-		//@ legavy
+		// @ legavy
 		$this->assertInstanceOf(
 			'\SMW\PropertyRestrictionExaminer',
 			new RestrictionExaminer()

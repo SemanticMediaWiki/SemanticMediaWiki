@@ -108,35 +108,35 @@ class PatternConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 			false
 		];
 
-		#1 valid
+		# 1 valid
 		$provider[] = [
 			" \nFoo|(ev\d{7}\d{4})|((tt|nm|ch|co|ev)\d{7})\n",
 			'tt0042876',
 			false
 		];
 
-		#2 uses '/\'
+		# 2 uses '/\'
 		$provider[] = [
 			" \nFoo|(ev\d{7}/\d{4})|((tt|nm|ch|co|ev)\d{7})\n",
 			'tt0042876',
 			false
 		];
 
-		#3 "Compilation failed: missing )", suppress error
+		# 3 "Compilation failed: missing )", suppress error
 		$provider[] = [
 			" \nFoo|(ev\d{7}\d{4})|((tt|nm|ch|co|ev)\d{7}\n",
 			'Foo',
 			true
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			" \nFoo|\d{8}\n",
 			'00564222',
 			false
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			" \nFoo|/\d{8}\n",
 			'00564222',

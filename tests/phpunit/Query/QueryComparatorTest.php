@@ -164,7 +164,6 @@ class QueryComparatorTest extends \PHPUnit\Framework\TestCase {
 			true
 		];
 
-
 		$provider[] = [
 			'like:someThing',
 			SMW_CMP_PRIM_LIKE,

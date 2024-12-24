@@ -221,7 +221,6 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 		if ( !( $store instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
-
 	}
 
 	protected function getStore() {

@@ -129,7 +129,7 @@ class RevisionFromEditComplete implements HookListener {
 				$title->getDBKey(),
 				$this->pageInfoProvider->getNativeData()
 			);
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			return null;
 		}
 

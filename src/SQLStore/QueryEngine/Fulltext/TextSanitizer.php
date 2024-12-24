@@ -143,7 +143,7 @@ class TextSanitizer {
 			$text
 		);
 
-		//var_dump( $language, $text, (microtime( true ) - $start ) );
+		// var_dump( $language, $text, (microtime( true ) - $start ) );
 		return $text;
 	}
 

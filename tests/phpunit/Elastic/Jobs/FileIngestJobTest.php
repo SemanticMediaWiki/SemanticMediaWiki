@@ -30,7 +30,7 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment =  new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()

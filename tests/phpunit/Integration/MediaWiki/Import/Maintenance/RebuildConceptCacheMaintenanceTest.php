@@ -19,7 +19,7 @@ use Title;
  * @author mwjames
  */
 class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
-	
+
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
