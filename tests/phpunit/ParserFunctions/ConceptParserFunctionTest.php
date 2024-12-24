@@ -228,7 +228,6 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		return $provider;
-
 	}
 
 	public function namespaceDataProvider() {

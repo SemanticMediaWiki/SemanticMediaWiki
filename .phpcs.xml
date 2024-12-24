@@ -29,7 +29,6 @@
 		<exclude name="MediaWiki.PHPUnit.MockBoilerplate.returnArgument" />
 		<exclude name="MediaWiki.PHPUnit.DeprecatedPHPUnitMethods.AssertInternalTypeLiteral" />
 		<exclude name="MediaWiki.PHPUnit.DeprecatedPHPUnitMethods.AssertInternalTypeGeneric" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.SingleSpaceBeforeSingleLineComment" />
 		<exclude name="MediaWiki.Usage.StaticClosure.StaticClosure" />
 		<exclude name="MediaWiki.Classes.UnusedUseStatement.UnusedUse" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVar" />
@@ -47,7 +46,6 @@
 		<exclude name="MediaWiki.Classes.UnusedUseStatement.UnnecessaryUse" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotShortBoolParam" />
 		<exclude name="PSR2.Methods.MethodDeclaration.AbstractAfterVisibility" />
-		<exclude name="PSR2.Methods.FunctionClosingBrace.SpacingBeforeClose" />
 		<exclude name="MediaWiki.PHPUnit.AssertEquals.Null" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCapitalLinks" />
 		<exclude name="MediaWiki.PHPUnit.AssertEquals.FalsyString" />
@@ -89,7 +87,6 @@
 		<exclude name="MediaWiki.Commenting.FunctionComment.SpacingBeforeParamType" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotPunctuationParamName" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.ParamPassByReference" />
-		<exclude name="PSR2.Namespaces.NamespaceDeclaration.BlankLineAfter" />
 		<exclude name="Generic.CodeAnalysis.EmptyPHPStatement.SemicolonWithoutCodeDetected" />
 		<exclude name="PSR2.ControlStructures.SwitchDeclaration.WrongOpenercase" />
 		<exclude name="MediaWiki.Commenting.DocComment.SyntaxAlignedDocClose" />

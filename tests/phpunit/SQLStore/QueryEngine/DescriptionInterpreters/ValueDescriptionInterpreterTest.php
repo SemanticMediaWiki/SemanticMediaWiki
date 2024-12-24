@@ -95,7 +95,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$descriptionFactory = new DescriptionFactory();
 		$dataItemFactory = new DataItemFactory();
 
-		#0 SMW_CMP_EQ
+		# 0 SMW_CMP_EQ
 		$description = $descriptionFactory->newValueDescription(
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
 		);
@@ -110,7 +110,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			$expected
 		];
 
-		#1 SMW_CMP_LEQ
+		# 1 SMW_CMP_LEQ
 		$description = $descriptionFactory->newValueDescription(
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ
 		);
@@ -126,7 +126,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			$expected
 		];
 
-		#2 SMW_CMP_LIKE
+		# 2 SMW_CMP_LIKE
 		$description = $descriptionFactory->newValueDescription(
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LIKE
 		);
@@ -142,7 +142,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			$expected
 		];
 
-		#3 not a DIWikiPage
+		# 3 not a DIWikiPage
 		$description = $descriptionFactory->newValueDescription(
 			$dataItemFactory->newDIBLob( 'Foo' )
 		);

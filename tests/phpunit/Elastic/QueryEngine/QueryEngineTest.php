@@ -61,7 +61,6 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
-
 	}
 
 	public function testCanConstruct() {

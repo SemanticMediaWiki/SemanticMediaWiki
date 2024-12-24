@@ -185,7 +185,6 @@ class SemanticDataValidator extends \PHPUnit\Framework\Assert {
 		}
 
 		$this->assertTrue( $runAssertThatPropertyHasCharacteristicsAs, __METHOD__ );
-
 	}
 
 	/**

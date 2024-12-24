@@ -184,7 +184,6 @@ class ListResultBuilder {
 		$templateRenderer->packFieldsForTemplate( $templatename );
 
 		return $templateRenderer->render();
-
 	}
 
 	/**

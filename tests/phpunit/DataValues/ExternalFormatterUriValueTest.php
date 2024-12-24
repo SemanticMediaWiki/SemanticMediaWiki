@@ -94,7 +94,7 @@ class ExternalFormatterUriValueTest extends \PHPUnit\Framework\TestCase {
 			'urn:abc:names:def:foo:dtd:xml:foo'
 		];
 
-	//	$provider[] = array(
+	// $provider[] = array(
 	//		'abc:$1',
 	//		'foo',
 	//		'http://example.org/foo'

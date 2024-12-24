@@ -473,7 +473,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'ParamListProcessor', ParamListProcessor::class );
 
 			$paramListProcessor = new ParamListProcessor(
-				//$containerBuilder->singleton( 'PrintRequestFactory' )
+				// $containerBuilder->singleton( 'PrintRequestFactory' )
 			);
 
 			return $paramListProcessor;
@@ -574,7 +574,6 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'QueryDependencyLinksStoreFactory', '\SMW\SQLStore\QueryDependencyLinksStoreFactory' );
 			return new QueryDependencyLinksStoreFactory();
 		} );
-
 	}
 
 	private function registerCallbackHandlersByConstructedInstance( ContainerBuilder $containerBuilder ) {
@@ -893,7 +892,6 @@ class SharedServicesContainer implements CallbackContainer {
 
 			return $preferenceExaminer;
 		} );
-
 	}
 
 }

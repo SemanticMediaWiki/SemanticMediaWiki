@@ -94,7 +94,6 @@ class QueryLinkerTest extends \PHPUnit\Framework\TestCase {
 			[ '' => 'ASC', 'Foo_bar' => 'DESC' ],
 			'&mainlabel=&source=&offset=&order=asc%2Cdesc&sort=%2CFoo%20bar'
 		];
-
 	}
 
 }

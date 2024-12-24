@@ -634,7 +634,7 @@ class ServicesFactory {
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'events.php' );
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'cache.php' );
 
-		//	$containerBuilder = $callbackContainerFactory->newLoggableContainerBuilder(
+		// $containerBuilder = $callbackContainerFactory->newLoggableContainerBuilder(
 		//		$containerBuilder,
 		//		$callbackContainerFactory->newBacktraceSniffer( 10 ),
 		//		$callbackContainerFactory->newCallFuncMemorySniffer()

@@ -143,7 +143,7 @@ class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
 			->method( 'canExist' )
 			->willReturn( true );
 
-		#0 Id = cache
+		# 0 Id = cache
 		$provider[] = [
 			[
 				'title'  => $validIdTitle,
@@ -159,7 +159,7 @@ class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1 Disabled setting
+		# 1 Disabled setting
 		$validIdTitle = MockTitle::buildMock( 'Disabled' );
 
 		$validIdTitle->expects( $this->atLeastOnce() )
@@ -219,7 +219,7 @@ class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#3 No Id
+		# 3 No Id
 		$provider[] = [
 			[
 				'title'  => $nullIdTitle,

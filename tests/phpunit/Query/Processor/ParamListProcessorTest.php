@@ -354,7 +354,6 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'this'       => []
 			]
 		];
-
 	}
 
 	public function legacyParametersProvider() {
@@ -397,7 +396,6 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'this'       => []
 			]
 		];
-
 	}
 
 }

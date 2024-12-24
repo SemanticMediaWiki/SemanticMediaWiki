@@ -64,7 +64,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 			if ( strpos( $comment, 'warning: hit complexity limit' ) === 0 ||
 				 strpos( $comment, 'some results have been dropped' ) === 0 ) {
 				$result->setErrorCode( RepositoryResult::ERROR_INCOMPLETE );
-			} //else debug_zval_dump($comment);
+			} // else debug_zval_dump($comment);
 		}
 
 		return $result;

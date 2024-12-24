@@ -304,7 +304,7 @@ class ResultFetcher {
 		// filter list for all matchable subjects on a specific selected property
 		if ( $parametersProcessor->getValueFilters() !== [] ) {
 
-		//	$_queryString = $queryString;
+		// $_queryString = $queryString;
 
 			foreach ( $parametersProcessor->getValueFilters() as $prop => $conds ) {
 

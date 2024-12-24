@@ -42,7 +42,6 @@ class NullPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			'\SMW\Property\Annotators\NullPropertyAnnotator',
 			$instance->addAnnotation()
 		);
-
 	}
 
 }

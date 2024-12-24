@@ -461,7 +461,7 @@ return [
 		'dependencies' => [
 			'smw.special.facetedsearch.styles',
 			'onoi.rangeslider',
-			//'vue'
+			// 'vue'
 		],
 		'targets' => [
 			'mobile',

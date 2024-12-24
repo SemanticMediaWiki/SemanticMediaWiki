@@ -81,7 +81,7 @@ class TemplateRendererFactory {
 		$templateRenderer->addField(
 			'#rowcount',
 			$this->getRowCount()
-		//$query->getCount()  // FIXME: Re-activate if another query takes too long.
+		// $query->getCount()  // FIXME: Re-activate if another query takes too long.
 		);
 	}
 

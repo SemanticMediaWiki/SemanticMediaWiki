@@ -116,7 +116,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	public function displayTitleProvider() {
 		$provider = [];
 
-		#0 with title entry
+		# 0 with title entry
 		$provider[] = [
 			'Foo',
 			'Lala',
@@ -128,7 +128,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1 Empty
+		# 1 Empty
 		$provider[] = [
 			'Bar',
 			'',
@@ -140,7 +140,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#2 Empty
+		# 2 Empty
 		$provider[] = [
 			'Bar',
 			false,
@@ -152,7 +152,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#3 Strip tags
+		# 3 Strip tags
 		$provider[] = [
 			'Bar',
 			'<span style="position: absolute; clip: rect(1px 1px 1px 1px); clip: rect(1px, 1px, 1px, 1px);">FOO</span>',
@@ -164,7 +164,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#4 Strip tags
+		# 4 Strip tags
 		$provider[] = [
 			'Foo',
 			"A 'quote' is <b>bold</b>",
@@ -176,7 +176,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#5 with different sortkey
+		# 5 with different sortkey
 		$provider[] = [
 			'Foo',
 			'Lala',
@@ -188,7 +188,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#6 unencoded Html entity
+		# 6 unencoded Html entity
 		$provider[] = [
 			'Foo',
 			'ABC & DEF',
@@ -200,7 +200,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#7 decoded/encoded Html entity
+		# 7 decoded/encoded Html entity
 		$provider[] = [
 			'Foo',
 			'ABC &amp; DEF',
@@ -212,7 +212,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#8 decoded/encoded ' (&#39;) entity
+		# 8 decoded/encoded ' (&#39;) entity
 		$provider[] = [
 			'Foo',
 			'ABC &#39; DEF',

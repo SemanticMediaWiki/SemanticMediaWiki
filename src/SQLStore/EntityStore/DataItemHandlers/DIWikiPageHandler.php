@@ -86,7 +86,7 @@ class DIWikiPageHandler extends DataItemHandler {
 
 			// In-property lookup
 			'o_id,p_id',
-			//'o_id,p_id,s_sort',
+			// 'o_id,p_id,s_sort',
 
 			// SMWSQLStore3Readers::getPropertySubjects
 			// SELECT DISTINCT s_id FROM `smw_di_wikipage` WHERE (p_id='64' AND o_id='104') ORDER BY s_sort ASC

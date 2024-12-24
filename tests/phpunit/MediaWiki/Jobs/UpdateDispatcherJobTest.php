@@ -332,7 +332,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 		$title = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
-		#0
+		# 0
 		$provider[] = [
 			[
 				'title'      => $title,
@@ -349,7 +349,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
-		#1
+		# 1
 		$provider[] = [
 			[
 				'title'      => $title,
@@ -363,7 +363,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#2
+		# 2
 		$duplicate = DIWikiPage::newFromText( 'Foo' );
 
 		$subjects = [

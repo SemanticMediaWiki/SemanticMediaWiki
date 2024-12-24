@@ -282,7 +282,7 @@ class TermsLookup implements ITermsLookup {
 			$params
 		);
 
-	//	if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
+	// if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
 	//		$params = $this->fieldMapper->constant_score( $params );
 	//	}
 

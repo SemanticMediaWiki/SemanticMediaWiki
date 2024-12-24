@@ -62,7 +62,6 @@ class FeedExportPrinterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		return $provider;
-
 	}
 
 }

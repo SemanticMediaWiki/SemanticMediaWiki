@@ -178,7 +178,6 @@ class NamespaceFilterTest extends \PHPUnit\Framework\TestCase {
 			],
 			true
 		];
-
 	}
 
 }

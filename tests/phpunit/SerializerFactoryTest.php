@@ -109,7 +109,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function objectToSerializerProvider() {
-		#0
+		# 0
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -118,7 +118,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 			$semanticData
 		];
 
-		#1
+		# 1
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -127,7 +127,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 			$queryResult
 		];
 
-		#2
+		# 2
 		$queryResult = $this->getMockBuilder( '\SMWExpData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -142,12 +142,12 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function serializationToDeserializerProvider() {
 		$provider = [];
 
-		#0
+		# 0
 		$provider[] = [
 			[ 'serializer' => 'SMW\Serializers\SemanticDataSerializer', 'subject' => 'Foo#0##' ]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			[ 'serializer' => 'SMW\Serializers\ExpDataSerializer' ]
 		];

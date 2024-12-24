@@ -37,7 +37,6 @@ class ValueTextsBuilder {
 		$valueTexts = $this->getValueTexts( $field, $column );
 
 		return join( $this->get( 'valuesep' ), $valueTexts );
-
 	}
 
 	/**

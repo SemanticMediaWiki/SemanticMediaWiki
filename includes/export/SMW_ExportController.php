@@ -602,7 +602,6 @@ class SMWExportController {
 
 		$this->serializer->finishSerialization();
 		$this->flush( true );
-
 	}
 
 	/**

@@ -123,7 +123,6 @@ class ParserHtmlTestCaseProcessor extends MediaWikiIntegrationTestCase {
 		}
 
 		return $context->getOutput()->getHTML();
-
 	}
 
 	/**

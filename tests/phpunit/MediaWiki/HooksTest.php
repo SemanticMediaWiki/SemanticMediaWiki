@@ -281,7 +281,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 		];
 	}
 
-//SMW::Maintenance::AfterUpdateEntityCollationComplete
+// SMW::Maintenance::AfterUpdateEntityCollationComplete
 	public function callParserAfterTidy( $instance ) {
 		$handler = 'ParserAfterTidy';
 

@@ -351,7 +351,6 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 			SMW_NS_SCHEMA,
 			'smw/schema'
 		];
-
 	}
 
 }

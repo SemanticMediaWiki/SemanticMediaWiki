@@ -331,7 +331,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$provider = [];
 
-		#0 Anonymous identifier
+		# 0 Anonymous identifier
 		// {{#subobject:
 		// |Foo=bar
 		// }}
@@ -346,7 +346,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1 Anonymous identifier
+		# 1 Anonymous identifier
 		// {{#subobject:-
 		// |Foo=1001 9009
 		// }}
@@ -361,7 +361,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#2 Named identifier
+		# 2 Named identifier
 		// {{#subobject:FooBar
 		// |FooBar=Bar foo
 		// }}
@@ -376,7 +376,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#3 Named identifier
+		# 3 Named identifier
 		// {{#subobject:Foo bar
 		// |Foo=Help:Bar
 		// }}
@@ -391,7 +391,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#4 Named identifier
+		# 4 Named identifier
 		// {{#subobject: Foo bar foo
 		// |Bar=foo Bar
 		// }}
@@ -406,7 +406,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#5 Named identifier
+		# 5 Named identifier
 		// {{#subobject: Foo bar foo
 		// |状況=超やばい
 		// |Bar=http://www.semantic-mediawiki.org/w/index.php?title=Subobject
@@ -425,7 +425,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#6 {{#subobject: Foo bar foo
+		# 6 {{#subobject: Foo bar foo
 		// |Bar=foo Bar
 		// |Modification date=foo Bar
 		// }}
@@ -441,7 +441,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#7 {{#subobject: Foo bar foo
+		# 7 {{#subobject: Foo bar foo
 		// |Bar=foo Bar
 		// |-Foo=foo Bar
 		// }}
@@ -476,7 +476,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		// Get the right language for an error object
 		$diPropertyError = new DIProperty( DIProperty::TYPE_ERROR );
 
-		#9 {{#subobject: Foo bar foo
+		# 9 {{#subobject: Foo bar foo
 		// |Bar=foo Bar
 		// |Date=Foo
 		// }}

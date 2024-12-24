@@ -56,7 +56,7 @@ class LinksWidget {
 			return '';
 		}
 
-		//show|hide inline embed code
+		// show|hide inline embed code
 		$embedShow = "document.getElementById('inlinequeryembed').style.display='block';" .
 			"document.getElementById('embed_hide').style.display='inline';" .
 			"document.getElementById('embed_show').style.display='none';" .

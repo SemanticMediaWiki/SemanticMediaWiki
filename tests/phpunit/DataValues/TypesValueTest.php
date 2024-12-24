@@ -21,7 +21,6 @@ class TypesValueTest extends \PHPUnit\Framework\TestCase {
 			TypesValue::class,
 			new TypesValue()
 		);
-
 	}
 
 	public function testNewFromTypeId() {
@@ -113,7 +112,6 @@ class TypesValueTest extends \PHPUnit\Framework\TestCase {
 			'Foo',
 			'Foo'
 		];
-
 	}
 
 }

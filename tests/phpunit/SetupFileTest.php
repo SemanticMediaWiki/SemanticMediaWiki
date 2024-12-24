@@ -150,7 +150,7 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 
 		$fields = [
 			'Foo' => 42,
-			//"upgrade_key_base" => '["",[],"",[]]'
+			// "upgrade_key_base" => '["",[],"",[]]'
 		];
 
 		$expected = json_encode( [ \SMW\Site::id() => $fields ], JSON_PRETTY_PRINT );

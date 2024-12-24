@@ -127,7 +127,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 			$result
 		);
 
-		//$this->assertEquals(
+		// $this->assertEquals(
 		//	array( 'query' => $test, 'query-continue-offset' => 10 ),
 		//	$result
 		//);

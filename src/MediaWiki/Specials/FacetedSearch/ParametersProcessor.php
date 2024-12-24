@@ -442,7 +442,7 @@ class ParametersProcessor {
 					} elseif ( $not === '!' ) {
 						$conditions[$prop][] = "<q>[[$prop::≤$min]] OR [[$prop::≥$max]]</q>";
 					} elseif ( $min === $max ) {
-					//	$conditions[$prop][] = "<q>[[$prop::$max]]</q>";
+					// $conditions[$prop][] = "<q>[[$prop::$max]]</q>";
 					} else {
 						$conditions[$prop][] = "[[$prop::≥$min]][[$prop::≤$max]]";
 					}

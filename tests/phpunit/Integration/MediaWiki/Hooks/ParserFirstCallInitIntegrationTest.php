@@ -151,31 +151,31 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 	public function textToParseProvider() {
 		$provider = [];
 
-		#0 ask
+		# 0 ask
 		$provider[] = [
 			'ask',
 			'{{#ask: [[Modification date::+]]|limit=1}}'
 		];
 
-		#1 show
+		# 1 show
 		$provider[] = [
 			'show',
 			'{{#show: [[Foo]]|limit=1}}'
 		];
 
-		#2 subobject
+		# 2 subobject
 		$provider[] = [
 			'subobject',
 			'{{#subobject:|foo=bar|lila=lula,linda,luna|+sep=,}}'
 		];
 
-		#3 set
+		# 3 set
 		$provider[] = [
 			'set',
 			'{{#set:|foo=bar|lila=lula,linda,luna|+sep=,}}'
 		];
 
-		#4 set_recurring_event
+		# 4 set_recurring_event
 		$provider[] = [
 			'set_recurring_event',
 			'{{#set_recurring_event:some more tests|property=has date|' .
@@ -184,13 +184,13 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 			'exclude=March 15, 2010;March 22, 2010|+sep=;}}'
 		];
 
-		#5 declare
+		# 5 declare
 		$provider[] = [
 			'declare',
 			'{{#declare:population=Foo}}'
 		];
 
-		#6 concept
+		# 6 concept
 		$provider[] = [
 			'concept',
 			'{{#concept:[[Modification date::+]]|Foo}}'

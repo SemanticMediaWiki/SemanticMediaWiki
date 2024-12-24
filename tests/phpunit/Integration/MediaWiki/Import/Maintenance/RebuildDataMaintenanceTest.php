@@ -100,7 +100,7 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 		 $this->assertRunWithoutOptions( $expectedSomeProperties );
 		 $this->assertRunWithFullDeleteOption( $expectedSomeProperties );
 		 $this->assertRunWithIdRangeOption( $expectedSomeProperties );
-//		$this->assertRunWithCategoryOption( $expectedSomeProperties );
+// $this->assertRunWithCategoryOption( $expectedSomeProperties );
 //		$this->assertRunWithSparqlStoreForPropertyOption( $expectedSomeProperties );
 //		$this->assertRunWithSparqlStoreForQueryOption( $expectedSomeProperties );
 	}

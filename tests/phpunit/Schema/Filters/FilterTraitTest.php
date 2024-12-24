@@ -76,7 +76,6 @@ class FilterTraitTest extends \PHPUnit\Framework\TestCase {
 			}
 
 			protected function match( \SMW\Schema\Compartment $compartment ) {
-
 			}
 		};
 	}

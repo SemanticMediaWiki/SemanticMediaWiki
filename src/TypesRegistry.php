@@ -404,7 +404,7 @@ class TypesRegistry {
 			'_wps' => Exporter::OWL_OBJECT_PROPERTY,
 			ConstraintSchemaValue::TYPE_ID => Exporter::OWL_OBJECT_PROPERTY,
 			'_rec' => Exporter::OWL_OBJECT_PROPERTY,
-		//	'_mlt_rec' => Exporter::OWL_OBJECT_PROPERTY,
+		// '_mlt_rec' => Exporter::OWL_OBJECT_PROPERTY,
 		//	'_ref_rec' => Exporter::OWL_OBJECT_PROPERTY,
 
 			// URI related

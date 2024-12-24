@@ -83,7 +83,6 @@ class GroupPermissionsTest extends \PHPUnit\Framework\TestCase {
 		$this->assertFalse(
 			$vars['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
-
 	}
 
 }

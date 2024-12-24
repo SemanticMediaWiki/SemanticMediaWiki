@@ -624,7 +624,7 @@ class SemanticData implements JsonUnserializable {
 	public function removePropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
 		$this->hash = null;
 
-		//delete associated subSemanticData
+		// delete associated subSemanticData
 		if ( $dataItem instanceof SMWDIContainer ) {
 			$this->removeSubSemanticData( $dataItem->getSemanticData() );
 			$dataItem = $dataItem->getSemanticData()->getSubject();
@@ -643,7 +643,7 @@ class SemanticData implements JsonUnserializable {
 		}
 
 		if ( $this->mNoDuplicates ) {
-			//this didn't get checked for my tests, but should work
+			// this didn't get checked for my tests, but should work
 			unset( $this->mPropVals[$property->getKey()][md5( $dataItem->getHash() )] );
 
 			if ( isset( $this->countMap[$key] ) && $key === '_INST' ) {

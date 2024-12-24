@@ -192,7 +192,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getProperties' )
 			->will( $this->returnValue( [ new DIProperty( __METHOD__ . 'property' ) ] ) );
 
-		#0 Simple factbox build, returning content
+		# 0 Simple factbox build, returning content
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-content' );
 
 		$title->expects( $this->atLeastOnce() )
@@ -238,7 +238,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1 Disabled namespace, no return value expected
+		# 1 Disabled namespace, no return value expected
 		$title = MockTitle::buildMock( __METHOD__ . 'title-ns-disabled' );
 
 		$title->expects( $this->atLeastOnce() )

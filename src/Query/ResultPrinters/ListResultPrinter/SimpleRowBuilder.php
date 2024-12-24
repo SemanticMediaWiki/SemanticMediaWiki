@@ -93,7 +93,6 @@ class SimpleRowBuilder extends RowBuilder {
 			$field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, $linker ) .
 			$this->get( 'field-label-close-tag' ) .
 			$this->get( 'field-label-separator' );
-
 	}
 
 	/**

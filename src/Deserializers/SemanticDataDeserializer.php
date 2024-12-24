@@ -141,7 +141,6 @@ class SemanticDataDeserializer implements Deserializer {
 		if ( $property !== null && $dataItem !== null ) {
 			$semanticData->addPropertyObjectValue( $property, $dataItem );
 		}
-
 	}
 
 	/**

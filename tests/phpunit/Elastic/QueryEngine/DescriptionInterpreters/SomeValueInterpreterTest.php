@@ -358,7 +358,6 @@ class SomeValueInterpreterTest extends \PHPUnit\Framework\TestCase {
 			$options,
 			'{"bool":{"must":[{"match_phrase":{"P:42.wpgField":"テスト"}}]}}'
 		];
-
 	}
 
 }

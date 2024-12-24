@@ -69,7 +69,6 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\
 				'finalTitle' => $title,
 				'deps' => $deps
 			];
-
 		} );
 
 		return $parser->preprocess( $text, $title, $options );

@@ -189,7 +189,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 			$score += $this->ts_( @self::$model["TC2"][$c2 . $c3 . $c4] );
 			$score += $this->ts_( @self::$model["TC3"][$c3 . $c4 . $c5] );
 			$score += $this->ts_( @self::$model["TC4"][$c4 . $c5 . $c6] );
-			//  $score += $this->ts_(@self::$model["TC5"][$c4 . $c5 . $c6]);
+			// $score += $this->ts_(@self::$model["TC5"][$c4 . $c5 . $c6]);
 			$score += $this->ts_( @self::$model["UQ1"][$p1 . $c1] );
 			$score += $this->ts_( @self::$model["UQ2"][$p2 . $c2] );
 			$score += $this->ts_( @self::$model["UQ1"][$p3 . $c3] );

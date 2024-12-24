@@ -49,7 +49,7 @@ class ExpDataSerializerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function expDataProvider() {
-		#0
+		# 0
 		$expData = new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', null ) );
 
 		$provider[] = [
@@ -66,7 +66,7 @@ class ExpDataSerializerTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$expData = new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', null ) );
 
 		$expData->addPropertyObjectValue(
@@ -105,7 +105,7 @@ class ExpDataSerializerTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#2 Nested
+		# 2 Nested
 		$expData = new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', null ) );
 
 		$expData->addPropertyObjectValue(

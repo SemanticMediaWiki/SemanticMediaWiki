@@ -139,7 +139,6 @@ class IdCacheManagerTest extends \PHPUnit\Framework\TestCase {
 			true,
 			$instance->hasCache( $instance->computeSha1( [ 'foo', 0, '', '' ] ) )
 		);
-
 	}
 
 	public function testDeleteCacheById() {
