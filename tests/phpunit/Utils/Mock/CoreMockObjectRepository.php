@@ -89,7 +89,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 		}
 
 		$collector = $this->getMockBuilder( '\SMW\Store\CacheableResultCollector' )
-			->setMethods( $methods )
+			->onlyMethods( $methods )
 			->getMock();
 
 		$collector->expects( $this->any() )
@@ -116,7 +116,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 		$methods = $this->builder->getInvokedMethods();
 
 		$dependencyObject = $this->getMockBuilder( 'SMW\DependencyObject' )
-			->setMethods( $methods )
+			->onlyMethods( $methods )
 			->getMock();
 
 		foreach ( $methods as $method ) {
@@ -139,7 +139,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 		$methods = $this->builder->getInvokedMethods();
 
 		$dependencyObject = $this->getMockBuilder( 'SMW\NullDependencyContainer' )
-			->setMethods( $methods )
+			->onlyMethods( $methods )
 			->getMock();
 
 		foreach ( $methods as $method ) {
@@ -412,7 +412,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 
 		$idTable = $this->getMockBuilder( 'stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getIdTable' ] )
+			->onlyMethods( [ 'getIdTable' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -421,7 +421,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( $methods )
+			->onlyMethods( $methods )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -507,7 +507,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 
 		$dataItem = $this->getMockBuilder( 'SMWDataItem' )
 			->disableOriginalConstructor()
-			->setMethods( $methods )
+			->onlyMethods( $methods )
 			->getMock();
 
 		foreach ( $methods as $method ) {
@@ -601,7 +601,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 
 		$queryDescription = $this->getMockBuilder( '\SMWDescription' )
-			->setMethods( $methods )
+			->onlyMethods( $methods )
 			->getMock();
 
 		foreach ( $methods as $method ) {

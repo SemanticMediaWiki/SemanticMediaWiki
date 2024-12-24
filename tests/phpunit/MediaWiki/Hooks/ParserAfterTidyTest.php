@@ -353,7 +353,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		# 0 Runs store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'updateData' ] )
+			->onlyMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
@@ -386,7 +386,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		# 1 No cache entry, no store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'updateData' ] )
+			->onlyMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->never() )
@@ -415,7 +415,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		# 2 SpecialPage, no store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'updateData' ] )
+			->onlyMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->never() )
@@ -444,7 +444,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		# 3 NS_FILE, store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'updateData' ] )
+			->onlyMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->atLeastOnce() )
@@ -486,7 +486,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		# 4, 1131, No store update when fetch return FALSE
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'updateData' ] )
+			->onlyMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->never() )

@@ -39,7 +39,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'exists' ] )
+			->onlyMethods( [ 'exists' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -48,7 +48,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )

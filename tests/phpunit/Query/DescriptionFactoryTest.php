@@ -199,7 +199,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstructDescriptionFromInvalidDataValue() {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid' ] )
+			->onlyMethods( [ 'isValid' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -217,7 +217,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstructDescriptionFromValidDataValue() {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getProperty', 'getDataItem', 'getWikiValue' ] )
+			->onlyMethods( [ 'isValid', 'getProperty', 'getDataItem', 'getWikiValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -267,7 +267,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
+			->onlyMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
 			->getMock();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -324,7 +324,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
+			->onlyMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
 			->getMock();
 
 		$dataValue->expects( $this->atLeastOnce() )

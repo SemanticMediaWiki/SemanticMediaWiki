@@ -49,7 +49,11 @@ class PropertyPageTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertSame(
+<<<<<<< HEAD
 			null,
+=======
+			'',
+>>>>>>> 258d5a32c (Fix phpcs for most of PHPUnit)
 			$instance->view()
 		);
 	}

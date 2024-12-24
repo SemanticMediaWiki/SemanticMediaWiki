@@ -229,7 +229,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 	public function testWikiFilePage_MEDIA_TYPE( $file, $expected ) {
 		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isFilePage', 'getFile' ] )
+			->onlyMethods( [ 'isFilePage', 'getFile' ] )
 			->getMock();
 
 		$wikiFilePage->expects( $this->any() )
@@ -251,7 +251,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 	public function testWikiFilePage_MIME_TYPE( $file, $expected ) {
 		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isFilePage', 'getFile' ] )
+			->onlyMethods( [ 'isFilePage', 'getFile' ] )
 			->getMock();
 
 		$wikiFilePage->expects( $this->any() )

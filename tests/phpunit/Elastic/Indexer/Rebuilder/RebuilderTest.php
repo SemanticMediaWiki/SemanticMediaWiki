@@ -69,7 +69,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )

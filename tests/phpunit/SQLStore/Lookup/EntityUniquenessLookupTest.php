@@ -27,7 +27,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -65,7 +65,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getPropertyTables', 'getPropertyTableInfoFetcher', 'getDataItemHandlerForDIType' ] )
+			->onlyMethods( [ 'getConnection', 'getPropertyTables', 'getPropertyTableInfoFetcher', 'getDataItemHandlerForDIType' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

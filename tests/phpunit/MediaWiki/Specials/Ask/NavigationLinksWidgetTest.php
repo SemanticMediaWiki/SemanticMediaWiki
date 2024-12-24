@@ -86,7 +86,7 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 
 		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'get', 'set' ] )
+			->onlyMethods( [ 'get', 'set' ] )
 			->getMock();
 
 		$urlArgs->expects( $this->at( 0 ) )

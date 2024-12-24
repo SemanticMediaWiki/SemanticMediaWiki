@@ -41,7 +41,7 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$this->connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
@@ -206,7 +206,7 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyTables' ] )
+			->onlyMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->setConnectionManager( $this->connectionManager );
@@ -270,7 +270,7 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyTables' ] )
+			->onlyMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->setConnectionManager( $this->connectionManager );
@@ -307,7 +307,7 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 	public function testUpdateRedirectNotEnabled() {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyTables' ] )
+			->onlyMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->never() )

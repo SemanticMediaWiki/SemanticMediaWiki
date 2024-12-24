@@ -70,7 +70,7 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSearchEngine' ] )
+			->onlyMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )

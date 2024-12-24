@@ -28,7 +28,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -77,7 +77,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
+			->onlyMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -150,7 +150,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
+			->onlyMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

@@ -57,7 +57,7 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit\Framework\TestCase {
 	public function testFindDuplicateEntityRecords() {
 		$idTable = $this->getMockBuilder( '\stdClss' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'findDuplicates' ] )
+			->onlyMethods( [ 'findDuplicates' ] )
 			->getMock();
 
 		$this->store->expects( $this->atLeastOnce() )

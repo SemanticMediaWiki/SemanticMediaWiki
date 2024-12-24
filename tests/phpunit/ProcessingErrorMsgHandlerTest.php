@@ -174,7 +174,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getErrors', 'getProperty' ] )
+			->onlyMethods( [ 'getErrors', 'getProperty' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -210,7 +210,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getErrors', 'getProperty' ] )
+			->onlyMethods( [ 'getErrors', 'getProperty' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -246,7 +246,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getErrors', 'getErrorsByType', 'getProperty' ] )
+			->onlyMethods( [ 'getErrors', 'getErrorsByType', 'getProperty' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )

@@ -101,7 +101,7 @@ class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 	public function unsupportedDataItemProvider() {
 		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
 			->disableOriginalConstructor()
-			->setMethods( [ '__toString' ] )
+			->onlyMethods( [ '__toString' ] )
 			->getMockForAbstractClass();
 
 		$dataItem->expects( $this->any() )

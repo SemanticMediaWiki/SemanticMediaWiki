@@ -37,7 +37,7 @@ class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'service' ] )
+			->onlyMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
@@ -76,7 +76,7 @@ class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 	public function testCanNotValidateOnNull() {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();
 
 		$instance = new UniqueValueConstraint(
@@ -100,7 +100,7 @@ class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -144,7 +144,7 @@ class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage', 'addError' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getContextPage', 'addError' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )

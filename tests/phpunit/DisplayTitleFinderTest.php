@@ -25,7 +25,7 @@ class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getWikiPageSortKey', 'service' ] )
+			->onlyMethods( [ 'getWikiPageSortKey', 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
@@ -208,7 +208,7 @@ class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 					$this->entityCache
 				]
 			)
-			->setMethods( [ 'prefetchFromList' ] )
+			->onlyMethods( [ 'prefetchFromList' ] )
 			->getMock();
 
 		$instance->expects( $this->any() )

@@ -250,7 +250,7 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSubject', 'getPropertyValues', 'getProperties', 'getSubSemanticData' ] )
+			->onlyMethods( [ 'getSubject', 'getPropertyValues', 'getProperties', 'getSubSemanticData' ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )

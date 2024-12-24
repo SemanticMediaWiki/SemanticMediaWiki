@@ -59,7 +59,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
@@ -99,7 +99,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
@@ -152,7 +152,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
@@ -201,7 +201,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
@@ -244,7 +244,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID', 'getWikiValue' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getTypeID', 'getWikiValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )

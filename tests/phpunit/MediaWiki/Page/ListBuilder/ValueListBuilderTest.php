@@ -72,7 +72,7 @@ class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getAllPropertySubjects', 'getPropertyValues', 'getWikiPageSortKey', 'service' ] )
+			->onlyMethods( [ 'getAllPropertySubjects', 'getPropertyValues', 'getWikiPageSortKey', 'service' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
@@ -112,7 +112,7 @@ class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getAllPropertySubjects', 'getPropertyValues', 'getWikiPageSortKey', 'service' ] )
+			->onlyMethods( [ 'getAllPropertySubjects', 'getPropertyValues', 'getWikiPageSortKey', 'service' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )

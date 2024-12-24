@@ -72,7 +72,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( true );
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
@@ -103,7 +103,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testInterpretDescription( $description, $concept, $expected ) {
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )

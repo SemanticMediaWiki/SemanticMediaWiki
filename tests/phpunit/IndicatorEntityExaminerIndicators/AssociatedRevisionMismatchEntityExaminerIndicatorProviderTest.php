@@ -39,7 +39,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )

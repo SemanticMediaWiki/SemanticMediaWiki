@@ -44,12 +44,12 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->onlyMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -105,7 +105,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 		$parserOutput->setTitleText( $title->getPrefixedText() );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->onlyMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
@@ -118,7 +118,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'clearData', 'getObjectIds' ] )
+			->onlyMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -205,7 +205,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSemanticData', 'updateStore', 'markUpdate' ] )
+			->onlyMethods( [ 'getSemanticData', 'updateStore', 'markUpdate' ] )
 			->getMock();
 
 		$parserData->expects( $this->never() )

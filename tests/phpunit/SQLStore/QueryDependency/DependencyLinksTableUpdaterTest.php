@@ -48,7 +48,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testAddToUpdateList() {
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getId' ] )
+			->onlyMethods( [ 'getId' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -86,7 +86,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->setConnectionManager( $connectionManager );
@@ -141,7 +141,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testAddDependenciesFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getId', 'makeSMWPageID' ] )
+			->onlyMethods( [ 'getId', 'makeSMWPageID' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -183,7 +183,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->setConnectionManager( $connectionManager );

@@ -111,7 +111,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function newPropertyTable( $propertyTableName, $fixedPropertyTable = false ) {
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isFixedPropertyTable', 'getName' ] )
+			->onlyMethods( [ 'isFixedPropertyTable', 'getName' ] )
 			->getMock();
 
 		$propertyTable->expects( $this->atLeastOnce() )

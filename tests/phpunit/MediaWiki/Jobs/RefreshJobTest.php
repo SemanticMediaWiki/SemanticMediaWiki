@@ -75,7 +75,7 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( $parameters['spos'] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
-			->setMethods( [ 'refreshData' ] )
+			->onlyMethods( [ 'refreshData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $expectedToRun )

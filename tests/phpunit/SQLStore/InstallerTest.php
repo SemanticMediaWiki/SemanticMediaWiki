@@ -99,7 +99,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'create' ] )
+			->onlyMethods( [ 'create' ] )
 			->getMockForAbstractClass();
 
 		$tableBuilder->expects( $this->once() )
@@ -163,7 +163,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'create' ] )
+			->onlyMethods( [ 'create' ] )
 			->getMockForAbstractClass();
 
 		$tableBuilder->expects( $this->once() )
@@ -208,7 +208,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'create' ] )
+			->onlyMethods( [ 'create' ] )
 			->getMockForAbstractClass();
 
 		$instance = new Installer(
@@ -239,7 +239,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'drop' ] )
+			->onlyMethods( [ 'drop' ] )
 			->getMockForAbstractClass();
 
 		$tableBuilder->expects( $this->once() )

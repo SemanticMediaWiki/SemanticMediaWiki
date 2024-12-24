@@ -22,7 +22,7 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )

@@ -29,7 +29,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getID' ] )
+			->onlyMethods( [ 'getID' ] )
 			->getMock();
 
 		$this->conditionBuilder->expects( $this->any() )

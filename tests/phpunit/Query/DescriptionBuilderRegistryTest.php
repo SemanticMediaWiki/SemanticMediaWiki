@@ -81,7 +81,7 @@ class DescriptionBuilderRegistryTest extends \PHPUnit\Framework\TestCase {
 	public function testRegisterAdditionalDescriptionBuilder() {
 		$descriptionBuilder = $this->getMockBuilder( '\SMW\Query\DescriptionBuilders\DescriptionBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isBuilderFor' ] )
+			->onlyMethods( [ 'isBuilderFor' ] )
 			->getMockForAbstractClass();
 
 		$descriptionBuilder->expects( $this->once() )

@@ -114,7 +114,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$objectIdFetcher = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSMWPropertyID' ] )
+			->onlyMethods( [ 'getSMWPropertyID' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )

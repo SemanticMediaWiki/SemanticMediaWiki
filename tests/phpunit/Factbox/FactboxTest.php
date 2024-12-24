@@ -186,7 +186,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 				$parserData,
 				$this->displayTitleFinder
 			] )
-			->setMethods( [ 'buildHTML' ] )
+			->onlyMethods( [ 'buildHTML' ] )
 			->getMock();
 
 		$factbox->setCheckMagicWords(

@@ -33,12 +33,12 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 		] );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->onlyMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -106,7 +106,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 
 		$pageCreator = $this->getMockBuilder( 'SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'createFilePage' ] )
+			->onlyMethods( [ 'createFilePage' ] )
 			->getMock();
 
 		$pageCreator->expects( $this->once() )

@@ -205,7 +205,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	public function testAddCategoryOnInvalidRedirect() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
+			->onlyMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->atLeastOnce() )

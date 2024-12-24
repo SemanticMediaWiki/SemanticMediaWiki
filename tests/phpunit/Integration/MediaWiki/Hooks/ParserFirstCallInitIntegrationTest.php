@@ -43,7 +43,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getQueryResult', 'getObjectIds', 'service' ] )
+			->onlyMethods( [ 'getQueryResult', 'getObjectIds', 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
