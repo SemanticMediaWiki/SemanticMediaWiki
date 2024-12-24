@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
+class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 
 	protected $mockedStoreValues;
 	private $semanticData;
@@ -177,7 +177,7 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return [
-			//  $mockedStoreValues, $dataValues, $settings,               $expected
+			// $mockedStoreValues, $dataValues, $settings,               $expected
 			[ $subjects, [], [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
 			[ [], $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
 			[ $subject, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],

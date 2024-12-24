@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $querySegmentValidator;
 	private $store;
@@ -93,7 +93,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$descriptionFactory = new DescriptionFactory();
 		$dataItemFactory = new DataItemFactory();
 
-		#0
+		# 0
 		$pageId = 42;
 
 		$description = $descriptionFactory->newClassDescription(
@@ -111,7 +111,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#1 Empty
+		# 1 Empty
 		$pageId = 0;
 
 		$description = $descriptionFactory->newClassDescription(

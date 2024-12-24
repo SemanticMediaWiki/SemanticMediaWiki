@@ -13,7 +13,7 @@ use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
  *
  * @author mwjames
  */
-class MonolingualTextValueParserTest extends \PHPUnit_Framework_TestCase {
+class MonolingualTextValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -64,7 +64,7 @@ class MonolingualTextValueParserTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$provider[] = [
-			[ 'EN' =>'Foo' ],
+			[ 'EN' => 'Foo' ],
 			'Foo',
 			'en'
 		];

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class EntityCacheTest extends \PHPUnit_Framework_TestCase {
+class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

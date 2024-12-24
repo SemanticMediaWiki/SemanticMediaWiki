@@ -13,7 +13,7 @@ use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
  *
  * @author mwjames
  */
-class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
+class ArticleAugmentorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )

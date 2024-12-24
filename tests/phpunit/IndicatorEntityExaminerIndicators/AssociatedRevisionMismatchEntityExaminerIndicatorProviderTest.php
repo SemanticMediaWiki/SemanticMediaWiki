@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
+class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

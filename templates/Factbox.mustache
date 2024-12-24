@@ -12,12 +12,12 @@
     - html-pagination-next: string - Next page HTML
     - footer-content: string - Pagination status text
 }}
-<article class="smw-factbox"{{#is-loading}} aria-busy="true"{{/is-loading}}>
+<div class="smw-factbox"{{#is-loading}} aria-busy="true"{{/is-loading}}>
 	{{#data-header}}
-	<header class="smw-factbox-header mw-sticky-header-element">
+	<div class="smw-factbox-header mw-sticky-header-element">
 		<div class="smw-factbox-title" role="heading" aria-level="2">{{{html-title}}}</div>
 		<div class="smw-factbox-actions">{{{html-actions}}}</div>
-	</header>
+	</div>
 	{{/data-header}}
 	{{#array-sections}}{{>FactboxSection}}{{/array-sections}}
 	{{#data-pagination}}
@@ -27,4 +27,4 @@
 		{{{html-pagination-next}}}
 	</div>
 	{{/data-pagination}}
-</article>
+</div>

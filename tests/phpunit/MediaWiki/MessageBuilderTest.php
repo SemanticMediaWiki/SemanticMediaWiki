@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
+class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

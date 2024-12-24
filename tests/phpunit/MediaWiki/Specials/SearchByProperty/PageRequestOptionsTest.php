@@ -13,7 +13,7 @@ use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
  *
  * @author mwjames
  */
-class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
+class PageRequestOptionsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$queryString = '';
@@ -43,7 +43,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function pageRequestOptionsProvider() {
-		#0
+		# 0
 		$provider[] = [
 			'',
 			[],
@@ -56,7 +56,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'Foo',
 			[],
@@ -68,7 +68,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'Foo_nu/Bar',
 			[],
@@ -81,7 +81,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 @see 516
+		# 3 @see 516
 		$provider[] = [
 			':Foo("#^$&--2F)/("#^$&-)Bar',
 			[],
@@ -94,7 +94,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			'Foo("#^$&--2F)/("#^$&-)Bar',
 			[
@@ -111,7 +111,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			'',
 			[
@@ -128,7 +128,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			'',
 			[
@@ -145,7 +145,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#7
+		# 7
 		$provider[] = [
 			'',
 			[
@@ -162,7 +162,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#9
+		# 9
 		$provider[] = [
 			'',
 			[
@@ -179,7 +179,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#10
+		# 10
 		$provider[] = [
 			'',
 			[
@@ -196,7 +196,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#10
+		# 10
 		$provider[] = [
 			':Temperature/373,15-20K',
 			[
@@ -211,7 +211,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#11
+		# 11
 		$provider[] = [
 			'',
 			[
@@ -228,7 +228,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#11
+		# 11
 		$provider[] = [
 			':Telephone number/%2B1-2D201-2D555-2D0123',
 			[
@@ -243,7 +243,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#12
+		# 12
 		$provider[] = [
 			'',
 			[
@@ -260,7 +260,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#13
+		# 13
 		$provider[] = [
 			'',
 			[

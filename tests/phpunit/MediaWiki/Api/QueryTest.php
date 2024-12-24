@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QueryTest extends \PHPUnit_Framework_TestCase {
+class QueryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -127,7 +127,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 			$result
 		);
 
-		//$this->assertEquals(
+		// $this->assertEquals(
 		//	array( 'query' => $test, 'query-continue-offset' => 10 ),
 		//	$result
 		//);

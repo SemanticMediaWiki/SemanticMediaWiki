@@ -16,7 +16,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
+class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $termsLookup;
@@ -93,6 +93,5 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->prepareCache( [] );
 	}
-
 
 }

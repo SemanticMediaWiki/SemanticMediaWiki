@@ -126,8 +126,8 @@ class DIWikiPage extends SMWDataItem {
 	public function isSubEntityOf( string $prefix ): bool {
 		if (
 			$this->m_dbkey === '' ||
-			$this->m_subobjectname ===  '' ||
-			$prefix ===  '' ) {
+			$this->m_subobjectname === '' ||
+			$prefix === '' ) {
 			return false;
 		}
 

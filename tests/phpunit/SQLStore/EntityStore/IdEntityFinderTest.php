@@ -18,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
+class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $cache;
@@ -73,9 +73,9 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_title = 'Foo';
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
-		$row->smw_subobject ='';
-		$row->smw_sortkey ='';
-		$row->smw_sort ='';
+		$row->smw_subobject = '';
+		$row->smw_sortkey = '';
+		$row->smw_sort = '';
 		$row->smw_hash = 'x99w';
 
 		$this->cache->expects( $this->once() )
@@ -199,7 +199,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_title = 'Foo';
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
-		$row->smw_subobject ='';
+		$row->smw_subobject = '';
 		$row->smw_sortkey = '...';
 		$row->smw_sort = '...';
 		$row->smw_hash = 'x99w';

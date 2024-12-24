@@ -13,7 +13,7 @@ use SMW\MediaWiki\Search\QueryBuilder;
  *
  * @author mwjames
  */
-class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
+class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $webRequest;
 	private $store;
@@ -210,6 +210,5 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			$instance->getQueryString( $this->store, 'Foo' )
 		);
 	}
-
 
 }

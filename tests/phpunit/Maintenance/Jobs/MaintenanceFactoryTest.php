@@ -13,7 +13,7 @@ use SMW\Maintenance\MaintenanceFactory;
  *
  * @author mwjames
  */
-class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
+class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 

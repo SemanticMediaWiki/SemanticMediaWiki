@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
+class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -126,6 +126,5 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance->setStore( $this->store );
 		$instance->handleRequest( $this->webRequest );
 	}
-
 
 }

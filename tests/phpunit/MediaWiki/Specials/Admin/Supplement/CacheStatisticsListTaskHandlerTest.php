@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CacheStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class CacheStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -90,6 +90,5 @@ class CacheStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->handleRequest( $webRequest );
 	}
-
 
 }

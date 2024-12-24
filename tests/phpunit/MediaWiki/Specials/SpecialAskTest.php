@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialAskTest extends \PHPUnit_Framework_TestCase {
+class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 

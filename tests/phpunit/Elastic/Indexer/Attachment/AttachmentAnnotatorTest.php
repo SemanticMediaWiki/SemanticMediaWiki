@@ -13,7 +13,7 @@ use SMW\Elastic\Indexer\Attachment\AttachmentAnnotator;
  *
  * @author mwjames
  */
-class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class AttachmentAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $containerSemanticData;
 
@@ -117,7 +117,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[ '_source' => [ 'attachment' => [ 'keywords' => '1001' ] ] ],
 			'_CONT_KEYW'
 		];
-
 	}
 
 }

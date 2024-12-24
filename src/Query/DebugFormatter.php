@@ -107,7 +107,7 @@ class DebugFormatter {
 
 		$style = '';
 		$result = '<div class="smw-debug-box">' .
-		          "<div class='smw-column-header'><big>Debug output <span style='float:right'>$this->name</span></big></div>";
+				  "<div class='smw-column-header'><big>Debug output <span style='float:right'>$this->name</span></big></div>";
 
 		foreach ( $entries as $header => $information ) {
 			$result .= "<div class='smw-column-header'>$header</div>";

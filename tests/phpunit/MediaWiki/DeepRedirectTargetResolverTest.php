@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DeepRedirectTargetResolverTest extends \PHPUnit_Framework_TestCase {
+class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

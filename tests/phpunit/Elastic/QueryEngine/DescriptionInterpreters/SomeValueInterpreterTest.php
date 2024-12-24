@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
+class SomeValueInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -358,7 +358,6 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$options,
 			'{"bool":{"must":[{"match_phrase":{"P:42.wpgField":"テスト"}}]}}'
 		];
-
 	}
 
 }

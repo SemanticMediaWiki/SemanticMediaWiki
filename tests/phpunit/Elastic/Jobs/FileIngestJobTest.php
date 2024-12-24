@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FileIngestJobTest extends \PHPUnit_Framework_TestCase {
+class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -30,7 +30,7 @@ class FileIngestJobTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment =  new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()

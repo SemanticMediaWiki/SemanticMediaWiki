@@ -13,7 +13,7 @@
  * @codeCoverageIgnore
  */
 if ( !defined( 'MEDIAWIKI' ) ) {
-  die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
+	die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
 }
 
 return ( function () {
@@ -21,7 +21,7 @@ return ( function () {
 	$smwgIP = dirname( __DIR__ ) . '/';
 	return [
 
-		###
+		# ##
 		# This is the path to your installation of Semantic MediaWiki as seen on your
 		# local filesystem. Used against some PHP file path issues.
 		#
@@ -36,7 +36,7 @@ return ( function () {
 		'smwgResourceLoaderDefFiles' => [ 'smw' => $smwgIP . '/res/Resources.php' ],
 		'smwgMaintenanceDir' => $smwgIP . '/maintenance',
 		'smwgDir' => $smwgIP,
-		##
+		# #
 
 		###
 		# Configuration directory
@@ -57,7 +57,7 @@ return ( function () {
 		# @since 3.0
 		##
 		'smwgConfigFileDir' => $smwgIP,
-		##
+		# #
 
 		###
 		# Upgrade key
@@ -75,7 +75,7 @@ return ( function () {
 		# @since 3.0
 		##
 		'smwgUpgradeKey' => 'smw:2020-04-18',
-		##
+		# #
 
 		###
 		# Content import
@@ -93,7 +93,7 @@ return ( function () {
 		##
 		'smwgImportFileDirs' => [ 'smw' => $smwgIP . '/data/import' ],
 		'smwgImportReqVersion' => 1,
-		##
+		# #
 
 		###
 		# List of users for import activities
@@ -109,7 +109,7 @@ return ( function () {
 		# @default []
 		##
 		'smwgImportPerformers' => [ 'SemanticMediaWikiImporter' ],
-		##
+		# #
 
 		###
 		# Allows to ignore the check for whether the extension was correctly enabled
@@ -125,13 +125,13 @@ return ( function () {
 		# @since 3.1
 		##
 		'smwgIgnoreExtensionRegistrationCheck' => false,
-		##
+		# #
 
 		###
 		# @since 4.1.3
 		##
 		'smwgIgnoreUpgradeKeyCheck' => false,
-		##
+		# #
 
 		###
 		# Use another storage backend for Semantic MediaWiki. The default is suitable
@@ -140,7 +140,7 @@ return ( function () {
 		# @since 0.7
 		##
 		'smwgDefaultStore' => SMW\SQLStore\SQLStore::class,
-		##
+		# #
 
 		##
 		# Debug logger role
@@ -161,7 +161,7 @@ return ( function () {
 		# @default production
 		##
 		'smwgDefaultLoggerRole' => 'production',
-		##
+		# #
 
 		###
 		# Local connection configurations
@@ -189,7 +189,7 @@ return ( function () {
 				'write' => DB_PRIMARY
 			]
 		],
-		##
+		# #
 
 		###
 		# Configure SPARQL database connection for Semantic MediaWiki. This is used
@@ -216,7 +216,7 @@ return ( function () {
 			'update' => 'http://localhost:8080/update/',
 			'data'   => 'http://localhost:8080/data/'
 		],
-		##
+		# #
 
 		###
 		#
@@ -230,7 +230,7 @@ return ( function () {
 		# @since 1.7
 		##
 		'smwgSparqlDefaultGraph' => '',
-		##
+		# #
 
 		##
 		# Sparql repository connector
@@ -256,7 +256,7 @@ return ( function () {
 		# @default default, meaning that the default (aka generic) connector is used
 		##
 		'smwgSparqlRepositoryConnector' => 'default',
-		##
+		# #
 
 		##
 		# Sparql cutstom connector
@@ -271,7 +271,7 @@ return ( function () {
 		# @since 2.0
 		##
 		'smwgSparqlCustomConnector' => 'SMWSparqlDatabase',
-		##
+		# #
 
 		##
 		# Sparql query features that are expected to be supported by the repository:
@@ -294,7 +294,7 @@ return ( function () {
 		# @since 2.3
 		##
 		'smwgSparqlQFeatures' => SMW_SPARQL_QF_REDI | SMW_SPARQL_QF_SUBP | SMW_SPARQL_QF_SUBC,
-		##
+		# #
 
 		##
 		# SPARQL respository specific features
@@ -308,7 +308,7 @@ return ( function () {
 		# @since 3.2
 		##
 		'smwgSparqlRepositoryFeatures' => SMW_SPARQL_NONE,
-		##
+		# #
 
 		##
 		# @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1306
@@ -324,7 +324,7 @@ return ( function () {
 		# @default false === means to use the default as determined by cURL
 		##
 		'smwgSparqlRepositoryConnectorForcedHttpVersion' => false,
-		##
+		# #
 
 		##
 		# Property replication exemption list
@@ -336,7 +336,7 @@ return ( function () {
 		# @default array
 		##
 		'smwgSparqlReplicationPropertyExemptionList' => [],
-		##
+		# #
 
 		###
 		# If you already have custom namespaces on your site, insert
@@ -380,7 +380,7 @@ return ( function () {
 			NS_CATEGORY => true,
 			NS_CATEGORY_TALK => false,
 		],
-		##
+		# #
 
 		###
 		# Specifies features supported by the in-page factbox
@@ -399,7 +399,7 @@ return ( function () {
 		##
 		'smwgFactboxFeatures' => SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH | SMW_FACTBOX_DISPLAY_SUBOBJECT | SMW_FACTBOX_DISPLAY_ATTACHMENT,
 
-		###
+		# ##
 		# This setting allows you to select in which cases you want to have a factbox
 		# appear below an article and includes the following options:
 		#
@@ -414,7 +414,7 @@ return ( function () {
 		# @since 0.7
 		##
 		'smwgShowFactbox' => SMW_FACTBOX_HIDDEN,
-		##
+		# #
 
 		###
 		# Same as $smwgShowFactbox but for the edit mode with same possible values.
@@ -422,7 +422,7 @@ return ( function () {
 		# @since 1.0
 		##
 		'smwgShowFactboxEdit' => SMW_FACTBOX_NONEMPTY,
-		##
+		# #
 
 		###
 		# Compact infolink support
@@ -446,7 +446,7 @@ return ( function () {
 		# @default true
 		##
 		'smwgCompactLinkSupport' => false,
-		##
+		# #
 
 		###
 		#
@@ -467,7 +467,7 @@ return ( function () {
 		# @since 3.0
 		##
 		'smwgCategoryFeatures' => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE | SMW_CAT_HIERARCHY,
-		##
+		# #
 
 		###
 		# Settings for recurring events, created with the 	#set_recurring_event parser
@@ -478,7 +478,7 @@ return ( function () {
 		##
 		'smwgDefaultNumRecurringEvents' => 100,
 		'smwgMaxNumRecurringEvents' => 500,
-		##
+		# #
 
 		###
 		# Special:Browse related settings
@@ -508,7 +508,7 @@ return ( function () {
 		# @since 3.0
 		##
 		'smwgBrowseFeatures' => SMW_BROWSE_TLINK | SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_SHOW_GROUP | SMW_BROWSE_USE_API,
-		##
+		# #
 
 		###
 		# Should the search by property special page display nearby results when there
@@ -519,7 +519,7 @@ return ( function () {
 		# variable to array() or false
 		##
 		'smwgSearchByPropertyFuzzy' => [ '_num', '_txt', '_dat', '_mlt_rec' ],
-		##
+		# #
 
 		###
 		# Number of results shown in the listings on pages in the Property and Concept
@@ -550,7 +550,7 @@ return ( function () {
 				'valuelist.incoming' => 20,
 			]
 		],
-		##
+		# #
 
 		###
 		# Property page to limit the query request for individual values
@@ -562,7 +562,7 @@ return ( function () {
 		# @since 1.3
 		##
 		'smwgMaxPropertyValues' => 3,
-		##
+		# #
 
 		###
 		# Property page list limits
@@ -580,7 +580,7 @@ return ( function () {
 			'redirect' => 25,
 			'error' => 10
 		],
-		##
+		# #
 
 		###
 		# Settings for inline queries ({{#ask:...}}) and for semantic queries in
@@ -627,7 +627,7 @@ return ( function () {
 		# @default: SMW_EQ_SOME
 		##
 		'smwgQEqualitySupport' => SMW_EQ_SOME,
-		##
+		# #
 
 		###
 		# Sort features
@@ -649,7 +649,7 @@ return ( function () {
 		# @since 3.0
 		##
 		'smwgQSortFeatures' => SMW_QSORT | SMW_QSORT_RANDOM,
-		##
+		# #
 
 		###
 		# List of comparator characters
@@ -679,7 +679,7 @@ return ( function () {
 		# @since 1.0
 		##
 		'smwgQComparators' => '<|>|!~|!|~|≤|≥|<<|>>|~=|like:|nlike:|in:|not:|phrase:',
-		##
+		# #
 
 		###
 		# Sets whether the > and < comparators should be strict or not. If they are strict,
@@ -691,7 +691,7 @@ return ( function () {
 
 		// To be used starting with 3.x (due to misspelling)
 		'smwgQStrictComparators' => false,
-		##
+		# #
 
 		###
 		# Further settings for queries. The following settings affect inline queries
@@ -716,7 +716,7 @@ return ( function () {
 		# @default 10
 		##
 		'smwgQExpensiveThreshold' => 10,
-		##
+		# #
 
 		###
 		# Limit of expensive #ask/#show functions
@@ -728,7 +728,7 @@ return ( function () {
 		# @default false (== no limit)
 		##
 		'smwgQExpensiveExecutionLimit' => false,
-		##
+		# #
 
 		###
 		# The below setting defines which query features should be available by
@@ -743,7 +743,7 @@ return ( function () {
 		# @since 1.2
 		##
 		'smwgQFeatures' => SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY | SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY,
-		##
+		# #
 
 		###
 		# Filter duplicate query segments
@@ -756,7 +756,7 @@ return ( function () {
 		# @default: false
 		##
 		'smwgQFilterDuplicates' => false,
-		##
+		# #
 
 		###
 		# Settings about printout of (especially inline) queries:
@@ -801,7 +801,7 @@ return ( function () {
 		// this, SMW tries to recompute it, and will only use the cache if this is not
 		// allowed due to settings above:
 		'smwgQConceptCacheLifetime' => 24 * 60,
-		##
+		# #
 
 		##
 		# Predefined result formats for queries
@@ -832,7 +832,7 @@ return ( function () {
 			'json'       => 'SMW\Query\ResultPrinters\JsonResultPrinter',
 			'rdf'        => 'SMW\Query\ResultPrinters\RdfResultPrinter'
 		],
-		##
+		# #
 
 		##
 		# Predefined aliases for result formats
@@ -849,7 +849,7 @@ return ( function () {
 			'templatefile' => [ 'template file' ],
 			'plainlist' => [ 'plain' ]
 		],
-		##
+		# #
 
 		/**
 		 * Affects format=list.
@@ -864,7 +864,7 @@ return ( function () {
 		 */
 		'smwgPlainList' => false,
 
-		##
+		# #
 		# Result printer features
 		#
 		# - SMW_RF_NONE
@@ -873,7 +873,7 @@ return ( function () {
 		# @since 2.3
 		##
 		'smwgResultFormatsFeatures' => SMW_RF_TEMPLATE_OUTSEP,
-		##
+		# #
 
 		###
 		# Handling of `RemoteRequest` features
@@ -892,7 +892,7 @@ return ( function () {
 		# @default: SMW_REMOTE_REQ_SEND_RESPONSE | SMW_REMOTE_REQ_SHOW_NOTE
 		##
 		'smwgRemoteReqFeatures' => SMW_REMOTE_REQ_SEND_RESPONSE | SMW_REMOTE_REQ_SHOW_NOTE,
-		##
+		# #
 
 		###
 		#
@@ -911,10 +911,10 @@ return ( function () {
 		# @since 1.4.3
 		##
 		'smwgQuerySources' => [
-			//	'local'      => '',
+			// 'local'      => '',
 			//	'mw-wiki-foo' => [ '\SMW\Query\RemoteRequest', 'url' => 'http://example.org/wiki/index.php' ],
 		],
-		##
+		# #
 
 		### Default property type
 		# Undefined properties (those without pages or whose pages have no "has type"
@@ -925,7 +925,7 @@ return ( function () {
 		# @since 1.1.2
 		##
 		'smwgPDefaultType' => '_wpg',
-		##
+		# #
 
 		###
 		# The maximal number that SMW will normally display without using scientific exp
@@ -935,7 +935,7 @@ return ( function () {
 		# @since 1.4.3
 		##
 		'smwgMaxNonExpNumber' => 1000000000000000,
-		##
+		# #
 
 		###
 		# SMW defers some tasks until after a page was edited by using the MediaWiki
@@ -950,7 +950,7 @@ return ( function () {
 		# @since 1.1.2
 		##
 		'smwgEnableUpdateJobs' => true,
-		##
+		# #
 
 		###
 		# JobQueue watchlist
@@ -978,7 +978,7 @@ return ( function () {
 		# @default disabled (empty array)
 		##
 		'smwgJobQueueWatchlist' => [],
-		##
+		# #
 
 		###
 		# List of enabled special page properties.
@@ -1001,7 +1001,7 @@ return ( function () {
 		# @since 1.7
 		##
 		'smwgPageSpecialProperties' => [ '_MDAT' ],
-		##
+		# #
 
 		###
 		# Change propagation watchlist
@@ -1022,7 +1022,7 @@ return ( function () {
 			'_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB', '_PREC', '_PDESC',
 			'_SUBP', '_SUBC', '_PVALI'
 		],
-		##
+		# #
 
 		##
 		# Change propagation protection
@@ -1034,7 +1034,7 @@ return ( function () {
 		# @default true
 		##
 		'smwgChangePropagationProtection' => true,
-		##
+		# #
 
 		###
 		# By default, DataTypes (Date, URL etc.) are registered with a corresponding
@@ -1049,7 +1049,7 @@ return ( function () {
 			'Reference',
 			'Keyword'
 		],
-		##
+		# #
 
 		##
 		# Default output formatter
@@ -1076,7 +1076,7 @@ return ( function () {
 			// '_dat' => 'LOCL',
 			// 'Boolean' => 'tick',
 		],
-		##
+		# #
 
 		// some default settings which usually need no modification
 
@@ -1088,7 +1088,7 @@ return ( function () {
 		# @since 0.7
 		##
 		'smwgTranslate' => false,
-		##
+		# #
 
 		###
 		# -- FEATURE IS DISABLED --
@@ -1130,7 +1130,7 @@ return ( function () {
 		'smwgAdminFeatures' =>
 		SMW_ADM_REFRESH | SMW_ADM_SETUP | SMW_ADM_DISPOSAL | SMW_ADM_PSTATS | SMW_ADM_FULLT |
 		SMW_ADM_MAINTENANCE_SCRIPT_DOCS | SMW_ADM_SHOW_OVERVIEW | SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN,
-		##
+		# #
 
 		###
 		# Sets whether or not to refresh the pages of which semantic data is stored.
@@ -1138,7 +1138,7 @@ return ( function () {
 		# @since 1.5.6
 		##
 		'smwgAutoRefreshSubject' => true,
-		##
+		# #
 
 		###
 		# Semantic MediaWiki uses various cache instances and types to improve access
@@ -1156,7 +1156,7 @@ return ( function () {
 		# @default CACHE_ANYTHING
 		##
 		'smwgMainCacheType' => CACHE_ANYTHING,
-		##
+		# #
 
 		###
 		# CacheTTL settings
@@ -1202,7 +1202,7 @@ return ( function () {
 			'api.task'  => 3600,
 			'api.table.statistics'  => 3600
 		],
-		##
+		# #
 
 		###
 		# Sets whether or not to refresh semantic data in the store when a page is
@@ -1214,7 +1214,7 @@ return ( function () {
 		# @default true
 		##
 		'smwgAutoRefreshOnPurge' => true,
-		##
+		# #
 
 		###
 		# Sets whether or not to refresh semantic data in the store when a page was
@@ -1226,7 +1226,7 @@ return ( function () {
 		# @default true
 		##
 		'smwgAutoRefreshOnPageMove' => true,
-		##
+		# #
 
 		##
 		# List of user-defined fixed properties
@@ -1252,7 +1252,7 @@ return ( function () {
 		##
 		'smwgFixedProperties' => [],
 
-		###
+		# ##
 		# Sets a threshold value for when a property is being highlighted as "hardly
 		# begin used" on Special:Properties
 		#
@@ -1261,7 +1261,7 @@ return ( function () {
 		# default = 5
 		##
 		'smwgPropertyLowUsageThreshold' => 5,
-		##
+		# #
 
 		###
 		# Hide properties where the usage count is zero on Special:Properties
@@ -1271,7 +1271,7 @@ return ( function () {
 		# default = true (legacy behaviour)
 		##
 		'smwgPropertyZeroCountDisplay' => true,
-		##
+		# #
 
 		###
 		# QueryProfiler related settings
@@ -1294,7 +1294,7 @@ return ( function () {
 		# @default true
 		##
 		'smwgQueryProfiler' => true,
-		##
+		# #
 
 		###
 		# Enables SMW specific annotation and content processing for listed SpecialPages
@@ -1302,7 +1302,7 @@ return ( function () {
 		# @since 1.9
 		##
 		'smwgEnabledSpecialPage' => [ 'Ask' ],
-		##
+		# #
 
 		###
 		# Search engine to fall back to in case SMWSearch is used as custom search
@@ -1315,7 +1315,7 @@ return ( function () {
 		# @since 2.1
 		##
 		'smwgFallbackSearchType' => null,
-		##
+		# #
 
 		###
 		# If enabled it will display help information on the edit page to support users
@@ -1324,7 +1324,7 @@ return ( function () {
 		# @since 2.1
 		##
 		'smwgEnabledEditPageHelp' => false,
-		##
+		# #
 
 		###
 		# Various MediaWiki update operations in MW 1.26+ started to use DeferredUpdates
@@ -1336,7 +1336,7 @@ return ( function () {
 		# @since 2.4
 		##
 		'smwgEnabledDeferredUpdate' => true,
-		##
+		# #
 
 		###
 		# Regulates task specific settings for the post-edit process.
@@ -1386,7 +1386,7 @@ return ( function () {
 				'on-outdated-query-dependency' => true
 			]
 		],
-		##
+		# #
 
 		###
 		# Query dependency and parser cache invalidation
@@ -1398,7 +1398,7 @@ return ( function () {
 		# @default false
 		##
 		'smwgEnabledQueryDependencyLinksStore' => false,
-		##
+		# #
 
 		###
 		# Relates to `smwgEnabledQueryDependencyLinksStore` and defines property keys
@@ -1419,7 +1419,7 @@ return ( function () {
 		'smwgQueryDependencyPropertyExemptionList' => [
 			'_MDAT', '_SOBJ', '_ASKDU', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST'
 		],
-		##
+		# #
 
 		###
 		# Settings for OWL/RDF export
@@ -1430,7 +1430,7 @@ return ( function () {
 		# @default = false
 		##
 		'smwgAllowRecursiveExport' => false,
-		##
+		# #
 
 		###
 		# Settings for OWL/RDF export
@@ -1441,7 +1441,7 @@ return ( function () {
 		# @default = true
 		##
 		'smwgExportBacklinks' => true,
-		##
+		# #
 
 		###
 		# OWL/RDF export namespace for URIs/IRIs
@@ -1461,7 +1461,7 @@ return ( function () {
 		# @default null
 		##
 		'smwgNamespace' => null,
-		##
+		# #
 
 		###
 		# The setting is introduced the keep backwards compatibility with existing Rdf/Turtle
@@ -1480,7 +1480,7 @@ return ( function () {
 		# @since 2.3
 		##
 		'smwgExportBCAuxiliaryUse' => false,
-		##
+		# #
 
 		##
 		# The preferred form is to use canonical identifiers (Category:, Property:)
@@ -1492,7 +1492,7 @@ return ( function () {
 		# @since 2.3
 		##
 		'smwgExportBCNonCanonicalFormUse' => false,
-		##
+		# #
 
 		##
 		# Export resources using IRIs
@@ -1506,7 +1506,7 @@ return ( function () {
 		# @default true
 		##
 		'smwgExportResourcesAsIri' => true,
-		##
+		# #
 
 		###
 		# Features related to text and annotion parsing
@@ -1540,7 +1540,7 @@ return ( function () {
 		# @since 3.0
 		##
 		'smwgParserFeatures' => SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR | SMW_PARSER_HID_CATS,
-		##
+		# #
 
 		##
 		# Features or restrictions for specific DataValue types
@@ -1594,7 +1594,7 @@ return ( function () {
 		# @since 2.4
 		##
 		'smwgDVFeatures' => SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM | SMW_DV_PPLB | SMW_DV_PROV_LHNT,
-		##
+		# #
 
 		##
 		# Fulltext search support
@@ -1610,7 +1610,7 @@ return ( function () {
 		# @default: false
 		##
 		'smwgEnabledFulltextSearch' => false,
-		##
+		# #
 
 		##
 		# Throttle index updates
@@ -1627,7 +1627,7 @@ return ( function () {
 		# @default: true
 		##
 		'smwgFulltextDeferredUpdate' => true,
-		##
+		# #
 
 		##
 		# Fulltext search table options
@@ -1656,7 +1656,7 @@ return ( function () {
 			'mysql'  => [ 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' ],
 			'sqlite' => [ 'FTS4' ]
 		],
-		##
+		# #
 
 		##
 		# Exempted properties
@@ -1676,7 +1676,7 @@ return ( function () {
 			'_TYPE', '_ERRT', '_INST', '_ASK', '_SOBJ', '_PVAL', '_PVALI',
 			'_REDI', '_CHGPRO'
 		],
-		##
+		# #
 
 		##
 		# List of indexable DataTypes
@@ -1698,7 +1698,7 @@ return ( function () {
 		# @default: SMW_FT_BLOB | SMW_FT_URI
 		##
 		'smwgFulltextSearchIndexableDataTypes' => SMW_FT_BLOB | SMW_FT_URI,
-		##
+		# #
 
 		##
 		# Describes the minimum word/token length to help to decide whether MATCH or LIKE
@@ -1710,7 +1710,7 @@ return ( function () {
 		# @since 2.5
 		##
 		'smwgFulltextSearchMinTokenSize' => 3,
-		##
+		# #
 
 		##
 		# To detect a possible language candidate from an indexable text element.
@@ -1726,10 +1726,10 @@ return ( function () {
 		# @default empty list (language detection is disabled by default)
 		##
 		'smwgFulltextLanguageDetection' => [
-			//	'TextCatLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
+			// 'TextCatLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
 			//	'CdbNGramLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
 		],
-		##
+		# #
 
 		##
 		# MySQL's "Global Transaction Identifier" will create issues when executing
@@ -1752,7 +1752,7 @@ return ( function () {
 		# @default false
 		##
 		'smwgQTemporaryTablesAutoCommitMode' => false,
-		##
+		# #
 
 		###
 		# Support to store a computed subject list that were fetched from the QueryEngine
@@ -1771,7 +1771,7 @@ return ( function () {
 		# @default: CACHE_NONE (== feature is disabled)
 		##
 		'smwgQueryResultCacheType' => CACHE_NONE,
-		##
+		# #
 
 		###
 		# Specifies the lifetime of embedded query and their results fetched from a
@@ -1812,7 +1812,7 @@ return ( function () {
 		# @since 2.5
 		##
 		'smwgQueryResultCacheRefreshOnPurge' => true,
-		##
+		# #
 
 		##
 		# Property create protection
@@ -1827,7 +1827,7 @@ return ( function () {
 		# @default false
 		##
 		'smwgCreateProtectionRight' => false,
-		##
+		# #
 
 		###
 		# Page edit protection
@@ -1850,7 +1850,7 @@ return ( function () {
 		# @default false
 		##
 		'smwgEditProtectionRight' => false,
-		##
+		# #
 
 		##
 		# Similarity lookup exemption property
@@ -1867,7 +1867,7 @@ return ( function () {
 		# @since 2.5
 		##
 		'smwgSimilarityLookupExemptionProperty' => 'owl:differentFrom',
-		##
+		# #
 
 		##
 		# Property label invalid characters
@@ -1884,7 +1884,7 @@ return ( function () {
 			'[', ']', '|', '<', '>', '{', '}', '+', '–', '%', "\r", "\n",
 			'?', '*', '!'
 		],
-		##
+		# #
 
 		##
 		# Properties classified as retired/no longer in use
@@ -1903,7 +1903,7 @@ return ( function () {
 			// No longer valid predefined property prefixes
 			'_SF_', '_SD_'
 		],
-		##
+		# #
 
 		##
 		# Reserved property names
@@ -1923,7 +1923,7 @@ return ( function () {
 		# @since 3.0
 		##
 		'smwgPropertyReservedNameList' => [ 'Category', 'smw-property-reserved-category' ],
-		##
+		# #
 
 		##
 		# Entity specific collation
@@ -1945,7 +1945,7 @@ return ( function () {
 		# @default identity (as legacy setting)
 		##
 		'smwgEntityCollation' => 'identity',
-		##
+		# #
 
 		##
 		# Experimental settings
@@ -1968,7 +1968,7 @@ return ( function () {
 		# @since 3.0
 		##
 		'smwgExperimentalFeatures' => SMW_QUERYRESULT_PREFETCH | SMW_SHOWPARSER_USE_CURTAILMENT,
-		##
+		# #
 
 		##
 		# SQLStore specific field type features
@@ -2026,7 +2026,7 @@ return ( function () {
 		# @default false
 		##
 		'smwgFieldTypeFeatures' => false,
-		##
+		# #
 
 		##
 		# Subobject content hash !! BC setting ONLY !!
@@ -2052,7 +2052,7 @@ return ( function () {
 		# @default true
 		##
 		'smwgUseComparableContentHash' => true,
-		##
+		# #
 
 		##
 		# List of supported schemes for a URI typed property
@@ -2066,7 +2066,7 @@ return ( function () {
 			'http', 'https', 'mailto', 'tel', 'ftp', 'sftp', 'news', 'file', 'urn',
 			'telnet', 'ldap', 'gopher', 'ssh', 'git', 'irc', 'ircs'
 		],
-		##
+		# #
 
 		##
 		# Special:Ask form submit method
@@ -2086,7 +2086,7 @@ return ( function () {
 		# @default SMW_SASK_SUBMIT_POST
 		##
 		'smwgSpecialAskFormSubmitMethod' => SMW_SASK_SUBMIT_POST,
-		##
+		# #
 
 		##
 		# Enable/disable <section> ... </section> support
@@ -2095,7 +2095,7 @@ return ( function () {
 		# @default true
 		##
 		'smwgSupportSectionTag' => true,
-		##
+		# #
 
 		##
 		# Subproperty type inheritance
@@ -2107,7 +2107,7 @@ return ( function () {
 		# @default false
 		##
 		'smwgMandatorySubpropertyParentTypeInheritance' => false,
-		##
+		# #
 
 		##
 		# Find and remove remnant entities
@@ -2137,7 +2137,7 @@ return ( function () {
 		# @default 'purge'
 		##
 		'smwgCheckForRemnantEntities' => 'purge',
-		##
+		# #
 
 		##
 		# Lookup and display of constraint errors
@@ -2158,7 +2158,7 @@ return ( function () {
 		# @default SMW_CONSTRAINT_ERR_CHECK_ALL
 		##
 		'smwgCheckForConstraintErrors' => SMW_CONSTRAINT_ERR_CHECK_ALL,
-		##
+		# #
 
 		##
 		# THE FOLLOWING SETTINGS AND SUPPORT FUNCTIONS ARE EXPERIMENTAL!
@@ -2182,7 +2182,7 @@ return ( function () {
 		# @since 3.0
 		##
 		'smwgSchemaTypes' => [],
-		##
+		# #
 
 		##
 		# ElasticStore settings
@@ -2202,7 +2202,7 @@ return ( function () {
 				'data' => $smwgIP . '/data/elastic/smw-data-standard.json',
 				'lookup' => $smwgIP . '/data/elastic/smw-lookup.json'
 			],
-			'connection' =>[
+			'connection' => [
 				'quick_ping' => true,
 
 				// Number of times the client tries to reconnect before throwing an
@@ -2465,7 +2465,7 @@ return ( function () {
 				'highlight.fragment' => [ 'number' => 1, 'size' => 250, 'type' => false ]
 			]
 		],
-		##
+		# #
 
 		##
 		# ElasticStore profile
@@ -2491,7 +2491,7 @@ return ( function () {
 			// 'localhost:9200'
 		],
 
-		##
+		# #
 		# ElasticSearch basic authentication credentials
 		#
 		# @since 4.2

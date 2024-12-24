@@ -169,7 +169,7 @@ class JsonTestCaseFileHandler {
 				$version = defined( 'HHVM_VERSION' ) ? HHVM_VERSION : 0;
 			} elseif ( strpos( $id, 'php' ) !== false ) {
 				$version = defined( 'PHP_VERSION' ) ? PHP_VERSION : 0;
- 			}
+			}
 
 			if ( $versionToSkip !== '' && ( $versionToSkip[0] === '<' || $versionToSkip[0] === '>' ) ) {
 				$compare = $versionToSkip[0];
@@ -430,9 +430,9 @@ class JsonTestCaseFileHandler {
 	 * @return array
 	 */
 	public function getContentsFor( $key ) {
-		try{
+		try {
 			$contents = $this->getFileContentsFor( $key );
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			$contents = [];
 		}
 

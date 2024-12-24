@@ -14,7 +14,7 @@ use SMW\DIWikiPage;
  *
  * @author Stephan Gambke
  */
-class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
+class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @var SearchResultSet The search result set under test
@@ -61,7 +61,6 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( [ $pageMock, $pageMock, $pageMock ] ) );
 
 		$this->resultSet = new SearchResultSet( $this->queryResult, 42 );
-
 	}
 
 	public function testCanConstruct() {

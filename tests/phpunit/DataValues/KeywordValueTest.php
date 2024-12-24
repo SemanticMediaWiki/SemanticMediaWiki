@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class KeywordValueTest extends \PHPUnit_Framework_TestCase {
+class KeywordValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -170,7 +170,7 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 				'rule' => [ 'link_to' => 'SPECIAL_SEARCH_BY_PROPERTY' ]
 			]
 		);
-	
+
 		$this->propertySpecificationLookup->expects( $this->exactly( 2 ) )
 			->method( 'getSpecification' )
 			->withConsecutive(
@@ -187,19 +187,19 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 				[ $this->dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_SCHEMA ) ],
 				[ $this->dataItemFactory->newDIBlob( $data ) ]
 			);
-	
+
 		$instance = new KeywordValue();
 		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 		$instance->setOption( KeywordValue::OPT_COMPACT_INFOLINKS, false );
-	
+
 		$instance->setUserValue( 'foo' );
 		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
-	
+
 		$this->assertEquals(
 			'foo',
 			$instance->getShortWikiText()
 		);
-	
+
 		$this->assertNotContains(
 			'[[:Special:SearchByProperty/cl:OkJhci9mb28|foo]]',
 			$instance->getShortWikiText( 'linker' )

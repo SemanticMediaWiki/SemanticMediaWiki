@@ -15,20 +15,20 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
+class IdCacheManagerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $caches;
 
- 	protected function setUp(): void {
+	protected function setUp(): void {
 		$this->caches = [
 			'entity.id' => new FixedInMemoryLruCache(),
 			'entity.sort' => new FixedInMemoryLruCache(),
 			'entity.lookup' => new FixedInMemoryLruCache(),
 			'propertytable.hash' => new FixedInMemoryLruCache()
 		];
- 	}
+	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -139,7 +139,6 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 			true,
 			$instance->hasCache( $instance->computeSha1( [ 'foo', 0, '', '' ] ) )
 		);
-
 	}
 
 	public function testDeleteCacheById() {

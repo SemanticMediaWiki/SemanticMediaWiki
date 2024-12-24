@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
+class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 	private $outputPage;
 	private $request;
@@ -228,7 +228,7 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleDataProvider() {
-		#0 Standard title
+		# 0 Standard title
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -250,7 +250,7 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 as SpecialPage
+		# 1 as SpecialPage
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

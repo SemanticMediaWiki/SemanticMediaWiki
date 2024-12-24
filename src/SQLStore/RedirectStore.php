@@ -208,7 +208,6 @@ class RedirectStore {
 			}
 		}
 
-
 		// Generally, redirect updates can be lazily run during the online processing
 		$immediateMode = false;
 

@@ -13,7 +13,7 @@ use SMW\Connection\CallbackConnectionProvider;
  *
  * @author mwjames
  */
-class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
+class CallbackConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 
@@ -24,7 +24,8 @@ class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-		$callback = function () {};
+		$callback = function () {
+		};
 
 		$this->assertInstanceOf(
 			CallbackConnectionProvider::class,

@@ -11,7 +11,7 @@ use Title;
  *
  * @license GNU GPL v2+
  */
-class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
+class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 
 	private $namespaceExaminer;
 
@@ -69,7 +69,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function skinTemplateDataProvider() {
-		#0 Standard title
+		# 0 Standard title
 		$settings = [
 			'isEnabledNamespace' => true,
 			'smwgBrowseFeatures' => SMW_BROWSE_TLINK
@@ -83,7 +83,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 			[ 'count' => 1 ],
 		];
 
-		#1 isArticle = false
+		# 1 isArticle = false
 		$provider[] = [
 			[
 				'skin' => $this->newSkinStub( false ),
@@ -105,7 +105,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 			[ 'count' => 0 ],
 		];
 
-		#3 smwgNamespacesWithSemanticLinks = false
+		# 3 smwgNamespacesWithSemanticLinks = false
 
 		$settings = [
 			'isEnabledNamespace' => false,
@@ -120,7 +120,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 			[ 'count' => 0 ],
 		];
 
-		#4 Special page
+		# 4 Special page
 		$settings = [
 			'isEnabledNamespace' => true,
 			'smwgBrowseFeatures' => SMW_BROWSE_TLINK

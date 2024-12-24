@@ -16,7 +16,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryEngineTest extends \PHPUnit_Framework_TestCase {
+class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $conditionBuilder;
@@ -61,7 +61,6 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
-
 	}
 
 	public function testCanConstruct() {

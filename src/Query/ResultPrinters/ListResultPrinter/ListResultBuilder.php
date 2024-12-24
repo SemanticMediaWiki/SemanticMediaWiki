@@ -85,8 +85,7 @@ class ListResultBuilder {
 	public function getResultText() {
 		$this->prepareBuilt();
 
-		return
-			$this->getTemplateCall( 'introtemplate' ) .
+		return $this->getTemplateCall( 'introtemplate' ) .
 			$this->get( 'result-open-tag' ) .
 
 			join( $this->get( 'sep' ), $this->getRowTexts() ) .
@@ -185,7 +184,6 @@ class ListResultBuilder {
 		$templateRenderer->packFieldsForTemplate( $templatename );
 
 		return $templateRenderer->render();
-
 	}
 
 	/**

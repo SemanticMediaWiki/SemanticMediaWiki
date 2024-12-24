@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -168,7 +168,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->parse( $params );
 
-		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ){
+		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ) {
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
 
 			$this->semanticDataValidator->assertThatPropertiesAreSet(

@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
+class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -83,7 +83,7 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEmpty( $result );
 
-		foreach( $queryResult->getErrors() as $error ) {
+		foreach ( $queryResult->getErrors() as $error ) {
 			$this->assertEquals( $expected['message'], $error );
 		}
 	}
@@ -212,7 +212,7 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [
 			[
 				'parameters'  => [ 'distribution' => true ],
-		//		'queryResult' => $queryResult
+		// 'queryResult' => $queryResult
 				],
 			[
 				'message'     => $message
@@ -223,7 +223,7 @@ class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [
 			[
 				'parameters'  => [ 'distribution' => false ],
-			//	'queryResult' => $queryResult
+			// 'queryResult' => $queryResult
 				],
 			[
 				'message'     => $message

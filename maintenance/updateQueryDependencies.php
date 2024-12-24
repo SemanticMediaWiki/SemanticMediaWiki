@@ -179,5 +179,5 @@ class updateQueryDependencies extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\updateQueryDependencies';
+$maintClass = updateQueryDependencies::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );

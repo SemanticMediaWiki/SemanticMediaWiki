@@ -13,7 +13,7 @@ use SMW\MediaWiki\Api\Browse\ListAugmentor;
  *
  * @author mwjames
  */
-class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
+class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

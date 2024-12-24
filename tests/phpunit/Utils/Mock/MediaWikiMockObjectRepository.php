@@ -17,7 +17,7 @@ use Wikimedia\Rdbms\Database;
  *
  * @author mwjames
  */
-class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implements MockObjectRepository {
+class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implements MockObjectRepository {
 
 	/** @var MockObjectBuilder */
 	protected $builder;
@@ -72,7 +72,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
-
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
 

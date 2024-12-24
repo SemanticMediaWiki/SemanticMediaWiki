@@ -17,7 +17,7 @@ use Wikimedia\Rdbms\ILoadBalancer;
  *
  * @author mwjames
  */
-class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
+class LoadBalancerConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

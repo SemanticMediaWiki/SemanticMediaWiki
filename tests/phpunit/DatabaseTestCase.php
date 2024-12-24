@@ -30,7 +30,7 @@ use Title;
  *
  * @author mwjames
  */
-abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
+abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @var TestEnvironment
@@ -114,7 +114,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 				$title->expects( $this->any() )
 					->method( 'getPrefixedDBkey' )
 					->willReturn( 'Badtitle/Dummy title for BacklinkCache reset' );
-	
+
 				BacklinkCache::get( $title )->clear();
 			}
 		}

@@ -150,8 +150,8 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 */
 	public function getQueryResult( Query $query ) {
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
-		     $query->querymode != Query::MODE_DEBUG &&
-		     count( $query->getErrors() ) > 0 ) {
+			 $query->querymode != Query::MODE_DEBUG &&
+			 count( $query->getErrors() ) > 0 ) {
 			return $this->queryFactory->newQueryResult( $this->store, $query, [], false );
 			// NOTE: we check this here to prevent unnecessary work, but we check
 			// it after query processing below again in case more errors occurred.
@@ -445,7 +445,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		);
 
 		while ( ( $count < $query->getLimit() ) && ( $row = $res->fetchObject() ) ) {
-			if ( $row->iw === '' || $row->iw[0] != ':' )  {
+			if ( $row->iw === '' || $row->iw[0] != ':' ) {
 
 				// Catch exception for non-existing predefined properties that
 				// still registered within non-updated pages (@see bug 48711)

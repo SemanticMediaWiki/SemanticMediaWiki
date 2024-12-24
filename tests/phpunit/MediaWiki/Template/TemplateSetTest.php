@@ -14,7 +14,7 @@ use SMW\MediaWiki\Template\Template;
  *
  * @author mwjames
  */
-class TemplateSetTest extends \PHPUnit_Framework_TestCase {
+class TemplateSetTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

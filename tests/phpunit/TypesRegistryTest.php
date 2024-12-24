@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
+class TypesRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -106,7 +106,7 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 				continue;
 			}
 
-			yield[ $key, $def ];
+			yield [ $key, $def ];
 		}
 	}
 
@@ -119,7 +119,7 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 				continue;
 			}
 
-			yield[ $key, $def ];
+			yield [ $key, $def ];
 		}
 	}
 

@@ -15,7 +15,7 @@ use SMWPropertyValue as PropertyValue;
  *
  * @author mwjames
  */
-class PrintRequestTest extends \PHPUnit_Framework_TestCase {
+class PrintRequestTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructPropertyPrintRequest() {
 		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
@@ -116,63 +116,63 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-		#0
+		# 0
 		$provider[] = [
 			'Foo',
 			false,
 			'Foo'
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'Foo',
 			true,
 			''
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'Foo=Bar',
 			false,
 			'Bar'
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			'Foo=Bar#123',
 			false,
 			'Bar#123'
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			'Foo#123=Bar',
 			false,
 			'Bar'
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			'Category=Foo',
 			false,
 			'Foo'
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			'-Foo',
 			false,
 			'-Foo'
 		];
 
-		#7
+		# 7
 		$provider[] = [
 			'-Foo=Bar',
 			false,
 			'Bar'
 		];
 
-		#8, 1464
+		# 8, 1464
 		$provider[] = [
 			'Has boolean#<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>=Label on (&#10003;,&#10005;)',
 			false,

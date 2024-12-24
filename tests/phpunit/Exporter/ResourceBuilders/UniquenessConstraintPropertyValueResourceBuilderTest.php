@@ -18,7 +18,7 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class UniquenessConstraintPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class UniquenessConstraintPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;

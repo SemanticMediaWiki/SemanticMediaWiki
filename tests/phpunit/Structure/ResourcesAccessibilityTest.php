@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ResourcesAccessibilityTest extends \PHPUnit_Framework_TestCase {
+class ResourcesAccessibilityTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

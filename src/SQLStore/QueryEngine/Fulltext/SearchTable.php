@@ -105,7 +105,7 @@ class SearchTable {
 			$property = DIProperty::newFromUserLabel(
 				$dataItem->getDBKey()
 			);
-		} catch( PredefinedPropertyLabelMismatchException $e ) {
+		} catch ( PredefinedPropertyLabelMismatchException $e ) {
 			// The property no longer exists (or is no longer available) therefore
 			// exempt it.
 			return true;

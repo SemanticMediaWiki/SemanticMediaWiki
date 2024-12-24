@@ -14,7 +14,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
+class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$wikipage = $this->getMockBuilder( '\WikiPage' )

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -82,7 +82,7 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->propertyStatisticsStore
 		);
 
-		$params= new Parameters(
+		$params = new Parameters(
 			[
 				'insert_rows' => [],
 				'delete_rows' => [],
@@ -201,7 +201,7 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->propertyStatisticsStore
 		);
 
-		$params= new Parameters(
+		$params = new Parameters(
 			[
 				'insert_rows' => [
 					'table_foo' => []

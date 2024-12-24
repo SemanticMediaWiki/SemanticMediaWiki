@@ -46,6 +46,12 @@ jobs:
             database_image: "mariadb:11.2"
             coverage: false
             experimental: true
+          - mediawiki_version: '1.43'
+            php_version: 8.2
+            database_type: mysql
+            database_image: "mariadb:11.2"
+            coverage: false
+            experimental: true
             
     env:
       MW_VERSION: ${{ matrix.mediawiki_version }}
@@ -62,12 +68,8 @@ jobs:
       - name: Update submodules
         run: git submodule update --init --remote
 
-      - name: Run unit tests
-        run: make ci COMPOSER_PARAMS="-- --testsuite=semantic-mediawiki-unit"
-        if: matrix.coverage == false
-
       - name: Run tests
-        run: make ci COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure"
+        run: make ci
         if: matrix.coverage == false
 
       - name: Run unit tests with coverage

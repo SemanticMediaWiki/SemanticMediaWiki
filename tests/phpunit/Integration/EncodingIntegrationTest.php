@@ -22,7 +22,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
+class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

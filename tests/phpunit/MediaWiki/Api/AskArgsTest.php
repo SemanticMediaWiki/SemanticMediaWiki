@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AskArgsTest extends \PHPUnit_Framework_TestCase {
+class AskArgsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -199,7 +199,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -218,7 +218,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -226,7 +226,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 						'redi' => ''
 					],
 					[
-						'label'=> 'Modification date',
+						'label' => 'Modification date',
 						'typeid' => '_dat',
 						'mode' => 1,
 						'format' => '',
@@ -245,7 +245,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -253,7 +253,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 						'redi' => ''
 					],
 					[
-						'label'=> 'Modification date',
+						'label' => 'Modification date',
 						'typeid' => '_dat',
 						'mode' => 1,
 						'format' => '',

@@ -25,7 +25,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framework_TestCase {
+class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	private $store = null;
 	private $queryResultValidator;

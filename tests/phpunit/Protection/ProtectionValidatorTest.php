@@ -14,7 +14,7 @@ use SMW\Protection\ProtectionValidator;
  *
  * @author mwjames
  */
-class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
+class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $store;

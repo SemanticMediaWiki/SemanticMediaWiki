@@ -473,7 +473,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'ParamListProcessor', ParamListProcessor::class );
 
 			$paramListProcessor = new ParamListProcessor(
-				//$containerBuilder->singleton( 'PrintRequestFactory' )
+				// $containerBuilder->singleton( 'PrintRequestFactory' )
 			);
 
 			return $paramListProcessor;
@@ -574,7 +574,6 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'QueryDependencyLinksStoreFactory', '\SMW\SQLStore\QueryDependencyLinksStoreFactory' );
 			return new QueryDependencyLinksStoreFactory();
 		} );
-
 	}
 
 	private function registerCallbackHandlersByConstructedInstance( ContainerBuilder $containerBuilder ) {
@@ -616,7 +615,6 @@ class SharedServicesContainer implements CallbackContainer {
 
 			$settings = $containerBuilder->singleton( 'Settings' );
 			$cacheType = $cacheType === null ? $settings->get( 'smwgQueryResultCacheType' ) : $cacheType;
-
 
 			// Explicitly use the CACHE_DB to access a SqlBagOstuff instance
 			// for a bit more persistence
@@ -894,7 +892,6 @@ class SharedServicesContainer implements CallbackContainer {
 
 			return $preferenceExaminer;
 		} );
-
 	}
 
 }

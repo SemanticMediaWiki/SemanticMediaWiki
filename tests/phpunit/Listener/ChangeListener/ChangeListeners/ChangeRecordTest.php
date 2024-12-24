@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
+class ChangeRecordTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -41,7 +41,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	public function testCanTrigger() {
 		$instance = new CallableChangeListener();
 		$instance->addListenerCallback( 'foo', [ $this, 'observeChange' ] );
-
 
 		$this->assertFalse(
 			$instance->canTrigger( 'bar' )

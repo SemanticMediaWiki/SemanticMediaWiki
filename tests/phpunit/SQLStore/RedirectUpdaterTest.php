@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
+class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $tableFieldUpdater;
@@ -90,11 +90,11 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$cachingSemanticDataLookup->expects( $this->any() )
 			->method( 'invalidateCache' )
-             ->withConsecutive(
+			 ->withConsecutive(
 				[ $this->equalTo( 42 ) ],
 				[ $this->equalTo( 0 ) ],
 				[ $this->equalTo( 1001 ) ]
-             );
+			 );
 
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()

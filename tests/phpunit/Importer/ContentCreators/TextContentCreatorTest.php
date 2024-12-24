@@ -15,7 +15,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
+class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $titleFactory;
 	private $connection;
@@ -62,7 +62,8 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function ( $callback ) {
-				return call_user_func( $callback ); }
+				return call_user_func( $callback );
+			}
 			) );
 
 		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
@@ -127,7 +128,8 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function ( $callback ) {
-				return call_user_func( $callback ); }
+				return call_user_func( $callback );
+			}
 			) );
 
 		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
@@ -139,7 +141,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		}
-	
+
 		$status->expects( $this->any() )
 			->method( 'isOK' )
 			->will( $this->returnValue( false ) );
@@ -245,7 +247,8 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function ( $callback ) {
-				return call_user_func( $callback ); }
+				return call_user_func( $callback );
+			}
 			) );
 
 		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
@@ -257,7 +260,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		}
-	
+
 		$status->expects( $this->any() )
 			->method( 'isOK' )
 			->will( $this->returnValue( true ) );
@@ -327,7 +330,8 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
 			->will( $this->returnCallback( function ( $callback ) {
-				return call_user_func( $callback ); }
+				return call_user_func( $callback );
+			}
 			) );
 
 		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
@@ -339,7 +343,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		}
-	
+
 		$status->expects( $this->any() )
 			->method( 'isOK' )
 			->will( $this->returnValue( true ) );

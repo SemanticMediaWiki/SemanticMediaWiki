@@ -141,7 +141,6 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::
 	$messageReporter->reportMessage(
 		$cliMsgFormatter->oneCol( "... done.", 3 )
 	);
-
 } );
 
 return [

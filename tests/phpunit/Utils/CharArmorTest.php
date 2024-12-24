@@ -13,7 +13,7 @@ use SMW\Utils\CharArmor;
  *
  * @author mwjames
  */
-class CharArmorTest extends \PHPUnit_Framework_TestCase {
+class CharArmorTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider invisibleControlCharactersProvider

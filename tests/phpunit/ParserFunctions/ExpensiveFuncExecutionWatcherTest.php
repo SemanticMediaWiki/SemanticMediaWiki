@@ -13,7 +13,7 @@ use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
  *
  * @author mwjames
  */
-class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
+class ExpensiveFuncExecutionWatcherTest extends \PHPUnit\Framework\TestCase {
 
 	private $parserData;
 

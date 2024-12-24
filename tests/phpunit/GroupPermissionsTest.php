@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
+class GroupPermissionsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -34,7 +34,7 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 
 		$vars = [];
 
-		$instance =  new GroupPermissions();
+		$instance = new GroupPermissions();
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -68,7 +68,7 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 		$vars['wgGroupPermissions']['sysop']['smw-admin'] = false;
 		$vars['wgGroupPermissions']['smwadministrator']['smw-admin'] = false;
 
-		$instance =  new GroupPermissions();
+		$instance = new GroupPermissions();
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -83,7 +83,6 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse(
 			$vars['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
-
 	}
 
 }

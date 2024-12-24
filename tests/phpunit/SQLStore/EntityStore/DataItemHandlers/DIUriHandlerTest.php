@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
+class DIUriHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

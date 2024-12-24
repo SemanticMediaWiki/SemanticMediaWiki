@@ -18,7 +18,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
+class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

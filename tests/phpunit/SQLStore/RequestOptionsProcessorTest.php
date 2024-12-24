@@ -15,7 +15,7 @@ use SMWStringCondition as StringCondition;
  *
  * @author mwjames
  */
-class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
+class RequestOptionsProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -224,7 +224,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	public function requestOptionsToApplyProvider() {
 		$provider = [];
 
-		#0
+		# 0
 		$requestOptions = new RequestOptions();
 		$requestOptions->boundary = true;
 
@@ -238,7 +238,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$requestOptions = new RequestOptions();
 		$requestOptions->addStringCondition( 'Foo', StringCondition::STRCOND_PRE );
 
@@ -252,7 +252,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2 String not match
+		# 2 String not match
 		$requestOptions = new RequestOptions();
 		$requestOptions->addStringCondition( 'Bar', StringCondition::STRCOND_POST );
 
@@ -264,7 +264,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			[]
 		];
 
-		#3 Limit
+		# 3 Limit
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
 
@@ -279,7 +279,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4 ascending
+		# 4 ascending
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->ascending = true;
@@ -296,7 +296,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#5 descending
+		# 5 descending
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->ascending = false;
@@ -313,7 +313,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#6 descending
+		# 6 descending
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->ascending = false;

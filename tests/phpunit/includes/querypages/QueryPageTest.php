@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QueryPageTest extends \PHPUnit_Framework_TestCase {
+class QueryPageTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -66,7 +66,6 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType( 'array', $result );
 		$this->assertEquals( $expected, $result );
-
 	}
 
 	/**

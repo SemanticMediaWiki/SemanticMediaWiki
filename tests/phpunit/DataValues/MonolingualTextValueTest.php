@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
+class MonolingualTextValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

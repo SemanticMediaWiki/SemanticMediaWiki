@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
+class ConceptQuerySegmentBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $conditionBuilder;
 	private $querySegmentListProcessor;

@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
+class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -272,7 +272,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAllowedValues() {
-		$expected =  [
+		$expected = [
 			$this->dataItemFactory->newDIBlob( 'A' ),
 			$this->dataItemFactory->newDIBlob( 'B' )
 		];

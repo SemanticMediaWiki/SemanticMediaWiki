@@ -21,7 +21,7 @@ use Title;
  *
  * @author mwjames
  */
-class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
+class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 

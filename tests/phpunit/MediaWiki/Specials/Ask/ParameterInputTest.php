@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ParameterInputTest extends \PHPUnit_Framework_TestCase {
+class ParameterInputTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$paramDefinition = $this->getMockBuilder( '\ParamProcessor\ParamDefinition' )

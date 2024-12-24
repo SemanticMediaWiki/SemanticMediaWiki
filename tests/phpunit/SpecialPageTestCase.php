@@ -23,7 +23,7 @@ use WebResponse;
  *
  * @author mwjames
  */
-abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
+abstract class SpecialPageTestCase extends \PHPUnit\Framework\TestCase {
 
 	protected $obLevel;
 	protected $store = null;

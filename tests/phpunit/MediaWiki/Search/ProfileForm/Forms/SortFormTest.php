@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SortFormTest extends \PHPUnit_Framework_TestCase {
+class SortFormTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

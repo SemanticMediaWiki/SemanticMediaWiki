@@ -14,7 +14,7 @@ use SMW\Localizer\LocalLanguage\LanguageContents;
  *
  * @author mwjames
  */
-class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
+class LocalLanguageTest extends \PHPUnit\Framework\TestCase {
 
 	private $languageContents;
 
@@ -212,13 +212,13 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 			)
 			->willReturnOnConsecutiveCalls(
 				[ '_FOO' => 'Bar' ],
-				[],                
-				[],                
-				[]                
- );
-	
+				[],
+				[],
+				[]
+		);
+
 		$instance = new LocalLanguage( $this->languageContents );
-	
+
 		// Check that the label 'Foo' does not match any property ID
 		$this->assertNull( $instance->getPropertyIdByLabel( 'Foo' ) );
 	}
@@ -234,14 +234,14 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 				[ $this->equalTo( 'property.aliases' ), $this->anything() ]
 			)
 			->willReturnOnConsecutiveCalls(
-				[], 
-				[],  
-				[],  
-				[]   
- );
-	
+				[],
+				[],
+				[],
+				[]
+		);
+
 		$instance = new LocalLanguage( $this->languageContents );
-	
+
 		// Check that when all data sources are empty, no property ID is found
 		$this->assertNull( $instance->getPropertyIdByLabel( 'Foo' ) );
 	}

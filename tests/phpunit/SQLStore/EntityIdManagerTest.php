@@ -24,7 +24,7 @@ use SMW\SQLStore\EntityStore\EntityIdManager;
  *
  * @author mwjames
  */
-class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
+class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $cache;

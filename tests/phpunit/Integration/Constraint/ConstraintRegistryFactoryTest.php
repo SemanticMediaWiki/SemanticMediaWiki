@@ -13,7 +13,7 @@ use SMW\Constraint\ConstraintRegistry;
  *
  * @author mwjames
  */
-class ConstraintRegistryFactoryTest extends \PHPUnit_Framework_TestCase {
+class ConstraintRegistryFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider constraintKeyProvider

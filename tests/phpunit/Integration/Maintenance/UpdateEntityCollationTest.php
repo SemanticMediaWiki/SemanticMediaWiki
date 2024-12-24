@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
 class UpdateEntityCollationTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
-	
+
 	private $runnerFactory;
 	private $spyMessageReporter;
 	private $hookDispatcher;
@@ -40,7 +40,7 @@ class UpdateEntityCollationTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\UpdateEntityCollation'
+			'\SMW\Maintenance\updateEntityCollation'
 		);
 
 		$maintenanceRunner->setMessageReporter(

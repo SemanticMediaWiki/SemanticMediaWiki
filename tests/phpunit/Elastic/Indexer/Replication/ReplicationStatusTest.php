@@ -15,7 +15,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
+class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -124,7 +124,7 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	public function testGetAssociatedRev() {
 		$doc = [
 			'_source' => [
-				'subject' =>[
+				'subject' => [
 					'rev_id' => 1001
 				]
 			]
@@ -192,7 +192,7 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 	public function testGet_associated_revision() {
 		$doc = [
 			'_source' => [
-				'subject' =>[
+				'subject' => [
 					'rev_id' => 1001
 				]
 			]

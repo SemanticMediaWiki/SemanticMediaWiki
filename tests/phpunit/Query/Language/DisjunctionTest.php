@@ -20,7 +20,7 @@ use SMW\Query\Language\ValueDescription;
  *
  * @author mwjames
  */
-class DisjunctionTest extends \PHPUnit_Framework_TestCase {
+class DisjunctionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

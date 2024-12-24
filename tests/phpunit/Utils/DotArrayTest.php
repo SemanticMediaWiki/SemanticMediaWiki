@@ -13,7 +13,7 @@ use SMW\Utils\DotArray;
  *
  * @author mwjames
  */
-class DotArrayTest extends \PHPUnit_Framework_TestCase {
+class DotArrayTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider dotProvider
@@ -142,7 +142,6 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase {
 			'query.highlight.fragment.type',
 			'foo'
 		];
-
 	}
 
 }

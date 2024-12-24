@@ -35,7 +35,7 @@ class UpdateEntityCountMapTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\UpdateEntityCountMap'
+			'\SMW\Maintenance\updateEntityCountMap'
 		);
 
 		$maintenanceRunner->setMessageReporter(

@@ -16,7 +16,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
+class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 
 	private $idCacheManager;
 	private $store;

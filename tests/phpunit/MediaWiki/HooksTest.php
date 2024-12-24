@@ -25,7 +25,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HooksTest extends \PHPUnit_Framework_TestCase {
+class HooksTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -187,9 +187,9 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		self::$handlers[] = call_user_func_array( [ $this, $method ], [ $instance ] );
 	}
 
-    /**
-     * @depends testRegister
-     */
+	/**
+	 * @depends testRegister
+	 */
 	public function testCheckOnMissingHandlers() {
 		$disabled = [
 			'PageSchemasRegisterHandlers',
@@ -281,7 +281,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		];
 	}
 
-//SMW::Maintenance::AfterUpdateEntityCollationComplete
+// SMW::Maintenance::AfterUpdateEntityCollationComplete
 	public function callParserAfterTidy( $instance ) {
 		$handler = 'ParserAfterTidy';
 
@@ -1419,7 +1419,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$handler = 'UnblockUserComplete';
 
 		$block = $this->createMock( Block::class );
-
 
 		$user = $this->createMock( UserIdentity::class );
 		$user->expects( $this->any() )

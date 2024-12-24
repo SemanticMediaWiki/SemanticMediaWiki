@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
+class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $applicationFactory;
@@ -350,7 +350,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleDataProvider() {
-		#0 Runs store update
+		# 0 Runs store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
@@ -383,7 +383,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 No cache entry, no store update
+		# 1 No cache entry, no store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
@@ -412,7 +412,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2 SpecialPage, no store update
+		# 2 SpecialPage, no store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
@@ -441,7 +441,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 NS_FILE, store update
+		# 3 NS_FILE, store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
@@ -472,7 +472,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 3001 ) );
 
-
 		$provider[] = [
 			[
 				'store'    => $store,
@@ -484,7 +483,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4, 1131, No store update when fetch return FALSE
+		# 4, 1131, No store update when fetch return FALSE
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
@@ -517,7 +516,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#5, 1410 displaytitle
+		# 5, 1410 displaytitle
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

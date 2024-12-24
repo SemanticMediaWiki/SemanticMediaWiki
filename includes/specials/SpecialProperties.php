@@ -49,7 +49,6 @@ class SpecialProperties extends SpecialPage {
 
 		// Ensure locally collected output data is pushed to the output!
 		SMWOutputs::commitToOutputPage( $out );
-
 	}
 
 	/**

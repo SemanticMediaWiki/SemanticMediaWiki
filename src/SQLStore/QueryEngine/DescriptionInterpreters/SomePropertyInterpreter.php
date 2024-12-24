@@ -285,7 +285,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		// Do not support smw_id joined data for now.
 		$indexField = $diHandler->getIndexField();
 
-		//Hack to get to the field used as index
+		// Hack to get to the field used as index
 		$keys = $diHandler->getWhereConds( $dataItem );
 		$value = $keys[$indexField];
 

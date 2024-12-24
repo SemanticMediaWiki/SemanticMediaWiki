@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
+class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

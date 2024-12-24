@@ -193,6 +193,59 @@
 			}
 		}
 	}
+
+	&-container {
+		.smw-factbox {
+			font-size: @font-size-small;
+		}
+	}
+
+	&-table-wrapper {
+		overflow-x: auto;
+		margin: -@border-width-base; // hide table border since we have border at factbox
+
+		.wikitable {
+			margin: 0;
+			width: 100%;
+			display: table; // enforce table layout because we already have a wrapper to handle responsiveness
+		}
+	}
+}
+
+/**
+ * Tab styles required for on page factbox
+ * TODO: This shouldn't be here and the tab implementation is quite hacky,
+ * remove this when we rework tabs
+ */
+.smw-factbox-container.smw-tabs {
+	.nav-label {
+		margin-bottom: 0; // disable negative margin from smw-tabs
+	}
+
+	section {
+		border: 0; // border is handled by factbox, no need for another one
+	}
+
+	#tab-facts-list:checked ~ #tab-content-facts-list ,
+	#tab-facts-attachment:checked ~ #tab-content-facts-attachment {
+		display: block;
+	}
+}
+
+/** TODO: Icon should be handled somewhere else, remove this when we rework icons */
+.smw-factbox-actions .rdflink a {
+	display: flex;
+	align-items: center;
+	gap: @spacing-50;
+
+	&::before {
+		content: '';
+		display: block;
+		min-width: @min-size-icon-small;
+		min-height: @min-size-icon-small;
+		background-size: contain;
+		background-image: url( assets/smw-icon-rdf.svg );
+	}
 }
 
 @keyframes cdx-progress-bar-inline {

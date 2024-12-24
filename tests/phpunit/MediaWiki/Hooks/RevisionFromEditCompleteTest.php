@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
+class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $testEnvironment;

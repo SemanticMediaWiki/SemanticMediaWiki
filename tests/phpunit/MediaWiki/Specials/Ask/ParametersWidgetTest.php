@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
+class ParametersWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 

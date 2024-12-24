@@ -16,7 +16,7 @@ use SMW\Schema\CompartmentIterator;
  *
  * @author mwjames
  */
-class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
+class NamespaceFilterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -178,7 +178,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 			],
 			true
 		];
-
 	}
 
 }

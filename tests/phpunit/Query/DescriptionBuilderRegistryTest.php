@@ -13,7 +13,7 @@ use SMW\Query\DescriptionBuilderRegistry;
  *
  * @author mwjames
  */
-class DescriptionBuilderRegistryTest extends \PHPUnit_Framework_TestCase {
+class DescriptionBuilderRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	protected function tearDown(): void {
 		parent::tearDown();

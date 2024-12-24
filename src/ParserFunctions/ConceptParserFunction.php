@@ -43,7 +43,7 @@ class ConceptParserFunction {
 
 	/**
 	 * @since 1.9
-	 * 
+	 *
 	 * @param ParserData $parserData
 	 * @param MessageFormatter $messageFormatter
 	 */

@@ -17,7 +17,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
+class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $entityCache;
@@ -158,7 +158,7 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrefetchFromSemanticData() {
-		$subSemanticData =  $this->getMockBuilder( '\SMW\SemanticData' )
+		$subSemanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -201,15 +201,15 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( 'SubFoo' )
 		];
 
- 		$instance = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
- 			->setConstructorArgs(
- 				[
+		$instance = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
+			->setConstructorArgs(
+				[
 					$this->store,
 					$this->entityCache
- 				]
- 			)
- 			->setMethods( [ 'prefetchFromList' ] )
- 			->getMock();
+				]
+			)
+			->setMethods( [ 'prefetchFromList' ] )
+			->getMock();
 
 		$instance->expects( $this->any() )
 			->method( 'prefetchFromList' )

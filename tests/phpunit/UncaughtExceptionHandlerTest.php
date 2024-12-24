@@ -13,7 +13,7 @@ use SMW\UncaughtExceptionHandler;
  *
  * @author mwjames
  */
-class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
+class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $setupCheck;
 
@@ -89,22 +89,22 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function errorTypeProvider() {
-		yield[
+		yield [
 			[ 'msg' => 'SemanticFoo', 'type' => 'Foo' ],
 			\SMW\SetupCheck::ERROR_EXTENSION_DEPENDENCY
 		];
 
-		yield[
+		yield [
 			[ 'msg' => 'SemanticBar', 'type' => 'incompatible-core' ],
 			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];
 
-		yield[
+		yield [
 			[ 'msg' => 'SemanticFoobar', 'type' => 'incompatible-php' ],
 			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];
 
-		yield[
+		yield [
 			[ 'msg' => 'SemanticFoOBaR', 'type' => 'incompatible-extensions', 'incompatible' => [] ],
 			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];

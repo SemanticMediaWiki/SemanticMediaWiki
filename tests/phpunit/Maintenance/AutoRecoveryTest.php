@@ -14,14 +14,14 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
+class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $file;
 	private $site;
 
 	protected function setUp(): void {
-		$this->testEnvironment =  new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 		$this->site = \SMW\Site::id();
 
 		$this->file = $this->getMockBuilder( '\SMW\Utils\File' )

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class FieldTest extends \PHPUnit_Framework_TestCase {
+class FieldTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

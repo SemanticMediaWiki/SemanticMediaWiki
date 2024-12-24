@@ -16,7 +16,7 @@ use SMWQuery;
  *
  * @author Stephan Gambke
  */
-class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
+class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -209,7 +209,7 @@ class QueryResultLookup {
 			$requestOptions
 		);
 	}
-	
+
 	private function destructureDIContainer( DIProperty $DIProperty, DataItem $dataItem, PageRequestOptions $pageRequestOptions ) {
 		$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
@@ -235,7 +235,7 @@ class QueryResultLookup {
 		];
 		$pageRequestOptions = new PageRequestOptions( '', $requestOptions );
 		$pageRequestOptions->initialize();
-		
+
 		return [ $DIPropertyReferenceValue, $pageRequestOptions->value->getDataItem() ];
 	}
 

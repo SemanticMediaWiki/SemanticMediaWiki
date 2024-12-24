@@ -16,7 +16,7 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
+class ConceptDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$concept = $this->getMockBuilder( '\SMW\DIWikiPage' )

@@ -147,7 +147,7 @@ class SanitizerFactory {
 
 		if ( !$tokenizer->isAvailable() && CharacterExaminer::contains( CharacterExaminer::CJK_UNIFIED, $text ) ) {
 			return $this->newCJKMatchableTokenizer( $text );
-		} elseif( !$tokenizer->isAvailable() ) {
+		} elseif ( !$tokenizer->isAvailable() ) {
 			return $this->newGenericRegExTokenizer( $tokenizer );
 		}
 

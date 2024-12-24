@@ -17,7 +17,7 @@ use SMW\Utils\JsonSchemaValidator;
  *
  * @author mwjames
  */
-class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
+class JsonSchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

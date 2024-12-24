@@ -359,13 +359,15 @@ class TypesRegistry {
 		];
 
 		if ( $key === 'id' ) {
-			array_walk( $fixedProperties, function ( &$v, $k ) { $v = $v[0]; } );
+			array_walk( $fixedProperties, function ( &$v, $k ) { $v = $v[0];
+			} );
 		}
 
 		// Default fixed property table for selected special properties
 		if ( $key === 'default_fixed' ) {
 			$fixedProperties = array_keys(
-				array_filter( $fixedProperties, function ( $v ) { return $v[1]; } )
+				array_filter( $fixedProperties, function ( $v ) { return $v[1];
+				} )
 			);
 		}
 
@@ -373,7 +375,8 @@ class TypesRegistry {
 		// special properties that can have their own fixed property table
 		if ( $key === 'custom_fixed' ) {
 			$fixedProperties = array_keys(
-				array_filter( $fixedProperties, function ( $v ) { return $v[2]; } )
+				array_filter( $fixedProperties, function ( $v ) { return $v[2];
+				} )
 			);
 		}
 
@@ -401,7 +404,7 @@ class TypesRegistry {
 			'_wps' => Exporter::OWL_OBJECT_PROPERTY,
 			ConstraintSchemaValue::TYPE_ID => Exporter::OWL_OBJECT_PROPERTY,
 			'_rec' => Exporter::OWL_OBJECT_PROPERTY,
-		//	'_mlt_rec' => Exporter::OWL_OBJECT_PROPERTY,
+		// '_mlt_rec' => Exporter::OWL_OBJECT_PROPERTY,
 		//	'_ref_rec' => Exporter::OWL_OBJECT_PROPERTY,
 
 			// URI related

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QueryResultTest extends \PHPUnit_Framework_TestCase {
+class QueryResultTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

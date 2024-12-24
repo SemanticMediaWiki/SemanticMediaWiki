@@ -19,7 +19,7 @@ use SMW\Tests\Utils\Validators\QuerySegmentValidator;
  *
  * @author mwjames
  */
-class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
+class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $connection;
@@ -287,7 +287,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$descriptionFactory = new DescriptionFactory();
 		$dataItemFactory = new DataItemFactory();
 
-		#0 Blob + wildcard
+		# 0 Blob + wildcard
 		$isFixedPropertyTable = false;
 		$indexField = '';
 		$sortKeys = [];
@@ -313,7 +313,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#1 WikiPage + SMW_CMP_EQ
+		# 1 WikiPage + SMW_CMP_EQ
 		$isFixedPropertyTable = false;
 		$indexField = 'wikipageIndex';
 		$sortKeys = [];
@@ -341,7 +341,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#2 WikiPage + SMW_CMP_EQ + sort
+		# 2 WikiPage + SMW_CMP_EQ + sort
 		$isFixedPropertyTable = false;
 		$indexField = 'wikipageIndex';
 		$sortKeys = [ 'Foo' => 'DESC' ];
@@ -370,7 +370,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#3 Blob + SMW_CMP_EQ
+		# 3 Blob + SMW_CMP_EQ
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
 		$sortKeys = [];
@@ -398,7 +398,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#4 Blob + SMW_CMP_EQ + sort
+		# 4 Blob + SMW_CMP_EQ + sort
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
 		$sortKeys = [ 'Foo' => 'ASC' ];
@@ -427,7 +427,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#5 Check SemanticMaps compatibility mode (invokes `getSQLCondition`)
+		# 5 Check SemanticMaps compatibility mode (invokes `getSQLCondition`)
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
 		$sortKeys = [];
@@ -469,7 +469,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#6, see 556
+		# 6, see 556
 		$isFixedPropertyTable = false;
 		$indexField = '';
 		$sortKeys = [];

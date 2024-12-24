@@ -128,7 +128,7 @@ class DependencyLinksValidator {
 			],
 			__METHOD__,
 			[
-			//	'ORDER BY' => 'v.smw_touched'
+			// 'ORDER BY' => 'v.smw_touched'
 			],
 			[
 				"p" => [ 'INNER JOIN', [ 's_id=p.smw_id' ] ],

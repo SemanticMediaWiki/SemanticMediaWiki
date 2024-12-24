@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SequenceTest extends \PHPUnit_Framework_TestCase {
+class SequenceTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -67,7 +67,8 @@ class SequenceTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) { return $callback(); } ) );
+			->will( $this->returnCallback( function ( $callback ) { return $callback();
+			} ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )

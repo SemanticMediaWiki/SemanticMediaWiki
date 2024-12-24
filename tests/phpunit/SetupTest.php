@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SetupTest extends \PHPUnit_Framework_TestCase {
+class SetupTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $defaultConfig;
@@ -193,7 +193,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse(
 			$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
-
 	}
 
 	public function testRegisterParamDefinitions() {

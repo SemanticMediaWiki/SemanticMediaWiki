@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SetupFileTest extends \PHPUnit_Framework_TestCase {
+class SetupFileTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -150,7 +150,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 
 		$fields = [
 			'Foo' => 42,
-			//"upgrade_key_base" => '["",[],"",[]]'
+			// "upgrade_key_base" => '["",[],"",[]]'
 		];
 
 		$expected = json_encode( [ \SMW\Site::id() => $fields ], JSON_PRETTY_PRINT );

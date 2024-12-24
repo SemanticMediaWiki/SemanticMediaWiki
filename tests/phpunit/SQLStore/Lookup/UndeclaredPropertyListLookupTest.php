@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
+class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -114,7 +114,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$defaultPropertyType,
 			$requestOptions
 		);
-
 
 		$this->assertNotSame(
 			$lookupIdentifier,

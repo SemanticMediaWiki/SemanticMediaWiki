@@ -15,7 +15,7 @@ use Wikimedia\Rdbms\ILBFactory;
  *
  * @author mwjames
  */
-class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
+class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -143,7 +143,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * Get the appropriate `hasMaster/PrimaryChanges` method to mock for the `ILBFactory` interface.
 	 * @return string
 	 */
-	private static function getHasPrimaryChangesMethod(): string{
+	private static function getHasPrimaryChangesMethod(): string {
 		return method_exists( ILBFactory::class, 'hasPrimaryChanges' ) ? 'hasPrimaryChanges' : 'hasMasterChanges';
 	}
 }

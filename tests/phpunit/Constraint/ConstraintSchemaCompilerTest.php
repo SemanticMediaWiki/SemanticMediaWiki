@@ -17,7 +17,7 @@ use SMW\Message;
  *
  * @author mwjames
  */
-class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
+class ConstraintSchemaCompilerTest extends \PHPUnit\Framework\TestCase {
 
 	private $schemaFinder;
 	private $propertySpecificationLookup;
@@ -68,7 +68,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$this->assertSame(
-			json_encode( $constraintSchema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES |JSON_UNESCAPED_UNICODE ),
+			json_encode( $constraintSchema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ),
 			$instance->prettify( $constraintSchema )
 		);
 	}

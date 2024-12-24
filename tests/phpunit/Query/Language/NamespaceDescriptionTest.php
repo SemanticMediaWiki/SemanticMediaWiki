@@ -15,7 +15,7 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class NamespaceDescriptionTest extends \PHPUnit_Framework_TestCase {
+class NamespaceDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$namespace = NS_MAIN;

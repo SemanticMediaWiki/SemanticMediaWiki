@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
+class UpdateQueryDependenciesTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $messageReporter;
@@ -25,7 +25,7 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 	private $entityCache;
 
 	protected function setUp(): void {
-		$this->testEnvironment =  new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
 			->disableOriginalConstructor()

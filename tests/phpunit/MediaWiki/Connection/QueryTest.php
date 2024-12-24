@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QueryTest extends \PHPUnit_Framework_TestCase {
+class QueryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -226,7 +226,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 			'SELECT f AS a FROM foo WHERE (foo_bar) GROUP BY _foo HAVING COUNT(Foo) > 5 LIMIT 42',
 			$instance->build()
 		);
-
 	}
 
 	public function testTable() {
@@ -311,7 +310,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $instance ),
 				$this->equalTo( 'Foo' ) );
-
 
 		$instance->execute( 'Foo' );
 	}

@@ -159,7 +159,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 			} elseif ( $subCondition instanceof WhereCondition ) {
 				$hasSafeSubconditions = $hasSafeSubconditions || $subCondition->isSafe();
 				$subConditionElements->unionCondition .= ( $subConditionElements->unionCondition ? ' UNION ' : '' ) .
-				                   "{\n" . $subCondition->condition . "}";
+								   "{\n" . $subCondition->condition . "}";
 			} elseif ( $subCondition instanceof FilterCondition ) {
 				$subConditionElements->filter .= ( $subConditionElements->filter ? ' || ' : '' ) . $subCondition->filter;
 			} elseif ( $subCondition instanceof SingletonCondition ) {
@@ -181,7 +181,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 					$subConditionElements->filter .= ( $subConditionElements->filter ? ' || ' : '' ) . "?$joinVariable = $matchElementName";
 				} else {
 					$subConditionElements->unionCondition .= ( $subConditionElements->unionCondition ? ' UNION ' : '' ) .
-				                   "{\n" . $subCondition->condition . " FILTER( ?$joinVariable = $matchElementName ) }";
+								   "{\n" . $subCondition->condition . " FILTER( ?$joinVariable = $matchElementName ) }";
 				}
 
 				// Relates to wikipage [[Foo::~*a*||~*A*]] in value regex disjunction

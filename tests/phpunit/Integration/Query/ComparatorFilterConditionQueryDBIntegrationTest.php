@@ -128,7 +128,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 		$property = new DIProperty( 'SomeNumericPropertyToFilter' );
 		$property->setPropertyTypeId( '_num' );
 
-		#0 Numeric Greater Equal, Less Equal
+		# 0 Numeric Greater Equal, Less Equal
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -148,7 +148,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 			]
 		];
 
-		#1 Numeric Greater, Equal
+		# 1 Numeric Greater, Equal
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -169,7 +169,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 			]
 		];
 
-		#2 Numeric Greater, Less
+		# 2 Numeric Greater, Less
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -188,7 +188,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 			]
 		];
 
-		#3 Numeric Greater, Not Like
+		# 3 Numeric Greater, Not Like
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -215,7 +215,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 		$property = new DIProperty( 'SomeBlobPropertyToFilter' );
 		$property->setPropertyTypeId( '_txt' );
 
-		#4 Text, Greater Equal, Less Equal
+		# 4 Text, Greater Equal, Less Equal
 		$provider[] = [
 			[
 				'AA' => new DIBlob( 'AA' ),
@@ -235,7 +235,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 			]
 		];
 
-		#5 Text, Like, Like
+		# 5 Text, Like, Like
 		$provider[] = [
 			[
 				'A'   => new DIBlob( 'A' ),
@@ -256,7 +256,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 			]
 		];
 
-		#6 Text, Like, Not Like
+		# 6 Text, Like, Not Like
 		$provider[] = [
 			[
 				'AABA' => new DIBlob( 'AABA' ),
@@ -283,7 +283,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 		$property = new DIProperty( 'SomeDatePropertyToFilter' );
 		$property->setPropertyTypeId( '_dat' );
 
-		#7 Date, Greater Equal, Less Equal
+		# 7 Date, Greater Equal, Less Equal
 		$provider[] = [
 			[
 				'197001' => new DITime( 1, 1970, 01, 01, 1, 1 ),
@@ -303,7 +303,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 			]
 		];
 
-		#7 Date, Greater Equal, Less Equal
+		# 7 Date, Greater Equal, Less Equal
 		$provider[] = [
 			[
 				'1970011' => new DITime( 1, 1970, 01, 01, 1, 1 ),

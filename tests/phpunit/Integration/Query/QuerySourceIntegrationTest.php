@@ -15,7 +15,7 @@ use SMWQueryProcessor;
  *
  * @author mwjames
  */
-class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
+class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

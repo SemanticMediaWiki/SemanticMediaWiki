@@ -113,7 +113,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function hasEditProtection() {
-		//$this->title->flushRestrictions();
+		// $this->title->flushRestrictions();
 
 		if ( !PageInfoProvider::isProtected( $this->title, 'edit' ) ) {
 			return false;

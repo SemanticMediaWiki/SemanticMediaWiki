@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
+class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -102,7 +102,7 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_title = 'Foo';
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
-		$row->smw_subobject ='';
+		$row->smw_subobject = '';
 
 		$expected = [
 			'count' => 42,

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
+class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -125,7 +125,8 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->registerConstraint( 'foo', function () use( $constraint ) {
-			return $constraint; }
+			return $constraint;
+		}
 		);
 
 		$this->assertInstanceOf(

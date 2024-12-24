@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
+class JsonContentsFileReaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -115,7 +115,7 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function WriteToFile( $topic, $extension ) {
 		$instance = new JsonContentsFileReader();
-		$list ='ar,arz,ca,de,es,fi,fr,he,hu,id,it,nb,nl,pl,pt,ru,sk,zh-cn,zh-tw';
+		$list = 'ar,arz,ca,de,es,fi,fr,he,hu,id,it,nb,nl,pl,pt,ru,sk,zh-cn,zh-tw';
 
 		foreach ( explode( ',', $list ) as $lang ) {
 			$contents = $instance->readByLanguageCode( $lang, true );

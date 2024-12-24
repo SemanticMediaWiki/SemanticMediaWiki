@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UserChangeTest extends \PHPUnit_Framework_TestCase {
+class UserChangeTest extends \PHPUnit\Framework\TestCase {
 
 	private $namespaceExaminer;
 	private $testEnvironment;

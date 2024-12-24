@@ -35,7 +35,7 @@ class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RebuildFulltextSearchTable'
+			'\SMW\Maintenance\rebuildFulltextSearchTable'
 		);
 
 		$maintenanceRunner->setMessageReporter(

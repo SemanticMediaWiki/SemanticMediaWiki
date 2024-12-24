@@ -13,7 +13,7 @@ use SMW\Exception\PropertyLabelNotResolvedException;
  *
  * @author mwjames
  */
-class PropertyLabelNotResolvedExceptionTest extends \PHPUnit_Framework_TestCase {
+class PropertyLabelNotResolvedExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new PropertyLabelNotResolvedException();

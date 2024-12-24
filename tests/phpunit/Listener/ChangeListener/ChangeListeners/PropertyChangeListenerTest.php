@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
+class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -65,7 +65,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PropertyChangeListener( $this->store );
 		$instance->addListenerCallback( $property, [ $this, 'observeChange' ] );
-
 
 		$this->assertFalse(
 			$instance->canTrigger( 'bar' )

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ErrorCodeFormatterTest extends \PHPUnit_Framework_TestCase {
+class ErrorCodeFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

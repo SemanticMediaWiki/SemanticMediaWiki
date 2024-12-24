@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SearchResultTest extends \PHPUnit_Framework_TestCase {
+class SearchResultTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

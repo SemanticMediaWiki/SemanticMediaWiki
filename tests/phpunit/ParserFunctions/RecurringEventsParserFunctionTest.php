@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class RecurringEventsParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
@@ -182,7 +182,6 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'parameters' => []
 			]
 		];
-
 
 		// #3
 		// {{#set_recurring_event:property=Has date

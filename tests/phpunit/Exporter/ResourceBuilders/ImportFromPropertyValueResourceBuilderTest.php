@@ -17,7 +17,7 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class ImportFromPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class ImportFromPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $testEnvironment;

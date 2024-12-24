@@ -14,7 +14,7 @@ use SMW\Query\Result\ItemFetcher;
  *
  * @author mwjames
  */
-class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
+class ItemFetcherTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $store;

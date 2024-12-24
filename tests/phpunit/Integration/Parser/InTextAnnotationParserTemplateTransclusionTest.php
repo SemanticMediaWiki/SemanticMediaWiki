@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_TestCase {
+class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -69,7 +69,6 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 				'finalTitle' => $title,
 				'deps' => $deps
 			];
-
 		} );
 
 		return $parser->preprocess( $text, $title, $options );

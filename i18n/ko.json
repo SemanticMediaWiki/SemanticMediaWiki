@@ -310,6 +310,7 @@
 	"smw_inverse_label_default": "$1입니다",
 	"smw_inverse_label_property": "역 속성 레이블",
 	"pageproperty": "문서 속성 검색",
+	"pendingtasklist": "보류 중인 작업 목록",
 	"smw_pp_docu": "문서와 속성을 입력하십시오. 할당된 모든 값을 가져오려면 속성만 입력하십시오.",
 	"smw_pp_from": "문서에서:",
 	"smw_pp_type": "속성:",

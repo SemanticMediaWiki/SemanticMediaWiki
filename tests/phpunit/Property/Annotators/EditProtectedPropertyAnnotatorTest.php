@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -124,7 +124,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$provider = [];
 
-		#0 no EditProtectionRight
+		# 0 no EditProtectionRight
 		$provider[] = [
 			$title,
 			false,
@@ -135,7 +135,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			$title,
 			'Foo',
@@ -158,7 +158,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( 0 ) );
 
-		#2
+		# 2
 		$provider[] = [
 			$title,
 			'Foo',
@@ -181,7 +181,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( 0 ) );
 
-		#3
+		# 3
 		$provider[] = [
 			$title,
 			'Foo',

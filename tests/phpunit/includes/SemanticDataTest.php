@@ -21,7 +21,7 @@ use Title;
  *
  * @author mwjames
  */
-class SemanticDataTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -554,7 +554,8 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 			$instance->getExtensionData( 'Foo' )
 		);
 
-		$callback = function () { return 42; };
+		$callback = function () { return 42;
+		};
 
 		$instance->setExtensionData( 'Bar', $callback );
 
@@ -686,7 +687,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => [ 'Bar' ]
 			]
 		];
-
 
 		// #5 Error (Predefined)
 		$provider[] = [

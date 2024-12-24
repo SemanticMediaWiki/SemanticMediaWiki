@@ -14,7 +14,7 @@ use SMW\Query\Result\Restrictions;
  *
  * @author mwjames
  */
-class RestrictionsTest extends \PHPUnit_Framework_TestCase {
+class RestrictionsTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $store;

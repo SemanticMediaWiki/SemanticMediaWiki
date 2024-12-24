@@ -70,13 +70,13 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 			'Property:Has quantity',
 			'Property:Has temperature',
 			'Property:Has text'
-		];
+		 ];
 
-		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
+		 $this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$main = Title::newFromText( 'Lorem ipsum' );
+		 $main = Title::newFromText( 'Lorem ipsum' );
 
-		$expectedSomeProperties = [
+		 $expectedSomeProperties = [
 			'properties' => [
 				new DIProperty( 'Has boolean' ),
 				new DIProperty( 'Has date' ),
@@ -89,18 +89,18 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 				new DIProperty( 'Has Url' ),
 				new DIProperty( 'Has annotation uri' )
 			]
-		];
+		 ];
 
-		$this->maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildData' );
-		$this->maintenanceRunner->setQuiet();
+		 $this->maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildData' );
+		 $this->maintenanceRunner->setQuiet();
 
-		$this->semanticDataFinder = new ByPageSemanticDataFinder;
-		$this->semanticDataFinder->setTitle( $main )->setStore( $this->getStore() );
+		 $this->semanticDataFinder = new ByPageSemanticDataFinder;
+		 $this->semanticDataFinder->setTitle( $main )->setStore( $this->getStore() );
 
-		$this->assertRunWithoutOptions( $expectedSomeProperties );
-		$this->assertRunWithFullDeleteOption( $expectedSomeProperties );
-		$this->assertRunWithIdRangeOption( $expectedSomeProperties );
-//		$this->assertRunWithCategoryOption( $expectedSomeProperties );
+		 $this->assertRunWithoutOptions( $expectedSomeProperties );
+		 $this->assertRunWithFullDeleteOption( $expectedSomeProperties );
+		 $this->assertRunWithIdRangeOption( $expectedSomeProperties );
+// $this->assertRunWithCategoryOption( $expectedSomeProperties );
 //		$this->assertRunWithSparqlStoreForPropertyOption( $expectedSomeProperties );
 //		$this->assertRunWithSparqlStoreForQueryOption( $expectedSomeProperties );
 	}

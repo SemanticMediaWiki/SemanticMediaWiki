@@ -520,7 +520,7 @@ class Client {
 
 		try {
 			return $this->client->update( $params );
-		} catch( Exception $e ) {
+		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Updated failed for document {id} with: {exception}, DOC: {doc}', $context );
 
@@ -546,7 +546,7 @@ class Client {
 
 		try {
 			return $this->client->index( $params );
-		} catch( Exception $e ) {
+		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Index failed for document {id} with: {exception}', $context );
 
@@ -596,9 +596,9 @@ class Client {
 			}
 
 			return $response;
-		} catch( ReplicationException $e ) {
+		} catch ( ReplicationException $e ) {
 			throw new ReplicationException( $e->getMessage() );
-		} catch( Exception $e ) {
+		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Bulk update failed with {exception}', $context );
 

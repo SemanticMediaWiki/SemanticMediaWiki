@@ -14,7 +14,7 @@ use SMW\Importer\ImportContents;
  *
  * @author mwjames
  */
-class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
+class XmlContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $importerServiceFactory;
 	private $wikiImporter;

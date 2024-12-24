@@ -60,7 +60,8 @@ class MissingRedirectLookup {
 	 */
 	public function findMissingRedirects() {
 		$namespaces = array_keys( array_filter( $this->namespaces, function ( $v ) {
-			return $v; }
+			return $v;
+		}
 		) );
 
 		return $this->fetchFromTable( $namespaces );

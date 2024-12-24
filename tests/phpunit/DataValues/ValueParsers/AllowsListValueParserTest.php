@@ -13,7 +13,7 @@ use SMW\DataValues\ValueParsers\AllowsListValueParser;
  *
  * @author mwjames
  */
-class AllowsListValueParserTest extends \PHPUnit_Framework_TestCase {
+class AllowsListValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	private $mediaWikiNsContentReader;
 

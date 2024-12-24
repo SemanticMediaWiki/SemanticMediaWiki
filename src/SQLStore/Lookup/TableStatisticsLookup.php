@@ -242,7 +242,6 @@ class TableStatisticsLookup {
 
 		$rows_group_by_namespace = [];
 
-
 		foreach ( $res as $row ) {
 			$rows_group_by_namespace[$row->smw_namespace] = (int)$row->count;
 		}

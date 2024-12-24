@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ImporterTest extends \PHPUnit_Framework_TestCase {
+class ImporterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -106,7 +106,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 		$instance->runImport();
 	}
 
-	public function testrunImportWithError() {
+	public function testRunImportWithError() {
 		$importContents = new ImportContents();
 
 		$importContents->addError( 'Bar' );
@@ -134,7 +134,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 		$instance->runImport();
 	}
 
-	public function testrunImportWithErrorDuringCreation() {
+	public function testRunImportWithErrorDuringCreation() {
 		$importContents = new ImportContents();
 		$importContents->setVersion( 1 );
 
@@ -152,7 +152,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 					$importContents->addError( 'BarError from create' );
 					$importContents->addError( [ 'Foo1', 'Foo2' ] );
 					return true;
-				}
+			}
 			) );
 
 		$instance = new Importer(

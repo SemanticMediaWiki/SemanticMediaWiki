@@ -15,7 +15,7 @@ use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
  *
  * @author mwjames
  */
-class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
+class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

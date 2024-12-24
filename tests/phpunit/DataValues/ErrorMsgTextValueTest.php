@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ErrorMsgTextValueTest extends \PHPUnit_Framework_TestCase {
+class ErrorMsgTextValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

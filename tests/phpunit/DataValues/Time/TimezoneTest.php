@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TimezoneTest extends \PHPUnit_Framework_TestCase {
+class TimezoneTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

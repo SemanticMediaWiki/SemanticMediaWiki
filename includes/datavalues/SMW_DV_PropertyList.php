@@ -101,7 +101,7 @@ class SMWPropertyListValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		return ( $this->m_caption !== false ) ?  $this->m_caption : $this->makeOutputText( 2, $linked );
+		return ( $this->m_caption !== false ) ? $this->m_caption : $this->makeOutputText( 2, $linked );
 	}
 
 	public function getShortHTMLText( $linker = null ) {

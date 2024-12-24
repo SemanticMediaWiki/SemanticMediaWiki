@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $querySegmentValidator;
 	private $descriptionInterpreterFactory;
@@ -160,7 +160,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$descriptionFactory = $applicationFactory->getQueryFactory()->newDescriptionFactory();
 		$dataItemFactory = $applicationFactory->getDataItemFactory();
 
-		#0 No concept
+		# 0 No concept
 		$concept = false;
 
 		$description = $descriptionFactory->newConceptDescription(
@@ -177,7 +177,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#1 Cached concept
+		# 1 Cached concept
 		$concept = new \stdClass;
 		$concept->concept_size = 1;
 		$concept->concept_features = 1;
@@ -200,7 +200,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#2 Non cached concept
+		# 2 Non cached concept
 		$concept = new \stdClass;
 		$concept->concept_txt = "[[Category:Foo]]";
 		$concept->concept_size = 1;

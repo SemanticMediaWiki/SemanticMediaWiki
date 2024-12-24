@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	private $applicationFactory;
 
@@ -154,7 +154,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$parserData->getSemanticData()->getProperties()
 		);
 
-		foreach ( $parserData->getSemanticData()->getProperties() as $property ){
+		foreach ( $parserData->getSemanticData()->getProperties() as $property ) {
 
 			if ( $property->getKey() !== '_CONC' ) {
 				continue;
@@ -228,7 +228,6 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return $provider;
-
 	}
 
 	public function namespaceDataProvider() {

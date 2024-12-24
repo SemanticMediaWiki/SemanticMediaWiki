@@ -13,7 +13,7 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class ThingDescriptionTest extends \PHPUnit_Framework_TestCase {
+class ThingDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
+class PropertyListByApiRequestTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;
@@ -33,7 +33,7 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
- 	}
+	}
 
 	public function testCanConstruct() {
 		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )

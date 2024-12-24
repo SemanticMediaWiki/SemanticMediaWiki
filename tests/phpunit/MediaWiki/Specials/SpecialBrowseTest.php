@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
+class SpecialBrowseTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;
@@ -69,19 +69,19 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryParameterProvider() {
-		#0
+		# 0
 		$provider[] = [
 			'',
 			[ 'smw-error-browse' ]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			':Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
 			[ 'smw-error-browse' ]
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'Foo/Bar',
 			[
@@ -90,7 +90,7 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			':Main-20Page-23_QUERY140d50d705e9566904fc4a877c755964',
 			[

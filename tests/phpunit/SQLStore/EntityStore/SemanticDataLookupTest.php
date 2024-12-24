@@ -19,7 +19,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -116,7 +116,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTableUsageInfo() {
-		$property =  new DIProperty( 'Foo' );
+		$property = new DIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
@@ -142,7 +142,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewRequestOptions_NULL() {
-		$property =  new DIProperty( 'Foo' );
+		$property = new DIProperty( 'Foo' );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -159,7 +159,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewRequestOptions_AsConditionConstraint_IsFixedPropertyTable() {
-		$property =  new DIProperty( 'Foo' );
+		$property = new DIProperty( 'Foo' );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -264,7 +264,8 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'";
+			} ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -324,7 +325,8 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'";
+			} ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -375,7 +377,8 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'";
+			} ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -481,7 +484,8 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'";
+			} ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
@@ -551,7 +555,8 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
+			->will( $this->returnCallback( function ( $value ) { return "'$value'";
+			} ) );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'readQuery' )

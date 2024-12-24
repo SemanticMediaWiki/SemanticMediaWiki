@@ -59,7 +59,7 @@ class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 	}
 
 	public function testTriggerUpdateJob() {
-		$index = 1; //pass-by-reference
+		$index = 1; // pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
 

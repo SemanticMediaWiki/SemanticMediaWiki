@@ -34,7 +34,7 @@ use PHPUnit\Framework\TestResult;
  */
 abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
-    /**
+	/**
 	 * @var TestEnvironment
 	 */
 	protected $testEnvironment;
@@ -70,62 +70,62 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	protected $isUsableUnitTestDatabase = true;
 
 	/**
-     * Setup configuration required for SMW integration tests.
-     */
-    public static function setUpBeforeClass(): void {
-        parent::setUpBeforeClass();
+	 * Setup configuration required for SMW integration tests.
+	 */
+	public static function setUpBeforeClass(): void {
+		parent::setUpBeforeClass();
 
-        // Load default settings specific to SMW
-        TestEnvironment::loadDefaultSettings( [ 'smwgQEqualitySupport' ] );
-    }
+		// Load default settings specific to SMW
+		TestEnvironment::loadDefaultSettings( [ 'smwgQEqualitySupport' ] );
+	}
 
-    protected function setUp(): void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		// Clear any cached user to ensure a clean state for each test
-        $user = $this->getTestUser()->getUser();
-        $user->clearInstanceCache( $user->mFrom );
+		$user = $this->getTestUser()->getUser();
+		$user->clearInstanceCache( $user->mFrom );
 
-        // Reset services and caches that SMW tests rely on
-        $this->resetSMWServices();
-        $this->clearGlobalCaches();
+		// Reset services and caches that SMW tests rely on
+		$this->resetSMWServices();
+		$this->clearGlobalCaches();
 
-        // Prepare test environment for SMW-specific requirements
-        $this->initializeTestEnvironment();
-    }
+		// Prepare test environment for SMW-specific requirements
+		$this->initializeTestEnvironment();
+	}
 
 	 /**
-     * Reset Semantic MediaWiki-related services and caches.
-     */
-    private function resetSMWServices(): void {
-        LinkBatch::reset();
-        DataValueFactory::getInstance()->clear();
-        Exporter::clear();
+	 * Reset Semantic MediaWiki-related services and caches.
+	 */
+	private function resetSMWServices(): void {
+		LinkBatch::reset();
+		DataValueFactory::getInstance()->clear();
+		Exporter::clear();
 		MediaWikiServices::getInstance()->resetGlobalInstance();
-        StoreFactory::clear();
-        ServicesFactory::clear();
-        SMWQueryProcessor::setRecursiveTextProcessor();
-    }
+		StoreFactory::clear();
+		ServicesFactory::clear();
+		SMWQueryProcessor::setRecursiveTextProcessor();
+	}
 
 	/**
-     * Initialize SMW test environment configuration.
-     */
-    private function initializeTestEnvironment(): void {
+	 * Initialize SMW test environment configuration.
+	 */
+	private function initializeTestEnvironment(): void {
 		$fixedInMemoryLruCache = ServicesFactory::getInstance()->create( 'FixedInMemoryLruCache' );
 
-        $this->testEnvironment = new TestEnvironment();
-        $this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
-        $this->testEnvironment->registerObject( 'Store', $this->getStore() );
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
+		$this->testEnvironment->registerObject( 'Store', $this->getStore() );
 		$this->testEnvironment->registerObject( 'Cache', $fixedInMemoryLruCache );
 		$this->testEnvironment->resetDBLoadBalancer();
 
-        PropertyRegistry::clear();
+		PropertyRegistry::clear();
 
-        $this->clearPendingDeferredUpdates();
+		$this->clearPendingDeferredUpdates();
 
-        // Set cache to avoid unexpected database interactions
-        $this->disableGlobalCaches();
-    }
+		// Set cache to avoid unexpected database interactions
+		$this->disableGlobalCaches();
+	}
 
 	protected function clearGlobalCaches(): void {
 		// Clear the main cache and other relevant MediaWiki caches
@@ -142,44 +142,44 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 				$title->expects( $this->any() )
 					->method( 'getPrefixedDBkey' )
 					->willReturn( 'Badtitle/Dummy title for BacklinkCache reset' );
-	
+
 				BacklinkCache::get( $title )->clear();
 			}
 		}
 	}
 
 	/**
-     * Disable global caches for predictable test behavior.
-     */
-    private function disableGlobalCaches(): void {
-        $GLOBALS['wgMainCacheType'] = CACHE_NONE;
-        $GLOBALS['wgMessageCacheType'] = CACHE_NONE;
-        $GLOBALS['wgParserCacheType'] = CACHE_NONE;
-        $GLOBALS['wgLanguageConverterCacheType'] = CACHE_NONE;
-        $GLOBALS['wgUseDatabaseMessages'] = false;
-    }
+	 * Disable global caches for predictable test behavior.
+	 */
+	private function disableGlobalCaches(): void {
+		$GLOBALS['wgMainCacheType'] = CACHE_NONE;
+		$GLOBALS['wgMessageCacheType'] = CACHE_NONE;
+		$GLOBALS['wgParserCacheType'] = CACHE_NONE;
+		$GLOBALS['wgLanguageConverterCacheType'] = CACHE_NONE;
+		$GLOBALS['wgUseDatabaseMessages'] = false;
+	}
 
 	/**
-     * Clear pending deferred updates to ensure no state leaks between tests.
-     */
-    private function clearPendingDeferredUpdates(): void {
-        $this->testEnvironment->clearPendingDeferredUpdates();
-    }
+	 * Clear pending deferred updates to ensure no state leaks between tests.
+	 */
+	private function clearPendingDeferredUpdates(): void {
+		$this->testEnvironment->clearPendingDeferredUpdates();
+	}
 
-    protected function tearDown(): void {
-        if ( $this->testEnvironment !== null ) {
-            $this->testEnvironment->tearDown();
-        }
+	protected function tearDown(): void {
+		if ( $this->testEnvironment !== null ) {
+			$this->testEnvironment->tearDown();
+		}
 		// Ensure all transactions are closed before ending the test
 		$dbw = $this->getDBConnection();
 		$dbw->rollback();
 
 		parent::tearDown();
-    }
+	}
 
 	public function run( ?TestResult $result = null ): TestResult {
 		$this->getStore()->clear();
-		if( $GLOBALS['wgDBtype'] == 'mysql' ) {
+		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
 
 			// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
 			// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
@@ -209,7 +209,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		return $testResult;
 	}
 
-    protected function getStore() {
+	protected function getStore() {
 		return StoreFactory::getStore();
 	}
 

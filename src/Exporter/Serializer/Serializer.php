@@ -289,16 +289,16 @@ abstract class Serializer {
 			if ( $typeresource instanceof ExpNsResource ) {
 				switch ( $typeresource->getQName() ) {
 					case 'owl:Class':
-					$typeflag = SMW_SERIALIZER_DECL_CLASS;
+						$typeflag = SMW_SERIALIZER_DECL_CLASS;
 					break;
 					case 'owl:ObjectProperty':
-					$typeflag = SMW_SERIALIZER_DECL_OPROP;
+						$typeflag = SMW_SERIALIZER_DECL_OPROP;
 					break;
 					case 'owl:DatatypeProperty':
-					$typeflag = SMW_SERIALIZER_DECL_APROP;
+						$typeflag = SMW_SERIALIZER_DECL_APROP;
 					break;
 					default:
-					$typeflag = 0;
+						$typeflag = 0;
 				}
 
 				if ( $typeflag != 0 ) {
@@ -354,9 +354,9 @@ abstract class Serializer {
 			return ( $locname == 'type' );
 		} elseif ( $property->getNamespaceID() == 'owl' ) {
 			return ( $locname == 'intersectionOf' ) || ( $locname == 'unionOf' ) ||
-			       ( $locname == 'equivalentClass' ) ||
-			       ( $locname == 'complementOf' ) || ( $locname == 'someValuesFrom' ) ||
-			       ( $locname == 'allValuesFrom' ) || ( $locname == 'onClass' );
+				   ( $locname == 'equivalentClass' ) ||
+				   ( $locname == 'complementOf' ) || ( $locname == 'someValuesFrom' ) ||
+				   ( $locname == 'allValuesFrom' ) || ( $locname == 'onClass' );
 		} elseif ( $property->getNamespaceID() == 'rdfs' ) {
 			return ( $locname == 'subClassOf' ) || ( $locname == 'range' ) || ( $locname == 'domain' );
 		}

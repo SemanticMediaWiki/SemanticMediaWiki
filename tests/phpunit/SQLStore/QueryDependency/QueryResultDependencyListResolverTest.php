@@ -27,7 +27,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase {
+class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -164,7 +164,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			DIWikiPage::newFromText( 'Foo' ),
 			DIWikiPage::newFromText( 'Bar' ),
 			'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
-		//	DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) removed
+		// DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) removed
 		];
 
 		$this->assertEquals(
@@ -371,7 +371,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 	public function queryProvider() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		#0
+		# 0
 		$description = new SomeProperty(
 			new DIProperty( 'Foobar' ),
 			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
@@ -389,7 +389,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			]
 		];
 
-		#1
+		# 1
 		$description = new SomeProperty(
 			new DIProperty( 'Foobar' ),
 			new ValueDescription( new DIBlob( 'Bar' ) )
@@ -406,7 +406,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			]
 		];
 
-		#2 uses inverse property declaration
+		# 2 uses inverse property declaration
 		$description = new SomeProperty(
 			new DIProperty( 'Foobar', true ),
 			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
@@ -424,7 +424,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			]
 		];
 
-		#3 Conjunction
+		# 3 Conjunction
 		$description = new SomeProperty(
 			new DIProperty( 'Foobar' ),
 			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
@@ -446,7 +446,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			]
 		];
 
-		#4 Disjunction
+		# 4 Disjunction
 		$description = new SomeProperty(
 			new DIProperty( 'Foobar' ),
 			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
@@ -468,7 +468,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			]
 		];
 
-		#5
+		# 5
 		$description = new ClassDescription(
 			DIWikiPage::newFromText( 'Foocat', NS_CATEGORY )
 		);
@@ -484,7 +484,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			]
 		];
 
-		#6
+		# 6
 		$description = new ConceptDescription(
 			DIWikiPage::newFromText( 'FooConcept', SMW_NS_CONCEPT )
 		);
@@ -500,7 +500,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			]
 		];
 
-		#7 Printrequest
+		# 7 Printrequest
 		$pv = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Foobaz' );
 
 		$description = new SomeProperty(
@@ -525,7 +525,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			]
 		];
 
-		#8 Inverse printrequest
+		# 8 Inverse printrequest
 		$pv = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Foobaz' );
 		$pv->setInverse( true );
 
@@ -551,7 +551,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			]
 		];
 
-		#9 SMW_CMP_EQ comparator
+		# 9 SMW_CMP_EQ comparator
 		$description = new SomeProperty(
 			new DIProperty( 'Foobar' ),
 			new ValueDescription( DIWikiPage::newFromText( 'EQ_Comparator' ), null, SMW_CMP_EQ )
@@ -569,7 +569,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			]
 		];
 
-		#10 Ignore entity with SMW_CMP_EQ comparator
+		# 10 Ignore entity with SMW_CMP_EQ comparator
 		$description = new SomeProperty(
 			new DIProperty( 'Foobar' ),
 			new ValueDescription( DIWikiPage::newFromText( 'LIKE_Comparator' ), null, SMW_CMP_LIKE )

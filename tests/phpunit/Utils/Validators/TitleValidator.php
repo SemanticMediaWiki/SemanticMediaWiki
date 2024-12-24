@@ -10,7 +10,7 @@ use Title;
  *
  * @author mwjames
  */
-class TitleValidator extends \PHPUnit_Framework_Assert {
+class TitleValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @since 2.1

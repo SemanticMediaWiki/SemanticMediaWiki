@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DuplicateLookupTaskTest extends \PHPUnit_Framework_TestCase {
+class DuplicateLookupTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $cache;

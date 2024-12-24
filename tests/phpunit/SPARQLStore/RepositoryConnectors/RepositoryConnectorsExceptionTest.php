@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
+class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

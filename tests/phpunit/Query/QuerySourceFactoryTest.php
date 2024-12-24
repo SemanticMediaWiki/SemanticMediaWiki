@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
+class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

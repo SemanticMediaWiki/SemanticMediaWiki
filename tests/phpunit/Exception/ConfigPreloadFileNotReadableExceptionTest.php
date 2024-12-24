@@ -13,7 +13,7 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
  *
  * @author mwjames
  */
-class ConfigPreloadFileNotReadableExceptionTest extends \PHPUnit_Framework_TestCase {
+class ConfigPreloadFileNotReadableExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new ConfigPreloadFileNotReadableException( 'Foo' );

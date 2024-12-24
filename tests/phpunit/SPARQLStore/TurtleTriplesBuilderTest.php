@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
+class TurtleTriplesBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -45,7 +45,6 @@ class ImportFromPropertyValueResourceBuilder extends PredefinedPropertyValueReso
 			$diSubject->getNamespace()
 		);
 
-
 		if ( $expNsResource === null ) {
 			return;
 		}

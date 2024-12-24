@@ -20,7 +20,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
+class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

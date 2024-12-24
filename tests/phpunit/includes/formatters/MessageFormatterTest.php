@@ -84,7 +84,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 
 		$instance->setType( 'info' );
 		$this->assertInternalType( 'string', $instance->getHtml() );
-
 	}
 
 	/**
@@ -137,7 +136,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 
 		$instance->clear();
 		$this->assertEmpty( $instance->getPlain() );
-
 	}
 
 	/**
@@ -161,7 +159,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		// Test array normalization and deletion of duplicates
 		$result = $method->invoke( $instance, $instance->getMessages() );
 		$this->assertCount( $count, $result );
-
 	}
 
 	/**
@@ -206,7 +203,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 
 		$this->assertEquals( '&lt;Foo&gt;', $instance->escape( true )->getPlain() );
 		$this->assertEquals( '<Foo>', $instance->escape( false )->getPlain() );
-
 	}
 
 	/**

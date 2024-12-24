@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class FilterTraitTest extends \PHPUnit_Framework_TestCase {
+class FilterTraitTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -76,7 +76,6 @@ class FilterTraitTest extends \PHPUnit_Framework_TestCase {
 			}
 
 			protected function match( \SMW\Schema\Compartment $compartment ) {
-
 			}
 		};
 	}

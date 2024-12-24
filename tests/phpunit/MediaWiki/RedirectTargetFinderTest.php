@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
+class RedirectTargetFinderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

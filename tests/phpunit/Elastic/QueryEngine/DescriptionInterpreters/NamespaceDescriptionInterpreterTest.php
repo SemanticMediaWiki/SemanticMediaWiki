@@ -15,7 +15,7 @@ use SMW\Query\DescriptionFactory;
  *
  * @author mwjames
  */
-class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private DescriptionFactory $descriptionFactory;
 	private $conditionBuilder;

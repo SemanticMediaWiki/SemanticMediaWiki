@@ -45,7 +45,7 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 
-	//	$this->getStore()->getSparqlDatabase()->deleteAll();
+	// $this->getStore()->getSparqlDatabase()->deleteAll();
 	}
 
 	protected function tearDown(): void {

@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableInfoFetcherTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
+class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -92,7 +92,6 @@ class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $this->semanticData ) );
-
 
 		$instance = new PredefinedPropertyExaminer(
 			$this->declarationExaminer

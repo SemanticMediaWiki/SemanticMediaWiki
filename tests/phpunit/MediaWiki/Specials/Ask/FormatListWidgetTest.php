@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FormatListWidgetTest extends \PHPUnit_Framework_TestCase {
+class FormatListWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	public function testEmptyParameters() {
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();

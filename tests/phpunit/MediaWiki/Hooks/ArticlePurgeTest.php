@@ -18,7 +18,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
+class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
 
 	private $applicationFactory;
 	private $testEnvironment;
@@ -129,7 +129,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleDataProvider() {
-		$validIdTitle =  MockTitle::buildMock( 'validIdTitle' );
+		$validIdTitle = MockTitle::buildMock( 'validIdTitle' );
 
 		$validIdTitle->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
@@ -143,7 +143,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			->method( 'canExist' )
 			->willReturn( true );
 
-		#0 Id = cache
+		# 0 Id = cache
 		$provider[] = [
 			[
 				'title'  => $validIdTitle,
@@ -159,8 +159,8 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 Disabled setting
-		$validIdTitle =  MockTitle::buildMock( 'Disabled' );
+		# 1 Disabled setting
+		$validIdTitle = MockTitle::buildMock( 'Disabled' );
 
 		$validIdTitle->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
@@ -190,7 +190,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		// #2 No Id
-		$nullIdTitle =  MockTitle::buildMock( 'NullId' );
+		$nullIdTitle = MockTitle::buildMock( 'NullId' );
 
 		$nullIdTitle->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
@@ -219,7 +219,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 No Id
+		# 3 No Id
 		$provider[] = [
 			[
 				'title'  => $nullIdTitle,

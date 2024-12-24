@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
+class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $parserFactory;
@@ -303,7 +303,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleProvider() {
-		#0
+		# 0
 		$provider[] = [ Title::newFromText( __METHOD__ ) ];
 
 		$title = MockTitle::buildMockForMainNamespace();
@@ -312,7 +312,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
 
-		#1
+		# 1
 		$provider[] = [ $title ];
 
 		$title = MockTitle::buildMockForMainNamespace();
@@ -321,8 +321,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
 
-
-		#2
+		# 2
 		$provider[] = [ $title ];
 
 		$title = MockTitle::buildMockForMainNamespace();
@@ -331,7 +330,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
 
-		#3
+		# 3
 		$provider[] = [ $title ];
 
 		return $provider;

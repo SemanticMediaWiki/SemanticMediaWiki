@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
+class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -105,7 +105,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revisionLookup =  $this->getRevisionLookupMock();
+		$revisionLookup = $this->getRevisionLookupMock();
 		$revisionLookup->expects( $this->once() )
 			->method( 'getRevisionByTitle' );
 
