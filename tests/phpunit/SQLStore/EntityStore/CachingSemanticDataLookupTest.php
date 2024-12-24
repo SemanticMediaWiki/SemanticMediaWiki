@@ -51,11 +51,11 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$stubSemanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'newStubSemanticData' )
-			->will( $this->returnValue( $stubSemanticData ) );
+			->willReturn( $stubSemanticData );
 
 		$instance = new CachingSemanticDataLookup(
 			$this->semanticDataLookup
@@ -85,11 +85,11 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'newStubSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'getTableUsageInfo' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new CachingSemanticDataLookup(
 			$this->semanticDataLookup
@@ -150,7 +150,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'newStubSemanticData' )
-			->will( $this->returnValue( $stubSemanticData ) );
+			->willReturn( $stubSemanticData );
 
 		$instance = new CachingSemanticDataLookup(
 			$this->semanticDataLookup
@@ -194,15 +194,15 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$stubSemanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'newStubSemanticData' )
-			->will( $this->returnValue( $stubSemanticData ) );
+			->willReturn( $stubSemanticData );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'fetchSemanticDataFromTable' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new CachingSemanticDataLookup(
 			$this->semanticDataLookup
@@ -220,7 +220,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTableDefinition->expects( $this->once() )
 			->method( 'getName' )
-			->will( $this->returnValue( '__foo__' ) );
+			->willReturn( '__foo__' );
 
 		$stubSemanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
 			->disableOriginalConstructor()
@@ -228,15 +228,15 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$stubSemanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'newStubSemanticData' )
-			->will( $this->returnValue( $stubSemanticData ) );
+			->willReturn( $stubSemanticData );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'getTableUsageInfo' )
-			->will( $this->returnValue( [ '__foo__' => true ] ) );
+			->willReturn( [ '__foo__' => true ] );
 
 		$this->semanticDataLookup->expects( $this->never() )
 			->method( 'fetchSemanticDataFromTable' );

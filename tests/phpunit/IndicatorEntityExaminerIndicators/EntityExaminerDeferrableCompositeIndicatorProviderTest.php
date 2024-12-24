@@ -69,8 +69,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Fr
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->isDeferredMode()
 		);
 	}
@@ -82,8 +82,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Fr
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getName()
 		);
 	}
@@ -95,8 +95,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Fr
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getIndicators()
 		);
 	}
@@ -108,8 +108,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Fr
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getModules()
 		);
 	}
@@ -121,8 +121,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Fr
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getInlineStyle()
 		);
 	}
@@ -139,15 +139,15 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Fr
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'hasIndicator' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getModules' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$indicatorProviders = [
 			$deferrableIndicatorProvider
@@ -157,8 +157,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Fr
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
@@ -175,19 +175,19 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Fr
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'hasIndicator' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getModules' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$deferrableIndicatorProvider->expects( $this->once() )
 			->method( 'getIndicators' )
-			->will( $this->returnValue( [ 'content' => '' ] ) );
+			->willReturn( [ 'content' => '' ] );
 
 		$indicatorProviders = [
 			$deferrableIndicatorProvider
@@ -199,8 +199,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Fr
 
 		$instance->setDeferredMode( true );
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
@@ -210,7 +210,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Fr
 
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$indicatorProviders = [
 			$this->newPermissionAwareIndicatorProvider()
@@ -226,8 +226,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Fr
 
 		$instance->setDeferredMode( true );
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}

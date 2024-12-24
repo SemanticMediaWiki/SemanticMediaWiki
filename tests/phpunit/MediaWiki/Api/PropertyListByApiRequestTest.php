@@ -99,15 +99,15 @@ class PropertyListByApiRequestTest extends \PHPUnit\Framework\TestCase {
 
 		$cachedListLookup->expects( $this->once() )
 			->method( 'fetchList' )
-			->will( $this->returnValue( $list ) );
+			->willReturn( $list );
 
 		$cachedListLookup->expects( $this->once() )
 			->method( 'isFromCache' )
-			->will( $this->returnValue( $isCached ) );
+			->willReturn( $isCached );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertiesSpecial' )
-			->will( $this->returnValue( $cachedListLookup ) );
+			->willReturn( $cachedListLookup );
 
 		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()

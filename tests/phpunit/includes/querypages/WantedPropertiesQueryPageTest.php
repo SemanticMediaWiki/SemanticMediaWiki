@@ -61,8 +61,8 @@ class WantedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 			[ $error, null ]
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$result
 		);
 

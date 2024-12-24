@@ -27,7 +27,7 @@ class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->transactionProfiler = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'setSilenced' ] )
+			->onlyMethods( [ 'setSilenced' ] )
 			->getMock();
 	}
 
@@ -41,7 +41,7 @@ class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetEmptyTransactionTicket() {
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( self::getHasPrimaryChangesMethod() )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( 'getEmptyTransactionTicket' );
@@ -56,7 +56,7 @@ class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetEmptyTransactionTicketOnMasterChanges() {
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( self::getHasPrimaryChangesMethod() )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->loadBalancerFactory->expects( $this->never() )
 			->method( 'getEmptyTransactionTicket' );

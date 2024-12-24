@@ -38,12 +38,12 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$this->dependencyValidator = $this->getMockBuilder( '\SMW\DependencyValidator' )
 			->disableOriginalConstructor()
@@ -70,7 +70,7 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -78,12 +78,12 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( true ) );
+			->with( $property )
+			->willReturn( true );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$output = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -98,7 +98,7 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$context->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $output ) );
+			->willReturn( $output );
 
 		$page = $this->getMockBuilder( '\Article' )
 			->disableOriginalConstructor()
@@ -106,11 +106,11 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$page->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $subject->getTitle() ) );
+			->willReturn( $subject->getTitle() );
 
 		$page->expects( $this->any() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $context ) );
+			->willReturn( $context );
 
 		$instance = new ArticleViewHeader(
 			$this->store,
@@ -139,7 +139,7 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$output = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -151,7 +151,7 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$page->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $subject->getTitle() ) );
+			->willReturn( $subject->getTitle() );
 
 		$page->expects( $this->never() )
 			->method( 'getContext' );
@@ -179,11 +179,11 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->dependencyValidator->expects( $this->any() )
 			->method( 'hasArchaicDependencies' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title = $subject->getTitle();
 
@@ -197,7 +197,7 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$page->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$page->expects( $this->never() )
 			->method( 'getContext' );

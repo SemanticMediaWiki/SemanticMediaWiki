@@ -25,7 +25,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'interpretDescription' ] )
+			->onlyMethods( [ 'interpretDescription' ] )
 			->getMock();
 	}
 
@@ -54,7 +54,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function testInterpretDescription_NotEmpty() {
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'interpretDescription' )
-			->will( $this->returnValue( $this->conditionBuilder->newCondition( [ 'Foo' ] ) ) );
+			->willReturn( $this->conditionBuilder->newCondition( [ 'Foo' ] ) );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -62,7 +62,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new ConjunctionInterpreter(
 			$this->conditionBuilder

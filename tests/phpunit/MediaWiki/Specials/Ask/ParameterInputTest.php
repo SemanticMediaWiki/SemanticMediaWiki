@@ -39,11 +39,11 @@ class ParameterInputTest extends \PHPUnit\Framework\TestCase {
 
 		$paramDefinition->expects( $this->atLeastOnce() )
 			->method( 'getAllowedValues' )
-			->will( $this->returnValue( $allowedValues ) );
+			->willReturn( $allowedValues );
 
 		$paramDefinition->expects( $this->any() )
 			->method( 'isList' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new ParameterInput(
 			$paramDefinition,

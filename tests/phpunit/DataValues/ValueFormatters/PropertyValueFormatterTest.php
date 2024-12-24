@@ -56,11 +56,11 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new PropertyValueParser() ) );
+			->willReturn( new PropertyValueParser() );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 	}
 
 	public function testCanConstruct() {
@@ -97,7 +97,7 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 			$this->propertySpecificationLookup
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->format( $propertyValue, [ 'Foo' ] )
 		);
@@ -198,15 +198,15 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPropertyListFromLabelByLanguageCode' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPreferredPropertyLabelByLanguageCode' )
-			->will( $this->returnValue( $preferredLabel ) );
+			->willReturn( $preferredLabel );
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'searchPropertyIdByLabel' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
 
@@ -254,15 +254,15 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPropertyListFromLabelByLanguageCode' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPreferredPropertyLabelByLanguageCode' )
-			->will( $this->returnValue( $preferredLabel ) );
+			->willReturn( $preferredLabel );
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'searchPropertyIdByLabel' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
 
@@ -485,19 +485,19 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$property->expects( $this->any() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( \SMWDataItem::TYPE_PROPERTY ) );
+			->willReturn( \SMWDataItem::TYPE_PROPERTY );
 
 		$property->expects( $this->any() )
 			->method( 'getPreferredLabel' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$property->expects( $this->any() )
 			->method( 'getLabel' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$property->expects( $this->any() )
 			->method( 'getCanonicalLabel' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$provider[] = [
 			$property,

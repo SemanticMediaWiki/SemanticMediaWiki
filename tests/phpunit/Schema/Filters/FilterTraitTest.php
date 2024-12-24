@@ -21,8 +21,8 @@ class FilterTraitTest extends \PHPUnit\Framework\TestCase {
 	public function testHasMatches() {
 		$instance = $this->newFilterTrait();
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasMatches()
 		);
 	}
@@ -30,8 +30,8 @@ class FilterTraitTest extends \PHPUnit\Framework\TestCase {
 	public function testGetMatches() {
 		$instance = $this->newFilterTrait();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getMatches()
 		);
 	}
@@ -39,8 +39,8 @@ class FilterTraitTest extends \PHPUnit\Framework\TestCase {
 	public function testGetLog() {
 		$instance = $this->newFilterTrait();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getLog()
 		);
 	}

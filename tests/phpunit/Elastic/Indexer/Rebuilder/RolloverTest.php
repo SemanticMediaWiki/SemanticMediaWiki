@@ -53,7 +53,7 @@ class RolloverTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new Rollover(
 			$this->connection
@@ -65,14 +65,14 @@ class RolloverTest extends \PHPUnit\Framework\TestCase {
 	public function testDelete() {
 		$this->connection->expects( $this->exactly( 3 ) )
 			->method( 'indexExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->exactly( 3 ) )
 			->method( 'deleteIndex' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new Rollover(
 			$this->connection
@@ -84,7 +84,7 @@ class RolloverTest extends \PHPUnit\Framework\TestCase {
 	public function testUpdate_OnNoConnectionThrowsException() {
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new Rollover(
 			$this->connection
@@ -97,7 +97,7 @@ class RolloverTest extends \PHPUnit\Framework\TestCase {
 	public function testDelete_OnNoConnectionThrowsException() {
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new Rollover(
 			$this->connection

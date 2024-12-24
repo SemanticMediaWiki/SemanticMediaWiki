@@ -30,7 +30,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $repositoryConnection ) );
+			->willReturn( $repositoryConnection );
 	}
 
 	public function testCanConstruct() {

@@ -54,7 +54,7 @@ class ConstraintSchemaValueTest extends \PHPUnit\Framework\TestCase {
 	public function testNoSchema() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new ConstraintSchemaValue(
 			ConstraintSchemaValue::TYPE_ID,
@@ -84,8 +84,8 @@ class ConstraintSchemaValueTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSpecification' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( $data ) ] ) );
+				$this->dataItemFactory->newDIProperty( '_SCHEMA_DEF' ) )
+			->willReturn( [ $this->dataItemFactory->newDIBlob( $data ) ] );
 
 		$instance = new ConstraintSchemaValue(
 			ConstraintSchemaValue::TYPE_ID,
@@ -115,8 +115,8 @@ class ConstraintSchemaValueTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSpecification' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( $data ) ] ) );
+				$this->dataItemFactory->newDIProperty( '_SCHEMA_DEF' ) )
+			->willReturn( [ $this->dataItemFactory->newDIBlob( $data ) ] );
 
 		$instance = new ConstraintSchemaValue(
 			ConstraintSchemaValue::TYPE_ID,

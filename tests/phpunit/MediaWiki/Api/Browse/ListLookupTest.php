@@ -48,7 +48,7 @@ class ListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -56,11 +56,11 @@ class ListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSQLOptions' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new ListLookup(
 			$store,
@@ -76,8 +76,8 @@ class ListLookupTest extends \PHPUnit\Framework\TestCase {
 		$res = $instance->lookup( $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 

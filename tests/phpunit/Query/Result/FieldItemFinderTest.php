@@ -52,7 +52,7 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 	public function testGetRequestOptions() {
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -71,8 +71,8 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'isMode' )
-			->with( $this->equalTo( PrintRequest::PRINT_THIS ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_THIS )
+			->willReturn( true );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -93,14 +93,14 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->itemFetcher->expects( $this->once() )
 			->method( 'fetch' )
 			->with(
-				$this->equalTo( [ $dataItem ] ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_INST' ) ) )
-			->will( $this->returnValue( [ $expected ] ) );
+				[ $dataItem ],
+				$this->dataItemFactory->newDIProperty( '_INST' ) )
+			->willReturn( [ $expected ] );
 
 		$this->printRequest->expects( $this->at( 1 ) )
 			->method( 'isMode' )
-			->with( $this->equalTo( PrintRequest::PRINT_CATS ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_CATS )
+			->willReturn( true );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -121,18 +121,18 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $dataItem ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_INST' ) ) )
-			->will( $this->returnValue( [ $expected ] ) );
+				$dataItem,
+				$this->dataItemFactory->newDIProperty( '_INST' ) )
+			->willReturn( [ $expected ] );
 
 		$this->printRequest->expects( $this->at( 2 ) )
 			->method( 'isMode' )
-			->with( $this->equalTo( PrintRequest::PRINT_CCAT ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_CCAT )
+			->willReturn( true );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( $expected ) );
+			->willReturn( $expected );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -153,27 +153,27 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->itemFetcher->expects( $this->once() )
 			->method( 'fetch' )
 			->with(
-				$this->equalTo( [ $dataItem ] ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ),
+				[ $dataItem ],
+				$this->dataItemFactory->newDIProperty( 'Prop' ),
 				$this->anything() )
-			->will( $this->returnValue( [ $expected ] ) );
+			->willReturn( [ $expected ] );
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_PROP )
+			->willReturn( true );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( $this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) ) );
+			->willReturn( $this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -194,28 +194,28 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->itemFetcher->expects( $this->once() )
 			->method( 'fetch' )
 			->with(
-				$this->equalTo( [ $dataItem ] ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ),
+				[ $dataItem ],
+				$this->dataItemFactory->newDIProperty( 'Prop' ),
 				$this->anything() )
-			->will( $this->returnValue( [ $expected ] ) );
+			->willReturn( [ $expected ] );
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_PROP )
+			->willReturn( true );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue(
-				$this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) ) );
+			->willReturn(
+				$this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -238,27 +238,27 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->itemFetcher->expects( $this->once() )
 			->method( 'fetch' )
 			->with(
-				$this->equalTo( [ $dataItem ] ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ),
+				[ $dataItem ],
+				$this->dataItemFactory->newDIProperty( 'Prop' ),
 				$this->anything() )
-			->will( $this->returnValue( [ $expected ] ) );
+			->willReturn( [ $expected ] );
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_PROP )
+			->willReturn( true );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '_txt' ) );
+			->willReturn( '_txt' );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( $propertyValue ) );
+			->willReturn( $propertyValue );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -282,31 +282,31 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->itemFetcher->expects( $this->once() )
 			->method( 'fetch' )
 			->with(
-				$this->equalTo( [ $dataItem ] ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ),
+				[ $dataItem ],
+				$this->dataItemFactory->newDIProperty( 'Prop' ),
 				$this->anything() )
-			->will( $this->returnValue( [ $text ] ) );
+			->willReturn( [ $text ] );
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with( $this->equalTo( PrintRequest::PRINT_PROP ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_PROP )
+			->willReturn( true );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getOutputFormat' )
-			->will( $this->returnValue( '-raw' ) );
+			->willReturn( '-raw' );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '_txt' ) );
+			->willReturn( '_txt' );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( $propertyValue ) );
+			->willReturn( $propertyValue );
 
 		$instance = new FieldItemFinder(
 			$this->store,

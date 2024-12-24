@@ -34,15 +34,15 @@ class DefaultParamDefinitionTest extends \PHPUnit\Framework\TestCase {
 			'smwgQUpperbound' => 100
 		];
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			DefaultParamDefinition::buildParamDefinitions( $vars )
 		);
 	}
 
 	public function testGetParamDefinitions() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			DefaultParamDefinition::getParamDefinitions()
 		);
 	}

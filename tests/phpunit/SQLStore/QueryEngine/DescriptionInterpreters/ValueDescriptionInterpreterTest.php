@@ -51,12 +51,12 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testInterpretDescription( $description, $expected ) {
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -64,15 +64,15 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIds ) );
+			->willReturn( $objectIds );
 
 		$queryEngineFactory = new QueryEngineFactory( $this->store );
 

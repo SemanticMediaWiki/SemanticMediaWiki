@@ -41,7 +41,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implemen
 
 		$user->expects( $this->any() )
 			->method( 'getUserPage' )
-			->will( $this->returnValue( $this->builder->setValue( 'getUserPage' ) ) );
+			->willReturn( $this->builder->setValue( 'getUserPage' ) );
 
 		return $user;
 	}
@@ -58,7 +58,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implemen
 
 		$parserOptions->expects( $this->any() )
 			->method( 'getTargetLanguage' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTargetLanguage' ) ) );
+			->willReturn( $this->builder->setValue( 'getTargetLanguage' ) );
 
 		return $parserOptions;
 	}
@@ -189,63 +189,63 @@ class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implemen
 
 		$title->expects( $this->any() )
 			->method( 'getDBkey' )
-			->will( $this->returnValue( $this->builder->setValue( 'getDBkey', $this->builder->newRandomString( 10, 'Title-auto-dbkey' ) ) ) );
+			->willReturn( $this->builder->setValue( 'getDBkey', $this->builder->newRandomString( 10, 'Title-auto-dbkey' ) ) );
 
 		$title->expects( $this->any() )
 			->method( 'getInterwiki' )
-			->will( $this->returnValue( $this->builder->setValue( 'getInterwiki', '' ) ) );
+			->willReturn( $this->builder->setValue( 'getInterwiki', '' ) );
 
 		$title->expects( $this->any() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( $this->builder->setValue( 'getArticleID', rand( 10, 10000 ) ) ) );
+			->willReturn( $this->builder->setValue( 'getArticleID', rand( 10, 10000 ) ) );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( $this->builder->setValue( 'getNamespace', NS_MAIN ) ) );
+			->willReturn( $this->builder->setValue( 'getNamespace', NS_MAIN ) );
 
 		$title->expects( $this->any() )
 			->method( 'isKnown' )
-			->will( $this->returnValue( $this->builder->setValue( 'exists' ) ) );
+			->willReturn( $this->builder->setValue( 'exists' ) );
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( $this->builder->setValue( 'exists' ) ) );
+			->willReturn( $this->builder->setValue( 'exists' ) );
 
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( $this->builder->setValue( 'getLatestRevID', rand( 10, 5000 ) ) ) );
+			->willReturn( $this->builder->setValue( 'getLatestRevID', rand( 10, 5000 ) ) );
 
 		$title->expects( $this->any() )
 			->method( 'getText' )
-			->will( $this->returnValue( $this->builder->setValue( 'getText' ) ) );
+			->willReturn( $this->builder->setValue( 'getText' ) );
 
 		$title->expects( $this->any() )
 			->method( 'getPrefixedText' )
-			->will( $this->returnValue( $this->builder->setValue( 'getPrefixedText', $this->builder->newRandomString( 10, 'Title-auto-prefixedtext' ) ) ) );
+			->willReturn( $this->builder->setValue( 'getPrefixedText', $this->builder->newRandomString( 10, 'Title-auto-prefixedtext' ) ) );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( $this->builder->setValue( 'isSpecialPage', false ) ) );
+			->willReturn( $this->builder->setValue( 'isSpecialPage', false ) );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecial' )
-			->will( $this->returnValue( $this->builder->setValue( 'isSpecial', false ) ) );
+			->willReturn( $this->builder->setValue( 'isSpecial', false ) );
 
 		$title->expects( $this->any() )
 			->method( 'isDeleted' )
-			->will( $this->returnValue( $this->builder->setValue( 'isDeleted', false ) ) );
+			->willReturn( $this->builder->setValue( 'isDeleted', false ) );
 
 		$title->expects( $this->any() )
 			->method( 'getContentModel' )
-			->will( $this->returnValue( $this->builder->setValue( 'getContentModel', $contentModel ) ) );
+			->willReturn( $this->builder->setValue( 'getContentModel', $contentModel ) );
 
 		$title->expects( $this->any() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $this->builder->setValue( 'getPageLanguage' ) ) );
+			->willReturn( $this->builder->setValue( 'getPageLanguage' ) );
 
 		$title->expects( $this->any() )
 			->method( 'isRedirect' )
-			->will( $this->returnValue( $this->builder->setValue( 'isRedirect', false ) ) );
+			->willReturn( $this->builder->setValue( 'isRedirect', false ) );
 
 		$title->expects( $this->any() )
 			->method( 'inNamespace' )
@@ -287,7 +287,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implemen
 
 		$skinTemplate->expects( $this->any() )
 			->method( 'getSkin' )
-			->will( $this->returnValue( $this->builder->setValue( 'getSkin' ) ) );
+			->willReturn( $this->builder->setValue( 'getSkin' ) );
 
 		return $skinTemplate;
 	}
@@ -344,19 +344,19 @@ class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implemen
 
 		$outputPage->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTitle' ) ) );
+			->willReturn( $this->builder->setValue( 'getTitle' ) );
 
 		$outputPage->expects( $this->any() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $this->builder->setValue( 'getContext' ) ) );
+			->willReturn( $this->builder->setValue( 'getContext' ) );
 
 		$outputPage->expects( $this->any() )
 			->method( 'addModules' )
-			->will( $this->returnValue( $this->builder->setValue( 'addModules' ) ) );
+			->willReturn( $this->builder->setValue( 'addModules' ) );
 
 		$outputPage->expects( $this->any() )
 			->method( 'addLink' )
-			->will( $this->returnValue( $this->builder->setValue( 'addLink' ) ) );
+			->willReturn( $this->builder->setValue( 'addLink' ) );
 
 		// getHeadLinksArray doesn't exist in MW 1.19
 		$outputPage->expects( $this->any() )
@@ -401,7 +401,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implemen
 
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( $methods )
+			->onlyMethods( $methods )
 			->getMock();
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
@@ -454,7 +454,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implemen
 
 		$contentHandler = $this->getMockBuilder( 'ContentHandler' )
 			->disableOriginalConstructor()
-			->setMethods( $methods )
+			->onlyMethods( $methods )
 			->getMock();
 
 		foreach ( $methods as $method ) {

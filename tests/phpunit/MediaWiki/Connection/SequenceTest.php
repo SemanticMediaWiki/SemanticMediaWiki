@@ -48,35 +48,34 @@ class SequenceTest extends \PHPUnit\Framework\TestCase {
 	public function testNonPostgres() {
 		$this->connection->expects( $this->once() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new Sequence(
 			$this->connection
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->restart( 'Foo', 'bar' )
+		$this->assertNull(
+						$instance->restart( 'Foo', 'bar' )
 		);
 	}
 
 	public function testPostgres() {
 		$this->connection->expects( $this->once() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'postgres' ) );
+			->willReturn( 'postgres' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) { return $callback();
-			} ) );
+			->willReturnCallback( function ( $callback ) { return $callback();
+			} );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
-			->with( $this->equalTo( 'ALTER SEQUENCE Foo_bar_seq RESTART WITH 43' ) );
+			->with( 'ALTER SEQUENCE Foo_bar_seq RESTART WITH 43' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectField' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new Sequence(
 			$this->connection

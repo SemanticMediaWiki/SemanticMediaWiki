@@ -27,12 +27,12 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
 			->disableOriginalConstructor()
@@ -53,7 +53,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getWhereConds' )
-			->will( $this->returnValue( [ 'o_hash' => '' ] ) );
+			->willReturn( [ 'o_hash' => '' ] );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
@@ -61,24 +61,24 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTableInfoFetcher->expects( $this->any() )
 			->method( 'findTableIdForProperty' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getPropertyTables', 'getPropertyTableInfoFetcher', 'getDataItemHandlerForDIType' ] )
+			->onlyMethods( [ 'getConnection', 'getPropertyTables', 'getPropertyTableInfoFetcher', 'getDataItemHandlerForDIType' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
@@ -86,27 +86,27 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTable->expects( $this->once() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->any() )
 			->method( 'getFixedProperty' )
-			->will( $this->returnValue( '_UNKNOWN_FIXED_PROPERTY' ) );
+			->willReturn( '_UNKNOWN_FIXED_PROPERTY' );
 
 		$propertyTable->expects( $this->once() )
 			->method( 'getDiType' )
-			->will( $this->returnValue( \SMWDataItem::TYPE_BLOB ) );
+			->willReturn( \SMWDataItem::TYPE_BLOB );
 
 		$propertyTable->expects( $this->once() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'smw_foo' ) );
+			->willReturn( 'smw_foo' );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ '_foo' => $propertyTable ] ) );
+			->willReturn( [ '_foo' => $propertyTable ] );
 
 		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
 			->disableOriginalConstructor()
@@ -114,11 +114,11 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$requestOptions->expects( $this->any() )
 			->method( 'getExtraConditions' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$requestOptions->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -126,11 +126,11 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'tableName' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$query = new \SMW\MediaWiki\Connection\Query( $connection );
 
@@ -140,11 +140,11 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$instance = new EntityUniquenessLookup(
 			$store,

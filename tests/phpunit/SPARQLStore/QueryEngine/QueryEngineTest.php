@@ -95,11 +95,11 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [ 'bogus-error' ] ) );
+			->willReturn( [ 'bogus-error' ] );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'getConditionFrom' )
-			->will( $this->returnValue( $condition ) );
+			->willReturn( $condition );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
@@ -183,19 +183,19 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
-			->will( $this->returnValue( $conditionBuilder ) );
+			->willReturn( $conditionBuilder );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( $sortKeys ) );
+			->willReturn( $sortKeys );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'getConditionFrom' )
-			->will( $this->returnValue( $condition ) );
+			->willReturn( $condition );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
@@ -225,15 +225,15 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
-			->will( $this->returnValue( $conditionBuilder ) );
+			->willReturn( $conditionBuilder );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'getConditionFrom' )
-			->will( $this->returnValue( $condition ) );
+			->willReturn( $condition );
 
 		$queryResultFactory = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\QueryResultFactory' )
 			->disableOriginalConstructor()
@@ -251,8 +251,8 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 			$instance->getQueryResult( $query )
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getQueryResult( $query )
 		);
 	}
@@ -268,7 +268,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'selectCount' )
-			->will( $this->returnValue( $repositoryResult ) );
+			->willReturn( $repositoryResult );
 
 		$condition = $this->getMockForAbstractClass( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' );
 
@@ -282,15 +282,15 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
-			->will( $this->returnValue( $conditionBuilder ) );
+			->willReturn( $conditionBuilder );
 
 		$conditionBuilder->expects( $this->once() )
 			->method( 'getConditionFrom' )
-			->will( $this->returnValue( $condition ) );
+			->willReturn( $condition );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
@@ -316,12 +316,12 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'select' ] )
+			->onlyMethods( [ 'select' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( $repositoryResult ) );
+			->willReturn( $repositoryResult );
 
 		$condition = $this->getMockForAbstractClass( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' );
 
@@ -335,15 +335,15 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
-			->will( $this->returnValue( $conditionBuilder ) );
+			->willReturn( $conditionBuilder );
 
 		$conditionBuilder->expects( $this->once() )
 			->method( 'getConditionFrom' )
-			->will( $this->returnValue( $condition ) );
+			->willReturn( $condition );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
@@ -381,7 +381,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$conditionBuilder->expects( $this->never() )
 			->method( 'setSortKeys' )
-			->will( $this->returnValue( $conditionBuilder ) );
+			->willReturn( $conditionBuilder );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
@@ -407,12 +407,12 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'ask' ] )
+			->onlyMethods( [ 'ask' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->once() )
 			->method( 'ask' )
-			->will( $this->returnValue( $repositoryResult ) );
+			->willReturn( $repositoryResult );
 
 		$element = $this->getMockBuilder( '\SMW\Exporter\Element' )
 			->disableOriginalConstructor()
@@ -434,15 +434,15 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
-			->will( $this->returnValue( $conditionBuilder ) );
+			->willReturn( $conditionBuilder );
 
 		$conditionBuilder->expects( $this->once() )
 			->method( 'getConditionFrom' )
-			->will( $this->returnValue( $condition ) );
+			->willReturn( $condition );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
@@ -466,12 +466,12 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		// interface hence the use of the concrete class
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSparqlForSelect' ] )
+			->onlyMethods( [ 'getSparqlForSelect' ] )
 			->getMock();
 
 		$connection->expects( $this->once() )
 			->method( 'getSparqlForSelect' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$condition = $this->getMockForAbstractClass( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' );
 
@@ -485,15 +485,15 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
-			->will( $this->returnValue( $conditionBuilder ) );
+			->willReturn( $conditionBuilder );
 
 		$conditionBuilder->expects( $this->once() )
 			->method( 'getConditionFrom' )
-			->will( $this->returnValue( $condition ) );
+			->willReturn( $condition );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
@@ -506,8 +506,8 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_DEBUG;
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getQueryResult( $query )
 		);
 	}

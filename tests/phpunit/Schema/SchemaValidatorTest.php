@@ -36,7 +36,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$jsonSchemaValidator->expects( $this->never() )
 			->method( 'validate' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 
@@ -56,11 +56,11 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'validate' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 
@@ -80,15 +80,15 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'validate' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'isValid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [ '...' ] ) );
+			->willReturn( [ '...' ] );
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 
@@ -108,7 +108,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$jsonSchemaValidator->expects( $this->never() )
 			->method( 'validate' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 

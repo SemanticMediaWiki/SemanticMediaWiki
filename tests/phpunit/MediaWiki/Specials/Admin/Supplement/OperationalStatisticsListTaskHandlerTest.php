@@ -56,8 +56,8 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCa
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
@@ -88,7 +88,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCa
 
 		$this->store->expects( $this->once() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( $semanticStatistics ) );
+			->willReturn( $semanticStatistics );
 
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
@@ -113,8 +113,8 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCa
 
 		$webRequest->expects( $this->once() )
 			->method( 'getText' )
-			->with( $this->equalTo( 'action' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->with( 'action' )
+			->willReturn( 'foo' );
 
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
 			->disableOriginalConstructor()
@@ -122,11 +122,11 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCa
 
 		$taskHandler->expects( $this->once() )
 			->method( 'isTaskFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$taskHandler->expects( $this->once() )
 			->method( 'handleRequest' )
-			->with( $this->equalTo( $webRequest ) );
+			->with( $webRequest );
 
 		$instance = new OperationalStatisticsListTaskHandler(
 			$this->outputFormatter,

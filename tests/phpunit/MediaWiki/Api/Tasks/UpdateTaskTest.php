@@ -53,7 +53,7 @@ class UpdateTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $updateJob ) );
+			->willReturn( $updateJob );
 
 		$instance = new UpdateTask(
 			$this->jobFactory

@@ -39,12 +39,12 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getPropertyTables' ] )
+			->onlyMethods( [ 'getConnection', 'getPropertyTables' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 	}
 
 	public function testCanConstruct() {
@@ -59,9 +59,9 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
-				$this->equalTo( '*' ),
-				$this->equalTo( [ 'smw_id' => 42 ] ) )
-			->will( $this->returnValue( false ) );
+				'*',
+				[ 'smw_id' => 42 ] )
+			->willReturn( false );
 
 		$instance = new IdChanger(
 			$this->store
@@ -90,23 +90,23 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
-				$this->equalTo( '*' ),
-				$this->equalTo( [ 'smw_id' => 42 ] ) )
-			->will( $this->returnValue( (object)$row ) );
+				'*',
+				[ 'smw_id' => 42 ] )
+			->willReturn( (object)$row );
 
 		$this->connection->expects( $this->once() )
 			->method( 'nextSequenceValue' )
-			->will( $this->returnValue( '__seq__' ) );
+			->willReturn( '__seq__' );
 
 		$this->connection->expects( $this->at( 3 ) )
 			->method( 'insert' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'smw_id' => '__seq__' ] + $row ) );
+				[ 'smw_id' => '__seq__' ] + $row );
 
 		$this->connection->expects( $this->once() )
 			->method( 'insertId' )
-			->will( $this->returnValue( 9999 ) );
+			->willReturn( 9999 );
 
 		$this->connection->expects( $this->any() )
 			->method( 'delete' )
@@ -116,11 +116,11 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->onConsecutiveCalls( [] ) );
+			->willReturnOnConsecutiveCalls( [] );
 
 		$this->jobFactory->expects( $this->once() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $this->nullJob ) );
+			->willReturn( $this->nullJob );
 
 		$instance = new IdChanger(
 			$this->store,
@@ -155,15 +155,15 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
-				$this->equalTo( '*' ),
-				$this->equalTo( [ 'smw_id' => 42 ] ) )
-			->will( $this->returnValue( (object)$row ) );
+				'*',
+				[ 'smw_id' => 42 ] )
+			->willReturn( (object)$row );
 
 		$this->connection->expects( $this->at( 2 ) )
 			->method( 'insert' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'smw_id' => 1001 ] + $row ) );
+				[ 'smw_id' => 1001 ] + $row );
 
 		$this->connection->expects( $this->any() )
 			->method( 'delete' )
@@ -173,11 +173,11 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->onConsecutiveCalls( [] ) );
+			->willReturnOnConsecutiveCalls( [] );
 
 		$this->jobFactory->expects( $this->once() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $this->nullJob ) );
+			->willReturn( $this->nullJob );
 
 		$instance = new IdChanger(
 			$this->store,
@@ -199,48 +199,48 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 
 		$table->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$table->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$table->expects( $this->any() )
 			->method( 'getFields' )
-			->will( $this->returnValue( [ '_foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] ) );
+			->willReturn( [ '_foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->onConsecutiveCalls( [ $table ] ) );
+			->willReturnOnConsecutiveCalls( [ $table ] );
 
 		$this->connection->expects( $this->at( 0 ) )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 's_id' => 42 ] ) )
-			->will( $this->returnValue( true ) );
+				[ 's_id' => 42 ] )
+			->willReturn( true );
 
 		$this->connection->expects( $this->at( 1 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 's_id' => 1001 ] ),
-				$this->equalTo( [ 's_id' => 42 ] ) );
+				[ 's_id' => 1001 ],
+				[ 's_id' => 42 ] );
 
 		$this->connection->expects( $this->at( 2 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'p_id' => 1001 ] ),
-				$this->equalTo( [ 'p_id' => 42 ] ) );
+				[ 'p_id' => 1001 ],
+				[ 'p_id' => 42 ] );
 
 		$this->connection->expects( $this->at( 4 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ '_foo' => 1001 ] ),
-				$this->equalTo( [ '_foo' => 42 ] ) );
+				[ '_foo' => 1001 ],
+				[ '_foo' => 42 ] );
 
 		$instance = new IdChanger(
 			$this->store
@@ -256,47 +256,47 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 
 		$table->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$table->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$table->expects( $this->any() )
 			->method( 'getFields' )
-			->will( $this->returnValue( [ '_foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] ) );
+			->willReturn( [ '_foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->onConsecutiveCalls( [ $table ] ) );
+			->willReturnOnConsecutiveCalls( [ $table ] );
 
 		$this->connection->expects( $this->at( 0 ) )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 's_id' => 42 ] ) )
-			->will( $this->returnValue( true ) );
+				[ 's_id' => 42 ] )
+			->willReturn( true );
 
 		$this->connection->expects( $this->at( 1 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 's_id' => 1001 ] ),
-				$this->equalTo( [ 's_id' => 42 ] ) );
+				[ 's_id' => 1001 ],
+				[ 's_id' => 42 ] );
 
 		$this->connection->expects( $this->at( 2 ) )
 			->method( 'delete' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'p_id' => 42 ] ) );
+				[ 'p_id' => 42 ] );
 
 		$this->connection->expects( $this->at( 4 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ '_foo' => 1001 ] ),
-				$this->equalTo( [ '_foo' => 42 ] ) );
+				[ '_foo' => 1001 ],
+				[ '_foo' => 42 ] );
 
 		$instance = new IdChanger(
 			$this->store
@@ -312,53 +312,53 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 
 		$table->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$table->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$table->expects( $this->any() )
 			->method( 'getFields' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->onConsecutiveCalls( [ $table ] ) );
+			->willReturnOnConsecutiveCalls( [ $table ] );
 
 		$this->connection->expects( $this->at( 0 ) )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 's_id' => 42 ] ) )
-			->will( $this->returnValue( true ) );
+				[ 's_id' => 42 ] )
+			->willReturn( true );
 
 		$this->connection->expects( $this->at( 1 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 's_id' => 1001 ] ),
-				$this->equalTo( [ 's_id' => 42 ] ) );
+				[ 's_id' => 1001 ],
+				[ 's_id' => 42 ] );
 
 		$this->connection->expects( $this->at( 2 ) )
 			->method( 'delete' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 's_id' => 42 ] ) );
+				[ 's_id' => 42 ] );
 
 		$this->connection->expects( $this->at( 3 ) )
 			->method( 'delete' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 's_id' => 42 ] ) );
+				[ 's_id' => 42 ] );
 
 		$this->connection->expects( $this->at( 4 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'o_id' => 1001 ] ),
-				$this->equalTo( [ 'o_id' => 42 ] ) );
+				[ 'o_id' => 1001 ],
+				[ 'o_id' => 42 ] );
 
 		$instance = new IdChanger(
 			$this->store

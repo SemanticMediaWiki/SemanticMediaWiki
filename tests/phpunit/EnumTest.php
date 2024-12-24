@@ -22,8 +22,8 @@ class EnumTest extends \PHPUnit\Framework\TestCase {
 	 *@dataProvider constProvider
 	 */
 	public function testValidate( $const ) {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$const
 		);
 	}

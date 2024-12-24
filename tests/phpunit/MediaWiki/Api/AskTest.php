@@ -48,7 +48,7 @@ class AskTest extends \PHPUnit\Framework\TestCase {
 			'query' => implode( '|', $query )
 		] );
 
-		$this->assertInternalType( 'array', $results );
+		$this->assertIsArray( $results );
 
 		// If their is no printrequests array we expect an error array
 		if ( isset( $results['query']['printrequests'] ) ) {

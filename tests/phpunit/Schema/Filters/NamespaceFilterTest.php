@@ -41,7 +41,7 @@ class NamespaceFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.namespace' ) );
+			->with(	'if.namespace' );
 
 		$instance = new NamespaceFilter( null );
 		$instance->filter( $compartment );
@@ -54,7 +54,7 @@ class NamespaceFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.namespace' ) );
+			->with(	'if.namespace' );
 
 		$instance = new NamespaceFilter( NS_MAIN );
 		$instance->addOption( NamespaceFilter::FILTER_CONDITION_NOT_REQUIRED, true );

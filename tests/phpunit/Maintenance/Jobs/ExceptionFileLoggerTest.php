@@ -43,13 +43,13 @@ class ExceptionFileLoggerTest extends \PHPUnit\Framework\TestCase {
 			'exception-log' => __DIR__
 		] ) );
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->getExceptionFile()
 		);
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->getExceptionCount()
 		);
 	}
@@ -65,7 +65,7 @@ class ExceptionFileLoggerTest extends \PHPUnit\Framework\TestCase {
 			new \Exception( 'Bar' )
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->getExceptionCount()
 		);

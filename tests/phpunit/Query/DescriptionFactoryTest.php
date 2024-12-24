@@ -91,7 +91,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$descriptions[] = $description;
 
@@ -101,7 +101,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$descriptions[] = $description;
 
@@ -122,7 +122,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$descriptions[] = $description;
 
@@ -132,7 +132,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$descriptions[] = $description;
 
@@ -199,12 +199,12 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstructDescriptionFromInvalidDataValue() {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid' ] )
+			->onlyMethods( [ 'isValid' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'isValid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new DescriptionFactory();
 
@@ -217,24 +217,24 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstructDescriptionFromValidDataValue() {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getProperty', 'getDataItem', 'getWikiValue' ] )
+			->onlyMethods( [ 'isValid', 'getProperty', 'getDataItem', 'getWikiValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar' ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getWikiValue' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
 			->disableOriginalConstructor()
@@ -242,7 +242,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getDescriptionBuilderRegistry' )
-			->will( $this->returnValue( new \SMW\Query\DescriptionBuilderRegistry() ) );
+			->willReturn( new \SMW\Query\DescriptionBuilderRegistry() );
 
 		$dataValue->setDataValueServiceFactory(
 			$dataValueServiceFactory
@@ -263,20 +263,20 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$containerSemanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( 'Bar' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIBlob( 'Bar' ) ] );
 
 		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
+			->onlyMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
 			->getMock();
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIContainer( $containerSemanticData ) ) );
+			->willReturn( $this->dataItemFactory->newDIContainer( $containerSemanticData ) );
 
 		$monolingualTextValueFormatter = new MonolingualTextValueFormatter();
 		$monolingualTextValueFormatter->setDataValue( $dataValue );
@@ -291,15 +291,15 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $monolingualTextValueFormatter ) );
+			->willReturn( $monolingualTextValueFormatter );
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( $monolingualTextValueParser ) );
+			->willReturn( $monolingualTextValueParser );
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getDescriptionBuilderRegistry' )
-			->will( $this->returnValue( new \SMW\Query\DescriptionBuilderRegistry() ) );
+			->willReturn( new \SMW\Query\DescriptionBuilderRegistry() );
 
 		$dataValue->setDataValueServiceFactory(
 			$dataValueServiceFactory
@@ -320,24 +320,24 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$containerSemanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( 'Bar' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIBlob( 'Bar' ) ] );
 
 		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
+			->onlyMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
 			->getMock();
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIContainer( $containerSemanticData ) ) );
+			->willReturn( $this->dataItemFactory->newDIContainer( $containerSemanticData ) );
 
 		$monolingualTextValueFormatter = new MonolingualTextValueFormatter();
 		$monolingualTextValueFormatter->setDataValue( $dataValue );
@@ -352,15 +352,15 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $monolingualTextValueFormatter ) );
+			->willReturn( $monolingualTextValueFormatter );
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( $monolingualTextValueParser ) );
+			->willReturn( $monolingualTextValueParser );
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getDescriptionBuilderRegistry' )
-			->will( $this->returnValue( new \SMW\Query\DescriptionBuilderRegistry() ) );
+			->willReturn( new \SMW\Query\DescriptionBuilderRegistry() );
 
 		$dataValue->setDataValueServiceFactory(
 			$dataValueServiceFactory

@@ -28,12 +28,12 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
 			->disableOriginalConstructor()
@@ -55,7 +55,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'unescape_bytea' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new ErrorLookup(
 			$this->store
@@ -77,32 +77,32 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
+			->onlyMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$store->expects( $this->any() )
 			->method( 'findDiTypeTableId' )
-			->will( $this->onConsecutiveCalls( '_foo', '_bar' ) );
+			->willReturnOnConsecutiveCalls( '_foo', '_bar' );
 
 		$store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
-			->will( $this->onConsecutiveCalls( 'smw_di_blob', 'smw_di_blob', 'smw_di_blob' ) );
+			->willReturnOnConsecutiveCalls( 'smw_di_blob', 'smw_di_blob', 'smw_di_blob' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
@@ -112,7 +112,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$instance = new ErrorLookup(
 			$store
@@ -150,32 +150,32 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
+			->onlyMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$store->expects( $this->any() )
 			->method( 'findDiTypeTableId' )
-			->will( $this->onConsecutiveCalls( '_foo', '_bar' ) );
+			->willReturnOnConsecutiveCalls( '_foo', '_bar' );
 
 		$store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
-			->will( $this->onConsecutiveCalls( 'smw_fpt_sobj', 'smw_di_blob', 'smw_di_blob' ) );
+			->willReturnOnConsecutiveCalls( 'smw_fpt_sobj', 'smw_di_blob', 'smw_di_blob' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
@@ -185,7 +185,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$instance = new ErrorLookup(
 			$store

@@ -40,7 +40,7 @@ class ManualEntryLoggerTest extends \PHPUnit\Framework\TestCase {
 
 		$manualLogEntry->expects( $this->once() )
 			->method( 'insert' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new ManualEntryLogger( $manualLogEntry );
 		$instance->registerLoggableEventType( 'Foo' );
@@ -58,21 +58,21 @@ class ManualEntryLoggerTest extends \PHPUnit\Framework\TestCase {
 
 		$manualLogEntry->expects( $this->once() )
 			->method( 'insert' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
-			->setMethods( [ 'newManualLogEntryForType' ] )
+			->onlyMethods( [ 'newManualLogEntryForType' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
 			->method( 'newManualLogEntryForType' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( $manualLogEntry ) );
+			->with( 'Foo' )
+			->willReturn( $manualLogEntry );
 
 		$instance->registerLoggableEventType( 'Foo' );
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->log( 'Foo', 'Bar', 'Baz', 'Yui' )
 		);
 	}
@@ -88,21 +88,21 @@ class ManualEntryLoggerTest extends \PHPUnit\Framework\TestCase {
 
 		$manualLogEntry->expects( $this->once() )
 			->method( 'insert' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
-			->setMethods( [ 'newManualLogEntryForType' ] )
+			->onlyMethods( [ 'newManualLogEntryForType' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
 			->method( 'newManualLogEntryForType' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( $manualLogEntry ) );
+			->with( 'Foo' )
+			->willReturn( $manualLogEntry );
 
 		$instance->registerLoggableEventType( 'Foo' );
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->log( 'Foo', $performer, 'Baz', 'Yui' )
 		);
 	}

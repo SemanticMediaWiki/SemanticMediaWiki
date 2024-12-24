@@ -50,7 +50,7 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->elasticFactory->expects( $this->any() )
 			->method( 'newIndexer' )
-			->will( $this->returnValue( $indexer ) );
+			->willReturn( $indexer );
 
 		$this->logger = $this->getMockBuilder( '\Psr\Log\NullLogger' )
 			->disableOriginalConstructor()
@@ -97,11 +97,11 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->fileIndexer->expects( $this->once() )
 			->method( 'findFile' )
-			->will( $this->returnValue( $file ) );
+			->willReturn( $file );
 
 		$this->elasticFactory->expects( $this->once() )
 			->method( 'newFileIndexer' )
-			->will( $this->returnValue( $this->fileIndexer ) );
+			->willReturn( $this->fileIndexer );
 
 		$config = $this->getMockBuilder( '\SMW\Elastic\Config' )
 			->disableOriginalConstructor()
@@ -117,17 +117,17 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $client ) );
+			->willReturn( $client );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$this->title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_FILE ) );
+			->willReturn( NS_FILE );
 
 		$instance = new FileIngestJob(
 			$this->title
@@ -140,11 +140,11 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 	public function testRunFileIndexer_NoFile_RequeueRetry() {
 		$this->fileIndexer->expects( $this->once() )
 			->method( 'findFile' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$this->elasticFactory->expects( $this->once() )
 			->method( 'newFileIndexer' )
-			->will( $this->returnValue( $this->fileIndexer ) );
+			->willReturn( $this->fileIndexer );
 
 		$config = $this->getMockBuilder( '\SMW\Elastic\Config' )
 			->disableOriginalConstructor()
@@ -152,8 +152,8 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 
 		$config->expects( $this->once() )
 			->method( 'dotGet' )
-			->with( $this->equalTo( 'indexer.job.file.ingest.retries' ) )
-			->will( $this->returnValue( 1 ) );
+			->with( 'indexer.job.file.ingest.retries' )
+			->willReturn( 1 );
 
 		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
@@ -161,7 +161,7 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 
 		$client->expects( $this->atLeastOnce() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
+			->willReturn( $config );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -169,17 +169,17 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $client ) );
+			->willReturn( $client );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$this->title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_FILE ) );
+			->willReturn( NS_FILE );
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'push' );

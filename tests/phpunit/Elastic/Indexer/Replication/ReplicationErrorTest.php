@@ -52,8 +52,8 @@ class ReplicationErrorTest extends \PHPUnit\Framework\TestCase {
 			ReplicationError::TYPE_EXCEPTION
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->is( ReplicationError::TYPE_EXCEPTION )
 		);
 	}

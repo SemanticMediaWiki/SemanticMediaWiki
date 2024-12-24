@@ -46,7 +46,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->loadBalancer->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$instance = new LoadBalancerConnectionProvider(
 			DB_REPLICA
@@ -73,7 +73,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$loadBalancer->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$instance = new LoadBalancerConnectionProvider(
 			DB_REPLICA

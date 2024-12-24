@@ -46,7 +46,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$instance = new TitleLookup( $database );
 
@@ -68,10 +68,10 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->with( $this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'page_namespace' => NS_MAIN ] ),
+				[ 'page_namespace' => NS_MAIN ],
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$instance = new TitleLookup( $database );
 
@@ -92,10 +92,10 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->with( $this->stringContains( 'category' ),
 				$this->anything(),
-				$this->equalTo( [ "cat_id BETWEEN 1 AND 5" ] ),
+				[ "cat_id BETWEEN 1 AND 5" ],
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$instance = new TitleLookup( $database );
 
@@ -120,7 +120,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 				$this->equalTo( [ "page_id BETWEEN 6 AND 10", 'page_namespace' => NS_MAIN ] ),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$instance = new TitleLookup( $database );
 
@@ -138,10 +138,10 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->with( $this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'page_namespace' => NS_MAIN ] ),
+				[ 'page_namespace' => NS_MAIN ],
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new TitleLookup( $database );
 
@@ -163,7 +163,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new TitleLookup( $database );
 
@@ -179,11 +179,11 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$database->expects( $this->once() )
 			->method( 'selectField' )
-			->with( $this->equalTo( 'page' ),
+			->with( 'page',
 				$this->anything(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( 9999 ) );
+			->willReturn( 9999 );
 
 		$instance = new TitleLookup( $database );
 
@@ -200,11 +200,11 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$database->expects( $this->once() )
 			->method( 'selectField' )
-			->with( $this->equalTo( 'category' ),
+			->with( 'category',
 				$this->anything(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( 1111 ) );
+			->willReturn( 1111 );
 
 		$instance = new TitleLookup( $database );
 
@@ -237,7 +237,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	protected function assertArrayOfTitles( $arrayOfTitles ) {
-		$this->assertInternalType( 'array', $arrayOfTitles );
+		$this->assertIsArray( $arrayOfTitles );
 
 		foreach ( $arrayOfTitles as $title ) {
 			$this->assertInstanceOf( 'Title', $title );

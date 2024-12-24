@@ -73,17 +73,17 @@ class PurgeEntityCacheTest extends TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( $fields ),
+				$fields,
 				$this->anything() )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->entityCache->expects( $this->atLeastOnce() )
 			->method( 'invalidate' )
-			->with( $this->equalTo( $subject ) );
+			->with( $subject );
 
 		$instance = new purgeEntityCache();
 

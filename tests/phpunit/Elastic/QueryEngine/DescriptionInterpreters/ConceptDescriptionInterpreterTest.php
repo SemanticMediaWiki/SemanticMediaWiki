@@ -43,20 +43,20 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->termsLookup->expects( $this->any() )
 			->method( 'newParameters' )
-			->will( $this->returnValue( $parameters ) );
+			->willReturn( $parameters );
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getTermsLookup', 'getStore', 'getID', 'interpretDescription' ] )
+			->onlyMethods( [ 'getTermsLookup', 'getStore', 'getID', 'interpretDescription' ] )
 			->getMock();
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $this->store ) );
+			->willReturn( $this->store );
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getTermsLookup' )
-			->will( $this->returnValue( $this->termsLookup ) );
+			->willReturn( $this->termsLookup );
 
 		$this->queryParser = $this->getMockBuilder( '\SMW\Query\Parser' )
 			->disableOriginalConstructor()
@@ -89,7 +89,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function testInterpretDescription_AvailableConceptQuery() {
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'interpretDescription' )
-			->will( $this->returnValue( $this->conditionBuilder->newCondition( [ 'Foo' ] ) ) );
+			->willReturn( $this->conditionBuilder->newCondition( [ 'Foo' ] ) );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -101,11 +101,11 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $concept ] ) );
+			->willReturn( [ $concept ] );
 
 		$this->queryParser->expects( $this->any() )
 			->method( 'getQueryDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new ConceptDescriptionInterpreter(
 			$this->conditionBuilder,

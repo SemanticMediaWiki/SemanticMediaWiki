@@ -55,8 +55,8 @@ class DispatchingContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$contentCreator->expects( $this->any() )
 			->method( 'canCreateContentsFor' )
-			->with( $this->equalTo( $importContents ) )
-			->will( $this->returnValue( true ) );
+			->with( $importContents )
+			->willReturn( true );
 
 		$instance = new DispatchingContentCreator(
 			[
@@ -79,12 +79,12 @@ class DispatchingContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$contentCreator->expects( $this->any() )
 			->method( 'canCreateContentsFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$contentCreator->expects( $this->any() )
 			->method( 'create' )
-			->with( $this->equalTo( $importContents ) )
-			->will( $this->returnValue( true ) );
+			->with( $importContents )
+			->willReturn( true );
 
 		$instance = new DispatchingContentCreator(
 			[
@@ -111,7 +111,7 @@ class DispatchingContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$contentCreator->expects( $this->any() )
 			->method( 'canCreateContentsFor' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$contentCreator->expects( $this->never() )
 			->method( 'create' );

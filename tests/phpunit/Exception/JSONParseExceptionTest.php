@@ -38,8 +38,8 @@ class JSONParseExceptionTest extends \PHPUnit\Framework\TestCase {
 			$json
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTidyMessage()
 		);
 	}

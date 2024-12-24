@@ -97,8 +97,8 @@ class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 			$definition[1]
 		);
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$definition[2]
 		);
 	}
@@ -107,7 +107,7 @@ class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->parserData->expects( $this->at( 0 ) )
 			->method( 'setOption' )
 			->with(
-				$this->equalTo( \SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE ),
+				\SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE,
 				$this->anything() );
 
 		$parser = $this->parserFactory->create( __METHOD__ );

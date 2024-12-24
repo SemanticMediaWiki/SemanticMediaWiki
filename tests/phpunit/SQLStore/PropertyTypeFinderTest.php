@@ -39,10 +39,10 @@ class PropertyTypeFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
-				$this->equalTo( 'smw_fpt_type' ),
+				'smw_fpt_type',
 				$this->anything(),
-				$this->equalTo( [ 'o_serialized' => 'http://semantic-mediawiki.org/swivt/1.0#_txt' ] ) )
-			->will( $this->returnValue( $row ) );
+				[ 'o_serialized' => 'http://semantic-mediawiki.org/swivt/1.0#_txt' ] )
+			->willReturn( $row );
 
 		$instance = new PropertyTypeFinder(
 			$this->connection

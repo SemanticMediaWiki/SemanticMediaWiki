@@ -49,8 +49,8 @@ class HashFieldUpdateTest extends \PHPUnit\Framework\TestCase {
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'smw_hash' => '' ] ),
-				$this->equalTo( [ 'smw_id' => 1001 ] ) );
+				[ 'smw_hash' => '' ],
+				[ 'smw_id' => 1001 ] );
 
 		HashFieldUpdate::$isCommandLineMode = true;
 		HashFieldUpdate::addUpdate( $this->connection, 1001, '' );
@@ -61,8 +61,8 @@ class HashFieldUpdateTest extends \PHPUnit\Framework\TestCase {
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'smw_hash' => '__hash__' ] ),
-				$this->equalTo( [ 'smw_id' => 42 ] ) );
+				[ 'smw_hash' => '__hash__' ],
+				[ 'smw_id' => 42 ] );
 
 		$instance = new HashFieldUpdate(
 			$this->connection,

@@ -29,7 +29,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 	}
 
 	public function testCanConstruct() {
@@ -231,7 +231,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	public function testTable() {
 		$this->connection->expects( $this->once() )
 			->method( 'tableName' )
-			->with( $this->equalTo( 'Bar' ) );
+			->with( 'Bar' );
 
 		$instance = new Query(
 			$this->connection
@@ -243,7 +243,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	public function testJoin() {
 		$this->connection->expects( $this->once() )
 			->method( 'tableName' )
-			->with( $this->equalTo( 'Foo' ) );
+			->with( 'Foo' );
 
 		$instance = new Query(
 			$this->connection
@@ -255,8 +255,8 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	public function testEq() {
 		$this->connection->expects( $this->once() )
 			->method( 'addQuotes' )
-			->with( $this->equalTo( 'Bar' ) )
-			->will( $this->returnValue( '`Bar`' ) );
+			->with( 'Bar' )
+			->willReturn( '`Bar`' );
 
 		$instance = new Query(
 			$this->connection
@@ -272,7 +272,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'makeList' )
 			->with( $this->equalTo( [ 'a', 'b' ] ) )
-			->will( $this->returnValue( 'a, b' ) );
+			->willReturn( 'a, b' );
 
 		$instance = new Query(
 			$this->connection
@@ -287,8 +287,8 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	public function testNeq() {
 		$this->connection->expects( $this->once() )
 			->method( 'addQuotes' )
-			->with( $this->equalTo( 'Bar' ) )
-			->will( $this->returnValue( '`Bar`' ) );
+			->with( 'Bar' )
+			->willReturn( '`Bar`' );
 
 		$instance = new Query(
 			$this->connection
@@ -308,8 +308,8 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
 			->with(
-				$this->equalTo( $instance ),
-				$this->equalTo( 'Foo' ) );
+				$instance,
+				'Foo' );
 
 		$instance->execute( 'Foo' );
 	}

@@ -32,12 +32,12 @@ class CategoryResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new CategoryResultPrinter( 'category' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getResult( $queryResult, [], SMW_OUTPUT_WIKI )
 		);
 	}

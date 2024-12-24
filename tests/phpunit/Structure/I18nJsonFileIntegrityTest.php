@@ -54,13 +54,13 @@ class I18nJsonFileIntegrityTest extends \PHPUnit\Framework\TestCase {
 	public function testMediaWikiI18NJsonDecodeEncode( $file ) {
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$jsonFileReader->getModificationTime()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$jsonFileReader->read()
 		);
 	}
@@ -71,15 +71,15 @@ class I18nJsonFileIntegrityTest extends \PHPUnit\Framework\TestCase {
 	public function testSemanticMediaWikiI18NJsonDecodeEncode( $file ) {
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$jsonFileReader->getModificationTime()
 		);
 
 		$contents = $jsonFileReader->read();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$contents
 		);
 

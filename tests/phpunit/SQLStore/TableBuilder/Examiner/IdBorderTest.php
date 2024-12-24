@@ -49,11 +49,11 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( [ (object)$row ] ) );
+			->willReturn( [ (object)$row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new IdBorder(
 			$this->store
@@ -86,17 +86,17 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $rows ) );
+			->willReturn( $rows );
 
 		$connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'smw_id' => 9999 ] ) );
+				[ 'smw_id' => 9999 ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new IdBorder(
 			$this->store
@@ -130,7 +130,7 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'moveSMWPageID' ] )
+			->onlyMethods( [ 'moveSMWPageID' ] )
 			->getMock();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -139,21 +139,21 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $rows ) );
+			->willReturn( $rows );
 
 		$connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $expected ) );
+				$expected );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new IdBorder(
 			$this->store

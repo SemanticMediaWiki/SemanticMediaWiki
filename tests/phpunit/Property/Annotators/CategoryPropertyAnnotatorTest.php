@@ -154,7 +154,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$wikiPage->expects( $expectedPageLookup )
 			->method( 'getHiddenCategories' )
-			->will( $this->returnValue( $parameters['hidCategories'] ) );
+			->willReturn( $parameters['hidCategories'] );
 
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
@@ -162,7 +162,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$pageCreator->expects( $expectedPageLookup )
 			->method( 'createPage' )
-			->will( $this->returnValue( $wikiPage ) );
+			->willReturn( $wikiPage );
 
 		$semanticData = $this->semanticDataFactory
 			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
@@ -205,12 +205,12 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	public function testAddCategoryOnInvalidRedirect() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
+			->onlyMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
+			->willReturn( new DIWikiPage( 'Foo', NS_MAIN ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -292,11 +292,11 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$hidCategory->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_CATEGORY ) );
+			->willReturn( NS_CATEGORY );
 
 		$hidCategory->expects( $this->any() )
 			->method( 'getText' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		// #0 Standard category, show hidden category
 		$provider[] = [

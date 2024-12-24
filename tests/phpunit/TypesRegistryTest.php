@@ -19,15 +19,15 @@ class TypesRegistryTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testGetDataTypeList() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			TypesRegistry::getDataTypeList()
 		);
 	}
 
 	public function testGetPropertyList() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			TypesRegistry::getPropertyList()
 		);
 	}

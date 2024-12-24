@@ -64,7 +64,7 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -72,15 +72,15 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 
 		$page->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->dependencyValidator->expects( $this->once() )
 			->method( 'canKeepParserCache' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new RejectParserCacheValue(
 			$this->namespaceExaminer,
@@ -103,7 +103,7 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -111,15 +111,15 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 
 		$page->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->dependencyValidator->expects( $this->once() )
 			->method( 'canKeepParserCache' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new RejectParserCacheValue(
 			$this->namespaceExaminer,
@@ -146,11 +146,11 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 
 		$page->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->dependencyValidator->expects( $this->never() )
 			->method( 'canKeepParserCache' );

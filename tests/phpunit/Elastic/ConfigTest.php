@@ -69,9 +69,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase {
 			$instance->dotGet( 'foo.foo_bar' )
 		);
 
-		$this->assertEquals(
-			false,
-			$instance->dotGet( 'foo.foo.bar' )
+		$this->assertFalse(
+						$instance->dotGet( 'foo.foo.bar' )
 		);
 	}
 
@@ -87,7 +86,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase {
 			$instance->dotGet( 'Foo' )
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'456',
 			$instance->dotGet( 'Bar' )
 		);

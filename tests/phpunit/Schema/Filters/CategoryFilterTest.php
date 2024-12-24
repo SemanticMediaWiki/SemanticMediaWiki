@@ -44,7 +44,7 @@ class CategoryFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.category' ) );
+			->with(	'if.category' );
 
 		$instance = new CategoryFilter();
 		$instance->filter( $compartment );
@@ -57,7 +57,7 @@ class CategoryFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.category' ) );
+			->with(	'if.category' );
 
 		$instance = new CategoryFilter();
 		$instance->addOption( CategoryFilter::FILTER_CONDITION_NOT_REQUIRED, true );

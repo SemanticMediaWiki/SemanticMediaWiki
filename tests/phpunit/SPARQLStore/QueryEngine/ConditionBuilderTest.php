@@ -734,8 +734,8 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testCanUseQFeature() {
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isSetFlag( 'Foo' )
 		);
 	}
@@ -755,16 +755,16 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isRedirect' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
-			->setMethods( [ 'getTitle' ] )
+			->onlyMethods( [ 'getTitle' ] )
 			->getMock();
 
 		$diWikiPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
@@ -776,18 +776,18 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
-			->setMethods( [ 'isSetFlag' ] )
+			->onlyMethods( [ 'isSetFlag' ] )
 			->getMock();
 
 		$instance->expects( $this->at( 0 ) )
 			->method( 'isSetFlag' )
-			->with( $this->equalTo( SMW_SPARQL_QF_NOCASE ) )
-			->will( $this->returnValue( false ) );
+			->with( SMW_SPARQL_QF_NOCASE )
+			->willReturn( false );
 
 		$instance->expects( $this->at( 1 ) )
 			->method( 'isSetFlag' )
-			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
-			->will( $this->returnValue( true ) );
+			->with( SMW_SPARQL_QF_REDI )
+			->willReturn( true );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -816,33 +816,33 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isRedirect' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
-			->setMethods( [ 'getTitle' ] )
+			->onlyMethods( [ 'getTitle' ] )
 			->getMock();
 
 		$diWikiPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$description = new ValueDescription( $diWikiPage, null );
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
-			->setMethods( [ 'isSetFlag' ] )
+			->onlyMethods( [ 'isSetFlag' ] )
 			->getMock();
 
 		$instance->expects( $this->at( 0 ) )
 			->method( 'isSetFlag' )
-			->with( $this->equalTo( SMW_SPARQL_QF_NOCASE ) )
-			->will( $this->returnValue( false ) );
+			->with( SMW_SPARQL_QF_NOCASE )
+			->willReturn( false );
 
 		$instance->expects( $this->at( 1 ) )
 			->method( 'isSetFlag' )
-			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
-			->will( $this->returnValue( true ) );
+			->with( SMW_SPARQL_QF_REDI )
+			->willReturn( true );
 
 		$condition = $instance->getConditionFrom( $description );
 

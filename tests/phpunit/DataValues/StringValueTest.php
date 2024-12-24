@@ -31,7 +31,7 @@ class StringValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 	}
 
 	public function testCanConstruct() {
@@ -49,7 +49,7 @@ class StringValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $stringValueFormatter ) );
+			->willReturn( $stringValueFormatter );
 
 		$instance->setDataValueServiceFactory(
 			$this->dataValueServiceFactory

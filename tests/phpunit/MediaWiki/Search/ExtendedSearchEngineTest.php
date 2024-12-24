@@ -57,12 +57,12 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSearchEngine' ] )
+			->onlyMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
 			->method( 'getSearchEngine' )
-			->will( $this->returnValue( $searchEngine ) );
+			->willReturn( $searchEngine );
 
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', null );
 
@@ -100,8 +100,8 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'supports' )
-			->with( $this->equalTo( 'Some feature' ) )
-			->will( $this->returnValueMap( [ [ 'Some feature', true ] ] ) );
+			->with( 'Some feature' )
+			->willReturnMap( [ [ 'Some feature', true ] ] );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
@@ -121,8 +121,8 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'normalizeText' )
-			->with( $this->equalTo( 'Some text' ) )
-			->will( $this->returnValueMap( [ [ 'Some text', 'Some normalized text' ] ] ) );
+			->with( 'Some text' )
+			->willReturnMap( [ [ 'Some text', 'Some normalized text' ] ] );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
@@ -156,9 +156,9 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'getTextFromContent' )
 			->with(
-				$this->equalTo( $title ),
-				$this->equalTo( $content ) )
-			->will( $this->returnValueMap( [ [ $title, $content, 'text from content for title' ] ] ) );
+				$title,
+				$content )
+			->willReturnMap( [ [ $title, $content, 'text from content for title' ] ] );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
@@ -184,7 +184,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'textAlreadyUpdatedForIndex' )
 			->with()
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
@@ -205,9 +205,9 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'update' )
 			->with(
-				$this->equalTo( 42 ),
-				$this->equalTo( 'Some title' ),
-				$this->equalTo( 'Some text' ) );
+				42,
+				'Some title',
+				'Some text' );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
@@ -225,8 +225,8 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'updateTitle' )
 			->with(
-				$this->equalTo( 42 ),
-				$this->equalTo( 'Some title' ) );
+				42,
+				'Some title' );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
@@ -248,8 +248,8 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'delete' )
 			->with(
-				$this->equalTo( 42 ),
-				$this->equalTo( 'Some title' ) );
+				42,
+				'Some title' );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
@@ -271,8 +271,8 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'setFeatureData' )
 			->with(
-				$this->equalTo( 'Some feature name' ),
-				$this->equalTo( 'Some feature expression' ) );
+				'Some feature name',
+				'Some feature expression' );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
@@ -321,8 +321,8 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'setLimitOffset' )
 			->with(
-				$this->equalTo( 9001 ),
-				$this->equalTo( 42 ) );
+				9001,
+				42 );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
@@ -376,7 +376,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'setShowSuggestion' )
-			->with( $this->equalTo( true ) );
+			->with( true );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
@@ -397,7 +397,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$searchSuggestionSet->expects( $this->any() )
 			->method( 'map' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
 			->disableOriginalConstructor()
@@ -405,8 +405,8 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$extendedSearch->expects( $this->once() )
 			->method( 'completionSearch' )
-			->with( $this->equalTo( 'in:Foo' ) )
-			->will( $this->returnValue( $searchSuggestionSet ) );
+			->with( 'in:Foo' )
+			->willReturn( $searchSuggestionSet );
 
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
@@ -432,7 +432,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$searchSuggestionSet->expects( $this->any() )
 			->method( 'map' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
 			->disableOriginalConstructor()
@@ -440,7 +440,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$extendedSearch->expects( $this->once() )
 			->method( 'completionSearch' )
-			->will( $this->returnValue( $searchSuggestionSet ) );
+			->willReturn( $searchSuggestionSet );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
@@ -462,7 +462,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$searchSuggestionSet->expects( $this->any() )
 			->method( 'map' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
 			->disableOriginalConstructor()
@@ -470,11 +470,11 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$extendedSearch->expects( $this->once() )
 			->method( 'completionSearch' )
-			->will( $this->returnValue( $searchSuggestionSet ) );
+			->willReturn( $searchSuggestionSet );
 
 		$extendedSearch->expects( $this->once() )
 			->method( 'setCompletionSearchTerm' )
-			->with( $this->equalTo( 'Foo_Variants' ) );
+			->with( 'Foo_Variants' );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection

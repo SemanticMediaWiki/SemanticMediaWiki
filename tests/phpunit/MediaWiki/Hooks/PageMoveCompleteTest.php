@@ -112,7 +112,7 @@ class PageMoveCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'deleteSubject' )
-			->with( $this->equalTo( $oldTitle ) );
+			->with( $oldTitle );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

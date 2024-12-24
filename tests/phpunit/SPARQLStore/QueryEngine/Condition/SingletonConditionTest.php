@@ -36,18 +36,18 @@ class SingletonConditionTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new SingletonCondition( $expElement );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getCondition()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getWeakConditionString()
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isSafe()
 		);
 	}

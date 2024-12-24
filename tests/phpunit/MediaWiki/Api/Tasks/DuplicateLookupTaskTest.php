@@ -55,7 +55,7 @@ class DuplicateLookupTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' );
@@ -66,7 +66,7 @@ class DuplicateLookupTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$entityTable->expects( $this->atLeastOnce() )
 			->method( 'findDuplicates' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -74,7 +74,7 @@ class DuplicateLookupTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityTable ) );
+			->willReturn( $entityTable );
 
 		$instance = new DuplicateLookupTask(
 			$store,

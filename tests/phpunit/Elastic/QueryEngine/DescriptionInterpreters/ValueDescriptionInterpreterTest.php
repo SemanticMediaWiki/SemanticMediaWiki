@@ -29,12 +29,12 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getID' ] )
+			->onlyMethods( [ 'getID' ] )
 			->getMock();
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 	}
 
 	public function testCanConstruct() {

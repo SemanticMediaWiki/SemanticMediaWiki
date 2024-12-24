@@ -53,7 +53,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testBuildHTML_Empty() {
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( '__foo__' ) );
+			->willReturn( '__foo__' );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -93,12 +93,12 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$typableSeverityIndicatorProvider->expects( $this->any() )
 			->method( 'isSeverityType' )
-			->with( $this->equalTo( $typableSeverityIndicatorProvider::SEVERITY_ERROR ) )
-			->will( $this->returnValue( true ) );
+			->with( $typableSeverityIndicatorProvider::SEVERITY_ERROR )
+			->willReturn( true );
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( '__foo__' ) );
+			->willReturn( '__foo__' );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -141,11 +141,11 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 			->withConsecutive(
 				[ $this->equalTo( $typableSeverityIndicatorProvider::SEVERITY_ERROR ) ],
 				[ $this->equalTo( $typableSeverityIndicatorProvider::SEVERITY_WARNING ) ] )
-			->will( $this->onConsecutiveCalls( false, true ) );
+			->willReturnOnConsecutiveCalls( false, true );
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( '__foo__' ) );
+			->willReturn( '__foo__' );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -185,7 +185,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( '__foo__' ) );
+			->willReturn( '__foo__' );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -229,11 +229,11 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$compositeIndicatorProvider->expects( $this->any() )
 			->method( 'getIndicators' )
-			->will( $this->returnValue( $composite ) );
+			->willReturn( $composite );
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( '__foo__' ) );
+			->willReturn( '__foo__' );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 

@@ -66,7 +66,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -87,13 +87,13 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'smw.refresh' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw.refresh' )
+			->willReturn( true );
 
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'pop' )
-			->with( $this->equalTo( 'smw.refresh' ) )
-			->will( $this->returnValue( false ) );
+			->with( 'smw.refresh' )
+			->willReturn( false );
 
 		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
@@ -101,7 +101,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newByType' )
-			->will( $this->returnValue( $refreshJob ) );
+			->willReturn( $refreshJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -111,7 +111,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$webRequest->expects( $this->atLeastOnce() )
 			->method( 'getText' )
-			->will( $this->returnValue( 'yes' ) );
+			->willReturn( 'yes' );
 
 		$instance = new DataRefreshJobTaskHandler(
 			$this->htmlFormRenderer,
@@ -125,7 +125,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	public function testDoRefreshOn_Stop() {
 		$this->jobQueue->expects( $this->once() )
 			->method( 'delete' )
-			->with( $this->equalTo( 'smw.refresh' ) );
+			->with( 'smw.refresh' );
 
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
@@ -133,7 +133,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$webRequest->expects( $this->atLeastOnce() )
 			->method( 'getText' )
-			->will( $this->returnValue( 'stop' ) );
+			->willReturn( 'stop' );
 
 		$instance = new DataRefreshJobTaskHandler(
 			$this->htmlFormRenderer,

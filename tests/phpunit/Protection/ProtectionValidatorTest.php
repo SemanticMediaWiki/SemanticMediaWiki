@@ -32,7 +32,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'save', 'contains', 'fetch', 'associate', 'invalidate', 'delete' ] )
+			->onlyMethods( [ 'save', 'contains', 'fetch', 'associate', 'invalidate', 'delete' ] )
 			->getMock();
 
 		$this->permissionManager = $this->getMockBuilder( '\SMW\MediaWiki\PermissionManager' )
@@ -70,14 +70,14 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $subject->asBase() ),
-				$this->equalTo( $property ) )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( true ) ] ) );
+				$subject->asBase(),
+				$property )
+			->willReturn( [ $this->dataItemFactory->newDIBoolean( true ) ] );
 
 		$instance = new ProtectionValidator(
 			$this->store,
@@ -100,14 +100,14 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $subject->asBase() ),
-				$this->equalTo( $property ) )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( true ) ] ) );
+				$subject->asBase(),
+				$property )
+			->willReturn( [ $this->dataItemFactory->newDIBoolean( true ) ] );
 
 		$instance = new ProtectionValidator(
 			$this->store,
@@ -125,11 +125,11 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new ProtectionValidator(
 			$this->store,
@@ -147,11 +147,11 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new ProtectionValidator(
 			$this->store,
@@ -190,11 +190,11 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( 'yes' ) );
+			->willReturn( 'yes' );
 
 		$instance = new ProtectionValidator(
 			$this->store,
@@ -253,10 +253,10 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 		$this->permissionManager->expects( $this->once() )
 			->method( 'userCan' )
 			->with(
-				$this->equalTo( 'edit' ),
-				$this->equalTo( null ),
-				$this->equalTo( $title ) )
-			->will( $this->returnValue( false ) );
+				'edit',
+				null,
+				$title )
+			->willReturn( false );
 
 		$instance = new ProtectionValidator(
 			$this->store,
@@ -325,7 +325,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$revision->expects( $this->any() )
 			->method( 'getUserText' )
-			->will( $this->returnValue( 'FooImporter' ) );
+			->willReturn( 'FooImporter' );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -333,15 +333,15 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+			->willReturn( SMW_NS_SCHEMA );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'FooSchema' ) );
+			->willReturn( 'FooSchema' );
 
 		$title->expects( $this->any() )
 			->method( 'getFirstRevision' )
-			->will( $this->returnValue( $revision ) );
+			->willReturn( $revision );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -370,7 +370,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$revision->expects( $this->any() )
 			->method( 'getUserText' )
-			->will( $this->returnValue( 'FooImporter' ) );
+			->willReturn( 'FooImporter' );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -378,15 +378,15 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+			->willReturn( SMW_NS_SCHEMA );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'FooSchema' ) );
+			->willReturn( 'FooSchema' );
 
 		$title->expects( $this->any() )
 			->method( 'getFirstRevision' )
-			->will( $this->returnValue( $revision ) );
+			->willReturn( $revision );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -394,7 +394,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$user->expects( $this->any() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'FooImporter' ) );
+			->willReturn( 'FooImporter' );
 
 		$instance = new ProtectionValidator(
 			$this->store,
@@ -419,7 +419,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 		$propertyChangeListener->expects( $this->at( 0 ) )
 			->method( 'addListenerCallback' )
 			->with(
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_CHGPRO' ) ),
+				$this->dataItemFactory->newDIProperty( '_CHGPRO' ),
 				$this->anything() );
 
 		$instance = new ProtectionValidator(
@@ -438,7 +438,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getDataItemById' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -446,7 +446,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'delete' )
@@ -476,7 +476,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getDataItemById' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -484,7 +484,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' )

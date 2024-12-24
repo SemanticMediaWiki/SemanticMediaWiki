@@ -95,7 +95,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$redirectStore = new RedirectStore( $this->store );
 
@@ -105,52 +105,52 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->factory->expects( $this->any() )
 			->method( 'newDuplicateFinder' )
-			->will( $this->returnValue( $this->duplicateFinder ) );
+			->willReturn( $this->duplicateFinder );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newIdCacheManager' )
-			->will( $this->returnValue( $idCacheManager ) );
+			->willReturn( $idCacheManager );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newRedirectStore' )
-			->will( $this->returnValue( $redirectStore ) );
+			->willReturn( $redirectStore );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyStatisticsStore' )
-			->will( $this->returnValue( $propertyStatisticsStore ) );
+			->willReturn( $propertyStatisticsStore );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newidEntityFinder' )
-			->will( $this->returnValue( $this->idEntityFinder ) );
+			->willReturn( $this->idEntityFinder );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newTableFieldUpdater' )
-			->will( $this->returnValue( $this->tableFieldUpdater ) );
+			->willReturn( $this->tableFieldUpdater );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newCacheWarmer' )
-			->will( $this->returnValue( $this->cacheWarmer ) );
+			->willReturn( $this->cacheWarmer );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyTableHashes' )
-			->will( $this->returnValue( $this->propertyTableHashes ) );
+			->willReturn( $this->propertyTableHashes );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newSequenceMapFinder' )
-			->will( $this->returnValue( $this->sequenceMapFinder ) );
+			->willReturn( $this->sequenceMapFinder );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newAuxiliaryFields' )
-			->will( $this->returnValue( $this->auxiliaryFields ) );
+			->willReturn( $this->auxiliaryFields );
 
 		$this->entityIdFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdFinder' )
 			->setConstructorArgs( [ $this->connection, $this->propertyTableHashes, $idCacheManager ] )
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$this->factory->expects( $this->any() )
 			->method( 'newEntityIdFinder' )
-			->will( $this->returnValue( $this->entityIdFinder ) );
+			->willReturn( $this->entityIdFinder );
 	}
 
 	public function testCanConstruct() {
@@ -185,7 +185,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->deleteRedirect( 'Foo', 9001 );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->findRedirect( 'Foo', 9001 )
 		);
@@ -204,7 +204,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( $selectRow ) );
+			->willReturn( $selectRow );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -212,7 +212,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new EntityIdManager(
 			$store,
@@ -237,7 +237,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( $selectRow ) );
+			->willReturn( $selectRow );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -245,7 +245,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new EntityIdManager(
 			$store,
@@ -281,11 +281,11 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( $selectRow ) );
+			->willReturn( $selectRow );
 
 		$this->connection->expects( $this->once() )
 			->method( 'insertId' )
-			->will( $this->returnValue( 9999 ) );
+			->willReturn( 9999 );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -293,7 +293,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new EntityIdManager(
 			$store,
@@ -324,12 +324,12 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->idEntityFinder->expects( $this->once() )
 			->method( 'getDataItemById' )
-			->with( $this->equalTo( 42 ) )
-			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
+			->with( 42 )
+			->willReturn( new DIWikiPage( 'Foo', NS_MAIN ) );
 
 		$instance = new EntityIdManager(
 			$this->store,
@@ -346,9 +346,9 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 		$this->tableFieldUpdater->expects( $this->once() )
 			->method( 'updateIwField' )
 			->with(
-				$this->equalTo( 42 ),
-				$this->equalTo( 'Bar' ),
-				$this->equalTo( '8ba1886210e332a1fbaf28c38e43d1e89dc761db' ) );
+				42,
+				'Bar',
+				'8ba1886210e332a1fbaf28c38e43d1e89dc761db' );
 
 		$instance = new EntityIdManager(
 			$this->store,
@@ -374,8 +374,8 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->duplicateFinder->expects( $this->at( 0 ) )
 			->method( 'findDuplicates' )
-			->with( $this->equalTo( \SMW\SQLStore\SQLStore::ID_TABLE ) )
-			->will( $this->returnValue( [ $row ] ) );
+			->with( \SMW\SQLStore\SQLStore::ID_TABLE )
+			->willReturn( [ $row ] );
 
 		$instance = new EntityIdManager(
 			$this->store,
@@ -406,11 +406,11 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( $row ) );
+			->willReturn( $row );
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new EntityIdManager(
 			$store,
@@ -439,7 +439,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cacheWarmer->expects( $this->once() )
 			->method( 'prepareCache' )
-			->with( $this->equalTo( $list ) );
+			->with( $list );
 
 		$factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
@@ -447,15 +447,15 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$factory->expects( $this->any() )
 			->method( 'newIdCacheManager' )
-			->will( $this->returnValue( $idCacheManager ) );
+			->willReturn( $idCacheManager );
 
 		$factory->expects( $this->any() )
 			->method( 'newIdEntityFinder' )
-			->will( $this->returnValue( $this->idEntityFinder ) );
+			->willReturn( $this->idEntityFinder );
 
 		$factory->expects( $this->any() )
 			->method( 'newCacheWarmer' )
-			->will( $this->returnValue( $this->cacheWarmer ) );
+			->willReturn( $this->cacheWarmer );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -487,7 +487,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
@@ -495,11 +495,11 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$factory->expects( $this->any() )
 			->method( 'newIdCacheManager' )
-			->will( $this->returnValue( $idCacheManager ) );
+			->willReturn( $idCacheManager );
 
 		$factory->expects( $this->any() )
 			->method( 'newIdEntityFinder' )
-			->will( $this->returnValue( $this->idEntityFinder ) );
+			->willReturn( $this->idEntityFinder );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -507,7 +507,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -515,7 +515,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new EntityIdManager(
 			$store,
@@ -539,12 +539,12 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$fieldList->expects( $this->any() )
 			->method( 'getHashList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->auxiliaryFields->expects( $this->once() )
 			->method( 'prefetchFieldList' )
-			->with( $this->equalTo( $subjects ) )
-			->will( $this->returnValue( $fieldList ) );
+			->with( $subjects )
+			->willReturn( $fieldList );
 
 		$instance = new EntityIdManager(
 			$this->store,
@@ -558,8 +558,8 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 		$this->auxiliaryFields->expects( $this->once() )
 			->method( 'setFieldMaps' )
 			->with(
-				$this->equalTo( 42 ),
-				$this->equalTo( [ 'Foo' ] ) );
+				42,
+				[ 'Foo' ] );
 
 		$instance = new EntityIdManager(
 			$this->store,
@@ -572,7 +572,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetSequenceMap() {
 		$this->sequenceMapFinder->expects( $this->once() )
 			->method( 'findMapById' )
-			->with( $this->equalTo( 1001 ) );
+			->with( 1001 );
 
 		$instance = new EntityIdManager(
 			$this->store,

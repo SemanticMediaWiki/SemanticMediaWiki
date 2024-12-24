@@ -69,7 +69,7 @@ class AttachmentAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	public function testAddAnnotation( $document, $expected ) {
 		$this->containerSemanticData->expects( $this->once() )
 			->method( 'addPropertyObjectValue' )
-			->with( $this->equalTo( new \SMW\DIProperty( $expected ) ) );
+			->with( new \SMW\DIProperty( $expected ) );
 
 		$instance = new AttachmentAnnotator(
 			$this->containerSemanticData,

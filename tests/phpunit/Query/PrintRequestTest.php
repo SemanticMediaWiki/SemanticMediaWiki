@@ -24,7 +24,7 @@ class PrintRequestTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyValue->expects( $this->once() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->assertInstanceOf(
 			'SMW\Query\PrintRequest',
@@ -43,14 +43,12 @@ class PrintRequestTest extends \PHPUnit\Framework\TestCase {
 			$instance->getCanonicalLabel()
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->getLabel()
+		$this->assertNull(
+						$instance->getLabel()
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->getWikiText()
+		$this->assertNull(
+						$instance->getWikiText()
 		);
 
 		$instance->setLabel( 'Bar' );

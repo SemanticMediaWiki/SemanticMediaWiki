@@ -42,7 +42,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
@@ -69,7 +69,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function testinterpretDescriptionForUnknownTablePropertyId() {
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$description = $this->descriptionFactory->newSomeProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' ),
@@ -99,20 +99,20 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testinterpretDescriptionForNonIdSubject() {
 		$proptable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'usesIdSubject' ] )
+			->onlyMethods( [ 'usesIdSubject' ] )
 			->getMock();
 
 		$proptable->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $proptable ] ) );
+			->willReturn( [ 'Foo' => $proptable ] );
 
 		$description = $this->descriptionFactory->newSomeProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' ),
@@ -147,27 +147,27 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$property->expects( $this->once() )
 			->method( 'isInverse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$property->expects( $this->once() )
 			->method( 'findPropertyTypeID' )
-			->will( $this->returnValue( '_txt' ) );
+			->willReturn( '_txt' );
 
 		$proptable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'usesIdSubject' ] )
+			->onlyMethods( [ 'usesIdSubject' ] )
 			->getMock();
 
 		$proptable->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $proptable ] ) );
+			->willReturn( [ 'Foo' => $proptable ] );
 
 		$description = $this->descriptionFactory->newSomeProperty(
 			$property,
@@ -204,31 +204,31 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getIndexField' )
-			->will( $this->returnValue( $indexField ) );
+			->willReturn( $indexField );
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getTableFields' )
-			->will( $this->returnValue( [ 'one', 'two' ] ) );
+			->willReturn( [ 'one', 'two' ] );
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getWhereConds' )
-			->will( $this->returnValue( [ $indexField => 'fixedFooWhereCond' ] ) );
+			->willReturn( [ $indexField => 'fixedFooWhereCond' ] );
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPropertyID', 'getSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPropertyID', 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 91 ) );
+			->willReturn( 91 );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$proptable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -236,31 +236,31 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$proptable->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$proptable->expects( $this->any() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'FooPropTable' ) );
+			->willReturn( 'FooPropTable' );
 
 		$proptable->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( $isFixedPropertyTable ) );
+			->willReturn( $isFixedPropertyTable );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $proptable ] ) );
+			->willReturn( [ 'Foo' => $proptable ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIds ) );
+			->willReturn( $objectIds );
 
 		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$queryEngineFactory = new QueryEngineFactory( $this->store );
 
@@ -436,16 +436,16 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSQLCondition', 'getDataItem' ] )
+			->onlyMethods( [ 'getSQLCondition', 'getDataItem' ] )
 			->getMock();
 
 		$valueDescription->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItemFactory->newDIBlob( '13,56' ) ) );
+			->willReturn( $dataItemFactory->newDIBlob( '13,56' ) );
 
 		$valueDescription->expects( $this->once() )
 			->method( 'getSQLCondition' )
-			->will( $this->returnValue( 'foo AND bar' ) );
+			->willReturn( 'foo AND bar' );
 
 		$description = $descriptionFactory->newSomeProperty(
 			$property,

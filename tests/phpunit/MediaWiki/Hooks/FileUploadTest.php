@@ -33,17 +33,17 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 		] );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->onlyMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -82,7 +82,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 
 		$namespaceExaminer->expects( $this->atLeastOnce() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$file = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
@@ -90,7 +90,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 
 		$file->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
 			->disableOriginalConstructor()
@@ -98,21 +98,21 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 
 		$wikiFilePage->expects( $this->once() )
 			->method( 'getParserOutput' )
-			->will( $this->returnValue( new ParserOutput() ) );
+			->willReturn( new ParserOutput() );
 
 		$wikiFilePage->expects( $this->atLeastOnce() )
 			->method( 'getFile' )
-			->will( $this->returnValue( $file ) );
+			->willReturn( $file );
 
 		$pageCreator = $this->getMockBuilder( 'SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'createFilePage' ] )
+			->onlyMethods( [ 'createFilePage' ] )
 			->getMock();
 
 		$pageCreator->expects( $this->once() )
 			->method( 'createFilePage' )
-			->with( $this->equalTo( $title ) )
-			->will( $this->returnValue( $wikiFilePage ) );
+			->with( $title )
+			->willReturn( $wikiFilePage );
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
@@ -144,7 +144,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 
 		$namespaceExaminer->expects( $this->atLeastOnce() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$file = $this->getMockBuilder( 'File' )
 			->disableOriginalConstructor()
@@ -152,7 +152,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 
 		$file->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$pageCreator = $this->getMockBuilder( 'SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()

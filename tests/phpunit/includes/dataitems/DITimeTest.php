@@ -37,7 +37,7 @@ class DITimeTest extends \PHPUnit\Framework\TestCase {
 			new \DateTime( '2012-07-08 11:14:15.638276' )
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'15.638276',
 			$instance->getSecond()
 		);

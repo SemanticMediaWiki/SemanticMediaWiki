@@ -58,8 +58,8 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$baseStore->expects( $this->once() )
 			->method( 'getSemanticData' )
-			->with( $this->equalTo( $subject ) )
-			->will( $this->returnValue( $semanticData ) );
+			->with( $subject )
+			->willReturn( $semanticData );
 
 		$instance = new SPARQLStore( $baseStore );
 
@@ -85,8 +85,8 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$baseStore->expects( $this->once() )
 			->method( 'deleteSubject' )
-			->with( $this->equalTo( $title ) )
-			->will( $this->returnValue( true ) );
+			->with( $title )
+			->willReturn( true );
 
 		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
 			->disableOriginalConstructor()
@@ -94,15 +94,15 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$sparqlDatabase->expects( $this->once() )
 			->method( 'deleteContentByValue' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$sparqlDatabase->expects( $this->once() )
 			->method( 'delete' )
 			->with(
-				$this->equalTo( "{$resourceUri} ?p ?o" ),
-				$this->equalTo( "{$resourceUri} ?p ?o" ),
-				$this->equalTo( $extraNamespaces ) )
-			->will( $this->returnValue( true ) );
+				"{$resourceUri} ?p ?o",
+				"{$resourceUri} ?p ?o",
+				$extraNamespaces )
+			->willReturn( true );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
@@ -110,7 +110,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $sparqlDatabase ) );
+			->willReturn( $sparqlDatabase );
 
 		$instance = new SPARQLStore( $baseStore );
 		$instance->setConnectionManager( $connectionManager );
@@ -140,7 +140,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$sparqlDatabase->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $repositoryResult ) );
+			->willReturn( $repositoryResult );
 
 		$sparqlDatabase->expects( $this->once() )
 			->method( 'insertData' );
@@ -151,7 +151,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $sparqlDatabase ) );
+			->willReturn( $sparqlDatabase );
 
 		$instance = new SPARQLStore( $baseStore );
 		$instance->setConnectionManager( $connectionManager );
@@ -165,7 +165,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$respositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RespositoryConnection' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'insertDelete' ] )
+			->onlyMethods( [ 'insertDelete' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -177,16 +177,16 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
 			->setConstructorArgs( [ $store ] )
-			->setMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
+			->onlyMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $respositoryConnection ) );
+			->willReturn( $respositoryConnection );
 
 		$instance->expects( $this->once() )
 			->method( 'doSparqlDataDelete' )
-			->with(	$this->equalTo( DIWikiPage::newFromTitle( $oldTitle ) ) );
+			->with(	DIWikiPage::newFromTitle( $oldTitle ) );
 
 		$instance->changeTitle( $oldTitle, $newTitle, 42, 0 );
 	}
@@ -216,22 +216,22 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $repositoryResult ) );
+			->willReturn( $repositoryResult );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'insertData' );
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
-			->setMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
+			->onlyMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
 			->method( 'doSparqlDataDelete' )
-			->with(	$this->equalTo( $expectedSubjectForDeleteTask ) );
+			->with(	$expectedSubjectForDeleteTask );
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance->doSparqlDataUpdate( $semanticData );
 	}
@@ -251,22 +251,22 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'shouldPing' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$connection->expects( $this->once() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$connection->expects( $this->never() )
 			->method( 'insertData' );
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->expectException( '\SMW\SPARQLStore\Exception\HttpEndpointConnectionException' );
 
@@ -280,7 +280,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$description->expects( $this->atLeastOnce() )
 			->method( 'getPrintrequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -288,20 +288,20 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$idLookup = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'warmUpCache' ] )
+			->onlyMethods( [ 'warmUpCache' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idLookup ) );
+			->willReturn( $idLookup );
 
 		$repositoryClient = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryClient' )
 			->disableOriginalConstructor()
@@ -313,7 +313,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getRepositoryClient' )
-			->will( $this->returnValue( $repositoryClient ) );
+			->willReturn( $repositoryClient );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
@@ -321,7 +321,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SPARQLStore( $store );
 		$instance->setConnectionManager( $connectionManager );
@@ -347,7 +347,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$repositoryClient->expects( $this->atLeastOnce() )
 			->method( 'getQueryEndpoint' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
@@ -355,7 +355,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getRepositoryClient' )
-			->will( $this->returnValue( $repositoryClient ) );
+			->willReturn( $repositoryClient );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
@@ -363,7 +363,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SPARQLStore( $store );
 		$instance->setConnectionManager( $connectionManager );

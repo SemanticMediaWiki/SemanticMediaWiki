@@ -65,8 +65,8 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$instance = $this->acquireInstance( $subobject );
 		$result   = $instance->parse( new ParserParameterFormatter( $parameters ) );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$result
 		);
 	}

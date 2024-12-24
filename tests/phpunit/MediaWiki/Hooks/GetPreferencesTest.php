@@ -54,7 +54,7 @@ class GetPreferencesTest extends \PHPUnit\Framework\TestCase {
 	public function testProcess( $key ) {
 		$this->permissionExaminer->expects( $this->any() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()

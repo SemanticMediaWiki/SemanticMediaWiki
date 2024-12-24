@@ -27,12 +27,12 @@ class SpecialPagePropertyTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyValues', 'service' ] )
+			->onlyMethods( [ 'getPropertyValues', 'service' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();

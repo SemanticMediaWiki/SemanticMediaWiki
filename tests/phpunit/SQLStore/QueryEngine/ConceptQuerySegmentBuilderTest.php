@@ -50,7 +50,7 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->queryParser->expects( $this->any() )
 			->method( 'getQueryDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new ConceptQuerySegmentBuilder(
 			$this->conditionBuilder,

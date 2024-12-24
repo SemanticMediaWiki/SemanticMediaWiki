@@ -41,25 +41,25 @@ class NoValueFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testFormat() {
 		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSerialization' ] )
+			->onlyMethods( [ 'getSerialization' ] )
 			->getMockForAbstractClass();
 
 		$dataItem->expects( $this->once() )
 			->method( 'getSerialization' )
-			->will( $this->returnValue( 'isFromSerializationMethod' ) );
+			->willReturn( 'isFromSerializationMethod' );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getDataItem' ] )
+			->onlyMethods( [ 'isValid', 'getDataItem' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->once() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
 		$instance = new NoValueFormatter( $dataValue );
 

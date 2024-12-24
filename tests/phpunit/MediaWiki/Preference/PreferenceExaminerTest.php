@@ -38,15 +38,15 @@ class PreferenceExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testHasPreferenceOf() {
 		$this->user->expects( $this->any() )
 			->method( 'getOption' )
-			->with( $this->equalTo( 'foo' ) )
-			->will( $this->returnValue( false ) );
+			->with( 'foo' )
+			->willReturn( false );
 
 		$instance = new PreferenceExaminer();
 
 		$instance->setUser( $this->user );
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasPreferenceOf( 'foo' )
 		);
 	}
@@ -54,8 +54,8 @@ class PreferenceExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testHasPreferenceOf_NoUser() {
 		$instance = new PreferenceExaminer();
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasPreferenceOf( 'foo' )
 		);
 	}

@@ -42,7 +42,7 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$listLookup->expects( $this->atLeastOnce() )
 			->method( 'getHash' )
-			->will( $this->returnValue( 'Bar#123' ) );
+			->willReturn( 'Bar#123' );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -51,11 +51,11 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 		$cache->expects( $this->once() )
 			->method( 'contains' )
 			->with(	$this->stringContains( 'cacheprefix-foobar:smw:store:lookup:' ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( serialize( $expectedCachedItem ) ) );
+			->willReturn( serialize( $expectedCachedItem ) );
 
 		$cacheOptions = new \stdClass;
 		$cacheOptions->useCache = true;
@@ -95,11 +95,11 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$listLookup->expects( $this->once() )
 			->method( 'fetchList' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$listLookup->expects( $this->once() )
 			->method( 'getTimestamp' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -110,7 +110,7 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 			->with(
 				$this->stringContains( 'smw:store:lookup' ),
 				$this->anything( serialize( $expectedCacheItem ) ),
-				$this->equalTo( 1001 ) );
+				1001 );
 
 		$cacheOptions = new \stdClass;
 		$cacheOptions->useCache = false;
@@ -140,7 +140,7 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$listLookup->expects( $this->once() )
 			->method( 'getHash' )
-			->will( $this->returnValue( 'Foo#123' ) );
+			->willReturn( 'Foo#123' );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -148,7 +148,7 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( serialize( [ 'smw:store:lookup:6283479db90b04ad3a6db333a3c89766' => true ] ) ) );
+			->willReturn( serialize( [ 'smw:store:lookup:6283479db90b04ad3a6db333a3c89766' => true ] ) );
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'delete' )

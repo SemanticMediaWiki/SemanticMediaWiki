@@ -25,15 +25,15 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'sqlite' ) );
+			->willReturn( 'sqlite' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'dbSchema' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'tablePrefix' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
 			->willReturnArgument( 0 );
@@ -49,7 +49,7 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testCreateTableOnNewTable() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
@@ -67,12 +67,12 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testUpdateTableWithNewField() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'PRAGMA table_info(foo)' ) )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->at( 4 ) )
 			->method( 'query' )
@@ -90,12 +90,12 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testUpdateTableWithNewFieldAndDefault() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'PRAGMA table_info(foo)' ) )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->at( 4 ) )
 			->method( 'query' )
@@ -114,12 +114,12 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testCreateIndex() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->at( 5 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'PRAGMA index_list(foo)' ) )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->at( 7 ) )
 			->method( 'query' )
@@ -138,7 +138,7 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testDropTable() {
 		$this->connection->expects( $this->once() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )

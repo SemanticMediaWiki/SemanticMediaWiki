@@ -30,7 +30,7 @@ class MappingsInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->outputFormatter->expects( $this->any() )
 			->method( 'encodeAsJson' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
@@ -38,12 +38,12 @@ class MappingsInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( new DummyClient() ) );
+			->willReturn( new DummyClient() );
 	}
 
 	public function testCanConstruct() {
@@ -74,8 +74,8 @@ class MappingsInfoProviderTest extends \PHPUnit\Framework\TestCase {
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
@@ -83,7 +83,7 @@ class MappingsInfoProviderTest extends \PHPUnit\Framework\TestCase {
 	public function testHandleRequest() {
 		$this->outputFormatter->expects( $this->once() )
 			->method( 'addParentLink' )
-			->with(	$this->equalTo( [ 'action' => 'elastic' ] ) );
+			->with(	[ 'action' => 'elastic' ] );
 
 		$instance = new MappingsInfoProvider(
 			$this->outputFormatter

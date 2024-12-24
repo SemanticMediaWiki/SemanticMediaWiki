@@ -57,15 +57,15 @@ class FormsBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$customForm->expects( $this->any() )
 			->method( 'getParameters' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->formsFactory->expects( $this->any() )
 			->method( 'newOpenForm' )
-			->will( $this->returnValue( $openForm ) );
+			->willReturn( $openForm );
 
 		$this->formsFactory->expects( $this->any() )
 			->method( 'newCustomForm' )
-			->will( $this->returnValue( $customForm ) );
+			->willReturn( $customForm );
 
 		$instance = new FormsBuilder(
 			$this->webRequest,

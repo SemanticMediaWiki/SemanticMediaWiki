@@ -69,12 +69,12 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$instance = new Rebuilder(
 			$this->connection,
@@ -84,8 +84,8 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 			$this->installer
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->select( $store, [] )
 		);
 	}
@@ -115,7 +115,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testHasIndices() {
 		$this->connection->expects( $this->once() )
 			->method( 'hasIndex' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new Rebuilder(
 			$this->connection,
@@ -163,7 +163,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'hasIndex' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'releaseLock' );
@@ -217,21 +217,21 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$this->documentCreator->expects( $this->any() )
 			->method( 'newFromSemanticData' )
-			->will( $this->returnValue( $document ) );
+			->willReturn( $document );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $options ) );
+			->willReturn( $options );
 
 		$this->indexer->expects( $this->once() )
 			->method( 'indexDocument' )
 			->with(
 				$this->anything( $document ),
-				$this->equalTo( false ) );
+				false );
 
 		$instance = new Rebuilder(
 			$this->connection,
@@ -247,7 +247,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testRefresh() {
 		$this->connection->expects( $this->any() )
 			->method( 'hasIndex' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'refresh' );

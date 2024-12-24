@@ -26,7 +26,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'service' ] )
+			->onlyMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 	}
 
@@ -46,8 +46,8 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHelpLink( $schema )
 		);
 	}
@@ -59,7 +59,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$schema->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnCallback( [ $this, 'schema_get' ] ) );
+			->willReturnCallback( [ $this, 'schema_get' ] );
 
 		$text = '...';
 		$isYaml = false;
@@ -69,8 +69,8 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getText( $text, $schema, $errors )
 		);
 	}
@@ -82,7 +82,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$schema->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnCallback( [ $this, 'schema_get' ] ) );
+			->willReturnCallback( [ $this, 'schema_get' ] );
 
 		$text = '...';
 		$isYaml = false;
@@ -95,8 +95,8 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getText( $text, $schema, $errors )
 		);
 	}
@@ -108,7 +108,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new SchemaContentFormatter(
 			$this->store
@@ -137,11 +137,11 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [ $dataItem ] ) );
+			->willReturn( [ $dataItem ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnValue( $sortLetter ) );
+			->willReturn( $sortLetter );
 
 		$instance = new SchemaContentFormatter(
 			$this->store
@@ -172,11 +172,11 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [ $dataItem ] ) );
+			->willReturn( [ $dataItem ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnValue( $sortLetter ) );
+			->willReturn( $sortLetter );
 
 		$instance = new SchemaContentFormatter(
 			$this->store

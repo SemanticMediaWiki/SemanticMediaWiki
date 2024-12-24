@@ -68,7 +68,7 @@ class PagePropertyTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -79,8 +79,8 @@ class PagePropertyTest extends \PHPUnit\Framework\TestCase {
 			$this->options
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildForm()
 		);
 	}
@@ -91,8 +91,8 @@ class PagePropertyTest extends \PHPUnit\Framework\TestCase {
 			$this->options
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHtml( [] )
 		);
 	}
@@ -106,8 +106,8 @@ class PagePropertyTest extends \PHPUnit\Framework\TestCase {
 			$this->options
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHtml( [ DIWikiPage::newFromText( 'Foo' ) ] )
 		);
 	}

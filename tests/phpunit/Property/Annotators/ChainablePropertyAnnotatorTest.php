@@ -39,7 +39,7 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$pageInfoProvider->expects( $this->atLeastOnce() )
 			->method( 'getModificationDate' )
-			->will( $this->returnValue( $parameters['modificationDate'] ) );
+			->willReturn( $parameters['modificationDate'] );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 

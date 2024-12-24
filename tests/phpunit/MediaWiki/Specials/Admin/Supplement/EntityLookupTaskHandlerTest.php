@@ -36,12 +36,12 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
 			->disableOriginalConstructor()
@@ -69,7 +69,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSpecialPageLinkWith' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'action' => 'lookup' ] ) );
+				[ 'action' => 'lookup' ] );
 
 		$instance = new EntityLookupTaskHandler(
 			$this->store,
@@ -77,8 +77,8 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
@@ -99,7 +99,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -117,7 +117,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$user->expects( $this->atLeastOnce() )
 			->method( 'matchEditToken' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance->setUser(
 			$user
@@ -133,7 +133,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	public function testPerformActionWithId() {
 		$this->connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
 			->disableOriginalConstructor()
@@ -154,7 +154,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newEntityIdDisposerJob' )
-			->will( $this->returnValue( $entityIdDisposerJob ) );
+			->willReturn( $entityIdDisposerJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -173,7 +173,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -185,7 +185,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$user->expects( $this->atLeastOnce() )
 			->method( 'matchEditToken' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
@@ -193,18 +193,18 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$webRequest->expects( $this->at( 1 ) )
 			->method( 'getText' )
-			->with( $this->equalTo( 'id' ) )
-			->will( $this->returnValue( 42 ) );
+			->with( 'id' )
+			->willReturn( 42 );
 
 		$webRequest->expects( $this->at( 2 ) )
 			->method( 'getText' )
-			->with( $this->equalTo( 'dispose' ) )
-			->will( $this->returnValue( 'yes' ) );
+			->with( 'dispose' )
+			->willReturn( 'yes' );
 
 		$webRequest->expects( $this->at( 3 ) )
 			->method( 'getText' )
-			->with( $this->equalTo( 'action' ) )
-			->will( $this->returnValue( 'lookup' ) );
+			->with( 'action' )
+			->willReturn( 'lookup' );
 
 		$instance = new EntityLookupTaskHandler(
 			$this->store,

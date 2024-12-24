@@ -39,12 +39,12 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityIdManager ) );
+			->willReturn( $this->entityIdManager );
 
 		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
 			->disableOriginalConstructor()
@@ -56,7 +56,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 	}
 
 	protected function tearDown(): void {
@@ -88,15 +88,15 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 
 		$permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->with( $this->equalTo( 'smw-viewentityassociatedrevisionmismatch' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw-viewentityassociatedrevisionmismatch' )
+			->willReturn( true );
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasPermission( $permissionExaminer )
 		);
 	}
@@ -106,8 +106,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getName()
 		);
 	}
@@ -117,8 +117,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->isSeverityType( 'foo' )
 		);
 	}
@@ -128,8 +128,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getIndicators()
 		);
 	}
@@ -139,8 +139,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getModules()
 		);
 	}
@@ -150,8 +150,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getInlineStyle()
 		);
 	}
@@ -159,11 +159,11 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	public function testHasIndicator_SameRevision() {
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->revisionGuard->expects( $this->once() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -191,11 +191,11 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	public function testHasIndicator_DifferentRevision() {
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->revisionGuard->expects( $this->once() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -230,12 +230,12 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	public function testPredefinedPropertyHasIndicator_DifferentRevision() {
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'findAssociatedRev' )
-			->with( $this->equalTo( '_MDAT' ) )
-			->will( $this->returnValue( 42 ) );
+			->with( '_MDAT' )
+			->willReturn( 42 );
 
 		$this->revisionGuard->expects( $this->once() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$subject = DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
 

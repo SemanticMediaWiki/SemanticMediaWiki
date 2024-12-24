@@ -72,8 +72,8 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getName()
 		);
 	}
@@ -86,8 +86,8 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getIndicators()
 		);
 	}
@@ -100,8 +100,8 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getModules()
 		);
 	}
@@ -114,8 +114,8 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getInlineStyle()
 		);
 	}
@@ -129,11 +129,11 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 
 		$indicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'hasIndicator' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$indicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getModules' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$indicatorProviders = [
 			$indicatorProvider
@@ -144,8 +144,8 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
@@ -197,7 +197,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 
 		$this->compositeIndicatorHtmlBuilder->expects( $this->once() )
 			->method( 'buildHTML' )
-			->will( $this->returnValue( '...' ) );
+			->willReturn( '...' );
 
 		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
 			->disableOriginalConstructor()
@@ -205,11 +205,11 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 
 		$indicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'hasIndicator' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$indicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getModules' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$indicatorProviders = [
 			$indicatorProvider
@@ -220,8 +220,8 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
@@ -234,7 +234,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$indicatorProviders = [
 			$this->newPermissionAwareIndicatorProvider()
@@ -249,8 +249,8 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 			$this->permissionExaminer
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}

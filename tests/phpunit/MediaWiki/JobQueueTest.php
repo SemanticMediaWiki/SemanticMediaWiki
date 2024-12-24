@@ -38,7 +38,7 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 
@@ -58,7 +58,7 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 
@@ -73,12 +73,12 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 	public function testAck() {
 		$job = $this->getMockBuilder( '\Job' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getType', 'run' ] )
+			->onlyMethods( [ 'getType', 'run' ] )
 			->getMock();
 
 		$job->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'FakeJob' ) );
+			->willReturn( 'FakeJob' );
 
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
@@ -87,7 +87,7 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 
@@ -102,12 +102,12 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 	public function testDeleteWithDisabledCache() {
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'assertNotReadOnly', 'doDelete', 'doFlushCaches' ] )
+			->onlyMethods( [ 'assertNotReadOnly', 'doDelete', 'doFlushCaches' ] )
 			->getMockForAbstractClass();
 
 		$jobQueue->expects( $this->any() )
 			->method( 'assertNotReadOnly' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$jobQueue->expects( $this->once() )
 			->method( 'doDelete' );
@@ -118,7 +118,7 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 		$instance->disableCache( true );
@@ -165,7 +165,7 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 	public function testGetQueueSize() {
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doGetSize', 'doFlushCaches' ] )
+			->onlyMethods( [ 'doGetSize', 'doFlushCaches' ] )
 			->getMockForAbstractClass();
 
 		$jobQueue->expects( $this->once() )
@@ -177,7 +177,7 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 		$instance->disableCache( true );
@@ -188,17 +188,17 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 	public function testHasPendingJob() {
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doGetSize' ] )
+			->onlyMethods( [ 'doGetSize' ] )
 			->getMockForAbstractClass();
 
 		$jobQueue->expects( $this->once() )
 			->method( 'doGetSize' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 
@@ -210,17 +210,17 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 	public function testHasPendingJobWithLegacyName() {
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doGetSize' ] )
+			->onlyMethods( [ 'doGetSize' ] )
 			->getMockForAbstractClass();
 
 		$jobQueue->expects( $this->once() )
 			->method( 'doGetSize' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'smw.fake' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 

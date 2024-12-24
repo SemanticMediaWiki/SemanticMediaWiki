@@ -48,12 +48,12 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testAddToUpdateList() {
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getId' ] )
+			->onlyMethods( [ 'getId' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'getId' )
-			->will( $this->onConsecutiveCalls( 1001 ) );
+			->willReturnOnConsecutiveCalls( 1001 );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -62,8 +62,8 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
-				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
-				$this->equalTo( [ 's_id' => 42 ] ) );
+				\SMWSQLStore3::QUERY_LINKS_TABLE,
+				[ 's_id' => 42 ] );
 
 		$insert[] = [
 			's_id' => 42,
@@ -73,8 +73,8 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
-				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
-				$this->equalTo( $insert ) );
+				\SMWSQLStore3::QUERY_LINKS_TABLE,
+				$insert );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
@@ -82,18 +82,18 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->setConnectionManager( $connectionManager );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new DependencyLinksTableUpdater(
 			$store
@@ -141,16 +141,16 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testAddDependenciesFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getId', 'makeSMWPageID' ] )
+			->onlyMethods( [ 'getId', 'makeSMWPageID' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'getId' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$idTable->expects( $this->any() )
 			->method( 'makeSMWPageID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -159,8 +159,8 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
-				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
-				$this->equalTo( [ 's_id' => 42 ] ) );
+				\SMWSQLStore3::QUERY_LINKS_TABLE,
+				[ 's_id' => 42 ] );
 
 		$insert[] = [
 			's_id' => 42,
@@ -170,8 +170,8 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
-				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
-				$this->equalTo( $insert ) );
+				\SMWSQLStore3::QUERY_LINKS_TABLE,
+				$insert );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
@@ -179,18 +179,18 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->setConnectionManager( $connectionManager );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new DependencyLinksTableUpdater(
 			$store

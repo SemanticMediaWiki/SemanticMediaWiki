@@ -76,12 +76,12 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 	public function testDisabledOnUserPreference() {
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->preferenceExaminer->expects( $this->at( 0 ) )
 			->method( 'hasPreferenceOf' )
-			->with( $this->equalTo( 'smw-prefs-general-options-disable-editpage-info' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw-prefs-general-options-disable-editpage-info' )
+			->willReturn( true );
 
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
@@ -114,17 +114,17 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 	public function testExtendEditFormPageTop( $title, $namespaces, $isSemanticEnabled, $expected ) {
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->preferenceExaminer->expects( $this->at( 0 ) )
 			->method( 'hasPreferenceOf' )
-			->with( $this->equalTo( 'smw-prefs-general-options-disable-editpage-info' ) )
-			->will( $this->returnValue( false ) );
+			->with( 'smw-prefs-general-options-disable-editpage-info' )
+			->willReturn( false );
 
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->with( $this->equalTo( $namespaces ) )
-			->will( $this->returnValue( $isSemanticEnabled ) );
+			->with( $namespaces )
+			->willReturn( $isSemanticEnabled );
 
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
@@ -132,7 +132,7 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 
 		$editPage->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$editPage->editFormPageTop = '';
 

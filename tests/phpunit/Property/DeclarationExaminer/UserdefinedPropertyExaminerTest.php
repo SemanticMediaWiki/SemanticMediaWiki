@@ -43,11 +43,11 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$this->propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
@@ -59,7 +59,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $this->propertyTableInfoFetcher ) );
+			->willReturn( $this->propertyTableInfoFetcher );
 	}
 
 	protected function tearDown(): void {
@@ -77,7 +77,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testIsFixedTable() {
 		$this->propertyTableInfoFetcher->expects( $this->any() )
 			->method( 'isFixedTableProperty' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -104,12 +104,12 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $dataItemFactory->newDIProperty( '_LIST' ) ) )
-			->will( $this->returnValue( [] ) );
+			->with( $dataItemFactory->newDIProperty( '_LIST' ) )
+			->willReturn( [] );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$instance = new UserdefinedPropertyExaminer(
 			$this->declarationExaminer,
@@ -158,16 +158,16 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $dataItemFactory->newDIProperty( '_LIST' ) ) )
-			->will( $this->returnValue(
+			->with( $dataItemFactory->newDIProperty( '_LIST' ) )
+			->willReturn(
 				[
 					$dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_PROPERTY ),
 					$dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_PROPERTY )
-				] ) );
+				] );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$instance = new UserdefinedPropertyExaminer(
 			$this->declarationExaminer,
@@ -240,21 +240,21 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->semanticData->expects( $this->at( 0 ) )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( $dataItemFactory->newDIProperty( '_IMPO' ) ) )
-			->will( $this->returnValue( true ) );
+			->with( $dataItemFactory->newDIProperty( '_IMPO' ) )
+			->willReturn( true );
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getOption' )
-			->with( $this->equalTo( \SMW\Property\Annotators\MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) )
-			->will( $this->returnValue( $imported_type ) );
+			->with( \SMW\Property\Annotators\MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE )
+			->willReturn( $imported_type );
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $user_type ] ) );
+			->willReturn( [ $user_type ] );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$instance = new UserdefinedPropertyExaminer(
 			$this->declarationExaminer,
@@ -278,7 +278,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -306,7 +306,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$instance = new UserdefinedPropertyExaminer(
 			$declarationExaminer,
@@ -330,7 +330,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -348,7 +348,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$instance = new UserdefinedPropertyExaminer(
 			$declarationExaminer,

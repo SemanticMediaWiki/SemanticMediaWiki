@@ -21,7 +21,7 @@ class SortLetterTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getWikiPageSortKey' ] )
+			->onlyMethods( [ 'getWikiPageSortKey' ] )
 			->getMockForAbstractClass();
 
 		$this->collator = $this->getMockBuilder( '\SMW\MediaWiki\Collator' )
@@ -43,15 +43,15 @@ class SortLetterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItem->expects( $this->any() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( \SMWDataItem::TYPE_WIKIPAGE ) );
+			->willReturn( \SMWDataItem::TYPE_WIKIPAGE );
 
 		$this->store->expects( $this->once() )
 			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->collator->expects( $this->once() )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
+			->willReturn( 'F' );
 
 		$instance = new SortLetter(
 			$this->store,

@@ -52,26 +52,26 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testNewDescription( $value, $decription ) {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
+			->onlyMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ) );
+				false );
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDITime( 1, '1970' ) ) );
+			->willReturn( $this->dataItemFactory->newDITime( 1, '1970' ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 
 		$instance = new SomeValueDescriptionBuilder();
 
@@ -87,14 +87,14 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testnNewDescriptionForLikeNotLike( $value ) {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'setUserValue' ] )
+			->onlyMethods( [ 'setUserValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ) );
+				false );
 
 		$instance = new SomeValueDescriptionBuilder();
 
@@ -104,12 +104,12 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testInvalidDataValueRetunsThingDescription() {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid' ] )
+			->onlyMethods( [ 'isValid' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SomeValueDescriptionBuilder();
 
@@ -133,26 +133,26 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testWikiPageValueOnNonMainNamespace() {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
+			->onlyMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ) );
+				false );
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( '~Foo', NS_HELP ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( '~Foo', NS_HELP ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 
 		$instance = new SomeValueDescriptionBuilder();
 

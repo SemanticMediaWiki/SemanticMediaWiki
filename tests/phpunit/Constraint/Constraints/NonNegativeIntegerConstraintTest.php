@@ -58,7 +58,7 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'addError' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'addError' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -69,11 +69,11 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDINumber( -1 ) ) );
+			->willReturn( $this->dataItemFactory->newDINumber( -1 ) );
 
 		$instance = new NonNegativeIntegerConstraint();
 

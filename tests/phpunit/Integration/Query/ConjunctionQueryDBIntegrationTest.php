@@ -159,7 +159,7 @@ class ConjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 			$semanticDataOfDreamland->getSubject()
 		];
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$queryResult->getCount()
 		);
@@ -236,7 +236,7 @@ class ConjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$queryResult->getCount()
 		);

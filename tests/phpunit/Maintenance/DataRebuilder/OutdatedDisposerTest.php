@@ -66,30 +66,30 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$resultIterator->expects( $this->exactly( 2 ) )
 			->method( 'count' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newOutdatedEntitiesResultIterator' )
-			->will( $this->returnValue( $resultIterator ) );
+			->willReturn( $resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newByNamespaceInvalidEntitiesResultIterator' )
-			->will( $this->returnValue( $resultIterator ) );
+			->willReturn( $resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newOutdatedQueryLinksResultIterator' )
-			->will( $this->returnValue( $this->resultIterator ) );
+			->willReturn( $this->resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newUnassignedQueryLinksResultIterator' )
-			->will( $this->returnValue( $this->resultIterator ) );
+			->willReturn( $this->resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'dispose' );
 
 		$this->iteratorFactory->expects( $this->exactly( 2 ) )
 			->method( 'newChunkedIterator' )
-			->will( $this->returnValue( $chunkedIterator ) );
+			->willReturn( $chunkedIterator );
 
 		$instance = new OutdatedDisposer(
 			$this->entityIdDisposerJob,
@@ -128,23 +128,23 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$resultIterator->expects( $this->once() )
 			->method( 'count' )
-			->will( $this->returnValue( 9999 ) );
+			->willReturn( 9999 );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newOutdatedQueryLinksResultIterator' )
-			->will( $this->returnValue( $resultIterator ) );
+			->willReturn( $resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newOutdatedEntitiesResultIterator' )
-			->will( $this->returnValue( $this->resultIterator ) );
+			->willReturn( $this->resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newByNamespaceInvalidEntitiesResultIterator' )
-			->will( $this->returnValue( $this->resultIterator ) );
+			->willReturn( $this->resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newUnassignedQueryLinksResultIterator' )
-			->will( $this->returnValue( $this->resultIterator ) );
+			->willReturn( $this->resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'disposeQueryLinks' );
@@ -191,23 +191,23 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$resultIterator->expects( $this->once() )
 			->method( 'count' )
-			->will( $this->returnValue( 10 ) );
+			->willReturn( 10 );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newUnassignedQueryLinksResultIterator' )
-			->will( $this->returnValue( $resultIterator ) );
+			->willReturn( $resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newOutdatedEntitiesResultIterator' )
-			->will( $this->returnValue( $this->resultIterator ) );
+			->willReturn( $this->resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newByNamespaceInvalidEntitiesResultIterator' )
-			->will( $this->returnValue( $this->resultIterator ) );
+			->willReturn( $this->resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newOutdatedQueryLinksResultIterator' )
-			->will( $this->returnValue( $this->resultIterator ) );
+			->willReturn( $this->resultIterator );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'disposeQueryLinks' );

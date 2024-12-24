@@ -76,7 +76,7 @@ class EventHandlerTest extends \PHPUnit\Framework\TestCase {
 		$eventDispatcher->expects( $this->once() )
 			->method( 'addListener' )
 			->with(
-				$this->equalTo( 'foo' ),
+				'foo',
 				$this->anything() );
 
 		$instance = new EventHandler( $eventDispatcher );

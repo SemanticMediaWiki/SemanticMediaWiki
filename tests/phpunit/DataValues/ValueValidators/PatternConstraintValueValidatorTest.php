@@ -64,28 +64,28 @@ class PatternConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $allowedPattern ) );
+			->willReturn( $allowedPattern );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedPatternBy' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '_txt' ) );
+			->willReturn( '_txt' );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
+			->willReturn( $property );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( $testString ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( $testString ) );
 
 		$instance = new PatternConstraintValueValidator(
 			$this->allowsPatternValueParser

@@ -39,23 +39,23 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'save' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( $cacheTTL ) );
+				$cacheTTL );
 
 		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getVersion', 'lookup' ] )
+			->onlyMethods( [ 'getVersion', 'lookup' ] )
 			->getMockForAbstractClass();
 
 		$lookup->expects( $this->atLeastOnce() )
 			->method( 'lookup' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new CachingLookup(
 			$cache,
@@ -76,14 +76,14 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$cache->expects( $this->never() )
 			->method( 'save' );
 
 		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getVersion', 'lookup' ] )
+			->onlyMethods( [ 'getVersion', 'lookup' ] )
 			->getMockForAbstractClass();
 
 		$lookup->expects( $this->never() )
@@ -112,12 +112,12 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getVersion', 'lookup' ] )
+			->onlyMethods( [ 'getVersion', 'lookup' ] )
 			->getMockForAbstractClass();
 
 		$lookup->expects( $this->atLeastOnce() )
 			->method( 'lookup' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new CachingLookup(
 			$cache,

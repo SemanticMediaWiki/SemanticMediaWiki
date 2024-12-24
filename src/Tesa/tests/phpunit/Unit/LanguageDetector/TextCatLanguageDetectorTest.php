@@ -33,9 +33,9 @@ class TextCatLanguageDetectorTest extends TestCase {
 		$textCat->expects( $this->once() )
 			->method( 'classify' )
 			->with(
-				$this->equalTo( 'Foo' ),
-				$this->equalTo( $languageCandidates ) )
-			->will( $this->returnValue( array() ) );
+				'Foo',
+				$languageCandidates )
+			->willReturn( array() );
 
 		$instance = new TextCatLanguageDetector( $textCat );
 		$instance->setLanguageCandidates(

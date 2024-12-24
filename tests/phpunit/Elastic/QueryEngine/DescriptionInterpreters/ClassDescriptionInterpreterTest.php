@@ -22,7 +22,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function setUp(): void {
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getID', 'findHierarchyMembers', 'prepareCache' ] )
+			->onlyMethods( [ 'getID', 'findHierarchyMembers', 'prepareCache' ] )
 			->getMock();
 	}
 
@@ -39,11 +39,11 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function testInterpretDescription( $description, $isConjunction, $hierarchyMembers, $expected ) {
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'findHierarchyMembers' )
-			->will( $this->returnValue( $hierarchyMembers ) );
+			->willReturn( $hierarchyMembers );
 
 		$instance = new ClassDescriptionInterpreter(
 			$this->conditionBuilder

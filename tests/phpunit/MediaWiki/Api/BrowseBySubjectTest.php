@@ -67,7 +67,7 @@ class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -114,8 +114,8 @@ class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSemanticData' )
-			->with( $this->equalTo( $dataItem ) )
-			->will( $this->returnValue( $semanticData ) );
+			->with( $dataItem )
+			->willReturn( $semanticData );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -167,12 +167,12 @@ class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSemanticData' )
-			->with( $this->equalTo( $dataItem ) )
-			->will( $this->returnValue( $semanticData ) );
+			->with( $dataItem )
+			->willReturn( $semanticData );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

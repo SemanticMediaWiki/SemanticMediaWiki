@@ -146,11 +146,10 @@ class RecurringEventsTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
-		$this->assertEquals(
-			null,
-			$instance->getJulianDay( $dataValue )
+		$this->assertNull(
+						$instance->getJulianDay( $dataValue )
 		);
 	}
 

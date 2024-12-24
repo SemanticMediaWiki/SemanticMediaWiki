@@ -72,19 +72,19 @@ class QueueTest extends \PHPUnit\Framework\TestCase {
 		$instance = new Queue();
 		$instance->add( $dataItem, 2 );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->count()
 		);
 
 		$instance->done( $dataItem, 1 );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->count()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->count()
 		);

@@ -47,7 +47,7 @@ class ParserCachePurgeJobTest extends \PHPUnit\Framework\TestCase {
 
 		$page->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$page->expects( $this->once() )
 			->method( 'doPurge' );
@@ -60,12 +60,12 @@ class ParserCachePurgeJobTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = $this->getMockBuilder( ParserCachePurgeJob::class )
 			->setConstructorArgs( [ $title, $parameters ] )
-			->setMethods( [ 'newWikiPage' ] )
+			->onlyMethods( [ 'newWikiPage' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
 			->method( 'newWikiPage' )
-			->will( $this->returnValue( $page ) );
+			->willReturn( $page );
 
 		$instance->run();
 	}

@@ -33,7 +33,7 @@ class AllowsListValueParserTest extends \PHPUnit\Framework\TestCase {
 	public function testParseAndMatchFromResource() {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( " \n*Foo\n**Foobar|bar\n" ) );
+			->willReturn( " \n*Foo\n**Foobar|bar\n" );
 
 		$instance = new AllowsListValueParser(
 			$this->mediaWikiNsContentReader
@@ -53,7 +53,7 @@ class AllowsListValueParserTest extends \PHPUnit\Framework\TestCase {
 
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $contents ) );
+			->willReturn( $contents );
 
 		$instance = new AllowsListValueParser(
 			$this->mediaWikiNsContentReader

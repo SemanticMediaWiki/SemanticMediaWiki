@@ -38,7 +38,7 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->outputFormatter->expects( $this->any() )
 			->method( 'encodeAsJson' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
@@ -60,8 +60,8 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}

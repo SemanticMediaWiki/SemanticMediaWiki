@@ -66,8 +66,8 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
 			return $this->assertGreaterThanOrEqual( 0, $result['info'][$queryParameters] );
 		}
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result['info'][$queryParameters]
 		);
 	}
@@ -82,7 +82,7 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( $statistics ) );
+			->willReturn( $statistics );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -118,8 +118,8 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
 				'info' => 'Foo'
 		] );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$data['warnings']
 		);
 	}
@@ -127,7 +127,7 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
 	public function testJobCount() {
 		$this->jobQueue->expects( $this->any() )
 			->method( 'getQueueSize' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$result = $this->apiFactory->doApiRequest(
 			[

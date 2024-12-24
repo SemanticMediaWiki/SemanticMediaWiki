@@ -47,8 +47,8 @@ class GenericRegExTokenizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $string ) )
-			->will( $this->returnValue( array( $string ) ) );
+			->with( $string )
+			->willReturn( array( $string ) );
 
 		$instance = new GenericRegExTokenizer( $tokenizer );
 

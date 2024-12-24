@@ -73,8 +73,8 @@ class TableTest extends \PHPUnit\Framework\TestCase {
 			$instance->getAttributes()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHash()
 		);
 	}

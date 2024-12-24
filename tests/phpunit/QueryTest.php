@@ -138,8 +138,8 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 
 		$serialized = $instance->toArray();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$serialized
 		);
 
@@ -169,7 +169,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	public function testGetHash() {
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getFingerprint' ] )
+			->onlyMethods( [ 'getFingerprint' ] )
 			->getMockForAbstractClass();
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
@@ -177,8 +177,8 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 
 		$hash = $instance->getHash();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$hash
 		);
 

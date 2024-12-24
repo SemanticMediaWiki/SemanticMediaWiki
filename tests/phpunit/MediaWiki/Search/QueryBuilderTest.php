@@ -53,8 +53,8 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testAddNamespaceCondition() {
 		$this->webRequest->expects( $this->any() )
 			->method( 'getCheck' )
-			->with( $this->equalTo( 'ns6' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'ns6' )
+			->willReturn( true );
 
 		$instance = new QueryBuilder(
 			$this->webRequest
@@ -70,7 +70,7 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$query->expects( $this->once() )
 			->method( 'setDescription' );
@@ -81,8 +81,8 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testAddSort() {
 		$this->webRequest->expects( $this->any() )
 			->method( 'getVal' )
-			->with( $this->equalTo( 'sort' ) )
-			->will( $this->returnValue( 'recent' ) );
+			->with( 'sort' )
+			->willReturn( 'recent' );
 
 		$instance = new QueryBuilder(
 			$this->webRequest
@@ -121,13 +121,13 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->webRequest->expects( $this->at( 0 ) )
 			->method( 'getVal' )
-			->with( $this->equalTo( 'smw-form' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->with( 'smw-form' )
+			->willReturn( 'foo' );
 
 		$this->webRequest->expects( $this->at( 1 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'barproperty' ) )
-			->will( $this->returnValue( [ 'Foobar' ] ) );
+			->with( 'barproperty' )
+			->willReturn( [ 'Foobar' ] );
 
 		$instance = new QueryBuilder(
 			$this->webRequest,
@@ -154,13 +154,13 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->webRequest->expects( $this->at( 0 ) )
 			->method( 'getVal' )
-			->with( $this->equalTo( 'smw-form' ) )
-			->will( $this->returnValue( 'foo-2' ) );
+			->with( 'smw-form' )
+			->willReturn( 'foo-2' );
 
 		$this->webRequest->expects( $this->at( 1 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'barproperty' ) )
-			->will( $this->returnValue( [ '', 42 ] ) );
+			->with( 'barproperty' )
+			->willReturn( [ '', 42 ] );
 
 		$instance = new QueryBuilder(
 			$this->webRequest,
@@ -182,23 +182,23 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->webRequest->expects( $this->at( 0 ) )
 			->method( 'getVal' )
-			->with( $this->equalTo( 'smw-form' ) )
-			->will( $this->returnValue( 'open' ) );
+			->with( 'smw-form' )
+			->willReturn( 'open' );
 
 		$this->webRequest->expects( $this->at( 1 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'property' ) )
-			->will( $this->returnValue( [ 'Bar' ] ) );
+			->with( 'property' )
+			->willReturn( [ 'Bar' ] );
 
 		$this->webRequest->expects( $this->at( 2 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'pvalue' ) )
-			->will( $this->returnValue( [ 42 ] ) );
+			->with( 'pvalue' )
+			->willReturn( [ 42 ] );
 
 		$this->webRequest->expects( $this->at( 3 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'op' ) )
-			->will( $this->returnValue( [ 'OR' ] ) );
+			->with( 'op' )
+			->willReturn( [ 'OR' ] );
 
 		$instance = new QueryBuilder(
 			$this->webRequest,

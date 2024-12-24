@@ -63,7 +63,7 @@ class ApiRequestParameterFormatterTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ApiRequestParameterFormatter( $parameters );
 		$result = $instance->getAskApiParameters();
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
 	}
 

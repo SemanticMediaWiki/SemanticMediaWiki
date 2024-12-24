@@ -29,12 +29,12 @@ class FilterMapTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityIdManager ) );
+			->willReturn( $this->entityIdManager );
 	}
 
 	public function testCanConstruct() {
@@ -47,7 +47,7 @@ class FilterMapTest extends \PHPUnit\Framework\TestCase {
 	public function testGetCountListByType() {
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'preload' )
-			->with( $this->equalTo( [ 'Foo' ] ) );
+			->with( [ 'Foo' ] );
 
 		$instance = new FilterMap(
 			$this->store,

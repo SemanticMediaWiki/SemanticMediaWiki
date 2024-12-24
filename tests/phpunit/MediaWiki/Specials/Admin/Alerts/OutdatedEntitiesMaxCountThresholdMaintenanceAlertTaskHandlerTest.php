@@ -42,11 +42,11 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandlerTest extends \
 
 		$connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)[ 'count' => 50000 ] ) );
+			->willReturn( (object)[ 'count' => 50000 ] );
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler(
 			$this->store

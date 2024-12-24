@@ -37,28 +37,28 @@ class DIWikiPageHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new DIWikiPageHandler( $store );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableFields()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getFetchFields()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableIndexes()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getIndexField()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getLabelField()
 		);
 	}
@@ -66,16 +66,16 @@ class DIWikiPageHandlerTest extends \PHPUnit\Framework\TestCase {
 	public function testMutableMethodAccess() {
 		// EntityIdTable
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPageID', 'makeSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPageID', 'makeSMWPageID' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$idTable->expects( $this->any() )
 			->method( 'makeSMWPageID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -83,17 +83,17 @@ class DIWikiPageHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new DIWikiPageHandler( $store );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getWhereConds( DIWikiPage::newFromText( 'Foo' ) )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getInsertValues( DIWikiPage::newFromText( 'Foo' ) )
 		);
 	}

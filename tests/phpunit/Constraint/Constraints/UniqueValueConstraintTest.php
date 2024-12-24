@@ -37,13 +37,13 @@ class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'service' ] )
+			->onlyMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'EntityUniquenessLookup' ) )
-			->will( $this->returnValue( $this->entityUniquenessLookup ) );
+			->with( 'EntityUniquenessLookup' )
+			->willReturn( $this->entityUniquenessLookup );
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
@@ -76,7 +76,7 @@ class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 	public function testCanNotValidateOnNull() {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();
 
 		$instance = new UniqueValueConstraint(
@@ -96,24 +96,24 @@ class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityUniquenessLookup->expects( $this->atLeastOnce() )
 			->method( 'checkConstraint' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
+			->willReturn( $property );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Foo' ) );
 
 		$instance = new UniqueValueConstraint(
 			$this->store,
@@ -140,28 +140,28 @@ class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityUniquenessLookup->expects( $this->atLeastOnce() )
 			->method( 'checkConstraint' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ] );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage', 'addError' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getContextPage', 'addError' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
+			->willReturn( $property );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->equalTo( $error ) );
+			->with( $error );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Foo' ) );
 
 		$instance = new UniqueValueConstraint(
 			$this->store,

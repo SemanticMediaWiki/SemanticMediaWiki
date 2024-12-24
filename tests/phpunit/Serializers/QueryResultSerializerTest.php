@@ -67,8 +67,8 @@ class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryResultSerializer();
 		$results = $instance->serialize( $setup['queryResult'] );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$results
 		);
 
@@ -85,11 +85,11 @@ class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ) ] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -97,11 +97,11 @@ class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'BarList1;BarList2' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'BarList1;BarList2' ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -177,7 +177,7 @@ class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryResultSerializer();
 		$results = $instance->serialize( $queryResult );
 
-		$this->assertInternalType( 'array', $results );
+		$this->assertIsArray( $results );
 		$this->assertEmpty( $results['printrequests'] );
 		$this->assertEmpty( $results['results'] );
 	}

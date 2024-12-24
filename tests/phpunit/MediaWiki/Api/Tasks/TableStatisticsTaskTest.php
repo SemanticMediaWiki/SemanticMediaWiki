@@ -27,7 +27,7 @@ class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'service' ] )
+			->onlyMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -56,8 +56,8 @@ class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'service' )
-			->with( $this->equalTo( 'TableStatisticsLookup' ) )
-			->will( $this->returnValue( $tableStatisticsLookup ) );
+			->with( 'TableStatisticsLookup' )
+			->willReturn( $tableStatisticsLookup );
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -65,7 +65,7 @@ class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' );

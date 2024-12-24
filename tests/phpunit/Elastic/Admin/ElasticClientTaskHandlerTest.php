@@ -34,12 +34,12 @@ class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( new DummyClient() ) );
+			->willReturn( new DummyClient() );
 	}
 
 	public function testCanConstruct() {
@@ -56,7 +56,7 @@ class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$task->expects( $this->once() )
 			->method( 'getTask' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new ElasticClientTaskHandler(
 			$this->outputFormatter,
@@ -80,16 +80,16 @@ class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$client->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $client ) );
+			->willReturn( $client );
 
 		$instance = new ElasticClientTaskHandler(
 			$this->outputFormatter
@@ -97,8 +97,8 @@ class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setStore( $store );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
@@ -106,7 +106,7 @@ class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	public function testHandleRequest_OnNoAvailableNodes() {
 		$this->outputFormatter->expects( $this->once() )
 			->method( 'addParentLink' )
-			->with(	$this->equalTo( [ 'tab' => 'supplement' ] ) );
+			->with(	[ 'tab' => 'supplement' ] );
 
 		$instance = new ElasticClientTaskHandler(
 			$this->outputFormatter

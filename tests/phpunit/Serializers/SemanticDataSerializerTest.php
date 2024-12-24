@@ -46,8 +46,8 @@ class SemanticDataSerializerTest extends \PHPUnit\Framework\TestCase {
 	public function testSerializerDeserializerRountrip( $data ) {
 		$instance = new SemanticDataSerializer();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->serialize( $data )
 		);
 	}

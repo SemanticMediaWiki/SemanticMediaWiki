@@ -27,7 +27,7 @@ class SpecialMissingRedirectAnnotationsTest extends \PHPUnit\Framework\TestCase 
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'service' ] )
+			->onlyMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
@@ -53,17 +53,17 @@ class SpecialMissingRedirectAnnotationsTest extends \PHPUnit\Framework\TestCase 
 
 		$missingRedirectLookup->expects( $this->once() )
 			->method( 'findMissingRedirects' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$this->store->expects( $this->at( 0 ) )
 			->method( 'service' )
-			->with( $this->equalTo( 'SortLetter' ) )
-			->will( $this->returnValue( $sortLetter ) );
+			->with( 'SortLetter' )
+			->willReturn( $sortLetter );
 
 		$this->store->expects( $this->at( 1 ) )
 			->method( 'service' )
-			->with( $this->equalTo( 'MissingRedirectLookup' ) )
-			->will( $this->returnValue( $missingRedirectLookup ) );
+			->with( 'MissingRedirectLookup' )
+			->willReturn( $missingRedirectLookup );
 
 		$instance = new SpecialMissingRedirectAnnotations();
 

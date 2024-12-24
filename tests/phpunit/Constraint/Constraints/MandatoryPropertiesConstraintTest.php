@@ -62,17 +62,17 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'addError', 'getCallable' ] )
+			->onlyMethods( [ 'addError', 'getCallable' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData;
-			} ) );
+			->willReturn( function () use( $semanticData ) { return $semanticData;
+			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )

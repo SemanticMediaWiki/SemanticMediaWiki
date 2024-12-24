@@ -33,7 +33,7 @@ class UnitConverterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'fetch', 'save', 'associate' ] )
+			->onlyMethods( [ 'fetch', 'save', 'associate' ] )
 			->getMock();
 	}
 
@@ -57,7 +57,7 @@ class UnitConverterTest extends \PHPUnit\Framework\TestCase {
 
 		$numberValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
+			->willReturn( $property );
 
 		$instance = new UnitConverter(
 			$this->propertySpecificationLookup,
@@ -81,7 +81,7 @@ class UnitConverterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( $correspondsTo ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIBlob( $correspondsTo ) ] );
 
 		$numberValue = new NumberValue();
 		$numberValue->setProperty( $property );
@@ -142,18 +142,18 @@ class UnitConverterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->will( $this->onConsecutiveCalls( false, $data ) );
+			->willReturnOnConsecutiveCalls( false, $data );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'associate' )
-			->with( $this->equalTo( $property->getDiWikiPage() ) );
+			->with( $property->getDiWikiPage() );
 
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( 'Foo' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIBlob( 'Foo' ) ] );
 
 		$numberValue = new NumberValue();
 		$numberValue->setProperty( $property );

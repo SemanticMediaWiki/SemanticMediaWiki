@@ -31,7 +31,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	 */
 	private function newInstance( $search = '' ) {
 		$queryPage = $this->getMockBuilder( '\SMW\QueryPage' )
-			->setMethods( [ 'getResults', 'formatResult' ] )
+			->onlyMethods( [ 'getResults', 'formatResult' ] )
 			->getMock();
 
 		$context = $this->newContext( [ 'property' => $search ] );
@@ -64,7 +64,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 		$search = __METHOD__;
 		$result = $this->newInstance( $test )->linkParameters();
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
 	}
 
@@ -97,7 +97,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$this->assertInternalType( 'string', $result );
+		$this->assertIsString( $result );
 
 		// https://github.com/sebastianbergmann/phpunit/issues/1380
 		// $this->assertTag( $matcher, $result );

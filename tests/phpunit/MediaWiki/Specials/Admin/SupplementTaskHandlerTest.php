@@ -63,8 +63,8 @@ class SupplementTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
@@ -76,8 +76,8 @@ class SupplementTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$taskHandler->expects( $this->once() )
 			->method( 'isTaskFor' )
-			->with( $this->equalTo( 'foo' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'foo' )
+			->willReturn( true );
 
 		$instance = new SupplementTaskHandler(
 			$this->outputFormatter,
@@ -98,8 +98,8 @@ class SupplementTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$webRequest->expects( $this->once() )
 			->method( 'getText' )
-			->with( $this->equalTo( 'action' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->with( 'action' )
+			->willReturn( 'foo' );
 
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
 			->disableOriginalConstructor()
@@ -107,11 +107,11 @@ class SupplementTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$taskHandler->expects( $this->once() )
 			->method( 'isTaskFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$taskHandler->expects( $this->once() )
 			->method( 'handleRequest' )
-			->with( $this->equalTo( $webRequest ) );
+			->with( $webRequest );
 
 		$instance = new SupplementTaskHandler(
 			$this->outputFormatter,

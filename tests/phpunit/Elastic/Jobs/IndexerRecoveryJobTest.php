@@ -68,7 +68,7 @@ class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 
 		$elasticFactory->expects( $this->any() )
 			->method( 'newIndexer' )
-			->will( $this->returnValue( $this->indexer ) );
+			->willReturn( $this->indexer );
 
 		$this->store->expects( $this->any() )
 			->method( 'getElasticFactory' )
@@ -101,15 +101,15 @@ class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( ( new \SMW\Options() ) ) );
+			->willReturn( ( new \SMW\Options() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 
@@ -127,15 +127,15 @@ class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( ( new \SMW\Options() ) ) );
+			->willReturn( ( new \SMW\Options() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 
@@ -150,15 +150,15 @@ class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 	public function testRun_Index() {
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( ( new \SMW\Options() ) ) );
+			->willReturn( ( new \SMW\Options() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 
@@ -178,19 +178,19 @@ class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 		$this->config->expects( $this->atLeastOnce() )
 			->method( 'dotGet' )
 			->with( $this->stringContains( 'indexer.job.recovery.retries' ) )
-			->will( $this->returnValue( 5 ) );
+			->willReturn( 5 );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $this->config ) );
+			->willReturn( $this->config );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		// Check insert with next retry
 		$this->jobQueue->expects( $this->once() )

@@ -25,7 +25,7 @@ class TableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->willReturn( 'mysql' );
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\TableBuilder\MySQLTableBuilder',
@@ -40,7 +40,7 @@ class TableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'sqlite' ) );
+			->willReturn( 'sqlite' );
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\TableBuilder\SQLiteTableBuilder',
@@ -55,7 +55,7 @@ class TableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'postgres' ) );
+			->willReturn( 'postgres' );
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\TableBuilder\PostgresTableBuilder',
@@ -70,7 +70,7 @@ class TableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$this->expectException( 'RuntimeException' );
 		TableBuilder::factory( $connection );

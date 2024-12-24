@@ -48,9 +48,9 @@ class SearchTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'o_text' ] ),
+				[ 'o_text' ],
 				$this->equalTo( [ 's_id' => 12, 'p_id' => 42 ] ) )
-			->will( $this->returnValue( $row ) );
+			->willReturn( $row );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -64,8 +64,8 @@ class SearchTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 	public function testOptimizeOnEnabledType() {
 		$this->connection->expects( $this->once() )
 			->method( 'isType' )
-			->with( $this->equalTo( 'mysql' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'mysql' )
+			->willReturn( true );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' );
@@ -84,7 +84,7 @@ class SearchTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 	public function testOptimizeOnDisabledType() {
 		$this->connection->expects( $this->once() )
 			->method( 'isType' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->never() )
 			->method( 'query' );
@@ -171,7 +171,7 @@ class SearchTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'delete' )
 			->with(
 				$this->anything(),
-				$this->equalTo( '*' ) );
+				'*' );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,

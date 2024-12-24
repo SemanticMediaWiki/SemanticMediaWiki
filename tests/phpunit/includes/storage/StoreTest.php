@@ -66,7 +66,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertyValues( $subject, $property, $requestOptions );
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertContainsOnlyInstancesOf( '\SMWDataItem', $result );
 	}
 
@@ -112,7 +112,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getProperties( $subject, $requestOptions );
 
-		$this->assertTrue( is_array( $result ) );
+		$this->assertIsArray( $result );
 
 		foreach ( $result as $property ) {
 			$this->assertInstanceOf(
@@ -181,7 +181,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getStatistics();
 
-		$this->assertTrue( is_array( $result ) );
+		$this->assertIsArray( $result );
 		$this->assertArrayHasKey( 'PROPUSES', $result );
 		$this->assertArrayHasKey( 'USEDPROPS', $result );
 		$this->assertArrayHasKey( 'DECLPROPS', $result );
@@ -203,12 +203,12 @@ class StoreTest extends SMWIntegrationTestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyValues' ] )
+			->onlyMethods( [ 'getPropertyValues' ] )
 			->getMockForAbstractClass();
 
 		$instance->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $expected ] ) );
+			->willReturn( [ $expected ] );
 
 		$this->assertEquals(
 			$expected,

@@ -40,7 +40,7 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
 			->disableOriginalConstructor()
@@ -52,12 +52,12 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 	}
 
 	public function testCanConstruct() {
@@ -81,20 +81,20 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 42 ),
+				42,
 				$this->anything() );
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'smw_id' => 42 ] ) )
-			->will( $this->returnValue( $row ) );
+				[ 'smw_id' => 42 ] )
+			->willReturn( $row );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -111,7 +111,7 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 	public function testGetDataItemForCachedId() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
+			->willReturn( new DIWikiPage( 'Foo', NS_MAIN ) );
 
 		$this->connection->expects( $this->never() )
 			->method( 'selectRow' );
@@ -146,15 +146,15 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'smw_id' => 42 ] ) )
-			->will( $this->returnValue( $row ) );
+				[ 'smw_id' => 42 ] )
+			->willReturn( $row );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -171,11 +171,11 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 	public function testNullForUnknownId() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -209,8 +209,8 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'smw_id' => [ 42 ] ] ) )
-			->will( $this->returnValue( [ $row ] ) );
+				[ 'smw_id' => [ 42 ] ] )
+			->willReturn( [ $row ] );
 
 		$instance = new IdEntityFinder(
 			$this->store,

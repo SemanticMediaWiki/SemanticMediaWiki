@@ -31,7 +31,7 @@ class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
@@ -49,7 +49,7 @@ class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$this->assertInstanceOf(
 			StubSemanticData::class,
@@ -62,7 +62,7 @@ class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 			->setConstructorArgs( [
 				DIWikiPage::newFromText( __METHOD__ ),
 				$this->store ] )
-			->setMethods( [
+			->onlyMethods( [
 				'getProperties',
 				'isRedirect',
 				'getPropertyValues' ] )
@@ -70,11 +70,11 @@ class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->expects( $this->once() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ new DIProperty( '_SOBJ' ) ] ) );
+			->willReturn( [ new DIProperty( '_SOBJ' ) ] );
 
 		$instance->expects( $this->once() )
 			->method( 'isRedirect' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance->expects( $this->never() )
 			->method( 'getPropertyValues' );

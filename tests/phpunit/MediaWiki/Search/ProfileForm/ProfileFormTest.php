@@ -53,15 +53,15 @@ class ProfileFormTest extends \PHPUnit\Framework\TestCase {
 
 		$this->requestContext->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $this->outputPage ) );
+			->willReturn( $this->outputPage );
 
 		$this->requestContext->expects( $this->any() )
 			->method( 'getRequest' )
-			->will( $this->returnValue( $this->webRequest ) );
+			->willReturn( $this->webRequest );
 
 		$this->requestContext->expects( $this->any() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $this->user ) );
+			->willReturn( $this->user );
 	}
 
 	public function testCanConstruct() {
@@ -97,7 +97,7 @@ class ProfileFormTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$searchEngine = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
 			->disableOriginalConstructor()
@@ -105,23 +105,23 @@ class ProfileFormTest extends \PHPUnit\Framework\TestCase {
 
 		$searchEngine->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->specialSearch->expects( $this->any() )
 			->method( 'getSearchEngine' )
-			->will( $this->returnValue( $searchEngine ) );
+			->willReturn( $searchEngine );
 
 		$this->specialSearch->expects( $this->any() )
 			->method( 'getNamespaces' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->specialSearch->expects( $this->any() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $this->user ) );
+			->willReturn( $this->user );
 
 		$this->specialSearch->expects( $this->any() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $this->requestContext ) );
+			->willReturn( $this->requestContext );
 
 		$instance = new ProfileForm(
 			$this->store,

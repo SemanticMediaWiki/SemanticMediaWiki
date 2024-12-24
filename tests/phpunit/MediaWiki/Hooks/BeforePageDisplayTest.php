@@ -40,7 +40,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 		$requestContext->expects( $this->any() )
 			->method( 'getRequest' )
-			->will( $this->returnValue( $this->request ) );
+			->willReturn( $this->request );
 
 		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -48,7 +48,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 		$this->outputPage->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $this->title ) );
+			->willReturn( $this->title );
 
 		$this->skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -56,7 +56,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 		$this->skin->expects( $this->any() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $requestContext ) );
+			->willReturn( $requestContext );
 
 		$this->userOptionsLookup = $this->createMock( UserOptionsLookup::class );
 		$this->testEnvironment = new TestEnvironment();
@@ -78,8 +78,8 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 	public function testInformAboutExtensionAvailability() {
 		$this->title->expects( $this->once() )
 			->method( 'isSpecial' )
-			->with( $this->equalTo( 'Version' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Version' )
+			->willReturn( true );
 
 		$this->outputPage->expects( $this->once() )
 			->method( 'prependHTML' );
@@ -119,14 +119,14 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 		$this->userOptionsLookup->expects( $this->any() )
 			->method( 'getOption' )
 			->with( $user, 'smw-prefs-general-options-suggester-textinput' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
-		$this->outputPage->expects( $this->exactly( 1 ) )
+		$this->outputPage->expects( $this->once() )
 			->method( 'addModules' );
 
 		$this->outputPage->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$instance = new BeforePageDisplay();
 
@@ -143,7 +143,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 		$this->outputPage->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$instance = new BeforePageDisplay();
 
@@ -163,20 +163,20 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 		$this->title->expects( $this->any() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->title->expects( $this->any() )
 			->method( 'isSpecial' )
-			->with( $this->equalTo( 'Userlogin' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Userlogin' )
+			->willReturn( true );
 
 		$this->outputPage->expects( $this->once() )
 			->method( 'prependHTML' )
-			->with( $this->equalTo( '' ) );
+			->with( '' );
 
 		$this->outputPage->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$instance = new BeforePageDisplay();
 
@@ -205,11 +205,11 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 		$this->outputPage->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$this->outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $setup['title'] ) );
+			->willReturn( $setup['title'] );
 
 		$this->outputPage->expects( $expected )
 			->method( 'addLink' );
@@ -235,11 +235,11 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPrefixedText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$provider[] = [
 			[
@@ -257,7 +257,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$provider[] = [
 			[

@@ -50,13 +50,13 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		$propertyChangeListener->expects( $this->at( 0 ) )
 			->method( 'addListenerCallback' )
 			->with(
-				$this->equalTo( new DIProperty( '_SUBP' ) ),
+				new DIProperty( '_SUBP' ),
 				$this->anything() );
 
 		$propertyChangeListener->expects( $this->at( 1 ) )
 			->method( 'addListenerCallback' )
 			->with(
-				$this->equalTo( new DIProperty( '_SUBC' ) ),
+				new DIProperty( '_SUBC' ),
 				$this->anything() );
 
 		$instance = new HierarchyLookup(
@@ -78,7 +78,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -96,8 +96,8 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		$property = new DIProperty( 'Foo' );
 		$instance->hasSubproperty( $property );
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->hasSubproperty( $property )
 		);
 	}
@@ -116,10 +116,10 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->equalTo( new DIProperty( '_SUBP' ) ),
-				$this->equalTo( $property->getDiWikiPage() ),
+				new DIProperty( '_SUBP' ),
+				$property->getDiWikiPage(),
 				$this->anything() )
-			->will( $this->returnValue( $expected ) );
+			->willReturn( $expected );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -153,24 +153,24 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		$this->store->expects( $this->at( 0 ) )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->equalTo( new DIProperty( '_SUBP' ) ),
-				$this->equalTo( $property->getDiWikiPage() ),
+				new DIProperty( '_SUBP' ),
+				$property->getDiWikiPage(),
 				$this->anything() )
-			->will( $this->returnValue( [ $a ] ) );
+			->willReturn( [ $a ] );
 
 		$b = DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY );
 
 		$this->store->expects( $this->at( 1 ) )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->equalTo( new DIProperty( '_SUBP' ) ),
-				$this->equalTo( $a ),
+				new DIProperty( '_SUBP' ),
+				$a,
 				$this->anything() )
-			->will( $this->returnValue( [ $b ] ) );
+			->willReturn( [ $b ] );
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
@@ -205,7 +205,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ 'Foo' => [ 'Bar', 'Foobar' ] ] ) );
+			->willReturn( [ 'Foo' => [ 'Bar', 'Foobar' ] ] );
 
 		$this->cache->expects( $this->never() )
 			->method( 'save' );
@@ -240,24 +240,24 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		$this->store->expects( $this->at( 0 ) )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->equalTo( new DIProperty( '_SUBC' ) ),
-				$this->equalTo( $category ),
+				new DIProperty( '_SUBC' ),
+				$category,
 				$this->anything() )
-			->will( $this->returnValue( [ $a ] ) );
+			->willReturn( [ $a ] );
 
 		$b = DIWikiPage::newFromText( 'Foobar', NS_CATEGORY );
 
 		$this->store->expects( $this->at( 1 ) )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->equalTo( new DIProperty( '_SUBC' ) ),
-				$this->equalTo( $a ),
+				new DIProperty( '_SUBC' ),
+				$a,
 				$this->anything() )
-			->will( $this->returnValue( [ $b ] ) );
+			->willReturn( [ $b ] );
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
@@ -295,24 +295,24 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		$this->store->expects( $this->at( 0 ) )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->equalTo( new DIProperty( '_SUBC', true ) ),
-				$this->equalTo( $category ),
+				new DIProperty( '_SUBC', true ),
+				$category,
 				$this->anything() )
-			->will( $this->returnValue( [ $a ] ) );
+			->willReturn( [ $a ] );
 
 		$b = DIWikiPage::newFromText( 'Foobar', NS_CATEGORY );
 
 		$this->store->expects( $this->at( 1 ) )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->equalTo( new DIProperty( '_SUBC', true ) ),
-				$this->equalTo( $a ),
+				new DIProperty( '_SUBC', true ),
+				$a,
 				$this->anything() )
-			->will( $this->returnValue( [ $b ] ) );
+			->willReturn( [ $b ] );
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
@@ -347,7 +347,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ 'Foo' => [ 'Bar', 'Foobar' ] ] ) );
+			->willReturn( [ 'Foo' => [ 'Bar', 'Foobar' ] ] );
 
 		$this->cache->expects( $this->never() )
 			->method( 'save' );
@@ -394,10 +394,10 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->equalTo( new DIProperty( '_SUBC' ) ),
-				$this->equalTo( $category ),
+				new DIProperty( '_SUBC' ),
+				$category,
 				$this->anything() )
-			->will( $this->returnValue( $expected ) );
+			->willReturn( $expected );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -432,10 +432,10 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->equalTo( new DIProperty( '_SUBC', true ) ),
-				$this->equalTo( $category ),
+				new DIProperty( '_SUBC', true ),
+				$category,
 				$this->anything() )
-			->will( $this->returnValue( $expected ) );
+			->willReturn( $expected );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -467,7 +467,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->never() )
 			->method( 'contains' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new HierarchyLookup( $store, $cache );
 		$instance->setSubpropertyDepth( 0 );
@@ -488,7 +488,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->never() )
 			->method( 'contains' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new HierarchyLookup( $store, $cache );
 		$instance->setSubcategoryDepth( 0 );

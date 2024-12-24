@@ -46,28 +46,28 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSMWPropertyID', 'isFixedPropertyTable' ] )
+			->onlyMethods( [ 'getSMWPropertyID', 'isFixedPropertyTable' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$idTable->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
@@ -79,19 +79,19 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new ProximityPropertyValueLookup(
 			$store
@@ -127,28 +127,28 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSMWPropertyID', 'isFixedPropertyTable' ] )
+			->onlyMethods( [ 'getSMWPropertyID', 'isFixedPropertyTable' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$idTable->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
@@ -156,7 +156,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getLabelField' )
-			->will( $this->returnValue( 'o_hash' ) );
+			->willReturn( 'o_hash' );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -164,19 +164,19 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new ProximityPropertyValueLookup(
 			$store

@@ -19,36 +19,36 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testFieldset() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::fieldset()
 		);
 	}
 
 	public function testEmbeddedCodeLink() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::embeddedCodeLink()
 		);
 	}
 
 	public function testEmbeddedCodeBlock() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::embeddedCodeBlock( 'Foo' )
 		);
 	}
 
 	public function testResultSubmitLinkHide() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::resultSubmitLink( true )
 		);
 	}
 
 	public function testResultSubmitLinkShow() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::resultSubmitLink( false )
 		);
 	}
@@ -62,8 +62,8 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::showHideLink( $title, $urlArgs )
 		);
 	}
@@ -77,8 +77,8 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::debugLink( $title, $urlArgs )
 		);
 	}
@@ -92,8 +92,8 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::noQCacheLink( $title, $urlArgs, true )
 		);
 	}
@@ -117,8 +117,8 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::clipboardLink( $infolink )
 		);
 	}

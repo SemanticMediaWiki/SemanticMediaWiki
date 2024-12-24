@@ -62,7 +62,7 @@ class NamespaceConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'addError' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'addError' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -73,11 +73,11 @@ class NamespaceConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( 'Foo' ) );
 
 		$instance = new NamespaceConstraint();
 

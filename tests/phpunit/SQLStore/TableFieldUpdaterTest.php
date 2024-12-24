@@ -33,7 +33,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$collator->expects( $this->once() )
 			->method( 'getSortKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -41,14 +41,14 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'timestamp' )
-			->will( $this->returnValue( '1970' ) );
+			->willReturn( '1970' );
 
 		$connection->expects( $this->once() )
 			->method( 'update' )
 				->with(
 					$this->anything(),
 					$this->equalTo( [ 'smw_sortkey' => 'Foo', 'smw_sort' => 'Foo', 'smw_touched' => 1970 ] ),
-					$this->equalTo( [ 'smw_id' => 42 ] ) );
+					[ 'smw_id' => 42 ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -56,7 +56,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new TableFieldUpdater(
 			$store,
@@ -73,14 +73,14 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'timestamp' )
-			->will( $this->returnValue( '1970' ) );
+			->willReturn( '1970' );
 
 		$connection->expects( $this->once() )
 			->method( 'update' )
 				->with(
 					$this->anything(),
 					$this->equalTo( [ 'smw_rev' => 1001, 'smw_touched' => 1970 ] ),
-					$this->equalTo( [ 'smw_id'  => 42 ] ) );
+					[ 'smw_id'  => 42 ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -88,7 +88,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new TableFieldUpdater(
 			$store
@@ -104,14 +104,14 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'timestamp' )
-			->will( $this->returnValue( '1970' ) );
+			->willReturn( '1970' );
 
 		$connection->expects( $this->once() )
 			->method( 'update' )
 				->with(
 					$this->anything(),
-					$this->equalTo( [ 'smw_touched' => 1970 ] ),
-					$this->equalTo( [ 'smw_id'  => 42 ] ) );
+					[ 'smw_touched' => 1970 ],
+					[ 'smw_id'  => 42 ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -119,7 +119,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new TableFieldUpdater(
 			$store
@@ -138,7 +138,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 				->with(
 					$this->anything(),
 					$this->equalTo( [ 'smw_iw' => 'foo', 'smw_hash' => 'abc1234' ] ),
-					$this->equalTo( [ 'smw_id'  => 42 ] ) );
+					[ 'smw_id'  => 42 ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -146,7 +146,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new TableFieldUpdater(
 			$store

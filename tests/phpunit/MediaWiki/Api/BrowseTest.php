@@ -41,8 +41,8 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'ProximityPropertyValueLookup' ) )
-			->will( $this->returnValue( $proximityPropertyValueLookup ) );
+			->with( 'ProximityPropertyValueLookup' )
+			->willReturn( $proximityPropertyValueLookup );
 	}
 
 	protected function tearDown(): void {
@@ -68,12 +68,12 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 	public function testExecute( $id, $parameters = [] ) {
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSMWPropertyID' ] )
+			->onlyMethods( [ 'getSMWPropertyID' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -81,7 +81,7 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )
 			->disableOriginalConstructor()
@@ -97,15 +97,15 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$connection->expects( $this->any() )
 			->method( 'query' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
@@ -113,27 +113,27 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getSQLOptions' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->testEnvironment->registerObject( 'Cache', $cache );
 		$this->testEnvironment->registerObject( 'Store', $this->store );
@@ -163,19 +163,19 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 

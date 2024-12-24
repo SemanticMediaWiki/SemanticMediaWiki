@@ -105,7 +105,7 @@ class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new QueryFactory();
 

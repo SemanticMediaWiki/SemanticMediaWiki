@@ -197,7 +197,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->willReturn( 'mysql' );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -205,7 +205,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SQLStoreFactory( $store );
 
@@ -249,7 +249,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SQLStoreFactory( $this->store );
 
@@ -304,7 +304,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
 			->disableOriginalConstructor()
@@ -356,7 +356,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$instance = new SQLStoreFactory( $this->store );
 
@@ -458,7 +458,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SQLStoreFactory( $this->store );
 
@@ -475,7 +475,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
 			->disableOriginalConstructor()
@@ -532,7 +532,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SQLStoreFactory( $this->store );
 
@@ -576,7 +576,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SQLStoreFactory( $this->store );
 
@@ -593,7 +593,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SQLStoreFactory( $this->store );
 
@@ -646,7 +646,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
 			->disableOriginalConstructor()
@@ -667,7 +667,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SQLStoreFactory( $this->store );
 
@@ -720,7 +720,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
 			->disableOriginalConstructor()

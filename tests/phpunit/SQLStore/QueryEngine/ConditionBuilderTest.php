@@ -46,7 +46,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->orderCondition = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\OrderCondition' )
 			->disableOriginalConstructor()
@@ -87,7 +87,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$this->orderCondition->expects( $this->once() )
 			->method( 'addConditions' );
@@ -118,7 +118,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$expected->type = 1;
 		$expected->where = "t0.smw_namespace=";
 
-		$this->assertEquals( 0, $instance->getLastQuerySegmentId() );
+		$this->assertSame( 0, $instance->getLastQuerySegmentId() );
 		$this->assertEmpty( $instance->getErrors() );
 
 		$this->querySegmentValidator->assertThatContainerContains(
@@ -152,7 +152,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$expectedMainNs->type = 1;
 		$expectedMainNs->where = "t2.smw_namespace=";
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getLastQuerySegmentId()
 		);
@@ -175,16 +175,16 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testClassDescription() {
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->once() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIds ) );
+			->willReturn( $objectIds );
 
 		$description = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
 
@@ -208,7 +208,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$expectedHierarchy->alias = "t1";
 		$expectedHierarchy->queryNumber = 1;
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getLastQuerySegmentId()
 		);

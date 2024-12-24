@@ -44,9 +44,9 @@ class PermissionExaminerTest extends \PHPUnit\Framework\TestCase {
 		$this->permissionManager->expects( $this->any() )
 			->method( 'userHasRight' )
 			->with(
-				$this->equalTo( $this->user ),
-				$this->equalTo( 'foo' ) )
-			->will( $this->returnValue( false ) );
+				$this->user,
+				'foo' )
+			->willReturn( false );
 
 		$instance = new PermissionExaminer(
 			$this->permissionManager
@@ -54,8 +54,8 @@ class PermissionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setUser( $this->user );
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasPermissionOf( 'foo' )
 		);
 	}

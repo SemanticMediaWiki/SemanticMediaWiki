@@ -64,8 +64,8 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$messageFormatter->expects( $this->once() )
 			->method( 'addFromKey' )
-			->with( $this->equalTo( 'smw_no_concept_namespace' ) )
-			->will( $this->returnSelf() );
+			->with( 'smw_no_concept_namespace' )
+			->willReturnSelf();
 
 		$instance = new ConceptParserFunction( $parserData, $messageFormatter );
 		$instance->parse( [] );
@@ -86,12 +86,12 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$messageFormatter->expects( $this->once() )
 			->method( 'addFromKey' )
-			->with( $this->equalTo( 'smw_multiple_concepts' ) )
-			->will( $this->returnSelf() );
+			->with( 'smw_multiple_concepts' )
+			->willReturnSelf();
 
 		$instance = new ConceptParserFunction( $parserData, $messageFormatter );
 
@@ -111,15 +111,15 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$messageFormatter->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$messageFormatter->expects( $this->once() )
 			->method( 'getHtml' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new ConceptParserFunction( $parserData, $messageFormatter );
 
@@ -144,7 +144,7 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$instance = new ConceptParserFunction( $parserData, $messageFormatter );
 		$instance->parse( $params );

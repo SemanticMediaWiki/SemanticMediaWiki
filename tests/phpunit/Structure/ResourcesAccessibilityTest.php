@@ -31,8 +31,8 @@ class ResourcesAccessibilityTest extends \PHPUnit\Framework\TestCase {
 		foreach ( array_keys( $modules ) as $name ) {
 			$resourceLoaderModule = $resourceLoader->getModule( $name );
 
-			$this->assertInternalType(
-				'string',
+			$this->assertIsString(
+
 				$resourceLoaderModule->getScript( $context )
 			);
 		}
@@ -50,7 +50,7 @@ class ResourcesAccessibilityTest extends \PHPUnit\Framework\TestCase {
 			$styles = $resourceLoaderModule->getStyles( $context );
 
 			foreach ( $styles as $style ) {
-				$this->assertInternalType( 'string', $style );
+				$this->assertIsString( $style );
 			}
 		}
 	}

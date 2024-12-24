@@ -39,20 +39,20 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getQueryResult', 'getObjectIds', 'service' ] )
+			->onlyMethods( [ 'getQueryResult', 'getObjectIds', 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $this->queryResult ) );
+			->willReturn( $this->queryResult );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 
@@ -78,7 +78,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$singleEntityQueryLookup->expects( $this->any() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $this->queryResult ) );
+			->willReturn( $this->queryResult );
 
 		$monolingualTextLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\MonolingualTextLookup' )
 			->disableOriginalConstructor()
@@ -86,7 +86,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnCallback( function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
+			->willReturnCallback( function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
 				if ( $service === 'SingleEntityQueryLookup' ) {
 					return $singleEntityQueryLookup;
 				}
@@ -94,7 +94,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 				if ( $service === 'MonolingualTextLookup' ) {
 					return $monolingualTextLookup;
 				}
-			} ) );
+			} );
 
 		$expectedNullOutputFor = [
 			'concept',

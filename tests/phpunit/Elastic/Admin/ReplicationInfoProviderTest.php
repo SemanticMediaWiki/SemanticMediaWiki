@@ -36,7 +36,7 @@ class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'fetch' ] )
+			->onlyMethods( [ 'fetch' ] )
 			->getMock();
 
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
@@ -45,12 +45,12 @@ class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( new DummyClient() ) );
+			->willReturn( new DummyClient() );
 	}
 
 	public function testCanConstruct() {
@@ -85,8 +85,8 @@ class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
@@ -94,11 +94,11 @@ class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
 	public function tesHandleRequest_NoFailures() {
 		$this->outputFormatter->expects( $this->once() )
 			->method( 'addParentLink' )
-			->with(	$this->equalTo( [ 'action' => 'elastic' ] ) );
+			->with(	[ 'action' => 'elastic' ] );
 
 		$this->replicationCheck->expects( $this->once() )
 			->method( 'getReplicationFailures' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
@@ -115,7 +115,7 @@ class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->replicationCheck->expects( $this->once() )
 			->method( 'getReplicationFailures' )
-			->will( $this->returnValue( [ 'Foo#0##', "Bar#$ns##" ] ) );
+			->willReturn( [ 'Foo#0##', "Bar#$ns##" ] );
 
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,

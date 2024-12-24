@@ -54,15 +54,15 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$this->propertyAnnotatorFactory->expects( $this->any() )
 			->method( 'newNullPropertyAnnotator' )
-			->will( $this->returnValue( $annotator ) );
+			->willReturn( $annotator );
 
 		$this->propertyAnnotatorFactory->expects( $this->any() )
 			->method( 'newPredefinedPropertyAnnotator' )
-			->will( $this->returnValue( $annotator ) );
+			->willReturn( $annotator );
 
 		$this->propertyAnnotatorFactory->expects( $this->any() )
 			->method( 'newSchemaPropertyAnnotator' )
-			->will( $this->returnValue( $annotator ) );
+			->willReturn( $annotator );
 
 		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
 			->disableOriginalConstructor()
@@ -96,7 +96,7 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$this->editInfo->expects( $this->once() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$this->schemaFactory->expects( $this->never() )
 			->method( 'newSchema' );
@@ -133,15 +133,15 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+			->willReturn( SMW_NS_SCHEMA );
 
 		$this->editInfo->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$this->schemaFactory->expects( $this->once() )
 			->method( 'newSchema' );
@@ -181,19 +181,19 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+			->willReturn( SMW_NS_SCHEMA );
 
 		$this->editInfo->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$this->schemaFactory->expects( $this->once() )
 			->method( 'newSchema' )
-			->will( $this->throwException( new \Exception() ) );
+			->willThrowException( new \Exception() );
 
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
@@ -239,15 +239,15 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_CONCEPT ) );
+			->willReturn( SMW_NS_CONCEPT );
 
 		$this->editInfo->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$this->schemaFactory->expects( $this->never() )
 			->method( 'newSchema' );

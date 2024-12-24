@@ -90,7 +90,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
@@ -98,7 +98,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 		$parserOptions->expects( $this->once() )
 			->method( 'getInterfaceMessage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$parser = $this->getMockBuilder( 'Parser' )
 			->disableOriginalConstructor()
@@ -106,11 +106,11 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 		$parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( $parserOptions ) );
+			->willReturn( $parserOptions );
 
 		$parser->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance = new InternalParseBeforeLinks(
 			$parser,
@@ -131,20 +131,20 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecial' )
-			->with( $this->equalTo( 'Bar' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Bar' )
+			->willReturn( true );
 
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
@@ -156,7 +156,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 		$parserOptions->expects( $this->once() )
 			->method( 'getInterfaceMessage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$parser = $this->getMockBuilder( 'Parser' )
 			->disableOriginalConstructor()
@@ -164,7 +164,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 		$parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( $parserOptions ) );
+			->willReturn( $parserOptions );
 
 		$instance = new InternalParseBeforeLinks(
 			$parser,
@@ -189,20 +189,20 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecial' )
-			->with( $this->equalTo( 'Bar' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Bar' )
+			->willReturn( true );
 
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
@@ -222,11 +222,11 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 		$parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance = new InternalParseBeforeLinks(
 			$parser,
@@ -310,7 +310,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		# 1
 		$provider[] = [ $title ];
@@ -319,7 +319,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		# 2
 		$provider[] = [ $title ];
@@ -328,7 +328,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		# 3
 		$provider[] = [ $title ];

@@ -36,7 +36,7 @@ class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -58,7 +58,7 @@ class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testMessages() {
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -82,16 +82,16 @@ class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( $dataItemFactory->newDIProperty( '_TYPE' ) ) )
-			->will( $this->returnValue( true ) );
+			->with( $dataItemFactory->newDIProperty( '_TYPE' ) )
+			->willReturn( true );
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $uri ] ) );
+			->willReturn( [ $uri ] );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$instance = new PredefinedPropertyExaminer(
 			$this->declarationExaminer
@@ -114,11 +114,11 @@ class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'hasProperty' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$dataItemFactory = new DataItemFactory();
 

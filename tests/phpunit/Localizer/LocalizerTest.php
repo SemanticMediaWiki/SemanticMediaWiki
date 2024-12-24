@@ -211,7 +211,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $pageLanguage ) );
+			->willReturn( $pageLanguage );
 
 		$this->assertEquals(
 			$pageLanguage,
@@ -247,7 +247,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 
 		$language->expects( $this->once() )
 			->method( 'getCode' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$this->assertInstanceOf(
 			'\SMW\Localizer\LocalLanguage\LocalLanguage',
@@ -256,7 +256,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testConvertDoubleWidth() {
-		$this->assertEquals(
+		$this->assertSame(
 			'2000',
 			Localizer::convertDoubleWidth( '２０００' )
 		);
@@ -284,7 +284,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 	public function testNormalizeTitleText() {
 		$this->language->expects( $this->once() )
 			->method( 'ucfirst' )
-			->will( $this->returnValue( 'Fo_o' ) );
+			->willReturn( 'Fo_o' );
 
 		$instance = $this->newLocalizer();
 
@@ -297,11 +297,11 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetCanonicalizedUrlByNamespace() {
 		$this->language->expects( $this->exactly( 3 ) )
 			->method( 'getNsText' )
-			->will( $this->returnValue( 'Spécial' ) );
+			->willReturn( 'Spécial' );
 
 		$this->namespaceInfo->expects( $this->exactly( 3 ) )
 			->method( 'getCanonicalName' )
-			->will( $this->returnValue( 'Special' ) );
+			->willReturn( 'Special' );
 
 		$instance = $this->newLocalizer();
 
@@ -324,7 +324,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetCanonicalName() {
 		$this->namespaceInfo->expects( $this->once() )
 			->method( 'getCanonicalName' )
-			->will( $this->returnValue( 'Help' ) );
+			->willReturn( 'Help' );
 
 		$instance = $this->newLocalizer();
 

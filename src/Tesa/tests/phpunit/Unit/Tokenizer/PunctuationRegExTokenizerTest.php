@@ -51,7 +51,7 @@ class PunctuationRegExTokenizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'isWordTokenizer' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new PunctuationRegExTokenizer( $tokenizer );
 
@@ -72,8 +72,8 @@ class PunctuationRegExTokenizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $string ) )
-			->will( $this->returnValue( array( $string ) ) );
+			->with( $string )
+			->willReturn( array( $string ) );
 
 		$instance = new PunctuationRegExTokenizer( $tokenizer );
 

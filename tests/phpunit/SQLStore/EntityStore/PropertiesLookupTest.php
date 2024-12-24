@@ -43,7 +43,7 @@ class PropertiesLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTableDef->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
 			->disableOriginalConstructor()
@@ -51,7 +51,7 @@ class PropertiesLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'execute' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -59,24 +59,24 @@ class PropertiesLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getSQLOptions', 'getSQLConditions' ] )
+			->onlyMethods( [ 'getConnection', 'getSQLOptions', 'getSQLConditions' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSQLOptions' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSQLConditions' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new PropertiesLookup(
 			$store
@@ -97,7 +97,7 @@ class PropertiesLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTableDef->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
 			->disableOriginalConstructor()
@@ -105,7 +105,7 @@ class PropertiesLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'execute' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -113,16 +113,16 @@ class PropertiesLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new PropertiesLookup(
 			$store

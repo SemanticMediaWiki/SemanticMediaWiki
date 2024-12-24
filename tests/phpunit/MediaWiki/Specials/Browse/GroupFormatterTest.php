@@ -45,7 +45,7 @@ class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testFindGroupMembership() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyGroup' )
-			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_CATEGORY ) ) );
+			->willReturn( new DIWikiPage( 'Bar', NS_CATEGORY ) );
 
 		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
 			->disableOriginalConstructor()
@@ -53,11 +53,11 @@ class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$schemaList->expects( $this->any() )
 			->method( 'getList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->schemaFinder->expects( $this->any() )
 			->method( 'getSchemaListByType' )
-			->will( $this->returnValue( $schemaList ) );
+			->willReturn( $schemaList );
 
 		$instance = new GroupFormatter(
 			$this->propertySpecificationLookup,
@@ -100,16 +100,16 @@ class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$schemaDefinition->expects( $this->any() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'Foo schema' ) );
+			->willReturn( 'Foo schema' );
 
 		$schemaDefinition->expects( $this->any() )
 			->method( 'get' )
-			->with( $this->equalTo( 'groups' ) )
-			->will( $this->returnValue( $data ) );
+			->with( 'groups' )
+			->willReturn( $data );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyGroup' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
 			->disableOriginalConstructor()
@@ -117,11 +117,11 @@ class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$schemaList->expects( $this->any() )
 			->method( 'getList' )
-			->will( $this->returnValue( [ $schemaDefinition ] ) );
+			->willReturn( [ $schemaDefinition ] );
 
 		$this->schemaFinder->expects( $this->any() )
 			->method( 'getSchemaListByType' )
-			->will( $this->returnValue( $schemaList ) );
+			->willReturn( $schemaList );
 
 		$instance = new GroupFormatter(
 			$this->propertySpecificationLookup,
@@ -156,7 +156,7 @@ class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testFindGroupMembershipWhereShowGroupIsDisabled() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyGroup' )
-			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_CATEGORY ) ) );
+			->willReturn( new DIWikiPage( 'Bar', NS_CATEGORY ) );
 
 		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
 			->disableOriginalConstructor()
@@ -164,11 +164,11 @@ class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$schemaList->expects( $this->any() )
 			->method( 'getList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->schemaFinder->expects( $this->any() )
 			->method( 'getSchemaListByType' )
-			->will( $this->returnValue( $schemaList ) );
+			->willReturn( $schemaList );
 
 		$instance = new GroupFormatter(
 			$this->propertySpecificationLookup,

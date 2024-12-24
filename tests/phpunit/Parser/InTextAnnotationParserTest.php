@@ -279,21 +279,21 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 
 		$stripMarkerDecoder = $this->getMockBuilder( '\SMW\MediaWiki\StripMarkerDecoder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'canUse', 'hasStripMarker', 'unstrip' ] )
+			->onlyMethods( [ 'canUse', 'hasStripMarker', 'unstrip' ] )
 			->getMock();
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'canUse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'hasStripMarker' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'unstrip' )
 			->with( $this->stringContains( '<nowiki>Bar</nowiki>' ) )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$parserData = new ParserData(
 			Title::newFromText( __METHOD__ ),

@@ -85,16 +85,16 @@ class SettingsTest extends \PHPUnit\Framework\TestCase {
 
 		$changeListener->expects( $this->once() )
 			->method( 'canTrigger' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Foo' )
+			->willReturn( true );
 
 		$changeListener->expects( $this->once() )
 			->method( 'setAttrs' )
-			->with( $this->equalTo( [ 'Foo' => 'Bar' ] ) );
+			->with( [ 'Foo' => 'Bar' ] );
 
 		$changeListener->expects( $this->once() )
 			->method( 'trigger' )
-			->with( $this->equalTo( 'Foo' ) );
+			->with( 'Foo' );
 
 		$instance = Settings::newFromArray( [] );
 		$instance->registerChangeListener( $changeListener );

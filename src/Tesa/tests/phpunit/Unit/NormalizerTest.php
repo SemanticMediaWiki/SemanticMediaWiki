@@ -24,7 +24,7 @@ class NormalizerTest extends TestCase {
 	}
 
 	public function testConvertDoubleWidth() {
-		$this->assertEquals(
+		$this->assertSame(
 			'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
 			Normalizer::convertDoubleWidth( '０１２３４５６７８９ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ' )
 		);

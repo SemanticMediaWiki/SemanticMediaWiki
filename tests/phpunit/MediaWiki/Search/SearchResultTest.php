@@ -25,7 +25,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getFragment' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new SearchResult( $title );
 
@@ -42,7 +42,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getFragment' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$instance = new SearchResult( $title );
 
@@ -58,7 +58,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getFragment' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$instance = new SearchResult( $title );
 		$instance->setExcerpt( 'Foo ...' );
@@ -76,15 +76,15 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getFragment' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$instance = new SearchResult( $title );
 
@@ -118,8 +118,8 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setExcerpt( 'Foobar' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTextSnippet( [ 'Foo' ] )
 		);
 	}

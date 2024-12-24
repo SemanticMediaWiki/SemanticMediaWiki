@@ -42,8 +42,8 @@ class ResultPrintersTest extends \PHPUnit\Framework\TestCase {
 
 		$params = ParamDefinition::getCleanDefinitions( $params );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$params
 		);
 	}

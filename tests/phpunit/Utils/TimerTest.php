@@ -21,27 +21,27 @@ class TimerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetElapsedTime() {
 		Timer::start( __CLASS__ );
 
-		$this->assertInternalType(
-			'float',
+		$this->assertIsFloat(
+
 			Timer::getElapsedTime( __CLASS__ )
 		);
 
-		$this->assertInternalType(
-			'float',
+		$this->assertIsFloat(
+
 			Timer::getElapsedTime( __CLASS__, 5 )
 		);
 	}
 
 	public function testGetElapsedTimeWithoutStart() {
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			Timer::getElapsedTime( 'Foo' )
 		);
 	}
 
 	public function testGetElapsedTimeAsLoggableMessage() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			Timer::getElapsedTimeAsLoggableMessage( 'Foo' )
 		);
 	}

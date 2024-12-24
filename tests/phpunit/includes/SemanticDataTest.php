@@ -41,7 +41,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -120,8 +120,8 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 			$subobject->getContainer()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHash()
 		);
 	}
@@ -332,8 +332,8 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->addSubobject( $subobject );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getSubSemanticData()
 		);
 

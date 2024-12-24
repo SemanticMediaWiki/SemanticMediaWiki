@@ -60,8 +60,8 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 			ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages, null, 'en' )
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ProcessingErrorMsgHandler::getMessagesAsString( $messages, null, 'en' )
 		);
 	}
@@ -81,7 +81,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'addPropertyObjectValue' )
-			->with( $this->equalTo( $this->dataItemFactory->newDIProperty( '_ERRC' ) ) );
+			->with( $this->dataItemFactory->newDIProperty( '_ERRC' ) );
 
 		$instance->addToSemanticData(
 			$semanticData,
@@ -120,11 +120,11 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$processingError->expects( $this->atLeastOnce() )
 			->method( 'encode' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$processingError->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foobar' ) );
+			->willReturn( 'foobar' );
 
 		$instance = new ProcessingErrorMsgHandler(
 			DIWikiPage::newFromText( __METHOD__ )
@@ -174,16 +174,16 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getErrors', 'getProperty' ] )
+			->onlyMethods( [ 'getErrors', 'getProperty' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$container = $instance->newErrorContainerFromDataValue( $dataValue );
 
@@ -210,16 +210,16 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getErrors', 'getProperty' ] )
+			->onlyMethods( [ 'getErrors', 'getProperty' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( '_INST' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( '_INST' ) );
 
 		$container = $instance->newErrorContainerFromDataValue( $dataValue );
 
@@ -246,20 +246,20 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getErrors', 'getErrorsByType', 'getProperty' ] )
+			->onlyMethods( [ 'getErrors', 'getErrorsByType', 'getProperty' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [ '_123' => 'Foo' ] ) );
+			->willReturn( [ '_123' => 'Foo' ] );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getErrorsByType' )
-			->will( $this->returnValue( [ '_type_1' => [ '_123' ] ] ) );
+			->willReturn( [ '_type_1' => [ '_123' ] ] );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$container = $instance->newErrorContainerFromDataValue( $dataValue );
 

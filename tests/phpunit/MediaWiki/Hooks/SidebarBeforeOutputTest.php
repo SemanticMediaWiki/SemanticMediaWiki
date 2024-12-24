@@ -40,7 +40,7 @@ class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 	public function testProcess( $setup, $expected ) {
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( $setup['settings']['isEnabledNamespace'] ) );
+			->willReturn( $setup['settings']['isEnabledNamespace'] );
 
 		$sidebar = [];
 
@@ -130,7 +130,7 @@ class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -138,7 +138,7 @@ class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$provider[] = [
 			[
@@ -170,15 +170,15 @@ class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( Title::newFromText( __METHOD__ ) ) );
+			->willReturn( Title::newFromText( __METHOD__ ) );
 
 		$skin->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( $message ) );
+			->willReturn( $message );
 
 		$skin->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $output ) );
+			->willReturn( $output );
 
 		return $skin;
 	}

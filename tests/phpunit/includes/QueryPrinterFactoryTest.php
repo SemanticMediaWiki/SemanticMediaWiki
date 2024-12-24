@@ -98,7 +98,7 @@ class QueryPrinterFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testGetFormats() {
 		$factory = new QueryPrinterFactory();
 
-		$this->assertInternalType( 'array', $factory->getFormats() );
+		$this->assertIsArray( $factory->getFormats() );
 
 		$factory->registerFormat( 'table', TableResultPrinter::class );
 		$factory->registerFormat( 'list', SMWListResultPrinter::class );
@@ -108,7 +108,7 @@ class QueryPrinterFactoryTest extends \PHPUnit\Framework\TestCase {
 		$factory->registerAliases( 'ohi', [ 'there', 'o_O' ] );
 
 		$formats = $factory->getFormats();
-		$this->assertInternalType( 'array', $formats );
+		$this->assertIsArray( $formats );
 
 		$this->assertContains( 'table', $factory->getFormats() );
 		$this->assertContains( 'list', $factory->getFormats() );

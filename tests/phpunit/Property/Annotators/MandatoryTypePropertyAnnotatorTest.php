@@ -56,7 +56,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->never() )
 			->method( 'getPropertyValues' );
@@ -77,7 +77,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->never() )
 			->method( 'getPropertyValues' );

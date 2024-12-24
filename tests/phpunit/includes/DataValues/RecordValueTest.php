@@ -58,16 +58,16 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
+			->onlyMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -90,16 +90,16 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 	public function testParseValue() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
+			->onlyMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -140,16 +140,16 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 	public function testParseValueWithErroredDv() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
+			->onlyMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -190,7 +190,7 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getDescriptionBuilderRegistry' )
-			->will( $this->returnValue( new \SMW\Query\DescriptionBuilderRegistry() ) );
+			->willReturn( new \SMW\Query\DescriptionBuilderRegistry() );
 
 		$instance = new RecordValue( '_rec' );
 		$instance->setFieldProperties( $properties );

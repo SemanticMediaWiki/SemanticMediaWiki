@@ -48,12 +48,12 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$instance = $this->getMockBuilder( '\SMW\NamespaceManager' )
-			->setMethods( [ 'isDefinedConstant' ] )
+			->onlyMethods( [ 'isDefinedConstant' ] )
 			->getMock();
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'isDefinedConstant' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance->init( $default );
 	}
@@ -67,8 +67,8 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit\Framework\TestCase {
 		$index = NamespaceManager::buildNamespaceIndex( $applicationFactory->getSettings()->get( 'smwgNamespaceIndex' ) );
 		$names = NamespaceManager::getCanonicalNames();
 
-		$this->assertInternalType( 'array', $names );
-		$this->assertInternalType( 'array', $index );
+		$this->assertIsArray( $names );
+		$this->assertIsArray( $index );
 
 		foreach ( $index as $ns => $idx ) {
 

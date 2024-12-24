@@ -56,15 +56,15 @@ class ParametersProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->once() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$query->expects( $this->once() )
 			->method( 'getQueryMode' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$instance = new ParametersProfileAnnotator(
 			new NullProfileAnnotator( $container ),

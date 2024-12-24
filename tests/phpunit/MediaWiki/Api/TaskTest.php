@@ -57,7 +57,7 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $updateJob ) );
+			->willReturn( $updateJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -82,7 +82,7 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$cache->expects( $this->once() )
 			->method( 'save' );
@@ -93,7 +93,7 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 
 		$entityTable->expects( $this->atLeastOnce() )
 			->method( 'findDuplicates' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -101,7 +101,7 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityTable ) );
+			->willReturn( $entityTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->testEnvironment->registerObject( 'Cache', $cache );
@@ -136,10 +136,10 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newByType' )
 			->with(
-				$this->equalTo( 'Foobar' ),
+				'Foobar',
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( $nullJob ) );
+			->willReturn( $nullJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -174,8 +174,8 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 
 		$jobQueue->expects( $this->atLeastOnce() )
 			->method( 'runFromQueue' )
-			->with( $this->equalTo( [ 'FooJob' => 1 ] ) )
-			->will( $this->returnValue( '--job-done' ) );
+			->with( [ 'FooJob' => 1 ] )
+			->willReturn( '--job-done' );
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
@@ -210,7 +210,7 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

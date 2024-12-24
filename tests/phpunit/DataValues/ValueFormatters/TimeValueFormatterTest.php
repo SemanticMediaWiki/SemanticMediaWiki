@@ -35,11 +35,11 @@ class TimeValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new TimeValueParser() ) );
+			->willReturn( new TimeValueParser() );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 	}
 
 	public function testCanConstruct() {

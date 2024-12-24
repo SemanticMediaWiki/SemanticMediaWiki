@@ -73,11 +73,11 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$messageFormatter->expects( $this->once() )
 			->method( 'getHtml' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
@@ -89,8 +89,8 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			$templateRenderer
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->parse( ParameterFormatterFactory::newFromArray( $params ) )
 		);
 	}
@@ -110,7 +110,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
@@ -151,7 +151,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$templateRenderer = new WikitextTemplateRenderer();
 

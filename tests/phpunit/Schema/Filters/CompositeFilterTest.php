@@ -40,11 +40,11 @@ class CompositeFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$filter_2->expects( $this->once() )
 			->method( 'filter' )
-			->with(	$this->equalTo( $compartment ) );
+			->with(	$compartment );
 
 		$filter_2->expects( $this->once() )
 			->method( 'getMatches' )
-			->will(	$this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$instance = new CompositeFilter( [ $filter_1, $filter_2 ] );
 		$instance->addOption( 'foo', true );
@@ -73,7 +73,7 @@ class CompositeFilterTest extends \PHPUnit\Framework\TestCase {
 	public function testSortMatches() {
 		$rule_1 = $this->getMockBuilder( '\SMW\Schema\Rule' )
 			->disableOriginalConstructor()
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$rule_1->incrFilterScore();
@@ -97,11 +97,11 @@ class CompositeFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$filter_2->expects( $this->once() )
 			->method( 'filter' )
-			->with(	$this->equalTo( $compartment ) );
+			->with(	$compartment );
 
 		$filter_2->expects( $this->once() )
 			->method( 'getMatches' )
-			->will(	$this->returnValue( [ $rule_2, $rule_1 ] ) );
+			->willReturn( [ $rule_2, $rule_1 ] );
 
 		$instance = new CompositeFilter( [ $filter_1, $filter_2 ] );
 		$instance->filter( $compartment );

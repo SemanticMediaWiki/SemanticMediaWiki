@@ -53,7 +53,7 @@ class CategoryFilterTest extends \PHPUnit\Framework\TestCase {
 	public function testCreate_NoFilter() {
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$params = [
 			'min_item' => 1
@@ -71,8 +71,8 @@ class CategoryFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$filters = [];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->create( $this->urlArgs, $filters )
 		);
 	}
@@ -80,7 +80,7 @@ class CategoryFilterTest extends \PHPUnit\Framework\TestCase {
 	public function testCreate_OneFilter() {
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$params = [
 			'min_item' => 1,
@@ -101,8 +101,8 @@ class CategoryFilterTest extends \PHPUnit\Framework\TestCase {
 			'Foo' => 42
 		];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->create( $this->urlArgs, $filters )
 		);
 	}

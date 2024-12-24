@@ -49,12 +49,12 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getPropertyInterwiki', 'moveSMWPageID', 'getPropertyTableHashes' ] )
+			->onlyMethods( [ 'getPropertyInterwiki', 'moveSMWPageID', 'getPropertyTableHashes' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'getPropertyInterwiki' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -62,23 +62,23 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'replace' );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
+			->onlyMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new PredefinedProperties(
 			$store
@@ -103,7 +103,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'moveSMWPageID', 'getPropertyInterwiki' ] )
+			->onlyMethods( [ 'moveSMWPageID', 'getPropertyInterwiki' ] )
 			->getMock();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -119,24 +119,24 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 					'smw_title' => 'Foo',
 					'smw_namespace' => SMW_NS_PROPERTY,
 					'smw_subobject' => '' ] ) )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$connection->expects( $this->at( 1 ) )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
+			->onlyMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new PredefinedProperties(
 			$store
@@ -152,7 +152,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCheckOnInvalidProperty() {
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getPropertyInterwiki', 'moveSMWPageID' ] )
+			->onlyMethods( [ 'getPropertyInterwiki', 'moveSMWPageID' ] )
 			->getMock();
 
 		$idTable->expects( $this->never() )
@@ -164,16 +164,16 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
+			->onlyMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new PredefinedProperties(
 			$store

@@ -99,8 +99,8 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$hierarchyLookup->expects( $this->once() )
 			->method( 'hasSubcategory' )
-			->with( $this->equalTo( $category ) )
-			->will( $this->returnValue( true ) );
+			->with( $category )
+			->willReturn( true );
 
 		$resultVariable = 'result';
 

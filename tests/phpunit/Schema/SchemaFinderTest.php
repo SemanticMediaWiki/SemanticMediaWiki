@@ -50,20 +50,20 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->any() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [
+			->willReturn( [
 				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'Bar' ) ] ) );
+				DIWikiPage::newFromText( 'Bar' ) ] );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
 			->with(
 				$this->anyThing(),
-				$this->equalTo( new DIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->onConsecutiveCalls( [ $data[0] ], [ $data[1] ] ) );
+				new DIProperty( '_SCHEMA_DEF' ) )
+			->willReturnOnConsecutiveCalls( [ $data[0] ], [ $data[1] ] );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -86,16 +86,16 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( new DIProperty( 'Foo' ) ),
-				$this->equalTo( new DIProperty( '_CONSTRAINT_SCHEMA' ) ) )
-			->will( $this->onConsecutiveCalls( [ $subject ] ) );
+				new DIProperty( 'Foo' ),
+				new DIProperty( '_CONSTRAINT_SCHEMA' ) )
+			->willReturnOnConsecutiveCalls( [ $subject ] );
 
 		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( $subject ),
-				$this->equalTo( new DIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->onConsecutiveCalls( [ $data[0] ], [ $data[1] ] ) );
+				$subject,
+				new DIProperty( '_SCHEMA_DEF' ) )
+			->willReturnOnConsecutiveCalls( [ $data[0] ], [ $data[1] ] );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -117,16 +117,16 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( new DIProperty( 'Foo' ) ),
-				$this->equalTo( new DIProperty( 'BAR' ) ) )
-			->will( $this->onConsecutiveCalls( [ $subject ] ) );
+				new DIProperty( 'Foo' ),
+				new DIProperty( 'BAR' ) )
+			->willReturnOnConsecutiveCalls( [ $subject ] );
 
 		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( $subject ),
-				$this->equalTo( new DIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->onConsecutiveCalls( [ $data[0] ] ) );
+				$subject,
+				new DIProperty( '_SCHEMA_DEF' ) )
+			->willReturnOnConsecutiveCalls( [ $data[0] ] );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -143,7 +143,7 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 	public function testNewSchemaList_NoMatch() {
 		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -151,9 +151,8 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 			$this->cache
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
+		$this->assertNull(
+						$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
 		);
 	}
 
@@ -164,16 +163,16 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( new DIProperty( 'Foo' ) ),
-				$this->equalTo( new DIProperty( 'BAR' ) ) )
-			->will( $this->onConsecutiveCalls( [ $subject ] ) );
+				new DIProperty( 'Foo' ),
+				new DIProperty( 'BAR' ) )
+			->willReturnOnConsecutiveCalls( [ $subject ] );
 
 		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( $subject ),
-				$this->equalTo( new DIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->onConsecutiveCalls( [ $data[0] ] ) );
+				$subject,
+				new DIProperty( '_SCHEMA_DEF' ) )
+			->willReturnOnConsecutiveCalls( [ $data[0] ] );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -194,7 +193,7 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyChangeListener->expects( $this->once() )
 			->method( 'addListenerCallback' )
-			->with(	$this->equalTo( '_SCHEMA_TYPE' ) );
+			->with(	'_SCHEMA_TYPE' );
 
 		$instance = new SchemaFinder(
 			$this->store,

@@ -50,8 +50,8 @@ class TableChangeOpTest extends \PHPUnit\Framework\TestCase {
 			$instance->getFixedPropertyValueBy( 'key' )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getFieldChangeOps( 'insert' )
 		);
 	}

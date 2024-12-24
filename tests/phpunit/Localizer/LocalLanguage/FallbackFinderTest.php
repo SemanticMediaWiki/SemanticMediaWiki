@@ -57,7 +57,7 @@ class FallbackFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
 			->method( 'readByLanguageCode' )
-			->will( $this->returnValue( $mockedContent ) );
+			->willReturn( $mockedContent );
 
 		$instance = new FallbackFinder(
 			$this->jsonContentsFileReader
@@ -72,7 +72,7 @@ class FallbackFinderTest extends \PHPUnit\Framework\TestCase {
 	public function testgetFallbackLanguageByUnknownLanguageCode() {
 		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
 			->method( 'readByLanguageCode' )
-			->will( $this->throwException( new \RuntimeException ) );
+			->willThrowException( new \RuntimeException );
 
 		$instance = new FallbackFinder(
 			$this->jsonContentsFileReader

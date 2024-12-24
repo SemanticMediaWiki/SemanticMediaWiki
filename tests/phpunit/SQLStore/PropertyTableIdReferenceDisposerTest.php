@@ -32,12 +32,12 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getDataItemById' ] )
+			->onlyMethods( [ 'getDataItemById' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'getDataItemById' )
-			->will( $this->returnValue( DIWikiPage::newFromText( 'Foo' ) ) );
+			->willReturn( DIWikiPage::newFromText( 'Foo' ) );
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -45,7 +45,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
 			->disableOriginalConstructor()
@@ -76,12 +76,12 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTableIdReferenceFinder->expects( $this->any() )
 			->method( 'hasResidualReferenceForId' )
-			->with( $this->equalTo( 42 ) )
-			->will( $this->returnValue( false ) );
+			->with( 42 )
+			->willReturn( false );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTableIdReferenceFinder' )
-			->will( $this->returnValue( $propertyTableIdReferenceFinder ) );
+			->willReturn( $propertyTableIdReferenceFinder );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store
@@ -111,23 +111,23 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$connection->expects( $this->at( 0 ) )
 			->method( 'delete' )
-			->with( $this->equalTo( \SMW\SQLStore\SQLStore::ID_TABLE ) );
+			->with( \SMW\SQLStore\SQLStore::ID_TABLE );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ $tableDefinition ] ) );
+			->willReturn( [ $tableDefinition ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTableIdReferenceFinder' )
-			->will( $this->returnValue( $propertyTableIdReferenceFinder ) );
+			->willReturn( $propertyTableIdReferenceFinder );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store
@@ -147,7 +147,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$tableDefinition->expects( $this->once() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -155,19 +155,19 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'delete' )
-			->with( $this->equalTo( \SMW\SQLStore\SQLStore::ID_TABLE ) );
+			->with( \SMW\SQLStore\SQLStore::ID_TABLE );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ $tableDefinition ] ) );
+			->willReturn( [ $tableDefinition ] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store
@@ -187,11 +187,11 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store
@@ -214,11 +214,11 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store
@@ -247,11 +247,11 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store
@@ -271,21 +271,21 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) {
+			->willReturnCallback( function ( $callback ) {
 				return call_user_func( $callback );
 			}
-			) );
+			);
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'delete' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store
@@ -301,12 +301,12 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCleanUpOnTransactionIdleAvoidOnSubobject() {
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getDataItemById' ] )
+			->onlyMethods( [ 'getDataItemById' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'getDataItemById' )
-			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' ) ) );
+			->willReturn( new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -314,7 +314,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -322,9 +322,9 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) {
+			->willReturnCallback( function ( $callback ) {
 				return $callback();
-			} ) );
+			} );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'delete' )
@@ -339,11 +339,11 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$store
@@ -359,12 +359,12 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 		}
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getDataItemById' ] )
+			->onlyMethods( [ 'getDataItemById' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'getDataItemById' )
-			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN, SMW_SQL3_SMWREDIIW ) ) );
+			->willReturn( new DIWikiPage( 'Foo', NS_MAIN, SMW_SQL3_SMWREDIIW ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -372,7 +372,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -391,11 +391,11 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$store

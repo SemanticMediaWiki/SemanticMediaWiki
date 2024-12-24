@@ -49,12 +49,12 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testCompileDescription( $description, $pageId, $expected ) {
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( $pageId ) );
+			->willReturn( $pageId );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -66,11 +66,11 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIds ) );
+			->willReturn( $objectIds );
 
 		$queryEngineFactory = new QueryEngineFactory( $this->store );
 

@@ -107,8 +107,7 @@ class ExpResourceMapperTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will(
-				$this->returnValue( [ new \SMWDIBlob( 'foo:bar:fom:fuz' ) ] ) );
+			->willReturn( [ new \SMWDIBlob( 'foo:bar:fom:fuz' ) ] );
 
 		$instance = new ExpResourceMapper(
 			$store

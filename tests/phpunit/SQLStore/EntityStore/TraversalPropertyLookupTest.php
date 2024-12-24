@@ -37,7 +37,7 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItemHandler->expects( $this->atLeastOnce() )
 			->method( 'getWhereConds' )
-			->will( $this->returnValue( [ 'o_id' => 42 ] ) );
+			->willReturn( [ 'o_id' => 42 ] );
 
 		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -45,7 +45,7 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTableDef->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -53,28 +53,28 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getDataItemHandlerForDIType', 'getSQLOptions', 'getSQLConditions' ] )
+			->onlyMethods( [ 'getConnection', 'getDataItemHandlerForDIType', 'getSQLOptions', 'getSQLConditions' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSQLOptions' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSQLConditions' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$instance = new TraversalPropertyLookup(
 			$store
@@ -96,7 +96,7 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItemHandler->expects( $this->atLeastOnce() )
 			->method( 'getWhereConds' )
-			->will( $this->returnValue( [ 'o_id' => 42 ] ) );
+			->willReturn( [ 'o_id' => 42 ] );
 
 		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -104,7 +104,7 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTableDef->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -112,20 +112,20 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getDataItemHandlerForDIType' ] )
+			->onlyMethods( [ 'getConnection', 'getDataItemHandlerForDIType' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$instance = new TraversalPropertyLookup(
 			$store

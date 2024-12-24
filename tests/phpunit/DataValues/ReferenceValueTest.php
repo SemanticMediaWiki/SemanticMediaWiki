@@ -57,16 +57,16 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
+			->onlyMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -89,16 +89,16 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 	public function testParseValue() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
+			->onlyMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -139,16 +139,16 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 	public function testParseValueWithErroredDv() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
+			->onlyMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

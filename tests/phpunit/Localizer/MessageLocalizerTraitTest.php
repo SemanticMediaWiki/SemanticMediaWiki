@@ -23,9 +23,9 @@ class MessageLocalizerTraitTest extends \PHPUnit\Framework\TestCase {
 		$messageLocalizer->expects( $this->once() )
 			->method( 'msg' )
 			->with(
-				$this->equalTo( 'foo' ),
-				$this->equalTo( 'bar' ),
-				$this->equalTo( 42 ) );
+				'foo',
+				'bar',
+				42 );
 
 		$instance = $this->newMessageLocalizerClass();
 

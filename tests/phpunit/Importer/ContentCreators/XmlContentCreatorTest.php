@@ -37,11 +37,11 @@ class XmlContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->importerServiceFactory->expects( $this->any() )
 			->method( 'newImportStreamSource' )
-			->will( $this->returnValue( $importStreamSource ) );
+			->willReturn( $importStreamSource );
 
 		$this->importerServiceFactory->expects( $this->any() )
 			->method( 'newWikiImporter' )
-			->will( $this->returnValue( $this->wikiImporter ) );
+			->willReturn( $this->wikiImporter );
 
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
 			->disableOriginalConstructor()

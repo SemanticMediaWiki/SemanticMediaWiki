@@ -59,7 +59,7 @@ class DependencyValidatorTest extends \PHPUnit\Framework\TestCase {
 	public function testHasArchaicDependencies() {
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'overrideSub' )
@@ -73,22 +73,22 @@ class DependencyValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$eventDispatcher->expects( $this->once() )
 			->method( 'dispatch' )
-			->with( $this->equalTo( 'InvalidateResultCache' ) );
+			->with( 'InvalidateResultCache' );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'canCheckDependencies' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'hasArchaicDependencies' )
-			->with( $this->equalTo( $subject ) )
-			->will( $this->returnValue( true ) );
+			->with( $subject )
+			->willReturn( true );
 
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'getCheckedDependencies' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DependencyValidator(
 			$this->namespaceExaminer,
@@ -110,7 +110,7 @@ class DependencyValidatorTest extends \PHPUnit\Framework\TestCase {
 	public function testHasNoArchaicDependencies() {
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->never() )
 			->method( 'overrideSub' );
@@ -119,12 +119,12 @@ class DependencyValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'canCheckDependencies' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'hasArchaicDependencies' )
-			->with( $this->equalTo( $subject ) )
-			->will( $this->returnValue( false ) );
+			->with( $subject )
+			->willReturn( false );
 
 		$instance = new DependencyValidator(
 			$this->namespaceExaminer,
@@ -142,7 +142,7 @@ class DependencyValidatorTest extends \PHPUnit\Framework\TestCase {
 	public function testHasNoArchaicDependencies_DisabledNamespace() {
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->entityCache->expects( $this->never() )
 			->method( 'overrideSub' );
@@ -182,7 +182,7 @@ class DependencyValidatorTest extends \PHPUnit\Framework\TestCase {
 	public function testCanKeepParserCache_NoCache() {
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->entityCache->expects( $this->never() )
 			->method( 'fetchSub' );
@@ -203,12 +203,12 @@ class DependencyValidatorTest extends \PHPUnit\Framework\TestCase {
 	public function testCanKeepParserCache_NoCacheOnFetch() {
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
 			->with( $this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -228,11 +228,11 @@ class DependencyValidatorTest extends \PHPUnit\Framework\TestCase {
 	public function testCanNotKeepParserCache() {
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'saveSub' )

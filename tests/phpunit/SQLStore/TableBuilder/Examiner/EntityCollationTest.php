@@ -47,7 +47,7 @@ class EntityCollationTest extends \PHPUnit\Framework\TestCase {
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'entity_collation' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$this->setupFile->expects( $this->once() )
 			->method( 'addIncompleteTask' );
@@ -70,7 +70,7 @@ class EntityCollationTest extends \PHPUnit\Framework\TestCase {
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'entity_collation' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new EntityCollation(
 			$this->store

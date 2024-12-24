@@ -34,16 +34,16 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->idTable->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
+			->onlyMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->idTable ) );
+			->willReturn( $this->idTable );
 
 		$this->replicationStatus = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\ReplicationStatus' )
 			->disableOriginalConstructor()
@@ -55,7 +55,7 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 	}
 
 	public function testCanConstruct() {
@@ -77,28 +77,28 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItem->expects( $this->any() )
 			->method( 'equals' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->idTable->expects( $this->at( 1 ) )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
-			->will( $this->returnValue( $replicationStatus ) );
+			->with(	'modification_date_associated_revision' )
+			->willReturn( $replicationStatus );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $dataItem ] ) );
+			->willReturn( [ $dataItem ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new DocumentReplicationExaminer(
 			$this->store,
@@ -113,7 +113,7 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testCheck_NotExists() {
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$replicationStatus = [
 			'modification_date' => false
@@ -121,16 +121,16 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
-			->will( $this->returnValue( $replicationStatus ) );
+			->with(	'modification_date_associated_revision' )
+			->willReturn( $replicationStatus );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new DocumentReplicationExaminer(
 			$this->store,
@@ -160,12 +160,12 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testCheck_DocumentExists() {
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'exists' ) )
-			->will( $this->returnValue( false ) );
+			->with(	'exists' )
+			->willReturn( false );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new DocumentReplicationExaminer(
 			$this->store,
@@ -199,7 +199,7 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testCheck_ModificationDate() {
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$time_es = DITime::newFromTimestamp( 1272508900 );
 		$time_store = DITime::newFromTimestamp( 1272508903 );
@@ -210,16 +210,16 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
-			->will( $this->returnValue( $replicationStatus ) );
+			->with(	'modification_date_associated_revision' )
+			->willReturn( $replicationStatus );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $time_store ] ) );
+			->willReturn( [ $time_store ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new DocumentReplicationExaminer(
 			$this->store,
@@ -251,7 +251,7 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testCheck_AssociateRev() {
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$time = DITime::newFromTimestamp( 1272508903 );
@@ -263,20 +263,20 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
-			->will( $this->returnValue( $replicationStatus ) );
+			->with(	'modification_date_associated_revision' )
+			->willReturn( $replicationStatus );
 
 		$this->idTable->expects( $this->at( 1 ) )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->at( 1 ) )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $time ] ) );
+			->willReturn( [ $time ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new DocumentReplicationExaminer(
 			$this->store,
@@ -315,16 +315,16 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$config->expects( $this->any() )
 			->method( 'dotGet' )
-			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
-			->will( $this->returnValue( true ) );
+			->with(	'indexer.experimental.file.ingest' )
+			->willReturn( true );
 
 		$this->elasticClient->expects( $this->once() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
+			->willReturn( $config );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$replicationStatus = [
 			'modification_date' => $time,
@@ -333,24 +333,24 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
-			->will( $this->returnValue( $replicationStatus ) );
+			->with(	'modification_date_associated_revision' )
+			->willReturn( $replicationStatus );
 
 		$this->idTable->expects( $this->at( 1 ) )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 99999 ) );
+			->willReturn( 99999 );
 
 		$this->store->expects( $this->at( 1 ) )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $time ] ) );
+			->willReturn( [ $time ] );
 
 		$this->store->expects( $this->at( 4 ) )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new DocumentReplicationExaminer(
 			$this->store,
@@ -391,16 +391,16 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$config->expects( $this->any() )
 			->method( 'dotGet' )
-			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
-			->will( $this->returnValue( true ) );
+			->with(	'indexer.experimental.file.ingest' )
+			->willReturn( true );
 
 		$this->elasticClient->expects( $this->once() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
+			->willReturn( $config );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$replicationStatus = [
 			'modification_date' => $time,
@@ -409,24 +409,24 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
-			->will( $this->returnValue( $replicationStatus ) );
+			->with(	'modification_date_associated_revision' )
+			->willReturn( $replicationStatus );
 
 		$this->idTable->expects( $this->at( 1 ) )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 99999 ) );
+			->willReturn( 99999 );
 
 		$this->store->expects( $this->at( 1 ) )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $time ] ) );
+			->willReturn( [ $time ] );
 
 		$this->store->expects( $this->at( 4 ) )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new DocumentReplicationExaminer(
 			$this->store,
@@ -454,16 +454,16 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$config->expects( $this->any() )
 			->method( 'dotGet' )
-			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
-			->will( $this->returnValue( false ) );
+			->with(	'indexer.experimental.file.ingest' )
+			->willReturn( false );
 
 		$this->elasticClient->expects( $this->once() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
+			->willReturn( $config );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$replicationStatus = [
 			'modification_date' => $time,
@@ -472,20 +472,20 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
-			->will( $this->returnValue( $replicationStatus ) );
+			->with(	'modification_date_associated_revision' )
+			->willReturn( $replicationStatus );
 
 		$this->idTable->expects( $this->at( 1 ) )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 99999 ) );
+			->willReturn( 99999 );
 
 		$this->store->expects( $this->at( 1 ) )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $time ] ) );
+			->willReturn( [ $time ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new DocumentReplicationExaminer(
 			$this->store,
@@ -509,7 +509,7 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$replicationStatus = [
 			'modification_date' => $time,
@@ -518,20 +518,20 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
-			->will( $this->returnValue( $replicationStatus ) );
+			->with(	'modification_date_associated_revision' )
+			->willReturn( $replicationStatus );
 
 		$this->idTable->expects( $this->at( 1 ) )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 99999 ) );
+			->willReturn( 99999 );
 
 		$this->store->expects( $this->at( 1 ) )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $time ] ) );
+			->willReturn( [ $time ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new DocumentReplicationExaminer(
 			$this->store,

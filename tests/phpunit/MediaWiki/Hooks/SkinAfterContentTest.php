@@ -95,7 +95,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 			$factboxFactory->expects( $this->once() )
 				->method( 'newCachedFactbox' )
-				->will( $this->returnValue( $cachedFactbox ) );
+				->willReturn( $cachedFactbox );
 
 			$this->applicationFactory->registerObject( 'FactboxFactory', $factboxFactory );
 		}
@@ -118,11 +118,11 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 10001 ) );
+			->willReturn( 10001 );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -130,7 +130,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -138,18 +138,18 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $outputPage ) );
+			->willReturn( $outputPage );
 
 		$requestContext = new \RequestContext();
 		$requestContext->setLanguage( 'en' );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $requestContext ) );
+			->willReturn( $requestContext );
 
 		$provider[] = [
 			[ 'skin' => $skin, 'text' => $text ],
@@ -161,11 +161,11 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 10002 ) );
+			->willReturn( 10002 );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -173,14 +173,14 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$requestContext = new \RequestContext();
 		$requestContext->setLanguage( 'en' );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $requestContext ) );
+			->willReturn( $requestContext );
 
 		$text = __METHOD__ . 'text-1';
 
@@ -190,15 +190,15 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $outputPage ) );
+			->willReturn( $outputPage );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $requestContext ) );
+			->willReturn( $requestContext );
 
 		$provider[] = [
 			[ 'skin' => $skin, 'text' => $text, 'title' => $outputPage->getTitle() ],
@@ -212,7 +212,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -220,7 +220,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -228,15 +228,15 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $outputPage ) );
+			->willReturn( $outputPage );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
+			->willReturn( new \RequestContext() );
 
 		$provider[] = [
 			[ 'skin' => $skin, 'text' => $text ],
@@ -250,11 +250,11 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 10003 ) );
+			->willReturn( 10003 );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -262,7 +262,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -270,18 +270,18 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $outputPage ) );
+			->willReturn( $outputPage );
 
 		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'action' => 'edit' ], true ) );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $context ) );
+			->willReturn( $context );
 
 		$provider[] = [
 			[ 'skin' => $skin, 'text' => $text ],
@@ -299,7 +299,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -307,18 +307,18 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$skin->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $outputPage ) );
+			->willReturn( $outputPage );
 
 		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'action' => 'delete' ], true ) );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $context ) );
+			->willReturn( $context );
 
 		$provider[] = [
 			[ 'skin' => $skin, 'text' => $text ],
@@ -336,7 +336,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -344,18 +344,18 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$skin->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $outputPage ) );
+			->willReturn( $outputPage );
 
 		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'action' => 'purge' ], true ) );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $context ) );
+			->willReturn( $context );
 
 		$provider[] = [
 			[ 'skin' => $skin, 'text' => $text ],

@@ -44,11 +44,11 @@ class CompoundConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$constraintValueValidator->expects( $this->once() )
 			->method( 'validate' )
-			->with( $this->equalTo( 'Foo' ) );
+			->with( 'Foo' );
 
 		$constraintValueValidator->expects( $this->once() )
 			->method( 'hasConstraintViolation' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new CompoundConstraintValueValidator();
 		$instance->setLogger( $this->spyLogger );

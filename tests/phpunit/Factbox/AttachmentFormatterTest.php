@@ -40,8 +40,8 @@ class AttachmentFormatterTest extends \PHPUnit\Framework\TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHTML( [] )
 		);
 	}
@@ -53,8 +53,8 @@ class AttachmentFormatterTest extends \PHPUnit\Framework\TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHTML( [ $item ] )
 		);
 	}

@@ -48,7 +48,7 @@ class ComparatorMapperTest extends \PHPUnit\Framework\TestCase {
 
 		$valueDescription->expects( $this->once() )
 			->method( 'getComparator' )
-			->will( $this->returnValue( $comparator ) );
+			->willReturn( $comparator );
 
 		$instance = new ComparatorMapper();
 

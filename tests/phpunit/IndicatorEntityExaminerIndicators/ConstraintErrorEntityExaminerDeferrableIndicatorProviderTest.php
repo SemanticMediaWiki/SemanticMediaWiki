@@ -37,12 +37,12 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'service' ] )
+			->onlyMethods( [ 'getConnection', 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnValue( $this->errorLookup ) );
+			->willReturn( $this->errorLookup );
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
@@ -54,7 +54,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 	}
 
 	protected function tearDown(): void {
@@ -97,8 +97,8 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 			$instance->isDeferredMode()
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 
@@ -111,7 +111,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 	public function testHasIndicator_FromErrorLookup() {
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' );
@@ -121,7 +121,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 
 		$this->errorLookup->expects( $this->once() )
 			->method( 'buildArray' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -136,8 +136,8 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
@@ -145,7 +145,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 	public function testHasIndicator_FromCache() {
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$this->errorLookup->expects( $this->never() )
 			->method( 'buildArray' );
@@ -163,8 +163,8 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}

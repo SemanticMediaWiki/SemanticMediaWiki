@@ -54,10 +54,10 @@ class InsertJobTaskTest extends \PHPUnit\Framework\TestCase {
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newByType' )
 			->with(
-				$this->equalTo( 'Foobar' ),
+				'Foobar',
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( $nullJob ) );
+			->willReturn( $nullJob );
 
 		$instance = new InsertJobTask(
 			$this->jobFactory

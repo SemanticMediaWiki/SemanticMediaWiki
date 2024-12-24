@@ -90,15 +90,15 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'toArray' )
-			->will( $this->returnValue( $test ) );
+			->willReturn( $test );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'hasFurtherResults' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$apiResult = $this->apiFactory->newApiResult( [] );
 
@@ -112,7 +112,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'getResult' )
-			->will( $this->returnValue( $apiResult ) );
+			->willReturn( $apiResult );
 
 		$method->invoke( $instance, $queryResult );
 
@@ -122,8 +122,8 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 		unset( $result['warnings'] );
 		unset( $result['_type'] );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 

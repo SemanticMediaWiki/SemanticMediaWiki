@@ -32,7 +32,7 @@ class CheckMagicWordsTest extends \PHPUnit\Framework\TestCase {
 
 		$parserOutput->expects( $this->any() )
 			->method( 'getExtensionData' )
-			->will( $this->returnValue( $magicWords ) );
+			->willReturn( $magicWords );
 
 		$instance = new CheckMagicWords(
 			$options

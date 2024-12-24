@@ -20,8 +20,8 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testIsGoodSchema() {
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			SetupFile::isGoodSchema()
 		);
 	}
@@ -124,7 +124,7 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 			->method( 'write' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $expected ) );
+				$expected );
 
 		$instance = new SetupFile(
 			$file
@@ -162,8 +162,8 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 		$file->expects( $this->once() )
 			->method( 'write' )
 			->with(
-				$this->equalTo( $configFile ),
-				$this->equalTo( $expected ) );
+				$configFile,
+				$expected );
 
 		$instance = new SetupFile(
 			$file
@@ -200,8 +200,8 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 		$file->expects( $this->once() )
 			->method( 'write' )
 			->with(
-				$this->equalTo( $configFile ),
-				$this->equalTo( $expected ) );
+				$configFile,
+				$expected );
 
 		$instance = new SetupFile(
 			$file
@@ -231,8 +231,8 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 		$file->expects( $this->once() )
 			->method( 'write' )
 			->with(
-				$this->equalTo( $configFile ),
-				$this->equalTo( $expected ) );
+				$configFile,
+				$expected );
 
 		$instance = new SetupFile(
 			$file
@@ -338,9 +338,8 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 			$instance->get( SetupFile::LATEST_VERSION )
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->get( SetupFile::PREVIOUS_VERSION, [ 'smw.json' => [] ] )
+		$this->assertNull(
+						$instance->get( SetupFile::PREVIOUS_VERSION, [ 'smw.json' => [] ] )
 		);
 
 		// Previous version is known

@@ -49,14 +49,14 @@ class TouchedFieldTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'update' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new TouchedField(
 			$this->store

@@ -60,7 +60,7 @@ class TitleQuickPermissionsTest extends \PHPUnit\Framework\TestCase {
 	public function testProcessOnArchaicDependencies_TitleQuickPermissions() {
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->titlePermissions->expects( $this->once() )
 			->method( 'checkPermissionFor' );
@@ -81,7 +81,7 @@ class TitleQuickPermissionsTest extends \PHPUnit\Framework\TestCase {
 	public function testProcessOnDisabledNamespace() {
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->titlePermissions->expects( $this->never() )
 			->method( 'checkPermissionFor' );

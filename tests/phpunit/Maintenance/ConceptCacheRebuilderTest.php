@@ -170,7 +170,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$database->expects( $expectedToRun )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -178,15 +178,15 @@ class ConceptCacheRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConceptCacheStatus' )
-			->will( $this->returnValue( $concept ) );
+			->willReturn( $concept );
 
 		$store->expects( $expectedToRun )
 			->method( 'refreshConceptCache' )
-			->will( $this->returnValue( [ $refreshConceptCacheReturn ] ) );
+			->willReturn( [ $refreshConceptCacheReturn ] );
 
 		$store->expects( $expectedToRun )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$settings = $this->getMockBuilder( '\SMW\Settings' )
 			->disableOriginalConstructor()

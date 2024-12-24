@@ -49,7 +49,7 @@ class PropertyTableHashesTest extends \PHPUnit\Framework\TestCase {
 
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$rows = [
 			'smw_proptable_hash' => 'a:1:{i:0;s:3:"foo";}'
@@ -63,8 +63,8 @@ class PropertyTableHashesTest extends \PHPUnit\Framework\TestCase {
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $rows ),
-				$this->equalTo( $expected ) );
+				$rows,
+				$expected );
 
 		$instance = new PropertyTableHashes(
 			$this->connection,
@@ -80,11 +80,11 @@ class PropertyTableHashesTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$fields = [
 			'smw_proptable_hash'
@@ -100,15 +100,15 @@ class PropertyTableHashesTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'unescape_bytea' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $fields ),
-				$this->equalTo( $expected ) )
-			->will( $this->returnValue( (object)$row ) );
+				$fields,
+				$expected )
+			->willReturn( (object)$row );
 
 		$instance = new PropertyTableHashes(
 			$this->connection,
@@ -125,12 +125,12 @@ class PropertyTableHashesTest extends \PHPUnit\Framework\TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 42 ),
-				$this->equalTo( [ 'foo' ] ) );
+				42,
+				[ 'foo' ] );
 
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$instance = new PropertyTableHashes(
 			$this->connection,
@@ -143,7 +143,7 @@ class PropertyTableHashesTest extends \PHPUnit\Framework\TestCase {
 	public function testSetPropertyTableHashesCache_Zero() {
 		$this->idCacheManager->expects( $this->never() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$instance = new PropertyTableHashes(
 			$this->connection,
@@ -156,13 +156,13 @@ class PropertyTableHashesTest extends \PHPUnit\Framework\TestCase {
 	public function testClearPropertyTableHashCacheById() {
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 42 ),
-				$this->equalTo( [] ) );
+				42,
+				[] );
 
 		$instance = new PropertyTableHashes(
 			$this->connection,

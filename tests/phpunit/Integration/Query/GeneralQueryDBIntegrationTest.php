@@ -100,7 +100,7 @@ class GeneralQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->getStore()->updateData( $semanticData );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$this->searchForResultsThatCompareEqualToOnlySingularPropertyOf( $property )->getCount()
 		);

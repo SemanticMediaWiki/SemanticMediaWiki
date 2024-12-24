@@ -46,8 +46,8 @@ class JobListTaskTest extends \PHPUnit\Framework\TestCase {
 	public function testProcess() {
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'runFromQueue' )
-			->with( $this->equalTo( [ 'FooJob' => 1 ] ) )
-			->will( $this->returnValue( '--job-done' ) );
+			->with( [ 'FooJob' => 1 ] )
+			->willReturn( '--job-done' );
 
 		$instance = new JobListTask(
 			$this->jobQueue

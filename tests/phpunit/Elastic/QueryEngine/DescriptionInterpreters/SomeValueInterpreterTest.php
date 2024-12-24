@@ -32,7 +32,7 @@ class SomeValueInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getID' ] )
+			->onlyMethods( [ 'getID' ] )
 			->getMock();
 
 		$this->conditionBuilder->setOptions( new Options(
@@ -162,7 +162,7 @@ class SomeValueInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function testInterpretDescription_PageValue( $dataItem, $comparator, $options, $expected ) {
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 
 		$this->conditionBuilder->setOptions( new Options(
 			[

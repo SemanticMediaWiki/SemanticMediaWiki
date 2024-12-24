@@ -35,7 +35,7 @@ class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->protectionValidator = $this->getMockBuilder( '\SMW\Protection\ProtectionValidator' )
 			->disableOriginalConstructor()
@@ -57,15 +57,15 @@ class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testCreateProtectionRight() {
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'isLocked' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasCreateProtection' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getCreateProtectionRight' )
-			->will( $this->returnValue( 'abc' ) );
+			->willReturn( 'abc' );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -87,15 +87,15 @@ class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testEditProtectionRight() {
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'isLocked' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasEditProtection' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getEditProtectionRight' )
-			->will( $this->returnValue( 'abc_123' ) );
+			->willReturn( 'abc_123' );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -117,15 +117,15 @@ class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testIsEditProtectedProperty() {
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'isLocked' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasEditProtection' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getEditProtectionRight' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$dataItemFactory = new DataItemFactory();
 

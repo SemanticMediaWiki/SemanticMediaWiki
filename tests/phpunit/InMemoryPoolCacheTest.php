@@ -66,8 +66,8 @@ class InMemoryPoolCacheTest extends \PHPUnit\Framework\TestCase {
 			$instance->getStats()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getStats( InMemoryPoolCache::FORMAT_PLAIN )
 		);
 
@@ -76,8 +76,8 @@ class InMemoryPoolCacheTest extends \PHPUnit\Framework\TestCase {
 			$instance->getStats( InMemoryPoolCache::FORMAT_HTML )
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getStats( InMemoryPoolCache::FORMAT_JSON )
 		);
 

@@ -49,13 +49,13 @@ class QueryReferenceBacklinksTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->any() )
 			->method( 'addPropertyObjectValue' )
 			->with(
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_ASK' ) ),
-				$this->equalTo( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) );
+				$this->dataItemFactory->newDIProperty( '_ASK' ),
+				$this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) );
 
 		$queryDependencyLinksStore = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore' )
 			->disableOriginalConstructor()
@@ -63,16 +63,16 @@ class QueryReferenceBacklinksTest extends \PHPUnit\Framework\TestCase {
 
 		$queryDependencyLinksStore->expects( $this->once() )
 			->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$queryDependencyLinksStore->expects( $this->any() )
 			->method( 'findEmbeddedQueryIdListBySubject' )
-			->with( $this->equalTo( $subject ) )
-			->will( $this->returnValue( [ 'Foo#0##' => 42 ] ) );
+			->with( $subject )
+			->willReturn( [ 'Foo#0##' => 42 ] );
 
 		$queryDependencyLinksStore->expects( $this->once() )
 			->method( 'findDependencyTargetLinksForSubject' )
-			->will( $this->returnValue( [ 'Foo#0##' ] ) );
+			->willReturn( [ 'Foo#0##' ] );
 
 		$instance = new QueryReferenceBacklinks(
 			$queryDependencyLinksStore
@@ -94,7 +94,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit\Framework\TestCase {
 
 		$queryDependencyLinksStore->expects( $this->any() )
 			->method( 'findDependencyTargetLinksForSubject' )
-			->will( $this->returnValue( [ 'Foo#0##' ] ) );
+			->willReturn( [ 'Foo#0##' ] );
 
 		$instance = new QueryReferenceBacklinks(
 			$queryDependencyLinksStore

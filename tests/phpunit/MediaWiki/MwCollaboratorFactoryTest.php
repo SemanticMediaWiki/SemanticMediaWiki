@@ -84,7 +84,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->applicationFactory->expects( $this->atLeastOnce() )
 			->method( 'newPageCreator' )
-			->will( $this->returnValue( $pageCreator ) );
+			->willReturn( $pageCreator );
 
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory
@@ -156,15 +156,15 @@ class MwCollaboratorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$settings->expects( $this->atLeastOnce() )
 			->method( 'get' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->applicationFactory->expects( $this->atLeastOnce() )
 			->method( 'getSettings' )
-			->will( $this->returnValue( $settings ) );
+			->willReturn( $settings );
 
 		$this->applicationFactory->expects( $this->atLeastOnce() )
 			->method( 'getMediaWikiLogger' )
-			->will( $this->returnValue( $logger ) );
+			->willReturn( $logger );
 
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory
@@ -213,8 +213,8 @@ class MwCollaboratorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->applicationFactory->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
-			->with( $this->equalTo( 'RevisionGuard' ) )
-			->will( $this->returnValue( $revisionGuard ) );
+			->with( 'RevisionGuard' )
+			->willReturn( $revisionGuard );
 
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory
@@ -263,8 +263,8 @@ class MwCollaboratorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->applicationFactory->expects( $this->atLeastOnce() )
 			->method( 'create' )
-			->with( $this->equalTo( 'MediaWikiNsContentReader' ) )
-			->will( $this->returnValue( $mediaWikiNsContentReader ) );
+			->with( 'MediaWikiNsContentReader' )
+			->willReturn( $mediaWikiNsContentReader );
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\MediaWikiNsContentReader',

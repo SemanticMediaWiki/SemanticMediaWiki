@@ -69,33 +69,33 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromText( 'Foo' ) ] ) );
+			->willReturn( [ DIWikiPage::newFromText( 'Foo' ) ] );
 
 		$semanticData->expects( $this->once() )
 			->method( 'addPropertyObjectValue' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->client->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->client->expects( $this->once() )
 			->method( 'get' )
-			->will( $this->returnValue( $document ) );
+			->willReturn( $document );
 
 		$this->bulk->expects( $this->once() )
 			->method( 'upsert' );
 
 		$this->indexer->expects( $this->atLeastOnce() )
 			->method( 'getId' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->indexer->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->client ) );
+			->willReturn( $this->client );
 
 		$instance = new FileAttachment(
 			$this->store,
@@ -115,19 +115,19 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 
 		$this->client->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->client->expects( $this->once() )
 			->method( 'get' )
-			->will( $this->returnValue( $document ) );
+			->willReturn( $document );
 
 		$this->indexer->expects( $this->once() )
 			->method( 'getId' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->indexer->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->client ) );
+			->willReturn( $this->client );
 
 		$instance = new FileAttachment(
 			$this->store,
@@ -145,18 +145,18 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 
 		$this->client->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->client->expects( $this->never() )
 			->method( 'get' );
 
 		$this->indexer->expects( $this->once() )
 			->method( 'getId' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->indexer->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->client ) );
+			->willReturn( $this->client );
 
 		$instance = new FileAttachment(
 			$this->store,
@@ -176,7 +176,7 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalDiWikiPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ) );
+			->willReturn( DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) );
 
 		$attachmentAnnotator = $this->getMockBuilder( '\SMW\Elastic\Indexer\Attachment\AttachmentAnnotator' )
 			->disableOriginalConstructor()
@@ -184,7 +184,7 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 
 		$attachmentAnnotator->expects( $this->once() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
+			->willReturn( $property );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -192,19 +192,19 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( DIWikiPage::newFromText( 'Foo' ) ) );
+			->willReturn( DIWikiPage::newFromText( 'Foo' ) );
 
 		$semanticData->expects( $this->once() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $property ] ) );
+			->willReturn( [ $property ] );
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromText( 'Foobar' ) ] ) );
+			->willReturn( [ DIWikiPage::newFromText( 'Foobar' ) ] );
 
 		$attachmentAnnotator->expects( $this->once() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->bulk->expects( $this->once() )
 			->method( 'clear' );
@@ -217,7 +217,7 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 
 		$this->indexer->expects( $this->atLeastOnce() )
 			->method( 'getId' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new FileAttachment(
 			$this->store,
@@ -241,15 +241,15 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( DIWikiPage::newFromText( 'Foo' ) ) );
+			->willReturn( DIWikiPage::newFromText( 'Foo' ) );
 
 		$attachmentAnnotator->expects( $this->once() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->indexer->expects( $this->once() )
 			->method( 'getId' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$instance = new FileAttachment(
 			$this->store,
@@ -272,15 +272,15 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( DIWikiPage::newFromText( 'Foo' ) ) );
+			->willReturn( DIWikiPage::newFromText( 'Foo' ) );
 
 		$attachmentAnnotator->expects( $this->once() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->indexer->expects( $this->atLeastOnce() )
 			->method( 'getId' )
-			->will( $this->onConsecutiveCalls( 42, 0 ) );
+			->willReturnOnConsecutiveCalls( 42, 0 );
 
 		$instance = new FileAttachment(
 			$this->store,

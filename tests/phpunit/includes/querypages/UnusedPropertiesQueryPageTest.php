@@ -69,8 +69,8 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 			$error
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$result
 		);
 

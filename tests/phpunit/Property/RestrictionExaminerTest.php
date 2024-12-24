@@ -101,8 +101,8 @@ class RestrictionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->user->expects( $this->once() )
 			->method( 'isAllowed' )
-			->with( $this->equalTo( $right ) )
-			->will( $this->returnValue( true ) );
+			->with( $right )
+			->willReturn( true );
 
 		$instance = new RestrictionExaminer();
 

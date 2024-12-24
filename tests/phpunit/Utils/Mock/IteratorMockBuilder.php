@@ -81,7 +81,7 @@ class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 	public function getMockForIterator() {
 		$instance = $this->getMockBuilder( $this->iteratorClass )
 			->disableOriginalConstructor()
-			->setMethods( $this->methods )
+			->onlyMethods( $this->methods )
 			->getMock();
 
 		if ( !$instance instanceof \Iterator ) {
@@ -95,11 +95,11 @@ class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 
 			$instance->expects( $this->at( $this->counter++ ) )
 				->method( 'valid' )
-				->will( $this->returnValue( true ) );
+				->willReturn( true );
 
 			$instance->expects( $this->at( $this->counter++ ) )
 				->method( 'current' )
-				->will( $this->returnValue( $value ) );
+				->willReturn( $value );
 
 			$instance->expects( $this->at( $this->counter++ ) )
 				->method( 'next' );
@@ -107,7 +107,7 @@ class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 
 		$instance->expects( $this->at( $this->counter++ ) )
 			->method( 'valid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		return $instance;
 	}

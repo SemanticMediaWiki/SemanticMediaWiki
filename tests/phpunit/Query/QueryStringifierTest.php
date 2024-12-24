@@ -63,15 +63,15 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		yield [
 			$query,
@@ -95,19 +95,19 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getQuerySource' )
-			->will( $this->returnValue( 'Baz' ) );
+			->willReturn( 'Baz' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		yield [
 			$query,
@@ -132,19 +132,19 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( [ 'Foobar' => 'DESC' ] ) );
+			->willReturn( [ 'Foobar' => 'DESC' ] );
 
 		yield [
 			$query,
@@ -170,19 +170,19 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( [ 'Foobar' => 'DESC', 'Foobaz' => 'ASC' ] ) );
+			->willReturn( [ 'Foobar' => 'DESC', 'Foobaz' => 'ASC' ] );
 
 		yield [
 			$query,
@@ -208,7 +208,7 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 
 		$printRequest->expects( $this->any() )
 			->method( 'getSerialisation' )
-			->will( $this->returnValue( '?ABC' ) );
+			->willReturn( '?ABC' );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -216,19 +216,19 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [ $printRequest ] ) );
+			->willReturn( [ $printRequest ] );
 
 		yield [
 			$query,
@@ -254,7 +254,7 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 
 		$printRequest->expects( $this->any() )
 			->method( 'getSerialisation' )
-			->will( $this->returnValue( '?ABC' ) );
+			->willReturn( '?ABC' );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -262,19 +262,19 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [ $printRequest ] ) );
+			->willReturn( [ $printRequest ] );
 
 		yield [
 			$query,

@@ -36,11 +36,11 @@ class BeforeDisplayNoArticleTextTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getText' )
-			->will( $this->returnValue( $text ) );
+			->willReturn( $text );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( $namespace ) );
+			->willReturn( $namespace );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -48,7 +48,7 @@ class BeforeDisplayNoArticleTextTest extends \PHPUnit\Framework\TestCase {
 
 		$wikiPage->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance = new BeforeDisplayNoArticleText( $wikiPage );
 
