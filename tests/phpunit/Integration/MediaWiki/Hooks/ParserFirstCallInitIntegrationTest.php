@@ -68,7 +68,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionEnabled( $parserName, $text ) {
-		$singleEntityQueryLookup = $this->createMock( SingleEntityQueryLookup::class )
+		$singleEntityQueryLookup = $this->createMock( SingleEntityQueryLookup::class );
 
 		$singleEntityQueryLookup->expects( $this->any() )
 			->method( 'getQueryResult' )
