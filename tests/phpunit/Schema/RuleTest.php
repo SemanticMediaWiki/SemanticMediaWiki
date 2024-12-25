@@ -53,7 +53,7 @@ class RuleTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertSame(
-			'',
+			null,
 			$instance->if( 'foo' )
 		);
 
@@ -78,7 +78,7 @@ class RuleTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertSame(
-			'',
+			null,
 			$instance->then( 'foo' )
 		);
 

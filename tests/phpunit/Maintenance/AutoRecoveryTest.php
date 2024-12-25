@@ -92,7 +92,7 @@ class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
 		$instance->safeMargin( 101 );
 
 		$this->assertSame(
-			0,
+			false,
 			$instance->get( 'ar_id' )
 		);
 

@@ -49,7 +49,7 @@ class PropertyPageTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertSame(
-			'',
+			null,
 			$instance->view()
 		);
 	}
