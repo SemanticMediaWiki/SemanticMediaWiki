@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
+use SMWQueryResult;
 use SMW\Services\ServicesFactory;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\Lookup\SingleEntityQueryLookup;
+use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 use Title;
@@ -29,13 +33,9 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
-			->disableOriginalConstructor()
-			->getMock();
+		$idTable = $this->createMock( EntityIdManager::class );
 
-		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->queryResult = $this->createMock( SMWQueryResult::class )
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'getErrors' )
@@ -43,12 +43,8 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getQueryResult', 'getObjectIds', 'service' ] )
+			->setMethods( [ 'getQueryResult', 'service' ] )
 			->getMockForAbstractClass();
-
-		$this->store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getQueryResult' )
@@ -72,17 +68,13 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionEnabled( $parserName, $text ) {
-		$singleEntityQueryLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\SingleEntityQueryLookup' )
-			->disableOriginalConstructor()
-			->getMock();
+		$singleEntityQueryLookup = $this->createMock( SingleEntityQueryLookup::class )
 
 		$singleEntityQueryLookup->expects( $this->any() )
 			->method( 'getQueryResult' )
 			->will( $this->returnValue( $this->queryResult ) );
 
-		$monolingualTextLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\MonolingualTextLookup' )
-			->disableOriginalConstructor()
-			->getMock();
+		$monolingualTextLookup = $this->createMock( MonolingualTextLookup::class );
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
