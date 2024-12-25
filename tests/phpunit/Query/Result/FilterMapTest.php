@@ -5,6 +5,7 @@ namespace SMW\Tests\Query\Result;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Result\FilterMap;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 
 /**
  * @covers \SMW\Query\Result\FilterMap
@@ -23,18 +24,11 @@ class FilterMapTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->entityIdManager = $this->createMock( EntityIdManager::class );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
-
-		$this->store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityIdManager ) );
 	}
 
 	public function testCanConstruct() {
