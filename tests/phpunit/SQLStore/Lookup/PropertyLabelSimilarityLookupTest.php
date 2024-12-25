@@ -47,7 +47,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testGetPropertyMaxCount() {
 		$this->store->expects( $this->any() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( [ 'TOTALPROPS' => 42 ] ) );
+			->willReturn( [ 'TOTALPROPS' => 42 ] );
 
 		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
@@ -74,11 +74,11 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
@@ -93,7 +93,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->compareAndFindLabels( $requestOptions );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->getLookupCount()
 		);
@@ -112,11 +112,11 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row1, $row2 ] ) );
+			->willReturn( [ $row1, $row2 ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
@@ -124,7 +124,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Foobar', SMW_NS_PROPERTY ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIWikiPage( 'Foobar', SMW_NS_PROPERTY ) ] );
 
 		$instance = new PropertyLabelSimilarityLookup(
 			$this->store,
@@ -136,8 +136,8 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 		$instance->setExemptionProperty( 'Bar' );
 		$instance->setThreshold( 10 );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->compareAndFindLabels( $requestOptions )
 		);
 	}

@@ -50,7 +50,7 @@ class CheckQueryTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$instance = new CheckQueryTask(
 			$this->store

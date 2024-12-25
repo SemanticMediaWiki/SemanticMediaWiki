@@ -86,7 +86,7 @@ class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getInfo' )
-			->will( $this->returnValue( [ 'SPARQLStore' ] ) );
+			->willReturn( [ 'SPARQLStore' ] );
 
 		$instance = new QuerySourceFactory(
 			$store,

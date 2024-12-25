@@ -56,7 +56,7 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'getSettings' )
-			->will( $this->returnValue( $settings ) );
+			->willReturn( $settings );
 
 		$instance = new ReplicationStatus(
 			$this->connection
@@ -76,12 +76,12 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'getIndexName' )
-			->will( $this->returnValue( "FOO" ) );
+			->willReturn( "FOO" );
 
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
-			->with(	$this->equalTo( $params ) )
-			->will( $this->returnValue( true ) );
+			->with(	$params )
+			->willReturn( true );
 
 		$instance = new ReplicationStatus(
 			$this->connection
@@ -109,7 +109,7 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'search' )
-			->will( $this->returnValue( [ $res, [] ] ) );
+			->willReturn( [ $res, [] ] );
 
 		$instance = new ReplicationStatus(
 			$this->connection
@@ -138,16 +138,16 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'getIndexName' )
-			->will( $this->returnValue( "FOO" ) );
+			->willReturn( "FOO" );
 
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( $params ) )
-			->will( $this->returnValue( $doc ) );
+			->with(	$params )
+			->willReturn( $doc );
 
 		$instance = new ReplicationStatus(
 			$this->connection
@@ -162,13 +162,13 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 	public function testGetAssociatedRev_NotExists() {
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new ReplicationStatus(
 			$this->connection
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getAssociatedRev( 42 )
 		);
@@ -177,13 +177,13 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 	public function testGetAssociatedRev_NoMatch() {
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new ReplicationStatus(
 			$this->connection
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getAssociatedRev( 42 )
 		);
@@ -206,16 +206,16 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'getIndexName' )
-			->will( $this->returnValue( "FOO" ) );
+			->willReturn( "FOO" );
 
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( $params ) )
-			->will( $this->returnValue( $doc ) );
+			->with(	$params )
+			->willReturn( $doc );
 
 		$instance = new ReplicationStatus(
 			$this->connection
@@ -247,16 +247,16 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'getIndexName' )
-			->will( $this->returnValue( "FOO" ) );
+			->willReturn( "FOO" );
 
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( $params ) )
-			->will( $this->returnValue( $doc ) );
+			->with(	$params )
+			->willReturn( $doc );
 
 		$instance = new ReplicationStatus(
 			$this->connection
@@ -274,7 +274,7 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 	public function testGet_modification_date_associated_revision_not_exists() {
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new ReplicationStatus(
 			$this->connection
@@ -292,7 +292,7 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 	public function testGet_modification_date_associated_revision_no_match() {
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new ReplicationStatus(
 			$this->connection
@@ -310,15 +310,14 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 	public function testGetModificationDate_NoMatch() {
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new ReplicationStatus(
 			$this->connection
 		);
 
-		$this->assertEquals(
-			false,
-			$instance->getModificationDate( 42 )
+		$this->assertFalse(
+						$instance->getModificationDate( 42 )
 		);
 	}
 
@@ -336,11 +335,11 @@ class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'get' )
-			->will( $this->returnValue( $doc ) );
+			->willReturn( $doc );
 
 		$this->connection->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new ReplicationStatus(
 			$this->connection

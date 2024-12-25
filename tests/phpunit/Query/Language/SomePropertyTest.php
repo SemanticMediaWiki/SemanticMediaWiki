@@ -247,8 +247,8 @@ class SomePropertyTest extends \PHPUnit\Framework\TestCase {
 			$instance->prune( $maxsize, $maxDepth, $log )
 		);
 
-		$this->assertEquals( 0, $maxsize );
-		$this->assertEquals( 1, $maxDepth );
+		$this->assertSame( 0, $maxsize );
+		$this->assertSame( 1, $maxDepth );
 
 		$maxsize  = 0;
 		$maxDepth = 1;

@@ -38,7 +38,7 @@ class PSubjectLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testLookup( $subject, $parameters, $expected ) {
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [ $subject ] ) );
+			->willReturn( [ $subject ] );
 
 		$instance = new PSubjectLookup(
 			$this->store
@@ -47,8 +47,8 @@ class PSubjectLookupTest extends \PHPUnit\Framework\TestCase {
 		$res = $instance->lookup( $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 

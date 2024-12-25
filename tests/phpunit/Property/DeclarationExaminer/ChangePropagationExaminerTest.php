@@ -43,7 +43,7 @@ class ChangePropagationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -83,7 +83,7 @@ class ChangePropagationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$instance = new ChangePropagationExaminer(
 			$this->declarationExaminer,
@@ -111,15 +111,15 @@ class ChangePropagationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$this->jobQueue->expects( $this->any() )
 			->method( 'hasPendingJob' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->jobQueue->expects( $this->any() )
 			->method( 'getQueueSize' )
-			->will( $this->onConsecutiveCalls( 2, 4 ) );
+			->willReturnOnConsecutiveCalls( 2, 4 );
 
 		$instance = new ChangePropagationExaminer(
 			$this->declarationExaminer,

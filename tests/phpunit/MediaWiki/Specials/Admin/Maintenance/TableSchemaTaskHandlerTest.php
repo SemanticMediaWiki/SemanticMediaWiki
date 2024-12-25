@@ -66,7 +66,7 @@ class TableSchemaTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -92,7 +92,7 @@ class TableSchemaTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$webRequest->expects( $this->once() )
 			->method( 'getVal' )
-			->will( $this->returnValue( 'done' ) );
+			->willReturn( 'done' );
 
 		$instance = new TableSchemaTaskHandler(
 			$this->store,

@@ -94,7 +94,7 @@ class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
 
 		$parserOutput->expects( $this->any() )
 			->method( 'getExtensionData' )
-			->will( $this->returnValue( $expected['magicWords'] ) );
+			->willReturn( $expected['magicWords'] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -125,7 +125,7 @@ class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
 
 		$result = $magic->invoke( $instance );
 
-		$this->assertInternalType( 'integer', $result );
+		$this->assertIsInt( $result );
 		$this->assertEquals( $expected['constants'], $result );
 	}
 

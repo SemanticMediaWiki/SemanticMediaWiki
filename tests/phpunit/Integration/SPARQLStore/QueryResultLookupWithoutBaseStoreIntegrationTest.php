@@ -99,7 +99,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit\Framewor
 
 		$query->querymode = Query::MODE_INSTANCES;
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$this->store->getQueryResult( $query )->getCount()
 		);
@@ -108,7 +108,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit\Framewor
 			$this->store->doSparqlDataDelete( $semanticData->getSubject() )
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$this->store->getQueryResult( $query )->getCount()
 		);

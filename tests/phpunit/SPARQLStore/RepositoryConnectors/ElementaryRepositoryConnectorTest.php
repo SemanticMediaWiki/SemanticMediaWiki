@@ -37,13 +37,13 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 		$httpRequest->expects( $this->at( 8 ) )
 			->method( 'setOption' )
 			->with(
-				$this->equalTo( CURLOPT_POSTFIELDS ),
+				CURLOPT_POSTFIELDS,
 				$this->stringContains( $expectedPostField ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$httpRequest->expects( $this->once() )
 			->method( 'execute' )
-			->will( $this->returnValue( $rawResultProvider->getEmptySparqlResultXml() ) );
+			->willReturn( $rawResultProvider->getEmptySparqlResultXml() );
 
 		$instance = new $httpDatabaseConnector(
 			new RepositoryClient( 'http://foo/myDefaultGraph', 'http://localhost:9999/query' ),
@@ -74,13 +74,13 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 		$httpRequest->expects( $this->at( 7 ) )
 			->method( 'setOption' )
 			->with(
-				$this->equalTo( CURLOPT_POSTFIELDS ),
+				CURLOPT_POSTFIELDS,
 				$this->stringContains( $expectedPostField ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$instance = new $httpDatabaseConnector(
 			new RepositoryClient(
@@ -108,7 +108,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$instance = new $httpDatabaseConnector(
 			new RepositoryClient(

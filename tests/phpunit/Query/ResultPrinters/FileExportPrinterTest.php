@@ -27,7 +27,7 @@ class FileExportPrinterTest extends \PHPUnit\Framework\TestCase {
 		$fileExportPrinter->expects( $this->at( 0 ) )
 			->method( 'getFileResult' )
 			->with( $queryResult )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$fileExportPrinter->expects( $this->at( 1 ) )
 			->method( 'getMimeType' );

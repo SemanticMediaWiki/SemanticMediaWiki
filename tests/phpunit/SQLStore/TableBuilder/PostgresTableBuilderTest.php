@@ -25,15 +25,15 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'postgres' ) );
+			->willReturn( 'postgres' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'dbSchema' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'tablePrefix' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
 			->willReturnArgument( 0 );
@@ -49,7 +49,7 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testCreateTableOnNewTable() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
@@ -66,12 +66,12 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testUpdateTableWithNewField() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'SELECT a.attname as' ) )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->at( 4 ) )
 			->method( 'query' )
@@ -89,12 +89,12 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testUpdateTableWithNewFieldAndDefault() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'SELECT a.attname as' ) )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->at( 4 ) )
 			->method( 'query' )
@@ -113,16 +113,16 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testCreateIndex() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->any() )
 			->method( 'indexInfo' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->at( 5 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'SELECT  i.relname AS indexname' ) )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->at( 8 ) )
 			->method( 'query' )
@@ -141,7 +141,7 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testDropTable() {
 		$this->connection->expects( $this->once() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
@@ -158,7 +158,7 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 		$this->markTestSkipped( 'SUT needs refactoring - onTransactionCommitOrIdle cannot be mocked' );
 		$this->connection->expects( $this->any() )
 			->method( 'selectField' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = PostgresTableBuilder::factory( $this->connection );
 
@@ -168,7 +168,7 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testOptimizeTable() {
 		$this->connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'postgres' ) );
+			->willReturn( 'postgres' );
 
 		$this->connection->expects( $this->at( 2 ) )
 			->method( 'query' )

@@ -93,8 +93,8 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 			);
 		}
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$dataValue->getErrors()
 		);
 	}
@@ -118,7 +118,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}
 		} else {
-			$this->assertInternalType( 'array', $dataValue->getErrors() );
+			$this->assertIsArray( $dataValue->getErrors() );
 		}
 
 		// Check interface parameters
@@ -151,7 +151,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}
 		} else {
-			$this->assertInternalType( 'array', $dataValue->getErrors() );
+			$this->assertIsArray( $dataValue->getErrors() );
 		}
 
 		// Check interface parameters

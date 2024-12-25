@@ -75,7 +75,7 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getSearchEngine' )
-			->will( $this->returnValue( $searchEngine ) );
+			->willReturn( $searchEngine );
 
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', null );
 

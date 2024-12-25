@@ -38,11 +38,11 @@ class TitleIsAlwaysKnownTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( $namespace ) );
+			->willReturn( $namespace );
 
 		$title->expects( $this->any() )
 			->method( 'getText' )
-			->will( $this->returnValue( $text ) );
+			->willReturn( $text );
 
 		$result = '';
 

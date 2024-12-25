@@ -106,8 +106,8 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$hierarchyLookup->expects( $this->once() )
 			->method( 'hasSubproperty' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( true ) );
+			->with( $property )
+			->willReturn( true );
 
 		$resultVariable = 'result';
 

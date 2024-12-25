@@ -50,11 +50,11 @@ class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'write' )
 			->with(
 				$this->anything(),
-				$this->equalTo( json_encode( $contents, JSON_PRETTY_PRINT ) ) );
+				json_encode( $contents, JSON_PRETTY_PRINT ) );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new AutoRecovery( 'foo', $this->file );
 		$instance->enable( true );
@@ -71,7 +71,7 @@ class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'read' )
-			->will( $this->returnValue( json_encode( $init ) ) );
+			->willReturn( json_encode( $init ) );
 
 		$contents = [
 			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => 1001 ] ] ]
@@ -81,17 +81,17 @@ class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'write' )
 			->with(
 				$this->anything(),
-				$this->equalTo( json_encode( $contents, JSON_PRETTY_PRINT ) ) );
+				json_encode( $contents, JSON_PRETTY_PRINT ) );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new AutoRecovery( 'foo', $this->file );
 		$instance->enable( true );
 		$instance->safeMargin( 101 );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->get( 'ar_id' )
 		);
@@ -111,7 +111,7 @@ class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'read' )
-			->will( $this->returnValue( json_encode( $init ) ) );
+			->willReturn( json_encode( $init ) );
 
 		$contents = [
 			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => false ] ] ]
@@ -121,11 +121,11 @@ class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'write' )
 			->with(
 				$this->anything(),
-				$this->equalTo( json_encode( $contents, JSON_PRETTY_PRINT ) ) );
+				json_encode( $contents, JSON_PRETTY_PRINT ) );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new AutoRecovery( 'foo', $this->file );
 		$instance->enable( true );
@@ -137,9 +137,8 @@ class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->set( 'ar_id', false );
 
-		$this->assertEquals(
-			false,
-			$instance->get( 'ar_id' )
+		$this->assertFalse(
+						$instance->get( 'ar_id' )
 		);
 	}
 
@@ -150,17 +149,17 @@ class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'read' )
-			->will( $this->returnValue( json_encode( $init, JSON_PRETTY_PRINT ) ) );
+			->willReturn( json_encode( $init, JSON_PRETTY_PRINT ) );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new AutoRecovery( 'foo', $this->file );
 		$instance->enable( true );
 		$instance->safeMargin( 9999 );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->get( 'ar_id' )
 		);

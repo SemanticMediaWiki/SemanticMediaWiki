@@ -36,8 +36,8 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetServiceFile() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			DataValueServiceFactory::SERVICE_FILE
 		);
 	}
@@ -50,7 +50,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->containerBuilder->expects( $this->once() )
 			->method( 'isRegistered' )
 			->with( $this->stringContains( 'bar' ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
@@ -97,12 +97,12 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->containerBuilder->expects( $this->once() )
 			->method( 'isRegistered' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->containerBuilder->expects( $this->once() )
 			->method( 'singleton' )
 			->with( $this->stringContains( DataValueServiceFactory::TYPE_FORMATTER ) )
-			->will( $this->returnValue( $dataValueFormatter ) );
+			->willReturn( $dataValueFormatter );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
@@ -122,12 +122,12 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->containerBuilder->expects( $this->once() )
 			->method( 'isRegistered' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->containerBuilder->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( DataValueServiceFactory::TYPE_FORMATTER ) )
-			->will( $this->returnValue( $dataValueFormatter ) );
+			->willReturn( $dataValueFormatter );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
@@ -144,7 +144,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->containerBuilder->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( 'PropertyRestrictionExaminer' ) )
-			->will( $this->returnValue( $propertyRestrictionExaminer ) );
+			->willReturn( $propertyRestrictionExaminer );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
@@ -161,7 +161,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->containerBuilder->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( 'DescriptionBuilderRegistry' ) )
-			->will( $this->returnValue( $descriptionBuilderRegistry ) );
+			->willReturn( $descriptionBuilderRegistry );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
@@ -178,7 +178,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->containerBuilder->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( 'UnitConverter' ) )
-			->will( $this->returnValue( $unitConverter ) );
+			->willReturn( $unitConverter );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder

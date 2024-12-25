@@ -81,15 +81,15 @@ class QueryResultTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->serializeToArray();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getNext()
 		);
 
 		$instance->getHash();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getNext()
 		);
 	}

@@ -80,7 +80,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 
 		$this->elasticClient->expects( $this->once() )
 			->method( 'bulk' )
-			->will( $this->returnValue( json_decode( $response, true ) ) );
+			->willReturn( json_decode( $response, true ) );
 
 		$instance = new Client(
 			$this->elasticClient,

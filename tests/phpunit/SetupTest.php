@@ -34,11 +34,11 @@ class SetupTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()

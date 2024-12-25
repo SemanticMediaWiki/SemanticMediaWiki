@@ -50,17 +50,17 @@ class FixedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
-			->will( $this->onConsecutiveCalls(
+			->willReturnOnConsecutiveCalls(
 				(object)[ 'smw_id' => 99999 ],
-				(object)[ 'smw_id' => 11111 ] ) );
+				(object)[ 'smw_id' => 11111 ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new FixedProperties(
 			$this->store
