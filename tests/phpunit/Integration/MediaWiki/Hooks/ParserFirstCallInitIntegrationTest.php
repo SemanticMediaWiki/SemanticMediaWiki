@@ -35,7 +35,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$idTable = $this->createMock( EntityIdManager::class );
 
-		$this->queryResult = $this->createMock( SMWQueryResult::class )
+		$this->queryResult = $this->createMock( SMWQueryResult::class );
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'getErrors' )
