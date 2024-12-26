@@ -130,9 +130,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelectMethod() {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
@@ -161,7 +159,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\Wikimedia\Rdbms\ResultWrapper',
+			IResultWrapper::class,
 			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
 		);
 	}
@@ -204,9 +202,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider querySqliteProvider
 	 */
 	public function testQueryOnSQLite( $query, $expected ) {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
@@ -254,7 +250,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\Wikimedia\Rdbms\ResultWrapper',
+			IResultWrapper::class,
 			$instance->query( $query )
 		);
 	}
@@ -305,7 +301,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		$this->expectException( 'RuntimeException' );
 
 		$this->assertInstanceOf(
-			'\Wikimedia\Rdbms\ResultWrapper',
+			IResultWrapper::class,
 			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
 		);
 	}

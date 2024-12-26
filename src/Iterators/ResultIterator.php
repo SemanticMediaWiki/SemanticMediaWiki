@@ -7,7 +7,7 @@ use Countable;
 use Iterator;
 use RuntimeException;
 use SeekableIterator;
-use Wikimedia\Rdbms\ResultWrapper;
+use Wikimedia\Rdbms\IResultWrapper;
 /**
  * @license GNU GPL v2+
  * @since 2.5
@@ -17,7 +17,7 @@ use Wikimedia\Rdbms\ResultWrapper;
 class ResultIterator implements Iterator, Countable, SeekableIterator {
 
 	/**
-	 * @var ResultWrapper
+	 * @var IResultWrapper
 	 */
 	public $res;
 

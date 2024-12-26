@@ -2,8 +2,16 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use SMWDIBlob;
+use SMW\DIProperty;
+use SMW\IteratorFactory;
+use SMW\RequestOptions;
+use SMW\MediaWiki\Database;
+use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\TableDefinition;
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
 use SMW\DIWikiPage;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\Lookup\EntityUniquenessLookup
@@ -21,9 +29,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 	private $iteratorFactory;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->connection = $this->createMock( Database::class );
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -34,9 +40,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->iteratorFactory = $this->createMock( IteratorFactory::class );
 	}
 
 	public function testCanConstruct() {
@@ -55,9 +59,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getWhereConds' )
 			->willReturn( [ 'o_hash' => '' ] );
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
-			->disableOriginalConstructor()
-			->getMock();
+		$propertyTableInfoFetcher = $this->createMock( PropertyTableInfoFetcher::class );
 
 		$propertyTableInfoFetcher->expects( $this->any() )
 			->method( 'findTableIdForProperty' )
@@ -80,9 +82,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->willReturn( $propertyTableInfoFetcher );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
-			->disableOriginalConstructor()
-			->getMock();
+		$propertyTable = $this->createMock( TableDefinition::class );
 
 		$propertyTable->expects( $this->once() )
 			->method( 'usesIdSubject' )
@@ -108,9 +108,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTables' )
 			->willReturn( [ '_foo' => $propertyTable ] );
 
-		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
-			->disableOriginalConstructor()
-			->getMock();
+		$requestOptions = $this->createMock( RequestOptions::class );
 
 		$requestOptions->expects( $this->any() )
 			->method( 'getExtraConditions' )
@@ -120,9 +118,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLimit' )
 			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
@@ -134,9 +130,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$query = new \SMW\MediaWiki\Connection\Query( $connection );
 
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
@@ -151,13 +145,9 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			$this->iteratorFactory
 		);
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
-			->disableOriginalConstructor()
-			->getMock();
+		$property = $this->createMock( DIProperty::class );
 
-		$dataItem = $this->getMockBuilder( '\SMWDIBlob' )
-			->disableOriginalConstructor()
-			->getMock();
+		$dataItem = $this->createMock( SMWDIBlob::class );
 
 		$instance->checkConstraint( $property, $dataItem, $requestOptions );
 

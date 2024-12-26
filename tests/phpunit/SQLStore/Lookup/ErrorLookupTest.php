@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore\Lookup;
 use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ErrorLookup
@@ -106,9 +107,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
@@ -179,9 +178,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )

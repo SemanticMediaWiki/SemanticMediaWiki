@@ -4,6 +4,7 @@ namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\ResultIterator;
 use SMW\Tests\PHPUnitCompat;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * @covers \SMW\Iterators\ResultIterator
@@ -70,9 +71,7 @@ class ResultIteratorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testdoIterateOnResultWrapper() {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$resultWrapper->expects( $this->exactly( 3 ) )
 			->method( 'numRows' )

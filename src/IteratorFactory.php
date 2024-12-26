@@ -19,7 +19,7 @@ class IteratorFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param \Wikimedia\Rdbms\ResultWrapper|Iterator|array $res
+	 * @param \Wikimedia\Rdbms\IResultWrapper|Iterator|array $res
 	 *
 	 * @return ResultIterator
 	 */
