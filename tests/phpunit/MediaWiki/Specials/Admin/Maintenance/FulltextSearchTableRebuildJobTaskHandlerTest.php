@@ -66,7 +66,7 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit\Framework\Te
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -83,8 +83,8 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit\Framework\Te
 	public function testHandleRequestOnNonPendingJob() {
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'smw.fulltextSearchTableRebuild' ) )
-			->will( $this->returnValue( false ) );
+			->with( 'smw.fulltextSearchTableRebuild' )
+			->willReturn( false );
 
 		$fulltextSearchTableRebuildJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob' )
 			->disableOriginalConstructor()
@@ -99,7 +99,7 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit\Framework\Te
 
 		$jobFactory->expects( $this->once() )
 			->method( 'newByType' )
-			->will( $this->returnValue( $fulltextSearchTableRebuildJob ) );
+			->willReturn( $fulltextSearchTableRebuildJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -120,8 +120,8 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit\Framework\Te
 	public function testHandleRequestOnPendingJob() {
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'smw.fulltextSearchTableRebuild' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw.fulltextSearchTableRebuild' )
+			->willReturn( true );
 
 		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()

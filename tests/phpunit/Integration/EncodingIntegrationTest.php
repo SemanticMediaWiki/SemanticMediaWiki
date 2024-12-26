@@ -95,16 +95,16 @@ class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( Title::newFromText( $text, NS_MAIN ) ) );
+			->willReturn( Title::newFromText( $text, NS_MAIN ) );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'msg' )
-			->will( $this->returnValue( $message ) )
+			->willReturn( $message )
 			->with( 'smw_browselink' );
 
 		$skin->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $output ) );
+			->willReturn( $output );
 
 		return [ 'settings' => $settings, 'skin' => $skin ];
 	}

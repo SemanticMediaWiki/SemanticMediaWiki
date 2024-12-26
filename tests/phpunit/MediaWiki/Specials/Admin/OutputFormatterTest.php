@@ -47,8 +47,8 @@ class OutputFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testGetSpecialPageLinkWith() {
 		$instance = new OutputFormatter( $this->outputPage );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getSpecialPageLinkWith()
 		);
 	}
@@ -56,8 +56,8 @@ class OutputFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testEncodeAsJson() {
 		$instance = new OutputFormatter( $this->outputPage );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->encodeAsJson( [] )
 		);
 	}

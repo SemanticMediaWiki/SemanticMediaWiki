@@ -44,7 +44,7 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.property' ) );
+			->with(	'if.property' );
 
 		$instance = new PropertyFilter();
 		$instance->filter( $compartment );
@@ -57,7 +57,7 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.property' ) );
+			->with(	'if.property' );
 
 		$instance = new PropertyFilter();
 		$instance->addOption( PropertyFilter::FILTER_CONDITION_NOT_REQUIRED, true );

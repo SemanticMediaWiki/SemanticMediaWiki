@@ -64,18 +64,18 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 			ParamListProcessor::FORMAT_LEGACY
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$a[0]
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$a[1]
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$a[2]
 		);
 	}

@@ -64,7 +64,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 		$search = __METHOD__;
 		$result = $this->newInstance( $test )->linkParameters();
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
 	}
 
@@ -97,7 +97,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$this->assertInternalType( 'string', $result );
+		$this->assertIsString( $result );
 
 		// https://github.com/sebastianbergmann/phpunit/issues/1380
 		// $this->assertTag( $matcher, $result );

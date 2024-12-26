@@ -123,8 +123,8 @@ class SchemaTypesTest extends \PHPUnit\Framework\TestCase {
 	public function testJsonSerialize() {
 		$instance = new SchemaTypes();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->jsonSerialize()
 		);
 	}

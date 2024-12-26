@@ -153,15 +153,15 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'findPropertyTypeID' )
-			->will( $this->returnValue( $parameters['property']['typeId'] ) );
+			->willReturn( $parameters['property']['typeId'] );
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'getKey' )
-			->will( $this->returnValue( $parameters['property']['key'] ) );
+			->willReturn( $parameters['property']['key'] );
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'getLabel' )
-			->will( $this->returnValue( $parameters['property']['label'] ) );
+			->willReturn( $parameters['property']['label'] );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$parameters['dataItem'],

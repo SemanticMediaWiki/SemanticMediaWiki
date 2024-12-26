@@ -37,7 +37,7 @@ class ImporterServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->callbackContainerFactory = new CallbackContainerFactory();
 		$this->servicesFileDir = $GLOBALS['smwgServicesFileDir'];

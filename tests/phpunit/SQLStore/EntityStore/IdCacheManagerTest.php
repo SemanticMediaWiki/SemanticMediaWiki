@@ -38,8 +38,8 @@ class IdCacheManagerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testComputeSha1() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			IdCacheManager::computeSha1( [] )
 		);
 	}
@@ -75,9 +75,8 @@ class IdCacheManagerTest extends \PHPUnit\Framework\TestCase {
 			$instance->getId( [ 'foo', 0, '', '' ] )
 		);
 
-		$this->assertEquals(
-			false,
-			$instance->getId( [ 'foo', '0', '', '' ] )
+		$this->assertFalse(
+						$instance->getId( [ 'foo', '0', '', '' ] )
 		);
 
 		$this->assertEquals(
@@ -114,14 +113,12 @@ class IdCacheManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->deleteCache( 'foo', 0, '', '' );
 
-		$this->assertEquals(
-			false,
-			$instance->getId( [ 'foo', '0', '', '' ] )
+		$this->assertFalse(
+						$instance->getId( [ 'foo', '0', '', '' ] )
 		);
 
-		$this->assertEquals(
-			false,
-			$instance->getSort( [ 'foo', 0, '', '' ] )
+		$this->assertFalse(
+						$instance->getSort( [ 'foo', 0, '', '' ] )
 		);
 	}
 
@@ -130,14 +127,12 @@ class IdCacheManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setCache( 'foo', 0, '', '', '42', 'bar' );
 
-		$this->assertEquals(
-			false,
-			$instance->hasCache( [ 'foo', 0, '', '' ] )
+		$this->assertFalse(
+						$instance->hasCache( [ 'foo', 0, '', '' ] )
 		);
 
-		$this->assertEquals(
-			true,
-			$instance->hasCache( $instance->computeSha1( [ 'foo', 0, '', '' ] ) )
+		$this->assertTrue(
+						$instance->hasCache( $instance->computeSha1( [ 'foo', 0, '', '' ] ) )
 		);
 	}
 
@@ -148,7 +143,7 @@ class IdCacheManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'delete' )
-			->with( $this->equalTo( IdCacheManager::computeSha1( [ 'foo', 0, '', '' ] ) ) );
+			->with( IdCacheManager::computeSha1( [ 'foo', 0, '', '' ] ) );
 
 		$this->caches['entity.id'] = $cache;
 

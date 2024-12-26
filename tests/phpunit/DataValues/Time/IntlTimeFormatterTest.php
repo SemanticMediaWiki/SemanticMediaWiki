@@ -89,8 +89,8 @@ class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$language->expects( $this->once() )
 			->method( 'getMonthName' )
-			->with( $this->equalTo( '12' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->with( '12' )
+			->willReturn( 'Foo' );
 
 		$instance = new IntlTimeFormatter(
 			DITime::doUnserialize( '1/2000/12/12/1/1/20.200' ),

@@ -47,11 +47,11 @@ class IndexerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $options ) );
+			->willReturn( $options );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->logger = $this->getMockBuilder( '\Psr\Log\NullLogger' )
 			->disableOriginalConstructor()
@@ -94,17 +94,17 @@ class IndexerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getIndexName' )
-			->with( $this->equalTo( 'data' ) )
-			->will( $this->returnValue( '_index_abc' ) );
+			->with( 'data' )
+			->willReturn( '_index_abc' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'index' )
-			->with( $this->equalTo( $expected ) )
-			->will( $this->returnValue( true ) );
+			->with( $expected )
+			->willReturn( true );
 
 		$instance = new Indexer(
 			$this->store,
@@ -123,7 +123,7 @@ class IndexerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new Indexer(
 			$this->store,
@@ -137,7 +137,7 @@ class IndexerTest extends \PHPUnit\Framework\TestCase {
 	public function testDelete() {
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->bulk->expects( $this->once() )
 			->method( 'clear' );
@@ -168,7 +168,7 @@ class IndexerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new Indexer(
 			$this->store,
@@ -189,7 +189,7 @@ class IndexerTest extends \PHPUnit\Framework\TestCase {
 
 		$document->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$this->bulk->expects( $this->once() )
 			->method( 'head' );
@@ -221,14 +221,14 @@ class IndexerTest extends \PHPUnit\Framework\TestCase {
 
 		$document->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'push' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new Indexer(
 			$this->store,

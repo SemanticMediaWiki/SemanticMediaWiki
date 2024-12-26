@@ -19,13 +19,13 @@ class HtmlModalTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testGetModules() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			HtmlModal::getModules()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			HtmlModal::getModuleStyles()
 		);
 	}

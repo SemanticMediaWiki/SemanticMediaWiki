@@ -40,23 +40,23 @@ class ConstraintCheckRunnerTest extends \PHPUnit\Framework\TestCase {
 
 		$constraint->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( Constraint::TYPE_INSTANT ) );
+			->willReturn( Constraint::TYPE_INSTANT );
 
 		$constraint->expects( $this->atLeastOnce() )
 			->method( 'checkConstraint' )
 			->with(
-				$this->equalTo( [ 'foo_bar' => [] ] ),
-				$this->equalTo( '__value__' ) )
-			->will( $this->returnValue( false ) );
+				[ 'foo_bar' => [] ],
+				'__value__' )
+			->willReturn( false );
 
 		$constraint->expects( $this->atLeastOnce() )
 			->method( 'hasViolation' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->constraintRegistry->expects( $this->atLeastOnce() )
 			->method( 'getConstraintByKey' )
-			->with( $this->equalTo( 'foo_bar' ) )
-			->will( $this->returnValue( $constraint ) );
+			->with( 'foo_bar' )
+			->willReturn( $constraint );
 
 		$instance = new ConstraintCheckRunner(
 			$this->constraintRegistry
@@ -87,15 +87,15 @@ class ConstraintCheckRunnerTest extends \PHPUnit\Framework\TestCase {
 
 		$constraint->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( Constraint::TYPE_DEFERRED ) );
+			->willReturn( Constraint::TYPE_DEFERRED );
 
 		$constraint->expects( $this->never() )
 			->method( 'checkConstraint' );
 
 		$this->constraintRegistry->expects( $this->atLeastOnce() )
 			->method( 'getConstraintByKey' )
-			->with( $this->equalTo( 'foo_bar' ) )
-			->will( $this->returnValue( $constraint ) );
+			->with( 'foo_bar' )
+			->willReturn( $constraint );
 
 		$instance = new ConstraintCheckRunner(
 			$this->constraintRegistry

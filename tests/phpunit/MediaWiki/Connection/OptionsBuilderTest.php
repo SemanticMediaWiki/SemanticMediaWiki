@@ -33,8 +33,8 @@ class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			OptionsBuilder::makeSelectOptions( $connection, $options )
 		);
 	}
@@ -47,8 +47,8 @@ class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			OptionsBuilder::toString( $options )
 		);
 	}

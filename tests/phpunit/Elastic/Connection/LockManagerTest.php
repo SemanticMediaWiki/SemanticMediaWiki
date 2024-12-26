@@ -38,7 +38,7 @@ class LockManagerTest extends \PHPUnit\Framework\TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
 			->with( $this->stringContains( 'smw:elastic:57cb773ae7a82c8c8aae12fa8f8d7abd' ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new LockManager(
 			$this->cache
@@ -64,7 +64,7 @@ class LockManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'save' )
 			->with(
 				$this->anything(),
-				$this->equalTo( 2 ) );
+				2 );
 
 		$instance = new LockManager(
 			$this->cache
@@ -76,7 +76,7 @@ class LockManagerTest extends \PHPUnit\Framework\TestCase {
 	public function testHasLock() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( '123' ) );
+			->willReturn( '123' );
 
 		$instance = new LockManager(
 			$this->cache
@@ -90,7 +90,7 @@ class LockManagerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetLock() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( 2 ) );
+			->willReturn( 2 );
 
 		$instance = new LockManager(
 			$this->cache

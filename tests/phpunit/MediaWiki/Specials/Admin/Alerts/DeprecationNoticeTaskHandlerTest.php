@@ -58,8 +58,8 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
@@ -102,8 +102,8 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}

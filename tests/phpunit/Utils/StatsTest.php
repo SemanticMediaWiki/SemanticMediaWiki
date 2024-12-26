@@ -37,13 +37,13 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'Foo.bar' => 11 ] ) );
+				[ 'Foo.bar' => 11 ] );
 
 		$instance = new Stats(
 			$this->cache,
@@ -59,7 +59,7 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'save' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'Foo.bar' => 10 ] ) );
+				[ 'Foo.bar' => 10 ] );
 
 		$instance = new Stats(
 			$this->cache,
@@ -77,13 +77,13 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'Foo.bar' => 7.5 ] ) );
+				[ 'Foo.bar' => 7.5 ] );
 
 		$instance = new Stats(
 			$this->cache,
@@ -107,7 +107,7 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$instance = new Stats(
 			$this->cache,
@@ -133,7 +133,7 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$instance = new Stats(
 			$this->cache,
@@ -160,7 +160,7 @@ class StatsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$instance = new Stats(
 			$this->cache,

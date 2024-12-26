@@ -33,7 +33,7 @@ class MaintenanceAlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$taskHandler->expects( $this->once() )
 			->method( 'getHtml' )
-			->will( $this->returnValue( 'FOO' ) );
+			->willReturn( 'FOO' );
 
 		$instance = new MaintenanceAlertsTaskHandler(
 			[

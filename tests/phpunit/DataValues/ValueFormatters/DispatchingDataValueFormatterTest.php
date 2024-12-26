@@ -32,7 +32,7 @@ class DispatchingDataValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueFormatter->expects( $this->once() )
 			->method( 'isFormatterFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -54,7 +54,7 @@ class DispatchingDataValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueFormatter->expects( $this->once() )
 			->method( 'isFormatterFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -76,7 +76,7 @@ class DispatchingDataValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueFormatter->expects( $this->once() )
 			->method( 'isFormatterFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$defaultDataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
@@ -106,7 +106,7 @@ class DispatchingDataValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueFormatter->expects( $this->once() )
 			->method( 'isFormatterFor' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()

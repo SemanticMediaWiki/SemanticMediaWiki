@@ -58,7 +58,7 @@ class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$context->expects( $this->once() )
 			->method( 'getLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$instance = new MessageBuilder();
 

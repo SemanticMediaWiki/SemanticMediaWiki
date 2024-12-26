@@ -36,11 +36,11 @@ class MonolingualTextValueMappingTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new MonolingualTextValueParser() ) );
+			->willReturn( new MonolingualTextValueParser() );
 	}
 
 	public function testCanConstruct() {
@@ -147,7 +147,7 @@ class MonolingualTextValueMappingTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $monolingualTextValueFormatter ) );
+			->willReturn( $monolingualTextValueFormatter );
 
 		$instance->setDataValueServiceFactory(
 			$this->dataValueServiceFactory
@@ -169,7 +169,7 @@ class MonolingualTextValueMappingTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $monolingualTextValueFormatter ) );
+			->willReturn( $monolingualTextValueFormatter );
 
 		$instance->setDataValueServiceFactory(
 			$this->dataValueServiceFactory

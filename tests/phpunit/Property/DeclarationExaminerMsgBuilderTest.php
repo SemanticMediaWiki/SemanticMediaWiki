@@ -41,7 +41,7 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testBuildHTML( $messages, $expected ) {
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( $messages ) );
+			->willReturn( $messages );
 
 		$instance = new DeclarationExaminerMsgBuilder();
 

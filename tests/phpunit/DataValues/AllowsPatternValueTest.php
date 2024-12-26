@@ -53,11 +53,11 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new AllowsPatternValueParser( $this->mediaWikiNsContentReader ) ) );
+			->willReturn( new AllowsPatternValueParser( $this->mediaWikiNsContentReader ) );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $this->constraintValueValidator ) );
+			->willReturn( $this->constraintValueValidator );
 	}
 
 	protected function tearDown(): void {
@@ -90,7 +90,7 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 	public function testHasErrorForNonMatchingContent() {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( " \nFoo|Bar\n" ) );
+			->willReturn( " \nFoo|Bar\n" );
 
 		$instance = new AllowsPatternValue();
 
@@ -110,7 +110,7 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 	public function testHasNoErrorOnMatchableContent() {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( " \nFoo|Bar\n" ) );
+			->willReturn( " \nFoo|Bar\n" );
 
 		$instance = new AllowsPatternValue();
 
@@ -148,7 +148,7 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 
 		$allowsPatternValueParser->expects( $this->any() )
 			->method( 'parse' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
 			->disableOriginalConstructor()
@@ -156,11 +156,11 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( $allowsPatternValueParser ) );
+			->willReturn( $allowsPatternValueParser );
 
 		$dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $this->constraintValueValidator ) );
+			->willReturn( $this->constraintValueValidator );
 
 		$instance = new AllowsPatternValue();
 		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVAP );
@@ -184,7 +184,7 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 
 		$allowsPatternValueParser->expects( $this->any() )
 			->method( 'parse' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
 			->disableOriginalConstructor()
@@ -192,11 +192,11 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( $allowsPatternValueParser ) );
+			->willReturn( $allowsPatternValueParser );
 
 		$dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $this->constraintValueValidator ) );
+			->willReturn( $this->constraintValueValidator );
 
 		$instance = new AllowsPatternValue();
 		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVAP );

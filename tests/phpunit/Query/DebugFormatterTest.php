@@ -21,8 +21,8 @@ class DebugFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testFormatDebugOutputWithoutQuery() {
 		$instance = new DebugFormatter();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHTML( [], null )
 		);
 	}
@@ -47,16 +47,16 @@ class DebugFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$query->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DebugFormatter();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHTML( [], $query )
 		);
 	}
@@ -67,8 +67,8 @@ class DebugFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testFormatSQLExplainOutput( $type, $res ) {
 		$instance = new DebugFormatter();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->prettifyExplain( $res )
 		);
 	}
@@ -78,8 +78,8 @@ class DebugFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$sparql = '';
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->prettifySPARQL( $sparql )
 		);
 
@@ -95,8 +95,8 @@ class DebugFormatterTest extends \PHPUnit\Framework\TestCase {
 		$sql = '';
 		$alias = '';
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->prettifySQL( $sql, $alias )
 		);
 	}

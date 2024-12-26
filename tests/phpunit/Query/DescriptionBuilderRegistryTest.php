@@ -86,7 +86,7 @@ class DescriptionBuilderRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$descriptionBuilder->expects( $this->once() )
 			->method( 'isBuilderFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()

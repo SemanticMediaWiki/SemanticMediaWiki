@@ -45,11 +45,11 @@ class HtmlFormTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$query->expects( $this->once() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -57,15 +57,15 @@ class HtmlFormTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$instance = new HtmlForm( $title );
 		$instance->isEditMode( true );
 
 		$log = [];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getForm( $urlArgs, $queryResult, $log )
 		);
 	}

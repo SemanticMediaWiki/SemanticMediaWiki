@@ -21,8 +21,8 @@ class CliMsgFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testHead() {
 		$instance = new CliMsgFormatter();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->head()
 		);
 	}
