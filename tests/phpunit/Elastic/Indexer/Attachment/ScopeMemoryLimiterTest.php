@@ -94,7 +94,7 @@ class ScopeMemoryLimiterTest extends \PHPUnit\Framework\TestCase {
 		}
 		$this->testCaller = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->onlyMethods( [ 'calledFromCallable' ] )
+			->addMethods( [ 'calledFromCallable' ] )
 			->getMock();
 
 		$this->testCaller->expects( $this->once() )
