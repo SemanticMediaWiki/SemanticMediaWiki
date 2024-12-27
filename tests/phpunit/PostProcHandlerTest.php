@@ -352,7 +352,8 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'setExtensionData' )
-			->with( PostProcHandler::POST_EDIT_UPDATE, $sExtensionData );
+			->with( PostProcHandler::POST_EDIT_UPDATE )
+			->willReturn( $sExtensionData );
 
 		$instance = new PostProcHandler(
 			$this->parserOutput,
@@ -373,7 +374,8 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'setExtensionData' )
-			->with( PostProcHandler::POST_EDIT_CHECK, $sExtensionData );
+			->with( PostProcHandler::POST_EDIT_CHECK )
+			->willReturn( $sExtensionData );
 
 		$instance = new PostProcHandler(
 			$this->parserOutput,
