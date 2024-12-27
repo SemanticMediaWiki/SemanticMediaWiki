@@ -42,14 +42,14 @@ class InfoParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$processingResult->expects( $this->any() )
 			->method( 'getParameters' )
-			->will( $this->returnValue( [
+			->willReturn( [
 				'message'  => $processedParam,
 				'max-width'  => $processedParam,
 				'theme'  => $processedParam,
-				'icon'     => $processedParam ] ) );
+				'icon'     => $processedParam ] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->handle( $parser, $processingResult )
 		);
 	}

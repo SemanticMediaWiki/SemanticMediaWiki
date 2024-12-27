@@ -106,7 +106,7 @@ class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItem->expects( $this->any() )
 			->method( '__toString' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		# 0
 		$provider[] = [

@@ -4,7 +4,6 @@ namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMWQueryResult;
 use SMW\Services\ServicesFactory;
-use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\SingleEntityQueryLookup;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\Tests\SMWIntegrationTestCase;
@@ -33,13 +32,11 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$idTable = $this->createMock( EntityIdManager::class );
-
 		$this->queryResult = $this->createMock( SMWQueryResult::class );
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -48,7 +45,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $this->queryResult ) );
+			->willReturn( $this->queryResult );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 
@@ -72,13 +69,13 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$singleEntityQueryLookup->expects( $this->any() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $this->queryResult ) );
+			->willReturn( $this->queryResult );
 
 		$monolingualTextLookup = $this->createMock( MonolingualTextLookup::class );
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnCallback( function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
+			->willReturnCallback( function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
 				if ( $service === 'SingleEntityQueryLookup' ) {
 					return $singleEntityQueryLookup;
 				}
@@ -86,7 +83,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 				if ( $service === 'MonolingualTextLookup' ) {
 					return $monolingualTextLookup;
 				}
-			} ) );
+			} );
 
 		$expectedNullOutputFor = [
 			'concept',

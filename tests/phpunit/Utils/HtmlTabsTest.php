@@ -21,8 +21,8 @@ class HtmlTabsTest extends \PHPUnit\Framework\TestCase {
 	public function testHasContents() {
 		$instance = new HtmlTabs();
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasContents()
 		);
 	}

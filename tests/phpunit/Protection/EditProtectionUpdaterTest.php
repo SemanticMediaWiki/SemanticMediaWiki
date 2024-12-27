@@ -54,7 +54,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->wikiPage->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $subject->getTitle() ) );
+			->willReturn( $subject->getTitle() );
 
 		$this->wikiPage->expects( $this->never() )
 			->method( 'doUpdateRestrictions' );
@@ -65,7 +65,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new EditProtectionUpdater(
 			$this->wikiPage,
@@ -85,7 +85,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->wikiPage->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $subject->getTitle() ) );
+			->willReturn( $subject->getTitle() );
 
 		$this->wikiPage->expects( $this->once() )
 			->method( 'doUpdateRestrictions' );
@@ -96,7 +96,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( true ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIBoolean( true ) ] );
 
 		$instance = new EditProtectionUpdater(
 			$this->wikiPage,
@@ -130,11 +130,11 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getRestrictions' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$this->wikiPage->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->wikiPage->expects( $this->once() )
 			->method( 'doUpdateRestrictions' );
@@ -145,7 +145,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( false ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIBoolean( false ) ] );
 
 		$instance = new EditProtectionUpdater(
 			$this->wikiPage,
@@ -181,11 +181,11 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getRestrictions' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$this->wikiPage->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->wikiPage->expects( $this->never() )
 			->method( 'doUpdateRestrictions' );
@@ -196,8 +196,8 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( true ) ] ) );
+			->with( $property )
+			->willReturn( [ $this->dataItemFactory->newDIBoolean( true ) ] );
 
 		$instance = new EditProtectionUpdater(
 			$this->wikiPage,

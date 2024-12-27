@@ -70,7 +70,7 @@ class UpdateQueryDependenciesTest extends \PHPUnit\Framework\TestCase {
 
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $updateJob ) );
+			->willReturn( $updateJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -99,15 +99,15 @@ class UpdateQueryDependenciesTest extends \PHPUnit\Framework\TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new updateQueryDependencies();
 

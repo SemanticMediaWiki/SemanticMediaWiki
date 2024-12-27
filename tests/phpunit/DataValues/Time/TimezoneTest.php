@@ -27,8 +27,8 @@ class TimezoneTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testListShortAbbreviations() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			Timezone::listShortAbbreviations()
 		);
 	}

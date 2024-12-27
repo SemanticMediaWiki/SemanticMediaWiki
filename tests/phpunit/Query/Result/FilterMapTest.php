@@ -41,7 +41,7 @@ class FilterMapTest extends \PHPUnit\Framework\TestCase {
 	public function testGetCountListByType() {
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'preload' )
-			->with( $this->equalTo( [ 'Foo' ] ) );
+			->with( [ 'Foo' ] );
 
 		$instance = new FilterMap(
 			$this->store,

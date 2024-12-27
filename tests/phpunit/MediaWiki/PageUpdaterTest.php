@@ -42,8 +42,8 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 	public function testCanUpdate() {
 		$instance = new PageUpdater();
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			 $instance->canUpdate()
 		);
 	}
@@ -58,7 +58,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->once() )
 			->method( $titleMethod );
@@ -76,7 +76,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->never() )
 			->method( 'touchLinks' );
@@ -95,7 +95,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->exactly( 2 ) )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->once() )
 			->method( 'invalidateCache' );
@@ -117,7 +117,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->once() )
 			->method( $titleMethod );
@@ -142,7 +142,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->once() )
 			->method( $titleMethod );
@@ -170,7 +170,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->once() )
 			->method( $titleMethod );
@@ -192,7 +192,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->never() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new PageUpdater();
 		$instance->addPage( null );
@@ -211,7 +211,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$transactionalCallableUpdate->expects( $this->once() )
 			->method( 'setFingerprint' )
-			->with( $this->equalTo( 'Foobar' ) );
+			->with( 'Foobar' );
 
 		$transactionalCallableUpdate->expects( $this->once() )
 			->method( 'waitOnTransactionIdle' );
@@ -225,7 +225,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new PageUpdater(
 			$this->connection,
@@ -249,17 +249,17 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->connection->expects( $this->once() )
 			->method( 'update' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) {
+			->willReturnCallback( function ( $callback ) {
 				return call_user_func( $callback );
 			}
-			) );
+			);
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -267,7 +267,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->never() )
 			->method( 'invalidateCache' );

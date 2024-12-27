@@ -73,7 +73,7 @@ class EntityExaminerTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityExaminerIndicatorsFactory->expects( $this->atLeastOnce() )
 			->method( 'newEntityExaminerDeferrableCompositeIndicatorProvider' )
-			->will( $this->returnValue( $entityExaminerDeferrableCompositeIndicatorProvider ) );
+			->willReturn( $entityExaminerDeferrableCompositeIndicatorProvider );
 
 		$instance = new EntityExaminerTask(
 			$this->store,
@@ -107,11 +107,11 @@ class EntityExaminerTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityExaminerIndicatorsFactory->expects( $this->atLeastOnce() )
 			->method( 'newEntityExaminerDeferrableCompositeIndicatorProvider' )
-			->will( $this->returnValue( $entityExaminerDeferrableCompositeIndicatorProvider ) );
+			->willReturn( $entityExaminerDeferrableCompositeIndicatorProvider );
 
 		$this->entityExaminerIndicatorsFactory->expects( $this->atLeastOnce() )
 			->method( 'newEntityExaminerCompositeIndicatorProvider' )
-			->will( $this->returnValue( $compositeIndicatorProvider ) );
+			->willReturn( $compositeIndicatorProvider );
 
 		$instance = new EntityExaminerTask(
 			$this->store,

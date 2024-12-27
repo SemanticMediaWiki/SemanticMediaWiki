@@ -43,7 +43,7 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
@@ -51,8 +51,8 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 			$this->hookDispatcher
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isSkippableUpdate( $title )
 		);
 	}
@@ -73,8 +73,8 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 			$this->hookDispatcher
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isSkippableUpdate( $title, $latestRevID )
 		);
 	}
@@ -86,7 +86,7 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
@@ -152,8 +152,8 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onChangeFile' )
 			->with(
-				$this->equalTo( $title ),
-				$this->equalTo( $file ) );
+				$title,
+				$file );
 
 		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 

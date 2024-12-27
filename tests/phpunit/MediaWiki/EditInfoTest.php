@@ -73,7 +73,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 
 		$wikiPage->expects( $this->any() )
 			->method( 'prepareContentForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+			->willReturn( $editInfo );
 
 		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
@@ -118,7 +118,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			  ->method( 'canExist' )
-			  ->will( $this->returnValue( true ) );
+			  ->willReturn( true );
 
 		# 0 No parserOutput object
 		$editInfo = (object)[];
@@ -130,7 +130,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 
 		$wikiPage->expects( $this->any() )
 			->method( 'prepareContentForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+			->willReturn( $editInfo );
 
 		$provider[] = [
 			[
@@ -151,7 +151,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 
 		$wikiPage->expects( $this->any() )
 			->method( 'prepareContentForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+			->willReturn( $editInfo );
 
 		$provider[] = [
 			[
@@ -171,7 +171,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 
 		$wikiPage->expects( $this->any() )
 			->method( 'prepareContentForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+			->willReturn( $editInfo );
 
 		$provider[] = [
 			[
@@ -194,19 +194,19 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 		// Needed for the abstract class
 		$revision->expects( $this->any() )
 			->method( 'getSize' )
-			->will( $this->returnValue( strlen( 'Foo' ) ) );
+			->willReturn( strlen( 'Foo' ) );
 
 		// Needed for the abstract class
 		$revision->expects( $this->any() )
 			->method( 'getSha1' )
-			->will( $this->returnValue( \Wikimedia\base_convert( sha1( 'Foo' ), 16, 36 ) ) );
+			->willReturn( \Wikimedia\base_convert( sha1( 'Foo' ), 16, 36 ) );
 
 		$revision->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValueMap( [
+			->willReturnMap( [
 				[ SlotRecord::MAIN, RevisionRecord::RAW, null, 'Foo' ],
 				[ SlotRecord::MAIN, RevisionRecord::FOR_PUBLIC, null, $this->newContentStub() ],
-			] ) );
+			] );
 
 		return $revision;
 	}
@@ -222,7 +222,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 
 		$contentHandler->expects( $this->atLeastOnce() )
 			->method( 'getDefaultFormat' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$content = $this->getMockBuilder( '\Content' )
 			->disableOriginalConstructor()
@@ -230,7 +230,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 
 		$content->expects( $this->atLeastOnce() )
 			->method( 'getContentHandler' )
-			->will( $this->returnValue( $contentHandler ) );
+			->willReturn( $contentHandler );
 
 		return $content;
 	}

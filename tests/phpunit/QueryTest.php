@@ -138,8 +138,8 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 
 		$serialized = $instance->toArray();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$serialized
 		);
 
@@ -177,8 +177,8 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 
 		$hash = $instance->getHash();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$hash
 		);
 

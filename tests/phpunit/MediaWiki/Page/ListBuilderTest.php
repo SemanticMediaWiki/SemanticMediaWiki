@@ -33,8 +33,8 @@ class ListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'SortLetter' ) )
-			->will( $this->returnValue( $this->sortLetter ) );
+			->with( 'SortLetter' )
+			->willReturn( $this->sortLetter );
 	}
 
 	public function testCanConstruct() {
@@ -47,7 +47,7 @@ class ListBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testGetList() {
 		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
+			->willReturn( 'F' );
 
 		$instance = new ListBuilder(
 			$this->store
@@ -67,11 +67,11 @@ class ListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->sortLetter->expects( $this->at( 0 ) )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
+			->willReturn( 'F' );
 
 		$this->sortLetter->expects( $this->at( 1 ) )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'A' ) );
+			->willReturn( 'A' );
 
 		$instance = new ListBuilder(
 			$this->store
@@ -86,7 +86,7 @@ class ListBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testGetColumnList() {
 		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
+			->willReturn( 'F' );
 
 		$instance = new ListBuilder(
 			$this->store
@@ -109,7 +109,7 @@ class ListBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testGetColumnList_ItemFormatter() {
 		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
+			->willReturn( 'F' );
 
 		$instance = new ListBuilder(
 			$this->store

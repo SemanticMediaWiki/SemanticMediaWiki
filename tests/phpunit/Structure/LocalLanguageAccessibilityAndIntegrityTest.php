@@ -70,7 +70,7 @@ class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit\Framework\Test
 			$label = call_user_func( [ $class, 'getMonthLabel' ], $i );
 			$month = call_user_func( [ $class, 'findMonth' ], $label );
 
-			$this->assertInternalType( 'string', $label );
+			$this->assertIsString( $label );
 			$this->assertEquals( $i, $month );
 		}
 	}

@@ -46,7 +46,7 @@ class NoValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItem->expects( $this->once() )
 			->method( 'getSerialization' )
-			->will( $this->returnValue( 'isFromSerializationMethod' ) );
+			->willReturn( 'isFromSerializationMethod' );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -55,11 +55,11 @@ class NoValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->once() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
 		$instance = new NoValueFormatter( $dataValue );
 

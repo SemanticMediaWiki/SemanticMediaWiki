@@ -77,13 +77,13 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		);
 
 		$instance->setType( 'error' );
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertIsString( $instance->getHtml() );
 
 		$instance->setType( 'warning' );
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertIsString( $instance->getHtml() );
 
 		$instance->setType( 'info' );
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertIsString( $instance->getHtml() );
 	}
 
 	/**
@@ -173,7 +173,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		$instance = $this->getInstance();
 		$instance->addFromArray( $messages );
 
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertIsString( $instance->getHtml() );
 	}
 
 	/**
@@ -188,7 +188,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		$instance = $this->getInstance();
 		$instance->addFromArray( $messages );
 
-		$this->assertInternalType( 'string', $instance->getPlain() );
+		$this->assertIsString( $instance->getPlain() );
 	}
 
 	/**

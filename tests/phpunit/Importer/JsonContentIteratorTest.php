@@ -45,7 +45,7 @@ class JsonContentIteratorTest extends \PHPUnit\Framework\TestCase {
 	public function testGetIterator() {
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
 			->method( 'getContentList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new JsonContentIterator(
 			$this->jsonImportContentsFileDirReader

@@ -31,7 +31,7 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()

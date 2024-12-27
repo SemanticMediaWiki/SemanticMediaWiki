@@ -75,8 +75,8 @@ class HashBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testContentHashId() {
 		$hash = HashBuilder::createFromContent( 'Foo' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$hash
 		);
 
@@ -96,8 +96,8 @@ class HashBuilderTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( __METHOD__ )
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			HashBuilder::createFromSemanticData( $semanticData )
 		);
 	}
@@ -125,8 +125,8 @@ class HashBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$sem = serialize( $semanticData );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			HashBuilder::createFromSemanticData( unserialize( $sem ) )
 		);
 	}

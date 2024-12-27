@@ -91,7 +91,7 @@ class ChangeDiffTest extends \PHPUnit\Framework\TestCase {
 			->method( 'save' )
 			->with(
 				$this->stringContains( ChangeDiff::CACHE_NAMESPACE ),
-				$this->equalTo( $instance->serialize() ) );
+				$instance->serialize() );
 
 		$instance->save( $cache );
 	}
@@ -116,7 +116,7 @@ class ChangeDiffTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $instance->serialize() ) );
+			->willReturn( $instance->serialize() );
 
 		$this->assertEquals(
 			$instance,

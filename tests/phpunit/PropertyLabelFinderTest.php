@@ -141,7 +141,7 @@ class PropertyLabelFinderTest extends \PHPUnit\Framework\TestCase {
 			$instance->searchPropertyIdByLabel( 'Bar' )
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->findPropertyLabelById( '_Foo' )
 		);
@@ -182,8 +182,8 @@ class PropertyLabelFinderTest extends \PHPUnit\Framework\TestCase {
 	public function testFindPreferredPropertyLabelByLanguageCode() {
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getPreferredPropertyLabelByLanguageCode' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( 'ABC' ) );
+			->with( 'Foo' )
+			->willReturn( 'ABC' );
 
 		$instance = new PropertyLabelFinder(
 			$this->store

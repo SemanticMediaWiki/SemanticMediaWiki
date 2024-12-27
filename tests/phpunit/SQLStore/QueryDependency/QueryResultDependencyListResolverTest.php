@@ -90,11 +90,11 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$queryResult->expects( $this->never() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $this->store ) );
+			->willReturn( $this->store );
 
 		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
@@ -102,7 +102,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$this->hierarchyLookup->expects( $this->any() )
 			->method( 'getConsecutiveHierarchyList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new QueryResultDependencyListResolver(
 			$this->hierarchyLookup
@@ -130,15 +130,15 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$queryResult->expects( $this->once() )
 			->method( 'getResults' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $this->store ) );
+			->willReturn( $this->store );
 
 		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
@@ -146,13 +146,13 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$this->hierarchyLookup->expects( $this->any() )
 			->method( 'hasSubproperty' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->hierarchyLookup->expects( $this->at( 1 ) )
 			->method( 'getConsecutiveHierarchyList' )
-			->with( $this->equalTo( new DIProperty( 'Foobar' ) ) )
-			->will( $this->returnValue(
-				[ new DIProperty( 'Subprop' ) ] ) );
+			->with( new DIProperty( 'Foobar' ) )
+			->willReturn(
+				[ new DIProperty( 'Subprop' ) ] );
 
 		$instance = new QueryResultDependencyListResolver(
 			$this->hierarchyLookup
@@ -183,15 +183,15 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$queryResult->expects( $this->once() )
 			->method( 'getResults' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $this->store ) );
+			->willReturn( $this->store );
 
 		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
@@ -223,7 +223,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$itemJournal->expects( $this->once() )
 			->method( 'getEntityList' )
-			->will( $this->returnValue( [ $subject ] ) );
+			->willReturn( [ $subject ] );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -231,11 +231,11 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$queryResult->expects( $this->once() )
 			->method( 'getItemJournal' )
-			->will( $this->returnValue( $itemJournal ) );
+			->willReturn( $itemJournal );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
@@ -268,15 +268,15 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$queryResult->expects( $this->once() )
 			->method( 'getResults' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $this->store ) );
+			->willReturn( $this->store );
 
 		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
@@ -284,13 +284,13 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$this->hierarchyLookup->expects( $this->any() )
 			->method( 'hasSubproperty' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->hierarchyLookup->expects( $this->at( 1 ) )
 			->method( 'getConsecutiveHierarchyList' )
-			->with( $this->equalTo( new DIProperty( 'Foobar' ) ) )
-			->will( $this->returnValue(
-				[ new DIProperty( 'Subprop' ) ] ) );
+			->with( new DIProperty( 'Foobar' ) )
+			->willReturn(
+				[ new DIProperty( 'Subprop' ) ] );
 
 		$instance = new QueryResultDependencyListResolver(
 			$this->hierarchyLookup
@@ -325,15 +325,15 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$queryResult->expects( $this->once() )
 			->method( 'getResults' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $this->store ) );
+			->willReturn( $this->store );
 
 		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
@@ -341,15 +341,15 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$this->hierarchyLookup->expects( $this->any() )
 			->method( 'hasSubcategory' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->hierarchyLookup->expects( $this->at( 1 ) )
 			->method( 'getConsecutiveHierarchyList' )
-			->with( $this->equalTo( DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ) ) )
-			->will( $this->returnValue(
+			->with( DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ) )
+			->willReturn(
 				[
 					DIWikiPage::newFromText( 'Subcat', NS_CATEGORY ),
-					DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ) ] ) );
+					DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ) ] );
 
 		$instance = new QueryResultDependencyListResolver(
 			$this->hierarchyLookup

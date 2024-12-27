@@ -54,7 +54,7 @@ class ImporterServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->containerBuilder->registerObject( 'ConnectionManager', $connectionManager );
 

@@ -61,7 +61,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -72,8 +72,8 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'smw_hash' => [ '7b6b944694382bfab461675f40a2bda7e71e68e3' ] ] ) )
-			->will( $this->returnValue( [ (object)$row ] ) );
+				[ 'smw_hash' => [ '7b6b944694382bfab461675f40a2bda7e71e68e3' ] ] )
+			->willReturn( [ (object)$row ] );
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -81,7 +81,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new CacheWarmer(
 			$this->store,
@@ -133,7 +133,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -144,8 +144,8 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'smw_hash' => [ '909d8ab26ea49adb7e1b106bc47602050d07d19f' ] ] ) )
-			->will( $this->returnValue( [ (object)$row ] ) );
+				[ 'smw_hash' => [ '909d8ab26ea49adb7e1b106bc47602050d07d19f' ] ] )
+			->willReturn( [ (object)$row ] );
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -153,7 +153,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new CacheWarmer(
 			$this->store,
@@ -182,7 +182,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new CacheWarmer(
 			$this->store,

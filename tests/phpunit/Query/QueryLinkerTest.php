@@ -32,11 +32,11 @@ class QueryLinkerTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$query->expects( $this->once() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$parameters = [
 			'Foo' => 'Bar',
@@ -59,11 +59,11 @@ class QueryLinkerTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$query->expects( $this->once() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( $sortKeys ) );
+			->willReturn( $sortKeys );
 
 		$link = QueryLinker::get( $query );
 		$link->setCompactLink( false );

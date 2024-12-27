@@ -45,8 +45,8 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 	public function testTryParseForValidValueFormatErroredByNonExistingImportEntry() {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->with( $this->equalTo( ImportValue::IMPORT_PREFIX . 'Foo' ) )
-			->will( $this->returnValue( false ) );
+			->with( ImportValue::IMPORT_PREFIX . 'Foo' )
+			->willReturn( false );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader
@@ -65,7 +65,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 	public function testTryParseForValidValueFormatErroredByUriMismatch( $content ) {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader
@@ -84,7 +84,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 	public function testTryParseForValidValueFormatErroredByTypeMismatch( $content, $typelist ) {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader
@@ -103,7 +103,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 	public function testParseForValidValueToMatchType( $content, $parseValue, $expected ) {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader

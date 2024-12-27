@@ -106,7 +106,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 		$instance->isEnabledJobQueue( false );
 		$instance->run();
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getJobCount()
 		);
@@ -124,11 +124,11 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -152,19 +152,19 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -195,7 +195,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -226,23 +226,23 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnCallback( [ $this, 'mockStoreAllPropertySubjectsCallback' ] ) );
+			->willReturnCallback( [ $this, 'mockStoreAllPropertySubjectsCallback' ] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $setup['title'] ) ] ) );
+			->willReturn( [ DIWikiPage::newFromTitle( $setup['title'] ) ] );
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( $setup['properties'] ) );
+			->willReturn( $setup['properties'] );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( $setup['properties'] ) );
+			->willReturn( $setup['properties'] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -283,23 +283,23 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnCallback( [ $this, 'mockStoreAllPropertySubjectsCallback' ] ) );
+			->willReturnCallback( [ $this, 'mockStoreAllPropertySubjectsCallback' ] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $setup['title'] ) ] ) );
+			->willReturn( [ DIWikiPage::newFromTitle( $setup['title'] ) ] );
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( $setup['properties'] ) );
+			->willReturn( $setup['properties'] );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( $setup['properties'] ) );
+			->willReturn( $setup['properties'] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

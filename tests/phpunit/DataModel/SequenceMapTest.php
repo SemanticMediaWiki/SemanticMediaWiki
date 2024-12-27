@@ -45,8 +45,8 @@ class SequenceMapTest extends \PHPUnit\Framework\TestCase {
 
 		$schemaList->expects( $this->atLeastOnce() )
 			->method( 'get' )
-			->with( $this->equalTo( 'profile' ) )
-			->will( $this->returnValue( [ 'sequence_map' => true ] ) );
+			->with( 'profile' )
+			->willReturn( [ 'sequence_map' => true ] );
 
 		$schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
 			->disableOriginalConstructor()
@@ -54,11 +54,11 @@ class SequenceMapTest extends \PHPUnit\Framework\TestCase {
 
 		$schemaFinder->expects( $this->atLeastOnce() )
 			->method( 'newSchemaList' )
-			->will( $this->returnValue( $schemaList ) );
+			->willReturn( $schemaList );
 
 		$this->schemaFactory->expects( $this->atLeastOnce() )
 			->method( 'newSchemaFinder' )
-			->will( $this->returnValue( $schemaFinder ) );
+			->willReturn( $schemaFinder );
 
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()

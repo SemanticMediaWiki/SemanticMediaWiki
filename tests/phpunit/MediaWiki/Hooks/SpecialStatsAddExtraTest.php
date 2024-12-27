@@ -43,7 +43,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( $setup['statistics'] ) );
+			->willReturn( $setup['statistics'] );
 
 		$extraStats = $setup['extraStats'];
 
@@ -86,7 +86,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( $statistics ) );
+			->willReturn( $statistics );
 
 		$instance = new SpecialStatsAddExtra(
 			$store
@@ -105,8 +105,8 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 		$instance->process( $extraStats );
 
 		$this->assertEquals(
-			$extraStats,
-			$expected
+			$expected,
+			$extraStats
 		);
 	}
 

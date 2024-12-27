@@ -56,15 +56,15 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->querySegmentListProcessor->expects( $this->any() )
 			->method( 'getExecutedQueries' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
@@ -78,8 +78,8 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_DEBUG;
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getQueryResult( $query )
 		);
 	}
@@ -91,11 +91,11 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->never() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 

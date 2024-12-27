@@ -25,14 +25,14 @@ class RuleTest extends \PHPUnit\Framework\TestCase {
 	public function testFilterScore() {
 		$instance = new Rule();
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->filterScore
 		);
 
 		$instance->incrFilterScore();
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->filterScore
 		);
@@ -52,8 +52,8 @@ class RuleTest extends \PHPUnit\Framework\TestCase {
 			$data
 		);
 
-		$this->assertEquals(
-			'',
+		$this->assertSame(
+			null,
 			$instance->if( 'foo' )
 		);
 
@@ -77,8 +77,8 @@ class RuleTest extends \PHPUnit\Framework\TestCase {
 			$data
 		);
 
-		$this->assertEquals(
-			'',
+		$this->assertSame(
+			null,
 			$instance->then( 'foo' )
 		);
 

@@ -56,22 +56,22 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
+			->willReturn( $property );
 
 		$this->uniqueValueConstraint->expects( $this->atLeastOnce() )
 			->method( 'checkConstraint' );
 
 		$this->uniqueValueConstraint->expects( $this->once() )
 			->method( 'hasViolation' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'hasUniquenessConstraint' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->setOption(
 			'smwgDVFeatures',
@@ -100,22 +100,22 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
+			->willReturn( $property );
 
 		$this->uniqueValueConstraint->expects( $this->atLeastOnce() )
 			->method( 'checkConstraint' );
 
 		$this->uniqueValueConstraint->expects( $this->once() )
 			->method( 'hasViolation' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'hasUniquenessConstraint' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->setOption(
 			'smwgDVFeatures',

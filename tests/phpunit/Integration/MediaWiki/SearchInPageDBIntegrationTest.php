@@ -58,7 +58,7 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 			$results
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$results->getTotalHits()
 		);
@@ -102,7 +102,7 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$results->getTotalHits()
 		);

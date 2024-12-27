@@ -59,13 +59,13 @@ class MissingRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->once() )
 			->method( 'select' )
 			->with(
-				$this->equalTo( $tables ),
-				$this->equalTo( $fields ),
-				$this->equalTo( $conditions ) );
+				$tables,
+				$fields,
+				$conditions );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new MissingRedirectLookup(
 			$this->store

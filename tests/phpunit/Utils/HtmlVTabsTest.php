@@ -23,15 +23,15 @@ class HtmlVTabsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetModules() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			HtmlVTabs::getModules()
 		);
 	}
 
 	public function testGetModuleStyles() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			HtmlVTabs::getModuleStyles()
 		);
 	}
