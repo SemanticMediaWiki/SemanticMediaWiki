@@ -88,48 +88,48 @@ class ScopeMemoryLimiterTest extends \PHPUnit\Framework\TestCase {
 		// Retrieve the original memory limit
 		$memoryLimitBefore = $originalMemoryLimitBefore = ini_get( 'memory_limit' );
 		$converter = new ScopeMemoryLimiter();
-	
+
 		// Handle unlimited memory limit (-1) by setting a dynamic buffer
 		if ( $memoryLimitBefore === "-1" ) {
 			$currentUsage = memory_get_usage();
 			$buffer = $converter->toInt( '20M' );
 			$memoryLimitBefore = $currentUsage + $buffer;
-	
+
 			ini_set( 'memory_limit', $memoryLimitBefore );
 		}
-	
+
 		$this->testCaller = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'calledFromCallable' ] )
 			->getMock();
-	
+
 		$this->testCaller->expects( $this->once() )
 			->method( 'calledFromCallable' );
-	
+
 		// Calculate the new memory limit with an additional buffer
 		$additionalBuffer = $converter->toInt( '1M' );
 		$memoryLimit = $memoryLimitBefore + $additionalBuffer;
-	
+
 		// Create the ScopeMemoryLimiter instance with the calculated limit
 		$instance = new ScopeMemoryLimiter( $memoryLimit );
-	
+
 		// Execute the callable within the memory-limited scope
 		$instance->execute( [ $this, 'runCallable' ] );
-	
+
 		// Assert that the callable was executed with the expected memory limit
 		$this->assertEquals(
 			$memoryLimit,
 			$this->memoryLimitFromCallable,
 			"Limit we expected got set."
 		);
-	
+
 		// Assert that the memory limit was successfully reset to the original value
 		$this->assertEquals(
 			$memoryLimitBefore,
 			$instance->getMemoryLimit(),
 			"Limit was reset successfully."
 		);
-	
+
 		// Restore the original memory limit
 		ini_set( 'memory_limit', $originalMemoryLimitBefore );
 	}
