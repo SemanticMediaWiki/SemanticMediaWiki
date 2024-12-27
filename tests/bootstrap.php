@@ -18,6 +18,7 @@ $autoloader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
 $autoloader->addPsr4( 'SMW\\Tests\\', __DIR__ . '/phpunit' );
 
 $autoloader->addClassMap( [
+	'SMW\Tests\PHPUnitCheckRunnerTest'           => __DIR__ . '/phpunit/PHPUnitCheckRunnerTest.php',
 	'SMW\Tests\DataItemTest'                     => __DIR__ . '/phpunit/includes/dataitems/DataItemTest.php',
 	'SMW\Maintenance\rebuildConceptCache'        => __DIR__ . '/../maintenance/rebuildConceptCache.php',
 	'SMW\Maintenance\rebuildData'                => __DIR__ . '/../maintenance/rebuildData.php',
