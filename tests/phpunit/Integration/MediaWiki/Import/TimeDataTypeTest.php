@@ -219,7 +219,6 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 			$this->semanticDataValidator->assertThatPropertiesAreSet( $expectedPropertiesFromImport, $semanticData );
 			$this->assertBatchesOfDateValues( $expectedDateValuesBatches, $semanticData );
 		}
-
 	}
 
 	protected function assertBatchesOfDateValues( $assertionBatches, $semanticData ) {

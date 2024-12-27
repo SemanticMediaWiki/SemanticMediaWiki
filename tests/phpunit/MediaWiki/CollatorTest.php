@@ -29,7 +29,7 @@ class CollatorTest extends \PHPUnit\Framework\TestCase {
 
 		$collation->expects( $this->exactly( 2 ) )
 			->method( 'getSortKey' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new Collator(
 			$collation

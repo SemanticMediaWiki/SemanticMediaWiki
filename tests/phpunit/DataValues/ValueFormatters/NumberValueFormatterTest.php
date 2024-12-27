@@ -203,5 +203,4 @@ class NumberValueFormatterTest extends \PHPUnit\Framework\TestCase {
 		return $provider;
 	}
 
-
 }

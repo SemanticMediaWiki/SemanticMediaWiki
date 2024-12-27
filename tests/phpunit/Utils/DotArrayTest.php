@@ -142,7 +142,6 @@ class DotArrayTest extends \PHPUnit\Framework\TestCase {
 			'query.highlight.fragment.type',
 			'foo'
 		];
-
 	}
 
 }

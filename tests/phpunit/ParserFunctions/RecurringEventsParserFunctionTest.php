@@ -183,7 +183,6 @@ class RecurringEventsParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-
 		// #3
 		// {{#set_recurring_event:property=Has date
 		// |start=January 4, 2010

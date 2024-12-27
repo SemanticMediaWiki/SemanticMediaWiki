@@ -51,8 +51,8 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 		$instance = $this->magicWordsFinder;
 		$word = $instance->findMagicWordInText( $magicWord, $text );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$word
 		);
 
@@ -87,7 +87,7 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->expects( $this->any() )
 			->method( 'hasExtensionData' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance->setOutput( new ParserOutput() );
 
@@ -113,7 +113,7 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->expects( $this->any() )
 			->method( 'hasExtensionData' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance->setOutput( $parserOutput );
 		$instance->pushMagicWordsToParserOutput( [] );

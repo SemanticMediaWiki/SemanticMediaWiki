@@ -38,8 +38,8 @@ class LastOptimizationRunMaintenanceAlertTaskHandlerTest extends \PHPUnit\Framew
 	public function testGetHtml() {
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
-			->with( $this->equalTo( 'last_optimization_run' ) )
-			->will( $this->returnValue( '1970-01-01' ) );
+			->with( 'last_optimization_run' )
+			->willReturn( '1970-01-01' );
 
 		$instance = new LastOptimizationRunMaintenanceAlertTaskHandler(
 			$this->setupFile

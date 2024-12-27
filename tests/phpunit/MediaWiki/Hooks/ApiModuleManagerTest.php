@@ -47,10 +47,9 @@ class ApiModuleManagerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-
 		$apiModuleManager->expects( $this->once() )
 			->method( 'addModules' )
-			 ->with( $this->equalTo( $modules ) );
+			 ->with( $modules );
 
 		$instance = new ApiModuleManager();
 		$instance->process( $apiModuleManager );

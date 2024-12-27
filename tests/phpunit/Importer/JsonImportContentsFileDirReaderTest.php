@@ -54,16 +54,16 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->contentModeller->expects( $this->atLeastOnce() )
 			->method( 'makeContentList' )
-			->will( $this->returnValue( $importContents ) );
+			->willReturn( $importContents );
 
 		$this->fileFetcher->expects( $this->atLeastOnce() )
 			->method( 'findByExtension' )
-			->will( $this->returnValue( [ 'FooFile' => [] ] ) );
+			->willReturn( [ 'FooFile' => [] ] );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'read' )
 			->with( $this->stringContains( 'FooFile' ) )
-			->will( $this->returnValue( json_encode( [ 'Foo' ] ) ) );
+			->willReturn( json_encode( [ 'Foo' ] ) );
 
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
@@ -95,12 +95,12 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->fileFetcher->expects( $this->atLeastOnce() )
 			->method( 'findByExtension' )
-			->will( $this->returnValue( [ 'FooFile' => [] ] ) );
+			->willReturn( [ 'FooFile' => [] ] );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'read' )
 			->with( $this->stringContains( 'FooFile' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,

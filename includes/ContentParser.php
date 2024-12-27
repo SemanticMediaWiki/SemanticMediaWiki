@@ -167,7 +167,7 @@ class ContentParser {
 				$this->getTitle(),
 				$revision
 			);
-		} catch( \MWUnknownContentModelException $e ) {
+		} catch ( \MWUnknownContentModelException $e ) {
 			$this->parserOutput = null;
 		}
 

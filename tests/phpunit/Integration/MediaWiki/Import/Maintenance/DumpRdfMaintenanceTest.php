@@ -91,7 +91,7 @@ class DumpRdfMaintenanceTest extends SMWIntegrationTestCase {
 
 	private function doExportForDefaultOptions( $maintenanceRunner ) {
 		$expectedOutputContent = [
-		//	'<rdf:type rdf:resource="&wiki;Category-3ALorem_ipsum"/>',
+		// '<rdf:type rdf:resource="&wiki;Category-3ALorem_ipsum"/>',
 			'<rdfs:label>Lorem ipsum</rdfs:label>',
 			'<rdfs:label>Has annotation uri</rdfs:label>',
 			'<rdfs:label>Has boolean</rdfs:label>',

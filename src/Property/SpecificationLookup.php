@@ -16,7 +16,6 @@ use SMW\Message;
 use SMW\DataValueFactory;
 use SMW\PropertyRegistry;
 
-
 /**
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
  * to ensure a singleton instance.
@@ -781,7 +780,7 @@ class SpecificationLookup {
 	private function getTextByLanguageCode( $subject, $property, $languageCode ) {
 		try {
 			$monolingualTextLookup = $this->store->service( 'MonolingualTextLookup' );
-		} catch( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+		} catch ( \SMW\Services\Exception\ServiceNotFoundException $e ) {
 			return '';
 		}
 

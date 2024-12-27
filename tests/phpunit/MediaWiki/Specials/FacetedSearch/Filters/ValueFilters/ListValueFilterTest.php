@@ -48,7 +48,7 @@ class ListValueFilterTest extends \PHPUnit\Framework\TestCase {
 	public function testCreate_NoFilter() {
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$params = [
 			'min_item' => 1
@@ -66,8 +66,8 @@ class ListValueFilterTest extends \PHPUnit\Framework\TestCase {
 		$filters = [];
 		$raw = [];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->create( $this->urlArgs, 'Foo', $filters, $raw )
 		);
 	}

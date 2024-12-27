@@ -107,7 +107,7 @@ class ErrorWidget {
 		if ( count( $errors ) > 1 ) {
 			$error = '<ul><li>' . implode( '</li><li>', $errors ) . '</li></ul>';
 		} else {
-			$error =  implode( ' ', $errors );
+			$error = implode( ' ', $errors );
 		}
 
 		return Html::errorBox( $error, '', 'smw-error-result-error' );

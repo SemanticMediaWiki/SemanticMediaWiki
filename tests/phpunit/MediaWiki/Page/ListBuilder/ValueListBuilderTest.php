@@ -57,7 +57,7 @@ class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 		$property = new DIProperty( 'Foo' );
 		$dataItem = new DIWikiPage( 'Bar', NS_MAIN );
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->createHtml( $property, $dataItem, [] )
 		);
@@ -68,7 +68,7 @@ class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->prefetchItemLookup->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $subject->getHash() => [ DIWikiPage::newFromText( 'Bar' ) ] ] ) );
+			->willReturn( [ $subject->getHash() => [ DIWikiPage::newFromText( 'Bar' ) ] ] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -77,15 +77,15 @@ class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( [ $subject ] ) );
+			->willReturn( [ $subject ] );
 
 		$store->expects( $this->once() )
 			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$store->expects( $this->once() )
 			->method( 'service' )
-			->will( $this->returnValue( $this->prefetchItemLookup ) );
+			->willReturn( $this->prefetchItemLookup );
 
 		$instance = new ValueListBuilder( $store );
 		$instance->setLanguageCode( 'en' );
@@ -108,7 +108,7 @@ class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->prefetchItemLookup->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $subject->getHash() => [ new DITime( DITime::CM_GREGORIAN, 1970 ) ] ] ) );
+			->willReturn( [ $subject->getHash() => [ new DITime( DITime::CM_GREGORIAN, 1970 ) ] ] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -117,15 +117,15 @@ class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( [ $subject ] ) );
+			->willReturn( [ $subject ] );
 
 		$store->expects( $this->once() )
 			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$store->expects( $this->once() )
 			->method( 'service' )
-			->will( $this->returnValue( $this->prefetchItemLookup ) );
+			->willReturn( $this->prefetchItemLookup );
 
 		$instance = new ValueListBuilder( $store );
 		$instance->setLanguageCode( 'en' );

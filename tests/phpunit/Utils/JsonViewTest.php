@@ -36,8 +36,8 @@ class JsonViewTest extends \PHPUnit\Framework\TestCase {
 			$messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->create( 'foo', 'bar' )
 		);
 	}

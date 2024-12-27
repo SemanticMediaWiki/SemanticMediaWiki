@@ -604,7 +604,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 
 	/**
 	 * Implements \JsonSerializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @return array
@@ -617,7 +617,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 
 	/**
 	 * Implements JsonUnserializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @param JsonUnserializer $unserializer Unserializer

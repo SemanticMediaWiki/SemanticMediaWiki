@@ -72,7 +72,7 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 
 		$rebuilder->expects( $this->any() )
 			->method( 'rebuild' )
-			->will( $this->returnValue( $parameters['spos'] ) );
+			->willReturn( $parameters['spos'] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->setMethods( [ 'refreshData' ] )
@@ -80,7 +80,7 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $expectedToRun )
 			->method( 'refreshData' )
-			->will( $this->returnValue( $rebuilder ) );
+			->willReturn( $rebuilder );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
@@ -155,7 +155,6 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		return $provider;
-
 	}
 
 	/**

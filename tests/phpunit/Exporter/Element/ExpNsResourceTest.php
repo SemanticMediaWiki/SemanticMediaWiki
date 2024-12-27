@@ -124,7 +124,7 @@ class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function constructorProvider() {
-		#0
+		# 0
 		$provider[] = [
 			'', '', '', null,
 			[
@@ -134,7 +134,7 @@ class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'Foo', '', '', null,
 			[
@@ -144,7 +144,7 @@ class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'Foo', 'Bar', '', null,
 			[
@@ -154,7 +154,7 @@ class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			'Foo', 'Bar', 'Fum', null,
 			[
@@ -164,7 +164,7 @@ class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			'Foo', 'Bar', 'Fum', new DIWikiPage( 'Foo', NS_MAIN ),
 			[
@@ -181,17 +181,17 @@ class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function invalidConstructorProvider() {
-		#0
+		# 0
 		$provider[] = [
 			[], '', '', null
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'', [], '', null
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'', '', [], null
 		];
@@ -200,26 +200,26 @@ class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function serializationMissingElementProvider() {
-		#0
+		# 0
 		$provider[] = [
 			[]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE
 			]
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			[
 				'type' => 'BogusType'
 			]
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
@@ -227,7 +227,7 @@ class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
@@ -236,7 +236,7 @@ class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,

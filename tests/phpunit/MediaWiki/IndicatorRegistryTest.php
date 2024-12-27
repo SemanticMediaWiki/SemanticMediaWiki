@@ -43,19 +43,19 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$this->indicatorProvider->expects( $this->once() )
 			->method( 'hasIndicator' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->indicatorProvider->expects( $this->once() )
 			->method( 'getIndicators' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->indicatorProvider->expects( $this->once() )
 			->method( 'getModules' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new IndicatorRegistry();
 		$instance->addIndicatorProvider( $this->indicatorProvider );
@@ -82,11 +82,11 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new IndicatorRegistry();
 		$instance->addIndicatorProvider( $this->newPermissionAwareIndicatorProvider() );
@@ -101,11 +101,11 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new IndicatorRegistry();
 		$instance->addIndicatorProvider( $this->newPermissionExaminerAwareIndicatorProvider() );

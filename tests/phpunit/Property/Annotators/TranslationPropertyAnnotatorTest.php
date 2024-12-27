@@ -56,11 +56,11 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foobar' ) );
+			->willReturn( 'Foobar' );
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$translation = [
 			'languagecode' => 'foo',
@@ -108,11 +108,11 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->never() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foobar' ) );
+			->willReturn( 'Foobar' );
 
 		$title->expects( $this->never() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$translation = [
 			'languagecode' => 'foo',

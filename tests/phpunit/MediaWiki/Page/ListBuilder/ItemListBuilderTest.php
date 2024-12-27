@@ -48,7 +48,7 @@ class ItemListBuilderTest extends \PHPUnit\Framework\TestCase {
 		$property = new DIProperty( 'Foo' );
 		$dataItem = new DIWikiPage( 'Bar', NS_MAIN );
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->buildHTML( $property, $dataItem, $requestOptions )
 		);
@@ -66,12 +66,12 @@ class ItemListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'SortLetter' ) )
-			->will( $this->returnValue( $sortLetter ) );
+			->with( 'SortLetter' )
+			->willReturn( $sortLetter );
 
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [ DIWikiPage::newFromText( __METHOD__ ) ] ) );
+			->willReturn( [ DIWikiPage::newFromText( __METHOD__ ) ] );
 
 		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
 			->disableOriginalConstructor()

@@ -77,14 +77,13 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		);
 
 		$instance->setType( 'error' );
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertIsString( $instance->getHtml() );
 
 		$instance->setType( 'warning' );
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertIsString( $instance->getHtml() );
 
 		$instance->setType( 'info' );
-		$this->assertInternalType( 'string', $instance->getHtml() );
-
+		$this->assertIsString( $instance->getHtml() );
 	}
 
 	/**
@@ -137,7 +136,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 
 		$instance->clear();
 		$this->assertEmpty( $instance->getPlain() );
-
 	}
 
 	/**
@@ -161,7 +159,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		// Test array normalization and deletion of duplicates
 		$result = $method->invoke( $instance, $instance->getMessages() );
 		$this->assertCount( $count, $result );
-
 	}
 
 	/**
@@ -176,7 +173,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		$instance = $this->getInstance();
 		$instance->addFromArray( $messages );
 
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertIsString( $instance->getHtml() );
 	}
 
 	/**
@@ -191,7 +188,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		$instance = $this->getInstance();
 		$instance->addFromArray( $messages );
 
-		$this->assertInternalType( 'string', $instance->getPlain() );
+		$this->assertIsString( $instance->getPlain() );
 	}
 
 	/**
@@ -206,7 +203,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 
 		$this->assertEquals( '&lt;Foo&gt;', $instance->escape( true )->getPlain() );
 		$this->assertEquals( '<Foo>', $instance->escape( false )->getPlain() );
-
 	}
 
 	/**

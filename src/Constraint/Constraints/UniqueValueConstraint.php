@@ -114,7 +114,7 @@ class UniqueValueConstraint implements Constraint {
 		// assigned and is not unique
 		$requestOptions->addExtraCondition( function ( $store, $query, $alias ) use( $contextPage ) {
 				return $query->neq( "$alias.s_id", $store->getObjectIds()->getId( $contextPage ) );
-			}
+		}
 		);
 
 		$requestOptions->setLimit( 2 );

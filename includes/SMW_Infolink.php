@@ -588,7 +588,7 @@ class SMWInfolink {
 		// Expect to gain on larger strings and set an identifier to
 		// distinguish between compressed and non compressed
 		if ( mb_strlen( $value ) > 150 ) {
-			$value =  'c:' . gzdeflate( $value, 9 );
+			$value = 'c:' . gzdeflate( $value, 9 );
 		}
 
 		// https://en.wikipedia.org/wiki/Base64#URL_applications

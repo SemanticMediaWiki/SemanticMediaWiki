@@ -41,7 +41,7 @@ class TemplateExpanderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->parser->expects( $this->once() )
 			->method( 'preprocess' )
-			->with( $this->equalTo( '{{Foo}}' ) );
+			->with( '{{Foo}}' );
 
 		$instance = new TemplateExpander(
 			$this->parser

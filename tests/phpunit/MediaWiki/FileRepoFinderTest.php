@@ -38,7 +38,7 @@ class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->repoGroup->expects( $this->once() )
 			->method( 'findFile' )
-			->will( $this->returnValue( $file ) );
+			->willReturn( $file );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -69,15 +69,15 @@ class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$localRepo->expects( $this->any() )
 			->method( 'getReplicaDB' )
-			->will( $this->returnValue( $db ) );
+			->willReturn( $db );
 
 		$this->repoGroup->expects( $this->any() )
 			->method( 'getLocalRepo' )
-			->will( $this->returnValue( $localRepo ) );
+			->willReturn( $localRepo );
 
 		$localRepo->expects( $this->once() )
 			->method( 'findBySha1' )
-			->will( $this->returnValue( [ $file ] ) );
+			->willReturn( [ $file ] );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()

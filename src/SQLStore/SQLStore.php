@@ -284,7 +284,6 @@ class SQLStore extends Store {
 
 ///// Writing methods /////
 
-
 	public function deleteSubject( Title $title ) {
 		if ( $this->updater === null ) {
 			$this->updater = $this->factory->newUpdater();

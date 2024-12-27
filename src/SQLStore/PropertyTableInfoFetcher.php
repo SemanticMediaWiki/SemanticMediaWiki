@@ -60,7 +60,7 @@ class PropertyTableInfoFetcher {
 		DataItem::TYPE_TIME       => 'smw_di_time',
 		DataItem::TYPE_GEO        => 'smw_di_coords', // currently created only if Semantic Maps are installed
 		DataItem::TYPE_WIKIPAGE   => 'smw_di_wikipage',
-		//DataItem::TYPE_CONCEPT    => '', // _CONC is the only property of this type
+		// DataItem::TYPE_CONCEPT    => '', // _CONC is the only property of this type
 	];
 
 	/**

@@ -540,7 +540,7 @@ class SpecialAsk extends SpecialPage {
 			'from_cache' => $isFromCache
 		];
 	}
-	
+
 	/**
 	 * Generate wikitext for the current query expressed as an {{#ask:}} parser function invocation.
 	 * The return value is not HTML-safe; the caller must take care of escaping it.

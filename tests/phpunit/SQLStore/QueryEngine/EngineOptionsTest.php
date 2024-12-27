@@ -28,13 +28,13 @@ class EngineOptionsTest extends \PHPUnit\Framework\TestCase {
 	public function testInitialState() {
 		$instance = new EngineOptions();
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->get( 'smwgIgnoreQueryErrors' )
 		);
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->get( 'smwgQSortFeatures' )
 		);
 	}

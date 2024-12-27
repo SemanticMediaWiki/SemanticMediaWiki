@@ -34,7 +34,7 @@ class GroupPermissionsTest extends \PHPUnit\Framework\TestCase {
 
 		$vars = [];
 
-		$instance =  new GroupPermissions();
+		$instance = new GroupPermissions();
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -68,7 +68,7 @@ class GroupPermissionsTest extends \PHPUnit\Framework\TestCase {
 		$vars['wgGroupPermissions']['sysop']['smw-admin'] = false;
 		$vars['wgGroupPermissions']['smwadministrator']['smw-admin'] = false;
 
-		$instance =  new GroupPermissions();
+		$instance = new GroupPermissions();
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -83,7 +83,6 @@ class GroupPermissionsTest extends \PHPUnit\Framework\TestCase {
 		$this->assertFalse(
 			$vars['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
-
 	}
 
 }

@@ -366,7 +366,7 @@ class PageBuilder {
 		$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
 
 		if ( $dataValue->isValid() ) {
-			//$resultMessage = 'Item reference for a zero-marked property.';
+			// $resultMessage = 'Item reference for a zero-marked property.';
 			$resultList = $dataValue->getShortHtmlText( $this->linker ) . ' ' . $extra;
 			$resultCount++;
 

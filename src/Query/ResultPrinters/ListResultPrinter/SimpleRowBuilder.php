@@ -44,8 +44,7 @@ class SimpleRowBuilder extends RowBuilder {
 			$otherFieldsText = '';
 		}
 
-		return
-			$firstFieldText .
+		return $firstFieldText .
 			$otherFieldsText;
 	}
 
@@ -90,12 +89,10 @@ class SimpleRowBuilder extends RowBuilder {
 
 		$linker = $showHeaders === SMW_HEADERS_PLAIN ? null : $this->getLinker();
 
-		return
-			$this->get( 'field-label-open-tag' ) .
+		return $this->get( 'field-label-open-tag' ) .
 			$field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, $linker ) .
 			$this->get( 'field-label-close-tag' ) .
 			$this->get( 'field-label-separator' );
-
 	}
 
 	/**

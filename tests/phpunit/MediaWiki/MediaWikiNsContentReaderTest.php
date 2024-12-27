@@ -28,8 +28,8 @@ class MediaWikiNsContentReaderTest extends \PHPUnit\Framework\TestCase {
 	public function testReadFromMessageCache() {
 		$instance = new MediaWikiNsContentReader();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->read( 'smw-desc' )
 		);
 	}
@@ -52,8 +52,8 @@ class MediaWikiNsContentReaderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setRevisionGuard( $revisionGuard );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->read( __METHOD__ )
 		);
 	}

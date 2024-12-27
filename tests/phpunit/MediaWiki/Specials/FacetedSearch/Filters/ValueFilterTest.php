@@ -58,7 +58,7 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 	public function testCreate_NoFilter() {
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$params = [
 			'min_item' => 1
@@ -77,8 +77,8 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$filters = [];
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->create( $this->urlArgs, $filters )
 		);
 	}
@@ -90,11 +90,11 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->schemaFinder->expects( $this->any() )
 			->method( 'newSchemaList' )
-			->will( $this->returnValue( $schemaList ) );
+			->willReturn( $schemaList );
 
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$params = [
 			'min_item' => 1,
@@ -117,8 +117,8 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 			'filter' => [ 'Foo' => [ 1, 42 ] ]
 		];
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->create( $this->urlArgs, $filters )
 		);
 	}
@@ -130,11 +130,11 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->schemaFinder->expects( $this->any() )
 			->method( 'newSchemaList' )
-			->will( $this->returnValue( $schemaList ) );
+			->willReturn( $schemaList );
 
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$params = [
 			'min_item' => 1,

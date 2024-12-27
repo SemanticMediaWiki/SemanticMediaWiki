@@ -65,7 +65,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	public function testToReturnFalseOnMwNamespacePermissionCheck( $title, $permission, $action, $expected ) {
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasEditProtection' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -74,9 +74,9 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 		$this->permissionManager->expects( $this->once() )
 			->method( 'userHasRight' )
 			->with(
-				$this->equalTo( $user ),
-				$this->equalTo( $permission ) )
-			->will( $this->returnValue( false ) );
+				$user,
+				$permission )
+			->willReturn( false );
 
 		$result = [];
 
@@ -104,27 +104,27 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
+			->willReturn( 'PermissionTest' );
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_PROPERTY ) );
+			->willReturn( SMW_NS_PROPERTY );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasProtection' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getEditProtectionRight' )
-			->will( $this->returnValue( $editProtectionRight ) );
+			->willReturn( $editProtectionRight );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasEditProtectionOnNamespace' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -133,9 +133,9 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 		$this->permissionManager->expects( $this->once() )
 			->method( 'userHasRight' )
 			->with(
-				$this->equalTo( $user ),
-				$this->equalTo( $editProtectionRight ) )
-			->will( $this->returnValue( false ) );
+				$user,
+				$editProtectionRight )
+			->willReturn( false );
 
 		$instance = new TitlePermissions(
 			$this->protectionValidator,
@@ -161,19 +161,19 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
+			->willReturn( 'PermissionTest' );
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_PROPERTY ) );
+			->willReturn( SMW_NS_PROPERTY );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getEditProtectionRight' )
-			->will( $this->returnValue( $editProtectionRight ) );
+			->willReturn( $editProtectionRight );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -198,19 +198,19 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
+			->willReturn( 'PermissionTest' );
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_PROPERTY ) );
+			->willReturn( SMW_NS_PROPERTY );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getCreateProtectionRight' )
-			->will( $this->returnValue( $createProtectionRight ) );
+			->willReturn( $createProtectionRight );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -240,19 +240,19 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
+			->willReturn( 'PermissionTest' );
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_PROPERTY ) );
+			->willReturn( SMW_NS_PROPERTY );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getCreateProtectionRight' )
-			->will( $this->returnValue( $createProtectionRight ) );
+			->willReturn( $createProtectionRight );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -280,19 +280,19 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
+			->willReturn( 'PermissionTest' );
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_CATEGORY ) );
+			->willReturn( NS_CATEGORY );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasChangePropagationProtection' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -322,19 +322,19 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
+			->willReturn( 'PermissionTest' );
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_CATEGORY ) );
+			->willReturn( NS_CATEGORY );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasChangePropagationProtection' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -364,15 +364,15 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
+			->willReturn( 'PermissionTest' );
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+			->willReturn( SMW_NS_SCHEMA );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -381,9 +381,9 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 		$this->permissionManager->expects( $this->once() )
 			->method( 'userHasRight' )
 			->with(
-				$this->equalTo( $user ),
-				$this->equalTo( 'smw-schemaedit' ) )
-			->will( $this->returnValue( false ) );
+				$user,
+				'smw-schemaedit' )
+			->willReturn( false );
 
 		$instance = new TitlePermissions(
 			$this->protectionValidator,
@@ -409,15 +409,15 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
+			->willReturn( 'PermissionTest' );
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+			->willReturn( SMW_NS_SCHEMA );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -426,13 +426,13 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 		$this->permissionManager->expects( $this->once() )
 			->method( 'userHasRight' )
 			->with(
-				$this->equalTo( $user ),
-				$this->equalTo( 'smw-schemaedit' ) )
-			->will( $this->returnValue( true ) );
+				$user,
+				'smw-schemaedit' )
+			->willReturn( true );
 
 		$this->protectionValidator->expects( $this->once() )
 			->method( 'isClassifiedAsImportPerformerProtected' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new TitlePermissions(
 			$this->protectionValidator,
@@ -460,15 +460,15 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
+			->willReturn( 'PermissionTest' );
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+			->willReturn( SMW_NS_SCHEMA );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -477,9 +477,9 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 		$this->permissionManager->expects( $this->once() )
 			->method( 'userHasRight' )
 			->with(
-				$this->equalTo( $user ),
-				$this->equalTo( 'smw-schemaedit' ) )
-			->will( $this->returnValue( true ) );
+				$user,
+				'smw-schemaedit' )
+			->willReturn( true );
 
 		$instance = new TitlePermissions(
 			$this->protectionValidator,

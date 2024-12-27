@@ -34,7 +34,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 	}
 
 	public function testCanConstruct() {
@@ -159,6 +159,5 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			'{"bool":{"must":[{"multi_match":{"fields":["text_copy"],"query":"テスト","type":"phrase"}}]}}'
 		];
 	}
-
 
 }

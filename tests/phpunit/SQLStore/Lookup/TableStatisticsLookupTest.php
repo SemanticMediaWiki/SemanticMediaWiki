@@ -33,7 +33,7 @@ class TableStatisticsLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $this->query ) );
+			->willReturn( $this->query );
 
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
@@ -45,11 +45,11 @@ class TableStatisticsLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 	}
 
 	public function testCanConstruct() {
@@ -62,22 +62,22 @@ class TableStatisticsLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testGetStats() {
 		$this->query->expects( $this->any() )
 			->method( 'execute' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)[ 'count' => 0 ] ) );
+			->willReturn( (object)[ 'count' => 0 ] );
 
 		$instance = new TableStatisticsLookup(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getStats()
 		);
 	}
@@ -88,7 +88,7 @@ class TableStatisticsLookupTest extends \PHPUnit\Framework\TestCase {
 			->with(
 				$this->anything(),
 				$this->stringContains( 'MAX(smw_id)' ) )
-			->will( $this->returnValue( "42" ) );
+			->willReturn( "42" );
 
 		$instance = new TableStatisticsLookup(
 			$this->store
@@ -106,7 +106,7 @@ class TableStatisticsLookupTest extends \PHPUnit\Framework\TestCase {
 			->with(
 				$this->anything(),
 				$this->stringContains( 'Count(*)' ) )
-			->will( $this->returnValue( "42" ) );
+			->willReturn( "42" );
 
 		$instance = new TableStatisticsLookup(
 			$this->store

@@ -430,9 +430,9 @@ class JsonTestCaseFileHandler {
 	 * @return array
 	 */
 	public function getContentsFor( $key ) {
-		try{
+		try {
 			$contents = $this->getFileContentsFor( $key );
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			$contents = [];
 		}
 

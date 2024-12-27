@@ -240,7 +240,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$repositoryResult->expects( $this->once() )
 			->method( 'current' )
-			->will( $this->returnValue( $listReturnValue ) );
+			->willReturn( $listReturnValue );
 
 		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
@@ -248,7 +248,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$repositoryConnection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( $repositoryResult ) );
+			->willReturn( $repositoryResult );
 
 		return $repositoryConnection;
 	}

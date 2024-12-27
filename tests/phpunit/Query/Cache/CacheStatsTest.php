@@ -41,7 +41,7 @@ class CacheStatsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$instance = new CacheStats(
 			$this->cache,
@@ -62,7 +62,7 @@ class CacheStatsTest extends \PHPUnit\Framework\TestCase {
 	public function testGetStatsEmpty() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new CacheStats(
 			$this->cache,

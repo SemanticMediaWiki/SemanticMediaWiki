@@ -78,11 +78,11 @@ class CsvFileIteratorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertEquals(
-			$res,
 			[
 				[ '1', 'Foo', 'abc' ],
 				[ '2', 'Bar', '123' ]
-			]
+			],
+			$res
 		);
 	}
 
@@ -108,20 +108,20 @@ class CsvFileIteratorTest extends \PHPUnit\Framework\TestCase {
 		}
 
 		$this->assertEquals(
-			$instance->getHeader(),
 			[
 				'No',
 				'Text',
 				'Other'
-			]
+			],
+			$instance->getHeader()
 		);
 
 		$this->assertEquals(
-			$res,
 			[
 				[ '1', 'Foo', 'abc' ],
 				[ '2', 'Bar', '123' ]
-			]
+			],
+			$res
 		);
 	}
 

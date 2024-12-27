@@ -144,7 +144,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 			if ( substr( $var, 0, 18 ) == 'smw_property_name_' ) {
 				$fieldNum = substr( $var, 18 );
 				$xml = '<semanticmediawiki_Property name="' . $val . '" >';
-			} elseif ( substr( $var, 0, 18 ) == 'smw_property_type_' ){
+			} elseif ( substr( $var, 0, 18 ) == 'smw_property_type_' ) {
 				$xml .= '<Type>' . $val . '</Type>';
 			} elseif ( substr( $var, 0, 16 ) == 'smw_linked_form_' ) {
 				if ( $val !== '' ) {

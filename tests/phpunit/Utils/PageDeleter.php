@@ -39,7 +39,7 @@ class PageDeleter {
 		try {
 			$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 			$page->doDeleteArticleReal( 'SMW system test: delete page', $user );
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			//
 		}
 

@@ -48,8 +48,8 @@ class PropertyPageTest extends \PHPUnit\Framework\TestCase {
 			$this->declarationExaminerFactory
 		);
 
-		$this->assertEquals(
-			'',
+		$this->assertSame(
+			null,
 			$instance->view()
 		);
 	}

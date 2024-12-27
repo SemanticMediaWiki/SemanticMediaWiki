@@ -23,10 +23,10 @@ abstract class TaskHandler {
 	const SECTION_SUPPLEMENT = 'section/supplement';
 	const SECTION_SCHEMA = 'section/schema';
 	const SECTION_MAINTENANCE = 'section/maintenance';
-	const SECTION_DEPRECATION ='section/deprecation';
-	const SECTION_ALERTS ='section/alerts';
-	const SECTION_SUPPORT ='section/support';
-	const ACTIONABLE ='actionable';
+	const SECTION_DEPRECATION = 'section/deprecation';
+	const SECTION_ALERTS = 'section/alerts';
+	const SECTION_SUPPORT = 'section/support';
+	const ACTIONABLE = 'actionable';
 
 	/**
 	 * @var integer

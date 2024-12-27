@@ -74,7 +74,6 @@ class HtmlValidator extends \PHPUnit\Framework\Assert {
 		libxml_use_internal_errors( false );
 
 		$this->documentCache[ $cacheKey ] = ( $result === true ) ? $document : false;
-
 	}
 
 	/**

@@ -158,7 +158,7 @@ class SMWExportController {
 		$expData = SMWExporter::getInstance()->makeExportData( $semData );
 		$this->serializer->serializeExpData( $expData );
 
-		foreach( $semData->getSubSemanticData() as $subSemanticData ) {
+		foreach ( $semData->getSubSemanticData() as $subSemanticData ) {
 
 			// Mark SubSemanticData subjects as well to ensure that backlinks to
 			// the same subject do not create duplicate XML export entities
@@ -360,7 +360,6 @@ class SMWExportController {
 			$result = clone $semdata;
 		}
 
-
 		return $result;
 	}
 
@@ -422,7 +421,7 @@ class SMWExportController {
 			}
 
 			$diPage = SMWDIWikiPage::newFromTitle( $title );
-			$this->queue->add( $diPage, ( $recursion==1 ? -1 : 1 ) );
+			$this->queue->add( $diPage, ( $recursion == 1 ? -1 : 1 ) );
 		}
 
 		$this->serializer->startSerialization();
@@ -603,7 +602,6 @@ class SMWExportController {
 
 		$this->serializer->finishSerialization();
 		$this->flush( true );
-
 	}
 
 	/**

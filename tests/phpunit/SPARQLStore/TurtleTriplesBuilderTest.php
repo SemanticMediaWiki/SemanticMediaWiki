@@ -52,7 +52,7 @@ class TurtleTriplesBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->repositoryRedirectLookup->expects( $this->atLeastOnce() )
 			->method( 'findRedirectTargetResource' )
-			->will( $this->returnValue( $expNsResource ) );
+			->willReturn( $expNsResource );
 
 		$instance = new TurtleTriplesBuilder(
 			$this->repositoryRedirectLookup
@@ -64,13 +64,13 @@ class TurtleTriplesBuilderTest extends \PHPUnit\Framework\TestCase {
 			$instance->hasTriples()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTriples()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getPrefixes()
 		);
 	}
@@ -88,7 +88,7 @@ class TurtleTriplesBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->repositoryRedirectLookup->expects( $this->atLeastOnce() )
 			->method( 'findRedirectTargetResource' )
-			->will( $this->returnValue( $expNsResource ) );
+			->willReturn( $expNsResource );
 
 		$instance = new TurtleTriplesBuilder(
 			$this->repositoryRedirectLookup
@@ -97,8 +97,8 @@ class TurtleTriplesBuilderTest extends \PHPUnit\Framework\TestCase {
 		$instance->setTriplesChunkSize( 1 );
 		$instance->doBuildTriplesFrom( $semanticData );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getChunkedTriples()
 		);
 	}

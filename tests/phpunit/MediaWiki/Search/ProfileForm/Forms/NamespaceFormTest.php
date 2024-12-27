@@ -71,7 +71,7 @@ class NamespaceFormTest extends \PHPUnit\Framework\TestCase {
 
 		$user->expects( $this->any() )
 			->method( 'isRegistered' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
 			->disableOriginalConstructor()
@@ -79,7 +79,7 @@ class NamespaceFormTest extends \PHPUnit\Framework\TestCase {
 
 		$specialSearch->expects( $this->any() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$instance = new NamespaceForm(
 			$this->namespaceInfo,

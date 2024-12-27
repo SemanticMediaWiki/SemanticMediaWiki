@@ -235,7 +235,7 @@ class ListLookup extends Lookup {
 			if ( $ns === SMW_NS_PROPERTY ) {
 				try {
 					$label = DIProperty::newFromUserLabel( $row->smw_title )->getLabel();
-				} catch( Exception $e ) {
+				} catch ( Exception $e ) {
 					continue;
 				}
 

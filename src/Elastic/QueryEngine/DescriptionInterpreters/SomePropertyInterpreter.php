@@ -227,7 +227,7 @@ class SomePropertyInterpreter {
 			return [];
 		}
 
-		//$this->fieldMapper->bool( 'should', $p );
+		// $this->fieldMapper->bool( 'should', $p );
 		$condition = $this->conditionBuilder->newCondition( $p );
 
 		return $condition;

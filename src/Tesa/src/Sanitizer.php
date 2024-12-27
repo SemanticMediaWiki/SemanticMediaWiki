@@ -126,7 +126,7 @@ class Sanitizer {
 			}
 
 			// Simple proximity, check for same words appearing next to each other
-			if ( isset( $index[$pos-1] ) && $index[$pos-1] === $word ) {
+			if ( isset( $index[$pos - 1] ) && $index[$pos - 1] === $word ) {
 				continue;
 			}
 

@@ -247,7 +247,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( $callback ) );
+			->willReturnCallback( $callback );
 
 		$this->testEnvironment->clearPendingDeferredUpdates();
 

@@ -134,7 +134,8 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 			->method( 'addListenerCallback' );
 
 		$this->mwHooksHandler->register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', function ( $propertyChangeListener ) use ( $property ) {
-			$propertyChangeListener->addListenerCallback( $property, function (){} );
+			$propertyChangeListener->addListenerCallback( $property, function (){
+			} );
 		} );
 
 		$hookDispatcher->onRegisterPropertyChangeListeners( $propertyChangeListener );

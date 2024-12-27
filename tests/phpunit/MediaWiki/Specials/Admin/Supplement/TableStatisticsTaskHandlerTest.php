@@ -55,8 +55,8 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}

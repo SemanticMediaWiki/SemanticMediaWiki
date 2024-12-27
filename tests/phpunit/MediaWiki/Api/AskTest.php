@@ -48,7 +48,7 @@ class AskTest extends \PHPUnit\Framework\TestCase {
 			'query' => implode( '|', $query )
 		] );
 
-		$this->assertInternalType( 'array', $results );
+		$this->assertIsArray( $results );
 
 		// If their is no printrequests array we expect an error array
 		if ( isset( $results['query']['printrequests'] ) ) {
@@ -68,7 +68,7 @@ class AskTest extends \PHPUnit\Framework\TestCase {
 			],
 			[
 				[
-					'label'=> '',
+					'label' => '',
 					'typeid' => '_wpg',
 					'mode' => 2,
 					'format' => false,
@@ -76,7 +76,7 @@ class AskTest extends \PHPUnit\Framework\TestCase {
 					'redi' => ''
 				],
 				[
-					'label'=> 'Modification date',
+					'label' => 'Modification date',
 					'typeid' => '_dat',
 					'mode' => 1,
 					'format' => '',
@@ -93,7 +93,7 @@ class AskTest extends \PHPUnit\Framework\TestCase {
 			],
 			[
 				[
-					'error'=> 'foo',
+					'error' => 'foo',
 				]
 			]
 		];
