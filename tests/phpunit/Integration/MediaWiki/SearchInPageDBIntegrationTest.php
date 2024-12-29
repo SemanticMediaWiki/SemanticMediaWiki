@@ -41,12 +41,10 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
 			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
 		} else {
 			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
 		}
 
