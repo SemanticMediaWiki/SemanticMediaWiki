@@ -12,6 +12,7 @@ use Title;
 
 /**
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+

@@ -60,7 +60,7 @@ class ExtendedSearchEngine extends SearchEngine {
 				$this->fallbackSearchEngine );
 
 		} else {
-			throw new InvalidArgumentException(
+			throw new \InvalidArgumentException(
 				'Expected $connection to be an instance of IConnectionProvider or IDatabase'
 			);
 		}
