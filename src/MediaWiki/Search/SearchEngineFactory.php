@@ -10,6 +10,7 @@ use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Exception\ClassNotFoundException;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * @license GNU GPL v2+
@@ -22,31 +23,53 @@ class SearchEngineFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param IDatabase $connection
+	 * @param mixed $connection Either IConnectionProvider (MW 1.41+) or IDatabase (MW 1.40)
 	 *
 	 * @return SearchEngine
 	 * @throws SearchEngineInvalidTypeException
 	 */
-	public function newFallbackSearchEngine( IDatabase $connection = null ) {
+	public function newFallbackSearchEngine( $connection = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
 		if ( $connection === null ) {
+			// For MW 1.41+, getConnectionManager()->getConnection() returns IConnectionProvider
+			// For MW 1.40, it returns IDatabase
 			$connection = $applicationFactory->getConnectionManager()->getConnection( DB_REPLICA );
 		}
 
-		$type = $settings->get( 'smwgFallbackSearchType' );
-		$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
-
 		$dbLoadBalancer = $applicationFactory->create( 'DBLoadBalancer' );
 
-		if ( is_callable( $type ) ) {
-			// #3939
-			$fallbackSearchEngine = $type( $dbLoadBalancer );
-		} elseif ( $type !== null && $this->isValidSearchDatabaseType( $type ) ) {
-			$fallbackSearchEngine = new $type( $dbLoadBalancer );
+		if ( $connection instanceof IConnectionProvider ) {
+			// MW 1.41+ logic
+			$type = $settings->get( 'smwgFallbackSearchType' );
+			$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
+
+			if ( is_callable( $type ) ) {
+				$fallbackSearchEngine = $type( $dbLoadBalancer );
+			} elseif ( $type !== null && $this->isValidSearchDatabaseType( $type ) ) {
+				$fallbackSearchEngine = new $type( $dbLoadBalancer );
+			} else {
+				$fallbackSearchEngine = new $defaultSearchEngine( $dbLoadBalancer );
+			}
+
+		} elseif ( $connection instanceof IDatabase ) {
+			// MW 1.40 logic
+			$type = $settings->get( 'smwgFallbackSearchType' );
+			$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
+
+			if ( is_callable( $type ) ) {
+				$fallbackSearchEngine = $type( $dbLoadBalancer );
+			} elseif ( $type !== null && $this->isValidSearchDatabaseType( $type ) ) {
+				$fallbackSearchEngine = new $type( $dbLoadBalancer );
+			} else {
+				$fallbackSearchEngine = new $defaultSearchEngine( $dbLoadBalancer );
+			}
+
 		} else {
-			$fallbackSearchEngine = new $defaultSearchEngine( $dbLoadBalancer );
+			throw new InvalidArgumentException(
+				'Expected $connection to be an instance of IConnectionProvider or IDatabase'
+			);
 		}
 
 		if ( !$fallbackSearchEngine instanceof SearchEngine ) {

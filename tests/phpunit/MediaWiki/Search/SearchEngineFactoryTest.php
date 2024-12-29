@@ -26,9 +26,15 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$this->connection = $this->getMockBuilder( 'Wikimedia\Rdbms\IConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+		} else {
+			$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+		}
 	}
 
 	protected function tearDown(): void {
@@ -67,11 +73,18 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 				$searchEngine = 'SearchEngine';
 			}
 		}
-
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
+		} else {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getSearchEngine' ] )
+			->getMockForAbstractClass();
+		}
 
 		$connection->expects( $this->any() )
 			->method( 'getSearchEngine' )
@@ -129,6 +142,9 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromString() {
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$this->markTestSkipped( 'Check assertions for MW 1.41 and higher versions.' );
+		}
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\DummySearchDatabase' );
 
 		$searchEngineFactory = new SearchEngineFactory();
