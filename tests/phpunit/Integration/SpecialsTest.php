@@ -37,6 +37,7 @@ use SpecialPageFactory;
  *
  * @group SMW
  * @group SMWExtension
+ * @group Database
  * @group medium
  */
 class SpecialsTest extends SMWIntegrationTestCase {

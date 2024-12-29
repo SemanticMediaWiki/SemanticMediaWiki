@@ -13,6 +13,7 @@ use Title;
  * @group SMWExtension
  * @group semantic-mediawiki-import
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+

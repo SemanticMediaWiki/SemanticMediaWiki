@@ -15,6 +15,7 @@ use WikiPage;
  * @group SMWExtension
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
