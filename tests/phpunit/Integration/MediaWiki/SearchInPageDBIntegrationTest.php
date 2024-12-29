@@ -38,6 +38,18 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 		$propertyPage = Title::newFromText( 'Has some page value', SMW_NS_PROPERTY );
 		$targetPage = Title::newFromText( __METHOD__ );
 
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getSearchEngine' ] )
+			->getMockForAbstractClass();
+		} else {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getSearchEngine' ] )
+			->getMockForAbstractClass();
+		}
+
 		$pageCreator = new PageCreator();
 
 		$pageCreator
@@ -50,7 +62,7 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$search = new ExtendedSearchEngine();
+		$search = new ExtendedSearchEngine( $connection );
 		$results = $search->searchText( '[[Has some page value::Foo]]' );
 
 		$this->assertInstanceOf(
