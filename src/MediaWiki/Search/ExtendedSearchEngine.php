@@ -6,7 +6,6 @@ use Content;
 use Title;
 use SearchEngine;
 use Wikimedia\Rdbms\IDatabase;
-use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * Facade to the MediaWiki `SearchEngine` which doesn't allow any factory
@@ -35,35 +34,18 @@ class ExtendedSearchEngine extends SearchEngine {
 	 * @since 3.1
 	 */
 	public function __construct( $connection = null ) {
-		// Determine the type of $connection dynamically
-		if ( $connection instanceof IConnectionProvider ) {
-			// Handle for MW 1.41+
-			$searchEngineFactory = new SearchEngineFactory();
+		// It is common practice to avoid construction work in the constructor
+		// but we are unable to define a factory or callable and this is the only
+		// place to create an instance.
+		$searchEngineFactory = new SearchEngineFactory();
 
-			$this->fallbackSearchEngine = $searchEngineFactory->newFallbackSearchEngine(
-				$connection
-			);
+		$this->fallbackSearchEngine = $searchEngineFactory->newFallbackSearchEngine(
+			$connection
+		);
 
-			$this->extendedSearch = $searchEngineFactory->newExtendedSearch(
-				$this->fallbackSearchEngine
-			);
-
-		} elseif ( $connection instanceof IDatabase ) {
-			// Handle for MW 1.40 
-			$searchEngineFactory = new SearchEngineFactory();
-
-			$this->fallbackSearchEngine = $searchEngineFactory->newFallbackSearchEngine(
-				$connection
-			);
-
-			$this->extendedSearch = $searchEngineFactory->newExtendedSearch(
-				$this->fallbackSearchEngine );
-
-		} else {
-			throw new \InvalidArgumentException(
-				'Expected $connection to be an instance of IConnectionProvider or IDatabase'
-			);
-		}
+		$this->extendedSearch = $searchEngineFactory->newExtendedSearch(
+			$this->fallbackSearchEngine
+		);
 
 		$this->extendedSearch->setPrefix( $this->prefix );
 		$this->extendedSearch->setNamespaces( $this->namespaces );
