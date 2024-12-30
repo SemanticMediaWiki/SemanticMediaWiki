@@ -79,10 +79,7 @@ class XmlImportRunner {
 			throw new RuntimeException( 'Import returned with error(s) ' . serialize( $source->errors ) );
 		}
 
-		// WikiImporter::__construct without a Config instance was deprecated in MediaWiki 1.25.
-		if ( class_exists( '\ConfigFactory' ) ) {
-			$config = \ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
-		}
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'main' );
 
 		$services = MediaWikiServices::getInstance();
 		$importer = new WikiImporter(
