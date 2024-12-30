@@ -55,7 +55,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$queryEngineFactory = new QueryEngineFactory(
 			$this->store

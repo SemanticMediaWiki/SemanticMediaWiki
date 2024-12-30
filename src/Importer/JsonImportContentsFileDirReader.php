@@ -90,7 +90,7 @@ class JsonImportContentsFileDirReader {
 
 			try {
 				$files = $this->getFilesFromLocation( $importFileDir, 'json' );
-			} catch( RuntimeException $e ) {
+			} catch ( RuntimeException $e ) {
 				$this->errors[] = $importFileDir . ' is not accessible.';
 				continue;
 			}
@@ -99,7 +99,7 @@ class JsonImportContentsFileDirReader {
 
 				try {
 					$content = $this->readJSONFile( $file );
-				} catch( JSONFileParseException $e ) {
+				} catch ( JSONFileParseException $e ) {
 					$this->errors[] = $e->getMessage();
 					continue;
 				}

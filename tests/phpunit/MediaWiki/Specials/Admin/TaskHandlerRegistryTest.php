@@ -90,7 +90,7 @@ class TaskHandlerRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$taskHandler->expects( $this->once() )
 			->method( 'getSection' )
-			->will( $this->returnValue( $section ) );
+			->willReturn( $section );
 
 		$instance = new TaskHandlerRegistry(
 			$this->store,

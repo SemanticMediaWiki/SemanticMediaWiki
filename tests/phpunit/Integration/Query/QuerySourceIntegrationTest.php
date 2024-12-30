@@ -55,11 +55,11 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$rawParams = [
 			'[[Modification date::+]]',
@@ -68,8 +68,8 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 			'source=default'
 		];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$this->makeQueryResultFromRawParameters( $rawParams )
 		);
 	}
@@ -81,11 +81,11 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$rawParams = [
 			'[[Modification date::+]]',
@@ -94,8 +94,8 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 			'source=foo'
 		];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$this->makeQueryResultFromRawParameters( $rawParams )
 		);
 	}
@@ -107,11 +107,11 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$rawParams = [
 			'[[Modification date::+]]',
@@ -120,8 +120,8 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 			'source=bar'
 		];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$this->makeQueryResultFromRawParameters( $rawParams )
 		);
 	}
@@ -133,11 +133,11 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getCountValue' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$rawParams = [
 			'[[Modification date::+]]',
@@ -146,8 +146,8 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 			'source=foo'
 		];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$this->makeQueryResultFromRawParameters( $rawParams )
 		);
 	}

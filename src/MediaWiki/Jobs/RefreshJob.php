@@ -65,7 +65,7 @@ class RefreshJob extends Job {
 	 */
 	public function getProgress() {
 		$prog = $this->hasParameter( 'prog' ) ? $this->getParameter( 'prog' ) : 0;
-		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ): 1;
+		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
 		$rc   = $this->hasParameter( 'rc' ) ? $this->getParameter( 'rc' ) : 1;
 
 		return round( ( $run - 1 + $prog ) / $rc, 1 );

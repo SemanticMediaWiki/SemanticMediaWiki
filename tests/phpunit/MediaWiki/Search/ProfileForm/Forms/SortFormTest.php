@@ -36,8 +36,8 @@ class SortFormTest extends \PHPUnit\Framework\TestCase {
 	public function testMakeFields() {
 		$this->webRequest->expects( $this->at( 0 ) )
 			->method( 'getVal' )
-			->with( $this->equalTo( 'sort' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->with( 'sort' )
+			->willReturn( 'Foo' );
 
 		$instance = new SortForm(
 			$this->webRequest

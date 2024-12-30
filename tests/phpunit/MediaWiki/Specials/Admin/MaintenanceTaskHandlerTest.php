@@ -63,7 +63,7 @@ class MaintenanceTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->fileFetcher->expects( $this->once() )
 			->method( 'findByExtension' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new MaintenanceTaskHandler(
 			$this->outputFormatter,
@@ -74,8 +74,8 @@ class MaintenanceTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		);
 		$instance->setFeatureSet( SMW_ADM_MAINTENANCE_SCRIPT_DOCS );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
@@ -87,8 +87,8 @@ class MaintenanceTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$taskHandler->expects( $this->once() )
 			->method( 'isTaskFor' )
-			->with( $this->equalTo( 'foo' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'foo' )
+			->willReturn( true );
 
 		$instance = new MaintenanceTaskHandler(
 			$this->outputFormatter,
@@ -110,8 +110,8 @@ class MaintenanceTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$webRequest->expects( $this->once() )
 			->method( 'getText' )
-			->with( $this->equalTo( 'action' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->with( 'action' )
+			->willReturn( 'foo' );
 
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
 			->disableOriginalConstructor()
@@ -119,11 +119,11 @@ class MaintenanceTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$taskHandler->expects( $this->once() )
 			->method( 'isTaskFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$taskHandler->expects( $this->once() )
 			->method( 'handleRequest' )
-			->with( $this->equalTo( $webRequest ) );
+			->with( $webRequest );
 
 		$instance = new MaintenanceTaskHandler(
 			$this->outputFormatter,

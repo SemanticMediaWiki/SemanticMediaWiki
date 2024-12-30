@@ -76,17 +76,17 @@ class ValueDescriptionTest extends \PHPUnit\Framework\TestCase {
 			$instance->getPrintRequests()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->getSize()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getDepth()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getQueryFeatures()
 		);

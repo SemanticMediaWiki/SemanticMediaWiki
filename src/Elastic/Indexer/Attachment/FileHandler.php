@@ -69,7 +69,7 @@ class FileHandler {
 	 * @return string
 	 */
 	public function fetchContentFromURL( string $url ): string {
-		//PHP 7.1+
+		// PHP 7.1+
 		$readCallback = $this->readCallback;
 
 		if ( $this->readCallback !== null ) {

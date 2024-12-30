@@ -306,7 +306,7 @@ class FieldMapper {
 	 * @return array
 	 */
 	public function multi_match( $fields, $value, array $params = [] ) {
-		//return $this->multi_match( $field, trim( $value, '"' ) , [ "type" => "phrase" ] );
+		// return $this->multi_match( $field, trim( $value, '"' ) , [ "type" => "phrase" ] );
 
 		if ( strpos( $value, '"' ) !== false ) {
 			$value = trim( $value, '"' );
@@ -364,7 +364,7 @@ class FieldMapper {
 	 */
 	public function query_string_compat( $value, array $params = [] ) {
 		$wildcard = '';
-	//	$params = [];
+	// $params = [];
 
 		// Reserved characters are: + - = && || > < ! ( ) { } [ ] ^ " ~ * ? : \ /
 		// Failed the search with: {"error":{"root_cause":[{"type":"query_shard_exception","reason":"Failed to parse query [*{*]
@@ -425,7 +425,7 @@ class FieldMapper {
 
 			// Use case: `[[Has text::~foo bar*]]`
 			if ( strpos( $value, ' ' ) !== false && substr( $value, -1 ) === '*' ) {
-				//	$value = substr( $value, 0, -1 );
+				// $value = substr( $value, 0, -1 );
 				$wildcard = '*';
 				$params['analyze_wildcard'] = true;
 			}
@@ -434,7 +434,7 @@ class FieldMapper {
 			// ... ( and ) signifies precedence
 			// ... " wraps a number of tokens to signify a phrase for searching
 			if ( strpos( $value, ' ' ) !== false && strpos( $value, '"' ) === false ) {
-				//	$value = "\"($value)\"$wildcard";
+				// $value = "\"($value)\"$wildcard";
 			}
 		}
 

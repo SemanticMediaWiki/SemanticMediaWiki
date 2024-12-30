@@ -35,7 +35,7 @@ class DIBlobHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 	}
 
 	public function testCanConstruct() {
@@ -50,28 +50,28 @@ class DIBlobHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableFields()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getFetchFields()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableIndexes()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getIndexField()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getLabelField()
 		);
 	}
@@ -83,13 +83,13 @@ class DIBlobHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getWhereConds( $blob )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getInsertValues( $blob )
 		);
 	}
@@ -194,7 +194,7 @@ class DIBlobHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function createRandomString( $length = 10 ) {
-		return substr( str_shuffle( str_repeat( $x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil( $length/strlen( $x ) ) ) ), 1, $length );
+		return substr( str_shuffle( str_repeat( $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil( $length / strlen( $x ) ) ) ), 1, $length );
 	}
 
 	public function fieldTypeProvider() {

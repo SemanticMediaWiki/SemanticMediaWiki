@@ -171,7 +171,7 @@ class HtmlBuilder {
 	}
 
 	/**
-	 * Return the Mustache data for the placeholder state 
+	 * Return the Mustache data for the placeholder state
 	 *
 	 * @since 5.0
 	 */
@@ -239,7 +239,7 @@ class HtmlBuilder {
 
 		if ( $this->getOption( 'showAll' ) ) {
 			$this->incomingValuesCount = $this->getOption( 'valuelistlimit.in', 21 );
-			$this->incomingPropertiesCount = - 1;
+			$this->incomingPropertiesCount = -1;
 			$this->showoutgoing = true;
 			$this->showincoming = true;
 		}
@@ -595,7 +595,7 @@ class HtmlBuilder {
 	}
 
 	/**
-	 * Return the Mustache data to build the html that 
+	 * Return the Mustache data to build the html that
 	 * matches a group of properties and creates the display of assigned values.
 	 */
 	private function getPropertiesData(

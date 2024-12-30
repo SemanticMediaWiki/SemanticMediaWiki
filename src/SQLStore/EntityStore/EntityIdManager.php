@@ -522,9 +522,9 @@ class EntityIdManager {
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
 			try {
 				$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
-			} catch( \SMW\Exception\PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( \SMW\Exception\PredefinedPropertyLabelMismatchException $e ) {
 				return 0;
-			} catch( \SMW\Exception\PropertyLabelNotResolvedException $e ) {
+			} catch ( \SMW\Exception\PropertyLabelNotResolvedException $e ) {
 				return 0;
 			}
 

@@ -66,7 +66,7 @@ class FixturesProvider {
 		return [
 			'area' => new AreaProperty(),
 			'populationdensity' => new PopulationDensityProperty(),
-		//	'capitalof' => new CapitalOfProperty(),
+		// 'capitalof' => new CapitalOfProperty(),
 			'status' => new StatusProperty(),
 			'population' => new PopulationProperty(),
 			'founded' => new FoundedProperty(),

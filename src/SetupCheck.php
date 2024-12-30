@@ -542,7 +542,7 @@ class SetupCheck {
 
 				// Remove whitespace
 				return str_replace( [ "\r\n", "\r", "\n", "\t", '  ', '    ', '    ' ], '', $style );
-			},
+		},
 			$html
 		);
 

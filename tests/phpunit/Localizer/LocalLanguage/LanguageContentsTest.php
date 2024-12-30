@@ -57,11 +57,11 @@ class LanguageContentsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
 			->method( 'canReadByLanguageCode' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
 			->method( 'readByLanguageCode' )
-			->with( $this->equalTo( $languageCode ) );
+			->with( $languageCode );
 
 		$instance = new LanguageContents(
 			$this->jsonContentsFileReader,
@@ -84,12 +84,12 @@ class LanguageContentsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
 			->method( 'readByLanguageCode' )
-			->with( $this->equalTo( $languageCode ) )
-			->will( $this->returnValue( [ 'Foo' => [ 'Bar' => 123 ] ] ) );
+			->with( $languageCode )
+			->willReturn( [ 'Foo' => [ 'Bar' => 123 ] ] );
 
 		$this->fallbackFinder->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalFallbackLanguageCode' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$instance = new LanguageContents(
 			$this->jsonContentsFileReader,
@@ -107,12 +107,12 @@ class LanguageContentsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
 			->method( 'readByLanguageCode' )
-			->with( $this->equalTo( $languageCode ) )
-			->will( $this->returnValue( [ 'Foo' => [ 'Bar' => [ 'Foobar' => 456 ] ] ] ) );
+			->with( $languageCode )
+			->willReturn( [ 'Foo' => [ 'Bar' => [ 'Foobar' => 456 ] ] ] );
 
 		$this->fallbackFinder->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalFallbackLanguageCode' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$instance = new LanguageContents(
 			$this->jsonContentsFileReader,
@@ -131,21 +131,21 @@ class LanguageContentsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
 			->method( 'readByLanguageCode' )
-			->with( $this->equalTo( $languageCode ) )
-			->will( $this->returnValue( [] ) );
+			->with( $languageCode )
+			->willReturn( [] );
 
 		$this->jsonContentsFileReader->expects( $this->at( 1 ) )
 			->method( 'readByLanguageCode' )
-			->with( $this->equalTo( $fallback ) )
-			->will( $this->returnValue( [ 'Bar' => 123 ] ) );
+			->with( $fallback )
+			->willReturn( [ 'Bar' => 123 ] );
 
 		$this->fallbackFinder->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalFallbackLanguageCode' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$this->fallbackFinder->expects( $this->at( 1 ) )
 			->method( 'getFallbackLanguageBy' )
-			->will( $this->returnValue( $fallback ) );
+			->willReturn( $fallback );
 
 		$instance = new LanguageContents(
 			$this->jsonContentsFileReader,
@@ -164,25 +164,25 @@ class LanguageContentsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
 			->method( 'readByLanguageCode' )
-			->with( $this->equalTo( $languageCode ) )
-			->will( $this->returnValue( [] ) );
+			->with( $languageCode )
+			->willReturn( [] );
 
 		$this->jsonContentsFileReader->expects( $this->at( 1 ) )
 			->method( 'readByLanguageCode' )
-			->with( $this->equalTo( $fallback ) )
-			->will( $this->returnValue( [] ) );
+			->with( $fallback )
+			->willReturn( [] );
 
 		$this->fallbackFinder->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalFallbackLanguageCode' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$this->fallbackFinder->expects( $this->at( 1 ) )
 			->method( 'getFallbackLanguageBy' )
-			->will( $this->returnValue( $fallback ) );
+			->willReturn( $fallback );
 
 		$this->fallbackFinder->expects( $this->at( 3 ) )
 			->method( 'getFallbackLanguageBy' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$instance = new LanguageContents(
 			$this->jsonContentsFileReader,

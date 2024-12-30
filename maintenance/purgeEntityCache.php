@@ -217,7 +217,7 @@ class purgeEntityCache extends \Maintenance {
 			try {
 				$property = DIProperty::newFromUserLabel( $row->smw_title );
 				$title = str_replace( ' ', '_', $property->getLabel() );
-			} catch( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				//
 			}
 		}

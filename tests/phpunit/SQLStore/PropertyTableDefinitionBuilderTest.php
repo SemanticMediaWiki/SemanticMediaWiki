@@ -90,7 +90,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->propertyTypeFinder->expects( $this->any() )
 			->method( 'findTypeID' )
-			->will( $this->returnValue( '_num' ) );
+			->willReturn( '_num' );
 
 		$instance = new PropertyTableDefinitionBuilder(
 			$this->propertyTypeFinder

@@ -448,8 +448,8 @@ abstract class ResultPrinter implements IResultPrinter {
 
 		switch ( $link ) {
 			case 'head': case 'subject':
-				$this->mLinkFirst = true;
-				$this->mLinkOthers = false;
+					$this->mLinkFirst = true;
+					$this->mLinkOthers = false;
 				break;
 			case 'all':
 				$this->mLinkFirst = true;

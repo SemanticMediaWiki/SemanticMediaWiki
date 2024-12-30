@@ -37,7 +37,7 @@ class RepositoryResultTest extends \PHPUnit\Framework\TestCase {
 			[ [ new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' ) ] ]
 		);
 
-		$this->assertEquals( 1, $instance->numRows() );
+		$this->assertSame( 1, $instance->numRows() );
 		$this->assertTrue( $instance->isBooleanTrue() );
 	}
 
@@ -55,7 +55,7 @@ class RepositoryResultTest extends \PHPUnit\Framework\TestCase {
 			[ [ new ExpLiteral( '2', 'http://www.w3.org/2001/XMLSchema#integer' ) ] ]
 		);
 
-		$this->assertEquals( 1, $instance->numRows() );
+		$this->assertSame( 1, $instance->numRows() );
 		$this->assertSame( 2, $instance->getNumericValue() );
 	}
 

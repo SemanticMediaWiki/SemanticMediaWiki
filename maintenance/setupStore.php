@@ -174,7 +174,7 @@ class setupStore extends \Maintenance {
 
 		if ( $this->messageReporter === null && $this->getOption( 'quiet' ) ) {
 			$this->messageReporter = $messageReporterFactory->newNullMessageReporter();
-		} elseif( $this->messageReporter === null ) {
+		} elseif ( $this->messageReporter === null ) {
 			$this->messageReporter = $messageReporterFactory->newObservableMessageReporter();
 			$this->messageReporter->registerReporterCallback( [ $this, 'reportMessage' ] );
 		}

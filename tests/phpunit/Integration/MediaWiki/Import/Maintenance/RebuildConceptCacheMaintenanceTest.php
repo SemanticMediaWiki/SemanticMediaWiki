@@ -19,7 +19,7 @@ use Title;
  * @author mwjames
  */
 class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
-	
+
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
@@ -77,7 +77,7 @@ class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
 		// $this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$conceptPage = $this->createConceptPage( 'Lorem ipsum concept', '[[Category:Lorem ipsum]]' );
-	 	$this->importedTitles[] = $conceptPage;
+		$this->importedTitles[] = $conceptPage;
 
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildConceptCache' );
 		$maintenanceRunner->setQuiet();

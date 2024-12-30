@@ -162,7 +162,7 @@ class SomeValueInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function testInterpretDescription_PageValue( $dataItem, $comparator, $options, $expected ) {
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 
 		$this->conditionBuilder->setOptions( new Options(
 			[
@@ -358,7 +358,6 @@ class SomeValueInterpreterTest extends \PHPUnit\Framework\TestCase {
 			$options,
 			'{"bool":{"must":[{"match_phrase":{"P:42.wpgField":"テスト"}}]}}'
 		];
-
 	}
 
 }

@@ -62,7 +62,6 @@ class DIConceptTest extends DataItemTest {
 		$this->assertEquals( $status, $instance->getCacheStatus() );
 		$this->assertEquals( $date, $instance->getCacheDate() );
 		$this->assertEquals( $count, $instance->getCacheCount() );
-
 	}
 
 	/**

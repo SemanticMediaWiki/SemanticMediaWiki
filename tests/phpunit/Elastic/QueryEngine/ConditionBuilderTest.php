@@ -54,11 +54,11 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnCallback( $callback ) );
+			->willReturnCallback( $callback );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityIdManager ) );
+			->willReturn( $this->entityIdManager );
 
 		$this->termsLookup = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\TermsLookup\termsLookup' )
 			->disableOriginalConstructor()
@@ -93,6 +93,5 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->prepareCache( [] );
 	}
-
 
 }

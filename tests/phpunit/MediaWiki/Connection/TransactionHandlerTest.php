@@ -41,7 +41,7 @@ class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetEmptyTransactionTicket() {
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( self::getHasPrimaryChangesMethod() )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( 'getEmptyTransactionTicket' );
@@ -56,7 +56,7 @@ class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetEmptyTransactionTicketOnMasterChanges() {
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( self::getHasPrimaryChangesMethod() )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->loadBalancerFactory->expects( $this->never() )
 			->method( 'getEmptyTransactionTicket' );
@@ -143,7 +143,7 @@ class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
 	 * Get the appropriate `hasMaster/PrimaryChanges` method to mock for the `ILBFactory` interface.
 	 * @return string
 	 */
-	private static function getHasPrimaryChangesMethod(): string{
+	private static function getHasPrimaryChangesMethod(): string {
 		return method_exists( ILBFactory::class, 'hasPrimaryChanges' ) ? 'hasPrimaryChanges' : 'hasMasterChanges';
 	}
 }

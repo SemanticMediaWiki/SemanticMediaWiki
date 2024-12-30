@@ -24,12 +24,12 @@ use RuntimeException;
 class JaTinySegmenterTokenizer implements Tokenizer {
 
 	private $patterns_ = array(
-		"[一二三四五六七八九十百千万億兆]"=>"M", // numbers (japanese)
-		"[一-龠々〆ヵヶ]"=>"H", // kanji & misc characters
-		"[ぁ-ん]"=>"I", // hiragana
-		"[ァ-ヴーｱ-ﾝﾞｰ]"=>"K", // katakana
-		"[a-zA-Zａ-ｚＡ-Ｚ]"=>"A", // ascii / romaji letters
-		"[0-9０-９]"=>"N", // ascii / romaji numbers
+		"[一二三四五六七八九十百千万億兆]" => "M", // numbers (japanese)
+		"[一-龠々〆ヵヶ]" => "H", // kanji & misc characters
+		"[ぁ-ん]" => "I", // hiragana
+		"[ァ-ヴーｱ-ﾝﾞｰ]" => "K", // katakana
+		"[a-zA-Zａ-ｚＡ-Ｚ]" => "A", // ascii / romaji letters
+		"[0-9０-９]" => "N", // ascii / romaji numbers
 	);
 
 	/**
@@ -128,7 +128,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 		$ctype = array( "O", "O", "O" );
 		$o = $this->mb_string_to_array_( $input );
 
-		for ( $i = 0; $i<count( $o ); ++$i ) {
+		for ( $i = 0; $i < count( $o ); ++$i ) {
 			$seg[] = $o[$i];
 			$ctype[] = $this->ctype_( $o[$i] );
 		}
@@ -144,20 +144,20 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 		$p2 = "U";
 		$p3 = "U";
 
-		for( $i = 4; $i<count( $seg )-3; ++$i ){
+		for ( $i = 4; $i < count( $seg ) - 3; ++$i ) {
 			$score = self::$model["BIAS"];
-			$w1 = $seg[$i-3];
-			$w2 = $seg[$i-2];
-			$w3 = $seg[$i-1];
+			$w1 = $seg[$i - 3];
+			$w2 = $seg[$i - 2];
+			$w3 = $seg[$i - 1];
 			$w4 = $seg[$i];
-			$w5 = $seg[$i+1];
-			$w6 = $seg[$i+2];
-			$c1 = $ctype[$i-3];
-			$c2 = $ctype[$i-2];
-			$c3 = $ctype[$i-1];
+			$w5 = $seg[$i + 1];
+			$w6 = $seg[$i + 2];
+			$c1 = $ctype[$i - 3];
+			$c2 = $ctype[$i - 2];
+			$c3 = $ctype[$i - 1];
 			$c4 = $ctype[$i];
-			$c5 = $ctype[$i+1];
-			$c6 = $ctype[$i+2];
+			$c5 = $ctype[$i + 1];
+			$c6 = $ctype[$i + 2];
 			$score += $this->ts_( @self::$model["UP1"][$p1] );
 			$score += $this->ts_( @self::$model["UP2"][$p2] );
 			$score += $this->ts_( @self::$model["UP3"][$p3] );
@@ -189,7 +189,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 			$score += $this->ts_( @self::$model["TC2"][$c2 . $c3 . $c4] );
 			$score += $this->ts_( @self::$model["TC3"][$c3 . $c4 . $c5] );
 			$score += $this->ts_( @self::$model["TC4"][$c4 . $c5 . $c6] );
-			//  $score += $this->ts_(@self::$model["TC5"][$c4 . $c5 . $c6]);
+			// $score += $this->ts_(@self::$model["TC5"][$c4 . $c5 . $c6]);
 			$score += $this->ts_( @self::$model["UQ1"][$p1 . $c1] );
 			$score += $this->ts_( @self::$model["UQ2"][$p2 . $c2] );
 			$score += $this->ts_( @self::$model["UQ1"][$p3 . $c3] );
@@ -226,7 +226,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 		$result[] = $word;
 
 		if ( $encoding !== 'UTF-8' ) {
-			foreach( $result as &$str ) {
+			foreach ( $result as &$str ) {
 				$str = mb_convert_encoding( $str, $encoding, 'UTF-8' );
 			}
 		}
@@ -235,8 +235,8 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	}
 
 	private function ctype_( $str ) {
-		foreach( $this->patterns_ as $pattern => $type ) {
-			if( preg_match( '/' . $pattern . '/u', $str ) ) {
+		foreach ( $this->patterns_ as $pattern => $type ) {
+			if ( preg_match( '/' . $pattern . '/u', $str ) ) {
 				return $type;
 			}
 		}
@@ -252,7 +252,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 		$result = array();
 		$length = mb_strlen( $str, $encoding );
 
-		for ( $i=0; $i < $length; ++$i ) {
+		for ( $i = 0; $i < $length; ++$i ) {
 			$result[] = mb_substr( $str, $i, 1, $encoding );
 		}
 

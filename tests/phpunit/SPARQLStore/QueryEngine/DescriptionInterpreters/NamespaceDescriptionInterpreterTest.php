@@ -86,7 +86,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		# 0
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new NamespaceDescription( NS_MAIN );
+		$description = new NamespaceDescription( NS_MAIN );
 		$orderByProperty = null;
 
 		$expected = $stringBuilder

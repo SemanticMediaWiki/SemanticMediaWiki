@@ -57,7 +57,7 @@ class JsonSchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$data->expects( $this->any() )
 			->method( 'jsonSerialize' )
-			->will( $this->returnValue( json_encode( [ 'Foo' ] ) ) );
+			->willReturn( json_encode( [ 'Foo' ] ) );
 
 		$schemaValidator = $this->getMockBuilder( SchemaValidator::class )
 			->setMethods( [ 'check' ] )
@@ -89,7 +89,7 @@ class JsonSchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$data->expects( $this->any() )
 			->method( 'jsonSerialize' )
-			->will( $this->returnValue( json_encode( [ 'Foo' ] ) ) );
+			->willReturn( json_encode( [ 'Foo' ] ) );
 
 		$schemaValidator = $this->getMockBuilder( SchemaValidator::class )
 			->setMethods( [ 'check' ] )
@@ -97,7 +97,7 @@ class JsonSchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$schemaValidator->expects( $this->any() )
 			->method( 'check' )
-			->will( $this->throwException( new ResourceNotFoundException() ) );
+			->willThrowException( new ResourceNotFoundException() );
 
 		$instance = new JsonSchemaValidator(
 			$schemaValidator

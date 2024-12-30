@@ -110,7 +110,7 @@ class MessageFormatter {
 		foreach ( $messages as $message ) {
 			if ( is_string( $message ) ) {
 				$this->messages[md5( $message )] = $message;
-			} else{
+			} else {
 				$this->messages[] = $message;
 			}
 		}

@@ -109,7 +109,6 @@ class ConceptPage extends Page {
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'concept' );
 
-
 		$htmlTabs->isRTL(
 			$isRTL
 		);

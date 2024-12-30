@@ -31,7 +31,7 @@ class SequenceMapFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
@@ -55,9 +55,9 @@ class SequenceMapFinderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'upsert' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $row ),
-				$this->equalTo( 'smw_id' ),
-				$this->equalTo( [ 'smw_seqmap' => null ] ) );
+				$row,
+				'smw_id',
+				[ 'smw_seqmap' => null ] );
 
 		$instance = new SequenceMapFinder(
 			$this->connection,
@@ -77,15 +77,15 @@ class SequenceMapFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$this->connection->expects( $this->once() )
 			->method( 'unescape_bytea' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new SequenceMapFinder(
 			$this->connection,
@@ -111,8 +111,8 @@ class SequenceMapFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->cache->expects( $this->at( 0 ) )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 1001 ),
-				$this->equalTo( [ 'Foo' ] ) );
+				1001,
+				[ 'Foo' ] );
 
 		$this->connection->expects( $this->once() )
 			->method( 'select' )
@@ -120,11 +120,11 @@ class SequenceMapFinderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything(),
 				$this->equalTo( [ 'smw_id', 'smw_seqmap' ] ),
 				$this->equalTo( [ 'smw_id' => [ 42, 1001 ] ] ) )
-			->will( $this->returnValue( [ (object)$row ] ) );
+			->willReturn( [ (object)$row ] );
 
 		$this->connection->expects( $this->once() )
 			->method( 'unescape_bytea' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new SequenceMapFinder(
 			$this->connection,

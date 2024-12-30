@@ -137,7 +137,7 @@ class OptionsBuilder {
 			'asc' => "Title (A-Z)",
 			'desc' => "Title (Z-A)",
 			'recent' => "Most recent",
-		//	'score' => "Relevance"
+		// 'score' => "Relevance"
 		];
 
 		foreach ( $list as $key => $val ) {

@@ -50,7 +50,7 @@ class SPARQLStore extends Store {
 
 	/**
 	 * Underlying store to use for basic read operations.
-  	 * Public since 5.0. (https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5749)
+	 * Public since 5.0. (https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5749)
 	 *
 	 * @since 1.8
 	 * @var Store
@@ -208,7 +208,7 @@ class SPARQLStore extends Store {
 			$this->doSparqlFlatDataUpdate( $subSemanticData, $turtleTriplesBuilder );
 		}
 
-		//wfDebugLog( 'smw', ' InMemoryPoolCache: ' . json_encode( \SMW\InMemoryPoolCache::getInstance()->getStats() ) );
+		// wfDebugLog( 'smw', ' InMemoryPoolCache: ' . json_encode( \SMW\InMemoryPoolCache::getInstance()->getStats() ) );
 
 		// Reset internal cache
 		$turtleTriplesBuilder->reset();

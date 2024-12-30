@@ -148,7 +148,7 @@ class DisplayTitleFinder {
 
 		try {
 			$displayTitleLookup = $this->store->service( 'DisplayTitleLookup' );
-		} catch( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+		} catch ( \SMW\Services\Exception\ServiceNotFoundException $e ) {
 			return;
 		}
 

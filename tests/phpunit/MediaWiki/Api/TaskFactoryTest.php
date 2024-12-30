@@ -46,8 +46,8 @@ class TaskFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testGetAllowedTypes() {
 		$instance = new TaskFactory();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getAllowedTypes()
 		);
 	}

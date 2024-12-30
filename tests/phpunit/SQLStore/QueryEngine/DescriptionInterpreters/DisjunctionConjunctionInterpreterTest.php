@@ -36,7 +36,7 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase 
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
@@ -78,7 +78,7 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase 
 	public function descriptionProvider() {
 		$descriptionFactory = new DescriptionFactory();
 
-		#0 Disjunction
+		# 0 Disjunction
 		$description = $descriptionFactory->newDisjunction();
 
 		$description->addDescription(
@@ -98,7 +98,7 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase 
 			$expectedDisjunction
 		];
 
-		#1 Conjunction
+		# 1 Conjunction
 		$description = $descriptionFactory->newConjunction();
 
 		$description->addDescription(
@@ -118,7 +118,7 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase 
 			$expectedConjunction
 		];
 
-		#2 No query
+		# 2 No query
 		$description = $descriptionFactory->newConjunction();
 
 		$description->addDescription(

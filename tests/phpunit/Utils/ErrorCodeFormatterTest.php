@@ -19,29 +19,29 @@ class ErrorCodeFormatterTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testGetStringFromJsonErrorCode() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ErrorCodeFormatter::getStringFromJsonErrorCode( 'Foo' )
 		);
 
 		$contents = json_decode( '{ Foo: Bar }' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ErrorCodeFormatter::getStringFromJsonErrorCode( json_last_error() )
 		);
 	}
 
 	public function testGetMessageFromJsonErrorCode() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ErrorCodeFormatter::getMessageFromJsonErrorCode( 'Foo' )
 		);
 
 		$contents = json_decode( '{ Foo: Bar }' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ErrorCodeFormatter::getMessageFromJsonErrorCode( json_last_error() )
 		);
 	}

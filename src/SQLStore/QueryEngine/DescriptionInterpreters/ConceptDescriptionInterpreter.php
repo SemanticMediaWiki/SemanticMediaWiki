@@ -122,12 +122,12 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
 
 		$may_be_computed = ( $smwgQConceptCaching == CONCEPT_CACHE_NONE ) ||
-		    ( ( $smwgQConceptCaching == CONCEPT_CACHE_HARD ) && ( ( ~( ~( $row->concept_features + 0 ) | $smwgQFeatures ) ) == 0 ) &&
-		      ( $smwgQMaxSize >= $row->concept_size ) && ( $smwgQMaxDepth >= $row->concept_depth ) );
+			( ( $smwgQConceptCaching == CONCEPT_CACHE_HARD ) && ( ( ~( ~( $row->concept_features + 0 ) | $smwgQFeatures ) ) == 0 ) &&
+			  ( $smwgQMaxSize >= $row->concept_size ) && ( $smwgQMaxDepth >= $row->concept_depth ) );
 
 		if ( $row->cache_date &&
-		     ( ( $row->cache_date > ( strtotime( "now" ) - $smwgQConceptCacheLifetime * 60 ) ) ||
-		       !$may_be_computed ) ) { // Cached concept, use cache unless it is dead and can be revived.
+			 ( ( $row->cache_date > ( strtotime( "now" ) - $smwgQConceptCacheLifetime * 60 ) ) ||
+			   !$may_be_computed ) ) { // Cached concept, use cache unless it is dead and can be revived.
 
 			$query->joinTable = SQLStore::CONCEPT_CACHE_TABLE;
 			$query->joinfield = "$query->alias.s_id";

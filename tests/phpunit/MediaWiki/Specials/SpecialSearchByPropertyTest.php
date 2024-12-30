@@ -37,15 +37,15 @@ class SpecialSearchByPropertyTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableIdReferenceFinder' )
-			->will( $this->returnValue( $propertyTableIdReferenceFinder ) );
+			->willReturn( $propertyTableIdReferenceFinder );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
@@ -102,13 +102,13 @@ class SpecialSearchByPropertyTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function queryParameterProvider() {
-		#0
+		# 0
 		$provider[] = [
 			'Foo/Bar',
 			[ 'property=Foo', 'value=Bar' ]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			':Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
 			[ 'property=Has+foo', 'value=http%3A%2F%2Fexample.org%2Fid%2FCurly%2520Brackets%257B%257D' ]

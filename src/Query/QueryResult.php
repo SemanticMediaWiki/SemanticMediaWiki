@@ -479,7 +479,7 @@ class QueryResult {
 		$serializeArray = $this->serializeToArray();
 
 		return array_merge( $serializeArray, [
-			'meta'=> [
+			'meta' => [
 				'hash'   => md5( json_encode( $serializeArray ) ),
 				'count'  => $this->getCount(),
 				'offset' => $this->mQuery->getOffset(),

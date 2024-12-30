@@ -47,15 +47,15 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$timeValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$timeValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( new \SMWDITime( 1, '1970' ) ) );
+			->willReturn( new \SMWDITime( 1, '1970' ) );
 
 		$timeValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( new \SMW\DIProperty( 'Foo' ) ) );
+			->willReturn( new \SMW\DIProperty( 'Foo' ) );
 
 		$instance = new TimeValueDescriptionBuilder();
 
@@ -72,7 +72,7 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$timeValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new TimeValueDescriptionBuilder();
 

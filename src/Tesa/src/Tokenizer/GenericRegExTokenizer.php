@@ -50,7 +50,7 @@ class GenericRegExTokenizer implements Tokenizer {
 	 * {@inheritDoc}
 	 */
 	public function isWordTokenizer() {
-		return $this->tokenizer !== null ? $this->tokenizer->isWordTokenizer() :true;
+		return $this->tokenizer !== null ? $this->tokenizer->isWordTokenizer() : true;
 	}
 
 	/**

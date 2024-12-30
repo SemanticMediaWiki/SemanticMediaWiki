@@ -33,7 +33,7 @@ class AllowsPatternValueParserTest extends \PHPUnit\Framework\TestCase {
 	public function testParseAndMatchFromResource() {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( " \nFoo|^(Bar|Foo bar)$\n Bar|^(ABC|DEF)$\n" ) );
+			->willReturn( " \nFoo|^(Bar|Foo bar)$\n Bar|^(ABC|DEF)$\n" );
 
 		$instance = new AllowsPatternValueParser(
 			$this->mediaWikiNsContentReader

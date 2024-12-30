@@ -4,7 +4,6 @@ namespace SMW\Factbox;
 
 use Html;
 use MediaWiki\MediaWikiServices;
-use Sanitizer;
 use Title;
 use SMW\DataValueFactory;
 use SMW\DisplayTitleFinder;
@@ -13,16 +12,11 @@ use SMW\DIWikiPage;
 use SMW\Localizer;
 use SMW\Message;
 use SMW\ParserData;
-use SMW\Profiler;
 use SMW\SemanticData;
 use SMW\Store;
-use SMW\Utils\HtmlDivTable;
 use SMW\Utils\HtmlTabs;
 use SMWInfolink;
-use SMWSemanticData;
-use SMWDIBlob as DIBlob;
-use SMWDataItem as DataItem;
-use SMW\PropertyRegistry;
+use TemplateParser;
 
 /**
  * Class handling the "Factbox" content rendering
@@ -101,7 +95,7 @@ class Factbox {
 	 *
 	 * @param integer $featureSet
 	 */
-	public function setFeatureSet( $featureSet ) {
+	public function setFeatureSet( $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
@@ -110,7 +104,7 @@ class Factbox {
 	 *
 	 * @param CheckMagicWords $checkMagicWords
 	 */
-	public function setCheckMagicWords( CheckMagicWords $checkMagicWords ) {
+	public function setCheckMagicWords( CheckMagicWords $checkMagicWords ): void {
 		$this->checkMagicWords = $checkMagicWords;
 	}
 
@@ -128,6 +122,7 @@ class Factbox {
 		);
 
 		if ( $this->content !== '' || $this->attachments !== [] ) {
+			$this->parserData->getOutput()->addModuleStyles( self::getModuleStyles() );
 			$this->parserData->getOutput()->addModules( self::getModules() );
 			$this->parserData->pushSemanticDataToParserOutput();
 			$this->isVisible = true;
@@ -140,10 +135,8 @@ class Factbox {
 	 * Returns Title object
 	 *
 	 * @since 1.9
-	 *
-	 * @return string|null
 	 */
-	public function getTitle() {
+	public function getTitle(): Title {
 		return $this->parserData->getTitle();
 	}
 
@@ -161,39 +154,36 @@ class Factbox {
 	 *
 	 * @param array $attachments
 	 */
-	public function setAttachments( array $attachments ) {
+	public function setAttachments( array $attachments ): void {
 		$this->attachments = $attachments;
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return string
 	 */
-	public function getAttachmentContent() {
+	public function getAttachmentHTML(): string {
 		if ( $this->attachments === [] || !$this->hasFeature( SMW_FACTBOX_DISPLAY_ATTACHMENT ) ) {
 			return '';
 		}
 
-		$this->attachmentFormatter->setHeader(
-			$this->createHeader( DIWikiPage::newFromTitle( $this->getTitle() ) )
-		);
-
-		$html = $this->attachmentFormatter->buildHTML(
-			$this->attachments
-		);
-
-		return $html;
+		$templateParser = new TemplateParser( __DIR__ . '/../../templates' );
+		$data = [
+			'data-header' => $this->getHeaderData( DIWikiPage::newFromTitle( $this->getTitle() ) ),
+			'array-sections' => [
+				'html-section' => $this->attachmentFormatter->buildHTML(
+					$this->attachments
+				)
+			]
+		];
+		return $templateParser->processTemplate( 'Factbox', $data );
 	}
 
 	/**
 	 * Returns if content is visible
 	 *
 	 * @since 1.9
-	 *
-	 * @return boolean
 	 */
-	public function isVisible() {
+	public function isVisible(): bool {
 		return $this->isVisible;
 	}
 
@@ -202,10 +192,8 @@ class Factbox {
 	 *
 	 * @param string $rendered
 	 * @param string $derived
-	 *
-	 * @return string
 	 */
-	public static function tabs( $list, $attachment = '', $derived = '' ) {
+	public static function tabs( $list, $attachment = '', $derived = '' ): string {
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setActiveTab(
 			$list !== '' ? 'facts-list' : 'facts-attachment'
@@ -251,7 +239,7 @@ class Factbox {
 
 		return $htmlTabs->buildHTML(
 			[
-				'class' => 'smw-factbox'
+				'class' => 'smw-factbox-container'
 			]
 		);
 	}
@@ -276,17 +264,25 @@ class Factbox {
 	}
 
 	/**
+	 * Returns required resource module styles
+	 *
+	 * @since 5.0
+	 */
+	public static function getModuleStyles(): array {
+		return [
+			'ext.smw.factbox.styles'
+		];
+	}
+
+	/**
 	 * Returns required resource modules
 	 *
+	 * @todo: figure out a way to load this module only when attachments exist
 	 * @since 1.9
-	 *
-	 * @return array
 	 */
-	public static function getModules() {
+	public static function getModules(): array {
 		return [
-			'ext.smw.styles',
-			'ext.smw.table.styles',
-			'smw.factbox'
+			'ext.smw.factbox'
 		];
 	}
 
@@ -299,12 +295,8 @@ class Factbox {
 	 * displaying the given data at all.
 	 *
 	 * @since 1.9
-	 *
-	 * @return integer $showFactbox
-	 *
-	 * @return string|null
 	 */
-	protected function fetchContent( $showFactbox = SMW_FACTBOX_NONEMPTY ) {
+	protected function fetchContent( int $showFactbox = SMW_FACTBOX_NONEMPTY ): string {
 		if ( $showFactbox === SMW_FACTBOX_HIDDEN ) {
 			return '';
 		}
@@ -323,54 +315,51 @@ class Factbox {
 			return '';
 		}
 
-		return $this->createTable( $semanticData );
+		return $this->buildHTML( $semanticData );
 	}
 
 	/**
-	 * Returns a formatted factbox table
+	 * Returns the HTML of the factbox
 	 *
 	 * @since 1.9
-	 *
-	 * @param SMWSemanticData $semanticData
-	 *
-	 * @return string|null
 	 */
-	protected function createTable( SemanticData $semanticData ) {
+	protected function buildHTML( SemanticData $semanticData ): string {
 		$html = '';
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		if ( !$hookContainer->run( 'SMW::Factbox::BeforeContentGeneration', [ &$html, $semanticData ] ) ) {
+			return $html;
+		}
 
 		$this->displayTitleFinder->prefetchFromSemanticData( $semanticData );
 
-		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		$templateParser = new TemplateParser( __DIR__ . '/../../templates' );
+		$data = [
+			'data-header' => $this->getHeaderData( $semanticData->getSubject() ),
+			'array-sections' => [
+				'array-properties' => $this->getPropertiesData( $semanticData )
+			]
+		];
 
-		// Hook since 1.9
-		if ( $hookContainer->run( 'SMW::Factbox::BeforeContentGeneration', [ &$html, $semanticData ] ) ) {
-
-			$header = $this->createHeader( $semanticData->getSubject() );
-			$rows = $this->createRows( $semanticData );
-
-			if ( $rows === '' ) {
-				return $html;
-			}
-
-			$html .= Html::rawElement(
-				'div',
-				[
-					'class' => 'smwfact',
-					'style' => 'display:block;'
-				],
-				$header . HtmlDivTable::table(
-					$rows,
-					[
-						'class' => 'smwfacttable'
-					]
-				)
-			);
-		}
+		$html .= $templateParser->processTemplate( 'Factbox', $data );
 
 		return $html;
 	}
 
-	private function createHeader( DIWikiPage $subject ) {
+	private function isEmpty( SemanticData $semanticData ): bool {
+		// MW's internal Parser does iterate the ParserOutput object several times
+		// which can leave a '_SKEY' property while in fact the container is empty.
+		$semanticData->removeProperty(
+			new DIProperty( '_SKEY' )
+		);
+
+		return (bool)$semanticData->isEmpty();
+	}
+
+	private function hasFeature( ?int $feature ): bool {
+		return ( (int)$this->featureSet & $feature ) != 0;
+	}
+
+	private function getHeaderData( DIWikiPage $subject ): array {
 		$dataValue = $this->dataValueFactory->newDataValueByItem( $subject, null );
 
 		$browselink = SMWInfolink::newBrowsingLink(
@@ -379,30 +368,26 @@ class Factbox {
 			''
 		);
 
-		$header = Html::rawElement(
-			'div',
-			[ 'class' => 'smwfactboxhead' ],
-			Message::get( [ 'smw-factbox-head', $browselink->getWikiText() ], Message::TEXT, Message::USER_LANGUAGE )
-		);
-
-		$rdflink = SMWInfolink::newInternalLink(
-			Message::get( 'smw_viewasrdf', Message::TEXT, Message::USER_LANGUAGE ),
-			Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $dataValue->getWikiValue(),
-			'rdflink'
-		);
-
-		$header .= Html::rawElement(
-			'div',
-			[ 'class' => 'smwrdflink' ],
-			$rdflink->getWikiText()
-		);
-
-		return $header;
+		return [
+			'html-title' => Message::get( [ 'smw-factbox-head', $browselink->getWikiText() ], Message::TEXT, Message::USER_LANGUAGE ),
+			'html-actions' => SMWInfolink::newInternalLink(
+				Message::get( 'smw_viewasrdf', Message::TEXT, Message::USER_LANGUAGE ),
+				Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $dataValue->getWikiValue(),
+				'rdflink'
+			)->getWikiText()
+		];
 	}
 
-	private function createRows( SemanticData $semanticData ) {
-		$rows = '';
-		$attributes = [];
+	private function getPropertiesData( SemanticData $semanticData ): array {
+		$data = [];
+		$properties = $semanticData->getProperties();
+		if ( empty( $properties ) ) {
+			/**
+			 * @todo: Should we show an empty state if there are no data?
+			 * We can do it by setting 'html-section' with the HTML of a notice box
+			 */
+			return $data;
+		}
 
 		$comma = Message::get(
 			'comma-separator',
@@ -416,97 +401,79 @@ class Factbox {
 			Message::USER_LANGUAGE
 		);
 
-		foreach ( $semanticData->getProperties() as $property ) {
-
-			if ( $property->getKey() === '_SOBJ' && !$this->hasFeature( SMW_FACTBOX_DISPLAY_SUBOBJECT ) ) {
+		foreach ( $properties as $property ) {
+			$key = $property->getKey();
+			if ( $key === '_SOBJ' && !$this->hasFeature( SMW_FACTBOX_DISPLAY_SUBOBJECT ) ) {
+				// Not showing subobjects
 				continue;
 			}
 
-			$key = $property->getKey();
-			$propertyDv = $this->dataValueFactory->newDataValueByItem( $property, null );
-			$row = '';
-
 			if ( !$property->isShown() ) {
-				// showing this is not desired, hide
 				continue;
-			} elseif ( $property->isUserDefined() ) {
+			}
+
+			$propertyDv = $this->dataValueFactory->newDataValueByItem( $property, null );
+			$isUserDefined = $property->isUserDefined();
+			$isVisible = $propertyDv->isVisible();
+			$isInternal = !$isUserDefined && !$isVisible;
+
+			if ( $isInternal ) {
+				continue;
+			}
+
+			if ( $isUserDefined ) {
 				$propertyDv->setCaption( $propertyDv->getWikiValue() );
-				$attributes['property'] = [ 'class' => 'smwpropname' ];
-				$attributes['values'] = [ 'class' => 'smwprops' ];
-			} elseif ( $propertyDv->isVisible() ) {
-				// Predefined property
-				$attributes['property'] = [ 'class' => 'smwspecname' ];
-				$attributes['values'] = [ 'class' => 'smwspecs' ];
-			} else {
-				// predefined, internal property
-				// @codeCoverageIgnoreStart
-				continue;
-				// @codeCoverageIgnoreEnd
 			}
 
 			$list = [];
-			$html = '';
-
 			foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
-
 				if ( $key === '_ATTCH_LINK' ) {
 					$this->attachments[] = $dataItem;
-				} else {
-					$dataValue = $this->dataValueFactory->newDataValueByItem( $dataItem, $property );
-
-					$outputFormat = $dataValue->getOutputFormat();
-					$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
-
-					$dataValue->setOption( $dataValue::OPT_DISABLE_SERVICELINKS, true );
-
-					if ( $dataValue->isValid() ) {
-						$list[] = $dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
-					}
+					continue;
 				}
+
+				$dataValue = $this->dataValueFactory->newDataValueByItem( $dataItem, $property );
+				if ( !$dataValue->isValid() ) {
+					continue;
+				}
+
+				$outputFormat = $dataValue->getOutputFormat();
+				$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
+				$dataValue->setOption( $dataValue::OPT_DISABLE_SERVICELINKS, true );
+
+				$list[] = Html::rawElement(
+					'span',
+					[
+						'class' => 'smw-factbox-value'
+					],
+					$dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI )
+				);
 			}
 
-			if ( $list !== [] ) {
-				$last = array_pop( $list );
-
-				if ( $list === [] ) {
-					$html = $last;
-				} else {
-					$html = implode( $comma, $list ) . '&nbsp;' . $and . '&nbsp;' . $last;
-				}
-			} else {
+			if ( $list === [] ) {
 				continue;
 			}
 
-			$row .= HtmlDivTable::cell(
-				$propertyDv->getShortWikiText( true ),
-				$attributes['property']
-			);
+			/**
+			 * @todo: PHP does not have Intl.ListFormat() like in JS.
+			 * Considered that we use this a lot in SMW, it should be refactored into
+			 * an shared utility method.
+			 */
+			$valueHtml = '';
+			if ( count( $list ) === 1 ) {
+				$valueHtml = $list[0];
+			} else {
+				$last = array_pop( $list );
+				$valueHtml = implode( $comma, $list ) . '&nbsp;' . $and . '&nbsp;' . $last;
+			}
 
-			$row .= HtmlDivTable::cell(
-				$html,
-				$attributes['values']
-			);
-
-			$rows .= HtmlDivTable::row(
-				$row
-			);
+			$data[] = [
+				'html-name' => $propertyDv->getShortWikiText( true ),
+				'html-values' => $valueHtml
+			];
 		}
 
-		return $rows;
-	}
-
-	private function isEmpty( SemanticData $semanticData ) {
-		// MW's internal Parser does iterate the ParserOutput object several times
-		// which can leave a '_SKEY' property while in fact the container is empty.
-		$semanticData->removeProperty(
-			new DIProperty( '_SKEY' )
-		);
-
-		return $semanticData->isEmpty();
-	}
-
-	private function hasFeature( $feature ) {
-		return ( (int)$this->featureSet & $feature ) != 0;
+		return $data;
 	}
 
 }

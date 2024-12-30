@@ -291,7 +291,7 @@ class Rebuilder {
 
 		$this->indexer->setVersions( $this->versions );
 		$this->indexer->isRebuild();
-	//	$this->indexer->setState( Indexer::REBUILD_STATE );
+	// $this->indexer->setState( Indexer::REBUILD_STATE );
 
 		$dataItem = $semanticData->getSubject();
 		$dataItem->setId( $id );

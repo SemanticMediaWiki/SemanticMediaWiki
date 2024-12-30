@@ -341,7 +341,7 @@ class UpdateDispatcherJob extends Job {
 
 			try {
 				$subject = DIWikiPage::doUnserialize( $subject );
-			} catch( DataItemDeserializationException $e ) {
+			} catch ( DataItemDeserializationException $e ) {
 				continue;
 			}
 

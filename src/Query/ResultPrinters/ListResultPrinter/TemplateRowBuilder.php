@@ -52,7 +52,6 @@ class TemplateRowBuilder extends RowBuilder {
 		$templateRenderer->packFieldsForTemplate( $this->get( 'template' ) );
 
 		return $templateRenderer->render();
-
 	}
 
 	/**

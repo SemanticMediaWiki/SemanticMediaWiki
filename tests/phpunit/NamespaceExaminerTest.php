@@ -31,7 +31,7 @@ class NamespaceExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 		$instance->setValidNamespaces( [ NS_MAIN ] );
@@ -54,7 +54,7 @@ class NamespaceExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$subject->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 		$instance->setValidNamespaces( [ NS_MAIN ] );

@@ -98,7 +98,7 @@ class SchemaContentFormatter {
 	 * @return []
 	 */
 	public function getModules() {
-		return [ 'smw.content.schemaview', 'smw.factbox' ];
+		return [ 'smw.content.schemaview' ];
 	}
 
 	/**
@@ -140,7 +140,7 @@ class SchemaContentFormatter {
 	public function getText( $text, Schema $schema = null, array $errors = [] ) {
 		$methods = [
 			'body'   => [ $schema, $errors, $text ],
-		//	'footer' => [ $schema ]
+		// 'footer' => [ $schema ]
 		];
 
 		$html = '';

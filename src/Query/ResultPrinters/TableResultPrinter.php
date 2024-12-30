@@ -343,7 +343,6 @@ class TableResultPrinter extends ResultPrinter {
 				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
 			}
 
-
 			$values[] = $value === '' ? '&nbsp;' : $value;
 		}
 

@@ -388,9 +388,9 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 			try {
 				$property = DIProperty::newFromUserLabel( $row->smw_title );
 				$title = str_replace( ' ', '_', $property->getLabel() );
-			} catch( PropertyLabelNotResolvedException $e ) {
+			} catch ( PropertyLabelNotResolvedException $e ) {
 				return;
-			} catch( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				return;
 			}
 		}

@@ -80,7 +80,7 @@ class TemperatureValue extends NumberValue {
 	 */
 	protected function makeUserValue() {
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
-		     ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
+			 ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
 			$printUnit = $this->normalizeUnit( $this->m_outformat );
 			$this->m_unitin = $this->getUnitID( $printUnit );
 		} else {

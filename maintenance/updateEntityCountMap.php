@@ -84,7 +84,7 @@ class updateEntityCountMap extends \Maintenance {
 	 */
 	public function execute() {
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
-			exit ( $maintenanceCheck->getMessage() );
+			exit( $maintenanceCheck->getMessage() );
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -236,7 +236,6 @@ class updateEntityCountMap extends \Maintenance {
 			$countMap = $connection->escape_bytea(
 				HmacSerializer::compress( $countMap )
 			);
-
 
 			$connection->upsert(
 				SQLStore::ID_AUXILIARY_TABLE,

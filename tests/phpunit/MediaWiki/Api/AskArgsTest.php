@@ -59,7 +59,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 			'parameters' => $query['parameters'],
 		] );
 
-		$this->assertInternalType( 'array', $results );
+		$this->assertIsArray( $results );
 
 		if ( isset( $expected['error'] ) ) {
 			return $this->assertArrayHasKey( 'error', $results );
@@ -97,7 +97,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnCallback( [ $this, 'mockStoreQueryResultCallback' ] ) );
+			->willReturnCallback( [ $this, 'mockStoreQueryResultCallback' ] );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
@@ -113,7 +113,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 		// This came with 1.25, no idea what this suppose to be
 		unset( $result['_type'] );
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
 	}
 
@@ -138,15 +138,15 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'toArray' )
-			->will( $this->returnValue( $result ) );
+			->willReturn( $result );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'hasFurtherResults' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		return $queryResult;
 	}
@@ -199,7 +199,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -218,7 +218,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -226,7 +226,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 						'redi' => ''
 					],
 					[
-						'label'=> 'Modification date',
+						'label' => 'Modification date',
 						'typeid' => '_dat',
 						'mode' => 1,
 						'format' => '',
@@ -245,7 +245,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -253,7 +253,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 						'redi' => ''
 					],
 					[
-						'label'=> 'Modification date',
+						'label' => 'Modification date',
 						'typeid' => '_dat',
 						'mode' => 1,
 						'format' => '',

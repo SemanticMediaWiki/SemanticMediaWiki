@@ -49,7 +49,7 @@ class BooleanValueTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -57,7 +57,7 @@ class BooleanValueTest extends \PHPUnit\Framework\TestCase {
 
 		$subject->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance = new BooleanValue();
 
@@ -68,8 +68,8 @@ class BooleanValueTest extends \PHPUnit\Framework\TestCase {
 			$instance->getBoolean()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getWikiValue()
 		);
 	}
@@ -128,7 +128,7 @@ class BooleanValueTest extends \PHPUnit\Framework\TestCase {
 		$instance->setUserValue( 'true' );
 		$instance->setOutputFormat( 'num' );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->getLongWikiText()
 		);
@@ -136,7 +136,7 @@ class BooleanValueTest extends \PHPUnit\Framework\TestCase {
 		$instance->setUserValue( 'false' );
 		$instance->setOutputFormat( 'num' );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getLongWikiText()
 		);

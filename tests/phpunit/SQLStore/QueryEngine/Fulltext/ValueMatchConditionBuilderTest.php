@@ -42,7 +42,7 @@ class ValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testIsEnabled() {
 		$this->searchTable->expects( $this->once() )
 			->method( 'isEnabled' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new ValueMatchConditionBuilder(
 			$this->textSanitizer,
@@ -57,7 +57,7 @@ class ValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testGetTableName() {
 		$this->searchTable->expects( $this->once() )
 			->method( 'getTableName' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new ValueMatchConditionBuilder(
 			$this->textSanitizer,
@@ -73,7 +73,7 @@ class ValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testHasMinTokenLength() {
 		$this->searchTable->expects( $this->once() )
 			->method( 'hasMinTokenLength' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new ValueMatchConditionBuilder(
 			$this->textSanitizer,
@@ -88,7 +88,7 @@ class ValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testGetSortIndexField() {
 		$this->searchTable->expects( $this->once() )
 			->method( 'getSortField' )
-			->will( $this->returnValue( 'bar' ) );
+			->willReturn( 'bar' );
 
 		$instance = new ValueMatchConditionBuilder(
 			$this->textSanitizer,

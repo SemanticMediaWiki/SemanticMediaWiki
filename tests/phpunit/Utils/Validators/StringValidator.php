@@ -1,6 +1,7 @@
 <?php
 
 namespace SMW\Tests\Utils\Validators;
+
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -102,7 +103,6 @@ class StringValidator extends \PHPUnit\Framework\Assert {
 
 		// use a simple strpos (as it is faster)
 		return strpos( $source, $pattern ) !== false;
-
 	}
 
 	private function toString( $expected ) {

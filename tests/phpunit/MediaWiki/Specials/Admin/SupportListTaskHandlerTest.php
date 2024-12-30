@@ -25,7 +25,7 @@ class SupportListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-		//	->setMEthods( [ 'getInfo' ] )
+		// ->setMEthods( [ 'getInfo' ] )
 			->getMockForAbstractClass();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -63,7 +63,7 @@ class SupportListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -77,6 +77,5 @@ class SupportListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->getHtml();
 	}
-
 
 }

@@ -72,11 +72,10 @@ class dumpRDF extends \Maintenance {
 		$this->addOption( 'properties', 'Export only properties', false );
 		$this->addOption( 'individuals', 'Export only individuals', false );
 
-        $this->addOption( 'namespace', 'Export only namespaced included in the <namespacelist> with | being used as a separator. ' .
-            'Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE"', false, true );
+		$this->addOption( 'namespace', 'Export only namespaced included in the <namespacelist> with | being used as a separator. ' .
+			'Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE"', false, true );
 
-
-        $this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .
+		$this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .
 								'Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.', false, true );
 
 		$this->addOption( 'server', '<server> The protocol and server name to as base URLs, e.g. http://en.wikipedia.org. ' .
@@ -114,7 +113,7 @@ class dumpRDF extends \Maintenance {
 	 */
 	public function execute() {
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
-			exit ( $maintenanceCheck->getMessage() );
+			exit( $maintenanceCheck->getMessage() );
 		}
 
 		$cliMsgFormatter = new CliMsgFormatter();
@@ -174,21 +173,20 @@ class dumpRDF extends \Maintenance {
 		} elseif ( $this->hasOption( 'properties' ) ) {
 			$restrictNamespaceTo = SMW_NS_PROPERTY;
 		} elseif ( $this->hasOption( 'individuals' ) ) {
-			$restrictNamespaceTo = - 1;
+			$restrictNamespaceTo = -1;
 		}
 
 		if ( $this->hasOption( 'page' ) ) {
 			$pages = explode( '|', $this->getOption( 'page' ) );
 		}
 
-        if ( $this->hasOption( 'namespace' ) ) {
-            $restrictNamespaceTo = array_map( 'constant', explode( '|', $this->getOption( 'namespace' ) ) );
-        }
-
-        if ( $this->hasOption( 'server' ) ) {
-			$GLOBALS['wgServer'] = $this->getOption( 'server' );
+		if ( $this->hasOption( 'namespace' ) ) {
+			$restrictNamespaceTo = array_map( 'constant', explode( '|', $this->getOption( 'namespace' ) ) );
 		}
 
+		if ( $this->hasOption( 'server' ) ) {
+			$GLOBALS['wgServer'] = $this->getOption( 'server' );
+		}
 
 		$exporterFactory = new ExporterFactory();
 

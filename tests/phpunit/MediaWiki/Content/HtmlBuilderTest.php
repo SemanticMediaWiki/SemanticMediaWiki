@@ -32,8 +32,8 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testBuild( $key, $params ) {
 		$instance = new HtmlBuilder();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->build( $key, $params )
 		);
 	}
@@ -105,7 +105,6 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 				'href' => 'Foo'
 			]
 		];
-
 	}
 
 }

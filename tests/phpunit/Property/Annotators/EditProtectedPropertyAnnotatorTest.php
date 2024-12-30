@@ -98,7 +98,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getRestrictions' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$instance = new EditProtectedPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
@@ -116,15 +116,15 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$provider = [];
 
-		#0 no EditProtectionRight
+		# 0 no EditProtectionRight
 		$provider[] = [
 			$title,
 			false,
@@ -135,7 +135,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			$title,
 			'Foo',
@@ -152,13 +152,13 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
-		#2
+		# 2
 		$provider[] = [
 			$title,
 			'Foo',
@@ -175,13 +175,13 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
-		#3
+		# 3
 		$provider[] = [
 			$title,
 			'Foo',

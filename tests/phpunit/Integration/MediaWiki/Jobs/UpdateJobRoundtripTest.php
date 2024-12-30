@@ -50,7 +50,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		}
 
 		parent::runJobs( [ 'minJobs' => 0 ], [ 'complete' => true ] );
-	
+
 		$this->jobQueue = $this->applicationFactory->getJobQueue();
 		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
 	}
@@ -85,7 +85,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 	}
 
 	public function testSQLStoreRefreshDataTriggersUpdateJob() {
-		$index = 1; //pass-by-reference
+		$index = 1; // pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
 		parent::runJobs( [ 'numJobs' => 1 ], [ 'type' => 'smw.update' ] );

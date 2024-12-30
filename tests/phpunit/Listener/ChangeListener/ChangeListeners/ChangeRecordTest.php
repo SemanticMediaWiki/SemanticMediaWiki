@@ -42,7 +42,6 @@ class ChangeRecordTest extends \PHPUnit\Framework\TestCase {
 		$instance = new CallableChangeListener();
 		$instance->addListenerCallback( 'foo', [ $this, 'observeChange' ] );
 
-
 		$this->assertFalse(
 			$instance->canTrigger( 'bar' )
 		);

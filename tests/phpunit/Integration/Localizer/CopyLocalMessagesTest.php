@@ -50,7 +50,6 @@ class CopyLocalMessagesTest extends \PHPUnit\Framework\TestCase {
 			$canonicalMessages
 		);
 
-
 		$this->assertArrayHasKey(
 			'foo-abc-replacement',
 			$canonicalMessages
@@ -80,7 +79,6 @@ class CopyLocalMessagesTest extends \PHPUnit\Framework\TestCase {
 			'_dk-foo-abc',
 			$translatedMessages['foo-abc']['dk']
 		);
-
 
 		$this->assertEquals(
 			'_dk-foo-abc-replacement',

@@ -38,7 +38,7 @@ class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->setupCheck->expects( $this->once() )
 			->method( 'setErrorType' )
-			->with( $this->equalTo( \SMW\SetupCheck::ERROR_CONFIG_PROFILE_UNKNOWN ) );
+			->with( \SMW\SetupCheck::ERROR_CONFIG_PROFILE_UNKNOWN );
 
 		$instance = new UncaughtExceptionHandler(
 			$this->setupCheck
@@ -79,7 +79,7 @@ class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->setupCheck->expects( $this->once() )
 			->method( 'setErrorType' )
-			->with( $this->equalTo( $expected ) );
+			->with( $expected );
 
 		$instance = new UncaughtExceptionHandler(
 			$this->setupCheck
@@ -89,22 +89,22 @@ class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function errorTypeProvider() {
-		yield[
+		yield [
 			[ 'msg' => 'SemanticFoo', 'type' => 'Foo' ],
 			\SMW\SetupCheck::ERROR_EXTENSION_DEPENDENCY
 		];
 
-		yield[
+		yield [
 			[ 'msg' => 'SemanticBar', 'type' => 'incompatible-core' ],
 			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];
 
-		yield[
+		yield [
 			[ 'msg' => 'SemanticFoobar', 'type' => 'incompatible-php' ],
 			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];
 
-		yield[
+		yield [
 			[ 'msg' => 'SemanticFoOBaR', 'type' => 'incompatible-extensions', 'incompatible' => [] ],
 			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];
