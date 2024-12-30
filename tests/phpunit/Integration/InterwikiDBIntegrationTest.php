@@ -70,7 +70,7 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	protected function tearDown(): void {
-		unset( $GLOBALS['wgHooks']['InterwikiLoadPrefix'] );
+		$this->clearHook( 'InterwikiLoadPrefix' );
 
 		parent::tearDown();
 	}
