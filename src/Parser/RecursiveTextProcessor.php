@@ -67,7 +67,7 @@ class RecursiveTextProcessor {
 	 * @param Parser|null $parser
 	 */
 	public function __construct( ?Parser $parser = null ) {
-		$this->parser = $parser ?? MediaWikiServices::getInstance()->getParser();
+		$this->parser = $parser ?? MediaWikiServices::getInstance()->getParserFactory()->getInstance();
 	}
 
 	/**
