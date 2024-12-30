@@ -191,10 +191,10 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) {
+			->willReturnCallback( function ( $callback ) {
 				return call_user_func( $callback );
 			}
-			) );
+			);
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'update' );
@@ -270,7 +270,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->once() )
 			->method( 'update' )
@@ -281,10 +281,9 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 						'usage_count = usage_count + 1',
 						'null_count = null_count + 9999'
 					] ),
-				$this->equalTo(
-					[
+				[
 						'p_id' => 42
-					] ),
+					],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(
@@ -306,10 +305,9 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 						'usage_count' => 1,
 						'null_count' => 9999
 					] ),
-				$this->equalTo(
-					[
+				[
 						'p_id' => 42
-					] ),
+					],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(
@@ -326,7 +324,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'insert' )
-			->will( $this->throwException( $error ) );
+			->willThrowException( $error );
 
 		$connection->expects( $this->once() )
 			->method( 'update' )
@@ -337,7 +335,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 						'usage_count' => 12,
 						'null_count' => 0
 					] ),
-				$this->equalTo( [ 'p_id' => 42 ] ),
+				[ 'p_id' => 42 ],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(

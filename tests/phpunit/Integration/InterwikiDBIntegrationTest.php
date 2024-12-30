@@ -30,6 +30,8 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $queryResultValidator;
 	private $queryParser;
+	private $semanticDataFactory;
+	private $pageCreator;
 
 	protected function setUp(): void {
 		parent::setUp();

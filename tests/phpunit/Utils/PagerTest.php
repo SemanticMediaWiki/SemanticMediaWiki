@@ -25,8 +25,8 @@ class PagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPrefixedText' )
 			->willReturn( 'Test' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			Pager::filter( $title )
 		);
 	}

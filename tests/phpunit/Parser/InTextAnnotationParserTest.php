@@ -284,16 +284,16 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'canUse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'hasStripMarker' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'unstrip' )
 			->with( $this->stringContains( '<nowiki>Bar</nowiki>' ) )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$parserData = new ParserData(
 			Title::newFromText( __METHOD__ ),

@@ -62,8 +62,8 @@ class SQLStoreTest extends \PHPUnit\Framework\TestCase {
 	public function testGetPropertyTables() {
 		$defaultPropertyTableCount = count( $this->store->getPropertyTables() );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$this->store->getPropertyTables()
 		);
 
@@ -145,8 +145,8 @@ class SQLStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetObjectIds() {
-		$this->assertInternalType(
-			'object',
+		$this->assertIsObject(
+
 			$this->store->getObjectIds()
 		);
 	}

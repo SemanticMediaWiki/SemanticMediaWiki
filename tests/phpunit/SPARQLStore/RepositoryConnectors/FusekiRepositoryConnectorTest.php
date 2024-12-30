@@ -32,13 +32,13 @@ class FusekiRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 		$httpRequest->expects( $this->at( 5 ) )
 			->method( 'setOption' )
 			->with(
-				$this->equalTo( CURLOPT_URL ),
+				CURLOPT_URL,
 				$this->stringContains( 'http://usr:pass@localhost:9999/$/server' ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$httpRequest->expects( $this->once() )
 			->method( 'execute' )
-			->will( $this->returnValue( $data ) );
+			->willReturn( $data );
 
 		$instance = new FusekiRepositoryConnector(
 			new RepositoryClient(
@@ -49,7 +49,7 @@ class FusekiRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 			$httpRequest
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'3.2',
 			$instance->getVersion()
 		);

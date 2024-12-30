@@ -35,8 +35,8 @@ class FileTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDir() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			File::dir( 'foo' )
 		);
 	}

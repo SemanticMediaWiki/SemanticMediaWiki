@@ -86,11 +86,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
 			->method( 'getContentList' )
-			->will( $this->returnValue( [ 'Foo' => [ $importContents ] ] ) );
+			->willReturn( [ 'Foo' => [ $importContents ] ] );
 
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->contentCreator->expects( $this->atLeastOnce() )
 			->method( 'create' );
@@ -114,11 +114,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
 			->method( 'getContentList' )
-			->will( $this->returnValue( [ 'Foo' => [ $importContents ] ] ) );
+			->willReturn( [ 'Foo' => [ $importContents ] ] );
 
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [ 'Error' ] ) );
+			->willReturn( [ 'Error' ] );
 
 		$this->contentCreator->expects( $this->never() )
 			->method( 'create' );
@@ -140,11 +140,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
 			->method( 'getContentList' )
-			->will( $this->returnValue( [ 'Foo' => [ $importContents ] ] ) );
+			->willReturn( [ 'Foo' => [ $importContents ] ] );
 
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->contentCreator->expects( $this->once() )
 			->method( 'create' )

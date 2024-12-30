@@ -83,7 +83,7 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 	public function testContains() {
 		$this->cache->expects( $this->once() )
 			->method( 'contains' )
-			->with( $this->equalTo( 'Foo' ) );
+			->with( 'Foo' );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -95,8 +95,8 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 	public function testFetch() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( 'bar' ) );
+			->with( 'Foo' )
+			->willReturn( 'bar' );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -109,8 +109,8 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 'Foo' ),
-				$this->equalTo( 'bar' ) );
+				'Foo',
+				'bar' );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -122,7 +122,7 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 	public function testDelete() {
 		$this->cache->expects( $this->once() )
 			->method( 'delete' )
-			->with( $this->equalTo( 'Foo' ) );
+			->with( 'Foo' );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -134,8 +134,8 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 	public function testFetchSub() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar' ] ) );
+			->with( 'Foo' )
+			->willReturn( [ md5( 'bar' ) => 'Foobar' ] );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -150,14 +150,14 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 	public function tesSaveSub() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar' ] ) );
+			->with( 'Foo' )
+			->willReturn( [ md5( 'bar' ) => 'Foobar' ] );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 'Foo' ),
-				$this->equalTo( [ md5( 'bar' ) => '123' ] ) );
+				'Foo',
+				[ md5( 'bar' ) => '123' ] );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -170,8 +170,8 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 'Foo' ),
-				$this->equalTo( [ md5( 'bar' ) => '123' ] ) );
+				'Foo',
+				[ md5( 'bar' ) => '123' ] );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -183,14 +183,14 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 	public function tesDeleteSub() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar', md5( 'foobar' ) => '123' ] ) );
+			->with( 'Foo' )
+			->willReturn( [ md5( 'bar' ) => 'Foobar', md5( 'foobar' ) => '123' ] );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 'Foo' ),
-				$this->equalTo( [ md5( 'foobar' ) => '123' ] ) );
+				'Foo',
+				[ md5( 'foobar' ) => '123' ] );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -210,13 +210,13 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar' ] ) );
+			->willReturn( [ md5( 'bar' ) => 'Foobar' ] );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
 				$this->stringContains( 'smw:entity:44ab375ee7ebac04b8e4471a70180dc5' ),
-				$this->equalTo( $expected ) );
+				$expected );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -241,7 +241,7 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar', '__assoc' => [ 'Foo' => true ] ] ) );
+			->willReturn( [ md5( 'bar' ) => 'Foobar', '__assoc' => [ 'Foo' => true ] ] );
 
 		$this->cache->expects( $this->at( 1 ) )
 			->method( 'delete' )

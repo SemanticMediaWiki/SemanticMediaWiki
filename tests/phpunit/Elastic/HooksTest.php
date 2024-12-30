@@ -55,8 +55,8 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			$this->elasticFactory
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getHandlers()
 		);
 	}
@@ -68,7 +68,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$this->elasticFactory->expects( $this->once() )
 			->method( 'newInfoTaskHandler' )
-			->will( $this->returnValue( $infoTaskHandler ) );
+			->willReturn( $infoTaskHandler );
 
 		$taskHandlerRegistry = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry' )
 			->disableOriginalConstructor()
@@ -92,7 +92,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new Hooks(
 			$this->elasticFactory
@@ -110,7 +110,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$this->elasticFactory->expects( $this->once() )
 			->method( 'newReplicationCheck' )
-			->will( $this->returnValue( $replicationCheck ) );
+			->willReturn( $replicationCheck );
 
 		$config = $this->getMockBuilder( '\SMW\Elastic\Config' )
 			->disableOriginalConstructor()
@@ -122,7 +122,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
+			->willReturn( $config );
 
 		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
 			->disableOriginalConstructor()
@@ -130,7 +130,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new Hooks(
 			$this->elasticFactory

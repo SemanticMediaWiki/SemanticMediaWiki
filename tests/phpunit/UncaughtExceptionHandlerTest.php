@@ -38,7 +38,7 @@ class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->setupCheck->expects( $this->once() )
 			->method( 'setErrorType' )
-			->with( $this->equalTo( \SMW\SetupCheck::ERROR_CONFIG_PROFILE_UNKNOWN ) );
+			->with( \SMW\SetupCheck::ERROR_CONFIG_PROFILE_UNKNOWN );
 
 		$instance = new UncaughtExceptionHandler(
 			$this->setupCheck
@@ -79,7 +79,7 @@ class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->setupCheck->expects( $this->once() )
 			->method( 'setErrorType' )
-			->with( $this->equalTo( $expected ) );
+			->with( $expected );
 
 		$instance = new UncaughtExceptionHandler(
 			$this->setupCheck

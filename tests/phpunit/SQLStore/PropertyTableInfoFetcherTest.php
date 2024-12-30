@@ -43,8 +43,8 @@ class PropertyTableInfoFetcherTest extends \PHPUnit\Framework\TestCase {
 			$this->propertyTypeFinder
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getPropertyTableDefinitions()
 		);
 

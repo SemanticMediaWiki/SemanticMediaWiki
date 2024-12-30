@@ -71,8 +71,8 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 		$instance->augment( $res, $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 
@@ -121,8 +121,8 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 		$instance->augment( $res, $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 
@@ -165,7 +165,7 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( $row ) );
+			->willReturn( $row );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -173,7 +173,7 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new ListAugmentor(
 			$store
@@ -182,8 +182,8 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 		$instance->augment( $res, $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 

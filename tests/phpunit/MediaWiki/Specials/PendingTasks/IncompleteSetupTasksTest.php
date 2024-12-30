@@ -41,7 +41,7 @@ class IncompleteSetupTasksTest extends \PHPUnit\Framework\TestCase {
 
 		$setupFile->expects( $this->atLeastOnce() )
 			->method( 'findIncompleteTasks' )
-			->will( $this->returnValue( [ 'Foo', 'Bar' ] ) );
+			->willReturn( [ 'Foo', 'Bar' ] );
 
 		$instance = new IncompleteSetupTasks(
 			$setupFile

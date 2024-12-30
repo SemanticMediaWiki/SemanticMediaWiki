@@ -57,11 +57,11 @@ class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 
 		$entityIdManager->expects( $this->atLeastOnce() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$instance = new PropertyChangeListener( $this->store );
 		$instance->addListenerCallback( $property, [ $this, 'observeChange' ] );
@@ -84,11 +84,11 @@ class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 
 		$entityIdManager->expects( $this->atLeastOnce() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$instance = new PropertyChangeListener( $this->store );
 		$instance->addListenerCallback( $property, [ $this, 'observeChange' ] );
@@ -127,7 +127,7 @@ class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new PropertyChangeListener(
 			$this->store

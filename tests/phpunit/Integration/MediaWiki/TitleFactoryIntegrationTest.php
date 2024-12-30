@@ -33,7 +33,7 @@ class TitleFactoryIntegrationTest extends SMWIntegrationTestCase {
 		$out = $instance->newFromIDs( $input );
 
 		$this->assertCount( 1, $out );
-		$this->assertInternalType( 'array', $out );
+		$this->assertIsArray( $out );
 		$this->assertInstanceOf( Title::class, $out[0] );
 		$this->assertEquals( $title->getId(), $out[0]->getId() );
 	}

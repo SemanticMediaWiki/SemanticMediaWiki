@@ -76,11 +76,11 @@ class ResultIteratorTest extends \PHPUnit\Framework\TestCase {
 
 		$resultWrapper->expects( $this->exactly( 3 ) )
 			->method( 'numRows' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$resultWrapper->expects( $this->atLeastOnce() )
 			->method( 'current' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new ResultIterator( $resultWrapper );
 

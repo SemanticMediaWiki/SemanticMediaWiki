@@ -23,8 +23,8 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			ParametersProcessor::process( $request, [] )
 		);
 	}
@@ -109,14 +109,14 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 		$request->expects( $this->at( 5 ) )
 			->method( 'getInt' )
 			->with(
-				$this->equalTo( 'offset' ),
-				$this->equalTo( 0 ) );
+				'offset',
+				0 );
 
 		$request->expects( $this->at( 6 ) )
 			->method( 'getInt' )
 			->with(
-				$this->equalTo( 'limit' ),
-				$this->equalTo( 42 ) );
+				'limit',
+				42 );
 
 		ParametersProcessor::setDefaultLimit( 42 );
 
@@ -135,13 +135,13 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 
 		$request->expects( $this->at( 3 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'sort_num' ) )
-			->will( $this->returnValue( [ '', '', 'Foo' ] ) );
+			->with( 'sort_num' )
+			->willReturn( [ '', '', 'Foo' ] );
 
 		$request->expects( $this->at( 4 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'order_num' ) )
-			->will( $this->returnValue( [ 'asc', 'desc' ] ) );
+			->with( 'order_num' )
+			->willReturn( [ 'asc', 'desc' ] );
 
 		$parameters = [
 			'[[Foo::bar]]'
@@ -153,13 +153,13 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertSame(
-			$p['sort'],
-			',Foo'
+			',Foo',
+			$p['sort']
 		);
 
 		$this->assertSame(
-			$p['order'],
-			'asc,desc'
+			'asc,desc',
+			$p['order']
 		);
 	}
 
@@ -170,13 +170,13 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 
 		$request->expects( $this->at( 3 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'sort_num' ) )
-			->will( $this->returnValue( [ 'Foo', '' ] ) );
+			->with( 'sort_num' )
+			->willReturn( [ 'Foo', '' ] );
 
 		$request->expects( $this->at( 4 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'order_num' ) )
-			->will( $this->returnValue( [ 'asc', 'desc' ] ) );
+			->with( 'order_num' )
+			->willReturn( [ 'asc', 'desc' ] );
 
 		$parameters = [
 			'[[Foo::bar]]'
@@ -188,13 +188,13 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertSame(
-			$p['sort'],
-			'Foo'
+			'Foo',
+			$p['sort']
 		);
 
 		$this->assertSame(
-			$p['order'],
-			'asc'
+			'asc',
+			$p['order']
 		);
 	}
 
@@ -205,18 +205,18 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 
 		$request->expects( $this->at( 0 ) )
 			->method( 'getCheck' )
-			->with( $this->equalTo( 'q' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'q' )
+			->willReturn( true );
 
 		$request->expects( $this->at( 1 ) )
 			->method( 'getVal' )
-			->with( $this->equalTo( 'p' ) )
-			->will( $this->returnValue( '' ) );
+			->with( 'p' )
+			->willReturn( '' );
 
 		$request->expects( $this->at( 2 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'p' ) )
-			->will( $this->returnValue( [ 'foo' => [ 'Bar', 'foobar' ] ] ) );
+			->with( 'p' )
+			->willReturn( [ 'foo' => [ 'Bar', 'foobar' ] ] );
 
 		$parameters = [];
 

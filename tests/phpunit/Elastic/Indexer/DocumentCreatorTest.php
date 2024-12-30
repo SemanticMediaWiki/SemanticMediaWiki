@@ -39,8 +39,8 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 	public function testGetDocumentCreationDuration() {
 		$instance = new DocumentCreator( $this->store );
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->getDocumentCreationDuration()
 		);
 	}
@@ -57,15 +57,15 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->onConsecutiveCalls( [ 42, 43 ] ) );
+			->willReturnOnConsecutiveCalls( [ 42, 43 ] );
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -73,25 +73,25 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $property ] ) );
+			->willReturn( [ $property ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( [] ) );
+			->with( $property )
+			->willReturn( [] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( new DIProperty( '_REDI' ) ) )
-			->will( $this->returnValue( true ) );
+			->with( new DIProperty( '_REDI' ) )
+			->willReturn( true );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DocumentCreator( $this->store );
 		$document = $instance->newFromSemanticData( $semanticData );
@@ -121,15 +121,15 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->onConsecutiveCalls( [ 42, 43 ] ) );
+			->willReturnOnConsecutiveCalls( [ 42, 43 ] );
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -137,20 +137,20 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $property ] ) );
+			->willReturn( [ $property ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( $dataItems ) );
+			->with( $property )
+			->willReturn( $dataItems );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( [ $semanticData ] ) );
+			->willReturn( [ $semanticData ] );
 
 		$instance = new DocumentCreator( $this->store );
 
@@ -175,15 +175,15 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->onConsecutiveCalls( [ 42, 43 ] ) );
+			->willReturnOnConsecutiveCalls( [ 42, 43 ] );
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -191,20 +191,20 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $property ] ) );
+			->willReturn( [ $property ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( $dataItems ) );
+			->with( $property )
+			->willReturn( $dataItems );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( [ $semanticData ] ) );
+			->willReturn( [ $semanticData ] );
 
 		$instance = new DocumentCreator( $this->store );
 

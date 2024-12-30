@@ -74,11 +74,11 @@ class BrowseByPropertyTest extends \PHPUnit\Framework\TestCase {
 
 		$cachedListLookup->expects( $this->once() )
 			->method( 'fetchList' )
-			->will( $this->returnValue( $list ) );
+			->willReturn( $list );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertiesSpecial' )
-			->will( $this->returnValue( $cachedListLookup ) );
+			->willReturn( $cachedListLookup );
 
 		$this->applicationFactory->registerObject( 'Store', $this->store );
 

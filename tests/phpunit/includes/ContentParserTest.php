@@ -81,7 +81,7 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 		$this->parser->expects( $this->any() )
 			->method( 'parse' )
 			->with( $this->stringContains( $text ) )
-			->will( $this->returnValue( $this->parserOutput ) );
+			->willReturn( $this->parserOutput );
 
 		$instance = new ContentParser(
 			$this->title,
@@ -112,7 +112,7 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 
 			$contentRenderer->expects( $this->any() )
 				->method( 'getParserOutput' )
-				->will( $this->returnValue( $this->parserOutput ) );
+				->willReturn( $this->parserOutput );
 
 			return $contentRenderer;
 		} );
@@ -123,11 +123,11 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 
 		$revision->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
-			->will( $this->returnValue( $revision ) );
+			->willReturn( $revision );
 
 		$instance = new ContentParser(
 			$this->title,

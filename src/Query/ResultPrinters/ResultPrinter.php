@@ -608,7 +608,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @return string
 	 */
 	protected function escapeText( $text, $outputmode ) {
-		return $outputmode == SMW_OUTPUT_HTML ? htmlspecialchars( $text ) : $text;
+		return $outputmode == SMW_OUTPUT_HTML ? htmlspecialchars( $text ?? '' ) : $text;
 	}
 
 	/**

@@ -31,7 +31,7 @@ class ImportValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new ImportValueParser( $mediaWikiNsContentReader ) ) );
+			->willReturn( new ImportValueParser( $mediaWikiNsContentReader ) );
 	}
 
 	public function testCanConstruct() {

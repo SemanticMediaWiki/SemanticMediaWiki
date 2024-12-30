@@ -26,7 +26,7 @@ class CommonDataItemTest extends \PHPUnit\Framework\TestCase {
 
 			$dataItem->expects( $this->any() )
 				->method( 'getSerialization' )
-				->will( $this->returnValue( $value ) );
+				->willReturn( $value );
 
 			$items[] = $dataItem;
 		}

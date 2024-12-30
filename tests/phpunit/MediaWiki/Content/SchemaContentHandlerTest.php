@@ -40,29 +40,29 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$schemaValidator->expects( $this->once() )
 			->method( 'validate' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$schemaFactory = $this->createMock( SchemaFactory::class );
 
 		$schemaFactory->expects( $this->any() )
 			->method( 'newSchema' )
-			->will( $this->returnValue( $schema ) );
+			->willReturn( $schema );
 
 		$schemaFactory->expects( $this->any() )
 			->method( 'newSchemaValidator' )
-			->will( $this->returnValue( $schemaValidator ) );
+			->willReturn( $schemaValidator );
 
 		$title = $this->createMock( Title::class );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$page = $this->createMock( WikiPage::class );
 
 		$page->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$user = $this->createMock( User::class );
 
@@ -91,29 +91,29 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$schemaValidator->expects( $this->once() )
 			->method( 'validate' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$schemaFactory = $this->createMock( SchemaFactory::class );
 
 		$schemaFactory->expects( $this->any() )
 			->method( 'newSchema' )
-			->will( $this->returnValue( $schema ) );
+			->willReturn( $schema );
 
 		$schemaFactory->expects( $this->any() )
 			->method( 'newSchemaValidator' )
-			->will( $this->returnValue( $schemaValidator ) );
+			->willReturn( $schemaValidator );
 
 		$title = $this->createMock( Title::class );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$page = $this->createMock( WikiPage::class );
 
 		$page->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$user = $this->createMock( User::class );
 
@@ -130,7 +130,7 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 		$validationParams = new ValidationParams( $page, 0 );
 
 		$status = $instance->validateSave( $schemaContent, $validationParams );
-		$this->assertEquals( true, $status->isOK() );
+		$this->assertTrue( $status->isOK() );
 	}
 
 	public function testSerializationOfClassInstance() {
@@ -138,13 +138,13 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$page = $this->createMock( WikiPage::class );
 
 		$page->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$user = $this->createMock( User::class );
 

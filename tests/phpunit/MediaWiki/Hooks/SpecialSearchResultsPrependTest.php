@@ -46,8 +46,8 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 	public function testProcess() {
 		$this->preferenceExaminer->expects( $this->at( 1 ) )
 			->method( 'hasPreferenceOf' )
-			->with( $this->equalTo( 'smw-prefs-general-options-suggester-textinput' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw-prefs-general-options-suggester-textinput' )
+			->willReturn( true );
 
 		$search = $this->getMockBuilder( '\SMWSearch' )
 			->disableOriginalConstructor()
@@ -63,7 +63,7 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 
 		$specialSearch->expects( $this->atLeastOnce() )
 			->method( 'getSearchEngine' )
-			->will( $this->returnValue( $search ) );
+			->willReturn( $search );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -90,8 +90,8 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 	public function testProcess_DisabledInfo() {
 		$this->preferenceExaminer->expects( $this->at( 2 ) )
 			->method( 'hasPreferenceOf' )
-			->with( $this->equalTo( 'smw-prefs-general-options-disable-search-info' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw-prefs-general-options-disable-search-info' )
+			->willReturn( true );
 
 		$search = $this->getMockBuilder( '\SMWSearch' )
 			->disableOriginalConstructor()
@@ -107,7 +107,7 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 
 		$specialSearch->expects( $this->atLeastOnce() )
 			->method( 'getSearchEngine' )
-			->will( $this->returnValue( $search ) );
+			->willReturn( $search );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()

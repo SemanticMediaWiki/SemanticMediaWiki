@@ -36,8 +36,8 @@ class CustomFormTest extends \PHPUnit\Framework\TestCase {
 	public function testMakeFields() {
 		$this->webRequest->expects( $this->at( 0 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'barproperty' ) )
-			->will( $this->returnValue( [ 1001 ] ) );
+			->with( 'barproperty' )
+			->willReturn( [ 1001 ] );
 
 		$instance = new CustomForm(
 			$this->webRequest

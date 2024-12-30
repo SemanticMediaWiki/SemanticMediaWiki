@@ -53,7 +53,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$this->expensiveFuncExecutionWatcher->expects( $this->any() )
 			->method( 'hasReachedExpensiveLimit' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -61,7 +61,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -69,7 +69,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
@@ -106,8 +106,8 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			$this->expensiveFuncExecutionWatcher
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->parse( $params )
 		);
 	}
@@ -119,7 +119,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$this->messageFormatter->expects( $this->any() )
 			->method( 'addFromKey' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$this->messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
@@ -152,11 +152,11 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$expensiveFuncExecutionWatcher->expects( $this->any() )
 			->method( 'hasReachedExpensiveLimit' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->messageFormatter->expects( $this->any() )
 			->method( 'addFromKey' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$this->messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
@@ -207,7 +207,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$this->circularReferenceGuard->expects( $this->once() )
 			->method( 'isCircular' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new AskParserFunction(
 			$parserData,

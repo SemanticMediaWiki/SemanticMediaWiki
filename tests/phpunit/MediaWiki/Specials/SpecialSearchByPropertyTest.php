@@ -37,15 +37,15 @@ class SpecialSearchByPropertyTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableIdReferenceFinder' )
-			->will( $this->returnValue( $propertyTableIdReferenceFinder ) );
+			->willReturn( $propertyTableIdReferenceFinder );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
