@@ -88,7 +88,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		$index = 1; // pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
-		parent::runJobs( [ 'numJobs' => 1 ], [ 'type' => 'smw.update' ] );
+		$this->assertJob( 'smw.update' );
 	}
 
 	/**
