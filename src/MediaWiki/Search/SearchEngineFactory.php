@@ -40,21 +40,15 @@ class SearchEngineFactory {
 
 		$dbLoadBalancer = $applicationFactory->create( 'DBLoadBalancer' );
 
-		if ( $connection != null ) {
-			$type = $settings->get( 'smwgFallbackSearchType' );
-			$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
+		$type = $settings->get( 'smwgFallbackSearchType' );
+		$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
 
-			if ( is_callable( $type ) ) {
-				$fallbackSearchEngine = $type( $dbLoadBalancer );
-			} elseif ( $type !== null && $this->isValidSearchDatabaseType( $type ) ) {
-				$fallbackSearchEngine = new $type( $dbLoadBalancer );
-			} else {
-				$fallbackSearchEngine = new $defaultSearchEngine( $dbLoadBalancer );
-			}
-		} else if ( !( $connection instanceof IConnectionProvider || $connection instanceof IDatabase ) ) {
-			throw new InvalidArgumentException(
-				'Expected $connection to be an instance of IConnectionProvider or IDatabase'
-			);
+		if ( is_callable( $type ) ) {
+			$fallbackSearchEngine = $type( $dbLoadBalancer );
+		} elseif ( $type !== null && $this->isValidSearchDatabaseType( $type ) ) {
+			$fallbackSearchEngine = new $type( $dbLoadBalancer );
+		} else {
+			$fallbackSearchEngine = new $defaultSearchEngine( $dbLoadBalancer );
 		}
 
 		if ( !$fallbackSearchEngine instanceof SearchEngine ) {
