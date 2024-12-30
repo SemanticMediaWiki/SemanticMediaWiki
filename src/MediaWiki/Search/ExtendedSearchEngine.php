@@ -5,6 +5,8 @@ namespace SMW\MediaWiki\Search;
 use Content;
 use Title;
 use SearchEngine;
+use RuntimeException;
+use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
 
 /**
@@ -33,7 +35,15 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * @since 3.1
 	 */
-	public function __construct( IDatabase $connection = null ) {
+	public function __construct( $connection = null ) {
+		if ( $connection !== null &&
+			!$connection instanceof IConnectionProvider &&
+			!$connection instanceof IDatabase
+		) {
+			// TODO: Once MW 1.39 support is dropped, we can put the type as IConnectionProvider.
+			throw new RuntimeException( 'Expected $connection be instanceof either IConnectionProvider or IDatabase' );
+		}
+
 		// It is common practice to avoid construction work in the constructor
 		// but we are unable to define a factory or callable and this is the only
 		// place to create an instance.
