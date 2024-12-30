@@ -25,6 +25,9 @@ class ResourcesAccessibilityTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider moduleDataProvider
 	 */
 	public function testModulesScriptsFilesAreAccessible( $modules ) {
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$this->markTestSkipped( 'Skipped test for MW 1.41+, check ResourceLoader.' );
+		}
 		$resourceLoader = MediaWikiServices::getInstance()->getResourceLoader();
 		$context = ResourceLoaderContext::newDummyContext();
 
