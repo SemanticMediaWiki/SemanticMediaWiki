@@ -40,8 +40,7 @@ class SearchEngineFactory {
 
 		$dbLoadBalancer = $applicationFactory->create( 'DBLoadBalancer' );
 
-		if ( $connection instanceof IConnectionProvider ) {
-			// MW 1.41+ logic
+		if ( $connection != null ) {
 			$type = $settings->get( 'smwgFallbackSearchType' );
 			$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
 
@@ -52,20 +51,6 @@ class SearchEngineFactory {
 			} else {
 				$fallbackSearchEngine = new $defaultSearchEngine( $dbLoadBalancer );
 			}
-
-		} elseif ( $connection instanceof IDatabase ) {
-			// MW 1.40 logic
-			$type = $settings->get( 'smwgFallbackSearchType' );
-			$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
-
-			if ( is_callable( $type ) ) {
-				$fallbackSearchEngine = $type( $dbLoadBalancer );
-			} elseif ( $type !== null && $this->isValidSearchDatabaseType( $type ) ) {
-				$fallbackSearchEngine = new $type( $dbLoadBalancer );
-			} else {
-				$fallbackSearchEngine = new $defaultSearchEngine( $dbLoadBalancer );
-			}
-
 		} else {
 			throw new InvalidArgumentException(
 				'Expected $connection to be an instance of IConnectionProvider or IDatabase'
