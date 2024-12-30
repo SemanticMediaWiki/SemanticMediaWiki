@@ -106,6 +106,9 @@
 	},
 	"scripts": {
 		"test": [
+			"@lint",
+			"@phpcs",
+			"minus-x check .",
 			"@phpunit:unit",
 			"@phpunit:integration"
 		],
