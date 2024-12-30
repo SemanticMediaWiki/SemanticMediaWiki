@@ -245,9 +245,9 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserOutput->expects( $this->any() )
-			->method( 'getCategories' )
-			->willReturn( [] );
+		// $parserOutput->expects( $this->any() )
+		// 	->method( 'getCategories' )
+		// 	->willReturn( [] );
 
 		$parserOutput->expects( $this->any() )
 			->method( 'getImages' )

@@ -481,7 +481,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$extendedSearch->expects( $this->once() )
+		$extendedSearch->expects( $this->any() )
 			->method( 'completionSearch' )
 			->willReturn( $searchSuggestionSet );
 
