@@ -51,7 +51,7 @@ class SearchEngineFactory {
 			} else {
 				$fallbackSearchEngine = new $defaultSearchEngine( $dbLoadBalancer );
 			}
-		} else {
+		} else if ( !( $connection instanceof IConnectionProvider || $connection instanceof IDatabase ) ) {
 			throw new InvalidArgumentException(
 				'Expected $connection to be an instance of IConnectionProvider or IDatabase'
 			);

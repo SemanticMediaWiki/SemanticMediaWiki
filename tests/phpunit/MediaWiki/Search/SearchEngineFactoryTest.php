@@ -22,19 +22,20 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $connection;
+	private $param;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
-			$this->connection = $this->getMockBuilder( 'Wikimedia\Rdbms\IConnectionProvider' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			$this->param = '\Wikimedia\Rdbms\IConnectionProvider';
 		} else {
-			$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			$this->param = '\Wikimedia\Rdbms\Database';
 		}
+
+		$this->connection = $this->getMockBuilder( $this->param )
+		->disableOriginalConstructor()
+		->getMockForAbstractClass();
 	}
 
 	protected function tearDown(): void {
