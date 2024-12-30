@@ -51,7 +51,8 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 			->invokeHooksFromRegistry();
 
 		// Manipulate the interwiki prefix on-the-fly
-		$GLOBALS['wgHooks']['InterwikiLoadPrefix'][] = function ( $prefix, &$interwiki ) {
+
+		$this->setTemporaryHook( 'InterwikiLoadPrefix', function ( $prefix, &$interwiki ) {
 			if ( $prefix !== 'iw-test' ) {
 				return true;
 			}
@@ -66,7 +67,7 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 			];
 
 			return false;
-		};
+		} );
 	}
 
 	protected function tearDown(): void {
