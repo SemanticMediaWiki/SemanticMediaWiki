@@ -73,7 +73,7 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 				$searchEngine = 'SearchEngine';
 			}
 		}
-		
+
 		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
 			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
 			->disableOriginalConstructor()
