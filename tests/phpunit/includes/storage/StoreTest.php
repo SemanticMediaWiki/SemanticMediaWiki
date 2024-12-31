@@ -6,7 +6,6 @@ use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\StoreFactory;
-use SMWTestsDatabaseTestCase;
 use SMWRequestOptions;
 use Title;
 use SMW\Tests\PHPUnitCompat;
