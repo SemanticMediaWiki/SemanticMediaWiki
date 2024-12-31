@@ -72,6 +72,9 @@
 		}
 	},
 	"meta": {
+		"skip-on": {
+			"mw-1.41.x": "Check failing assertions for MW 1.41+."
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

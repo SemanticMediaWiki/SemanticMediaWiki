@@ -6,6 +6,7 @@ use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group large
  *
  * @license GNU GPL v2+

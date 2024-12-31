@@ -12,6 +12,7 @@ use Title;
  * @covers \SMW\MediaWiki\TitleFactory
  * @group SMW
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group mediawiki-database
  *
  * @license GNU GPL v2+

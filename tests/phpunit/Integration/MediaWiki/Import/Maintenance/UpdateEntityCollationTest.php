@@ -7,6 +7,7 @@ use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+

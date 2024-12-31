@@ -8,6 +8,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+

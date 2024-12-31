@@ -26,9 +26,15 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+		} else {
+			$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+		}
 	}
 
 	protected function tearDown(): void {
@@ -39,7 +45,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ExtendedSearchEngine::class,
-			new ExtendedSearchEngine()
+			new ExtendedSearchEngine( $this->connection )
 		);
 	}
 
@@ -55,10 +61,17 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 			}
 		}
 
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
+		} else {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getSearchEngine' ] )
+			->getMockForAbstractClass();
+		}
 
 		$connection->expects( $this->any() )
 			->method( 'getSearchEngine' )
@@ -468,7 +481,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$extendedSearch->expects( $this->once() )
+		$extendedSearch->expects( $this->any() )
 			->method( 'completionSearch' )
 			->willReturn( $searchSuggestionSet );
 

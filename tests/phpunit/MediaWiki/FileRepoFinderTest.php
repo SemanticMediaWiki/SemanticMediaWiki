@@ -59,14 +59,22 @@ class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$db = $this->getMockBuilder( '\Database' )
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			// Mock the IReadableDatabase interface
+			$db = $this->getMockBuilder( \Wikimedia\Rdbms\IReadableDatabase::class )
 			->disableOriginalConstructor()
 			->getMock();
+		} else {
+			$db = $this->getMockBuilder( '\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+		}
 
 		$localRepo = $this->getMockBuilder( '\LocalRepo' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		// Ensure getReplicaDB returns a mock of IReadableDatabase
 		$localRepo->expects( $this->any() )
 			->method( 'getReplicaDB' )
 			->willReturn( $db );
@@ -78,10 +86,6 @@ class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
 		$localRepo->expects( $this->once() )
 			->method( 'findBySha1' )
 			->willReturn( [ $file ] );
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$instance = new FileRepoFinder(
 			$this->repoGroup

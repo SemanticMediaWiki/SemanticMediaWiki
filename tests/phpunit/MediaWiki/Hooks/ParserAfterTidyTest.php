@@ -246,14 +246,6 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$parserOutput->expects( $this->any() )
-			->method( 'getCategoryLinks' )
-			->willReturn( [] );
-
-		$parserOutput->expects( $this->any() )
-			->method( 'getCategories' )
-			->willReturn( [] );
-
-		$parserOutput->expects( $this->any() )
 			->method( 'getImages' )
 			->willReturn( [] );
 
@@ -455,10 +447,6 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$title = MockTitle::buildMock( __METHOD__ );
-
-		$title->expects( $this->any() )
-			->method( 'getRestrictions' )
-			->willReturn( [] );
 
 		$title->expects( $this->any() )
 			->method( 'inNamespace' )

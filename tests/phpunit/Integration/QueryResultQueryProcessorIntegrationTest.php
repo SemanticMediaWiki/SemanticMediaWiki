@@ -16,6 +16,7 @@ use SMWQueryProcessor as QueryProcessor;
  * @group SMWExtension
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
