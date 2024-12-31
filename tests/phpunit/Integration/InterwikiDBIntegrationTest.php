@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
@@ -70,7 +71,7 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->clearHook( 'InterwikiLoadPrefix' );
+		MediaWikiServices::getInstance()->getHookContainer()->clear( 'InterwikiLoadPrefix' );
 
 		parent::tearDown();
 	}
