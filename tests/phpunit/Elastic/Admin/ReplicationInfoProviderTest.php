@@ -36,7 +36,7 @@ class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'fetch' ] )
+			->onlyMethods( [ 'fetch' ] )
 			->getMock();
 
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
@@ -45,7 +45,7 @@ class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )

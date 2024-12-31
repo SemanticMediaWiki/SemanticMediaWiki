@@ -49,7 +49,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getPropertyInterwiki', 'moveSMWPageID', 'getPropertyTableHashes' ] )
+			->onlyMethods( [ 'getPropertyInterwiki', 'moveSMWPageID', 'getPropertyTableHashes' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
@@ -69,7 +69,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
+			->onlyMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -103,7 +103,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'moveSMWPageID', 'getPropertyInterwiki' ] )
+			->onlyMethods( [ 'moveSMWPageID', 'getPropertyInterwiki' ] )
 			->getMock();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -127,7 +127,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
+			->onlyMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -152,7 +152,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCheckOnInvalidProperty() {
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getPropertyInterwiki', 'moveSMWPageID' ] )
+			->onlyMethods( [ 'getPropertyInterwiki', 'moveSMWPageID' ] )
 			->getMock();
 
 		$idTable->expects( $this->never() )
@@ -164,7 +164,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
+			->onlyMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

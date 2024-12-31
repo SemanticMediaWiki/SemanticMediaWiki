@@ -36,7 +36,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
+			->onlyMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )

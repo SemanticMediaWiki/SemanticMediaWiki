@@ -34,7 +34,7 @@ class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
@@ -84,7 +84,7 @@ class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )

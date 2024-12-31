@@ -114,7 +114,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 
 		$factboxFactory = $this->getMockBuilder( '\SMW\Factbox\FactboxFactory' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'newCachedFactbox' ] )
+			->onlyMethods( [ 'newCachedFactbox' ] )
 			->getMock();
 
 		$factboxFactory->expects( $this->any() )

@@ -109,7 +109,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testDoQueryLinksReferences() {
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getId' ] )
+			->onlyMethods( [ 'getId' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
@@ -118,7 +118,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )

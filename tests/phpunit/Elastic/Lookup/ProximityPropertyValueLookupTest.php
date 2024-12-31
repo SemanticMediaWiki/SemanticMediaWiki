@@ -32,7 +32,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSMWPropertyID' ] )
+			->onlyMethods( [ 'getSMWPropertyID' ] )
 			->getMock();
 
 		$this->idTable->expects( $this->any() )
@@ -41,7 +41,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
+			->onlyMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )

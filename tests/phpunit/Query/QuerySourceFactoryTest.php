@@ -102,7 +102,7 @@ class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testGetFromAnotherFakeSourceThatImplementsStoreAware() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )

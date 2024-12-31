@@ -84,7 +84,7 @@ class ChangePropagationEntityLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$entityIdManager = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSMWPropertyID', 'getDataItemPoolHashListFor' ] )
+			->onlyMethods( [ 'getSMWPropertyID', 'getDataItemPoolHashListFor' ] )
 			->getMock();
 
 		$entityIdManager->expects( $this->any() )

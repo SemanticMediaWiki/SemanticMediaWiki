@@ -30,7 +30,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 
 		$this->fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'replacePrefixes', 'searchTitle', 'searchText' ] )
+			->onlyMethods( [ 'replacePrefixes', 'searchTitle', 'searchText' ] )
 			->getMock();
 	}
 

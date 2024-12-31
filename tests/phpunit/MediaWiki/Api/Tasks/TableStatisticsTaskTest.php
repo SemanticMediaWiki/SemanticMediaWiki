@@ -27,7 +27,7 @@ class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'service' ] )
+			->onlyMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )

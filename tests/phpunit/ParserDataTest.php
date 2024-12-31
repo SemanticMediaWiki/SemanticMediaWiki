@@ -227,7 +227,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 
 	public function testUpdateStore() {
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->onlyMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -240,7 +240,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'clearData', 'getObjectIds' ] )
+			->onlyMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -369,7 +369,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'setLimitReportData' ] )
+			->onlyMethods( [ 'setLimitReportData' ] )
 			->getMock();
 
 		$parserOutput->expects( $this->once() )

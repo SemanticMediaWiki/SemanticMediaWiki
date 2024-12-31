@@ -52,7 +52,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testNewDescription( $value, $decription ) {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
+			->onlyMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )
@@ -87,7 +87,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testnNewDescriptionForLikeNotLike( $value ) {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'setUserValue' ] )
+			->onlyMethods( [ 'setUserValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )
@@ -104,7 +104,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testInvalidDataValueRetunsThingDescription() {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid' ] )
+			->onlyMethods( [ 'isValid' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
@@ -133,7 +133,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testWikiPageValueOnNonMainNamespace() {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
+			->onlyMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )

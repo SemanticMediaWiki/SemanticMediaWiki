@@ -32,7 +32,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getDataItemById' ] )
+			->onlyMethods( [ 'getDataItemById' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -301,7 +301,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCleanUpOnTransactionIdleAvoidOnSubobject() {
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getDataItemById' ] )
+			->onlyMethods( [ 'getDataItemById' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -359,7 +359,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 		}
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getDataItemById' ] )
+			->onlyMethods( [ 'getDataItemById' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )

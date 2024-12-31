@@ -78,7 +78,7 @@ class MustExistsConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'addError' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'addError' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )

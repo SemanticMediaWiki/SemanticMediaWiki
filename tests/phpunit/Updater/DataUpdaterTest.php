@@ -67,7 +67,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists' ] )
+			->onlyMethods( [ 'exists' ] )
 			->getMock();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -76,7 +76,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection', 'getPropertyValues', 'updateData' ] )
+			->onlyMethods( [ 'getObjectIds', 'getConnection', 'getPropertyValues', 'updateData' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -186,7 +186,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'updateData' ] )
+			->onlyMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
@@ -256,7 +256,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists' ] )
+			->onlyMethods( [ 'exists' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
@@ -265,7 +265,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'clearData', 'getObjectIds' ] )
+			->onlyMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -376,12 +376,12 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$semanticData = $this->semanticDataFactory->setSubject( $wikiPage )->newEmptySemanticData();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists' ] )
+			->onlyMethods( [ 'exists' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'updateData' ] )
+			->onlyMethods( [ 'updateData' ] )
 			->getMock();
 
 		$store->expects( $this->once() )

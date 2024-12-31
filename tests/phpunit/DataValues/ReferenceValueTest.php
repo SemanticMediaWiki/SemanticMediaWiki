@@ -57,7 +57,7 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
+			->onlyMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
@@ -89,7 +89,7 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 	public function testParseValue() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
+			->onlyMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
@@ -139,7 +139,7 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 	public function testParseValueWithErroredDv() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRedirectTarget' ] )
+			->onlyMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )

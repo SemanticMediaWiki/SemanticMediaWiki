@@ -25,7 +25,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'interpretDescription' ] )
+			->onlyMethods( [ 'interpretDescription' ] )
 			->getMock();
 	}
 

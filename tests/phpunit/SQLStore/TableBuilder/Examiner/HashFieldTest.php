@@ -2,9 +2,12 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
+use SMW\Maintenance\populateHashField;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\HashField
@@ -27,13 +30,9 @@ class HashFieldTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->store = $this->createMock( SQLStore::class );
 
-		$this->populateHashField = $this->getMockBuilder( '\SMW\Maintenance\populateHashField' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->populateHashField = $this->createMock( populateHashField::class );
 	}
 
 	public function testCanConstruct() {
@@ -44,9 +43,7 @@ class HashFieldTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheck_Populate() {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$resultWrapper->expects( $this->once() )
 			->method( 'numRows' )
@@ -74,9 +71,7 @@ class HashFieldTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheck_Incomplete() {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$resultWrapper->expects( $this->once() )
 			->method( 'numRows' )

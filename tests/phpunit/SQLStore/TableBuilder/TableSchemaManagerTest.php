@@ -167,7 +167,7 @@ class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getTableIndexes' ] )
+			->onlyMethods( [ 'getTableIndexes' ] )
 			->getMockForAbstractClass();
 
 		$dataItemHandler->expects( $this->once() )
@@ -225,7 +225,7 @@ class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getTableIndexes' ] )
+			->onlyMethods( [ 'getTableIndexes' ] )
 			->getMockForAbstractClass();
 
 		$dataItemHandler->expects( $this->once() )

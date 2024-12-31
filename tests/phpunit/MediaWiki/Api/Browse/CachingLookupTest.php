@@ -50,7 +50,7 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getVersion', 'lookup' ] )
+			->onlyMethods( [ 'getVersion', 'lookup' ] )
 			->getMockForAbstractClass();
 
 		$lookup->expects( $this->atLeastOnce() )
@@ -83,7 +83,7 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getVersion', 'lookup' ] )
+			->onlyMethods( [ 'getVersion', 'lookup' ] )
 			->getMockForAbstractClass();
 
 		$lookup->expects( $this->never() )
@@ -112,7 +112,7 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getVersion', 'lookup' ] )
+			->onlyMethods( [ 'getVersion', 'lookup' ] )
 			->getMockForAbstractClass();
 
 		$lookup->expects( $this->atLeastOnce() )

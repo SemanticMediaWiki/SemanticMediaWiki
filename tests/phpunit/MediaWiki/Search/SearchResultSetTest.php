@@ -41,7 +41,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$this->queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getQuery', 'getResults' ] )
+			->onlyMethods( [ 'getQuery', 'getResults' ] )
 			->getMock();
 
 		$pageMock = $this->getMockBuilder( 'SMW\DIWikiPage' )
@@ -150,7 +150,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getQuery', 'getResults' ] )
+			->onlyMethods( [ 'getQuery', 'getResults' ] )
 			->getMock();
 
 		$queryResult->expects( $this->any() )

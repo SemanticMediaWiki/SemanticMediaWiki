@@ -59,7 +59,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 	public function testGetResultTextErrorMessage( $setup, $expected ) {
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getErrors', 'getNext', 'addErrors' ] )
+			->onlyMethods( [ 'getErrors', 'getNext', 'addErrors' ] )
 			->getMock();
 
 		$queryResult->expects( $this->any() )
@@ -285,7 +285,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 			$resultArray = $this->getMockBuilder( '\SMWResultArray' )
 				->disableOriginalConstructor()
-				->setMethods( [ 'getText', 'getPrintRequest', 'getNextDataValue', 'getNextDataItem' ] )
+				->onlyMethods( [ 'getText', 'getPrintRequest', 'getNextDataValue', 'getNextDataItem' ] )
 				->getMock();
 
 			$resultArray->expects( $this->any() )

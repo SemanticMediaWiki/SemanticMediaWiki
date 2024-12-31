@@ -66,7 +66,7 @@ class SingleValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'addError', 'getCallable' ] )
+			->onlyMethods( [ 'getProperty', 'addError', 'getCallable' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )

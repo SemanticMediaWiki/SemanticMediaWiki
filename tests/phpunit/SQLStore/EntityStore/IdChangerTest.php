@@ -39,7 +39,7 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getPropertyTables' ] )
+			->onlyMethods( [ 'getConnection', 'getPropertyTables' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )

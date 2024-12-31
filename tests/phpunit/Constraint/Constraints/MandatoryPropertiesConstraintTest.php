@@ -66,7 +66,7 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'addError', 'getCallable' ] )
+			->onlyMethods( [ 'addError', 'getCallable' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )

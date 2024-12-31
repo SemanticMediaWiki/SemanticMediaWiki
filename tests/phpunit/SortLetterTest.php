@@ -21,7 +21,7 @@ class SortLetterTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getWikiPageSortKey' ] )
+			->onlyMethods( [ 'getWikiPageSortKey' ] )
 			->getMockForAbstractClass();
 
 		$this->collator = $this->getMockBuilder( '\SMW\MediaWiki\Collator' )

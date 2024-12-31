@@ -64,7 +64,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
 			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSearchEngine' ] )
+			->onlyMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
 		} else {
 			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )

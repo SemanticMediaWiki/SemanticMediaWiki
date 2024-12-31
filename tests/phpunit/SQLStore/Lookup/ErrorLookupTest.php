@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore\Lookup;
 use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ErrorLookup
@@ -28,7 +29,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -77,7 +78,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
+			->onlyMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -106,9 +107,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
@@ -150,7 +149,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
+			->onlyMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -179,9 +178,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )

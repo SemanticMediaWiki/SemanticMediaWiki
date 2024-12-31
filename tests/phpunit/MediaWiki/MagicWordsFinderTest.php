@@ -82,7 +82,7 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 	public function testSetGetMagicWordsOnLegacyStorage() {
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'hasExtensionData' ] )
+			->onlyMethods( [ 'hasExtensionData' ] )
 			->getMock();
 
 		$instance->expects( $this->any() )
@@ -108,7 +108,7 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'hasExtensionData' ] )
+			->onlyMethods( [ 'hasExtensionData' ] )
 			->getMock();
 
 		$instance->expects( $this->any() )

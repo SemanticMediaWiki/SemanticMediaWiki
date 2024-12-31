@@ -165,7 +165,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$respositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RespositoryConnection' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'insertDelete' ] )
+			->onlyMethods( [ 'insertDelete' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -177,7 +177,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
 			->setConstructorArgs( [ $store ] )
-			->setMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
+			->onlyMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
@@ -222,7 +222,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'insertData' );
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
-			->setMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
+			->onlyMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
@@ -261,7 +261,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'insertData' );
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$instance->expects( $this->atLeastOnce() )
@@ -292,11 +292,11 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$idLookup = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'warmUpCache' ] )
+			->onlyMethods( [ 'warmUpCache' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

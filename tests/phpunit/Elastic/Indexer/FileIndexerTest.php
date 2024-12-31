@@ -55,7 +55,7 @@ class FileIndexerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'save', 'associate', 'fetch' ] )
+			->onlyMethods( [ 'save', 'associate', 'fetch' ] )
 			->getMock();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
