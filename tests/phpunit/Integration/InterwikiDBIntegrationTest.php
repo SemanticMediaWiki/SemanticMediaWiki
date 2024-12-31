@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
@@ -51,26 +52,29 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 			->invokeHooksFromRegistry();
 
 		// Manipulate the interwiki prefix on-the-fly
-		$GLOBALS['wgHooks']['InterwikiLoadPrefix'][] = function ( $prefix, &$interwiki ) {
-			if ( $prefix !== 'iw-test' ) {
-				return true;
+		MediaWikiServices::getInstance()->getHookContainer()->register(
+			'InterwikiLoadPrefix',
+			function ( $prefix, &$interwiki ) {
+				if ( $prefix !== 'iw-test' ) {
+					return true;
+				}
+
+				$interwiki = [
+					'iw_prefix' => 'iw-test',
+					'iw_url' => 'http://www.example.org/$1',
+					'iw_api' => false,
+					'iw_wikiid' => 'foo',
+					'iw_local' => true,
+					'iw_trans' => false,
+				];
+
+				return false;
 			}
-
-			$interwiki = [
-				'iw_prefix' => 'iw-test',
-				'iw_url' => 'http://www.example.org/$1',
-				'iw_api' => false,
-				'iw_wikiid' => 'foo',
-				'iw_local' => true,
-				'iw_trans' => false,
-			];
-
-			return false;
-		};
+		);
 	}
 
 	protected function tearDown(): void {
-		unset( $GLOBALS['wgHooks']['InterwikiLoadPrefix'] );
+		MediaWikiServices::getInstance()->getHookContainer()->clear( 'InterwikiLoadPrefix' );
 
 		parent::tearDown();
 	}
