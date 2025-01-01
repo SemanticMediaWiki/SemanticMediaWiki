@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use Wikimedia\Rdbms\ChangedTablesTracker;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -224,6 +225,9 @@ class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		$query->querymode = Query::MODE_INSTANCES;
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			ChangedTablesTracker::stopTracking();
+		}
 
 		$this->assertEquals(
 			2,
