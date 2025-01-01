@@ -80,21 +80,39 @@ class XmlImportRunner {
 		}
 
 		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'main' );
-
 		$services = MediaWikiServices::getInstance();
-		$importer = new WikiImporter(
-			$source->value,
-			$config,
-			$services->getHookContainer(),
-			$services->getContentLanguage(),
-			$services->getNamespaceInfo(),
-			$services->getTitleFactory(),
-			$services->getWikiPageFactory(),
-			$services->getWikiRevisionUploadImporter(),
-			$services->getPermissionManager(),
-			$services->getContentHandlerFactory(),
-			$services->getSlotRoleRegistry()
-		);
+
+		// MW 1.41 or lower
+ 		if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
+			$importer = new WikiImporter(
+				$source->value,
+				$config,
+				$services->getHookContainer(),
+				$services->getContentLanguage(),
+				$services->getNamespaceInfo(),
+				$services->getTitleFactory(),
+				$services->getWikiPageFactory(),
+				$services->getWikiRevisionUploadImporter(),
+				$services->getPermissionManager(),
+				$services->getContentHandlerFactory(),
+				$services->getSlotRoleRegistry()
+			);
+		} else {
+			// MW 1.42+
+			$importer = new WikiImporter(
+				$source->value,
+				\RequestContext::getMain()->getAuthority(),
+				$config,
+				$services->getHookContainer(),
+				$services->getContentLanguage(),
+				$services->getNamespaceInfo(),
+				$services->getTitleFactory(),
+				$services->getWikiPageFactory(),
+				$services->getWikiRevisionUploadImporter(),
+				$services->getContentHandlerFactory(),
+				$services->getSlotRoleRegistry()
+			);
+		}
 		$importer->setDebug( $this->verbose );
 
 		$reporter = new ImportReporter(
