@@ -227,9 +227,6 @@
 		}
 	},
 	"meta": {
-		"skip-on": {
-			"mw-1.28<": "`numeric` collation only available with 1.28+"
-		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false
