@@ -56,7 +56,7 @@ return [
 	 */
 	'WikiImporter' => function ( $containerBuilder, \ImportSource $importSource ) {
 		$services = MediaWikiServices::getInstance();
-		return $services->getWikiImporterFactory->getWikiImporter(
+		return $services->getWikiImporterFactory()->getWikiImporter(
 			$importSource,
 			RequestContext::getMain()->getAuthority()
 		);
