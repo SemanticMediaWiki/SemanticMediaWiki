@@ -72,19 +72,17 @@ class PropertyStatisticsStore {
 	 * @since 1.9
 	 *
 	 * @param integer $propertyId
-	 * @param integer $value
+	 * @param array|integer $value
 	 *
 	 * @return boolean Success indicator
 	 */
 	public function addToUsageCount( $pid, $value ) {
-		$usageVal = 0;
+		$usageVal = (int)$value;
 		$nullVal = 0;
 
 		if ( is_array( $value ) ) {
-			$usageVal = $value[0];
-			$nullVal = $value[1];
-		} else {
-			$usageVal = $value;
+			$usageVal = (int)$value[0];
+			$nullVal = (int)$value[1];
 		}
 
 		if ( !is_int( $usageVal ) || !is_int( $nullVal ) ) {
