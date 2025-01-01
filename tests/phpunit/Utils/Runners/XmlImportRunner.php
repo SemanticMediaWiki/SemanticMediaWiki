@@ -69,7 +69,6 @@ class XmlImportRunner {
 	public function run() {
 		$this->unregisterUploadsource();
 		$start = microtime( true );
-		$config = null;
 
 		$source = ImportStreamSource::newFromFile(
 			$this->assertThatFileIsReadableOrThrowException( $this->file )
@@ -79,40 +78,9 @@ class XmlImportRunner {
 			throw new RuntimeException( 'Import returned with error(s) ' . serialize( $source->errors ) );
 		}
 
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'main' );
 		$services = MediaWikiServices::getInstance();
 
-		// MW 1.41 or lower
-		if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
-			$importer = new WikiImporter(
-				$source->value,
-				$config,
-				$services->getHookContainer(),
-				$services->getContentLanguage(),
-				$services->getNamespaceInfo(),
-				$services->getTitleFactory(),
-				$services->getWikiPageFactory(),
-				$services->getWikiRevisionUploadImporter(),
-				$services->getPermissionManager(),
-				$services->getContentHandlerFactory(),
-				$services->getSlotRoleRegistry()
-			);
-		} else {
-			// MW 1.42+
-			$importer = new WikiImporter(
-				$source->value,
-				RequestContext::getMain()->getAuthority(),
-				$config,
-				$services->getHookContainer(),
-				$services->getContentLanguage(),
-				$services->getNamespaceInfo(),
-				$services->getTitleFactory(),
-				$services->getWikiPageFactory(),
-				$services->getWikiRevisionUploadImporter(),
-				$services->getContentHandlerFactory(),
-				$services->getSlotRoleRegistry()
-			);
-		}
+		$import = $services->getWikiImporterFactory->getWikiImporter( $source->value );
 		$importer->setDebug( $this->verbose );
 
 		$reporter = new ImportReporter(
