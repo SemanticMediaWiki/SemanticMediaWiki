@@ -56,8 +56,28 @@ return [
 	'WikiImporter' => function ( $containerBuilder, \ImportSource $importSource ) {
 		$containerBuilder->registerExpectedReturnType( 'WikiImporter', '\WikiImporter' );
 		$services = MediaWikiServices::getInstance();
+
+		// MW 1.41 or lower
+		if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
+			return new WikiImporter(
+				$importSource,
+				$containerBuilder->create( 'MainConfig' ),
+				$services->getHookContainer(),
+				$services->getContentLanguage(),
+				$services->getNamespaceInfo(),
+				$services->getTitleFactory(),
+				$services->getWikiPageFactory(),
+				$services->getWikiRevisionUploadImporter(),
+				$services->getPermissionManager(),
+				$services->getContentHandlerFactory(),
+				$services->getSlotRoleRegistry()
+			);
+		}
+
+		// MW 1.42+
 		return new WikiImporter(
 			$importSource,
+			RequestContext::getMain()->getAuthority(),
 			$containerBuilder->create( 'MainConfig' ),
 			$services->getHookContainer(),
 			$services->getContentLanguage(),
@@ -65,7 +85,6 @@ return [
 			$services->getTitleFactory(),
 			$services->getWikiPageFactory(),
 			$services->getWikiRevisionUploadImporter(),
-			$services->getPermissionManager(),
 			$services->getContentHandlerFactory(),
 			$services->getSlotRoleRegistry()
 		);
