@@ -80,7 +80,7 @@ class XmlImportRunner {
 
 		$services = MediaWikiServices::getInstance();
 
-		$import = $services->getWikiImporterFactory->getWikiImporter(
+		$import = $services->getWikiImporterFactory()->getWikiImporter(
 			$source->value,
 			RequestContext::getMain()->getAuthority()
 		);
