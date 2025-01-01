@@ -101,7 +101,7 @@ class XmlImportRunner {
 			// MW 1.42+
 			$importer = new WikiImporter(
 				$source->value,
-				\RequestContext::getMain()->getAuthority(),
+				RequestContext::getMain()->getAuthority(),
 				$config,
 				$services->getHookContainer(),
 				$services->getContentLanguage(),
