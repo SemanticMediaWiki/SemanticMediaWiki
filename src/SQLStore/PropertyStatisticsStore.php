@@ -77,13 +77,15 @@ class PropertyStatisticsStore {
 	 * @return boolean Success indicator
 	 */
 	public function addToUsageCount( $pid, $value ) {
-		$usageVal = (int)$value;
+		$usageVal = 0;
 		$nullVal = 0;
 
 		if ( is_array( $value ) ) {
-			$usageVal = (int)$value[0];
-			$nullVal = (int)$value[1];
-		}
+			$usageVal = $value[0];
+			$nullVal = $value[1];
+		} else {
+ 			$usageVal = $value;
+ 		}
 
 		if ( !is_int( $usageVal ) || !is_int( $nullVal ) ) {
 			throw new PropertyStatisticsInvalidArgumentException( 'The value to add must be an integer' );
@@ -101,8 +103,8 @@ class PropertyStatisticsStore {
 			$this->connection->update(
 				SQLStore::PROPERTY_STATISTICS_TABLE,
 				[
-					'usage_count = usage_count ' . ( (int)$usageVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( (int)$usageVal ) ),
-					'null_count = null_count ' . ( (int)$nullVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( (int)$nullVal ) ),
+					'usage_count = usage_count ' . ( (int)$usageVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $usageVal ) ),
+					'null_count = null_count ' . ( (int)$nullVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $nullVal ) ),
 				],
 				[
 					'p_id' => $pid
