@@ -209,6 +209,13 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		return $testResult;
 	}
 
+	protected function overrideMwServices( $configOverrides = null, array $services = [] ) {
+		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
+			$this->setCliArg( 'use-normal-tables', true );
+		}
+		parent::overrideMwServices( $configOverrides, $services );
+	}
+
 	protected function getStore() {
 		return StoreFactory::getStore();
 	}
