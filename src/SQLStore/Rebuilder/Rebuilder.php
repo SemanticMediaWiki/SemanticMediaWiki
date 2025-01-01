@@ -248,7 +248,7 @@ class Rebuilder {
 		// -1 means that no next position is available
 		$this->next_position( $id, $emptyRange );
 
-		return $this->progress = $id > 0 && $this->getMaxId() ? $id / $this->getMaxId() : 1;
+		return $this->progress = $id > 0 && $this->getMaxId() !== 0 ? $id / $this->getMaxId() : 1;
 	}
 
 	private function matchAsTitle( $id ) {
