@@ -128,26 +128,7 @@ class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
 			'2000/12/12 01:01:20.200000'
 		];
 
-		// https://bugs.php.net/bug.php?id=76822
-		if ( version_compare( PHP_VERSION, '7.2', '<' ) ) {
-			# 3
-			$provider[] = [
-				'2/1300/11/02/12/03/25.888499949',
-				'en',
-				'Y-m-d H:i:s.u',
-				'1300-11-02 12:03:25.888500'
-			];
-
-			# 4 time alone doesn't require a calendar model
-			$provider[] = [
-				'2/1300/11/02/12/03/25.888499949',
-				'en',
-				'H:i:s.u',
-				'12:03:25.888500'
-			];
-		}
-
-		# 5
+		# 3
 		$provider['on monthnumber 12'] = [
 			'1/2000/12/12',
 			'en',
@@ -155,7 +136,7 @@ class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
 			'2000-12-12 Dec'
 		];
 
-		# 6
+		# 4
 		$provider['on daynumber 7'] = [
 			'1/2016/05/08/1/1/20/200',
 			'en',
@@ -163,7 +144,7 @@ class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
 			'2016-05-08 Sun'
 		];
 
-		# 7
+		# 5
 		$provider['on timezone 1'] = [
 			'1/1970/1/12/11/43/0/14',
 			'en',
