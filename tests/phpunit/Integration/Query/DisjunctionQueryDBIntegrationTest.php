@@ -19,7 +19,6 @@ use SMWQuery as Query;
  * @group SMWExtension
  * @group semantic-mediawiki-integration
  * @group semantic-mediawiki-query
- * @group mediawiki-database
  * @group Database
  * @group medium
  *
