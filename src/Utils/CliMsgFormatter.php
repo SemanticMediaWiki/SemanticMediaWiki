@@ -118,7 +118,7 @@ class CliMsgFormatter {
 			$last = $total;
 		}
 
-		$progress = min( 100, round( ( $i / $total ) * 100 ) );
+		$progress = min( 100, round( ( $total ? $i / $total : 1 ) * 100 ) );
 
 		if ( $remainingTime === null ) {
 			return sprintf( "%s / %s (%3.0f%%)", $current, $last, $progress );
