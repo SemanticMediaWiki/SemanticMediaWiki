@@ -103,8 +103,8 @@ class PropertyStatisticsStore {
 			$this->connection->update(
 				SQLStore::PROPERTY_STATISTICS_TABLE,
 				[
-					'usage_count = usage_count ' . ( $usageVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $usageVal ) ),
-					'null_count = null_count ' . ( $nullVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $nullVal ) ),
+					'usage_count = usage_count ' . ( (int)$usageVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( (int)$usageVal ) ),
+					'null_count = null_count ' . ( (int)$nullVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( (int)$nullVal ) ),
 				],
 				[
 					'p_id' => $pid
