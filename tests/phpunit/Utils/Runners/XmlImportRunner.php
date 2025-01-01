@@ -69,7 +69,6 @@ class XmlImportRunner {
 	public function run() {
 		$this->unregisterUploadsource();
 		$start = microtime( true );
-		$config = null;
 
 		$source = ImportStreamSource::newFromFile(
 			$this->assertThatFileIsReadableOrThrowException( $this->file )
@@ -79,21 +78,11 @@ class XmlImportRunner {
 			throw new RuntimeException( 'Import returned with error(s) ' . serialize( $source->errors ) );
 		}
 
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'main' );
-
 		$services = MediaWikiServices::getInstance();
-		$importer = new WikiImporter(
+
+		$importer = $services->getWikiImporterFactory()->getWikiImporter(
 			$source->value,
-			$config,
-			$services->getHookContainer(),
-			$services->getContentLanguage(),
-			$services->getNamespaceInfo(),
-			$services->getTitleFactory(),
-			$services->getWikiPageFactory(),
-			$services->getWikiRevisionUploadImporter(),
-			$services->getPermissionManager(),
-			$services->getContentHandlerFactory(),
-			$services->getSlotRoleRegistry()
+			RequestContext::getMain()->getAuthority()
 		);
 		$importer->setDebug( $this->verbose );
 
