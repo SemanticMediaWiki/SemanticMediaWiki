@@ -323,9 +323,6 @@
 			"type": "parser",
 			"about": "#13 `.888499949` is being rounded to `.888500`",
 			"subject": "Example/P0414/7a",
-			"skip-on": {
-				"hhvm-*": "Avoid .888500 vs. .888499 msec issue due to hhvm#6899"
-			},
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2456116.9682395\">8 July 2012 11:14:15</td>",
