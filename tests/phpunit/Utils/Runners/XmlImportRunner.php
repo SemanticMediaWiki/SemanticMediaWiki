@@ -83,7 +83,7 @@ class XmlImportRunner {
 		$services = MediaWikiServices::getInstance();
 
 		// MW 1.41 or lower
- 		if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
 			$importer = new WikiImporter(
 				$source->value,
 				$config,
