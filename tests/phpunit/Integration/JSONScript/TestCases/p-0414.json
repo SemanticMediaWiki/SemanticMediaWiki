@@ -324,7 +324,7 @@
 			"about": "#13 `.888499949` is being rounded to `.888500`",
 			"subject": "Example/P0414/7a",
 			"skip-on": {
- 				"php": ["7.2<", "Avoid .888500 vs. .888499 msec issue due to https://bugs.php.net/bug.php?id=76822"]
+ 				"php": ["<7.2", "Avoid .888500 vs. .888499 msec issue due to https://bugs.php.net/bug.php?id=76822"]
  			},
 			"assert-output": {
 				"to-contain": [
