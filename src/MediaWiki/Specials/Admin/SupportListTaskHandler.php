@@ -59,10 +59,9 @@ class SupportListTaskHandler extends TaskHandler {
 	private function ennvironmentSection() {
 		$info = $this->getStore()->getInfo() + [
 			'smw' => SMW_VERSION,
-			'mediawiki' => MW_VERSION
-		] + (
-			defined( 'HHVM_VERSION' ) ? [ 'hhvm' => HHVM_VERSION ] : [ 'php' => PHP_VERSION ]
-		);
+			'mediawiki' => MW_VERSION,
+			'php' => PHP_VERSION
+		];
 
 		return Html::rawElement(
 			'h3',
