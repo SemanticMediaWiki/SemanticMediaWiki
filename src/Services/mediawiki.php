@@ -8,6 +8,7 @@ use JobQueueGroup;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
+use RequestContext;
 use SMW\MediaWiki\FileRepoFinder;
 use SMW\MediaWiki\NamespaceInfo;
 use SMW\MediaWiki\PermissionManager;
@@ -77,7 +78,7 @@ return [
 		// MW 1.42+
 		return new WikiImporter(
 			$importSource,
-			\RequestContext::getMain()->getAuthority(),
+			RequestContext::getMain()->getAuthority(),
 			$containerBuilder->create( 'MainConfig' ),
 			$services->getHookContainer(),
 			$services->getContentLanguage(),
