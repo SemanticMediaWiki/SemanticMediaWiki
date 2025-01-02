@@ -132,7 +132,7 @@ class CliMsgFormatter {
 			$last = $total;
 		}
 
-		$progress = $this->caclulateProgress( $i, $total )
+		$progress = $this->caclulateProgress( $i, $total );
 
 		if ( $remainingTime === null ) {
 			return sprintf( "%s / %s (%3.0f%%)", $current, $last, $progress );
