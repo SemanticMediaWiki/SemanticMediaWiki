@@ -95,10 +95,10 @@ class CliMsgFormatter {
 	 * @return string
 	 */
 	public function progress( int $i, int $total ): string {
-		return $this->caclulateProgress( $i, $total, true );
+		return $this->calculateProgress( $i, $total, true );
 	}
 
-	private function caclulateProgress( int $i, int $total, bool $percentage ) {
+	private function calculateProgress( int $i, int $total, bool $percentage ) {
 		$value = 100;
 
 		if ( $i > 0 && $total > 0 ) {
@@ -132,7 +132,7 @@ class CliMsgFormatter {
 			$last = $total;
 		}
 
-		$progress = $this->caclulateProgress( $i, $total, false );
+		$progress = $this->calculateProgress( $i, $total, false );
 
 		if ( $remainingTime === null ) {
 			return sprintf( "%s / %s (%3.0f%%)", $current, $last, $progress );
