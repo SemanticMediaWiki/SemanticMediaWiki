@@ -84,8 +84,8 @@ class PropertyStatisticsStore {
 			$usageVal = $value[0];
 			$nullVal = $value[1];
 		} else {
- 			$usageVal = $value;
- 		}
+			$usageVal = $value;
+		}
 
 		if ( !is_int( $usageVal ) || !is_int( $nullVal ) ) {
 			throw new PropertyStatisticsInvalidArgumentException( 'The value to add must be an integer' );
