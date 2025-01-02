@@ -153,6 +153,10 @@ class ValueDescriptionInterpreter {
 	}
 
 	private function proximity_bool( $field, $value ) {
+		if ( !$value ) {
+			return [];
+		}
+
 		$params = [];
 		$hasWildcard = strpos( $value, '*' ) !== false;
 
@@ -164,7 +168,7 @@ class ValueDescriptionInterpreter {
 
 		// Wide proximity uses ~~ as identifier as in [[~~ ... ]] or
 		// [[in:fox jumps]]
-		if ( is_array( $value ) && $value[0] === '~' ) {
+		if ( $value[0] === '~' ) {
 			$isWide = true;
 
 			// Remove the ~ to avoid a `QueryShardException[Failed to parse query ...`
