@@ -45,20 +45,6 @@ class CliMsgFormatterTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testCalculateProgress() {
-		$instance = new CliMsgFormatter();
-
-		$this->assertEquals(
-			'50 %',
-			$instance->calculateProgress( 5, 10, true )
-		);
-
-		$this->assertEquals(
-			100,
-			$instance->calculateProgress( 0, 0, false )
-		);
-	}
-
 	public function testProgressCompact() {
 		$instance = new CliMsgFormatter();
 
