@@ -152,7 +152,7 @@ class ValueDescriptionInterpreter {
 		return $comparator === SMW_CMP_NLKE || $comparator === SMW_CMP_NEQ;
 	}
 
-	private function proximity_bool( $field, $value ) {
+	private function proximity_bool( $field, array $value ) {
 		$params = [];
 		$hasWildcard = strpos( $value, '*' ) !== false;
 
@@ -164,7 +164,7 @@ class ValueDescriptionInterpreter {
 
 		// Wide proximity uses ~~ as identifier as in [[~~ ... ]] or
 		// [[in:fox jumps]]
-		if ( $value[0] === '~' ) {
+		if ( is_array( $value ) && $value[0] === '~' ) {
 			$isWide = true;
 
 			// Remove the ~ to avoid a `QueryShardException[Failed to parse query ...`
@@ -181,7 +181,6 @@ class ValueDescriptionInterpreter {
 		// Wide or simple proximity? + wildcard?
 		// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#operator-min
 		if ( $hasWildcard && $isWide && !$isPhrase ) {
-
 			// cjk.best.effort.proximity.match
 			if ( $this->isCJK( $value ) ) {
 				// Increase match accuracy by relying on a `phrase` to define char
@@ -190,7 +189,6 @@ class ValueDescriptionInterpreter {
 			} else {
 				$params = $this->fieldMapper->query_string( $field, $value, [ 'minimum_should_match' => 1 ] );
 			}
-
 		} elseif ( $hasWildcard && !$isWide && !$isPhrase ) {
 			// [[~Foo/Bar/*]] (simple proximity) is only used on subject.sortkey
 			// which is why we want to use a `not_analyzed` field to exactly
