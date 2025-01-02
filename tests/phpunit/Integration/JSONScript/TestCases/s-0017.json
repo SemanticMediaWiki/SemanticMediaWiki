@@ -16,9 +16,6 @@
 		{
 			"type": "special",
 			"about": "#0",
-			"skip-on": {
-				"mediawiki": [ ">1.40", "Check failing assertions for MW 1.41+." ]
-			},
 			"special-page": {
 				"page": "Types",
 				"query-parameters": "",
@@ -34,9 +31,6 @@
 		{
 			"type": "special",
 			"about": "#1 (Monolingual text)",
-			"skip-on": {
-				"mediawiki": [ ">1.40", "Check failing assertions for MW 1.41+." ]
-			},
 			"special-page": {
 				"page": "Types",
 				"query-parameters": "Monolingual text",
@@ -52,9 +46,6 @@
 		{
 			"type": "special",
 			"about": "#2 (Foobar, unknown)",
-			"skip-on": {
-				"mediawiki": [ ">1.40", "Check failing assertions for MW 1.41+." ]
-			},
 			"special-page": {
 				"page": "Types",
 				"query-parameters": "Foobar",
@@ -81,6 +72,9 @@
 		}
 	},
 	"meta": {
+		"skip-on": {
+			"mw-1.41.x": "Check failing assertions for MW 1.41+."
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false
