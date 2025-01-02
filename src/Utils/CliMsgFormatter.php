@@ -95,7 +95,21 @@ class CliMsgFormatter {
 	 * @return string
 	 */
 	public function progress( int $i, int $total ): string {
-		return min( 100, round( ( $i / $total ) * 100 ) ) . " %";
+		return $this->caclulateProgress( $i, $total, true );
+	}
+
+	private function caclulateProgress( int $i, int $total, bool $percentage ) {
+		$value = 100;
+
+		if ( $i > 0 && $total > 0 ) {
+			$value = min( 100, round( ( $i / $total ) * 100 ) );
+		}
+
+		if ( $percentage ) {
+			$value .= " %";
+		}
+
+		return $value;
 	}
 
 	/**
@@ -118,7 +132,7 @@ class CliMsgFormatter {
 			$last = $total;
 		}
 
-		$progress = !$total ? 100 : min( 100, round( ( $i / $total ) * 100 ) );
+		$progress = $this->caclulateProgress( $i, $total )
 
 		if ( $remainingTime === null ) {
 			return sprintf( "%s / %s (%3.0f%%)", $current, $last, $progress );
