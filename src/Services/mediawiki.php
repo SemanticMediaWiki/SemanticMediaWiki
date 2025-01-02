@@ -8,6 +8,7 @@ use JobQueueGroup;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
+use RequestContext;
 use SMW\MediaWiki\FileRepoFinder;
 use SMW\MediaWiki\NamespaceInfo;
 use SMW\MediaWiki\PermissionManager;
@@ -54,20 +55,10 @@ return [
 	 * @return callable
 	 */
 	'WikiImporter' => function ( $containerBuilder, \ImportSource $importSource ) {
-		$containerBuilder->registerExpectedReturnType( 'WikiImporter', '\WikiImporter' );
 		$services = MediaWikiServices::getInstance();
-		return new WikiImporter(
+		return $services->getWikiImporterFactory()->getWikiImporter(
 			$importSource,
-			$containerBuilder->create( 'MainConfig' ),
-			$services->getHookContainer(),
-			$services->getContentLanguage(),
-			$services->getNamespaceInfo(),
-			$services->getTitleFactory(),
-			$services->getWikiPageFactory(),
-			$services->getWikiRevisionUploadImporter(),
-			$services->getPermissionManager(),
-			$services->getContentHandlerFactory(),
-			$services->getSlotRoleRegistry()
+			RequestContext::getMain()->getAuthority()
 		);
 	},
 
