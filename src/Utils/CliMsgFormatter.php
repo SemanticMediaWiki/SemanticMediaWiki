@@ -98,6 +98,9 @@ class CliMsgFormatter {
 		return $this->calculateProgress( $i, $total, true );
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	private function calculateProgress( int $i, int $total, bool $percentage ) {
 		$value = 100;
 
