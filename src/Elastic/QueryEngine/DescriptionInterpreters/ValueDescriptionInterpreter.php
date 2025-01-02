@@ -164,7 +164,7 @@ class ValueDescriptionInterpreter {
 
 		// Wide proximity uses ~~ as identifier as in [[~~ ... ]] or
 		// [[in:fox jumps]]
-		if ( $value && $value[0] === '~' ) {
+		if ( str_starts_with( $value ?? '', '~' ) ) {
 			$isWide = true;
 
 			// Remove the ~ to avoid a `QueryShardException[Failed to parse query ...`
@@ -226,7 +226,7 @@ class ValueDescriptionInterpreter {
 			return false;
 		}
 
-		if ( $text && $text[0] === '*' ) {
+		if ( str_starts_with( $text ?? '', '*' ) ) {
 			$text = mb_substr( $text, 1 );
 		}
 
