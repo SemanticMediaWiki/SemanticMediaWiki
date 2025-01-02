@@ -153,7 +153,7 @@ class ValueDescriptionInterpreter {
 	}
 
 	private function proximity_bool( $field, $value ) {
-		if ( !$value ) {
+		if ( empty( $value ) ) {
 			return [];
 		}
 
