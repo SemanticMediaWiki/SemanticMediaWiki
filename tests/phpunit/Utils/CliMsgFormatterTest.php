@@ -54,7 +54,7 @@ class CliMsgFormatterTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertEquals(
-			'100',
+			100,
 			$instance->calculateProgress( 0, 0, false )
 		);
 	}
