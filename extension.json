@@ -24,6 +24,39 @@
 	"AutoloadNamespaces": {
 		"SMW\\": "src/"
 	},
+	"TestAutoloadNamespaces": {
+ 		"SMW\\Test\\": "tests/phpunit",
+ 		"SMW\\Tests\\": "tests/phpunit",
+ 		"SMW\\Tests\\Fixtures\\": "tests/phpunit/Fixtures",
+ 		"SMW\\Tests\\Utils\\": "tests/phpunit/Utils"
+ 	},
+ 	"TestAutoloadClasses": {
+ 		"SMW\\Maintenance\\rebuildConceptCache": "maintenance/rebuildConceptCache.php",
+ 		"SMW\\Maintenance\\rebuildData": "maintenance/rebuildData.php",
+ 		"SMW\\Maintenance\\rebuildPropertyStatistics": "maintenance/rebuildPropertyStatistics.php",
+ 		"SMW\\Maintenance\\rebuildFulltextSearchTable": "maintenance/rebuildFulltextSearchTable.php",
+ 		"SMW\\Maintenance\\dumpRDF": "maintenance/dumpRDF.php",
+ 		"SMW\\Maintenance\\setupStore": "maintenance/setupStore.php",
+ 		"SMW\\Maintenance\\updateEntityCollation": "maintenance/updateEntityCollation.php",
+ 		"SMW\\Maintenance\\removeDuplicateEntities": "maintenance/removeDuplicateEntities.php",
+ 		"SMW\\Maintenance\\purgeEntityCache": "maintenance/purgeEntityCache.php",
+ 		"SMW\\Maintenance\\updateQueryDependencies": "maintenance/updateQueryDependencies.php",
+ 		"SMW\\Maintenance\\runImport": "maintenance/runImport.php",
+ 		"SMW\\Maintenance\\disposeOutdatedEntities": "maintenance/disposeOutdatedEntities.php",
+ 		"SMW\\Maintenance\\updateEntityCountMap": "maintenance/updateEntityCountMap.php",
+ 		"SMW\\Tests\\DatabaseTestCase": "tests/phpunit/DatabaseTestCase.php",
+ 		"SMW\\Tests\\DataItemTest": "tests/phpunit/includes/dataitems/DataItemTest.php",
+ 		"SMW\\Tests\\Integration\\JSONScript\\JSONScriptTestCaseRunnerTest": "tests/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php",
+ 		"SMW\\Tests\\Integration\\JSONScript\\JsonTestCaseScriptRunnerTest": "tests/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php",
+ 		"SMW\\Tests\\JSONScriptTestCaseRunner": "tests/phpunit/JSONScriptTestCaseRunner.php",
+ 		"SMW\\Tests\\JSONScriptServicesTestCaseRunner": "tests/phpunit/JSONScriptServicesTestCaseRunner.php",
+ 		"SMW\\Tests\\PHPUnitCompat": "tests/phpunit/PHPUnitCompat.php",
+ 		"SMW\\Tests\\QueryPrinterRegistryTestCase": "tests/phpunit/QueryPrinterRegistryTestCase.php",
+ 		"SMW\\Tests\\QueryPrinterTestCase": "tests/phpunit/QueryPrinterTestCase.php",
+ 		"SMW\\Tests\\SPARQLStore\\RepositoryConnectors\\ElementaryRepositoryConnectorTest": "tests/phpunit/Unit/SPARQLStore/RepositoryConnectors/ElementaryRepositoryConnectorTest.php",
+ 		"SMW\\Tests\\TestConfig": "tests/phpunit/TestConfig.php",
+ 		"SMW\\Tests\\TestEnvironment": "tests/phpunit/TestEnvironment.php"
+ 	},
 	"Hooks": {
 		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces",
 		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
