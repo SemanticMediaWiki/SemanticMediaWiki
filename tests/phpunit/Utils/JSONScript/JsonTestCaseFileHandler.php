@@ -285,7 +285,8 @@ class JsonTestCaseFileHandler {
 			}
 
 			if ( version_compare( $mwVersion, $versionToSkip, $compare ) ) {
-				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason[1]})";
+				$messageToShow = is_array( $reason ) && isset( $reason[1] ) ? $reason[1] : 'Test skipped!';
+				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$messageToShow})";
 				break;
 			}
 		}
