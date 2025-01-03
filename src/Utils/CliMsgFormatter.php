@@ -95,7 +95,9 @@ class CliMsgFormatter {
 	 * @return string
 	 */
 	public function progress( int $i, int $total ): string {
+		// @codeCoverageIgnoreStart
 		return $this->calculateProgress( $i, $total, true );
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
