@@ -181,9 +181,6 @@
 		}
 	},
 	"meta": {
-		"skip-on": {
-			"mw-1.25.6": "Somehow the content lang is not set correctly on Travis (locally works fine)."
-		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

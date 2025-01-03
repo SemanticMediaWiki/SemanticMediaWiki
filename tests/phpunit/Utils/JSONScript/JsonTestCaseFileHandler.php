@@ -156,17 +156,11 @@ class JsonTestCaseFileHandler {
 				list( $noop, $versionToSkip ) = explode( "mw-", $id, 2 );
 			}
 
-			if ( strpos( $id, 'hhvm-' ) !== false ) {
-				list( $noop, $versionToSkip ) = explode( "hhvm-", $id, 2 );
-			}
-
 			// Support for { "skip-on": { "mediawiki": [ ">1.29.x", "Reason is ..." ] }
 			if ( strpos( $id, 'smw' ) !== false ) {
 				$version = SMW_VERSION;
 			} elseif ( strpos( $id, 'mediawiki' ) !== false || strpos( $id, 'mw' ) !== false ) {
 				$version = MW_VERSION;
-			} elseif ( strpos( $id, 'hhvm' ) !== false ) {
-				$version = defined( 'HHVM_VERSION' ) ? HHVM_VERSION : 0;
 			} elseif ( strpos( $id, 'php' ) !== false ) {
 				$version = defined( 'PHP_VERSION' ) ? PHP_VERSION : 0;
 			}
@@ -267,26 +261,32 @@ class JsonTestCaseFileHandler {
 		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
 		foreach ( $skipOn as $id => $reason ) {
-
-			if ( strpos( $id, 'mw-' ) === false ) {
+			if ( strpos( $id, 'mediawiki' ) === false ) {
 				continue;
 			}
 
-			list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
+			$versionToSkip = $skipOn['mediawiki'][0];
 			$compare = '=';
 
-			if ( strpos( $versionToSkip, '.x' ) ) {
-				$versionToSkip = str_replace( '.x', '.9999', $versionToSkip );
-				$compare = '<';
+			if ( strpos( $versionToSkip, '=' ) ) {
+				$list = explode( "=", $versionToSkip );
+				$compare = $list[0] . '=';
+				if ( strpos( $versionToSkip, '.x' ) ) {
+					$versionToSkip = str_replace( '.x', '.9999', $list[1] );
+				}
 			}
 
-			if ( strpos( $versionToSkip, '<' ) ) {
-				$versionToSkip = str_replace( '<', '', $versionToSkip );
-				$compare = '<';
+			if ( !strpos( $versionToSkip, '=' ) ) {
+				$compare = $versionToSkip[0];
+				$list = explode( $compare, $versionToSkip );
+				if ( strpos( $versionToSkip, '.x' ) ) {
+					$versionToSkip = str_replace( '.x', '.9999', $list[1] );
+				}
 			}
 
 			if ( version_compare( $mwVersion, $versionToSkip, $compare ) ) {
-				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
+				$messageToShow = is_array( $reason ) && isset( $reason[1] ) ? $reason[1] : 'Test skipped!';
+				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$messageToShow})";
 				break;
 			}
 		}
