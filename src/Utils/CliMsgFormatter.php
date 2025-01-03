@@ -96,22 +96,18 @@ class CliMsgFormatter {
 	 */
 	public function progress( int $i, int $total ): string {
 		// @codeCoverageIgnoreStart
-		return $this->calculateProgress( $i, $total, true );
+		return $this->calculateProgress( $i, $total ) . " %";
 		// @codeCoverageIgnoreEnd
 	}
 
 	/**
 	 * @codeCoverageIgnore
 	 */
-	private function calculateProgress( int $i, int $total, bool $percentage ) {
+	private function calculateProgress( int $i, int $total ) {
 		$value = 100;
 
 		if ( $i > 0 && $total > 0 ) {
 			$value = min( 100, round( ( $i / $total ) * 100 ) );
-		}
-
-		if ( $percentage ) {
-			$value .= " %";
 		}
 
 		return $value;
@@ -137,7 +133,7 @@ class CliMsgFormatter {
 			$last = $total;
 		}
 
-		$progress = $this->calculateProgress( $i, $total, false );
+		$progress = $this->calculateProgress( $i, $total );
 
 		if ( $remainingTime === null ) {
 			return sprintf( "%s / %s (%3.0f%%)", $current, $last, $progress );
