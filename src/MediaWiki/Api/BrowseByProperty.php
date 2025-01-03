@@ -123,7 +123,7 @@ class BrowseByProperty extends ApiBase {
 				ApiBase::PARAM_REQUIRED => false,
 			],
 			'limit' => [
-				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_TYPE => 'limit',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_DFLT => 50,
 				ApiBase::PARAM_REQUIRED => false,
