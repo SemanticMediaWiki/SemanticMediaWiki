@@ -33,6 +33,8 @@ class ExtendedPermissionsError extends PermissionsError {
 			array_unshift( $this->errorArray, $errors );
 
 			$this->status->fatal( ...$this->errorArray );
+
+			$this->status = $this->status;
 		} else {
 			// Push SMW specific messages to appear first, PermissionsError will
 			// generate a list of required permissions
