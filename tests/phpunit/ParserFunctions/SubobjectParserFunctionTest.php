@@ -148,7 +148,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$instance = $this->acquireInstance( $subobject );
 		$instance->parse( new ParserParameterFormatter( $parameters ) );
 
-		// Expected to be stable for PHP and HHVM as well
+		// Expected to be stable for PHP as well
 		$this->assertEquals(
 			'_be96d37a4d7c35be8673cb4229b8fdec',
 			$subobject->getSubobjectId()
@@ -221,7 +221,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			new ParserParameterFormatter( $parameters )
 		);
 
-		// Expected to be stable for PHP and HHVM as well
+		// Expected to be stable for PHP as well
 		$this->assertEquals(
 			'_ec7323184d89fe1409b5cfaf09950a95',
 			$subobject->getSubobjectId()

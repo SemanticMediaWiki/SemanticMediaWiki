@@ -156,17 +156,11 @@ class JsonTestCaseFileHandler {
 				list( $noop, $versionToSkip ) = explode( "mw-", $id, 2 );
 			}
 
-			if ( strpos( $id, 'hhvm-' ) !== false ) {
-				list( $noop, $versionToSkip ) = explode( "hhvm-", $id, 2 );
-			}
-
 			// Support for { "skip-on": { "mediawiki": [ ">1.29.x", "Reason is ..." ] }
 			if ( strpos( $id, 'smw' ) !== false ) {
 				$version = SMW_VERSION;
 			} elseif ( strpos( $id, 'mediawiki' ) !== false || strpos( $id, 'mw' ) !== false ) {
 				$version = MW_VERSION;
-			} elseif ( strpos( $id, 'hhvm' ) !== false ) {
-				$version = defined( 'HHVM_VERSION' ) ? HHVM_VERSION : 0;
 			} elseif ( strpos( $id, 'php' ) !== false ) {
 				$version = defined( 'PHP_VERSION' ) ? PHP_VERSION : 0;
 			}
