@@ -18,7 +18,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ThingDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -87,7 +87,7 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 0
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
 
-		$description =  new ThingDescription();
+		$description = new ThingDescription();
 		$orderByProperty = null;
 
 		$expected = $stringBuilder
@@ -104,7 +104,7 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 1
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
 
-		$description =  new ThingDescription();
+		$description = new ThingDescription();
 		$orderByProperty = new DIProperty( 'Foo' );
 
 		$expected = $stringBuilder

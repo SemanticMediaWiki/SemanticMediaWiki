@@ -17,7 +17,7 @@ use SMW\Tests\Utils\Validators\QuerySegmentValidator;
  *
  * @author mwjames
  */
-class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $conditionBuilder;
@@ -55,7 +55,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$queryEngineFactory = new QueryEngineFactory(
 			$this->store

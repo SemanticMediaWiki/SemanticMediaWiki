@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UserChangeTest extends \PHPUnit_Framework_TestCase {
+class UserChangeTest extends \PHPUnit\Framework\TestCase {
 
 	private $namespaceExaminer;
 	private $testEnvironment;
@@ -55,12 +55,12 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 
 		$this->jobFactory->expects( $this->once() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $job ) );
+			->willReturn( $job );
 
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->with( $this->equalTo( NS_USER ) )
-			->will( $this->returnValue( true ) );
+			->with( NS_USER )
+			->willReturn( true );
 
 		$instance = new UserChange(
 			$this->namespaceExaminer
@@ -80,7 +80,7 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 
 		$user->expects( $this->once() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$job = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
 			->disableOriginalConstructor()
@@ -88,12 +88,12 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 
 		$this->jobFactory->expects( $this->once() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $job ) );
+			->willReturn( $job );
 
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->with( $this->equalTo( NS_USER ) )
-			->will( $this->returnValue( true ) );
+			->with( NS_USER )
+			->willReturn( true );
 
 		$instance = new UserChange(
 			$this->namespaceExaminer
@@ -112,8 +112,8 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->with( $this->equalTo( NS_USER ) )
-			->will( $this->returnValue( false ) );
+			->with( NS_USER )
+			->willReturn( false );
 
 		$instance = new UserChange(
 			$this->namespaceExaminer

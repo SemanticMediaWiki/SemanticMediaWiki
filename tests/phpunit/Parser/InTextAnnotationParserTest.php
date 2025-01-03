@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
+class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $stringValidator;
@@ -284,16 +284,16 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'canUse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'hasStripMarker' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'unstrip' )
 			->with( $this->stringContains( '<nowiki>Bar</nowiki>' ) )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$parserData = new ParserData(
 			Title::newFromText( __METHOD__ ),
@@ -540,7 +540,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#7 673
+		# 7 673
 
 		// Special:Types/Number
 		$provider[] = [
@@ -551,7 +551,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			],
 			'[[has type::number]], [[has Type::page]] ',
 			[
-				//                     Special:Types/Number -> .*/Number
+				// Special:Types/Number -> .*/Number
 				'resultText'     => "[[.*/Number|number]], [[:Page|page]]",
 				'propertyCount'  => 2,
 				'propertyLabels' => [ 'Has type', 'Has Type' ],
@@ -559,7 +559,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#8 1048, Double-double
+		# 8 1048, Double-double
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -575,7 +575,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#9 T32603
+		# 9 T32603
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -591,7 +591,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#10 #1252 (disabled strict mode)
+		# 10 #1252 (disabled strict mode)
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -607,7 +607,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#11 #1747 (left pipe)
+		# 11 #1747 (left pipe)
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -621,7 +621,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#12 #1747 (left pipe + including one annotation)
+		# 12 #1747 (left pipe + including one annotation)
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -637,7 +637,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#13 @@@ syntax
+		# 13 @@@ syntax
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -651,7 +651,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#14 @@@|# syntax (#4037)
+		# 14 @@@|# syntax (#4037)
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -665,7 +665,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#15 [ ... ] in-text link
+		# 15 [ ... ] in-text link
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -681,7 +681,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#16 (#2671) external [] decode use
+		# 16 (#2671) external [] decode use
 		$provider[] = [
 			NS_MAIN,
 			[

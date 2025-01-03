@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
+class ExpDataDeserializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -71,7 +71,7 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	public function expDataProvider() {
 		$serializier = new ExpDataSerializer();
 
-		#0
+		# 0
 		$expData = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )
 		);
@@ -81,7 +81,7 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 			$expData
 		];
 
-		#1
+		# 1
 		$expData = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )
 		);
@@ -96,7 +96,7 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 			$expData
 		];
 
-		#2 Nested
+		# 2 Nested
 		$expData = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )
 		);
@@ -116,7 +116,7 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 			$expData
 		];
 
-		#2 Nested level 2+3
+		# 2 Nested level 2+3
 
 		$expDataLevel2 = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', new DIBlob( 'SomeOtherText' ) )

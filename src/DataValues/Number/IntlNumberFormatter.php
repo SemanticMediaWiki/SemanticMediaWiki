@@ -189,10 +189,10 @@ class IntlNumberFormatter {
 			$absValue = abs( (float)$value );
 			if ( $absValue >= $this->maxNonExpNumber ) {
 				$doScientific = true;
-			} elseif ( $absValue < pow( 10, - $precision ) ) {
+			} elseif ( $absValue < pow( 10, -$precision ) ) {
 				$doScientific = true;
 			} elseif ( $absValue < 1 ) {
-				if ( $absValue < pow( 10, - $precision ) ) {
+				if ( $absValue < pow( 10, -$precision ) ) {
 					$doScientific = true;
 				} else {
 					// Increase decimal places for small numbers, e.g. .00123 should be 5 places.
@@ -226,8 +226,8 @@ class IntlNumberFormatter {
 			$end = $decseparator . str_repeat( '0', $precision );
 			$lenEnd = strlen( $end );
 
-			if ( substr( $value, - $lenEnd ) === $end ) {
-				$value = substr( $value, 0, - $lenEnd );
+			if ( substr( $value, -$lenEnd ) === $end ) {
+				$value = substr( $value, 0, -$lenEnd );
 			} else {
 				$decseparator = preg_quote( $decseparator, '/' );
 				// If above replacement occurred, no need to do the next one.
@@ -307,7 +307,7 @@ class IntlNumberFormatter {
 		}
 
 		$value = (float)$value;
-		$isNegative = $value < 0 || $value == 0 && strval( $value ) === '-0';
+		$isNegative = $value < 0 || ( $value == 0 && strval( $value ) === '-0' );
 
 		// Format to some level of precision; number_format does rounding and
 		// locale formatting, x and y are used temporarily since number_format

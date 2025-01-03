@@ -17,7 +17,7 @@ use SMW\Query\PrintRequest\Serializer;
  *
  * @author mwjames
  */
-class SerializerTest extends \PHPUnit_Framework_TestCase {
+class SerializerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider textProvider

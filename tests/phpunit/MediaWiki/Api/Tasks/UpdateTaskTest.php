@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UpdateTaskTest extends \PHPUnit_Framework_TestCase {
+class UpdateTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $jobFactory;
 	private $testEnvironment;
@@ -53,7 +53,7 @@ class UpdateTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $updateJob ) );
+			->willReturn( $updateJob );
 
 		$instance = new UpdateTask(
 			$this->jobFactory

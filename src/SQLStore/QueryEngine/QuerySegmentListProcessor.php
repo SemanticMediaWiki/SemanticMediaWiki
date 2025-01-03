@@ -173,7 +173,7 @@ class QuerySegmentListProcessor {
 				$condition = '';
 
 				if ( $subQuery->null === true ) {
-						$condition .= ( $condition ? ' OR ': '' ) . "$joinField IS NULL";
+						$condition .= ( $condition ? ' OR ' : '' ) . "$joinField IS NULL";
 				} else {
 					foreach ( $subQuery->joinfield as $value ) {
 						$op = $subQuery->not ? '!' : '';
@@ -256,9 +256,9 @@ class QuerySegmentListProcessor {
 
 			if ( $subQuery->joinTable !== '' ) {
 				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' .
-				       $this->connection->tableName( $query->alias ) .
+					   $this->connection->tableName( $query->alias ) .
 					   " SELECT DISTINCT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
-					   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where":'' );
+					   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where" : '' );
 			} elseif ( $subQuery->joinfield !== '' ) {
 				// NOTE: this works only for single "unconditional" values without further
 				// WHERE or FROM. The execution must take care of not creating any others.

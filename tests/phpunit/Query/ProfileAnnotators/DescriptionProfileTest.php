@@ -18,7 +18,7 @@ use SMWDIContainer as DIContainer;
  *
  * @author mwjames
  */
-class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
+class DescriptionProfileTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 
@@ -44,7 +44,7 @@ class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateProfile() {
-		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
+		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
 
 		$container = new DIContainer(
 			new ContainerSemanticData( $subject	)
@@ -56,15 +56,15 @@ class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$description->expects( $this->once() )
 			->method( 'getSize' )
-			->will( $this->returnValue( 2 ) );
+			->willReturn( 2 );
 
 		$description->expects( $this->once() )
 			->method( 'getDepth' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new DescriptionProfileAnnotator(
 			new NullProfileAnnotator( $container ),

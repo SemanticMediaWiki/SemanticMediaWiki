@@ -2,10 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group large
  *
  * @license GNU GPL v2+
@@ -13,9 +14,7 @@ use SMW\Tests\DatabaseTestCase;
  *
  * @author mwjames
  */
-class RebuildFulltextSearchTableTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -52,7 +51,7 @@ class RebuildFulltextSearchTableTest extends DatabaseTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildFulltextSearchTable' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildFulltextSearchTable' );
 		$maintenanceRunner->setQuiet()->run();
 	}
 

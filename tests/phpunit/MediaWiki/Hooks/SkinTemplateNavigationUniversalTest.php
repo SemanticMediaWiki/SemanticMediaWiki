@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
  *
  * @author mwjames
  */
-class SkinTemplateNavigationUniversalTest extends \PHPUnit_Framework_TestCase {
+class SkinTemplateNavigationUniversalTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
@@ -43,7 +43,7 @@ class SkinTemplateNavigationUniversalTest extends \PHPUnit_Framework_TestCase {
 
 		$user->expects( $this->atLeastOnce() )
 			->method( 'isAllowed' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$output = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -55,19 +55,19 @@ class SkinTemplateNavigationUniversalTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $output ) );
+			->willReturn( $output );
 
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'msg' )
-			->will( $this->returnValue( $message ) );
+			->willReturn( $message );
 
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$links = [];
 

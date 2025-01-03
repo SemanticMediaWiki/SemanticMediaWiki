@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SortWidgetTest extends \PHPUnit_Framework_TestCase {
+class SortWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

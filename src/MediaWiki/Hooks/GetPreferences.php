@@ -98,7 +98,7 @@ class GetPreferences implements HookListener {
 		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );
 		$this->permissionExaminer->setUser( $user );
 
-		$html = $this->makeImage( Logo::get( '100x90' ) );
+		$html = $this->makeImage( Logo::get( 'small' ) );
 		$html .= wfMessage( 'smw-prefs-intro-text' )->parseAsBlock();
 
 		// Intro text
@@ -177,7 +177,7 @@ class GetPreferences implements HookListener {
 	}
 
 	private function makeImage( $logo ) {
-		return "<img style='float:right;margin-top: 10px;margin-left:20px;' src='{$logo}' height='63' width='70'>";
+		return "<img style='float:right;margin-top:10px;margin-left:20px;height:auto;width:70px;' src='{$logo}'>";
 	}
 
 	private function getProfileList(): array {
@@ -187,7 +187,7 @@ class GetPreferences implements HookListener {
 
 		try {
 			$profileList = $facetedSearchProfile->getProfileList();
-		} catch ( DefaultProfileNotFoundException|SchemaTypeNotFoundException $e ) {
+		} catch ( DefaultProfileNotFoundException | SchemaTypeNotFoundException $e ) {
 			$profileList = [];
 		}
 

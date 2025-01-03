@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
+class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -86,7 +86,7 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getInfo' )
-			->will( $this->returnValue( [ 'SPARQLStore' ] ) );
+			->willReturn( [ 'SPARQLStore' ] );
 
 		$instance = new QuerySourceFactory(
 			$store,

@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class TimeValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -35,11 +35,11 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new TimeValueParser() ) );
+			->willReturn( new TimeValueParser() );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 	}
 
 	public function testCanConstruct() {
@@ -358,7 +358,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function timeInputProvider() {
-		#0
+		# 0
 		$provider[] = [
 			'2000',
 			TimeValueFormatter::VALUE,
@@ -368,7 +368,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000'
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'2000',
 			TimeValueFormatter::VALUE,
@@ -378,7 +378,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000'
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'2000',
 			TimeValueFormatter::WIKI_SHORT,
@@ -388,7 +388,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000'
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			'2000',
 			TimeValueFormatter::HTML_SHORT,
@@ -398,7 +398,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000'
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			'2000',
 			TimeValueFormatter::WIKI_LONG,
@@ -408,7 +408,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000-01-01'
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			'2000',
 			TimeValueFormatter::HTML_LONG,
@@ -418,7 +418,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000-01-01'
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			'2000',
 			TimeValueFormatter::WIKI_LONG,
@@ -428,7 +428,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000'
 		];
 
-		#7
+		# 7
 		$provider[] = [
 			'2000',
 			TimeValueFormatter::HTML_LONG,
@@ -438,7 +438,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000'
 		];
 
-		#8
+		# 8
 		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::VALUE,
@@ -448,7 +448,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000-02'
 		];
 
-		#9
+		# 9
 		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::VALUE,
@@ -458,7 +458,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000-02'
 		];
 
-		#10
+		# 10
 		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::WIKI_SHORT,
@@ -468,7 +468,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000-02'
 		];
 
-		#11
+		# 11
 		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::HTML_SHORT,
@@ -478,7 +478,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000-02'
 		];
 
-		#12
+		# 12
 		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::WIKI_LONG,
@@ -488,7 +488,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000-02-01'
 		];
 
-		#13
+		# 13
 		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::HTML_LONG,
@@ -498,7 +498,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000-02-01'
 		];
 
-		#14
+		# 14
 		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::HTML_LONG,

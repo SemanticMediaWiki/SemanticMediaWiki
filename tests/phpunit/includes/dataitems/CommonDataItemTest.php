@@ -13,7 +13,7 @@ namespace SMW\Tests;
  *
  * @author mwjames
  */
-class CommonDataItemTest extends \PHPUnit_Framework_TestCase {
+class CommonDataItemTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSerializationToFilterSameStringRepresentation() {
 		$items = [];
@@ -26,7 +26,7 @@ class CommonDataItemTest extends \PHPUnit_Framework_TestCase {
 
 			$dataItem->expects( $this->any() )
 				->method( 'getSerialization' )
-				->will( $this->returnValue( $value ) );
+				->willReturn( $value );
 
 			$items[] = $dataItem;
 		}

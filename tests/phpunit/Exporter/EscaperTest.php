@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EscaperTest extends \PHPUnit_Framework_TestCase {
+class EscaperTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
@@ -99,48 +99,48 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function encodePageProvider() {
-		#0
+		# 0
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, '', '' ), 'Foo'
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			new DIWikiPage( 'Foo_bar', NS_MAIN, '', '' ),
 			'Foo_bar'
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			new DIWikiPage( 'Foo%bar', NS_MAIN, '', '' ),
 			'Foo-25bar'
 		];
 
-		#3 / #759
+		# 3 / #759
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '' ),
 			'bar-3AFoo'
 		];
 
-		#4 / #759
+		# 4 / #759
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', 'yuu' ),
 			'bar-3AFoo'
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			new DIWikiPage( 'Fooºr', NS_MAIN, '', '' ),
 			'Foo-C2-BAr'
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			new DIWikiPage( 'Fooºr', SMW_NS_PROPERTY, '', '' ),
 			'Property-3AFoo-C2-BAr'
 		];
 
-		#7
+		# 7
 		$provider[] = [
 			new DIWikiPage( 'Fooºr', NS_CATEGORY, '', '' ),
 			'Category-3AFoo-C2-BAr'

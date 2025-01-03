@@ -14,7 +14,7 @@ use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
  *
  * @author mwjames
  */
-class HtmlTemplateRendererTest extends \PHPUnit_Framework_TestCase {
+class HtmlTemplateRendererTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$wikitextTemplateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )

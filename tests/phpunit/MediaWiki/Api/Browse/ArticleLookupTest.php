@@ -13,7 +13,7 @@ use SMW\MediaWiki\Api\Browse\ArticleLookup;
  *
  * @author mwjames
  */
-class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
+class ArticleLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -44,7 +44,7 @@ class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
@@ -52,7 +52,7 @@ class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anyThing(),
 				$this->anyThing(),
 				$this->stringContains( $condition ) )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$instance = new ArticleLookup(
 			$connection,
@@ -66,8 +66,8 @@ class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
 		$res = $instance->lookup( $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 

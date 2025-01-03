@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
+class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -32,8 +32,8 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testBuild( $key, $params ) {
 		$instance = new HtmlBuilder();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->build( $key, $params )
 		);
 	}
@@ -105,7 +105,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 				'href' => 'Foo'
 			]
 		];
-
 	}
 
 }

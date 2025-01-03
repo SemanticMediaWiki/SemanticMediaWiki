@@ -27,7 +27,7 @@ use SMWDINumber as DINumber;
  *
  * @author mwjames
  */
-class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class DisjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 

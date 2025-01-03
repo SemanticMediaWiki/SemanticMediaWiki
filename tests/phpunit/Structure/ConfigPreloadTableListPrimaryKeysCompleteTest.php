@@ -15,7 +15,7 @@ use ReflectionClass;
  *
  * @author mwjames
  */
-class ConfigPreloadTableListPrimaryKeysCompleteTest extends \PHPUnit_Framework_TestCase {
+class ConfigPreloadTableListPrimaryKeysCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	const FILENAME = 'db-primary-keys.php';
 

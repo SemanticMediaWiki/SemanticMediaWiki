@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class OpenFormTest extends \PHPUnit_Framework_TestCase {
+class OpenFormTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -36,18 +36,18 @@ class OpenFormTest extends \PHPUnit_Framework_TestCase {
 	public function testMakeFields() {
 		$this->webRequest->expects( $this->at( 0 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'property' ) )
-			->will( $this->returnValue( [ 'Bar' ] ) );
+			->with( 'property' )
+			->willReturn( [ 'Bar' ] );
 
 		$this->webRequest->expects( $this->at( 1 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'pvalue' ) )
-			->will( $this->returnValue( [ 42 ] ) );
+			->with( 'pvalue' )
+			->willReturn( [ 42 ] );
 
 		$this->webRequest->expects( $this->at( 2 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'op' ) )
-			->will( $this->returnValue( [ 'OR' ] ) );
+			->with( 'op' )
+			->willReturn( [ 'OR' ] );
 
 		$instance = new OpenForm(
 			$this->webRequest

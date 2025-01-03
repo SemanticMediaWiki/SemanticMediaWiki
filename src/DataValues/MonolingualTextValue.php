@@ -46,7 +46,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @var DIProperty[]|null
 	 */
 	private static $properties = null;
-	
+
 	/**
 	 * nonstandardLanguageCodeMapping
 	 */

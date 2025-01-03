@@ -13,7 +13,7 @@ use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
  *
  * @author mwjames
  */
-class AllowsPatternValueParserTest extends \PHPUnit_Framework_TestCase {
+class AllowsPatternValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	private $mediaWikiNsContentReader;
 
@@ -33,7 +33,7 @@ class AllowsPatternValueParserTest extends \PHPUnit_Framework_TestCase {
 	public function testParseAndMatchFromResource() {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( " \nFoo|^(Bar|Foo bar)$\n Bar|^(ABC|DEF)$\n" ) );
+			->willReturn( " \nFoo|^(Bar|Foo bar)$\n Bar|^(ABC|DEF)$\n" );
 
 		$instance = new AllowsPatternValueParser(
 			$this->mediaWikiNsContentReader

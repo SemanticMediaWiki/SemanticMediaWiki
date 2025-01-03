@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
+class NamespaceFormTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -71,7 +71,7 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 
 		$user->expects( $this->any() )
 			->method( 'isRegistered' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
 			->disableOriginalConstructor()
@@ -79,7 +79,7 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 
 		$specialSearch->expects( $this->any() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$instance = new NamespaceForm(
 			$this->namespaceInfo,

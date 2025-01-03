@@ -13,7 +13,7 @@ use SMW\Exception\SettingNotFoundException;
  *
  * @author mwjames
  */
-class SettingNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class SettingNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SettingNotFoundException();

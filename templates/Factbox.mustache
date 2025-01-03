@@ -1,0 +1,30 @@
+{{!
+  Factbox template for displaying semantic data
+
+  Required data:
+  - is-loading: bool - Whether the factbox is loading
+  - data-header: object - Header information
+    - html-title: string - Title HTML
+    - html-actions: string - Actions HTML
+  - array-sections: object[] - Array of section data (rendered via FactboxSection partial)
+  - data-pagination: object - Pagination information
+    - html-pagination-prev: string - Previous page HTML
+    - html-pagination-next: string - Next page HTML
+    - footer-content: string - Pagination status text
+}}
+<div class="smw-factbox"{{#is-loading}} aria-busy="true"{{/is-loading}}>
+	{{#data-header}}
+	<div class="smw-factbox-header mw-sticky-header-element">
+		<div class="smw-factbox-title" role="heading" aria-level="2">{{{html-title}}}</div>
+		<div class="smw-factbox-actions">{{{html-actions}}}</div>
+	</div>
+	{{/data-header}}
+	{{#array-sections}}{{>FactboxSection}}{{/array-sections}}
+	{{#data-pagination}}
+	<div class="smw-factbox-pagination">
+		{{{html-pagination-prev}}}
+		<div class="smw-factbox-pagination-status">{{footer-content}}</div>
+		{{{html-pagination-next}}}
+	</div>
+	{{/data-pagination}}
+</div>

@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
+class JsonResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -81,11 +81,11 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'serializeToArray' )
-			->will( $this->returnValue( $res ) );
+			->willReturn( $res );
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'getCount' )
-			->will( $this->returnValue( count( $res ) ) );
+			->willReturn( count( $res ) );
 
 		$instance = new JsonResultPrinter( 'json' );
 
@@ -95,8 +95,8 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 			SMW_OUTPUT_FILE
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$results
 		);
 

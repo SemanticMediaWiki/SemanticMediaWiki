@@ -15,7 +15,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
+class SingleValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -62,7 +62,7 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -71,7 +71,8 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
+			->willReturn( function () use( $semanticData ) { return $semanticData;
+			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
@@ -81,7 +82,7 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$instance = new SingleValueConstraint();
 

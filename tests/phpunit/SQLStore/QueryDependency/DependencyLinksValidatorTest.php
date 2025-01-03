@@ -15,7 +15,7 @@ use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
  *
  * @author mwjames
  */
-class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
+class DependencyLinksValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $dataItemFactory;
@@ -72,19 +72,19 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)[ 'smw_id' => 42 ] ) );
+			->willReturn( (object)[ 'smw_id' => 42 ] );
 
 		$connection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( [ (object)[ 'smw_id' => 42, 'smw_subobject' => '_foo', 'smw_touched' => '99999' ] ] ) );
+			->willReturn( [ (object)[ 'smw_id' => 42, 'smw_subobject' => '_foo', 'smw_touched' => '99999' ] ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ '_foo' => $propertyTableDefinition ] ) );
+			->willReturn( [ '_foo' => $propertyTableDefinition ] );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
@@ -92,11 +92,11 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTableInfoFetcher->expects( $this->any() )
 			->method( 'findTableIdForProperty' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$instance = new DependencyLinksValidator(
 			$this->store

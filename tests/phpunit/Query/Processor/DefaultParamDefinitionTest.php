@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DefaultParamDefinitionTest extends \PHPUnit_Framework_TestCase {
+class DefaultParamDefinitionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -34,15 +34,15 @@ class DefaultParamDefinitionTest extends \PHPUnit_Framework_TestCase {
 			'smwgQUpperbound' => 100
 		];
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			DefaultParamDefinition::buildParamDefinitions( $vars )
 		);
 	}
 
 	public function testGetParamDefinitions() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			DefaultParamDefinition::getParamDefinitions()
 		);
 	}

@@ -15,7 +15,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
+class MustExistsConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -62,7 +62,7 @@ class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -70,11 +70,11 @@ class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem->expects( $this->atLeastOnce() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( \SMWDataItem::TYPE_WIKIPAGE ) );
+			->willReturn( \SMWDataItem::TYPE_WIKIPAGE );
 
 		$dataItem->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -89,11 +89,11 @@ class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
 		$instance = new MustExistsConstraint();
 

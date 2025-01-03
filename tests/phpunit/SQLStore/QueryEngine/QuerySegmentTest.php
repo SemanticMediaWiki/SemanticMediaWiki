@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
  *
  * @author mwjames
  */
-class QuerySegmentTest extends \PHPUnit_Framework_TestCase {
+class QuerySegmentTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -26,7 +26,7 @@ class QuerySegmentTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QuerySegment();
 		$instance->reset();
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->queryNumber
 		);
@@ -36,7 +36,7 @@ class QuerySegmentTest extends \PHPUnit_Framework_TestCase {
 			$instance->alias
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance::$qnum
 		);
@@ -56,22 +56,22 @@ class QuerySegmentTest extends \PHPUnit_Framework_TestCase {
 			$instance->sortfields
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->joinfield
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->joinTable
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->from
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->where
 		);

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Connection;
 
+use RuntimeException;
 use SMW\Connection\ConnectionManager;
 use SMW\Tests\PHPUnitCompat;
 
@@ -14,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
+class ConnectionManagerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

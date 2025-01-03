@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use SMW\DIProperty;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
@@ -14,6 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  * @group SMWExtension
  * @group semantic-mediawiki-import
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -21,11 +22,9 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TimeDataTypeTest extends DatabaseTestCase {
+class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
-
-	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -221,7 +220,6 @@ class TimeDataTypeTest extends DatabaseTestCase {
 			$this->semanticDataValidator->assertThatPropertiesAreSet( $expectedPropertiesFromImport, $semanticData );
 			$this->assertBatchesOfDateValues( $expectedDateValuesBatches, $semanticData );
 		}
-
 	}
 
 	protected function assertBatchesOfDateValues( $assertionBatches, $semanticData ) {

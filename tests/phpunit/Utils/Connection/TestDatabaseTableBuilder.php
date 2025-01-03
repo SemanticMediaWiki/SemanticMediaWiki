@@ -160,7 +160,12 @@ class TestDatabaseTableBuilder {
 			__METHOD__
 		);
 
-		if ( $dbConnection->getType() === 'mysql' && method_exists( $dbConnection, 'listViews' ) ) {
+		// MW < 1.42
+		if (
+			version_compare( MW_VERSION, '1.42', '<' ) &&
+			$dbConnection->getType() === 'mysql' &&
+			method_exists( $dbConnection, 'listViews' )
+		) {
 
 			# bug 43571: cannot clone VIEWs under MySQL
 			$views = $dbConnection->listViews(
@@ -215,18 +220,18 @@ class TestDatabaseTableBuilder {
 				$tablesToBeCloned,
 				$this->getDBPrefix()
 			);
-	
+
 			// Ensure no leftovers
 			if ( $this->getDBConnection()->getType() === 'postgres' ) {
 				$this->cloneDatabase->destroy( true );
 			}
-	
+
 			// Rebuild the DB (in order to exclude temporary table usage)
 			// otherwise some tests will fail with
 			// "Error: 1137 Can't reopen table" on MySQL (see Issue #80)
 			$this->cloneDatabase->useTemporaryTables( false );
 			$this->cloneDatabase->cloneTableStructure();
-	
+
 			// #3197
 			// @see https://github.com/wikimedia/mediawiki/commit/6badc7415684df54d6672098834359223b859507
 			CloneDatabase::changePrefix( self::$UTDB_PREFIX );

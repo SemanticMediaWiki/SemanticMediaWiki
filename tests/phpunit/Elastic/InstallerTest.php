@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class InstallerTest extends \PHPUnit_Framework_TestCase {
+class InstallerTest extends \PHPUnit\Framework\TestCase {
 
 	private $rollover;
 
@@ -65,7 +65,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	public function testRollover() {
 		$this->rollover->expects( $this->once() )
 			->method( 'rollover' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new Installer(
 			$this->rollover

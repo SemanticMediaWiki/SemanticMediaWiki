@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
+class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -30,10 +30,10 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$urlArgs->expects( $this->any() )
 			->method( 'toArray' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, false )
 		);
 	}
@@ -49,7 +49,7 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$urlArgs->expects( $this->any() )
 			->method( 'toArray' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		NavigationLinksWidget::setMaxInlineLimit( 300 );
 
@@ -91,13 +91,13 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$urlArgs->expects( $this->at( 0 ) )
 			->method( 'get' )
-			->with(	$this->equalTo( 'limit' ) )
-			->will( $this->returnValue( 3 ) );
+			->with(	'limit' )
+			->willReturn( 3 );
 
 		$urlArgs->expects( $this->at( 1 ) )
 			->method( 'get' )
-			->with(	$this->equalTo( 'offset' ) )
-			->will( $this->returnValue( 10 ) );
+			->with(	'offset' )
+			->willReturn( 10 );
 
 		NavigationLinksWidget::setMaxInlineLimit( 300 );
 		NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, true );

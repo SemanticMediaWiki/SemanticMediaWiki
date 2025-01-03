@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class DuplicateLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -49,8 +49,8 @@ class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}

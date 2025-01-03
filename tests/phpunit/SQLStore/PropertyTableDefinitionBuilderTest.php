@@ -16,7 +16,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableDefinitionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $propertyTypeFinder;
 	private $mwHooksHandler;
@@ -90,7 +90,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertyTypeFinder->expects( $this->any() )
 			->method( 'findTypeID' )
-			->will( $this->returnValue( '_num' ) );
+			->willReturn( '_num' );
 
 		$instance = new PropertyTableDefinitionBuilder(
 			$this->propertyTypeFinder

@@ -11,13 +11,14 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\PropertiesQueryPage
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
+class PropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -66,8 +67,8 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			[ $error, null ]
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$result
 		);
 

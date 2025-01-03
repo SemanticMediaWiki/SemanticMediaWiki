@@ -16,7 +16,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryEngineTest extends \PHPUnit_Framework_TestCase {
+class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $conditionBuilder;
@@ -52,16 +52,15 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnCallback( $callback ) );
+			->willReturnCallback( $callback );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->idTable ) );
+			->willReturn( $this->idTable );
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
-
 	}
 
 	public function testCanConstruct() {
@@ -82,11 +81,11 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$query->querymode = Query::MODE_NONE;
 
@@ -136,23 +135,23 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'search' )
-			->will( $this->returnValue( [ $res, $errors ] ) );
+			->willReturn( [ $res, $errors ] );
 
 		$this->idTable->expects( $this->any() )
 			->method( 'getDataItemsFromList' )
-			->will( $this->returnValue( $list ) );
+			->willReturn( $list );
 
 		$this->conditionBuilder->expects( $this->once() )
 			->method( 'makeFromDescription' );

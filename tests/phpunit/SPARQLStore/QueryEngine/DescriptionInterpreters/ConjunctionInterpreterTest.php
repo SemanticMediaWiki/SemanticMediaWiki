@@ -25,7 +25,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -162,7 +162,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 3
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new SomeProperty(
+		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);

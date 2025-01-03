@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RebuilderTest extends \PHPUnit_Framework_TestCase {
+class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $titleFactory;
@@ -59,7 +59,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -68,11 +68,11 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
@@ -99,7 +99,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testDispatchRebuildForSingleIteration( $id, $expected ) {
 		$this->titleFactory->expects( $this->any() )
 			->method( 'newFromIDs' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -107,11 +107,11 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$connection->expects( $this->any() )
 			->method( 'selectField' )
-			->will( $this->returnValue( $expected ) );
+			->willReturn( $expected );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -120,7 +120,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new Rebuilder(
 			$store,
@@ -153,7 +153,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testRevisionMode() {
 		$this->entityValidator->expects( $this->any() )
 			->method( 'hasLatestRevID' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -161,15 +161,15 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->titleFactory->expects( $this->any() )
 			->method( 'newFromIDs' )
-			->will( $this->returnValue( [ $title ] ) );
+			->willReturn( [ $title ] );
 
 		$row = [
 			'smw_id' => 9999999999999999,
@@ -191,11 +191,11 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( [ (object)$row ] ) );
+			->willReturn( [ (object)$row ] );
 
 		$connection->expects( $this->any() )
 			->method( 'selectField' )
-			->will( $this->returnValue( 500 ) );
+			->willReturn( 500 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -204,11 +204,11 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new Rebuilder(
 			$store,

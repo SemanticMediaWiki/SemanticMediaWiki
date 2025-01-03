@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SectionTagTest extends \PHPUnit_Framework_TestCase {
+class SectionTagTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -63,11 +63,11 @@ class SectionTagTest extends \PHPUnit_Framework_TestCase {
 
 		$this->parser->expects( $this->any() )
 			->method( 'recursiveTagParse' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->parser->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance = new SectionTag(
 			$this->parser,
@@ -89,15 +89,15 @@ class SectionTagTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_PROPERTY ) );
+			->willReturn( SMW_NS_PROPERTY );
 
 		$this->parser->expects( $this->any() )
 			->method( 'recursiveTagParse' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->parser->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance = new SectionTag(
 			$this->parser,

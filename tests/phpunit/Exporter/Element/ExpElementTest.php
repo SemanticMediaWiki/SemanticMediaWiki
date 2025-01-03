@@ -16,7 +16,7 @@ use SMW\Exporter\Element\ExpResource;
  *
  * @author mwjames
  */
-class ExpElementTest extends \PHPUnit_Framework_TestCase {
+class ExpElementTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = $this->getMockBuilder( '\SMW\Exporter\Element\ExpElement' )

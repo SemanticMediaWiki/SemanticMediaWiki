@@ -9,7 +9,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\PrintRequest as PrintRequest;
 use SMW\Subobject;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
@@ -24,6 +24,7 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -31,7 +32,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class SpecialCharactersQueryDBIntegrationTest extends DatabaseTestCase {
+class SpecialCharactersQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;

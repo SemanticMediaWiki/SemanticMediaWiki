@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HtmlVTabsTest extends \PHPUnit_Framework_TestCase {
+class HtmlVTabsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -23,15 +23,15 @@ class HtmlVTabsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetModules() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			HtmlVTabs::getModules()
 		);
 	}
 
 	public function testGetModuleStyles() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			HtmlVTabs::getModuleStyles()
 		);
 	}

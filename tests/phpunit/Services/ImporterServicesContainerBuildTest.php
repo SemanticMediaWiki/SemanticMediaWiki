@@ -13,7 +13,7 @@ use SMW\Settings;
  *
  * @author mwjames
  */
-class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
+class ImporterServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 
 	private $callbackContainerFactory;
 	private $connectionManager;
@@ -37,7 +37,7 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->callbackContainerFactory = new CallbackContainerFactory();
 		$this->servicesFileDir = $GLOBALS['smwgServicesFileDir'];

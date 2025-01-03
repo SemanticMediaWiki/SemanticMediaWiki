@@ -11,13 +11,14 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\SQLStore\PropertyTableRowDiffer
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 2.3
  *
  * @author mwjames
  */
-class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -30,7 +31,7 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertyTableRowMapper->expects( $this->any() )
 			->method( 'mapToRows' )
-			->will( $this->returnValue( [ [], [], [], [] ] ) );
+			->willReturn( [ [], [], [], [] ] );
 	}
 
 	public function testCanConstruct() {
@@ -56,7 +57,7 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( $propertyTables ) );
+			->willReturn( $propertyTables );
 
 		$instance = new PropertyTableRowDiffer(
 			$store,
@@ -68,8 +69,8 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 			$semanticData
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 	}
@@ -86,7 +87,7 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( $propertyTables ) );
+			->willReturn( $propertyTables );
 
 		$instance = new PropertyTableRowDiffer(
 			$store,
@@ -113,15 +114,15 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->once() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getFixedProperty' )
-			->will( $this->returnValue( '_UNKNOWN_FIXED_PROPERTY' ) );
+			->willReturn( '_UNKNOWN_FIXED_PROPERTY' );
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
@@ -134,11 +135,11 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( $propertyTables ) );
+			->willReturn( $propertyTables );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( $propertyTables ) );
+			->willReturn( $propertyTables );
 
 		$instance = new PropertyTableRowDiffer(
 			$store,
@@ -173,11 +174,11 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
@@ -185,15 +186,15 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getFixedProperty' )
-			->will( $this->returnValue( '_UNKNOWN_FIXED_PROPERTY' ) );
+			->willReturn( '_UNKNOWN_FIXED_PROPERTY' );
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
@@ -206,7 +207,7 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getPropertyTableHashes' )
-			->will( $this->returnValue( [ 'foo' => 'abcdef10001' ] ) );
+			->willReturn( [ 'foo' => 'abcdef10001' ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -215,19 +216,19 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( $propertyTables ) );
+			->willReturn( $propertyTables );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( $propertyTables ) );
+			->willReturn( $propertyTables );
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new PropertyTableRowDiffer(
 			$store,

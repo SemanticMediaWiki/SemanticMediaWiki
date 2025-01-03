@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
+use Html;
 use SMW\Store;
 use SMW\Localizer\Message;
 use SMWQueryProcessor as QueryProcessor;
@@ -192,7 +193,7 @@ class ResultFetcher {
 				$msg .= Message::decode( $error );
 			}
 
-			return '<div class="smw-callout smw-callout-error">' . $msg . '</div>';
+			return Html::errorBox( $msg );
 		}
 
 		if ( $this->queryResult === null ) {
@@ -208,7 +209,9 @@ class ResultFetcher {
 		$html = $printer->getResult( $this->queryResult, $this->params, SMW_OUTPUT_HTML );
 
 		if ( $html === '' ) {
-			$html = '<div class="smw-callout smw-callout-warning">' . Message::get( [ 'smw-facetedsearch-no-output', $this->format ] ) . '</div>';
+			$html = Html::warningBox(
+				Message::get( [ 'smw-facetedsearch-no-output', $this->format ] )
+			);
 		}
 
 		return $html;
@@ -301,7 +304,7 @@ class ResultFetcher {
 		// filter list for all matchable subjects on a specific selected property
 		if ( $parametersProcessor->getValueFilters() !== [] ) {
 
-		//	$_queryString = $queryString;
+		// $_queryString = $queryString;
 
 			foreach ( $parametersProcessor->getValueFilters() as $prop => $conds ) {
 

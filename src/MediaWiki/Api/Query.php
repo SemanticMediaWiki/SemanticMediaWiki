@@ -76,9 +76,9 @@ abstract class Query extends ApiBase {
 		$resultFormatter->doFormat();
 
 		if ( $resultFormatter->getContinueOffset() ) {
-		//	$result->disableSizeCheck();
+		// $result->disableSizeCheck();
 			$result->addValue( null, 'query-continue-offset', $resultFormatter->getContinueOffset() );
-		//	$result->enableSizeCheck();
+		// $result->enableSizeCheck();
 		}
 
 		$result->addValue(

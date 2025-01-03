@@ -27,12 +27,6 @@ class NGramTokenizerTest extends TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testTokenize( $string, $ngram, $expected ) {
-		if ( version_compare( phpversion(), '5.4', '<' ) ) {
-			$this->markTestSkipped(
-				"Ehh, PHP 5.3 returns with unexpected results"
-			);
-		}
-
 		$instance = new NGramTokenizer( null, $ngram );
 
 		$this->assertEquals(
@@ -97,8 +91,8 @@ class NGramTokenizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $string ) )
-			->will( $this->returnValue( array( $string ) ) );
+			->with( $string )
+			->willReturn( array( $string ) );
 
 		$instance = new NGramTokenizer( $tokenizer );
 

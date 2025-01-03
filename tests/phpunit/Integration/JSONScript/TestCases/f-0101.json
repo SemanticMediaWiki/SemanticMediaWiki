@@ -44,27 +44,7 @@
 	"tests": [
 		{
 			"type": "format",
-			"about": "#0 (1.31-) asc template output using unnamed arguments, #885 further results link",
-			"skip-on": {
-				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
-			"subject": "template-001-asc-order-unnamed-args",
-			"assert-output": {
-				"to-contain": [
-					"<div>[$%&amp;*==42]</div>",
-					"[0]:123:ABC, DEF:[$%&amp;*==42]:",
-					"[1]:Bar:ABC, DEF:[$%&amp;*==42]:",
-					"[2]:Foo:ABC, DEF:[$%&amp;*==42]:",
-					"<div>[$%&amp;*==42]</div><span class=\"smw-template-furtherresults\">"
-				]
-			}
-		},
-		{
-			"type": "format",
-			"about": "#0 (1.31+) asc template output using unnamed arguments, #885 further results link",
-			"skip-on": {
-				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#0 asc template output using unnamed arguments, #885 further results link",
 			"subject": "template-001-asc-order-unnamed-args",
 			"assert-output": {
 				"to-contain": [
@@ -78,27 +58,7 @@
 		},
 		{
 			"type": "format",
-			"about": "#1 (1.31-) desc template output using unnamed arguments",
-			"skip-on": {
-				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
-			"subject": "template-001-desc-order-unnamed-args",
-			"assert-output": {
-				"to-contain": [
-					"<div>[$%&amp;*==42]</div>",
-					"[0]:Yxz:ABC, DEF:[$%&amp;*==42]:",
-					"[1]:Foo:ABC, DEF:[$%&amp;*==42]:",
-					"[2]:Bar:ABC, DEF:[$%&amp;*==42]:",
-					"<div>[$%&amp;*==42]</div><span class=\"smw-template-furtherresults\">"
-				]
-			}
-		},
-		{
-			"type": "format",
-			"about": "#1 (1.31+) desc template output using unnamed arguments",
-			"skip-on": {
-				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#1 desc template output using unnamed arguments",
 			"subject": "template-001-desc-order-unnamed-args",
 			"assert-output": {
 				"to-contain": [

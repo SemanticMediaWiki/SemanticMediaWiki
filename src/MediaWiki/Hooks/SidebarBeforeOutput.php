@@ -20,7 +20,7 @@ use SMW\OptionsAwareTrait;
  */
 class SidebarBeforeOutput implements HookListener {
 
-    use OptionsAwareTrait;
+	use OptionsAwareTrait;
 
 	/**
 	 * @var NamespaceExaminer

@@ -50,20 +50,17 @@ class SMWDIGeoCoord extends SMWDataItem {
 				if ( array_key_exists( 'alt', $args[0] ) ) {
 					$this->altitude = (float)$args[0]['alt'];
 				}
-			}
-			else {
+			} else {
 				throw new DataItemException( 'Invalid coordinate data passed to the SMWDIGeoCoord constructor' );
 			}
-		}
-		elseif ( $count === 2 || $count === 3 ) {
+		} elseif ( $count === 2 || $count === 3 ) {
 			$this->setLatitude( $args[0] );
 			$this->setLongitude( $args[1] );
 
 			if ( $count === 3 ) {
 				$this->altitude = (float)$args[2];
 			}
-		}
-		else {
+		} else {
 			throw new DataItemException( 'Invalid coordinate data passed to the SMWDIGeoCoord constructor' );
 		}
 	}

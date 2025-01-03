@@ -17,13 +17,14 @@ use SMWExpResource as ExpResource;
  *
  * @group SMW
  * @group SMWExtension
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SMWExporterTest extends \PHPUnit_Framework_TestCase {
+class SMWExporterTest extends \PHPUnit\Framework\TestCase {
 
 	// @see #795
 	public function testExportDataForPropertyPage() {

@@ -13,7 +13,7 @@ use SMW\DataValues\ExternalFormatterUriValue;
  *
  * @author mwjames
  */
-class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
+class ExternalFormatterUriValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -94,7 +94,7 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 			'urn:abc:names:def:foo:dtd:xml:foo'
 		];
 
-	//	$provider[] = array(
+	// $provider[] = array(
 	//		'abc:$1',
 	//		'foo',
 	//		'http://example.org/foo'

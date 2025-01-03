@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\SQLStore;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\MwHooksHandler;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
@@ -15,6 +15,7 @@ use WikiPage;
  * @group SMWExtension
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -22,7 +23,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class RefreshSQLStoreDBIntegrationTest extends DatabaseTestCase {
+class RefreshSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $title;
 	private $mwHooksHandler;
@@ -94,7 +95,7 @@ class RefreshSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	public function titleProvider() {
 		$provider = [];
 
-	//	$provider[] = array( NS_MAIN, 'withInterWiki', 'commons' );
+	// $provider[] = array( NS_MAIN, 'withInterWiki', 'commons' );
 		$provider[] = [ NS_MAIN, 'NormalTite', '' ];
 		$provider[] = [ NS_MAIN, 'UseUpdateJobs', '' ];
 

@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ThingDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $conditionBuilder;
@@ -34,7 +34,7 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()

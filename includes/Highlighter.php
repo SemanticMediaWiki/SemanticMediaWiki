@@ -118,7 +118,7 @@ class Highlighter {
 	 * @param string $text
 	 * @param string|null $type
 	 *
-	 * @return booelan
+	 * @return boolean
 	 */
 	public static function hasHighlighterClass( $text, $type = null ) {
 		if ( strpos( $text, 'smw-highlighter' ) === false ) {
@@ -156,7 +156,9 @@ class Highlighter {
 	 * @return string
 	 */
 	public function getHtml() {
-		SMWOutputs::requireResource( 'ext.smw.tooltips' );
+		SMWOutputs::requireStyle( 'ext.smw.styles' );
+		SMWOutputs::requireStyle( 'ext.smw.tooltip.styles' );
+		SMWOutputs::requireResource( 'ext.smw.tooltip' );
 		return $this->getContainer();
 	}
 

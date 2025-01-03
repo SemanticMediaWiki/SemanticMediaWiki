@@ -8,7 +8,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
@@ -22,6 +22,7 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -29,7 +30,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class InversePropertyRelationshipDBIntegrationTest extends DatabaseTestCase {
+class InversePropertyRelationshipDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 
@@ -95,7 +96,7 @@ class InversePropertyRelationshipDBIntegrationTest extends DatabaseTestCase {
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$queryResult->getCount()
 		);

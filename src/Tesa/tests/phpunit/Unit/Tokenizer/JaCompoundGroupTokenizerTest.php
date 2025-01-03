@@ -27,12 +27,6 @@ class JaCompoundGroupTokenizerTest extends TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testTokenize( $string, $expected ) {
-		if ( version_compare( phpversion(), '5.4', '<' ) ) {
-			$this->markTestSkipped(
-				"Boo, PHP 5.3 returns with unexpected results"
-			);
-		}
-
 		$instance = new JaCompoundGroupTokenizer();
 
 		$this->assertEquals(
@@ -42,12 +36,6 @@ class JaCompoundGroupTokenizerTest extends TestCase {
 	}
 
 	public function testTokenizeWithOption() {
-		if ( version_compare( phpversion(), '5.4', '<' ) ) {
-			$this->markTestSkipped(
-				"Ehh, PHP 5.3 returns with unexpected results"
-			);
-		}
-
 		$string = 'と歓声を上げていました';
 
 		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
@@ -59,8 +47,8 @@ class JaCompoundGroupTokenizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $string ) )
-			->will( $this->returnValue( array( $string ) ) );
+			->with( $string )
+			->willReturn( array( $string ) );
 
 		$instance = new JaCompoundGroupTokenizer( $tokenizer );
 

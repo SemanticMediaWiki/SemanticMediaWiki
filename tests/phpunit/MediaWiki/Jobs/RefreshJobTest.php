@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class RefreshJobTest extends \PHPUnit_Framework_TestCase {
+class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 
 	/** @var integer */
 	protected $controlRefreshDataIndex;
@@ -72,7 +72,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 		$rebuilder->expects( $this->any() )
 			->method( 'rebuild' )
-			->will( $this->returnValue( $parameters['spos'] ) );
+			->willReturn( $parameters['spos'] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->setMethods( [ 'refreshData' ] )
@@ -80,7 +80,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $expectedToRun )
 			->method( 'refreshData' )
-			->will( $this->returnValue( $rebuilder ) );
+			->willReturn( $rebuilder );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
@@ -155,7 +155,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return $provider;
-
 	}
 
 	/**

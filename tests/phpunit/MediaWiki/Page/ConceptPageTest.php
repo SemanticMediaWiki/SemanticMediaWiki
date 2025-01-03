@@ -14,7 +14,7 @@ use SMW\MediaWiki\Page\ConceptPage;
  *
  * @author mwjames
  */
-class ConceptPageTest extends \PHPUnit_Framework_TestCase {
+class ConceptPageTest extends \PHPUnit\Framework\TestCase {
 
 	private $title;
 

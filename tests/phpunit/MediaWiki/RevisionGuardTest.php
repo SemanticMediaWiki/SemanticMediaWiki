@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
+class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -43,7 +43,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
@@ -51,8 +51,8 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isSkippableUpdate( $title )
 		);
 	}
@@ -73,8 +73,8 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isSkippableUpdate( $title, $latestRevID )
 		);
 	}
@@ -86,7 +86,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
@@ -105,7 +105,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revisionLookup =  $this->getRevisionLookupMock();
+		$revisionLookup = $this->getRevisionLookupMock();
 		$revisionLookup->expects( $this->once() )
 			->method( 'getRevisionByTitle' );
 
@@ -152,8 +152,8 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onChangeFile' )
 			->with(
-				$this->equalTo( $title ),
-				$this->equalTo( $file ) );
+				$title,
+				$file );
 
 		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 

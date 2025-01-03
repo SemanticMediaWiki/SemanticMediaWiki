@@ -98,11 +98,11 @@ class RemoteRequest implements QueryEngine {
 			return $this->further_link( $query );
 		}
 
+		$source = $query->getQuerySource();
 		if ( !isset( $this->parameters['url'] ) ) {
 			throw new RuntimeException( "Missing a remote URL for $source" );
 		}
 
-		$source = $query->getQuerySource();
 		$this->init();
 
 		if ( !$this->canConnect( $this->parameters['url'] ) ) {
@@ -269,13 +269,10 @@ class RemoteRequest implements QueryEngine {
 	private function error() {
 		$params = func_get_args();
 
-		return Html::rawElement(
-			'div',
-			[
-				'id' => $params[0],
-				'class' => 'smw-callout smw-callout-error'
-			],
-			Message::get( $params, Message::PARSE, Message::USER_LANGUAGE )
+		return Html::errorBox(
+			Message::get( $params, Message::PARSE, Message::USER_LANGUAGE ),
+			'',
+			$params[0]
 		);
 	}
 

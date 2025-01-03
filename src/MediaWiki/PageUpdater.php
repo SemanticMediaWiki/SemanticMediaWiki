@@ -259,21 +259,6 @@ class PageUpdater implements DeferrableUpdate {
 	}
 
 	/**
-	 * @since 2.1
-	 */
-	public function doPurgeWebCache() {
-		$method = __METHOD__;
-
-		if ( $this->isPending || $this->onTransactionIdle ) {
-			return $this->pendingUpdates['doPurgeWebCache'] = true;
-		}
-
-		foreach ( $this->titles as $title ) {
-			$title->purgeSquid();
-		}
-	}
-
-	/**
 	 * Copied from PurgeJobUtils to avoid the AutoCommitUpdate from
 	 * Title::invalidateCache introduced with MW 1.28/1.29 on a large update pool
 	 */

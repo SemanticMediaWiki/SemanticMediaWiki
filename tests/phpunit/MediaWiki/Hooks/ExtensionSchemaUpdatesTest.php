@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
  *
  * @author mwjames
  */
-class ExtensionSchemaUpdatesTest extends \PHPUnit_Framework_TestCase {
+class ExtensionSchemaUpdatesTest extends \PHPUnit\Framework\TestCase {
 
 	private $databaseUpdater;
 	private $store;

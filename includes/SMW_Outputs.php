@@ -108,10 +108,12 @@ class SMWOutputs {
 		if ( is_numeric( $id ) ) {
 			switch ( $id ) {
 				case SMW_HEADER_TOOLTIP:
-					self::requireResource( 'ext.smw.tooltips' );
+					self::requireStyle( 'ext.smw.styles' );
+					self::requireStyle( 'ext.smw.tooltip.styles' );
+					self::requireResource( 'ext.smw.tooltip' );
 				break;
 				case SMW_HEADER_STYLE:
-					self::requireStyle( 'ext.smw.style' );
+					self::requireStyle( 'ext.smw.styles' );
 				break;
 			}
 		} else {

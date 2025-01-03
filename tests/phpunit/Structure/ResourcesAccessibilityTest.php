@@ -4,8 +4,8 @@ namespace SMW\Tests\Structure;
 
 use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use ResourceLoader;
-use ResourceLoaderContext;
+use MediaWiki\ResourceLoader\ResourceLoader;
+use MediaWiki\ResourceLoader\Context;
 use ResourceLoaderModule;
 use SMW\Tests\PHPUnitCompat;
 
@@ -17,40 +17,64 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ResourcesAccessibilityTest extends \PHPUnit_Framework_TestCase {
+class ResourcesAccessibilityTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	/**
+	 * @covers Resources
 	 * @dataProvider moduleDataProvider
 	 */
 	public function testModulesScriptsFilesAreAccessible( $modules ) {
 		$resourceLoader = MediaWikiServices::getInstance()->getResourceLoader();
-		$context = ResourceLoaderContext::newDummyContext();
+		$context = Context::newDummyContext();
 
-		foreach ( array_keys( $modules ) as $name ) {
-			$resourceLoaderModule = $resourceLoader->getModule( $name );
+		if ( version_compare( MW_VERSION, '1.41.0', '>=' ) ) {
+			foreach ( array_keys( $modules ) as $name ) {
+				$resourceLoaderModule = $resourceLoader->getModule( $name );
+				$scripts = $resourceLoaderModule->getScript( $context );
 
-			$this->assertInternalType(
-				'string',
-				$resourceLoaderModule->getScript( $context )
-			);
+				foreach ( $scripts['plainScripts'] as $key => $value ) {
+					$this->assertIsString( $value['content'] );
+				}
+			}
+		} else {
+			foreach ( array_keys( $modules ) as $name ) {
+				$resourceLoaderModule = $resourceLoader->getModule( $name );
+
+				$this->assertIsString(
+
+					$resourceLoaderModule->getScript( $context )
+				);
+			}
 		}
 	}
 
 	/**
+	 * @covers Resources
 	 * @dataProvider moduleDataProvider
 	 */
 	public function testModulesStylesFilesAreAccessible( $modules ) {
 		$resourceLoader = MediaWikiServices::getInstance()->getResourceLoader();
-		$context = ResourceLoaderContext::newDummyContext();
+		$context = Context::newDummyContext();
 
-		foreach ( array_keys( $modules ) as $name ) {
-			$resourceLoaderModule = $resourceLoader->getModule( $name );
-			$styles = $resourceLoaderModule->getStyles( $context );
+		if ( version_compare( MW_VERSION, '1.41.0', '>=' ) ) {
+			foreach ( array_keys( $modules ) as $name ) {
+				$resourceLoaderModule = $resourceLoader->getModule( $name );
+				$styles = $resourceLoaderModule->getStyles( $context );
 
-			foreach ( $styles as $style ) {
-				$this->assertInternalType( 'string', $style );
+				foreach ( $styles as $key => $value ) {
+					$this->assertIsString( $value );
+				}
+			}
+		} else {
+			foreach ( array_keys( $modules ) as $name ) {
+				$resourceLoaderModule = $resourceLoader->getModule( $name );
+				$styles = $resourceLoaderModule->getStyles( $context );
+
+				foreach ( $styles as $style ) {
+					$this->assertIsString( $style );
+				}
 			}
 		}
 	}

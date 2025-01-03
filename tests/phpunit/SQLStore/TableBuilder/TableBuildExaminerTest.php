@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
+class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -62,23 +62,23 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->tableBuildExaminerFactory->expects( $this->any() )
 			->method( 'newPredefinedProperties' )
-			->will( $this->returnValue( $this->predefinedProperties ) );
+			->willReturn( $this->predefinedProperties );
 
 		$this->tableBuildExaminerFactory->expects( $this->any() )
 			->method( 'newIdBorder' )
-			->will( $this->returnValue( $this->idBorder ) );
+			->willReturn( $this->idBorder );
 
 		$this->tableBuildExaminerFactory->expects( $this->any() )
 			->method( 'newTouchedField' )
-			->will( $this->returnValue( $this->touchedField ) );
+			->willReturn( $this->touchedField );
 
 		$this->tableBuildExaminerFactory->expects( $this->any() )
 			->method( 'newFixedProperties' )
-			->will( $this->returnValue( $this->fixedProperties ) );
+			->willReturn( $this->fixedProperties );
 
 		$this->tableBuildExaminerFactory->expects( $this->any() )
 			->method( 'newHashField' )
-			->will( $this->returnValue( $this->hashField ) );
+			->willReturn( $this->hashField );
 	}
 
 	public function testCanConstruct() {
@@ -95,11 +95,11 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'tableName' )
-			->will( $this->returnValue( 'smw_object_ids' ) );
+			->willReturn( 'smw_object_ids' );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'moveSMWPageID' ] )
@@ -112,11 +112,11 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
 			->disableOriginalConstructor()
@@ -124,7 +124,7 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$tableBuilder->expects( $this->any() )
 			->method( 'getLog' )
-			->will( $this->returnValue( [ 'smw_object_ids' => [ 'smw_sort' => 'field.new' ] ] ) );
+			->willReturn( [ 'smw_object_ids' => [ 'smw_sort' => 'field.new' ] ] );
 
 		$tableBuilder->expects( $this->once() )
 			->method( 'checkOn' );
@@ -153,7 +153,7 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'listTables' )
-			->will( $this->returnValue( [ 'abcsmw_foo' ] ) );
+			->willReturn( [ 'abcsmw_foo' ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -162,7 +162,7 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
 			->disableOriginalConstructor()
@@ -191,11 +191,11 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$connection->expects( $this->once() )
 			->method( 'getServerInfo' )
-			->will( $this->returnValue( 2 ) );
+			->willReturn( 2 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -204,7 +204,7 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new TableBuildExaminer(
 			$store,

@@ -3,12 +3,13 @@
 namespace SMW\Tests\Integration\SQLStore\Lookup;
 
 use SMW\DIProperty;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\DIWikiPage;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -16,7 +17,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class ByGroupPropertyValuesLookupIntegrationTest extends DatabaseTestCase {
+class ByGroupPropertyValuesLookupIntegrationTest extends SMWIntegrationTestCase {
 
 	private $semanticDataFactory;
 	private $mwHooksHandler;

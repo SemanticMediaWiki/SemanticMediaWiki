@@ -180,6 +180,9 @@
 		"wgLang": "en"
 	},
 	"meta": {
+		"skip-on": {
+			"mysql": "Failed assertions, check implementation of MediaWikiIntegrationTestCase."
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

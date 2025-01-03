@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
+class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -59,19 +59,19 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ) );
+				false );
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDITime( 1, '1970' ) ) );
+			->willReturn( $this->dataItemFactory->newDITime( 1, '1970' ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 
 		$instance = new SomeValueDescriptionBuilder();
 
@@ -94,7 +94,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ) );
+				false );
 
 		$instance = new SomeValueDescriptionBuilder();
 
@@ -109,7 +109,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SomeValueDescriptionBuilder();
 
@@ -140,19 +140,19 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ) );
+				false );
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( '~Foo', NS_HELP ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( '~Foo', NS_HELP ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 
 		$instance = new SomeValueDescriptionBuilder();
 

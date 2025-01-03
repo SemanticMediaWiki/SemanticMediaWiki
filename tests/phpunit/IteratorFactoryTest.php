@@ -13,7 +13,7 @@ use SMW\IteratorFactory;
  *
  * @author mwjames
  */
-class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
+class IteratorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -33,7 +33,7 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstructMappingIterator() {
 		$instance = new IteratorFactory();
 
-		$iterator = new \ArrayIterator([]);
+		$iterator = new \ArrayIterator( [] );
 
 		$this->assertInstanceOf(
 			'\SMW\Iterators\MappingIterator',

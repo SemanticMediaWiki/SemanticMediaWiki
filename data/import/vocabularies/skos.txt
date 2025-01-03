@@ -1,4 +1,4 @@
-http://www.w3.org/TR/skos-reference | [http://www.w3.org/TR/skos-reference Simple Knowledge Organization System (SKOS)]
+http://www.w3.org/2004/02/skos/core# | [http://www.w3.org/TR/skos-reference Simple Knowledge Organization System (SKOS)]
  altLabel|Type:Monolingual text
  broader|Type:Annotation URI
  broaderTransitive|Type:Annotation URI

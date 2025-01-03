@@ -14,7 +14,7 @@ use SMW\RequestOptions;
  *
  * @author mwjames
  */
-class ResultLimiterTest extends \PHPUnit_Framework_TestCase {
+class ResultLimiterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

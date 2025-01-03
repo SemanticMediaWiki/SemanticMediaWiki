@@ -242,8 +242,8 @@ class ResultArray {
 		}
 
 		if ( $this->printRequest->getMode() == PrintRequest::PRINT_PROP &&
-		    DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
-		    $this->printRequest->getParameter( 'index' ) !== false ) {
+			DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
+			$this->printRequest->getParameter( 'index' ) !== false ) {
 
 			/**
 			 * @var \SMWRecordValue $recordValue

@@ -25,7 +25,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framework_TestCase {
+class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	private $store = null;
 	private $queryResultValidator;
@@ -99,7 +99,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 
 		$query->querymode = Query::MODE_INSTANCES;
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$this->store->getQueryResult( $query )->getCount()
 		);
@@ -108,7 +108,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 			$this->store->doSparqlDataDelete( $semanticData->getSubject() )
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$this->store->getQueryResult( $query )->getCount()
 		);

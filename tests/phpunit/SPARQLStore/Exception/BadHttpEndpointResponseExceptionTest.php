@@ -13,7 +13,7 @@ use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
  *
  * @author mwjames
  */
-class BadHttpEndpointResponseExceptionTest extends \PHPUnit_Framework_TestCase {
+class BadHttpEndpointResponseExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

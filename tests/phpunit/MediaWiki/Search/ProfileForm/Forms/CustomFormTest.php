@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CustomFormTest extends \PHPUnit_Framework_TestCase {
+class CustomFormTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -36,8 +36,8 @@ class CustomFormTest extends \PHPUnit_Framework_TestCase {
 	public function testMakeFields() {
 		$this->webRequest->expects( $this->at( 0 ) )
 			->method( 'getArray' )
-			->with( $this->equalTo( 'barproperty' ) )
-			->will( $this->returnValue( [ 1001 ] ) );
+			->with( 'barproperty' )
+			->willReturn( [ 1001 ] );
 
 		$instance = new CustomForm(
 			$this->webRequest
@@ -48,12 +48,16 @@ class CustomFormTest extends \PHPUnit_Framework_TestCase {
 		$form = [
 			'<div class="smw-input-field" style="display:inline-block;">',
 			'<input class="smw-input" name="barproperty[]" value="1001" placeholder="Bar property ..." ',
-			'data-property="Bar property" title="Bar property"/></div>'
+			'data-property="Bar property" title="Bar property"></div>'
 		];
+
+		$actual = $instance->makeFields( [ 'Bar property' ] );
+		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
+		$actual = str_replace( '/>', '>', $actual );
 
 		$this->assertContains(
 			implode( '', $form ),
-			$instance->makeFields( [ 'Bar property' ] )
+			$actual
 		);
 
 		$this->assertEquals(

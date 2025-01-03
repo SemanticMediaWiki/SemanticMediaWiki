@@ -17,7 +17,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
+class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;
@@ -31,7 +31,7 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
@@ -49,7 +49,7 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$this->assertInstanceOf(
 			StubSemanticData::class,
@@ -70,11 +70,11 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->once() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ new DIProperty( '_SOBJ' ) ] ) );
+			->willReturn( [ new DIProperty( '_SOBJ' ) ] );
 
 		$instance->expects( $this->once() )
 			->method( 'isRedirect' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance->expects( $this->never() )
 			->method( 'getPropertyValues' );

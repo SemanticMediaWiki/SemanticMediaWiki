@@ -12,9 +12,24 @@
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Name",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "ID",
+			"contents": "[[Has type::Text]]"
+		},
+		{
 			"namespace": "NS_TEMPLATE",
 			"page": "Server",
 			"contents": "<includeonly>{{{Name}}} {{{ID}}} {{#declare: Has name=Name |Has ID=ID }}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Server1",
+			"contents": "<includeonly>{{{Name}}} {{{ID}}} {{#declare: Name |ID }}</includeonly>"
 		},
 		{
 			"page": "Sulcorebutia data",
@@ -27,6 +42,18 @@
 		{
 			"page": "Sulcorebutia ask query",
 			"contents": "{{#ask: [[Sulcorebutia data]] |?Has ID= |mainlabel=- }}"
+		},
+		{
+			"page": "Test data",
+			"contents": "{{Server1 |Name=Test |ID=1100 }}"
+		},
+		{
+			"page": "Test data show query",
+			"contents": "{{#show: Test data |?Name }}"
+		},
+		{
+			"page": "Test data ask query",
+			"contents": "{{#ask: [[Test data]] |?ID= |mainlabel=- }}"
 		}
 	],
 	"tests": [
@@ -53,6 +80,32 @@
 				],
 				"not-contain": [
 					"Sulcorebutia"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 query with `#show`",
+			"subject": "Test data show query",
+			"assert-output": {
+				"to-contain": [
+					"Test"
+				],
+				"not-contain": [
+					"1100"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 query with `#ask`",
+			"subject": "Test data ask query",
+			"assert-output": {
+				"to-contain": [
+					"1100"
+				],
+				"not-contain": [
+					"Test"
 				]
 			}
 		}

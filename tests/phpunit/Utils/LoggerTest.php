@@ -13,7 +13,7 @@ use SMW\Utils\Logger;
  *
  * @author mwjames
  */
-class LoggerTest extends \PHPUnit_Framework_TestCase {
+class LoggerTest extends \PHPUnit\Framework\TestCase {
 
 	private $logger;
 

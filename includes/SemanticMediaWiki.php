@@ -32,11 +32,6 @@ class SemanticMediaWiki {
 			require_once ( dirname( __DIR__ ) . "/includes/GlobalFunctions.php" );
 		}
 
-		// https://phabricator.wikimedia.org/T212738
-		if ( !defined( 'MW_VERSION' ) ) {
-			define( 'MW_VERSION', $GLOBALS['wgVersion'] );
-		}
-
 		// We're moving away from enableSemantics, so set this here.
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			define( 'SMW_EXTENSION_LOADED', true );
@@ -208,7 +203,7 @@ class SemanticMediaWiki {
 	 * @since 4.0
 	 */
 	public static function setupAliases(): void {
-		foreach( self::getClassAliasMap() as $class => $canon ) {
+		foreach ( self::getClassAliasMap() as $class => $canon ) {
 			class_alias( $canon, $class );
 		}
 	}
@@ -338,7 +333,7 @@ class SemanticMediaWiki {
 		define( 'SMW_HEADER_TOOLTIP', 2 );
 		/// @deprecated Module removed. Vanishes in SMW 1.7 at the latest.
 		define( 'SMW_HEADER_SORTTABLE', 3 );
-		/// @deprecated Use module 'ext.smw.style', see SMW_Ouptuts.php. Vanishes in SMW 1.7 at the
+		/// @deprecated Use module 'ext.smw.styles', see SMW_Ouptuts.php. Vanishes in SMW 1.7 at the
 		/// latest.
 		define( 'SMW_HEADER_STYLE', 4 );
 		/**@}*/

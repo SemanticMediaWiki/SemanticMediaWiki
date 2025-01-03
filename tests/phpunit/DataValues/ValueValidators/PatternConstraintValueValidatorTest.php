@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
+class PatternConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -64,11 +64,11 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $allowedPattern ) );
+			->willReturn( $allowedPattern );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedPatternBy' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -77,15 +77,15 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '_txt' ) );
+			->willReturn( '_txt' );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
+			->willReturn( $property );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( $testString ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( $testString ) );
 
 		$instance = new PatternConstraintValueValidator(
 			$this->allowsPatternValueParser
@@ -108,35 +108,35 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 			false
 		];
 
-		#1 valid
+		# 1 valid
 		$provider[] = [
 			" \nFoo|(ev\d{7}\d{4})|((tt|nm|ch|co|ev)\d{7})\n",
 			'tt0042876',
 			false
 		];
 
-		#2 uses '/\'
+		# 2 uses '/\'
 		$provider[] = [
 			" \nFoo|(ev\d{7}/\d{4})|((tt|nm|ch|co|ev)\d{7})\n",
 			'tt0042876',
 			false
 		];
 
-		#3 "Compilation failed: missing )", suppress error
+		# 3 "Compilation failed: missing )", suppress error
 		$provider[] = [
 			" \nFoo|(ev\d{7}\d{4})|((tt|nm|ch|co|ev)\d{7}\n",
 			'Foo',
 			true
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			" \nFoo|\d{8}\n",
 			'00564222',
 			false
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			" \nFoo|/\d{8}\n",
 			'00564222',

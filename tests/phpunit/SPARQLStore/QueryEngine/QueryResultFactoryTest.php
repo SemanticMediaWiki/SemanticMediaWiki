@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
+class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -65,7 +65,7 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$RepositoryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrorCode' )
-			->will( $this->returnValue( $errorCode ) );
+			->willReturn( $errorCode );
 
 		$description = $this->getMockBuilder( '\SMWDescription' )
 			->disableOriginalConstructor()
@@ -101,7 +101,7 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$RepositoryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrorCode' )
-			->will( $this->returnValue( $errorCode ) );
+			->willReturn( $errorCode );
 
 		$description = $this->getMockBuilder( '\SMWDescription' )
 			->disableOriginalConstructor()
@@ -143,7 +143,7 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$repositoryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrorCode' )
-			->will( $this->returnValue( $errorCode ) );
+			->willReturn( $errorCode );
 
 		$description = $this->getMockBuilder( '\SMWDescription' )
 			->disableOriginalConstructor()
@@ -172,7 +172,7 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$this->assertEmpty( $queryResult->getErrors() );
-		$this->assertInternalType( 'integer', $queryResult->getCountValue() );
+		$this->assertIsInt( $queryResult->getCountValue() );
 	}
 
 	private function assertQueryResultErrorCode( $errorCode, QueryResult $queryResult ) {

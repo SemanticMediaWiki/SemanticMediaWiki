@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class NamespaceUriFinderTest extends \PHPUnit_Framework_TestCase {
+class NamespaceUriFinderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

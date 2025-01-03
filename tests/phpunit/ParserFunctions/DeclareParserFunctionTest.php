@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class DeclareParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -63,20 +63,20 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$ppframe->expects( $this->any() )
 			->method( 'isTemplate' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$ppframe->expects( $this->any() )
 			->method( 'expand' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$ppframe->expects( $this->any() )
 			->method( 'getArgument' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new DeclareParserFunction( $parserData );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->parse( $ppframe, $args )
 		);
 

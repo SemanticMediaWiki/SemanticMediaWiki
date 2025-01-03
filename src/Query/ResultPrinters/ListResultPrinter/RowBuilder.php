@@ -39,5 +39,4 @@ abstract class RowBuilder {
 		$this->valueTextsBuilder = $valueTextsBuilder;
 	}
 
-
 }

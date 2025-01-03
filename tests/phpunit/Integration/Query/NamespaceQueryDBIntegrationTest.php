@@ -6,7 +6,7 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
@@ -18,6 +18,7 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -25,7 +26,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class NamespaceQueryDBIntegrationTest extends DatabaseTestCase {
+class NamespaceQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $fixturesProvider;
 	private $semanticDataFactory;

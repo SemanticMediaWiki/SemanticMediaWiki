@@ -43,7 +43,7 @@ class ConceptParserFunction {
 
 	/**
 	 * @since 1.9
-	 * 
+	 *
 	 * @param ParserData $parserData
 	 * @param MessageFormatter $messageFormatter
 	 */
@@ -72,7 +72,7 @@ class ConceptParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $rawParams ) {
-		$this->parserData->getOutput()->addModules( [ 'ext.smw.style' ] );
+		$this->parserData->getOutput()->addModules( [ 'ext.smw.styles' ] );
 
 		$title = $this->parserData->getTitle();
 		$property = new DIProperty( '_CONC' );
@@ -132,12 +132,9 @@ class ConceptParserFunction {
 		$message = '';
 
 		if ( wfMessage( 'smw-concept-introductory-message' )->exists() ) {
-			$message = Html::rawElement(
-				'div',
-				[
-					'class' => 'plainlinks smw-callout smw-callout-info'
-				],
-				wfMessage( 'smw-concept-introductory-message', $title->getText() )->text()
+			$message = Html::noticeBox(
+				wfMessage( 'smw-concept-introductory-message', $title->getText() )->text(),
+				'plainlinks'
 			);
 		}
 

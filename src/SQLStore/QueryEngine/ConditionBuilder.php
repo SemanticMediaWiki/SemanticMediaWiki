@@ -276,7 +276,7 @@ class ConditionBuilder {
 		);
 
 		$querySegment->fingerprint = $fingerprint;
-		//$querySegment->membership = $description->getMembership();
+		// $querySegment->membership = $description->getMembership();
 		//$querySegment->queryString = $description->getQueryString();
 
 		$this->lastQuerySegmentId = $this->registerQuerySegment(

@@ -13,7 +13,7 @@ use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
  *
  * @author mwjames
  */
-class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
+class ParserCachePurgeJobTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$title = $this->getMockBuilder( 'Title' )
@@ -47,7 +47,7 @@ class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
 
 		$page->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$page->expects( $this->once() )
 			->method( 'doPurge' );
@@ -65,7 +65,7 @@ class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->once() )
 			->method( 'newWikiPage' )
-			->will( $this->returnValue( $page ) );
+			->willReturn( $page );
 
 		$instance->run();
 	}

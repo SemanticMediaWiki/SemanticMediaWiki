@@ -21,7 +21,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $applicationFactory;
 	private $descriptionInterpreterFactory;
@@ -39,7 +39,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->applicationFactory->registerObject( 'Store', $store );
@@ -122,9 +122,9 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( new DIProperty( '_CONC' ) ) )
-			->will( $this->returnValue( [
-				new DIConcept( '[[Foo::+]]', 'Bar', 1, 0, 0 ) ] ) );
+			->with( new DIProperty( '_CONC' ) )
+			->willReturn( [
+				new DIConcept( '[[Foo::+]]', 'Bar', 1, 0, 0 ) ] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -132,8 +132,8 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->with( $this->equalTo( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) ) )
-			->will( $this->returnValue( $semanticData ) );
+			->with( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) )
+			->willReturn( $semanticData );
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->applicationFactory->registerObject( 'Store', $store );

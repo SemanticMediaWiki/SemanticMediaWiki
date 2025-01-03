@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Iterators;
 
+use RuntimeException;
 use SMW\Iterators\AppendIterator;
 use SMW\Tests\PHPUnitCompat;
 
@@ -14,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
+class AppendIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

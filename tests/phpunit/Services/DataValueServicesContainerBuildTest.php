@@ -36,7 +36,7 @@ use SMWTimeValue as TimeValue;
  *
  * @author mwjames
  */
-class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
+class DataValueServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 
 	private Store $store;
 	private $callbackContainerFactory;

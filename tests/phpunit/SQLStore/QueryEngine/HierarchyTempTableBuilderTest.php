@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use RuntimeException;
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
 use SMW\Tests\PHPUnitCompat;
 
@@ -14,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class HierarchyTempTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -43,7 +44,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'tableName' )
 			->with(
 				$this->stringContains( 'bar' ) )
-			->will( $this->returnValue( '_bar' ) );
+			->willReturn( '_bar' );
 
 		$instance = new HierarchyTempTableBuilder(
 			$this->connection,
@@ -73,7 +74,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'tableName' )
 			->with(
 				$this->stringContains( 'bar' ) )
-			->will( $this->returnValue( '_bar' ) );
+			->willReturn( '_bar' );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'query' );

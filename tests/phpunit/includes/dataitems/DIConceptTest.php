@@ -8,6 +8,7 @@ namespace SMW\Tests;
  * @group SMW
  * @group SMWExtension
  * @group SMWDataItems
+ * @group Database
  *
  * @license GNU GPL v2+
  * @author mwjames
@@ -61,7 +62,6 @@ class DIConceptTest extends DataItemTest {
 		$this->assertEquals( $status, $instance->getCacheStatus() );
 		$this->assertEquals( $date, $instance->getCacheDate() );
 		$this->assertEquals( $count, $instance->getCacheCount() );
-
 	}
 
 	/**

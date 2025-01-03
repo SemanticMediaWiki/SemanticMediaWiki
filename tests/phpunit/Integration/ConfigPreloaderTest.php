@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
+class ConfigPreloaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

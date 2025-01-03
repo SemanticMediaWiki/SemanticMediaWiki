@@ -16,7 +16,7 @@ use SMW\RequestOptions;
  *
  * @author mwjames
  */
-class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
+class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -37,7 +37,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -46,7 +46,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->idTable ) );
+			->willReturn( $this->idTable );
 
 		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
@@ -54,7 +54,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 	}
 
 	public function testCanConstruct() {
@@ -79,7 +79,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->elasticClient->expects( $this->once() )
 			->method( 'search' )
-			->with( $this->equalTo( $params ) );
+			->with( $params );
 
 		$instance = new ProximityPropertyValueLookup(
 			$this->store

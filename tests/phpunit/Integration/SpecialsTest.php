@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration;
 use FauxRequest;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
 use SpecialPageFactory;
@@ -37,9 +37,10 @@ use SpecialPageFactory;
  *
  * @group SMW
  * @group SMWExtension
+ * @group Database
  * @group medium
  */
-class SpecialsTest extends DatabaseTestCase {
+class SpecialsTest extends SMWIntegrationTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -58,8 +59,7 @@ class SpecialsTest extends DatabaseTestCase {
 	public function testSpecial( callable $specialPageProvider ) {
 		try {
 			$specialPageProvider()->execute( '' );
-		}
-		catch ( \Exception $exception ) {
+		} catch ( \Exception $exception ) {
 			if ( !( $exception instanceof \PermissionsError ) && !( $exception instanceof \ErrorPageError ) ) {
 				throw $exception;
 			}
@@ -93,7 +93,7 @@ class SpecialsTest extends DatabaseTestCase {
 			// Check against available aliases
 			foreach ( $aliases as $n => $values ) {
 				foreach ( $values as $value ) {
-					if( $name === $value ) {
+					if ( $name === $value ) {
 						$found = true;
 						break;
 					}

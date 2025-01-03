@@ -16,19 +16,26 @@ use SMWQuery;
  *
  * @author Stephan Gambke
  */
-class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
+class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $connection;
+	private $param;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$this->param = '\Wikimedia\Rdbms\IConnectionProvider';
+		} else {
+			$this->param = '\Wikimedia\Rdbms\Database';
+		}
+
+		$this->connection = $this->getMockBuilder( $this->param )
+		->disableOriginalConstructor()
+		->getMockForAbstractClass();
 	}
 
 	protected function tearDown(): void {
@@ -68,14 +75,21 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 			}
 		}
 
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
+		} else {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getSearchEngine' ] )
+			->getMockForAbstractClass();
+		}
 
 		$connection->expects( $this->any() )
 			->method( 'getSearchEngine' )
-			->will( $this->returnValue( $searchEngine ) );
+			->willReturn( $searchEngine );
 
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', null );
 
@@ -129,6 +143,9 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromString() {
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$this->markTestSkipped( 'Check assertions for MW 1.41 and higher versions.' );
+		}
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\DummySearchDatabase' );
 
 		$searchEngineFactory = new SearchEngineFactory();

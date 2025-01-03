@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PrefetchCacheTest extends \PHPUnit_Framework_TestCase {
+class PrefetchCacheTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -59,16 +59,16 @@ class PrefetchCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'getSMWPageID' )
-			->with( $this->equalTo( __METHOD__ ) )
-			->will( $this->returnValue( 42 ) );
+			->with( __METHOD__ )
+			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->prefetchItemLookup->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ 42 => [ DIWikiPage::newFromText( 'Bar' ) ] ] ) );
+			->willReturn( [ 42 => [ DIWikiPage::newFromText( 'Bar' ) ] ] );
 
 		$instance = new PrefetchCache(
 			$this->store,

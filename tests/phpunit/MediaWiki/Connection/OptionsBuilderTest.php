@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
+class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -33,8 +33,8 @@ class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			OptionsBuilder::makeSelectOptions( $connection, $options )
 		);
 	}
@@ -47,8 +47,8 @@ class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			OptionsBuilder::toString( $options )
 		);
 	}

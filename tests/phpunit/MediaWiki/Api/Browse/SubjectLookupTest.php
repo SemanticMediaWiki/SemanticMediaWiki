@@ -14,7 +14,7 @@ use SMW\MediaWiki\Api\Browse\SubjectLookup;
  *
  * @author mwjames
  */
-class SubjectLookupTest extends \PHPUnit_Framework_TestCase {
+class SubjectLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -38,15 +38,15 @@ class SubjectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new SubjectLookup(
 			$this->store
@@ -79,11 +79,11 @@ class SubjectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$instance = new SubjectLookup(
 			$this->store

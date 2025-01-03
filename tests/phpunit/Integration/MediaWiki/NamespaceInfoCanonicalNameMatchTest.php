@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
+class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -53,7 +53,7 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'isDefinedConstant' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance->init( $default );
 	}
@@ -67,8 +67,8 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 		$index = NamespaceManager::buildNamespaceIndex( $applicationFactory->getSettings()->get( 'smwgNamespaceIndex' ) );
 		$names = NamespaceManager::getCanonicalNames();
 
-		$this->assertInternalType( 'array', $names );
-		$this->assertInternalType( 'array', $index );
+		$this->assertIsArray( $names );
+		$this->assertIsArray( $index );
 
 		foreach ( $index as $ns => $idx ) {
 

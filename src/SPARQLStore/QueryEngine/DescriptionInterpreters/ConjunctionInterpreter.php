@@ -168,7 +168,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 				}
 
 				if ( ( $subConditionElements->singletonMatchElement !== null ) &&
-				     ( $singletonMatchElementName !== $matchElementName ) ) {
+					 ( $singletonMatchElementName !== $matchElementName ) ) {
 					return new FalseCondition();
 				}
 

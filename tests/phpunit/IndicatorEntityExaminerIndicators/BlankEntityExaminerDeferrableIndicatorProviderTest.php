@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
+class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -53,8 +53,8 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	public function testIsDeferredMode() {
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->isDeferredMode()
 		);
 	}
@@ -62,8 +62,8 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	public function testGetName() {
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getName()
 		);
 	}
@@ -71,8 +71,8 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	public function testGetIndicators() {
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getIndicators()
 		);
 	}
@@ -80,8 +80,8 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	public function testGetModules() {
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getModules()
 		);
 	}
@@ -89,8 +89,8 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 	public function testGetInlineStyle() {
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getInlineStyle()
 		);
 	}
@@ -100,8 +100,8 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framew
 
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}

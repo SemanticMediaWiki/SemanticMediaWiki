@@ -13,7 +13,7 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class ThingDescriptionTest extends \PHPUnit_Framework_TestCase {
+class ThingDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -31,13 +31,13 @@ class ThingDescriptionTest extends \PHPUnit_Framework_TestCase {
 	public function testCommonMethods() {
 		$instance = new ThingDescription();
 
-		$this->assertEquals( '', $instance->getQueryString() );
-		$this->assertEquals( false, $instance->isSingleton() );
+		$this->assertSame( '', $instance->getQueryString() );
+		$this->assertFalse( $instance->isSingleton() );
 		$this->assertEquals( [], $instance->getPrintRequests() );
 
-		$this->assertEquals( 0, $instance->getSize() );
-		$this->assertEquals( 0, $instance->getDepth() );
-		$this->assertEquals( 0, $instance->getQueryFeatures() );
+		$this->assertSame( 0, $instance->getSize() );
+		$this->assertSame( 0, $instance->getDepth() );
+		$this->assertSame( 0, $instance->getQueryFeatures() );
 	}
 
 	public function testPrune() {

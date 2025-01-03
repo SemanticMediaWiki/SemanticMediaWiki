@@ -267,7 +267,7 @@ class SMWInfolink {
 		}
 
 		if ( $this->mStyle !== false ) {
-			SMWOutputs::requireResource( 'ext.smw.style' );
+			SMWOutputs::requireResource( 'ext.smw.styles' );
 			$start = "<span class=\"$this->mStyle\">";
 			$end = '</span>';
 		} else {
@@ -563,7 +563,7 @@ class SMWInfolink {
 
 		if ( is_array( $titleParam ) ) {
 			return $titleParam;
-		} elseif ( $titleParam !== '' ) {
+		} elseif ( is_string( $titleParam ) && $titleParam !== '' ) {
 			// unescape $p; escaping scheme: all parameters rawurlencoded, "-" and "/" urlencoded, all "%" replaced by "-", parameters then joined with /
 			$ps = explode( '/', $titleParam ); // params separated by / here (compatible with wiki link syntax)
 
@@ -588,7 +588,7 @@ class SMWInfolink {
 		// Expect to gain on larger strings and set an identifier to
 		// distinguish between compressed and non compressed
 		if ( mb_strlen( $value ) > 150 ) {
-			$value =  'c:' . gzdeflate( $value, 9 );
+			$value = 'c:' . gzdeflate( $value, 9 );
 		}
 
 		// https://en.wikipedia.org/wiki/Base64#URL_applications

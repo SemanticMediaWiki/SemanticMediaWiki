@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
+class ElasticFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private MessageReporter $messageReporter;
 	private $store;
@@ -51,7 +51,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $options ) );
+			->willReturn( $options );
 
 		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
 			->disableOriginalConstructor()
@@ -59,7 +59,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
@@ -159,7 +159,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new ElasticFactory();
 
@@ -194,7 +194,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new ElasticFactory();
 
@@ -211,7 +211,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new ElasticFactory();
 
@@ -326,8 +326,8 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$dispatchContext->expects( $this->once() )
 			->method( 'has' )
-			->with( $this->equalTo( 'subject' ) )
-			->will( $this->returnValue( $subject ) );
+			->with( 'subject' )
+			->willReturn( $subject );
 
 		$instance->onInvalidateEntityCache( $dispatchContext );
 	}
@@ -341,11 +341,11 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$dispatchContext = $this->getMockBuilder( '\Onoi\EventDispatcher\DispatchContext' )
 			->disableOriginalConstructor()
@@ -353,7 +353,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$dispatchContext->expects( $this->once() )
 			->method( 'get' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance->onInvalidateEntityCache( $dispatchContext );
 	}
@@ -373,7 +373,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
 			->disableOriginalConstructor()
@@ -382,11 +382,11 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'newRebuilder' )
-			->will( $this->returnValue( $rebuilder ) );
+			->willReturn( $rebuilder );
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'newUpdateEntityCollationComplete' )
-			->will( $this->returnValue( $updateEntityCollationComplete ) );
+			->willReturn( $updateEntityCollationComplete );
 
 		$instance->onAfterUpdateEntityCollationComplete(
 			$store,
@@ -405,7 +405,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
 			->disableOriginalConstructor()

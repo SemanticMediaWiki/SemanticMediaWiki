@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
+class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private NamespaceExaminer $namespaceExaminer;
@@ -44,7 +44,7 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -53,11 +53,11 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
@@ -85,7 +85,7 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$row = (object)[
 			'smw_subobject' => 'foo',
@@ -113,7 +113,7 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$revisionGuard->expects( $this->once() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -121,7 +121,7 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$row = (object)[
 			'smw_subobject' => 'foo',

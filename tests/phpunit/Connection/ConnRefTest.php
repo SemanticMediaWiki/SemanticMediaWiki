@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConnRefTest extends \PHPUnit_Framework_TestCase {
+class ConnRefTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -32,7 +32,7 @@ class ConnRefTest extends \PHPUnit_Framework_TestCase {
 
 		$connectionProvider->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$connectionProvider->expects( $this->once() )
 			->method( 'releaseConnection' );

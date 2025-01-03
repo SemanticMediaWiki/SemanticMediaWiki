@@ -14,7 +14,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class PageCreatorTest extends \PHPUnit_Framework_TestCase {
+class PageCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

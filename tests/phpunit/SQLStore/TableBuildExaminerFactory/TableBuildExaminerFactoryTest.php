@@ -13,7 +13,7 @@ use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
  *
  * @author mwjames
  */
-class TableBuildExaminerFactoryTest extends \PHPUnit_Framework_TestCase {
+class TableBuildExaminerFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructEntityCollation() {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

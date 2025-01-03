@@ -143,7 +143,7 @@ class LinksProcessor {
 			// the regex splits it into `Foo:` and `Bar` loosing `=` from the value.
 			// Restore the link to its previous form of `Foo::=Bar` and reapply
 			// a simple split.
-			if( strpos( $semanticLink[0], '::=' ) && substr( $semanticLink[1], -1 ) == ':' ) {
+			if ( strpos( $semanticLink[0], '::=' ) && substr( $semanticLink[1], -1 ) == ':' ) {
 				list( $semanticLink[1], $semanticLink[2] ) = explode( '::', $semanticLink[1] . ':=' . $semanticLink[2], 2 );
 			}
 

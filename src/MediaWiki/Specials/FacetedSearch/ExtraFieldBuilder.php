@@ -58,7 +58,7 @@ class ExtraFieldBuilder {
 
 		if ( $urlArgs->find( 'cstate.extra-fields' ) !== '' ) {
 			$cssClass = $urlArgs->find( 'cstate.extra-fields' ) === 'c' ? 'mw-collapsible mw-collapsed' : 'mw-collapsible';
-		}elseif ( $this->profile->get( 'search.extra_fields.default_collapsed', true ) ) {
+		} elseif ( $this->profile->get( 'search.extra_fields.default_collapsed', true ) ) {
 			$cssClass = $values === [] ? 'mw-collapsible mw-collapsed' : 'mw-collapsible';
 		} else {
 			$cssClass = 'mw-collapsible';

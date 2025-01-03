@@ -79,7 +79,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 			// If we wanted to omit the language code display for some outputs then
 			// this is the point to make it happen
 			if ( ( $type == self::HTML_LONG || $type == self::WIKI_SHORT ) && $property->getKey() === '_LCODE' ) {
-				//continue;
+				// continue;
 			}
 
 			$dataItems = $this->dataValue->getDataItem()->getSemanticData()->getPropertyValues(

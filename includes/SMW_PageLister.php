@@ -307,7 +307,7 @@ class SMWPageLister {
 		$startChar = self::getFirstChar( $diWikiPages[$start] );
 
 		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
-		     '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</li>';
+			 '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</li>';
 
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {

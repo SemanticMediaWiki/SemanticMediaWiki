@@ -18,7 +18,7 @@ use SMWDIContainer as DIContainer;
  *
  * @author mwjames
  */
-class FormatProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class FormatProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 
@@ -40,7 +40,7 @@ class FormatProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateProfile() {
-		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
+		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
 
 		$container = new DIContainer(
 			new ContainerSemanticData( $subject	)

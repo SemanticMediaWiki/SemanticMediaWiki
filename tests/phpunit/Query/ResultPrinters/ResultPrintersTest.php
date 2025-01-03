@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ResultPrintersTest extends \PHPUnit_Framework_TestCase {
+class ResultPrintersTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -42,8 +42,8 @@ class ResultPrintersTest extends \PHPUnit_Framework_TestCase {
 
 		$params = ParamDefinition::getCleanDefinitions( $params );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$params
 		);
 	}

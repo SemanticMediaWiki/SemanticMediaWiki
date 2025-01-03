@@ -13,7 +13,7 @@ use SMW\DataValues\Time\JulianDay;
  *
  * @author mwjames
  */
-class JulianDayTest extends \PHPUnit_Framework_TestCase {
+class JulianDayTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider valueProvider

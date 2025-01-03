@@ -172,16 +172,16 @@ class Transliterator {
 		 *
 		 * @var array
 		 */
-		private static $greekMap = array(
+	private static $greekMap = array(
 
-			"ου"=> "ou",
-			"Ου"=> "Ou",
-			"Οι"=> "Oi",
-			"οι"=> "oi",
-			"Υι"=> "Yi",
-			"υι"=> "yi",
-			"Ού"=> "Oú",
-			"ού"=> "oú",
+			"ου" => "ou",
+			"Ου" => "Ou",
+			"Οι" => "Oi",
+			"οι" => "oi",
+			"Υι" => "Yi",
+			"υι" => "yi",
+			"Ού" => "Oú",
+			"ού" => "oú",
 
 			"Α" => "A",
 			"Ά" => "Á",

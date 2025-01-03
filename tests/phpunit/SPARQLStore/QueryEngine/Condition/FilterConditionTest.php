@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class FilterConditionTest extends \PHPUnit_Framework_TestCase {
+class FilterConditionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -28,23 +28,23 @@ class FilterConditionTest extends \PHPUnit_Framework_TestCase {
 	public function testCommonMethods() {
 		$instance = new FilterCondition( 'filter' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getCondition()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->namespaces
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getWeakConditionString()
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isSafe()
 		);
 	}

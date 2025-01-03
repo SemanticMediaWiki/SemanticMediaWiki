@@ -14,7 +14,7 @@ use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
  *
  * @author mwjames
  */
-class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class TemporaryTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 
@@ -57,8 +57,8 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'isType' )
-			->with( $this->equalTo( 'postgres' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'postgres' )
+			->willReturn( true );
 
 		$instance = new TemporaryTableBuilder(
 			$this->connection
@@ -70,7 +70,7 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCreateWithAutoCommitFlag() {
 		$this->connection->expects( $this->once() )
 			->method( 'setFlag' )
-			->with( $this->equalTo( Database::AUTO_COMMIT ) );
+			->with( Database::AUTO_COMMIT );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
@@ -108,7 +108,7 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testDropWithAutoCommitFlag() {
 		$this->connection->expects( $this->once() )
 			->method( 'setFlag' )
-			->with( $this->equalTo( Database::AUTO_COMMIT ) );
+			->with( Database::AUTO_COMMIT );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )

@@ -12,5 +12,4 @@ use RuntimeException;
  */
 class DataItemHandlerException extends RuntimeException {
 
-
 }

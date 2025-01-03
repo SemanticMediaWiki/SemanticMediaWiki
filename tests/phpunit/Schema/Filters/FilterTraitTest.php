@@ -14,15 +14,15 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class FilterTraitTest extends \PHPUnit_Framework_TestCase {
+class FilterTraitTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testHasMatches() {
 		$instance = $this->newFilterTrait();
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasMatches()
 		);
 	}
@@ -30,8 +30,8 @@ class FilterTraitTest extends \PHPUnit_Framework_TestCase {
 	public function testGetMatches() {
 		$instance = $this->newFilterTrait();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getMatches()
 		);
 	}
@@ -39,8 +39,8 @@ class FilterTraitTest extends \PHPUnit_Framework_TestCase {
 	public function testGetLog() {
 		$instance = $this->newFilterTrait();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getLog()
 		);
 	}
@@ -76,7 +76,6 @@ class FilterTraitTest extends \PHPUnit_Framework_TestCase {
 			}
 
 			protected function match( \SMW\Schema\Compartment $compartment ) {
-
 			}
 		};
 	}

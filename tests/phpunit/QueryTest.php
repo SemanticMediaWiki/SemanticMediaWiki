@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QueryTest extends \PHPUnit_Framework_TestCase {
+class QueryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -138,8 +138,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$serialized = $instance->toArray();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$serialized
 		);
 
@@ -177,8 +177,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$hash = $instance->getHash();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$hash
 		);
 

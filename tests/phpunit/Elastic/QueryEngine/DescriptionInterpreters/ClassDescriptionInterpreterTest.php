@@ -15,7 +15,7 @@ use SMW\Query\DescriptionFactory;
  *
  * @author mwjames
  */
-class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $conditionBuilder;
 
@@ -39,11 +39,11 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	public function testInterpretDescription( $description, $isConjunction, $hierarchyMembers, $expected ) {
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'findHierarchyMembers' )
-			->will( $this->returnValue( $hierarchyMembers ) );
+			->willReturn( $hierarchyMembers );
 
 		$instance = new ClassDescriptionInterpreter(
 			$this->conditionBuilder

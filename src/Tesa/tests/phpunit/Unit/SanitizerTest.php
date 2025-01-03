@@ -76,12 +76,6 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function testReduceLengthToNearestWholeWordForNonLatinString() {
-		if ( version_compare( phpversion(), '5.4', '<' ) ) {
-			$this->markTestSkipped(
-				"Boo, PHP 5.3 returns with `Failed asserting that 9 matches expected 3`"
-			);
-		}
-
 		$instance = new Sanitizer( '一　二　三' );
 		$instance->reduceLengthTo( 3 );
 
@@ -115,8 +109,8 @@ class SanitizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $text ) )
-			->will( $this->returnValue( array( 'Foo', 'bar', 'foobar' ) ) );
+			->with( $text )
+			->willReturn( array( 'Foo', 'bar', 'foobar' ) );
 
 		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
 			->disableOriginalConstructor()
@@ -124,7 +118,7 @@ class SanitizerTest extends TestCase {
 
 		$synonymizer->expects( $this->any() )
 			->method( 'synonymize' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new Sanitizer( $text );
 
@@ -147,12 +141,12 @@ class SanitizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'isWordTokenizer' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $text ) )
-			->will( $this->returnValue( array( 'Foo', 'bar', 'foobar' ) ) );
+			->with( $text )
+			->willReturn( array( 'Foo', 'bar', 'foobar' ) );
 
 		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
 			->disableOriginalConstructor()
@@ -160,7 +154,7 @@ class SanitizerTest extends TestCase {
 
 		$synonymizer->expects( $this->any() )
 			->method( 'synonymize' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new Sanitizer( $text );
 
@@ -186,12 +180,12 @@ class SanitizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'isWordTokenizer' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $text ) )
-			->will( $this->returnValue( array( 'foo', 'foo', 'テスト', 'テスト' ) ) );
+			->with( $text )
+			->willReturn( array( 'foo', 'foo', 'テスト', 'テスト' ) );
 
 		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
 			->disableOriginalConstructor()
@@ -199,7 +193,7 @@ class SanitizerTest extends TestCase {
 
 		$synonymizer->expects( $this->any() )
 			->method( 'synonymize' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new Sanitizer( $text );
 

@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
+class ConstraintSchemaValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -83,7 +83,7 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->schemafinder->expects( $this->once() )
 			->method( 'getConstraintSchema' )
-			->with( $this->equalTo( $property ) );
+			->with( $property );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty(
 			$property
@@ -118,19 +118,19 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->schemafinder->expects( $this->once() )
 			->method( 'getConstraintSchema' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( $schemaList ) );
+			->with( $property )
+			->willReturn( $schemaList );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'load' );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'check' )
-			->with( $this->equalTo( $dataValue ) );
+			->with( $dataValue );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'hasViolation' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new ConstraintSchemaValueValidator(
 			$this->constraintCheckRunner,
@@ -162,23 +162,23 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->schemafinder->expects( $this->once() )
 			->method( 'getConstraintSchema' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( $schemaList ) );
+			->with( $property )
+			->willReturn( $schemaList );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'load' );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'check' )
-			->with( $this->equalTo( $dataValue ) );
+			->with( $dataValue );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'hasViolation' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'hasDeferrableConstraint' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'push' )

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class IncomingSemanticDataValidator extends \PHPUnit_Framework_Assert {
+class IncomingSemanticDataValidator extends \PHPUnit\Framework\Assert {
 
 	use PHPUnitCompat;
 

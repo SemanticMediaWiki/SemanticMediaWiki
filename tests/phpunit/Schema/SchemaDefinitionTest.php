@@ -13,7 +13,7 @@ use SMW\Schema\SchemaDefinition;
  *
  * @author mwjames
  */
-class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
+class SchemaDefinitionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SchemaDefinition( 'foo', [] );

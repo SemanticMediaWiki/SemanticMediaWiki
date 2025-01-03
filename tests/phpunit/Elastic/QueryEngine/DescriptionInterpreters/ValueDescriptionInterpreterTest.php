@@ -17,7 +17,7 @@ use SMW\Options;
  *
  * @author mwjames
  */
-class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private DescriptionFactory $descriptionFactory;
 	private DataItemFactory $dataItemFactory;
@@ -34,7 +34,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 	}
 
 	public function testCanConstruct() {
@@ -159,6 +159,5 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			'{"bool":{"must":[{"multi_match":{"fields":["text_copy"],"query":"テスト","type":"phrase"}}]}}'
 		];
 	}
-
 
 }

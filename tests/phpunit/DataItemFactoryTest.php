@@ -15,7 +15,7 @@ use SMWDIUri as DIUri;
  *
  * @author mwjames
  */
-class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
+class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -58,7 +58,7 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$instance = new DataItemFactory();
 

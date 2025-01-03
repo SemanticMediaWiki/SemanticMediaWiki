@@ -19,7 +19,7 @@ use SMW\Tests\Utils\Validators\QuerySegmentValidator;
  *
  * @author mwjames
  */
-class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
+class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $connection;
@@ -42,7 +42,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
@@ -69,7 +69,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	public function testinterpretDescriptionForUnknownTablePropertyId() {
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$description = $this->descriptionFactory->newSomeProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' ),
@@ -104,15 +104,15 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$proptable->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $proptable ] ) );
+			->willReturn( [ 'Foo' => $proptable ] );
 
 		$description = $this->descriptionFactory->newSomeProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' ),
@@ -147,11 +147,11 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$property->expects( $this->once() )
 			->method( 'isInverse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$property->expects( $this->once() )
 			->method( 'findPropertyTypeID' )
-			->will( $this->returnValue( '_txt' ) );
+			->willReturn( '_txt' );
 
 		$proptable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'usesIdSubject' ] )
@@ -159,15 +159,15 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$proptable->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $proptable ] ) );
+			->willReturn( [ 'Foo' => $proptable ] );
 
 		$description = $this->descriptionFactory->newSomeProperty(
 			$property,
@@ -204,15 +204,15 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getIndexField' )
-			->will( $this->returnValue( $indexField ) );
+			->willReturn( $indexField );
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getTableFields' )
-			->will( $this->returnValue( [ 'one', 'two' ] ) );
+			->willReturn( [ 'one', 'two' ] );
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getWhereConds' )
-			->will( $this->returnValue( [ $indexField => 'fixedFooWhereCond' ] ) );
+			->willReturn( [ $indexField => 'fixedFooWhereCond' ] );
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getSMWPropertyID', 'getSMWPageID' ] )
@@ -220,15 +220,15 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 91 ) );
+			->willReturn( 91 );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$proptable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -236,31 +236,31 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$proptable->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$proptable->expects( $this->any() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'FooPropTable' ) );
+			->willReturn( 'FooPropTable' );
 
 		$proptable->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( $isFixedPropertyTable ) );
+			->willReturn( $isFixedPropertyTable );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $proptable ] ) );
+			->willReturn( [ 'Foo' => $proptable ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIds ) );
+			->willReturn( $objectIds );
 
 		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$queryEngineFactory = new QueryEngineFactory( $this->store );
 
@@ -287,7 +287,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$descriptionFactory = new DescriptionFactory();
 		$dataItemFactory = new DataItemFactory();
 
-		#0 Blob + wildcard
+		# 0 Blob + wildcard
 		$isFixedPropertyTable = false;
 		$indexField = '';
 		$sortKeys = [];
@@ -313,7 +313,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#1 WikiPage + SMW_CMP_EQ
+		# 1 WikiPage + SMW_CMP_EQ
 		$isFixedPropertyTable = false;
 		$indexField = 'wikipageIndex';
 		$sortKeys = [];
@@ -341,7 +341,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#2 WikiPage + SMW_CMP_EQ + sort
+		# 2 WikiPage + SMW_CMP_EQ + sort
 		$isFixedPropertyTable = false;
 		$indexField = 'wikipageIndex';
 		$sortKeys = [ 'Foo' => 'DESC' ];
@@ -370,7 +370,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#3 Blob + SMW_CMP_EQ
+		# 3 Blob + SMW_CMP_EQ
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
 		$sortKeys = [];
@@ -398,7 +398,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#4 Blob + SMW_CMP_EQ + sort
+		# 4 Blob + SMW_CMP_EQ + sort
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
 		$sortKeys = [ 'Foo' => 'ASC' ];
@@ -427,7 +427,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#5 Check SemanticMaps compatibility mode (invokes `getSQLCondition`)
+		# 5 Check SemanticMaps compatibility mode (invokes `getSQLCondition`)
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
 		$sortKeys = [];
@@ -441,11 +441,11 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$valueDescription->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItemFactory->newDIBlob( '13,56' ) ) );
+			->willReturn( $dataItemFactory->newDIBlob( '13,56' ) );
 
 		$valueDescription->expects( $this->once() )
 			->method( 'getSQLCondition' )
-			->will( $this->returnValue( 'foo AND bar' ) );
+			->willReturn( 'foo AND bar' );
 
 		$description = $descriptionFactory->newSomeProperty(
 			$property,
@@ -469,7 +469,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#6, see 556
+		# 6, see 556
 		$isFixedPropertyTable = false;
 		$indexField = '';
 		$sortKeys = [];

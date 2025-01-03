@@ -133,8 +133,8 @@ class RepositoryResult implements Iterator {
 			$row = reset( $this->data );
 			$expElement = reset( $row );
 			if ( ( count( $row ) == 1 ) && ( $expElement instanceof ExpLiteral ) &&
-			     ( $expElement->getLexicalForm() == 'true' ) &&
-			     ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#boolean' ) ) {
+				 ( $expElement->getLexicalForm() == 'true' ) &&
+				 ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#boolean' ) ) {
 				return true;
 			}
 		}
@@ -154,7 +154,7 @@ class RepositoryResult implements Iterator {
 			$row = reset( $this->data );
 			$expElement = reset( $row );
 			if ( ( count( $row ) == 1 ) && ( $expElement instanceof ExpLiteral ) &&
-			     ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#integer' ) ) {
+				 ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#integer' ) ) {
 				return (int)$expElement->getLexicalForm();
 			}
 		}
@@ -173,6 +173,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 		return current( $this->data );
 	}
@@ -183,6 +184,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
+	#[\ReturnTypeWillChange]
 	public function next() {
 		return next( $this->data );
 	}
@@ -193,6 +195,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
+	#[\ReturnTypeWillChange]
 	public function key() {
 		return key( $this->data );
 	}

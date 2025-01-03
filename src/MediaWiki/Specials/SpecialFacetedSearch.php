@@ -47,11 +47,12 @@ class SpecialFacetedSearch extends SpecialPage {
 		$output->addModuleStyles(
 			[
 				'smw.special.facetedsearch.styles',
-				'ext.smw.special.style',
+				'ext.smw.special.styles',
 				'jquery.makeCollapsible.styles',
 				'smw.ui.styles',
 				'smw.special.search.styles',
-				'ext.smw.style'
+				'ext.smw.styles',
+				'ext.smw.tooltip.styles'
 			]
 		);
 
@@ -61,7 +62,7 @@ class SpecialFacetedSearch extends SpecialPage {
 				'jquery.makeCollapsible',
 				'ext.smw.suggester.textInput',
 				'ext.smw.suggester',
-				'ext.smw.tooltips',
+				'ext.smw.tooltip',
 				'smw.tableprinter.datatable',
 				'ext.smw.autocomplete.property'
 			]
@@ -209,11 +210,6 @@ class SpecialFacetedSearch extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/search';
 	}
 

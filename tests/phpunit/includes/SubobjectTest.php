@@ -19,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class SubobjectTest extends \PHPUnit_Framework_TestCase {
+class SubobjectTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -122,7 +122,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			$parameters['identifier']
 		);
 
-		foreach ( $parameters['properties'] as $property => $value ){
+		foreach ( $parameters['properties'] as $property => $value ) {
 
 			$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 				$property,
@@ -153,15 +153,15 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'findPropertyTypeID' )
-			->will( $this->returnValue( $parameters['property']['typeId'] ) );
+			->willReturn( $parameters['property']['typeId'] );
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'getKey' )
-			->will( $this->returnValue( $parameters['property']['key'] ) );
+			->willReturn( $parameters['property']['key'] );
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'getLabel' )
-			->will( $this->returnValue( $parameters['property']['label'] ) );
+			->willReturn( $parameters['property']['label'] );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$parameters['dataItem'],
@@ -390,7 +390,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	public function errorProvider() {
 		$provider = [];
 
-		#0
+		# 0
 		$provider[] = [
 			[
 				'Foo',
@@ -399,7 +399,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			1
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			[
 				'Foo',
@@ -408,7 +408,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			2
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			[
 				[ 'Foo' => 'Bar' ],
@@ -417,7 +417,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			1
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			[
 				[ 'Foo' => 'Bar' ],

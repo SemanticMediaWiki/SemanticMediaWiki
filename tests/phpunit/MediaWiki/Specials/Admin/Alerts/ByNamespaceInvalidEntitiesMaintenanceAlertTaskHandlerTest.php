@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -42,11 +42,11 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit
 
 		$connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)[ 'count' => 50000 ] ) );
+			->willReturn( (object)[ 'count' => 50000 ] );
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler(
 			$this->store

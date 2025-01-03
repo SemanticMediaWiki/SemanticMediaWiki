@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
  *
  * @author mwjames
  */
-class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
+class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -30,7 +30,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new FulltextSearchTableFactory();
 
@@ -47,11 +47,11 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->willReturn( 'mysql' );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new FulltextSearchTableFactory();
 
@@ -86,7 +86,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new FulltextSearchTableFactory();
 
@@ -103,7 +103,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new FulltextSearchTableFactory();
 
@@ -120,7 +120,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new FulltextSearchTableFactory();
 

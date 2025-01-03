@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
+class ConceptQuerySegmentBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $conditionBuilder;
 	private $querySegmentListProcessor;
@@ -50,7 +50,7 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->queryParser->expects( $this->any() )
 			->method( 'getQueryDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new ConceptQuerySegmentBuilder(
 			$this->conditionBuilder,

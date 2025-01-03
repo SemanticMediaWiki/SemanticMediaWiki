@@ -14,7 +14,7 @@ use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
  *
  * @author mwjames
  */
-class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class CodeStringValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

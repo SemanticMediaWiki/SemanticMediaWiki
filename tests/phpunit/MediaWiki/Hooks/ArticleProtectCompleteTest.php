@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
+class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -55,7 +55,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
@@ -115,19 +115,19 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_SPECIAL ) );
+			->willReturn( NS_SPECIAL );
 
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 9900 ) );
+			->willReturn( 9900 );
 
 		$this->editInfo->expects( $this->once() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$instance = new ArticleProtectComplete(
 			$title,
@@ -172,7 +172,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -180,19 +180,19 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 9901 ) );
+			->willReturn( 9901 );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_SPECIAL ) );
+			->willReturn( NS_SPECIAL );
 
 		$this->editInfo->expects( $this->once() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$instance = new ArticleProtectComplete(
 			$title,

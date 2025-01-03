@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class MaintenanceCheckTest extends \PHPUnit_Framework_TestCase {
+class MaintenanceCheckTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -28,8 +28,8 @@ class MaintenanceCheckTest extends \PHPUnit_Framework_TestCase {
 	public function testCanExecute() {
 		$instance = new MaintenanceCheck();
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->canExecute()
 		);
 	}
@@ -37,8 +37,8 @@ class MaintenanceCheckTest extends \PHPUnit_Framework_TestCase {
 	public function testGetMessage() {
 		$instance = new MaintenanceCheck();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getMessage()
 		);
 	}

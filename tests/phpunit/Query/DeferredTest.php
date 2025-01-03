@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DeferredTest extends \PHPUnit_Framework_TestCase {
+class DeferredTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

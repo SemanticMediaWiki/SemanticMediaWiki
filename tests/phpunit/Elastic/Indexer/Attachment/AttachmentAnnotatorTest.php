@@ -13,7 +13,7 @@ use SMW\Elastic\Indexer\Attachment\AttachmentAnnotator;
  *
  * @author mwjames
  */
-class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class AttachmentAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $containerSemanticData;
 
@@ -69,7 +69,7 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	public function testAddAnnotation( $document, $expected ) {
 		$this->containerSemanticData->expects( $this->once() )
 			->method( 'addPropertyObjectValue' )
-			->with( $this->equalTo( new \SMW\DIProperty( $expected ) ) );
+			->with( new \SMW\DIProperty( $expected ) );
 
 		$instance = new AttachmentAnnotator(
 			$this->containerSemanticData,
@@ -117,7 +117,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[ '_source' => [ 'attachment' => [ 'keywords' => '1001' ] ] ],
 			'_CONT_KEYW'
 		];
-
 	}
 
 }

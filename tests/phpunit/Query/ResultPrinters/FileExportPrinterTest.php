@@ -11,7 +11,7 @@ namespace SMW\Tests\Query\ResultPrinters;
  *
  * @author mwjames
  */
-class FileExportPrinterTest extends \PHPUnit_Framework_TestCase {
+class FileExportPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testOutputAsFile_AccessSequence() {
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
@@ -27,7 +27,7 @@ class FileExportPrinterTest extends \PHPUnit_Framework_TestCase {
 		$fileExportPrinter->expects( $this->at( 0 ) )
 			->method( 'getFileResult' )
 			->with( $queryResult )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$fileExportPrinter->expects( $this->at( 1 ) )
 			->method( 'getMimeType' );

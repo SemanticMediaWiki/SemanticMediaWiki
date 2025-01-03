@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
+class TableChangeOpTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -50,8 +50,8 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 			$instance->getFixedPropertyValueBy( 'key' )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getFieldChangeOps( 'insert' )
 		);
 	}

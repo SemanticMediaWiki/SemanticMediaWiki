@@ -21,7 +21,7 @@ use Title;
  *
  * @author mwjames
  */
-class SemanticDataTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -41,7 +41,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -120,8 +120,8 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 			$subobject->getContainer()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHash()
 		);
 	}
@@ -332,8 +332,8 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addSubobject( $subobject );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getSubSemanticData()
 		);
 
@@ -554,7 +554,8 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 			$instance->getExtensionData( 'Foo' )
 		);
 
-		$callback = function () { return 42; };
+		$callback = function () { return 42;
+		};
 
 		$instance->setExtensionData( 'Bar', $callback );
 
@@ -686,7 +687,6 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => [ 'Bar' ]
 			]
 		];
-
 
 		// #5 Error (Predefined)
 		$provider[] = [

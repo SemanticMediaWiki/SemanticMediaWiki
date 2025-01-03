@@ -13,7 +13,7 @@ use SMW\Factbox\FactboxText;
  *
  * @author Morne Alberts
  */
-class FactboxTextTest extends \PHPUnit_Framework_TestCase {
+class FactboxTextTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSetText(): void {
 		$factboxText = new FactboxText();

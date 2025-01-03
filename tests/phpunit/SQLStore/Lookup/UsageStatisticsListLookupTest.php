@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
+class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -47,8 +47,8 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->propertyStatisticsStore
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTimestamp()
 		);
 
@@ -69,19 +69,19 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( new FakeResultWrapper( [] ) ) );
+			->willReturn( new FakeResultWrapper( [] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => 'throwExceptionForMismatch' ] ) );
+			->willReturn( [ 'Foo' => 'throwExceptionForMismatch' ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new UsageStatisticsListLookup(
 			$this->store,
@@ -106,7 +106,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
@@ -119,23 +119,23 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIdFetcher ) );
+			->willReturn( $objectIdFetcher );
 
 		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->propertyStatisticsStore->expects( $this->any() )
 			->method( 'getUsageCount' )
-			->will( $this->returnValue( 54 ) );
+			->willReturn( 54 );
 
 		$instance = new UsageStatisticsListLookup(
 			$this->store,
@@ -144,8 +144,8 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 

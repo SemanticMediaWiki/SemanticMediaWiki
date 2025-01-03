@@ -10,7 +10,7 @@ namespace SMW\Tests;
  *
  * @author mwjames
  */
-class DefinesTest extends  \PHPUnit_Framework_TestCase {
+class DefinesTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider constantsDataProvider

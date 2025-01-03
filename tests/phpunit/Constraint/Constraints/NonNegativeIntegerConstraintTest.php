@@ -15,7 +15,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
+class NonNegativeIntegerConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -69,11 +69,11 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDINumber( -1 ) ) );
+			->willReturn( $this->dataItemFactory->newDINumber( -1 ) );
 
 		$instance = new NonNegativeIntegerConstraint();
 

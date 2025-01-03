@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SemanticDataValidator extends \PHPUnit_Framework_Assert {
+class SemanticDataValidator extends \PHPUnit\Framework\Assert {
 
 	use PHPUnitCompat;
 
@@ -185,7 +185,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		}
 
 		$this->assertTrue( $runAssertThatPropertyHasCharacteristicsAs, __METHOD__ );
-
 	}
 
 	/**
@@ -247,7 +246,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 			if ( isset( $expected['propertyValues'] ) ) {
 				$pv = $semanticData->getPropertyValues( $property );
-				$report[$property->getKey()] =  $this->formatAsString( $pv );
+				$report[$property->getKey()] = $this->formatAsString( $pv );
 
 				$this->assertThatPropertyValuesAreSet(
 					$expected,
@@ -318,7 +317,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	private function assertThatSemanticDataIsIndeedEmpty( SemanticData $semanticData ) {
 		$property = new DIProperty( '_SKEY' );
 
-		foreach( $semanticData->getPropertyValues( $property ) as $dataItem ) {
+		foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
 			$semanticData->removePropertyObjectValue( $property, $dataItem );
 		}
 
@@ -412,7 +411,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 				continue;
 			}
 
-			if ( ( is_numeric( $value ) && is_numeric( $propertyValue ) )  && $value == $propertyValue ) {
+			if ( ( is_numeric( $value ) && is_numeric( $propertyValue ) ) && $value == $propertyValue ) {
 				unset( $expected['propertyValues'][$key] );
 				continue;
 			}

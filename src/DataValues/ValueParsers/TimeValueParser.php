@@ -194,7 +194,7 @@ class TimeValueParser implements ValueParser {
 				$datecomponents[] = $match; // we check later if this makes sense
 				$matchisdate = true;
 			} elseif ( is_numeric( $match ) &&
-			           ( $prevmatchwasdate || count( $datecomponents ) == 0 ) ) {
+					   ( $prevmatchwasdate || count( $datecomponents ) == 0 ) ) {
 				$datecomponents[] = $match;
 				$matchisnumber = true;
 				$matchisdate = true;

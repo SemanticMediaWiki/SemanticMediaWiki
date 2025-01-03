@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QueryPageTest extends \PHPUnit_Framework_TestCase {
+class QueryPageTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -64,9 +64,8 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 		$search = __METHOD__;
 		$result = $this->newInstance( $test )->linkParameters();
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
-
 	}
 
 	/**
@@ -98,7 +97,7 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		$this->assertInternalType( 'string', $result );
+		$this->assertIsString( $result );
 
 		// https://github.com/sebastianbergmann/phpunit/issues/1380
 		// $this->assertTag( $matcher, $result );

@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class CheckQueryTaskTest extends \PHPUnit_Framework_TestCase {
+class CheckQueryTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;
@@ -50,7 +50,7 @@ class CheckQueryTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$instance = new CheckQueryTask(
 			$this->store

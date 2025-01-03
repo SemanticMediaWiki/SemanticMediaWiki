@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\ExtensionTypes;
  *
  * @author mwjames
  */
-class ExtensionTypesTest extends \PHPUnit_Framework_TestCase {
+class ExtensionTypesTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

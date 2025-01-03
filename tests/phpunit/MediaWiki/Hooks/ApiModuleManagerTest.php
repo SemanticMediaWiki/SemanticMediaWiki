@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\ApiModuleManager;
  *
  * @author mwjames
  */
-class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
+class ApiModuleManagerTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -47,10 +47,9 @@ class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-
 		$apiModuleManager->expects( $this->once() )
 			->method( 'addModules' )
-			 ->with( $this->equalTo( $modules ) );
+			 ->with( $modules );
 
 		$instance = new ApiModuleManager();
 		$instance->process( $apiModuleManager );

@@ -19,13 +19,14 @@ use SMWExporter as Exporter;
  *
  * @group SMW
  * @group SMWExtension
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 2.0
  *
  * @author mwjames
  */
-class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
+class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $dataValueFactory;

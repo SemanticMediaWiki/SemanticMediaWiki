@@ -16,7 +16,7 @@ use SMWDataValue;
  *
  * @author mwjames
  */
-class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
+class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -63,8 +63,8 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( false ) );
+			->with( 'Foo' )
+			->willReturn( false );
 
 		$dataValue = $this->createMock( SMWDataValue::class );
 		$dataValue->expects( $this->any() )
@@ -73,7 +73,8 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
+			->willReturn( function () use( $semanticData ) { return $semanticData;
+			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
@@ -103,8 +104,8 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Foo' )
+			->willReturn( true );
 
 		$dataValue = $this->createMock( SMWDataValue::class );
 		$dataValue->expects( $this->any() )
@@ -113,7 +114,8 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
+			->willReturn( function () use( $semanticData ) { return $semanticData;
+			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
@@ -147,12 +149,12 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Foo' )
+			->willReturn( true );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $dataItem, $dataItem ] ) );
+			->willReturn( [ $dataItem, $dataItem ] );
 
 		$dataValue = $this->createMock( SMWDataValue::class );
 		$dataValue->expects( $this->any() )
@@ -161,7 +163,8 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
+			->willReturn( function () use( $semanticData ) { return $semanticData;
+			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
@@ -191,7 +194,7 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem->expects( $this->atLeastOnce() )
 			->method( 'getString' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -199,12 +202,12 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Foo' )
+			->willReturn( true );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $dataItem ] ) );
+			->willReturn( [ $dataItem ] );
 
 		$dataValue = $this->createMock( SMWDataValue::class );
 		$dataValue->expects( $this->any() )
@@ -213,7 +216,8 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function () use( $semanticData ) { return $semanticData; } ) );
+			->willReturn( function () use( $semanticData ) { return $semanticData;
+			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )

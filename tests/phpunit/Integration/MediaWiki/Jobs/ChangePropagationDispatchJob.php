@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use Title;
 
 /**
@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class ChangePropagationDispatchJob extends DatabaseTestCase {
+class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 
 	private $job = null;
 	private $pages = [];
@@ -59,7 +59,7 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 	}
 
 	public function testTriggerUpdateJob() {
-		$index = 1; //pass-by-reference
+		$index = 1; // pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
 

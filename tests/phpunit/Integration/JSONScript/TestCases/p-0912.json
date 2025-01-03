@@ -47,34 +47,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#1 (1.31-) (without `-raw`)",
-			"skip-on": {
-				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
-			"subject": "Example/P0912/Q.1",
-			"assert-store": {
-				"semantic-data": {
-					"strict-mode-valuematch": false,
-					"propertyCount": 3,
-					"propertyKeys": [
-						"_MDAT",
-						"_ASK",
-						"_SKEY"
-					]
-				}
-			},
-			"assert-output": {
-				"to-contain": [
-					"<td class=\"Has-text smwtype_txt\">Some text with annotation Example/P0912/1</td></tr></table>"
-				]
-			}
-		},
-		{
-			"type": "parser",
-			"about": "#1 (1.31+) (without `-raw`)",
-			"skip-on": {
-				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#1 (without `-raw`)",
 			"subject": "Example/P0912/Q.1",
 			"assert-store": {
 				"semantic-data": {
@@ -95,39 +68,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#2 (1.31-) (with `-raw`)",
-			"skip-on": {
-				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
-			"subject": "Example/P0912/Q.2",
-			"assert-store": {
-				"semantic-data": {
-					"strict-mode-valuematch": false,
-					"propertyCount": 4,
-					"propertyKeys": [
-						"_MDAT",
-						"_ASK",
-						"_SKEY",
-						"Foo"
-					],
-					"propertyValues": [
-						"Example/P0912/1"
-					]
-				}
-			},
-			"assert-output": {
-				"to-contain": [
-					"<td class=\"Has-text smwtype_txt\">Some text with annotation",
-					"title=\"Example/P0912/1\">Example/P0912/1</a></td></tr></table>"
-				]
-			}
-		},
-		{
-			"type": "parser",
-			"about": "#2 (1.31+) (with `-raw`)",
-			"skip-on": {
-				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#2 (with `-raw`)",
 			"subject": "Example/P0912/Q.2",
 			"assert-store": {
 				"semantic-data": {

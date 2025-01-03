@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
+class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -42,7 +42,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnValue( $this->errorLookup ) );
+			->willReturn( $this->errorLookup );
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
@@ -54,7 +54,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 	}
 
 	protected function tearDown(): void {
@@ -80,8 +80,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getName()
 		);
 	}
@@ -92,8 +92,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getIndicators()
 		);
 	}
@@ -104,8 +104,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getModules()
 		);
 	}
@@ -116,8 +116,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getInlineStyle()
 		);
 	}
@@ -142,7 +142,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	public function testHasIndicator_FromErrorLookup() {
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' );
@@ -152,7 +152,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 
 		$this->errorLookup->expects( $this->once() )
 			->method( 'buildArray' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -165,8 +165,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
@@ -174,7 +174,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	public function testHasIndicator_FromErrorLookup_NoErrors() {
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' );
@@ -184,7 +184,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 
 		$this->errorLookup->expects( $this->once() )
 			->method( 'buildArray' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -211,7 +211,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	public function testHasIndicator_FromCache() {
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$this->errorLookup->expects( $this->never() )
 			->method( 'buildArray' );
@@ -227,8 +227,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}

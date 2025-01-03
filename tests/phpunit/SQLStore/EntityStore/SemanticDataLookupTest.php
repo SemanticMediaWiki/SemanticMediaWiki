@@ -19,7 +19,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -42,7 +42,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $this->dataItemHandler ) );
+			->willReturn( $this->dataItemHandler );
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -50,7 +50,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
@@ -60,7 +60,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->store->setConnectionManager( $connectionManager );
 	}
@@ -94,7 +94,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -116,12 +116,12 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTableUsageInfo() {
-		$property =  new DIProperty( 'Foo' );
+		$property = new DIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->with(	$this->equalTo( $property ) )
-			->will( $this->returnValue( '__bar__' ) );
+			->with(	$property )
+			->willReturn( '__bar__' );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -129,7 +129,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $property ] ) );
+			->willReturn( [ $property ] );
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -142,7 +142,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewRequestOptions_NULL() {
-		$property =  new DIProperty( 'Foo' );
+		$property = new DIProperty( 'Foo' );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -152,14 +152,13 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->newRequestOptions( $propertyTable, $property )
+		$this->assertNull(
+						$instance->newRequestOptions( $propertyTable, $property )
 		);
 	}
 
 	public function testNewRequestOptions_AsConditionConstraint_IsFixedPropertyTable() {
-		$property =  new DIProperty( 'Foo' );
+		$property = new DIProperty( 'Foo' );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -167,7 +166,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->conditionConstraint = true;
@@ -189,7 +188,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataItemHandler->expects( $this->any() )
 			->method( 'getFetchFields' )
-			->will( $this->returnValue( [ 'fooField' => 'fieldType' ] ) );
+			->willReturn( [ 'fooField' => 'fieldType' ] );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -197,19 +196,19 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $this->query ) );
+			->willReturn( $this->query );
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -236,11 +235,11 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 9999 ) );
+			->willReturn( 9999 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
@@ -248,7 +247,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataItemHandler->expects( $this->any() )
 			->method( 'getFetchFields' )
-			->will( $this->returnValue( [ 'fooField' => 'fieldType' ] ) );
+			->willReturn( [ 'fooField' => 'fieldType' ] );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -256,23 +255,24 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
+			->willReturnCallback( function ( $value ) { return "'$value'";
+			} );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $this->query ) );
+			->willReturn( $this->query );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -308,7 +308,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataItemHandler->expects( $this->any() )
 			->method( 'getFetchFields' )
-			->will( $this->returnValue( [ 'fooField' => 'fieldType' ] ) );
+			->willReturn( [ 'fooField' => 'fieldType' ] );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -316,23 +316,24 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
+			->willReturnCallback( function ( $value ) { return "'$value'";
+			} );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $this->query ) );
+			->willReturn( $this->query );
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -355,7 +356,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataItemHandler->expects( $this->any() )
 			->method( 'getFetchFields' )
-			->will( $this->returnValue( [ 'fooField' => 'fieldType' ] ) );
+			->willReturn( [ 'fooField' => 'fieldType' ] );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -363,27 +364,28 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'bar_table' ) );
+			->willReturn( 'bar_table' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
+			->willReturnCallback( function ( $value ) { return "'$value'";
+			} );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $this->query ) );
+			->willReturn( $this->query );
 
 		$dataItem = DIWikiPage::newFromText( 'no_id_subject' );
 
@@ -408,7 +410,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -427,7 +429,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -465,7 +467,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataItemHandler->expects( $this->any() )
 			->method( 'getFetchFields' )
-			->will( $this->returnValue( [ 'fooField' => 'fieldType' ] ) );
+			->willReturn( [ 'fooField' => 'fieldType' ] );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -473,23 +475,24 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'bar_table' ) );
+			->willReturn( 'bar_table' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
+			->willReturnCallback( function ( $value ) { return "'$value'";
+			} );
 
 		$this->connection->expects( $this->once() )
 			->method( 'readQuery' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $this->query ) );
+			->willReturn( $this->query );
 
 		$dataItem = new DIBlob( __METHOD__ );
 
@@ -515,7 +518,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$query_1 = new \SMW\MediaWiki\Connection\Query( $this->connection );
 		$query_2 = new \SMW\MediaWiki\Connection\Query( $this->connection );
@@ -527,7 +530,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataItemHandler->expects( $this->any() )
 			->method( 'getFetchFields' )
-			->will( $this->returnValue( [ 'fooField' => 'fieldType' ] ) );
+			->willReturn( [ 'fooField' => 'fieldType' ] );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -535,31 +538,32 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$propertyTable->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'bar_table' ) );
+			->willReturn( 'bar_table' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnCallback( function ( $value ) { return "'$value'"; } ) );
+			->willReturnCallback( function ( $value ) { return "'$value'";
+			} );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'readQuery' )
-			->will( $this->onConsecutiveCalls( new FakeResultWrapper( [ $row ] ), new FakeResultWrapper( [ $row ] ) ) );
+			->willReturnOnConsecutiveCalls( new FakeResultWrapper( [ $row ] ), new FakeResultWrapper( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->onConsecutiveCalls( $query_1, $query_2 ) );
+			->willReturnOnConsecutiveCalls( $query_1, $query_2 );
 
 		$dataItem = DIWikiPage::newFromText( 'Bar' );
 

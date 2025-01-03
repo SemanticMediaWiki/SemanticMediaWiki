@@ -15,7 +15,7 @@ use SMW\Query\PrintRequestFactory;
  *
  * @author mwjames
  */
-class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
+class PrintRequestFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

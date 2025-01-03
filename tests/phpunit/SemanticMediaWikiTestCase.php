@@ -33,7 +33,7 @@ use WebRequest;
  *
  * @author mwjames
  */
-abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
+abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Returns the name of the deriving class being tested
@@ -221,7 +221,6 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 		if ( !( $store instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
-
 	}
 
 	protected function getStore() {

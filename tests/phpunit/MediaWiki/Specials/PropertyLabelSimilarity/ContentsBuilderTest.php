@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
+class ContentsBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -56,7 +56,7 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$requestOptions->expects( $this->atLeastOnce() )
 			->method( 'getExtraConditions' )
-			->will( $this->returnValue( [ 'type' => 'Foo', 'threshold' => 50 ] ) );
+			->willReturn( [ 'type' => 'Foo', 'threshold' => 50 ] );
 
 		$methods = [
 			'setName',
@@ -76,7 +76,7 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -87,8 +87,8 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->htmlFormRenderer
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml( $requestOptions )
 		);
 	}

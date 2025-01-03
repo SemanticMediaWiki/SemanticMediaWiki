@@ -13,7 +13,7 @@ use SMW\Elastic\QueryEngine\Condition;
  *
  * @author mwjames
  */
-class ConditionTest extends \PHPUnit_Framework_TestCase {
+class ConditionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

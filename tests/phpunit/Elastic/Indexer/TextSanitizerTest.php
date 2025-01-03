@@ -16,8 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
-
+class TextSanitizerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider textLinksProvider

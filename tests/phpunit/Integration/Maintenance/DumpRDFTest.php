@@ -2,12 +2,13 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -15,11 +16,10 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DumpRDFTest extends DatabaseTestCase {
+class DumpRDFTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 
-	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 	private $spyMessageReporter;
 
@@ -36,7 +36,7 @@ class DumpRDFTest extends DatabaseTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\DumpRDF'
+			'\SMW\Maintenance\dumpRDF'
 		);
 
 		$maintenanceRunner->setMessageReporter(

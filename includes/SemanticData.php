@@ -464,12 +464,12 @@ class SemanticData implements JsonUnserializable {
 	public function addPropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
 		$this->hash = null;
 
-		if( $dataItem instanceof SMWDIContainer ) {
+		if ( $dataItem instanceof SMWDIContainer ) {
 			$this->addSubSemanticData( $dataItem->getSemanticData() );
 			$dataItem = $dataItem->getSemanticData()->getSubject();
 		}
 
-		if( $property->getKey() === DIProperty::TYPE_MODIFICATION_DATE ) {
+		if ( $property->getKey() === DIProperty::TYPE_MODIFICATION_DATE ) {
 			$this->setOption( self::OPT_LAST_MODIFIED, $dataItem->getMwTimestamp() );
 		}
 
@@ -624,8 +624,8 @@ class SemanticData implements JsonUnserializable {
 	public function removePropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
 		$this->hash = null;
 
-		//delete associated subSemanticData
-		if( $dataItem instanceof SMWDIContainer ) {
+		// delete associated subSemanticData
+		if ( $dataItem instanceof SMWDIContainer ) {
 			$this->removeSubSemanticData( $dataItem->getSemanticData() );
 			$dataItem = $dataItem->getSemanticData()->getSubject();
 		}
@@ -643,7 +643,7 @@ class SemanticData implements JsonUnserializable {
 		}
 
 		if ( $this->mNoDuplicates ) {
-			//this didn't get checked for my tests, but should work
+			// this didn't get checked for my tests, but should work
 			unset( $this->mPropVals[$property->getKey()][md5( $dataItem->getHash() )] );
 
 			if ( isset( $this->countMap[$key] ) && $key === '_INST' ) {
@@ -652,8 +652,8 @@ class SemanticData implements JsonUnserializable {
 				$this->countMap[$key]--;
 			}
 		} else {
-			foreach( $this->mPropVals[$property->getKey()] as $index => $di ) {
-				if( $di->equals( $dataItem ) ) {
+			foreach ( $this->mPropVals[$property->getKey()] as $index => $di ) {
+				if ( $di->equals( $dataItem ) ) {
 					unset( $this->mPropVals[$property->getKey()][$index] );
 				}
 
@@ -729,10 +729,8 @@ class SemanticData implements JsonUnserializable {
 	 * data for subobjects.
 	 *
 	 * @since 1.8
-	 *
-	 * @return boolean
 	 */
-	public function isEmpty() {
+	public function isEmpty(): bool {
 		return $this->getProperties() === [] && $this->getSubSemanticData() === [];
 	}
 
@@ -748,7 +746,7 @@ class SemanticData implements JsonUnserializable {
 	 * @throws SemanticDataImportException
 	 */
 	public function importDataFrom( SemanticData $semanticData ) {
-		if( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
+		if ( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
 			throw new SemanticDataImportException( "SemanticData can only represent data about one subject. Importing data for another subject is not possible." );
 		}
 
@@ -757,7 +755,7 @@ class SemanticData implements JsonUnserializable {
 		// Shortcut when copying into empty objects that don't ask for
 		// more duplicate elimination:
 		if ( count( $this->mProperties ) == 0 &&
-		     ( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
+			 ( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
 
 			$this->mProperties = $semanticData->getProperties();
 			$this->sequenceMap = $semanticData->getSequenceMap();
@@ -800,7 +798,7 @@ class SemanticData implements JsonUnserializable {
 		// Subobject references are part of the value representation and assigned
 		// to the relevant property which may be resolved at a later point
 		if ( !$semanticData->isStub() ) {
-			foreach( $semanticData->getSubSemanticData() as $subSemanticData ) {
+			foreach ( $semanticData->getSubSemanticData() as $subSemanticData ) {
 				$this->addSubSemanticData( $subSemanticData );
 			}
 		}
@@ -818,7 +816,7 @@ class SemanticData implements JsonUnserializable {
 	 * @param SemanticData $semanticData
 	 */
 	public function removeDataFrom( SemanticData $semanticData ) {
-		if( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
+		if ( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
 			return;
 		}
 
@@ -826,7 +824,7 @@ class SemanticData implements JsonUnserializable {
 			$this->removeProperty( $property );
 		}
 
-		foreach( $semanticData->getSubSemanticData() as $semData ) {
+		foreach ( $semanticData->getSubSemanticData() as $semData ) {
 			$this->removeSubSemanticData( $semData );
 		}
 	}
@@ -880,7 +878,7 @@ class SemanticData implements JsonUnserializable {
 
 	/**
 	 * Implements \JsonSerializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @return array
@@ -923,7 +921,7 @@ class SemanticData implements JsonUnserializable {
 	public static function maybeUnserializeArray( $unserializer, array $value ) {
 		# Compatibility thunk for MW versions with T312589 fixed/unfixed
 		$result = [];
-		foreach ( $value as $k=>$v ) {
+		foreach ( $value as $k => $v ) {
 			$result[$k] = self::maybeUnserialize( $unserializer, $v );
 		}
 		return $result;
@@ -931,7 +929,7 @@ class SemanticData implements JsonUnserializable {
 
 	/**
 	 * Implements JsonUnserializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @param JsonUnserializer $unserializer Unserializer

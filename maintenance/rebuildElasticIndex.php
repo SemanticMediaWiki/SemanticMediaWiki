@@ -13,11 +13,13 @@ use SMW\Utils\CliMsgFormatter;
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * @license GNU GPL v2+
@@ -524,7 +526,7 @@ class rebuildElasticIndex extends \Maintenance {
 
 				$conditions[] = implode( ' AND ', $cond );
 			}
-		} elseif( !$this->hasOption( 's' ) || $this->getOption( 's' ) < 2 ) {
+		} elseif ( !$this->hasOption( 's' ) || $this->getOption( 's' ) < 2 ) {
 			// Make sure we always replicate properties whether they have a
 			// `smw_proptable_hash` or not (which hints to predefined properties
 			// without an actual page)
@@ -540,5 +542,7 @@ class rebuildElasticIndex extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\rebuildElasticIndex';
+// @codeCoverageIgnoreStart
+$maintClass = rebuildElasticIndex::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
+// @codeCoverageIgnoreEnd

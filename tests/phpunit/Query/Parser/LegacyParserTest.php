@@ -20,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class LegacyParserTest extends \PHPUnit_Framework_TestCase {
+class LegacyParserTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $descriptionFactory;

@@ -20,7 +20,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -99,8 +99,8 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$hierarchyLookup->expects( $this->once() )
 			->method( 'hasSubcategory' )
-			->with( $this->equalTo( $category ) )
-			->will( $this->returnValue( true ) );
+			->with( $category )
+			->willReturn( true );
 
 		$resultVariable = 'result';
 

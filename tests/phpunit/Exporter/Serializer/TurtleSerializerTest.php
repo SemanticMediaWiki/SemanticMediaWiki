@@ -19,7 +19,7 @@ use SMW\Exporter\Element\ExpLiteral;
  *
  * @author mwjames
  */
-class TurtleSerializerTest extends \PHPUnit_Framework_TestCase {
+class TurtleSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

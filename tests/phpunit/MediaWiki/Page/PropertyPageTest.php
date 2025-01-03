@@ -14,7 +14,7 @@ use SMW\MediaWiki\Page\PropertyPage;
  *
  * @author mwjames
  */
-class PropertyPageTest extends \PHPUnit_Framework_TestCase {
+class PropertyPageTest extends \PHPUnit\Framework\TestCase {
 
 	private $title;
 	private $store;
@@ -48,8 +48,8 @@ class PropertyPageTest extends \PHPUnit_Framework_TestCase {
 			$this->declarationExaminerFactory
 		);
 
-		$this->assertEquals(
-			'',
+		$this->assertSame(
+			null,
 			$instance->view()
 		);
 	}

@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class MonolingualTextValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -35,11 +35,11 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new MonolingualTextValueParser() ) );
+			->willReturn( new MonolingualTextValueParser() );
 	}
 
 	public function testCanConstruct() {

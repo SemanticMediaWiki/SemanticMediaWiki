@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\SQLStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;
@@ -17,6 +17,7 @@ use Title;
  * @group SMWExtension
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -24,7 +25,7 @@ use Title;
  *
  * @author mwjames
  */
-class SubSemanticDataDBIntegrationTest extends DatabaseTestCase {
+class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $title;
 
@@ -39,9 +40,7 @@ class SubSemanticDataDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function tearDown(): void {
-		$pageDeleter= new PageDeleter();
-
-		$pageDeleter->deletePage( $this->title );
+		$pageDeleter = new PageDeleter();
 
 		parent::tearDown();
 	}

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
+class OutputFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -47,8 +47,8 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testGetSpecialPageLinkWith() {
 		$instance = new OutputFormatter( $this->outputPage );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getSpecialPageLinkWith()
 		);
 	}
@@ -56,8 +56,8 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testEncodeAsJson() {
 		$instance = new OutputFormatter( $this->outputPage );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->encodeAsJson( [] )
 		);
 	}

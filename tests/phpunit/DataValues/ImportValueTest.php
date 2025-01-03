@@ -14,7 +14,7 @@ use SMW\DataValues\ValueParsers\ImportValueParser;
  *
  * @author mwjames
  */
-class ImportValueTest extends \PHPUnit_Framework_TestCase {
+class ImportValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataValueServiceFactory;
 
@@ -31,7 +31,7 @@ class ImportValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new ImportValueParser( $mediaWikiNsContentReader ) ) );
+			->willReturn( new ImportValueParser( $mediaWikiNsContentReader ) );
 	}
 
 	public function testCanConstruct() {

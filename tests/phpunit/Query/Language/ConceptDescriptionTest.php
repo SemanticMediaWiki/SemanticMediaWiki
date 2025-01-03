@@ -16,7 +16,7 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
+class ConceptDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$concept = $this->getMockBuilder( '\SMW\DIWikiPage' )
@@ -46,11 +46,11 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( "[[{$ns}:Foo]]", $instance->getQueryString() );
 		$this->assertEquals( " <q>[[{$ns}:Foo]]</q> ", $instance->getQueryString( true ) );
 
-		$this->assertEquals( false, $instance->isSingleton() );
+		$this->assertFalse( $instance->isSingleton() );
 		$this->assertEquals( [], $instance->getPrintRequests() );
 
-		$this->assertEquals( 1, $instance->getSize() );
-		$this->assertEquals( 0, $instance->getDepth() );
+		$this->assertSame( 1, $instance->getSize() );
+		$this->assertSame( 0, $instance->getDepth() );
 		$this->assertEquals( 4, $instance->getQueryFeatures() );
 	}
 

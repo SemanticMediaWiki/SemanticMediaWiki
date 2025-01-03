@@ -26,8 +26,7 @@ class FileSystemSmwJsonRepo implements SmwJsonRepo {
 
 		try {
 			$fileContents = $this->fileFetcher->fetchFile( $filePath );
-		}
-		catch ( FileFetchingException $ex ) {
+		} catch ( FileFetchingException $ex ) {
 			return null;
 		}
 

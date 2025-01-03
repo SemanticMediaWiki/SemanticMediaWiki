@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
+class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -53,11 +53,11 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getServerInfo' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new VersionExaminer(
 			$connection
@@ -83,7 +83,7 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new VersionExaminer(
 			$connection
@@ -104,11 +104,11 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getServerInfo' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$this->setupFile->expects( $this->once() )
 			->method( 'remove' );
@@ -120,9 +120,8 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
-		$this->assertEquals(
-			true,
-			$instance->meetsVersionMinRequirement( [ 'foo' => 1 ] )
+		$this->assertTrue(
+						$instance->meetsVersionMinRequirement( [ 'foo' => 1 ] )
 		);
 	}
 
@@ -134,11 +133,11 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getServerInfo' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$this->setupFile->expects( $this->once() )
 			->method( 'set' );
@@ -153,9 +152,8 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
-		$this->assertEquals(
-			false,
-			$instance->meetsVersionMinRequirement( [ 'foo' => 2 ] )
+		$this->assertFalse(
+						$instance->meetsVersionMinRequirement( [ 'foo' => 2 ] )
 		);
 
 		$this->assertContains(
