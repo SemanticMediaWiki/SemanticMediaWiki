@@ -27,14 +27,15 @@ class ExtendedPermissionsError extends PermissionsError {
 			foreach ( $this->status->getMessages() as $msg ) {
 				$this->errorArray[] = $msg->getKey();
 			}
-			
+
 			// Push SMW specific messages to appear first, PermissionsError will
 			// generate a list of required permissions
 			array_unshift( $this->errorArray, $errors );
 
-			$this->status->fatal( ...$this->errorArray );
+			$status = \MediaWiki\Permissions\PermissionStatus::newEmpty();
+			$status->fatal( ...$this->errorArray );
 
-			$this->status = $this->status;
+			$this->status = $status;
 		} else {
 			// Push SMW specific messages to appear first, PermissionsError will
 			// generate a list of required permissions
