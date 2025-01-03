@@ -13,11 +13,13 @@ use SMW\Utils\CliMsgFormatter;
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * @license GNU GPL v2+
@@ -272,5 +274,7 @@ class updateEntityCountMap extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = updateEntityCountMap::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
+// @codeCoverageIgnoreEnd

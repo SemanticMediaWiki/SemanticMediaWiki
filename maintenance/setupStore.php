@@ -15,11 +15,13 @@ use SMW\Utils\CliMsgFormatter;
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Sets up the storage backend currently selected in the "LocalSettings.php"
@@ -269,5 +271,7 @@ class setupStore extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = setupStore::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );
+// @codeCoverageIgnoreEnd
