@@ -261,26 +261,31 @@ class JsonTestCaseFileHandler {
 		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
 		foreach ( $skipOn as $id => $reason ) {
-
-			if ( strpos( $id, 'mw-' ) === false ) {
+			if ( strpos( $id, 'mediawiki' ) === false ) {
 				continue;
 			}
 
-			list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
+			$versionToSkip = $skipOn['mediawiki'][0];
 			$compare = '=';
 
-			if ( strpos( $versionToSkip, '.x' ) ) {
-				$versionToSkip = str_replace( '.x', '.9999', $versionToSkip );
-				$compare = '<';
+			if ( strpos( $versionToSkip, '=' ) ) {
+				$list = explode( "=", $versionToSkip );
+				$compare = $list[0] . '=';
+				if ( strpos( $versionToSkip, '.x' ) ) {
+					$versionToSkip = str_replace( '.x', '.9999', $list[1] );
+				}
 			}
 
-			if ( strpos( $versionToSkip, '<' ) ) {
-				$versionToSkip = str_replace( '<', '', $versionToSkip );
-				$compare = '<';
+			if ( !strpos( $versionToSkip, '=' ) ) {
+				$compare = $versionToSkip[0];
+				$list = explode( $compare, $versionToSkip );
+				if ( strpos( $versionToSkip, '.x' ) ) {
+					$versionToSkip = str_replace( '.x', '.9999', $list[1] );
+				}
 			}
 
 			if ( version_compare( $mwVersion, $versionToSkip, $compare ) ) {
-				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
+				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason[1]})";
 				break;
 			}
 		}
