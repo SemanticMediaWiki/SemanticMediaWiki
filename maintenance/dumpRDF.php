@@ -11,11 +11,13 @@ use Onoi\MessageReporter\CallbackMessageReporter;
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Usage:
@@ -217,6 +219,7 @@ class dumpRDF extends \Maintenance {
 	}
 
 }
-
+// @codeCoverageIgnoreStart
 $maintClass = dumpRDF::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );
+// @codeCoverageIgnoreEnd
