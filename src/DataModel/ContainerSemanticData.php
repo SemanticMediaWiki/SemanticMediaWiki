@@ -133,7 +133,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @param SemanticData|null $semanticData
 	 */
-	public function copyDataFrom( SemanticData $semanticData = null ) {
+	public function copyDataFrom( ?SemanticData $semanticData = null ) {
 		if ( $semanticData === null ) {
 			return;
 		}

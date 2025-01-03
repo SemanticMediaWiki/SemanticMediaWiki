@@ -128,7 +128,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @param DIWikiPage|null $contextPage
 	 */
-	public function setContextPage( DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?DIWikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 

@@ -52,7 +52,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $localName, $namespace, $namespaceId, DataItem $dataItem = null ) {
+	public function __construct( $localName, $namespace, $namespaceId, ?DataItem $dataItem = null ) {
 		if ( !is_string( $localName ) ) {
 			throw new InvalidArgumentException( '$localName needs to be a string' );
 		}

@@ -40,7 +40,7 @@ class MockObjectBuilder extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @param MockObjectRepository|null $repository
 	 */
-	public function __construct( MockObjectRepository $repository = null ) {
+	public function __construct( ?MockObjectRepository $repository = null ) {
 		if ( $repository === null ) {
 			$repository = new CoreMockObjectRepository();
 		}

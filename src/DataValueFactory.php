@@ -176,7 +176,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByType( $typeId, $valueString = false, $caption = false, DIProperty $property = null, $contextPage = null ) {
+	public function newDataValueByType( $typeId, $valueString = false, $caption = false, ?DIProperty $property = null, $contextPage = null ) {
 		if ( !$this->dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
 			return new ErrorValue(
 				$typeId,
@@ -255,7 +255,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByItem( DataItem $dataItem, DIProperty $property = null, $caption = false, $contextPage = null ) {
+	public function newDataValueByItem( DataItem $dataItem, ?DIProperty $property = null, $caption = false, $contextPage = null ) {
 		if ( $property !== null ) {
 			$typeId = $property->findPropertyTypeID();
 		} else {
@@ -311,7 +311,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByText( $propertyName, $valueString, $caption = false, DIWikiPage $contextPage = null ) {
+	public function newDataValueByText( $propertyName, $valueString, $caption = false, ?DIWikiPage $contextPage = null ) {
 		$propertyDV = $this->newPropertyValueByLabel( $propertyName, $caption, $contextPage );
 
 		if ( !$propertyDV->isValid() ) {
@@ -391,7 +391,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValue
 	 */
-	public function newPropertyValueByLabel( $propertyLabel, $caption = false, DIWikiPage $contextPage = null ) {
+	public function newPropertyValueByLabel( $propertyLabel, $caption = false, ?DIWikiPage $contextPage = null ) {
 		return $this->newDataValueByType( PropertyValue::TYPE_ID, $propertyLabel, $caption, null, $contextPage );
 	}
 
@@ -404,7 +404,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValue
 	 */
-	public function newPropertyValueByItem( DIProperty $property, $caption = false, DIWikiPage $contextPage = null ) {
+	public function newPropertyValueByItem( DIProperty $property, $caption = false, ?DIWikiPage $contextPage = null ) {
 		$dataValue = $this->newDataValueByType(
 			PropertyValue::TYPE_ID,
 			false,
@@ -443,7 +443,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValue
 	 */
-	public static function newDataItemValue( DataItem $dataItem, DIProperty $property = null, $caption = false ) {
+	public static function newDataItemValue( DataItem $dataItem, ?DIProperty $property = null, $caption = false ) {
 		return self::getInstance()->newDataValueByItem( $dataItem, $property, $caption );
 	}
 
@@ -461,7 +461,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValue
 	 */
-	public static function newTypeIdValue( $typeId, $valueString = false, $caption = false, DIProperty $property = null, $contextPage = null ) {
+	public static function newTypeIdValue( $typeId, $valueString = false, $caption = false, ?DIProperty $property = null, $contextPage = null ) {
 		return self::getInstance()->newDataValueByType( $typeId, $valueString, $caption, $property, $contextPage );
 	}
 
@@ -470,7 +470,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValue
 	 */
-	public function newPropertyValue( $propertyName, $valueString, $caption = false, DIWikiPage $contextPage = null ) {
+	public function newPropertyValue( $propertyName, $valueString, $caption = false, ?DIWikiPage $contextPage = null ) {
 		return $this->newDataValueByText( $propertyName, $valueString, $caption, $contextPage );
 	}
 

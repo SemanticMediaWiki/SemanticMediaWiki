@@ -57,7 +57,7 @@ class EntityIdDisposerJob extends Job {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newOutdatedEntitiesResultIterator( RequestOptions $requestOptions = null ) {
+	public function newOutdatedEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
 		if ( $this->propertyTableIdReferenceDisposer === null ) {
 			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
 		}
@@ -72,7 +72,7 @@ class EntityIdDisposerJob extends Job {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newByNamespaceInvalidEntitiesResultIterator( RequestOptions $requestOptions = null ) {
+	public function newByNamespaceInvalidEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
 		if ( $this->propertyTableIdReferenceDisposer === null ) {
 			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
 		}

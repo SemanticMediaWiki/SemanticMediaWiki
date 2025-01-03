@@ -300,7 +300,7 @@ class ParserData {
 	 *
 	 * @param ParserOutput|null
 	 */
-	public function importFromParserOutput( ParserOutput $parserOutput = null ) {
+	public function importFromParserOutput( ?ParserOutput $parserOutput = null ) {
 		if ( $parserOutput === null ) {
 			return;
 		}

@@ -30,7 +30,7 @@ class MagicWordsFinder {
 	 * @param ParserOutput|null $parserOutput
 	 * @param MagicWordFactory|null $magicWordFactory
 	 */
-	public function __construct( ParserOutput $parserOutput = null, MagicWordFactory $magicWordFactory = null ) {
+	public function __construct( ?ParserOutput $parserOutput = null, ?MagicWordFactory $magicWordFactory = null ) {
 		$this->parserOutput = $parserOutput;
 		$this->magicWordFactory = $magicWordFactory;
 	}

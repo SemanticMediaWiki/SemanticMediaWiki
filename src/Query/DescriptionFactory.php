@@ -33,7 +33,7 @@ class DescriptionFactory {
 	 *
 	 * @return ValueDescription
 	 */
-	public function newValueDescription( DataItem $dataItem, DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
+	public function newValueDescription( DataItem $dataItem, ?DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
 		return new ValueDescription( $dataItem, $property, $comparator );
 	}
 

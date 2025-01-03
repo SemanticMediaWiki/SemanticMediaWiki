@@ -44,7 +44,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 * @param Store $store
 	 * @param SemanticData $semanticData
 	 */
-	public function __construct( IDeclarationExaminer $declarationExaminer, Store $store, SemanticData $semanticData = null ) {
+	public function __construct( IDeclarationExaminer $declarationExaminer, Store $store, ?SemanticData $semanticData = null ) {
 		$this->declarationExaminer = $declarationExaminer;
 		$this->store = $store;
 		$this->semanticData = $semanticData;

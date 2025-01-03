@@ -45,7 +45,7 @@ class ValueDescription extends Description {
 	 * @param null|DIProperty $property
 	 * @param integer $comparator
 	 */
-	public function __construct( DataItem $dataItem, DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
+	public function __construct( DataItem $dataItem, ?DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
 		$this->dataItem = $dataItem;
 		$this->comparator = $comparator;
 		$this->property = $property;

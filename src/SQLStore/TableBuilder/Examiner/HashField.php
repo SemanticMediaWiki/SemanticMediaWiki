@@ -33,7 +33,7 @@ class HashField {
 	 * @param SQLStore $store
 	 * @param PopulateHashField|null $populateHashField
 	 */
-	public function __construct( SQLStore $store, PopulateHashField $populateHashField = null ) {
+	public function __construct( SQLStore $store, ?PopulateHashField $populateHashField = null ) {
 		$this->store = $store;
 		$this->populateHashField = $populateHashField;
 	}

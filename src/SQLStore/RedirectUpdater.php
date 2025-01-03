@@ -283,7 +283,7 @@ class RedirectUpdater {
 	 *
 	 * @return integer the new canonical ID of the subject
 	 */
-	public function updateRedirects( DIWikiPage $source, DIWikiPage $target = null ) {
+	public function updateRedirects( DIWikiPage $source, ?DIWikiPage $target = null ) {
 		// Track count changes for redi property
 		$count = 0;
 

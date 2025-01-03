@@ -292,7 +292,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	public function getCaptionFromFreeFormat( DITime $dataItem = null ) {
+	public function getCaptionFromFreeFormat( ?DITime $dataItem = null ) {
 		$language = Localizer::getInstance()->getLanguage(
 			$this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE )
 		);
@@ -327,7 +327,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	public function getLocalizedFormat( DITime $dataItem = null ) {
+	public function getLocalizedFormat( ?DITime $dataItem = null ) {
 		if ( $dataItem === null ) {
 			return '';
 		}
