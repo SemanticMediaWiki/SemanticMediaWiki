@@ -104,7 +104,7 @@ class CliMsgFormatter {
 	private function calculateProgress( int $i, int $total ): int {
 		$value = 100;
 
-		if ( $i > 0 && $total > 0 ) {
+		if ( $i >= 0 && $total > 0 ) {
 			$value = min( 100, round( ( $i / $total ) * 100 ) );
 		}
 
