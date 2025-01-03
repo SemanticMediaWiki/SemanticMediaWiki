@@ -90,7 +90,7 @@ class HtmlForm {
 	 *
 	 * @param Query $query
 	 */
-	public function setQuery( Query $query = null ) {
+	public function setQuery( ?Query $query = null ) {
 		$this->query = $query;
 	}
 

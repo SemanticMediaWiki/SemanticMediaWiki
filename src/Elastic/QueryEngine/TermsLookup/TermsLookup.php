@@ -43,7 +43,7 @@ class TermsLookup implements ITermsLookup {
 	 * @param Store $store
 	 * @param Options $options
 	 */
-	public function __construct( Store $store, Options $options = null ) {
+	public function __construct( Store $store, ?Options $options = null ) {
 		$this->store = $store;
 		$this->options = $options;
 

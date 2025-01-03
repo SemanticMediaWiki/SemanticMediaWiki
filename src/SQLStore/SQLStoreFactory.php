@@ -92,7 +92,7 @@ class SQLStoreFactory {
 	 * @param SQLStore $store
 	 * @param MessageReporter|null $messageReporter
 	 */
-	public function __construct( SQLStore $store, MessageReporter $messageReporter = null ) {
+	public function __construct( SQLStore $store, ?MessageReporter $messageReporter = null ) {
 		$this->store = $store;
 		$this->messageReporter = $messageReporter;
 
@@ -221,7 +221,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newPropertyUsageCachedListLookup( RequestOptions $requestOptions = null ) {
+	public function newPropertyUsageCachedListLookup( ?RequestOptions $requestOptions = null ) {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$propertyUsageListLookup = new PropertyUsageListLookup(
@@ -244,7 +244,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newUnusedPropertyCachedListLookup( RequestOptions $requestOptions = null ) {
+	public function newUnusedPropertyCachedListLookup( ?RequestOptions $requestOptions = null ) {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$unusedPropertyListLookup = new UnusedPropertyListLookup(
@@ -267,7 +267,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newUndeclaredPropertyCachedListLookup( RequestOptions $requestOptions = null ) {
+	public function newUndeclaredPropertyCachedListLookup( ?RequestOptions $requestOptions = null ) {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$undeclaredPropertyListLookup = new UndeclaredPropertyListLookup(
@@ -662,7 +662,7 @@ class SQLStoreFactory {
 	 *
 	 * @return IdEntityFinder
 	 */
-	public function newEntityIdFinder( IdCacheManager $idCacheManager, PropertyTableHashes $propertyTableHashes = null ) {
+	public function newEntityIdFinder( IdCacheManager $idCacheManager, ?PropertyTableHashes $propertyTableHashes = null ) {
 		if ( $propertyTableHashes === null ) {
 			$propertyTableHashes = $this->newPropertyTableHashes( $idCacheManager );
 		}

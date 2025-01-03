@@ -66,7 +66,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @param DIWikiPage|null $subject
 	 * @param array $diff
 	 */
-	public function __construct( DIWikiPage $subject = null, array $diff = [] ) {
+	public function __construct( ?DIWikiPage $subject = null, array $diff = [] ) {
 		$this->subject = $subject;
 		$this->diff = $diff;
 	}

@@ -66,7 +66,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $attributes = null ) {
+	protected function doCreateTable( $tableName, ?array $attributes = null ) {
 		$tableName = $this->connection->tableName( $tableName );
 		$sql = '';
 
@@ -116,7 +116,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $attributes = null ) {
+	protected function doUpdateTable( $tableName, ?array $attributes = null ) {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -259,7 +259,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, ?array $indexOptions = null ) {
 		$indices = $indexOptions['indices'];
 
 		// First remove possible obsolete indices

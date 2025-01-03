@@ -38,7 +38,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}

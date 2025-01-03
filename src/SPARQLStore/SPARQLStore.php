@@ -62,7 +62,7 @@ class SPARQLStore extends Store {
 	 *
 	 * @param Store $baseStore
 	 */
-	public function __construct( Store $baseStore = null ) {
+	public function __construct( ?Store $baseStore = null ) {
 		$this->factory = new SPARQLStoreFactory( $this );
 		$this->baseStore = $baseStore;
 

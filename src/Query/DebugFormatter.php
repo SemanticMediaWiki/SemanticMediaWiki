@@ -78,7 +78,7 @@ class DebugFormatter {
 	 *
 	 * @return string
 	 */
-	public function buildHTML( array $entries, Query $query = null ) {
+	public function buildHTML( array $entries, ?Query $query = null ) {
 		if ( $query instanceof Query ) {
 			$preEntries = [];
 			$description = $query->getDescription();

@@ -53,7 +53,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	 *
 	 * @param Tokenizer $tokenizer
 	 */
-	public function __construct( Tokenizer $tokenizer = null ) {
+	public function __construct( ?Tokenizer $tokenizer = null ) {
 		$this->tokenizer = $tokenizer;
 	}
 

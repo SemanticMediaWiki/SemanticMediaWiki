@@ -84,7 +84,7 @@ class ErrorWidget {
 	 *
 	 * @return string
 	 */
-	public static function queryError( Query $query = null ) {
+	public static function queryError( ?Query $query = null ) {
 		if ( $query === null || !is_array( $query->getErrors() ) || $query->getErrors() === [] ) {
 			return '';
 		}

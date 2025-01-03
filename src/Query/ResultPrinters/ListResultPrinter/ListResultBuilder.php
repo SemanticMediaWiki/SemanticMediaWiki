@@ -72,7 +72,7 @@ class ListResultBuilder {
 	private $templateRendererFactory;
 	private $listPlainByDefault;
 
-	public function __construct( SMWQueryResult $queryResult, Linker $linker, bool $listPlainByDefault = null ) {
+	public function __construct( SMWQueryResult $queryResult, Linker $linker, ?bool $listPlainByDefault = null ) {
 		$this->linker = $linker;
 		$this->queryResult = $queryResult;
 		$this->configuration = new ParameterDictionary();

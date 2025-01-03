@@ -29,7 +29,7 @@ class PermissionExaminer {
 	 * @param PermissionManager $permissionManager
 	 * @param User|null $user
 	 */
-	public function __construct( PermissionManager $permissionManager, User $user = null ) {
+	public function __construct( PermissionManager $permissionManager, ?User $user = null ) {
 		$this->permissionManager = $permissionManager;
 		$this->user = $user;
 	}

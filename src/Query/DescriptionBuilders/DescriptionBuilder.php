@@ -57,7 +57,7 @@ abstract class DescriptionBuilder {
 	 * @param DescriptionFactory|null $descriptionFactory
 	 * @param DataItemFactory|null $dataItemFactory
 	 */
-	public function __construct( DescriptionFactory $descriptionFactory = null, DescriptionFactory $dataItemFactory = null ) {
+	public function __construct( ?DescriptionFactory $descriptionFactory = null, ?DescriptionFactory $dataItemFactory = null ) {
 		$this->descriptionFactory = $descriptionFactory;
 		$this->dataItemFactory = $dataItemFactory;
 
@@ -115,7 +115,7 @@ abstract class DescriptionBuilder {
 	 * @param string $value
 	 * @param string|integer $comparator
 	 */
-	protected function prepareValue( DIProperty $property = null, &$value, &$comparator ) {
+	protected function prepareValue( ?DIProperty $property = null, &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 
 		// [[in:lorem ipsum]] / [[Has text::in:lorem ipsum]] to be turned into a

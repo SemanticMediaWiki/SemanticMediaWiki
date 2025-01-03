@@ -28,7 +28,7 @@ class TableFieldUpdater {
 	 * @param SQLStore $store
 	 * @param Collator|null $collator
 	 */
-	public function __construct( SQLStore $store, Collator $collator = null ) {
+	public function __construct( SQLStore $store, ?Collator $collator = null ) {
 		$this->store = $store;
 		$this->collator = $collator;
 	}

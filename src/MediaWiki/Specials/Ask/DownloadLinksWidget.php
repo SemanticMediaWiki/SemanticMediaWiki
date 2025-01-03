@@ -21,7 +21,7 @@ class DownloadLinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function downloadLinks( Infolink $infolink = null ) {
+	public static function downloadLinks( ?Infolink $infolink = null ) {
 		if ( $infolink === null ) {
 			return '';
 		}

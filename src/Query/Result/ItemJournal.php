@@ -65,7 +65,7 @@ class ItemJournal {
 	 *
 	 * @param DIProperty|null $property
 	 */
-	public function recordProperty( DIProperty $property = null ) {
+	public function recordProperty( ?DIProperty $property = null ) {
 		if ( $property !== null ) {
 			$this->properties[$property->getKey()] = $property;
 		}

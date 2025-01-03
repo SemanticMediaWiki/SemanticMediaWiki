@@ -283,7 +283,7 @@ class SMWExpData implements Element {
 	 *
 	 * @return array of array of SMWExpElement
 	 */
-	public function getTripleList( Element $subject = null ) {
+	public function getTripleList( ?Element $subject = null ) {
 		global $smwgBnodeCount;
 		if ( !isset( $smwgBnodeCount ) ) {
 			$smwgBnodeCount = 0;

@@ -282,7 +282,7 @@ class ProtectionValidator {
 	 *
 	 * @return boolean
 	 */
-	public function hasCreateProtection( Title $title = null ) {
+	public function hasCreateProtection( ?Title $title = null ) {
 		if ( $title === null ) {
 			return false;
 		}
@@ -304,7 +304,7 @@ class ProtectionValidator {
 	 *
 	 * @return boolean
 	 */
-	public function hasEditProtection( Title $title = null ) {
+	public function hasEditProtection( ?Title $title = null ) {
 		if ( $title === null ) {
 			return false;
 		}

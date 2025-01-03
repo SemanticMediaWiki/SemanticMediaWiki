@@ -311,7 +311,7 @@ abstract class SMWDataValue {
 	 *
 	 * @param SMWDIWikiPage|null $contextPage
 	 */
-	public function setContextPage( SMWDIWikiPage $contextPage = null ) {
+	public function setContextPage( ?SMWDIWikiPage $contextPage = null ) {
 		$this->m_contextPage = $contextPage;
 
 		$this->setOption(
@@ -851,7 +851,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return Options|null $options
 	 */
-	public function copyOptions( Options $options = null ) {
+	public function copyOptions( ?Options $options = null ) {
 		if ( $options === null ) {
 			return;
 		}

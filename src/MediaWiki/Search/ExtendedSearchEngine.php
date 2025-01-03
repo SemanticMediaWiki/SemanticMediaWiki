@@ -65,7 +65,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * @param null|SearchEngine $fallbackSearch
 	 */
-	public function setFallbackSearchEngine( SearchEngine $fallbackSearchEngine = null ) {
+	public function setFallbackSearchEngine( ?SearchEngine $fallbackSearchEngine = null ) {
 		$this->fallbackSearchEngine = $fallbackSearchEngine;
 	}
 
@@ -136,7 +136,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTextFromContent( Title $t, Content $c = null ) {
+	public function getTextFromContent( Title $t, ?Content $c = null ) {
 		return $this->fallbackSearchEngine->getTextFromContent( $t, $c );
 	}
 

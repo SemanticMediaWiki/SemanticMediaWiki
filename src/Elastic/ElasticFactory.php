@@ -176,7 +176,7 @@ class ElasticFactory {
 	 *
 	 * @return Indexer
 	 */
-	public function newIndexer( Store $store = null, MessageReporter $messageReporter = null ) {
+	public function newIndexer( ?Store $store = null, ?MessageReporter $messageReporter = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -301,7 +301,7 @@ class ElasticFactory {
 	 *
 	 * @return DocumentReplicationExaminer
 	 */
-	public function newDocumentReplicationExaminer( Store $store = null ) {
+	public function newDocumentReplicationExaminer( ?Store $store = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -323,7 +323,7 @@ class ElasticFactory {
 	 *
 	 * @return ReplicationCheck
 	 */
-	public function newReplicationCheck( Store $store = null ) {
+	public function newReplicationCheck( ?Store $store = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {

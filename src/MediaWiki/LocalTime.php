@@ -44,7 +44,7 @@ class LocalTime {
 	 *
 	 * @return DateTime
 	 */
-	public static function getLocalizedTime( DateTime $dateTime, string $timeCorrection = null ) {
+	public static function getLocalizedTime( DateTime $dateTime, ?string $timeCorrection = null ) {
 		$tz = $timeCorrection ?? false;
 		$data = explode( '|', $tz, 3 );
 

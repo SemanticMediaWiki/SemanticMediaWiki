@@ -708,7 +708,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @return SubobjectParserFunction
 	 */
-	private function acquireInstance( Subobject $subobject, ParserOutput $parserOutput = null ) {
+	private function acquireInstance( Subobject $subobject, ?ParserOutput $parserOutput = null ) {
 		if ( $parserOutput === null ) {
 			$parserOutput = new ParserOutput();
 		}

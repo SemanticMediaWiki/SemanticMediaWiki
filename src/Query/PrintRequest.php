@@ -85,7 +85,7 @@ class PrintRequest {
 	 * @param mixed $outputformat optional string for specifying an output format, e.g. an output unit
 	 * @param array|null $params optional array of further, named parameters for the print request
 	 */
-	public function __construct( $mode, $label, $data = null, $outputformat = false, array $params = null ) {
+	public function __construct( $mode, $label, $data = null, $outputformat = false, ?array $params = null ) {
 		if ( ( ( $mode == self::PRINT_CATS || $mode == self::PRINT_THIS ) &&
 				!is_null( $data ) ) ||
 			( $mode == self::PRINT_PROP &&

@@ -47,7 +47,7 @@ class ExceptionFileLogger {
 	 * @param string $namespace
 	 * @param File|null $file
 	 */
-	public function __construct( $namespace = 'smw', File $file = null ) {
+	public function __construct( $namespace = 'smw', ?File $file = null ) {
 		$this->namespace = $namespace;
 		$this->file = $file;
 

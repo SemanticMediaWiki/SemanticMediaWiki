@@ -65,7 +65,7 @@ class ErrorLookup {
 	 *
 	 * @return Iterator/array
 	 */
-	public function findErrorsByType( $errorType, DIWikiPage $subject = null, RequestOptions $requestOptions = null ) {
+	public function findErrorsByType( $errorType, ?DIWikiPage $subject = null, ?RequestOptions $requestOptions = null ) {
 		if ( $requestOptions === null ) {
 			$requestOptions = new RequestOptions();
 		}

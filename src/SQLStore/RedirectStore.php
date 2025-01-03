@@ -47,7 +47,7 @@ class RedirectStore {
 	 * @param Store $store
 	 * @param Cache|null $cache
 	 */
-	public function __construct( Store $store, Cache $cache = null ) {
+	public function __construct( Store $store, ?Cache $cache = null ) {
 		$this->store = $store;
 		$this->cache = $cache;
 

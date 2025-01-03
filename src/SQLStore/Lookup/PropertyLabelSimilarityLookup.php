@@ -50,7 +50,7 @@ class PropertyLabelSimilarityLookup {
 	 * @param Store $store
 	 * @param PropertySpecificationLookup|null $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, PropertySpecificationLookup $propertySpecificationLookup = null ) {
+	public function __construct( Store $store, ?PropertySpecificationLookup $propertySpecificationLookup = null ) {
 		$this->store = $store;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 
@@ -126,7 +126,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @return array
 	 */
-	public function compareAndFindLabels( RequestOptions $requestOptions = null ) {
+	public function compareAndFindLabels( ?RequestOptions $requestOptions = null ) {
 		$withType = false;
 		$propertyList = $this->getPropertyList( $requestOptions );
 
@@ -265,7 +265,7 @@ class PropertyLabelSimilarityLookup {
 		];
 	}
 
-	private function getPropertyList( RequestOptions $requestOptions = null ) {
+	private function getPropertyList( ?RequestOptions $requestOptions = null ) {
 		$propertyList = [];
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong

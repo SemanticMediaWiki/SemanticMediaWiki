@@ -136,7 +136,7 @@ class RevisionFromEditComplete implements HookListener {
 		return $schema;
 	}
 
-	private function addPredefinedPropertyAnnotation( ParserData $parserData, Schema $schema = null ) {
+	private function addPredefinedPropertyAnnotation( ParserData $parserData, ?Schema $schema = null ) {
 		$propertyAnnotator = $this->propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$parserData->getSemanticData()
 		);

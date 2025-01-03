@@ -84,7 +84,7 @@ class ServicesFactory {
 	 * @param ContainerBuilder|null $containerBuilder
 	 * @param string $servicesFileDir
 	 */
-	public function __construct( ContainerBuilder $containerBuilder = null, $servicesFileDir = '' ) {
+	public function __construct( ?ContainerBuilder $containerBuilder = null, $servicesFileDir = '' ) {
 		$this->containerBuilder = $containerBuilder;
 		$this->servicesFileDir = $servicesFileDir;
 	}
@@ -182,7 +182,7 @@ class ServicesFactory {
 	 *
 	 * @return PermissionExaminer
 	 */
-	public function newPermissionExaminer( \User $user = null ): PermissionExaminer {
+	public function newPermissionExaminer( ?\User $user = null ): PermissionExaminer {
 		return new PermissionExaminer( $this->containerBuilder->create( 'PermissionManager' ), $user );
 	}
 
@@ -193,7 +193,7 @@ class ServicesFactory {
 	 *
 	 * @return PreferenceExaminer
 	 */
-	public function newPreferenceExaminer( \User $user = null ): PreferenceExaminer {
+	public function newPreferenceExaminer( ?\User $user = null ): PreferenceExaminer {
 		return $this->containerBuilder->create( 'PreferenceExaminer', $user );
 	}
 
@@ -539,7 +539,7 @@ class ServicesFactory {
 	 *
 	 * @param callable $callback
 	 */
-	public function newDeferredCallableUpdate( callable $callback = null ): CallableUpdate {
+	public function newDeferredCallableUpdate( ?callable $callback = null ): CallableUpdate {
 		$deferredCallableUpdate = $this->containerBuilder->create(
 			'DeferredCallableUpdate',
 			$callback
@@ -565,7 +565,7 @@ class ServicesFactory {
 	 *
 	 * @param callable $callback
 	 */
-	public function newDeferredTransactionalCallableUpdate( callable $callback = null ): DeferredTransactionalCallableUpdate {
+	public function newDeferredTransactionalCallableUpdate( ?callable $callback = null ): DeferredTransactionalCallableUpdate {
 		$deferredTransactionalUpdate = $this->containerBuilder->create(
 			'DeferredTransactionalCallableUpdate',
 			$callback,

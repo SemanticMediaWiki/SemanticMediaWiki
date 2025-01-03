@@ -124,7 +124,7 @@ class SMWQuery implements QueryContext {
 	 * @param Description $description
 	 * @param integer|boolean $context
 	 */
-	public function __construct( Description $description = null, $context = false ) {
+	public function __construct( ?Description $description = null, $context = false ) {
 		$inline = false;
 		$concept = false;
 
@@ -181,7 +181,7 @@ class SMWQuery implements QueryContext {
 	 *
 	 * @param DIWikiPage|null $contextPage
 	 */
-	public function setContextPage( DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?DIWikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 
@@ -217,7 +217,7 @@ class SMWQuery implements QueryContext {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ) {
 		$this->queryToken = $queryToken;
 	}
 

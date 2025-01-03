@@ -1001,14 +1001,14 @@ class EntityIdManager {
 	 *
 	 * @return string[]
 	 */
-	public function getDataItemsFromList( array $idlist, RequestOptions $requestOptions = null ) {
+	public function getDataItemsFromList( array $idlist, ?RequestOptions $requestOptions = null ) {
 		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}
 
 	/**
 	 * @deprecated since 3.0, use SMWSql3SmwIds::getDataItemsFromList
 	 */
-	public function getDataItemPoolHashListFor( array $idlist, RequestOptions $requestOptions = null ) {
+	public function getDataItemPoolHashListFor( array $idlist, ?RequestOptions $requestOptions = null ) {
 		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}
 
@@ -1123,7 +1123,7 @@ class EntityIdManager {
 	 * @param array $sequenceMap
 	 * @param array $countMap
 	 */
-	public function updateFieldMaps( $sid, array $sequenceMap = null, array $countMap = null ) {
+	public function updateFieldMaps( $sid, ?array $sequenceMap = null, ?array $countMap = null ) {
 		$this->auxiliaryFields->setFieldMaps( $sid, $sequenceMap, $countMap );
 	}
 

@@ -38,7 +38,7 @@ class RedirectTargetFinder {
 	 *
 	 * @param Title|null
 	 */
-	public function setRedirectTarget( Title $redirectTarget = null ) {
+	public function setRedirectTarget( ?Title $redirectTarget = null ) {
 		$this->redirectTarget = $redirectTarget;
 	}
 

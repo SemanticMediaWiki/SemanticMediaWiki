@@ -73,7 +73,7 @@ class ContentParser {
 	 *
 	 * @return ContentParser
 	 */
-	public function setRevision( RevisionRecord $revision = null ) {
+	public function setRevision( ?RevisionRecord $revision = null ) {
 		$this->revision = $revision;
 		return $this;
 	}

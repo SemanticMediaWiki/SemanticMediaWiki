@@ -132,7 +132,7 @@ class SetupCheck {
 	 * @param array $vars
 	 * @param SetupFile|null $setupFile
 	 */
-	public function __construct( array $options, SetupFile $setupFile = null ) {
+	public function __construct( array $options, ?SetupFile $setupFile = null ) {
 		$this->options = $options;
 		$this->setupFile = $setupFile;
 		$this->templateEngine = new TemplateEngine();
@@ -175,7 +175,7 @@ class SetupCheck {
 	 *
 	 * @return SetupCheck
 	 */
-	public static function newFromDefaults( SetupFile $setupFile = null ) {
+	public static function newFromDefaults( ?SetupFile $setupFile = null ) {
 		if ( !defined( 'SMW_VERSION' ) ) {
 			$version = self::readFromFile( $GLOBALS['smwgIP'] . 'extension.json' )['version'];
 		} else {

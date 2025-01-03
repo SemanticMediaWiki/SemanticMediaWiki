@@ -49,7 +49,7 @@ class ExpLiteral extends ExpElement {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $lexicalForm, $datatype = '', $lang = '', DataItem $dataItem = null ) {
+	public function __construct( $lexicalForm, $datatype = '', $lang = '', ?DataItem $dataItem = null ) {
 		if ( !is_string( $lexicalForm ) ) {
 			throw new InvalidArgumentException( '$lexicalForm needs to be a string' );
 		}

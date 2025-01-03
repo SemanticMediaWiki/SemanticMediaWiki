@@ -68,7 +68,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @return SimpleDependencyBuilder
 	 */
-	public function newDependencyBuilder( DependencyContainer $dependencyContainer = null ) {
+	public function newDependencyBuilder( ?DependencyContainer $dependencyContainer = null ) {
 		return new SimpleDependencyBuilder( $dependencyContainer );
 	}
 
@@ -177,7 +177,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @return DIWikiPage
 	 */
-	protected function newSubject( Title $title = null ) {
+	protected function newSubject( ?Title $title = null ) {
 		return DIWikiPage::newFromTitle( $title === null ? $this->newTitle() : $title );
 	}
 

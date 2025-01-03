@@ -43,7 +43,7 @@ class IndicatorRegistry {
 	 *
 	 * @param IndicatorProvider|null $indicatorProvider
 	 */
-	public function addIndicatorProvider( IndicatorProvider $indicatorProvider = null ) {
+	public function addIndicatorProvider( ?IndicatorProvider $indicatorProvider = null ) {
 		if ( $indicatorProvider === null ) {
 			return;
 		}

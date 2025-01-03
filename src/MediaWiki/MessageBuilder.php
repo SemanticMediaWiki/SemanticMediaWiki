@@ -33,7 +33,7 @@ class MessageBuilder {
 	 *
 	 * @param Language|null $language
 	 */
-	public function __construct( Language $language = null ) {
+	public function __construct( ?Language $language = null ) {
 		$this->language = $language;
 	}
 

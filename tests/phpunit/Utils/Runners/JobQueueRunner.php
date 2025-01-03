@@ -36,7 +36,7 @@ class JobQueueRunner {
 	 * @param string|null $type
 	 * @param ConnectionProvider|null $connectionProvider
 	 */
-	public function __construct( $type = null, ConnectionProvider $connectionProvider = null ) {
+	public function __construct( $type = null, ?ConnectionProvider $connectionProvider = null ) {
 		$this->type = $type;
 		$this->connectionProvider = $connectionProvider;
 		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();

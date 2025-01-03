@@ -39,7 +39,7 @@ class DummyClient extends Client {
 	 * @param Cache|null $cache
 	 * @param Config|null $config
 	 */
-	public function __construct( $client = null, Cache $cache = null, Config $config = null ) {
+	public function __construct( $client = null, ?Cache $cache = null, ?Config $config = null ) {
 		$this->client = $client;
 		$this->cache = $cache;
 		$this->config = $config;

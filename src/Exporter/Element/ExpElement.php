@@ -37,7 +37,7 @@ abstract class ExpElement implements Element {
 	 *
 	 * @param DataItem|null $dataItem
 	 */
-	public function __construct( DataItem $dataItem = null ) {
+	public function __construct( ?DataItem $dataItem = null ) {
 		$this->dataItem = $dataItem;
 	}
 

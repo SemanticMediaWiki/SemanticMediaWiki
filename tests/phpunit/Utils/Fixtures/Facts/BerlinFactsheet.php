@@ -40,7 +40,7 @@ class BerlinFactsheet {
 	 *
 	 * @param DIWikiPage|null $targetSubject
 	 */
-	public function __construct( DIWikiPage $targetSubject = null ) {
+	public function __construct( ?DIWikiPage $targetSubject = null ) {
 		$this->targetSubject = $targetSubject;
 
 		if ( $this->targetSubject === null ) {

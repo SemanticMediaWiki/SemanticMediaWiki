@@ -54,7 +54,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	 * @param WikiPage $wikiPage
 	 * @param User|null $user
 	 */
-	public function __construct( WikiPage $wikiPage, User $user = null ) {
+	public function __construct( WikiPage $wikiPage, ?User $user = null ) {
 		$this->wikiPage = $wikiPage;
 		$this->user = $user;
 

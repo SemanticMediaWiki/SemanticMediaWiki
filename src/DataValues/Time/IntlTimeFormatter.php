@@ -39,7 +39,7 @@ class IntlTimeFormatter {
 	 * @param DITime $dataItem
 	 * @param Language|null $language
 	 */
-	public function __construct( DITime $dataItem, Language $language = null ) {
+	public function __construct( DITime $dataItem, ?Language $language = null ) {
 		$this->dataItem = $dataItem;
 		$this->language = $language;
 

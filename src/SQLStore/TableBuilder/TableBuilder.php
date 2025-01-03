@@ -233,19 +233,19 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @param string $tableName
 	 * @param array $tableOptions
 	 */
-	abstract protected function doCreateTable( $tableName, array $tableOptions = null );
+	abstract protected function doCreateTable( $tableName, ?array $tableOptions = null );
 
 	/**
 	 * @param string $tableName
 	 * @param array $tableOptions
 	 */
-	abstract protected function doUpdateTable( $tableName, array $tableOptions = null );
+	abstract protected function doUpdateTable( $tableName, ?array $tableOptions = null );
 
 	/**
 	 * @param string $tableName
 	 * @param array $indexOptions
 	 */
-	abstract protected function doCreateIndices( $tableName, array $indexOptions = null );
+	abstract protected function doCreateIndices( $tableName, ?array $indexOptions = null );
 
 	/**
 	 * @param string $tableName

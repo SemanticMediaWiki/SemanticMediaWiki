@@ -67,7 +67,7 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 *
 	 * @param DataValue|null $dataValue
 	 */
-	public function __construct( DataValue $dataValue = null ) {
+	public function __construct( ?DataValue $dataValue = null ) {
 		$this->dataValue = $dataValue;
 	}
 
