@@ -19,11 +19,13 @@ use SMW\Maintenance\MaintenanceCheck;
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * @license GNU GPL v2+
@@ -293,5 +295,7 @@ class updateEntityCollation extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = updateEntityCollation::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
+// @codeCoverageIgnoreEnd
