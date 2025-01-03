@@ -134,7 +134,7 @@ class BrowseByProperty extends ApiBase {
 				ApiBase::PARAM_REQUIRED => false,
 			],
 			'listonly' => [
-				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_TYPE => 'boolean',
 				ApiBase::PARAM_DFLT => false,
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_REQUIRED => false,
