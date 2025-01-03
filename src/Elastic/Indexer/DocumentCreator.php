@@ -303,7 +303,7 @@ class DocumentCreator {
 	private function makeSubject( DIWikiPage $subject ) {
 		$title = $subject->getDBKey();
 
-		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $title[0] !== '_' ) {
+		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || !str_starts_with( $title ?? '', '_' ) ) {
 			$title = str_replace( '_', ' ', $title );
 		}
 
