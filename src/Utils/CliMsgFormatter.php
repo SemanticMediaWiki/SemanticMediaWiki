@@ -103,7 +103,7 @@ class CliMsgFormatter {
 	/**
 	 * @codeCoverageIgnore
 	 */
-	private function calculateProgress( int $i, int $total ) {
+	private function calculateProgress( int $i, int $total ): int {
 		$value = 100;
 
 		if ( $i > 0 && $total > 0 ) {
