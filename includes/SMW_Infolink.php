@@ -563,7 +563,7 @@ class SMWInfolink {
 
 		if ( is_array( $titleParam ) ) {
 			return $titleParam;
-		} elseif ( $titleParam !== '' ) {
+		} elseif ( is_string( $titleParam ) && $titleParam !== '' ) {
 			// unescape $p; escaping scheme: all parameters rawurlencoded, "-" and "/" urlencoded, all "%" replaced by "-", parameters then joined with /
 			$ps = explode( '/', $titleParam ); // params separated by / here (compatible with wiki link syntax)
 
