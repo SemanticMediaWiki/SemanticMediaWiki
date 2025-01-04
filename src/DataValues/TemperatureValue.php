@@ -179,13 +179,10 @@ class TemperatureValue extends NumberValue {
 		switch ( $unit ) {
 			case 'K':
 				return $number;
-			break;
 			case '°C':
 				return $number + 273.15;
-			break;
 			case '°F':
 				return ( $number - 32 ) / 1.8 + 273.15;
-			break;
 			case '°R':
 				return ( $number ) / 1.8;
 		}
@@ -197,16 +194,12 @@ class TemperatureValue extends NumberValue {
 		switch ( $unit ) {
 			case 'K':
 				return $number;
-			break;
 			case '°C':
 				return $number - 273.15;
-			break;
 			case '°F':
 				return ( $number - 273.15 ) * 1.8 + 32;
-			break;
 			case '°R':
 				return ( $number ) * 1.8;
-			break;
 			// default: unit not supported
 		}
 

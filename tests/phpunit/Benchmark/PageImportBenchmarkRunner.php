@@ -88,7 +88,6 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 		switch ( $ext ) {
 			case 'xml':
 				return $this->doXmlImport( $file, $case );
-				break;
 			default:
 				# code...
 				break;
