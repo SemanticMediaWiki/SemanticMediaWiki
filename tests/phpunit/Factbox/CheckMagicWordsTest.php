@@ -13,7 +13,7 @@ use SMW\Factbox\CheckMagicWords;
  *
  * @author mwjames
  */
-class CheckMagicWordsTest extends \PHPUnit_Framework_TestCase {
+class CheckMagicWordsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -32,7 +32,7 @@ class CheckMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput->expects( $this->any() )
 			->method( 'getExtensionData' )
-			->will( $this->returnValue( $magicWords ) );
+			->willReturn( $magicWords );
 
 		$instance = new CheckMagicWords(
 			$options

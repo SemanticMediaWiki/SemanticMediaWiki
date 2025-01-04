@@ -15,7 +15,7 @@ use SMWQueryResult as QueryResult;
  *
  * @author mwjames
  */
-class QueryResultValidator extends \PHPUnit_Framework_Assert {
+class QueryResultValidator extends \PHPUnit\Framework\Assert {
 
 	private $dataValueValidationMethod = null;
 
@@ -175,6 +175,13 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 			$actualComparedToCount,
 			"Failed on {$message} asserting that " . implode( ', ', $expectedSubjects ) . ' is set.'
 		);
+
+		// check once again resultSubjects, clear all if there are some subjects left
+		if ( $resultSubjects >= 1 ) {
+			foreach ( $resultSubjects as $rKey => $resultSubject ) {
+				unset( $resultSubjects[$rKey] );
+			}
+		}
 
 		$this->assertEmpty(
 			$resultSubjects,

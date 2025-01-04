@@ -5,9 +5,11 @@ namespace SMW\Tests\Utils\JSONScript;
 use SMW\DIWikiPage;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\HtmlValidator;
+use MediaWikiIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -15,7 +17,7 @@ use SMW\Tests\Utils\Validators\HtmlValidator;
  *
  * @author Stephan Gambke
  */
-class ParserHtmlTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class ParserHtmlTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var HtmlValidator
@@ -121,7 +123,6 @@ class ParserHtmlTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		}
 
 		return $context->getOutput()->getHTML();
-
 	}
 
 	/**

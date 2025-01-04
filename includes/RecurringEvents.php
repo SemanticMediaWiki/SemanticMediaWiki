@@ -160,7 +160,7 @@ class RecurringEvents {
 		foreach ( $parameters as $name => $values ) {
 
 			foreach ( $values as $value ) {
-				switch( $name ) {
+				switch ( $name ) {
 					case 'property':
 						$this->property = $value;
 						break;
@@ -189,7 +189,7 @@ class RecurringEvents {
 						// it should be include=...;...|+sep=; because the
 						// ParameterParser class is conditioned to split those
 						// parameter accordingly
-						if ( strpos( $value, ';' ) ){
+						if ( strpos( $value, ';' ) ) {
 							$included_dates = explode( ';', $value );
 						} else {
 							$included_dates[] = $value;
@@ -197,7 +197,7 @@ class RecurringEvents {
 						break;
 					case 'exclude':
 						// Some as above
-						if ( strpos( $value, ';' ) ){
+						if ( strpos( $value, ';' ) ) {
 							$excluded_dates = explode( ';', $value );
 						} else {
 							$excluded_dates[] = $value;
@@ -291,7 +291,7 @@ class RecurringEvents {
 				} elseif ( $cur_day > 30 ) {
 					// Check whether 31 is a valid day of a month
 					$cur_day = ( $display_month - 1 ) % 7 % 2 ? 30 : 31;
- 				}
+				}
 
 				$date_str = "$cur_year-$display_month-$cur_day $cur_time";
 				$cur_date = DataValueFactory::getInstance()->newTypeIDValue( '_dat', $date_str );

@@ -13,7 +13,7 @@ use SMW\PropertyRegistry;
  *
  * @author mwjames
  */
-class PropertyLabelCanonicalMatchTest extends \PHPUnit_Framework_TestCase {
+class PropertyLabelCanonicalMatchTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider canonicalLabelProvider
@@ -22,8 +22,8 @@ class PropertyLabelCanonicalMatchTest extends \PHPUnit_Framework_TestCase {
 		list( $labelMatch, $property ) = $this->findPropertyIdByLabel( $label );
 
 		$this->assertEquals(
-			$labelMatch,
-			$expectedLabel
+			$expectedLabel,
+			$labelMatch
 		);
 
 		$this->assertEquals(
@@ -39,8 +39,8 @@ class PropertyLabelCanonicalMatchTest extends \PHPUnit_Framework_TestCase {
 		list( $labelMatch, $property ) = $this->newFromUserLabel( $label );
 
 		$this->assertEquals(
-			$labelMatch,
-			$expectedLabel
+			$expectedLabel,
+			$labelMatch
 		);
 
 		$this->assertEquals(
@@ -56,8 +56,8 @@ class PropertyLabelCanonicalMatchTest extends \PHPUnit_Framework_TestCase {
 		list( $labelMatch, $property ) = $this->newFromUserLabel( $label, $languageCode );
 
 		$this->assertEquals(
-			$labelMatch,
-			$expectedLabel
+			$expectedLabel,
+			$labelMatch
 		);
 
 		$this->assertEquals(

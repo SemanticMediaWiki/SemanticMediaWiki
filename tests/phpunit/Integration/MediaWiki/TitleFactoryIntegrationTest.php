@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\MediaWiki\TitleFactory;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
@@ -12,6 +12,7 @@ use Title;
  * @covers \SMW\MediaWiki\TitleFactory
  * @group SMW
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group mediawiki-database
  *
  * @license GNU GPL v2+
@@ -19,7 +20,7 @@ use Title;
  *
  * @author octfx
  */
-class TitleFactoryIntegrationTest extends DatabaseTestCase {
+class TitleFactoryIntegrationTest extends SMWIntegrationTestCase {
 	use PHPUnitCompat;
 
 	public function testNewFromIDs() {
@@ -33,7 +34,7 @@ class TitleFactoryIntegrationTest extends DatabaseTestCase {
 		$out = $instance->newFromIDs( $input );
 
 		$this->assertCount( 1, $out );
-		$this->assertInternalType( 'array', $out );
+		$this->assertIsArray( $out );
 		$this->assertInstanceOf( Title::class, $out[0] );
 		$this->assertEquals( $title->getId(), $out[0]->getId() );
 	}

@@ -2,12 +2,13 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -15,9 +16,8 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class RebuildElasticIndexTest extends DatabaseTestCase {
+class RebuildElasticIndexTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 	private $spyMessageReporter;
 	private $store;
@@ -43,7 +43,7 @@ class RebuildElasticIndexTest extends DatabaseTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RebuildElasticIndex'
+			'\SMW\Maintenance\rebuildElasticIndex'
 		);
 
 		$maintenanceRunner->setMessageReporter( $this->spyMessageReporter );

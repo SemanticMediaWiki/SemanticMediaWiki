@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
  *
  * @author mwjames
  */
-class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
+class ResourceLoaderGetConfigVarsTest extends \PHPUnit\Framework\TestCase {
 
 	private $namespaceInfo;
 

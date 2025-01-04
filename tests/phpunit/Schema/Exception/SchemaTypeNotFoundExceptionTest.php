@@ -13,7 +13,7 @@ use SMW\Schema\Exception\SchemaTypeNotFoundException;
  *
  * @author mwjames
  */
-class SchemaTypeNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class SchemaTypeNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SchemaTypeNotFoundException( 'foo' );

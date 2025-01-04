@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -62,11 +62,11 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( "[[{$ns}:Foo]]", $instance->getQueryString() );
 		$this->assertEquals( " <q>[[{$ns}:Foo]]</q> ", $instance->getQueryString( true ) );
 
-		$this->assertEquals( false, $instance->isSingleton() );
+		$this->assertFalse( $instance->isSingleton() );
 		$this->assertEquals( [], $instance->getPrintRequests() );
 
-		$this->assertEquals( 1, $instance->getSize() );
-		$this->assertEquals( 0, $instance->getDepth() );
+		$this->assertSame( 1, $instance->getSize() );
+		$this->assertSame( 0, $instance->getDepth() );
 		$this->assertEquals( 2, $instance->getQueryFeatures() );
 	}
 

@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Maintenance;
 
-use SMW\Maintenance\UpdateQueryDependencies;
+use SMW\Maintenance\updateQueryDependencies;
 use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
- * @covers \SMW\Maintenance\UpdateQueryDependencies
+ * @covers \SMW\Maintenance\updateQueryDependencies
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
+class UpdateQueryDependenciesTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $messageReporter;
@@ -25,7 +25,7 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 	private $entityCache;
 
 	protected function setUp(): void {
-		$this->testEnvironment =  new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
 			->disableOriginalConstructor()
@@ -54,8 +54,8 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			UpdateQueryDependencies::class,
-			new UpdateQueryDependencies()
+			updateQueryDependencies::class,
+			new updateQueryDependencies()
 		);
 	}
 
@@ -70,7 +70,7 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $updateJob ) );
+			->willReturn( $updateJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -99,17 +99,17 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
-		$instance = new UpdateQueryDependencies();
+		$instance = new updateQueryDependencies();
 
 		$instance->setMessageReporter(
 			$this->messageReporter

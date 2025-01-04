@@ -11,13 +11,14 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\SQLStore\PropertyTableRowMapper
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 3.0
  *
  * @author mwjames
  */
-class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -44,7 +45,7 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( $propertyTables ) );
+			->willReturn( $propertyTables );
 
 		$instance = new PropertyTableRowMapper(
 			$store
@@ -55,8 +56,8 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 			$semanticData
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 	}
@@ -68,11 +69,11 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->once() )
 			->method( 'makeSMWPropertyID' )
-			->will( $this->returnValue( 9999 ) );
+			->willReturn( 9999 );
 
 		$idTable->expects( $this->once() )
 			->method( 'makeSMWPageID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
@@ -80,11 +81,11 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->once() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->once() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -103,15 +104,15 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'smw_foo' ) );
+			->willReturn( 'smw_foo' );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( $propertyTables ) );
+			->willReturn( $propertyTables );
 
 		$instance = new PropertyTableRowMapper(
 			$store
@@ -140,11 +141,11 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->once() )
 			->method( 'makeSMWPropertyID' )
-			->will( $this->returnValue( 9999 ) );
+			->willReturn( 9999 );
 
 		$idTable->expects( $this->once() )
 			->method( 'makeSMWPageID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
@@ -152,11 +153,11 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->once() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyTable->expects( $this->once() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -175,15 +176,15 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'smw_foo' ) );
+			->willReturn( 'smw_foo' );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( $propertyTables ) );
+			->willReturn( $propertyTables );
 
 		$instance = new PropertyTableRowMapper(
 			$store

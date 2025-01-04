@@ -69,7 +69,6 @@ class XmlImportRunner {
 	public function run() {
 		$this->unregisterUploadsource();
 		$start = microtime( true );
-		$config = null;
 
 		$source = ImportStreamSource::newFromFile(
 			$this->assertThatFileIsReadableOrThrowException( $this->file )
@@ -79,29 +78,12 @@ class XmlImportRunner {
 			throw new RuntimeException( 'Import returned with error(s) ' . serialize( $source->errors ) );
 		}
 
-		// WikiImporter::__construct without a Config instance was deprecated in MediaWiki 1.25.
-		if ( class_exists( '\ConfigFactory' ) ) {
-			$config = \ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
-		}
+		$services = MediaWikiServices::getInstance();
 
-		if ( version_compare( MW_VERSION, '1.37', '<' ) ) {
-			$importer = new WikiImporter( $source->value, $config );
-		} else {
-			$services = MediaWikiServices::getInstance();
-			$importer = new WikiImporter(
-				$source->value,
-				$config,
-				$services->getHookContainer(),
-				$services->getContentLanguage(),
-				$services->getNamespaceInfo(),
-				$services->getTitleFactory(),
-				$services->getWikiPageFactory(),
-				$services->getWikiRevisionUploadImporter(),
-				$services->getPermissionManager(),
-				$services->getContentHandlerFactory(),
-				$services->getSlotRoleRegistry()
-			);
-		}
+		$importer = $services->getWikiImporterFactory()->getWikiImporter(
+			$source->value,
+			RequestContext::getMain()->getAuthority()
+		);
 		$importer->setDebug( $this->verbose );
 
 		$reporter = new ImportReporter(

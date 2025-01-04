@@ -18,7 +18,7 @@ use SMWDIContainer as DIContainer;
  *
  * @author mwjames
  */
-class DurationProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class DurationProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 
@@ -43,7 +43,7 @@ class DurationProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider durationDataProvider
 	 */
 	public function testCreateProfile( $duration, $expected ) {
-		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
+		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
 
 		$container = new DIContainer(
 			new ContainerSemanticData( $subject	)

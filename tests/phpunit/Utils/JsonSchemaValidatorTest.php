@@ -17,7 +17,7 @@ use SMW\Utils\JsonSchemaValidator;
  *
  * @author mwjames
  */
-class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
+class JsonSchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -57,7 +57,7 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$data->expects( $this->any() )
 			->method( 'jsonSerialize' )
-			->will( $this->returnValue( json_encode( [ 'Foo' ] ) ) );
+			->willReturn( json_encode( [ 'Foo' ] ) );
 
 		$schemaValidator = $this->getMockBuilder( SchemaValidator::class )
 			->setMethods( [ 'check' ] )
@@ -89,7 +89,7 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$data->expects( $this->any() )
 			->method( 'jsonSerialize' )
-			->will( $this->returnValue( json_encode( [ 'Foo' ] ) ) );
+			->willReturn( json_encode( [ 'Foo' ] ) );
 
 		$schemaValidator = $this->getMockBuilder( SchemaValidator::class )
 			->setMethods( [ 'check' ] )
@@ -97,7 +97,7 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaValidator->expects( $this->any() )
 			->method( 'check' )
-			->will( $this->throwException( new ResourceNotFoundException() ) );
+			->willThrowException( new ResourceNotFoundException() );
 
 		$instance = new JsonSchemaValidator(
 			$schemaValidator

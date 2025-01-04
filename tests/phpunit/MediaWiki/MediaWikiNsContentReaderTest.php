@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
+class MediaWikiNsContentReaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -28,8 +28,8 @@ class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
 	public function testReadFromMessageCache() {
 		$instance = new MediaWikiNsContentReader();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->read( 'smw-desc' )
 		);
 	}
@@ -52,8 +52,8 @@ class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setRevisionGuard( $revisionGuard );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->read( __METHOD__ )
 		);
 	}

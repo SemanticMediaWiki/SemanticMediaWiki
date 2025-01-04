@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngineFactory;
  *
  * @author mwjames
  */
-class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
+class QueryEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -28,7 +28,7 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 	}
 
 	public function testCanConstruct() {

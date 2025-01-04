@@ -10,13 +10,14 @@ use SMWDIBlob as DIBlob;
 /**
  * @covers \SMW\DisplayTitleFinder
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since   3.1
  *
  * @author mwjames
  */
-class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
+class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $entityCache;
@@ -44,18 +45,18 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $subject ) )
-			->will( $this->returnValue( [ new DIBlob( 'Bar' ) ] ) );
+			->with( $subject )
+			->willReturn( [ new DIBlob( 'Bar' ) ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'makeKey' )
 			->with(
-				$this->equalTo( 'displaytitle' ),
-				$this->equalTo( $subject->getHash() ) );
+				'displaytitle',
+				$subject->getHash() );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' );
@@ -82,23 +83,23 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 			->withConsecutive(
 				[ $this->equalTo( $subject ) ],
 				[ $this->equalTo( $subject->asBase() ) ] )
-			->will( $this->onConsecutiveCalls( [], [ new DIBlob( 'foobar' ) ] ) );
+			->willReturnOnConsecutiveCalls( [], [ new DIBlob( 'foobar' ) ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'makeKey' )
 			->with(
-				$this->equalTo( 'displaytitle' ),
-				$this->equalTo( $subject->getHash() ) );
+				'displaytitle',
+				$subject->getHash() );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' )
 			->with(
 				$this->anything(),
-				$this->equalTo( 'foobar' ) );
+				'foobar' );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'associate' );
@@ -122,24 +123,24 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 			->withConsecutive(
 				[ $this->equalTo( $subject ) ],
 				[ $this->equalTo( $subject->asBase() ) ] )
-			->will( $this->onConsecutiveCalls( [], [] ) );
+			->willReturnOnConsecutiveCalls( [], [] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'makeKey' )
 			->with(
-				$this->equalTo( 'displaytitle' ),
-				$this->equalTo( $subject->getHash() ) );
+				'displaytitle',
+				$subject->getHash() );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		// Stored with a space
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' )
 			->with(
 				$this->anything(),
-				$this->equalTo( ' ' ) );
+				' ' );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'associate' );
@@ -157,21 +158,21 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrefetchFromSemanticData() {
-		$subSemanticData =  $this->getMockBuilder( '\SMW\SemanticData' )
+		$subSemanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$subSemanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( DIWikiPage::doUnserialize( 'Foo#0##123' ) ) );
+			->willReturn( DIWikiPage::doUnserialize( 'Foo#0##123' ) );
 
 		$subSemanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ new DIProperty( 'SubFoo' ) ] ) );
+			->willReturn( [ new DIProperty( 'SubFoo' ) ] );
 
 		$subSemanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromText( 'SubFoo' ) ] ) );
+			->willReturn( [ DIWikiPage::newFromText( 'SubFoo' ) ] );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -179,19 +180,19 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_MAIN ) ) );
+			->willReturn( new DIWikiPage( 'Bar', NS_MAIN ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ new DIProperty( 'Foo' ) ] ) );
+			->willReturn( [ new DIProperty( 'Foo' ) ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromText( 'Foo' ) ] ) );
+			->willReturn( [ DIWikiPage::newFromText( 'Foo' ) ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( [ $subSemanticData ] ) );
+			->willReturn( [ $subSemanticData ] );
 
 		$prefetchList = [
 			DIWikiPage::newFromText( 'Bar' ),
@@ -200,19 +201,19 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( 'SubFoo' )
 		];
 
- 		$instance = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
- 			->setConstructorArgs(
- 				[
+		$instance = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
+			->setConstructorArgs(
+				[
 					$this->store,
 					$this->entityCache
- 				]
- 			)
- 			->setMethods( [ 'prefetchFromList' ] )
- 			->getMock();
+				]
+			)
+			->setMethods( [ 'prefetchFromList' ] )
+			->getMock();
 
 		$instance->expects( $this->any() )
 			->method( 'prefetchFromList' )
-			->with( $this->equalTo( $prefetchList ) );
+			->with( $prefetchList );
 
 		$instance->prefetchFromSemanticData( $semanticData );
 	}
@@ -236,16 +237,16 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$displayTitleLookup->expects( $this->any() )
 			->method( 'prefetchFromList' )
-			->will( $this->returnValue( $prefetch ) );
+			->willReturn( $prefetch );
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'DisplayTitleLookup' ) )
-			->will( $this->returnValue( $displayTitleLookup ) );
+			->with( 'DisplayTitleLookup' )
+			->willReturn( $displayTitleLookup );
 
 		$this->entityCache->expects( $this->any() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		// Stored with a space
 		$this->entityCache->expects( $this->any() )
@@ -282,16 +283,16 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$displayTitleLookup->expects( $this->any() )
 			->method( 'prefetchFromList' )
-			->will( $this->returnValue( $prefetch ) );
+			->willReturn( $prefetch );
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'DisplayTitleLookup' ) )
-			->will( $this->returnValue( $displayTitleLookup ) );
+			->with( 'DisplayTitleLookup' )
+			->willReturn( $displayTitleLookup );
 
 		$this->entityCache->expects( $this->any() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		// Stored with a space
 		$this->entityCache->expects( $this->any() )

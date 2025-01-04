@@ -108,7 +108,7 @@ class QueryEngine implements IQueryEngine {
 	 * @return QueryResult
 	 */
 	public function getQueryResult( Query $query ) {
-//		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
+// if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 
 		if ( ( $query->getDescription() instanceof ThingDescription ) &&
 				$query->querymode != Query::MODE_DEBUG &&

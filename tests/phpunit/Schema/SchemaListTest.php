@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SchemaListTest extends \PHPUnit_Framework_TestCase {
+class SchemaListTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -39,8 +39,8 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	public function testJsonSerialize() {
 		$instance = new SchemaList( [] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->jsonSerialize()
 		);
 	}
@@ -48,8 +48,8 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	public function testGetFingerprint() {
 		$instance = new SchemaList( [] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getFingerprint()
 		);
 	}
@@ -145,9 +145,8 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 			$instance->get( 'NotAvailableKey' )
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->get( 'NotAvailableKey', null )
+		$this->assertNull(
+						$instance->get( 'NotAvailableKey', null )
 		);
 	}
 

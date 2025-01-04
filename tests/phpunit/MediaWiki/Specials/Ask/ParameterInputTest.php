@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ParameterInputTest extends \PHPUnit_Framework_TestCase {
+class ParameterInputTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$paramDefinition = $this->getMockBuilder( '\ParamProcessor\ParamDefinition' )
@@ -39,11 +39,11 @@ class ParameterInputTest extends \PHPUnit_Framework_TestCase {
 
 		$paramDefinition->expects( $this->atLeastOnce() )
 			->method( 'getAllowedValues' )
-			->will( $this->returnValue( $allowedValues ) );
+			->willReturn( $allowedValues );
 
 		$paramDefinition->expects( $this->any() )
 			->method( 'isList' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new ParameterInput(
 			$paramDefinition,

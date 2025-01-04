@@ -2,13 +2,15 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use Title;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -16,9 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class LinksUpdateTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesBeforeRun = true;
+class LinksUpdateTest extends SMWIntegrationTestCase {
 
 	private $title = null;
 	private $applicationFactory;
@@ -113,7 +113,7 @@ class LinksUpdateTest extends DatabaseTestCase {
 		/**
 		 * See #347 and LinksUpdateComplete
 		 */
-		$linksUpdate = new \LinksUpdate( $this->title, new \ParserOutput() );
+		$linksUpdate = new LinksUpdate( $this->title, new \ParserOutput() );
 		$linksUpdate->doUpdate();
 
 		$this->testEnvironment->executePendingDeferredUpdates();

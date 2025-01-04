@@ -228,7 +228,7 @@ class ParametersWidget {
 
 			if ( $name == 'source' && (
 					count( $allowedValues ) == 0 ||
-					in_array( 'default', $allowedValues ) && count( $allowedValues ) < 2
+					( in_array( 'default', $allowedValues ) && count( $allowedValues ) < 2 )
 				) ) {
 
 				continue;
@@ -271,7 +271,7 @@ class ParametersWidget {
 			Html::rawElement(
 				'span',
 				[
-					'class'     =>  $class,
+					'class'     => $class,
 					'word-wrap' => 'break-word',
 					'data-info' => $info
 				],
@@ -290,7 +290,7 @@ class ParametersWidget {
 
 		$input = new ParameterInput( $definition );
 		$input->setInputName( 'p[' . $definition->getName() . ']' );
-		//$input->setInputClass( 'smw-ask-input-' . str_replace( ' ', '-', $definition->getName() ) );
+		// $input->setInputClass( 'smw-ask-input-' . str_replace( ' ', '-', $definition->getName() ) );
 
 		$opts = $definition->getOptions();
 		$attributes = [];

@@ -6,13 +6,14 @@ use SMW\DataValueFactory;
 use SMW\MediaWiki\Api\BrowseBySubject;
 use SMW\SerializerFactory;
 use SMW\Subobject;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\Utils\SemanticDataFactory;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -20,11 +21,9 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
+class ApiBrowseBySubjectDBIntegrationTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
-
-	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $apiFactory;
 	private $dataValueFactory;
@@ -47,8 +46,8 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 
 		$resultData = $this->newBrowseBySubject( __METHOD__ )->getResultData();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$resultData
 		);
 
@@ -57,8 +56,8 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 			$this->serializerFactory->getDeserializerFor( $resultData['query'] )->deserialize( $resultData['query'] )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$this->newBrowseBySubject( __METHOD__, true )->getResultData()
 		);
 	}
@@ -74,8 +73,8 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 
 		$resultData = $this->newBrowseBySubject( __METHOD__ )->getResultData();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$resultData
 		);
 
@@ -84,8 +83,8 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 			$this->serializerFactory->getDeserializerFor( $resultData['query'] )->deserialize( $resultData['query'] )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$this->newBrowseBySubject( __METHOD__, true )->getResultData()
 		);
 	}
@@ -113,8 +112,8 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 
 		$resultData = $this->newBrowseBySubject( __METHOD__ )->getResultData();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$resultData
 		);
 
@@ -123,8 +122,8 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 			$this->serializerFactory->getDeserializerFor( $resultData['query'] )->deserialize( $resultData['query'] )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$this->newBrowseBySubject( __METHOD__, true )->getResultData()
 		);
 	}
@@ -135,15 +134,9 @@ class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 			'browsebysubject'
 		);
 
-		// Went away with 1.26/1.27
-		if ( function_exists( 'setRawMode' ) && $asRawMode ) {
-			$instance->getMain()->getResult()->setRawMode();
-		}
-
 		$instance->execute();
 
-		// MW 1.25
-		return method_exists( $instance, 'getResult' ) ? $instance->getResult() : $instance;
+		return $instance->getResult();
 	}
 
 }

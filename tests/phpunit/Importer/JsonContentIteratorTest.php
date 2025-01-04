@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class JsonContentIteratorTest extends \PHPUnit_Framework_TestCase {
+class JsonContentIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $jsonImportContentsFileDirReader;
@@ -45,7 +45,7 @@ class JsonContentIteratorTest extends \PHPUnit_Framework_TestCase {
 	public function testGetIterator() {
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
 			->method( 'getContentList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new JsonContentIterator(
 			$this->jsonImportContentsFileDirReader

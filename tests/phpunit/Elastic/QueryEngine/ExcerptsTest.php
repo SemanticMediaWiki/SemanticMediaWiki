@@ -13,7 +13,7 @@ use SMW\Elastic\QueryEngine\Excerpts;
  *
  * @author mwjames
  */
-class ExcerptsTest extends \PHPUnit_Framework_TestCase {
+class ExcerptsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

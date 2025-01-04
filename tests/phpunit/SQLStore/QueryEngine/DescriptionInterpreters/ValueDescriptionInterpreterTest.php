@@ -18,7 +18,7 @@ use SMW\Tests\Utils\Validators\QuerySegmentValidator;
  *
  * @author mwjames
  */
-class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $conditionBuilder;
@@ -56,7 +56,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -64,15 +64,15 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIds ) );
+			->willReturn( $objectIds );
 
 		$queryEngineFactory = new QueryEngineFactory( $this->store );
 
@@ -95,7 +95,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$descriptionFactory = new DescriptionFactory();
 		$dataItemFactory = new DataItemFactory();
 
-		#0 SMW_CMP_EQ
+		# 0 SMW_CMP_EQ
 		$description = $descriptionFactory->newValueDescription(
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
 		);
@@ -110,7 +110,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#1 SMW_CMP_LEQ
+		# 1 SMW_CMP_LEQ
 		$description = $descriptionFactory->newValueDescription(
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ
 		);
@@ -126,7 +126,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#2 SMW_CMP_LIKE
+		# 2 SMW_CMP_LIKE
 		$description = $descriptionFactory->newValueDescription(
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LIKE
 		);
@@ -142,7 +142,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#3 not a DIWikiPage
+		# 3 not a DIWikiPage
 		$description = $descriptionFactory->newValueDescription(
 			$dataItemFactory->newDIBLob( 'Foo' )
 		);

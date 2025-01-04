@@ -16,7 +16,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class RedirectPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -89,7 +89,6 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => ':Lala'
 			]
 		];
-
 
 		// #2 Invalid free text
 		$provider[] = [

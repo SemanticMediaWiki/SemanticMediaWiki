@@ -98,7 +98,7 @@ class PageInfoProvider implements PageInfo {
 	 * @return boolean
 	 */
 	public function isNewPage() {
-		 if ( $this->isFilePage() ) {
+		if ( $this->isFilePage() ) {
 			return isset( $this->wikiPage->smwFileReUploadStatus ) ? !$this->wikiPage->smwFileReUploadStatus : false;
 		}
 

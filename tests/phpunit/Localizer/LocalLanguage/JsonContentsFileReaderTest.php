@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Localizer\LocalLanguage;
 
+use RuntimeException;
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
 use SMW\Tests\PHPUnitCompat;
 
@@ -14,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
+class JsonContentsFileReaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -31,8 +32,8 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	public function testReadByLanguageCode( $languageCode ) {
 		$instance = new JsonContentsFileReader();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->readByLanguageCode( $languageCode )
 		);
 	}
@@ -47,17 +48,17 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'contains' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new JsonContentsFileReader( $cache );
 		$instance->clear();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->readByLanguageCode( $languageCode )
 		);
 	}
@@ -69,11 +70,11 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->once() )
 			->method( 'readJSONFile' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance->expects( $this->once() )
 			->method( 'getFileModificationTime' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance->readByLanguageCode( 'foo' );
 
@@ -88,11 +89,11 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->exactly( 2 ) )
 			->method( 'readJSONFile' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance->expects( $this->exactly( 2 ) )
 			->method( 'getFileModificationTime' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance->readByLanguageCode( 'bar' );
 		$instance->readByLanguageCode( 'bar', true );
@@ -114,7 +115,7 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function WriteToFile( $topic, $extension ) {
 		$instance = new JsonContentsFileReader();
-		$list ='ar,arz,ca,de,es,fi,fr,he,hu,id,it,nb,nl,pl,pt,ru,sk,zh-cn,zh-tw';
+		$list = 'ar,arz,ca,de,es,fi,fr,he,hu,id,it,nb,nl,pl,pt,ru,sk,zh-cn,zh-tw';
 
 		foreach ( explode( ',', $list ) as $lang ) {
 			$contents = $instance->readByLanguageCode( $lang, true );
@@ -135,8 +136,8 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	public function testgetFileModificationTime( $languageCode ) {
 		$instance = new JsonContentsFileReader();
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->getFileModificationTime( $languageCode )
 		);
 	}

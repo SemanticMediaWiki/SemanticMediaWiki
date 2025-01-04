@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $querySegmentValidator;
 	private $store;
@@ -54,7 +54,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( $pageId ) );
+			->willReturn( $pageId );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -66,11 +66,11 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIds ) );
+			->willReturn( $objectIds );
 
 		$queryEngineFactory = new QueryEngineFactory( $this->store );
 
@@ -93,7 +93,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$descriptionFactory = new DescriptionFactory();
 		$dataItemFactory = new DataItemFactory();
 
-		#0
+		# 0
 		$pageId = 42;
 
 		$description = $descriptionFactory->newClassDescription(
@@ -111,7 +111,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#1 Empty
+		# 1 Empty
 		$pageId = 0;
 
 		$description = $descriptionFactory->newClassDescription(

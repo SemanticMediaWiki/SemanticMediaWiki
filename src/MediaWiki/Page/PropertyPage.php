@@ -194,7 +194,7 @@ class PropertyPage extends Page {
 
 		$matches = [];
 
-		$context->getOutput()->addModuleStyles( [ 'ext.smw.style', 'ext.smw.page.styles' ] );
+		$context->getOutput()->addModuleStyles( [ 'ext.smw.styles', 'ext.smw.page.styles' ] );
 		$context->getOutput()->addModules( [ 'smw.property.page', 'smw.jsonview' ] );
 
 		$context->getOutput()->setPageTitle(

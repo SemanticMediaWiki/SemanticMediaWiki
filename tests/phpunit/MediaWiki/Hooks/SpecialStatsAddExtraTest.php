@@ -14,7 +14,7 @@ use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
  *
  * @author mwjames
  */
-class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
+class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 
 	protected function tearDown(): void {
 		ApplicationFactory::clear();
@@ -43,7 +43,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( $setup['statistics'] ) );
+			->willReturn( $setup['statistics'] );
 
 		$extraStats = $setup['extraStats'];
 
@@ -86,7 +86,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( $statistics ) );
+			->willReturn( $statistics );
 
 		$instance = new SpecialStatsAddExtra(
 			$store
@@ -105,8 +105,8 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 		$instance->process( $extraStats );
 
 		$this->assertEquals(
-			$extraStats,
-			$expected
+			$expected,
+			$extraStats
 		);
 	}
 
@@ -130,7 +130,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			'PROPUSES' => 1001
 		];
 
-		#0
+		# 0
 		$provider[] = [
 			[
 				'extraStats' => [],
@@ -141,7 +141,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 unknown
+		# 1 unknown
 		$provider[] = [
 			[
 				'extraStats' => [],
@@ -152,7 +152,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2 MW 1.21+
+		# 2 MW 1.21+
 		$provider[] = [
 			[
 				'extraStats' => [],
@@ -163,7 +163,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 MW 1.21+ - unknown
+		# 3 MW 1.21+ - unknown
 		$provider[] = [
 			[
 				'extraStats' => [],

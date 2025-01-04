@@ -13,7 +13,7 @@ use SMW\Exception\RedirectTargetUnresolvableException;
  *
  * @author mwjames
  */
-class RedirectTargetUnresolvableExceptionTest extends \PHPUnit_Framework_TestCase {
+class RedirectTargetUnresolvableExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new RedirectTargetUnresolvableException();

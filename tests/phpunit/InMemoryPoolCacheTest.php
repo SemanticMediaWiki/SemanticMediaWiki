@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
+class InMemoryPoolCacheTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -66,8 +66,8 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 			$instance->getStats()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getStats( InMemoryPoolCache::FORMAT_PLAIN )
 		);
 
@@ -76,8 +76,8 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 			$instance->getStats( InMemoryPoolCache::FORMAT_HTML )
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getStats( InMemoryPoolCache::FORMAT_JSON )
 		);
 

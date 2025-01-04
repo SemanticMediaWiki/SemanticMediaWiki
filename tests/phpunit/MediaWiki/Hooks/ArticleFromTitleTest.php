@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
+class ArticleFromTitleTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -44,7 +44,7 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( $namespace ) );
+			->willReturn( $namespace );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()

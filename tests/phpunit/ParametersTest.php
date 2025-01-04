@@ -13,7 +13,7 @@ use SMW\Parameters;
  *
  * @author mwjames
  */
-class ParametersTest extends \PHPUnit_Framework_TestCase {
+class ParametersTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

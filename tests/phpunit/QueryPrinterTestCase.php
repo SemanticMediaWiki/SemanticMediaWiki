@@ -23,7 +23,7 @@ use SMW\ResultPrinter;
  * @group SMW
  * @group SMWExtension
  */
-abstract class QueryPrinterTestCase extends \PHPUnit_Framework_TestCase {
+abstract class QueryPrinterTestCase extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Helper method sets result printer parameters
@@ -52,7 +52,6 @@ abstract class QueryPrinterTestCase extends \PHPUnit_Framework_TestCase {
 		}
 
 		return $instance;
-
 	}
 
 	protected function arrayWrap( array $elements ) {

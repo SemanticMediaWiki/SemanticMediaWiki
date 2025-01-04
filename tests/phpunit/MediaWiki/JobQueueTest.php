@@ -13,7 +13,7 @@ use SMW\MediaWiki\JobQueue;
  *
  * @author mwjames
  */
-class JobQueueTest extends \PHPUnit_Framework_TestCase {
+class JobQueueTest extends \PHPUnit\Framework\TestCase {
 
 	private $jobQueueGroup;
 
@@ -38,7 +38,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 
@@ -58,7 +58,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 
@@ -78,7 +78,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$job->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'FakeJob' ) );
+			->willReturn( 'FakeJob' );
 
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
@@ -87,7 +87,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 
@@ -107,7 +107,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$jobQueue->expects( $this->any() )
 			->method( 'assertNotReadOnly' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$jobQueue->expects( $this->once() )
 			->method( 'doDelete' );
@@ -118,7 +118,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 		$instance->disableCache( true );
@@ -177,7 +177,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 		$instance->disableCache( true );
@@ -193,12 +193,12 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$jobQueue->expects( $this->once() )
 			->method( 'doGetSize' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'FakeJob' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 
@@ -215,12 +215,12 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$jobQueue->expects( $this->once() )
 			->method( 'doGetSize' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$this->jobQueueGroup->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'smw.fake' ) )
-			->will( $this->returnValue( $jobQueue ) );
+			->willReturn( $jobQueue );
 
 		$instance = new JobQueue( $this->jobQueueGroup );
 

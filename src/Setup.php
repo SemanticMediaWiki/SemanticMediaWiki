@@ -167,6 +167,10 @@ final class Setup {
 			define( 'SMW_PHPUNIT_AUTOLOADER_FILE', "$smwDir/tests/autoloader.php" );
 		}
 
+		if ( !defined( 'SMW_PHPUNIT_DIR' ) ) {
+			define( 'SMW_PHPUNIT_DIR', __DIR__ . '/../tests/phpunit' );
+		}
+
 		$vars['wgLogTypes'][] = 'smw';
 		$vars['wgFilterLogTypes']['smw'] = true;
 
@@ -181,18 +185,6 @@ final class Setup {
 			if ( is_readable( $file ) ) {
 				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include( $file ) );
 			}
-		}
-
-		// #3626
-		//
-		// Required due to support of LTS (1.31)
-		// Do replace `mediawiki.api.parse` (Resources.php) with `mediawiki.api`
-		// starting with the next supported LTS (likely MW 1.35)
-		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
-			$vars['wgResourceModules']['mediawiki.api.parse'] = [
-				'dependencies' => 'mediawiki.api',
-				'targets' => [ 'desktop', 'mobile' ]
-			];
 		}
 	}
 
@@ -348,7 +340,7 @@ final class Setup {
 
 	private function registerParamDefinitions( &$vars ) {
 		$vars['wgParamDefinitions']['smwformat'] = [
-			'definition'=> '\SMW\Query\ResultFormat',
+			'definition' => '\SMW\Query\ResultFormat',
 		];
 	}
 

@@ -30,23 +30,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#1 (1.31-) test output of the invalid [[Has text::Do]] annotation",
-			"skip-on": {
-				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
-			"subject": "Example/P0452/2",
-			"assert-output": {
-				"to-contain": [
-					"Do<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;Do&quot; is not in the list (Doe) of allowed values for the &quot;Has text&quot; property.\">"
-				]
-			}
-		},
-		{
-			"type": "parser",
-			"about": "#1 (1.31+) test output of the invalid [[Has text::Do]] annotation",
-			"skip-on": {
-				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#1 test output of the invalid [[Has text::Do]] annotation",
 			"subject": "Example/P0452/2",
 			"assert-output": {
 				"to-contain": [

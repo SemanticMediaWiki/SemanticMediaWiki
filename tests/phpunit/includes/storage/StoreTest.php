@@ -6,7 +6,6 @@ use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\StoreFactory;
-use SMWTestsDatabaseTestCase;
 use SMWRequestOptions;
 use Title;
 use SMW\Tests\PHPUnitCompat;
@@ -23,7 +22,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author Nischay Nahata
  */
-class StoreTest extends DatabaseTestCase {
+class StoreTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 
@@ -66,7 +65,7 @@ class StoreTest extends DatabaseTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertyValues( $subject, $property, $requestOptions );
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertContainsOnlyInstancesOf( '\SMWDataItem', $result );
 	}
 
@@ -88,7 +87,7 @@ class StoreTest extends DatabaseTestCase {
 			$result
 		);
 
-		foreach( $result as $page ) {
+		foreach ( $result as $page ) {
 			$this->assertInstanceOf(
 				'\SMW\DIWikiPage',
 				$page,
@@ -112,9 +111,9 @@ class StoreTest extends DatabaseTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getProperties( $subject, $requestOptions );
 
-		$this->assertTrue( is_array( $result ) );
+		$this->assertIsArray( $result );
 
-		foreach( $result as $property ) {
+		foreach ( $result as $property ) {
 			$this->assertInstanceOf(
 				'\SMWDataItem',
 				$property,
@@ -129,7 +128,7 @@ class StoreTest extends DatabaseTestCase {
 		// Really bailing out here and making the test database dependent!!
 
 		// This test fails on mysql http://bugs.mysql.com/bug.php?id=10327
-		if( $GLOBALS['wgDBtype'] == 'mysql' ) {
+		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
 			$this->assertTrue( true );
 			return;
 		}
@@ -138,7 +137,7 @@ class StoreTest extends DatabaseTestCase {
 		$result = $store->getPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
-		foreach( $result->fetchList() as $row ) {
+		foreach ( $result->fetchList() as $row ) {
 			$this->assertCount( 2, $row );
 
 			$this->assertInstanceOf(
@@ -154,7 +153,7 @@ class StoreTest extends DatabaseTestCase {
 		$result = $store->getUnusedPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
-		foreach( $result->fetchList() as $row ) {
+		foreach ( $result->fetchList() as $row ) {
 			$this->assertInstanceOf(
 				'\SMWDataItem',
 				$row,
@@ -168,7 +167,7 @@ class StoreTest extends DatabaseTestCase {
 		$result = $store->getWantedPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
-		foreach( $result->fetchList() as $row ) {
+		foreach ( $result->fetchList() as $row ) {
 			$this->assertInstanceOf(
 				'\SMW\DIProperty',
 				$row[0],
@@ -181,7 +180,7 @@ class StoreTest extends DatabaseTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getStatistics();
 
-		$this->assertTrue( is_array( $result ) );
+		$this->assertIsArray( $result );
 		$this->assertArrayHasKey( 'PROPUSES', $result );
 		$this->assertArrayHasKey( 'USEDPROPS', $result );
 		$this->assertArrayHasKey( 'DECLPROPS', $result );
@@ -208,7 +207,7 @@ class StoreTest extends DatabaseTestCase {
 
 		$instance->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $expected ] ) );
+			->willReturn( [ $expected ] );
 
 		$this->assertEquals(
 			$expected,

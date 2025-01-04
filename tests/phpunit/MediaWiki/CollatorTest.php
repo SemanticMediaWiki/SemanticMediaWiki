@@ -13,7 +13,7 @@ use SMW\MediaWiki\Collator;
  *
  * @author mwjames
  */
-class CollatorTest extends \PHPUnit_Framework_TestCase {
+class CollatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -29,7 +29,7 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 
 		$collation->expects( $this->exactly( 2 ) )
 			->method( 'getSortKey' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new Collator(
 			$collation

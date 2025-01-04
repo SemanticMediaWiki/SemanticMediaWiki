@@ -34,8 +34,7 @@
 	},
 	"meta": {
 		"skip-on": {
-			"sqlite": "Returns a `database is locked`",
-			"mw-1.19.20": "The table update on 1.19 lacks behind"
+			"sqlite": "Returns a `database is locked`"
 		},
 		"version": "2",
 		"is-incomplete": false,

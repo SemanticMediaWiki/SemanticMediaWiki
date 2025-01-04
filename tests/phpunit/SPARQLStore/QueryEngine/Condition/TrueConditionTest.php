@@ -13,7 +13,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
  *
  * @author mwjames
  */
-class TrueConditionTest extends \PHPUnit_Framework_TestCase {
+class TrueConditionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

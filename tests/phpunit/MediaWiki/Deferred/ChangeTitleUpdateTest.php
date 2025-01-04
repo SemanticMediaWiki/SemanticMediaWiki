@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ChangeTitleUpdateTest extends \PHPUnit_Framework_TestCase {
+class ChangeTitleUpdateTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $jobFactory;
@@ -56,7 +56,7 @@ class ChangeTitleUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $nullJob ) );
+			->willReturn( $nullJob );
 
 		$oldTitle = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()

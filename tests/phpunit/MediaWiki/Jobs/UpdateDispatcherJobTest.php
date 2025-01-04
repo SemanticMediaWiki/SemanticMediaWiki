@@ -19,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
+class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 	protected $expectedProperty;
 	protected $expectedSubjects;
@@ -106,7 +106,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		$instance->isEnabledJobQueue( false );
 		$instance->run();
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getJobCount()
 		);
@@ -124,11 +124,11 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -152,19 +152,19 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -195,7 +195,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -226,23 +226,23 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnCallback( [ $this, 'mockStoreAllPropertySubjectsCallback' ] ) );
+			->willReturnCallback( [ $this, 'mockStoreAllPropertySubjectsCallback' ] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $setup['title'] ) ] ) );
+			->willReturn( [ DIWikiPage::newFromTitle( $setup['title'] ) ] );
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( $setup['properties'] ) );
+			->willReturn( $setup['properties'] );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( $setup['properties'] ) );
+			->willReturn( $setup['properties'] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -283,23 +283,23 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnCallback( [ $this, 'mockStoreAllPropertySubjectsCallback' ] ) );
+			->willReturnCallback( [ $this, 'mockStoreAllPropertySubjectsCallback' ] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $setup['title'] ) ] ) );
+			->willReturn( [ DIWikiPage::newFromTitle( $setup['title'] ) ] );
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( $setup['properties'] ) );
+			->willReturn( $setup['properties'] );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( $setup['properties'] ) );
+			->willReturn( $setup['properties'] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -329,10 +329,10 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$count = count( $subjects ) - 1; // eliminate duplicate count
-		$title =  Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
+		$title = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
-		#0
+		# 0
 		$provider[] = [
 			[
 				'title'      => $title,
@@ -349,7 +349,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
-		#1
+		# 1
 		$provider[] = [
 			[
 				'title'      => $title,
@@ -363,8 +363,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-
-		#2
+		# 2
 		$duplicate = DIWikiPage::newFromText( 'Foo' );
 
 		$subjects = [
@@ -377,7 +376,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		];
 
-		$title =  Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
+		$title = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
 		$provider[] = [

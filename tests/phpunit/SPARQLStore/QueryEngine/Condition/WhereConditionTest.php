@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class WhereConditionTest extends \PHPUnit_Framework_TestCase {
+class WhereConditionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -28,23 +28,23 @@ class WhereConditionTest extends \PHPUnit_Framework_TestCase {
 	public function testCommonMethods() {
 		$instance = new WhereCondition( 'condition', true );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getCondition()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->namespaces
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getWeakConditionString()
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isSafe()
 		);
 	}

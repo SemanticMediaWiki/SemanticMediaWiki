@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class UrlArgsTest extends \PHPUnit_Framework_TestCase {
+class UrlArgsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -41,14 +41,12 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 			$instance->get( 'foo' )
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->get( 42 )
+		$this->assertNull(
+						$instance->get( 42 )
 		);
 
-		$this->assertEquals(
-			false,
-			$instance->get( 42, false )
+		$this->assertFalse(
+						$instance->get( 42, false )
 		);
 	}
 
@@ -64,9 +62,8 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->delete( 'foo' );
 
-		$this->assertEquals(
-			null,
-			$instance->get( 'foo' )
+		$this->assertNull(
+						$instance->get( 'foo' )
 		);
 	}
 

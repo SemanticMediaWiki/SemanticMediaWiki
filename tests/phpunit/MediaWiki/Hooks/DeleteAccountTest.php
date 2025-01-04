@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DeleteAccountTest extends \PHPUnit_Framework_TestCase {
+class DeleteAccountTest extends \PHPUnit\Framework\TestCase {
 
 	private $namespaceExaminer;
 	private $articleDelete;
@@ -43,8 +43,8 @@ class DeleteAccountTest extends \PHPUnit_Framework_TestCase {
 	public function testProcess() {
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->with( $this->equalTo( NS_USER ) )
-			->will( $this->returnValue( true ) );
+			->with( NS_USER )
+			->willReturn( true );
 
 		$this->articleDelete->expects( $this->atLeastOnce() )
 			->method( 'process' );
@@ -62,8 +62,8 @@ class DeleteAccountTest extends \PHPUnit_Framework_TestCase {
 	public function testProcess_User() {
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->with( $this->equalTo( NS_USER ) )
-			->will( $this->returnValue( true ) );
+			->with( NS_USER )
+			->willReturn( true );
 
 		$this->articleDelete->expects( $this->atLeastOnce() )
 			->method( 'process' );
@@ -74,7 +74,7 @@ class DeleteAccountTest extends \PHPUnit_Framework_TestCase {
 
 		$user->expects( $this->once() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new DeleteAccount(
 			$this->namespaceExaminer,

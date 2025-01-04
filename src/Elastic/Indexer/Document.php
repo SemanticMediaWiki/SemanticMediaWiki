@@ -185,7 +185,8 @@ class Document implements JsonSerializable {
 			'type' => $this->type,
 			'data' => $this->data,
 			'sub_docs' => array_map(
-				function ( $v ) { return $v->toArray(); },
+				function ( $v ) { return $v->toArray();
+				},
 				$this->subDocuments
 			)
 		];

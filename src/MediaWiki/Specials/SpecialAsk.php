@@ -185,11 +185,6 @@ class SpecialAsk extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/search';
 	}
 
@@ -197,10 +192,12 @@ class SpecialAsk extends SpecialPage {
 		$out = $this->getOutput();
 		$request = $this->getRequest();
 
-		$out->addModuleStyles( 'ext.smw.style' );
-		$out->addModuleStyles( 'ext.smw.ask.styles' );
-		$out->addModuleStyles( 'ext.smw.table.styles' );
-		$out->addModuleStyles( 'ext.smw.page.styles' );
+		$out->addModuleStyles( [
+			'ext.smw.styles',
+			'ext.smw.ask.styles',
+			'ext.smw.page.styles',
+			'ext.smw.table.styles'
+		] );
 
 		$out->addModuleStyles(
 			HtmlModal::getModuleStyles()
@@ -543,7 +540,7 @@ class SpecialAsk extends SpecialPage {
 			'from_cache' => $isFromCache
 		];
 	}
-	
+
 	/**
 	 * Generate wikitext for the current query expressed as an {{#ask:}} parser function invocation.
 	 * The return value is not HTML-safe; the caller must take care of escaping it.

@@ -247,7 +247,7 @@ class ParametersProcessor {
 			if ( isset( $clear['p'] ) && isset( $pv[$clear['p']] ) ) {
 				unset( $pv[$clear['p']] );
 				$request->setVal( 'pv', $pv );
-			} elseif( isset( $clear['p.all'] ) ) {
+			} elseif ( isset( $clear['p.all'] ) ) {
 				$pv = [];
 				$request->setVal( 'pv', $pv );
 				$request->unsetVal( 'clear' );
@@ -272,7 +272,7 @@ class ParametersProcessor {
 			if ( isset( $clear['c'] ) && isset( $c[$clear['c']] ) ) {
 				unset( $c[$clear['c']] );
 				$request->setVal( 'c', $c );
-			} elseif( isset( $clear['c.all'] ) ) {
+			} elseif ( isset( $clear['c.all'] ) ) {
 				$c = [];
 				$request->setVal( 'c', $c );
 				$request->unsetVal( 'clear' );
@@ -419,7 +419,7 @@ class ParametersProcessor {
 
 			foreach ( $filter as $value ) {
 
-				if ( $value === '' || isset( $clear['v'] ) && $clear['v'] === $value ) {
+				if ( $value === '' || ( isset( $clear['v'] ) && $clear['v'] === $value ) ) {
 					continue;
 				}
 
@@ -442,7 +442,7 @@ class ParametersProcessor {
 					} elseif ( $not === '!' ) {
 						$conditions[$prop][] = "<q>[[$prop::≤$min]] OR [[$prop::≥$max]]</q>";
 					} elseif ( $min === $max ) {
-					//	$conditions[$prop][] = "<q>[[$prop::$max]]</q>";
+					// $conditions[$prop][] = "<q>[[$prop::$max]]</q>";
 					} else {
 						$conditions[$prop][] = "[[$prop::≥$min]][[$prop::≤$max]]";
 					}

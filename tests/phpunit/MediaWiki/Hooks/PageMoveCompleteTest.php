@@ -16,7 +16,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class PageMoveCompleteTest extends \PHPUnit_Framework_TestCase {
+class PageMoveCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	private $user;
 	private $testEnvironment;
@@ -112,7 +112,7 @@ class PageMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'deleteSubject' )
-			->with( $this->equalTo( $oldTitle ) );
+			->with( $oldTitle );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

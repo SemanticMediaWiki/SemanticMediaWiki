@@ -10,13 +10,14 @@ use SMW\Tests\TestEnvironment;
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryDependencyLinksStore
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 2.3
  *
  * @author mwjames
  */
-class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
+class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $spyLogger;
@@ -44,7 +45,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
@@ -56,7 +57,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -64,11 +65,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$this->subject->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$this->subject->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
 		$this->testEnvironment->registerObject( 'NamespaceExaminer', $namespaceExaminer );
@@ -89,7 +90,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $this->store ) );
+			->willReturn( $this->store );
 
 		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
@@ -112,7 +113,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
@@ -120,11 +121,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$changeOp->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $this->subject ) );
+			->willReturn( $this->subject );
 
 		$changeOp->expects( $this->once() )
 			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
@@ -132,7 +133,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
@@ -163,7 +164,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
@@ -171,7 +172,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$changeOp->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $this->subject ) );
+			->willReturn( $this->subject );
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
@@ -179,7 +180,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
@@ -215,10 +216,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->once() )
 			->method( 'select' )
 			->with(
-				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
+				\SMWSQLStore3::QUERY_LINKS_TABLE,
 				$this->anything(),
-				$this->equalTo( [ 'o_id' => [ 42 ] ] ) )
-			->will( $this->returnValue( [ $row ] ) );
+				[ 'o_id' => [ 42 ] ] )
+			->willReturn( [ $row ] );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
@@ -226,7 +227,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -237,7 +238,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
@@ -245,7 +246,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
@@ -281,10 +282,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->once() )
 			->method( 'select' )
 			->with(
-				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
+				\SMWSQLStore3::QUERY_LINKS_TABLE,
 				$this->anything(),
-				$this->equalTo( [ 'o_id' => [ 42 ] ] ) )
-			->will( $this->returnValue( [ $row ] ) );
+				[ 'o_id' => [ 42 ] ] )
+			->willReturn( [ $row ] );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
@@ -292,7 +293,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -303,7 +304,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
@@ -315,11 +316,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$dependencyLinksTableUpdater->expects( $this->once() )
 			->method( 'getId' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
@@ -352,10 +353,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
-				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
+				\SMWSQLStore3::QUERY_LINKS_TABLE,
 				$this->anything(),
-				$this->equalTo( [ 'o_id' => [ 42 ] ] ) )
-			->will( $this->returnValue( $row ) );
+				[ 'o_id' => [ 42 ] ] )
+			->willReturn( $row );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -364,11 +365,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
@@ -389,7 +390,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
@@ -397,11 +398,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResultDependencyListResolver->expects( $this->never() )
 			->method( 'getDependencyListByLateRetrievalFrom' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResultDependencyListResolver->expects( $this->never() )
 			->method( 'getDependencyListFrom' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
@@ -429,7 +430,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
@@ -437,11 +438,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResultDependencyListResolver->expects( $this->never() )
 			->method( 'getDependencyListByLateRetrievalFrom' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResultDependencyListResolver->expects( $this->never() )
 			->method( 'getDependencyListFrom' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
@@ -460,8 +461,8 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getOption' )
-			->with(	$this->equalTo( 'request.action' ) )
-			->will( $this->returnValue( 'parse' ) );
+			->with(	'request.action' )
+			->willReturn( 'parse' );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -469,7 +470,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$this->assertNull(
 			$instance->updateDependencies( $queryResult )
@@ -483,7 +484,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getId' )
-			->will( $this->onConsecutiveCalls( 42, 1001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -492,7 +493,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
@@ -500,7 +501,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
@@ -508,11 +509,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getDependencyListByLateRetrievalFrom' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResultDependencyListResolver->expects( $this->once() )
 			->method( 'getDependencyListFrom' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
@@ -531,11 +532,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( $this->subject ) );
+			->willReturn( $this->subject );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -543,7 +544,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$instance->updateDependencies( $queryResult );
 
@@ -557,7 +558,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->testEnvironment->registerObject( 'NamespaceExaminer', $namespaceExaminer );
 
@@ -571,7 +572,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
@@ -596,7 +597,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( $this->subject ) );
+			->willReturn( $this->subject );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -604,7 +605,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$instance->updateDependencies( $queryResult );
 	}
@@ -616,11 +617,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->once() )
 			->method( 'getTouched' )
-			->will( $this->returnValue( 10 ) );
+			->willReturn( 10 );
 
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -628,11 +629,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$subject->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$subject->expects( $this->any() )
 			->method( 'getHash' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -644,7 +645,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -655,7 +656,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
@@ -663,11 +664,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getDependencyListByLateRetrievalFrom' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getDependencyListFrom' )
-			->will( $this->returnValue( [ null, DIWikiPage::newFromText( __METHOD__ ) ] ) );
+			->willReturn( [ null, DIWikiPage::newFromText( __METHOD__ ) ] );
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
@@ -675,17 +676,17 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getId' )
-			->will( $this->onConsecutiveCalls( 42, 1001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001 );
 
 		$dependencyLinksTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'addToUpdateList' )
 			->with(
-				$this->equalTo( 1001 ),
+				1001,
 				$this->anything() );
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
@@ -702,11 +703,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -714,7 +715,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$instance->updateDependencies( $queryResult );
 
@@ -728,7 +729,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
@@ -736,11 +737,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getDependencyListByLateRetrievalFrom' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getDependencyListFrom' )
-			->will( $this->returnValue( [ DIWikiPage::newFromText( 'Foo', NS_CATEGORY ) ] ) );
+			->willReturn( [ DIWikiPage::newFromText( 'Foo', NS_CATEGORY ) ] );
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
@@ -748,21 +749,21 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getId' )
-			->will( $this->onConsecutiveCalls( 0, 0 ) );
+			->willReturnOnConsecutiveCalls( 0, 0 );
 
 		$dependencyLinksTableUpdater->expects( $this->once() )
 			->method( 'createId' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$dependencyLinksTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'addToUpdateList' )
 			->with(
-				$this->equalTo( 1001 ),
+				1001,
 				$this->anything() );
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
@@ -779,11 +780,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( $this->subject ) );
+			->willReturn( $this->subject );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -791,7 +792,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$instance->updateDependencies( $queryResult );
 
@@ -808,11 +809,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$subject->expects( $this->atLeastOnce() )
 			->method( 'getHash' )
-			->will( $this->returnValue( 'Foo###' ) );
+			->willReturn( 'Foo###' );
 
 		$subject->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -824,7 +825,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -838,7 +839,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getDependencyListByLateRetrievalFrom' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
@@ -846,11 +847,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getId' )
-			->will( $this->returnValue( 4 ) );
+			->willReturn( 4 );
 
 		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->willReturn( $store );
 
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
@@ -867,11 +868,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -879,7 +880,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$instance->updateDependencies( $queryResult );
 	}
@@ -891,11 +892,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->once() )
 			->method( 'getTouched' )
-			->will( $this->returnValue( wfTimestamp( TS_MW ) + 60 ) );
+			->willReturn( wfTimestamp( TS_MW ) + 60 );
 
 		$provider[] = [
 			$title
@@ -907,13 +908,13 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		// This should be a `once` but it failed on PHP: hhvm-3.18 DB=sqlite; MW=master; PHPUNIT=5.7.*
 		// with "Method was expected to be called 1 times, actually called 0 times."
 		$title->expects( $this->any() )
 			->method( 'getTouched' )
-			->will( $this->returnValue( '2017-06-15 08:36:55+00' ) );
+			->willReturn( '2017-06-15 08:36:55+00' );
 
 		$provider[] = [
 			$title

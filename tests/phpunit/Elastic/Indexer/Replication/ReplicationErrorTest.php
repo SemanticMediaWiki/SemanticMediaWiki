@@ -15,7 +15,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
+class ReplicationErrorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -52,8 +52,8 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 			ReplicationError::TYPE_EXCEPTION
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->is( ReplicationError::TYPE_EXCEPTION )
 		);
 	}

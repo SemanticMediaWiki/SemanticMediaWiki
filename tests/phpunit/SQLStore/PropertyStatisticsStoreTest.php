@@ -2,23 +2,26 @@
 
 namespace SMW\Tests\SQLStore;
 
+use SMW\MediaWiki\Database;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\PHPUnitCompat;
+use Wikimedia\Rdbms\DBQueryError;
 
 /**
  * @covers \SMW\SQLStore\PropertyStatisticsStore
  * @group semantic-mediawiki
  *
  * @group medium
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class PropertyStatisticsStoreTest extends DatabaseTestCase {
+class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 
@@ -96,9 +99,7 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testAddToUsageCountWithInvalidCountThrowsException() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$instance = new PropertyStatisticsStore(
 			$connection,
@@ -110,9 +111,7 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testAddToUsageCountWithInvalidIdThrowsException() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$instance = new PropertyStatisticsStore(
 			$connection
@@ -188,16 +187,14 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testAddToUsageCountsOnTransactionIdle() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) {
+			->willReturnCallback( function ( $callback ) {
 				return call_user_func( $callback );
 			}
-			) );
+			);
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'update' );
@@ -220,9 +217,7 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testAddToUsageCountsWillNotWaitOnTransactionIdleWhenCommandLineModeIsActive() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->never() )
 			->method( 'onTransactionCommitOrIdle' );
@@ -249,9 +244,7 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	public function testInsertUsageCountWithArrayValue() {
 		$tableName = 'Foo';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->once() )
 			->method( 'insert' )
@@ -265,7 +258,6 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 					] ),
 				$this->anything() );
 
-
 		$instance = new PropertyStatisticsStore(
 			$connection
 		);
@@ -274,13 +266,11 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testAddToUsageCountsWithArrayValue() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->once() )
 			->method( 'update' )
@@ -291,10 +281,9 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 						'usage_count = usage_count + 1',
 						'null_count = null_count + 9999'
 					] ),
-				$this->equalTo(
-					[
+				[
 						'p_id' => 42
-					] ),
+					],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(
@@ -305,9 +294,7 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testSetUsageCountWithArrayValue() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->once() )
 			->method( 'update' )
@@ -318,10 +305,9 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 						'usage_count' => 1,
 						'null_count' => 9999
 					] ),
-				$this->equalTo(
-					[
+				[
 						'p_id' => 42
-					] ),
+					],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(
@@ -332,17 +318,13 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 	}
 
 	public function testUpsertOnInsertUsageCount() {
-		$error = $this->getMockBuilder( '\DBQueryError' )
-			->disableOriginalConstructor()
-			->getMock();
+		$error = $this->createMock( DBQueryError::class );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->once() )
 			->method( 'insert' )
-			->will( $this->throwException( $error ) );
+			->willThrowException( $error );
 
 		$connection->expects( $this->once() )
 			->method( 'update' )
@@ -353,7 +335,7 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 						'usage_count' => 12,
 						'null_count' => 0
 					] ),
-				$this->equalTo( [ 'p_id' => 42 ] ),
+				[ 'p_id' => 42 ],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(
@@ -362,5 +344,4 @@ class PropertyStatisticsStoreTest extends DatabaseTestCase {
 
 		$instance->insertUsageCount( 42, 12 );
 	}
-
 }

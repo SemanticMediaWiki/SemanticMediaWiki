@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
+class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 
 	private $mwHooksHandler;
 
@@ -134,7 +134,8 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addListenerCallback' );
 
 		$this->mwHooksHandler->register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', function ( $propertyChangeListener ) use ( $property ) {
-			$propertyChangeListener->addListenerCallback( $property, function (){} );
+			$propertyChangeListener->addListenerCallback( $property, function (){
+			} );
 		} );
 
 		$hookDispatcher->onRegisterPropertyChangeListeners( $propertyChangeListener );

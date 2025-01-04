@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUnit_Framework_TestCase {
+class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUnit\Framework\TestCase {
 
 	private $specificationLookup;
 	private $spyLogger;

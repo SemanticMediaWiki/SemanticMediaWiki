@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TimezoneTest extends \PHPUnit_Framework_TestCase {
+class TimezoneTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -27,8 +27,8 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListShortAbbreviations() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			Timezone::listShortAbbreviations()
 		);
 	}

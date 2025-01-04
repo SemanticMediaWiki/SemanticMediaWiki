@@ -16,7 +16,7 @@ use SMW\Schema\CompartmentIterator;
  *
  * @author mwjames
  */
-class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
+class NamespaceFilterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -41,7 +41,7 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.namespace' ) );
+			->with(	'if.namespace' );
 
 		$instance = new NamespaceFilter( null );
 		$instance->filter( $compartment );
@@ -54,7 +54,7 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.namespace' ) );
+			->with(	'if.namespace' );
 
 		$instance = new NamespaceFilter( NS_MAIN );
 		$instance->addOption( NamespaceFilter::FILTER_CONDITION_NOT_REQUIRED, true );
@@ -178,7 +178,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 			],
 			true
 		];
-
 	}
 
 }

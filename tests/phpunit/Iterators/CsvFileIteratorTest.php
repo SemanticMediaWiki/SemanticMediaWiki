@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
+class CsvFileIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -78,11 +78,11 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			$res,
 			[
 				[ '1', 'Foo', 'abc' ],
 				[ '2', 'Bar', '123' ]
-			]
+			],
+			$res
 		);
 	}
 
@@ -108,20 +108,20 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$this->assertEquals(
-			$instance->getHeader(),
 			[
 				'No',
 				'Text',
 				'Other'
-			]
+			],
+			$instance->getHeader()
 		);
 
 		$this->assertEquals(
-			$res,
 			[
 				[ '1', 'Foo', 'abc' ],
 				[ '2', 'Bar', '123' ]
-			]
+			],
+			$res
 		);
 	}
 

@@ -13,7 +13,7 @@ use SMW\Exception\PropertyNotFoundException;
  *
  * @author mwjames
  */
-class PropertyNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class PropertyNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new PropertyNotFoundException();

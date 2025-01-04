@@ -14,7 +14,7 @@ use SMW\RecurringEvents;
  *
  * @author mwjames
  */
-class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
+class RecurringEventsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -146,11 +146,10 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
-		$this->assertEquals(
-			null,
-			$instance->getJulianDay( $dataValue )
+		$this->assertNull(
+						$instance->getJulianDay( $dataValue )
 		);
 	}
 

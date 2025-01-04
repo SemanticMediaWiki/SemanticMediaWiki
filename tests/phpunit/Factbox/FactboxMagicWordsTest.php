@@ -21,7 +21,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
+class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -94,7 +94,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput->expects( $this->any() )
 			->method( 'getExtensionData' )
-			->will( $this->returnValue( $expected['magicWords'] ) );
+			->willReturn( $expected['magicWords'] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -125,7 +125,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $magic->invoke( $instance );
 
-		$this->assertInternalType( 'integer', $result );
+		$this->assertIsInt( $result );
 		$this->assertEquals( $expected['constants'], $result );
 	}
 

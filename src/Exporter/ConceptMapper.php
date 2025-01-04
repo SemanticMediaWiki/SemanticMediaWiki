@@ -192,7 +192,7 @@ class ConceptMapper implements DataItemMapper {
 		);
 
 		if ( ( $description->getDescription() instanceof ValueDescription ) &&
-		     ( $description->getDescription()->getComparator() === SMW_CMP_EQ ) ) {
+			 ( $description->getDescription()->getComparator() === SMW_CMP_EQ ) ) {
 			$result->addPropertyObjectValue(
 				$this->exporter->getSpecialNsResource( 'owl', 'hasValue' ),
 				$subdata

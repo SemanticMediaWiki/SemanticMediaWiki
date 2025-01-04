@@ -57,7 +57,8 @@ class TermsLookup implements ITermsLookup {
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {}
+	public function clear() {
+	}
 
 	/**
 	 * @since 3.0
@@ -281,7 +282,7 @@ class TermsLookup implements ITermsLookup {
 			$params
 		);
 
-	//	if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
+	// if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
 	//		$params = $this->fieldMapper->constant_score( $params );
 	//	}
 

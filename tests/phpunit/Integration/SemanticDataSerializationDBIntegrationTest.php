@@ -7,11 +7,12 @@ use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SerializerFactory;
 use SMW\Subobject;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use Title;
 
 /**
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -19,7 +20,7 @@ use Title;
  *
  * @author mwjames
  */
-class SemanticDataSerializationDBIntegrationTest extends DatabaseTestCase {
+class SemanticDataSerializationDBIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testRoundtripOfSerializedSemanticDataAfterStoreUpdate() {
 		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );

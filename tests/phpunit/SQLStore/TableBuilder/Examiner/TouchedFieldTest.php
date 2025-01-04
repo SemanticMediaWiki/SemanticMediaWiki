@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TouchedFieldTest extends \PHPUnit_Framework_TestCase {
+class TouchedFieldTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -49,14 +49,14 @@ class TouchedFieldTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'update' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new TouchedField(
 			$this->store
@@ -70,6 +70,5 @@ class TouchedFieldTest extends \PHPUnit_Framework_TestCase {
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
-
 
 }

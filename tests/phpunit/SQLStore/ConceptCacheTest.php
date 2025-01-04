@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
+class ConceptCacheTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $conceptQuerySegmentBuilder;
@@ -41,7 +41,7 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 	public function testRefreshConceptCache() {
 		$this->conceptQuerySegmentBuilder->expects( $this->once() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new ConceptCache(
 			new \SMWSQLStore3(),
@@ -60,7 +60,7 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$connection->expects( $this->once() )
 			->method( 'delete' );
@@ -71,7 +71,7 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$connectionManager->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store = new \SMWSQLStore3();
 		$store->setConnectionManager( $connectionManager );

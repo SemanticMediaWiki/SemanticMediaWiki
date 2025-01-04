@@ -142,7 +142,6 @@ class Queue {
 
 		// make sure it is not in the queue
 		unset( $this->queue[$hash] );
-
 	}
 
 	/**

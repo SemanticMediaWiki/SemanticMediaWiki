@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ExploreListBuilderTest extends \PHPUnit_Framework_TestCase {
+class ExploreListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

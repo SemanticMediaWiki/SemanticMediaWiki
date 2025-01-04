@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class JsonViewTest extends \PHPUnit_Framework_TestCase {
+class JsonViewTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -36,8 +36,8 @@ class JsonViewTest extends \PHPUnit_Framework_TestCase {
 			$messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->create( 'foo', 'bar' )
 		);
 	}

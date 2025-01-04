@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AskArgsTest extends \PHPUnit_Framework_TestCase {
+class AskArgsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -59,7 +59,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 			'parameters' => $query['parameters'],
 		] );
 
-		$this->assertInternalType( 'array', $results );
+		$this->assertIsArray( $results );
 
 		if ( isset( $expected['error'] ) ) {
 			return $this->assertArrayHasKey( 'error', $results );
@@ -97,7 +97,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnCallback( [ $this, 'mockStoreQueryResultCallback' ] ) );
+			->willReturnCallback( [ $this, 'mockStoreQueryResultCallback' ] );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
@@ -108,13 +108,12 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->execute();
 
-		// MW 1.25
-		$result = method_exists( $instance->getResult(), 'getResultData' ) ? $instance->getResult()->getResultData() : $instance->getResultData();
+		$result = $instance->getResult()->getResultData();
 
 		// This came with 1.25, no idea what this suppose to be
 		unset( $result['_type'] );
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
 	}
 
@@ -139,15 +138,15 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'toArray' )
-			->will( $this->returnValue( $result ) );
+			->willReturn( $result );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'hasFurtherResults' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		return $queryResult;
 	}
@@ -200,7 +199,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -219,7 +218,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -227,7 +226,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 						'redi' => ''
 					],
 					[
-						'label'=> 'Modification date',
+						'label' => 'Modification date',
 						'typeid' => '_dat',
 						'mode' => 1,
 						'format' => '',
@@ -246,7 +245,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -254,7 +253,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 						'redi' => ''
 					],
 					[
-						'label'=> 'Modification date',
+						'label' => 'Modification date',
 						'typeid' => '_dat',
 						'mode' => 1,
 						'format' => '',

@@ -107,7 +107,6 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			return \SMWQuery::MODE_INSTANCES;
 		}
 		return \SMWQuery::MODE_NONE;
-
 	}
 
 	/**

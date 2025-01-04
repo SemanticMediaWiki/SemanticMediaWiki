@@ -76,11 +76,6 @@ class ArticleViewHeader implements HookListener {
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		// Preload data most likely to be used during a request hereby providing
-		// a possibility to bundle relevant data objects early given that this
-		// hook runs before any other GET request
-		$this->store->getObjectIds()->preload( [ $subject ] );
-
 		$changePropagationWatchlist = array_flip(
 			$this->getOption( 'smwgChangePropagationWatchlist', [] )
 		);
@@ -140,14 +135,14 @@ class ArticleViewHeader implements HookListener {
 	}
 
 	private function message( $type, array $message ) {
-		return Html::rawElement(
-			'div',
-			[
-				'id' => $message[0],
-				'class' => 'plainlinks ' . ( $type !== '' ? 'smw-callout smw-callout-' . $type : '' )
-			],
-			Message::get( $message, Message::PARSE, Message::USER_LANGUAGE )
-		);
+		$content = Message::get( $message, Message::PARSE, Message::USER_LANGUAGE );
+		switch ( $type ) {
+			case 'error':
+				return Html::errorBox( $content );
+			case 'warning':
+				return Html::warningBox( $content );
+			default:
+				return Html::noticeBox( $content, '' );
+		}
 	}
-
 }

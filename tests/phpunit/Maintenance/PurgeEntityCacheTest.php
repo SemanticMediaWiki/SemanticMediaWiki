@@ -5,7 +5,7 @@ namespace SMW\Tests\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\EntityCache;
-use SMW\Maintenance\PurgeEntityCache;
+use SMW\Maintenance\purgeEntityCache;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
@@ -13,7 +13,7 @@ use SMW\DIWikiPage;
 use Wikimedia\Rdbms\Database;
 
 /**
- * @covers \SMW\Maintenance\PurgeEntityCache
+ * @covers \SMW\Maintenance\purgeEntityCache
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -30,7 +30,7 @@ class PurgeEntityCacheTest extends TestCase {
 	private $entityCache;
 
 	protected function setUp(): void {
-		$this->testEnvironment =  new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->messageReporter = $this->createMock( MessageReporter::class );
 		$this->store = $this->createMock( SQLStore::class );
@@ -48,8 +48,8 @@ class PurgeEntityCacheTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			PurgeEntityCache::class,
-			new PurgeEntityCache()
+			purgeEntityCache::class,
+			new purgeEntityCache()
 		);
 	}
 
@@ -73,19 +73,19 @@ class PurgeEntityCacheTest extends TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( $fields ),
+				$fields,
 				$this->anything() )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->entityCache->expects( $this->atLeastOnce() )
 			->method( 'invalidate' )
-			->with( $this->equalTo( $subject ) );
+			->with( $subject );
 
-		$instance = new PurgeEntityCache();
+		$instance = new purgeEntityCache();
 
 		$instance->setMessageReporter(
 			$this->messageReporter

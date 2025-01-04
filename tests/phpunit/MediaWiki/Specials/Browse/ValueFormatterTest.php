@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class ValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -49,14 +49,14 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getLongHTMLText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ValueFormatter::getFormattedSubject( $dataValue )
 		);
 	}
@@ -68,14 +68,14 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getLongHTMLText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ValueFormatter::getFormattedValue( $dataValue, $propertyValue )
 		);
 	}
@@ -87,14 +87,14 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyValue->expects( $this->once() )
 			->method( 'isVisible' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyValue->expects( $this->once() )
 			->method( 'getShortHTMLText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ValueFormatter::getPropertyLabel( $propertyValue )
 		);
 	}

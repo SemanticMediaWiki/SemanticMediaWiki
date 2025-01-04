@@ -13,7 +13,7 @@ use SMW\Query\ResultFormat;
  *
  * @author mwjames
  */
-class ResultFormatTest extends \PHPUnit_Framework_TestCase {
+class ResultFormatTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
  *
  * @author mwjames
  */
-class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
+class DescriptionInterpreterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $connection;
@@ -31,7 +31,7 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()

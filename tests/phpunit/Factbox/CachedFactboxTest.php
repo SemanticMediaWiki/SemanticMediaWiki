@@ -25,7 +25,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
+class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -78,7 +78,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	public function testProcessAndRetrieveContent( $parameters, $expected ) {
 		$this->entityCache->expects( $this->any() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
@@ -203,7 +203,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
@@ -213,50 +213,50 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'hasVisibleProperties' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $title ) ] ) );
+			->willReturn( [ DIWikiPage::newFromTitle( $title ) ] );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ new DIProperty( __METHOD__ . 'property' ) ] ) );
+			->willReturn( [ new DIProperty( __METHOD__ . 'property' ) ] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		#0 Factbox build, being visible
+		# 0 Factbox build, being visible
 		$title = MockTitle::buildMock( __METHOD__ . 'title-being-visible' );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 10001 ) );
+			->willReturn( 10001 );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 10001 ) );
+			->willReturn( 10001 );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -264,15 +264,15 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
+			->willReturn( new \RequestContext() );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getRevisionId' )
-			->will( $this->returnValue( 10001 ) );
+			->willReturn( 10001 );
 
 		$provider[] = [
 			[
@@ -288,28 +288,28 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 Factbox build, being visible, using WebRequest oldid
+		# 1 Factbox build, being visible, using WebRequest oldid
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-oldid' );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 10002 ) );
+			->willReturn( 10002 );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 10002 ) );
+			->willReturn( 10002 );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -317,18 +317,18 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getRevisionId' )
-			->will( $this->returnValue( 9001 ) );
+			->willReturn( 9001 );
 
 		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $context ) );
+			->willReturn( $context );
 
 		$provider[] = [
 			[
@@ -344,24 +344,24 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2 Factbox is expected not to be visible
+		# 2 Factbox is expected not to be visible
 		$title = MockTitle::buildMock( __METHOD__ . 'title-ns-disabled' );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 10003 ) );
+			->willReturn( 10003 );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 10003 ) );
+			->willReturn( 10003 );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -369,11 +369,11 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
+			->willReturn( new \RequestContext() );
 
 		$provider[] = [
 			[
@@ -388,24 +388,24 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 No semantic data
+		# 3 No semantic data
 		$title = MockTitle::buildMock( __METHOD__ . 'title-empty-semanticdata' );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 10004 ) );
+			->willReturn( 10004 );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 10004 ) );
+			->willReturn( 10004 );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -413,15 +413,15 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
+			->willReturn( new \RequestContext() );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getRevisionId' )
-			->will( $this->returnValue( 10004 ) );
+			->willReturn( 10004 );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -429,7 +429,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'isEmpty' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -437,7 +437,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$provider[] = [
 			[
@@ -457,11 +457,11 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -469,11 +469,11 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
+			->willReturn( new \RequestContext() );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -481,7 +481,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$provider[] = [
 			[
@@ -501,11 +501,11 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -513,11 +513,11 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
+			->willReturn( new \RequestContext() );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -525,7 +525,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$provider[] = [
 			[
@@ -547,7 +547,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput = new ParserOutput();
 		$parserOutput->setExtensionData( 'smwdata', $semanticData );
 		return $parserOutput;
-
 	}
 
 }

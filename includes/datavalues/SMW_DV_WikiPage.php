@@ -104,16 +104,16 @@ class SMWWikiPageValue extends SMWDataValue {
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
 		switch ( $typeid ) {
-			case '_wpp' : case '__sup':
-				$this->m_fixNamespace = SMW_NS_PROPERTY;
+			case '_wpp': case '__sup':
+					$this->m_fixNamespace = SMW_NS_PROPERTY;
 			break;
-			case '_wpc' : case '__suc': case '__sin':
-				$this->m_fixNamespace = NS_CATEGORY;
+			case '_wpc': case '__suc': case '__sin':
+						$this->m_fixNamespace = NS_CATEGORY;
 			break;
-			case '_wps' :
+			case '_wps':
 				$this->m_fixNamespace = SMW_NS_SCHEMA;
 			break;
-			case '_wpu' :
+			case '_wpu':
 				$this->m_fixNamespace = NS_USER;
 			break;
 			default: // case '_wpg':
@@ -546,7 +546,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				return $this->m_title = $title;
 			}
 
-			// #3278, Special handling of `>` in the user namespace, MW (1.31+)
+			// #3278, Special handling of `>` in the user namespace
 			// added a prefix to users that originate from imported content
 			if (
 				$this->m_dataitem->getNamespace() === NS_USER &&

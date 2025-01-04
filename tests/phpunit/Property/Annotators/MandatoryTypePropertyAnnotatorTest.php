@@ -20,7 +20,7 @@ use SMWDIUri as DIUri;
  *
  * @author mwjames
  */
-class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class MandatoryTypePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -56,7 +56,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->never() )
 			->method( 'getPropertyValues' );
@@ -77,7 +77,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->never() )
 			->method( 'getPropertyValues' );

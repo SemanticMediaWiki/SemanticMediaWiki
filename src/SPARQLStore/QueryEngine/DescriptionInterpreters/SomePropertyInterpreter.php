@@ -83,7 +83,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$namespaces
 		);
 
-		list ( $subjectName, $objectName, $nonInverseProperty ) = $this->doExchangeForWhenInversePropertyIsUsed(
+		list( $subjectName, $objectName, $nonInverseProperty ) = $this->doExchangeForWhenInversePropertyIsUsed(
 			$property,
 			$objectName,
 			$joinVariable

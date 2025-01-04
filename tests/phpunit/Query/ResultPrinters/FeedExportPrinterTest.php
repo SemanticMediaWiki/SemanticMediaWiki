@@ -13,7 +13,7 @@ use SMW\Query\ResultPrinters\FeedExportPrinter;
  *
  * @author mwjames
  */
-class FeedExportPrinterTest extends \PHPUnit_Framework_TestCase {
+class FeedExportPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -62,8 +62,6 @@ class FeedExportPrinterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return $provider;
-
 	}
-
 
 }

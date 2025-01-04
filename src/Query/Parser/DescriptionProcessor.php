@@ -265,7 +265,7 @@ class DescriptionProcessor {
 
 	private function newCompoundDescriptionByType( $compoundType, $currentDescription, $newDescription ) {
 		if ( ( ( $compoundType & SMW_CONJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Conjunction ) ) ||
-		     ( ( $compoundType & SMW_DISJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Disjunction ) ) ) { // use existing container
+			 ( ( $compoundType & SMW_DISJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Disjunction ) ) ) { // use existing container
 			$currentDescription->addDescription( $newDescription );
 			return $currentDescription;
 		} elseif ( ( $compoundType & SMW_CONJUNCTION_QUERY ) != 0 ) { // make new conjunction

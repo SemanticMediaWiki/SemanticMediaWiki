@@ -14,7 +14,7 @@ use SMW\Query\Result\ItemFetcher;
  *
  * @author mwjames
  */
-class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
+class ItemFetcherTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $store;
@@ -61,7 +61,7 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$queryToken->expects( $this->any() )
 			->method( 'highlight' )
-			->will( $this->returnValue( '<b>Foo</b>' ) );
+			->willReturn( '<b>Foo</b>' );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -69,11 +69,11 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '_txt' ) );
+			->willReturn( '_txt' );
 
 		$printRequest->expects( $this->any() )
 			->method( 'getOutputFormat' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$dataItem = $this->dataItemFactory->newDIBlob( 'Foo' );
 
@@ -106,9 +106,9 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $dataItem ),
-				$this->equalTo( $property ) )
-			->will( $this->returnValue( $expected ) );
+				$dataItem,
+				$property )
+			->willReturn( $expected );
 
 		$instance = new ItemFetcher(
 			$this->store
@@ -137,14 +137,14 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 		$prefetchCache->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $dataItem ),
-				$this->equalTo( $property ) )
-			->will( $this->returnValue( $expected ) );
+				$dataItem,
+				$property )
+			->willReturn( $expected );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'service' )
-			->with( $this->equalTo( 'PrefetchCache' ) )
-			->will( $this->returnValue( $prefetchCache ) );
+			->with( 'PrefetchCache' )
+			->willReturn( $prefetchCache );
 
 		$instance = new ItemFetcher(
 			$this->store

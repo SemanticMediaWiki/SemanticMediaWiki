@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class IncompleteSetupTasksTest extends \PHPUnit_Framework_TestCase {
+class IncompleteSetupTasksTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -41,7 +41,7 @@ class IncompleteSetupTasksTest extends \PHPUnit_Framework_TestCase {
 
 		$setupFile->expects( $this->atLeastOnce() )
 			->method( 'findIncompleteTasks' )
-			->will( $this->returnValue( [ 'Foo', 'Bar' ] ) );
+			->willReturn( [ 'Foo', 'Bar' ] );
 
 		$instance = new IncompleteSetupTasks(
 			$setupFile

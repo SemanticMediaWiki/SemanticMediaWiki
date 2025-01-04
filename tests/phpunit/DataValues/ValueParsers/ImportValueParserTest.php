@@ -14,7 +14,7 @@ use SMW\DataValues\ValueParsers\ImportValueParser;
  *
  * @author mwjames
  */
-class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
+class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	private $mediaWikiNsContentReader;
 
@@ -45,8 +45,8 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	public function testTryParseForValidValueFormatErroredByNonExistingImportEntry() {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->with( $this->equalTo( ImportValue::IMPORT_PREFIX . 'Foo' ) )
-			->will( $this->returnValue( false ) );
+			->with( ImportValue::IMPORT_PREFIX . 'Foo' )
+			->willReturn( false );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader
@@ -65,7 +65,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	public function testTryParseForValidValueFormatErroredByUriMismatch( $content ) {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader
@@ -84,7 +84,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	public function testTryParseForValidValueFormatErroredByTypeMismatch( $content, $typelist ) {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader
@@ -103,7 +103,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	public function testParseForValidValueToMatchType( $content, $parseValue, $expected ) {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader
@@ -169,7 +169,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function validMatchTypeContent() {
-		#0
+		# 0
 		$provider[] = [
 			"http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n",
 			'Foaf:name',
@@ -182,7 +182,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			" http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n   name|Type:Text\n",
 			'Foaf:name',
@@ -195,7 +195,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2 mbox_sha1sum
+		# 2 mbox_sha1sum
 		$provider[] = [
 			" http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n   mbox_sha1sum|Type:Text\n",
 			'Foaf:mbox_sha1sum',

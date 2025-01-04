@@ -2,13 +2,14 @@
 
 namespace SMW\Tests\Integration\Query\ResultPrinters;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -16,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ResultPrinterIntegrationTest extends DatabaseTestCase {
+class ResultPrinterIntegrationTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 

@@ -15,7 +15,7 @@ use Wikimedia\Rdbms\ILBFactory;
  *
  * @author mwjames
  */
-class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
+class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -41,7 +41,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testGetEmptyTransactionTicket() {
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( self::getHasPrimaryChangesMethod() )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( 'getEmptyTransactionTicket' );
@@ -56,7 +56,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testGetEmptyTransactionTicketOnMasterChanges() {
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( self::getHasPrimaryChangesMethod() )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->loadBalancerFactory->expects( $this->never() )
 			->method( 'getEmptyTransactionTicket' );
@@ -143,7 +143,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * Get the appropriate `hasMaster/PrimaryChanges` method to mock for the `ILBFactory` interface.
 	 * @return string
 	 */
-	private static function getHasPrimaryChangesMethod(): string{
+	private static function getHasPrimaryChangesMethod(): string {
 		return method_exists( ILBFactory::class, 'hasPrimaryChanges' ) ? 'hasPrimaryChanges' : 'hasMasterChanges';
 	}
 }

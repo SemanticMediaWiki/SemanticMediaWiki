@@ -143,7 +143,6 @@ class ParserAfterTidy implements HookListener {
 			$parserDefaultSort = $this->parser->getDefaultSort();
 		}
 
-
 		$parserCategories = [];
 		// MW >= 1.40
 		if ( method_exists( $parserOutput, 'getCategorySortKey' ) ) {

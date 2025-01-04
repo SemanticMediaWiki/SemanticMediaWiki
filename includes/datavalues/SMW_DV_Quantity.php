@@ -96,7 +96,7 @@ class SMWQuantityValue extends SMWNumberValue {
 
 		// Check if a known unit is given as outputformat:
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
-		     ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
+			 ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
 			$wantedunit = $this->normalizeUnit( $this->m_outformat );
 			if ( array_key_exists( $wantedunit, $this->m_unitids ) ) {
 				$printunit = $wantedunit;
@@ -140,7 +140,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			$sep = '';
 
 			if ( $this->m_outformat != '-u' ) {
-				$sep =  ( $this->m_outformat != '-' ? '&#160;' : ' ' );
+				$sep = ( $this->m_outformat != '-' ? '&#160;' : ' ' );
 			}
 
 			$this->m_caption = $asPrefix ? $printunit . $sep . $this->m_caption : $this->m_caption . $sep . $printunit;

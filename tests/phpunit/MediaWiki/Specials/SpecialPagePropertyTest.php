@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
+class SpecialPagePropertyTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;
@@ -32,7 +32,7 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
@@ -97,7 +97,7 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryParameterProvider() {
-		#0
+		# 0
 		$provider[] = [
 			'Has page::Has prop',
 			[ 'type=Has+prop', 'from=Has+page' ]

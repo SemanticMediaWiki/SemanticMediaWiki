@@ -1,65 +1,41 @@
 # Semantic MediaWiki 5.0.0
 
-Released on Octobar 24th, 2024.
+Released on TBD.
 
 ## Summary
 
-This release mainly contains no breaking changes, only bug fixes and new features.
-This release introduces the several modification across multiple classes and test files. 
+This release mainly brings support for recent versions of MediaWiki and PHP.
+Anyone using MediaWiki 1.41 or above or PHP 8.1 or above is recommended to upgrade.
 
+## Compatibility
 
-## Changes
+* Added support for MediaWiki 1.42
+* Improved compatibility with MediaWiki 1.43
+* Improved compatibility with PHP 8.1 and above
+* Dropped support for MediaWiki older than 1.39
+* Dropped support for PHP older than 8.0
 
-* [#4348](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4348#issuecomment-552868424) - according to the mwjames suggestion new interface has been introduced to cover new output marker and change the syntax 
-in 'ask' query
-* new custom formatters can be created if needed which will use the interface methods
-* [#5739](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5739) - instead of `nolink` output marker `link=` introduced as well as `thclass=unsortable` which is used to set table headers to unsortable
-
-
-## Contributors
-
-Top Contributors
-
-* Bertrand Gorge
-* Niklas Laxström
-* Mark A. Hershberger
-* Jaider Andrade Ferreira
-* Youri van den Bogert
-* alistair3149
-
-Code Contributors
-
-* James Hong Kong
-* Bertrand Gorge
-* Niklas Laxström
-* Mark A. Hershberger
-* Jaider Andrade Ferreira
-* alistair3149
-* Yvar Nanlohij
-* thomas-topway-it
-* Robert Vogel
-* Jeroen De Dauw
-* Karsten Hoffmeyer
-* Translatewiki.net
-* Marko Ilic
+For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
 ## Upgrading
 
-**Note:** You need to run either "update.php" or "setupStore.php". Apart from that, no other script needs to be run.
+There is no need to run the "update.php" maintenance script or any of the rebuild data scripts.
 
-**Get the new version via Composer:**
+## Contributors
 
-* Step 1: if you are upgrading from SMW older than 4.2.0, ensure the SMW version in `composer.json` is `^5.0.0`
-* Step 2: run composer in your MediaWiki directory: `composer update --no-dev --optimize-autoloader`
-* Step 3: run either MediaWiki's update.php or SemanticMediaWiki's
-  [setupStore.php maintenance script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_setupStore.php)
-
-**Get the new version via Git:**
-
-This is only for those who have installed SMW via Git.
-
-* Step 1: do a `git pull` in the SemanticMediaWiki directory
-* Step 2: run `composer update --no-dev --optimize-autoloader` in the MediaWiki directory
-* Step 3: run either MediaWiki's update.php or SemanticMediaWiki's
-  [setupStore.php maintenance script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_setupStore.php)
-
+* translatewiki.net
+* Marko Ilic
+* Sébastien Beyou
+* Alexander
+* Jeroen De Dauw ([Professional Wiki](https://professional.wiki/))
+* Karsten Hoffmeyer ([Professional Wiki](https://professional.wiki/))
+* Robert Vogel
+* Simon Stier
+* Yvar
+* alistair3149
+* Alexander Mashin
+* Ferdinand Bachmann
+* Youri vd Bogert
+* dependabot[bot]
+* jaideraf
+* thomas-topway-it

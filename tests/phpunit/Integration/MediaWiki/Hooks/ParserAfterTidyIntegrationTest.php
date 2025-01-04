@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class ParserAfterTidyIntegrationTest extends \PHPUnit_Framework_TestCase {
+class ParserAfterTidyIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	private $mwHooksHandler;
 	private $parserAfterTidyHook;

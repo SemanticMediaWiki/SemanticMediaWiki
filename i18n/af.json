@@ -4,7 +4,8 @@
 			"Arnobarnard",
 			"Biggs ZA",
 			"Joris Darlington Quarshie",
-			"Naudefj"
+			"Naudefj",
+			"Rooiratel"
 		]
 	},
 	"smw_finallistconjunct": ", en",
@@ -26,6 +27,7 @@
 	"smw-wantedproperty-template": "$1 ($2 gebruike)",
 	"smw_purge": "Verfris",
 	"types": "Tipes",
+	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Navraag|Navrae}}",
 	"smw_ask_sortby": "Sorteer volgens kolom (optioneel)",
 	"smw_ask_ascorder": "Toenemend",
 	"smw_ask_descorder": "Afnemend",

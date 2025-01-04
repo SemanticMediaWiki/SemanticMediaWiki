@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
+class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -46,49 +46,49 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function supportedDataItemProvider() {
-		#0
+		# 0
 		$provider[] = [
 			new \SMWDINumber( 42 ),
 			'42',
 			'double'
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			new \SMWDIBlob( 'Test' ),
 			'Test',
 			'string'
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			new \SMWDIBoolean( true ),
 			'true',
 			'boolean'
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			new \SMWDITime( 1, '1970' ),
 			'1970',
 			'gYear'
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			new \SMWDITime( 1, '1970', '12' ),
 			'1970-12',
 			'gYearMonth'
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			new \SMWDITime( 1, '1970', '12', '31' ),
 			'1970-12-31Z',
 			'date'
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			new \SMWDITime( 1, '1970', '12', '31', '12' ),
 			'1970-12-31T12:00:00Z',
@@ -106,44 +106,44 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem->expects( $this->any() )
 			->method( '__toString' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
-		#0
+		# 0
 		$provider[] = [
 			$dataItem
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			new \SMWDIGeoCoord( [ 'lat' => 52, 'lon' => 1 ] )
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			new \SMWDIConcept( 'Foo', '', '', '', '' )
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			new \SMWDIUri( 'http', '//example.org', '', '' )
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			new \SMWDIContainer( new \SMWContainerSemanticData( new DIWikiPage( 'Foo', NS_MAIN ) ) )
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN )
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			new DIProperty( 'Foo' )
 		];
 
-		#7 Not a gregorian calendar model
+		# 7 Not a gregorian calendar model
 		$provider[] = [
 			new \SMWDITime( 2, '1970' )
 		];

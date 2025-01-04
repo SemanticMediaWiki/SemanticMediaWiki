@@ -12,4 +12,5 @@ use SMW\Indicator\IndicatorProvider;
  *
  * @author mwjames
  */
-interface CompositeIndicatorProvider extends IndicatorProvider {}
+interface CompositeIndicatorProvider extends IndicatorProvider {
+}

@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\PersonalUrls;
  *
  * @author mwjames
  */
-class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
+class PersonalUrlsTest extends \PHPUnit\Framework\TestCase {
 
 	private $skinTemplate;
 	private $jobQueue;
@@ -48,8 +48,8 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 	public function testProcessOnJobQueueWatchlist() {
 		$this->preferenceExaminer->expects( $this->at( 0 ) )
 			->method( 'hasPreferenceOf' )
-			->with( $this->equalTo( 'smw-prefs-general-options-jobqueue-watchlist' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw-prefs-general-options-jobqueue-watchlist' )
+			->willReturn( true );
 
 		$output = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -57,11 +57,11 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->skinTemplate->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $output ) );
+			->willReturn( $output );
 
 		$this->permissionExaminer->expects( $this->any() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$personalUrls = [];
 

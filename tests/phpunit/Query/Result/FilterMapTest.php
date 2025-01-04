@@ -15,7 +15,7 @@ use SMW\Query\Result\FilterMap;
  *
  * @author mwjames
  */
-class FilterMapTest extends \PHPUnit_Framework_TestCase {
+class FilterMapTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $entityIdManager;
@@ -34,7 +34,7 @@ class FilterMapTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityIdManager ) );
+			->willReturn( $this->entityIdManager );
 	}
 
 	public function testCanConstruct() {
@@ -47,7 +47,7 @@ class FilterMapTest extends \PHPUnit_Framework_TestCase {
 	public function testGetCountListByType() {
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'preload' )
-			->with( $this->equalTo( [ 'Foo' ] ) );
+			->with( [ 'Foo' ] );
 
 		$instance = new FilterMap(
 			$this->store,

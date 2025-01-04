@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class DocumentationParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -30,14 +30,14 @@ class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$processedParam = $this->getMockBuilder( ProcessedParam::class )
 			->disableOriginalConstructor()
 			->getMock();
-		
+
 		$language = $this->getMockBuilder( ProcessedParam::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$language->expects( $this->any() )
 			->method( 'getValue' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$processingResult = $this->getMockBuilder( ProcessingResult::class )
 			->disableOriginalConstructor()
@@ -45,14 +45,14 @@ class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$processingResult->expects( $this->any() )
 			->method( 'getParameters' )
-			->will( $this->returnValue( [
+			->willReturn( [
 				'language'   => $language,
 				'format'     => $processedParam,
 				'parameters' => $processedParam ]
-			) );
+			);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->handle( $parser, $processingResult )
 		);
 	}

@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
+class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 
 	protected $mockedStoreValues;
 	private $semanticData;
@@ -46,7 +46,7 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 
 		$this->serializerFactory->expects( $this->any() )
 			->method( 'newSemanticDataSerializer' )
-			->will( $this->returnValue( $semanticDataSerializer ) );
+			->willReturn( $semanticDataSerializer );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -130,11 +130,11 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] ) );
+			->willReturnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -142,11 +142,11 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( $dataValues ) );
+			->willReturn( $dataValues );
 
 		$instance = new ChangePropagationNotifier(
 			$store,
@@ -177,7 +177,7 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return [
-			//  $mockedStoreValues, $dataValues, $settings,               $expected
+			// $mockedStoreValues, $dataValues, $settings,               $expected
 			[ $subjects, [], [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
 			[ [], $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
 			[ $subject, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],

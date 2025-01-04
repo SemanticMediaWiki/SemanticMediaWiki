@@ -13,7 +13,7 @@ use Wikimedia\Rdbms\ILoadBalancer;
  *
  * @author mwjames
  */
-class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
+class MediaWikiServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 
 	private $callbackContainerFactory;
 	private $servicesFileDir;

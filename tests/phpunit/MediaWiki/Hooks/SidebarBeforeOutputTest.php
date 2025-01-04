@@ -11,7 +11,7 @@ use Title;
  *
  * @license GNU GPL v2+
  */
-class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
+class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 
 	private $namespaceExaminer;
 
@@ -40,7 +40,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 	public function testProcess( $setup, $expected ) {
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( $setup['settings']['isEnabledNamespace'] ) );
+			->willReturn( $setup['settings']['isEnabledNamespace'] );
 
 		$sidebar = [];
 
@@ -69,7 +69,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function skinTemplateDataProvider() {
-		#0 Standard title
+		# 0 Standard title
 		$settings = [
 			'isEnabledNamespace' => true,
 			'smwgBrowseFeatures' => SMW_BROWSE_TLINK
@@ -83,7 +83,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 			[ 'count' => 1 ],
 		];
 
-		#1 isArticle = false
+		# 1 isArticle = false
 		$provider[] = [
 			[
 				'skin' => $this->newSkinStub( false ),
@@ -105,7 +105,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 			[ 'count' => 0 ],
 		];
 
-		#3 smwgNamespacesWithSemanticLinks = false
+		# 3 smwgNamespacesWithSemanticLinks = false
 
 		$settings = [
 			'isEnabledNamespace' => false,
@@ -120,7 +120,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 			[ 'count' => 0 ],
 		];
 
-		#4 Special page
+		# 4 Special page
 		$settings = [
 			'isEnabledNamespace' => true,
 			'smwgBrowseFeatures' => SMW_BROWSE_TLINK
@@ -130,7 +130,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -138,7 +138,7 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$provider[] = [
 			[
@@ -170,15 +170,15 @@ class SidebarBeforeOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( Title::newFromText( __METHOD__ ) ) );
+			->willReturn( Title::newFromText( __METHOD__ ) );
 
 		$skin->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( $message ) );
+			->willReturn( $message );
 
 		$skin->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $output ) );
+			->willReturn( $output );
 
 		return $skin;
 	}

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
+class ElementFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -57,47 +57,47 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function supportedDataItemProvider() {
 		$dataItemFactory = new DataItemFactory();
 
-		#0
+		# 0
 		$provider[] = [
 			$dataItemFactory->newDINumber( 42 )
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			$dataItemFactory->newDIBlob( 'Test' )
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			$dataItemFactory->newDIBoolean( true )
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			$dataItemFactory->newDIUri( 'http', '//example.org', '', '' )
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			$dataItemFactory->newDITime( 1, '1970' )
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			$dataItemFactory->newDIContainer( new \SMWContainerSemanticData( $dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) )
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN )
 		];
 
-		#7
+		# 7
 		$provider[] = [
 			$dataItemFactory->newDIProperty( 'Foo' )
 		];
 
-		#8
+		# 8
 		$provider[] = [
 			$dataItemFactory->newDIConcept( 'Foo', '', '', '', '' )
 		];
@@ -113,14 +113,14 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem->expects( $this->any() )
 			->method( '__toString' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
-		#0
+		# 0
 		$provider[] = [
 			$dataItem
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			new \SMWDIGeoCoord( [ 'lat' => 52, 'lon' => 1 ] )
 		];

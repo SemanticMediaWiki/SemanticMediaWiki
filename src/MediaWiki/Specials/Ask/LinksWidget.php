@@ -56,7 +56,7 @@ class LinksWidget {
 			return '';
 		}
 
-		//show|hide inline embed code
+		// show|hide inline embed code
 		$embedShow = "document.getElementById('inlinequeryembed').style.display='block';" .
 			"document.getElementById('embed_hide').style.display='inline';" .
 			"document.getElementById('embed_show').style.display='none';" .
@@ -203,31 +203,34 @@ class LinksWidget {
 			return '';
 		}
 
-		return  Html::rawElement(
-			'div',
+		return Html::noticeBox(
+				// Since message boxes can be rendered differently in different MW version,
+				// insert a div wrapper so JS can target that
+				Html::rawElement( 'div', [ 'class' => 'smw-message-content' ] ),
+				'smw-ask-change-info smw-message--hidden'
+			) .
+			Html::rawElement(
+				'div',
 				[
-					'id' => 'ask-change-info'
-				]
-			) . Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-ask-button-submit'
-			], Html::element(
-				'input',
-				[
-					'id' => 'search-action',
-					'type'  => 'submit',
-					'value' => wfMessage( 'smw_ask_submit' )->escaped()
-				]
-			) . Html::element(
-				'input',
-				[
-					'type'  => 'hidden',
-					'name'  => 'eq',
-					'value' => 'yes'
-				]
-			)
-		);
+					'class' => 'smw-ask-button-submit'
+				],
+				Html::element(
+					'input',
+					[
+						'id' => 'search-action',
+						'type'  => 'submit',
+						'value' => wfMessage( 'smw_ask_submit' )->escaped()
+					]
+				) .
+				Html::element(
+					'input',
+					[
+						'type'  => 'hidden',
+						'name'  => 'eq',
+						'value' => 'yes'
+					]
+				)
+			);
 	}
 
 	/**
@@ -371,7 +374,7 @@ class LinksWidget {
 					'data-onoi-clipboard-field' => 'value',
 					'class' => 'clipboard smw-icon-bookmark',
 					'value' => $infolink->getURL(),
-					'title' =>  wfMessage( 'smw-clipboard-copy-link' )->text()
+					'title' => wfMessage( 'smw-clipboard-copy-link' )->text()
 				]
 			)
 		);

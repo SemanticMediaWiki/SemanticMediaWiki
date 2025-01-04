@@ -119,7 +119,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 * @return string
 	 */
 	public function getQuerySearchModifier( &$value ) {
-		//  @see http://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
+		// @see http://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
 		// "MySQL can perform boolean full-text searches using the IN BOOLEAN
 		// MODE modifier. With this modifier, certain characters have special
 		// meaning at the beginning or end of words ..."

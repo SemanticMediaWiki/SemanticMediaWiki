@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
+class AuxiliaryFieldsTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 	private $idCacheManager;
@@ -46,8 +46,8 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	public function testPrefetchFieldList() {
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->with( $this->equalTo( AuxiliaryFields::COUNTMAP_CACHE_ID ) )
-			->will( $this->returnValue( $this->cache ) );
+			->with( AuxiliaryFields::COUNTMAP_CACHE_ID )
+			->willReturn( $this->cache );
 
 		$subjects = [ DIWikiPage::newFromText( 'Foo' ) ];
 
@@ -62,8 +62,8 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 't.smw_hash' => [ 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' ] ] ) )
-			->will( $this->returnValue( [ (object)$row ] ) );
+				[ 't.smw_hash' => [ 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' ] ] )
+			->willReturn( [ (object)$row ] );
 
 		$instance = new AuxiliaryFields(
 			$this->connection,
@@ -79,8 +79,8 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	public function testSetFieldMaps_Empty() {
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->with( $this->equalTo( AuxiliaryFields::COUNTMAP_CACHE_ID ) )
-			->will( $this->returnValue( $this->cache ) );
+			->with( AuxiliaryFields::COUNTMAP_CACHE_ID )
+			->willReturn( $this->cache );
 
 		$this->connection->expects( $this->once() )
 			->method( 'upsert' )
@@ -102,12 +102,12 @@ class AuxiliaryFieldsTest extends \PHPUnit_Framework_TestCase {
 	public function testSetFieldMaps() {
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->with( $this->equalTo( AuxiliaryFields::COUNTMAP_CACHE_ID ) )
-			->will( $this->returnValue( $this->cache ) );
+			->with( AuxiliaryFields::COUNTMAP_CACHE_ID )
+			->willReturn( $this->cache );
 
 		$this->connection->expects( $this->any() )
 			->method( 'escape_bytea' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->connection->expects( $this->once() )
 			->method( 'upsert' )

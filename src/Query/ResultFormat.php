@@ -99,7 +99,6 @@ class ResultFormat extends StringParam {
 
 		$format = false;
 
-
 		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		// Deprecated since 3.1, use `SMW::ResultFormat::OverrideDefaultFormat`
 		$hookContainer->run( 'SMWResultFormat', [ &$format, $this->printRequests, [] ] );

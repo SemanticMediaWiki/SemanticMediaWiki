@@ -200,7 +200,7 @@ class Settings extends Options {
 			'smwgElasticsearchConfig' => $GLOBALS['smwgElasticsearchConfig'],
 			'smwgElasticsearchProfile' => $GLOBALS['smwgElasticsearchProfile'],
 			'smwgElasticsearchEndpoints' => $GLOBALS['smwgElasticsearchEndpoints'],
-            'smwgElasticsearchCredentials' => $GLOBALS['smwgElasticsearchCredentials'],
+			'smwgElasticsearchCredentials' => $GLOBALS['smwgElasticsearchCredentials'],
 			'smwgPostEditUpdate' => $GLOBALS['smwgPostEditUpdate'],
 			'smwgSpecialAskFormSubmitMethod' => $GLOBALS['smwgSpecialAskFormSubmitMethod'],
 			'smwgSupportSectionTag' => $GLOBALS['smwgSupportSectionTag'],
@@ -209,8 +209,9 @@ class Settings extends Options {
 			'smwgCheckForConstraintErrors' => $GLOBALS['smwgCheckForConstraintErrors'],
 			'smwgPlainList' => $GLOBALS['smwgPlainList'],
 			'smwgDetectOutdatedData' => $GLOBALS['smwgDetectOutdatedData'],
-			'smwgIgnoreUpgradeKeyCheck' => $GLOBALS['smwgIgnoreUpgradeKeyCheck']
- 		];
+			'smwgIgnoreUpgradeKeyCheck' => $GLOBALS['smwgIgnoreUpgradeKeyCheck'],
+			'smwgEnableExportRDFLink' => $GLOBALS['smwgEnableExportRDFLink']
+		];
 
 		$this->isLoaded = true;
 

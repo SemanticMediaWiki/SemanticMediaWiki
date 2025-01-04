@@ -171,8 +171,8 @@ class UnitConverter {
 
 			// ignore corrupted data and bogus inputs
 			if ( !( $di instanceof DIBlob ) ||
-			     ( $numberValue->parseNumberValue( $di->getString(), $number, $unit, $asPrefix ) != 0 ) ||
-			     ( $number == 0 ) ) {
+				 ( $numberValue->parseNumberValue( $di->getString(), $number, $unit, $asPrefix ) != 0 ) ||
+				 ( $number == 0 ) ) {
 				continue;
 			}
 

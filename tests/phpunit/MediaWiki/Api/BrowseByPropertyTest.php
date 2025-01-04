@@ -16,7 +16,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
+class BrowseByPropertyTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $apiFactory;
@@ -74,11 +74,11 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$cachedListLookup->expects( $this->once() )
 			->method( 'fetchList' )
-			->will( $this->returnValue( $list ) );
+			->willReturn( $list );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertiesSpecial' )
-			->will( $this->returnValue( $cachedListLookup ) );
+			->willReturn( $cachedListLookup );
 
 		$this->applicationFactory->registerObject( 'Store', $this->store );
 

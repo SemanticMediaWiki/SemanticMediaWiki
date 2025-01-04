@@ -13,7 +13,7 @@ use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
  *
  * @author mwjames
  */
-class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
+class ArticleAugmentorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
@@ -64,7 +64,7 @@ class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getFullText' )
-			->will( $this->returnValue( 'NS:FOO' ) );
+			->willReturn( 'NS:FOO' );
 
 		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
@@ -72,8 +72,8 @@ class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 
 		$titleFactory->expects( $this->any() )
 			->method( 'newFromID' )
-			->with(	$this->equalTo( 42 ) )
-			->will( $this->returnValue( $title ) );
+			->with(	42 )
+			->willReturn( $title );
 
 		$instance = new ArticleAugmentor(
 			$titleFactory
@@ -82,8 +82,8 @@ class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 		$instance->augment( $res, $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 
@@ -125,7 +125,7 @@ class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getFullURL' )
-			->will( $this->returnValue( 'http://example.org/FOO' ) );
+			->willReturn( 'http://example.org/FOO' );
 
 		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
@@ -133,8 +133,8 @@ class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 
 		$titleFactory->expects( $this->any() )
 			->method( 'newFromID' )
-			->with(	$this->equalTo( 42 ) )
-			->will( $this->returnValue( $title ) );
+			->with(	42 )
+			->willReturn( $title );
 
 		$instance = new ArticleAugmentor(
 			$titleFactory
@@ -143,8 +143,8 @@ class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 		$instance->augment( $res, $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 

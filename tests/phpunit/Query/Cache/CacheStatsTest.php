@@ -15,7 +15,7 @@ use SMW\Query\Cache\CacheStats;
  *
  * @author mwjames
  */
-class CacheStatsTest extends \PHPUnit_Framework_TestCase {
+class CacheStatsTest extends \PHPUnit\Framework\TestCase {
 
 	private $cache;
 
@@ -41,7 +41,7 @@ class CacheStatsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$instance = new CacheStats(
 			$this->cache,
@@ -62,7 +62,7 @@ class CacheStatsTest extends \PHPUnit_Framework_TestCase {
 	public function testGetStatsEmpty() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new CacheStats(
 			$this->cache,

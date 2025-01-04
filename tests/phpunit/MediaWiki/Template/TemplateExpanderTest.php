@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TemplateExpanderTest extends \PHPUnit_Framework_TestCase {
+class TemplateExpanderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -41,7 +41,7 @@ class TemplateExpanderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->parser->expects( $this->once() )
 			->method( 'preprocess' )
-			->with( $this->equalTo( '{{Foo}}' ) );
+			->with( '{{Foo}}' );
 
 		$instance = new TemplateExpander(
 			$this->parser

@@ -358,7 +358,7 @@ class HtmlFormRenderer {
 		foreach ( $options as $internalId => $name ) {
 			$optionsHtml[] = Html::element(
 				'option', [
-				//	'disabled' => false,
+				// 'disabled' => false,
 					'value' => $internalId,
 					'selected' => $internalId == $inputValue,
 				], $name
@@ -437,7 +437,7 @@ class HtmlFormRenderer {
 
 			$resultCount = $instance->getMessageBuilder()
 				->getMessage( 'showingresults' )
-				->numParams( $messageCount, $offset + 1 )
+				->numParams( $messageCount, (int)$offset + 1 )
 				->parse();
 
 			$paging = $instance->getMessageBuilder()->prevNextToText(

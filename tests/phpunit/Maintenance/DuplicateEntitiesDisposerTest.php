@@ -13,7 +13,7 @@ use SMW\Maintenance\DuplicateEntitiesDisposer;
  *
  * @author mwjames
  */
-class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
+class DuplicateEntitiesDisposerTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $cache;
@@ -31,8 +31,8 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'PropertyTableIdReferenceDisposer' ) )
-			->will( $this->returnValue( $propertyTableIdReferenceDisposer ) );
+			->with( 'PropertyTableIdReferenceDisposer' )
+			->willReturn( $propertyTableIdReferenceDisposer );
 
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
 			->disableOriginalConstructor()
@@ -62,7 +62,7 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new DuplicateEntitiesDisposer(
 			$this->store
@@ -136,17 +136,17 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( $record ),
+				$record,
 				$this->anything() )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DuplicateEntitiesDisposer(
 			$this->store

@@ -264,7 +264,7 @@ class ValueListBuilder {
 		}
 
 		$ac = count( $diWikiPages );
-		//$contentLanguage = Localizer::getInstance()->getContentLanguage();
+		// $contentLanguage = Localizer::getInstance()->getContentLanguage();
 		$title = $dataItem->getTitle();
 
 		if ( $ac > $limit ) {

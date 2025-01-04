@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RangeValueFilterTest extends \PHPUnit_Framework_TestCase {
+class RangeValueFilterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -53,7 +53,7 @@ class RangeValueFilterTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate_NoFilter() {
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$params = [
 			'min_item' => 1
@@ -72,8 +72,8 @@ class RangeValueFilterTest extends \PHPUnit_Framework_TestCase {
 		$filters = [];
 		$raw = [];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->create( $this->urlArgs, 'Foo', $filters, $raw )
 		);
 	}

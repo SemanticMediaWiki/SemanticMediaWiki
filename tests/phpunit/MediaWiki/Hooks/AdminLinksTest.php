@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\AdminLinks;
  *
  * @author mwjames
  */
-class AdminLinksTest extends \PHPUnit_Framework_TestCase {
+class AdminLinksTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

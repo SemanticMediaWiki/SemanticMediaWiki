@@ -240,9 +240,9 @@ class ExpResourceMapper {
 		}
 
 		if ( ( $localName === '' ) ||
-		     ( in_array( $localName[0], [ '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ] ) ) ||
-		     ( $hasFixedNamespace && strpos( $localName, '/' ) !== false )
-		     ) {
+			 ( in_array( $localName[0], [ '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ] ) ) ||
+			 ( $hasFixedNamespace && strpos( $localName, '/' ) !== false )
+			 ) {
 			$namespace = Exporter::getInstance()->getNamespaceUri( 'wiki' );
 			$namespaceId = 'wiki';
 			$localName = Escaper::encodePage( $diWikiPage );
@@ -271,7 +271,7 @@ class ExpResourceMapper {
 		$importDataItems = null;
 
 		// Only try to find an import vocab for a matchable entity
-		if ( $this->seekImportVocabulary && $diWikiPage->getNamespace() === NS_CATEGORY || $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
+		if ( ( $this->seekImportVocabulary && $diWikiPage->getNamespace() === NS_CATEGORY ) || $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
 			$importDataItems = $this->store->getPropertyValues(
 				$diWikiPage,
 				new DIProperty( '_IMPO' )

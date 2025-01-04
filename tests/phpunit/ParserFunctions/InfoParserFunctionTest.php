@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class InfoParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class InfoParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -42,14 +42,14 @@ class InfoParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$processingResult->expects( $this->any() )
 			->method( 'getParameters' )
-			->will( $this->returnValue( [
+			->willReturn( [
 				'message'  => $processedParam,
 				'max-width'  => $processedParam,
 				'theme'  => $processedParam,
-				'icon'     => $processedParam ] ) );
+				'icon'     => $processedParam ] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->handle( $parser, $processingResult )
 		);
 	}

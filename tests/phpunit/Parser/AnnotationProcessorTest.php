@@ -14,7 +14,7 @@ use SMW\Parser\AnnotationProcessor;
  *
  * @author mwjames
  */
-class AnnotationProcessorTest extends \PHPUnit_Framework_TestCase {
+class AnnotationProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticData;
 	private $dataValueFactory;

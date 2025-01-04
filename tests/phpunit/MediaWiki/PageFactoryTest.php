@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use RuntimeException;
 use SMW\MediaWiki\PageFactory;
 use SMW\Tests\PHPUnitCompat;
 
@@ -14,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PageFactoryTest extends \PHPUnit_Framework_TestCase {
+class PageFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -42,7 +43,7 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$instance = new PageFactory( $this->store );
 
@@ -64,7 +65,7 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( $namespace ) );
+			->willReturn( $namespace );
 
 		$instance = new PageFactory( $this->store );
 

@@ -13,7 +13,7 @@ use SMW\SQLStore\Exception\TableMissingIdFieldException;
  *
  * @author mwjames
  */
-class TableMissingIdFieldExceptionTest extends \PHPUnit_Framework_TestCase {
+class TableMissingIdFieldExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new TableMissingIdFieldException( 'foo' );

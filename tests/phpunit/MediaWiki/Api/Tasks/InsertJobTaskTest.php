@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
+class InsertJobTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $jobFactory;
 	private $testEnvironment;
@@ -54,10 +54,10 @@ class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newByType' )
 			->with(
-				$this->equalTo( 'Foobar' ),
+				'Foobar',
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( $nullJob ) );
+			->willReturn( $nullJob );
 
 		$instance = new InsertJobTask(
 			$this->jobFactory

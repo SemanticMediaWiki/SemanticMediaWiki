@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
+class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -48,8 +48,8 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getConstraintKeys()
 		);
 	}
@@ -76,8 +76,8 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->constraintFactory->expects( $this->atLeastOnce() )
 			->method( 'newConstraintByClass' )
-			->with( $this->equalTo( 'SMW\Constraint\Constraints\NullConstraint' ) )
-			->will( $this->returnValue( $constraint ) );
+			->with( 'SMW\Constraint\Constraints\NullConstraint' )
+			->willReturn( $constraint );
 
 		$instance = new ConstraintRegistry(
 			$this->constraintFactory
@@ -125,7 +125,8 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->registerConstraint( 'foo', function () use( $constraint ) {
-			return $constraint; }
+			return $constraint;
+		}
 		);
 
 		$this->assertInstanceOf(
@@ -141,8 +142,8 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->constraintFactory->expects( $this->atLeastOnce() )
 			->method( 'newConstraintByClass' )
-			->with( $this->equalTo( '__class__' ) )
-			->will( $this->returnValue( $constraint ) );
+			->with( '__class__' )
+			->willReturn( $constraint );
 
 		$instance = new ConstraintRegistry(
 			$this->constraintFactory
@@ -170,8 +171,8 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->constraintFactory->expects( $this->atLeastOnce() )
 			->method( 'newConstraintByClass' )
-			->with( $this->equalTo( $expected ) )
-			->will( $this->returnValue( $constraint ) );
+			->with( $expected )
+			->willReturn( $constraint );
 
 		$instance = new ConstraintRegistry(
 			$this->constraintFactory

@@ -16,7 +16,7 @@ use SMW\Serializers\ExpDataSerializer;
  *
  * @author mwjames
  */
-class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
+class ExpDataFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $exporter;
 
@@ -42,11 +42,11 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->exporter->expects( $this->atLeastOnce() )
 			->method( 'newExpNsResourceById' )
-			->will( $this->returnValue( $expNsResource ) );
+			->willReturn( $expNsResource );
 
 		$this->exporter->expects( $this->atLeastOnce() )
 			->method( 'expandURI' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$instance = new ExpDataFactory(
 			$this->exporter
@@ -65,11 +65,11 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->exporter->expects( $this->atLeastOnce() )
 			->method( 'newExpNsResourceById' )
-			->will( $this->returnValue( $expNsResource ) );
+			->willReturn( $expNsResource );
 
 		$this->exporter->expects( $this->atLeastOnce() )
 			->method( 'expandURI' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$instance = new ExpDataFactory(
 			$this->exporter
@@ -88,7 +88,7 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->exporter->expects( $this->atLeastOnce() )
 			->method( 'newExpNsResourceById' )
-			->will( $this->returnValue( $expNsResource ) );
+			->willReturn( $expNsResource );
 
 		$instance = new ExpDataFactory(
 			$this->exporter

@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class TableSchemaTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -66,7 +66,7 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -92,7 +92,7 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$webRequest->expects( $this->once() )
 			->method( 'getVal' )
-			->will( $this->returnValue( 'done' ) );
+			->willReturn( 'done' );
 
 		$instance = new TableSchemaTaskHandler(
 			$this->store,

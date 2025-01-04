@@ -32,9 +32,6 @@
 		{
 			"type": "query",
 			"about": "#0 with boolean include/not include",
-			"skip-on": {
-				"mediawiki": [ ">1.34.100", "Failed asserting query result count on #0 with boolean include/not include\nFailed asserting that 3 matches expected 1." ]
-			},
 			"condition": "[[Has page::~+MariaDB -database]]",
 			"printouts": [],
 			"parameters": {
@@ -152,9 +149,6 @@
 			"type": "query",
 			"about": "#4 include/not include",
 			"condition": "[[Has page::~sear*, -elas*]]",
-			"skip-on": {
-				"mediawiki": [ ">1.34.100", "Failed" ]
-			},
 			"printouts": [],
 			"parameters": {
 				"limit": "10",
@@ -173,9 +167,6 @@
 			"type": "query",
 			"about": "#5 same as #4",
 			"condition": "[[Has page::!~elastic*, +sear*]]",
-			"skip-on": {
-				"mediawiki": [ ">1.34.100", "Failed" ]
-			},
 			"printouts": [],
 			"parameters": {
 				"limit": "10"
@@ -292,9 +283,6 @@
 			"type": "query",
 			"about": "#11 retain spaces on +/- operators",
 			"condition": "[[Has page::~+*maria* -postgres*]]",
-			"skip-on": {
-				"mediawiki": [ ">1.34.100", "Failed" ]
-			},
 			"printouts": [],
 			"parameters": {
 				"limit": "10"
@@ -312,9 +300,6 @@
 			"type": "query",
 			"about": "#12 same as #11 only with `,` (required by MySQL 5.7/MariaDB 10.1)",
 			"condition": "[[Has page::~+*maria*, -postgres*]]",
-			"skip-on": {
-				"mediawiki": [ ">1.34.100", "Failed" ]
-			},
 			"printouts": [],
 			"parameters": {
 				"limit": "10"

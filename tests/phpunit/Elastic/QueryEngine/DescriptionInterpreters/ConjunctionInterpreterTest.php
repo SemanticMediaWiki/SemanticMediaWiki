@@ -15,7 +15,7 @@ use SMW\Query\DescriptionFactory;
  *
  * @author mwjames
  */
-class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private DescriptionFactory $descriptionFactory;
 	private $conditionBuilder;
@@ -54,7 +54,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	public function testInterpretDescription_NotEmpty() {
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'interpretDescription' )
-			->will( $this->returnValue( $this->conditionBuilder->newCondition( [ 'Foo' ] ) ) );
+			->willReturn( $this->conditionBuilder->newCondition( [ 'Foo' ] ) );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -62,7 +62,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new ConjunctionInterpreter(
 			$this->conditionBuilder

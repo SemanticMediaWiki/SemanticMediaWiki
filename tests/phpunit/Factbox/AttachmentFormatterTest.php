@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
+class AttachmentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -40,8 +40,8 @@ class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHTML( [] )
 		);
 	}
@@ -53,8 +53,8 @@ class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHTML( [ $item ] )
 		);
 	}

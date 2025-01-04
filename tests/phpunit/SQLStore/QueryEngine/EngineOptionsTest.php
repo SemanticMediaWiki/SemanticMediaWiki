@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
+class EngineOptionsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -28,13 +28,13 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	public function testInitialState() {
 		$instance = new EngineOptions();
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->get( 'smwgIgnoreQueryErrors' )
 		);
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->get( 'smwgQSortFeatures' )
 		);
 	}

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class FileTest extends \PHPUnit_Framework_TestCase {
+class FileTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -35,8 +35,8 @@ class FileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDir() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			File::dir( 'foo' )
 		);
 	}

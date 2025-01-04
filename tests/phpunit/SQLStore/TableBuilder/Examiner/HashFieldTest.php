@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HashFieldTest extends \PHPUnit_Framework_TestCase {
+class HashFieldTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -31,7 +31,7 @@ class HashFieldTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->populateHashField = $this->getMockBuilder( '\SMW\Maintenance\PopulateHashField' )
+		$this->populateHashField = $this->getMockBuilder( '\SMW\Maintenance\populateHashField' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -50,14 +50,14 @@ class HashFieldTest extends \PHPUnit_Framework_TestCase {
 
 		$resultWrapper->expects( $this->once() )
 			->method( 'numRows' )
-			->will( $this->returnValue( HashField::threshold() - 1 ) );
+			->willReturn( HashField::threshold() - 1 );
 
 		$this->populateHashField->expects( $this->atLeastOnce() )
 			->method( 'populate' );
 
 		$this->populateHashField->expects( $this->once() )
 			->method( 'fetchRows' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$instance = new HashField(
 			$this->store,
@@ -80,14 +80,14 @@ class HashFieldTest extends \PHPUnit_Framework_TestCase {
 
 		$resultWrapper->expects( $this->once() )
 			->method( 'numRows' )
-			->will( $this->returnValue( HashField::threshold() + 1 ) );
+			->willReturn( HashField::threshold() + 1 );
 
 		$this->populateHashField->expects( $this->atLeastOnce() )
 			->method( 'setComplete' );
 
 		$this->populateHashField->expects( $this->once() )
 			->method( 'fetchRows' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$instance = new HashField(
 			$this->store,

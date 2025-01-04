@@ -20,7 +20,7 @@ use Title;
  *
  * @author mwjames
  */
-class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class PredefinedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -67,7 +67,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		foreach ( $parameters['pageInfo'] as $method => $returnValue ) {
 			$pageInfo->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnValue( $returnValue ) );
+				->willReturn( $returnValue );
 		}
 
 		$instance = new PredefinedPropertyAnnotator(
@@ -90,7 +90,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	public function specialPropertiesDataProvider() {
 		$provider = [];
 
-		#0 Unknown
+		# 0 Unknown
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'UNKNOWN' ) ),
@@ -104,7 +104,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 TYPE_MODIFICATION_DATE
+		# 1 TYPE_MODIFICATION_DATE
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withModificationDate' ) ),
@@ -120,7 +120,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2 TYPE_CREATION_DATE
+		# 2 TYPE_CREATION_DATE
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withCreationDate' ) ),
@@ -136,7 +136,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 TYPE_NEW_PAGE
+		# 3 TYPE_NEW_PAGE
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'NEW_PAGE_isNew' ) ),
@@ -152,7 +152,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'NEW_PAGE_isNotNew' ) ),
@@ -168,13 +168,13 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#5 TYPE_LAST_EDITOR
+		# 5 TYPE_LAST_EDITOR
 		$userPage = MockTitle::buildMock( 'Lula' );
 		$userNS = Localizer::getInstance()->getNsText( NS_USER );
 
 		$userPage->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_USER ) );
+			->willReturn( NS_USER );
 
 		$provider[] = [
 			[
@@ -191,13 +191,13 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#6 Combined entries
+		# 6 Combined entries
 		$userPage = MockTitle::buildMock( 'Lula' );
 		$userNS = Localizer::getInstance()->getNsText( NS_USER );
 
 		$userPage->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_USER ) );
+			->willReturn( NS_USER );
 
 		$provider[] = [
 			[
@@ -217,7 +217,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#7 TYPE_MEDIA
+		# 7 TYPE_MEDIA
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'MimePropertyForFilePage' ) ),
@@ -236,7 +236,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#8
+		# 8
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'MediaPropertyForNonFilePage' ) ),
@@ -253,7 +253,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#9 TYPE_MIME
+		# 9 TYPE_MIME
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'MimePropertyForFilePage' ) ),
@@ -272,7 +272,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#10
+		# 10
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'MimePropertyForNonFilePage' ) ),
@@ -289,7 +289,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#11 Empty TYPE_MIME
+		# 11 Empty TYPE_MIME
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'EmptyMimePropertyFilePage' ) ),
@@ -306,7 +306,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#12 Empty TYPE_MEDIA
+		# 12 Empty TYPE_MEDIA
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'EmptyMediaPropertyFilePage' ) ),
@@ -323,7 +323,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#13 Null TYPE_MIME
+		# 13 Null TYPE_MIME
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'NullMimePropertyFilePage' ) ),
@@ -340,7 +340,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#14 Null TYPE_MEDIA
+		# 14 Null TYPE_MEDIA
 		$provider[] = [
 			[
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'NullMediaPropertyFilePage' ) ),

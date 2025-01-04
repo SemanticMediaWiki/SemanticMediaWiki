@@ -12,16 +12,18 @@ use Title;
 /**
  * @covers \SMW\ParserData
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ParserDataTest extends \PHPUnit_Framework_TestCase {
+class ParserDataTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $dataValueFactory;
+	private $revisionGuard;
 	private $testEnvironment;
 
 	protected function setUp(): void {
@@ -51,7 +53,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( -1 ) );
+			->willReturn( -1 );
 
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
@@ -230,11 +232,11 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$idTable->expects( $this->any() )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -246,7 +248,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -263,7 +265,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	public function testSkipUpdateOnMatchedMarker() {
 		$this->revisionGuard->expects( $this->once() )
 			->method( 'isSkippableUpdate' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 
@@ -273,11 +275,11 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
 			->disableOriginalConstructor()
@@ -363,7 +365,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( -1 ) );
+			->willReturn( -1 );
 
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
@@ -392,7 +394,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( -1 ) );
+			->willReturn( -1 );
 
 		$parserOutput = new ParserOutput();
 
@@ -419,7 +421,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( -1 ) );
+			->willReturn( -1 );
 
 		$parserOutput = new ParserOutput();
 
@@ -450,7 +452,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( -1 ) );
+			->willReturn( -1 );
 
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()

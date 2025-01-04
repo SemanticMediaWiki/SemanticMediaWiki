@@ -15,7 +15,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class SearchTableTest extends \PHPUnit_Framework_TestCase {
+class SearchTableTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $dataItemFactory;

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
+class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -44,12 +44,12 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->isType( 'null' ),
 				$this->isInstanceOf( '\SMW\DIProperty' ),
 				$this->anything() )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new QueryResultLookup( $store );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->doQuery( $pageRequestOptions )
 		);
 	}
@@ -68,7 +68,7 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->isInstanceOf( '\SMW\DIProperty' ),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new QueryResultLookup( $store );
 
@@ -88,7 +88,7 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getNext' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -97,7 +97,7 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->once() )
 			->method( 'getQueryResult' )
 			->with( $this->isInstanceOf( '\SMWQuery' ) )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$instance = new QueryResultLookup( $store );
 
@@ -114,7 +114,7 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'getId' )
-			->will( $this->onConsecutiveCalls( 42 ) );
+			->willReturnOnConsecutiveCalls( 42 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -123,7 +123,7 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$pageRequestOptions = new PageRequestOptions( 'Foo/Bar', [] );
 		$pageRequestOptions->initialize();

@@ -15,7 +15,7 @@ use SMWWikiPageValue as WikiPageValue;
  *
  * @author mwjames
  */
-class WikiPageValueTest extends \PHPUnit_Framework_TestCase {
+class WikiPageValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;

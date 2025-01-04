@@ -13,7 +13,7 @@ use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
  *
  * @author mwjames
  */
-class ChangeListenerAwareTraitTest extends \PHPUnit_Framework_TestCase {
+class ChangeListenerAwareTraitTest extends \PHPUnit\Framework\TestCase {
 
 	public function testRegister_Get_Clear() {
 		$changeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListener' )

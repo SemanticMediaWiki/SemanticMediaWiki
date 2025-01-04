@@ -14,20 +14,20 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
+class TypesRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testGetDataTypeList() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			TypesRegistry::getDataTypeList()
 		);
 	}
 
 	public function testGetPropertyList() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			TypesRegistry::getPropertyList()
 		);
 	}
@@ -106,7 +106,7 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 				continue;
 			}
 
-			yield[ $key, $def ];
+			yield [ $key, $def ];
 		}
 	}
 
@@ -119,7 +119,7 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 				continue;
 			}
 
-			yield[ $key, $def ];
+			yield [ $key, $def ];
 		}
 	}
 

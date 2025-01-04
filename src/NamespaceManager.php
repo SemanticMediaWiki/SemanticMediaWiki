@@ -142,7 +142,7 @@ class NamespaceManager {
 		$namespaceIndex = [
 			'SMW_NS_PROPERTY'      => $offset + 2,
 			'SMW_NS_PROPERTY_TALK' => $offset + 3,
-			//'SF_NS_FORM'           => $offset + 6,
+			// 'SF_NS_FORM'           => $offset + 6,
 			//'SF_NS_FORM_TALK'      => $offset + 7,
 			'SMW_NS_CONCEPT'       => $offset + 8,
 			'SMW_NS_CONCEPT_TALK'  => $offset + 9,

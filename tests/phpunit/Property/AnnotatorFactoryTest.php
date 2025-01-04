@@ -13,7 +13,7 @@ use SMW\Property\AnnotatorFactory;
  *
  * @author mwjames
  */
-class AnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
+class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -77,7 +77,7 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new GenericRepositoryConnector(
 			new RepositoryClient(

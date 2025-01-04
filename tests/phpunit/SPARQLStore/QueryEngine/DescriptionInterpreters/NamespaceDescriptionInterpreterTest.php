@@ -17,7 +17,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -86,7 +86,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 0
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new NamespaceDescription( NS_MAIN );
+		$description = new NamespaceDescription( NS_MAIN );
 		$orderByProperty = null;
 
 		$expected = $stringBuilder

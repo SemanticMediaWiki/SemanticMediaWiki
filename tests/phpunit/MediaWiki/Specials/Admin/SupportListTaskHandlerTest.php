@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class SupportListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;
@@ -25,7 +25,7 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-		//	->setMEthods( [ 'getInfo' ] )
+		// ->setMEthods( [ 'getInfo' ] )
 			->getMockForAbstractClass();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -63,7 +63,7 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -77,6 +77,5 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->getHtml();
 	}
-
 
 }

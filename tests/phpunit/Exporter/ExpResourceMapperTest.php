@@ -18,7 +18,7 @@ use SMW\InMemoryPoolCache;
  *
  * @author mwjames
  */
-class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
+class ExpResourceMapperTest extends \PHPUnit\Framework\TestCase {
 
 	private $inMemoryPoolCache;
 
@@ -107,8 +107,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will(
-				$this->returnValue( [ new \SMWDIBlob( 'foo:bar:fom:fuz' ) ] ) );
+			->willReturn( [ new \SMWDIBlob( 'foo:bar:fom:fuz' ) ] );
 
 		$instance = new ExpResourceMapper(
 			$store
@@ -133,7 +132,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 		$wiki = \SMWExporter::getInstance()->getNamespaceUri( 'wiki' );
 		$property = \SMWExporter::getInstance()->getNamespaceUri( 'property' );
 
-		#0
+		# 0
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, '', '' ),
 			'',
@@ -144,7 +143,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '' ),
 			'',
@@ -155,7 +154,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '1234' ),
 			'',
@@ -166,7 +165,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 Extra modififer doesn't not alter the object when a subobject is used
+		# 3 Extra modififer doesn't not alter the object when a subobject is used
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '1234' ),
 			'abc',
@@ -177,7 +176,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
 			'',
@@ -188,7 +187,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
 			true,
@@ -199,7 +198,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#6
+		# 6
 		$name = Escaper::encodePage(
 			new DIWikiPage( '-Foo', SMW_NS_PROPERTY, '', '' )
 		);
@@ -214,7 +213,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#7
+		# 7
 		$provider[] = [
 			new DIWikiPage( 'Foo/Bar', SMW_NS_PROPERTY, '', '' ),
 			'',

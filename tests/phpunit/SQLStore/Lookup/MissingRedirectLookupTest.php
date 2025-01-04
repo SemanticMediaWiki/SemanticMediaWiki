@@ -13,7 +13,7 @@ use SMW\SQLStore\Lookup\MissingRedirectLookup;
  *
  * @author mwjames
  */
-class MissingRedirectLookupTest extends \PHPUnit_Framework_TestCase {
+class MissingRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -59,13 +59,13 @@ class MissingRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->once() )
 			->method( 'select' )
 			->with(
-				$this->equalTo( $tables ),
-				$this->equalTo( $fields ),
-				$this->equalTo( $conditions ) );
+				$tables,
+				$fields,
+				$conditions );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new MissingRedirectLookup(
 			$this->store

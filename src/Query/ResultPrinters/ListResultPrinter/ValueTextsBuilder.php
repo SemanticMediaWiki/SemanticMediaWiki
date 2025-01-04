@@ -23,7 +23,7 @@ class ValueTextsBuilder {
 	private $linker;
 	private $prefixParameterProcessor;
 
-	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {		
+	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {
 		$this->prefixParameterProcessor = $prefixParameterProcessor;
 	}
 
@@ -37,7 +37,6 @@ class ValueTextsBuilder {
 		$valueTexts = $this->getValueTexts( $field, $column );
 
 		return join( $this->get( 'valuesep' ), $valueTexts );
-
 	}
 
 	/**

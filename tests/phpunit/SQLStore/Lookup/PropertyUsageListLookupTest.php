@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
+class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -52,8 +52,8 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->requestOptions
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTimestamp()
 		);
 
@@ -117,11 +117,11 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
 			->disableOriginalConstructor()
@@ -135,8 +135,8 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 
@@ -166,11 +166,11 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		// TODO: Illegal dynamic property (#5421)
 		$this->requestOptions->limit = 1001;
@@ -183,8 +183,8 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 

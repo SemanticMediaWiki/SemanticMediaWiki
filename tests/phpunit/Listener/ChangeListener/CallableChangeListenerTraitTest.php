@@ -13,7 +13,7 @@ use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
  *
  * @author mwjames
  */
-class CallableChangeListenerTraitTest extends \PHPUnit_Framework_TestCase {
+class CallableChangeListenerTraitTest extends \PHPUnit\Framework\TestCase {
 
 	private $changeKey;
 	private $changeRecord;

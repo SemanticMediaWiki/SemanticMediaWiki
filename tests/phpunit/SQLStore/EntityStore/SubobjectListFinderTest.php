@@ -15,7 +15,7 @@ use SMW\SQLStore\EntityStore\SubobjectListFinder;
  *
  * @author mwjames
  */
-class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
+class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $iteratorFactory;
 
@@ -50,7 +50,7 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -59,7 +59,7 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SubobjectListFinder(
 			$store,
@@ -95,8 +95,8 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( 'smw_title= AND smw_namespace= AND smw_iw= AND smw_subobject!=' ) )
-			->will( $this->returnValue( [ $row ] ) );
+				'smw_title= AND smw_namespace= AND smw_iw= AND smw_subobject!=' )
+			->willReturn( [ $row ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -105,7 +105,7 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SubobjectListFinder(
 			$store,

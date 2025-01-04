@@ -13,13 +13,14 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\DataUpdater
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
+class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -80,11 +81,11 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->setLogger( $this->spyLogger );
 
@@ -119,11 +120,11 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	public function testDoUpdateForDefaultSettings() {
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
-			->will( $this->returnValue( $this->revision ) );
+			->willReturn( $this->revision );
 
 		$this->eventDispatcher->expects( $this->once() )
 			->method( 'dispatch' )
-			->with( $this->equalTo( \SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener::EVENT_ID ) );
+			->with( \SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener::EVENT_ID );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
@@ -149,7 +150,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 	public function testDeferredUpdate() {
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
-			->will( $this->returnValue( $this->revision ) );
+			->willReturn( $this->revision );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
@@ -205,7 +206,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$wikiPage->expects( $this->atLeastOnce() )
 			->method( 'getContent' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
@@ -213,17 +214,17 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$pageCreator->expects( $this->atLeastOnce() )
 			->method( 'createPage' )
-			->will( $this->returnValue( $wikiPage ) );
+			->willReturn( $wikiPage );
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'newRevisionFromPage' )
-			->will( $this->returnValue( $revision ) );
+			->willReturn( $revision );
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
-			->will( $this->returnValue( $revision ) );
+			->willReturn( $revision );
 
 		$instance = new DataUpdater(
 			$store,
@@ -260,7 +261,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -269,11 +270,11 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->once() )
 			->method( 'clearData' )
-			->with( $this->equalTo( $semanticData->getSubject() ) );
+			->with( $semanticData->getSubject() );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -285,13 +286,13 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$pageCreator->expects( $this->atLeastOnce() )
 			->method( 'createPage' )
-			->will( $this->returnValue( $wikiPage ) );
+			->willReturn( $wikiPage );
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$instance = new DataUpdater(
 			$store,
@@ -335,8 +336,8 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->eventDispatcher
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->doUpdate()
 		);
 	}
@@ -404,7 +405,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$wikiPage->expects( $this->atLeastOnce() )
 			->method( 'getContent' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
@@ -412,13 +413,13 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$pageCreator->expects( $this->atLeastOnce() )
 			->method( 'createPage' )
-			->will( $this->returnValue( $wikiPage ) );
+			->willReturn( $wikiPage );
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
-			->will( $this->returnValue( $revision ) );
+			->willReturn( $revision );
 
 		$instance = new DataUpdater(
 			$store,
@@ -458,7 +459,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$wikiPage->expects( $this->atLeastOnce() )
 			->method( 'getContent' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
@@ -466,7 +467,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$pageCreator->expects( $this->atLeastOnce() )
 			->method( 'createPage' )
-			->will( $this->returnValue( $wikiPage ) );
+			->willReturn( $wikiPage );
 
 		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
@@ -477,7 +478,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
-			->will( $this->returnValue( $revision ) );
+			->willReturn( $revision );
 
 		$source = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()

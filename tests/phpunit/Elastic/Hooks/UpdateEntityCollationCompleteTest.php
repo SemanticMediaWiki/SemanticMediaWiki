@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
+class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -45,11 +45,11 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityIdManager ) );
+			->willReturn( $this->entityIdManager );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->rebuilder = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rebuilder' )
 			->disableOriginalConstructor()
@@ -73,7 +73,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnCallback( $callback ) );
+			->willReturnCallback( $callback );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
@@ -103,15 +103,15 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->rebuilder->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->rebuilder->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ new FakeResultWrapper( [ (object)$row ] ), 2 ] ) );
+			->willReturn( [ new FakeResultWrapper( [ (object)$row ] ), 2 ] );
 
 		$this->entityIdManager->expects( $this->any() )
 			->method( 'getDataItemById' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
 		$instance = new UpdateEntityCollationComplete(
 			$this->store,

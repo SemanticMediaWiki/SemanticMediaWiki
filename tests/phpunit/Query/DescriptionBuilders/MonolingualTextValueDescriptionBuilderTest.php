@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
+class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -74,7 +74,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function valueProvider() {
-		#0
+		# 0
 		$provider[] = [
 			'Jan;1970',
 			'\SMW\Query\Language\Conjunction',
@@ -82,7 +82,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 			SMW_DV_MLTV_LCODE
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'Jan;1970',
 			'\SMW\Query\Language\SomeProperty',
@@ -90,7 +90,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 			SMW_DV_NONE
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'Jan@en',
 			'\SMW\Query\Language\Conjunction',
@@ -98,7 +98,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 			SMW_DV_MLTV_LCODE
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			'@en',
 			'\SMW\Query\Language\Conjunction',
@@ -106,7 +106,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 			SMW_DV_MLTV_LCODE
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			'@EN',
 			'\SMW\Query\Language\Conjunction',
@@ -114,7 +114,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 			SMW_DV_MLTV_LCODE
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			'@~zh*',
 			'\SMW\Query\Language\Conjunction',
@@ -122,7 +122,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 			SMW_DV_MLTV_LCODE
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			'?',
 			'\SMW\Query\Language\Conjunction',
@@ -130,7 +130,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 			SMW_DV_MLTV_LCODE
 		];
 
-		#7
+		# 7
 		$provider[] = [
 			'?',
 			'\SMW\Query\Language\SomeProperty',
@@ -138,7 +138,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 			SMW_DV_NONE
 		];
 
-		#8
+		# 8
 		$provider[] = [
 			'',
 			'\SMW\Query\Language\ThingDescription',

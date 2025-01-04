@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $querySegmentValidator;
 	private $descriptionInterpreterFactory;
@@ -68,8 +68,8 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	public function testCheckForCircularReference() {
 		$this->circularReferenceGuard->expects( $this->once() )
 			->method( 'isCircular' )
-			->with( $this->equalTo( 'concept-42' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'concept-42' )
+			->willReturn( true );
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getSMWPageID' ] )
@@ -77,11 +77,11 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIds ) );
+			->willReturn( $objectIds );
 
 		$instance = new ConceptDescriptionInterpreter(
 			$this->store,
@@ -108,7 +108,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -116,19 +116,19 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( $concept ) );
+			->willReturn( $concept );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIds ) );
+			->willReturn( $objectIds );
 
 		$queryEngineFactory = new QueryEngineFactory(
 			$this->store
@@ -160,7 +160,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$descriptionFactory = $applicationFactory->getQueryFactory()->newDescriptionFactory();
 		$dataItemFactory = $applicationFactory->getDataItemFactory();
 
-		#0 No concept
+		# 0 No concept
 		$concept = false;
 
 		$description = $descriptionFactory->newConceptDescription(
@@ -177,7 +177,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#1 Cached concept
+		# 1 Cached concept
 		$concept = new \stdClass;
 		$concept->concept_size = 1;
 		$concept->concept_features = 1;
@@ -200,7 +200,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		];
 
-		#2 Non cached concept
+		# 2 Non cached concept
 		$concept = new \stdClass;
 		$concept->concept_txt = "[[Category:Foo]]";
 		$concept->concept_size = 1;

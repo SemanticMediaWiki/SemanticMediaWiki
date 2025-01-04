@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class EnumTest extends \PHPUnit_Framework_TestCase {
+class EnumTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -22,8 +22,8 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 	 *@dataProvider constProvider
 	 */
 	public function testValidate( $const ) {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$const
 		);
 	}

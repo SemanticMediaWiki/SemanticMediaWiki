@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConfigTest extends \PHPUnit_Framework_TestCase {
+class ConfigTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -69,9 +69,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 			$instance->dotGet( 'foo.foo_bar' )
 		);
 
-		$this->assertEquals(
-			false,
-			$instance->dotGet( 'foo.foo.bar' )
+		$this->assertFalse(
+						$instance->dotGet( 'foo.foo.bar' )
 		);
 	}
 
@@ -87,7 +86,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 			$instance->dotGet( 'Foo' )
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'456',
 			$instance->dotGet( 'Bar' )
 		);

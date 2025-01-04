@@ -10,13 +10,14 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\SQLStore\PropertyTableInfoFetcher
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since   2.2
  *
  * @author mwjames
  */
-class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableInfoFetcherTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -42,8 +43,8 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 			$this->propertyTypeFinder
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getPropertyTableDefinitions()
 		);
 

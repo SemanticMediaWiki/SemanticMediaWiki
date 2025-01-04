@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class DeprecationNoticeTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -58,8 +58,8 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
@@ -102,8 +102,8 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}

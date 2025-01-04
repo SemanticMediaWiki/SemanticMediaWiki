@@ -14,18 +14,18 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HtmlModalTest extends \PHPUnit_Framework_TestCase {
+class HtmlModalTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testGetModules() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			HtmlModal::getModules()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			HtmlModal::getModuleStyles()
 		);
 	}

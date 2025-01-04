@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class KeywordValueTest extends \PHPUnit_Framework_TestCase {
+class KeywordValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -51,15 +51,15 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getPropertySpecificationLookup' )
-			->will( $this->returnValue( $this->propertySpecificationLookup ) );
+			->willReturn( $this->propertySpecificationLookup );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getDataValueFactory' )
-			->will( $this->returnValue( DataValueFactory::getInstance() ) );
+			->willReturn( DataValueFactory::getInstance() );
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
@@ -78,7 +78,7 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 	public function testErrorWhenLengthExceedsLimit() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new KeywordValue();
 		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
@@ -86,7 +86,7 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'LTVCLTVCSGFzLTIwa2V5d29yZC0yMHRlc3Q6OnRFc3QtMjAyLTVELTVEL2Zvcm1hdD1jYXRlZ29yeS8tM0ZIYXMtMjBkZXNjcmlwdGlvbgLTVCLTVCSGFzLTIwa2V5d29yZC0yMHRlc3Q6OnRFc3QtMjAyLTVELTVEL2Zvcm1hdD1jYXRlZ29yeS8tM0ZIYXMtMjBkZXNjcmlwdGlvbgLTVCLTVCSGFzLTIwaLTVCLTVCSGFzLTIwa..........' );
 		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->getShortWikiText()
 		);
@@ -100,7 +100,7 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 	public function testGetShortWikiText_WithoutLink() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new KeywordValue();
 		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
@@ -170,7 +170,7 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 				'rule' => [ 'link_to' => 'SPECIAL_SEARCH_BY_PROPERTY' ]
 			]
 		);
-	
+
 		$this->propertySpecificationLookup->expects( $this->exactly( 2 ) )
 			->method( 'getSpecification' )
 			->withConsecutive(
@@ -187,19 +187,19 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 				[ $this->dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_SCHEMA ) ],
 				[ $this->dataItemFactory->newDIBlob( $data ) ]
 			);
-	
+
 		$instance = new KeywordValue();
 		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 		$instance->setOption( KeywordValue::OPT_COMPACT_INFOLINKS, false );
-	
+
 		$instance->setUserValue( 'foo' );
 		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
-	
+
 		$this->assertEquals(
 			'foo',
 			$instance->getShortWikiText()
 		);
-	
+
 		$this->assertNotContains(
 			'[[:Special:SearchByProperty/cl:OkJhci9mb28|foo]]',
 			$instance->getShortWikiText( 'linker' )

@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
@@ -16,6 +16,7 @@ use SMWQueryProcessor as QueryProcessor;
  * @group SMWExtension
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -23,7 +24,7 @@ use SMWQueryProcessor as QueryProcessor;
  *
  * @author mwjames
  */
-class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
+class QueryResultQueryProcessorIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjects = [];
 	private $semanticDataFactory;
@@ -147,7 +148,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 		$provider = [];
 
 		// #1 Standard query
-		$provider[] =[
+		$provider[] = [
 			[ 'query' => [
 				'[[Modification date::+]]',
 				'?Modification date',
@@ -156,7 +157,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 			],
 			[
 				[
-					'label'=> '',
+					'label' => '',
 					'typeid' => '_wpg',
 					'mode' => 2,
 					'format' => false,
@@ -164,7 +165,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 					'redi' => ''
 				],
 				[
-					'label'=> 'Modification date',
+					'label' => 'Modification date',
 					'typeid' => '_dat',
 					'mode' => 1,
 					'format' => '',
@@ -175,7 +176,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 		];
 
 		// #2 Query containing a printrequest formatting
-		$provider[] =[
+		$provider[] = [
 			[ 'query' => [
 				'[[Modification date::+]]',
 				'?Modification date#ISO',
@@ -184,7 +185,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 			],
 			[
 				[
-					'label'=> '',
+					'label' => '',
 					'typeid' => '_wpg',
 					'mode' => 2,
 					'format' => false,
@@ -192,7 +193,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 					'redi' => ''
 				],
 				[
-					'label'=> 'Modification date',
+					'label' => 'Modification date',
 					'typeid' => '_dat',
 					'mode' => 1,
 					'format' => 'ISO',

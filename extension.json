@@ -46,7 +46,6 @@
 		"ext.smw.tests": {
 			"scripts": [
 				"tests/qunit/smw/ext.smw.test.js",
-				"tests/qunit/smw/util/ext.smw.util.tooltip.test.js",
 				"tests/qunit/smw/data/ext.smw.dataItem.wikiPage.test.js",
 				"tests/qunit/smw/data/ext.smw.dataItem.uri.test.js",
 				"tests/qunit/smw/data/ext.smw.dataItem.time.test.js",

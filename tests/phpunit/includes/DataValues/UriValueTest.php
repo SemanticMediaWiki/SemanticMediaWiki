@@ -15,7 +15,7 @@ use SMWURIValue as UriValue;
  *
  * @author mwjames
  */
-class UriValueTest extends \PHPUnit_Framework_TestCase {
+class UriValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -156,7 +156,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			'http://example.org/aaa/bbb#ccc',
 			'Foo',
@@ -170,7 +170,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			'http://example.org/aaa%2Fbbb#ccc',
 			false,
@@ -197,7 +197,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			'http://example.org/aaa%2Fbbb#ccc',
 			false,
@@ -224,7 +224,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#8 UTF-8 encoded string
+		# 8 UTF-8 encoded string
 		$provider[] = [
 			'http://example.org/ようこそ--23-7B-7D',
 			false,
@@ -238,7 +238,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#9
+		# 9
 		$provider[] = [
 			'http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D',
 			false,
@@ -319,7 +319,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#15
+		# 15
 		$provider[] = [
 			'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
 			false,

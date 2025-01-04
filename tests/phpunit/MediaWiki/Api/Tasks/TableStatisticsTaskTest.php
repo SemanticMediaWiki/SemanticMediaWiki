@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
+class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $cache;
@@ -56,8 +56,8 @@ class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'service' )
-			->with( $this->equalTo( 'TableStatisticsLookup' ) )
-			->will( $this->returnValue( $tableStatisticsLookup ) );
+			->with( 'TableStatisticsLookup' )
+			->willReturn( $tableStatisticsLookup );
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -65,7 +65,7 @@ class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' );

@@ -13,7 +13,7 @@ use SMW\Listener\EventListener\EventHandler;
  *
  * @author mwjames
  */
-class EventHandlerTest extends \PHPUnit_Framework_TestCase {
+class EventHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	protected function tearDown(): void {
 		EventHandler::clear();
@@ -76,11 +76,12 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 		$eventDispatcher->expects( $this->once() )
 			->method( 'addListener' )
 			->with(
-				$this->equalTo( 'foo' ),
+				'foo',
 				$this->anything() );
 
 		$instance = new EventHandler( $eventDispatcher );
-		$instance->addCallbackListener( 'foo', function (){} );
+		$instance->addCallbackListener( 'foo', function (){
+		} );
 	}
 
 }

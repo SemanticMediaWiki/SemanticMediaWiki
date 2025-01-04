@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
+class UnusedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -69,8 +69,8 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			$error
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$result
 		);
 

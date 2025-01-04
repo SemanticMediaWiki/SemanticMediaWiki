@@ -13,7 +13,7 @@ use SMW\Query\DescriptionBuilderRegistry;
  *
  * @author mwjames
  */
-class DescriptionBuilderRegistryTest extends \PHPUnit_Framework_TestCase {
+class DescriptionBuilderRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	protected function tearDown(): void {
 		parent::tearDown();
@@ -86,7 +86,7 @@ class DescriptionBuilderRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$descriptionBuilder->expects( $this->once() )
 			->method( 'isBuilderFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()

@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AlertsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class AlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -52,11 +52,11 @@ class AlertsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$taskHandler->expects( $this->once() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$taskHandler->expects( $this->once() )
 			->method( 'getHtml' )
-			->will( $this->returnValue( 'bar' ) );
+			->willReturn( 'bar' );
 
 		$instance = new AlertsTaskHandler(
 			$this->outputFormatter,

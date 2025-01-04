@@ -13,7 +13,7 @@ use SMW\Maintenance\MaintenanceFactory;
  *
  * @author mwjames
  */
-class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
+class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -81,7 +81,7 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\RebuildPropertyStatistics',
+			'\SMW\Maintenance\rebuildPropertyStatistics',
 			$instance->newRebuildPropertyStatistics()
 		);
 	}

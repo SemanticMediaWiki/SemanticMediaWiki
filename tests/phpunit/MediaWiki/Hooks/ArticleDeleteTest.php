@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
+class ArticleDeleteTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $jobFactory;
@@ -77,7 +77,7 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateDispatcherJob' )
-			->will( $this->returnValue( $updateDispatcherJob ) );
+			->willReturn( $updateDispatcherJob );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -90,11 +90,11 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( [ new DIProperty( 'Foo' ) ] ) );
+			->willReturn( [ new DIProperty( 'Foo' ) ] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )

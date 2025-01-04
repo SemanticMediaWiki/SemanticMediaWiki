@@ -91,7 +91,6 @@ class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 			->addHeader( 'h3', $this->msg( 'smw-admin-db' ) )
 			->addParagraph( $this->msg( 'smw-admin-dbdocu' ) );
 
-
 		$this->htmlFormRenderer
 			->addHiddenField( 'udsure', 'yes' )
 			->addSubmitButton(

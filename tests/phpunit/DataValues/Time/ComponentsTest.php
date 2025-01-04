@@ -14,18 +14,18 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ComponentsTest extends \PHPUnit_Framework_TestCase {
+class ComponentsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testPublicProperties() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			Components::$months
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			Components::$monthsShort
 		);
 	}
@@ -33,9 +33,8 @@ class ComponentsTest extends \PHPUnit_Framework_TestCase {
 	public function testGet() {
 		$instance = new Components( [ 'foo' => 'bar' ] );
 
-		$this->assertEquals(
-			false,
-			$instance->get( 'bar' )
+		$this->assertFalse(
+						$instance->get( 'bar' )
 		);
 
 		$this->assertEquals(

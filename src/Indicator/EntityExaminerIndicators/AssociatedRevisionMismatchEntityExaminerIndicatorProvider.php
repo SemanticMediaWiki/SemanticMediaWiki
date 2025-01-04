@@ -238,7 +238,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		);
 
 		$content .= $this->templateEngine->code( 'text_template' );
-	//	$content .= $this->templateEngine->code( 'line_template' );
+	// $content .= $this->templateEngine->code( 'line_template' );
 		$content .= $this->templateEngine->code( 'compare_list_template' );
 		$content .= $this->templateEngine->code( 'line_template' );
 		$content .= $this->templateEngine->code( 'bottom_comment_template' );

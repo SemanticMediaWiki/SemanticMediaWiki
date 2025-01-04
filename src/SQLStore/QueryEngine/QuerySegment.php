@@ -128,7 +128,7 @@ class QuerySegment {
 
 	/**
 	 * @var string[][] Array of JOIN conditions created to be compatible with MediaWiki’s IReadableDatabase::select()
-	 * 
+	 *
 	 * The key in the first array must be a string, and represent the table or alias; the corresponding values
 	 * are a list with index 0 and 1, where the value at index 0 is the the type of JOIN and the value at index 1
 	 * is the condition.

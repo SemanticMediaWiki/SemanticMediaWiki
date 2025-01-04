@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class QueryInputWidgetTest extends \PHPUnit_Framework_TestCase {
+class QueryInputWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	public function testInput() {
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();

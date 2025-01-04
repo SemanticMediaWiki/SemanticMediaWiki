@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
+class CategoryFilterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -44,7 +44,7 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.category' ) );
+			->with(	'if.category' );
 
 		$instance = new CategoryFilter();
 		$instance->filter( $compartment );
@@ -57,7 +57,7 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.category' ) );
+			->with(	'if.category' );
 
 		$instance = new CategoryFilter();
 		$instance->addOption( CategoryFilter::FILTER_CONDITION_NOT_REQUIRED, true );

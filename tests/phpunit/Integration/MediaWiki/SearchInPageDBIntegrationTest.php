@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use ExtensionRegistry;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;
@@ -16,6 +16,7 @@ use Title;
  *
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
+ * @group Database
  *
  * @group medium
  *
@@ -24,7 +25,7 @@ use Title;
  *
  * @author mwjames
  */
-class SearchInPageDBIntegrationTest extends DatabaseTestCase {
+class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -36,6 +37,16 @@ class SearchInPageDBIntegrationTest extends DatabaseTestCase {
 	public function testSearchForPageValueAsTerm() {
 		$propertyPage = Title::newFromText( 'Has some page value', SMW_NS_PROPERTY );
 		$targetPage = Title::newFromText( __METHOD__ );
+
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+		} else {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+		}
 
 		$pageCreator = new PageCreator();
 
@@ -49,7 +60,7 @@ class SearchInPageDBIntegrationTest extends DatabaseTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$search = new ExtendedSearchEngine();
+		$search = new ExtendedSearchEngine( $connection );
 		$results = $search->searchText( '[[Has some page value::Foo]]' );
 
 		$this->assertInstanceOf(
@@ -57,7 +68,7 @@ class SearchInPageDBIntegrationTest extends DatabaseTestCase {
 			$results
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$results->getTotalHits()
 		);
@@ -101,7 +112,7 @@ class SearchInPageDBIntegrationTest extends DatabaseTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$results->getTotalHits()
 		);

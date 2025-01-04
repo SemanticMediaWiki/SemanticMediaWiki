@@ -20,7 +20,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -53,7 +53,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->expensiveFuncExecutionWatcher->expects( $this->any() )
 			->method( 'hasReachedExpensiveLimit' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -61,7 +61,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -69,7 +69,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
@@ -106,8 +106,8 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$this->expensiveFuncExecutionWatcher
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->parse( $params )
 		);
 	}
@@ -119,7 +119,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->messageFormatter->expects( $this->any() )
 			->method( 'addFromKey' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$this->messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
@@ -152,11 +152,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$expensiveFuncExecutionWatcher->expects( $this->any() )
 			->method( 'hasReachedExpensiveLimit' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->messageFormatter->expects( $this->any() )
 			->method( 'addFromKey' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$this->messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
@@ -207,7 +207,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->circularReferenceGuard->expects( $this->once() )
 			->method( 'isCircular' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new AskParserFunction(
 			$parserData,
@@ -287,7 +287,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->parse( $params );
 
-		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ){
+		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ) {
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
 
 			$this->semanticDataValidator->assertThatPropertiesAreSet(

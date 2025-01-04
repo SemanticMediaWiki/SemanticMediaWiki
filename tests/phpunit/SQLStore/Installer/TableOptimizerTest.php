@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TableOptimizerTest extends \PHPUnit_Framework_TestCase {
+class TableOptimizerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -65,6 +65,5 @@ class TableOptimizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->runForTables( [ $table ] );
 	}
-
 
 }

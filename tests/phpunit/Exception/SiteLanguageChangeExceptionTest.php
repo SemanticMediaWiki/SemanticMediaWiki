@@ -13,7 +13,7 @@ use SMW\Exception\SiteLanguageChangeException;
  *
  * @author mwjames
  */
-class SiteLanguageChangeExceptionTest extends \PHPUnit_Framework_TestCase {
+class SiteLanguageChangeExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SiteLanguageChangeException( 'Foo', 'Bar' );

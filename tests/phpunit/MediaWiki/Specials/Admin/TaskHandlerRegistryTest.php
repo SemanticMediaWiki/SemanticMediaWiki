@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
+class TaskHandlerRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -90,7 +90,7 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$taskHandler->expects( $this->once() )
 			->method( 'getSection' )
-			->will( $this->returnValue( $section ) );
+			->willReturn( $section );
 
 		$instance = new TaskHandlerRegistry(
 			$this->store,

@@ -15,7 +15,7 @@ use SMW\Property\RestrictionExaminer;
  *
  * @author mwjames
  */
-class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
+class RestrictionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	private $user;
 
@@ -33,7 +33,7 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 			new RestrictionExaminer()
 		);
 
-		//@ legavy
+		// @ legavy
 		$this->assertInstanceOf(
 			'\SMW\PropertyRestrictionExaminer',
 			new RestrictionExaminer()
@@ -101,8 +101,8 @@ class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->user->expects( $this->once() )
 			->method( 'isAllowed' )
-			->with( $this->equalTo( $right ) )
-			->will( $this->returnValue( true ) );
+			->with( $right )
+			->willReturn( true );
 
 		$instance = new RestrictionExaminer();
 

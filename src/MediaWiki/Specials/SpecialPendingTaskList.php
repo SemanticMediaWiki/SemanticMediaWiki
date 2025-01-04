@@ -36,7 +36,8 @@ class SpecialPendingTaskList extends SpecialPage {
 		);
 
 		$output = $this->getOutput();
-		$output->addModuleStyles( 'ext.smw.special.style' );
+		$output->addModuleStyles( 'ext.smw.styles' );
+		$output->addModuleStyles( 'ext.smw.special.styles' );
 
 		$this->setHeaders();
 
@@ -49,11 +50,6 @@ class SpecialPendingTaskList extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/maintenance';
 	}
 

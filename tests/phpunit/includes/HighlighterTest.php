@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HighlighterTest extends \PHPUnit_Framework_TestCase {
+class HighlighterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -34,8 +34,8 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 	public function testGetTypeId( $type, $expected ) {
 		$results = Highlighter::getTypeId( $type );
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$results
 		);
 
@@ -63,8 +63,8 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 		] );
 
 		// Check without caption/content set
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 
@@ -74,8 +74,8 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 		] );
 
 		// Check with caption/content set
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}

@@ -19,7 +19,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HashBuilderTest extends \PHPUnit_Framework_TestCase {
+class HashBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -75,8 +75,8 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testContentHashId() {
 		$hash = HashBuilder::createFromContent( 'Foo' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$hash
 		);
 
@@ -96,8 +96,8 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__ )
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			HashBuilder::createFromSemanticData( $semanticData )
 		);
 	}
@@ -125,8 +125,8 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$sem = serialize( $semanticData );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			HashBuilder::createFromSemanticData( unserialize( $sem ) )
 		);
 	}

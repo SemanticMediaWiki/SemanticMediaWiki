@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class MessageTest extends \PHPUnit_Framework_TestCase {
+class MessageTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
@@ -73,7 +73,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
 		$language->expects( $this->once() )
 			->method( 'getCode' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$instanceSpy = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'hasLanguage' ] )
@@ -160,9 +160,8 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDecode() {
-		$this->assertEquals(
-			false,
-			Message::decode( 'Foo' )
+		$this->assertFalse(
+						Message::decode( 'Foo' )
 		);
 
 		$this->assertEquals(

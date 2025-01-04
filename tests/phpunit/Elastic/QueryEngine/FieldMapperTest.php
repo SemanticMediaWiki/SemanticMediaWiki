@@ -13,7 +13,7 @@ use SMW\Elastic\QueryEngine\FieldMapper;
  *
  * @author mwjames
  */
-class FieldMapperTest extends \PHPUnit_Framework_TestCase {
+class FieldMapperTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

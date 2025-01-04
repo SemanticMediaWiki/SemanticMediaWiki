@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class CountMapFieldTest extends \PHPUnit_Framework_TestCase {
+class CountMapFieldTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -39,7 +39,7 @@ class CountMapFieldTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
 			->disableOriginalConstructor()
@@ -56,7 +56,7 @@ class CountMapFieldTest extends \PHPUnit_Framework_TestCase {
 	public function testCheck_NewFieldTriggerIncompleteTask() {
 		$this->connection->expects( $this->once() )
 			->method( 'tableName' )
-			->will( $this->returnValue( 'smw_objects_aux' ) );
+			->willReturn( 'smw_objects_aux' );
 
 		$instance = new CountMapField(
 			$this->store

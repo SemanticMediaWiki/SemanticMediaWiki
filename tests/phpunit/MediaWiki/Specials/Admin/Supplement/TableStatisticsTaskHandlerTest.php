@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TableStatisticsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class TableStatisticsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -55,8 +55,8 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}

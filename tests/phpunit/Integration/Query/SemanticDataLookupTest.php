@@ -10,17 +10,18 @@ use SMW\RequestOptions;
 use SMW\StoreFactory;
 use SMWQuery as Query;
 use SMWDIBlob as DIBlob;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 3.1
  *
  * @author mwjames
  */
-class SemanticDataLookupTest extends DatabaseTestCase {
+class SemanticDataLookupTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 

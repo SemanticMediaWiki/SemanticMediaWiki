@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ClientTest extends \PHPUnit_Framework_TestCase {
+class ClientTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -80,7 +80,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
 		$this->elasticClient->expects( $this->once() )
 			->method( 'bulk' )
-			->will( $this->returnValue( json_decode( $response, true ) ) );
+			->willReturn( json_decode( $response, true ) );
 
 		$instance = new Client(
 			$this->elasticClient,

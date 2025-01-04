@@ -10,13 +10,14 @@ use SMWDataItem;
 /**
  * @covers \SMW\DataValueFactory
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
+class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -85,15 +86,15 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 			$dataValue
 		);
 
-		if ( $dataValue->getErrors() === [] ){
+		if ( $dataValue->getErrors() === [] ) {
 			return $this->assertEquals(
 				$expectedValue,
 				$dataValue->getWikiValue()
 			);
 		}
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$dataValue->getErrors()
 		);
 	}
@@ -110,14 +111,14 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		// Check the returned instance
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
-		if ( $dataValue->getErrors() === [] ){
+		if ( $dataValue->getErrors() === [] ) {
 			$this->assertInstanceOf( 'SMWDIProperty', $dataValue->getProperty() );
 			$this->assertContains( $propertyName, $dataValue->getProperty()->getLabel() );
-			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
+			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}
 		} else {
-			$this->assertInternalType( 'array', $dataValue->getErrors() );
+			$this->assertIsArray( $dataValue->getErrors() );
 		}
 
 		// Check interface parameters
@@ -143,14 +144,14 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		// Check the returned instance
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
-		if ( $dataValue->getErrors() === [] ){
+		if ( $dataValue->getErrors() === [] ) {
 			$this->assertInstanceOf( 'SMWDIProperty', $dataValue->getProperty() );
 			$this->assertContains( $propertyName, $dataValue->getProperty()->getLabel() );
-			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
+			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}
 		} else {
-			$this->assertInternalType( 'array', $dataValue->getErrors() );
+			$this->assertIsArray( $dataValue->getErrors() );
 		}
 
 		// Check interface parameters

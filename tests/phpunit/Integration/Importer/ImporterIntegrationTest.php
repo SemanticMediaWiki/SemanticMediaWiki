@@ -3,10 +3,11 @@
 namespace SMW\Tests\Integration\Importer;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -14,7 +15,7 @@ use SMW\Tests\DatabaseTestCase;
  *
  * @author mwjames
  */
-class ImporterIntegrationTest extends DatabaseTestCase {
+class ImporterIntegrationTest extends SMWIntegrationTestCase {
 
 	private $spyMessageReporter;
 	private $importerServiceFactory;

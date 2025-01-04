@@ -17,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FileIndexerTest extends \PHPUnit_Framework_TestCase {
+class FileIndexerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -31,7 +31,7 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 	private Store $store;
 
 	protected function setUp(): void {
-		$this->testEnvironment =  new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
 			->disableOriginalConstructor()
@@ -86,11 +86,11 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 
 		$file->expects( $this->once() )
 			->method( 'getFullURL' )
-			->will( $this->returnValue( $url ) );
+			->willReturn( $url );
 
 		$this->revisionGuard->expects( $this->once() )
 			->method( 'getFile' )
-			->will( $this->returnValue( $file ) );
+			->willReturn( $file );
 
 		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
@@ -101,7 +101,7 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $client ) );
+			->willReturn( $client );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' )

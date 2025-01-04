@@ -16,7 +16,7 @@ use SMWDINumber as DINumber;
  *
  * @author mwjames
  */
-class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
+class ValueDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
@@ -76,17 +76,17 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 			$instance->getPrintRequests()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->getSize()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getDepth()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getQueryFeatures()
 		);

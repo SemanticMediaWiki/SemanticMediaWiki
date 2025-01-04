@@ -9,7 +9,7 @@ use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
@@ -20,6 +20,7 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-integration
  * @group semantic-mediawiki-query
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -27,7 +28,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
+class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
@@ -45,7 +46,7 @@ class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 
-	//	$this->getStore()->getSparqlDatabase()->deleteAll();
+	// $this->getStore()->getSparqlDatabase()->deleteAll();
 	}
 
 	protected function tearDown(): void {

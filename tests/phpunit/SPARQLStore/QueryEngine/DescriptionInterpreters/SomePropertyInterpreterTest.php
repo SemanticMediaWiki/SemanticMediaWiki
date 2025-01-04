@@ -25,7 +25,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
+class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -106,8 +106,8 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$hierarchyLookup->expects( $this->once() )
 			->method( 'hasSubproperty' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( true ) );
+			->with( $property )
+			->willReturn( true );
 
 		$resultVariable = 'result';
 
@@ -144,7 +144,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 0
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
 
-		$description =  new SomeProperty(
+		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
 			new Disjunction()
 		);
@@ -167,7 +167,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 1
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new SomeProperty(
+		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
@@ -213,7 +213,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 3
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new SomeProperty(
+		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);

@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
+class HttpResponseErrorMapperTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -39,7 +39,7 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( $curlErrorCode ) );
+			->willReturn( $curlErrorCode );
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 		$instance->mapErrorResponse( 'Foo', 'Bar' );
@@ -52,7 +52,7 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 99999 ) );
+			->willReturn( 99999 );
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 
@@ -73,12 +73,12 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 22 ) );
+			->willReturn( 22 );
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastTransferInfo' )
-			->with( $this->equalTo( CURLINFO_HTTP_CODE ) )
-			->will( $this->returnValue( $httpErrorCode ) );
+			->with( CURLINFO_HTTP_CODE )
+			->willReturn( $httpErrorCode );
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 
@@ -93,12 +93,12 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 22 ) );
+			->willReturn( 22 );
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastTransferInfo' )
-			->with( $this->equalTo( CURLINFO_HTTP_CODE ) )
-			->will( $this->returnValue( 404 ) );
+			->with( CURLINFO_HTTP_CODE )
+			->willReturn( 404 );
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 		$instance->mapErrorResponse( 'Foo', 'Bar' );

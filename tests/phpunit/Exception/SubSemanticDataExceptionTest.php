@@ -13,7 +13,7 @@ use SMW\Exception\SubSemanticDataException;
  *
  * @author mwjames
  */
-class SubSemanticDataExceptionTest extends \PHPUnit_Framework_TestCase {
+class SubSemanticDataExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SubSemanticDataException();

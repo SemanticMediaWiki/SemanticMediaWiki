@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class EntityCollationTest extends \PHPUnit_Framework_TestCase {
+class EntityCollationTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -47,7 +47,7 @@ class EntityCollationTest extends \PHPUnit_Framework_TestCase {
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'entity_collation' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$this->setupFile->expects( $this->once() )
 			->method( 'addIncompleteTask' );
@@ -70,7 +70,7 @@ class EntityCollationTest extends \PHPUnit_Framework_TestCase {
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'entity_collation' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new EntityCollation(
 			$this->store

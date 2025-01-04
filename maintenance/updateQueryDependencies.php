@@ -12,7 +12,9 @@ use Title;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
+// @codeCoverageIgnoreStart
 require_once $basePath . '/maintenance/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * @license GNU GPL v2+
@@ -179,5 +181,7 @@ class updateQueryDependencies extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\updateQueryDependencies';
+// @codeCoverageIgnoreStart
+$maintClass = updateQueryDependencies::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
+// @codeCoverageIgnoreEnd
