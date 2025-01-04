@@ -145,7 +145,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityIdFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdFinder' )
 			->setConstructorArgs( [ $this->connection, $this->propertyTableHashes, $idCacheManager ] )
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$this->factory->expects( $this->any() )

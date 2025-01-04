@@ -60,7 +60,7 @@ class ParserCachePurgeJobTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = $this->getMockBuilder( ParserCachePurgeJob::class )
 			->setConstructorArgs( [ $title, $parameters ] )
-			->setMethods( [ 'newWikiPage' ] )
+			->onlyMethods( [ 'newWikiPage' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )

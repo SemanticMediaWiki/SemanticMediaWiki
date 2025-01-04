@@ -26,7 +26,7 @@ class ItemFetcherTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'service', 'getPropertyValues' ] )
+			->onlyMethods( [ 'service', 'getPropertyValues' ] )
 			->getMockForAbstractClass();
 
 		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )

@@ -52,7 +52,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 		$propertyTables = [];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getPropertyTables' ] )
+			->onlyMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -82,7 +82,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 		$propertyTables = [];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getPropertyTables' ] )
+			->onlyMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -130,7 +130,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 		$propertyTables = [ $propertyTable ];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getPropertyTables' ] )
+			->onlyMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -211,7 +211,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyTables', 'getConnection', 'getObjectIds' ] )
+			->onlyMethods( [ 'getPropertyTables', 'getConnection', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

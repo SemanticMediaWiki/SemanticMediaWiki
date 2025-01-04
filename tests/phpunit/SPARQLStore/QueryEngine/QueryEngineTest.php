@@ -316,7 +316,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'select' ] )
+			->onlyMethods( [ 'select' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->once() )
@@ -407,7 +407,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'ask' ] )
+			->onlyMethods( [ 'ask' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->once() )
@@ -466,7 +466,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		// interface hence the use of the concrete class
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSparqlForSelect' ] )
+			->onlyMethods( [ 'getSparqlForSelect' ] )
 			->getMock();
 
 		$connection->expects( $this->once() )

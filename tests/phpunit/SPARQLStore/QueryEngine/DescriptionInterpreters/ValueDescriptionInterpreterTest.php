@@ -66,7 +66,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function testCreateFalseConditionForNotSupportedDataItemType( $dataItem ) {
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
-			->setMethods( [ 'isSetFlag' ] )
+			->onlyMethods( [ 'isSetFlag' ] )
 			->getMock();
 
 		$conditionBuilder->expects( $this->once() )
@@ -116,7 +116,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
-			->setMethods( [ 'tryToFindRedirectVariableForDataItem' ] )
+			->onlyMethods( [ 'tryToFindRedirectVariableForDataItem' ] )
 			->getMock();
 
 		$conditionBuilder->expects( $this->once() )

@@ -66,7 +66,7 @@ class PropertySubjectsLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getDataItemHandlerForDIType', 'getSQLOptions', 'getSQLConditions' ] )
+			->onlyMethods( [ 'getConnection', 'getDataItemHandlerForDIType', 'getSQLOptions', 'getSQLConditions' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
@@ -131,7 +131,7 @@ class PropertySubjectsLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getDataItemHandlerForDIType' ] )
+			->onlyMethods( [ 'getConnection', 'getDataItemHandlerForDIType' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )

@@ -28,7 +28,7 @@ class ServicesContainerTest extends \PHPUnit\Framework\TestCase {
 	public function testGet() {
 		$mock = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'runService' ] )
+			->onlyMethods( [ 'runService' ] )
 			->getMock();
 
 		$mock->expects( $this->once() )
@@ -62,7 +62,7 @@ class ServicesContainerTest extends \PHPUnit\Framework\TestCase {
 	public function testGet_MultipleArgs() {
 		$fake = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'runService' ] )
+			->onlyMethods( [ 'runService' ] )
 			->getMock();
 
 		$fake->expects( $this->once() )
@@ -81,7 +81,7 @@ class ServicesContainerTest extends \PHPUnit\Framework\TestCase {
 	public function testAdd() {
 		$fake = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'runService' ] )
+			->onlyMethods( [ 'runService' ] )
 			->getMock();
 
 		$fake->expects( $this->once() )
@@ -96,7 +96,7 @@ class ServicesContainerTest extends \PHPUnit\Framework\TestCase {
 	public function testAddClosure() {
 		$fake = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'runService' ] )
+			->onlyMethods( [ 'runService' ] )
 			->getMock();
 
 		$fake->expects( $this->once() )

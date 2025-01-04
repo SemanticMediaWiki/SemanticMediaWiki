@@ -99,7 +99,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testinterpretDescriptionForNonIdSubject() {
 		$proptable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'usesIdSubject' ] )
+			->onlyMethods( [ 'usesIdSubject' ] )
 			->getMock();
 
 		$proptable->expects( $this->any() )
@@ -154,7 +154,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( '_txt' );
 
 		$proptable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'usesIdSubject' ] )
+			->onlyMethods( [ 'usesIdSubject' ] )
 			->getMock();
 
 		$proptable->expects( $this->any() )
@@ -215,7 +215,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( [ $indexField => 'fixedFooWhereCond' ] );
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPropertyID', 'getSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPropertyID', 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
@@ -436,7 +436,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSQLCondition', 'getDataItem' ] )
+			->onlyMethods( [ 'getSQLCondition', 'getDataItem' ] )
 			->getMock();
 
 		$valueDescription->expects( $this->any() )

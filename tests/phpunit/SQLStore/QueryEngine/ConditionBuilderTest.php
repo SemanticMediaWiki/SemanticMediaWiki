@@ -175,7 +175,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testClassDescription() {
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )

@@ -51,7 +51,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testInterpretDescription( $description, $expected ) {
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )

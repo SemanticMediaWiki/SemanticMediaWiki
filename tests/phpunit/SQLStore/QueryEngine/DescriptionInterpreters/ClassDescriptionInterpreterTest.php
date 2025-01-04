@@ -49,7 +49,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testCompileDescription( $description, $pageId, $expected ) {
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )

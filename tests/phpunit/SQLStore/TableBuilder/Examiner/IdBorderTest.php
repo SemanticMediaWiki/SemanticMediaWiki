@@ -130,7 +130,7 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'moveSMWPageID' ] )
+			->onlyMethods( [ 'moveSMWPageID' ] )
 			->getMock();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )

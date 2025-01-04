@@ -27,7 +27,7 @@ class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->transactionProfiler = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'setSilenced' ] )
+			->onlyMethods( [ 'setSilenced' ] )
 			->getMock();
 	}
 

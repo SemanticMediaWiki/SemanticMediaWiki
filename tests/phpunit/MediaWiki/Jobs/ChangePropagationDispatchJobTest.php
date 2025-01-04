@@ -164,7 +164,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPropertyID' ] )
+			->onlyMethods( [ 'getSMWPropertyID' ] )
 			->getMock();
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )

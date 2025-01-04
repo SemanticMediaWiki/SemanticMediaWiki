@@ -31,7 +31,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doRun' ] )
+			->onlyMethods( [ 'doRun' ] )
 			->getMock();
 
 		$test->expects( $this->once() )

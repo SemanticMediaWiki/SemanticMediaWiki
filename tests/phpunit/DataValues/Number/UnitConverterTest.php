@@ -33,7 +33,7 @@ class UnitConverterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'fetch', 'save', 'associate' ] )
+			->onlyMethods( [ 'fetch', 'save', 'associate' ] )
 			->getMock();
 	}
 

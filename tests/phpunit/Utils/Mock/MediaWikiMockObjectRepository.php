@@ -401,7 +401,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implemen
 
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( $methods )
+			->onlyMethods( $methods )
 			->getMock();
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
@@ -454,7 +454,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implemen
 
 		$contentHandler = $this->getMockBuilder( 'ContentHandler' )
 			->disableOriginalConstructor()
-			->setMethods( $methods )
+			->onlyMethods( $methods )
 			->getMock();
 
 		foreach ( $methods as $method ) {

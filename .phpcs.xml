@@ -31,7 +31,6 @@
 		<exclude name="MediaWiki.Commenting.MissingCovers.MissingCovers" />
 		<exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
 		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />
-		<exclude name="MediaWiki.PHPUnit.SetMethods.SetMethods" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.WrongStyle" />
 		<exclude name="MediaWiki.Commenting.DocComment.SpacingDocStar" />
 		<exclude name="MediaWiki.Classes.UnusedUseStatement.UnnecessaryUse" />

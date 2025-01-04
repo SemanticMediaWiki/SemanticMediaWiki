@@ -66,7 +66,7 @@ class DIWikiPageHandlerTest extends \PHPUnit\Framework\TestCase {
 	public function testMutableMethodAccess() {
 		// EntityIdTable
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getSMWPageID', 'makeSMWPageID' ] )
+			->onlyMethods( [ 'getSMWPageID', 'makeSMWPageID' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )

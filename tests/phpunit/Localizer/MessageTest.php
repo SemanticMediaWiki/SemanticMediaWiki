@@ -76,7 +76,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( 'en' );
 
 		$instanceSpy = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'hasLanguage' ] )
+			->onlyMethods( [ 'hasLanguage' ] )
 			->getMock();
 
 		$instanceSpy->expects( $this->once() )

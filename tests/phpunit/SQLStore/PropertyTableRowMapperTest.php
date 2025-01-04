@@ -40,7 +40,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 		$propertyTables = [];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getPropertyTables' ] )
+			->onlyMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -99,7 +99,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 		$propertyTables = [ 'smw_foo' => $propertyTable ];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getPropertyTables', 'findPropertyTableID', 'getObjectIds' ] )
+			->onlyMethods( [ 'getPropertyTables', 'findPropertyTableID', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -171,7 +171,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 		$propertyTables = [ 'smw_foo' => $propertyTable ];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getPropertyTables', 'findPropertyTableID', 'getObjectIds' ] )
+			->onlyMethods( [ 'getPropertyTables', 'findPropertyTableID', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

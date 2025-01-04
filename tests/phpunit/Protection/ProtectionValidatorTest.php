@@ -32,7 +32,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'save', 'contains', 'fetch', 'associate', 'invalidate', 'delete' ] )
+			->onlyMethods( [ 'save', 'contains', 'fetch', 'associate', 'invalidate', 'delete' ] )
 			->getMock();
 
 		$this->permissionManager = $this->getMockBuilder( '\SMW\MediaWiki\PermissionManager' )

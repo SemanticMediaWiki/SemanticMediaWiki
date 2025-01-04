@@ -41,7 +41,7 @@ class CleanUpTablesTest extends \PHPUnit\Framework\TestCase {
 	public function testNonPostgres() {
 		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'listTables', 'query', 'tableExists' ] )
+			->onlyMethods( [ 'listTables', 'query', 'tableExists' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->atLeastOnce() )
@@ -66,7 +66,7 @@ class CleanUpTablesTest extends \PHPUnit\Framework\TestCase {
 	public function testPostgres() {
 		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'listTables', 'query', 'getType', 'tableExists' ] )
+			->onlyMethods( [ 'listTables', 'query', 'getType', 'tableExists' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->atLeastOnce() )
