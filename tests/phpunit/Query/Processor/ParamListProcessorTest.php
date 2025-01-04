@@ -471,5 +471,4 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 	}
-
 }

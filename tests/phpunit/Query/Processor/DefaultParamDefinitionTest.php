@@ -46,5 +46,4 @@ class DefaultParamDefinitionTest extends \PHPUnit\Framework\TestCase {
 			DefaultParamDefinition::getParamDefinitions()
 		);
 	}
-
 }
