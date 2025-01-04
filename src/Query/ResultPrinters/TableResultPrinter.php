@@ -127,16 +127,16 @@ class TableResultPrinter extends ResultPrinter {
 				// if outputFormat has class defined as an option, take the value which class holds and set it as class attribute
 				// example outputFormat = 40px;class=unsortable
 				$outputFormat = $pr->getOutputFormat();
-				if ( str_contains( $outputFormat, 'class=' )  ) {
+				if ( str_contains( $outputFormat, 'class=' ) ) {
 					if ( str_contains( $outputFormat, ';' ) ) {
 						$parts = explode( ';', $outputFormat );
 						foreach ( $parts as $part ) {
 							if ( str_contains( $part, 'class=' ) ) {
-								$headerFormatSplitted = explode( '=', $part ); 
+								$headerFormatSplitted = explode( '=', $part );
 								if ( count( $headerFormatSplitted ) >= 2 ) {
 									$attributes['class'] = htmlspecialchars( $headerFormatSplitted[1], ENT_QUOTES );
 								} else {
-								    continue;
+									continue;
 								}
 							}
 						}

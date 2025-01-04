@@ -139,6 +139,7 @@
 		<exclude name="MediaWiki.Commenting.LicenseComment.LicenseTagNonFileComment" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCategoryCollation" />
 		<exclude name="MediaWiki.Usage.DirUsage.FunctionFound" />
+		<exclude name="Squiz.WhiteSpace.ScopeClosingBrace.ContentBefore" />
 	</rule>
 	<rule ref="MediaWiki.NamingConventions.ValidGlobalName">
 		<properties>

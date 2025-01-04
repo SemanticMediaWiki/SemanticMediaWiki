@@ -195,10 +195,10 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		//4348
+		// 4348
 		yield [
-			[ 	'[[Foo::Bar]]', 
-				'?Foobar', 
+			[ '[[Foo::Bar]]',
+				'?Foobar',
 				'+link='
 			],
 			false,
@@ -218,10 +218,10 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		yield [
-			[ 	'[[Foo::Bar]]', 
-				'?Foobar', 
-				'+link=', 
-				'+thclass=unsortable' 
+			[ '[[Foo::Bar]]',
+				'?Foobar',
+				'+link=',
+				'+thclass=unsortable'
 			],
 			false,
 			[
@@ -240,11 +240,11 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		yield [
-			[ 	'[[Foo::Bar]]', 
-				'?Foobar', 
+			[ '[[Foo::Bar]]',
+				'?Foobar',
 				'+width=30px',
-				'+link=', 
-				'+thclass=unsortable' 
+				'+link=',
+				'+thclass=unsortable'
 			],
 			false,
 			[
@@ -263,12 +263,12 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		yield [
-			[ 	'[[Foo::Bar]]', 
-				'?Foobar', 
+			[ '[[Foo::Bar]]',
+				'?Foobar',
 				'+width=30px',
-				'+link=', 
+				'+link=',
 				'+height=50px',
-				'+thclass=unsortable' 
+				'+thclass=unsortable'
 			],
 			false,
 			[
@@ -287,12 +287,11 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		yield [
-			[ 	'[[Foo::Bar]]', 
+			[ '[[Foo::Bar]]',
 				'?Foobar',
-				'+link=', 
+				'+link=',
 				'+height=50px',
-				'+thclass=unsortable' 
-			],
+				'+thclass=unsortable' ],
 			false,
 			[
 				'showMode'   => false,
@@ -310,13 +309,12 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		yield [
-			[ 	'[[Foo::Bar]]', 
-				'?Foobar', 
-				'+link=', 
+			[ '[[Foo::Bar]]',
+				'?Foobar',
+				'+link=',
 				'+height=100px',
 				'+thclass=unsortable',
-				'+width=90px'
-			],
+				'+width=90px' ],
 			false,
 			[
 				'showMode'   => false,
@@ -334,13 +332,12 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		yield [
-			[ 	'[[Foo::Bar]]', 
-				'?Foobar',  
+			[ '[[Foo::Bar]]',
+				'?Foobar',
 				'+height=100px',
 				'+thclass=unsortable',
 				'+width=90px',
-				'+link='
-			],
+				'+link=' ],
 			false,
 			[
 				'showMode'   => false,

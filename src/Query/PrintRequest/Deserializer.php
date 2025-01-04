@@ -187,7 +187,7 @@ class Deserializer {
 
 		if ( isset( $outputFormat ) ) {
 			if ( str_contains( $outputFormat, 'link' ) || str_contains( $outputFormat, 'class' ) ) {
-				$outputFormat = str_replace( ['link', 'class'], ['link=', 'class='], $outputFormat );
+				$outputFormat = str_replace( [ 'link', 'class' ], [ 'link=', 'class=' ], $outputFormat );
 			}
 		}
 

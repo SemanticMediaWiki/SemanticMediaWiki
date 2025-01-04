@@ -83,7 +83,7 @@ class ParamListProcessor {
 
 		// Call the new method to handle width and height parameters
 		foreach ( $parameters as $key => $value ) {
-			if ( !is_array( $value ) && (str_contains( $value, '+width' ) || str_contains( $value, '+height' )) ) {
+			if ( !is_array( $value ) && ( str_contains( $value, '+width' ) || str_contains( $value, '+height' ) ) ) {
 				$this->handleWidthHeightParameters( $parameters );
 				break;
 			}
@@ -140,8 +140,8 @@ class ParamListProcessor {
 				$result = $headerFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
 				$serialization = $result[ 'serialization' ];
 				$labelPreviousPrintout = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
-			} elseif ( $param[0] == '+' && ( !str_contains( $param, '+link=') && !str_contains( $param, '+thclass=' ) ) ) {
-				$this->addPrintRequestParameter( $name, $param, $previousPrintout, $serialization ); 
+			} elseif ( $param[0] == '+' && ( !str_contains( $param, '+link=' ) && !str_contains( $param, '+thclass=' ) ) ) {
+				$this->addPrintRequestParameter( $name, $param, $previousPrintout, $serialization );
 			} else {
 				$this->addOtherParameters( $name, $param, $serialization, $showMode );
 			}
@@ -162,25 +162,25 @@ class ParamListProcessor {
 
 	/**
 	 * Handles width and height parameters in the given array of parameters.
-	 * It looks for parameters starting with '+width=' and '+height=', 
-	 * temporarily removes them from the array, and appends them 
+	 * It looks for parameters starting with '+width=' and '+height=',
+	 * temporarily removes them from the array, and appends them
 	 * after the specific '?' parameter in the array.
 	 *
-	 * This function modifies the input parameters array by reference, 
+	 * This function modifies the input parameters array by reference,
 	 * so no return value is needed.
 	 *
-	 * @param array &$parameters The array of parameters to process. 
+	 * @param array &$parameters The array of parameters to process.
 	 *                           This will be modified in place.
 	 */
 	private function handleWidthHeightParameters( array &$parameters ) {
 		$pendingWidth = null;
 		$pendingHeight = null;
 		$lastFieldIndex = null;
-	
+
 		foreach ( $parameters as $index => &$param ) {
 			// Check for width and height definitions
 			if ( strpos( $param, '+width=' ) !== false ) {
-				$pendingWidth = $param; 
+				$pendingWidth = $param;
 				unset( $parameters[ $index ] );
 			} elseif ( strpos( $param, '+height=' ) !== false ) {
 				$pendingHeight = $param;
@@ -189,7 +189,7 @@ class ParamListProcessor {
 				// For each ?parameter, track its index
 				$lastFieldIndex = $index;
 			}
-	
+
 			// After processing the ?parameter, append width and height if pending
 			if ( $lastFieldIndex !== null && ( $pendingWidth || $pendingHeight ) ) {
 				if ( $pendingWidth ) {
