@@ -29,11 +29,11 @@ class SMWSpecialOWLExport extends SpecialPage {
 		$wgOut->setPageTitle( wfMessage( 'exportrdf' )->text() );
 
 		// see if we can find something to export:
-		$page = is_null( $page ) ? $wgRequest->getVal( 'page' ) : rawurldecode( $page );
+		$page = $page === null ? $wgRequest->getVal( 'page' ) : rawurldecode( $page );
 		$pages = false;
 
-		if ( !is_null( $page ) || $wgRequest->getCheck( 'page' ) ) {
-			$page = is_null( $page ) ? $wgRequest->getCheck( 'text' ) : $page;
+		if ( $page !== null || $wgRequest->getCheck( 'page' ) ) {
+			$page = $page === null ? $wgRequest->getCheck( 'text' ) : $page;
 
 			if ( $page !== '' ) {
 				$pages = [ $page ];

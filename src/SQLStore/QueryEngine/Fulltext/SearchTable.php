@@ -29,7 +29,7 @@ class SearchTable {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEnabled = false;
 
@@ -72,7 +72,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $indexableDataTypes
+	 * @param int $indexableDataTypes
 	 */
 	public function setIndexableDataTypes( $indexableDataTypes ) {
 		$this->indexableDataTypes = $indexableDataTypes;
@@ -90,7 +90,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return boolean
 	 */
@@ -207,7 +207,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getMinTokenSize() {
 		return $this->minTokenSize;
@@ -216,7 +216,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @return integer $minTokenSize
+	 * @return int $minTokenSize
 	 */
 	public function setMinTokenSize( $minTokenSize ) {
 		$this->minTokenSize = (int)$minTokenSize;
@@ -238,7 +238,7 @@ class SearchTable {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getIdByProperty( DIProperty $property ) {
 		return $this->store->getObjectIds()->getId( $property->getCanonicalDiWikiPage() );
@@ -247,7 +247,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return DIWikiPage|null
 	 */

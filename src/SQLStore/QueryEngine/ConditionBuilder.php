@@ -37,7 +37,7 @@ class ConditionBuilder {
 	private $dispatchingDescriptionInterpreter;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isFilterDuplicates = true;
 
@@ -160,7 +160,7 @@ class ConditionBuilder {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLastQuerySegmentId() {
 		return $this->lastQuerySegmentId;
@@ -189,7 +189,7 @@ class ConditionBuilder {
 	 *
 	 * @param Query $query
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function buildCondition( Query $query ) {
 		$this->sortKeys = $query->sortkeys;
@@ -256,7 +256,7 @@ class ConditionBuilder {
 	 *
 	 * @param Description $description
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function buildFromDescription( Description $description ) {
 		$fingerprint = $description->getFingerprint();

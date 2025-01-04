@@ -290,5 +290,5 @@ class rebuildData extends \Maintenance {
 }
 // @codeCoverageIgnoreStart
 $maintClass = rebuildData::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

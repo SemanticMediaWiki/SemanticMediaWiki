@@ -34,7 +34,7 @@ class StringResult extends QueryResult {
 	private $count = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasFurtherResults = false;
 
@@ -70,7 +70,7 @@ class StringResult extends QueryResult {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $count
+	 * @param int $count
 	 */
 	public function setCount( $count ) {
 		$this->count = $count;
@@ -79,7 +79,7 @@ class StringResult extends QueryResult {
 	/**
 	 * @since 3.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getCount() {
 		return $this->count;

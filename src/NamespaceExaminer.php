@@ -69,7 +69,7 @@ class NamespaceExaminer {
 	 *
 	 * @since 1.9
 	 *
-	 * @param integer $namespace
+	 * @param int $namespace
 	 *
 	 * @return boolean
 	 * @throws InvalidArgumentException

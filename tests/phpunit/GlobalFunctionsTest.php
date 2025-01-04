@@ -73,19 +73,19 @@ class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testSmwfEncodeMessages( $message, $type, $separator, $escape ) {
 		$results = smwfEncodeMessages( $message );
-		$this->assertFalse( is_null( $results ) );
+		$this->assertFalse( $results === null );
 		$this->assertTrue( is_string( $results ) );
 
 		$results = smwfEncodeMessages( $message, $type );
-		$this->assertFalse( is_null( $results ) );
+		$this->assertFalse( $results === null );
 		$this->assertTrue( is_string( $results ) );
 
 		$results = smwfEncodeMessages( $message, $type, $separator );
-		$this->assertFalse( is_null( $results ) );
+		$this->assertFalse( $results === null );
 		$this->assertTrue( is_string( $results ) );
 
 		$results = smwfEncodeMessages( $message, $type, $separator, $escape );
-		$this->assertFalse( is_null( $results ) );
+		$this->assertFalse( $results === null );
 		$this->assertTrue( is_string( $results ) );
 	}
 

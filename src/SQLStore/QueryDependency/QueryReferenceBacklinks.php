@@ -66,8 +66,8 @@ class QueryReferenceBacklinks {
 	 * @since 2.5
 	 *
 	 * @param DIWikiPage $subject
-	 * @param integer $limit
-	 * @param integer $offset
+	 * @param int|null $limit
+	 * @param int $offset
 	 *
 	 * @return array
 	 */

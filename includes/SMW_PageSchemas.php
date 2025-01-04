@@ -117,7 +117,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$psTemplates = $pageSchemaObj->getTemplates();
 		foreach ( $psTemplates as $psTemplate ) {
 			$smwConnectingPropertyName = self::getConnectingPropertyName( $psTemplate );
-			if ( is_null( $smwConnectingPropertyName ) ) {
+			if ( $smwConnectingPropertyName === null ) {
 				continue;
 			}
 			$pagesToGenerate[] = Title::makeTitleSafe( SMW_NS_PROPERTY, $smwConnectingPropertyName );
@@ -183,9 +183,9 @@ class SMWPageSchemas extends PSExtensionHandler {
 
 		$prop_array = [];
 		$hasExistingValues = false;
-		if ( !is_null( $psTemplate ) ) {
+		if ( $psTemplate !== null ) {
 			$prop_array = $psTemplate->getObject( 'semanticmediawiki_ConnectingProperty' );
-			if ( !is_null( $prop_array ) ) {
+			if ( $prop_array !== null ) {
 				$hasExistingValues = true;
 			}
 		}
@@ -205,9 +205,9 @@ class SMWPageSchemas extends PSExtensionHandler {
 
 		$prop_array = [];
 		$hasExistingValues = false;
-		if ( !is_null( $psTemplateField ) ) {
+		if ( $psTemplateField !== null ) {
 			$prop_array = $psTemplateField->getObject( 'semanticmediawiki_Property' );
-			if ( !is_null( $prop_array ) ) {
+			if ( $prop_array !== null ) {
 				$hasExistingValues = true;
 			}
 		}
@@ -245,7 +245,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 			'size' => 80
 		];
 		$allowedValues = PageSchemas::getValueFromObject( $prop_array, 'allowed_values' );
-		if ( is_null( $allowedValues ) ) {
+		if ( $allowedValues === null ) {
 			$allowed_val_string = '';
 		} else {
 			$allowed_val_string = implode( ', ', $allowedValues );
@@ -271,7 +271,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$psTemplates = $pageSchemaObj->getTemplates();
 		foreach ( $psTemplates as $psTemplate ) {
 			$smwConnectingPropertyName = self::getConnectingPropertyName( $psTemplate );
-			if ( is_null( $smwConnectingPropertyName ) ) {
+			if ( $smwConnectingPropertyName === null ) {
 				continue;
 			}
 			$propTitle = Title::makeTitleSafe( SMW_NS_PROPERTY, $smwConnectingPropertyName );

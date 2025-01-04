@@ -31,7 +31,7 @@ class TreeBuilder {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $nodes;
 
@@ -72,7 +72,7 @@ class TreeBuilder {
 	 * @param array $categories
 	 * @param string $type
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getHierarchyList( array $subjects, string $type ): array {
 		if ( $subjects === [] ) {
@@ -172,7 +172,7 @@ class TreeBuilder {
 		foreach ( $this->nodes as $key => $node ) {
 			if ( $node->hasNode( $id ) ) {
 				return true;
-			};
+			}
 		}
 
 		return false;
@@ -186,7 +186,7 @@ class TreeBuilder {
 		foreach ( $this->nodes as $key => $node ) {
 			if ( $node->hasNode( $id ) ) {
 				return $node->getNode( $id );
-			};
+			}
 		}
 	}
 
@@ -224,7 +224,7 @@ class TreeBuilder {
 				foreach ( $this->children as $key => $child ) {
 					if ( $child->hasNode( $id ) ) {
 						return true;
-					};
+					}
 				}
 
 				return false;
@@ -238,7 +238,7 @@ class TreeBuilder {
 				foreach ( $this->children as $key => $child ) {
 					if ( $child->hasNode( $id ) ) {
 						return $child->getNode( $id );
-					};
+					}
 				}
 			}
 

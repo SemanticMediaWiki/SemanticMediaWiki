@@ -49,19 +49,19 @@ class ParserAfterTidy implements HookListener {
 	private $cache;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isReady = true;
 
 	/**
 	 * @since  1.9
 	 *
-	 * @param Parser $parser
+	 * @param Parser &$parser
 	 * @param NamespaceExaminer $NamespaceExaminer
 	 * @param Cache $cache
 	 */
@@ -94,7 +94,7 @@ class ParserAfterTidy implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param string $text
+	 * @param string &$text
 	 *
 	 * @return true
 	 */

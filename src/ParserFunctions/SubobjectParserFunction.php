@@ -69,17 +69,17 @@ class SubobjectParserFunction {
 	private $stripMarkerDecoder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $useFirstElementAsPropertyLabel = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCapitalLinks = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isComparableContent = false;
 

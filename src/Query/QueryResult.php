@@ -55,7 +55,7 @@ class QueryResult {
 	/**
 	 * Are there more results than the ones given?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $mFurtherResults;
 
@@ -84,7 +84,7 @@ class QueryResult {
 	/**
 	 * Indicates whether results have been retrieved from cache or not
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isFromCache = false;
 
@@ -284,7 +284,7 @@ class QueryResult {
 	/**
 	 * Return number of available results.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getCount() {
 		return count( $this->mResults );
@@ -322,7 +322,7 @@ class QueryResult {
 	 * Return the number of columns of result values that each row
 	 * in this result set contains.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getColumnCount() {
 		return count( $this->mPrintRequests );
@@ -360,7 +360,7 @@ class QueryResult {
 	/**
 	 * @since  2.0
 	 *
-	 * @param integer $countValue
+	 * @param int $countValue
 	 */
 	public function setCountValue( $countValue ) {
 		$this->countValue = (int)$countValue;
@@ -369,7 +369,7 @@ class QueryResult {
 	/**
 	 * @since  2.0
 	 *
-	 * @return integer|null
+	 * @return int|null
 	 */
 	public function getCountValue() {
 		return $this->countValue;

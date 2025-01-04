@@ -234,7 +234,7 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 *
 	 * @return string
 	 */
@@ -245,7 +245,7 @@ class Localizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 *
 	 * @return string
 	 */
@@ -264,7 +264,7 @@ class Localizer {
 	 *
 	 * @param string $namespaceName
 	 *
-	 * @return integer|boolean
+	 * @return int|bool
 	 */
 	public function getNsIndex( $namespaceName ) {
 		return $this->contentLanguage->getNsIndex( str_replace( ' ', '_', $namespaceName ) );
@@ -335,7 +335,7 @@ class Localizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 * @param string $text
 	 *
 	 * @return string
@@ -347,7 +347,7 @@ class Localizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $ns
+	 * @param int $ns
 	 * @param string $url
 	 *
 	 * @return string

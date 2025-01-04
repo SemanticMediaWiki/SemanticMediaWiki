@@ -43,7 +43,7 @@ class IteratorFactory {
 	 * @since 3.0
 	 *
 	 * @param Iterator/array $$iterable
-	 * @param integer $chunkSize
+	 * @param int $chunkSize
 	 *
 	 * @return ChunkedIterator
 	 */
@@ -66,7 +66,7 @@ class IteratorFactory {
 	 * @param string $file
 	 * @param boolean $parseHeader
 	 * @param string $delimiter
-	 * @param integer $length
+	 * @param int $length
 	 *
 	 * @return CsvFileIterator
 	 */

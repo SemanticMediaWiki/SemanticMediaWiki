@@ -37,7 +37,7 @@ class FilterFactory {
 	 * @since 3.2
 	 *
 	 * @param TemplateEngine $templateEngine
-	 * @param TreeBuilder $treeBuilder,
+	 * @param TreeBuilder $treeBuilder
 	 * @param SchemaFactory $schemaFactory
 	 */
 	public function __construct( TemplateEngine $templateEngine, TreeBuilder $treeBuilder, SchemaFactory $schemaFactory ) {

@@ -19,7 +19,7 @@ class TemplateEngine {
 	const HTML_TIDY = 2;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $templates = [];
 
@@ -29,12 +29,12 @@ class TemplateEngine {
 	private $templateDir;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $container = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $compiled = [];
 

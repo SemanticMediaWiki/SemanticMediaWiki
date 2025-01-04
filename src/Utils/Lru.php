@@ -37,7 +37,7 @@ class Lru {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|integer $key
+	 * @param string|int $key
 	 * @param mixed $value
 	 */
 	public function set( $key, $value ) {
@@ -59,7 +59,7 @@ class Lru {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|integer $key
+	 * @param string|int $key
 	 *
 	 * @return mixed
 	 */
@@ -78,7 +78,7 @@ class Lru {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|integer $key
+	 * @param string|int $key
 	 */
 	public function delete( $key ) {
 		if ( !isset( $this->cache[$key] ) ) {

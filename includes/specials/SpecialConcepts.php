@@ -60,8 +60,8 @@ class SpecialConcepts extends \SpecialPage {
 	/**
 	 * @since 1.9
 	 *
-	 * @param integer $limit
-	 * @param integer $offset
+	 * @param int $limit
+	 * @param int $offset
 	 *
 	 * @return DIWikiPage[]
 	 */
@@ -112,8 +112,8 @@ class SpecialConcepts extends \SpecialPage {
 	 * @since 1.9
 	 *
 	 * @param DIWikiPage[] $dataItems
-	 * @param integer $limit
-	 * @param integer $offset
+	 * @param int $limit
+	 * @param int $offset
 	 *
 	 * @return string
 	 */

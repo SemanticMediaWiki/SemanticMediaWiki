@@ -163,7 +163,7 @@ class ImportValue extends DataValue {
 
 		// @see ImportValueParser
 		$controlledVocabulary = $this->mediaWikiNsContentReader->read(
-			ImportValue::IMPORT_PREFIX . $namespace
+			self::IMPORT_PREFIX . $namespace
 		);
 
 		if ( $controlledVocabulary === '' ) {

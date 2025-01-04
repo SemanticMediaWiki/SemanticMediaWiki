@@ -46,7 +46,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 	 *
 	 * @param PreferenceExaminer $preferenceExaminer
 	 * @param SpecialSearch $specialSearch
-	 * @param OutputPage &$outputPage
+	 * @param OutputPage $outputPage
 	 */
 	public function __construct( PreferenceExaminer $preferenceExaminer, SpecialSearch $specialSearch, OutputPage $outputPage ) {
 		$this->preferenceExaminer = $preferenceExaminer;

@@ -19,7 +19,7 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 

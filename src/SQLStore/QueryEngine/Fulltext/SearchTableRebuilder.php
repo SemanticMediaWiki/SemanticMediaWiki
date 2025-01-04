@@ -33,12 +33,12 @@ class SearchTableRebuilder {
 	private $messageReporter;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $reportVerbose = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $optimization = false;
 

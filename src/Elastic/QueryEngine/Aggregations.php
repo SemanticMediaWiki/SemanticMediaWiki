@@ -21,7 +21,7 @@ class Aggregations {
 	private $subAggregations = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $plain = false;
 

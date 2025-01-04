@@ -37,9 +37,9 @@ class Pager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Title   $title
-	 * @param integer $limit
-	 * @param integer $offset
+	 * @param Title $title
+	 * @param int $limit
+	 * @param int $offset
 	 *
 	 * @return string
 	 */
@@ -111,7 +111,7 @@ class Pager {
 	 * @param Title $title Title object to link
 	 * @param int $offset
 	 * @param int $limit
-	 * @param integer $count
+	 * @param int $count
 	 * @param array $query Optional URL query parameter string
 	 *
 	 * @return string

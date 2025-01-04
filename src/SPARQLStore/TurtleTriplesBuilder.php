@@ -48,7 +48,7 @@ class TurtleTriplesBuilder {
 	private $prefixes = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasTriplesForUpdate = false;
 
@@ -76,7 +76,7 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $chunkSize
+	 * @param int $chunkSize
 	 */
 	public function setTriplesChunkSize( $triplesChunkSize ) {
 		$this->triplesChunkSize = (int)$triplesChunkSize;
@@ -220,7 +220,7 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param Element $expElement object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 *
 	 * @return ExpElement
 	 */
@@ -248,7 +248,7 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param ExpResource $expResource object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 *
 	 * @return ExpElement
 	 */
@@ -287,7 +287,7 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param ExpData $expData object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
 	 *
 	 * @return ExpData

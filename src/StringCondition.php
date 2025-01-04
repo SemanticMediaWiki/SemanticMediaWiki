@@ -48,12 +48,12 @@ class StringCondition {
 	 * Whether to match the strings as conjunction or
 	 * disjunction.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isOr;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isNot;
 
@@ -66,7 +66,7 @@ class StringCondition {
 	 * @since 1.0
 	 *
 	 * @param srting $string
-	 * @param integer $condition
+	 * @param int $condition
 	 * @param boolean $isOr
 	 */
 	public function __construct( $string, $condition, $isOr = false, $isNot = false ) {

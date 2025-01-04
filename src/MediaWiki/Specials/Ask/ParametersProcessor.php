@@ -27,7 +27,7 @@ class ParametersProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $defaultLimit
+	 * @param int $defaultLimit
 	 */
 	public static function setDefaultLimit( $defaultLimit ) {
 		self::$defaultLimit = $defaultLimit;
@@ -36,7 +36,7 @@ class ParametersProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $maxInlineLimit
+	 * @param int $maxInlineLimit
 	 */
 	public static function setMaxInlineLimit( $maxInlineLimit ) {
 		self::$maxInlineLimit = $maxInlineLimit;

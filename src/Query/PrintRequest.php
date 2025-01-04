@@ -79,7 +79,7 @@ class PrintRequest {
 	/**
 	 * Create a print request.
 	 *
-	 * @param integer $mode a constant defining what to printout
+	 * @param int $mode a constant defining what to printout
 	 * @param string $label the string label to describe this printout
 	 * @param mixed $data optional data for specifying some request, might be a property object, title, or something else; interpretation depends on $mode
 	 * @param mixed $outputformat optional string for specifying an output format, e.g. an output unit
@@ -87,7 +87,7 @@ class PrintRequest {
 	 */
 	public function __construct( $mode, $label, $data = null, $outputformat = false, ?array $params = null ) {
 		if ( ( ( $mode == self::PRINT_CATS || $mode == self::PRINT_THIS ) &&
-				!is_null( $data ) ) ||
+				$data !== null ) ||
 			( $mode == self::PRINT_PROP &&
 				( !( $data instanceof PropertyValue ) || !$data->isValid() ) ) ||
 			( $mode == self::PRINT_CHAIN &&
@@ -149,7 +149,7 @@ class PrintRequest {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $mode
+	 * @param int $mode
 	 *
 	 * @return boolean
 	 */

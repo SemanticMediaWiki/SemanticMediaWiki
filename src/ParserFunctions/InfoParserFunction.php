@@ -77,7 +77,7 @@ class InfoParserFunction implements HookHandler {
 
 		$result = $highlighter->getHtml();
 
-		if ( !is_null( $parser->getTitle() ) && $parser->getTitle()->isSpecialPage() ) {
+		if ( $parser->getTitle() !== null && $parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
 			SMWOutputs::commitToOutputPage( $wgOut );
 		} else {

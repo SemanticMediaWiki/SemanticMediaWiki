@@ -21,7 +21,7 @@ class TableStatisticsTask extends Task {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $cacheUsage;
 

@@ -25,7 +25,7 @@ interface Parser {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getErrors();
 

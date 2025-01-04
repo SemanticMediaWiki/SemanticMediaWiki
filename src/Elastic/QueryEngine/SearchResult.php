@@ -13,12 +13,12 @@ use InvalidArgumentException;
 class SearchResult {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $raw = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $errors = [];
 
@@ -33,7 +33,7 @@ class SearchResult {
 	private $filterField = '_id';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $container = [
 		'info' => [],
@@ -82,7 +82,7 @@ class SearchResult {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer|null $cutoff
+	 * @param int|null $cutoff
 	 *
 	 * @return array
 	 */
@@ -110,9 +110,9 @@ class SearchResult {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $cutoff
+	 * @param int $cutoff
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function doFilterResults( array $results, $cutoff = null ) {
 		$this->results = [];

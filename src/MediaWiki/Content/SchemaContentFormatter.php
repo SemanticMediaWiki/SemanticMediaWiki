@@ -33,12 +33,12 @@ class SchemaContentFormatter {
 	private $htmlBuilder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isYaml = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $type = [];
 
@@ -69,7 +69,7 @@ class SchemaContentFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function setType( $type ) {
 		$this->type = $type;
@@ -78,7 +78,7 @@ class SchemaContentFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModuleStyles() {
 		return array_merge( [
@@ -93,7 +93,7 @@ class SchemaContentFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return [ 'smw.content.schemaview' ];

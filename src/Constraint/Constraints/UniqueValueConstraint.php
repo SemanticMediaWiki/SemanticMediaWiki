@@ -37,7 +37,7 @@ class UniqueValueConstraint implements Constraint {
 	private $propertySpecificationLookup;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 

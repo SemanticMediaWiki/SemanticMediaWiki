@@ -128,7 +128,7 @@ class XmlImportRunner {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getElapsedImportTimeInSeconds() {
 		return round( $this->importTime, 7 );

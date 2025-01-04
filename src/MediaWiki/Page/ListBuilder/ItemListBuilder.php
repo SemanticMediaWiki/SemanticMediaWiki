@@ -28,7 +28,7 @@ class ItemListBuilder {
 	private $languageCode = 'en';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRTL = false;
 
@@ -43,12 +43,12 @@ class ItemListBuilder {
 	private $listHeader = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isUserDefined = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $checkProperty = true;
 
@@ -96,7 +96,7 @@ class ItemListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $listLimit
+	 * @param int $listLimit
 	 */
 	public function setListLimit( $listLimit ) {
 		$this->listLimit = $listLimit;
@@ -123,7 +123,7 @@ class ItemListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getItemCount() {
 		return $this->itemCount;

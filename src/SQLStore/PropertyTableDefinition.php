@@ -58,7 +58,7 @@ class PropertyTableDefinition {
 	 * other or to the contents of the store.
 	 *
 	 * @since 1.8
-	 * @var string|boolean false
+	 * @var string|bool false
 	 */
 	protected $fixedProperty;
 
@@ -70,7 +70,7 @@ class PropertyTableDefinition {
 	 * table. New tables should really keep the default "true" here.
 	 *
 	 * @since 1.8
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $idSubject = true;
 
@@ -85,7 +85,7 @@ class PropertyTableDefinition {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $DIType constant
+	 * @param int $DIType constant
 	 * @param string $tableName logocal table name (not the DB version)
 	 * @param string|false $fixedProperty property key if any
 	 */
@@ -200,7 +200,7 @@ class PropertyTableDefinition {
 	 *
 	 * @since 1.8
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDiType() {
 		return $this->diType;

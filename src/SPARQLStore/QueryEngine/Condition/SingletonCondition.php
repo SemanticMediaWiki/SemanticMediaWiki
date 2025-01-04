@@ -36,7 +36,7 @@ class SingletonCondition extends Condition {
 	 * Whether this condition is safe.
 	 *
 	 * @see SMWSparqlCondition::isSafe().
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isSafe;
 

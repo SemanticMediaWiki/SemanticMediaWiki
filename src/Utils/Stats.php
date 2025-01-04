@@ -46,7 +46,7 @@ class Stats {
 	private $id;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $shouldRecord = true;
 
@@ -135,7 +135,7 @@ class Stats {
 	 * @since 2.5
 	 *
 	 * @param string|array $key
-	 * @param string|integer $default
+	 * @param string|int $default
 	 */
 	public function init( $key, $default ) {
 		$this->stats[$key] = $default;
@@ -146,7 +146,7 @@ class Stats {
 	 * @since 2.5
 	 *
 	 * @param string|array $key
-	 * @param string|integer $value
+	 * @param string|int $value
 	 */
 	public function set( $key, $value ) {
 		$this->stats[$key] = $value;
@@ -157,7 +157,7 @@ class Stats {
 	 * @since 2.5
 	 *
 	 * @param string|array $key
-	 * @param integer $value
+	 * @param int $value
 	 */
 	public function calcMedian( $key, $value ) {
 		if ( !isset( $this->stats[$key] ) ) {

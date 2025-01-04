@@ -66,4 +66,3 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

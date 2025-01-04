@@ -31,7 +31,7 @@ use SMW\SemanticData;
 class ContainerSemanticData extends SemanticData {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $skipAnonymousCheck = false;
 

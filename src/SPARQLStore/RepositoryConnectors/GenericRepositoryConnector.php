@@ -130,7 +130,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	/**
 	 * @since  2.0
 	 *
-	 * @param integer $timeout in seconds
+	 * @param int $timeout in seconds
 	 */
 	public function setConnectionTimeout( $timeout = 10 ) {
 		$this->httpRequest->setOption( CURLOPT_CONNECTTIMEOUT, $timeout );

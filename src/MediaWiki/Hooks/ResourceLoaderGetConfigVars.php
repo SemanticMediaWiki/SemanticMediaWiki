@@ -48,7 +48,7 @@ class ResourceLoaderGetConfigVars implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param array $vars
+	 * @param array &$vars
 	 *
 	 * @return boolean
 	 */

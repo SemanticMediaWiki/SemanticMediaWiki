@@ -42,12 +42,12 @@ class OrderCondition {
 	private $sortKeys = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isSupported = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $asUnconditional = false;
 
@@ -98,7 +98,7 @@ class OrderCondition {
 	 * @since 2.5
 	 *
 	 * @param ConditionBuilder $conditionBuilder
-	 * @param integer $qid
+	 * @param int $qid
 	 */
 	public function addConditions( ConditionBuilder $conditionBuilder, $qid ) {
 		if ( !$this->isSupported ) {

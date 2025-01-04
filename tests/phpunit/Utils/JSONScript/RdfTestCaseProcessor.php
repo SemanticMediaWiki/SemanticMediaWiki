@@ -33,7 +33,7 @@ class RdfTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	private $runnerFactory;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 

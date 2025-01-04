@@ -68,7 +68,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @todo Check why this is public and document this here. Or fix it.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $stubObject;
 
@@ -90,7 +90,7 @@ class SemanticData implements JsonUnserializable {
 	/**
 	 * States whether the container holds any normal properties.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $mHasVisibleProps = false;
 
@@ -100,7 +100,7 @@ class SemanticData implements JsonUnserializable {
 	 * label). For some settings we need this to decide if a Factbox is
 	 * displayed.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $mHasVisibleSpecs = false;
 
@@ -113,7 +113,7 @@ class SemanticData implements JsonUnserializable {
 	 * @note This setting is merely for optimization. The SMW data model
 	 * never cares about the multiplicity of identical data assignments.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $mNoDuplicates;
 
@@ -833,7 +833,7 @@ class SemanticData implements JsonUnserializable {
 	 * @see SubSemanticData::hasSubSemanticData
 	 * @since 1.9
 	 *
-	 * @param string $subobjectName|null
+	 * @param string|null $subobjectName|null
 	 *
 	 * @return boolean
 	 */

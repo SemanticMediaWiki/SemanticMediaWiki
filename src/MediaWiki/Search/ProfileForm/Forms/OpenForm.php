@@ -26,12 +26,12 @@ class OpenForm {
 	private $field;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isActiveForm = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
@@ -48,7 +48,7 @@ class OpenForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getParameters() {
 		return $this->parameters;

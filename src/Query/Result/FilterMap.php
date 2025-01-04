@@ -29,7 +29,7 @@ class FilterMap {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $results = [];
 

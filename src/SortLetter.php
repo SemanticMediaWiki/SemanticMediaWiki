@@ -29,7 +29,7 @@ class SortLetter {
 	 * @since 3.1
 	 *
 	 * @param Store $store
-	 * @param Collator $collator
+	 * @param Collator|null $collator
 	 */
 	public function __construct( Store $store, ?Collator $collator = null ) {
 		$this->store = $store;

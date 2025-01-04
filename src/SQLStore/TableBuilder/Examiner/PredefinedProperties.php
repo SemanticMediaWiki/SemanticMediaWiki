@@ -24,7 +24,7 @@ class PredefinedProperties {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $predefinedPropertyList = [];
 

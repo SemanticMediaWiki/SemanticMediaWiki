@@ -61,7 +61,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 	private $lastId = 0;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $missingDocuments = [];
 
@@ -411,5 +411,5 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = rebuildElasticMissingDocuments::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

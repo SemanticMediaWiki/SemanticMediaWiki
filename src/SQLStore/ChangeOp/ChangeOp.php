@@ -56,7 +56,7 @@ class ChangeOp implements IteratorAggregate {
 	private $propertyList = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $textItemsFlag = false;
 
@@ -178,7 +178,7 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param array $data
 	 */
 	public function addTextItems( $id, array $textItems ) {

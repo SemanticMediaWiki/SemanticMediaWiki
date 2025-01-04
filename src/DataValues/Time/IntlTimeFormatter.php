@@ -29,7 +29,7 @@ class IntlTimeFormatter {
 	private $language;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasLocalTimeCorrection = false;
 
@@ -60,7 +60,7 @@ class IntlTimeFormatter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $formatFlag
+	 * @param int $formatFlag
 	 *
 	 * @return string|boolean
 	 */

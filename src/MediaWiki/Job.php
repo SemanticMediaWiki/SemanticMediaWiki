@@ -23,7 +23,7 @@ abstract class Job extends MediaWikiJob {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isEnabledJobQueue = true;
 
@@ -88,7 +88,7 @@ abstract class Job extends MediaWikiJob {
 	/**
 	 * @since  2.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getJobCount() {
 		return count( $this->jobs );
@@ -169,7 +169,7 @@ abstract class Job extends MediaWikiJob {
 	 * @see Translate::TTMServerMessageUpdateJob
 	 * @since 3.0
 	 *
-	 * @param integer $delay
+	 * @param int $delay
 	 */
 	public function setDelay( $delay ) {
 		$isDelayedJobsEnabled = $this->getJobQueue()->isDelayedJobsEnabled(

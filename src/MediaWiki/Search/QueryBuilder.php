@@ -85,7 +85,7 @@ class QueryBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Query $query
+	 * @param Query|null $query
 	 * @param array $searchableNamespaces
 	 */
 	public function addNamespaceCondition( ?Query $query = null, $searchableNamespaces = [] ) {
@@ -114,7 +114,7 @@ class QueryBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Query $query
+	 * @param Query|null $query
 	 */
 	public function addSort( ?Query $query = null ) {
 		if ( $query === null ) {
@@ -138,7 +138,7 @@ class QueryBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getQueryString( Store $store, $term ) {
 		// Special invisible char which is set by the JS component to allow to
@@ -206,7 +206,7 @@ class QueryBuilder {
 	 * @param string $form
 	 * @param array $data
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function fetchFieldValues( $form, array $data ) {
 		$fieldValues = [];

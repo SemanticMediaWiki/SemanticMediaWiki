@@ -34,7 +34,7 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	private $stringValidator;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 

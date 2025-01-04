@@ -49,7 +49,7 @@ class Components {
 	];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $components = [];
 

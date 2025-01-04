@@ -22,7 +22,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	private $compositeIndicatorHtmlBuilder;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicatorProviders = [];
 
@@ -32,12 +32,12 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	private $permissionExaminer;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicators = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $modules = [ 'smw.entityexaminer' ];
 
@@ -65,7 +65,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getIndicators() {
 		return $this->indicators;
@@ -74,7 +74,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return $this->modules;

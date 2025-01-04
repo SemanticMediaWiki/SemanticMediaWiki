@@ -106,7 +106,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	public function getCoordinateSet() {
 		$coords = [ 'lat' => $this->latitude, 'lon' => $this->longitude ];
 
-		if ( !is_null( $this->altitude ) ) {
+		if ( $this->altitude !== null ) {
 			$coords['alt'] = $this->altitude;
 		}
 

@@ -27,7 +27,7 @@ class TitlePermissions {
 	private $permissionManager;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $errors = [];
 
@@ -45,7 +45,7 @@ class TitlePermissions {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getErrors() {
 		return $this->errors;

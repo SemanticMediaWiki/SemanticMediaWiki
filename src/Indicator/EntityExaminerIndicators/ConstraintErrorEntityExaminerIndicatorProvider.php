@@ -35,12 +35,12 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	private $entityCache;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $checkConstraintErrors = true;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $indicators = [];
 
@@ -117,7 +117,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getIndicators() {
 		return $this->indicators;
@@ -126,7 +126,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return [];

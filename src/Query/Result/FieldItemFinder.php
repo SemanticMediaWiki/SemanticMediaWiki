@@ -53,12 +53,12 @@ class FieldItemFinder {
 	private $itemFetcher;
 
 	/**
-	 * @var boolean|array
+	 * @var bool|array
 	 */
 	private static $catCacheObj = false;
 
 	/**
-	 * @var boolean|array
+	 * @var bool|array
 	 */
 	private static $catCache = false;
 
@@ -66,7 +66,7 @@ class FieldItemFinder {
 	 * @since 2.5
 	 *
 	 * @param Store $store
-	 * @param PrintRequest $printRequest
+	 * @param PrintRequest|null $printRequest
 	 */
 	public function __construct( Store $store, ?ItemFetcher $itemFetcher = null, ?PrintRequest $printRequest = null ) {
 		$this->store = $store;

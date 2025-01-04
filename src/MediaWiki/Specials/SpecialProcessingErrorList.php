@@ -39,7 +39,7 @@ class SpecialProcessingErrorList extends SpecialPage {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $limit
+	 * @param int $limit
 	 *
 	 * @return string
 	 */

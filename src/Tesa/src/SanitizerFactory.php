@@ -55,7 +55,6 @@ class SanitizerFactory {
 		);
 
 		return $cdbStopwordAnalyzer->isAvailable() ? $cdbStopwordAnalyzer : $this->newNullStopwordAnalyzer();
-		;
 	}
 
 	/**
@@ -70,7 +69,7 @@ class SanitizerFactory {
 	/**
 	 * @since 0.1
 	 *
-	 * @param array $stopwords;
+	 * @param array $stopwords
 	 *
 	 * @return StopwordAnalyzer
 	 */
@@ -100,7 +99,6 @@ class SanitizerFactory {
 		}
 
 		return $this->newNullSynonymizer();
-		;
 	}
 
 	/* Synonymizer */

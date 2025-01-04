@@ -87,7 +87,7 @@ class ExceptionFileLogger {
 	/**
 	 * @since 2.4
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getExceptionCount() {
 		return $this->exceptionCount;

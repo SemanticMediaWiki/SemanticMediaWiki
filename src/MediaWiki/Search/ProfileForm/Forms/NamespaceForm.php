@@ -34,17 +34,17 @@ class NamespaceForm {
 	private $localizer;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $activeNamespaces = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $hiddenNamespaces = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $searchableNamespaces = [];
 

@@ -72,7 +72,7 @@ class HtmlColumnListRenderer {
 	private $columnClass = 'smw-column';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRTL = false;
 
@@ -113,7 +113,7 @@ class HtmlColumnListRenderer {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $numberOfColumns
+	 * @param int $numberOfColumns
 	 *
 	 * @return HtmlColumnListRenderer
 	 */

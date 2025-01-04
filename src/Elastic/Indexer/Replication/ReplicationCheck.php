@@ -48,7 +48,7 @@ class ReplicationCheck {
 	private $templateEngine;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $errorTitle = '';
 
@@ -98,7 +98,7 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getReplicationFailures() {
 		return $this->entityCache->fetch( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
@@ -136,7 +136,7 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $cacheTTL
+	 * @param int $cacheTTL
 	 */
 	public function setCacheTTL( $cacheTTL ) {
 		$this->cacheTTL = $cacheTTL > 0 ? $cacheTTL : 3600;

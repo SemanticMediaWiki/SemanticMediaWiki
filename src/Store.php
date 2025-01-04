@@ -73,7 +73,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param $subject mixed SMWDIWikiPage or null
 	 * @param $property DIProperty
-	 * @param $requestoptions SMWRequestOptions
+	 * @param null $requestoptions SMWRequestOptions
 	 *
 	 * @return array of DataItem
 	 */
@@ -327,7 +327,7 @@ abstract class Store implements QueryEngine {
 	 * results requested (otherwise callers might assume that there are no
 	 * further results to ask for).
 	 *
-	 * @param SMWRequestOptions $requestoptions
+	 * @param SMWRequestOptions|null $requestoptions
 	 *
 	 * @return ListLookup
 	 */
@@ -345,7 +345,7 @@ abstract class Store implements QueryEngine {
 	 * results requested (otherwise callers might assume that there are no
 	 * further results to ask for).
 	 *
-	 * @param SMWRequestOptions $requestoptions
+	 * @param SMWRequestOptions|null $requestoptions
 	 *
 	 * @return array of DIProperty|SMWDIError
 	 */
@@ -357,7 +357,7 @@ abstract class Store implements QueryEngine {
 	 * accessing the set of all existing pages can extend this list to all
 	 * properties that are used but do not have a type assigned to them.
 	 *
-	 * @param SMWRequestOptions $requestoptions
+	 * @param SMWRequestOptions|null $requestoptions
 	 *
 	 * @return array of array( DIProperty, int )
 	 */
@@ -450,7 +450,7 @@ abstract class Store implements QueryEngine {
 	 * processed later using MediaWiki jobs, instead of doing all updates
 	 * immediately. The default is TRUE.
 	 *
-	 * @param $index integer
+	 * @param &$index integer
 	 * @param $count integer
 	 * @param $namespaces mixed array or false
 	 * @param $usejobs boolean

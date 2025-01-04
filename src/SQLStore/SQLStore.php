@@ -189,7 +189,7 @@ class SQLStore extends Store {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $diType
+	 * @param int $diType
 	 *
 	 * @return DataItemHandler
 	 * @throws RuntimeException if no handler exists for the given type
@@ -357,7 +357,7 @@ class SQLStore extends Store {
 	 *
 	 * @param Query $query
 	 *
-	 * @return QueryResult|string|integer depends on $query->querymode
+	 * @return QueryResult|string|int depends on $query->querymode
 	 */
 	public function getQueryResult( Query $query ) {
 		$result = null;
@@ -571,7 +571,7 @@ class SQLStore extends Store {
 	/**
 	 * PropertyTableInfoFetcher::findTableIdForDataItemTypeId
 	 *
-	 * @param integer $dataItemId
+	 * @param int $dataItemId
 	 *
 	 * @return string
 	 */

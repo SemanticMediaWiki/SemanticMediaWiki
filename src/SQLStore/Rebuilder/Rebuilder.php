@@ -151,7 +151,7 @@ class Rebuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $iterationLimit
+	 * @param int $iterationLimit
 	 */
 	public function setDispatchRangeLimit( $iterationLimit ) {
 		$this->iterationLimit = (int)$iterationLimit;
@@ -160,7 +160,7 @@ class Rebuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getMaxId() {
 		$db = $this->store->getConnection( 'mw.db' );
@@ -188,7 +188,7 @@ class Rebuilder {
 	 *
 	 * @since 2.3
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getEstimatedProgress() {
 		return $this->progress;
@@ -209,7 +209,7 @@ class Rebuilder {
 	 *
 	 * @since 2.3
 	 *
-	 * @param integer &$id
+	 * @param int &$id
 	 */
 	public function rebuild( &$id ) {
 		$this->updateJobs = [];

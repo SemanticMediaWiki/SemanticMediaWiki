@@ -81,7 +81,7 @@ class QueryEngine implements QueryEngineInterface {
 
 	/**
 	 * @since  2.0
-	 * @param  Query $query
+	 * @param Query $query
 	 *
 	 * @return QueryResult|string
 	 */

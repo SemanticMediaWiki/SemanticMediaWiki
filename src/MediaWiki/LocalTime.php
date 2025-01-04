@@ -23,7 +23,7 @@ class LocalTime {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $localTimeOffset
+	 * @param int $localTimeOffset
 	 */
 	public static function setLocalTimeOffset( $localTimeOffset ) {
 		self::$localTimeOffset = $localTimeOffset;

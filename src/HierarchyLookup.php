@@ -45,7 +45,7 @@ class HierarchyLookup {
 	private $cache;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $inMemoryCache = [];
 
@@ -125,7 +125,7 @@ class HierarchyLookup {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $subcategoryDepth
+	 * @param int $subcategoryDepth
 	 */
 	public function setSubcategoryDepth( $subcategoryDepth ) {
 		$this->subcategoryDepth = (int)$subcategoryDepth;
@@ -134,7 +134,7 @@ class HierarchyLookup {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $subpropertyDepth
+	 * @param int $subpropertyDepth
 	 */
 	public function setSubpropertyDepth( $subpropertyDepth ) {
 		$this->subpropertyDepth = (int)$subpropertyDepth;

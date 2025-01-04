@@ -72,7 +72,7 @@ class SetupCheck {
 	const MAINTENANCE_MODE = 'MAINTENANCE_MODE';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $options = [];
 
@@ -92,7 +92,7 @@ class SetupCheck {
 	private $localMessageProvider;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $definitions = [];
 
@@ -107,7 +107,7 @@ class SetupCheck {
 	private $fallbackLanguageCode = 'en';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $sentHeader = true;
 

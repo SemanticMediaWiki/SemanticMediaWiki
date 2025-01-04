@@ -44,7 +44,7 @@ class ContentParser {
 	protected $errors = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $skipInTextAnnotationParser = false;
 

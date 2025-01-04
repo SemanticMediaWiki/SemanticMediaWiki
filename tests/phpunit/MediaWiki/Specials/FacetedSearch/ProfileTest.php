@@ -95,4 +95,3 @@ class ProfileTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

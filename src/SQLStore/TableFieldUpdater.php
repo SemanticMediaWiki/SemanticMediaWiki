@@ -36,7 +36,7 @@ class TableFieldUpdater {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $tz
 	 */
 	public function updateTouchedField( $id, $tz = 0 ) {
@@ -58,7 +58,7 @@ class TableFieldUpdater {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $searchKey
 	 */
 	public function updateSortField( $id, $searchKey ) {
@@ -86,8 +86,8 @@ class TableFieldUpdater {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $sid
-	 * @param integer $rev_id
+	 * @param int $sid
+	 * @param int $rev_id
 	 */
 	public function updateRevField( $sid, $rev_id ) {
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -108,7 +108,7 @@ class TableFieldUpdater {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param string $iw
 	 * @param string $hash
 	 */

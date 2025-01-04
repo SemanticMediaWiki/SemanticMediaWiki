@@ -38,7 +38,7 @@ class PropertyTableRowDiffer {
 	private $changeOp;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $checkRemnantEntities = false;
 
@@ -99,7 +99,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @since 2.3
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param SemanticData $semanticData
 	 *
 	 * @return array
@@ -277,7 +277,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param TableDefinition $tableDeclaration
 	 *
 	 * @return array

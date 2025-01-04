@@ -34,7 +34,7 @@ class SubjectLookup extends Lookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @return string|integer
+	 * @return string|int
 	 */
 	public function getVersion() {
 		return 'SubjectLookup:' . self::VERSION;

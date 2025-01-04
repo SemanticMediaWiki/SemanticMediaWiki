@@ -47,7 +47,7 @@ class RecursiveTextProcessor {
 	private $maxRecursionDepth = 2;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $recursiveAnnotation = false;
 
@@ -82,7 +82,7 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getError() {
 		return $this->error;
@@ -93,7 +93,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string|integer|null $uniqid
+	 * @param string|int|null $uniqid
 	 */
 	public function uniqid( $uniqid = null ) {
 		$this->uniqid = $uniqid ?? uniqid();
@@ -102,7 +102,7 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $maxRecursionDepth
+	 * @param int $maxRecursionDepth
 	 */
 	public function setMaxRecursionDepth( $maxRecursionDepth ) {
 		$this->maxRecursionDepth = $maxRecursionDepth;

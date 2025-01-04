@@ -261,7 +261,7 @@ class HookDispatcher {
 	 * @since 3.2
 	 *
 	 * @param Title $title
-	 * @param File|null $file
+	 * @param File|null &$file
 	 */
 	public function onChangeFile( Title $title, &$file ) {
 		$this->getHookContiner()
@@ -276,7 +276,7 @@ class HookDispatcher {
 	 * @since 3.2
 	 *
 	 * @param Title $title
-	 * @param RevisionRecord|null $revision
+	 * @param RevisionRecord|null &$revision
 	 */
 	public function onChangeRevision( Title $title, ?RevisionRecord &$revision ) {
 		$this->getHookContiner()

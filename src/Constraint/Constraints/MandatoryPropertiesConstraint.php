@@ -23,7 +23,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'mandatory_properties';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 

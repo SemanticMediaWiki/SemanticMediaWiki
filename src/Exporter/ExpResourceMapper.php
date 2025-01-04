@@ -45,12 +45,12 @@ class ExpResourceMapper {
 	/**
 	 * @note Legacy setting expected to vanish with 3.0
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $bcAuxiliaryUse = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $seekImportVocabulary = true;
 

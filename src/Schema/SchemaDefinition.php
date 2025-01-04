@@ -60,7 +60,7 @@ class SchemaDefinition extends Compartment implements Schema {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function toArray() {
 		return $this->data;

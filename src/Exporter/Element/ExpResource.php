@@ -28,7 +28,7 @@ class ExpResource extends ExpElement {
 	private $uri;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isImported = false;
 

@@ -325,12 +325,12 @@ class SMWExporter {
 				case SMW_NS_CONCEPT:
 					$maintype_pe = self::getSpecialNsResource( 'owl', 'Class' );
 					$label = $pageTitle;
-				break;
+					break;
 				case SMW_NS_PROPERTY:
 					$property = new DIProperty( $subject->getDBKey() );
 					$maintype_pe = self::getSpecialNsResource( 'owl', $this->getOWLPropertyType( $property ) );
 					$label = $pageTitle;
-				break;
+					break;
 				default:
 					$label = $prefixedSubjectTitle;
 					$maintype_pe = self::getSpecialNsResource( 'swivt', 'Subject' );
@@ -388,7 +388,7 @@ class SMWExporter {
 	 *
 	 * @param $property SMWDIProperty
 	 * @param $dataItems array of SMWDataItem objects for the given property
-	 * @param $data SMWExpData to add the data to
+	 * @param &$data SMWExpData to add the data to
 	 */
 	static public function addPropertyValues( SMWDIProperty $property, array $dataItems, SMWExpData &$expData ) {
 		$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
@@ -400,13 +400,13 @@ class SMWExporter {
 		} else { // pre-defined property, only exported if known
 			$diSubject = $expData->getSubject()->getDataItem();
 			// subject wikipage required for disambiguating special properties:
-			if ( is_null( $diSubject ) ||
+			if ( $diSubject === null ||
 				 $diSubject->getDIType() != SMWDataItem::TYPE_WIKIPAGE ) {
 				return;
 			}
 
 			$pe = self::getSpecialPropertyResource( $property->getKey(), $diSubject->getNamespace() );
-			if ( is_null( $pe ) ) {
+			if ( $pe === null ) {
 				return; // unknown special property, not exported
 			}
 			// have helper property ready before entering the for loop, even if not needed:
@@ -598,34 +598,34 @@ class SMWExporter {
 
 		switch ( $shortName ) {
 			case 'wiki':
-			return self::$m_ent_wiki;
+				return self::$m_ent_wiki;
 			case 'wikiurl':
-			return self::$m_ent_wikiurl;
+				return self::$m_ent_wikiurl;
 			case 'property':
-			return self::$m_ent_property;
+				return self::$m_ent_property;
 			case 'category':
-			return self::$m_ent_category;
+				return self::$m_ent_category;
 			case 'export':
-			return self::$m_exporturl;
+				return self::$m_exporturl;
 			case 'owl':
-			return 'http://www.w3.org/2002/07/owl#';
+				return 'http://www.w3.org/2002/07/owl#';
 			case 'rdf':
-			return 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+				return 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
 			case 'rdfs':
-			return 'http://www.w3.org/2000/01/rdf-schema#';
+				return 'http://www.w3.org/2000/01/rdf-schema#';
 			case 'swivt':
-			return 'http://semantic-mediawiki.org/swivt/1.0#';
+				return 'http://semantic-mediawiki.org/swivt/1.0#';
 			case 'xsd':
-			return 'http://www.w3.org/2001/XMLSchema#';
+				return 'http://www.w3.org/2001/XMLSchema#';
 			default:
-			return '';
+				return '';
 		}
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param SMWDataItem $dataItem;
+	 * @param SMWDataItem $dataItem
 	 *
 	 * @return ExpElement
 	 */

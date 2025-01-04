@@ -29,7 +29,7 @@ class NamespaceInfo {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 *
 	 * @return string
 	 */
@@ -44,7 +44,7 @@ class NamespaceInfo {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getValidNamespaces() {
 		if ( $this->nsInfo === null ) {

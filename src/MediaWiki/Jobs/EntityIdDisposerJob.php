@@ -107,7 +107,7 @@ class EntityIdDisposerJob extends Job {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer|stdClass $id
+	 * @param int|stdClass $id
 	 */
 	public function disposeQueryLinks( $id ) {
 		if ( $this->queryLinksTableDisposer === null ) {
@@ -120,7 +120,7 @@ class EntityIdDisposerJob extends Job {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|stdClass $id
+	 * @param int|stdClass $id
 	 */
 	public function dispose( $id ) {
 		if ( $this->propertyTableIdReferenceDisposer === null ) {

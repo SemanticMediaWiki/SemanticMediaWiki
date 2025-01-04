@@ -34,7 +34,7 @@ class TitleFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return Title|null
 	 */

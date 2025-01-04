@@ -40,27 +40,27 @@ class ProtectionValidator {
 	private $permissionManager;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $editProtectionRight = false;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $createProtectionRight = false;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $changePropagationProtection = true;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $importPerformers = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $importPerformerProtectionLookupCache = [];
 
@@ -278,7 +278,7 @@ class ProtectionValidator {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Title $title
+	 * @param Title|null $title
 	 *
 	 * @return boolean
 	 */
@@ -300,7 +300,7 @@ class ProtectionValidator {
 	 *
 	 * @since 2.5
 	 *
-	 * @param Title $title
+	 * @param Title|null $title
 	 *
 	 * @return boolean
 	 */

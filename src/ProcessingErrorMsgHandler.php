@@ -50,8 +50,8 @@ class ProcessingErrorMsgHandler {
 	 * @since 2.5
 	 *
 	 * @param array $messages
-	 * @param integer|null $type
-	 * @param integer|null $language
+	 * @param int|null $type
+	 * @param int|null $language
 	 *
 	 * @return array
 	 */
@@ -104,8 +104,8 @@ class ProcessingErrorMsgHandler {
 	 * @since 2.5
 	 *
 	 * @param array $messages
-	 * @param integer|null $type
-	 * @param integer|null $language
+	 * @param int|null $type
+	 * @param int|null $language
 	 *
 	 * @return string
 	 */

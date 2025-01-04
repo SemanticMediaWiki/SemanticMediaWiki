@@ -132,8 +132,8 @@ class ElasticStore extends SQLStore {
 	 *
 	 * @param Title $oldtitle
 	 * @param Title $newtitle
-	 * @param integer $pageid
-	 * @param integer $redirid
+	 * @param int $pageid
+	 * @param int $redirid
 	 */
 	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
 		$status = parent::changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
@@ -340,8 +340,8 @@ class ElasticStore extends SQLStore {
 
 			// Remove REBUILD_INDEX_RUN_COMPLETE with 3.3+
 
-			if ( $setupFile->get( ElasticStore::REBUILD_INDEX_RUN_COMPLETE ) !== null ) {
-				$setupFile->remove( ElasticStore::REBUILD_INDEX_RUN_COMPLETE );
+			if ( $setupFile->get( self::REBUILD_INDEX_RUN_COMPLETE ) !== null ) {
+				$setupFile->remove( self::REBUILD_INDEX_RUN_COMPLETE );
 				$setupFile->set( [ 'elasticsearch' => [ 'latest_version' => $version ] ] );
 			} elseif ( $setupFile->get( 'elasticsearch' ) === null ) {
 				$setupFile->set( [ 'elasticsearch' => [ 'latest_version' => $version ] ] );
@@ -399,11 +399,11 @@ class ElasticStore extends SQLStore {
 		$setupFile = $installer->newSetupFile();
 
 		$setupFile->remove(
-			ElasticStore::REBUILD_INDEX_RUN_COMPLETE
+			self::REBUILD_INDEX_RUN_COMPLETE
 		);
 
 		$setupFile->removeIncompleteTask(
-			ElasticStore::REBUILD_INDEX_RUN_INCOMPLETE
+			self::REBUILD_INDEX_RUN_INCOMPLETE
 		);
 
 		$setupFile->remove( 'elasticsearch' );

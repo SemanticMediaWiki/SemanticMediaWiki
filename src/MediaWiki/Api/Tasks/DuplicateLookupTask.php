@@ -20,7 +20,7 @@ class DuplicateLookupTask extends Task {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $cacheUsage;
 

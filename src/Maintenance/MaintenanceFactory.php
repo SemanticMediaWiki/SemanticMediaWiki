@@ -43,7 +43,7 @@ class MaintenanceFactory {
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param Callable|null $reporterCallback
+	 * @param callable|null $reporterCallback
 	 *
 	 * @return DataRebuilder
 	 */
@@ -66,7 +66,7 @@ class MaintenanceFactory {
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param Callable|null $reporterCallback
+	 * @param callable|null $reporterCallback
 	 *
 	 * @return ConceptCacheRebuilder
 	 */
@@ -87,7 +87,7 @@ class MaintenanceFactory {
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param Callable|null $reporterCallback
+	 * @param callable|null $reporterCallback
 	 *
 	 * @return PropertyStatisticsRebuilder
 	 */

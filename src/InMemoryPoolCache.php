@@ -115,7 +115,7 @@ class InMemoryPoolCache {
 	 * @since 2.5
 	 *
 	 * @param string $poolCacheId
-	 * @param integer $cacheSize
+	 * @param int $cacheSize
 	 *
 	 * @return Cache
 	 */

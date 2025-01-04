@@ -263,7 +263,7 @@ class Transliterator {
 	 * @since 0.1
 	 *
 	 * @param string $string
-	 * @param integer $flag
+	 * @param int $flag
 	 *
 	 * @return string
 	 */

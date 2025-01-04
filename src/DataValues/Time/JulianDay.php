@@ -34,13 +34,13 @@ class JulianDay implements CalendarModel {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $calendarmodel
-	 * @param integer $year
-	 * @param integer $month
-	 * @param integer $day
-	 * @param integer $hour
-	 * @param integer $minute
-	 * @param integer $second
+	 * @param int $calendarmodel
+	 * @param int $year
+	 * @param int $month
+	 * @param int $day
+	 * @param int $hour
+	 * @param int $minute
+	 * @param int $second
 	 *
 	 * @return float
 	 */
@@ -133,7 +133,7 @@ class JulianDay implements CalendarModel {
 	 * values will be returned. Avoid date conversions before 10000 BCE.
 	 *
 	 * @param $jdValue float number of Julian Days
-	 * @param $calendarModel integer either CM_GREGORIAN or CM_JULIAN
+	 * @param null $calendarModel integer either CM_GREGORIAN or CM_JULIAN
 	 *
 	 * @return array( calendarModel, yearnumber, monthnumber, daynumber )
 	 * @throws RuntimeException

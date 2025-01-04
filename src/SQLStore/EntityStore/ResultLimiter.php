@@ -18,7 +18,7 @@ class ResultLimiter {
 	private $size = -1;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $counter = [];
 
@@ -53,7 +53,7 @@ class ResultLimiter {
 	 *
 	 * @since 3.2
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return boolean
 	 */

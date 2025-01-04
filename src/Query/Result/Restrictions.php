@@ -20,7 +20,7 @@ class Restrictions {
 	 * @param PrintRequest $printRequest
 	 * @param DataItem[] $content
 	 *
-	 * @return []
+	 * @return
 	 */
 	public static function applySortRestriction( PrintRequest $printRequest, array $content ) {
 		if ( $content === [] ) {
@@ -73,7 +73,7 @@ class Restrictions {
 	 * @param PrintRequest $printRequest
 	 * @param DataItem[] $content
 	 *
-	 * @return []
+	 * @return
 	 */
 	public static function applyLimitRestriction( PrintRequest $printRequest, array $content ) {
 		$limit = (int)$printRequest->getParameter( 'limit' );

@@ -26,12 +26,12 @@ class PrefetchCache {
 	private $prefetchItemLookup;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $cache = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $lookupCache = [];
 
@@ -136,7 +136,7 @@ class PrefetchCache {
 	 * @param DIProperty $property
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPropertyValues( DIWikiPage $subject, DIProperty $property, RequestOptions $requestOptions ) {
 		$key = $this->makeCacheKey( $property, $requestOptions );

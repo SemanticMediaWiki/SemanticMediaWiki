@@ -16,7 +16,7 @@ trait ParameterDictionaryUser {
 	private $configuration;
 
 	/**
-	 * @param ParameterDictionary $configuration
+	 * @param ParameterDictionary &$configuration
 	 */
 	public function setConfiguration( ParameterDictionary &$configuration ) {
 		$this->configuration = $configuration;

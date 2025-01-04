@@ -39,7 +39,7 @@ class UpdateEntityCollationComplete {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $countDown
+	 * @param int $countDown
 	 */
 	public function setCountDown( $countDown ) {
 		$this->countDown = $countDown;

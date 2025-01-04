@@ -119,10 +119,10 @@ class SemanticDataLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
-	 * @param DataItem $dataItem
+	 * @param int $id
+	 * @param DataItem|null $dataItem
 	 * @param PropertyTableDefinition $propTable
-	 * @param RequestOptions $requestOptions
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return SemanticData
 	 */
@@ -207,7 +207,7 @@ class SemanticDataLookup {
 	 * @param array $subjects
 	 * @param DIProperty $property
 	 * @param PropertyTableDefinition $propTable
-	 * @param RequestOptions $requestOptions
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
@@ -306,10 +306,10 @@ class SemanticDataLookup {
 	 * without the property keys. Container dataItems will be encoded with
 	 * nested arrays like in case (1).
 	 *
-	 * @param integer $id
-	 * @param DataItem $dataItem
+	 * @param int $id
+	 * @param DataItem|null $dataItem
 	 * @param PropertyTableDefinition $propTable
-	 * @param RequestOptions $requestOptions
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */

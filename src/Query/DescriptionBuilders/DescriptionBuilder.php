@@ -112,8 +112,8 @@ abstract class DescriptionBuilder {
 	 * to consist only of the remaining effective value string (without the
 	 * comparator).
 	 *
-	 * @param string $value
-	 * @param string|integer $comparator
+	 * @param string|null $value
+	 * @param string|int &$comparator
 	 */
 	protected function prepareValue( ?DIProperty $property = null, &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );

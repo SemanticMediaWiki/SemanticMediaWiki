@@ -24,7 +24,7 @@ class Table {
 	private $name;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCoreTable = true;
 

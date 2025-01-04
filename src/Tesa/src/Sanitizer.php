@@ -76,7 +76,7 @@ class Sanitizer {
 	/**
 	 * @since 0.1
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 */
 	public function applyTransliteration( $flag = Transliterator::DIACRITICS ) {
 		$this->string = Normalizer::applyTransliteration( $this->string, $flag );
@@ -87,7 +87,7 @@ class Sanitizer {
 	 *
 	 * @since 0.1
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 */
 	public function convertDoubleWidth() {
 		$this->string = Normalizer::convertDoubleWidth( $this->string );
@@ -146,7 +146,7 @@ class Sanitizer {
 	/**
 	 * @since 0.1
 	 *
-	 * @param integer $length
+	 * @param int $length
 	 */
 	public function reduceLengthTo( $length ) {
 		$this->string = Normalizer::reduceLengthTo( $this->string, $length );

@@ -30,7 +30,7 @@ class ChangePropagationEntityLookup {
 	private $iteratorFactory;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isTypePropagation = false;
 

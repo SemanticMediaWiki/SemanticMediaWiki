@@ -35,7 +35,7 @@ class DummyClient extends Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @param \Elasticsearch\Client $client
+	 * @param \Elasticsearch\Client|null $client
 	 * @param Cache|null $cache
 	 * @param Config|null $config
 	 */

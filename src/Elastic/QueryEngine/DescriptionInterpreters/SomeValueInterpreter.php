@@ -260,7 +260,7 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param DIBlob $dataItem
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */
@@ -335,7 +335,7 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param DIUri $dataItem
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */
@@ -388,7 +388,7 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param DIGeoCoord $dataItem
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */
@@ -437,7 +437,7 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param mixed $value
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */

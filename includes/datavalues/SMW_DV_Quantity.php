@@ -188,7 +188,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		$this->initConversionData(); // needed to normalise unit strings
 		$this->m_displayunits = [];
 
-		if ( is_null( $this->m_property ) || is_null( $this->m_property->getDIWikiPage() ) ) {
+		if ( $this->m_property === null || $this->m_property->getDIWikiPage() === null ) {
 			return;
 		}
 

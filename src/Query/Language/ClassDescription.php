@@ -49,7 +49,7 @@ class ClassDescription extends Description {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $hierarchyDepth
+	 * @param int $hierarchyDepth
 	 */
 	public function setHierarchyDepth( $hierarchyDepth ) {
 		if ( $hierarchyDepth > $GLOBALS['smwgQSubcategoryDepth'] ) {
@@ -62,7 +62,7 @@ class ClassDescription extends Description {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer|null
+	 * @return int|null
 	 */
 	public function getHierarchyDepth() {
 		return $this->hierarchyDepth;

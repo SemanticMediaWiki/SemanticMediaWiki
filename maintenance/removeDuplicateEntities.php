@@ -149,5 +149,5 @@ class removeDuplicateEntities extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = removeDuplicateEntities::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

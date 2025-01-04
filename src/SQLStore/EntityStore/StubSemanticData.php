@@ -55,7 +55,7 @@ class StubSemanticData extends SemanticData {
 	/**
 	 * Whether SubSemanticData have been requested and added
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $subSemanticDataInit = false;
 
@@ -127,7 +127,7 @@ class StubSemanticData extends SemanticData {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param [] $sequenceMap
 	 */
 	public function setSequenceMap( $sid, $sequenceMap ) {
@@ -137,7 +137,7 @@ class StubSemanticData extends SemanticData {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param [] $countMap
 	 */
 	public function setCountMap( $sid, $countMap ) {
@@ -352,14 +352,14 @@ class StubSemanticData extends SemanticData {
 	 * @since 1.8
 	 *
 	 * @param string $propertyKey
-	 * @param SMWDIProperty $diProperty if available
+	 * @param SMWDIProperty|null $diProperty if available
 	 *
 	 * @throws DataItemException if property key is not valid
 	 * 	and $diProperty is null
 	 */
 	protected function unstubProperty( $propertyKey, $diProperty = null ) {
 		if ( !array_key_exists( $propertyKey, $this->mProperties ) ) {
-			if ( is_null( $diProperty ) ) {
+			if ( $diProperty === null ) {
 				$diProperty = new DIProperty( $propertyKey, false );
 			}
 

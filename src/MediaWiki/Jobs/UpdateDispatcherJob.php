@@ -49,7 +49,7 @@ class UpdateDispatcherJob extends Job {
 	 *
 	 * @param Title $title
 	 * @param array $params job parameters
-	 * @param integer $id job id
+	 * @param int $id job id
 	 */
 	public function __construct( Title $title, $params = [], $id = 0 ) {
 		parent::__construct( 'smw.updateDispatcher', $title, $params, $id );

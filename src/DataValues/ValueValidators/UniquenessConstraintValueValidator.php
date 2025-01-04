@@ -34,7 +34,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	private $propertySpecificationLookup;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 

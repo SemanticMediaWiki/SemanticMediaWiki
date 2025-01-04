@@ -18,7 +18,7 @@ use Title;
 class SearchResult extends \SearchResult {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasHighlight = false;
 

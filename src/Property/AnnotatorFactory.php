@@ -59,7 +59,7 @@ class AnnotatorFactory {
 	 * @since 3.0
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
-	 * @param Schema $schema
+	 * @param Schema|null $schema
 	 *
 	 * @return SchemaPropertyAnnotator
 	 */

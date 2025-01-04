@@ -22,7 +22,7 @@ class NamespaceConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'allowed_namespaces';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 

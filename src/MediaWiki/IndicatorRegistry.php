@@ -24,17 +24,17 @@ class IndicatorRegistry {
 	private $indicatorProviders = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicators = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $modules = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $inlineStyles = [];
 

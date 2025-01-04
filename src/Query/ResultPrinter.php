@@ -68,7 +68,7 @@ interface ResultPrinter {
 	 *
 	 * @param $context
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryMode( $context );
 

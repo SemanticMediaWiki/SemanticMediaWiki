@@ -542,5 +542,5 @@ class rebuildElasticIndex extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = rebuildElasticIndex::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

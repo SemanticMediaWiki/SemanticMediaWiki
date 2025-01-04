@@ -47,7 +47,7 @@ abstract class DataItemHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $fieldTypeFeatures
+	 * @param int $fieldTypeFeatures
 	 */
 	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
 		$this->fieldTypeFeatures = $fieldTypeFeatures;
@@ -56,7 +56,7 @@ abstract class DataItemHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
 	 * @return boolean
 	 */

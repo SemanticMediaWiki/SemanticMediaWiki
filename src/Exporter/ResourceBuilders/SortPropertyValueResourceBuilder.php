@@ -20,7 +20,7 @@ use SMWExpLiteral as ExpLiteral;
 class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBuilder {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $enabledCollationField = false;
 

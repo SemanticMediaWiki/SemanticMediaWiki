@@ -23,7 +23,7 @@ class AttachmentAnnotator implements PropertyAnnotator {
 	private $containerSemanticData;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $doc = [];
 

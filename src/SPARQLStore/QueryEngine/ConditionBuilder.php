@@ -302,7 +302,7 @@ class ConditionBuilder {
 	 * SingletonCondition objects in the condition, which may
 	 * lead to additional namespaces for serializing its URI.
 	 *
-	 * @param Condition $condition
+	 * @param Condition &$condition
 	 *
 	 * @return string
 	 */
@@ -401,7 +401,7 @@ class ConditionBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $featureFlag
+	 * @param int $featureFlag
 	 *
 	 * @return boolean
 	 */
@@ -424,13 +424,13 @@ class ConditionBuilder {
 	 * Extend the given SPARQL condition by a suitable order by variable,
 	 * if an order by property is set.
 	 *
-	 * @param Condition $sparqlCondition condition to modify
+	 * @param Condition &$sparqlCondition condition to modify
 	 * @param string $mainVariable the variable that represents the value to be ordered
 	 * @param mixed $orderByProperty DIProperty or null
-	 * @param integer $diType DataItem type id if known, or DataItem::TYPE_NOTYPE to determine it from the property
+	 * @param int $diType DataItem type id if known, or DataItem::TYPE_NOTYPE to determine it from the property
 	 */
 	public function addOrderByDataForProperty( Condition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ) {
-		if ( is_null( $orderByProperty ) ) {
+		if ( $orderByProperty === null ) {
 			return;
 		}
 
@@ -445,9 +445,9 @@ class ConditionBuilder {
 	 * Extend the given SPARQL condition by a suitable order by variable,
 	 * possibly adding conditions if required for the type of data.
 	 *
-	 * @param Condition $sparqlCondition condition to modify
+	 * @param Condition &$sparqlCondition condition to modify
 	 * @param string $mainVariable the variable that represents the value to be ordered
-	 * @param integer $diType DataItem type id
+	 * @param int $diType DataItem type id
 	 */
 	public function addOrderByData( Condition &$condition, $mainVariable, $diType ) {
 		if ( $diType !== DataItem::TYPE_WIKIPAGE ) {
@@ -475,7 +475,7 @@ class ConditionBuilder {
 	 * this operation, every key in sortKeys is assigned to a query
 	 * variable by $sparqlCondition->orderVariables.
 	 *
-	 * @param Condition $condition condition to modify
+	 * @param Condition &$condition condition to modify
 	 */
 	protected function addMissingOrderByConditions( Condition &$condition ) {
 		foreach ( $this->sortKeys as $propertyKey => $order ) {

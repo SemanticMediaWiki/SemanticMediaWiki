@@ -121,8 +121,8 @@ class SMWQuery implements QueryContext {
 	/**
 	 * @since 1.6
 	 *
-	 * @param Description $description
-	 * @param integer|boolean $context
+	 * @param Description|null $description
+	 * @param int|bool $context
 	 */
 	public function __construct( ?Description $description = null, $context = false ) {
 		$inline = false;
@@ -269,7 +269,7 @@ class SMWQuery implements QueryContext {
 	public function setExtraPrintouts( $extraprintouts ) {
 		$this->m_extraprintouts = $extraprintouts;
 
-		if ( !is_null( $this->description ) ) {
+		if ( $this->description !== null ) {
 			foreach ( $extraprintouts as $printout ) {
 				$this->description->addPrintRequest( $printout );
 			}
@@ -305,7 +305,7 @@ class SMWQuery implements QueryContext {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|integer $key
+	 * @param string|int $key
 	 * @param mixed $value
 	 */
 	public function setOption( $key, $value ) {
@@ -315,7 +315,7 @@ class SMWQuery implements QueryContext {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|integer $key
+	 * @param string|int $key
 	 *
 	 * @return mixed
 	 */
@@ -326,7 +326,7 @@ class SMWQuery implements QueryContext {
 	/**
 	 * @since 1.7
 	 *
-	 * @param  boolean $fresh
+	 * @param boolean $fresh
 	 *
 	 * @return string
 	 */
@@ -340,7 +340,7 @@ class SMWQuery implements QueryContext {
 
 		if ( $this->queryString !== false ) {
 			return $this->queryString;
-		} elseif ( !is_null( $this->description ) ) {
+		} elseif ( $this->description !== null ) {
 			return $this->description->getQueryString();
 		} else {
 			return '';
@@ -371,7 +371,7 @@ class SMWQuery implements QueryContext {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer $offset
+	 * @param int $offset
 	 */
 	public function setUnboundOffset( $offset ) {
 		$this->offset = (int)$offset;
@@ -400,7 +400,7 @@ class SMWQuery implements QueryContext {
 	 *
 	 * @since 2.0
 	 *
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function setUnboundLimit( $limit ) {
 		$this->limit = (int)$limit;
@@ -432,7 +432,7 @@ class SMWQuery implements QueryContext {
 	public function applyRestrictions() {
 		global $smwgQMaxSize, $smwgQMaxDepth, $smwgQConceptMaxSize, $smwgQConceptMaxDepth;
 
-		if ( !is_null( $this->description ) ) {
+		if ( $this->description !== null ) {
 			if ( $this->isUsedInConcept ) {
 				$maxsize = $smwgQConceptMaxSize;
 				$maxdepth = $smwgQConceptMaxDepth;

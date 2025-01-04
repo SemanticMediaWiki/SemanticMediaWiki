@@ -13,7 +13,7 @@ use SMW\PropertyAnnotator;
 class AttachmentLinkPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $attachments;
 

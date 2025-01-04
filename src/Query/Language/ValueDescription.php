@@ -43,7 +43,7 @@ class ValueDescription extends Description {
 	/**
 	 * @param DataItem $dataItem
 	 * @param null|DIProperty $property
-	 * @param integer $comparator
+	 * @param int $comparator
 	 */
 	public function __construct( DataItem $dataItem, ?DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
 		$this->dataItem = $dataItem;
@@ -95,7 +95,7 @@ class ValueDescription extends Description {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getComparator() {
 		return $this->comparator;

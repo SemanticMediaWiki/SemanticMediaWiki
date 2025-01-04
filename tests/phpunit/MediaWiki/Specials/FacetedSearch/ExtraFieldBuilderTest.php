@@ -41,4 +41,3 @@ class ExtraFieldBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

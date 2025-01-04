@@ -50,7 +50,7 @@ class DataItemHandlerFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $fieldTypeFeatures
+	 * @param int $fieldTypeFeatures
 	 */
 	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
 		$this->fieldTypeFeatures = $fieldTypeFeatures;

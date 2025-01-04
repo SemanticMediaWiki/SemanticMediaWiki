@@ -156,7 +156,7 @@ class ImportContents {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function setNamespace( $namespace ) {
 		$this->namespace = $namespace;

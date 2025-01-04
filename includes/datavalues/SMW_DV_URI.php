@@ -41,7 +41,7 @@ class SMWURIValue extends SMWDataValue {
 	private $m_mode;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showUrlContextInRawFormat = true;
 
@@ -55,19 +55,19 @@ class SMWURIValue extends SMWDataValue {
 		switch ( $typeid ) {
 			case '_ema':
 				$this->m_mode = SMW_URI_MODE_EMAIL;
-			break;
+				break;
 			case '_anu':
 				$this->m_mode = SMW_URI_MODE_ANNOURI;
-			break;
+				break;
 			case '_tel':
 				$this->m_mode = SMW_URI_MODE_TEL;
-			break;
+				break;
 			case '__spu':
 			case '_uri':
 			case '_url':
 			default:
 				$this->m_mode = SMW_URI_MODE_URI;
-			break;
+				break;
 		}
 
 		$this->schemeList = array_flip( $GLOBALS['smwgURITypeSchemeList'] );
@@ -89,7 +89,6 @@ class SMWURIValue extends SMWDataValue {
 		switch ( $this->m_mode ) {
 			case SMW_URI_MODE_URI:
 			case SMW_URI_MODE_ANNOURI:
-
 				// Whether the url value was externally encoded or not
 				if ( strpos( $value, "%" ) === false ) {
 					$this->showUrlContextInRawFormat = false;
@@ -234,7 +233,7 @@ class SMWURIValue extends SMWDataValue {
 	public function getShortWikiText( $linked = null ) {
 		[ $url, $caption ] = $this->decodeUriContext( $this->m_caption, $linked );
 
-		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
+		if ( $linked === null || ( $linked === false ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
 			return $caption;
 		} elseif ( $this->m_outformat == 'nowiki' ) {
@@ -247,7 +246,7 @@ class SMWURIValue extends SMWDataValue {
 	public function getShortHTMLText( $linker = null ) {
 		[ $url, $caption ] = $this->decodeUriContext( $this->m_caption, $linker );
 
-		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
+		if ( $linker === null || ( !$this->isValid() ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ||
 			( $this->m_caption === '' ) || $linker === false ) {
 			return $caption;
@@ -281,7 +280,7 @@ class SMWURIValue extends SMWDataValue {
 
 		[ $url, $wikitext ] = $this->decodeUriContext( $this->m_wikitext, $linker );
 
-		if ( is_null( $linker ) || $linker === false || $url === '' ||
+		if ( $linker === null || $linker === false || $url === '' ||
 			$this->m_outformat == '-' || $this->m_outformat == 'nowiki' ) {
 			return $wikitext;
 		}

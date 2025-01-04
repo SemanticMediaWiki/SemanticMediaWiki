@@ -183,7 +183,7 @@ class Timezone {
 	 *
 	 * @param string $identifer
 	 *
-	 * @return false|integer
+	 * @return false|int
 	 */
 	public static function getIdByAbbreviation( $identifer ) {
 		if ( isset( self::$shortList[strtoupper( $identifer )] ) ) {
@@ -203,7 +203,7 @@ class Timezone {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $identifer
+	 * @param int $identifer
 	 *
 	 * @return false|string
 	 */
@@ -341,7 +341,7 @@ class Timezone {
 	 * @since 2.5
 	 *
 	 * @param DateTime $dateTime
-	 * @param string|integer &$tz
+	 * @param string|int &$tz
 	 *
 	 * @return DateTime
 	 */

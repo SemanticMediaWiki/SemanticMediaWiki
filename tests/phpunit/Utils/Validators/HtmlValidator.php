@@ -19,7 +19,7 @@ class HtmlValidator extends \PHPUnit\Framework\Assert {
 	private $documentCache = [];
 
 	/**
-	 * @var null|boolean
+	 * @var null|bool
 	 */
 	private $canUse;
 

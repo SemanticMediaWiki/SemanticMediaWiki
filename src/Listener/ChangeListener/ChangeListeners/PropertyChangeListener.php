@@ -27,12 +27,12 @@ class PropertyChangeListener implements ChangeListener {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $propertyIdKeyMap = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $changes = [];
 
@@ -87,7 +87,7 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $pid
+	 * @param int $pid
 	 * @param array $record
 	 *
 	 * @throws RuntimeException

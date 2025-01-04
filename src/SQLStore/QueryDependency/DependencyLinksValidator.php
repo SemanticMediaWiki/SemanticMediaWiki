@@ -24,12 +24,12 @@ class DependencyLinksValidator {
 	private $store;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $checkDependencies = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $checkedDependencies = [];
 
@@ -63,7 +63,7 @@ class DependencyLinksValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getCheckedDependencies() {
 		return $this->checkedDependencies;

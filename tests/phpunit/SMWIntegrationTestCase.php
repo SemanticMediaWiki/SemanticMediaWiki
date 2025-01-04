@@ -53,17 +53,17 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	protected $storesToBeExcluded = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $destroyDatabaseTablesBeforeRun = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $destroyDatabaseTablesAfterRun = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isUsableUnitTestDatabase = true;
 

@@ -67,7 +67,7 @@ class PropertyTableUpdater {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param Parameters $parameters
 	 */
 	public function update( $id, Parameters $parameters ) {

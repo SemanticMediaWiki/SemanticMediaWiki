@@ -28,7 +28,7 @@ class ApiTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	private $stringValidator;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 

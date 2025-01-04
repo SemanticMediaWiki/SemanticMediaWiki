@@ -113,7 +113,7 @@ class Options implements JsonUnserializable {
 	 * @since 3.0
 	 *
 	 * @param string $key
-	 * @param integer $flag
+	 * @param int $flag
 	 *
 	 * @return boolean
 	 */

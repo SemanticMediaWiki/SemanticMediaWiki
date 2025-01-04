@@ -31,7 +31,7 @@ class ExtensionSchemaUpdates implements HookListener {
 	/**
 	 * @since  2.0
 	 *
-	 * @param DatabaseUpdater $updater = null
+	 * @param DatabaseUpdater|null $updater = null
 	 */
 	public function __construct( ?DatabaseUpdater $updater = null ) {
 		$this->updater = $updater;
@@ -40,7 +40,7 @@ class ExtensionSchemaUpdates implements HookListener {
 	/**
 	 * @since 3.1
 	 *
-	 * @param array $params
+	 * @param array &$params
 	 */
 	public static function addMaintenanceUpdateParams( &$params ) {
 		// For details, see https://github.com/wikimedia/mediawiki/commit/a6facc8a0a4f9b54e0cfb1e5ef6f3991de752342

@@ -29,17 +29,17 @@ class ConstraintRegistry {
 	private $constraintFactory;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $constraints = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $instances = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 
@@ -69,7 +69,7 @@ class ConstraintRegistry {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getConstraintKeys() {
 		if ( $this->constraints === [] ) {

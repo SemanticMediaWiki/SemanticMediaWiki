@@ -15,8 +15,8 @@ class NumberValidator extends \PHPUnit\Framework\Assert {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|string $expected
-	 * @param integer|string $actual
+	 * @param int|string $expected
+	 * @param int|string $actual
 	 */
 	public function assertThatNumberComparesTo( $expected, $actual, $message = '' ) {
 		return $this->doAssertWith( $expected, $actual, $message );
@@ -25,7 +25,7 @@ class NumberValidator extends \PHPUnit\Framework\Assert {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|string $expected
+	 * @param int|string $expected
 	 * @param array $actual
 	 */
 	public function assertThatCountComparesTo( $expected, array $actual, $message = '' ) {

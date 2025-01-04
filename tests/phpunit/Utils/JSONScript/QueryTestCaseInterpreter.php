@@ -62,7 +62,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryMode() {
 		return isset( $this->contents['parameters']['querymode'] ) ? constant( $this->contents['parameters']['querymode'] ) : \SMWQuery::MODE_INSTANCES;
@@ -71,7 +71,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLimit() {
 		return isset( $this->contents['parameters']['limit'] ) ? (int)$this->contents['parameters']['limit'] : 100;
@@ -80,7 +80,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getOffset() {
 		return isset( $this->contents['parameters']['offset'] ) ? (int)$this->contents['parameters']['offset'] : 0;
@@ -160,7 +160,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSortKeys() {
 		if ( isset( $this->contents['parameters']['sort'] ) ) {
@@ -187,7 +187,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getExpectedCount() {
 		return isset( $this->contents['assert-queryresult']['count'] ) ? (int)$this->contents['assert-queryresult']['count'] : 0;
@@ -259,7 +259,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getExpectedErrorCount() {
 		if ( !isset( $this->contents['assert-queryresult']['error'] ) ) {
@@ -312,7 +312,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getExpectedConceptCache() {
 		return isset( $this->contents['conceptcache'] ) ? $this->contents['conceptcache'] : [];

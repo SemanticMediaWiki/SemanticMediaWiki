@@ -23,7 +23,7 @@ class SchemaPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 * @since 3.0
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
-	 * @param Schema $schema
+	 * @param Schema|null $schema
 	 */
 	public function __construct( PropertyAnnotator $propertyAnnotator, ?Schema $schema = null ) {
 		parent::__construct( $propertyAnnotator );

@@ -40,17 +40,17 @@ class ChangePropagationNotifier {
 	private $propertyList = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasDiff = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isTypePropagation = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 

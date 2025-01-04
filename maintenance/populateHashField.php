@@ -215,7 +215,7 @@ class populateHashField extends \Maintenance {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Iterator $rows
+	 * @param Iterator|null $rows
 	 */
 	public function populate( ?\Iterator $rows = null ) {
 		$this->cliMsgFormatter = new CliMsgFormatter();
@@ -286,5 +286,5 @@ class populateHashField extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = populateHashField::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

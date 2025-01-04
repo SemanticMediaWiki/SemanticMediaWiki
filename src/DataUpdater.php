@@ -51,27 +51,27 @@ class DataUpdater {
 	private $changePropagationNotifier;
 
 	/**
-	 * @var boolean|null
+	 * @var bool|null
 	 */
 	private $canCreateUpdateJob = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $processSemantics = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $isChangeProp = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isDeferrableUpdate = false;
 

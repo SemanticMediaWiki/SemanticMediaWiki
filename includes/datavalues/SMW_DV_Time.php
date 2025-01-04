@@ -209,7 +209,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * returned. Otherwise, true is returned.
 	 *
 	 * @param $datecomponents array of strings that might belong to the specification of a date
-	 * @param $date array set to result
+	 * @param &$date array set to result
 	 *
 	 * @return boolean stating if successful
 	 */
@@ -398,9 +398,9 @@ class SMWTimeValue extends SMWDataValue {
 	 * interpretations.
 	 *
 	 * @param $component string
-	 * @param $numvalue integer representing the components value
+	 * @param &$numvalue integer representing the components value
 	 *
-	 * @return integer that encodes a three-digit bit vector
+	 * @return int that encodes a three-digit bit vector
 	 */
 	protected static function checkDateComponent( $component, &$numvalue ) {
 		if ( $component === '' ) { // should not happen
@@ -443,7 +443,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @param $month mixed integer of the month or false
 	 * @param $day mixed integer of the day or false
 	 *
-	 * @return integer either DITime::CM_GREGORIAN or DITime::CM_JULIAN
+	 * @return int either DITime::CM_GREGORIAN or DITime::CM_JULIAN
 	 */
 	protected function getCalendarModel( $presetmodel, $year, $month, $day ) {
 		// Old Style is a notational convention of Julian dates only
@@ -664,12 +664,12 @@ class SMWTimeValue extends SMWDataValue {
 		if ( $this->m_dataitem->getYear() <= self::PREHISTORY ) {
 			return ( $this->m_dataitem->getCalendarModel() == $calendarmodel ) ? $this->m_dataitem : null;
 		} elseif ( $calendarmodel == DITime::CM_GREGORIAN ) {
-			if ( is_null( $this->m_dataitem_greg ) ) {
+			if ( $this->m_dataitem_greg === null ) {
 				$this->m_dataitem_greg = $this->m_dataitem->getForCalendarModel( DITime::CM_GREGORIAN );
 			}
 			return $this->m_dataitem_greg;
 		} else {
-			if ( is_null( $this->m_dataitem_jul ) ) {
+			if ( $this->m_dataitem_jul === null ) {
 				$this->m_dataitem_jul = $this->m_dataitem->getForCalendarModel( DITime::CM_JULIAN );
 			}
 			return $this->m_dataitem_jul;

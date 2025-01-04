@@ -16,7 +16,7 @@ use SMW\Services\ServicesFactory;
 class SequenceMap {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $canMap = [];
 

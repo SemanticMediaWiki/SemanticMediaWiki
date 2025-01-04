@@ -446,7 +446,7 @@ class LocalLanguage {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer|null $precision
+	 * @param int|null $precision
 	 *
 	 * @return string
 	 */
@@ -480,7 +480,7 @@ class LocalLanguage {
 	 *
 	 * @param string $label
 	 *
-	 * @return false|integer
+	 * @return false|int
 	 */
 	public function findMonthNumberByLabel( $label ) {
 		$languageCode = $this->languageCode;
@@ -512,7 +512,7 @@ class LocalLanguage {
 	 *
 	 * @since 2.4
 	 *
-	 * @param integer $number
+	 * @param int $number
 	 *
 	 * @return array
 	 */

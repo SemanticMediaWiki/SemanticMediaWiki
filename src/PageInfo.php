@@ -19,7 +19,7 @@ interface PageInfo {
 	 *
 	 * @since 1.9
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getModificationDate();
 
@@ -28,7 +28,7 @@ interface PageInfo {
 	 *
 	 * @since 1.9
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getCreationDate();
 

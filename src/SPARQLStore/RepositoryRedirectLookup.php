@@ -55,7 +55,7 @@ class RepositoryRedirectLookup {
 	 * @since 1.6
 	 *
 	 * @param ExpNsResource $expNsResource string URI to check
-	 * @param boolean $existsthat is set to true if $expNsResource is in the
+	 * @param boolean &$existsthat is set to true if $expNsResource is in the
 	 * store; always false for blank nodes; always true for subobjects
 	 *
 	 * @return ExpNsResource
@@ -81,7 +81,7 @@ class RepositoryRedirectLookup {
 			return $expNsResource;
 		}
 
-		if ( is_array( $firstRow ) && count( $firstRow ) > 1 && !is_null( $firstRow[1] ) ) {
+		if ( is_array( $firstRow ) && count( $firstRow ) > 1 && $firstRow[1] !== null ) {
 			return $this->getResourceForTargetElement( $expNsResource, $firstRow[1] );
 		}
 

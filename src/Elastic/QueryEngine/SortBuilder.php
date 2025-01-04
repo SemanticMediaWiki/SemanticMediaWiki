@@ -34,7 +34,7 @@ class SortBuilder {
 	private $scoreField;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isScoreSort = false;
 

@@ -145,15 +145,15 @@ class SMWPropertyListValue extends SMWDataValue {
 	protected function makeValueOutputText( $type, $propertyValue, $linker ) {
 		switch ( $type ) {
 			case 0:
-			return $propertyValue->getShortWikiText( $linker );
+				return $propertyValue->getShortWikiText( $linker );
 			case 1:
-			return $propertyValue->getShortHTMLText( $linker );
+				return $propertyValue->getShortHTMLText( $linker );
 			case 2:
-			return $propertyValue->getLongWikiText( $linker );
+				return $propertyValue->getLongWikiText( $linker );
 			case 3:
-			return $propertyValue->getLongHTMLText( $linker );
+				return $propertyValue->getLongHTMLText( $linker );
 			case 4:
-			return $propertyValue->getWikiValue();
+				return $propertyValue->getWikiValue();
 		}
 	}
 }

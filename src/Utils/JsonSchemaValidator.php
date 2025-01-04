@@ -25,7 +25,7 @@ class JsonSchemaValidator {
 	private $isValid = true;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $errors = [];
 
@@ -99,7 +99,7 @@ class JsonSchemaValidator {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getErrors() {
 		return $this->errors;

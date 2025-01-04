@@ -86,7 +86,7 @@ class ParserData {
 	private $errors = [];
 
 	/**
-	 * @var $canCreateUpdateJob
+	 * @var
 	 */
 	private $canCreateUpdateJob = true;
 

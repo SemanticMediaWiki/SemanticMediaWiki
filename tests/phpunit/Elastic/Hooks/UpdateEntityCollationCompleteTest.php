@@ -66,7 +66,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 		$callback = static function ( $type ) use ( $connection, $database ) {
 			if ( $type === 'mw.db' ) {
 				return $database;
-			};
+			}
 
 			return $connection;
 		};

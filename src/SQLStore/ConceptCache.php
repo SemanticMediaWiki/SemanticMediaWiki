@@ -49,7 +49,7 @@ class ConceptCache {
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer $upperLimit
+	 * @param int $upperLimit
 	 */
 	public function setUpperLimit( $upperLimit ) {
 		$this->upperLimit = (int)$upperLimit;

@@ -20,7 +20,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 	use FilterTrait;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $properties = [];
 

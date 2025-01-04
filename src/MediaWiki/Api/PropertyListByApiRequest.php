@@ -63,7 +63,7 @@ class PropertyListByApiRequest {
 	private $languageCode = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $listOnly = false;
 
@@ -81,7 +81,7 @@ class PropertyListByApiRequest {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function setLimit( $limit ) {
 		$this->limit = (int)$limit;

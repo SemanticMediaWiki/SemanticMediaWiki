@@ -19,7 +19,7 @@ class StripMarkerDecoder {
 	private $stripState;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isSupported = false;
 

@@ -108,4 +108,3 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

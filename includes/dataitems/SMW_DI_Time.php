@@ -117,7 +117,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @param $hour mixed integer number or false
 	 * @param $minute mixed integer number or false
 	 * @param $second mixed integer number or false
-	 * @param integer|false $timezone
+	 * @param int|false $timezone
 	 *
 	 * @todo Implement more validation here.
 	 */
@@ -157,7 +157,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDIType() {
 		return SMWDataItem::TYPE_TIME;
@@ -166,7 +166,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getCalendarModel() {
 		return $this->m_model;
@@ -175,7 +175,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 2.5
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimezone() {
 		return $this->timezone;
@@ -184,7 +184,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getPrecision() {
 		return $this->m_precision;
@@ -200,7 +200,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 *
 	 * @since 2.4
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getEra() {
 		return $this->era;
@@ -209,7 +209,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getYear() {
 		return $this->m_year;
@@ -218,7 +218,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getMonth() {
 		return $this->m_month;
@@ -227,7 +227,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDay() {
 		return $this->m_day;
@@ -236,7 +236,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getHour() {
 		return $this->m_hours;
@@ -245,7 +245,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getMinute() {
 		return $this->m_minutes;
@@ -254,7 +254,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSecond() {
 		return $this->m_seconds;
@@ -505,8 +505,8 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * calendar model, presicion.
 	 *
 	 * @param double $jdValue
-	 * @param integer|null $calendarmodel
-	 * @param integer|null $precision
+	 * @param int|null $calendarmodel
+	 * @param int|null $precision
 	 *
 	 * @return self
 	 */

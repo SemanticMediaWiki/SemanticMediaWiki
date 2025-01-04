@@ -25,14 +25,14 @@ use User;
 class TaskFactory {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $services;
 
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getAllowedTypes() {
 		if ( self::$services === null ) {

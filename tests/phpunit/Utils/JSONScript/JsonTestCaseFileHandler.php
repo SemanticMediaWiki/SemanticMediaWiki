@@ -319,7 +319,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return array|integer|string|boolean
+	 * @return array|int|string|bool
 	 * @throws RuntimeException
 	 */
 	public function getSettingsFor( $key, $callback = null ) {
@@ -480,7 +480,7 @@ class JsonTestCaseFileHandler {
 	 *
 	 * @param string $type
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function countTestCasesByType( $type ) {
 		return count( $this->findTestCasesByType( $type ) );

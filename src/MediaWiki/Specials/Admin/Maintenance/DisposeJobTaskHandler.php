@@ -36,7 +36,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	private $refreshjob = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isApiTask = true;
 

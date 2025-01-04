@@ -144,7 +144,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	 * @since  1.9
 	 *
 	 * @param array $messages
-	 * @param integer $count
+	 * @param int $count
 	 */
 	public function testFormat( array $messages, $count ) {
 		$instance = $this->getInstance();

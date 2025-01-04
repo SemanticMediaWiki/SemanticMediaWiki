@@ -34,7 +34,7 @@ class SchemaTypes implements JsonSerializable {
 	/**
 	 * Default types
 	 *
-	 * @var []
+	 * @var
 	 */
 	private static $defaultTypes = [
 		'LINK_FORMAT_SCHEMA' => [
@@ -148,7 +148,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @param string $type
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getType( string $type ): array {
 		return $this->schemaTypes[$type] ?? [];
@@ -168,7 +168,7 @@ class SchemaTypes implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getRegisteredTypes(): array {
 		return array_keys( $this->schemaTypes );
@@ -179,7 +179,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @param string $group
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getRegisteredTypesByGroup( string $group ): array {
 		$registeredTypes = [];

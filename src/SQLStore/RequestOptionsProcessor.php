@@ -114,17 +114,17 @@ class RequestOptionsProcessor {
 				switch ( $strcond->condition ) {
 					case StringCondition::COND_PRE:
 						$string .= '%';
-					break;
+						break;
 					case StringCondition::COND_POST:
 						$string = '%' . $string;
-					break;
+						break;
 					case StringCondition::COND_MID:
 						$string = '%' . $string . '%';
-					break;
+						break;
 					case StringCondition::COND_EQ:
 						$string = $strcond->string;
 						$condition = '=';
-					break;
+						break;
 				}
 
 				$conditionOperator = $strcond->isOr ? ' OR ' : ' AND ';

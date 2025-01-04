@@ -20,7 +20,7 @@ class TemporaryTableBuilder {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $autoCommitFlag = false;
 

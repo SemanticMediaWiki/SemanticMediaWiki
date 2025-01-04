@@ -37,7 +37,7 @@ class RedirectStore {
 	private $equalitySupport = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
@@ -68,7 +68,7 @@ class RedirectStore {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $equalitySupport
+	 * @param int $equalitySupport
 	 */
 	public function setEqualitySupport( int $equalitySupport ) {
 		$this->equalitySupport = new Flag( $equalitySupport );
@@ -93,7 +93,7 @@ class RedirectStore {
 	 * @since 3.0
 	 *
 	 * @param string $title DB key
-	 * @param integer $namespace
+	 * @param int $namespace
 	 *
 	 * @return boolean
 	 */
@@ -107,9 +107,9 @@ class RedirectStore {
 	 * @since 2.1
 	 *
 	 * @param string $title DB key
-	 * @param integer $namespace
+	 * @param int $namespace
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function findRedirect( $title, $namespace ) {
 		$hash = $this->makeHash(
@@ -131,9 +131,9 @@ class RedirectStore {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function addRedirect( $id, $title, $namespace ) {
 		$this->insert( $id, $title, $namespace );
@@ -151,7 +151,7 @@ class RedirectStore {
 	 *
 	 * @param string $id
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function updateRedirect( $id, $title, $namespace ) {
 		$this->deleteRedirect( $title, $namespace );
@@ -234,7 +234,7 @@ class RedirectStore {
 	 * @since 2.1
 	 *
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function deleteRedirect( $title, $namespace ) {
 		$this->delete( $title, $namespace );

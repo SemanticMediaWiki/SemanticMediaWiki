@@ -42,7 +42,7 @@ class PHPUnitEnvironment {
 	}
 
 	/**
-	 * @return boolean|integer
+	 * @return bool|int
 	 */
 	public function getXdebugInfo() {
 		if ( extension_loaded( 'xdebug' ) &&

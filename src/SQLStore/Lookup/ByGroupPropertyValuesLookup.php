@@ -25,7 +25,7 @@ class ByGroupPropertyValuesLookup {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $cache = [];
 

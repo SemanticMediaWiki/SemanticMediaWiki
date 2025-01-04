@@ -94,7 +94,7 @@ class PrefetchItemLookup {
 	 * @param DIProperty $property
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPropertyValues( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
 		$this->linkBatch->setCaller( __METHOD__ );

@@ -11,12 +11,12 @@ namespace SMW\Utils;
 class Url {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $info = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $flag = [];
 

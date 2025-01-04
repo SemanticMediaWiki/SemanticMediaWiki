@@ -77,12 +77,12 @@ class QuerySegment {
 	public $fingerprint = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $null = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $not = false;
 

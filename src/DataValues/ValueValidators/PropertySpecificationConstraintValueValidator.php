@@ -15,7 +15,7 @@ use SMWDataValue as DataValue;
 class PropertySpecificationConstraintValueValidator implements ConstraintValueValidator {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 

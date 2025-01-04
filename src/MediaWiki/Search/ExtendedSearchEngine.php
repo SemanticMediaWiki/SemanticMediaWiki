@@ -296,7 +296,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getErrors() {
 		return $this->extendedSearch->getErrors();

@@ -113,9 +113,9 @@ class SMWNumberValue extends SMWDataValue {
 	 * results are stored in the $number and $unit parameters. Returns an
 	 * error code.
 	 * @param $value string to parse
-	 * @param $number call-by-ref parameter that will be set to the numerical value
-	 * @param $unit call-by-ref parameter that will be set to the "unit" string (after the number)
-	 * @return integer 0 (no errors), 1 (no number found at all), 2 (number
+	 * @param &$number call-by-ref parameter that will be set to the numerical value
+	 * @param &$unit call-by-ref parameter that will be set to the "unit" string (after the number)
+	 * @return int 0 (no errors), 1 (no number found at all), 2 (number
 	 * too large for this platform)
 	 */
 	public function parseNumberValue( $value, &$number, &$unit, &$asPrefix = false ) {

@@ -120,7 +120,7 @@ class TaskHandlerFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $adminFeatures
+	 * @param int $adminFeatures
 	 * @param User|null $user
 	 *
 	 * @return SupplementTaskHandler
@@ -175,7 +175,7 @@ class TaskHandlerFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $adminFeatures
+	 * @param int $adminFeatures
 	 *
 	 * @return MaintenanceTaskHandler
 	 */
@@ -261,7 +261,7 @@ class TaskHandlerFactory {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $adminFeatures
+	 * @param int $adminFeatures
 	 *
 	 * @return AlertsTaskHandler
 	 */

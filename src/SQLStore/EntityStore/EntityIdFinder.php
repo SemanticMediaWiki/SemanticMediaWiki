@@ -35,7 +35,7 @@ class EntityIdFinder {
 	private $idCacheManager;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $fetchPropertyTableHashes = false;
 
@@ -66,7 +66,7 @@ class EntityIdFinder {
 	 *
 	 * @param DIWikiPage $dataItem
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function findIdByItem( DIWikiPage $dataItem ) {
 		if ( ( $id = $this->idCacheManager->getId( $dataItem ) ) !== false ) {
@@ -108,9 +108,9 @@ class EntityIdFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $title
-	 * @param string|integer $namespace
+	 * @param string|int $namespace
 	 * @param string $iw
 	 * @param string $subobjectName
 	 * @param string &$sortkey
@@ -178,7 +178,7 @@ class EntityIdFinder {
 	 * @since 3.1
 	 *
 	 * @param string $title
-	 * @param string|integer $namespace
+	 * @param string|int $namespace
 	 * @param string $iw
 	 * @param string $subobjectName
 	 * @param string &$sortkey
@@ -259,8 +259,8 @@ class EntityIdFinder {
 	 * @since 3.1
 	 *
 	 * @param string $title
-	 * @param string|integer $namespace
-	 * @param string $iw
+	 * @param string|int $namespace
+	 * @param string|null $iw
 	 * @param string $subobjectName
 	 *
 	 * @return array

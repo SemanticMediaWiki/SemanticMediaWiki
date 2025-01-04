@@ -32,12 +32,12 @@ class QueryLinksTableDisposer {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $waitForReplication = false;
 
@@ -117,7 +117,7 @@ class QueryLinksTableDisposer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param stdClass|integer $id
+	 * @param stdClass|int $id
 	 */
 	public function cleanUpTableEntriesById( $id ) {
 		$fname = __METHOD__;

@@ -40,7 +40,7 @@ class ExtraFieldBuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @param UrlArgs $urlArgs
+	 * @param UrlArgs|null $urlArgs
 	 *
 	 * @return string
 	 */

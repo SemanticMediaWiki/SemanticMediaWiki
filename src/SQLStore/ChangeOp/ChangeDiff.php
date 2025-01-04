@@ -85,7 +85,7 @@ class ChangeDiff {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $associatedRev
+	 * @param int $associatedRev
 	 */
 	public function setAssociatedRev( $associatedRev ) {
 		$this->associatedRev = $associatedRev;
@@ -94,7 +94,7 @@ class ChangeDiff {
 	/**
 	 * @since 3.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getAssociatedRev() {
 		return $this->associatedRev;
@@ -130,7 +130,7 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getTextItems() {
 		return $this->textItems;
@@ -141,7 +141,7 @@ class ChangeDiff {
 	 *
 	 * @param boolean $op
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPropertyList( $op = false ) {
 		if ( $op === true || $op === 'flip' ) {

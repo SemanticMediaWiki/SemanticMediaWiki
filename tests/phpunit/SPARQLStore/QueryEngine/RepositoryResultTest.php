@@ -121,4 +121,3 @@ class RepositoryResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

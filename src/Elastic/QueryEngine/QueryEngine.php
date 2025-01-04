@@ -201,13 +201,13 @@ class QueryEngine implements IQueryEngine {
 		switch ( $query->querymode ) {
 			case Query::MODE_DEBUG:
 				$result = $this->newDebugQueryResult( $params );
-			break;
+				break;
 			case Query::MODE_COUNT:
 				$result = $this->newCountQueryResult( $query, $params );
-			break;
+				break;
 			default:
 				$result = $this->newInstanceQueryResult( $query, $params );
-			break;
+				break;
 		}
 
 		return $result;

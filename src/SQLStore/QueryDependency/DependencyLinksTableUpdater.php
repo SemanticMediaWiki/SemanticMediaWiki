@@ -55,7 +55,7 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param array|null $dependencyList
 	 */
 	public function addToUpdateList( $sid, ?array $dependencyList = null ) {
@@ -113,7 +113,7 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param array $dependencyList
 	 *
 	 * @return void

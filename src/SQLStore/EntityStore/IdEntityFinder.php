@@ -125,7 +125,7 @@ class IdEntityFinder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return DIWikiPage|null
 	 */

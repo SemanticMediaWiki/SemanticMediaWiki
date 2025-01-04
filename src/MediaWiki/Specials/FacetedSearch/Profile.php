@@ -32,7 +32,7 @@ class Profile {
 	private $profile;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $profileList = [];
 

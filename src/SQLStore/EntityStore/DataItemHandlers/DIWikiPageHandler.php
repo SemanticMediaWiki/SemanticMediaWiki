@@ -203,7 +203,7 @@ class DIWikiPageHandler extends DataItemHandler {
 
 			$wikipage = $property->getCanonicalDiWikiPage( $dbkeys[4] );
 
-			if ( !is_null( $wikipage ) ) {
+			if ( $wikipage !== null ) {
 				return $wikipage;
 			}
 		}

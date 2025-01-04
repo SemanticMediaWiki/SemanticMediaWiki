@@ -40,7 +40,7 @@ final class Setup {
 	 *
 	 * @since 3.1
 	 *
-	 * @param array $vars
+	 * @param array &$vars
 	 */
 	public static function registerExtensionCheck( &$vars ) {
 		$uncaughtExceptionHandler = new UncaughtExceptionHandler(
@@ -65,7 +65,7 @@ final class Setup {
 	/**
 	 * @since 3.2
 	 *
-	 * @param array $vars
+	 * @param array &$vars
 	 */
 	public static function releaseExtensionCheck( &$vars ) {
 		// Restore the exception handler from before Setup::registerExtensionCheck
@@ -181,7 +181,7 @@ final class Setup {
 
 		foreach ( $vars['smwgResourceLoaderDefFiles'] as $key => $file ) {
 			if ( is_readable( $file ) ) {
-				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include( $file ) );
+				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include $file );
 			}
 		}
 	}

@@ -108,4 +108,3 @@ class CategoryFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

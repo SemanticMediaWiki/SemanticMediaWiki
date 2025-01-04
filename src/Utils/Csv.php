@@ -13,12 +13,12 @@ class Csv {
 	const DEFAULT_SEP = ',';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $show = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $bom = false;
 

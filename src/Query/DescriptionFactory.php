@@ -29,7 +29,7 @@ class DescriptionFactory {
 	 *
 	 * @param DataItem $dataItem
 	 * @param DIProperty|null $property = null
-	 * @param integer $comparator
+	 * @param int $comparator
 	 *
 	 * @return ValueDescription
 	 */
@@ -83,7 +83,7 @@ class DescriptionFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $ns
+	 * @param int $ns
 	 *
 	 * @return NamespaceDescription
 	 */

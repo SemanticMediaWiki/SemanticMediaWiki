@@ -19,7 +19,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	use FilterTrait;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $categories = [];
 

@@ -162,7 +162,7 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @since  1.9
 	 *
-	 * @param integer $index
+	 * @param int &$index
 	 */
 	public function refreshDataCallback( &$index ) {
 		$this->controlRefreshDataIndex = $index;

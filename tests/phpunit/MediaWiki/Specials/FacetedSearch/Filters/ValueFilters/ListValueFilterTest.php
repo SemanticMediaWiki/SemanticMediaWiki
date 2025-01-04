@@ -73,4 +73,3 @@ class ListValueFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

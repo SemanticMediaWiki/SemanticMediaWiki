@@ -142,7 +142,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 				default:
 					$expectedPostField = '&default-graph-uri=' . $encodedDefaultGraph;
 					break;
-			};
+			}
 
 			$provider[] = [ $repositoryConnector, $expectedPostField ];
 		}
@@ -163,7 +163,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 				default:
 					$expectedPostField = 'update=';
 					break;
-			};
+			}
 
 			$provider[] = [ $repositoryConnector, $expectedPostField ];
 		}

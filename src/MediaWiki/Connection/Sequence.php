@@ -62,7 +62,7 @@ class Sequence {
 	 * @param string $tableName
 	 * @param string $field
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function restart( $table, $field ) {
 		if ( $this->connection->getType() !== 'postgres' ) {

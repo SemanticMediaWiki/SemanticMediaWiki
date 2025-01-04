@@ -142,7 +142,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	/**
-	 * @param integer $id
+	 * @param int $id
 	 * @param User|null $use
 	 */
 	private function doDispose( $id ) {

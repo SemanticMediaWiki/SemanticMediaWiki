@@ -11,7 +11,7 @@ namespace SMW\MediaWiki\Template;
 class TemplateSet {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $templates = [];
 

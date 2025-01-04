@@ -14,7 +14,7 @@ use SMW\SetupCheck;
 class ConnectionManager {
 
 	/**
-	 * @var boolean|null
+	 * @var bool|null
 	 */
 	private static $isConnectable;
 

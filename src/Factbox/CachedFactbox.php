@@ -32,7 +32,7 @@ class CachedFactbox {
 	private $entityCache;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCached = false;
 
@@ -52,7 +52,7 @@ class CachedFactbox {
 	private $showFactbox = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEnabled = true;
 
@@ -90,7 +90,7 @@ class CachedFactbox {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $featureSet
+	 * @param int $featureSet
 	 */
 	public function setFeatureSet( $featureSet ) {
 		$this->featureSet = $featureSet;
@@ -99,7 +99,7 @@ class CachedFactbox {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $showFactboxEdit
+	 * @param int $showFactboxEdit
 	 */
 	public function setShowFactboxEdit( $showFactboxEdit ) {
 		$this->showFactboxEdit = $showFactboxEdit;
@@ -108,7 +108,7 @@ class CachedFactbox {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $showFactbox
+	 * @param int $showFactbox
 	 */
 	public function setShowFactbox( $showFactbox ) {
 		$this->showFactbox = $showFactbox;
@@ -117,7 +117,7 @@ class CachedFactbox {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $cacheTTL
+	 * @param int $cacheTTL
 	 */
 	public function setCacheTTL( $cacheTTL ) {
 		$this->cacheTTL = $cacheTTL;
@@ -135,7 +135,7 @@ class CachedFactbox {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimestamp() {
 		return $this->timestamp;
@@ -144,7 +144,7 @@ class CachedFactbox {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function makeCacheKey( $id ) {
 		if ( $id instanceof Title ) {
@@ -247,7 +247,7 @@ class CachedFactbox {
 	 *
 	 * @param string $key
 	 * @param string $text
-	 * @param integer|null $revisionId
+	 * @param int|null $revisionId
 	 */
 	public function addContentToCache( $key, $text, $rev_id = null, $lang = 'en', $feature_set = null ) {
 		$this->saveToCache(

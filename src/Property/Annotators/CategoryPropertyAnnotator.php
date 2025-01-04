@@ -33,22 +33,22 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $hiddenCategories = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showHiddenCategories = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $useCategoryInstance = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $useCategoryHierarchy = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $useCategoryRedirect = true;
 

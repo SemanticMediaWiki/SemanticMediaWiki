@@ -38,7 +38,7 @@ class QueryTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	private $numberValidator;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 

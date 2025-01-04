@@ -46,12 +46,12 @@ class SchemaContent extends JsonContent {
 	private $parse;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isYaml = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isValid;
 

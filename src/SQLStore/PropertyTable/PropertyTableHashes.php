@@ -43,7 +43,7 @@ class PropertyTableHashes {
 	 *
 	 * @since 3.1
 	 *
-	 * @param integer $id ID of the page as stored in SMW IDs table
+	 * @param int $id ID of the page as stored in SMW IDs table
 	 * @param string[] of hash values with table names as keys
 	 */
 	public function setPropertyTableHashes( $id, $hash = null ) {
@@ -96,7 +96,7 @@ class PropertyTableHashes {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $id ID of the page as stored in the SMW IDs table
+	 * @param int $id ID of the page as stored in the SMW IDs table
 	 *
 	 * @return array
 	 */

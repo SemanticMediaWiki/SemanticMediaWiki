@@ -34,12 +34,12 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	private $user;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRestrictedUpdate = false;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $editProtectionRight = false;
 

@@ -50,8 +50,8 @@ class IdChanger {
 	 *
 	 * @since 3.1
 	 *
-	 * @param integer $curid
-	 * @param integer $targetid
+	 * @param int $curid
+	 * @param int $targetid
 	 *
 	 * @return \stdClass
 	 */
@@ -154,10 +154,10 @@ class IdChanger {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $old_id numeric ID that is to be changed
-	 * @param integer $new_id numeric ID to which the records are to be changed
-	 * @param integer $old_ns namespace of old id's page (-1 to ignore it)
-	 * @param integer $new_ns namespace of new id's page (-1 to ignore it)
+	 * @param int $old_id numeric ID that is to be changed
+	 * @param int $new_id numeric ID to which the records are to be changed
+	 * @param int $old_ns namespace of old id's page (-1 to ignore it)
+	 * @param int $new_ns namespace of new id's page (-1 to ignore it)
 	 * @param boolean $s_data stating whether to update subject references
 	 * @param boolean $po_data stating if to update property/object references
 	 */

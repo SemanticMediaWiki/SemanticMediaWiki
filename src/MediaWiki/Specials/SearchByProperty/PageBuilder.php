@@ -250,7 +250,7 @@ class PageBuilder {
 	 * ones.
 	 *
 	 * @param array $results (array of (array of one or two SMWDataValues))
-	 * @param integer $number How many results should be displayed? -1 for all
+	 * @param int $number How many results should be displayed? -1 for all
 	 * @param boolean $first If less results should be displayed than
 	 * 	given, should they show the first $number results, or the last
 	 * 	$number results?

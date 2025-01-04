@@ -47,7 +47,7 @@ class SemanticDataFactory {
 	/**
 	 * @since  2.0
 	 *
-	 * @param string $title
+	 * @param string|null $title
 	 *
 	 * @return SemanticData
 	 * @throws RuntimeException

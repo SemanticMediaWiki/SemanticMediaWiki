@@ -22,7 +22,7 @@ class HmacSerializer {
 	 * @since 3.0
 	 *
 	 * @param mixed $data
-	 * @param string $key
+	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
 	 * @return string|boolean
@@ -46,7 +46,7 @@ class HmacSerializer {
 	 * @since 3.0
 	 *
 	 * @param mixed $data
-	 * @param string $key
+	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
 	 * @return string|boolean
@@ -75,7 +75,7 @@ class HmacSerializer {
 	 * @since 3.0
 	 *
 	 * @param mixed $data
-	 * @param string $key
+	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
 	 * @return string|boolean
@@ -99,7 +99,7 @@ class HmacSerializer {
 	 * @since 3.0
 	 *
 	 * @param string $data
-	 * @param string $key
+	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
 	 * @return mixed|boolean
@@ -131,7 +131,7 @@ class HmacSerializer {
 	 * @since 3.0
 	 *
 	 * @param mixed $data
-	 * @param string $key
+	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
 	 * @return string|boolean
@@ -150,7 +150,7 @@ class HmacSerializer {
 	 * @since 3.0
 	 *
 	 * @param string $data
-	 * @param string $key
+	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
 	 * @return mixed|boolean

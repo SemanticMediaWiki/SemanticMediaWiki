@@ -36,4 +36,3 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

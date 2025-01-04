@@ -191,7 +191,7 @@ class setupStore extends \Maintenance {
 			$smwgIP = dirname( __FILE__ ) . '/../';
 		}
 
-		require_once ( $smwgIP . 'includes/GlobalFunctions.php' );
+		require_once $smwgIP . 'includes/GlobalFunctions.php';
 	}
 
 	protected function getStore() {
@@ -273,5 +273,5 @@ class setupStore extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = setupStore::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

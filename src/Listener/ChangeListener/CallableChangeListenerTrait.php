@@ -15,12 +15,12 @@ trait CallableChangeListenerTrait {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $changeListeners = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $attrs = [];
 

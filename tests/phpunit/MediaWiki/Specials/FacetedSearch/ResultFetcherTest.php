@@ -36,4 +36,3 @@ class ResultFetcherTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

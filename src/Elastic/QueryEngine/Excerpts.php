@@ -17,7 +17,7 @@ class Excerpts extends \SMW\Query\Excerpts {
 	 *
 	 * @param DIWikiPage|string $hash
 	 *
-	 * @return string|integer|false
+	 * @return string|int|false
 	 */
 	public function getExcerpt( $hash ) {
 		if ( $hash instanceof DIWikiPage ) {

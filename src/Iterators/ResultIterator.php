@@ -8,6 +8,7 @@ use Iterator;
 use RuntimeException;
 use SeekableIterator;
 use Wikimedia\Rdbms\ResultWrapper;
+
 /**
  * @license GNU GPL v2+
  * @since 2.5
@@ -32,7 +33,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	public $current;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $numRows = false;
 

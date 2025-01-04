@@ -58,7 +58,7 @@ class PropertyPage extends Page {
 	private $itemListBuilder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isLockedView = false;
 

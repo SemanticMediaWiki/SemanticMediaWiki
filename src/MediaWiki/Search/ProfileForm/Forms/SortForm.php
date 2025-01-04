@@ -27,7 +27,7 @@ class SortForm {
 	private $field;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
@@ -44,7 +44,7 @@ class SortForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getParameters() {
 		return $this->parameters;

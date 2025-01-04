@@ -61,7 +61,7 @@ class ErrorLookup {
 	 * @since 3.1
 	 *
 	 * @param string $errorType
-	 * @param DIWikiPage $subject = null
+	 * @param DIWikiPage|null $subject = null
 	 *
 	 * @return Iterator/array
 	 */

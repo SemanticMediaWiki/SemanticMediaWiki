@@ -37,7 +37,7 @@ class CheckboxRangeGroupValueFilter {
 	private $urlArgs;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $params;
 

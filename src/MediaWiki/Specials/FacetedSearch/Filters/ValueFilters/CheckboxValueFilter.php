@@ -30,7 +30,7 @@ class CheckboxValueFilter {
 	private $urlArgs;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $params;
 

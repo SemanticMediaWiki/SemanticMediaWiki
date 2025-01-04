@@ -49,7 +49,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	private $configValueCallback = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $deletePagesOnTearDown = true;
 
@@ -129,7 +129,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	protected function getDependencyDefinitions() {
 		return [];
@@ -299,7 +299,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	 * @since 2.5
 	 *
 	 * @param array $pages
-	 * @param integer $defaultNamespace
+	 * @param int $defaultNamespace
 	 */
 	protected function createPagesFrom( array $pages, $defaultNamespace = NS_MAIN ) {
 		$this->jsonTestCaseContentHandler->skipOn(

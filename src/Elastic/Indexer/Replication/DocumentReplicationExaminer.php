@@ -31,7 +31,7 @@ class DocumentReplicationExaminer {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $replicationStatusResponse = [];
 

@@ -30,7 +30,7 @@ class CachedListLookup implements ListLookup {
 	private $cacheOptions;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isFromCache = false;
 
@@ -111,7 +111,7 @@ class CachedListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimestamp() {
 		return $this->timestamp;

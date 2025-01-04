@@ -25,17 +25,17 @@ class PropertyValueParser implements ValueParser {
 	private $invalidCharacterList = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCapitalLinks = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $reqCapitalizedFirstChar = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isQueryContext = false;
 

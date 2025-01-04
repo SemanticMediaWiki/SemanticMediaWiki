@@ -36,7 +36,7 @@ class MessageFormatter {
 	/** @var string */
 	protected $separator = ' <!--br-->';
 
-	/** @var boolean */
+	/** @var bool*/
 	protected $escape = true;
 
 	/** @var Language|StubUserLang */

@@ -18,7 +18,7 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
 class ConfigPreloader {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $config = [];
 

@@ -30,7 +30,7 @@ class CachingTermsLookup extends TermsLookup {
 	private $cache;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $quick_cache = [];
 

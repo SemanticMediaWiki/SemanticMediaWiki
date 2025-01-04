@@ -18,7 +18,7 @@ use SMWQueryResult;
 abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $httpHeader = true;
 
@@ -90,7 +90,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @param $mode
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryMode( $mode ) {
 		return $mode == SMWQueryProcessor::SPECIAL_PAGE ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
