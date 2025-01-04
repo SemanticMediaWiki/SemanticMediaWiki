@@ -65,7 +65,7 @@ class ListBuilder {
 	 * @param Store $store
 	 * @param Collator|null $collator
 	 */
-	public function __construct( Store $store, Collator $collator = null ) {
+	public function __construct( Store $store, ?Collator $collator = null ) {
 		$this->store = $store;
 		$this->collator = $collator;
 	}

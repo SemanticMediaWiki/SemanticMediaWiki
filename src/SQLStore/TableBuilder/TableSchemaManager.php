@@ -403,7 +403,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function addTable( Table $table = null ) {
+	private function addTable( ?Table $table = null ) {
 		if ( $table === null ) {
 			return;
 		}

@@ -145,7 +145,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		return $provider;
 	}
 
-	protected function assertJob( $type, Job &$job = null ) {
+	protected function assertJob( $type, ?Job &$job = null ) {
 		if ( $job === null ) {
 			$job = $this->jobQueueRunner->pop_type( $type );
 		}

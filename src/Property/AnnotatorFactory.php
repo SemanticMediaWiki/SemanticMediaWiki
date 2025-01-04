@@ -63,7 +63,7 @@ class AnnotatorFactory {
 	 *
 	 * @return SchemaPropertyAnnotator
 	 */
-	public function newSchemaPropertyAnnotator( PropertyAnnotator $propertyAnnotator, Schema $schema = null ) {
+	public function newSchemaPropertyAnnotator( PropertyAnnotator $propertyAnnotator, ?Schema $schema = null ) {
 		$schemaPropertyAnnotator = new SchemaPropertyAnnotator(
 			$propertyAnnotator,
 			$schema

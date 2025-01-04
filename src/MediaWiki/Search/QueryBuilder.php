@@ -44,7 +44,7 @@ class QueryBuilder {
 	 * @param WebRequest|null $request
 	 * @param array|null $data
 	 */
-	public function __construct( WebRequest $request = null, array $data = [] ) {
+	public function __construct( ?WebRequest $request = null, array $data = [] ) {
 		$this->request = $request;
 		$this->data = $data;
 
@@ -88,7 +88,7 @@ class QueryBuilder {
 	 * @param Query $query
 	 * @param array $searchableNamespaces
 	 */
-	public function addNamespaceCondition( Query $query = null, $searchableNamespaces = [] ) {
+	public function addNamespaceCondition( ?Query $query = null, $searchableNamespaces = [] ) {
 		if ( $query === null ) {
 			return;
 		}
@@ -116,7 +116,7 @@ class QueryBuilder {
 	 *
 	 * @param Query $query
 	 */
-	public function addSort( Query $query = null ) {
+	public function addSort( ?Query $query = null ) {
 		if ( $query === null ) {
 			return;
 		}

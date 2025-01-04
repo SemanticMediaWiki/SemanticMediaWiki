@@ -83,7 +83,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @param callable|null $callback
 	 */
-	public function __construct( callable $callback = null ) {
+	public function __construct( ?callable $callback = null ) {
 		if ( $callback === null ) {
 			$callback = [ $this, 'emptyCallback' ];
 		}

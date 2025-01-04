@@ -72,7 +72,7 @@ class QueryEngine implements IQueryEngine {
 	 * @param ConditionBuilder $conditionBuilder
 	 * @param Options|null $options
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder, Options $options = null ) {
+	public function __construct( Store $store, ConditionBuilder $conditionBuilder, ?Options $options = null ) {
 		$this->store = $store;
 		$this->options = $options;
 

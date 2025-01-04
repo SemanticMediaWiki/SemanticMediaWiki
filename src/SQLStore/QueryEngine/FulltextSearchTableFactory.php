@@ -38,13 +38,11 @@ class FulltextSearchTableFactory {
 					$this->newTextSanitizer(),
 					$this->newSearchTable( $store )
 				);
-				break;
 			case 'sqlite':
 				return new SQLiteValueMatchConditionBuilder(
 					$this->newTextSanitizer(),
 					$this->newSearchTable( $store )
 				);
-				break;
 		}
 
 		return new ValueMatchConditionBuilder( $this->newTextSanitizer(), $this->newSearchTable( $store ) );

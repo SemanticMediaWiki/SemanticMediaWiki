@@ -135,7 +135,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return string
 	 */
-	public function getText( $text, Schema $schema = null, array $errors = [] ) {
+	public function getText( $text, ?Schema $schema = null, array $errors = [] ) {
 		$methods = [
 			'body'   => [ $schema, $errors, $text ],
 		// 'footer' => [ $schema ]
@@ -161,7 +161,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return array
 	 */
-	public function getUsage( Schema $schema = null ) {
+	public function getUsage( ?Schema $schema = null ) {
 		if ( $schema === null || !isset( $this->type['usage_lookup'] ) ) {
 			return [ '', 0 ];
 		}

@@ -34,7 +34,7 @@ class JsonSchemaValidator {
 	 *
 	 * @param SchemaValidator|null $schemaValidator
 	 */
-	public function __construct( SchemaValidator $schemaValidator = null ) {
+	public function __construct( ?SchemaValidator $schemaValidator = null ) {
 		$this->schemaValidator = $schemaValidator;
 	}
 

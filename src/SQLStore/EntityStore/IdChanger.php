@@ -31,7 +31,7 @@ class IdChanger {
 	 * @param SQLStore $store
 	 * @param JobFactory|null $jobFactory
 	 */
-	public function __construct( SQLStore $store, JobFactory $jobFactory = null ) {
+	public function __construct( SQLStore $store, ?JobFactory $jobFactory = null ) {
 		$this->store = $store;
 		$this->jobFactory = $jobFactory;
 

@@ -86,7 +86,7 @@ class AuxiliaryFields {
 	 * @param array|null $seqmap
 	 * @param array|null $countmap
 	 */
-	public function setFieldMaps( $sid, array $seqmap = null, array $countmap = null ) {
+	public function setFieldMaps( $sid, ?array $seqmap = null, ?array $countmap = null ) {
 		$cache = $this->idCacheManager->get( self::COUNTMAP_CACHE_ID );
 
 		if ( $seqmap !== [] ) {

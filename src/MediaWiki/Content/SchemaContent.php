@@ -157,7 +157,7 @@ class SchemaContent extends JsonContent {
 	 * @param SchemaFactory $schemaFactory
 	 * @param SchemaContentFormatter|null $contentFormatter
 	 */
-	public function setServices( SchemaFactory $schemaFactory, SchemaContentFormatter $contentFormatter = null ) {
+	public function setServices( SchemaFactory $schemaFactory, ?SchemaContentFormatter $contentFormatter = null ) {
 		$this->schemaFactory = $schemaFactory;
 		$this->contentFormatter = $contentFormatter;
 	}

@@ -46,7 +46,6 @@
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.NotShortBoolVar" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamName" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotClass" />
-		<exclude name="Squiz.PHP.NonExecutableCode.Unreachable" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotShortIntParam" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.ParamNameNoMatch" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotShortIntReturn" />

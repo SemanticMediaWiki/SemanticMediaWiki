@@ -146,7 +146,7 @@ class RevisionGuard {
 	 *
 	 * @return File|null
 	 */
-	public function getFile( Title $title, File $file = null ) {
+	public function getFile( Title $title, ?File $file = null ) {
 		$origFile = $file;
 
 		$this->hookDispatcher->onChangeFile( $title, $file );

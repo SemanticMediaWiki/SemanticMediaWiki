@@ -31,7 +31,7 @@ class CopyLocalMessages {
 	 *
 	 * @param string $file
 	 */
-	public function __construct( string $file, string $languageFileDir = null ) {
+	public function __construct( string $file, ?string $languageFileDir = null ) {
 		$this->file = $file;
 		$this->languageFileDir = $languageFileDir
 							  ?? ( !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )

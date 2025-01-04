@@ -192,7 +192,7 @@ class NavigationLinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function basicLinks( $navigation = '', Infolink $infoLink = null ) {
+	public static function basicLinks( $navigation = '', ?Infolink $infoLink = null ) {
 		if ( $navigation === '' ) {
 			return '';
 		}

@@ -34,7 +34,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @param RecursiveTextProcessor|null $recursiveTextProcessor
 	 */
-	public static function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor = null ) {
+	public static function setRecursiveTextProcessor( ?RecursiveTextProcessor $recursiveTextProcessor = null ) {
 		self::$recursiveTextProcessor = $recursiveTextProcessor;
 	}
 

@@ -190,7 +190,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newIcuWordBoundaryTokenizer( Tokenizer $tokenizer = null ) {
+	public function newIcuWordBoundaryTokenizer( ?Tokenizer $tokenizer = null ) {
 		return new IcuWordBoundaryTokenizer( $tokenizer );
 	}
 
@@ -201,7 +201,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newGenericRegExTokenizer( Tokenizer $tokenizer = null ) {
+	public function newGenericRegExTokenizer( ?Tokenizer $tokenizer = null ) {
 		return new GenericRegExTokenizer( $tokenizer );
 	}
 
@@ -212,7 +212,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newPunctuationRegExTokenizer( Tokenizer $tokenizer = null ) {
+	public function newPunctuationRegExTokenizer( ?Tokenizer $tokenizer = null ) {
 		return new PunctuationRegExTokenizer( $tokenizer );
 	}
 
@@ -221,7 +221,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newJaCompoundGroupTokenizer( Tokenizer $tokinizer = null ) {
+	public function newJaCompoundGroupTokenizer( ?Tokenizer $tokinizer = null ) {
 		return new JaCompoundGroupTokenizer( $tokinizer );
 	}
 
@@ -230,7 +230,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newJaTinySegmenterTokenizer( Tokenizer $tokinizer = null ) {
+	public function newJaTinySegmenterTokenizer( ?Tokenizer $tokinizer = null ) {
 		return new JaTinySegmenterTokenizer( $tokinizer );
 	}
 
@@ -239,7 +239,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newCJKSimpleCharacterRegExTokenizer( Tokenizer $tokinizer = null ) {
+	public function newCJKSimpleCharacterRegExTokenizer( ?Tokenizer $tokinizer = null ) {
 		return new CJKSimpleCharacterRegExTokenizer( $tokinizer );
 	}
 
@@ -248,7 +248,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newNGramTokenizer( Tokenizer $tokinizer = null, $ngram = 2 ) {
+	public function newNGramTokenizer( ?Tokenizer $tokinizer = null, $ngram = 2 ) {
 		return new NGramTokenizer( $tokinizer, $ngram );
 	}
 

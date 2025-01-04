@@ -240,7 +240,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return new PageCreator();
 		} );
 
-		$containerBuilder->registerCallback( 'PageUpdater', static function ( $containerBuilder, $connection, TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
+		$containerBuilder->registerCallback( 'PageUpdater', static function ( $containerBuilder, $connection, ?TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
 			$containerBuilder->registerExpectedReturnType( 'PageUpdater', '\SMW\MediaWiki\PageUpdater' );
 			return new PageUpdater( $connection, $transactionalCallableUpdate );
 		} );
@@ -310,14 +310,14 @@ class SharedServicesContainer implements CallbackContainer {
 			return $contentParser;
 		} );
 
-		$containerBuilder->registerCallback( 'DeferredCallableUpdate', static function ( $containerBuilder, callable $callback = null ) {
+		$containerBuilder->registerCallback( 'DeferredCallableUpdate', static function ( $containerBuilder, ?callable $callback = null ) {
 			$containerBuilder->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\MediaWiki\Deferred\CallableUpdate' );
 			$containerBuilder->registerAlias( 'CallableUpdate', CallableUpdate::class );
 
 			return new CallableUpdate( $callback );
 		} );
 
-		$containerBuilder->registerCallback( 'DeferredTransactionalCallableUpdate', static function ( $containerBuilder, callable $callback = null, Database $connection = null ) {
+		$containerBuilder->registerCallback( 'DeferredTransactionalCallableUpdate', static function ( $containerBuilder, ?callable $callback = null, ?Database $connection = null ) {
 			$containerBuilder->registerExpectedReturnType( 'DeferredTransactionalUpdate', '\SMW\MediaWiki\Deferred\TransactionalCallableUpdate' );
 			$containerBuilder->registerAlias( 'DeferredTransactionalUpdate', TransactionalCallableUpdate::class );
 
@@ -744,7 +744,7 @@ class SharedServicesContainer implements CallbackContainer {
 		/**
 		 * @var EditProtectionUpdater
 		 */
-		$containerBuilder->registerCallback( 'EditProtectionUpdater', static function ( $containerBuilder, \WikiPage $wikiPage, \User $user = null ) {
+		$containerBuilder->registerCallback( 'EditProtectionUpdater', static function ( $containerBuilder, \WikiPage $wikiPage, ?\User $user = null ) {
 			$containerBuilder->registerExpectedReturnType( 'EditProtectionUpdater', '\SMW\Protection\EditProtectionUpdater' );
 
 			$editProtectionUpdater = new EditProtectionUpdater(

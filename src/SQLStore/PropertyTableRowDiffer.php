@@ -58,7 +58,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param ChangeOp|null $changeOp
 	 */
-	public function setChangeOp( ChangeOp $changeOp = null ) {
+	public function setChangeOp( ?ChangeOp $changeOp = null ) {
 		$this->changeOp = $changeOp;
 	}
 

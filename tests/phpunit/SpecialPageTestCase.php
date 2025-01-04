@@ -59,7 +59,7 @@ abstract class SpecialPageTestCase extends \PHPUnit\Framework\TestCase {
 	 * @param string      $sub The subpage parameter to call the page with
 	 * @param WebRequest $request Web request that may contain URL parameters, etc
 	 */
-	protected function execute( $sub = '', WebRequest $request = null, $user = null ) {
+	protected function execute( $sub = '', ?WebRequest $request = null, $user = null ) {
 		$request  = $request === null ? new FauxRequest() : $request;
 		$response = $request->response();
 

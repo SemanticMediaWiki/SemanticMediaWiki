@@ -53,7 +53,7 @@ class JsonImportContentsFileDirReader {
 	 * @param File|null $file
 	 * @param array $importFileDirs
 	 */
-	public function __construct( ContentModeller $contentModeller, FileFetcher $fileFetcher, File $file = null, $importFileDirs = [] ) {
+	public function __construct( ContentModeller $contentModeller, FileFetcher $fileFetcher, ?File $file = null, $importFileDirs = [] ) {
 		$this->contentModeller = $contentModeller;
 		$this->fileFetcher = $fileFetcher;
 		$this->file = $file;

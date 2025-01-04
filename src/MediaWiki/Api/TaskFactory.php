@@ -78,32 +78,25 @@ class TaskFactory {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function newByType( $type, User $user = null ) {
+	public function newByType( $type, ?User $user = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$service = null;
 
 		switch ( $type ) {
 			case 'update':
 				return new UpdateTask( $applicationFactory->newJobFactory() );
-				break;
 			case 'check-query':
 				return new CheckQueryTask( $applicationFactory->getStore() );
-				break;
 			case 'run-entity-examiner':
 				return $this->newEntityExaminerTask( $user );
-				break;
 			case 'duplicate-lookup':
 				return $this->newDuplicateLookupTask();
-				break;
 			case 'table-statistics':
 				return $this->newTableStatisticsTask();
-				break;
 			case 'insert-job':
 				return new InsertJobTask( $applicationFactory->newJobFactory() );
-				break;
 			case 'run-joblist':
 				return new JobListTask( $applicationFactory->getJobQueue() );
-				break;
 		}
 
 		if ( is_array( self::$services ) && isset( self::$services[$type] ) && is_callable( self::$services[$type] ) ) {
@@ -162,7 +155,7 @@ class TaskFactory {
 	 *
 	 * @return EntityExaminerTask
 	 */
-	public function newEntityExaminerTask( User $user = null ): EntityExaminerTask {
+	public function newEntityExaminerTask( ?User $user = null ): EntityExaminerTask {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityExaminerTask = new EntityExaminerTask(

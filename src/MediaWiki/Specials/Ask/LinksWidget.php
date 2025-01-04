@@ -354,7 +354,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function clipboardLink( Infolink $infolink = null ) {
+	public static function clipboardLink( ?Infolink $infolink = null ) {
 		if ( $infolink === null ) {
 			return '';
 		}

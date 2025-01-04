@@ -281,7 +281,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param Title|null $redirectTarget
 	 */
-	public function setRedirectTarget( Title $redirectTarget = null ) {
+	public function setRedirectTarget( ?Title $redirectTarget = null ) {
 		$this->redirectTargetFinder->setRedirectTarget( $redirectTarget );
 	}
 

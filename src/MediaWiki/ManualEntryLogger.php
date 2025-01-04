@@ -30,7 +30,7 @@ class ManualEntryLogger {
 	 *
 	 * @param LogEntry|null $logEntry
 	 */
-	public function __construct( LogEntry $logEntry = null ) {
+	public function __construct( ?LogEntry $logEntry = null ) {
 		$this->logEntry = $logEntry;
 	}
 

@@ -68,7 +68,7 @@ class FieldItemFinder {
 	 * @param Store $store
 	 * @param PrintRequest $printRequest
 	 */
-	public function __construct( Store $store, ItemFetcher $itemFetcher = null, PrintRequest $printRequest = null ) {
+	public function __construct( Store $store, ?ItemFetcher $itemFetcher = null, ?PrintRequest $printRequest = null ) {
 		$this->store = $store;
 		$this->printRequest = $printRequest;
 		$this->itemFetcher = $itemFetcher;
@@ -93,7 +93,7 @@ class FieldItemFinder {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ) {
 		if ( $queryToken === null ) {
 			return;
 		}

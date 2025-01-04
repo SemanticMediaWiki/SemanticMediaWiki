@@ -48,7 +48,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return MessageBuilder
 	 */
-	public function newMessageBuilder( Language $language = null ) {
+	public function newMessageBuilder( ?Language $language = null ) {
 		return new MessageBuilder( $language );
 	}
 
@@ -87,7 +87,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function newHtmlFormRenderer( Title $title, Language $language = null ) {
+	public function newHtmlFormRenderer( Title $title, ?Language $language = null ) {
 		if ( $language === null ) {
 			$language = $title->getPageLanguage();
 		}

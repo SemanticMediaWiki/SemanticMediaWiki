@@ -59,7 +59,7 @@ class QueryResultFactory {
 	 *
 	 * @return QueryResult
 	 */
-	public function newQueryResult( RepositoryResult $repositoryResult = null, Query $query ) {
+	public function newQueryResult( ?RepositoryResult $repositoryResult = null, Query $query ) {
 		if ( $repositoryResult === null ) {
 			return $this->newEmptyQueryResult( $query );
 		}

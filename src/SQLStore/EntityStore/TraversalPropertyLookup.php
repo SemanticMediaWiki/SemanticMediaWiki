@@ -40,7 +40,7 @@ class TraversalPropertyLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function fetchFromTable( PropertyTableDef $propertyTableDef, DataItem $dataItem, RequestOptions $requestOptions = null ) {
+	public function fetchFromTable( PropertyTableDef $propertyTableDef, DataItem $dataItem, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( $dataItem instanceof DIContainer ) {

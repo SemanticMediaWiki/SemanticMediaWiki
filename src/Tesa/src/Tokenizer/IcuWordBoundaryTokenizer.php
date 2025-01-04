@@ -32,7 +32,7 @@ class IcuWordBoundaryTokenizer implements Tokenizer {
 	 *
 	 * @param Tokenizer|null $tokenizer
 	 */
-	public function __construct( Tokenizer $tokenizer = null ) {
+	public function __construct( ?Tokenizer $tokenizer = null ) {
 		$this->tokenizer = $tokenizer;
 	}
 

@@ -12,6 +12,8 @@
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 
+// phpcs:disable Squiz.PHP.NonExecutableCode.Unreachable
+
 throw new Exception( 'Not an actual source file' );
 
 class SMWDataItemException extends SMW\Exception\DataItemException {

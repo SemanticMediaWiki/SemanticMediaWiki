@@ -34,7 +34,7 @@ class ParamListProcessor {
 	 *
 	 * @param PrintRequestFactory|null $printRequestFactory
 	 */
-	public function __construct( PrintRequestFactory $printRequestFactory = null ) {
+	public function __construct( ?PrintRequestFactory $printRequestFactory = null ) {
 		$this->printRequestFactory = $printRequestFactory;
 
 		if ( $this->printRequestFactory === null ) {

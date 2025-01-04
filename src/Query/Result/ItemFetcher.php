@@ -84,7 +84,7 @@ class ItemFetcher {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ) {
 		$this->queryToken = $queryToken;
 	}
 

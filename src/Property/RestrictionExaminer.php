@@ -111,7 +111,7 @@ class RestrictionExaminer {
 	 * @param DIProperty $property
 	 * @param DIWikiPage|null $contextPage
 	 */
-	public function checkRestriction( DIProperty $property, DIWikiPage $contextPage = null ) {
+	public function checkRestriction( DIProperty $property, ?DIWikiPage $contextPage = null ) {
 		$this->error = [];
 
 		if ( $this->isDeclarative( $property, $contextPage ) ) {

@@ -54,7 +54,7 @@ class AutoRecovery {
 	 * @param string $identifier
 	 * @param File|null $file
 	 */
-	public function __construct( $identifier, File $file = null ) {
+	public function __construct( $identifier, ?File $file = null ) {
 		$this->identifier = $identifier;
 		$this->file = $file;
 		$this->site = Site::id();

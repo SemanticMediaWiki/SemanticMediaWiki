@@ -65,7 +65,7 @@ class PropertySubjectsLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function fetchFromTable( $pid, TableDefinition $proptable, DataItem $dataItem = null, RequestOptions $requestOptions = null ) {
+	public function fetchFromTable( $pid, TableDefinition $proptable, ?DataItem $dataItem = null, ?RequestOptions $requestOptions = null ) {
 		$this->caller = __METHOD__;
 
 		$res = $this->doFetch( $pid, $proptable, $dataItem, $requestOptions );
@@ -159,7 +159,7 @@ class PropertySubjectsLookup {
 		return $this->prefetch[$hash] = $result;
 	}
 
-	private function doFetch( $pid, TableDefinition $proptable, $dataItem = null, RequestOptions $requestOptions = null ) {
+	private function doFetch( $pid, TableDefinition $proptable, $dataItem = null, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$group = false;
 

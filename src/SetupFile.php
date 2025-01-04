@@ -64,7 +64,7 @@ class SetupFile {
 
 	private /* SmwJsonRepo */ $repo;
 
-	public function __construct( File $file = null, FileFetcher $fileFetcher = null ) {
+	public function __construct( ?File $file = null, ?FileFetcher $fileFetcher = null ) {
 		$this->repo = $GLOBALS['smwgSmwJsonRepo'] ??
 			new FileSystemSmwJsonRepo(
 				$fileFetcher ?? new SimpleFileFetcher(),

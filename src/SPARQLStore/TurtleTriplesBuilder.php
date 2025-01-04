@@ -68,7 +68,7 @@ class TurtleTriplesBuilder {
 	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
 	 * @param Cache|null $cache
 	 */
-	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, Cache $cache = null ) {
+	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, ?Cache $cache = null ) {
 		$this->repositoryRedirectLookup = $repositoryRedirectLookup;
 		$this->cache = $cache;
 	}

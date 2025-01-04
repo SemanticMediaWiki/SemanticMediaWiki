@@ -105,7 +105,7 @@ class ConditionBuilder {
 	 * @param DescriptionInterpreterFactory $descriptionInterpreterFactory
 	 * @param EngineOptions|null $engineOptions
 	 */
-	public function __construct( DescriptionInterpreterFactory $descriptionInterpreterFactory, EngineOptions $engineOptions = null ) {
+	public function __construct( DescriptionInterpreterFactory $descriptionInterpreterFactory, ?EngineOptions $engineOptions = null ) {
 		$this->dispatchingDescriptionInterpreter = $descriptionInterpreterFactory->newDispatchingDescriptionInterpreter( $this );
 		$this->engineOptions = $engineOptions;
 
@@ -359,7 +359,7 @@ class ConditionBuilder {
 	 *
 	 * @return string|null
 	 */
-	public function tryToFindRedirectVariableForDataItem( DataItem $dataItem = null ) {
+	public function tryToFindRedirectVariableForDataItem( ?DataItem $dataItem = null ) {
 		if ( !$dataItem instanceof DIWikiPage || !$this->isSetFlag( SMW_SPARQL_QF_REDI ) ) {
 			return null;
 		}

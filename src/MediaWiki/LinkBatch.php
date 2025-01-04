@@ -41,7 +41,7 @@ class LinkBatch {
 	 *
 	 * @param \LinkBatch|null $linkBatch
 	 */
-	public function __construct( \LinkBatch $linkBatch = null ) {
+	public function __construct( ?\LinkBatch $linkBatch = null ) {
 		$this->linkBatch = $linkBatch;
 	}
 
