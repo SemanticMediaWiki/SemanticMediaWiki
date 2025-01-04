@@ -165,7 +165,7 @@ class FileIndexer {
 	 * @param DIWikiPage $dataItem
 	 * @param File|null $file
 	 */
-	public function index( DIWikiPage $dataItem, File $file = null ) {
+	public function index( DIWikiPage $dataItem, ?File $file = null ) {
 		$title = $dataItem->getTitle();
 
 		// Allow any third-party extension to modify the file used as base for

@@ -76,7 +76,7 @@ class PageUpdater implements DeferrableUpdate {
 	 * @param Database|null $connection
 	 * @param TransactionalCallableUpdate|null $transactionalCallableUpdate
 	 */
-	public function __construct( Database $connection = null, TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
+	public function __construct( ?Database $connection = null, ?TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
 		$this->connection = $connection;
 		$this->transactionalCallableUpdate = $transactionalCallableUpdate;
 	}
@@ -122,7 +122,7 @@ class PageUpdater implements DeferrableUpdate {
 	 *
 	 * @param Title|null $title
 	 */
-	public function addPage( Title $title = null ) {
+	public function addPage( ?Title $title = null ) {
 		if ( $title === null ) {
 			return;
 		}

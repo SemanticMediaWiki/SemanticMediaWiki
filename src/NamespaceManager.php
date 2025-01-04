@@ -41,7 +41,7 @@ class NamespaceManager {
 	 *
 	 * @param LocalLanguage|null $LocalLanguage
 	 */
-	public function __construct( LocalLanguage $LocalLanguage = null ) {
+	public function __construct( ?LocalLanguage $LocalLanguage = null ) {
 		$this->localLanguage = $LocalLanguage;
 
 		if ( $this->localLanguage === null ) {
@@ -161,7 +161,7 @@ class NamespaceManager {
 	/**
 	 * @since 1.9
 	 */
-	public static function initCustomNamespace( array $vars, LocalLanguage $localLanguage = null ): array {
+	public static function initCustomNamespace( array $vars, ?LocalLanguage $localLanguage = null ): array {
 		$instance = new self( $localLanguage );
 
 		$vars['smwgNamespaceIndex'] = $instance->getNamespaceIndex( $vars );

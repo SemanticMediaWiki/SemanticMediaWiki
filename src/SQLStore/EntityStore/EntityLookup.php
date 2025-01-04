@@ -179,7 +179,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getProperties( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
+	public function getProperties( DIWikiPage $subject, ?RequestOptions $requestOptions = null ) {
 		$idTable = $this->store->getObjectIds();
 
 		$sid = $idTable->getSMWPageID(
@@ -237,7 +237,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getPropertyValues( DIWikiPage $subject = null, DIProperty $property, RequestOptions $requestOptions = null ) {
+	public function getPropertyValues( ?DIWikiPage $subject = null, DIProperty $property, ?RequestOptions $requestOptions = null ) {
 		$idTable = $this->store->getObjectIds();
 
 		if ( $property->isInverse() ) { // inverses are working differently
@@ -339,7 +339,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getPropertySubjects( DIProperty $property, DataItem $dataItem = null, RequestOptions $requestOptions = null ) {
+	public function getPropertySubjects( DIProperty $property, ?DataItem $dataItem = null, ?RequestOptions $requestOptions = null ) {
 		// * @todo This method cannot retrieve subjects for sortkeys, i.e., for
 		// * property _SKEY. Only empty arrays will be returned there.
 
@@ -399,7 +399,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getAllPropertySubjects( DIProperty $property, RequestOptions $requestOptions = null ) {
+	public function getAllPropertySubjects( DIProperty $property, ?RequestOptions $requestOptions = null ) {
 		return $this->getPropertySubjects( $property, null, $requestOptions );
 	}
 
@@ -410,7 +410,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInProperties( DataItem $object, RequestOptions $requestOptions = null ) {
+	public function getInProperties( DataItem $object, ?RequestOptions $requestOptions = null ) {
 		$result = [];
 		$diType = $object->getDIType();
 

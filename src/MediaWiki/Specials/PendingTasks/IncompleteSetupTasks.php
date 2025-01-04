@@ -24,7 +24,7 @@ class IncompleteSetupTasks {
 	 *
 	 * @param SetupFile|null $setupFile
 	 */
-	public function __construct( SetupFile $setupFile = null ) {
+	public function __construct( ?SetupFile $setupFile = null ) {
 		$this->setupFile = $setupFile;
 
 		if ( $this->setupFile === null ) {

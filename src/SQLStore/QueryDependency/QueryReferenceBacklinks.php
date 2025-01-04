@@ -38,7 +38,7 @@ class QueryReferenceBacklinks {
 	 *
 	 * @return boolean
 	 */
-	public function addReferenceLinksTo( SemanticData $semanticData, RequestOptions $requestOptions = null ) {
+	public function addReferenceLinksTo( SemanticData $semanticData, ?RequestOptions $requestOptions = null ) {
 		if ( !$this->queryDependencyLinksStore->isEnabled() ) {
 			return false;
 		}
@@ -71,7 +71,7 @@ class QueryReferenceBacklinks {
 	 *
 	 * @return array
 	 */
-	public function findReferenceLinks( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
+	public function findReferenceLinks( DIWikiPage $subject, ?RequestOptions $requestOptions = null ) {
 		$queryTargetLinksHashList = $this->queryDependencyLinksStore->findDependencyTargetLinksForSubject(
 			$subject,
 			$requestOptions

@@ -32,7 +32,7 @@ class SkinAfterContent implements HookListener {
 	 *
 	 * @param Skin|null $skin
 	 */
-	public function __construct( Skin $skin = null ) {
+	public function __construct( ?Skin $skin = null ) {
 		$this->skin = $skin;
 	}
 

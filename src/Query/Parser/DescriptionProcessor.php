@@ -70,7 +70,7 @@ class DescriptionProcessor {
 	 *
 	 * @param DIWikiPage|null $contextPage
 	 */
-	public function setContextPage( DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?DIWikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 
@@ -202,7 +202,7 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function asOr( Description $currentDescription = null, Description $newDescription = null ) {
+	public function asOr( ?Description $currentDescription = null, ?Description $newDescription = null ) {
 		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_DISJUNCTION_QUERY );
 	}
 
@@ -214,7 +214,7 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function asAnd( Description $currentDescription = null, Description $newDescription = null ) {
+	public function asAnd( ?Description $currentDescription = null, ?Description $newDescription = null ) {
 		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_CONJUNCTION_QUERY );
 	}
 
@@ -230,7 +230,7 @@ class DescriptionProcessor {
 	 * The return value is the expected combined description. The object $currentDescription will
 	 * also be changed (if it was non-NULL).
 	 */
-	private function newCompoundDescription( Description $currentDescription = null, Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ) {
+	private function newCompoundDescription( ?Description $currentDescription = null, ?Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ) {
 		$notallowedmessage = 'smw_noqueryfeature';
 
 		if ( $newDescription instanceof SomeProperty ) {

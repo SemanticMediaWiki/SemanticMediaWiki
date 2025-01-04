@@ -50,7 +50,7 @@ class SequenceMapFinder {
 	 * @param integer $sid
 	 * @param array $map
 	 */
-	public function setMap( $sid, array $map = null ) {
+	public function setMap( $sid, ?array $map = null ) {
 		if ( $map === null ) {
 			return;
 		}

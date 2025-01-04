@@ -371,7 +371,7 @@ class ConditionBuilder {
 	 *
 	 * @return array
 	 */
-	public function findHierarchyMembers( DataItem $dataItem = null, $hierarchyDepth ) {
+	public function findHierarchyMembers( ?DataItem $dataItem = null, $hierarchyDepth ) {
 		$ids = [];
 
 		if ( $dataItem !== null && ( $members = $this->hierarchyLookup->getConsecutiveHierarchyList( $dataItem ) ) !== [] ) {

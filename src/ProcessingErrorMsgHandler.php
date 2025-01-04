@@ -131,7 +131,7 @@ class ProcessingErrorMsgHandler {
 	 * @param SemanticData $semanticData
 	 * @param DIContainer|null $container
 	 */
-	public function addToSemanticData( SemanticData $semanticData, DIContainer $container = null ) {
+	public function addToSemanticData( SemanticData $semanticData, ?DIContainer $container = null ) {
 		if ( $container === null ) {
 			return;
 		}
@@ -150,7 +150,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return DIContainer
 	 */
-	public function newErrorContainerFromMsg( $error, DIProperty $property = null ) {
+	public function newErrorContainerFromMsg( $error, ?DIProperty $property = null ) {
 		if ( $property !== null && $property->isInverse() ) {
 			$property = new DIProperty( $property->getKey() );
 		}

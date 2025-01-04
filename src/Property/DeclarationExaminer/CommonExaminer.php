@@ -42,7 +42,7 @@ class CommonExaminer extends DeclarationExaminer {
 	 * @param Store $store
 	 * @param SemanticData $semanticData
 	 */
-	public function __construct( Store $store, SemanticData $semanticData = null ) {
+	public function __construct( Store $store, ?SemanticData $semanticData = null ) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
 	}

@@ -78,7 +78,7 @@ class Client {
 	 * @param LockManager $lockManager
 	 * @param Options|null $options
 	 */
-	public function __construct( ElasticClient $client, LockManager $lockManager, Config $options = null ) {
+	public function __construct( ElasticClient $client, LockManager $lockManager, ?Config $options = null ) {
 		$this->client = $client;
 		$this->lockManager = $lockManager;
 		$this->options = $options;

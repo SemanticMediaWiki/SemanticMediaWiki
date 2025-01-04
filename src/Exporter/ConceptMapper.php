@@ -38,7 +38,7 @@ class ConceptMapper implements DataItemMapper {
 	 *
 	 * @param Exporter|null $exporter
 	 */
-	public function __construct( Exporter $exporter = null ) {
+	public function __construct( ?Exporter $exporter = null ) {
 		$this->exporter = $exporter;
 
 		if ( $this->exporter === null ) {

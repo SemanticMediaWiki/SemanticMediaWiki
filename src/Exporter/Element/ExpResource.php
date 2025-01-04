@@ -41,7 +41,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $uri, DataItem $dataItem = null ) {
+	public function __construct( $uri, ?DataItem $dataItem = null ) {
 		if ( !is_string( $uri ) ) {
 			throw new InvalidArgumentException( '$uri needs to be a string' );
 		}

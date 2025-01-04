@@ -28,7 +28,7 @@ class PreferenceExaminer {
 	 *
 	 * @param User|null $user
 	 */
-	public function __construct( User $user = null, UserOptionsLookup $userOptionsLookup = null ) {
+	public function __construct( ?User $user = null, ?UserOptionsLookup $userOptionsLookup = null ) {
 		$this->user = $user;
 		$this->userOptionsLookup = $userOptionsLookup;
 	}

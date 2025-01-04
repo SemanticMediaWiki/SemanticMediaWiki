@@ -78,7 +78,7 @@ class TaskFactory {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function newByType( $type, User $user = null ) {
+	public function newByType( $type, ?User $user = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$service = null;
 
@@ -155,7 +155,7 @@ class TaskFactory {
 	 *
 	 * @return EntityExaminerTask
 	 */
-	public function newEntityExaminerTask( User $user = null ): EntityExaminerTask {
+	public function newEntityExaminerTask( ?User $user = null ): EntityExaminerTask {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityExaminerTask = new EntityExaminerTask(
