@@ -38,19 +38,18 @@ class PreferenceExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testHasPreferenceOf() {
 		$userOptionsLookup = $this->createMock( UserOptionsLookup::class );
-	
+
 		$userOptionsLookup->expects( $this->any() )
 			->method( 'getOption' )
 			->with( $this->user, 'foo', false )
 			->willReturn( false );
-	
+
 		$instance = new PreferenceExaminer( $this->user, $userOptionsLookup );
-	
+
 		$this->assertIsBool(
 			$instance->hasPreferenceOf( 'foo' )
 		);
 	}
-
 
 	public function testHasPreferenceOf_NoUser() {
 		$instance = new PreferenceExaminer();
