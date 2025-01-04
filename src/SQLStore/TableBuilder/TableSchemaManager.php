@@ -4,8 +4,6 @@ namespace SMW\SQLStore\TableBuilder;
 
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
-use RuntimeException;
-use Hooks;
 
 /**
  * @private

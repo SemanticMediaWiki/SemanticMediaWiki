@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Schema\Filters;
 
-use SMW\Schema\Filters\NamespaceFilter;
 use SMW\Schema\Compartment;
-use SMW\Schema\Rule;
 use SMW\Schema\CompartmentIterator;
+use SMW\Schema\Filters\NamespaceFilter;
+use SMW\Schema\Rule;
 
 /**
  * @covers \SMW\Schema\Filters\NamespaceFilter

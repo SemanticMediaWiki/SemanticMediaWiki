@@ -3,13 +3,12 @@
 namespace SMW\Schema;
 
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Schema\Exception\SchemaTypeNotFoundException;
-use SMW\Schema\Exception\SchemaConstructionFailedException;
-use SMW\Schema\Exception\SchemaParameterTypeMismatchException;
-use SMW\Store;
-use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\Schema\Exception\SchemaConstructionFailedException;
+use SMW\Schema\Exception\SchemaTypeNotFoundException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

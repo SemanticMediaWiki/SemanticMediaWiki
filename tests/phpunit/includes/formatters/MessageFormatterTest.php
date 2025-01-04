@@ -5,7 +5,6 @@ namespace SMW\Tests;
 use Message;
 use ReflectionClass;
 use SMW\MessageFormatter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * Tests for the MessageFormatter class

@@ -48,26 +48,26 @@ class JaCompoundGroupTokenizerTest extends TestCase {
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
 			->with( $string )
-			->willReturn( array( $string ) );
+			->willReturn( [ $string ] );
 
 		$instance = new JaCompoundGroupTokenizer( $tokenizer );
 
 		$instance->setOption(
 			JaCompoundGroupTokenizer::REGEX_EXEMPTION,
-			array( 'Foo' )
+			[ 'Foo' ]
 		);
 
 		$this->assertEquals(
-			array( '歓声', '上' ),
+			[ '歓声', '上' ],
 			$instance->tokenize( $string )
 		);
 	}
 
 	public function stringProvider() {
-		$provider[] = array(
+		$provider[] = [
 			'と歓声を上げていました。 十勝農業改良普及センターによりますと',
-			array( '歓声', '上', '十勝農業改良普及', 'センター' )
-		);
+			[ '歓声', '上', '十勝農業改良普及', 'センター' ]
+		];
 
 		return $provider;
 	}

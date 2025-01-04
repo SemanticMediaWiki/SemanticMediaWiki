@@ -2,16 +2,13 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
-use SMWDataItem as DataItem;
-use SMW\DIContainer;
-use SMW\RequestOptions;
-use SMW\Options;
-use SMW\MediaWiki\DatabaseHelper;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\RequestOptionsProc;
 use RuntimeException;
+use SMW\Options;
+use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
+use SMW\SQLStore\SQLStore;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2

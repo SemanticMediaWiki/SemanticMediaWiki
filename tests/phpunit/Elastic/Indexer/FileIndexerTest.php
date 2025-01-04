@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
-use SMW\Elastic\Indexer\FileIndexer;
 use SMW\DIWikiPage;
+use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Store;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;

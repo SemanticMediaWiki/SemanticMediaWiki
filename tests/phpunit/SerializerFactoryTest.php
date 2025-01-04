@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\SerializerFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SerializerFactory

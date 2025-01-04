@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\RevisionGuard;
-use SMW\DIWikiPage;
 use SMW\Tests\PHPUnitCompat;
 
 /**

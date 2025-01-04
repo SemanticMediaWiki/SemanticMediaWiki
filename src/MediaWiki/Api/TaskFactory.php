@@ -3,17 +3,17 @@
 namespace SMW\MediaWiki\Api;
 
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Api\Tasks\Task;
-use SMW\MediaWiki\Api\Tasks\UpdateTask;
+use RuntimeException;
+use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\MediaWiki\Api\Tasks\CheckQueryTask;
 use SMW\MediaWiki\Api\Tasks\DuplicateLookupTask;
+use SMW\MediaWiki\Api\Tasks\EntityExaminerTask;
 use SMW\MediaWiki\Api\Tasks\InsertJobTask;
 use SMW\MediaWiki\Api\Tasks\JobListTask;
 use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
-use SMW\MediaWiki\Api\Tasks\EntityExaminerTask;
-use SMW\Indicator\EntityExaminerIndicatorsFactory;
-use RuntimeException;
+use SMW\MediaWiki\Api\Tasks\Task;
+use SMW\MediaWiki\Api\Tasks\UpdateTask;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use User;
 
 /**

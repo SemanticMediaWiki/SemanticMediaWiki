@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
-use SMW\Property\DeclarationExaminer\ProtectionExaminer;
 use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
+use SMW\Property\DeclarationExaminer\ProtectionExaminer;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\ProtectionExaminer

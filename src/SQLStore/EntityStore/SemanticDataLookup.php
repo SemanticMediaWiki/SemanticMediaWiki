@@ -4,15 +4,15 @@ namespace SMW\SQLStore\EntityStore;
 
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\DataModel\SequenceMap;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\SemanticData;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMW\SQLStore\Lookup\RedirectTargetLookup;
-use SMW\DataModel\SequenceMap;
 use SMWDataItem as DataItem;
 
 /**
@@ -260,7 +260,7 @@ class SemanticDataLookup {
 		// the result set so that the `PrefetchCache/Lookup` can distinguish
 		// items by subject during the lazy load
 		foreach ( $res as $key => $data ) {
-			list( $sid, $i, $hash ) = explode( '#', $key );
+			[ $sid, $i, $hash ] = explode( '#', $key );
 
 			if ( !isset( $result[$sid] ) ) {
 				$result[$sid] = [];
@@ -578,7 +578,7 @@ class SemanticDataLookup {
 				$params['propertyKey'] = $row->prop;
 			}
 
-			list( $hash, $r ) = $this->buildResultFromRow( $row, $params );
+			[ $hash, $r ] = $this->buildResultFromRow( $row, $params );
 
 			if ( $hash === '' ) {
 				continue;

@@ -4,9 +4,9 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
 use Sanitizer;
+use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMWDataValue;
 use SMWResultArray;
-use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 
 /**
  * Class ValueTextsBuilder

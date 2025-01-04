@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Localizer\LocalLanguage;
 
-use RuntimeException;
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
 use SMW\Tests\PHPUnitCompat;
 

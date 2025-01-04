@@ -3,9 +3,9 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\DIWikiPage;
 
 /**
  * @group semantic-mediawiki

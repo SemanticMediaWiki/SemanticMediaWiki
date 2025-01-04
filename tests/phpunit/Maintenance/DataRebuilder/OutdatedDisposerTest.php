@@ -3,9 +3,9 @@
 namespace SMW\Tests\Maintenance\DataRebuilder;
 
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Maintenance\DataRebuilder\OutdatedDisposer

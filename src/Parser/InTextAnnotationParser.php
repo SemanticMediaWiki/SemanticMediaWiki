@@ -2,16 +2,15 @@
 
 namespace SMW\Parser;
 
-use Hooks;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Localizer;
-use SMW\SemanticData;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\MediaWiki\StripMarkerDecoder;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\ParserData;
+use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Timer;
 use SMWOutputs;
 use Title;
@@ -373,7 +372,7 @@ class InTextAnnotationParser {
 			return $semanticLinks;
 		}
 
-		list( $properties, $value, $valueCaption ) = $semanticLinks;
+		[ $properties, $value, $valueCaption ] = $semanticLinks;
 
 		$subject = $this->parserData->getSubject();
 

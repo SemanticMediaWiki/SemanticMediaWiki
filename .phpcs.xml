@@ -22,10 +22,7 @@
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.WrongStyle" />
 		<exclude name="Generic.Files.OneObjectStructurePerFile.MultipleFound" />
 		<exclude name="MediaWiki.Commenting.LicenseComment.InvalidLicenseTag" />
-		<exclude name="MediaWiki.Classes.UnsortedUseStatements.UnsortedUse" />
 		<exclude name="MediaWiki.PHPUnit.DeprecatedPHPUnitMethods.AssertInternalTypeGeneric" />
-		<exclude name="MediaWiki.Usage.StaticClosure.StaticClosure" />
-		<exclude name="MediaWiki.Classes.UnusedUseStatement.UnusedUse" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVar" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.NotShortIntVar" />
 		<exclude name="MediaWiki.Commenting.MissingCovers.MissingCovers" />
@@ -33,18 +30,9 @@
 		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />
 		<exclude name="MediaWiki.PHPUnit.SetMethods.SetMethods" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.WrongStyle" />
-		<exclude name="MediaWiki.Commenting.DocComment.SpacingDocStar" />
-		<exclude name="MediaWiki.Classes.UnusedUseStatement.UnnecessaryUse" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotShortBoolParam" />
-		<exclude name="PSR2.Methods.MethodDeclaration.AbstractAfterVisibility" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCapitalLinks" />
-		<exclude name="Generic.Formatting.DisallowMultipleStatements.SameLine" />
 		<exclude name="MediaWiki.NamingConventions.ValidGlobalName.allowedPrefix" />
-		<exclude name="PSR2.Files.EndFileNewline.NoneFound" />
-		<exclude name="Universal.UseStatements.NoUselessAliases.Found" />
-		<exclude name="PSR12.Files.ImportStatement.LeadingSlash" />
-		<exclude name="Universal.Lists.DisallowLongListSyntax.Found" />
-		<exclude name="Generic.Formatting.MultipleStatementAlignment.IncorrectWarning" />
 		<exclude name="Universal.Constants.LowercaseClassResolutionKeyword.Mixedcase" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotShortBoolReturn" />
 		<exclude name="MediaWiki.Usage.AssignmentInReturn.AssignmentInReturn" />
@@ -52,9 +40,7 @@
 		<exclude name="MediaWiki.Commenting.FunctionComment.SpacingAfterParamType" />
 		<exclude name="MediaWiki.Commenting.LicenseComment.LicenceTag" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.ForbiddenTest" />
-		<exclude name="Generic.PHP.LowerCaseKeyword.Found" />
 		<exclude name="MediaWiki.Commenting.FunctionAnnotations.UnrecognizedAnnotation" />
-		<exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestClass" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestFunction" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.NotShortBoolVar" />
@@ -64,7 +50,6 @@
 		<exclude name="MediaWiki.Commenting.FunctionComment.ParamNameNoMatch" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotShortIntReturn" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotShortIntArrayParam" />
-		<exclude name="Generic.Arrays.DisallowLongArraySyntax.Found" />
 		<exclude name="MediaWiki.Usage.IsNull.IsNull" />
 		<exclude name="MediaWiki.Usage.InArrayUsage.Found" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.NotParenthesisReturnType" />

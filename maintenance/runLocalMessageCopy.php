@@ -3,12 +3,9 @@
 namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
-use Onoi\MessageReporter\CallbackMessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Setup;
-use SMW\Utils\CliMsgFormatter;
-use SMW\Maintenance\MaintenanceCheck;
 use SMW\Localizer\CopyLocalMessages;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class

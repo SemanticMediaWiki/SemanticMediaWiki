@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Listener\ChangeListener\ChangeListeners;
 
-use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\DIProperty;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Tests\PHPUnitCompat;
 
 /**

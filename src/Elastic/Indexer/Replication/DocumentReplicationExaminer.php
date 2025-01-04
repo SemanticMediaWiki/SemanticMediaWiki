@@ -2,17 +2,9 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
-use Onoi\Cache\Cache;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\MediaWiki\Api\Tasks\Task;
-use SMW\Message;
-use SMW\EntityCache;
-use Html;
-use SMW\Utils\TemplateEngine;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use Title;
+use SMW\DIWikiPage;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

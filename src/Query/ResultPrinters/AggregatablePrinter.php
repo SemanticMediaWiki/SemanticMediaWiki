@@ -78,7 +78,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @param array $data label => value
 	 */
-	protected abstract function getFormatOutput( array $data );
+	abstract protected function getFormatOutput( array $data );
 
 	/**
 	 * Method gets called right before the result is returned

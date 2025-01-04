@@ -2,12 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
-use SMWDataItem as DataItem;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
-use RuntimeException;
+use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @license GNU GPL v2

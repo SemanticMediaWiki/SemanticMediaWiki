@@ -4,8 +4,6 @@ namespace SMW\Tests\Property;
 
 use Html;
 use SMW\Property\DeclarationExaminerMsgBuilder;
-use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminerMsgBuilder

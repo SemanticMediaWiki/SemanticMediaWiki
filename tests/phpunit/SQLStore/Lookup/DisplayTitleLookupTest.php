@@ -2,10 +2,8 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\DisplayTitleLookup;
-use SMW\MediaWiki\Connection\Query;
 use SMW\DIWikiPage;
-use SMW\DIProperty;
+use SMW\SQLStore\Lookup\DisplayTitleLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\DisplayTitleLookup

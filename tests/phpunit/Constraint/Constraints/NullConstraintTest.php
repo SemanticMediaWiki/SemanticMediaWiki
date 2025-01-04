@@ -3,7 +3,6 @@
 namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\NullConstraint;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Constraint\Constraints\NullConstraint

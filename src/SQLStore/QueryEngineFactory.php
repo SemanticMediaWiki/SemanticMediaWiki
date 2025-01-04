@@ -2,15 +2,15 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\EngineOptions;
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
 use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QueryEngine;
-use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMW\Utils\CircularReferenceGuard;

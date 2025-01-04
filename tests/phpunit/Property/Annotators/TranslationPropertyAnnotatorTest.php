@@ -3,9 +3,9 @@
 namespace SMW\Tests\Property\Annotators;
 
 use SMW\DataItemFactory;
-use SMW\SemanticData;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\TranslationPropertyAnnotator;
+use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 
 /**

@@ -9,8 +9,6 @@ use SMW\Services\ServicesFactory;
 use SMW\Store;
 use Title;
 use UnexpectedValueException;
-use User;
-use WikiPage;
 
 /**
  *

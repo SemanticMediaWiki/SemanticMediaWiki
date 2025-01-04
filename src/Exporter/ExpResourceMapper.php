@@ -12,7 +12,6 @@ use SMW\InMemoryPoolCache;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWExporter as Exporter;
-use Title;
 
 /**
  * @license GNU GPL v2+
@@ -186,9 +185,9 @@ class ExpResourceMapper {
 		$importDataItem = $this->findImportDataItem( $diWikiPage, $modifier );
 
 		if ( $this->seekImportVocabulary && $importDataItem instanceof DataItem ) {
-			list( $localName, $namespace, $namespaceId ) = $this->defineElementsForImportDataItem( $importDataItem );
+			[ $localName, $namespace, $namespaceId ] = $this->defineElementsForImportDataItem( $importDataItem );
 		} else {
-			list( $localName, $namespace, $namespaceId ) = $this->defineElementsForDiWikiPage( $diWikiPage, $modifier );
+			[ $localName, $namespace, $namespaceId ] = $this->defineElementsForDiWikiPage( $diWikiPage, $modifier );
 		}
 
 		$resource = new ExpNsResource(

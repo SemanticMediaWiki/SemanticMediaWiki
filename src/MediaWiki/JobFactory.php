@@ -2,19 +2,19 @@
 
 namespace SMW\MediaWiki;
 
-use SMW\MediaWiki\Jobs\NullJob;
-use SMW\MediaWiki\Jobs\RefreshJob;
-use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
-use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
-use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
-use SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob;
-use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
+use RuntimeException;
+use SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\MediaWiki\Jobs\ChangePropagationUpdateJob;
-use SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
+use SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob;
+use SMW\MediaWiki\Jobs\NullJob;
 use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
-use RuntimeException;
+use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
+use SMW\MediaWiki\Jobs\RefreshJob;
+use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use Title;
 
 /**

@@ -4,8 +4,8 @@ namespace SMW\Importer;
 
 use RuntimeException;
 use SMW\Exception\JSONFileParseException;
-use SMW\Utils\FileFetcher;
 use SMW\Utils\File;
+use SMW\Utils\FileFetcher;
 
 /**
  * @license GNU GPL v2+

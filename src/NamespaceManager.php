@@ -2,9 +2,9 @@
 
 namespace SMW;
 
-use SMW\Localizer\LocalLanguage\LocalLanguage;
-use SMW\Exception\SiteLanguageChangeException;
 use SMW\Exception\NamespaceIndexChangeException;
+use SMW\Exception\SiteLanguageChangeException;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
  * @license GNU GPL v2+

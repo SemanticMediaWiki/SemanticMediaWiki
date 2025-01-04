@@ -4,8 +4,8 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\StoreFactory;
-use SMWDataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableDefinition

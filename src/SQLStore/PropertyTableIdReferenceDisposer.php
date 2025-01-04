@@ -3,11 +3,11 @@
 namespace SMW\SQLStore;
 
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DIWikiPage;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
+use SMW\DIWikiPage;
 use SMW\Iterators\ResultIterator;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Wikimedia\Rdbms\DBError;
 
 /**

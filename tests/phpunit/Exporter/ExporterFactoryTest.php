@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\DataItemFactory;
 use SMW\Exporter\ExporterFactory;
 use SMW\Tests\PHPUnitCompat;
 

@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Api;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\PropertySpecificationLookup;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\StringCondition;
 

@@ -3,9 +3,9 @@
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder

@@ -4,7 +4,6 @@ namespace SMW\Maintenance;
 
 use Onoi\Cache\Cache;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;

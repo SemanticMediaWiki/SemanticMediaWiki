@@ -5,7 +5,6 @@ namespace SMW\Query;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMWPropertyValue as PropertyValue;
-use Title;
 
 /**
  * @license GNU GPL v2+

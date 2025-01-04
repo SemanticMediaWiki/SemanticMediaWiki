@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Connection;
 
-use SMW\SQLStore\SQLStore;
 use RuntimeException;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;

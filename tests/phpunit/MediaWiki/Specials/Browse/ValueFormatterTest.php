@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
 use SMW\MediaWiki\Specials\Browse\ValueFormatter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\ValueFormatter

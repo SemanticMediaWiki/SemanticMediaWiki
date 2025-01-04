@@ -2,9 +2,8 @@
 
 namespace SMW\Tests;
 
-use SMW\EntityCache;
 use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
+use SMW\EntityCache;
 
 /**
  * @covers \SMW\EntityCache

@@ -2,10 +2,10 @@
 
 namespace SMW\Listener\EventListener\EventListeners;
 
-use Onoi\EventDispatcher\EventListener;
 use Onoi\EventDispatcher\DispatchContext;
-use SMW\PropertySpecificationLookup;
+use Onoi\EventDispatcher\EventListener;
 use Psr\Log\LoggerAwareTrait;
+use SMW\PropertySpecificationLookup;
 
 /**
  * @license GNU GPL v2+

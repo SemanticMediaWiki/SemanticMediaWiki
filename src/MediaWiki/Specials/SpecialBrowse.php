@@ -3,12 +3,12 @@
 namespace SMW\MediaWiki\Specials;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Encoder;
-use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
+use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\Message;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWInfolink as Infolink;
 use SpecialPage;
 use TemplateParser;

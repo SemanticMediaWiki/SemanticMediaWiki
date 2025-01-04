@@ -5,12 +5,11 @@ namespace SMW\Tests\Integration\Query;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\StringCondition;
 use SMW\RequestOptions;
 use SMW\StoreFactory;
-use SMWQuery as Query;
-use SMWDIBlob as DIBlob;
+use SMW\StringCondition;
 use SMW\Tests\SMWIntegrationTestCase;
+use SMWDIBlob as DIBlob;
 
 /**
  * @group semantic-mediawiki

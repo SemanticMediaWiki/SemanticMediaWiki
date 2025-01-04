@@ -147,7 +147,7 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 			'[[Foo::bar]]'
 		];
 
-		list( $q, $p, $po ) = ParametersProcessor::process(
+		[ $q, $p, $po ] = ParametersProcessor::process(
 			$request,
 			$parameters
 		);
@@ -182,7 +182,7 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 			'[[Foo::bar]]'
 		];
 
-		list( $q, $p, $po ) = ParametersProcessor::process(
+		[ $q, $p, $po ] = ParametersProcessor::process(
 			$request,
 			$parameters
 		);

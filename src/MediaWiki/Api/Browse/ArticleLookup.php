@@ -70,7 +70,7 @@ class ArticleLookup extends Lookup {
 		}
 
 		if ( isset( $parameters['search'] ) ) {
-			list( $list, $continueOffset ) = $this->search( $limit, $offset, $parameters['search'], $namespace );
+			[ $list, $continueOffset ] = $this->search( $limit, $offset, $parameters['search'], $namespace );
 		}
 
 		// Changing this output format requires to set a new version
@@ -175,7 +175,7 @@ class ArticleLookup extends Lookup {
 
 	private function getSearchTerm( $search, &$namespace = null ) {
 		if ( strpos( $search, ':' ) !== false ) {
-			list( $ns, $term ) = explode( ':', $search );
+			[ $ns, $term ] = explode( ':', $search );
 
 			if ( ( $namespace = Localizer::getInstance()->getNsIndex( $ns ) ) !== false ) {
 				$search = $term;

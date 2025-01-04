@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use ALTree;
-use ALSection;
 use ALItem;
 use ALRow;
+use ALSection;
+use ALTree;
 use SMW\MediaWiki\HookListener;
 
 /**

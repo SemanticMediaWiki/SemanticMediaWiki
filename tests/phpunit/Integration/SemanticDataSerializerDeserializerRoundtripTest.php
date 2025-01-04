@@ -3,12 +3,12 @@
 namespace SMW\Tests\Integration;
 
 use ReflectionClass;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Serializers\SemanticDataSerializer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Subobject;
 
 /**

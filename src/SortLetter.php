@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use SMW\Store;
 use SMW\MediaWiki\Collator;
 use SMWDataItem as DataItem;
 

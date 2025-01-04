@@ -2,15 +2,15 @@
 
 namespace SMW\Constraint;
 
-use SMW\ConstraintFactory;
-use SMW\Constraint\Constraints\NullConstraint;
-use SMW\Constraint\Constraints\NamespaceConstraint;
-use SMW\Constraint\Constraints\UniqueValueConstraint;
-use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
-use SMW\Constraint\Constraints\MustExistsConstraint;
-use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
+use SMW\Constraint\Constraints\MustExistsConstraint;
+use SMW\Constraint\Constraints\NamespaceConstraint;
+use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
+use SMW\Constraint\Constraints\NullConstraint;
 use SMW\Constraint\Constraints\ShapeConstraint;
+use SMW\Constraint\Constraints\SingleValueConstraint;
+use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\ConstraintFactory;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**

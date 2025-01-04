@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils\File;
 
-use RuntimeException;
 use SMW\Utils\FileFetcher;
 
 /**

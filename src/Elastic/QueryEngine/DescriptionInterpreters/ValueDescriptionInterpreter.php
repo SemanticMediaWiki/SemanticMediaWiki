@@ -5,11 +5,11 @@ namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 use SMW\DIWikiPage;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ValueDescription;
+use SMW\Utils\CharExaminer;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWDInumber as DINumber;
 use SMWDITime as DITime;
-use SMW\Utils\CharExaminer;
 
 /**
  * @license GNU GPL v2+

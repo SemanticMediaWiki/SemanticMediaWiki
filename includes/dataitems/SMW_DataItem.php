@@ -33,29 +33,29 @@ use SMW\SemanticData;
 abstract class SMWDataItem implements JsonUnserializable {
 
 	/// Data item ID that can be used to indicate that no data item class is appropriate
-	const TYPE_NOTYPE    = 0;
+	const TYPE_NOTYPE = 0;
 	/// Data item ID for SMWDINumber
-	const TYPE_NUMBER    = 1;
+	const TYPE_NUMBER = 1;
 	/// Data item ID for SMWDIBlob
-	const TYPE_BLOB      = 2;
+	const TYPE_BLOB = 2;
 	///  Data item ID for SMWDIBoolean
-	const TYPE_BOOLEAN   = 4;
+	const TYPE_BOOLEAN = 4;
 	///  Data item ID for SMWDIUri
-	const TYPE_URI       = 5;
+	const TYPE_URI = 5;
 	///  Data item ID for SMWDITimePoint
-	const TYPE_TIME      = 6;
+	const TYPE_TIME = 6;
 	///  Data item ID for SMWDIGeoCoord
-	const TYPE_GEO       = 7;
+	const TYPE_GEO = 7;
 	///  Data item ID for SMWDIContainer
 	const TYPE_CONTAINER = 8;
 	///  Data item ID for SMWDIWikiPage
-	const TYPE_WIKIPAGE  = 9;
+	const TYPE_WIKIPAGE = 9;
 	///  Data item ID for SMWDIConcept
-	const TYPE_CONCEPT   = 10;
+	const TYPE_CONCEPT = 10;
 	///  Data item ID for SMWDIProperty
-	const TYPE_PROPERTY  = 11;
+	const TYPE_PROPERTY = 11;
 	///  Data item ID for SMWDIError
-	const TYPE_ERROR     = 12;
+	const TYPE_ERROR = 12;
 
 	/**
 	 * @var Options

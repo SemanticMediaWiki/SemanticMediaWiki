@@ -2,15 +2,12 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
+use SMW\DIProperty;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Parser as QueryParser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\Options;
 
 /**
  * @license GNU GPL v2+

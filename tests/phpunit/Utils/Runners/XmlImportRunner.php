@@ -8,7 +8,6 @@ use MediaWiki\MediaWikiServices;
 use RequestContext;
 use RuntimeException;
 use SMW\Tests\TestEnvironment;
-use WikiImporter;
 
 /**
  * @group SMW

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\TempFile;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\TempFile;
 
 /**
  * @covers \SMW\Utils\TempFile

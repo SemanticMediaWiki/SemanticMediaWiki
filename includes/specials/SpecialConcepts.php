@@ -3,12 +3,12 @@
 namespace SMW;
 
 use Html;
-use SMW\Utils\Pager;
+use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Page\ListBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\HtmlTabs;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Collator;
+use SMW\Utils\Pager;
 
 /**
  * Special page that lists available concepts

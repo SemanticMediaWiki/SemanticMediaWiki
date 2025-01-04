@@ -1,8 +1,5 @@
 <?php
 
-use SMW\DataValues\Number\UnitConverter;
-use SMW\Message;
-
 /**
  * @ingroup SMWDataValues
  */

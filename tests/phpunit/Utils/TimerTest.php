@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\Timer;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\Timer;
 
 /**
  * @covers \SMW\Utils\Timer

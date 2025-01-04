@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\EntityStore;
 
 use SMW\MediaWiki\Database;
-use SMW\Utils\HmacSerializer;
 use SMW\SQLStore\SQLStore;
+use SMW\Utils\HmacSerializer;
 
 /**
  * @private

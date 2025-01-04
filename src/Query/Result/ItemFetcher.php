@@ -2,9 +2,7 @@
 
 namespace SMW\Query\Result;
 
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
-use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Parser\InTextAnnotationParser;
@@ -14,7 +12,6 @@ use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
 
 /**
  * @license GNU GPL v2+

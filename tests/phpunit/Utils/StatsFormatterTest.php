@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\StatsFormatter;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\StatsFormatter;
 
 /**
  * @covers \SMW\Utils\StatsFormatter

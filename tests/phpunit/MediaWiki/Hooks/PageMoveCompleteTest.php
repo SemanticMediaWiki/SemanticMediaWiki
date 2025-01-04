@@ -5,7 +5,6 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use SMW\MediaWiki\Hooks\PageMoveComplete;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\PageMoveComplete

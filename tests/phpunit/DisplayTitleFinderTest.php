@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
+use SMW\DIProperty;
 use SMW\DisplayTitleFinder;
 use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMWDIBlob as DIBlob;
 
 /**

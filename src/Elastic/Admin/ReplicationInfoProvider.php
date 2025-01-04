@@ -3,15 +3,14 @@
 namespace SMW\Elastic\Admin;
 
 use Html;
-use WebRequest;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\Message;
 use SMW\Elastic\Indexer\FileIndexer;
-use SMW\Utils\HtmlColumns;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\EntityCache;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Message;
+use SMW\Utils\HtmlColumns;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

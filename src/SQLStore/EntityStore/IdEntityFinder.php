@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
 use SMW\DIWikiPage;
 use SMW\IteratorFactory;
 use SMW\RequestOptions;

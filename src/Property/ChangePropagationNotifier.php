@@ -2,14 +2,14 @@
 
 namespace SMW\Property;
 
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
-use SMWDataItem;
-use SMWDIBlob as DIBlob;
+use SMW\SemanticData;
 use SMW\SerializerFactory;
 use SMW\Store;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
+use SMWDataItem;
+use SMWDIBlob as DIBlob;
 
 /**
  * Before a new set of data (type, constraints etc.) is stored about a property

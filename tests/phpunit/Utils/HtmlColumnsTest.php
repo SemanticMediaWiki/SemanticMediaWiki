@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\HtmlColumns;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\HtmlColumns;
 
 /**
  * @covers \SMW\Utils\HtmlColumns

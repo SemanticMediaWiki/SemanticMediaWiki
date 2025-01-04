@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
-use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
 
 /**

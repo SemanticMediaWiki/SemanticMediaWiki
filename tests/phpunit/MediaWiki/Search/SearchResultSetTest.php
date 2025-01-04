@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\SearchResultSet;
-use SMW\DIWikiPage;
 use Title;
 
 /**

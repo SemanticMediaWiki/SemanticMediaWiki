@@ -2,10 +2,9 @@
 
 namespace SMW\Maintenance;
 
-use SMW\Utils\File;
-use RuntimeException;
-use SMW\Site;
 use SMW\SetupFile;
+use SMW\Site;
+use SMW\Utils\File;
 
 /**
  * @license GNU GPL v2+

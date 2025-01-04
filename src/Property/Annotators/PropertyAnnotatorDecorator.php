@@ -66,6 +66,6 @@ abstract class PropertyAnnotatorDecorator implements PropertyAnnotator {
 	/**
 	 * @since 1.9
 	 */
-	protected abstract function addPropertyValues();
+	abstract protected function addPropertyValues();
 
 }

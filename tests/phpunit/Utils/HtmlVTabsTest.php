@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\HtmlVTabs;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\HtmlVTabs;
 
 /**
  * @covers \SMW\Utils\HtmlVTabs

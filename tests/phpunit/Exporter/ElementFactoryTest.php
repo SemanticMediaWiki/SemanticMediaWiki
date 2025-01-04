@@ -46,7 +46,7 @@ class ElementFactoryTest extends \PHPUnit\Framework\TestCase {
 		$dataItemFactory = new DataItemFactory();
 		$instance = new ElementFactory();
 
-		$instance->registerCallableMapper( \SMWDataItem::TYPE_BLOB, function ( $datatem ) {
+		$instance->registerCallableMapper( \SMWDataItem::TYPE_BLOB, static function ( $datatem ) {
 			return new \stdclass;
 		} );
 

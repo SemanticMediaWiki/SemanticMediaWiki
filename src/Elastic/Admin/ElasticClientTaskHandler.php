@@ -3,17 +3,16 @@
 namespace SMW\Elastic\Admin;
 
 use Html;
+use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use WebRequest;
-use SMW\Elastic\Indexer\ReplicationStatus;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\Config;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

@@ -6,8 +6,8 @@ use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\KeywordValue;
 use SMW\PropertySpecificationLookup;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\KeywordValue

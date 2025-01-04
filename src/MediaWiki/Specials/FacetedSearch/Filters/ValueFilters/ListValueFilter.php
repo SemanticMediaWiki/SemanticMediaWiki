@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
-use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Utils\TemplateEngine;
+use SMW\Utils\UrlArgs;
 
 /**
  * @license GNU GPL v2+

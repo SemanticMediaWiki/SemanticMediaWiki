@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration\Schema;
 
-use SMW\Schema\SchemaList;
 use SMW\Schema\SchemaDefinition;
+use SMW\Schema\SchemaList;
 
 /**
  * @group semantic-mediawiki-integration

@@ -2,11 +2,10 @@
 
 namespace SMW\Iterators;
 
-use Exception;
-use Iterator;
 use Countable;
-use SMW\Exception\FileNotFoundException;
+use Iterator;
 use RuntimeException;
+use SMW\Exception\FileNotFoundException;
 use SplFileObject;
 
 /**

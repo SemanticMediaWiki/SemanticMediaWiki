@@ -74,7 +74,7 @@ class PunctuationRegExTokenizer implements Tokenizer {
 		$result = preg_split( '/[' . $pattern . ']+/u', $string, null, PREG_SPLIT_NO_EMPTY );
 
 		if ( $result === false ) {
-			$result = array();
+			$result = [];
 		}
 
 		return $result;

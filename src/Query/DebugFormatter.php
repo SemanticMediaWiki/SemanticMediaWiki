@@ -261,7 +261,7 @@ class DebugFormatter {
 		$matches = [];
 		$i = 0;
 
-		$sql = preg_replace_callback( '/NOT IN .*\)/', function ( $m ) use ( &$matches, &$i ) {
+		$sql = preg_replace_callback( '/NOT IN .*\)/', static function ( $m ) use ( &$matches, &$i ) {
 			$i++;
 
 			$string = str_replace( [ 'AND ((' ], [ "AND (<br>   (" ], $m[0] );

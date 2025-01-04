@@ -3,8 +3,6 @@
 namespace SMW\Tests\Schema;
 
 use SMW\Schema\SchemaFilterFactory;
-use SMW\Tests\PHPUnitCompat;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Schema\SchemaFilterFactory

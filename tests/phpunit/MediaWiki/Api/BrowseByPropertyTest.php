@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\BrowseByProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**

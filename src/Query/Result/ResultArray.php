@@ -2,14 +2,13 @@
 
 namespace SMW\Query\Result;
 
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
+use SMW\DataValueFactory;
+use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
-use SMW\RequestOptions;
-use SMWDataItem as DataItem;
-use SMW\DIWikiPage;
 use SMW\Store;
+use SMWDataItem as DataItem;
 use SMWDataValue;
 use SMWQueryResult as QueryResult;
 

@@ -6,6 +6,7 @@ use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\AllowsValue;
 use SMW\DataValues\BooleanValue;
+use SMW\DataValues\ConstraintSchemaValue;
 use SMW\DataValues\ErrorMsgTextValue;
 use SMW\DataValues\ExternalFormatterUriValue;
 use SMW\DataValues\ExternalIdentifierValue;
@@ -21,13 +22,11 @@ use SMW\DataValues\TelephoneUriValue;
 use SMW\DataValues\TemperatureValue;
 use SMW\DataValues\TypesValue;
 use SMW\DataValues\UniquenessConstraintValue;
-use SMW\DataValues\ConstraintSchemaValue;
-use SMW\DataValues\ValueFactory;
 use SMWDataItem as DataItem;
+use SMWExporter as Exporter;
 use SMWNumberValue as NumberValue;
 use SMWQuantityValue as QuantityValue;
 use SMWTimeValue as TimeValue;
-use SMWExporter as Exporter;
 
 /**
  * @license GNU GPL v2+
@@ -359,14 +358,14 @@ class TypesRegistry {
 		];
 
 		if ( $key === 'id' ) {
-			array_walk( $fixedProperties, function ( &$v, $k ) { $v = $v[0];
+			array_walk( $fixedProperties, static function ( &$v, $k ) { $v = $v[0];
 			} );
 		}
 
 		// Default fixed property table for selected special properties
 		if ( $key === 'default_fixed' ) {
 			$fixedProperties = array_keys(
-				array_filter( $fixedProperties, function ( $v ) { return $v[1];
+				array_filter( $fixedProperties, static function ( $v ) { return $v[1];
 				} )
 			);
 		}
@@ -375,7 +374,7 @@ class TypesRegistry {
 		// special properties that can have their own fixed property table
 		if ( $key === 'custom_fixed' ) {
 			$fixedProperties = array_keys(
-				array_filter( $fixedProperties, function ( $v ) { return $v[2];
+				array_filter( $fixedProperties, static function ( $v ) { return $v[2];
 				} )
 			);
 		}

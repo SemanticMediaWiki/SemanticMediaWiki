@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki;
 
-use Title;
 use OutputPage;
 use SMW\DIWikiPage;
 use SMW\Indicator\IndicatorProvider;
-use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionAware;
+use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminerAware;
+use Title;
 
 /**
  * @license GNU GPL v2+

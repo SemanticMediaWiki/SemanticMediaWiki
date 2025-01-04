@@ -2,13 +2,12 @@
 
 namespace SMW\Constraint\Constraints;
 
+use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
 use SMW\Message;
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
 use SMW\SemanticData;
-use RuntimeException;
+use SMWDataValue as DataValue;
 
 /**
  * @license GNU GPL v2+

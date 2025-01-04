@@ -2,13 +2,13 @@
 
 namespace SMW\DataValues;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\SemanticData;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer;
+use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
@@ -103,7 +103,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @param string $userValue
 	 */
 	protected function parseUserValue( $userValue ) {
-		list( $text, $languageCode ) = $this->getValuesFromString( $userValue );
+		[ $text, $languageCode ] = $this->getValuesFromString( $userValue );
 
 		$languageCodeValue = $this->newLanguageCodeValue( $languageCode );
 

@@ -5,8 +5,8 @@ namespace SMW\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\SQLStore\PropertyStatisticsStore;
-use SMW\Store;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 
 /**
@@ -151,7 +151,7 @@ class PropertyStatisticsRebuilder {
 				continue;
 			}
 
-			list( $uCount, $nCount ) = $this->getPropertyTableRowCount(
+			[ $uCount, $nCount ] = $this->getPropertyTableRowCount(
 				$propertyTable,
 				$row->smw_id
 			);

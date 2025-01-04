@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use ParserOutput;
 use SMW\MediaWiki\FileRepoFinder;
 
 /**

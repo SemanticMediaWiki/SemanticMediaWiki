@@ -2,12 +2,11 @@
 
 namespace SMW\Elastic;
 
+use SMW\Elastic\Connection\DummyClient;
+use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\Connection\DummyClient;
-use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 
 /**
  * @license GNU GPL v2+

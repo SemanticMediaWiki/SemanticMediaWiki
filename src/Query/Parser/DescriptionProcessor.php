@@ -11,9 +11,9 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\QueryComparator;
 use SMW\Site;
 use SMWDataValue as DataValue;
-use SMW\Query\QueryComparator;
 
 /**
  * @license GNU GPL v2+

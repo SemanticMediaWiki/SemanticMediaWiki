@@ -2,10 +2,8 @@
 
 namespace SMW\Tests\Schema;
 
-use SMW\DataItemFactory;
-use SMW\Schema\SchemaValidator;
 use SMW\Schema\SchemaDefinition;
-use SMW\Tests\TestEnvironment;
+use SMW\Schema\SchemaValidator;
 
 /**
  * @covers \SMW\Schema\SchemaValidator

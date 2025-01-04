@@ -2,13 +2,12 @@
 
 namespace SMW\Maintenance;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\SQLStore\SQLStore;
-use SMW\Utils\HmacSerializer;
 use SMW\DIWikiPage;
-use SMW\Maintenance\MaintenanceCheck;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\HmacSerializer;
 
 /**
  * Load the required class

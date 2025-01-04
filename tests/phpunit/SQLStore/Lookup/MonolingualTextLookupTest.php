@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\MonolingualTextLookup;
-use SMW\MediaWiki\Connection\Query;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Query;
+use SMW\SQLStore\Lookup\MonolingualTextLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\MonolingualTextLookup

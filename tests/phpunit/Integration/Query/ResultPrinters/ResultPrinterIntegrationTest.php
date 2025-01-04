@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration\Query\ResultPrinters;
 
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-integration

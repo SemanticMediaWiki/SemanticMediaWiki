@@ -384,7 +384,7 @@ class FieldMapper {
 		} elseif ( substr_count( $value, '"' ) == 2 && strpos( $value, '~' ) !== false ) {
 			// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_fuzziness
 			// [[Has page::phrase:some text~2]] as "some text"~2
-			list( $value, $fuzziness ) = explode( '~', $value );
+			[ $value, $fuzziness ] = explode( '~', $value );
 			$value = "$value\"~" . str_replace( '"', '', $fuzziness );
 		}
 
@@ -459,7 +459,7 @@ class FieldMapper {
 	 */
 	public function query_string( $fields, $value, array $params = [] ) {
 		if ( $this->isCompatMode ) {
-			list( $value, $params ) = $this->query_string_compat( $value, $params );
+			[ $value, $params ] = $this->query_string_compat( $value, $params );
 		}
 
 		if ( !is_array( $fields ) ) {
@@ -641,7 +641,7 @@ class FieldMapper {
 		$str = is_array( $params ) ? json_encode( $params ) : (string)$params;
 
 		// P:, or iP:
-		list( $prefix, $id ) = explode( ':', $replacement );
+		[ $prefix, $id ] = explode( ':', $replacement );
 
 		$params = [];
 		$params[] = json_decode( $str, true );

@@ -79,7 +79,7 @@ class ElementFactory {
 	 * @return ExpLiteral
 	 */
 	public function newFromNumber( DataItem $dataItem ) {
-		list( $type, $value ) = XsdValueMapper::map(
+		[ $type, $value ] = XsdValueMapper::map(
 			$dataItem
 		);
 
@@ -94,7 +94,7 @@ class ElementFactory {
 	 * @return ExpLiteral
 	 */
 	public function newFromBlob( DataItem $dataItem ) {
-		list( $type, $value ) = XsdValueMapper::map(
+		[ $type, $value ] = XsdValueMapper::map(
 			$dataItem
 		);
 
@@ -109,7 +109,7 @@ class ElementFactory {
 	 * @return ExpLiteral
 	 */
 	public function newFromBoolean( DataItem $dataItem ) {
-		list( $type, $value ) = XsdValueMapper::map(
+		[ $type, $value ] = XsdValueMapper::map(
 			$dataItem
 		);
 
@@ -137,7 +137,7 @@ class ElementFactory {
 	public function newFromTime( DataItem $dataItem ) {
 		$dataItem = $dataItem->getForCalendarModel( DITime::CM_GREGORIAN );
 
-		list( $type, $value ) = XsdValueMapper::map(
+		[ $type, $value ] = XsdValueMapper::map(
 			$dataItem
 		);
 

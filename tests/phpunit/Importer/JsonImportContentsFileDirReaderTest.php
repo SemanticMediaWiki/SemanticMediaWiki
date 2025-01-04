@@ -2,9 +2,7 @@
 
 namespace SMW\Tests\Importer;
 
-use SMW\Importer\ContentModeller;
 use SMW\Importer\JsonImportContentsFileDirReader;
-use SMW\Utils\FileFetcher;
 use SMW\Tests\PHPUnitCompat;
 
 /**

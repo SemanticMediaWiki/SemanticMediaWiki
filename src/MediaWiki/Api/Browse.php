@@ -3,18 +3,18 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Exception\RedirectTargetUnresolvableException;
+use SMW\Exception\JSONParseException;
 use SMW\Exception\ParameterNotFoundException;
+use SMW\Exception\RedirectTargetUnresolvableException;
 use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
 use SMW\MediaWiki\Api\Browse\ArticleLookup;
-use SMW\MediaWiki\Api\Browse\SubjectLookup;
 use SMW\MediaWiki\Api\Browse\CachingLookup;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
 use SMW\MediaWiki\Api\Browse\ListLookup;
-use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Api\Browse\PSubjectLookup;
-use SMW\Exception\JSONParseException;
+use SMW\MediaWiki\Api\Browse\PValueLookup;
+use SMW\MediaWiki\Api\Browse\SubjectLookup;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Module to support selected browse activties including:

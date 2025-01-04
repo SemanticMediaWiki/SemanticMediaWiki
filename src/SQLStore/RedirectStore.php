@@ -4,11 +4,11 @@ namespace SMW\SQLStore;
 
 use Onoi\Cache\Cache;
 use SMW\InMemoryPoolCache;
+use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\Store;
 use SMW\Utils\Flag;
-use SMW\Listener\ChangeListener\ChangeRecord;
 use Title;
 
 /**

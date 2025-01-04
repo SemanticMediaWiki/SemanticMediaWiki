@@ -2,11 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use WebRequest;
-use SMW\Utils\UrlArgs;
 use Html;
-use Title;
-use SMW\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 
 /**

@@ -2,14 +2,13 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use Html;
-use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Exception\ExtendedPermissionsError;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Message;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlTabs;
 use SpecialPage;
 

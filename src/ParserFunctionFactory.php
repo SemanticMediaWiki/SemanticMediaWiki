@@ -72,25 +72,25 @@ class ParserFunctionFactory {
 	 * @param Parser $parser
 	 */
 	public function registerFunctionHandlers( Parser $parser ) {
-		list( $name, $definition, $flag ) = $this->getAskParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getAskParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getShowParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getShowParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getSubobjectParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getSubobjectParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getSetRecurringEventParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getSetRecurringEventParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getSetParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getSetParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getConceptParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getConceptParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getDeclareParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getDeclareParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 	}
 

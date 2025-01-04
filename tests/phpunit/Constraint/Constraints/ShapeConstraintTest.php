@@ -3,8 +3,8 @@
 namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\ShapeConstraint;
-use SMW\Tests\PHPUnitCompat;
 use SMW\DataItemFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMWDataValue;
 
 /**
@@ -73,7 +73,7 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->willReturn( function () use( $semanticData ) { return $semanticData;
+			->willReturn( static function () use( $semanticData ) { return $semanticData;
 			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -114,7 +114,7 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->willReturn( function () use( $semanticData ) { return $semanticData;
+			->willReturn( static function () use( $semanticData ) { return $semanticData;
 			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -163,7 +163,7 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->willReturn( function () use( $semanticData ) { return $semanticData;
+			->willReturn( static function () use( $semanticData ) { return $semanticData;
 			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -216,7 +216,7 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->willReturn( function () use( $semanticData ) { return $semanticData;
+			->willReturn( static function () use( $semanticData ) { return $semanticData;
 			} );
 
 		$dataValue->expects( $this->atLeastOnce() )

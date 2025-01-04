@@ -4,9 +4,9 @@ namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMWDataItem as DataItem;
 

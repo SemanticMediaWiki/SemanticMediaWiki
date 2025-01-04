@@ -4,7 +4,6 @@ namespace SMW;
 
 use FileFetcher\FileFetcher;
 use FileFetcher\SimpleFileFetcher;
-use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Elastic\ElasticStore;
 use SMW\SQLStore\Installer;

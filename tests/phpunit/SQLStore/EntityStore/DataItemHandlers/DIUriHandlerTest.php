@@ -4,8 +4,8 @@ namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDIUri as DIUri;
 use SMW\Tests\PHPUnitCompat;
+use SMWDIUri as DIUri;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler

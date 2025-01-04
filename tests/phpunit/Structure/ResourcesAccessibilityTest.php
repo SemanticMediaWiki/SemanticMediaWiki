@@ -3,10 +3,7 @@
 namespace SMW\Tests\Structure;
 
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use MediaWiki\ResourceLoader\ResourceLoader;
 use MediaWiki\ResourceLoader\Context;
-use ResourceLoaderModule;
 use SMW\Tests\PHPUnitCompat;
 
 /**

@@ -2,8 +2,8 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
-use SMW\SQLStore\SQLStore;
 use SMW\MediaWiki\Connection\Sequence;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 

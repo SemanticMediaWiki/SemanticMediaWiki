@@ -31,7 +31,7 @@ class PropertyValueParserTest extends \PHPUnit\Framework\TestCase {
 			$invalidCharacterList
 		);
 
-		list( $propertyName, $capitalizedName, $inverse ) = $instance->parse( $value );
+		[ $propertyName, $capitalizedName, $inverse ] = $instance->parse( $value );
 
 		$this->assertSame(
 			$expectedPropertyName,
@@ -49,7 +49,7 @@ class PropertyValueParserTest extends \PHPUnit\Framework\TestCase {
 		$instance->isCapitalLinks( false );
 		$instance->reqCapitalizedFirstChar( true );
 
-		list( $propertyName, $capitalizedName, $inverse ) = $instance->parse( 'foo' );
+		[ $propertyName, $capitalizedName, $inverse ] = $instance->parse( 'foo' );
 
 		$this->assertSame(
 			'foo',

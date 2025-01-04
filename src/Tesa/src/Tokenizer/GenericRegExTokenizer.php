@@ -76,7 +76,7 @@ class GenericRegExTokenizer implements Tokenizer {
 		$result = preg_split( '/' . $pattern . '/u', $string, -1, PREG_SPLIT_NO_EMPTY );
 
 		if ( $result === false ) {
-			$result = array();
+			$result = [];
 		}
 
 		return $result;

@@ -5,8 +5,8 @@ namespace SMW\Tests\SQLStore;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
 use Wikimedia\Rdbms\DBQueryError;
 
 /**
@@ -191,7 +191,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return call_user_func( $callback );
 			}
 			);

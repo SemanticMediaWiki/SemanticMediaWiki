@@ -2,17 +2,14 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\RequestOptions;
-use SMW\SQLStore\SQLStore;
-use SMW\Store;
-use SMW\DataTypeRegistry;
-use SMWDataItem as DataItem;
-use SMW\MediaWiki\LinkBatch;
-use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\DataModel\SequenceMap;
-use RuntimeException;
+use SMW\DataTypeRegistry;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\LinkBatch;
+use SMW\RequestOptions;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
+use SMW\Store;
 
 /**
  * Prefetch values for a list of known subjects to a specific property to avoid

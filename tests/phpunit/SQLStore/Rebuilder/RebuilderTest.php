@@ -2,9 +2,7 @@
 
 namespace SMW\Tests\SQLStore\Rebuilder;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Rebuilder\Rebuilder;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**

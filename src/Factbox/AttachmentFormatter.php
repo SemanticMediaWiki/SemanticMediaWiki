@@ -3,14 +3,14 @@
 namespace SMW\Factbox;
 
 use Html;
-use SMW\Store;
 use SMW\DataValueFactory;
-use SMW\PropertyRegistry;
 use SMW\DIProperty;
 use SMW\Message;
+use SMW\PropertyRegistry;
+use SMW\Store;
 use SMW\Utils\HtmlTable;
-use SMWDIBlob as DIBlob;
 use SMWDataItem as DataItem;
+use SMWDIBlob as DIBlob;
 
 /**
  * @license GNU GPL v2+

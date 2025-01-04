@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
-use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\SQLStore\Lookup\EntityUniquenessLookup

@@ -4,12 +4,9 @@ namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\Installer;
 use SMW\SetupFile;
-use SMW\Setup;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\Maintenance\MaintenanceCheck;
 use SMW\Utils\CliMsgFormatter;
 
 /**

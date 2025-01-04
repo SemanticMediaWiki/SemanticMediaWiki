@@ -3,7 +3,6 @@
 namespace SMW\Tests\Constraint;
 
 use SMW\Constraint\ConstraintError;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Constraint\ConstraintError

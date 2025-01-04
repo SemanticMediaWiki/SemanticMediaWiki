@@ -2,12 +2,12 @@
 
 namespace SMW\Query\DescriptionBuilders;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataItemFactory;
+use SMW\DIProperty;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\QueryComparator;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
-use SMW\DIProperty;
 
 /**
  * @private
@@ -75,7 +75,7 @@ abstract class DescriptionBuilder {
 	 *
 	 * @param DataValue|null $dataValue
 	 */
-	public abstract function isBuilderFor( $dataValue );
+	abstract public function isBuilderFor( $dataValue );
 
 	/**
 	 * @since 2.3

@@ -2,11 +2,10 @@
 
 namespace SMW\Schema;
 
-use SMW\Schema\Filters\NamespaceFilter;
 use SMW\Schema\Filters\CategoryFilter;
-use SMW\Schema\Filters\PropertyFilter;
 use SMW\Schema\Filters\CompositeFilter;
-use SMW\DIWikiPage;
+use SMW\Schema\Filters\NamespaceFilter;
+use SMW\Schema\Filters\PropertyFilter;
 
 /**
  * @license GNU GPL v2+

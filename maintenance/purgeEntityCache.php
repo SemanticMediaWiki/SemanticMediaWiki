@@ -3,14 +3,14 @@
 namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
-use SMW\Setup;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Utils\CliMsgFormatter;
+use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class

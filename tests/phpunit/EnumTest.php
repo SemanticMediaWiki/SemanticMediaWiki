@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\Enum;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Enum
@@ -19,7 +18,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	/**
-	 *@dataProvider constProvider
+	 * @dataProvider constProvider
 	 */
 	public function testValidate( $const ) {
 		$this->assertIsString(

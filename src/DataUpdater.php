@@ -4,13 +4,13 @@ namespace SMW;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
+use Onoi\EventDispatcher\EventDispatcherAwareTrait;
+use Psr\Log\LoggerAwareTrait;
+use SMW\DeferredTransactionalCallableUpdate as DeferredUpdate;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
+use SMW\Property\ChangePropagationNotifier;
 use Title;
 use WikiPage;
-use SMW\DeferredTransactionalCallableUpdate as DeferredUpdate;
-use Psr\Log\LoggerAwareTrait;
-use SMW\Property\ChangePropagationNotifier;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 
 /**
  * This function takes care of storing the collected semantic data and

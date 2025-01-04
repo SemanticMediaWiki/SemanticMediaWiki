@@ -3,13 +3,13 @@
 namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\ParameterFormatterFactory;
 use SMW\ParserFunctions\SetParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\SetParserFunction

@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Schema\Filters;
 
-use SMW\Schema\Filters\CategoryFilter;
 use SMW\Schema\Compartment;
-use SMW\Schema\Rule;
 use SMW\Schema\CompartmentIterator;
+use SMW\Schema\Filters\CategoryFilter;
+use SMW\Schema\Rule;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -75,7 +75,7 @@ class CategoryFilterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function () {
+		$callback = static function () {
 			return null;
 		};
 
@@ -107,7 +107,7 @@ class CategoryFilterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider categoryFilterProvider
 	 */
 	public function testHasMatches_Callback_Compartment( $categories, $compartment, $expected ) {
-		$callback = function () use ( $categories ) {
+		$callback = static function () use ( $categories ) {
 			return $categories;
 		};
 

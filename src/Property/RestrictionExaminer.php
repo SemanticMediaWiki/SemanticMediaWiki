@@ -2,11 +2,10 @@
 
 namespace SMW\Property;
 
-use SMW\Message;
 use SMW\DIProperty;
-use SMW\PropertyRegistry;
 use SMW\DIWikiPage;
-use Title;
+use SMW\Message;
+use SMW\PropertyRegistry;
 use User;
 
 /**

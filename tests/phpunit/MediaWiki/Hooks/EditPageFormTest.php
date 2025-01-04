@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\EditPageForm;
-use Title;
 use SMW\Tests\PHPUnitCompat;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\EditPageForm

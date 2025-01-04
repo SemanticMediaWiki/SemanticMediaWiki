@@ -4,9 +4,9 @@ namespace SMW\Elastic\Admin;
 
 use Html;
 use SMW\Message;
-use WebRequest;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

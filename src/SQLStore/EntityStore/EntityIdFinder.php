@@ -3,16 +3,11 @@
 namespace SMW\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
-use SMW\IteratorFactory;
-use SMW\RequestOptions;
-use SMW\SQLStore\SQLStore;
-use SMW\DIProperty;
-use SMW\TypesRegistry;
-use SMW\PropertyRegistry;
-use SMW\SQLStore\RedirectStore;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\SQLStore\propertyTable\propertyTableHashes;
+use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @private

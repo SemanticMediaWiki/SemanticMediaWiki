@@ -4,9 +4,9 @@ namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ThingDescription;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\ConditionBuilder;
 
 /**
  * @license GNU GPL v2+

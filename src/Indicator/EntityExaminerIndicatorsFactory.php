@@ -2,18 +2,16 @@
 
 namespace SMW\Indicator;
 
-use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
-use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
-use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
-use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider;
-use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider as ConstraintErrorEntityExaminerIndicatorProvider;
-use SMW\Indicator\EntityExaminerIndicators\BlankEntityExaminerDeferrableIndicatorProvider;
-use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
-use SMW\Services\ServicesFactory;
-use SMW\Utils\TemplateEngine;
-use SMW\Store;
 use SMW\EntityCache;
+use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
+use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
+use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider as ConstraintErrorEntityExaminerIndicatorProvider;
+use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
+use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\Services\ServicesFactory;
+use SMW\Store;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @license GNU GPL v2+

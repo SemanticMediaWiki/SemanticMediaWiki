@@ -2,12 +2,10 @@
 
 namespace SMW\Schema\Filters;
 
-use SMW\Schema\SchemaList;
-use SMW\Schema\SchemaFilter;
 use SMW\Schema\ChainableFilter;
-use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Compartment;
 use SMW\Schema\Rule;
+use SMW\Schema\SchemaFilter;
 
 /**
  * @license GNU GPL v2+

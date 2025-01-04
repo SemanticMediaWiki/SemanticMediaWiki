@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore;
 
-use MWException;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;

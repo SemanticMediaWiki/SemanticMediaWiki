@@ -2,10 +2,7 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\SQLStore\EntityStore\FieldList;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\FieldList

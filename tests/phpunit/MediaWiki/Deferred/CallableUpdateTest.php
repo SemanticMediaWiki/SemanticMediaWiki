@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Deferred;
 
 use SMW\MediaWiki\Deferred\CallableUpdate;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Deferred\CallableUpdate
@@ -35,7 +35,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$callback = function () {
+		$callback = static function () {
 			return null;
 		};
 
@@ -54,7 +54,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -69,7 +69,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateThatThrowsExceptionToLogAndRethrow() {
-		$callback = function () {
+		$callback = static function () {
 			throw new \Exception( "Error Processing Request", 1 );
 		};
 
@@ -114,7 +114,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -140,7 +140,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -167,7 +167,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -182,7 +182,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOrigin() {
-		$callback = function () {
+		$callback = static function () {
 		};
 
 		$instance = new CallableUpdate(
@@ -206,7 +206,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 

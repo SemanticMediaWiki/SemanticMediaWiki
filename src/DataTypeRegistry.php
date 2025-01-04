@@ -3,10 +3,9 @@
 namespace SMW;
 
 use MediaWiki\MediaWikiServices;
-use SMW\DataValues\TypeList;
+use RuntimeException;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMWDataItem as DataItem;
-use RuntimeException;
 
 /**
  * DataTypes registry class

@@ -45,7 +45,7 @@ class QueryStringifier {
 			$serialized['parameters']['source'] = $query->getQuerySource();
 		}
 
-		list( $serialized['sort'], $serialized['order'] ) = self::sortKeys(
+		[ $serialized['sort'], $serialized['order'] ] = self::sortKeys(
 			$query
 		);
 

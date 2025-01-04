@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\DIProperty;
-use Title;
 use SMW\MediaWiki\HookListener;
+use Title;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsMovable

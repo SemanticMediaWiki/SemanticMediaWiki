@@ -5,8 +5,8 @@ namespace SMW\Tests\DataValues\ValueFormatters;
 use SMW\DataItemFactory;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\ReferenceValueFormatter

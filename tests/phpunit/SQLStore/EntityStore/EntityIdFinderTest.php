@@ -2,11 +2,8 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
-use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\EntityIdFinder;
-use SMW\MediaWiki\Connection\Query;
 use SMW\Tests\TestEnvironment;
 
 /**

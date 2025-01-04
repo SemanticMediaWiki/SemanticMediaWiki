@@ -4,8 +4,8 @@ namespace SMW\Tests\Protection;
 
 use SMW\DataItemFactory;
 use SMW\Protection\EditProtectionUpdater;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Protection\EditProtectionUpdater

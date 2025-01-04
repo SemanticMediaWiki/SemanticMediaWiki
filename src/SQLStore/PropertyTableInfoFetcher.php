@@ -3,8 +3,8 @@
 namespace SMW\SQLStore;
 
 use SMW\DataTypeRegistry;
-use SMW\TypesRegistry;
 use SMW\DIProperty;
+use SMW\TypesRegistry;
 use SMWDataItem as DataItem;
 
 /**

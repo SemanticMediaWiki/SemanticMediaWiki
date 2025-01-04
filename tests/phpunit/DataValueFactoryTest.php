@@ -37,7 +37,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		$test->expects( $this->once() )
 			->method( 'doRun' );
 
-		$callback = function () use( $test ) {
+		$callback = static function () use( $test ) {
 			return $test;
 		};
 

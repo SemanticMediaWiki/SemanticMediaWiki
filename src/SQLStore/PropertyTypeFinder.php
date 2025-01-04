@@ -126,7 +126,7 @@ class PropertyTypeFinder {
 		}
 
 		// e.g. http://semantic-mediawiki.org/swivt/1.0#_num
-		list( $url, $fragment ) = explode( "#", $row->o_serialized );
+		[ $url, $fragment ] = explode( "#", $row->o_serialized );
 
 		return $fragment;
 	}

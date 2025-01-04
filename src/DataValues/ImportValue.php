@@ -2,12 +2,12 @@
 
 namespace SMW\DataValues;
 
+use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\Message;
+use SMW\Services\ServicesFactory;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
-use SMW\MediaWiki\MediaWikiNsContentReader;
-use SMW\Services\ServicesFactory;
 
 /**
  * This datavalue implements datavalues used by special property '_IMPO' used
@@ -98,7 +98,7 @@ class ImportValue extends DataValue {
 			$this
 		);
 
-		list( $this->namespace, $this->term, $this->uri, $this->declarativeName, $this->termType ) = $importValueParser->parse(
+		[ $this->namespace, $this->term, $this->uri, $this->declarativeName, $this->termType ] = $importValueParser->parse(
 			$value
 		);
 
@@ -179,7 +179,7 @@ class ImportValue extends DataValue {
 			return $this->declarativeNames[$namespace] = '';
 		}
 
-		list( $uri, $name ) = explode( '|', $fristLine, 2 );
+		[ $uri, $name ] = explode( '|', $fristLine, 2 );
 
 		return $this->declarativeNames[$namespace] = $name;
 	}

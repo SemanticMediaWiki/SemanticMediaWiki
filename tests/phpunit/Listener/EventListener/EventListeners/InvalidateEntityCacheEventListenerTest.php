@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Listener\EventListener\EventListeners;
 
+use Onoi\EventDispatcher\DispatchContext;
 use SMW\DIWikiPage;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
-use Onoi\EventDispatcher\DispatchContext;
 use SMW\Tests\TestEnvironment;
 
 /**

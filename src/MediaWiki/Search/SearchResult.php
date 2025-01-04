@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Search;
 
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use Title;
 
 /**

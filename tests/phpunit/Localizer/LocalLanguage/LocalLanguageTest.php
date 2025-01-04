@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Localizer\LocalLanguage;
 
-use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\Localizer\LocalLanguage\LanguageContents;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
  * @covers \SMW\Localizer\LocalLanguage

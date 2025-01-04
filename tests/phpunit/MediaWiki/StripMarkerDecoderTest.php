@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\StripMarkerDecoder;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\StripMarkerDecoder

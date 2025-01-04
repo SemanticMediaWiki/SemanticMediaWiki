@@ -2,13 +2,10 @@
 
 namespace SMW;
 
-use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\NamespaceExaminer;
-use SMW\DIWikiPage;
-use SMW\EntityCache;
-use Title;
 use Page;
+use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
+use Title;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\Logo;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\Logo;
 
 /**
  * @covers \SMW\Utils\Logo

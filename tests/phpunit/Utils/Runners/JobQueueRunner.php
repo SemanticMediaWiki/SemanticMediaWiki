@@ -2,8 +2,6 @@
 
 namespace SMW\Tests\Utils\Runners;
 
-use Job;
-use JobQueueGroup;
 use MediaWiki\MediaWikiServices;
 use SMW\Connection\ConnectionProvider;
 use SMW\Tests\TestEnvironment;

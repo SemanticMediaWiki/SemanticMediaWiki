@@ -3,9 +3,6 @@
 namespace SMW\Tests\Elastic\QueryEngine;
 
 use SMW\Elastic\QueryEngine\ConditionBuilder;
-use SMW\Query\QueryResult;
-use SMW\DIWikiPage;
-use SMWQuery as Query;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\ConditionBuilder

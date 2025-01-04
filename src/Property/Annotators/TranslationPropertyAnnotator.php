@@ -3,7 +3,6 @@
 namespace SMW\Property\Annotators;
 
 use SMW\PropertyAnnotator;
-use SMW\DataModel\ContainerSemanticData;
 use Title;
 
 /**

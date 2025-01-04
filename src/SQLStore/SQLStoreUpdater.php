@@ -4,16 +4,14 @@ namespace SMW\SQLStore;
 
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Enum;
+use SMW\Parameters;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Status;
 use SMWDIBlob as DIBlob;
-use SMW\Parameters;
-use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\Enum;
 use Title;
 
 /**
@@ -363,7 +361,7 @@ class SQLStoreUpdater {
 		}
 
 		// Take care of all remaining property table data
-		list( $insertRows, $deleteRows, $newHashes ) = $this->propertyTableRowDiffer->computeTableRowDiff(
+		[ $insertRows, $deleteRows, $newHashes ] = $this->propertyTableRowDiffer->computeTableRowDiff(
 			$sid,
 			$data
 		);

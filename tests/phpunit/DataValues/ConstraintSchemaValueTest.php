@@ -3,12 +3,11 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
-use SMW\DataValueFactory;
 use SMW\DataValues\ConstraintSchemaValue;
-use SMW\PropertySpecificationLookup;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
+use SMW\PropertySpecificationLookup;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ConstraintSchemaValue

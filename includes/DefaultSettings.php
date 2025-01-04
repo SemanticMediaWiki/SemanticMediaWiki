@@ -16,7 +16,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
 }
 
-return ( function () {
+return ( static function () {
 	SemanticMediaWiki::setupDefines();
 	$smwgIP = dirname( __DIR__ ) . '/';
 	return [

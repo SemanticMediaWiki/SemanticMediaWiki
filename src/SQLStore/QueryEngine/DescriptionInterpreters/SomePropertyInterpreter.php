@@ -12,14 +12,14 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\ConditionBuilder;
-use SMWDataItem as DataItem;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2+

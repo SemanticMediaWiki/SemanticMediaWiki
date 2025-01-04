@@ -6,7 +6,6 @@ use Closure;
 use DeferrableUpdate;
 use DeferredUpdates;
 use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\Database;
 use Wikimedia\Assert\Assert;
 
 /**

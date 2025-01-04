@@ -3,12 +3,12 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use WikiPage;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use WikiPage;
 
 /**
  * A function hook being executed before running "&action=purge"

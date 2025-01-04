@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\PHPUnitCompat;
 use Title;
 
 /**
@@ -111,7 +111,7 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 			Title::newFromText( __METHOD__ )
 		);
 
-		$target  = DIWikiPage::newFromTitle(
+		$target = DIWikiPage::newFromTitle(
 			Title::newFromText( 'ManualRemovalOfRedirectTarget' )
 		);
 

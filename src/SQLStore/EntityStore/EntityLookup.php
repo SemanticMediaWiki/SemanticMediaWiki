@@ -2,16 +2,16 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Enum;
 use SMW\EntityLookup as IEntityLookup;
+use SMW\Enum;
+use SMW\Exception\DataItemException;
 use SMW\RequestOptions;
 use SMW\SemanticData;
-use SMW\DataTypeRegistry;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
-use SMW\Exception\DataItemException;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 

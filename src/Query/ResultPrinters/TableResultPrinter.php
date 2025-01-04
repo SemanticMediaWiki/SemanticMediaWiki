@@ -3,7 +3,6 @@
 namespace SMW\Query\ResultPrinters;
 
 use Html;
-use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\Query\PrintRequest;

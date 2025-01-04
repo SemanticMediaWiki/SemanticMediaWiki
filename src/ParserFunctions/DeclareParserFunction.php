@@ -2,7 +2,6 @@
 
 namespace SMW\ParserFunctions;
 
-use Parser;
 use PPFrame;
 use SMW\DataValueFactory;
 use SMW\ParserData;

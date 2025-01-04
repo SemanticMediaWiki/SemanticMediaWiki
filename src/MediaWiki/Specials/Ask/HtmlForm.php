@@ -3,12 +3,12 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
+use SMW\Query\QueryLinker;
 use SMW\Query\QueryResult;
-use Title;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\UrlArgs;
-use SMW\Query\QueryLinker;
 use SMWQuery as Query;
+use Title;
 
 /**
  * @license GNU GPL v2+

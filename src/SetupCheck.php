@@ -2,12 +2,12 @@
 
 namespace SMW;
 
-use SMW\Utils\TemplateEngine;
-use SMW\Utils\Logo;
-use SMW\Localizer\LocalMessageProvider;
+use RuntimeException;
 use SMW\Exception\FileNotReadableException;
 use SMW\Exception\JSONFileParseException;
-use RuntimeException;
+use SMW\Localizer\LocalMessageProvider;
+use SMW\Utils\Logo;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @private
@@ -536,7 +536,7 @@ class SetupCheck {
 		// Minify CSS rules, we keep them readable in the template to allow for
 		// better adaption
 		// @see http://manas.tungare.name/software/css-compression-in-php/
-		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", function ( $matches ) {
+		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", static function ( $matches ) {
 				// Remove space after colons
 				$style = str_replace( ': ', ':', $matches[0] );
 

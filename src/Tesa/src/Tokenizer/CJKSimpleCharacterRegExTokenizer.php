@@ -76,7 +76,7 @@ class CJKSimpleCharacterRegExTokenizer implements Tokenizer {
 			return $result;
 		}
 
-		return array();
+		return [];
 	}
 
 }

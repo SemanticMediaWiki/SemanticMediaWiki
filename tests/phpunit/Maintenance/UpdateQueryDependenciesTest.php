@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Maintenance;
 
+use SMW\DIWikiPage;
 use SMW\Maintenance\updateQueryDependencies;
 use SMW\Tests\TestEnvironment;
-use SMW\DIWikiPage;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**

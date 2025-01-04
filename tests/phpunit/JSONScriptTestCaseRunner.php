@@ -157,14 +157,14 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 			$lang = $languageFactory->getLanguage( $val );
 
 			// https://github.com/wikimedia/mediawiki/commit/49ce67be93dfbb40d036703dad2278ea9843f1ad
-			$this->testEnvironment->redefineMediaWikiService( 'ContentLanguage', function () use ( $lang ) {
+			$this->testEnvironment->redefineMediaWikiService( 'ContentLanguage', static function () use ( $lang ) {
 				return $lang;
 			} );
 
 			return $lang;
 		} );
 
-		$this->registerConfigValueCallback( 'wgLang', function ( $val ) {
+		$this->registerConfigValueCallback( 'wgLang', static function ( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
 			Localizer::clear();
 			\SMW\NamespaceManager::clear();

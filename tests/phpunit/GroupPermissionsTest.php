@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\GroupPermissions;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\GroupPermissions

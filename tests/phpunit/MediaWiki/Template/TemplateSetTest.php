@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Template;
 
-use SMW\MediaWiki\Template\TemplateSet;
 use SMW\MediaWiki\Template\Template;
+use SMW\MediaWiki\Template\TemplateSet;
 
 /**
  * @covers \SMW\MediaWiki\Template\TemplateSet

@@ -5,8 +5,8 @@ namespace SMW\Tests\DataValues;
 use SMW\DataItemFactory;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\AllowsPatternValue

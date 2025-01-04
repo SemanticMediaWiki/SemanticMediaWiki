@@ -27,7 +27,7 @@ class MonolingualTextValueParserTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testFullParsableString( $value, $expectedText, $expectedLanguageCode ) {
 		$instance = new MonolingualTextValueParser();
-		list( $text, $languageCode ) = $instance->parse( $value );
+		[ $text, $languageCode ] = $instance->parse( $value );
 
 		$this->assertEquals(
 			$expectedText,
@@ -42,7 +42,7 @@ class MonolingualTextValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testParsableStringWithMissingLanguageCode() {
 		$instance = new MonolingualTextValueParser();
-		list( $text, $languageCode ) = $instance->parse( 'FooBar' );
+		[ $text, $languageCode ] = $instance->parse( 'FooBar' );
 
 		$this->assertEquals(
 			'FooBar',

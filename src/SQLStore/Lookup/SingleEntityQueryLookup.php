@@ -3,15 +3,11 @@
 namespace SMW\SQLStore\Lookup;
 
 use MediaWiki\MediaWikiServices;
-use SMW\Store;
-use SMW\QueryEngine;
-use SMWQuery as Query;
-use SMW\Query\QueryResult;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Query\Language\ValueDescription;
-use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
-use SMW\DIWikiPage;
-use RuntimeException;
+use SMW\Query\QueryResult;
+use SMW\QueryEngine;
+use SMW\Store;
+use SMWQuery as Query;
 
 /**
  * `#show` will only make a request to one particular entity therefore instead of

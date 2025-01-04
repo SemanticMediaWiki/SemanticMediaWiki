@@ -2,11 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use RuntimeException;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\MediaWiki\JobFactory;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * @license GNU GPL v2+

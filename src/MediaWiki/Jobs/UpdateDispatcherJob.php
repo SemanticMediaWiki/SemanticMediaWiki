@@ -2,17 +2,16 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use Hooks;
 use MediaWiki\MediaWikiServices;
-use SMW\MediaWiki\Job;
-use SMW\SerializerFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\DataTypeRegistry;
-use SMW\RequestOptions;
 use SMW\Enum;
 use SMW\Exception\DataItemDeserializationException;
+use SMW\MediaWiki\Job;
+use SMW\RequestOptions;
+use SMW\SerializerFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use Title;
 
@@ -149,7 +148,7 @@ class UpdateDispatcherJob extends Job {
 		);
 
 		foreach ( $dependencyTargetLinks as $targetLink ) {
-			list( $title, $namespace, $iw, $subobjectname ) = explode( '#', $targetLink, 4 );
+			[ $title, $namespace, $iw, $subobjectname ] = explode( '#', $targetLink, 4 );
 
 			// @see DIWikiPage::doUnserialize
 			if ( !isset( $this->jobs[( $title . '#' . $namespace . '#' . $iw . '#' )] ) ) {

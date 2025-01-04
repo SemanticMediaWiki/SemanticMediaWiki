@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\JobFactory;
-use Title;
 use SMW\Tests\PHPUnitCompat;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\JobFactory

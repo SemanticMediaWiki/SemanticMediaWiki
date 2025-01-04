@@ -6,7 +6,6 @@ use RuntimeException;
 use SMW\QueryEngine;
 use SMW\Store;
 use SMW\StoreAware;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @private

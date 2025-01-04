@@ -2,10 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Store;
-use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;
-use SMW\DIWikiPage;
+use SMW\NamespaceExaminer;
 use Title;
 use User;
 

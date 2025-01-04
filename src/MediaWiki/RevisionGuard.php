@@ -2,13 +2,12 @@
 
 namespace SMW\MediaWiki;
 
-use IDBAccessObject;
-use MediaWiki\Revision\RevisionRecord;
-use MediaWiki\Revision\RevisionLookup;
-use Title;
 use File;
+use IDBAccessObject;
+use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Revision\RevisionRecord;
+use Title;
 use WikiPage;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
  * @private

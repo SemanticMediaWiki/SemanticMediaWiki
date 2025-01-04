@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Parser\InTextAnnotationParser;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
+use SMW\Parser\InTextAnnotationParser;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use StripState;
 
 /**

@@ -3,10 +3,10 @@
 namespace SMW\Tests\Elastic\Connection;
 
 use Psr\Log\LoggerInterface;
+use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Connection\ConnectionProvider;
 use SMW\Elastic\Connection\DummyClient;
-use SMW\Elastic\Connection\Client;
-use SMW\Elastic\Config;
 use SMW\Elastic\Connection\LockManager;
 use SMW\Tests\PHPUnitCompat;
 

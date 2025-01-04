@@ -2,12 +2,11 @@
 
 namespace SMW\DataValues;
 
-use SMW\Localizer;
-use SMWWikiPageValue as WikiPageValue;
+use SMW\Constraint\Constraint;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Property\SpecificationLookup;
-use SMW\Constraint\Constraint;
+use SMWWikiPageValue as WikiPageValue;
 
 /**
  * @license GNU GPL v2+

@@ -2,10 +2,7 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\DIWikiPage;
 use SMW\Exporter\ExpDataFactory;
-use SMW\Tests\TestEnvironment;
-use SMW\Serializers\ExpDataSerializer;
 
 /**
  * @covers \SMW\Exporter\ExpDataFactory

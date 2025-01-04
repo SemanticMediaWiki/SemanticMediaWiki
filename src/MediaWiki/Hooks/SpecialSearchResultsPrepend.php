@@ -4,14 +4,14 @@ namespace SMW\MediaWiki\Hooks;
 
 use Html;
 use OutputPage;
-use SMW\MediaWiki\Search\ExtendedSearchEngine;
+use SMW\Localizer\MessageLocalizerTrait;
+use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Message;
+use SMW\OptionsAwareTrait;
 use SMW\Utils\HtmlModal;
 use SpecialSearch;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
-use SMW\Localizer\MessageLocalizerTrait;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchResultsPrepend

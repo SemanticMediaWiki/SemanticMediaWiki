@@ -19,7 +19,7 @@ class PropertyLabelCanonicalMatchTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider canonicalLabelProvider
 	 */
 	public function testFindPropertyIdByLabel( $label, $expectedKey, $expectedLabel ) {
-		list( $labelMatch, $property ) = $this->findPropertyIdByLabel( $label );
+		[ $labelMatch, $property ] = $this->findPropertyIdByLabel( $label );
 
 		$this->assertEquals(
 			$expectedLabel,
@@ -36,7 +36,7 @@ class PropertyLabelCanonicalMatchTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider canonicalLabelProvider
 	 */
 	public function testNewFromUserLabel( $label, $expectedKey, $expectedLabel ) {
-		list( $labelMatch, $property ) = $this->newFromUserLabel( $label );
+		[ $labelMatch, $property ] = $this->newFromUserLabel( $label );
 
 		$this->assertEquals(
 			$expectedLabel,
@@ -53,7 +53,7 @@ class PropertyLabelCanonicalMatchTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider canonicalLabelWithLanguageProvider
 	 */
 	public function testNewFromUserLabelWithLanguage( $label, $languageCode, $expectedKey, $expectedLabel ) {
-		list( $labelMatch, $property ) = $this->newFromUserLabel( $label, $languageCode );
+		[ $labelMatch, $property ] = $this->newFromUserLabel( $label, $languageCode );
 
 		$this->assertEquals(
 			$expectedLabel,

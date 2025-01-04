@@ -2,8 +2,8 @@
 
 namespace SMW\Query\Result;
 
-use SMW\Query\PrintRequest;
 use SMW\DataTypeRegistry;
+use SMW\Query\PrintRequest;
 use SMWDataItem as DataItem;
 
 /**

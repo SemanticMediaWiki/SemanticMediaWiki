@@ -3,10 +3,9 @@
 namespace SMW\Tests;
 
 use FauxRequest;
-use Language;
+use MediaWiki\MediaWikiServices;
 use OutputPage;
 use RequestContext;
-use MediaWiki\MediaWikiServices;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
 use WebRequest;
@@ -48,7 +47,7 @@ abstract class SpecialPageTestCase extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @return SpecialPage
 	 */
-	protected abstract function getInstance();
+	abstract protected function getInstance();
 
 	protected function setStore( $store ) {
 		$this->store = $store;

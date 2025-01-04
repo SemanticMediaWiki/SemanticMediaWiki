@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki;
 
 use MagicWord;
-use ParserOutput;
 use MagicWordFactory;
+use ParserOutput;
 
 /**
  * @license GNU GPL v2+

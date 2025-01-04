@@ -2,12 +2,9 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMW\PropertySpecificationLookup;
-use SMW\DIWikiPage;
-use SMWDataValue as DataValue;
-use SMW\RequestOptions;
-use SMW\Store;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\PropertySpecificationLookup;
+use SMWDataValue as DataValue;
 
 /**
  * @private

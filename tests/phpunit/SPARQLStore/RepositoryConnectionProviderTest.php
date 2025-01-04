@@ -3,8 +3,8 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\SPARQLStore\RepositoryConnectionProvider;
-use SMW\Tests\Utils\GlobalsProvider;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\GlobalsProvider;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectionProvider

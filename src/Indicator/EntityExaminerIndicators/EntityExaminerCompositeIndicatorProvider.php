@@ -4,8 +4,8 @@ namespace SMW\Indicator\EntityExaminerIndicators;
 
 use SMW\DIWikiPage;
 use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
-use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionAware;
+use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminerAware;
 
 /**

@@ -2,15 +2,14 @@
 
 namespace SMW\ParserFunctions;
 
-use Parser;
 use SMW\DataValueFactory;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\MediaWiki\StripMarkerDecoder;
 use SMW\MessageFormatter;
-use SMW\ParserData;
-use SMW\SemanticData;
-use SMW\ParserParameterProcessor;
 use SMW\Parser\AnnotationProcessor;
+use SMW\ParserData;
+use SMW\ParserParameterProcessor;
+use SMW\SemanticData;
 
 /**
  * Class that provides the {{#set}} parser function

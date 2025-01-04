@@ -1,16 +1,15 @@
 <?php
 
 use MediaWiki\MediaWikiServices;
-use SMW\Exporter\Serializer\Serializer;
-use SMW\Exporter\ExpDataFactory;
-use SMW\Exporter\Controller\Queue;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Controller\Queue;
 use SMW\Exporter\Escaper;
+use SMW\Exporter\ExpDataFactory;
+use SMW\Exporter\Serializer\Serializer;
 use SMW\Query\PrintRequest;
 use SMW\SemanticData;
-use SMW\Site;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * File holding the SMWExportController class that provides basic functions for

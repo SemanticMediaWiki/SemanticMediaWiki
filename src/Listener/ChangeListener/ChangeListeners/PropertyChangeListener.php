@@ -2,14 +2,13 @@
 
 namespace SMW\Listener\ChangeListener\ChangeListeners;
 
-use SMW\Listener\ChangeListener\ChangeListener;
-use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
-use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\Store;
-use SMW\DIProperty;
-use SMW\Exception\PropertyLabelNotResolvedException;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use RuntimeException;
+use SMW\DIProperty;
+use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
+use SMW\Listener\ChangeListener\ChangeListener;
+use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

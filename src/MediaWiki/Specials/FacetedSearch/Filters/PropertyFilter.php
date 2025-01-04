@@ -2,13 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
-use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
-use Html;
+use SMW\Utils\TemplateEngine;
+use SMW\Utils\UrlArgs;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Query\Processor;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Query\Processor\QueryCreator;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @covers SMW\Query\Processor\QueryCreator

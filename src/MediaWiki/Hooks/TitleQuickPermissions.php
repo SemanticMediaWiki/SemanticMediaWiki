@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\NamespaceExaminer;
 use Title;
-use SMW\MediaWiki\HookListener;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleQuickPermissions

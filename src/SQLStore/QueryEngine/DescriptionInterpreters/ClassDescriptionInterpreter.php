@@ -3,12 +3,12 @@
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
-use SMW\Store;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\ConditionBuilder;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

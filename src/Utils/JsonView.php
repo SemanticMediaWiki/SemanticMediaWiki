@@ -2,8 +2,8 @@
 
 namespace SMW\Utils;
 
-use SMW\Localizer\MessageLocalizerTrait;
 use Html;
+use SMW\Localizer\MessageLocalizerTrait;
 
 /**
  * @license GNU GPL v2+

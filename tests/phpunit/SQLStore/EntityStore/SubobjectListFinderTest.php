@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 
 /**

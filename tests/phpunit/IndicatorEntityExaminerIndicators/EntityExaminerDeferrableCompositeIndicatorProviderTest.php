@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
-use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
+use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider

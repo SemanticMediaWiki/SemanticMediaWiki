@@ -2,12 +2,10 @@
 
 namespace SMW\MediaWiki\Search;
 
-use SMW\Store;
-use RuntimeException;
 use SearchEngine;
+use SMW\Store;
 use SMWQuery;
 use SMWQueryResult as QueryResult;
-use Title;
 
 /**
  * Search engine that will try to find wiki pages by interpreting the search

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SpecialStatsAddExtra

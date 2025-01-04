@@ -2,8 +2,8 @@
 
 namespace SMW\Property;
 
-use SMW\Message;
 use Html;
+use SMW\Message;
 
 /**
  * @license GNU GPL v2+

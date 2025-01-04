@@ -3,7 +3,6 @@
 namespace SMW\Tests\Integration\Localizer;
 
 use SMW\Localizer\CopyLocalMessages;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Localizer\CopyLocalMessages

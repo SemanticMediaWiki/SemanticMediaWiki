@@ -3,7 +3,6 @@
 namespace Onoi\Tesa\Tests\Integration;
 
 use Onoi\Tesa\SanitizerFactory;
-use Onoi\Tesa\Tokenizer\NGramTokenizer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -39,13 +38,13 @@ class CombinedNGramTokenizerTest extends TestCase {
 
 	public function textProvider() {
 		// https://en.wikipedia.org/wiki/Stop_words
-		$provider[] = array(
+		$provider[] = [
 			'en',
 			'2',
 			//
 			'In computing, stop words are words which are filtered ...',
 			//
-			array(
+			[
 				0 => '_i',
 				1 => 'in',
 				2 => 'n_',
@@ -99,8 +98,8 @@ class CombinedNGramTokenizerTest extends TestCase {
 				50 => 're',
 				51 => 'ed',
 				52 => 'd_',
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

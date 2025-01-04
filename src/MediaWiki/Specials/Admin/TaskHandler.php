@@ -2,10 +2,8 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use SMW\Message;
-use SMW\Store;
-use WebRequest;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

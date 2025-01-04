@@ -4,25 +4,25 @@ namespace SMW\MediaWiki\Page;
 
 use Html;
 use ParserOptions;
-use SMW\ParserData;
-use SMW\SemanticData;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer;
 use SMW\MediaWiki\Page\ListBuilder\ItemListBuilder;
 use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
-use SMW\Localizer;
+use SMW\Message;
+use SMW\ParserData;
+use SMW\Property\DeclarationExaminerFactory;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
+use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\StringCondition;
+use SMW\Utils\HtmlTabs;
+use SMW\Utils\JsonView;
 use SMWDataValue;
 use Title;
-use SMW\Utils\HtmlTabs;
-use SMW\Property\DeclarationExaminerFactory;
-use SMW\Utils\JsonView;
 
 /**
  * @license GNU GPL v2+

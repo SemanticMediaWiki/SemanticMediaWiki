@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Factbox\FactboxCache;
 use SMW\MediaWiki\Hooks\ArticlePurge;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use WikiPage;

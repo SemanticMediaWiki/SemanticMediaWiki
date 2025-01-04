@@ -3,10 +3,10 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 use SMWExpLiteral as ExpLiteral;
 use SMWExpResource as ExpResource;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\XmlResponseParser

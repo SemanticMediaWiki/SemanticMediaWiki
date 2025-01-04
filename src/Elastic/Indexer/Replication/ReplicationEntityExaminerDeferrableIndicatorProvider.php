@@ -2,15 +2,14 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Store;
-use SMW\Message;
+use SMW\DIWikiPage;
+use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
-use SMW\EntityCache;
-use SMW\Utils\TemplateEngine;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Store;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @license GNU GPL v2+

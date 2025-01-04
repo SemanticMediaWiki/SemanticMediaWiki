@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore;
 
-use RuntimeException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
@@ -43,7 +42,7 @@ class PropertyTableRowMapper {
 	 * @return ChangeOp
 	 */
 	public function newChangeOp( $id, SemanticData $semanticData ) {
-		list( $dataArray, $textItems, $propertyList, $fixedPropertyList ) = $this->mapToRows(
+		[ $dataArray, $textItems, $propertyList, $fixedPropertyList ] = $this->mapToRows(
 			$id,
 			$semanticData
 		);
@@ -88,7 +87,7 @@ class PropertyTableRowMapper {
 	 * @return array
 	 */
 	public function mapToRows( $sid, SemanticData $semanticData ) {
-		list( $rows, $textItems, $propertyList, $fixedPropertyList ) = $this->mapData(
+		[ $rows, $textItems, $propertyList, $fixedPropertyList ] = $this->mapData(
 			$sid,
 			$semanticData
 		);

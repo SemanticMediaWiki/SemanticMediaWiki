@@ -3,15 +3,11 @@
 namespace SMW\Query;
 
 use SMW\DIWikiPage;
-use SMW\Query\Excerpts;
-use SMW\Query\PrintRequest;
-use SMW\Query\QueryLinker;
-use SMW\Query\Result\ItemJournal;
 use SMW\Query\Result\FieldItemFinder;
-use SMW\Query\Result\ItemFetcher;
-use SMW\Query\Result\ResultArray;
 use SMW\Query\Result\FilterMap;
-use SMW\Query\ScoreSet;
+use SMW\Query\Result\ItemFetcher;
+use SMW\Query\Result\ItemJournal;
+use SMW\Query\Result\ResultArray;
 use SMW\SerializerFactory;
 use SMW\Store;
 use SMWInfolink;

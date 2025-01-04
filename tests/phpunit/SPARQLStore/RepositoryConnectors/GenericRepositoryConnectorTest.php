@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
-use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
 use SMW\SPARQLStore\RepositoryClient;
+use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector

@@ -8,7 +8,6 @@ use RequestContext;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
-use SpecialPageFactory;
 
 /**
  * Tests for registered special pages

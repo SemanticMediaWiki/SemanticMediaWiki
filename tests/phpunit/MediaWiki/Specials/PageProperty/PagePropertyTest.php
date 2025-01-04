@@ -5,8 +5,8 @@ namespace SMW\Tests\MediaWiki\Specials\PageProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PageProperty\PageBuilder

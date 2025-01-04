@@ -3,10 +3,9 @@
 namespace SMW\SQLStore\TableBuilder\Examiner;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\TableBuilder;
+use SMW\Maintenance\updateEntityCollation;
 use SMW\SetupFile;
-use SMW\Maintenance\updateEntityCollation as UpdateEntityCollation;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 
 /**

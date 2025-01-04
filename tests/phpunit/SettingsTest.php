@@ -3,8 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\Settings;
-use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Settings

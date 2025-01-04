@@ -2,8 +2,8 @@
 
 namespace SMW\Utils;
 
-use SMW\Exception\FileNotReadableException;
 use RuntimeException;
+use SMW\Exception\FileNotReadableException;
 
 /**
  * @license GNU GPL v2+

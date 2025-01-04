@@ -3,8 +3,6 @@
 namespace SMW\Tests\Property;
 
 use SMW\Property\DeclarationExaminerFactory;
-use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminerFactory

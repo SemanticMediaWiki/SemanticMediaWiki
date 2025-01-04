@@ -2,18 +2,14 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Utils\Flag;
-use SMW\SemanticData;
-use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
-use SMW\SQLStore\PropertyStatisticsStore;
-use SMW\SQLStore\TableFieldUpdater;
-use SMW\Store;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\EntityStore\IdChanger;
-use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\DIWikiPage;
 use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\SQLStore\EntityStore\IdChanger;
+use SMW\Store;
+use SMW\Utils\Flag;
 use Title;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 

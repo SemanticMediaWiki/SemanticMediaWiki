@@ -2,11 +2,10 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Store;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\RedirectStore;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

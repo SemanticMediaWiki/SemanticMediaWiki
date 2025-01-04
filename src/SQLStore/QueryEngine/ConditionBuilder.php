@@ -5,10 +5,9 @@ namespace SMW\SQLStore\QueryEngine;
 use InvalidArgumentException;
 use OutOfBoundsException;
 use SMW\Message;
-use SMW\Query\Language\Conjuncton;
 use SMW\Query\Language\Description;
-use SMW\Store;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Utils\CircularReferenceGuard;
 use SMWQuery as Query;
 

@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use Html;
-use Title;
 use WebRequest;
 
 /**

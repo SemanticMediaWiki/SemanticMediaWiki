@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
-use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
+use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider

@@ -4,17 +4,14 @@ namespace SMW\Property;
 
 use MediaWiki\MediaWikiServices;
 use RuntimeException;
-use SMW\Query\DescriptionFactory;
-use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
-use SMWQuery as Query;
-use SMW\Store;
-use SMW\EntityCache;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\EntityCache;
 use SMW\Message;
-use SMW\DataValueFactory;
 use SMW\PropertyRegistry;
+use SMW\Store;
+use SMWDIBoolean as DIBoolean;
 
 /**
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup

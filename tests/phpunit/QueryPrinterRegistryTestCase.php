@@ -23,7 +23,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	 *
 	 * @return array
 	 */
-	public abstract function getFormats();
+	abstract public function getFormats();
 
 	/**
 	 * @since 1.8
@@ -64,7 +64,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 		$phpFails = [ $this, 'newInstance' ];
 
 		return array_map(
-			function ( array $args ) use ( $phpFails ) {
+			static function ( array $args ) use ( $phpFails ) {
 				return call_user_func_array( $phpFails, $args );
 			},
 			$this->constructorProvider()

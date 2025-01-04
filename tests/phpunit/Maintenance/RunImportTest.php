@@ -4,8 +4,8 @@ namespace SMW\Tests\Maintenance;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\runImport;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Maintenance\runImport

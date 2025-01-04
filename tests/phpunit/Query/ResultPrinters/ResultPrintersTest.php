@@ -4,8 +4,8 @@ namespace SMW\Tests\Query\ResultPrinters;
 
 use ParamProcessor\ParamDefinition;
 use SMW\Query\ResultPrinters\ResultPrinter;
-use SMWQueryProcessor as QueryProcessor;
 use SMW\Tests\PHPUnitCompat;
+use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @covers \SMW\Query\ResultPrinters\ResultPrinter

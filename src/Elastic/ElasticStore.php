@@ -2,20 +2,17 @@
 
 namespace SMW\Elastic;
 
-use Hooks;
 use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\DIWikiPage;
+use SMW\Elastic\Indexer\Indexer;
+use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Options;
 use SMW\SemanticData;
 use SMW\SQLStore\SQLStore;
-use SMWQuery as Query;
-use SMW\Options;
-use Title;
-use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
-use SMW\Elastic\Jobs\FileIngestJob;
-use SMW\Elastic\Indexer\DocumentCreator;
-use SMW\Elastic\Indexer\Indexer;
+use SMWQuery as Query;
+use Title;
 
 /**
  * @private

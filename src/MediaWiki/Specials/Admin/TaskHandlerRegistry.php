@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use SMW\Store;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\Store;
 use User;
 
 /**

@@ -2,7 +2,6 @@
 
 namespace SMW\Exporter;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIConcept;
 use SMW\DIProperty;
@@ -15,6 +14,7 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;

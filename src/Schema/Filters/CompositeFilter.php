@@ -2,11 +2,8 @@
 
 namespace SMW\Schema\Filters;
 
-use SMW\Schema\SchemaList;
-use SMW\Schema\SchemaFilter;
 use SMW\Schema\ChainableFilter;
-use SMW\Schema\CompartmentIterator;
-use SMW\Schema\Compartment;
+use SMW\Schema\SchemaFilter;
 
 /**
  * @license GNU GPL v2+
@@ -85,7 +82,7 @@ class CompositeFilter implements SchemaFilter {
 		$order = strtolower( $order );
 
 		if ( $type === self::SORT_FILTER_SCORE ) {
-			usort( $this->matches, function ( $a, $b ) use ( $order ) {
+			usort( $this->matches, static function ( $a, $b ) use ( $order ) {
 				if ( $order === 'desc' ) {
 					return $b->filterScore <=> $a->filterScore;
 				}

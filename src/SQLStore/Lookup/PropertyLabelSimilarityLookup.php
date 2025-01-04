@@ -3,11 +3,11 @@
 namespace SMW\SQLStore\Lookup;
 
 use Exception;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\PropertySpecificationLookup;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -141,7 +141,7 @@ class PropertyLabelSimilarityLookup {
 		$this->lookupCount = count( $propertyList );
 		$similarities = $this->matchLabels( $propertyList, $withType );
 
-		usort( $similarities, function ( $a, $b ) {
+		usort( $similarities, static function ( $a, $b ) {
 			return $b['similarity'] <=> $a['similarity'];
 		} );
 

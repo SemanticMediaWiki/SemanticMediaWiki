@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
+use Iterator;
 use Onoi\Cache\Cache;
 use SMW\Store;
-use Iterator;
 
 /**
  * @license GNU GPL v2+

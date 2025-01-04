@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Query\Cache;
 
-use SMW\Query\Cache\ResultCache;
-use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
-use SMW\Query\Cache\CacheStats;
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
+use SMW\DIWikiPage;
+use SMW\Query\Cache\CacheStats;
+use SMW\Query\Cache\ResultCache;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Cache\ResultCache

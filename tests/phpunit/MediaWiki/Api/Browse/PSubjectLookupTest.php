@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
-use SMW\DIProperty;
-use SMW\MediaWiki\Api\Browse\PSubjectLookup;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Api\Browse\PSubjectLookup;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\PSubjectLookup

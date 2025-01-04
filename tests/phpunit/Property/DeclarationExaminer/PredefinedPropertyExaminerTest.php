@@ -3,10 +3,10 @@
 namespace SMW\Tests\Property\DeclarationExaminer;
 
 use ExtensionRegistry;
-use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
 use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
+use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer
