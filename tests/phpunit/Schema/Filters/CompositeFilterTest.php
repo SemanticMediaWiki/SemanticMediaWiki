@@ -73,7 +73,7 @@ class CompositeFilterTest extends \PHPUnit\Framework\TestCase {
 	public function testSortMatches() {
 		$rule_1 = $this->getMockBuilder( '\SMW\Schema\Rule' )
 			->disableOriginalConstructor()
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$rule_1->incrFilterScore();

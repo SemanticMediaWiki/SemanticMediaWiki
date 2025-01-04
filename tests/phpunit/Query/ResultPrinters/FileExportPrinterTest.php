@@ -20,7 +20,7 @@ class FileExportPrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$fileExportPrinter = $this->getMockBuilder( '\SMW\Query\ResultPrinters\FileExportPrinter' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getFileResult', 'getMimeType', 'getFileName' ] )
+			->onlyMethods( [ 'getFileResult', 'getMimeType', 'getFileName' ] )
 			->getMockForAbstractClass();
 
 		// #4375 (needs to be accessed first)

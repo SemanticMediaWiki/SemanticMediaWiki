@@ -125,7 +125,7 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyValues', 'getSemanticData' ] )
+			->onlyMethods( [ 'getPropertyValues', 'getSemanticData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )

@@ -759,7 +759,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
-			->setMethods( [ 'getTitle' ] )
+			->onlyMethods( [ 'getTitle' ] )
 			->getMock();
 
 		$diWikiPage->expects( $this->atLeastOnce() )
@@ -776,7 +776,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
-			->setMethods( [ 'isSetFlag' ] )
+			->onlyMethods( [ 'isSetFlag' ] )
 			->getMock();
 
 		$instance->expects( $this->at( 0 ) )
@@ -820,7 +820,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
-			->setMethods( [ 'getTitle' ] )
+			->onlyMethods( [ 'getTitle' ] )
 			->getMock();
 
 		$diWikiPage->expects( $this->atLeastOnce() )
@@ -831,7 +831,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
-			->setMethods( [ 'isSetFlag' ] )
+			->onlyMethods( [ 'isSetFlag' ] )
 			->getMock();
 
 		$instance->expects( $this->at( 0 ) )

@@ -61,7 +61,7 @@ class ItemListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertySubjects', 'service' ] )
+			->onlyMethods( [ 'getPropertySubjects', 'service' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )

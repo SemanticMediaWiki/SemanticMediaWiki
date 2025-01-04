@@ -31,7 +31,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	 */
 	private function newInstance( $search = '' ) {
 		$queryPage = $this->getMockBuilder( '\SMW\QueryPage' )
-			->setMethods( [ 'getResults', 'formatResult' ] )
+			->onlyMethods( [ 'getResults', 'formatResult' ] )
 			->getMock();
 
 		$context = $this->newContext( [ 'property' => $search ] );

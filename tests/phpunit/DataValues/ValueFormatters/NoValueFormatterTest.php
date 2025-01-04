@@ -41,7 +41,7 @@ class NoValueFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testFormat() {
 		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSerialization' ] )
+			->onlyMethods( [ 'getSerialization' ] )
 			->getMockForAbstractClass();
 
 		$dataItem->expects( $this->once() )
@@ -50,7 +50,7 @@ class NoValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'isValid', 'getDataItem' ] )
+			->onlyMethods( [ 'isValid', 'getDataItem' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )

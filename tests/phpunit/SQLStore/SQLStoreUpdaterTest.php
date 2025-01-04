@@ -161,7 +161,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$objectIdGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
@@ -220,7 +220,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
@@ -276,7 +276,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
-			->setMethods( [ 'getPropertyValues' ] )
+			->onlyMethods( [ 'getPropertyValues' ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
@@ -328,7 +328,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
-			->setMethods( [ 'getPropertyValues' ] )
+			->onlyMethods( [ 'getPropertyValues' ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )

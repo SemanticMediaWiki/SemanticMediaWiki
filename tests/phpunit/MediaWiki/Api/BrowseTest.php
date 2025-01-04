@@ -68,7 +68,7 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 	public function testExecute( $id, $parameters = [] ) {
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSMWPropertyID' ] )
+			->onlyMethods( [ 'getSMWPropertyID' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )

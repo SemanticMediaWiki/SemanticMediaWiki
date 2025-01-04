@@ -38,7 +38,7 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'newUpdateJob' ] )
+			->onlyMethods( [ 'newUpdateJob' ] )
 			->getMock();
 
 		$jobFactory->expects( $this->any() )
@@ -116,7 +116,7 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'refreshData' ] )
+			->onlyMethods( [ 'refreshData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
@@ -161,7 +161,7 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [
+			->onlyMethods( [
 				'refreshData',
 				'drop' ] )
 			->getMockForAbstractClass();
@@ -212,7 +212,7 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'refreshData' ] )
+			->onlyMethods( [ 'refreshData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )

@@ -58,7 +58,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	public function testUpdate() {
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doTest' ] )
+			->onlyMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -104,7 +104,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doTest' ] )
+			->onlyMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -130,7 +130,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	public function testWaitableUpdate() {
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doTest' ] )
+			->onlyMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -158,7 +158,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	public function testUpdateWithDisabledDeferredUpdate() {
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doTest' ] )
+			->onlyMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -201,7 +201,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	public function testFilterDuplicateQueueEntryByFingerprint() {
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doTest' ] )
+			->onlyMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -253,7 +253,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doTest' ] )
+			->onlyMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -288,7 +288,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doTest' ] )
+			->onlyMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -324,7 +324,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doTest' ] )
+			->onlyMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -360,7 +360,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'doTest' ] )
+			->onlyMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->never() )

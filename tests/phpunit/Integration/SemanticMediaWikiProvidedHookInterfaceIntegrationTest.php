@@ -104,7 +104,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->getMock();
 
 		$store = $this->getMockBuilder( $storeClass )
-			->setMethods( [ 'fetchQueryResult' ] )
+			->onlyMethods( [ 'fetchQueryResult' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -122,7 +122,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->getMock();
 
 		$store = $this->getMockBuilder( $storeClass )
-			->setMethods( [ 'fetchQueryResult' ] )
+			->onlyMethods( [ 'fetchQueryResult' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -148,7 +148,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->getMock();
 
 		$store = $this->getMockBuilder( $storeClass )
-			->setMethods( [ 'fetchQueryResult' ] )
+			->onlyMethods( [ 'fetchQueryResult' ] )
 			->getMock();
 
 		$store->expects( $this->never() )
@@ -180,7 +180,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->getMock();
 
 		$store = $this->getMockBuilder( $storeClass )
-			->setMethods( [ 'fetchQueryResult' ] )
+			->onlyMethods( [ 'fetchQueryResult' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -237,7 +237,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 		$store = $this->getMockBuilder( $storeClass )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSemanticData', 'getConnection', 'service' ] )
+			->onlyMethods( [ 'getSemanticData', 'getConnection', 'service' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -296,7 +296,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 		$store = $this->getMockBuilder( $storeClass )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getPropertyTables', 'getConnection' ] )
+			->onlyMethods( [ 'getObjectIds', 'getPropertyTables', 'getConnection' ] )
 			->getMock();
 
 		$redirectUpdater = $this->getMockBuilder( '\SMW\SQLStore\RedirectUpdater' )
@@ -372,7 +372,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->willReturn( [ 42 ] );
 
 		$store = $this->getMockBuilder( $storeClass )
-			->setMethods( [ 'getPropertyTables', 'getObjectIds' ] )
+			->onlyMethods( [ 'getPropertyTables', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -410,7 +410,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->willReturn( [ 42 ] );
 
 		$store = $this->getMockBuilder( $storeClass )
-			->setMethods( [ 'getPropertyTables', 'getObjectIds' ] )
+			->onlyMethods( [ 'getPropertyTables', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -483,7 +483,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 		$inTextAnnotationParser = $this->getMockBuilder( '\SMW\Parser\InTextAnnotationParser' )
 			->setConstructorArgs( [ $parserData, $linksProcessor, $magicWordsFinder, $redirectTargetFinder ] )
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
@@ -507,7 +507,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 	public function testRegisteredAddCustomFixedPropertyTables() {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$this->mwHooksHandler->register( 'SMW::SQLStore::AddCustomFixedPropertyTables', function ( &$customFixedProperties, &$fixedPropertyTablePrefix ) {
@@ -534,7 +534,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 	public function testRegisteredAfterDataUpdateComplete() {
 		$test = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'is' ] )
+			->onlyMethods( [ 'is' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -542,7 +542,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->with( [] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getPropertyTables' ] )
+			->onlyMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

@@ -202,7 +202,7 @@ class StoreTest extends SMWIntegrationTestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyValues' ] )
+			->onlyMethods( [ 'getPropertyValues' ] )
 			->getMockForAbstractClass();
 
 		$instance->expects( $this->once() )

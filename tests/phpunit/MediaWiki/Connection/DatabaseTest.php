@@ -62,7 +62,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	public function testAddQuotesMethod() {
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'addQuotes' ] )
+			->onlyMethods( [ 'addQuotes' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->once() )
@@ -99,7 +99,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	public function testTableNameMethod( $type ) {
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'tableName' ] )
+			->onlyMethods( [ 'tableName' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->any() )
@@ -130,13 +130,11 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelectMethod() {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'select' ] )
+			->onlyMethods( [ 'select' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->once() )
@@ -161,7 +159,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\Wikimedia\Rdbms\ResultWrapper',
+			IResultWrapper::class,
 			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
 		);
 	}
@@ -169,7 +167,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	public function testSelectFieldMethod() {
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'selectField' ] )
+			->onlyMethods( [ 'selectField' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->once() )
@@ -204,13 +202,11 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider querySqliteProvider
 	 */
 	public function testQueryOnSQLite( $query, $expected ) {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$resultWrapper = $this->createMock( IResultWrapper::class );
 
 		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getType' ] )
+			->onlyMethods( [ 'getType' ] )
 			->getMockForAbstractClass();
 
 		$read->expects( $this->any() )
@@ -227,7 +223,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 
 		$write = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'query' ] )
+			->onlyMethods( [ 'query' ] )
 			->getMockForAbstractClass();
 
 		$write->expects( $this->once() )
@@ -254,7 +250,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\Wikimedia\Rdbms\ResultWrapper',
+			IResultWrapper::class,
 			$instance->query( $query )
 		);
 	}
@@ -273,7 +269,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	public function testSelectThrowsException() {
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'select' ] )
+			->onlyMethods( [ 'select' ] )
 			->getMockForAbstractClass();
 
 		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
@@ -305,7 +301,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		$this->expectException( 'RuntimeException' );
 
 		$this->assertInstanceOf(
-			'\Wikimedia\Rdbms\ResultWrapper',
+			IResultWrapper::class,
 			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
 		);
 	}
@@ -313,7 +309,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	public function testQueryThrowsException() {
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'query' ] )
+			->onlyMethods( [ 'query' ] )
 			->getMockForAbstractClass();
 
 		$databaseException = new DBError( $database, 'foo' );
@@ -540,7 +536,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	public function testDoQueryWithAutoCommit() {
 		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getFlag', 'clearFlag', 'setFlag', 'getType', 'query' ] )
+			->onlyMethods( [ 'getFlag', 'clearFlag', 'setFlag', 'getType', 'query' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->any() )

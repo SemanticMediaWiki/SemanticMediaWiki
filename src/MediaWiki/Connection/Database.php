@@ -11,7 +11,7 @@ use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\Platform\SQLPlatform;
-use Wikimedia\Rdbms\ResultWrapper;
+use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\ScopedCallback;
 
 /**
@@ -222,7 +222,7 @@ class Database {
 	 * @param array $options
 	 * @param array $joinConditions
 	 *
-	 * @return ResultWrapper
+	 * @return IResultWrapper
 	 * @throws UnexpectedValueException
 	 */
 	public function select( $tableName, $fields, $conditions, $fname, array $options = [], $joinConditions = [] ) {
@@ -258,7 +258,7 @@ class Database {
 			$this->tablePrefix( $tablePrefix );
 		}
 
-		if ( $results instanceof ResultWrapper ) {
+		if ( $results instanceof IResultWrapper ) {
 			return $results;
 		}
 
@@ -281,7 +281,7 @@ class Database {
 	 * @param string $fname
 	 * @param int $flags
 	 *
-	 * @return ResultWrapper
+	 * @return IResultWrapper
 	 * @throws RuntimeException
 	 */
 	public function query( $sql, $fname = __METHOD__, $flags = 0 ) {
@@ -308,7 +308,7 @@ class Database {
 	 * @param Query|string $sql
 	 * @param string $fname
 	 * @param int $flags
-	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
+	 * @return bool|IResultWrapper
 	 * @throws Exception
 	 */
 	public function readQuery( $sql, $fname = __METHOD__, $flags = 0 ) {
@@ -329,7 +329,7 @@ class Database {
 	 * @param Query|string $sql
 	 * @param $fname
 	 * @param int $flags
-	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
+	 * @return bool|IResultWrapper
 	 * @throws Exception
 	 */
 	private function executeQuery( IDatabase $connection, $sql, $fname, $flags ) {

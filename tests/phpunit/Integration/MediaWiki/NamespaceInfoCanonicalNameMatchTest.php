@@ -48,7 +48,7 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$instance = $this->getMockBuilder( '\SMW\NamespaceManager' )
-			->setMethods( [ 'isDefinedConstant' ] )
+			->onlyMethods( [ 'isDefinedConstant' ] )
 			->getMock();
 
 		$instance->expects( $this->atLeastOnce() )

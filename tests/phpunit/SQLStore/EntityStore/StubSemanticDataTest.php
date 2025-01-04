@@ -62,7 +62,7 @@ class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 			->setConstructorArgs( [
 				DIWikiPage::newFromText( __METHOD__ ),
 				$this->store ] )
-			->setMethods( [
+			->onlyMethods( [
 				'getProperties',
 				'isRedirect',
 				'getPropertyValues' ] )

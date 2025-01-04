@@ -54,7 +54,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'exists' ] )
+			->onlyMethods( [ 'exists' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -63,7 +63,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
@@ -115,7 +115,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -199,7 +199,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getObjectIds' ] )
+			->onlyMethods( [ 'getConnection', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

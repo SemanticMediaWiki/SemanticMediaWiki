@@ -37,7 +37,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit\Framew
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'service' ] )
+			->onlyMethods( [ 'getConnection', 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )

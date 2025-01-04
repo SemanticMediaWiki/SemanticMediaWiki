@@ -35,12 +35,12 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 		] );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->onlyMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getPropertyValues', 'updateData' ] )
+			->onlyMethods( [ 'getObjectIds', 'getPropertyValues', 'updateData' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -179,7 +179,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->onlyMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
@@ -192,7 +192,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'clearData', 'getObjectIds' ] )
+			->onlyMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -248,12 +248,12 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->onlyMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyValues', 'getObjectIds' ] )
+			->onlyMethods( [ 'getPropertyValues', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -277,7 +277,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'updateData' ] )
+			->onlyMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
@@ -311,7 +311,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'updateData', 'getPropertyValues' ] )
+			->onlyMethods( [ 'updateData', 'getPropertyValues' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )

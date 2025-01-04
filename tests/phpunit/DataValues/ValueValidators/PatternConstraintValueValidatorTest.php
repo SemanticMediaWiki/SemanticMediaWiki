@@ -72,7 +72,7 @@ class PatternConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
+			->onlyMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )

@@ -47,7 +47,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getTermsLookup', 'getStore', 'getID', 'interpretDescription' ] )
+			->onlyMethods( [ 'getTermsLookup', 'getStore', 'getID', 'interpretDescription' ] )
 			->getMock();
 
 		$this->conditionBuilder->expects( $this->any() )

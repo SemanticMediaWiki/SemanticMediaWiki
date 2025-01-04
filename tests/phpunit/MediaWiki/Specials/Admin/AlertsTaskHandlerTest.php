@@ -47,7 +47,7 @@ class AlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetHtml() {
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getName', 'getHtml' ] )
+			->onlyMethods( [ 'getName', 'getHtml' ] )
 			->getMockForAbstractClass();
 
 		$taskHandler->expects( $this->once() )

@@ -377,7 +377,7 @@ class ElasticFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'newRebuilder', 'newUpdateEntityCollationComplete' ] )
+			->onlyMethods( [ 'newRebuilder', 'newUpdateEntityCollationComplete' ] )
 			->getMock();
 
 		$instance->expects( $this->atLeastOnce() )
@@ -409,7 +409,7 @@ class ElasticFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'newRebuilder' ] )
+			->onlyMethods( [ 'newRebuilder' ] )
 			->getMock();
 
 		$instance->expects( $this->never() )

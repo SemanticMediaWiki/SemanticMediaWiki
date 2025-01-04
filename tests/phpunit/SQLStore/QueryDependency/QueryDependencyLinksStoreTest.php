@@ -203,7 +203,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 		$row->s_id = 1001;
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getDataItemPoolHashListFor' ] )
+			->onlyMethods( [ 'getDataItemPoolHashListFor' ] )
 			->getMock();
 
 		$idTable->expects( $this->once() )
@@ -231,7 +231,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->setConnectionManager( $connectionManager );
@@ -269,7 +269,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 		$row->s_id = 1001;
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getDataItemPoolHashListFor' ] )
+			->onlyMethods( [ 'getDataItemPoolHashListFor' ] )
 			->getMock();
 
 		$idTable->expects( $this->once() )
@@ -297,7 +297,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->setConnectionManager( $connectionManager );
@@ -360,7 +360,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -479,7 +479,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 
 	public function testTryDoUpdateDependenciesByForWhenDependencyListReturnsEmpty() {
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getId' ] )
+			->onlyMethods( [ 'getId' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -488,7 +488,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->onlyMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
@@ -649,7 +649,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyValues' ] )
+			->onlyMethods( [ 'getPropertyValues' ] )
 			->getMock();
 
 		$store->setConnectionManager( $connectionManager );

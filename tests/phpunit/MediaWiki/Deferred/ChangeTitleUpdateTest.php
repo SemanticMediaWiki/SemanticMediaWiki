@@ -25,7 +25,7 @@ class ChangeTitleUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'newUpdateJob' ] )
+			->onlyMethods( [ 'newUpdateJob' ] )
 			->getMock();
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )

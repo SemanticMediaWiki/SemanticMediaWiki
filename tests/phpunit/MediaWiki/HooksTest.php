@@ -602,7 +602,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'deleteSubject' ] )
+			->onlyMethods( [ 'deleteSubject' ] )
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'Store', $store );
@@ -736,7 +736,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyTables', 'getPropertyTableInfoFetcher', 'getObjectIds' ] )
+			->onlyMethods( [ 'getPropertyTables', 'getPropertyTableInfoFetcher', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -878,12 +878,12 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 		$handler = 'LinksUpdateComplete';
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->onlyMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'updateData' ] )
+			->onlyMethods( [ 'getObjectIds', 'updateData' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -1338,7 +1338,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyTables', 'getPropertyTableInfoFetcher' ] )
+			->onlyMethods( [ 'getPropertyTables', 'getPropertyTableInfoFetcher' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -1668,12 +1668,12 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 		$handler = 'SMW::Store::AfterQueryResultLookupComplete';
 
 		$idTableLookup = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'warmUpCache' ] )
+			->onlyMethods( [ 'warmUpCache' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getPropertyValues' ] )
+			->onlyMethods( [ 'getObjectIds', 'getPropertyValues' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -1698,12 +1698,12 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 		$handler = 'SMW::Browse::AfterIncomingPropertiesLookupComplete';
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'getId' ] )
+			->onlyMethods( [ 'exists', 'getId' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getPropertyValues' ] )
+			->onlyMethods( [ 'getObjectIds', 'getPropertyValues' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

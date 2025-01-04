@@ -117,7 +117,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [
+			->onlyMethods( [
 				'getProperties',
 				'getInProperties' ] )
 			->getMockForAbstractClass();
@@ -143,7 +143,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [
+			->onlyMethods( [
 				'getProperties',
 				'getInProperties',
 				'getAllPropertySubjects',
@@ -188,7 +188,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [
+			->onlyMethods( [
 				'getAllPropertySubjects',
 				] )
 			->getMockForAbstractClass();
@@ -216,7 +216,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [
+			->onlyMethods( [
 				'getAllPropertySubjects',
 				'getPropertyValues',
 				'getProperties',
@@ -273,7 +273,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [
+			->onlyMethods( [
 				'getAllPropertySubjects',
 				'getPropertyValues',
 				'getProperties',

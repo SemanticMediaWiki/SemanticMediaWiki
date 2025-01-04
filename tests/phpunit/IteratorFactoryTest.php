@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\IteratorFactory;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * @covers \SMW\IteratorFactory
@@ -20,9 +21,7 @@ class IteratorFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstructResultIterator() {
 		$instance = new IteratorFactory();
 
-		$result = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$result = $this->createMock( IResultWrapper::class );
 
 		$this->assertInstanceOf(
 			'\SMW\Iterators\ResultIterator',

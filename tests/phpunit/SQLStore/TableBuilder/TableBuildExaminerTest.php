@@ -102,12 +102,12 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( 'smw_object_ids' );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'moveSMWPageID' ] )
+			->onlyMethods( [ 'moveSMWPageID' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection', 'getObjectIds' ] )
+			->onlyMethods( [ 'getConnection', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -148,7 +148,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testCheckOnPostDestruction() {
 		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'listTables' ] )
+			->onlyMethods( [ 'listTables' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->atLeastOnce() )
@@ -157,7 +157,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -186,7 +186,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetDatabaseInfo() {
 		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getType', 'getServerInfo' ] )
+			->onlyMethods( [ 'getType', 'getServerInfo' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->once() )
@@ -199,7 +199,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
+			->onlyMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

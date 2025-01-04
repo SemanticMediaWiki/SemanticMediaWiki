@@ -69,12 +69,12 @@ class DataValueServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 
 		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
 			->disableOriginalConstructor()
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$this->constraintFactory = $this->getMockBuilder( '\SMW\ConstraintFactory' )
 			->disableOriginalConstructor()
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )

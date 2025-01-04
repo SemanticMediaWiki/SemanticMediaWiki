@@ -37,7 +37,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'findPropertyTableID', 'getDataItemHandlerForDIType', 'getObjectIds' ] )
+			->onlyMethods( [ 'findPropertyTableID', 'getDataItemHandlerForDIType', 'getObjectIds' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -230,7 +230,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSMWPropertyID' ] )
+			->onlyMethods( [ 'getSMWPropertyID' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
