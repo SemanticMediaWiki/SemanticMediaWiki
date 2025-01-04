@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\JsonView;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\JsonView;
 
 /**
  * @covers \SMW\Utils\JsonView

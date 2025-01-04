@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki;
 
 use DeferrableUpdate;
-use DeferredpendingUpdates;
 use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;

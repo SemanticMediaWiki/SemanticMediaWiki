@@ -2,15 +2,14 @@
 
 namespace SMW\MediaWiki\Page;
 
-use SMW\Store;
-use SMW\Message;
-use SMW\MediaWiki\Collator;
+use Linker;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMWInfolink as Infolink;
-use SMWDataItem as DataItem;
+use SMW\MediaWiki\Collator;
+use SMW\Message;
+use SMW\Store;
 use SMW\Utils\HtmlColumns;
-use Linker;
+use SMWInfolink as Infolink;
 
 /**
  * @license GNU GPL v2+

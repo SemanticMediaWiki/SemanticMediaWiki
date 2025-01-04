@@ -7,7 +7,6 @@ use SMW\DataItemFactory;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\Property\Annotators\EditProtectedPropertyAnnotator

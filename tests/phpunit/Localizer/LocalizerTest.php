@@ -4,8 +4,6 @@ namespace SMW\Tests\Localizer;
 
 use DateTime;
 use IContextSource;
-use Language;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
 use SMW\Localizer\Localizer;
 

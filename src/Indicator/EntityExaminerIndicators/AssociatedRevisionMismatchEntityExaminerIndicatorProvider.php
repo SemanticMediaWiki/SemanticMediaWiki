@@ -2,19 +2,18 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\Message;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
+use SMW\DIWikiPage;
+use SMW\GroupPermissions;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
-use SMW\Utils\TemplateEngine;
+use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Permission\PermissionAware;
 use SMW\MediaWiki\Permission\PermissionExaminer;
-use SMW\GroupPermissions;
-use Title;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
+use SMW\Message;
+use SMW\Store;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @license GNU GPL v2+

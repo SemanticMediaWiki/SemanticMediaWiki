@@ -4,18 +4,18 @@ use ParamProcessor\Options;
 use ParamProcessor\ParamDefinition;
 use ParamProcessor\ProcessedParam;
 use ParamProcessor\Processor;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\Query\Deferred;
-use SMW\Query\PrintRequest;
-use SMW\Query\Processor\ParamListProcessor;
-use SMW\Query\Processor\DefaultParamDefinition;
-use SMW\Query\QueryContext;
 use SMW\Query\Exception\ResultFormatNotFoundException;
+use SMW\Query\PrintRequest;
+use SMW\Query\Processor\DefaultParamDefinition;
+use SMW\Query\Processor\ParamListProcessor;
+use SMW\Query\QueryContext;
 use SMW\Query\ResultFormat;
 use SMW\Query\ResultPrinter;
-use SMW\Query\ResultPrinters\NullResultPrinter;
 use SMW\Query\ResultPrinterDependency;
+use SMW\Query\ResultPrinters\NullResultPrinter;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Static class for accessing functions to generate and execute semantic queries
@@ -254,7 +254,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return array( SMWQuery, ProcessedParam[] )
 	 */
 	static public function getQueryAndParamsFromFunctionParams( array $rawParams, $outputMode, $context, $showMode, $contextPage = null ) {
-		list( $queryString, $params, $printouts ) = self::getComponentsFromFunctionParams( $rawParams, $showMode );
+		[ $queryString, $params, $printouts ] = self::getComponentsFromFunctionParams( $rawParams, $showMode );
 
 		if ( !$showMode ) {
 			self::addThisPrintout( $printouts, $params );
@@ -262,7 +262,7 @@ class SMWQueryProcessor implements QueryContext {
 
 		$params = self::getProcessedParams( $params, $printouts, true, $context, $showMode );
 
-		$query  = self::createQuery( $queryString, $params, $context, '', $printouts, $contextPage );
+		$query = self::createQuery( $queryString, $params, $context, '', $printouts, $contextPage );
 
 		// For convenience keep parameters and options to be available for immediate
 		// processing

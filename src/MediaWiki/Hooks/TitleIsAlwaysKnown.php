@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\DIProperty;
-use Title;
 use SMW\MediaWiki\HookListener;
+use Title;
 
 /**
  * Allows overriding default behaviour for determining if a page exists

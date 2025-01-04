@@ -3,8 +3,8 @@
 namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\NamespaceConstraint;
-use SMW\Tests\TestEnvironment;
 use SMW\DataItemFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Constraint\Constraints\NamespaceConstraint

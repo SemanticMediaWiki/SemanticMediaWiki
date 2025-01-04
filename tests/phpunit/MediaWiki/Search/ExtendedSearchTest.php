@@ -171,7 +171,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getQueryResult' )
-			->willReturnCallback( function ( SMWQuery $query ) use ( $queryResult ) {
+			->willReturnCallback( static function ( SMWQuery $query ) use ( $queryResult ) {
 				return $query->querymode === SMWQuery::MODE_COUNT ? 9001 : $queryResult;
 			} );
 
@@ -267,7 +267,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->exactly( 3 ) )
 			->method( 'getQueryResult' )
-			->willReturnCallback( function ( SMWQuery $query ) use ( $queryResult ) {
+			->willReturnCallback( static function ( SMWQuery $query ) use ( $queryResult ) {
 				return $query->querymode === \SMWQuery::MODE_COUNT ? 9001 : $queryResult;
 			} );
 

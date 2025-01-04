@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use RuntimeException;
 use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;

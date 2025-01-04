@@ -4,12 +4,12 @@ namespace SMW\ParserFunctions;
 
 use Html;
 use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\PostProcHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWInfolink;
 use SMWQueryProcessor as QueryProcessor;
 use Title;
@@ -159,7 +159,7 @@ class ConceptParserFunction {
 	private function buildQuery( $conceptQueryString ) {
 		$rawParams = [ $conceptQueryString ];
 
-		list( $query, ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, ] = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
 			QueryProcessor::CONCEPT_DESC,

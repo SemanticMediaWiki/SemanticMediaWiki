@@ -3,9 +3,9 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use Onoi\Cache\FixedInMemoryLruCache;
-use SMW\SQLStore\EntityStore\CacheWarmer;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SQLStore\EntityStore\CacheWarmer;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\CacheWarmer

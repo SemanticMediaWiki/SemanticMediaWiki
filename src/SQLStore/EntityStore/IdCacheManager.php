@@ -4,7 +4,6 @@ namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
 use SMW\DIWikiPage;
-use SMW\SQLStore\SQLStore;
 
 /**
  * @license GNU GPL v2+

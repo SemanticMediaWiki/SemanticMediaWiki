@@ -2,18 +2,16 @@
 
 namespace SMW\SQLStore\Rebuilder;
 
-use Hooks;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\TitleFactory;
 use SMW\PropertyRegistry;
 use SMW\SemanticData;
-use SMW\Utils\Lru;
-use SMW\MediaWiki\TitleFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
-use Title;
+use SMW\Utils\Lru;
 
 /**
  * @private

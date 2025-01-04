@@ -4,7 +4,6 @@ namespace SMW\ParserFunctions;
 
 use ParamProcessor\ProcessedParam;
 use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\MessageFormatter;
 use SMW\Parser\RecursiveTextProcessor;
@@ -12,6 +11,7 @@ use SMW\ParserData;
 use SMW\PostProcHandler;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Query\Deferred;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
 use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
@@ -184,7 +184,7 @@ class AskParserFunction {
 		$GLOBALS['smwgIQRunningNumber']++;
 		$result = '';
 
-		list( $functionParams, $extraKeys ) = $this->prepareFunctionParameters(
+		[ $functionParams, $extraKeys ] = $this->prepareFunctionParameters(
 			$functionParams
 		);
 
@@ -291,7 +291,7 @@ class AskParserFunction {
 			$contextPage = null;
 		}
 
-		list( $query, $this->params ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $this->params ] = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$functionParams,
 			SMW_OUTPUT_WIKI,
 			$this->context,

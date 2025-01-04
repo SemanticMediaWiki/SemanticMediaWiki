@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
-use SMW\MediaWiki\Connection\Query;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
 use SMW\Tests\PHPUnitCompat;
 
 /**

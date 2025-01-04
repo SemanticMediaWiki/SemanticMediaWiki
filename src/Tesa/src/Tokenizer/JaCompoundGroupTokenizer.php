@@ -15,7 +15,7 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 	/**
 	 * @var array
 	 */
-	private $compound = array(
+	private $compound = [
 		"あっ",
 		"あり",
 		"ある",
@@ -129,7 +129,7 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 		"。",
 		"「",
 		"」"
-	);
+	];
 
 	/**
 	 * @var Tokenizer
@@ -194,7 +194,7 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 			return array_values( $result );
 		}
 
-		return array();
+		return [];
 	}
 
 	/**

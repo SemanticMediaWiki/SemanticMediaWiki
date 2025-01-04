@@ -2,8 +2,6 @@
 
 namespace SMW\Schema;
 
-use JsonSerializable;
-
 /**
  * @license GNU GPL v2+
  * @since 3.0

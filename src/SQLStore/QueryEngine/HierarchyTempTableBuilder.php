@@ -109,7 +109,7 @@ class HierarchyTempTableBuilder {
 	public function fillTempTable( $type, $tablename, $valueComposite, $depth = null ) {
 		$this->temporaryTableBuilder->create( $tablename );
 
-		list( $smwtable, $d ) = $this->getTableDefinitionByType( $type );
+		[ $smwtable, $d ] = $this->getTableDefinitionByType( $type );
 
 		if ( $depth === null ) {
 			$depth = $d;

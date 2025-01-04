@@ -9,7 +9,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\Pager;
-use SMW\MediaWiki\Page\ListBuilder;
 
 /**
  * @license GNU GPL v2+

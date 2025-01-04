@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Query\DescriptionBuilders;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
 
 /**

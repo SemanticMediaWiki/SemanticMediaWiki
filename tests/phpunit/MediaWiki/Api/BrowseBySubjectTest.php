@@ -4,9 +4,8 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Api\BrowseBySubject;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
-use Title;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Api\BrowseBySubject
@@ -204,23 +203,23 @@ class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
 
 	public function assertToContainArrayKeys( $setup, $result ) {
 		$this->assertInternalArrayStructure(
-			$setup, $result, 'error', 'array', function ( $r ) { return $r['error'];
+			$setup, $result, 'error', 'array', static function ( $r ) { return $r['error'];
 			} );
 
 		$this->assertInternalArrayStructure(
-			$setup, $result, 'result', 'array', function ( $r ) { return $r['query'];
+			$setup, $result, 'result', 'array', static function ( $r ) { return $r['query'];
 			} );
 
 		$this->assertInternalArrayStructure(
-			$setup, $result, 'subject', 'string', function ( $r ) { return $r['query']['subject'];
+			$setup, $result, 'subject', 'string', static function ( $r ) { return $r['query']['subject'];
 			} );
 
 		$this->assertInternalArrayStructure(
-			$setup, $result, 'data', 'array', function ( $r ) { return $r['query']['data'];
+			$setup, $result, 'data', 'array', static function ( $r ) { return $r['query']['data'];
 			} );
 
 		$this->assertInternalArrayStructure(
-			$setup, $result, 'sobj', 'array', function ( $r ) { return $r['query']['sobj'];
+			$setup, $result, 'sobj', 'array', static function ( $r ) { return $r['query']['sobj'];
 			} );
 	}
 

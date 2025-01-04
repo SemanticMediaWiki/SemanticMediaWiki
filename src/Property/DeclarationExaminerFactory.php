@@ -2,14 +2,14 @@
 
 namespace SMW\Property;
 
-use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
-use SMW\Property\DeclarationExaminer\ProtectionExaminer;
+use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
+use SMW\Property\DeclarationExaminer\ProtectionExaminer;
 use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
-use SMW\Store;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

@@ -3,9 +3,6 @@
 namespace SMW\Tests\Schema\Filters;
 
 use SMW\Schema\Filters\CompositeFilter;
-use SMW\Schema\Compartment;
-use SMW\Schema\Rule;
-use SMW\Schema\CompartmentIterator;
 
 /**
  * @covers \SMW\Schema\Filters\CompositeFilter

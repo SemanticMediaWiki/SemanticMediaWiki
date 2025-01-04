@@ -2,8 +2,8 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 
 /**

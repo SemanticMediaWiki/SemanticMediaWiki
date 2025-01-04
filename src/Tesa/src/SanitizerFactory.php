@@ -2,22 +2,22 @@
 
 namespace Onoi\Tesa;
 
-use Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer;
-use Onoi\Tesa\StopwordAnalyzer\NullStopwordAnalyzer;
-use Onoi\Tesa\StopwordAnalyzer\CdbStopwordAnalyzer;
-use Onoi\Tesa\StopwordAnalyzer\ArrayStopwordAnalyzer;
-use Onoi\Tesa\Synonymizer\Synonymizer;
-use Onoi\Tesa\Synonymizer\NullSynonymizer;
 use Onoi\Tesa\LanguageDetector\NullLanguageDetector;
 use Onoi\Tesa\LanguageDetector\TextCatLanguageDetector;
+use Onoi\Tesa\StopwordAnalyzer\ArrayStopwordAnalyzer;
+use Onoi\Tesa\StopwordAnalyzer\CdbStopwordAnalyzer;
+use Onoi\Tesa\StopwordAnalyzer\NullStopwordAnalyzer;
+use Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer;
+use Onoi\Tesa\Synonymizer\NullSynonymizer;
+use Onoi\Tesa\Synonymizer\Synonymizer;
 use Onoi\Tesa\Tokenizer\CJKSimpleCharacterRegExTokenizer;
-use Onoi\Tesa\Tokenizer\Tokenizer;
 use Onoi\Tesa\Tokenizer\GenericRegExTokenizer;
-use Onoi\Tesa\Tokenizer\JaCompoundGroupTokenizer;
 use Onoi\Tesa\Tokenizer\IcuWordBoundaryTokenizer;
-use Onoi\Tesa\Tokenizer\NGramTokenizer;
+use Onoi\Tesa\Tokenizer\JaCompoundGroupTokenizer;
 use Onoi\Tesa\Tokenizer\JaTinySegmenterTokenizer;
+use Onoi\Tesa\Tokenizer\NGramTokenizer;
 use Onoi\Tesa\Tokenizer\PunctuationRegExTokenizer;
+use Onoi\Tesa\Tokenizer\Tokenizer;
 
 /**
  * @license GNU GPL v2+
@@ -54,7 +54,8 @@ class SanitizerFactory {
 			$languageCode
 		);
 
-		return $cdbStopwordAnalyzer->isAvailable() ? $cdbStopwordAnalyzer : $this->newNullStopwordAnalyzer();;
+		return $cdbStopwordAnalyzer->isAvailable() ? $cdbStopwordAnalyzer : $this->newNullStopwordAnalyzer();
+		;
 	}
 
 	/**
@@ -73,7 +74,7 @@ class SanitizerFactory {
 	 *
 	 * @return StopwordAnalyzer
 	 */
-	public function newArrayStopwordAnalyzer( array $stopwords = array() ) {
+	public function newArrayStopwordAnalyzer( array $stopwords = [] ) {
 		return new ArrayStopwordAnalyzer( $stopwords );
 	}
 
@@ -98,7 +99,8 @@ class SanitizerFactory {
 			return $this->newNullSynonymizer();
 		}
 
-		return $this->newNullSynonymizer();;
+		return $this->newNullSynonymizer();
+		;
 	}
 
 	/* Synonymizer */

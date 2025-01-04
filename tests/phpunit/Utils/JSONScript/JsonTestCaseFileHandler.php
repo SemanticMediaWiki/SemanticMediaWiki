@@ -153,7 +153,7 @@ class JsonTestCaseFileHandler {
 			// Support for { "skip-on": { "smw->2.5.x": "Reason is ..." }
 			// or { "skip-on": { "mw->1.30.x": "Reason is ..." }
 			if ( strpos( $id, 'mw-' ) !== false ) {
-				list( $noop, $versionToSkip ) = explode( "mw-", $id, 2 );
+				[ $noop, $versionToSkip ] = explode( "mw-", $id, 2 );
 			}
 
 			// Support for { "skip-on": { "mediawiki": [ ">1.29.x", "Reason is ..." ] }
@@ -470,7 +470,7 @@ class JsonTestCaseFileHandler {
 	 * @return array
 	 */
 	public function findTestCasesByType( $type ) {
-		return array_filter( $this->getContentsFor( 'tests' ), function ( $contents ) use( $type ) {
+		return array_filter( $this->getContentsFor( 'tests' ), static function ( $contents ) use( $type ) {
 			return isset( $contents['type'] ) && $contents['type'] === $type;
 		} );
 	}

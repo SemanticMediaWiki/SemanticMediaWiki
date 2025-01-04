@@ -2,14 +2,14 @@
 
 namespace SMW\Constraint\Constraints;
 
+use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
-use SMW\DIProperty;
 use SMW\DataTypeRegistry;
+use SMW\DIProperty;
 use SMW\SemanticData;
-use RuntimeException;
+use SMWDataItem as DataItem;
+use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 
 /**

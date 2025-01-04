@@ -17,17 +17,17 @@ namespace SMW\SPARQLStore\Exception;
 class BadHttpEndpointResponseException extends \Exception {
 
 	/// Error code: malformed query
-	const ERROR_MALFORMED      = 1;
+	const ERROR_MALFORMED = 1;
 	/// Error code: service refused to handle the request
-	const ERROR_REFUSED        = 2;
+	const ERROR_REFUSED = 2;
 	/// Error code: the query required a graph that does not exist
 	const ERROR_GRAPH_NOEXISTS = 3;
 	/// Error code: some existing graph should not exist to run this query
-	const ERROR_GRAPH_EXISTS   = 4;
+	const ERROR_GRAPH_EXISTS = 4;
 	/// Error code: unknown error
-	const ERROR_OTHER          = 5;
+	const ERROR_OTHER = 5;
 	/// Error code: required service not known
-	const ERROR_NOSERVICE      = 6;
+	const ERROR_NOSERVICE = 6;
 
 	/**
 	 * SPARQL query that caused the problem.

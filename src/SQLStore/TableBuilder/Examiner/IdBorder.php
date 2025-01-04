@@ -2,10 +2,9 @@
 
 namespace SMW\SQLStore\TableBuilder\Examiner;
 
-use SMW\MediaWiki\Database;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\SQLStore\SQLStore;
 use RuntimeException;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 
 /**

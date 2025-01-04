@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DataItemFactory;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use Title;
@@ -219,7 +218,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		$parserOutput->setExtensionData( 'smw-semanticdata-status', $parameters['data-status'] );
 		$parserOutput->setPageProperty( 'displaytitle', $displayTitle );
 
-		$text   = '';
+		$text = '';
 
 		$instance = new ParserAfterTidy(
 			$parser,

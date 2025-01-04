@@ -2,13 +2,13 @@
 
 namespace SMW\Maintenance;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\StoreFactory;
-use SMW\Store;
-use SMW\Setup;
-use SMW\Options;
-use SMW\Utils\CliMsgFormatter;
 use InvalidArgumentException;
+use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup;
+use SMW\Store;
+use SMW\StoreFactory;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class

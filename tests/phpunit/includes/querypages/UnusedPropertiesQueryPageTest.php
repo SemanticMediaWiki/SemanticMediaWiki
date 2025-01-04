@@ -4,9 +4,7 @@ namespace SMW\Tests;
 
 use SMW\DataItemFactory;
 use SMW\Settings;
-use SMW\Tests\TestEnvironment;
 use SMW\UnusedPropertiesQueryPage;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\UnusedPropertiesQueryPage

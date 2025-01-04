@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\SMWIntegrationTestCase;
-use SMW\Tests\TestEnvironment;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki

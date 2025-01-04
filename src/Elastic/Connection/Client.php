@@ -7,9 +7,9 @@ use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Exception;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use SMW\Elastic\Config;
 use SMW\Elastic\Exception\InvalidJSONException;
 use SMW\Elastic\Exception\ReplicationException;
-use SMW\Elastic\Config;
 use SMW\Options;
 use SMW\Site;
 

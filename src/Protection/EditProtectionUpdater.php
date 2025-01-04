@@ -103,7 +103,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 			return;
 		}
 
-		list( $isEditProtected, $isAnnotationBySystem ) = $this->fetchEditProtectedInfo( $semanticData );
+		[ $isEditProtected, $isAnnotationBySystem ] = $this->fetchEditProtectedInfo( $semanticData );
 
 		$title = $this->wikiPage->getTitle();
 

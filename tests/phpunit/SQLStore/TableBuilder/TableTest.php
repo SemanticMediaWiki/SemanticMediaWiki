@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
-use RuntimeException;
 use SMW\SQLStore\TableBuilder\Table;
 use SMW\Tests\PHPUnitCompat;
 

@@ -2,24 +2,22 @@
 
 namespace SMW\Tests;
 
-use MediaWikiIntegrationTestCase;
-use Title;
 use BacklinkCache;
 use HashBagOStuff;
+use MediaWiki\MediaWikiServices;
+use MediaWikiIntegrationTestCase;
 use ObjectCache;
-use RequestContext;
+use PHPUnit\Framework\TestResult;
 use RuntimeException;
+use SMW\DataValueFactory;
+use SMW\MediaWiki\LinkBatch;
+use SMW\PropertyRegistry;
+use SMW\Services\ServicesFactory;
+use SMW\StoreFactory;
+use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use SMWQueryProcessor;
-use MediaWiki\MediaWikiServices;
-use SMW\StoreFactory;
-use SMW\DataValueFactory;
-use SMW\PropertyRegistry;
-use SMW\MediaWiki\LinkBatch;
-use SMW\Services\ServicesFactory;
-use SMW\Tests\TestEnvironment;
-use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
-use PHPUnit\Framework\TestResult;
+use Title;
 
 /**
  * @group semantic-mediawiki

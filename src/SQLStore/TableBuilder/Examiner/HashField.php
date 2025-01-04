@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\TableBuilder\Examiner;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\Maintenance\populateHashField;
 use SMW\SQLStore\SQLStore;
-use SMW\Maintenance\populateHashField as PopulateHashField;
 use SMW\Utils\CliMsgFormatter;
 
 /**

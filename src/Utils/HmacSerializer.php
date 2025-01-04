@@ -116,7 +116,7 @@ class HmacSerializer {
 		$hash = '';
 
 		if ( strpos( $data, '|' ) !== false ) {
-			list( $hash, $data ) = explode( '|', $data, 2 );
+			[ $hash, $data ] = explode( '|', $data, 2 );
 		}
 
 		// Timing attack safe string comparison

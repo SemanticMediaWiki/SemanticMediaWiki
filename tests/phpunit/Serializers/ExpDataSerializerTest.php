@@ -5,9 +5,9 @@ namespace SMW\Tests\Serializers;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Serializers\ExpDataSerializer;
+use SMW\Tests\PHPUnitCompat;
 use SMWDIBlob as DIBlob;
 use SMWExpData as ExpData;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Serializers\ExpDataSerializer

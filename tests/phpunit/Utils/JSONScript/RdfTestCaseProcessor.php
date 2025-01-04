@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
-use SMW\Exporter\ExporterFactory;
 use MediaWikiIntegrationTestCase;
+use SMW\Exporter\ExporterFactory;
 
 /**
  * @group semantic-mediawiki

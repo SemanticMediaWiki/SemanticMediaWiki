@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\Pager;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\Pager;
 use Title;
 
 /**

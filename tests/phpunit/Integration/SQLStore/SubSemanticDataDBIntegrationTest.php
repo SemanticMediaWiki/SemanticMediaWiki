@@ -29,8 +29,7 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $title;
 
-	protected function setUp(): void
-	{
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();

@@ -10,8 +10,8 @@ use SMW\ParserData;
 use SMW\ParserFunctions\SubobjectParserFunction;
 use SMW\ParserParameterFormatter;
 use SMW\Subobject;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

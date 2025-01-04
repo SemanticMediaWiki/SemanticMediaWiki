@@ -7,7 +7,6 @@ use ParserOutput;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\Tests\TestEnvironment;
 use Title;
-use TitleValue;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\LinksUpdateComplete

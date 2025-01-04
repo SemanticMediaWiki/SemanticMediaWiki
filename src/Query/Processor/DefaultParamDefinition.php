@@ -2,10 +2,10 @@
 
 namespace SMW\Query\Processor;
 
-use SMW\Query\ResultPrinter;
-use SMW\Message;
 use ParamProcessor\ParamDefinition;
+use SMW\Message;
 use SMW\Query\QueryContext;
+use SMW\Query\ResultPrinter;
 
 /**
  * @private

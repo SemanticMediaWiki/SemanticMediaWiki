@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\UrlArgs;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\UrlArgs;
 
 /**
  * @covers \SMW\Utils\UrlArgs

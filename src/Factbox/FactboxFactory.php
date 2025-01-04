@@ -2,11 +2,9 @@
 
 namespace SMW\Factbox;
 
-use IContextSource;
-use OutputPage;
+use ParserOutput;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
-use ParserOutput;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Elastic\Connection;
 
-use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client;
 use SMW\Tests\PHPUnitCompat;
 
 /**

@@ -207,7 +207,7 @@ class QueryResultValidator extends \PHPUnit\Framework\Assert {
 	 * @return QueryResultValidator
 	 */
 	public function useWikiValueForDataValueValidation() {
-		$this->dataValueValidationMethod = function ( DataValue $expectedDataValue, DataValue $dataValue ) {
+		$this->dataValueValidationMethod = static function ( DataValue $expectedDataValue, DataValue $dataValue ) {
 			return $expectedDataValue->getWikiValue() === $dataValue->getWikiValue();
 		};
 

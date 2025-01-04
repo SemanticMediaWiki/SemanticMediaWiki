@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\Browse;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\Localizer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
 
@@ -46,7 +46,7 @@ class ValueFormatter {
 			// Those with a formatted displayTitle
 			// foaf:homepage&nbsp;<span style="font-size:small;">(Foaf:homepage)</span>
 			if ( strpos( $label, '&nbsp;<span' ) !== false ) {
-				list( $label, $extra ) = explode( '&nbsp;', $label );
+				[ $label, $extra ] = explode( '&nbsp;', $label );
 				$extra = '&nbsp;' . $extra;
 			}
 

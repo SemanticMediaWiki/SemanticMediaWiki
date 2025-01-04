@@ -2,18 +2,18 @@
 
 namespace SMW\Tests;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Listener\EventListener\EventHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
-use SMW\Tests\Utils\JSONScript\ParserTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\ParserHtmlTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\QueryTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\QueryTestCaseInterpreter;
-use SMW\Tests\Utils\JSONScript\RdfTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\ApiTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
+use SMW\Tests\Utils\JSONScript\ParserHtmlTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\ParserTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\QueryTestCaseInterpreter;
+use SMW\Tests\Utils\JSONScript\QueryTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\RdfTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
 
 /**
  * It is provided for external extensions that seek a simple way of creating tests

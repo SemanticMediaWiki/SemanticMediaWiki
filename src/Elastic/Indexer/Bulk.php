@@ -2,8 +2,8 @@
 
 namespace SMW\Elastic\Indexer;
 
-use SMW\Elastic\Connection\Client as ElasticClient;
 use JsonSerializable;
+use SMW\Elastic\Connection\Client as ElasticClient;
 
 /**
  * @note Elasticsearch provides a bulk API to perform several index/delete operations

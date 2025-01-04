@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
 use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
-use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use SMW\Tests\PHPUnitCompat;
 
 /**

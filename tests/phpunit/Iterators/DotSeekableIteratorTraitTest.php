@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Iterators;
 
-use SMW\Iterators\SeekableIteratorTrait;
 use SMW\Iterators\DotSeekableIteratorTrait;
 use SMW\Tests\PHPUnitCompat;
 

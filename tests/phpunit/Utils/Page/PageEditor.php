@@ -7,9 +7,9 @@ use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\RevisionSlotsUpdate;
 use RequestContext;
 use RuntimeException;
+use SMW\Services\ServicesFactory;
 use Title;
 use WikiPage;
-use SMW\Services\ServicesFactory;
 
 /**
  * @group SMW

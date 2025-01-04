@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
-use SMW\Tests\Utils\File\ContentsReader;
 use MediaWikiIntegrationTestCase;
+use SMW\Tests\Utils\File\ContentsReader;
 
 /**
  * @group semantic-mediawiki

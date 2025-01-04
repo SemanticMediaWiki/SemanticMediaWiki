@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWikiIntegrationTestCase;
 use SMW\Query\Parser as QueryParser;
 use SMW\Store;
 use SMW\Tests\Utils\Validators\QueryResultValidator;
 use SMW\Tests\Utils\Validators\StringValidator;
 use SMWQuery as Query;
 use Title;
-use MediaWikiIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki

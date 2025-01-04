@@ -59,7 +59,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
-		list( $condition, $namespaces ) = $this->mapCategoriesToConditionElements(
+		[ $condition, $namespaces ] = $this->mapCategoriesToConditionElements(
 			$description->getCategories(),
 			$description->getHierarchyDepth(),
 			$joinVariable

@@ -3,7 +3,6 @@
 namespace SMW\Utils;
 
 use SMW\DIWikiPage;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

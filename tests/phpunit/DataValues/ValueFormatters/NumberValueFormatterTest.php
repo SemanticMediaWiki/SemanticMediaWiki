@@ -4,8 +4,8 @@ namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\TemperatureValue;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
-use SMWNumberValue as NumberValue;
 use SMW\Tests\PHPUnitCompat;
+use SMWNumberValue as NumberValue;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\NumberValueFormatter

@@ -3,8 +3,8 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\MediaWiki\TitleFactory;
-use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 

@@ -2,11 +2,11 @@
 
 namespace SMW\Utils;
 
-use RuntimeException;
-use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
-use RegexIterator;
+use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
+use RegexIterator;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+

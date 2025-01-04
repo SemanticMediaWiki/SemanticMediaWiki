@@ -4,9 +4,9 @@ namespace SMW\Tests\Maintenance;
 
 use SMW\Maintenance\DataRebuilder;
 use SMW\Options;
-use Title;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
+use Title;
 
 /**
  * @covers \SMW\Maintenance\DataRebuilder

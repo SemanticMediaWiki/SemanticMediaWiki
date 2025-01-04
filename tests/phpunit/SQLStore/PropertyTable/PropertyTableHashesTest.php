@@ -3,9 +3,6 @@
 namespace SMW\Tests\SQLStore\PropertyTable;
 
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
-use SMW\StoreFactory;
-use SMWDataItem;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyTable\PropertyTableHashes

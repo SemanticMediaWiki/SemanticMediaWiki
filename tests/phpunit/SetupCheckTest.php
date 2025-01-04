@@ -2,9 +2,8 @@
 
 namespace SMW\Tests;
 
-use SMW\SetupCheck;
-use SMW\Tests\PHPUnitCompat;
 use ReflectionClass;
+use SMW\SetupCheck;
 
 /**
  * @covers \SMW\SetupCheck

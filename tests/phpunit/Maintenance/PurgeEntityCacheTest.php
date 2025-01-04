@@ -4,13 +4,13 @@ namespace SMW\Tests\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
 use SMW\EntityCache;
 use SMW\Maintenance\purgeEntityCache;
-use Wikimedia\Rdbms\FakeResultWrapper;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
-use SMW\DIWikiPage;
 use Wikimedia\Rdbms\Database;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\Maintenance\purgeEntityCache

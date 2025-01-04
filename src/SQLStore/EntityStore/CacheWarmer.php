@@ -2,16 +2,15 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use RuntimeException;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SQLStore\SQLStore;
-use SMWQueryResult as QueryResult;
 use Iterator;
-use SMW\MediaWiki\LinkBatch;
+use SMW\DIProperty;
 use SMW\DisplayTitleFinder;
+use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\MediaWiki\LinkBatch;
+use SMW\SQLStore\SQLStore;
+use SMWQueryResult as QueryResult;
 
 /**
  * @license GNU GPL v2+

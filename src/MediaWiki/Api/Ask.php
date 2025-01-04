@@ -27,7 +27,7 @@ class Ask extends Query {
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
 		$outputFormat = 'json';
 
-		list( $queryString, $parameters, $printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $parameterFormatter->getAskApiParameters(), false );
+		[ $queryString, $parameters, $printouts ] = SMWQueryProcessor::getComponentsFromFunctionParams( $parameterFormatter->getAskApiParameters(), false );
 
 		$queryResult = $this->getQueryResult( $this->getQuery(
 			$queryString,

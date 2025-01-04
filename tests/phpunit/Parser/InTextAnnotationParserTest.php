@@ -5,7 +5,6 @@ namespace SMW\Tests\Parser;
 use ParserOutput;
 use ReflectionClass;
 use SMW\DIProperty;
-use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Parser\LinksProcessor;

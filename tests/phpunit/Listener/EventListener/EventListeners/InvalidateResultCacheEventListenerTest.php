@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Listener\EventListener\EventListeners;
 
-use SMW\DIWikiPage;
-use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use Onoi\EventDispatcher\DispatchContext;
+use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Tests\TestEnvironment;
 
 /**

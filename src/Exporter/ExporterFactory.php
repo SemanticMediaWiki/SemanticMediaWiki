@@ -2,13 +2,13 @@
 
 namespace SMW\Exporter;
 
-use SMW\Exporter\Serializer\Serializer;
-use SMW\Exporter\Serializer\RDFXMLSerializer;
-use SMW\Exporter\Serializer\TurtleSerializer;
+use InvalidArgumentException;
 use SMW\Exporter\Controller\Queue;
+use SMW\Exporter\Serializer\RDFXMLSerializer;
+use SMW\Exporter\Serializer\Serializer;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMWExportController as ExportController;
 use SMWExporter as Exporter;
-use InvalidArgumentException;
 
 /**
  * @license GNU GPL v2+

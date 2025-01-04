@@ -2,9 +2,9 @@
 
 namespace SMW\DataValues\Number;
 
-use SMW\PropertySpecificationLookup;
-use SMW\EntityCache;
 use SMW\DIProperty;
+use SMW\EntityCache;
+use SMW\PropertySpecificationLookup;
 use SMWDIBlob as DIBlob;
 use SMWNumberValue as NumberValue;
 

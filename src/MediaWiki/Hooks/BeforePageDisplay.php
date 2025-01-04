@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Html;
 use OutputPage;
 use Skin;
-use SpecialPage;
-use Title;
-use SMW\Message;
-use Html;
 use SMW\MediaWiki\HookListener;
+use SMW\Message;
 use SMW\OptionsAwareTrait;
 use SMW\Services\ServicesFactory;
+use SpecialPage;
+use Title;
 
 /**
  * BeforePageDisplay hook which allows last minute changes to the

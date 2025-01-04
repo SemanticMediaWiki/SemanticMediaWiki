@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 use SMWQueryProcessor;
 
 /**
@@ -165,7 +165,7 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	protected function makeQueryResultFromRawParameters( $rawParams ) {
-		list( $query, $params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $params ] = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
 			SMWQueryProcessor::INLINE_QUERY,

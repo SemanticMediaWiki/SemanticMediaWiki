@@ -11,7 +11,6 @@ use SMW\HierarchyLookup;
 use SMW\Message;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
-use SMW\SPARQLStore\HierarchyFinder;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
@@ -394,7 +393,7 @@ class ConditionBuilder {
 
 		// Reuse an existing variable for the value to allow to be used more than
 		// once when referring to the same property/value redirect
-		list( $redirectByVariable, $namespaces ) = $this->redirectByVariableReplacementMap[$valueName];
+		[ $redirectByVariable, $namespaces ] = $this->redirectByVariableReplacementMap[$valueName];
 
 		return $redirectByVariable;
 	}
@@ -597,7 +596,7 @@ class ConditionBuilder {
 		$namespaces[$rediExpElement->getNamespaceId()] = $rediExpElement->getNamespace();
 
 		foreach ( $this->redirectByVariableReplacementMap as $valueName => $content ) {
-			list( $redirectByVariable, $ns ) = $content;
+			[ $redirectByVariable, $ns ] = $content;
 			$weakConditions[] = "$redirectByVariable " . "^" . $rediExpElement->getQName() . " $valueName .\n";
 			$namespaces = array_merge( $namespaces, $ns );
 		}

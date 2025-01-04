@@ -2,16 +2,15 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\Message;
-use SMW\Store;
-use SMW\EntityCache;
-use SMW\DIWikiPage;
-use SMW\RequestOptions;
 use SMW\Constraint\ConstraintError;
+use SMW\DIWikiPage;
+use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
-use SMW\Utils\TemplateEngine;
 use SMW\Localizer\MessageLocalizerTrait;
-use Html;
+use SMW\Message;
+use SMW\RequestOptions;
+use SMW\Store;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @license GNU GPL v2+

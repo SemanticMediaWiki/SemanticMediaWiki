@@ -5,7 +5,6 @@ namespace SMW\Tests;
 use SMW\DataItemFactory;
 use SMW\Settings;
 use SMW\WantedPropertiesQueryPage;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\WantedPropertiesQueryPage

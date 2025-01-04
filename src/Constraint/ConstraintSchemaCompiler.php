@@ -2,10 +2,10 @@
 
 namespace SMW\Constraint;
 
-use SMW\PropertySpecificationLookup;
-use SMW\Schema\SchemaFinder;
 use SMW\DIProperty;
 use SMW\Message;
+use SMW\PropertySpecificationLookup;
+use SMW\Schema\SchemaFinder;
 
 /**
  * @license GNU GPL v2+
@@ -149,7 +149,7 @@ class ConstraintSchemaCompiler {
 				continue;
 			}
 
-			list( $reference, $regex ) = explode( '|', $part, 2 );
+			[ $reference, $regex ] = explode( '|', $part, 2 );
 
 			if ( $reference === $allowed_pattern ) {
 				$pattern = $regex;

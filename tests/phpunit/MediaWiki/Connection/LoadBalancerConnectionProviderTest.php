@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
-use ReflectionClass;
-use SMW\Tests\PHPUnitCompat;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Wikimedia\Rdbms\ILoadBalancer;
 

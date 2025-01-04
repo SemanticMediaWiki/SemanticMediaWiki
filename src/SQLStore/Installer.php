@@ -2,24 +2,21 @@
 
 namespace SMW\SQLStore;
 
-use Hooks;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
-use SMW\SQLStore\TableBuilder\TableSchemaManager;
-use SMW\SQLStore\TableBuilder\TableBuildExaminer;
-use SMW\SQLStore\Installer\VersionExaminer;
-use SMW\SQLStore\Installer\TableOptimizer;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Options;
-use SMW\Site;
-use SMW\TypesRegistry;
+use SMW\Setup;
 use SMW\SetupFile;
+use SMW\SQLStore\Installer\TableOptimizer;
+use SMW\SQLStore\Installer\VersionExaminer;
+use SMW\SQLStore\TableBuilder\TableBuildExaminer;
+use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\Timer;
-use SMW\Setup;
 
 /**
  * @private

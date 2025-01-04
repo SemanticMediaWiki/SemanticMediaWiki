@@ -2,8 +2,6 @@
 
 namespace SMW\Tests\Query\Result;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\Result\FilterMap;
 
 /**

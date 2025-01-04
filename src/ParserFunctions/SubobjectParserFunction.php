@@ -2,18 +2,17 @@
 
 namespace SMW\ParserFunctions;
 
-use Parser;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\HashBuilder;
 use SMW\MediaWiki\StripMarkerDecoder;
 use SMW\Message;
 use SMW\MessageFormatter;
+use SMW\Parser\AnnotationProcessor;
 use SMW\ParserData;
 use SMW\ParserParameterProcessor;
 use SMW\SemanticData;
 use SMW\Subobject;
-use SMW\Parser\AnnotationProcessor;
 
 /**
  * @private This class should not be instantiated directly, please use
@@ -192,7 +191,7 @@ class SubobjectParserFunction {
 			);
 		}
 
-		list( $parameters, $id ) = $this->getParameters(
+		[ $parameters, $id ] = $this->getParameters(
 			$parserParameterProcessor
 		);
 

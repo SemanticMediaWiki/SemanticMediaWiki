@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
-use SMW\Tests\TestEnvironment;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\TableBuildExaminer

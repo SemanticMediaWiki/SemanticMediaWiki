@@ -3,14 +3,13 @@
 namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
-use SMW\MediaWiki\Specials\Admin\ActionableTask;
-use Title;
-use WebRequest;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

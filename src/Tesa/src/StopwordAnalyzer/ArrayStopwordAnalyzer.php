@@ -27,7 +27,7 @@ class ArrayStopwordAnalyzer implements StopwordAnalyzer {
 	 *
 	 * @param array $stopwords
 	 */
-	public function __construct( array $stopwords = array() ) {
+	public function __construct( array $stopwords = [] ) {
 		$this->stopwords = array_flip( $stopwords );
 	}
 

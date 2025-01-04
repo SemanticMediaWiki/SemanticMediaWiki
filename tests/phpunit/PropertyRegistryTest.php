@@ -7,7 +7,6 @@ use SMW\DIProperty;
 use SMW\PropertyAliasFinder;
 use SMW\PropertyLabelFinder;
 use SMW\PropertyRegistry;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\PropertyRegistry

@@ -3,8 +3,8 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
-use SMWExpLiteral as ExpLiteral;
 use SMW\Tests\PHPUnitCompat;
+use SMWExpLiteral as ExpLiteral;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\RepositoryResult

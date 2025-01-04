@@ -6,9 +6,9 @@ use SMW\Query\QuerySourceFactory;
 use SMW\QueryEngine;
 use SMW\Store;
 use SMW\StoreAware;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWQuery as Query;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers SMW\Query\QuerySourceFactory

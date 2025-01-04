@@ -144,7 +144,7 @@ class LinksProcessor {
 			// Restore the link to its previous form of `Foo::=Bar` and reapply
 			// a simple split.
 			if ( strpos( $semanticLink[0], '::=' ) && substr( $semanticLink[1], -1 ) == ':' ) {
-				list( $semanticLink[1], $semanticLink[2] ) = explode( '::', $semanticLink[1] . ':=' . $semanticLink[2], 2 );
+				[ $semanticLink[1], $semanticLink[2] ] = explode( '::', $semanticLink[1] . ':=' . $semanticLink[2], 2 );
 			}
 
 			// #1252 Strict mode being disabled for support of multi property
@@ -156,7 +156,7 @@ class LinksProcessor {
 			// then concatenate the string again and split for the first :: occurrence
 			// only
 			if ( $this->isStrictMode && strpos( $semanticLink[1], ':' ) !== false && isset( $semanticLink[2] ) ) {
-				list( $semanticLink[1], $semanticLink[2] ) = explode( '::', $semanticLink[1] . '::' . $semanticLink[2], 2 );
+				[ $semanticLink[1], $semanticLink[2] ] = explode( '::', $semanticLink[1] . '::' . $semanticLink[2], 2 );
 			}
 
 			$property = $semanticLink[1];

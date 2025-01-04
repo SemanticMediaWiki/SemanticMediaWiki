@@ -6,10 +6,10 @@ use SMW\DIWikiPage;
 use SMW\Exporter\Escaper;
 use SMW\InMemoryPoolCache;
 use SMW\SPARQLStore\RepositoryRedirectLookup;
+use SMW\Tests\PHPUnitCompat;
 use SMWExpLiteral as ExpLiteral;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryRedirectLookup

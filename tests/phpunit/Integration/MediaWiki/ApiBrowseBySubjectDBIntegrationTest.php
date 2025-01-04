@@ -6,10 +6,10 @@ use SMW\DataValueFactory;
 use SMW\MediaWiki\Api\BrowseBySubject;
 use SMW\SerializerFactory;
 use SMW\Subobject;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\Utils\SemanticDataFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-integration

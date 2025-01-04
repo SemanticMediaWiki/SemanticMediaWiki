@@ -2,12 +2,10 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use Sanitizer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWQueryResult as QueryResult;
 use SMW\MediaWiki\Template\Template;
-use SMW\MediaWiki\Template\TemplateSet;
 use SMW\MediaWiki\Template\TemplateExpander;
+use SMW\MediaWiki\Template\TemplateSet;
+use SMWQueryResult as QueryResult;
 
 /**
  * Exports data as file in a format that is defined by its invoked templates.

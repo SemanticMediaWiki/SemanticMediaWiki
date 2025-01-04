@@ -3,11 +3,10 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use Onoi\Cache\Cache;
+use Onoi\Cache\FixedInMemoryLruCache;
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\AuxiliaryFields;
-use Onoi\Cache\FixedInMemoryLruCache;
 use SMW\Utils\HmacSerializer;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\AuxiliaryFields

@@ -2,8 +2,8 @@
 
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Class TemplateRendererFactory

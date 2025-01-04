@@ -2,8 +2,6 @@
 
 namespace SMW\Tests\Query\Cache;
 
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\Query\Cache\CacheStats;
 
 /**

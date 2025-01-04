@@ -2,16 +2,13 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
-use Onoi\Cache\Cache;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\DIWikiPage;
 use SMW\EntityCache;
-use Html;
-use SMW\Utils\TemplateEngine;
-use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Message;
+use SMW\Store;
+use SMW\Utils\TemplateEngine;
 use Title;
 
 /**

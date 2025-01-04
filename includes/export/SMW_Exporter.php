@@ -1,14 +1,9 @@
 <?php
 
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\SemanticData;
 use SMW\DIWikiPage;
-use SMWDIBlob as DIBlob;
-use SMW\Site;
 use SMW\Exporter\DataItemMatchFinder;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
@@ -19,7 +14,11 @@ use SMW\Exporter\ExpResourceMapper;
 use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
 use SMW\Localizer\Localizer;
 use SMW\NamespaceUriFinder;
+use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Site;
 use SMW\TypesRegistry;
+use SMWDIBlob as DIBlob;
 
 /**
  * SMWExporter is a class for converting internal page-based data (SemanticData) into

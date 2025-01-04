@@ -6,8 +6,8 @@ use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIProperty;
 use SMW\MediaWiki\Database;
-use SMWDataItem as DataItem;
 use SMW\Utils\CliMsgFormatter;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2+

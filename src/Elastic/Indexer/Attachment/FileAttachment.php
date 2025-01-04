@@ -5,17 +5,14 @@ namespace SMW\Elastic\Indexer\Attachment;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Indexer\Bulk;
+use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\QueryEngine\FieldMapper;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMWContainerSemanticData as ContainerSemanticData;
-use Title;
-use File;
 
 /**
  * @license GNU GPL v2+

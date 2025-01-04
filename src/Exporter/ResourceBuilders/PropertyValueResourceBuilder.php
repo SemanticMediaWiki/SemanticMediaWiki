@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\Exporter\ResourceBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;

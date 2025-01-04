@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\Mock;
 
-use User;
 use MediaWiki\Permissions\PermissionStatus;
+use User;
 
 /**
  * Instantiate a SuperUser in order to be able to do everything

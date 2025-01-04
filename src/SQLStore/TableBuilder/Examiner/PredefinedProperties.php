@@ -3,10 +3,10 @@
 namespace SMW\SQLStore\TableBuilder\Examiner;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\SQLStore\SQLStore;
 use SMW\DIProperty;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\MediaWiki\Collator;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @license GNU GPL v2+

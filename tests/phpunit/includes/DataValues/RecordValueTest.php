@@ -3,9 +3,9 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWRecordValue as RecordValue;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWRecordValue

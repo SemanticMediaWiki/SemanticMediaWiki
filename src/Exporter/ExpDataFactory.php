@@ -2,12 +2,11 @@
 
 namespace SMW\Exporter;
 
+use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpResource;
+use SMW\Site;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;
-use SMW\Exporter\Element\ExpResource;
-use SMW\Exporter\Element\ExpLiteral;
-use SMW\Exporter\Element\ExpNsResource;
-use SMW\Site;
 use Title;
 
 /**

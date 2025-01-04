@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Content;
 
 use SMW\MediaWiki\Content\HtmlBuilder;
-use SMW\Schema\Schema;
 use SMW\Tests\PHPUnitCompat;
 
 /**

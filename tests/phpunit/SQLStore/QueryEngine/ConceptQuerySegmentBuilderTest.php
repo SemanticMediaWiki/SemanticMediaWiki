@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
-use Title;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder

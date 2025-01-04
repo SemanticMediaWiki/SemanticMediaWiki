@@ -5,12 +5,12 @@ namespace SMW\Elastic\Indexer\Rebuilder;
 use Exception;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Indexer\DocumentCreator;
+use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Installer;
 use SMW\SemanticData;
-use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\SQLStore\SQLStore;
-use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 

@@ -3,8 +3,8 @@
 namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\CsvFileIterator;
-use SMW\Utils\TempFile;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\TempFile;
 
 /**
  * @covers \SMW\Iterators\CsvFileIterator

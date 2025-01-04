@@ -10,8 +10,8 @@ use ParserOutput;
 use RequestContext;
 use RuntimeException;
 use SMW\Localizer\Localizer;
-use SMW\ParserData;
 use SMW\MediaWiki\Template\TemplateExpander;
+use SMW\ParserData;
 use SMWOutputs;
 use Title;
 

@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\ParserFunctionFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctionFactory

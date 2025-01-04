@@ -4,12 +4,12 @@ namespace SMW\SQLStore;
 
 use InvalidArgumentException;
 use SMW\DIProperty;
+use SMW\Enum;
 use SMW\Exception\DataItemException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
-use SMW\Enum;
 use SMWDataItem as DataItem;
 
 /**
@@ -117,7 +117,7 @@ class PropertyTableRowDiffer {
 			$this->setChangeOp( new ChangeOp( $semanticData->getSubject() ) );
 		}
 
-		list( $newData, $textItems, $propertyList, $fixedPropertyList ) = $this->propertyTableRowMapper->mapToRows(
+		[ $newData, $textItems, $propertyList, $fixedPropertyList ] = $this->propertyTableRowMapper->mapToRows(
 			$sid,
 			$semanticData
 		);
@@ -194,7 +194,7 @@ class PropertyTableRowDiffer {
 					// Table contains data and should contain the same data after update
 					continue;
 				} else { // Table contains no data or contains data that is different from the new
-					list( $tablesInsertRows[$tableName], $tablesDeleteRows[$tableName] ) = $this->arrayDeleteMatchingValues(
+					[ $tablesInsertRows[$tableName], $tablesDeleteRows[$tableName] ] = $this->arrayDeleteMatchingValues(
 						$this->fetchCurrentContentsForPropertyTable( $sid, $propertyTable ),
 						$newData[$tableName],
 						$propertyTable

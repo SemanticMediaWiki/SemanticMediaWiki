@@ -3,10 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\ConstraintFactory;
-use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\Fixtures\PlainClass;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ConstraintFactory

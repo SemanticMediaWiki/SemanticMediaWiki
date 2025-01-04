@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store;
-use SMW\Parameters;
 use SMW\DIProperty;
-use SMW\SQLStore\Exception\TableMissingIdFieldException;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\Parameters;
+use SMW\SQLStore\Exception\TableMissingIdFieldException;
+use SMW\Store;
 
 /**
  * @private

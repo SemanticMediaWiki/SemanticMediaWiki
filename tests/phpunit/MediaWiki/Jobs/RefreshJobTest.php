@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Jobs\RefreshJob;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**

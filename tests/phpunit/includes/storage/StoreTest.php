@@ -8,7 +8,6 @@ use SMW\DIWikiPage;
 use SMW\StoreFactory;
 use SMWRequestOptions;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * Tests for the SMWStore class.

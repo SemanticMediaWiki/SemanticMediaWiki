@@ -2,8 +2,6 @@
 
 namespace SMW;
 
-use SMW\Options;
-
 /**
  * @license GNU GPL v2+
  * @since 3.2

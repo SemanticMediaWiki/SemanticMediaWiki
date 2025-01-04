@@ -3,10 +3,9 @@
 namespace SMW\MediaWiki\Content;
 
 use Html;
-use SMW\Utils\HtmlTabs;
-use SMW\Utils\HtmlDivTable;
-use SMW\Utils\Html\SummaryTable;
 use SMW\Message;
+use SMW\Utils\Html\SummaryTable;
+use SMW\Utils\HtmlTabs;
 
 /**
  * @license GNU GPL v2+

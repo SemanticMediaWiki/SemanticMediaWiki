@@ -16,8 +16,8 @@ class ReadmeContentsBuilder {
 	/**
 	 * @var string
 	 */
-	CONST REPLACE_START_MARKER = '<!-- Begin of generated contents by readmeContentsBuilder.php -->';
-	CONST REPLACE_END_MARKER = '<!-- End of generated contents by readmeContentsBuilder.php -->';
+	const REPLACE_START_MARKER = '<!-- Begin of generated contents by readmeContentsBuilder.php -->';
+	const REPLACE_END_MARKER = '<!-- End of generated contents by readmeContentsBuilder.php -->';
 
 	/**
 	 * @var array

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\DIWikiPage;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\Query\DescriptionFactory;
 
 /**

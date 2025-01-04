@@ -6,7 +6,6 @@ use SMW\DIProperty;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
-use Title;
 
 /**
  * @group SMW

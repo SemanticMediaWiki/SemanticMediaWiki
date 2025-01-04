@@ -66,7 +66,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		$property = $description->getProperty();
 
-		list( $innerOrderByProperty, $innerCondition, $innerJoinVariable ) = $this->doResolveInnerConditionRecursively(
+		[ $innerOrderByProperty, $innerCondition, $innerJoinVariable ] = $this->doResolveInnerConditionRecursively(
 			$property,
 			$description->getDescription()
 		);
@@ -83,7 +83,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$namespaces
 		);
 
-		list( $subjectName, $objectName, $nonInverseProperty ) = $this->doExchangeForWhenInversePropertyIsUsed(
+		[ $subjectName, $objectName, $nonInverseProperty ] = $this->doExchangeForWhenInversePropertyIsUsed(
 			$property,
 			$objectName,
 			$joinVariable

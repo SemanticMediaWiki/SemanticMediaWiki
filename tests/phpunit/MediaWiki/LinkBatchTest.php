@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\LinkBatch;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\LinkBatch;
 
 /**
  * @covers \SMW\MediaWiki\LinkBatch

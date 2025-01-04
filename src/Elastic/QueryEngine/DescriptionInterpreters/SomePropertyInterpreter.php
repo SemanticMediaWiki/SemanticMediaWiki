@@ -2,27 +2,18 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
-use Maps\Semantic\ValueDescriptions\AreaDescription;
 use SMW\DataTypeRegistry;
-use SMW\DIWikiPage;
-use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\Condition;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\FieldMapper;
-use SMW\Elastic\QueryEngine\QueryBuilder;
+use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\NamespaceDescription;
 use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
-use SMWDIGeoCoord as DIGeoCoord;
-use SMWDInumber as DINumber;
-use SMWDITime as DITime;
-use SMWDIUri as DIUri;
 
 /**
  * @license GNU GPL v2+

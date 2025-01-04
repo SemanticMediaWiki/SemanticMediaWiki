@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use Html;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMW\Utils\HtmlColumns;
 use SMW\Message;
-use Html;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Utils\HtmlColumns;
 use SpecialPage;
 
 /**

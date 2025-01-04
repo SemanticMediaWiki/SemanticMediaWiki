@@ -2,11 +2,11 @@
 
 namespace SMW\Parser;
 
-use SMW\SemanticData;
 use SMW\DataValueFactory;
-use SMWDataItem as DataItem;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
+use SMWDataItem as DataItem;
 
 /**
  * To allow for an in-memory processing of existing SemanticData references during

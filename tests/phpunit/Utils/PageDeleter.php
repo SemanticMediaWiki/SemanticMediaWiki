@@ -4,7 +4,6 @@ namespace SMW\Tests\Utils;
 
 use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
 use User;
 use WikiPage;

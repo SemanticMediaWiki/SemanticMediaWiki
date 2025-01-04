@@ -8,9 +8,9 @@ use MediaWiki\Revision\SlotRecord;
 use Parser;
 use ParserOptions;
 use RequestContext;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
 use Title;
 use User;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
 
 /**
  * Fetches the ParserOutput either by parsing an invoked text component,

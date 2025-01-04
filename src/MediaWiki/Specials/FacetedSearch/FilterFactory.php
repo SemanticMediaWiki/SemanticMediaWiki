@@ -2,15 +2,13 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
-use SMW\Schema\SchemaFactory;
-use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
-use SMW\MediaWiki\Specials\FacetedSearch\Filters\PropertyFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\CategoryFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\PropertyFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilterFactory;
-use Title;
+use SMW\Schema\SchemaFactory;
+use SMW\Utils\TemplateEngine;
+use SMW\Utils\UrlArgs;
 
 /**
  * @license GNU GPL v2+

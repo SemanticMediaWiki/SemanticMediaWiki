@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\DIWikiPage;
-use SMW\SQLStore\SQLStoreUpdater;
 use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\SQLStoreUpdater;
 use Title;
 
 /**

@@ -60,7 +60,7 @@ class StringResultTest extends \PHPUnit\Framework\TestCase {
 	public function testGetResult_PreOutputCallback() {
 		$instance = new StringResult( 'Foobar', $this->query );
 
-		$instance->setPreOutputCallback( function ( $result, $options ) {
+		$instance->setPreOutputCallback( static function ( $result, $options ) {
 			return $result . ' Foo bar';
 		} );
 

@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\DIWikiPage;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\TermsLookup;
 use SMW\Query\DescriptionFactory;
 use SMW\Store;
-use SMW\Tests\TestEnvironmentTrait;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter

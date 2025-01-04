@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use ParserOptions;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use Title;

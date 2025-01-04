@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Elastic\Exception;
 
-use SMW\Elastic\Exception\ClientBuilderNotFoundException;
 use RuntimeException;
+use SMW\Elastic\Exception\ClientBuilderNotFoundException;
 
 /**
  * @covers \SMW\Elastic\Exception\ClientBuilderNotFoundException

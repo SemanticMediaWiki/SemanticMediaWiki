@@ -2,19 +2,15 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
+use SMW\DIProperty;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableFieldUpdater;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\Setup;
-use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
-use SMW\MediaWiki\HookDispatcher;
-use Onoi\MessageReporter\MessageReporter;
-use SMW\Maintenance\MaintenanceCheck;
 
 /**
  * Load the required class

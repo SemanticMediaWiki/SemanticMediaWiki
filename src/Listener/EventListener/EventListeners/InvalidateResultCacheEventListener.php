@@ -2,11 +2,11 @@
 
 namespace SMW\Listener\EventListener\EventListeners;
 
-use Onoi\EventDispatcher\EventListener;
 use Onoi\EventDispatcher\DispatchContext;
-use SMW\Query\Cache\ResultCache;
-use SMW\DIWikiPage;
+use Onoi\EventDispatcher\EventListener;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DIWikiPage;
+use SMW\Query\Cache\ResultCache;
 
 /**
  * @license GNU GPL v2+

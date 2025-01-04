@@ -4,13 +4,13 @@ namespace SMW\SQLStore\TableBuilder;
 
 use SMW\Services\ServicesFactory;
 use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\TableBuilder\Examiner\HashField;
-use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
-use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
-use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
-use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
 use SMW\SQLStore\TableBuilder\Examiner\CountMapField;
 use SMW\SQLStore\TableBuilder\Examiner\EntityCollation;
+use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
+use SMW\SQLStore\TableBuilder\Examiner\HashField;
+use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
+use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
+use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 
 /**
  * @private

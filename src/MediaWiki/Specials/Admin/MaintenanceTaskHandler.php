@@ -4,9 +4,9 @@ namespace SMW\MediaWiki\Specials\Admin;
 
 use Html;
 use SMW\Message;
-use WebRequest;
 use SMW\Utils\FileFetcher;
 use SMW\Utils\HtmlTabs;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

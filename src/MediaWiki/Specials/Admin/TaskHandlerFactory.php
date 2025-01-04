@@ -2,7 +2,14 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
+use SMW\ApplicationFactory;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\Admin\Alerts\ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Alerts\OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Maintenance\DataRefreshJobTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Maintenance\DisposeJobTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Maintenance\FulltextSearchTableRebuildJobTaskHandler;
@@ -14,15 +21,8 @@ use SMW\MediaWiki\Specials\Admin\Supplement\DuplicateLookupTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Supplement\TableStatisticsTaskHandler;
-use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
-use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
-use SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler;
-use SMW\MediaWiki\Specials\Admin\Alerts\OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler;
-use SMW\MediaWiki\Specials\Admin\Alerts\ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
-use SMW\Store;
 use SMW\SetupFile;
-use SMW\ApplicationFactory;
+use SMW\Store;
 use SMW\Utils\FileFetcher;
 use User;
 

@@ -3,9 +3,8 @@
 namespace SMW\MediaWiki\Search;
 
 use Content;
-use Title;
 use SearchEngine;
-use Wikimedia\Rdbms\IDatabase;
+use Title;
 
 /**
  * Facade to the MediaWiki `SearchEngine` which doesn't allow any factory

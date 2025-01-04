@@ -2,18 +2,16 @@
 
 namespace SMW\Query\Result;
 
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
+use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Parser\InTextAnnotationParser;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 
 /**

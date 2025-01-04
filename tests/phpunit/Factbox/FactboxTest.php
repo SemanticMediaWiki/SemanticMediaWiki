@@ -6,14 +6,13 @@ use ParserOutput;
 use ReflectionClass;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Factbox\Factbox;
 use SMW\Factbox\CheckMagicWords;
+use SMW\Factbox\Factbox;
 use SMW\ParserData;
 use SMW\SemanticData;
-use SMW\TableFormatter;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\Factbox

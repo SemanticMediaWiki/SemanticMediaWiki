@@ -5,7 +5,6 @@ namespace SMW\Tests;
 use SMW\DataItemFactory;
 use SMW\DIWikiPage;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ProcessingErrorMsgHandler

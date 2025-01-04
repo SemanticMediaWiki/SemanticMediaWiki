@@ -3,11 +3,10 @@
 namespace SMW\Property\DeclarationExaminer;
 
 use SMW\DIProperty;
-use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
-use SMW\Store;
-use SMW\SemanticData;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
-use SMW\Message;
+use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
+use SMW\SemanticData;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

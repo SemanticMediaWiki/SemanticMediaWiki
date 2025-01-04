@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore;
 
-use Hooks;
 use MediaWiki\MediaWikiServices;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;

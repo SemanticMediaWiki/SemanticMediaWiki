@@ -4,7 +4,6 @@ namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Tests\PHPUnitCompat;
-use SMWDITime as DITime;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\ReplicationError

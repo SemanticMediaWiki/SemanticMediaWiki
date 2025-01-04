@@ -2,9 +2,9 @@
 
 namespace SMW\Schema;
 
-use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use JsonSerializable;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
 
 /**
  * @license GNU GPL v2+

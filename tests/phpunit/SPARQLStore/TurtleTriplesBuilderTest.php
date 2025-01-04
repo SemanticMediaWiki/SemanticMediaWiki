@@ -5,9 +5,9 @@ namespace SMW\Tests\SPARQLStore;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
+use SMW\Tests\PHPUnitCompat;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\TurtleTriplesBuilder

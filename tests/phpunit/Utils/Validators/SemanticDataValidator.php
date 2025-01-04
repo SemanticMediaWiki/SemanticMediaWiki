@@ -6,8 +6,8 @@ use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\SemanticData;
-use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem as DataItem;
 
 /**
  *

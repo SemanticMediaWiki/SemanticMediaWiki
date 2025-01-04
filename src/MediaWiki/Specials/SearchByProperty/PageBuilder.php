@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\StringValue;
@@ -12,6 +11,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
 
@@ -74,12 +74,12 @@ class PageBuilder {
 		$this->pageRequestOptions->initialize();
 		$this->messageBuilder = $this->htmlFormRenderer->getMessageBuilder();
 
-		list( $resultMessage, $resultList, $resultCount ) = $this->getResultHtml();
+		[ $resultMessage, $resultList, $resultCount ] = $this->getResultHtml();
 
 		if ( ( $resultList === '' || $resultList === null ) &&
 			$this->pageRequestOptions->property->getDataItem() instanceof DIProperty &&
 			$this->pageRequestOptions->valueString === '' ) {
-			list( $resultMessage, $resultList, $resultCount ) = $this->tryToFindAtLeastOnePropertyTableReferenceFor(
+			[ $resultMessage, $resultList, $resultCount ] = $this->tryToFindAtLeastOnePropertyTableReferenceFor(
 				$this->pageRequestOptions->property->getDataItem()
 			);
 		}

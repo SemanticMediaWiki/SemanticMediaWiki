@@ -184,7 +184,7 @@ class RequestOptionsProcessor {
 
 		foreach ( $data as $item ) {
 
-			list( $label, $value ) = self::getSortKeyForItem( $store, $item );
+			[ $label, $value ] = self::getSortKeyForItem( $store, $item );
 
 			$keepDataValue = self::applyBoundaryConditions( $requestOptions, $value, $isNumeric );
 			$keepDataValue = self::applyStringConditions( $requestOptions, $label, $keepDataValue );

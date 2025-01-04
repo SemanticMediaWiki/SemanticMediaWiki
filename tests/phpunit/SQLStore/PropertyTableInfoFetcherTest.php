@@ -4,8 +4,8 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\DIProperty;
 use SMW\SQLStore\PropertyTableInfoFetcher;
-use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableInfoFetcher

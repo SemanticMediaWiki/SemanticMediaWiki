@@ -4,7 +4,6 @@ namespace SMW\Tests;
 
 use SMW\DataTypeRegistry;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataTypeRegistry
@@ -63,7 +62,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterDatatypeWithCallable() {
-		$callback = function () {
+		$callback = static function () {
 			return new FooValue();
 		};
 
@@ -464,7 +463,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterCallableGetCallablesByTypeId() {
-		$callback = function () {
+		$callback = static function () {
 			return 'foo';
 		};
 

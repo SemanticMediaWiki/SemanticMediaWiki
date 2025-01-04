@@ -6,9 +6,9 @@ use SMW\DataItemFactory;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\ResourceBuilders\SortPropertyValueResourceBuilder;
 use SMW\Serializers\ExpDataSerializer;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWExpData as ExpData;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\ResourceBuilders\SortPropertyValueResourceBuilder

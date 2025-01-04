@@ -3,21 +3,19 @@
 namespace SMW;
 
 use RuntimeException;
-use SMW\Exception\ClassNotFoundException;
+use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintCheckRunner;
 use SMW\Constraint\ConstraintRegistry;
-use SMW\Constraint\ConstraintErrorFinder;
-use SMW\Constraint\Constraint;
-use SMW\Constraint\Constraints\NullConstraint;
-use SMW\Constraint\ConstraintSchemaCompiler;
-use SMW\Constraint\Constraints\NamespaceConstraint;
-use SMW\Constraint\Constraints\UniqueValueConstraint;
-use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
-use SMW\Constraint\Constraints\MustExistsConstraint;
-use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
+use SMW\Constraint\Constraints\MustExistsConstraint;
+use SMW\Constraint\Constraints\NamespaceConstraint;
+use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
+use SMW\Constraint\Constraints\NullConstraint;
 use SMW\Constraint\Constraints\ShapeConstraint;
-use SMW\Options;
+use SMW\Constraint\Constraints\SingleValueConstraint;
+use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\Constraint\ConstraintSchemaCompiler;
+use SMW\Exception\ClassNotFoundException;
 
 /**
  * @license GNU GPL v2+

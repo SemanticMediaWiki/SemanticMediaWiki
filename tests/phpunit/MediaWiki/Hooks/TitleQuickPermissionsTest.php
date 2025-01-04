@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\TitleQuickPermissions;
 use SMW\Tests\TestEnvironment;
 

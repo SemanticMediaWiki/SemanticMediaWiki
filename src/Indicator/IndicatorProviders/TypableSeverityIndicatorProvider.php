@@ -28,7 +28,7 @@ interface TypableSeverityIndicatorProvider extends IndicatorProvider {
 	const SEVERITY_WARNING = 'severity/warning';
 
 	/**
-	 *Indicates that an indicator describes an error state.
+	 * Indicates that an indicator describes an error state.
 	 */
 	const SEVERITY_ERROR = 'severity/error';
 

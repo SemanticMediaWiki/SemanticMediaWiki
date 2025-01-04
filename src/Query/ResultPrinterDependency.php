@@ -2,8 +2,6 @@
 
 namespace SMW\Query;
 
-use SMWQuery as Query;
-
 /**
  * Interface for result printers that require some dependency to be fully
  * functional.

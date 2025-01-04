@@ -56,7 +56,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 		$this->dataValue = $dataValue;
 
 		$subdescriptions = [];
-		list( $text, $languageCode ) = $this->dataValue->getValuesFromString( $value );
+		[ $text, $languageCode ] = $this->dataValue->getValuesFromString( $value );
 
 		foreach ( $this->dataValue->getPropertyDataItems() as $property ) {
 

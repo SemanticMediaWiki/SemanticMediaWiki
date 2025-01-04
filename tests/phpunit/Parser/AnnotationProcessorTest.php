@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Parser;
 
-use SMW\Parser\LinksProcessor;
 use SMW\Parser\AnnotationProcessor;
 
 /**

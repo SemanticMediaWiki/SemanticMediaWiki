@@ -76,7 +76,7 @@ class ParametersProcessor {
 			$printouts
 		);
 
-		list( $queryString, $parameters, $printouts ) = QueryProcessor::getComponentsFromFunctionParams(
+		[ $queryString, $parameters, $printouts ] = QueryProcessor::getComponentsFromFunctionParams(
 			$parameterList,
 			false
 		);
@@ -269,7 +269,7 @@ class ParametersProcessor {
 	private static function replace( $source, $target, $value ) {
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
-			function ( array $matches ) use ( $source, $target ) {
+			static function ( array $matches ) use ( $source, $target ) {
 				return str_replace( [ $source ], [ $target ], $matches[0] );
 			},
 			$value

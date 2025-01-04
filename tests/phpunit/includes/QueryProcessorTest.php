@@ -6,9 +6,7 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\SMWIntegrationTestCase;
 use SMWQueryProcessor;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * Tests for the SMWQueryProcessor class.
@@ -64,7 +62,7 @@ class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 		// TODO: this prevents doing [[Category:Foo||bar||baz]], must document.
 		$rawParams = explode( '|', $query );
 
-		list( $queryString, $parameters, $printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
+		[ $queryString, $parameters, $printouts ] = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
 
 		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
 
@@ -87,7 +85,7 @@ class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 	 * @dataProvider rawParamsProvider
 	 */
 	public function testQuerStringFromRawParameters( $rawParams, $expected ) {
-		list( $queryString, $parameters, $printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
+		[ $queryString, $parameters, $printouts ] = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
 
 		$this->assertEquals(
 			$expected,

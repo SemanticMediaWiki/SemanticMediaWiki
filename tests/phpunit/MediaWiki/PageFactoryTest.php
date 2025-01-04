@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use RuntimeException;
 use SMW\MediaWiki\PageFactory;
 use SMW\Tests\PHPUnitCompat;
 

@@ -11,9 +11,7 @@ use SMW\Query\Parser\TermParser;
 use SMW\Store;
 use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
-use Title;
 use WebRequest;
-use WikiPage;
 
 /**
  * @private
@@ -104,7 +102,7 @@ class QueryBuilder {
 		}
 
 		$namespacesDisjunction = new Disjunction(
-			array_map( function ( $ns ) {
+			array_map( static function ( $ns ) {
 				return new NamespaceDescription( $ns );
 			}, $namespaces )
 		);

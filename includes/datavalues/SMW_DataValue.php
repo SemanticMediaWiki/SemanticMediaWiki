@@ -13,10 +13,10 @@ use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\Message;
 use SMW\Options;
+use SMW\ProcessingError;
 use SMW\Query\QueryComparator;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Utils\CharArmor;
-use SMW\ProcessingError;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided

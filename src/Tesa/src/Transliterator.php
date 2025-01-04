@@ -41,7 +41,7 @@ class Transliterator {
 	 *
 	 * @var array
 	 */
-	private static $diacriticsMap = array(
+	private static $diacriticsMap = [
 			"Á" => "A", "Ă" => "A", "Ắ" => "A", "Ặ" => "A", "Ằ" => "A", "Ẳ" => "A", "Ẵ" => "A",
 			"Ǎ" => "A", "Â" => "A", "Ấ" => "A", "Ậ" => "A", "Ầ" => "A", "Ẩ" => "A", "Ẫ" => "A",
 			"Ä" => "AE", "Ǟ" => "A", "Ȧ" => "A", "Ǡ" => "A", "Ạ" => "A", "Ȁ" => "A", "À" => "A",
@@ -161,7 +161,7 @@ class Transliterator {
 			"ƶ" => "z", "ɀ" => "z", "ﬀ" => "ff", "ﬃ" => "ffi", "ﬄ" => "ffl", "ﬁ" => "fi",
 			"ﬂ" => "fl", "ĳ" => "ij", "œ" => "oe", "ﬆ" => "st", "ₐ" => "a", "ₑ" => "e", "ᵢ" => "i",
 			"ⱼ" => "j", "ₒ" => "o", "ᵣ" => "r", "ᵤ" => "u", "ᵥ" => "v", "ₓ" => "x"
-		);
+		];
 
 		/**
 		 * @see http://en.wikipedia.org/wiki/ISO_843
@@ -172,7 +172,7 @@ class Transliterator {
 		 *
 		 * @var array
 		 */
-	private static $greekMap = array(
+	private static $greekMap = [
 
 			"ου" => "ou",
 			"Ου" => "Ou",
@@ -252,12 +252,12 @@ class Transliterator {
 			"ψ" => "ps",
 			"ω" => "ō",
 			"ώ" => "ṓ",
-		);
+		];
 
 	/**
 	 * @var array
 	 */
-	private static $transliterationMap = array();
+	private static $transliterationMap = [];
 
 	/**
 	 * @since 0.1
@@ -275,7 +275,7 @@ class Transliterator {
 		}
 
 		if ( !isset( self::$transliterationMap[$flag] ) ) {
-			$transliterationMap = array();
+			$transliterationMap = [];
 
 			if ( $flag === ( $flag | self::GREEK ) ) {
 				$transliterationMap += self::$greekMap;

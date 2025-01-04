@@ -3,10 +3,9 @@
 namespace SMW\Tests\Utils;
 
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\ContentParser;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 use WikiPage;
 

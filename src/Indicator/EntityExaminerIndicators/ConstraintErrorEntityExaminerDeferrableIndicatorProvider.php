@@ -2,7 +2,6 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 
 /**

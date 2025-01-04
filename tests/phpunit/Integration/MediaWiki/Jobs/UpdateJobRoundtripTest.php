@@ -4,7 +4,6 @@ namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;

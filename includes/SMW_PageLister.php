@@ -1,9 +1,9 @@
 <?php
 
-use SMW\Query\PrintRequest;
-use SMW\Localizer\Localizer;
-use SMW\StoreFactory;
 use SMW\DataValueFactory;
+use SMW\Localizer\Localizer;
+use SMW\Query\PrintRequest;
+use SMW\StoreFactory;
 
 /**
  * Helper class to generate HTML lists of wiki pages, with support for paged

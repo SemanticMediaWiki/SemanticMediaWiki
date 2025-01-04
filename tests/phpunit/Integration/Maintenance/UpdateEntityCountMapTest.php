@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\SMWIntegrationTestCase;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki

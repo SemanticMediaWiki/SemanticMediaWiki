@@ -2,13 +2,10 @@
 
 namespace SMW\Tests;
 
-use Exception;
-use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestListenerDefaultImplementation;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Framework\Warning;
 use WeakMap;
 
 class ExecutionTimeTestListener implements TestListener {

@@ -2,17 +2,15 @@
 
 namespace SMW\Schema;
 
-use SMW\DIProperty;
-use SMW\RequestOptions;
-use SMW\Store;
-use SMWDIBlob as DIBlob;
-use SMWDataItem as DataItem;
-use Title;
-use SMW\DIWikiPage;
-use SMW\PropertySpecificationLookup;
 use Onoi\Cache\Cache;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\PropertySpecificationLookup;
+use SMW\Store;
+use SMWDataItem as DataItem;
+use SMWDIBlob as DIBlob;
 
 /**
  * @private

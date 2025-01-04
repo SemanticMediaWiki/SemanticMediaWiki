@@ -106,7 +106,7 @@ class FormatListWidget {
 			}
 		}
 
-		usort( $formats, function ( $x, $y ) {
+		usort( $formats, static function ( $x, $y ) {
 			return strcasecmp( $x['name'], $y['name'] );
 		} );
 

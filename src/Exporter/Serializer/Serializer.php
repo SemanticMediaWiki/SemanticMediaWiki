@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter\Serializer;
 
-use SMWExpData as ExpData;
-use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
+use SMWExpData as ExpData;
 
 /**
  * Abstract class for serializing exported data (encoded as ExpData object)

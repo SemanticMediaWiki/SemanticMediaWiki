@@ -87,7 +87,7 @@ class DIWikiPage extends SMWDataItem {
 
 		// Check for a potential fragment such as Foo#Bar, Bar#_49c8ab
 		if ( strpos( $dbkey, '#' ) !== false ) {
-			list( $dbkey, $subobjectname ) = explode( '#', $dbkey );
+			[ $dbkey, $subobjectname ] = explode( '#', $dbkey );
 		}
 
 		$this->m_dbkey = str_replace( ' ', '_', $dbkey );

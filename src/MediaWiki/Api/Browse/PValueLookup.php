@@ -2,15 +2,9 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DataTypeRegistry;
-use SMW\DataValueFactory;
-use SMW\RequestOptions;
 use SMW\DIProperty;
-use SMW\SQLStore\SQLStore;
+use SMW\RequestOptions;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDITime as DIime;
-use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 
 /**
  * @license GNU GPL v2+

@@ -2,13 +2,11 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\Schema\SchemaFinder;
 use SMW\Constraint\ConstraintCheckRunner;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
+use SMW\Schema\SchemaFinder;
+use SMWDataValue as DataValue;
 
 /**
  * @private

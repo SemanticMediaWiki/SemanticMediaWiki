@@ -3,18 +3,18 @@
 namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
-use SMW\Setup;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Exception\PropertyLabelNotResolvedException;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\Utils\CliMsgFormatter;
-use SMW\Elastic\Indexer\Replication\ReplicationError;
+use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
+use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class

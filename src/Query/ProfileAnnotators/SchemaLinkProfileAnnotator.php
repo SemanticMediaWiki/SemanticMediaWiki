@@ -2,10 +2,10 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
+use RuntimeException;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotator;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

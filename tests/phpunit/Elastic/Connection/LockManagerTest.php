@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic\Connection;
 
 use SMW\Elastic\Connection\LockManager;
-use SMW\Options;
 use SMW\Tests\PHPUnitCompat;
 
 /**

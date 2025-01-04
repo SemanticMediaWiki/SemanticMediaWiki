@@ -1,7 +1,7 @@
 <?php
 
-use SMW\Site;
 use SMW\Localizer\Localizer;
+use SMW\Site;
 
 /**
  * This class mainly is a container to store URLs for the factbox in a

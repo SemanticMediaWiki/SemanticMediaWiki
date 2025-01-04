@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\TypesRegistry;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\TypesRegistry

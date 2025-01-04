@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use SMW\MediaWiki\Job;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Job;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
 use SMWExporter as Exporter;
 use Title;

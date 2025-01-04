@@ -2,9 +2,9 @@
 
 namespace SMW\ParserFunctions;
 
+use Html;
 use Parser;
 use PPFrame;
-use Html;
 
 /**
  * To support the generation of <section> ... </section>
@@ -50,7 +50,7 @@ class SectionTag {
 			return false;
 		}
 
-		$parser->setHook( 'section', function ( $input, array $args, Parser $parser, PPFrame $frame ) {
+		$parser->setHook( 'section', static function ( $input, array $args, Parser $parser, PPFrame $frame ) {
 			return ( new self( $parser, $frame ) )->parse( $input, $args );
 		} );
 

@@ -2,14 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\DependencyValidator;
-use SMW\NamespaceExaminer;
-use SMW\DIWikiPage;
-use SMW\EntityCache;
-use Title;
 use Page;
-use SMW\MediaWiki\HookListener;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DependencyValidator;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\HookListener;
+use SMW\NamespaceExaminer;
+use Title;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue

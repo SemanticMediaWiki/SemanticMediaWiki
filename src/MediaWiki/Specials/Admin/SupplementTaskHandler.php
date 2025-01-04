@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Specials\Admin;
 use Html;
 use SMW\Message;
 use WebRequest;
-use SMW\Utils\FileFetcher;
 
 /**
  * @license GNU GPL v2+

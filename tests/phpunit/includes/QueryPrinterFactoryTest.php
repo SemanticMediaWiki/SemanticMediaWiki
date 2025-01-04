@@ -2,8 +2,8 @@
 
 namespace SMW\Tests;
 
-use SMW\QueryPrinterFactory;
 use SMW\Query\ResultPrinter;
+use SMW\QueryPrinterFactory;
 use SMW\TableResultPrinter;
 use SMWListResultPrinter;
 

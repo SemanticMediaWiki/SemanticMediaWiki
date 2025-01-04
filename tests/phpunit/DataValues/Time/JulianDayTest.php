@@ -19,7 +19,7 @@ class JulianDayTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testConvert( $calendarModel, $seralization, $jdValue ) {
-		list( $year, $month, $day, $hour, $minute, $second ) = explode( '/', $seralization );
+		[ $year, $month, $day, $hour, $minute, $second ] = explode( '/', $seralization );
 
 		$this->assertEquals(
 			$jdValue,

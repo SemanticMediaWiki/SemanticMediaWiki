@@ -2,25 +2,19 @@
 
 namespace SMW\Elastic\Indexer;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
-use SMW\Services\ServicesContainer;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\SQLStore\ChangeOp\ChangeDiff;
-use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
-use SMW\Store;
-use SMW\Utils\CharArmor;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\MediaWiki\Collator;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
+use SMW\Store;
 use SMW\Utils\Timer;
-use SMWDIBlob as DIBlob;
 use Title;
 
 /**

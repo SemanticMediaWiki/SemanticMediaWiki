@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMWQuery as Query;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWQuery

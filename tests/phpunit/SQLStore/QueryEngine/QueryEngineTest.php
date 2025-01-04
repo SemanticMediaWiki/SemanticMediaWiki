@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\QueryEngine;
-use SMWQuery as Query;
 use SMW\Tests\PHPUnitCompat;
+use SMWQuery as Query;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QueryEngine

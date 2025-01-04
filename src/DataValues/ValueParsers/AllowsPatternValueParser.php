@@ -83,7 +83,7 @@ class AllowsPatternValueParser implements ValueParser {
 				continue;
 			}
 
-			list( $reference, $regex ) = explode( '|', $part, 2 );
+			[ $reference, $regex ] = explode( '|', $part, 2 );
 			$list[trim( $reference )] = $regex;
 		}
 

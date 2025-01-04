@@ -6,12 +6,11 @@ use File;
 use Hooks;
 use MediaWiki\HookContainer\HookContainer;
 use ParserOptions;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Localizer;
-use SMW\NamespaceExaminer;
-use Title;
-use User;
 use SMW\MediaWiki\HookListener;
+use SMW\NamespaceExaminer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use User;
 
 /**
  * Fires when a local file upload occurs

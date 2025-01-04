@@ -121,7 +121,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 
 		$property = new DIProperty( '_TYPE' );
 
-		list( $ns, $type ) = explode( ':', $importValue->getTermType(), 2 );
+		[ $ns, $type ] = explode( ':', $importValue->getTermType(), 2 );
 
 		$typeId = DataTypeRegistry::getInstance()->findTypeId( $type );
 

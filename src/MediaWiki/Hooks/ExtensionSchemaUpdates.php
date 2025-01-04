@@ -4,13 +4,12 @@ namespace SMW\MediaWiki\Hooks;
 
 use DatabaseUpdater;
 use Maintenance;
-use ReflectionProperty;
-use SMW\Options;
-use SMW\Store;
-use SMW\SQLStore\Installer;
-use SMW\StoreFactory;
 use Onoi\MessageReporter\MessageReporterFactory;
+use ReflectionProperty;
 use SMW\MediaWiki\HookListener;
+use SMW\Options;
+use SMW\SQLStore\Installer;
+use SMW\Store;
 
 /**
  * Schema update to set up the needed database tables

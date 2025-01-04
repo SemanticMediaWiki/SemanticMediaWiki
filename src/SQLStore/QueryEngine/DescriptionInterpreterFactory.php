@@ -3,7 +3,6 @@
 namespace SMW\SQLStore\QueryEngine;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Store;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\DisjunctionConjunctionInterpreter;
@@ -12,6 +11,7 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpr
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ThingDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
+use SMW\Store;
 use SMW\Utils\CircularReferenceGuard;
 
 /**

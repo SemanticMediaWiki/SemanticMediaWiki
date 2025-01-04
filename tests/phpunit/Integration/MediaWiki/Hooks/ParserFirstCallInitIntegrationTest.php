@@ -4,7 +4,6 @@ namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\Services\ServicesFactory;
 use SMW\Tests\SMWIntegrationTestCase;
-use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
@@ -86,7 +85,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->willReturnCallback( function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
+			->willReturnCallback( static function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
 				if ( $service === 'SingleEntityQueryLookup' ) {
 					return $singleEntityQueryLookup;
 				}

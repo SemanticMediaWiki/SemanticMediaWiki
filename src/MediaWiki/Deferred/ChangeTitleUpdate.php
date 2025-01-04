@@ -4,11 +4,10 @@ namespace SMW\MediaWiki\Deferred;
 
 use DeferrableUpdate;
 use DeferredUpdates;
-use Title;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
-use SMW\Enum;
+use Title;
 
 /**
  * Run a deferred update job for a changed title instance to re-parse the content

@@ -5,7 +5,6 @@ namespace SMW\MediaWiki;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
-use User;
 
 /**
  * @license GNU GPL v2+

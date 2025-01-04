@@ -6,7 +6,6 @@ use ParserOptions;
 use ParserOutput;
 use Psr\Log\LoggerAwareTrait;
 use SMWDataValue as DataValue;
-use SMW\MediaWiki\RevisionGuard;
 use Title;
 
 /**

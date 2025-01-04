@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\Localizer;
-use SMW\MediaWiki\NamespaceInfo;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\NamespaceInfo;
 use SMW\OptionsAwareTrait;
 
 /**

@@ -90,11 +90,11 @@ class NGramTokenizer implements Tokenizer {
 			return $result;
 		}
 
-		return array();
+		return [];
 	}
 
 	private function createNGrams( $text, $ngramSize, $withMarker ) {
-		$ngramList = array();
+		$ngramList = [];
 
 		// Identify the beginning-of-word and end-of-word
 		if ( $withMarker ) {

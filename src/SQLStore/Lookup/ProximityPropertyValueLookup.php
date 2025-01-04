@@ -2,13 +2,12 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\Store;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDITime as DITime;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
@@ -74,7 +73,7 @@ class ProximityPropertyValueLookup {
 		$query->type( 'SELECT' );
 		$query->table( $table );
 
-		list( $field, $diType ) = $this->getField( $property );
+		[ $field, $diType ] = $this->getField( $property );
 
 		// look ahead +1
 		$limit = $opts->getLimit() + 1;

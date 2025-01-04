@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\Constraint;
 
-use SMW\Constraint\ConstraintCheckRunner;
 use SMW\Constraint\Constraint;
+use SMW\Constraint\ConstraintCheckRunner;
 use SMW\Schema\SchemaDefinition;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Constraint\ConstraintCheckRunner

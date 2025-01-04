@@ -4,8 +4,8 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use ReflectionClass;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\MwApiFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\Query

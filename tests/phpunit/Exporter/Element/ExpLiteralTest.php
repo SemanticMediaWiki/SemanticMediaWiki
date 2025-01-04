@@ -5,8 +5,8 @@ namespace SMW\Tests\Exporter\Element;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
-use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Exporter\Element\ExpLiteral

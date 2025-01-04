@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
-use SMW\Options;
 use SMW\SQLStore\EntityStore\PropertiesLookup;
 use Wikimedia\Rdbms\FakeResultWrapper;
 

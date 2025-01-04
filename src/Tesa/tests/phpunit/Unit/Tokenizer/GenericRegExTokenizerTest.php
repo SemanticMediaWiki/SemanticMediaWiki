@@ -48,42 +48,42 @@ class GenericRegExTokenizerTest extends TestCase {
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
 			->with( $string )
-			->willReturn( array( $string ) );
+			->willReturn( [ $string ] );
 
 		$instance = new GenericRegExTokenizer( $tokenizer );
 
 		$instance->setOption(
 			GenericRegExTokenizer::REGEX_EXEMPTION,
-			array( '\(', '\)', "'", ';' )
+			[ '\(', '\)', "'", ';' ]
 		);
 
 		$this->assertEquals(
-			array( "It's", 'a', 'test', 'string', '(that', 'has', 'no);' ),
+			[ "It's", 'a', 'test', 'string', '(that', 'has', 'no);' ],
 			$instance->tokenize( $string )
 		);
 	}
 
 	public function stringProvider() {
-		$provider[] = array(
+		$provider[] = [
 			"It's a test string (that has no);deep meaning except0",
-			array( 'It', 's', 'a', 'test', 'string', 'that', 'has', 'no', 'deep', 'meaning', 'except', '0' )
-		);
+			[ 'It', 's', 'a', 'test', 'string', 'that', 'has', 'no', 'deep', 'meaning', 'except', '0' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"Привет, мир! Меня зовут д'Артаньян %) цуацуа123123",
-			array( 'Привет', 'мир', 'Меня', 'зовут', 'д', "Артаньян", 'цуацуа', '123123' )
-		);
+			[ 'Привет', 'мир', 'Меня', 'зовут', 'д', "Артаньян", 'цуацуа', '123123' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"[[Действует на возбудителей]] Brucella spp., Legionella pneumophila, Salmonella typhi,(за исключением остальных рифампицинов) не отмечено. ...
 
 Фармакокинетика[править | править вики-текст]
 Рифампицин хорошо всасывается из желудочно-кишечного тракта.",
-			array(
+			[
 				'Действует', 'на', 'возбудителей', 'Brucella', 'spp', 'Legionella', 'pneumophila', 'Salmonella', 'typhi', 'за', 'исключением', 'остальных', 'рифампицинов',
 				'не', 'отмечено', 'Фармакокинетика', 'править', 'править', 'вики', 'текст', 'Рифампицин', 'хорошо', 'всасывается', 'из', 'желудочно', 'кишечного', 'тракта'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

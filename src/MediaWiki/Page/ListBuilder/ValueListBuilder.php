@@ -3,24 +3,21 @@
 namespace SMW\MediaWiki\Page\ListBuilder;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\Localizer;
 use SMW\MediaWiki\Collator;
 use SMW\Message;
-use SMW\Utils\Pager;
 use SMW\Query\Language\SomeProperty;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\HtmlDivTable;
-use SMW\Utils\NextPager;
+use SMW\Utils\Pager;
 use SMWDataItem as DataItem;
-use SMWDITime as DITime;
 use SMWDataValue as DataValue;
+use SMWDITime as DITime;
 use SMWInfolink as Infolink;
 use SMWPageLister as PageLister;
-use WebRequest;
 
 /**
  * @license GNU GPL v2+

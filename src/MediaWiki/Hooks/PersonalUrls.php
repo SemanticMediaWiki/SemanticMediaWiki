@@ -3,11 +3,11 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SkinTemplate;
-use SMW\MediaWiki\JobQueue;
+use SMW\GroupPermissions;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
-use SMW\GroupPermissions;
 use SMW\OptionsAwareTrait;
 
 /**

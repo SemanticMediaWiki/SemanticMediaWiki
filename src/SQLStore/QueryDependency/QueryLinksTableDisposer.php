@@ -2,11 +2,9 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DIWikiPage;
+use SMW\IteratorFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\IteratorFactory;
 
 /**
  * @private

@@ -2,8 +2,8 @@
 
 namespace SMW\Elastic;
 
-use SMW\Options;
 use RuntimeException;
+use SMW\Options;
 
 /**
  * @license GNU GPL v2+

@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Localizer;
 use SMW\NamespaceUriFinder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GNU GPL v2+

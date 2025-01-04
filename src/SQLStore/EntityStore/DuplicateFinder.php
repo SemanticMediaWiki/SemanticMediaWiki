@@ -2,15 +2,12 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
-use SMW\DIWikiPage;
-use SMW\IteratorFactory;
-use SMW\RequestOptions;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\RedirectStore;
-use SMW\SQLStore\PropertyTableInfoFetcher;
-use SMW\Store;
 use InvalidArgumentException;
+use SMW\IteratorFactory;
+use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMWDataItem as DataItem;
 
 /**

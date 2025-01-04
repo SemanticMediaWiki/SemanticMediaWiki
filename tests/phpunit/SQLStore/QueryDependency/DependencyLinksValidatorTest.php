@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\QueryDependency;
 
 use SMW\DataItemFactory;
-use SMW\RequestOptions;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 
 /**

@@ -22,14 +22,14 @@ class MappingIteratorTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			MappingIterator::class,
-			new MappingIterator( [], function () {
+			new MappingIterator( [], static function () {
 			} )
 		);
 	}
 
 	public function testInvalidConstructorArgumentThrowsException() {
 		$this->expectException( 'RuntimeException' );
-		$instance = new MappingIterator( 2, function () {
+		$instance = new MappingIterator( 2, static function () {
 		} );
 	}
 
@@ -38,7 +38,7 @@ class MappingIteratorTest extends \PHPUnit\Framework\TestCase {
 			1, 42
 		];
 
-		$mappingIterator = new MappingIterator( $expected, function ( $counter ) {
+		$mappingIterator = new MappingIterator( $expected, static function ( $counter ) {
 			return $counter;
 		} );
 
@@ -55,7 +55,7 @@ class MappingIteratorTest extends \PHPUnit\Framework\TestCase {
 			1001, 42
 		];
 
-		$mappingIterator = new MappingIterator( new ArrayIterator( $expected ), function ( $counter ) {
+		$mappingIterator = new MappingIterator( new ArrayIterator( $expected ), static function ( $counter ) {
 			return $counter;
 		} );
 

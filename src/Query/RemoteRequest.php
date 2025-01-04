@@ -7,10 +7,10 @@ use Onoi\HttpRequest\CachedCurlRequest;
 use Onoi\HttpRequest\CurlRequest;
 use Onoi\HttpRequest\HttpRequest;
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Message;
 use SMW\Query\Result\StringResult;
 use SMW\QueryEngine;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMWQuery as Query;
 
@@ -132,7 +132,7 @@ class RemoteRequest implements QueryEngine {
 			$isDisabled = true;
 		} else {
 
-			list( $count, $hasFurtherResults ) = $this->findExtraInformation(
+			[ $count, $hasFurtherResults ] = $this->findExtraInformation(
 				$result
 			);
 
@@ -204,7 +204,7 @@ class RemoteRequest implements QueryEngine {
 
 		if ( $matches !== [] ) {
 			foreach ( $matches[1] as $val ) {
-				list( $k, $v ) = explode( ':', $val );
+				[ $k, $v ] = explode( ':', $val );
 
 				if ( $k === 'COUNT' ) {
 					$count = intval( $v );

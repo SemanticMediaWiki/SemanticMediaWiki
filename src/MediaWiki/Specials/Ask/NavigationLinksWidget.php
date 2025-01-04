@@ -7,10 +7,9 @@ use SMW\Localizer;
 use SMW\Message;
 use SMW\Utils\HtmlModal;
 use SMW\Utils\Pager;
+use SMW\Utils\UrlArgs;
 use SMWInfolink as Infolink;
 use Title;
-use SMW\Utils\HtmlTabs;
-use SMW\Utils\UrlArgs;
 
 /**
  * @license GNU GPL v2+

@@ -5,9 +5,9 @@ namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 use Html;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Store;
 use WebRequest;
 

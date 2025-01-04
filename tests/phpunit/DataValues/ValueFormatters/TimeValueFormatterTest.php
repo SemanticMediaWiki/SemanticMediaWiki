@@ -4,8 +4,8 @@ namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 use SMW\DataValues\ValueParsers\TimeValueParser;
-use SMWTimeValue as TimeValue;
 use SMW\Tests\PHPUnitCompat;
+use SMWTimeValue as TimeValue;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\TimeValueFormatter

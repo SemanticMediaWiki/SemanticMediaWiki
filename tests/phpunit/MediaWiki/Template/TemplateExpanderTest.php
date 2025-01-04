@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Template;
 
-use SMW\MediaWiki\Template\TemplateExpander;
 use SMW\MediaWiki\Template\Template;
+use SMW\MediaWiki\Template\TemplateExpander;
 use SMW\Tests\PHPUnitCompat;
 
 /**

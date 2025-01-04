@@ -2,10 +2,9 @@
 
 namespace Onoi\Tesa;
 
-use Onoi\Tesa\Tokenizer\Tokenizer;
-use Onoi\Tesa\Synonymizer\Synonymizer;
 use Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer;
-use RuntimeException;
+use Onoi\Tesa\Synonymizer\Synonymizer;
+use Onoi\Tesa\Tokenizer\Tokenizer;
 
 /**
  * @license GNU GPL v2+
@@ -33,7 +32,7 @@ class Sanitizer {
 	/**
 	 * @var array
 	 */
-	private $whiteList = array();
+	private $whiteList = [];
 
 	/**
 	 * @var array
@@ -56,7 +55,7 @@ class Sanitizer {
 	 * @param mixed $value
 	 */
 	public function setOption( $name, $value ) {
-		if ( $name === self::WHITELIST && is_array( $value ) && $value !== array() ) {
+		if ( $name === self::WHITELIST && is_array( $value ) && $value !== [] ) {
 			$this->whiteList = array_fill_keys( $value, true );
 		}
 
@@ -112,7 +111,7 @@ class Sanitizer {
 			return $this->string;
 		}
 
-		$index = array();
+		$index = [];
 		$pos = 0;
 
 		foreach ( $words as $key => $word ) {

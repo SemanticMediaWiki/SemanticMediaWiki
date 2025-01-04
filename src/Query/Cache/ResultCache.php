@@ -6,17 +6,15 @@ use Onoi\BlobStore\BlobStore;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\Store;
+use SMW\Query\Excerpts;
 use SMW\QueryEngine;
 use SMW\QueryFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Utils\Timer;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
-use SMW\SQLStore\SQLStore;
-use SMW\Query\Cache\CacheStats;
-use SMW\Query\Excerpts;
 
 /**
  * The prefetcher only caches the subject list from a computed a query

@@ -147,7 +147,7 @@ class ExpNsResource extends ExpResource {
 			throw new RuntimeException( "Invalid uri format, expected two '|' dividers" );
 		}
 
-		list( $localName, $namespace, $namespaceId ) = explode( '|', $serialization['uri'], 3 );
+		[ $localName, $namespace, $namespaceId ] = explode( '|', $serialization['uri'], 3 );
 
 		return new self(
 			$localName,

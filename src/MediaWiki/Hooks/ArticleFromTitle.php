@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Page;
-use SMW\MediaWiki\PageFactory;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\PageFactory;
 use SMW\Store;
 use Title;
 

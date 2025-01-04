@@ -5,9 +5,9 @@ namespace SMW\MediaWiki\Hooks;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\User\UserIdentity;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;
+use SMW\NamespaceExaminer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * PageMoveComplete occurs whenever a request to move an article

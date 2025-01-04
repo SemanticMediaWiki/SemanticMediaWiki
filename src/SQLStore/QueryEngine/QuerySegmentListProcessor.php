@@ -316,7 +316,7 @@ class QuerySegmentListProcessor {
 				break;
 		}
 
-		list( $smwtable, $depth ) = $this->hierarchyTempTableBuilder->getTableDefinitionByType(
+		[ $smwtable, $depth ] = $this->hierarchyTempTableBuilder->getTableDefinitionByType(
 			$type
 		);
 

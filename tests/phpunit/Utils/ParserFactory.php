@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use Parser;
 use ParserOptions;
 use SMW\DIWikiPage;
 use SMW\Tests\Utils\Mock\MockSuperUser;

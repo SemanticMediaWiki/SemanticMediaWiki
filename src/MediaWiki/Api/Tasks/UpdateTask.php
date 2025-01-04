@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\Store;
-use SMW\Enum;
 use SMW\DIWikiPage;
+use SMW\Enum;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 

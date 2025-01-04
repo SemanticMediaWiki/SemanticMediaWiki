@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Elastic\QueryEngine;
 
+use SMW\DIWikiPage;
 use SMW\Elastic\QueryEngine\QueryEngine;
 use SMW\Query\QueryResult;
-use SMW\DIWikiPage;
 use SMWQuery as Query;
 
 /**

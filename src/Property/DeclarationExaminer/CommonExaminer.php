@@ -2,11 +2,11 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
-use SMW\DIProperty;
-use SMW\Store;
-use SMW\SemanticData;
-use SMW\Message;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\Message;
+use SMW\SemanticData;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

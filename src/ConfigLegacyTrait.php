@@ -2,8 +2,6 @@
 
 namespace SMW;
 
-use SMW\Exception\SettingNotFoundException;
-
 /**
  * @private
  *

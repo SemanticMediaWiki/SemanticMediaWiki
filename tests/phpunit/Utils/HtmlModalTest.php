@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\HtmlModal;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\HtmlModal;
 
 /**
  * @covers \SMW\Utils\HtmlModal
