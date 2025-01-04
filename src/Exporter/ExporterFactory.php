@@ -57,11 +57,9 @@ class ExporterFactory {
 			case 'application/x-turtle':
 			case 'turtle':
 				return $this->newTurtleSerializer();
-				break;
 			case 'application/rdf+xml':
 			case 'rdfxml':
 				return $this->newRDFXMLSerializer();
-				break;
 		}
 
 		throw new InvalidArgumentException( "$type is not matchable to a registered serializer!" );

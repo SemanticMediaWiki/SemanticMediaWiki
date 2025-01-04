@@ -85,8 +85,6 @@ class FulltextSearchTableUpdateJobTest extends \PHPUnit\Framework\TestCase {
 				]
 			]
 		];
-
-		return $provider;
 	}
 
 }

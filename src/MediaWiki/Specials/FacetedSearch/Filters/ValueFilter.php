@@ -182,10 +182,8 @@ class ValueFilter {
 		switch ( $type ) {
 			case DataItem::TYPE_NUMBER:
 				return 'TYPE_NUMBER';
-				break;
 			default:
 				return '';
-				break;
 		}
 	}
 
