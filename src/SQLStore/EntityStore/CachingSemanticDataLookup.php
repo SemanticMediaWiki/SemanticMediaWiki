@@ -206,7 +206,7 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return
 	 */
-	public function prefetchDataFromTable( array $subjects, ?DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
+	public function prefetchDataFromTable( array $subjects, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
 		$hash = '';
 
 		if ( $dataItem !== null ) {
@@ -251,7 +251,7 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
+	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
 		return $this->semanticDataLookup->fetchSemanticDataFromTable( $id, $dataItem, $propertyTableDef, $requestOptions );
 	}
 
@@ -265,7 +265,7 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticData( $id, ?DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
+	public function getSemanticData( $id, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
 		// Avoid the cache when a request is constrainted
 		if ( $requestOptions !== null || !$dataItem instanceof DIWikiPage ) {
 			return $this->semanticDataLookup->getSemanticData( $id, $dataItem, $propertyTableDef, $requestOptions );
@@ -285,7 +285,7 @@ class CachingSemanticDataLookup {
 		return $this->semanticDataLookup->newStubSemanticData( $subject );
 	}
 
-	private function fetchFromCache( $id, ?DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef ) {
+	private function fetchFromCache( $id, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef ) {
 		// Do not clear the cache when called recursively.
 		$this->lockCache();
 		$this->initLookupCache( $id, $dataItem );
