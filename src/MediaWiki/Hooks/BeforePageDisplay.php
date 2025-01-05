@@ -18,7 +18,7 @@ use Title;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -58,7 +58,7 @@ class BeforePageDisplay implements HookListener {
 	 * @param OutputPage $outputPage
 	 * @param Skin $skin
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( OutputPage $outputPage, Skin $skin ) {
 		$title = $outputPage->getTitle();

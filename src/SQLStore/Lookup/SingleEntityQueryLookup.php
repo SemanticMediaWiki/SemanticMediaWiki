@@ -15,7 +15,7 @@ use SMWQuery as Query;
  * `QueryResult` hereby by behave as any other `QueryEngine` implementation but
  * without the query footprint.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -54,7 +54,7 @@ class SingleEntityQueryLookup implements QueryEngine {
 		if ( !$description instanceof ValueDescription ) {
 			$results = [];
 			$furtherResults = false;
-		} else if ( $query->getLimit() == 0 ) {
+		} elseif ( $query->getLimit() == 0 ) {
 			$results = [];
 			$furtherResults = true;
 		} else {

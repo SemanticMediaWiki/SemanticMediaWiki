@@ -16,7 +16,7 @@ use SMWSemanticData as SemanticData;
  * This class provides a subclass of SemanticData that can store prefetched values
  * from the SQL store, and unstub this data on demand when it is accessed.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Markus Krötzs
@@ -74,7 +74,7 @@ class StubSemanticData extends SemanticData {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStub(): bool {
 		return true;
@@ -128,7 +128,7 @@ class StubSemanticData extends SemanticData {
 	 * @since 3.1
 	 *
 	 * @param int $sid
-	 * @param [] $sequenceMap
+	 * @param $sequenceMap
 	 */
 	public function setSequenceMap( $sid, $sequenceMap ) {
 		$this->sequenceMap = is_array( $sequenceMap ) ? $sequenceMap : [];
@@ -138,7 +138,7 @@ class StubSemanticData extends SemanticData {
 	 * @since 3.2
 	 *
 	 * @param int $sid
-	 * @param [] $countMap
+	 * @param $countMap
 	 */
 	public function setCountMap( $sid, $countMap ) {
 		$this->countMap = is_array( $countMap ) ? $countMap : [];
@@ -162,7 +162,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty( DIProperty $property ) {
 		$this->unstubProperties();
@@ -279,7 +279,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasVisibleProperties() {
 		$this->unstubProperties();
@@ -292,7 +292,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasVisibleSpecialProperties() {
 		$this->unstubProperties();

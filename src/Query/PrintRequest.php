@@ -140,7 +140,7 @@ class PrintRequest {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLabelMarker() {
 		return $this->labelMarker;
@@ -151,7 +151,7 @@ class PrintRequest {
 	 *
 	 * @param int $mode
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMode( $mode ) {
 		return $this->m_mode === $mode;

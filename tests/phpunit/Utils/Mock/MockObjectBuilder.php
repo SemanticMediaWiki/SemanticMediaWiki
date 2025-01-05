@@ -22,7 +22,7 @@ use SMW\Options;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -120,7 +120,7 @@ class MockObjectBuilder extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @param $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasValue( $key ) {
 		return $this->configuration->has( $key );

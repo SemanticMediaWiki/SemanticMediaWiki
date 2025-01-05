@@ -10,7 +10,7 @@ use SMWExpData as ExpData;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -32,7 +32,7 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isResourceBuilderFor( DIProperty $property ) {
 		if ( $this->resourceBuilders === [] ) {

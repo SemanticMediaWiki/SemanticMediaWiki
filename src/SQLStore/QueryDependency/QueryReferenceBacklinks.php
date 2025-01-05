@@ -9,7 +9,7 @@ use SMW\RequestOptions;
 use SMW\SemanticData;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -36,7 +36,7 @@ class QueryReferenceBacklinks {
 	 * @param SemanticData $semanticData
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function addReferenceLinksTo( SemanticData $semanticData, ?RequestOptions $requestOptions = null ) {
 		if ( !$this->queryDependencyLinksStore->isEnabled() ) {
@@ -86,7 +86,7 @@ class QueryReferenceBacklinks {
 	 * @param DIProperty $property
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doesRequireFurtherLink( DIProperty $property, DIWikiPage $subject, &$html ) {
 		if ( $property->getKey() !== '_ASK' ) {

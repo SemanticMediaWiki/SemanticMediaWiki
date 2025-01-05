@@ -6,7 +6,7 @@ use RuntimeException;
 use SMW\DIWikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -67,7 +67,7 @@ class IdCacheManager {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function get( $key ) {
 		if ( !isset( $this->caches[$key] ) ) {
@@ -82,7 +82,7 @@ class IdCacheManager {
 	 *
 	 * @param string $hash
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasCache( $hash ) {
 		if ( !is_string( $hash ) ) {
@@ -219,7 +219,7 @@ class IdCacheManager {
 	 * @param string $interwiki
 	 * @param string $subobject
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function getSort( $args ) {
 		if ( is_array( $args ) ) {

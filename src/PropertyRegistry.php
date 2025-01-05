@@ -6,7 +6,7 @@ use MediaWiki\MediaWikiServices;
 use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -436,7 +436,7 @@ class PropertyRegistry {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRegistered( $id ) {
 		return isset( $this->propertyList[$id] ) || array_key_exists( $id, $this->propertyList );
@@ -447,7 +447,7 @@ class PropertyRegistry {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isVisible( $id ) {
 		return $this->isRegistered( $id ) ? $this->propertyList[$id][1] : false;
@@ -458,7 +458,7 @@ class PropertyRegistry {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAnnotable( $id ) {
 		return $this->isRegistered( $id ) ? $this->propertyList[$id][2] : false;
@@ -469,7 +469,7 @@ class PropertyRegistry {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeclarative( $id ) {
 		if ( !$this->isRegistered( $id ) ) {

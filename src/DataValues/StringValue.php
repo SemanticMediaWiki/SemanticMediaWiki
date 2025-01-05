@@ -10,7 +10,7 @@ use SMWDIBlob as DIBlob;
 /**
  * Implements a string/text based datavalue suitable for defining text properties.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Nikolas Iwan

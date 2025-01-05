@@ -19,7 +19,7 @@ use SMWDITime as DITime;
  * The class is targeted to be used for API (e.g. autocomplete etc.) intensive
  * services.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

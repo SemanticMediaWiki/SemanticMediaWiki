@@ -20,7 +20,7 @@ use SMWDataItem as DataItem;
  * dataitems. The store recognizes this special behavior from the field type
  * 'p' that the handler reports for its only data field.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata

@@ -3,7 +3,7 @@
 namespace Onoi\Tesa\StopwordAnalyzer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -36,7 +36,7 @@ class ArrayStopwordAnalyzer implements StopwordAnalyzer {
 	 *
 	 * @param string $word
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStopWord( $word ) {
 		return isset( $this->stopwords[$word] );

@@ -7,7 +7,7 @@ use SMW\Schema\Schema;
 use SMW\Schema\SchemaList;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -56,7 +56,7 @@ class ConstraintCheckRunner {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasViolation() {
 		return $this->hasViolation;
@@ -65,7 +65,7 @@ class ConstraintCheckRunner {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasDeferrableConstraint() {
 		return $this->hasDeferrableConstraint;

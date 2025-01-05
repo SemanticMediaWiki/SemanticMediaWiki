@@ -8,7 +8,7 @@ use RuntimeException;
 use SMW\Utils\ErrorCodeFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -88,7 +88,7 @@ class JsonContentsFileReader {
 	 * @param string $languageCode
 	 * @param boolean $readFromFile
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canReadByLanguageCode( $languageCode ) {
 		$canReadByLanguageCode = '';

@@ -131,7 +131,7 @@ class ImportValue extends DataValue {
 	 *
 	 * @param DataItem $dataitem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
 		if ( !$dataItem instanceof DIBlob ) {

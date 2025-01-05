@@ -13,7 +13,7 @@ use SMW\OptionsAwareTrait;
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -125,7 +125,7 @@ class PersonalUrls implements HookListener {
 	private function humanReadable( $num, $decimals = 0 ) {
 		if ( $num < 1000 ) {
 			$num = number_format( $num );
-		} else if ( $num < 1000000 ) {
+		} elseif ( $num < 1000000 ) {
 			$num = number_format( $num / 1000, $decimals ) . 'K';
 		} else {
 			$num = number_format( $num / 1000000, $decimals ) . 'M';

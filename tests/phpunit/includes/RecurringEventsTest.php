@@ -9,7 +9,7 @@ use SMW\RecurringEvents;
  * @covers \SMW\RecurringEvents
  * @group semantic-mediawiki
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

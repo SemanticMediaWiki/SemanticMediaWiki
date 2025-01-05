@@ -5,7 +5,7 @@ namespace SMW\Elastic\QueryEngine;
 use SMW\Elastic\QueryEngine\TermsLookup\Parameters;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

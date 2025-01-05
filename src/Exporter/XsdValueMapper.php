@@ -13,7 +13,7 @@ use SMWDITime as DITime;
  * This class only maps primitive types (string, boolean, integers ) mostly to
  * be encoded as literal and all other dataitems are handled separately.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch

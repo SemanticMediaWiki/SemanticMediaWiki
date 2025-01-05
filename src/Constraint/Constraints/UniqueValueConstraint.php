@@ -14,7 +14,7 @@ use SMWDataValue as DataValue;
  * The `unique_value_constraint` implicitly requires a `GLOBAL_SCOPE` (instead
  * of only an `ENTITY_SCOPE` which would just require a `single_value_constraint`).
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

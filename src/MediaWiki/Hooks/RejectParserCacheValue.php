@@ -13,7 +13,7 @@ use Title;
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -48,7 +48,7 @@ class RejectParserCacheValue implements HookListener {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( Page $page ) {
 		$title = $page->getTitle();

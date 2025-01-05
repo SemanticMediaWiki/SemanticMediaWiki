@@ -17,7 +17,7 @@ use User;
 /**
  * Handles protection validation.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -180,7 +180,7 @@ class ProtectionValidator {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasEditProtectionOnNamespace( Title $title ) {
 		$subject = DIWikiPage::newFromTitle(
@@ -204,7 +204,7 @@ class ProtectionValidator {
 	 * @param Title $title
 	 * @param User $user
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isClassifiedAsImportPerformerProtected( Title $title, User $user ): bool {
 		if ( $this->importPerformers === [] ) {
@@ -243,7 +243,7 @@ class ProtectionValidator {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasChangePropagationProtection( Title $title ) {
 		$subject = DIWikiPage::newFromTitle( $title )->asBase();
@@ -265,7 +265,7 @@ class ProtectionValidator {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProtection( Title $title ) {
 		$subject = DIWikiPage::newFromTitle(
@@ -280,7 +280,7 @@ class ProtectionValidator {
 	 *
 	 * @param Title|null $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasCreateProtection( ?Title $title = null ) {
 		if ( $title === null ) {
@@ -302,7 +302,7 @@ class ProtectionValidator {
 	 *
 	 * @param Title|null $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasEditProtection( ?Title $title = null ) {
 		if ( $title === null ) {

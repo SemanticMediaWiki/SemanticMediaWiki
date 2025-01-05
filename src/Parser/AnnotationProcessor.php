@@ -16,7 +16,7 @@ use SMWDataItem as DataItem;
  *
  * https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3901
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -67,7 +67,7 @@ class AnnotationProcessor {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canAnnotate() {
 		return $this->canAnnotate;

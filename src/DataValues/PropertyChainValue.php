@@ -9,7 +9,7 @@ use SMWDIBlob as DIBlob;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -43,7 +43,7 @@ class PropertyChainValue extends StringValue {
 	 *
 	 * @param string $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isChained( $value ) {
 		return strpos( $value, '.' ) !== false;
@@ -141,7 +141,7 @@ class PropertyChainValue extends StringValue {
 	 *
 	 * @param $dataitem SMWDataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
 		if ( !$dataItem instanceof DIBlob ) {

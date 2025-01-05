@@ -53,7 +53,7 @@ use SMWDataItem as DataItem;
  * properties are represented by language-independent keys rather than proper
  * titles. SMWDIHandlerWikiPage takes care of this.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Markus Krötzsch
@@ -212,7 +212,7 @@ class EntityIdManager {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRedirect( DIWikiPage $subject ) {
 		if ( $this->redirectStore === null ) {
@@ -421,7 +421,7 @@ class EntityIdManager {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isUnique( DataItem $dataItem ) {
 		if ( $this->duplicateFinder === null ) {

@@ -12,7 +12,7 @@ use Title;
  * `...Sub` methods provide a convenient support layer to extend or remove values
  * from a cache entry.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -100,7 +100,7 @@ class EntityCache {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function contains( $key ) {
 		return $this->cache->contains( $key );

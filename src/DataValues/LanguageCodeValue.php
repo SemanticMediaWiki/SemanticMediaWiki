@@ -11,7 +11,7 @@ use SMWDIBlob as DIBlob;
  *
  * @see https://en.wikipedia.org/wiki/IETF_language_tag
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames

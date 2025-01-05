@@ -7,7 +7,7 @@ use SMWQueryResult as QueryResult;
 /**
  * Interface for SMW export related result printers
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -51,7 +51,7 @@ interface ExportPrinter extends ResultPrinter {
 	 *
 	 * @param QueryResult $queryResult
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function getFileName( QueryResult $queryResult );
 

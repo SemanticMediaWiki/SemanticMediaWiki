@@ -13,7 +13,7 @@ use SMW\Store;
 use SMW\Utils\TemplateEngine;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -74,7 +74,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @param string $severityType
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
@@ -104,7 +104,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 * @param DIWikiPage $subject
 	 * @param array $options
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
 		if ( $this->checkConstraintErrors ) {

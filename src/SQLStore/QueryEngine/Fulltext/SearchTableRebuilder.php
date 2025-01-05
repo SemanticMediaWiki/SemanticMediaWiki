@@ -10,7 +10,7 @@ use SMW\Utils\CliMsgFormatter;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -98,7 +98,7 @@ class SearchTableRebuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canRebuild() {
 		return $this->searchTableUpdater->isEnabled();
@@ -109,7 +109,7 @@ class SearchTableRebuilder {
 	 *
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function rebuild() {
 		if ( !$this->canRebuild() ) {

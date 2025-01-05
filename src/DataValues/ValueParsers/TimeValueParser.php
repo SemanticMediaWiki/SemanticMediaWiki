@@ -9,7 +9,7 @@ use SMW\Localizer;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -127,7 +127,7 @@ class TimeValueParser implements ValueParser {
 	 * @param &$seconds integer set to a value between 0 and 59, or false if not given
 	 * @param &$timeoffset double set to a value for time offset (e.g. 3.5), or false if not given
 	 *
-	 * @return boolean stating if the parsing succeeded
+	 * @return bool stating if the parsing succeeded
 	 */
 	private function parseDateString( $string, &$datecomponents, &$calendarmodel, &$era, &$hours, &$minutes, &$seconds, &$microseconds, &$timeoffset, &$timezone ) {
 		$calendarmodel = $timezoneoffset = $era = $ampm = false;
@@ -279,7 +279,7 @@ class TimeValueParser implements ValueParser {
 	 * @param &$seconds integer between 0 and 59, or false if not given
 	 * @param &$timeoffset double for time offset (e.g. 3.5), or false if not given
 	 *
-	 * @return boolean stating if the parsing succeeded
+	 * @return bool stating if the parsing succeeded
 	 */
 	private static function parseTimeString( $string, &$hours, &$minutes, &$seconds, &$timeoffset ) {
 		if ( !preg_match( "/^[T]?([0-2]?[0-9]):([0-5][0-9])(:[0-5][0-9])?(([+\-][0-2]?[0-9])(:(30|00))?)?$/u", $string, $match ) ) {
@@ -325,7 +325,7 @@ class TimeValueParser implements ValueParser {
 	 * @param &$minutes integer between 0 and 59
 	 * @param &$seconds integer between 0 and 59, or false if not given
 	 *
-	 * @return boolean stating if the parsing succeeded
+	 * @return bool stating if the parsing succeeded
 	 */
 	private static function parseMilTimeString( $string, &$hours, &$minutes, &$seconds ) {
 		if ( !preg_match( "/^([0-2][0-9])([0-5][0-9])([0-5][0-9])?$/u", $string, $match ) ) {
@@ -355,7 +355,7 @@ class TimeValueParser implements ValueParser {
 	 * @param $string string month name or abbreviation to parse
 	 * @param &$monthname string with standard 3-letter English month abbreviation
 	 *
-	 * @return boolean stating whether a month was found
+	 * @return bool stating whether a month was found
 	 */
 	private function parseMonthString( $string, &$monthname ) {
 		// takes precedence over English month names!

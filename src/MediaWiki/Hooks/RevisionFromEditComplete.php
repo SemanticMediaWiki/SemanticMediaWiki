@@ -27,7 +27,7 @@ use Title;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/RevisionFromEditComplete
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -77,7 +77,7 @@ class RevisionFromEditComplete implements HookListener {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( Title $title ) {
 		$this->editInfo->fetchEditInfo();

@@ -11,7 +11,7 @@ use SMW\Tests\Utils\PageDeleter;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -101,7 +101,7 @@ class JsonTestCaseContentHandler {
 
 			$skipOn = isset( $page['skip-on'] ) ? $page['skip-on'] : [];
 
-			if ( in_array( $this->skipOn, array_keys( $skipOn ) ) ) {
+			if ( array_key_exists( $this->skipOn, $skipOn ) ) {
 				continue;
 			}
 

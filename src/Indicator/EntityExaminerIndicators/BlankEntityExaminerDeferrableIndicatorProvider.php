@@ -14,7 +14,7 @@ use SMW\Localizer\MessageLocalizerTrait;
  * Deferrable means that the examiner is only called after a wikipage has been
  * rendered and the check is called from within the `run-entity-examiner` API.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -50,7 +50,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
@@ -61,7 +61,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 *
 	 * @param string $severityType
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
@@ -82,7 +82,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 * @param DIWikiPage $subject
 	 * @param array $options
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
 		if ( $this->isDeferredMode ) {

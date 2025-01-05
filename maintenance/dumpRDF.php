@@ -41,7 +41,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *                    https://en.wikipedia.org. This is sometimes necessary because
  *                    server name detection may fail in command line scripts.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch

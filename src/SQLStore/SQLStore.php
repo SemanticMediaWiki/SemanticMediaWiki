@@ -63,7 +63,7 @@ define( 'SMW_SQL3_SMWDELETEIW', ':smw-delete' );
  * interwiki object is given but a local object of the same name exists. It is
  * currently not planned to support things like interwiki reuse of properties.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Markus Krötzsch

@@ -33,8 +33,8 @@ class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	* @dataProvider resultAliasDataProvider
-	*/
+	 * @dataProvider resultAliasDataProvider
+	 */
 	public function testGetResultPrinter_MatchAlias( $alias ) {
 		$this->assertInstanceOf(
 			'\SMW\Query\ResultPrinter',
@@ -56,8 +56,8 @@ class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	* @dataProvider createQueryDataProvider
-	*/
+	 * @dataProvider createQueryDataProvider
+	 */
 	public function testCreateQuery( $query ) {
 		// TODO: this prevents doing [[Category:Foo||bar||baz]], must document.
 		$rawParams = explode( '|', $query );

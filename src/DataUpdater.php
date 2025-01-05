@@ -24,7 +24,7 @@ use WikiPage;
  * type, the data type, the allowed values, or the conversion factors have
  * changed.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -163,7 +163,7 @@ class DataUpdater {
 	 * @param Title $title
 	 * @param int|null &$latestRevID
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSkippable( Title $title, ?int &$latestRevID = null ) {
 		if ( $this->revisionGuard->isSkippableUpdate( $title, $latestRevID ) ) {
@@ -182,7 +182,7 @@ class DataUpdater {
 	/**
 	 * @since 1.9
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doUpdate() {
 		if ( !$this->canUpdate() ) {

@@ -8,7 +8,7 @@ use Exception;
 use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -43,7 +43,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	/**
 	 * @since 0.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAvailable() {
 		return $this->cdb !== null;
@@ -76,7 +76,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 *
 	 * @param string $word
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStopWord( $word ) {
 		if ( $this->cdb !== null && $this->cdb->get( $word ) !== false ) {
@@ -92,7 +92,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 * @param string $location
 	 * @param string $language
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function createCdbByLanguage( $location, $language ) {
 		$language = strtolower( $language );

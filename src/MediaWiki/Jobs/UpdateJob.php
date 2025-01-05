@@ -25,7 +25,7 @@ use Title;
  * formatting in-page values based on a datatype thathas since been changed), whereas
  * the Factbox and query/browsing interfaces might already show the updated records.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Daniel M. Herzig
@@ -73,7 +73,7 @@ class UpdateJob extends Job {
 	/**
 	 * @see Job::run
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function run() {
 		// #2199 ("Invalid or virtual namespace -1 given")

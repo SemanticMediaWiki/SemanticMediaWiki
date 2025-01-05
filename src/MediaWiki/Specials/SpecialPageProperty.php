@@ -18,7 +18,7 @@ use SpecialPage;
  *
  * This is typically used for overflow results from other dynamic output pages.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.4
  *
  * @author Denny Vrandecic

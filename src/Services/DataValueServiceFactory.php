@@ -24,7 +24,7 @@ use SMWTimeValue as TimeValue;
  * This class provides service and factory functions for DataValue objects and
  * are only to be used for those objects.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

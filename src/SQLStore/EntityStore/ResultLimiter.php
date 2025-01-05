@@ -55,7 +55,7 @@ class ResultLimiter {
 	 *
 	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canSkip( $id ) {
 		if ( $this->size < 0 ) {

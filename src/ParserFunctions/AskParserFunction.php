@@ -21,7 +21,7 @@ use SMWQueryProcessor as QueryProcessor;
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:Ask
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch

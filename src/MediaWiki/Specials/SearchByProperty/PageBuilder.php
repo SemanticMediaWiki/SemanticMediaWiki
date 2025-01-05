@@ -16,7 +16,7 @@ use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author Denny Vrandecic
@@ -256,7 +256,7 @@ class PageBuilder {
 	 * 	$number results?
 	 * @param boolean $highlight Should the results be highlighted?
 	 *
-	 * @return string  HTML with the bullet list, including header
+	 * @return string HTML with the bullet list, including header
 	 */
 	private function makeResultList( $results, $number, $first, $highlight = false ) {
 		if ( $number > 0 ) {

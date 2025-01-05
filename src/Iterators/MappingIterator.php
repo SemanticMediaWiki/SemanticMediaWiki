@@ -13,7 +13,7 @@ use RuntimeException;
  * (or traversable/array) in order to apply a mapping on the returned current element
  * during an iterative (foreach etc.) process.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

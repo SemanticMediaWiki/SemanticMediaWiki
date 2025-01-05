@@ -10,7 +10,7 @@ use SMWDITime as DITime;
  * @covers \SMW\DataValues\Time\IntlTimeFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames

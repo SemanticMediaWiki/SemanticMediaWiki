@@ -12,7 +12,7 @@ use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
  *
  * @ingroup Sparql
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch

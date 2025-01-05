@@ -10,7 +10,7 @@ use SMWQueryResult as QueryResult;
 /**
  * Printer class for generating RDF output
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch

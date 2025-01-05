@@ -23,7 +23,7 @@ use SMWExpData as ExpData;
  * (only the latter two are mutually exclusive). This class determines the
  * required declaration from the context in which an element is used.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.5.5
  *
  * @author Markus Krötzsch
@@ -345,7 +345,7 @@ abstract class Serializer {
 	 *
 	 * @param ExpNsResource $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isOWLClassTypeProperty( ExpNsResource $property ): bool {
 		$locname = $property->getLocalName();

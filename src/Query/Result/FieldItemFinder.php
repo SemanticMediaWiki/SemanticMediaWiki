@@ -18,7 +18,7 @@ use SMWDIBoolean as DIBoolean;
  * Returns the result content (DI objects) for a single PrintRequest, representing
  * as cell of the intersection between a subject row and a print column.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author Markus Krötzsch

@@ -22,7 +22,7 @@ use SMW\Subobject;
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:ParserFunction
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

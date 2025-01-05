@@ -15,7 +15,7 @@ use SMW\SemanticData;
  * Internal handling of the SubSemanticData container and its subsequent
  * add and remove operations.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author Markus Krötzsch
@@ -133,7 +133,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @param string|null $subobjectName
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSubSemanticData( $subobjectName = null ) {
 		if ( $this->subSemanticData === [] || $subobjectName === '' ) {

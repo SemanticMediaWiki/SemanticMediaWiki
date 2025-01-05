@@ -8,7 +8,7 @@ use SMW\Schema\Exception\SchemaTypeNotFoundException;
  * @covers \SMW\Schema\Exception\SchemaTypeNotFoundException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

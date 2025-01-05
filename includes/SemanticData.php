@@ -60,7 +60,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @var string
 	 */
-	static protected $mPropertyPrefix = '';
+	protected static $mPropertyPrefix = '';
 
 	/**
 	 * States whether this is a stub object. Stubbing might happen on
@@ -213,7 +213,7 @@ class SemanticData implements JsonUnserializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStub(): bool {
 		return false;
@@ -265,7 +265,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty( DIProperty $property ) {
 		return isset( $this->mProperties[$property->getKey()] ) || array_key_exists( $property->getKey(), $this->mProperties );
@@ -430,7 +430,7 @@ class SemanticData implements JsonUnserializable {
 	 * function DIProperty::isShown(). The name is kept for
 	 * compatibility.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasVisibleProperties() {
 		return $this->mHasVisibleProps;
@@ -444,7 +444,7 @@ class SemanticData implements JsonUnserializable {
 	 * function DIProperty::isShown(). The name is kept for
 	 * compatibility.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasVisibleSpecialProperties() {
 		return $this->mHasVisibleSpecs;
@@ -835,7 +835,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @param string|null $subobjectName|null
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSubSemanticData( $subobjectName = null ) {
 		return $this->subSemanticData->hasSubSemanticData( $subobjectName );
@@ -870,7 +870,7 @@ class SemanticData implements JsonUnserializable {
 	 * @since 1.8
 	 *
 	 * @param SemanticData $semanticData
-	*/
+	 */
 	public function removeSubSemanticData( SemanticData $semanticData ) {
 		$this->hash = null;
 		$this->subSemanticData->removeSubSemanticData( $semanticData );

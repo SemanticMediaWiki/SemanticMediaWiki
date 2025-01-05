@@ -143,7 +143,7 @@ class SMWRecordValue extends AbstractMultiValue {
 	/**
 	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem DataItem
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
 		if ( $dataItem->getDIType() == DataItem::TYPE_CONTAINER ) {

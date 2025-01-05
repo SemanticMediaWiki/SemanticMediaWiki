@@ -20,7 +20,7 @@ use SMW\Tests\Utils\Fixtures\Properties\UrlProperty;
 use SMW\Tests\Utils\Fixtures\Properties\YearProperty;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames

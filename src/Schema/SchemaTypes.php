@@ -7,7 +7,7 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -159,7 +159,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @param string|null $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRegisteredType( ?string $type ): bool {
 		return isset( $this->schemaTypes[$type] );

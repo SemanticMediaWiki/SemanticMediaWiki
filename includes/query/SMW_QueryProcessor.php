@@ -115,7 +115,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return SMWQuery
 	 */
-	static public function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = [], $contextPage = null ) {
+	public static function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = [], $contextPage = null ) {
 		if ( $format === '' || $format === null ) {
 			$format = $params['format']->getValue();
 		}
@@ -224,7 +224,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @param boolean $showMode
 	 * @return array( string, array( string => string ), array( SMWPrintRequest ) )
 	 */
-	static public function getComponentsFromFunctionParams( array $rawParams, $showMode ) {
+	public static function getComponentsFromFunctionParams( array $rawParams, $showMode ) {
 		/**
 		 * @var ParamListProcessor $paramListProcessor
 		 */
@@ -253,7 +253,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @param boolean $showMode process like #show parser function?
 	 * @return array( SMWQuery, ProcessedParam[] )
 	 */
-	static public function getQueryAndParamsFromFunctionParams( array $rawParams, $outputMode, $context, $showMode, $contextPage = null ) {
+	public static function getQueryAndParamsFromFunctionParams( array $rawParams, $outputMode, $context, $showMode, $contextPage = null ) {
 		[ $queryString, $params, $printouts ] = self::getComponentsFromFunctionParams( $rawParams, $showMode );
 
 		if ( !$showMode ) {
@@ -384,7 +384,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return ResultPrinter
 	 * @throws ResultFormatNotFoundException
 	 */
-	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
+	public static function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
 		global $smwgResultFormats;
 
 		ResultFormat::resolveFormatAliases( $format );

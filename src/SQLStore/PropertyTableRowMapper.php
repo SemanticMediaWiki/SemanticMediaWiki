@@ -12,7 +12,7 @@ use SMWDIError as DIError;
 /**
  * Builds a table row representation for a SemanticData object.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

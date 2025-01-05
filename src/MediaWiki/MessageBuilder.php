@@ -16,7 +16,7 @@ use Title;
  * components and decrease depdencency on the Language object with SMW's code
  * base
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames

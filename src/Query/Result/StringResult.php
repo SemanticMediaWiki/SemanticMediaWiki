@@ -6,7 +6,7 @@ use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -88,7 +88,7 @@ class StringResult extends QueryResult {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFurtherResults() {
 		return $this->hasFurtherResults;

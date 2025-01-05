@@ -7,7 +7,7 @@ namespace SMW\Localizer\LocalLanguage;
  * to handle certain language options in a way required by Semantic MediaWiki
  * and its registration system.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames

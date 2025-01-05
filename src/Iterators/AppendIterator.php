@@ -12,7 +12,7 @@ use Traversable;
  * @see Guzzle::AppendIterator
  * @see https://bugs.php.net/bug.php?id=49104
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  */
 class AppendIterator extends \AppendIterator implements Countable {

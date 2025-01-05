@@ -7,7 +7,7 @@ use RuntimeException;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -56,7 +56,7 @@ class Table {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCoreTable(): bool {
 		return $this->isCoreTable;

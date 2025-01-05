@@ -17,7 +17,7 @@ use SMWQueryResult as QueryResult;
  * i.e. basically an array of SMWDataItems with some additional parameters.
  * The content of the array is fetched on demand only.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author Markus Krötzsch

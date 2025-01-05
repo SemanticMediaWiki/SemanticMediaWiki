@@ -23,7 +23,7 @@ use SMW\Store;
  * class to match the correct DataItem representation for a specific subject in
  * list of subjects.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

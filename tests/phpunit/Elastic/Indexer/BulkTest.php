@@ -8,7 +8,7 @@ use SMW\Elastic\Indexer\Bulk;
  * @covers \SMW\Elastic\Indexer\Bulk
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

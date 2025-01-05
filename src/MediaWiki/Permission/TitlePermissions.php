@@ -9,7 +9,7 @@ use Title;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -58,7 +58,7 @@ class TitlePermissions {
 	 * @param User $user
 	 * @param string $action
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function checkPermissionFor( Title $title, User $user, $action ) {
 		return $this->hasUserPermission( $title, $user, $action );
@@ -71,7 +71,7 @@ class TitlePermissions {
 	 * @param User $user
 	 * @param string $action
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasUserPermission( Title $title, User $user, $action ) {
 		$this->errors = [];

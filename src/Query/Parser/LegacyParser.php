@@ -16,7 +16,7 @@ use SMW\Query\QueryToken;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -195,7 +195,7 @@ class LegacyParser implements Parser {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function containsSelfReference() {
 		if ( $this->selfReference ) {

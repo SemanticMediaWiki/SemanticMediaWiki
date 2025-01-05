@@ -8,7 +8,7 @@ use RequestContext;
 /**
  * Module to support various tasks initiate using the API interface
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

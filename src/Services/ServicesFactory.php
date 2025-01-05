@@ -53,7 +53,7 @@ use Title;
 /**
  * Application instances access for internal and external use
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

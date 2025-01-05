@@ -12,7 +12,7 @@ use SpecialSearch;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -63,7 +63,7 @@ class ProfileForm {
 	 *
 	 * @param string $profile
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isValidProfile( $profile ) {
 		return $profile === self::PROFILE_NAME;

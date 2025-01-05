@@ -9,7 +9,7 @@ use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
  * @covers \SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
