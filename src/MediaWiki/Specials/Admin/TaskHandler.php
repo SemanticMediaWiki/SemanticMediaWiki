@@ -6,7 +6,7 @@ use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -58,7 +58,7 @@ abstract class TaskHandler {
 	 *
 	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeature( $feature ) {
 		return ( ( (int)$this->featureSet & $feature ) == $feature );
@@ -122,7 +122,7 @@ abstract class TaskHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isApiTask() {
 		return false;

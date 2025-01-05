@@ -12,7 +12,7 @@ use User;
  *
  * @file
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 
 /**

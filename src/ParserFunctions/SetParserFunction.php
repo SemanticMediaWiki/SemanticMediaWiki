@@ -17,7 +17,7 @@ use SMW\SemanticData;
  * @see http://semantic-mediawiki.org/wiki/Help:Properties_and_types#Silent_annotations_using_.23set
  * @see http://www.semantic-mediawiki.org/wiki/Help:Setting_values
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author Markus Krötzsch

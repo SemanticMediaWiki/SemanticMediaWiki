@@ -17,7 +17,7 @@ use Wikimedia\Rdbms\DBError;
  * that are contained in either the ID_TABLE or related property tables with
  * reference to a matchable ID.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -105,7 +105,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDisposable( $id ) {
 		return $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) === false;

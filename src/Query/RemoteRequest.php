@@ -15,7 +15,7 @@ use SMW\Site;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -80,7 +80,7 @@ class RemoteRequest implements QueryEngine {
 	 *
 	 * @param int $flag
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeature( $flag ) {
 		return ( ( (int)$this->features & $flag ) == $flag );

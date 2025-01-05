@@ -6,7 +6,7 @@ use RuntimeException;
 use SMW\Tests\Utils\File\JsonFileReader;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -35,7 +35,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isIncomplete() {
 		$meta = $this->getFileContentsFor( 'meta' );
@@ -51,7 +51,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getDebugMode() {
 		$meta = $this->getFileContentsFor( 'meta' );
@@ -62,7 +62,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAllRequirements( $dependencyDef = [] ) {
 		$requires = $this->getContentsFor( 'requires' );
@@ -98,7 +98,7 @@ class JsonTestCaseFileHandler {
 	 * @param array $case
 	 * @param string $identifier
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function requiredToSkipFor( array $case, $identifier ) {
 		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : [];
@@ -197,7 +197,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function requiredToSkipForConnector( $connectorId ) {
 		$connectorId = strtolower( $connectorId );
@@ -205,7 +205,7 @@ class JsonTestCaseFileHandler {
 
 		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
-		if ( in_array( $connectorId, array_keys( $skipOn ) ) ) {
+		if ( array_key_exists( $connectorId, $skipOn ) ) {
 			$this->reasonToSkip = $skipOn[$connectorId];
 		}
 
@@ -215,7 +215,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function requiredToSkipForJsonVersion( $version ) {
 		$meta = $this->getFileContentsFor( 'meta' );
@@ -230,7 +230,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function requiredToSkipOnSiteLanguage( $siteLanguage ) {
 		$meta = $this->getFileContentsFor( 'meta' );
@@ -254,7 +254,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function requiredToSkipForMwVersion( $mwVersion ) {
 		$meta = $this->getFileContentsFor( 'meta' );

@@ -11,7 +11,7 @@ use SMW\Tests\Utils\Validators\StringValidator;
  * @covers SMW\ParameterListDocBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class ParameterListDocBuilderTest extends \PHPUnit\Framework\TestCase {

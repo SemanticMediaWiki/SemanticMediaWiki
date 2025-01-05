@@ -23,7 +23,7 @@ use SMWDataItem as DataItem;
  * Build an internal representation for a SPARQL condition from individual query
  * descriptions.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

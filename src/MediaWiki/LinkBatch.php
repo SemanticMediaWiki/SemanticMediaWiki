@@ -9,7 +9,7 @@ use SMW\DIWikiPage;
  * Isolate access to the LinkBatch class which allows to bulk load a list
  * of titles into the LinkCache.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -119,7 +119,7 @@ class LinkBatch {
 	 *
 	 * @param DataItem|null|false $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has( $dataItem ) {
 		if ( $dataItem instanceof DIWikiPage && isset( $this->log[$dataItem->getSha1()] ) ) {

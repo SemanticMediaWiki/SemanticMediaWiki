@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\DBQueryError;
  * @group medium
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -32,7 +32,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	 * "MWException: The value to add must be a positive integer" therefore
 	 * return true if this test runs on Windows
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function isWinOS() {
 		return strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN';

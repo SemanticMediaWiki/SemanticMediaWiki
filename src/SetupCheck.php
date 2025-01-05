@@ -12,7 +12,7 @@ use SMW\Utils\TemplateEngine;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -204,7 +204,7 @@ class SetupCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCli() {
 		return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg';
@@ -240,7 +240,7 @@ class SetupCheck {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isError( string $error ): bool {
 		return $this->errorType === $error;
@@ -249,7 +249,7 @@ class SetupCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasError() {
 		$this->errorType = '';

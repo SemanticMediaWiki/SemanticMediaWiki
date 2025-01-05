@@ -22,7 +22,7 @@ use Title;
  * This class is contains all functions necessary for parsing wiki text before
  * it is displayed or previewed while identifying SMW related annotations.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -217,7 +217,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param string $text
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasMarker( $text ) {
 		return strpos( $text, self::OFF ) !== false || strpos( $text, self::ON ) !== false;
@@ -228,7 +228,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param string $text
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasPropertyLink( $text ) {
 		return strpos( $text, '::@@@' ) !== false;

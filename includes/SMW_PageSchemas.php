@@ -303,7 +303,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	/**
 	 * Creates the text for a property page.
 	 */
-	static public function createPropertyText( $propertyType, $allowedValues, $linkedForm = null ) {
+	public static function createPropertyText( $propertyType, $allowedValues, $linkedForm = null ) {
 		$smwgContLang = smwfContLang();
 
 		$propLabels = $smwgContLang->getPropertyLabels();
@@ -333,7 +333,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	/**
 	 * Returns either the "connecting property", or a field property, based
 	 * on the XML passed from the Page Schemas extension.
-	*/
+	 */
 	public static function createPageSchemasObject( $tagName, $xml ) {
 		if ( $tagName == "semanticmediawiki_ConnectingProperty" ) {
 			foreach ( $xml->children() as $tag => $child ) {

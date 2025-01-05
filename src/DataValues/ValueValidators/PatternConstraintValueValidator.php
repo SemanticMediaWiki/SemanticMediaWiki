@@ -10,7 +10,7 @@ use SMWDataValue as DataValue;
  * To support regular expressions in connection with the `Allows pattern`
  * property.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames

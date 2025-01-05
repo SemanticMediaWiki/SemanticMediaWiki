@@ -14,7 +14,7 @@ use Title;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -204,7 +204,7 @@ class RedirectUpdater {
 	 *
 	 * @param array $redirects
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function shouldCleanUpAnnotationsAndRedirects( array $redirects = [] ): bool {
 		if ( $redirects === [] ) {

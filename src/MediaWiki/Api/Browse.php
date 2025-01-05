@@ -19,7 +19,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 /**
  * Module to support selected browse activties including:
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

@@ -10,7 +10,7 @@ use SMW\Utils\Timer;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -167,7 +167,7 @@ class PageUpdater implements DeferrableUpdate {
 	/**
 	 * @since 2.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUpdate() {
 		return !MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly();

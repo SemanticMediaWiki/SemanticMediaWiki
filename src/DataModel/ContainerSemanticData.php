@@ -22,7 +22,7 @@ use SMW\SemanticData;
  *
  * See also the documentation of SMWDIContainer.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -90,7 +90,7 @@ class ContainerSemanticData extends SemanticData {
 	 * Check if the subject of this container is an anonymous object.
 	 * See the documenation of the class for details.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAnonymousSubject() {
 		if ( $this->mSubject->getNamespace() == NS_SPECIAL &&

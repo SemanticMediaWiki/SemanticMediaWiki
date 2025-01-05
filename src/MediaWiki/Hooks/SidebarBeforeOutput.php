@@ -15,7 +15,7 @@ use Title;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SidebarBeforeOutput
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @author StarHeartHunt
  */
@@ -41,7 +41,7 @@ class SidebarBeforeOutput implements HookListener {
 	 * @param $skin
 	 * @param &$sidebar
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( $skin, &$sidebar ) {
 		$title = $skin->getTitle();

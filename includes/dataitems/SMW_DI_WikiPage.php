@@ -121,7 +121,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @param string $prefix
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSubEntityOf( string $prefix ): bool {
 		if (
@@ -139,7 +139,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @param int $namespace
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inNamespace( int $namespace ): bool {
 		return $this->m_dbkey !== '' && $this->m_namespace === $namespace;

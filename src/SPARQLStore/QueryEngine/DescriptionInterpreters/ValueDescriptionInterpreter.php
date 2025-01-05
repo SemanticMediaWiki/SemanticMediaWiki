@@ -18,7 +18,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -87,15 +87,16 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			case SMW_CMP_NEQ:
 				$comparator = '!=';
 				break;
-			case SMW_CMP_PRIM_LIKE;
+			case SMW_CMP_PRIM_LIKE:
 			case SMW_CMP_LIKE:
 				$comparator = 'regex';
-			break;
-			case SMW_CMP_PRIM_NLKE;
+				break;
+			case SMW_CMP_PRIM_NLKE:
 			case SMW_CMP_NLKE:
 				$comparator = '!regex';
-			break;
-			default: $comparator = ''; // unkown, unsupported
+				break;
+			default:
+				$comparator = ''; // unkown, unsupported
 		}
 
 		if ( $comparator === '' ) {

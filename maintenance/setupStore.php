@@ -188,7 +188,7 @@ class setupStore extends \Maintenance {
 		global $smwgIP;
 
 		if ( !isset( $smwgIP ) ) {
-			$smwgIP = dirname( __FILE__ ) . '/../';
+			$smwgIP = __DIR__ . '/../';
 		}
 
 		require_once $smwgIP . 'includes/GlobalFunctions.php';
@@ -231,7 +231,7 @@ class setupStore extends \Maintenance {
 	/**
 	 * @param string $storeName
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasDeletionVerification() {
 		$cliMsgFormatter = new CliMsgFormatter();

@@ -12,7 +12,7 @@ use SMWExporter as Exporter;
  * Class for serializing exported data (encoded as ExpData object) in
  * RDF/XML.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.5.5
  *
  * @author Markus Krötzsch

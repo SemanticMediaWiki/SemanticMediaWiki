@@ -10,7 +10,7 @@ use SMWDataItem as DataItem;
  * A single resource (individual) for export, defined by a URI for which there
  * also is a namespace abbreviation.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -114,7 +114,7 @@ class ExpNsResource extends ExpResource {
 	 * false if it may not be the case. However, we do not check the whole
 	 * range of allowed Unicode entities for performance reasons.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAllowedLocalName() {
 		return preg_match( '/^[A-Za-z_][-A-Za-z_0-9]*$/u', $this->localName );

@@ -22,7 +22,7 @@ use Title;
  *
  * @note This is an internal class and should not be used outside of smw-core
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
@@ -172,7 +172,7 @@ class DataRebuilder {
 	/**
 	 * @since 1.9.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function rebuild() {
 		$this->reportMessage(

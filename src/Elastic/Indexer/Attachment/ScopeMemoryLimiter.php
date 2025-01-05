@@ -7,7 +7,7 @@ namespace SMW\Elastic\Indexer\Attachment;
  * return with "Fatal error: Allowed memory size of ..." therefore temporary lift
  * and scope the memory limitation!
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

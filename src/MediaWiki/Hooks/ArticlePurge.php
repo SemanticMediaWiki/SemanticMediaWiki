@@ -18,7 +18,7 @@ use WikiPage;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

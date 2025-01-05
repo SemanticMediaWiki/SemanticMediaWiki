@@ -99,7 +99,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * @since 1.8
 	 *
 	 * @param SMWDataItem $di
-	 * @return boolean
+	 * @return bool
 	 */
 	abstract public function equals( SMWDataItem $di );
 

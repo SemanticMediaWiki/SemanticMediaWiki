@@ -13,7 +13,7 @@ use SMW\InMemoryPoolCache;
  * (e.g MW's Message class). It is expected that a registered handler returns a
  * simple string representation for the parameters, type, and language given.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -162,7 +162,7 @@ class Message {
 	 * @param int|null $type
 	 * @param int|null $language
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public static function decode( $message, $type = null, $language = null ) {
 		$message = json_decode( $message );

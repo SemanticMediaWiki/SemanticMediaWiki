@@ -418,7 +418,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param boolean $verbose
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 */
 	abstract public function setup( $verbose = true );
 
@@ -465,7 +465,7 @@ abstract class Store implements QueryEngine {
 	 * @param bool $verbose
 	 * @param Options|null $options
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 */
 	public static function setupStore( $verbose = true, $options = null ) {
 		$store = StoreFactory::getStore();

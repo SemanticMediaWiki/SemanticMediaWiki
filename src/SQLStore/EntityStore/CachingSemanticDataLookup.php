@@ -14,7 +14,7 @@ use SMW\SQLStore\PropertyTableDefinition;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

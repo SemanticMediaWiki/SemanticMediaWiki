@@ -11,7 +11,7 @@ use SMW\SQLStore\TableBuilder\Table;
  * that implements this interface is expected to define Database specific
  * operations and allowing it to be executed on a specific RDBMS back-end.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

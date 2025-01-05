@@ -206,7 +206,7 @@ class SMWNumberValue extends SMWDataValue {
 	/**
 	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem SMWDataItem
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_NUMBER ) {
@@ -407,7 +407,7 @@ class SMWNumberValue extends SMWDataValue {
 	 *
 	 * @param string $unit
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasPrefixalUnitPreference( $unit ) {
 		return isset( $this->prefixalUnitPreference[$unit] ) && $this->prefixalUnitPreference[$unit];
@@ -451,7 +451,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * may overwrite this behavior.
 	 * @param $number float value obtained by parsing user input
 	 * @param $unit string after the numericla user input
-	 * @return boolean specifying if the unit string is allowed
+	 * @return bool specifying if the unit string is allowed
 	 */
 	protected function convertToMainUnit( $number, $unit ) {
 		$this->m_dataitem = new SMWDINumber( $number );

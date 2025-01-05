@@ -19,7 +19,7 @@ use SMWErrorValue as ErrorValue;
  * property names. To create suitable datavalues for a given property, the
  * method newDataValueByProperty() can be used.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch

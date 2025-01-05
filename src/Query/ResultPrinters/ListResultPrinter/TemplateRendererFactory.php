@@ -8,7 +8,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 /**
  * Class TemplateRendererFactory
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke

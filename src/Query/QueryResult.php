@@ -24,7 +24,7 @@ use SMWQuery as Query;
  * getResults(). This is useful for printers that disregard printouts and
  * only are interested in the actual list of pages.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author Markus Krötzsch
@@ -237,7 +237,7 @@ class QueryResult {
 	/**
 	 * @since  2.4
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFromCache() {
 		return $this->isFromCache;
@@ -351,7 +351,7 @@ class QueryResult {
 	/**
 	 * Would there be more query results that were not shown due to a limit?
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFurtherResults() {
 		return $this->mFurtherResults;

@@ -14,7 +14,7 @@ use Xml;
  * @note Copied from SearchFormWidget::powerSearchBox, #3126 contains the reason
  * why we need to copy the code!
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

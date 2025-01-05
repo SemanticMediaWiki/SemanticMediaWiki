@@ -13,7 +13,7 @@ use SMW\SQLStore\SQLStore;
 /**
  * Run a deferred update on the `smw_hash` field.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

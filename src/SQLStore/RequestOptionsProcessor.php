@@ -9,7 +9,7 @@ use SMWRequestOptions as RequestOptions;
 use SMWStringCondition as StringCondition;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author Markus Krötzsch

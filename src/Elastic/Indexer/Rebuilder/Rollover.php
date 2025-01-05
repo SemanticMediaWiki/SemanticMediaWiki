@@ -13,7 +13,7 @@ use SMW\Elastic\Exception\NoConnectionException;
  *
  * @see https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

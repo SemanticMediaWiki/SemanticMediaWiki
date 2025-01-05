@@ -18,7 +18,7 @@ use SMWQueryResult as QueryResult;
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
  * of these queries to obtain suitable QueryResult objects.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch

@@ -11,7 +11,7 @@ use Wikimedia\Rdbms\DBQueryError;
  * Simple implementation of PropertyStatisticsTable using MediaWikis
  * database abstraction layer and a single table.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -73,7 +73,7 @@ class PropertyStatisticsStore {
 	 * @param int $propertyId
 	 * @param int $value
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 */
 	public function addToUsageCount( $pid, $value ) {
 		$usageVal = 0;
@@ -131,7 +131,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @param array $additions
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 */
 	public function addToUsageCounts( array $additions ) {
 		$success = true;
@@ -173,7 +173,7 @@ class PropertyStatisticsStore {
 	 * @param int $propertyId
 	 * @param int $value
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function setUsageCount( $propertyId, $value ) {
@@ -216,7 +216,7 @@ class PropertyStatisticsStore {
 	 * @param int $propertyId
 	 * @param int $value
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function insertUsageCount( $propertyId, $value ) {
@@ -333,7 +333,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 1.9
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 */
 	public function deleteAll() {
 		return $this->connection->delete(

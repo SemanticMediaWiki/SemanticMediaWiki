@@ -20,7 +20,7 @@ use SMWExpData as ExpData;
 use SMWExporter as Exporter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author Markus Krötzsch
@@ -51,7 +51,7 @@ class ConceptMapper implements DataItemMapper {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMapperFor( DataItem $dataItem ) {
 		return $dataItem instanceof DIConcept;

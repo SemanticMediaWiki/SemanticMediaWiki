@@ -8,7 +8,7 @@ use SMW\Query\DescriptionBuilderRegistry;
  * @covers \SMW\Query\DescriptionBuilderRegistry
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames

@@ -14,7 +14,7 @@ use SMW\MediaWiki\Permission\PermissionExaminerAware;
 use SMW\Utils\TemplateEngine;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -86,7 +86,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
@@ -107,7 +107,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 * @param DIWikiPage $subject
 	 * @param array $options
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
 		return $this->checkIndicators( $subject, $options ) !== [];

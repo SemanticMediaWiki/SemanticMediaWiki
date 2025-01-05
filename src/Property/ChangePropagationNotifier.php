@@ -16,7 +16,7 @@ use SMWDIBlob as DIBlob;
  * the class tries to compare old and new specifications (values about that property)
  * and notifies a dispatcher about a change.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -89,7 +89,7 @@ class ChangePropagationNotifier {
 	/**
 	 * @since 1.9
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasDiff() {
 		return $this->hasDiff;
@@ -119,7 +119,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inNamespace( DIWikiPage $subject ) {
 		return $subject->getNamespace() === SMW_NS_PROPERTY || $subject->getNamespace() === NS_CATEGORY;
@@ -196,7 +196,7 @@ class ChangePropagationNotifier {
 	 * @param SMWDataItem[] $oldDataValue
 	 * @param SMWDataItem[] $newDataValue
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function isEqual( array $oldDataValue, array $newDataValue ) {
 		// The hashes of all values of both arrays are taken, then sorted

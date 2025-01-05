@@ -6,7 +6,7 @@ use SMW\MediaWiki\Database;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -53,7 +53,7 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnabled() {
 		return $this->searchTable->isEnabled();
@@ -78,7 +78,7 @@ class SearchTableUpdater {
 	 *
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function optimize() {
 		if ( !$this->connection->isType( 'mysql' ) ) {
@@ -100,7 +100,7 @@ class SearchTableUpdater {
 	 * @param int $sid
 	 * @param int $pid
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function exists( $sid, $pid ) {
 		$row = $this->connection->selectRow(

@@ -5,7 +5,7 @@ namespace SMW\Indicator\EntityExaminerIndicators;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -29,7 +29,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProvider extends Constrain
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;

@@ -33,7 +33,7 @@ use Title;
  * during tests that would lead to an out-of-memory) to store a list of
  * entities that require an update.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -69,7 +69,7 @@ class ChangePropagationDispatchJob extends Job {
 	 * @param DIWikiPage $subject
 	 * @param array $params
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function planAsJob( DIWikiPage $subject, $params = [] ) {
 		Exporter::getInstance()->resetCacheBy( $subject );
@@ -108,7 +108,7 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasPendingJobs( DIWikiPage $subject ) {
 		$applicationFactory = ApplicationFactory::getInstance();

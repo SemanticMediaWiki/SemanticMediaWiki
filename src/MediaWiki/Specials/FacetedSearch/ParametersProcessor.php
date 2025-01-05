@@ -20,7 +20,7 @@ use WebRequest;
  * - csum: defines a checksum to verify whether the query string was modified
  *   during a request
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -188,7 +188,7 @@ class ParametersProcessor {
 
 		if ( in_array( $request->getVal( 'order', 'asc' ), [ 'asc', 'desc' ] ) ) {
 			$this->parameters[] = 'order=' . $request->getVal( 'order', 'asc' );
-		} else if ( $request->getVal( 'order', 'asc' ) === 'recent' ) {
+		} elseif ( $request->getVal( 'order', 'asc' ) === 'recent' ) {
 			$this->parameters[] = 'order=desc';
 			$this->parameters[] = 'sort=Modification date';
 		}

@@ -29,7 +29,7 @@ use SMWDataValue as DataValue;
  * return ThingDescription to not impose any condition, e.g. if parsing
  * failed. Error messages of this DataValue object are propagated.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames

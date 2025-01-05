@@ -11,7 +11,7 @@ use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -92,7 +92,7 @@ class SearchTable {
 	 *
 	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExemptedPropertyById( $id ) {
 		$dataItem = $this->getDataItemById( $id );
@@ -119,7 +119,7 @@ class SearchTable {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExemptedProperty( DIProperty $property ) {
 		$dataItemTypeId = DataTypeRegistry::getInstance()->getDataItemId(
@@ -139,7 +139,7 @@ class SearchTable {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValidByType( $type ) {
 		$indexType = SMW_FT_NONE;
@@ -171,7 +171,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnabled() {
 		return $this->isEnabled;
@@ -227,7 +227,7 @@ class SearchTable {
 	 *
 	 * @param string $token
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasMinTokenLength( $token ) {
 		return mb_strlen( $token ) >= $this->minTokenSize;

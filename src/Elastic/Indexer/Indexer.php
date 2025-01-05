@@ -18,7 +18,7 @@ use SMW\Utils\Timer;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -78,7 +78,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param [] $versions
+	 * @param $versions
 	 */
 	public function setVersions( array $versions ) {
 		$this->versions = $versions;
@@ -107,7 +107,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAccessible() {
 		return $this->canReplicate();

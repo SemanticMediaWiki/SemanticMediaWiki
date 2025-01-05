@@ -11,7 +11,7 @@ use SMWDIBlob as DIBlob;
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames

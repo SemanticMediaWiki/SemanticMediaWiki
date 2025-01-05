@@ -8,7 +8,7 @@ use SMW\DIProperty;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -73,7 +73,7 @@ class FieldMapper {
 	 *
 	 * @param string $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isPhrase( $value = '' ) {
 		return $value[0] === '"' && substr( $value, -1 ) === '"';
@@ -84,7 +84,7 @@ class FieldMapper {
 	 *
 	 * @param string $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasWildcard( $value = '' ) {
 		return strpos( $value, '*' ) !== false && strpos( $value, '\*' ) === false;
@@ -95,7 +95,7 @@ class FieldMapper {
 	 *
 	 * @param string $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function containsReservedChar( $value ) {
 		$reservedChars = [

@@ -14,7 +14,7 @@ use SMWQueryResult as QueryResult;
  * Print query results in alphabetic groups displayed in columns, a la the
  * standard Category pages.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author David Loomer

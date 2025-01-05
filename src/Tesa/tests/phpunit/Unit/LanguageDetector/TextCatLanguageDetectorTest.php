@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Onoi\Tesa\LanguageDetector\TextCatLanguageDetector
  * @group onoi-tesa
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames

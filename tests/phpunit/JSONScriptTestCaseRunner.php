@@ -21,7 +21,7 @@ use SMW\Tests\Utils\UtilityFactory;
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -199,7 +199,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	 *
 	 * @param string $file
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function canTestCaseFile( $file ) {
 		// Filter specific files on-the-fly

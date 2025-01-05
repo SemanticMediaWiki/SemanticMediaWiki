@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  * Allows to execute SQLStore or table specific examination tasks that are
  * expected to be part of the installation or removal routine.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

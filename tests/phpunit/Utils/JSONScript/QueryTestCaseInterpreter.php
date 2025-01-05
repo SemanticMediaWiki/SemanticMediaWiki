@@ -11,7 +11,7 @@ use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -35,7 +35,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasCondition() {
 		return isset( $this->contents['condition'] );
@@ -98,7 +98,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFromCache() {
 		return isset( $this->contents['assert-queryresult']['isFromCache'] ) ? (bool)$this->contents['assert-queryresult']['isFromCache'] : null;
@@ -107,7 +107,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function checkSorting() {
 		return isset( $this->contents['assert-queryresult']['check-sorting'] ) ? (bool)$this->contents['assert-queryresult']['check-sorting'] : false;
@@ -178,7 +178,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.3
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRequiredToClearStoreCache() {
 		return isset( $this->contents['store']['clear-cache'] ) && $this->contents['store']['clear-cache'];

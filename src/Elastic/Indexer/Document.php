@@ -8,7 +8,7 @@ use SMW\DIWikiPage;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -80,7 +80,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isType( $type ) {
 		return $this->type === $type;
@@ -148,7 +148,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSubDocumentById( $id ) {
 		return isset( $this->subDocuments[$id] );
