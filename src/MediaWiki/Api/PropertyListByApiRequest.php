@@ -48,7 +48,7 @@ class PropertyListByApiRequest {
 	private $meta = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $limit = 50;
 
@@ -90,7 +90,7 @@ class PropertyListByApiRequest {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $listOnly
+	 * @param bool $listOnly
 	 */
 	public function setListOnly( $listOnly ) {
 		$this->listOnly = (bool)$listOnly;

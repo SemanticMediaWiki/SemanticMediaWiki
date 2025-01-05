@@ -127,7 +127,7 @@ abstract class Description {
 	 * The result should be a plain query string that SMW is able to parse,
 	 * without any kind of HTML escape sequences.
 	 *
-	 * @param boolean $asValue
+	 * @param bool $asValue
 	 *
 	 * @return string
 	 */

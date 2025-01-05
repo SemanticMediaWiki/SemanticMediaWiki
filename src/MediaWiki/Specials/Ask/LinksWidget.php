@@ -47,7 +47,7 @@ class LinksWidget {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isEmpty
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
@@ -194,7 +194,7 @@ class LinksWidget {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isEmpty
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
@@ -238,8 +238,8 @@ class LinksWidget {
 	 *
 	 * @param Title $title
 	 * @param string $urlTail
-	 * @param boolean $hideForm
-	 * @param boolean $isEmpty
+	 * @param bool $hideForm
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
@@ -269,7 +269,7 @@ class LinksWidget {
 	 *
 	 * @param Title $title
 	 * @param string $urlTail
-	 * @param boolean $isEmpty
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
@@ -314,7 +314,7 @@ class LinksWidget {
 	 *
 	 * @param Title $title
 	 * @param string $urlTail
-	 * @param boolean $isFromCache
+	 * @param bool $isFromCache
 	 *
 	 * @return string
 	 */

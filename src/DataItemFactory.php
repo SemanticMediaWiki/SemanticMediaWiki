@@ -37,7 +37,7 @@ class DataItemFactory {
 	 * @since 2.4
 	 *
 	 * @param string $key
-	 * @param boolean $inverse
+	 * @param bool $inverse
 	 *
 	 * @return DIProperty
 	 */
@@ -110,7 +110,7 @@ class DataItemFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param boolean $boolean
+	 * @param bool $boolean
 	 *
 	 * @return DIBoolean
 	 */

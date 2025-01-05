@@ -73,12 +73,12 @@ class DataRebuilder {
 	private $cliMsgFormatter;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $rebuildCount = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $exceptionCount = 0;
 

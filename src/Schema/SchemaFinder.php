@@ -48,7 +48,7 @@ class SchemaFinder {
 	private $cache;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL;
 

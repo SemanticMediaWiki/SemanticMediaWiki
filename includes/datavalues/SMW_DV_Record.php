@@ -142,7 +142,7 @@ class SMWRecordValue extends AbstractMultiValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem DataItem
+	 * @param $dataItem DataItem
 	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {

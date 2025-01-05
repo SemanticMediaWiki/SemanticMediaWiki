@@ -53,12 +53,12 @@ class Database {
 	private $transactionHandler;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $flags = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $insertId = null;
 

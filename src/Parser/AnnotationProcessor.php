@@ -58,7 +58,7 @@ class AnnotationProcessor {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $canAnnotate
+	 * @param bool $canAnnotate
 	 */
 	public function setCanAnnotate( $canAnnotate ) {
 		$this->canAnnotate = $canAnnotate;

@@ -49,8 +49,8 @@ class Tokenizer {
 	 *
 	 * @param string &$currentString
 	 * @param string $stoppattern
-	 * @param boolean $consume
-	 * @param boolean $trim
+	 * @param bool $consume
+	 * @param bool $trim
 	 *
 	 * @return string
 	 */

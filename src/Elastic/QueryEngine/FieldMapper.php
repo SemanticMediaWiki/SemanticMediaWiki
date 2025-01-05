@@ -28,7 +28,7 @@ class FieldMapper {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isCompatMode
+	 * @param bool $isCompatMode
 	 */
 	public function isCompatMode( $isCompatMode ) {
 		$this->isCompatMode = $isCompatMode;

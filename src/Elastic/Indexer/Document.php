@@ -20,7 +20,7 @@ class Document implements JsonSerializable {
 	const TYPE_DELETE = 'type/delete';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $id = 0;
 

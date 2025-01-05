@@ -153,7 +153,7 @@ class MessageFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $escape
+	 * @param bool $escape
 	 *
 	 * @return MessageFormatter
 	 */
@@ -238,8 +238,8 @@ class MessageFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $escape
-	 * @param boolean $html
+	 * @param bool $escape
+	 * @param bool $html
 	 *
 	 * @return string
 	 */

@@ -56,7 +56,7 @@ class XmlResponseParser implements HttpResponseParser {
 	/**
 	 * Integer index of the column that the current result binding fills.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $xmlBindIndex;
 
@@ -173,13 +173,13 @@ class XmlResponseParser implements HttpResponseParser {
 			case 'result' && ( $prevTag == 'results' ):
 				$this->data[] = array_fill( 0, count( $this->header ), null );
 				break;
-			case  'literal' && ( $prevTag == 'binding' ):
+			case 'literal' && ( $prevTag == 'binding' ):
 				if ( array_key_exists( 'datatype', $attributes ) ) {
 					$this->currentDataType = $attributes['datatype'];
 				}
 				/// TODO handle xml:lang attributes here as well?
 				break;
-			case  'variable' && ( $prevTag == 'head' ):
+			case 'variable' && ( $prevTag == 'head' ):
 				if ( array_key_exists( 'name', $attributes ) ) {
 					$this->header[$attributes['name']] = count( $this->header );
 				}

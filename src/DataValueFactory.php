@@ -44,7 +44,7 @@ class DataValueFactory {
 	private $dataValueServiceFactory;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $featureSet = 0;
 

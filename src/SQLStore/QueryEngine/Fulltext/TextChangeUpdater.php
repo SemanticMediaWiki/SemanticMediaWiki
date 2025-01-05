@@ -71,7 +71,7 @@ class TextChangeUpdater {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $asDeferredUpdate
+	 * @param bool $asDeferredUpdate
 	 */
 	public function asDeferredUpdate( $asDeferredUpdate ) {
 		$this->asDeferredUpdate = (bool)$asDeferredUpdate;
@@ -84,7 +84,7 @@ class TextChangeUpdater {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
@@ -93,7 +93,7 @@ class TextChangeUpdater {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isPrimary
+	 * @param bool $isPrimary
 	 */
 	public function isPrimary( $isPrimary ) {
 		$this->isPrimary = $isPrimary;

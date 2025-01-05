@@ -23,7 +23,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	public $res;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $position;
 

@@ -86,7 +86,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	/**
 	 * @since 2.2
 	 *
-	 * @param boolean $debugMode
+	 * @param bool $debugMode
 	 */
 	public function setDebugMode( $debugMode ) {
 		$this->debug = $debugMode;

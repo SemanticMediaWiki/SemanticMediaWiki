@@ -26,14 +26,14 @@ class ParametersWidget {
 	private static $isTooltipDisplay = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $defaultLimit = 50;
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isTooltipDisplay
+	 * @param bool $isTooltipDisplay
 	 */
 	public static function setTooltipDisplay( $isTooltipDisplay ) {
 		self::$isTooltipDisplay = (bool)$isTooltipDisplay;

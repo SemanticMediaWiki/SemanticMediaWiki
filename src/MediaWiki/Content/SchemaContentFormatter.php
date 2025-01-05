@@ -60,7 +60,7 @@ class SchemaContentFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isYaml
+	 * @param bool $isYaml
 	 */
 	public function isYaml( $isYaml ) {
 		$this->isYaml = $isYaml;

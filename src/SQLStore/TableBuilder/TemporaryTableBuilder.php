@@ -37,7 +37,7 @@ class TemporaryTableBuilder {
 	 * @see $smwgQTemporaryTablesWithAutoCommit
 	 * @since 2.5
 	 *
-	 * @param boolean $autoCommitFlag
+	 * @param bool $autoCommitFlag
 	 */
 	public function setAutoCommitFlag( $autoCommitFlag ) {
 		$this->autoCommitFlag = (bool)$autoCommitFlag;

@@ -26,7 +26,7 @@ class DIWikiPage extends SMWDataItem {
 
 	/**
 	 * MediaWiki namespace integer.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_namespace;
 
@@ -59,7 +59,7 @@ class DIWikiPage extends SMWDataItem {
 	private $pageLanguage = null;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $id = 0;
 

@@ -173,7 +173,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * Do not override in deriving classes.
 	 *
 	 * @param string $format
-	 * @param boolean $inline Optional since 1.9
+	 * @param bool $inline Optional since 1.9
 	 */
 	public function __construct( $format, $inline = true ) {
 		global $smwgQDefaultLinking;
@@ -249,7 +249,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * @see IResultPrinter::getResult
 	 *
-	 * @note: since 1.8 this method is final, since it's the entry point.
+	 * @note since 1.8 this method is final, since it's the entry point.
 	 * Most logic has been moved out to buildResult, which you can override.
 	 *
 	 * @param $results QueryResult
@@ -480,7 +480,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * Depending on current linking settings, returns a linker object
 	 * for making hyperlinks or NULL if no links should be created.
 	 *
-	 * @param boolean $firstcol True of this is the first result column (having special linkage settings).
+	 * @param bool $firstcol True of this is the first result column (having special linkage settings).
 	 *
 	 * @return Linker|null
 	 */
@@ -579,7 +579,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * @see IResultPrinter::setShowErrors
 	 *
-	 * @param boolean $show
+	 * @param bool $show
 	 */
 	public function setShowErrors( $show ) {
 		$this->mShowErrors = $show;

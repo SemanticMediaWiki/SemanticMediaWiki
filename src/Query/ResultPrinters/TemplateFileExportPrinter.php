@@ -20,7 +20,7 @@ use SMWQueryResult as QueryResult;
 class TemplateFileExportPrinter extends FileExportPrinter {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numRows = 0;
 

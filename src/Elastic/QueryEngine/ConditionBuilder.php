@@ -304,7 +304,7 @@ class ConditionBuilder {
 	 * @since 3.0
 	 *
 	 * @param Description $description
-	 * @param boolean $isConstantScore
+	 * @param bool $isConstantScore
 	 *
 	 * @return array
 	 */

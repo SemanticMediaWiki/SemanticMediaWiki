@@ -23,7 +23,7 @@ class DummyFileCreator {
 	private $file = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $size = 100;
 

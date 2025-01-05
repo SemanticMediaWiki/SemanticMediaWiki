@@ -21,12 +21,12 @@ class ScoreSet {
 	private $scores = [];
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	private $max_score = null;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	private $min_score = null;
 
@@ -102,7 +102,7 @@ class ScoreSet {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $usort
+	 * @param bool $usort
 	 */
 	public function usort( $usort ) {
 		if ( !$usort || $this->scores === [] ) {

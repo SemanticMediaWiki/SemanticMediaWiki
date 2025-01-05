@@ -55,7 +55,7 @@ class DistinctEntityDataRebuilder {
 	private $filters = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $rebuildCount = 0;
 

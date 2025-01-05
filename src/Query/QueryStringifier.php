@@ -27,7 +27,7 @@ class QueryStringifier {
 	 * @since 3.0
 	 *
 	 * @param Query $query
-	 * @param boolean $printParameters
+	 * @param bool $printParameters
 	 *
 	 * @return string
 	 */

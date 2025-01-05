@@ -25,8 +25,8 @@ class Csv {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $show
-	 * @param boolean $bom
+	 * @param bool $show
+	 * @param bool $bom
 	 */
 	public function __construct( $show = false, $bom = false ) {
 		$this->show = $show;

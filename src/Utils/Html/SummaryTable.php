@@ -24,7 +24,7 @@ class SummaryTable {
 	private $attributes = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $columnThreshold = 4;
 
@@ -63,7 +63,7 @@ class SummaryTable {
 	/**
 	 * @since 3.1
 	 *
-	 * @param int $ColumnThreshold
+	 * @param int $columnThreshold
 	 */
 	public function setColumnThreshold( $columnThreshold ) {
 		$this->columnThreshold = $columnThreshold;

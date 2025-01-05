@@ -101,7 +101,7 @@ function smwfAbort( $text ) {
  * @param array $messages
  * @param string $icon Acts like an enum. Callers must ensure safety, since this value is used directly in the output.
  * @param string $separator
- * @param boolean $escape Should the messages be escaped or not (ie when they already are)
+ * @param bool $escape Should the messages be escaped or not (ie when they already are)
  *
  * @return string
  */
@@ -208,7 +208,7 @@ function smwfGetLinker() {
  * available as early on. Moreover, jobs and special pages are registered.
  *
  * @param mixed $namespace
- * @param boolean $complete
+ * @param bool $complete
  *
  * @return ConfigPreloader
  *

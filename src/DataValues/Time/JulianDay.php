@@ -34,7 +34,7 @@ class JulianDay implements CalendarModel {
 	/**
 	 * @since 2.4
 	 *
-	 * @param int $calendarmodel
+	 * @param int $calendarModel
 	 * @param int $year
 	 * @param int $month
 	 * @param int $day

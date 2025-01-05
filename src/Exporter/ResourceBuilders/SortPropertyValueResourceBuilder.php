@@ -36,7 +36,7 @@ class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBu
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $enabledCollationField
+	 * @param bool $enabledCollationField
 	 */
 	public function enabledCollationField( $enabledCollationField ) {
 		$this->enabledCollationField = (bool)$enabledCollationField;

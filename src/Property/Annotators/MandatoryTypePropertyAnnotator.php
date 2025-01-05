@@ -32,7 +32,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $subpropertyParentTypeInheritance
+	 * @param bool $subpropertyParentTypeInheritance
 	 */
 	public function setSubpropertyParentTypeInheritance( $subpropertyParentTypeInheritance ) {
 		$this->subpropertyParentTypeInheritance = (bool)$subpropertyParentTypeInheritance;

@@ -24,7 +24,7 @@ class SchemaLinkProfileAnnotator extends ProfileAnnotatorDecorator {
 	 * @since 3.0
 	 *
 	 * @param ProfileAnnotator $profileAnnotator
-	 * @param string $SchemaLink
+	 * @param string $schemaLink
 	 */
 	public function __construct( ProfileAnnotator $profileAnnotator, $schemaLink ) {
 		parent::__construct( $profileAnnotator );

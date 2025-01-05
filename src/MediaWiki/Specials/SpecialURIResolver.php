@@ -46,7 +46,7 @@ class SpecialURIResolver extends SpecialPage {
 				$this->setHeaders();
 				$out->addHTML(
 					'<p>' .
-						wfMessage( 'smw_uri_doc', 'https://www.w3.org/2001/tag/issues.html#httpRange-14' )->parse() .
+						$this->msg( 'smw_uri_doc', 'https://www.w3.org/2001/tag/issues.html#httpRange-14' )->parse() .
 					'</p>'
 				);
 			}

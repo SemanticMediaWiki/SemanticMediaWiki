@@ -74,7 +74,7 @@ class SpecialPageProperty extends SpecialPage {
 		);
 
 		$this->addHelpLink(
-			wfMessage( 'smw-special-pageproperty-helplink' )->escaped(),
+			$this->msg( 'smw-special-pageproperty-helplink' )->escaped(),
 			true
 		);
 
@@ -131,7 +131,7 @@ class SpecialPageProperty extends SpecialPage {
 		// No property given, no results
 		if ( $propname === '' ) {
 			$html .= $pageBuilder->buildForm();
-			$html .= wfMessage( 'smw_result_noresults' )->text();
+			$html .= $this->msg( 'smw_result_noresults' )->text();
 		} else {
 
 			$requestOptions = new RequestOptions();
@@ -158,7 +158,7 @@ class SpecialPageProperty extends SpecialPage {
 		}
 
 		$output = $this->getOutput();
-		$output->setPagetitle( wfMessage( 'pageproperty' )->text() );
+		$output->setPagetitle( $this->msg( 'pageproperty' )->text() );
 
 		$output->addModuleStyles( 'ext.smw.special.styles' );
 		$output->addModules( 'ext.smw.tooltip' );

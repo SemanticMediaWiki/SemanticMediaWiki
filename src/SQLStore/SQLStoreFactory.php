@@ -284,7 +284,7 @@ class SQLStoreFactory {
 	 * @since 2.2
 	 *
 	 * @param ListLookup $listLookup
-	 * @param boolean $useCache
+	 * @param bool $useCache
 	 * @param int $cacheExpiry
 	 *
 	 * @return ListLookup

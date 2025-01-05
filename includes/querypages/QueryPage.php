@@ -133,7 +133,7 @@ abstract class QueryPage extends \QueryPage {
 		// during doQuery() which is processed before this form is generated
 		$limit = $this->selectOptions['limit'];
 		$offset = $this->selectOptions['offset'];
-		$resultCount = wfMessage( 'smw-showingresults' )->numParams( $limit, $offset + 1 )->parse();
+		$resultCount = $this->msg( 'smw-showingresults' )->numParams( $limit, $offset + 1 )->parse();
 
 		$msgBuilder = new MessageBuilder( $this->getLanguage() );
 		$selection = $msgBuilder->prevNextToText(

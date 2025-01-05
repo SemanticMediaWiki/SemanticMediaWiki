@@ -26,7 +26,7 @@ class MappingIterator extends IteratorIterator implements Countable {
 	private $callback;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $count = 1;
 

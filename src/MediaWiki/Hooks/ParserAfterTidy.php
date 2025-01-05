@@ -62,7 +62,7 @@ class ParserAfterTidy implements HookListener {
 	 * @since  1.9
 	 *
 	 * @param Parser &$parser
-	 * @param NamespaceExaminer $NamespaceExaminer
+	 * @param NamespaceExaminer $namespaceExaminer
 	 * @param Cache $cache
 	 */
 	public function __construct( Parser &$parser, NamespaceExaminer $namespaceExaminer, Cache $cache ) {
@@ -76,7 +76,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
@@ -85,7 +85,7 @@ class ParserAfterTidy implements HookListener {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isReady
+	 * @param bool $isReady
 	 */
 	public function isReady( $isReady ) {
 		$this->isReady = (bool)$isReady;

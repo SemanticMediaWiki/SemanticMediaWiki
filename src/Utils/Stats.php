@@ -41,7 +41,7 @@ class Stats {
 	private $cache;
 
 	/**
-	 * @var string|integer
+	 * @var string|int
 	 */
 	private $id;
 
@@ -98,7 +98,7 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $shouldRecord
+	 * @param bool $shouldRecord
 	 */
 	public function shouldRecord( $shouldRecord ) {
 		$this->shouldRecord = (bool)$shouldRecord;
@@ -216,7 +216,7 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $asPending
+	 * @param bool $asPending
 	 */
 	public function recordStats( $asPending = false ) {
 		if ( $this->shouldRecord === false ) {

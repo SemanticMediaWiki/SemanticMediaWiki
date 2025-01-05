@@ -74,7 +74,7 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $textItemsFlag
+	 * @param bool $textItemsFlag
 	 */
 	public function setTextItemsFlag( $textItemsFlag ) {
 		$this->textItemsFlag = (bool)$textItemsFlag;

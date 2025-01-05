@@ -18,7 +18,7 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 	use FilterTrait;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $namespace;
 

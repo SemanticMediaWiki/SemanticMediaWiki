@@ -25,7 +25,7 @@ class TitleLookup {
 	private $connection = null;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $namespace = null;
 

@@ -74,7 +74,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $checkReplication
+	 * @param bool $checkReplication
 	 */
 	public function canCheckReplication( $checkReplication ) {
 		$this->checkReplication = (bool)$checkReplication;
@@ -83,7 +83,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $type
+	 * @param bool $type
 	 */
 	public function setDeferredMode( bool $isDeferredMode ) {
 		$this->isDeferredMode = $isDeferredMode;

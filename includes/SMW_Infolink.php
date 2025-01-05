@@ -73,7 +73,7 @@ class SMWInfolink {
 	/**
 	 * Create a new link to some internal page or to some external URL.
 	 *
-	 * @param boolean $internal Indicates whether $target is a page name (true) or URL (false).
+	 * @param bool $internal Indicates whether $target is a page name (true) or URL (false).
 	 * @param string $caption The label for the link.
 	 * @param string $target The actual link target.
 	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
@@ -91,7 +91,7 @@ class SMWInfolink {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isRestricted
+	 * @param bool $isRestricted
 	 */
 	public function isRestricted( $isRestricted ) {
 		$this->isRestricted = (bool)$isRestricted;
@@ -100,7 +100,7 @@ class SMWInfolink {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isCompactLink
+	 * @param bool $isCompactLink
 	 */
 	public function setCompactLink( $isCompactLink = true ) {
 		$this->isCompactLink = (bool)$isCompactLink;
@@ -173,13 +173,13 @@ class SMWInfolink {
 	 *
 	 * @return SMWInfolink
 	 */
-	public static function newInversePropertySearchLink( $caption, $subject, $propertyname, $style = false ) {
+	public static function newInversePropertySearchLink( $caption, $subject, $propertyName, $style = false ) {
 		return new SMWInfolink(
 			true,
 			$caption,
 			Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':PageProperty',
 			$style,
-			[ $subject . '::' . $propertyname ]
+			[ $subject . '::' . $propertyName ]
 		);
 	}
 
@@ -452,7 +452,7 @@ class SMWInfolink {
 	 * respective encoding/decoding methods instead.
 	 *
 	 * @param array $params
-	 * @param boolean $forTitle
+	 * @param bool $forTitle
 	 */
 	public static function encodeParameters( array $params, $forTitle = true ) {
 		$result = '';
@@ -540,7 +540,7 @@ class SMWInfolink {
 	 * the respective encoding/decoding methods instead.
 	 *
 	 * @param string $titleParam
-	 * @param boolean $allParams
+	 * @param bool $allParams
 	 *
 	 * @return array
 	 */

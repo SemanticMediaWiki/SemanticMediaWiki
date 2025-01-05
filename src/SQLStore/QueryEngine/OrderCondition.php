@@ -79,7 +79,7 @@ class OrderCondition {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isSupported
+	 * @param bool $isSupported
 	 */
 	public function isSupported( $isSupported ) {
 		$this->isSupported = $isSupported;
@@ -88,7 +88,7 @@ class OrderCondition {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $asUnconditional
+	 * @param bool $asUnconditional
 	 */
 	public function asUnconditional( $asUnconditional ) {
 		$this->asUnconditional = $asUnconditional;

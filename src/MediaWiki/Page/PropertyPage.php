@@ -63,7 +63,7 @@ class PropertyPage extends Page {
 	private $isLockedView = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $filterCount = 0;
 

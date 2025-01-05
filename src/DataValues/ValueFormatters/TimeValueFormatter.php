@@ -69,7 +69,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @since 2.4
 	 *
-	 * @param boolean $mindefault determining whether values below the
+	 * @param bool $mindefault determining whether values below the
 	 * precision of our input should be completed with minimal or maximal
 	 * conceivable values
 	 *

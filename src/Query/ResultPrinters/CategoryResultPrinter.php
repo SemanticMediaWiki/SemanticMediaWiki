@@ -39,7 +39,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	private $userParam;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numColumns;
 

@@ -30,7 +30,7 @@ class LinksProcessor {
 	 *
 	 * @since 2.3
 	 *
-	 * @param boolean $isStrictMode
+	 * @param bool $isStrictMode
 	 */
 	public function isStrictMode( $isStrictMode ) {
 		$this->isStrictMode = (bool)$isStrictMode;
@@ -58,7 +58,7 @@ class LinksProcessor {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $linksInValues
+	 * @param bool $linksInValues
 	 *
 	 * @return string
 	 */

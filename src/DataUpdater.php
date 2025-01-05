@@ -99,7 +99,7 @@ class DataUpdater {
 	 *
 	 * @since 3.0
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;
@@ -108,7 +108,7 @@ class DataUpdater {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isChangeProp
+	 * @param bool $isChangeProp
 	 */
 	public function isChangeProp( $isChangeProp ) {
 		$this->isChangeProp = (bool)$isChangeProp;
@@ -117,7 +117,7 @@ class DataUpdater {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isChangeProp
+	 * @param bool $isChangeProp
 	 */
 	public function isDeferrableUpdate( $isDeferrableUpdate ) {
 		$this->isDeferrableUpdate = (bool)$isDeferrableUpdate;
@@ -144,7 +144,7 @@ class DataUpdater {
 	/**
 	 * @since 1.9
 	 *
-	 * @param boolean $canCreateUpdateJob
+	 * @param bool $canCreateUpdateJob
 	 */
 	public function canCreateUpdateJob( $canCreateUpdateJob ) {
 		$this->canCreateUpdateJob = (bool)$canCreateUpdateJob;

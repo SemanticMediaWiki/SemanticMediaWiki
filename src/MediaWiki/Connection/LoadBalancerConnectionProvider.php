@@ -49,7 +49,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 *
 	 * @param int $id
 	 * @param string|array $groups
-	 * @param string|boolean $wiki Wiki ID, or false for the current wiki
+	 * @param string|bool $wiki Wiki ID, or false for the current wiki
 	 */
 	public function __construct( $id, $groups = [], $wiki = false ) {
 		$this->id = $id;

@@ -25,7 +25,7 @@ abstract class Page extends Article {
 	/**
 	 * Limit for results per page.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $limit;
 

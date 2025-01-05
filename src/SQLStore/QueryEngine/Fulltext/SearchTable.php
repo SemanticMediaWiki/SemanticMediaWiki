@@ -34,12 +34,12 @@ class SearchTable {
 	private $isEnabled = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $minTokenSize = 3;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $indexableDataTypes = 0;
 
@@ -162,7 +162,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $enabled
+	 * @param bool $enabled
 	 */
 	public function setEnabled( $enabled ) {
 		$this->isEnabled = (bool)$enabled;

@@ -36,7 +36,7 @@ class JsonContentsFileReader {
 	private $skipCache = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $ttl = 604800; // 7 * 24 * 3600
 
@@ -86,7 +86,7 @@ class JsonContentsFileReader {
 	 * @since 2.5
 	 *
 	 * @param string $languageCode
-	 * @param boolean $readFromFile
+	 * @param bool $readFromFile
 	 *
 	 * @return bool
 	 */
@@ -121,7 +121,7 @@ class JsonContentsFileReader {
 	 * @since 2.5
 	 *
 	 * @param string $languageCode
-	 * @param boolean $readFromFile
+	 * @param bool $readFromFile
 	 *
 	 * @return array
 	 * @throws RuntimeException

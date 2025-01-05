@@ -36,7 +36,7 @@ class ValueTextsBuilder {
 	public function getValuesText( SMWResultArray $field, $column = 0 ) {
 		$valueTexts = $this->getValueTexts( $field, $column );
 
-		return join( $this->get( 'valuesep' ), $valueTexts );
+		return implode( $this->get( 'valuesep' ), $valueTexts );
 	}
 
 	/**

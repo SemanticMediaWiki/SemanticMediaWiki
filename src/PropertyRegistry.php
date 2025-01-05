@@ -171,9 +171,9 @@ class PropertyRegistry {
 	 * @param string $id
 	 * @param string $valueType SMW type id
 	 * @param string|bool $label user label or false (internal property)
-	 * @param boolean $isVisible only used if label is given, see isShown()
-	 * @param boolean $isAnnotable
-	 * @param boolean $isDeclarative
+	 * @param bool $isVisible only used if label is given, see isShown()
+	 * @param bool $isAnnotable
+	 * @param bool $isDeclarative
 	 */
 	public function registerProperty( $id, $valueType, $label = false, $isVisible = false, $isAnnotable = true, $isDeclarative = false ) {
 		$signature = [ $valueType, $isVisible, $isAnnotable, $isDeclarative ];
@@ -347,7 +347,7 @@ class PropertyRegistry {
 	 * return false.
 	 *
 	 * @param string $label normalized property label
-	 * @param boolean $useAlias determining whether to check if the label is an alias
+	 * @param bool $useAlias determining whether to check if the label is an alias
 	 *
 	 * @return mixed string property ID or false
 	 */

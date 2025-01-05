@@ -27,7 +27,7 @@ class TextSanitizer {
 	private $languageDetection = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $minTokenSize = 3;
 
@@ -82,7 +82,7 @@ class TextSanitizer {
 	 * @since 2.5
 	 *
 	 * @param string $text
-	 * @param boolean $isSearchTerm
+	 * @param bool $isSearchTerm
 	 *
 	 * @return string
 	 */

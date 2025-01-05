@@ -67,7 +67,7 @@ class SMWPropertyListValue extends SMWDataValue {
 	/**
 	 * @see SMWDataValue::loadDataItem()
 	 *
-	 * @param $dataitem SMWDataItem
+	 * @param $dataItem SMWDataItem
 	 *
 	 * @return bool
 	 */

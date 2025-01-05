@@ -20,7 +20,7 @@ class ExecutionTimeTestListener implements TestListener {
 	/**
 	 * Threshold that defines "slow" in terms of seconds
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $slowThreshold = 10;
 

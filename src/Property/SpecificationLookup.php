@@ -386,7 +386,7 @@ class SpecificationLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $skipCache
+	 * @param bool $skipCache
 	 */
 	public function skipCache( $skipCache = true ) {
 		$this->skipCache = $skipCache;

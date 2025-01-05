@@ -36,7 +36,7 @@ class SMWURIValue extends SMWDataValue {
 	/**
 	 * One of the basic modes of operation for this class (emails, URL,
 	 * telephone number URI, ...).
-	 * @var integer
+	 * @var int
 	 */
 	private $m_mode;
 
@@ -207,7 +207,7 @@ class SMWURIValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
+	 * @param $dataItem SMWDataItem
 	 * @return bool
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {

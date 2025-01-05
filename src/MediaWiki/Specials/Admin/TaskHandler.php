@@ -27,7 +27,7 @@ abstract class TaskHandler {
 	const ACTIONABLE = 'actionable';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $featureSet = 0;
 

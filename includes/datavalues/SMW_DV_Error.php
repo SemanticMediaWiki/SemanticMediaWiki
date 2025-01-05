@@ -35,7 +35,7 @@ class SMWErrorValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
+	 * @param $dataItem SMWDataItem
 	 * @return bool
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {

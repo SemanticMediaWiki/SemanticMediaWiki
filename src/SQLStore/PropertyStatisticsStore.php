@@ -51,7 +51,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;

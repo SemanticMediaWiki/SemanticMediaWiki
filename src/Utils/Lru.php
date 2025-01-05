@@ -11,7 +11,7 @@ namespace SMW\Utils;
 class Lru {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $size;
 

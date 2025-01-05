@@ -103,7 +103,7 @@ class InfoLinksProvider {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $compactLink
+	 * @param bool $compactLink
 	 */
 	public function setCompactLink( $compactLink ) {
 		$this->compactLink = (bool)$compactLink;

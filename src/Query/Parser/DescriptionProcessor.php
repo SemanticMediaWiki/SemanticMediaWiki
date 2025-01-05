@@ -35,7 +35,7 @@ class DescriptionProcessor {
 	private $descriptionFactory;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $queryFeatures;
 

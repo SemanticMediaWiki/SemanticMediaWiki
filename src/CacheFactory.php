@@ -19,7 +19,7 @@ use WikiMap;
 class CacheFactory {
 
 	/**
-	 * @var string|integer
+	 * @var string|int
 	 */
 	private $mainCacheType;
 

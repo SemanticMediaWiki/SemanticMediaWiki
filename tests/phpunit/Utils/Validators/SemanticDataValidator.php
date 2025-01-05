@@ -29,7 +29,7 @@ class SemanticDataValidator extends \PHPUnit\Framework\Assert {
 	private $strictModeForValueMatch = true;
 
 	/**
-	 * @param boolean $strictMode
+	 * @param bool $strictMode
 	 */
 	public function setStrictModeForValueMatch( $strictMode ) {
 		$this->strictModeForValueMatch = (bool)$strictMode;

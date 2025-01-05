@@ -20,7 +20,7 @@ use Title;
 class NavigationLinksWidget {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $maxInlineLimit = 500;
 
@@ -149,7 +149,7 @@ class NavigationLinksWidget {
 	 * @param Title $title
 	 * @param UrlArgs $urlArgs
 	 * @param int $count
-	 * @param boolean $hasFurtherResults
+	 * @param bool $hasFurtherResults
 	 *
 	 * @return string
 	 */

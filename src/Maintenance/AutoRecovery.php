@@ -37,7 +37,7 @@ class AutoRecovery {
 	private $enabled = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $safeMargin = 0;
 
@@ -69,7 +69,7 @@ class AutoRecovery {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $enabled
+	 * @param bool $enabled
 	 */
 	public function enable( $enabled ) {
 		$this->enabled = (bool)$enabled;

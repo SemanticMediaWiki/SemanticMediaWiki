@@ -145,7 +145,7 @@ class Message {
 	}
 
 	/**
-	 * @FIXME Needs to be MW agnostic !
+	 * @fixme Needs to be MW agnostic !
 	 *
 	 * @since 2.5
 	 *

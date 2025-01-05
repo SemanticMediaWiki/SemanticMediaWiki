@@ -41,7 +41,7 @@ class DisplayTitleFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $canUse
+	 * @param bool $canUse
 	 */
 	public function getEntityCache() {
 		return $this->entityCache;
@@ -50,7 +50,7 @@ class DisplayTitleFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $canUse
+	 * @param bool $canUse
 	 */
 	public function setCanUse( $canUse ) {
 		$this->canUse = (bool)$canUse;

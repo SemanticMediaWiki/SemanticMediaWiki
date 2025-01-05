@@ -81,7 +81,7 @@ class NamespaceForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $hideList
+	 * @param bool $hideList
 	 */
 	public function setHideList( $hideList ) {
 		$this->hideList = (bool)$hideList;

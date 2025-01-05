@@ -312,8 +312,8 @@ class EntityIdManager {
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
 	 * @param string &$sortkey call-by-ref will be set to sortkey
-	 * @param boolean $canonical should redirects be resolved?
-	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @param bool $canonical should redirects be resolved?
+	 * @param bool $fetchHashes should the property hashes be obtained and cached?
 	 *
 	 * @return int SMW id or 0 if there is none
 	 */
@@ -341,8 +341,8 @@ class EntityIdManager {
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
 	 * @param string &$sortkey call-by-ref will be set to sortkey
-	 * @param boolean $canonical should redirects be resolved?
-	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @param bool $canonical should redirects be resolved?
+	 * @param bool $fetchHashes should the property hashes be obtained and cached?
 	 *
 	 * @return int SMW id or 0 if there is none
 	 */
@@ -556,8 +556,8 @@ class EntityIdManager {
 	 * @param int $namespace namespace
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
-	 * @param boolean $canonical should redirects be resolved?
-	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @param bool $canonical should redirects be resolved?
+	 * @param bool $fetchHashes should the property hashes be obtained and cached?
 	 *
 	 * @return int SMW id or 0 if there is none
 	 */
@@ -584,9 +584,9 @@ class EntityIdManager {
 	 * @param int $namespace namespace
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
-	 * @param boolean $canonical should redirects be resolved?
+	 * @param bool $canonical should redirects be resolved?
 	 * @param string $sortkey call-by-ref will be set to sortkey
-	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @param bool $fetchHashes should the property hashes be obtained and cached?
 	 *
 	 * @return int SMW id or 0 if there is none
 	 */
@@ -614,9 +614,9 @@ class EntityIdManager {
 	 * @param int $namespace namespace
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
-	 * @param boolean $canonical should redirects be resolved?
+	 * @param bool $canonical should redirects be resolved?
 	 * @param string $sortkey call-by-ref will be set to sortkey
-	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @param bool $fetchHashes should the property hashes be obtained and cached?
 	 *
 	 * @return int SMW id or 0 if there is none
 	 */

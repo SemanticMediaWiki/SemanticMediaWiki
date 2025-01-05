@@ -18,7 +18,7 @@ use SMW\Localizer;
 class NamespaceDescription extends Description {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $namespace;
 

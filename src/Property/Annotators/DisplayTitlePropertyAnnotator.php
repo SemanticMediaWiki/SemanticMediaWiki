@@ -45,7 +45,7 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $canCreateAnnotation
+	 * @param bool $canCreateAnnotation
 	 */
 	public function canCreateAnnotation( $canCreateAnnotation ) {
 		$this->canCreateAnnotation = (bool)$canCreateAnnotation;

@@ -37,7 +37,7 @@ class Table {
 	 * @since 2.5
 	 *
 	 * @param string $name
-	 * @param boolean $isCoreTable
+	 * @param bool $isCoreTable
 	 */
 	public function __construct( $name, bool $isCoreTable = true ) {
 		$this->name = $name;

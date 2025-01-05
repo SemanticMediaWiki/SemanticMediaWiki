@@ -66,7 +66,7 @@ class PrefetchItemLookup {
 	 * @param Store $store
 	 * @param CachingSemanticDataLookup $semanticDataLookup
 	 * @param PropertySubjectsLookup $propertySubjectsLookup
-	 * @param LinkBatch|null $LinkBatch
+	 * @param LinkBatch|null $linkBatch
 	 * @param SequenceMap|null $sequenceMap
 	 */
 	public function __construct( Store $store, CachingSemanticDataLookup $semanticDataLookup, PropertySubjectsLookup $propertySubjectsLookup, ?LinkBatch $linkBatch = null, ?SequenceMap $sequenceMap = null ) {

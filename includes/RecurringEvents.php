@@ -43,12 +43,12 @@ class RecurringEvents {
 	private $errors = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $defaultNumRecurringEvents = 25;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $maxNumRecurringEvents = 25;
 

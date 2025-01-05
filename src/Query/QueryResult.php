@@ -77,7 +77,7 @@ class QueryResult {
 	/**
 	 * Holds a value that belongs to a count query result
 	 *
-	 * @var integer|null
+	 * @var int|null
 	 */
 	private $countValue;
 
@@ -99,7 +99,7 @@ class QueryResult {
 	private $fieldItemFinder;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $serializer_version = 2;
 
@@ -123,7 +123,7 @@ class QueryResult {
 	 * @param Query $query
 	 * @param DIWikiPage[] $results
 	 * @param Store $store
-	 * @param boolean $furtherRes
+	 * @param bool $furtherRes
 	 */
 	public function __construct( array $printRequests, Query $query, array $results, Store $store, $furtherRes = false ) {
 		$this->mResults = $results;
@@ -188,7 +188,7 @@ class QueryResult {
 	/**
 	 * @since  2.4
 	 *
-	 * @param boolean $isFromCache
+	 * @param bool $isFromCache
 	 */
 	public function setFromCache( $isFromCache ) {
 		$this->isFromCache = (bool)$isFromCache;

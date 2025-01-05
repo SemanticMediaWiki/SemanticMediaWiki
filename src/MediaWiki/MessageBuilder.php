@@ -65,7 +65,7 @@ class MessageBuilder {
 	 * @since 2.1
 	 *
 	 * @param mixed $number
-	 * @param boolean $useForSpecialNumbers set to true for numbers like dates
+	 * @param bool $useForSpecialNumbers set to true for numbers like dates
 	 *
 	 * @return string
 	 */
@@ -95,7 +95,7 @@ class MessageBuilder {
 	 * @param int $offset
 	 * @param int $offset
 	 * @param array $query
-	 * @param boolean|null $isAtTheEnd
+	 * @param bool|null $isAtTheEnd
 	 *
 	 * @return string
 	 */

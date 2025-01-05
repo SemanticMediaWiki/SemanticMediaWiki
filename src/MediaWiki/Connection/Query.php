@@ -61,7 +61,7 @@ class Query {
 	public $alias = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $index = 0;
 

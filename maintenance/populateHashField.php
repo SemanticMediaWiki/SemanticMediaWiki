@@ -69,7 +69,7 @@ class populateHashField extends \Maintenance {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $complete
+	 * @param bool $complete
 	 */
 	public function setComplete( $complete ) {
 		$this->cliMsgFormatter = new CliMsgFormatter();

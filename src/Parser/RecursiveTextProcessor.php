@@ -37,12 +37,12 @@ class RecursiveTextProcessor {
 	 * Incremented while expanding templates inserted during printout; stop
 	 * expansion at some point
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $recursionDepth = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $maxRecursionDepth = 2;
 
@@ -52,7 +52,7 @@ class RecursiveTextProcessor {
 	private $recursiveAnnotation = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $uniqid;
 
@@ -111,7 +111,7 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $transcludeAnnotation
+	 * @param bool $transcludeAnnotation
 	 */
 	public function transcludeAnnotation( $transcludeAnnotation ) {
 		$parserOutput = $this->getParserOutputSafe();
@@ -162,7 +162,7 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $recursiveAnnotation
+	 * @param bool $recursiveAnnotation
 	 */
 	public function setRecursiveAnnotation( $recursiveAnnotation ) {
 		$this->recursiveAnnotation = (bool)$recursiveAnnotation;

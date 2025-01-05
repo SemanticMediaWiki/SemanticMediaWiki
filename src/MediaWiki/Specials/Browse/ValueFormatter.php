@@ -63,7 +63,7 @@ class ValueFormatter {
 	 *
 	 * @param DataValue $value
 	 * @param PropertyValue $property
-	 * @param boolean $incoming
+	 * @param bool $incoming
 	 *
 	 * @return string
 	 */
@@ -132,8 +132,8 @@ class ValueFormatter {
 	 * @since 2.5
 	 *
 	 * @param PropertyValue $property
-	 * @param boolean $incoming
-	 * @param boolean $showInverse
+	 * @param bool $incoming
+	 * @param bool $showInverse
 	 *
 	 * @return string
 	 */

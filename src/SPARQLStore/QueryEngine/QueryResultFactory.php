@@ -35,7 +35,7 @@ class QueryResultFactory {
 	 * @since  2.0
 	 *
 	 * @param Query $query QueryResults hold a reference to original query
-	 * @param boolean $hasFurtherResults
+	 * @param bool $hasFurtherResults
 	 *
 	 * @return QueryResult
 	 */

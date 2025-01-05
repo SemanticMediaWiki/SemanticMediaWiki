@@ -63,7 +63,7 @@ class ReplicationCheck {
 	private $severityType = self::SEVERITY_TYPE_ERROR;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL = 3600;
 

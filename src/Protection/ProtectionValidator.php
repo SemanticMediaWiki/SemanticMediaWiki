@@ -124,7 +124,7 @@ class ProtectionValidator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param string|bool $editProtectionRight
 	 */
 	public function setEditProtectionRight( $editProtectionRight ) {
 		$this->editProtectionRight = $editProtectionRight;
@@ -142,7 +142,7 @@ class ProtectionValidator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $createProtectionRight
+	 * @param string|bool $createProtectionRight
 	 */
 	public function setCreateProtectionRight( $createProtectionRight ) {
 		$this->createProtectionRight = $createProtectionRight;
@@ -160,7 +160,7 @@ class ProtectionValidator {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $changePropagationProtection
+	 * @param bool $changePropagationProtection
 	 */
 	public function setChangePropagationProtection( $changePropagationProtection ) {
 		$this->changePropagationProtection = (bool)$changePropagationProtection;

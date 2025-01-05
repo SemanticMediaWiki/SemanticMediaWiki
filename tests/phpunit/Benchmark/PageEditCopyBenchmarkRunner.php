@@ -43,7 +43,7 @@ class PageEditCopyBenchmarkRunner {
 	private $benchmarkReport = [];
 
 	/**
-	 * @var integer|count
+	 * @var int|count
 	 */
 	private $editRepetitionCount = null;
 

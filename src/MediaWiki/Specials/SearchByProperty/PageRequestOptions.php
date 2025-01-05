@@ -52,12 +52,12 @@ class PageRequestOptions {
 	public $value;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $limit = 20;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $offset = 0;
 

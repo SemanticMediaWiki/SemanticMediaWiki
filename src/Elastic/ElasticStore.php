@@ -130,10 +130,10 @@ class ElasticStore extends SQLStore {
 	 * @see SQLStore::changeTitle
 	 * @since 3.0
 	 *
-	 * @param Title $oldtitle
-	 * @param Title $newtitle
-	 * @param int $pageid
-	 * @param int $redirid
+	 * @param Title $oldTitle
+	 * @param Title $newTitle
+	 * @param int $pageId
+	 * @param int $redirectId
 	 */
 	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
 		$status = parent::changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );

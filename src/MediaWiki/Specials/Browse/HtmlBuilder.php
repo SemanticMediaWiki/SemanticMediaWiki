@@ -49,28 +49,28 @@ class HtmlBuilder {
 	/**
 	 * At which incoming property are we currently?
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $offset = 0;
 
 	/**
 	 * How many incoming values should be asked for
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $incomingValuesCount = 8;
 
 	/**
 	 * How many outgoing values should be asked for
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $outgoingValuesCount = 200;
 
 	/**
 	 * How many incoming properties should be asked for
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $incomingPropertiesCount = 21;
 

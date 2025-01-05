@@ -110,7 +110,7 @@ class SubobjectParserFunction {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCapitalLinks
+	 * @param bool $isCapitalLinks
 	 */
 	public function isCapitalLinks( $isCapitalLinks ) {
 		$this->isCapitalLinks = $isCapitalLinks;
@@ -123,7 +123,7 @@ class SubobjectParserFunction {
 	 *
 	 * @since 3.0
 	 *
-	 * @param boolean $isComparableContent
+	 * @param bool $isComparableContent
 	 */
 	public function isComparableContent( $isComparableContent = true ) {
 		$this->isComparableContent = (bool)$isComparableContent;
@@ -132,7 +132,7 @@ class SubobjectParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param boolean $useFirstElementAsPropertyLabel
+	 * @param bool $useFirstElementAsPropertyLabel
 	 *
 	 * @return SubobjectParserFunction
 	 */

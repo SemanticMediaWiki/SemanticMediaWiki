@@ -77,7 +77,7 @@ class AskParserFunction {
 	private $curtailmentMode = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $context = QueryProcessor::INLINE_QUERY;
 
@@ -144,7 +144,7 @@ class AskParserFunction {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $curtailmentMode
+	 * @param bool $curtailmentMode
 	 */
 	public function setCurtailmentMode( $curtailmentMode ) {
 		$this->curtailmentMode = (bool)$curtailmentMode;

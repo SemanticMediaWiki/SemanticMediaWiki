@@ -23,7 +23,7 @@ class HtmlColumns {
 	const PLAIN_LIST = 'list/plain';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $columns = 1;
 
@@ -38,17 +38,17 @@ class HtmlColumns {
 	private $itemAttributes = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numRows = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $count = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $columnStyle = 0;
 
@@ -88,7 +88,7 @@ class HtmlColumns {
 	private $isResponsiveCols = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $responsiveColsThreshold = 10;
 
@@ -113,7 +113,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function isRTL( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;
@@ -122,7 +122,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isResponsiveCols
+	 * @param bool $isResponsiveCols
 	 */
 	public function setResponsiveCols( $isResponsiveCols = true ) {
 		$this->isResponsiveCols = (bool)$isResponsiveCols;

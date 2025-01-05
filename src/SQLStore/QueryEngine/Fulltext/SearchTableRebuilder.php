@@ -80,7 +80,7 @@ class SearchTableRebuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $reportVerbose
+	 * @param bool $reportVerbose
 	 */
 	public function reportVerbose( $reportVerbose ) {
 		$this->reportVerbose = (bool)$reportVerbose;
@@ -89,7 +89,7 @@ class SearchTableRebuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $optimization
+	 * @param bool $optimization
 	 */
 	public function requestOptimization( $optimization ) {
 		$this->optimization = (bool)$optimization;

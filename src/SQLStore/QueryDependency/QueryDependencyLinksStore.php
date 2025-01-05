@@ -60,7 +60,7 @@ class QueryDependencyLinksStore {
 	 * previous update to avoid unnecessary DB transactions if it takes place
 	 * within the computed time frame.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $skewFactorForDependencyUpdateInSeconds = 10;
 
@@ -92,7 +92,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;
@@ -110,7 +110,7 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $isEnabled
+	 * @param bool $isEnabled
 	 */
 	public function setEnabled( $isEnabled ) {
 		$this->isEnabled = (bool)$isEnabled;

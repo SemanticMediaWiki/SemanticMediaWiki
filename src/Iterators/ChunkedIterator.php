@@ -17,7 +17,7 @@ use Traversable;
 class ChunkedIterator extends IteratorIterator {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $chunkSize = 0;
 

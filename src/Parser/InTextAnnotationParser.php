@@ -117,7 +117,7 @@ class InTextAnnotationParser {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isLinksInValues
+	 * @param bool $isLinksInValues
 	 */
 	public function isLinksInValues( $isLinksInValues ) {
 		$this->isLinksInValues = $isLinksInValues;
@@ -126,7 +126,7 @@ class InTextAnnotationParser {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $showErrors
+	 * @param bool $showErrors
 	 */
 	public function showErrors( $showErrors ) {
 		$this->showErrors = (bool)$showErrors;
@@ -323,7 +323,7 @@ class InTextAnnotationParser {
 	 * @see LinksProcessor::getRegexpPattern
 	 * @since 1.9
 	 *
-	 * @param boolean $linksInValues
+	 * @param bool $linksInValues
 	 *
 	 * @return string
 	 */

@@ -63,7 +63,7 @@ class ConditionBuilder {
 	private $errors = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $lastQuerySegmentId = -1;
 
@@ -91,7 +91,7 @@ class ConditionBuilder {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isFilterDuplicates
+	 * @param bool $isFilterDuplicates
 	 */
 	public function isFilterDuplicates( $isFilterDuplicates ) {
 		$this->isFilterDuplicates = (bool)$isFilterDuplicates;

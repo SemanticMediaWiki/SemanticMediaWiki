@@ -57,7 +57,7 @@ class OpenForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isActiveForm
+	 * @param bool $isActiveForm
 	 */
 	public function isActiveForm( $isActiveForm ) {
 		$this->isActiveForm = (bool)$isActiveForm;

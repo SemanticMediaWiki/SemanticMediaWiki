@@ -46,12 +46,12 @@ class IntlNumberFormatter {
 	private $options = null;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $maxNonExpNumber = null;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $defaultPrecision = 3;
 

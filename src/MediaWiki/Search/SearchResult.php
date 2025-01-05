@@ -86,7 +86,7 @@ class SearchResult extends \SearchResult {
 	 * Set a text excerpt retrieved from a different back-end.
 	 *
 	 * @param string|null $text
-	 * @param boolean $hasHighlight
+	 * @param bool $hasHighlight
 	 */
 	public function setExcerpt( $text = null, $hasHighlight = false ) {
 		$this->mText = $text;

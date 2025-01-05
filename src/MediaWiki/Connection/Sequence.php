@@ -65,6 +65,8 @@ class Sequence {
 	 * @return int
 	 */
 	public function restart( $table, $field ) {
+		$fname = __METHOD__;
+
 		if ( $this->connection->getType() !== 'postgres' ) {
 			return;
 		}
@@ -78,8 +80,8 @@ class Sequence {
 
 		$sequence = self::makeSequence( $table, $field );
 
-		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num ) {
-			$this->connection->query( "ALTER SEQUENCE {$sequence} RESTART WITH {$seq_num}", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
+		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num, $fname ) {
+			$this->connection->query( "ALTER SEQUENCE {$sequence} RESTART WITH {$seq_num}", $fname, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		} );
 
 		return $seq_num;

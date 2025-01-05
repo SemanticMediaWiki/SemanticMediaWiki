@@ -72,12 +72,12 @@ class Rebuilder {
 	private $namespaces = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $iterationLimit = 1;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $progress = 1;
 

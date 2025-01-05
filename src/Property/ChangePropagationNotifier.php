@@ -80,7 +80,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @since 3.0
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;

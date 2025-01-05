@@ -24,7 +24,7 @@ class MaintenanceLogger {
 	private $manualEntryLogger;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $maxNameChars = 255;
 

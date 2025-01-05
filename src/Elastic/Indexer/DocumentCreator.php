@@ -57,7 +57,7 @@ class DocumentCreator {
 	private $compatibilityMode = true;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $documentCreationDuration = 0;
 
@@ -76,7 +76,7 @@ class DocumentCreator {
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $compatibilityMode
+	 * @param bool $compatibilityMode
 	 */
 	public function setCompatibilityMode( $compatibilityMode ) {
 		$this->compatibilityMode = $compatibilityMode;

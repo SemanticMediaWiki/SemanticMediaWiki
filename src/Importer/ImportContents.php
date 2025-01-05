@@ -34,7 +34,7 @@ class ImportContents {
 	private $importPerformer = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $namespace = 0;
 

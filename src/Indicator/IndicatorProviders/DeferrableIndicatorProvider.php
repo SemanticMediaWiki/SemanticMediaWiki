@@ -19,7 +19,7 @@ interface DeferrableIndicatorProvider extends IndicatorProvider {
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $deferredMode
+	 * @param bool $deferredMode
 	 */
 	public function setDeferredMode( bool $deferredMode );
 

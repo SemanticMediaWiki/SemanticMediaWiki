@@ -149,8 +149,8 @@ class RequestOptions {
 	 *
 	 * @param string $string to match
 	 * @param int $condition one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
-	 * @param boolean $isOr
-	 * @param boolean $isNot
+	 * @param bool $isOr
+	 * @param bool $isNot
 	 */
 	public function addStringCondition( $string, $condition, $isOr = false, $isNot = false ) {
 		$this->stringConditions[] = new StringCondition( $string, $condition, $isOr, $isNot );

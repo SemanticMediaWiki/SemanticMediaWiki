@@ -519,7 +519,7 @@ class SQLStore extends Store {
 	 * @since 1.8
 	 *
 	 * @param RequestOptions|null $requestOptions
-	 * @param string $valuecol
+	 * @param string $valueCol
 	 *
 	 * @return array
 	 */
@@ -535,7 +535,7 @@ class SQLStore extends Store {
 	 * @param RequestOptions|null $requestOptions
 	 * @param string $valueCol name of SQL column to which conditions apply
 	 * @param string $labelCol name of SQL column to which string conditions apply, if any
-	 * @param boolean $addAnd indicate whether the string should begin with " AND " if non-empty
+	 * @param bool $addAnd indicate whether the string should begin with " AND " if non-empty
 	 *
 	 * @return string
 	 */

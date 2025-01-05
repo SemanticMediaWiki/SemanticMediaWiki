@@ -16,7 +16,7 @@ class LocalTime {
 
 	/**
 	 * @see $GLOBALS['wgLocalTZoffset']
-	 * @var integer
+	 * @var int
 	 */
 	private static $localTimeOffset = 0;
 

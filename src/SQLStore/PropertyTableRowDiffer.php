@@ -65,7 +65,7 @@ class PropertyTableRowDiffer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $checkRemnantEntities
+	 * @param bool $checkRemnantEntities
 	 */
 	public function checkRemnantEntities( $checkRemnantEntities ) {
 		$this->checkRemnantEntities = (bool)$checkRemnantEntities;

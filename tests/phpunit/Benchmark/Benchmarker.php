@@ -21,7 +21,7 @@ class Benchmarker {
 	private $useAsSample = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $roundFactor;
 

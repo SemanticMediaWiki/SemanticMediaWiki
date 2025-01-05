@@ -116,7 +116,7 @@ class PrintRequest {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isDisconnected
+	 * @param bool $isDisconnected
 	 */
 	public function isDisconnected( $isDisconnected ) {
 		$this->isDisconnected = (bool)$isDisconnected;
@@ -348,7 +348,7 @@ class PrintRequest {
 	 *
 	 * @param string $text
 	 * @param boalean $showMode = false
-	 * @param boolean $useCanonicalLabel = false
+	 * @param bool $useCanonicalLabel = false
 	 *
 	 * @return PrintRequest|null
 	 */

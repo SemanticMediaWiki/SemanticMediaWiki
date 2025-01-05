@@ -53,7 +53,7 @@ class TurtleTriplesBuilder {
 	private $hasTriplesForUpdate = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $triplesChunkSize = 80;
 

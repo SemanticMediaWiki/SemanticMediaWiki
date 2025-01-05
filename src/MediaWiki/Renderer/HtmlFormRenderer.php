@@ -386,7 +386,7 @@ class HtmlFormRenderer {
 	 * @param string $label
 	 * @param string $inputName
 	 * @param string $inputValue
-	 * @param boolean $isChecked
+	 * @param bool $isChecked
 	 * @param string|null $id
 	 *
 	 * @return HtmlFormRenderer

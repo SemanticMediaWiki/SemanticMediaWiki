@@ -49,7 +49,7 @@ class Factbox {
 	private $dataValueFactory;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $featureSet = 0;
 
@@ -277,7 +277,7 @@ class Factbox {
 	/**
 	 * Returns required resource modules
 	 *
-	 * @todo: figure out a way to load this module only when attachments exist
+	 * @todo figure out a way to load this module only when attachments exist
 	 * @since 1.9
 	 */
 	public static function getModules(): array {

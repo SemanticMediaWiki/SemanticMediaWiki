@@ -116,7 +116,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isRebuild
+	 * @param bool $isRebuild
 	 */
 	public function isRebuild( $isRebuild = true ) {
 		$this->isRebuild = $isRebuild;
