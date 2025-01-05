@@ -33,35 +33,35 @@ class DIConcept extends \SMWDataItem {
 	protected $m_docu;
 	/**
 	 * Flags of query features.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_features;
 	/**
 	 * Size of the query.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_size;
 	/**
 	 * Depth of the query.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_depth;
 
 	/**
 	 * Status
-	 * @var integer
+	 * @var int
 	 */
 	protected $cacheStatus;
 
 	/**
 	 * Date
-	 * @var integer
+	 * @var int
 	 */
 	protected $cacheDate;
 
 	/**
 	 * Count
-	 * @var integer
+	 * @var int
 	 */
 	protected $cacheCount;
 

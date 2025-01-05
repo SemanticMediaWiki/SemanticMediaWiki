@@ -55,7 +55,7 @@ class ListBuilder {
 	private $linker = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $sort = SORT_NATURAL;
 
@@ -82,7 +82,7 @@ class ListBuilder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function isRTL( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;

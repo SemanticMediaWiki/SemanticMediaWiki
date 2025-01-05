@@ -66,7 +66,7 @@ class ConditionBuilder {
 	/**
 	 * Counter used to generate globally fresh variables.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $variableCounter = 0;
 

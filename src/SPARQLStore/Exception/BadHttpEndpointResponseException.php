@@ -37,7 +37,7 @@ class BadHttpEndpointResponseException extends \Exception {
 
 	/**
 	 * Error code
-	 * @var integer
+	 * @var int
 	 */
 	public $errorCode;
 

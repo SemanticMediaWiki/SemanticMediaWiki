@@ -13,7 +13,7 @@ use SMW\RequestOptions;
 class ResultLimiter {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $size = -1;
 

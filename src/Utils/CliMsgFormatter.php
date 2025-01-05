@@ -19,7 +19,7 @@ class CliMsgFormatter {
 	const MAX_LEN = 75;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	private $firstColLen = null;
 

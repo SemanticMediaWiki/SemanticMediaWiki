@@ -18,7 +18,7 @@ use Traversable;
 class AppendIterator extends \AppendIterator implements Countable {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $count = 0;
 

@@ -41,7 +41,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @since 1.7
 	 *
-	 * @param boolean $noDuplicates stating if duplicate data should be avoided
+	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
 	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ) {
 		$containerSemanticData = new ContainerSemanticData(

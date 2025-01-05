@@ -51,7 +51,7 @@ class SpecialConcepts extends \SpecialPage {
 		$diWikiPages = $this->fetchFromTable( $limit, $offset );
 		$html = $this->getHtml( $diWikiPages, $limit, $offset );
 
-		$this->addHelpLink( wfMessage( 'smw-helplink-concepts' )->escaped(), true );
+		$this->addHelpLink( $this->msg( 'smw-helplink-concepts' )->escaped(), true );
 
 		$out->setPageTitle( $this->msg( 'concepts' )->text() );
 		$out->addHTML( $html );

@@ -119,7 +119,7 @@ class PageCreator {
 	 * @since 2.3
 	 *
 	 * @param Title $target
-	 * @param boolean $isRedirect
+	 * @param bool $isRedirect
 	 *
 	 * @return PageCreator
 	 */

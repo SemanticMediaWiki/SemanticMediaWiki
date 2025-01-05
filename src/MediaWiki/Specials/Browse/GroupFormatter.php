@@ -67,7 +67,7 @@ class GroupFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $showGroup
+	 * @param bool $showGroup
 	 */
 	public function showGroup( $showGroup ) {
 		$this->showGroup = $showGroup;

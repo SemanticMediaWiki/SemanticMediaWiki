@@ -33,7 +33,7 @@ class ItemListBuilder {
 	private $isRTL = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $listLimit = 0;
 
@@ -53,7 +53,7 @@ class ItemListBuilder {
 	private $checkProperty = true;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $itemCount = 0;
 
@@ -78,7 +78,7 @@ class ItemListBuilder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function isRTL( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;
@@ -87,7 +87,7 @@ class ItemListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isUserDefined
+	 * @param bool $isUserDefined
 	 */
 	public function isUserDefined( $isUserDefined ) {
 		$this->isUserDefined = $isUserDefined;
@@ -114,7 +114,7 @@ class ItemListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $checkProperty
+	 * @param bool $checkProperty
 	 */
 	public function checkProperty( $checkProperty ) {
 		$this->checkProperty = $checkProperty;

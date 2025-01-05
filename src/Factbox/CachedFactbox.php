@@ -37,17 +37,17 @@ class CachedFactbox {
 	private $isCached = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $featureSet = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $showFactboxEdit = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $showFactbox = 0;
 
@@ -57,12 +57,12 @@ class CachedFactbox {
 	private $isEnabled = true;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $timestamp;
 

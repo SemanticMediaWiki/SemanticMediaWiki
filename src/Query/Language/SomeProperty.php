@@ -30,7 +30,7 @@ class SomeProperty extends Description {
 	protected $property;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	protected $hierarchyDepth;
 

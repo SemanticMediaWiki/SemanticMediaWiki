@@ -326,7 +326,7 @@ class SMWQuery implements QueryContext {
 	/**
 	 * @since 1.7
 	 *
-	 * @param boolean $fresh
+	 * @param bool $fresh
 	 *
 	 * @return string
 	 */

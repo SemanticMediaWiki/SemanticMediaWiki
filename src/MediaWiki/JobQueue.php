@@ -38,7 +38,7 @@ class JobQueue {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $disableCache
+	 * @param bool $disableCache
 	 */
 	public function disableCache( $disableCache = true ) {
 		$this->disableCache = (bool)$disableCache;

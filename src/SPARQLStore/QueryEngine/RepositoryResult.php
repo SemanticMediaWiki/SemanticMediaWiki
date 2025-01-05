@@ -56,7 +56,7 @@ class RepositoryResult implements Iterator {
 	/**
 	 * Error code.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $errorCode;
 

@@ -69,7 +69,7 @@ class PropertyTableIdReferenceDisposer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $redirectRemoval
+	 * @param bool $redirectRemoval
 	 */
 	public function setRedirectRemoval( $redirectRemoval ) {
 		$this->redirectRemoval = $redirectRemoval;
@@ -78,7 +78,7 @@ class PropertyTableIdReferenceDisposer {
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $fulltextTableUsage
+	 * @param bool $fulltextTableUsage
 	 */
 	public function setFulltextTableUsage( bool $fulltextTableUsage ) {
 		$this->fulltextTableUsage = $fulltextTableUsage;

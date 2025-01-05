@@ -31,7 +31,7 @@ class ValueDescription extends Description {
 	private $dataItem;
 
 	/**
-	 * @var integer element in the SMW_CMP_ enum
+	 * @var int element in the SMW_CMP_ enum
 	 */
 	private $comparator;
 

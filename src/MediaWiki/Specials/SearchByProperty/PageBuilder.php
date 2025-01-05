@@ -251,10 +251,10 @@ class PageBuilder {
 	 *
 	 * @param array $results (array of (array of one or two SMWDataValues))
 	 * @param int $number How many results should be displayed? -1 for all
-	 * @param boolean $first If less results should be displayed than
+	 * @param bool $first If less results should be displayed than
 	 * 	given, should they show the first $number results, or the last
 	 * 	$number results?
-	 * @param boolean $highlight Should the results be highlighted?
+	 * @param bool $highlight Should the results be highlighted?
 	 *
 	 * @return string HTML with the bullet list, including header
 	 */

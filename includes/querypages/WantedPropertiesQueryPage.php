@@ -181,8 +181,8 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @param SMWRequestOptions $requestOptions
 	 * @return array of SMWDIProperty|SMWDIError
 	 */
-	function getResults( $requestoptions ) {
-		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestoptions );
+	function getResults( $requestOptions ) {
+		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestOptions );
 		return $this->listLookup->fetchList();
 	}
 }

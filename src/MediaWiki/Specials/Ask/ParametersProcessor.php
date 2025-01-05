@@ -15,12 +15,12 @@ use WebRequest;
 class ParametersProcessor {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $defaultLimit = 50;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $maxInlineLimit = 500;
 

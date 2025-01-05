@@ -41,7 +41,7 @@ class SectionTag {
 	 * @since 3.0
 	 *
 	 * @param Parser $parser
-	 * @param boolean $supportSectionTag
+	 * @param bool $supportSectionTag
 	 *
 	 * @return bool
 	 */

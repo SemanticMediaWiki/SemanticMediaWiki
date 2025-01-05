@@ -22,12 +22,12 @@ trait SeekableIteratorTrait {
 	private $container = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $position = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $count;
 

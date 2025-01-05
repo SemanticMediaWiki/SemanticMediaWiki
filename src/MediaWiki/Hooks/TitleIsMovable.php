@@ -33,7 +33,7 @@ class TitleIsMovable implements HookListener {
 	/**
 	 * @since 2.1
 	 *
-	 * @param boolean &$isMovable
+	 * @param bool &$isMovable
 	 *
 	 * @return bool
 	 */

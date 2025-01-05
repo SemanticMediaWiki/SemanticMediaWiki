@@ -16,7 +16,7 @@ class NGramTokenizer implements Tokenizer {
 	private $tokenizer;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $ngramSize = 2;
 
@@ -39,7 +39,7 @@ class NGramTokenizer implements Tokenizer {
 	/**
 	 * @since 0.1
 	 *
-	 * @param boolean $withMarker
+	 * @param bool $withMarker
 	 */
 	public function withMarker( $withMarker ) {
 		$this->withMarker = (bool)$withMarker;

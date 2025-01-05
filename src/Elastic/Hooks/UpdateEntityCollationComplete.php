@@ -23,7 +23,7 @@ class UpdateEntityCollationComplete {
 	private $store;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $countDown = 5;
 

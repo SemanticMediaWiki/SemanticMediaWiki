@@ -95,7 +95,7 @@ class SMWExportController {
 
 	/**
 	 * Enable or disable inclusion of backlinks into the output.
-	 * @param boolean $enable
+	 * @param bool $enable
 	 */
 	public function enableBacklinks( $enable ) {
 		$this->add_backlinks = $enable;

@@ -242,8 +242,8 @@ class DataTypeRegistry {
 	 * @param $className string name of the according subclass of SMWDataValue
 	 * @param $dataItemId integer ID of the data item class that this data value uses, see DataItem
 	 * @param $label mixed string label or false for types that cannot be accessed by users
-	 * @param boolean $isSubDataType
-	 * @param boolean $isBrowsableType
+	 * @param bool $isSubDataType
+	 * @param bool $isBrowsableType
 	 */
 	public function registerDataType( $id, $className, $dataItemId, $label = false, $isSubDataType = false, $isBrowsableType = false ) {
 		$this->typeClasses[$id] = $className;

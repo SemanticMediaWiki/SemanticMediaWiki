@@ -77,7 +77,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $isDeferredMode
+	 * @param bool $isDeferredMode
 	 */
 	public function setDeferredMode( bool $isDeferredMode ) {
 		$this->isDeferredMode = $isDeferredMode;

@@ -42,7 +42,7 @@ class CsvFileIterator implements Iterator, Countable {
 	private $delimiter;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $length;
 
@@ -60,7 +60,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 * @since 3.0
 	 *
 	 * @param string $file
-	 * @param boolean $parseHeader
+	 * @param bool $parseHeader
 	 * @param string $delimiter
 	 * @param int $length
 	 */

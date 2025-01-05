@@ -56,7 +56,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean|true $enableJobQueue
+	 * @param bool|true $enableJobQueue
 	 *
 	 * @return AbstractJob
 	 */

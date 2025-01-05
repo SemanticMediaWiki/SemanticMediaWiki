@@ -152,7 +152,7 @@ class TypesRegistry {
 	 *
 	 * @since 3.0
 	 *
-	 * @param boolean $useCategoryHierarchy
+	 * @param bool $useCategoryHierarchy
 	 *
 	 * @return array
 	 */

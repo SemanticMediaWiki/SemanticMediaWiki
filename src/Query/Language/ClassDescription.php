@@ -25,7 +25,7 @@ class ClassDescription extends Description {
 	protected $m_diWikiPages;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	protected $hierarchyDepth;
 

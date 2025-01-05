@@ -43,7 +43,7 @@ class PropertyTableDefinition {
 	 * DIType of this table.
 	 *
 	 * @since 1.8
-	 * @var integer
+	 * @var int
 	 */
 	protected $diType;
 

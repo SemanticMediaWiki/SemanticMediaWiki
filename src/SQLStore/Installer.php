@@ -135,7 +135,7 @@ class Installer implements MessageReporter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Options|boolean $verbose
+	 * @param Options|bool $verbose
 	 */
 	public function install( $verbose = true ) {
 		if ( $verbose instanceof Options ) {
@@ -288,7 +288,7 @@ class Installer implements MessageReporter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $verbose
+	 * @param bool $verbose
 	 */
 	public function uninstall( $verbose = true ) {
 		$this->cliMsgFormatter = new CliMsgFormatter();

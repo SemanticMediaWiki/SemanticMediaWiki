@@ -50,57 +50,57 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * Precision SMWDITime::PREC_Y, SMWDITime::PREC_YM,
 	 * SMWDITime::PREC_YMD, or SMWDITime::PREC_YMDT.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_precision;
 	/**
 	 * Calendar model: SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_model;
 	/**
 	 * Number of year, possibly negative.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_year;
 	/**
 	 * Number of month.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_month;
 	/**
 	 * Number of day.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_day;
 	/**
 	 * Hours of the day.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_hours;
 	/**
 	 * Minutes of the hour.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_minutes;
 	/**
 	 * Seconds of the minute.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_seconds;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $timezone;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	protected $era = null;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $julianDay = null;
 
@@ -505,7 +505,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * calendar model, presicion.
 	 *
 	 * @param double $jdValue
-	 * @param int|null $calendarmodel
+	 * @param int|null $calendarModel
 	 * @param int|null $precision
 	 *
 	 * @return self

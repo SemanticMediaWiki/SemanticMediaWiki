@@ -317,7 +317,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @param SMWDataValue[] $dataValues
 	 * @param $outputMode
-	 * @param boolean $isSubject
+	 * @param bool $isSubject
 	 *
 	 * @return string
 	 */

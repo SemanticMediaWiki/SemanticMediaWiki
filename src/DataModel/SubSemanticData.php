@@ -59,7 +59,7 @@ class SubSemanticData implements JsonUnserializable {
 	/**
 	 * Maximum depth for an recursive sub data assignment
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $subContainerMaxDepth = 3;
 
@@ -67,7 +67,7 @@ class SubSemanticData implements JsonUnserializable {
 	 * @since 2.5
 	 *
 	 * @param DIWikiPage $subject
-	 * @param boolean $noDuplicates stating if duplicate data should be avoided
+	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
 	public function __construct( DIWikiPage $subject, $noDuplicates = true ) {
 		$this->clear();

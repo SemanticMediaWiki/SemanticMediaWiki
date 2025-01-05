@@ -45,7 +45,7 @@ class XmlImportRunner {
 	}
 
 	/**
-	 * @param boolean $verbose
+	 * @param bool $verbose
 	 *
 	 * @return XmlImportRunner
 	 */

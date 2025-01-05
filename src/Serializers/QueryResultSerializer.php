@@ -29,7 +29,7 @@ use Title;
 class QueryResultSerializer implements DispatchableSerializer {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $version = 2;
 

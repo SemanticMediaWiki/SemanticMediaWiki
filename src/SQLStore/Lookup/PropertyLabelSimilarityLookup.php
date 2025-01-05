@@ -40,7 +40,7 @@ class PropertyLabelSimilarityLookup {
 	private $exemptionProperty;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $lookupCount = 0;
 

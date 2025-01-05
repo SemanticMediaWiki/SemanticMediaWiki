@@ -77,12 +77,12 @@ class ExtendedSearch {
 	private $searchableNamespaces = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $limit = 10;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $offset = 0;
 

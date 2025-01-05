@@ -29,7 +29,7 @@ class StringResult extends QueryResult {
 	private $preOutputCallback;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $count = 0;
 

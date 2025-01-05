@@ -59,7 +59,7 @@ class RedirectStore {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function setCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;

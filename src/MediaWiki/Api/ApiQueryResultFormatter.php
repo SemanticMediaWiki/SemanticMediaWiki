@@ -58,7 +58,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $isRawMode
+	 * @param bool $isRawMode
 	 */
 	public function setIsRawMode( $isRawMode ) {
 		$this->isRawMode = $isRawMode;

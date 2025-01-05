@@ -60,7 +60,7 @@ class ChangeDiff {
 	private $changeList = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $associatedRev = 0;
 
@@ -139,7 +139,7 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $op
+	 * @param bool $op
 	 *
 	 * @return
 	 */

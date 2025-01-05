@@ -50,7 +50,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @param array $params
 	 * @param PrintRequest[] $printRequests
-	 * @param boolean $unknownInvalid
+	 * @param bool $unknownInvalid
 	 *
 	 * @return ProcessedParam[]
 	 */
@@ -221,7 +221,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * default labels (empty) for additional print requests.
 	 *
 	 * @param array $rawParams
-	 * @param boolean $showMode
+	 * @param bool $showMode
 	 * @return array( string, array( string => string ), array( SMWPrintRequest ) )
 	 */
 	public static function getComponentsFromFunctionParams( array $rawParams, $showMode ) {
@@ -250,7 +250,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @param array $rawParams user-provided list of unparsed parameters
 	 * @param int $outputMode SMW_OUTPUT_WIKI, SMW_OUTPUT_HTML, ...
 	 * @param int $context INLINE_QUERY, SPECIAL_PAGE, CONCEPT_DESC
-	 * @param boolean $showMode process like #show parser function?
+	 * @param bool $showMode process like #show parser function?
 	 * @return array( SMWQuery, ProcessedParam[] )
 	 */
 	public static function getQueryAndParamsFromFunctionParams( array $rawParams, $outputMode, $context, $showMode, $contextPage = null ) {
@@ -460,7 +460,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @param array $params
 	 * @param PrintRequest[] $printRequests
-	 * @param boolean $unknownInvalid
+	 * @param bool $unknownInvalid
 	 *
 	 * @return Processor
 	 */

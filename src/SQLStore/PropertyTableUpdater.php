@@ -146,7 +146,7 @@ class PropertyTableUpdater {
 	 *
 	 * @param PropertyTableDefinition $propertyTable
 	 * @param array $rows array of rows to insert/delete
-	 * @param boolean $insert
+	 * @param bool $insert
 	 */
 	private function update_rows( PropertyTableDefinition $propertyTable, array $rows, $insert ) {
 		if ( empty( $rows ) ) {

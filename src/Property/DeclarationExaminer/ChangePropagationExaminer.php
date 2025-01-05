@@ -39,7 +39,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DeclarationExaminer $DeclarationExaminer
+	 * @param DeclarationExaminer $declarationExaminer
 	 * @param Store $store
 	 * @param SemanticData|null $semanticData
 	 */
@@ -52,7 +52,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $changePropagationProtection
+	 * @param bool $changePropagationProtection
 	 */
 	public function setChangePropagationProtection( $changePropagationProtection ) {
 		$this->changePropagationProtection = (bool)$changePropagationProtection;

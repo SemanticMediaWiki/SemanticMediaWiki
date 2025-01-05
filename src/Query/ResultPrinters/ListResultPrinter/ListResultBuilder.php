@@ -88,7 +88,7 @@ class ListResultBuilder {
 		return $this->getTemplateCall( 'introtemplate' ) .
 			$this->get( 'result-open-tag' ) .
 
-			join( $this->get( 'sep' ), $this->getRowTexts() ) .
+			implode( $this->get( 'sep' ), $this->getRowTexts() ) .
 
 			$this->get( 'result-close-tag' ) .
 			$this->getTemplateCall( 'outrotemplate' );

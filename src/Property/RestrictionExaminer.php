@@ -55,7 +55,7 @@ class RestrictionExaminer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|boolean $createProtectionRight
+	 * @param string|bool $createProtectionRight
 	 */
 	public function setCreateProtectionRight( $createProtectionRight ) {
 		$this->createProtectionRight = $createProtectionRight;
@@ -64,7 +64,7 @@ class RestrictionExaminer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isQueryContext
+	 * @param bool $isQueryContext
 	 */
 	public function isQueryContext( $isQueryContext ) {
 		$this->isQueryContext = (bool)$isQueryContext;

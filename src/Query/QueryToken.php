@@ -118,7 +118,7 @@ class QueryToken {
 	 * @since 2.5
 	 *
 	 * @param string $text
-	 * @param type $text
+	 * @param string $type
 	 *
 	 * @return string
 	 */

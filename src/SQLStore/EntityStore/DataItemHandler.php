@@ -26,7 +26,7 @@ abstract class DataItemHandler {
 	protected $store;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $fieldTypeFeatures = false;
 

@@ -50,21 +50,21 @@ class HierarchyLookup {
 	private $inMemoryCache = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL = 60 * 60 * 24 * 7;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $subcategoryDepth = 10;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $subpropertyDepth = 10;
 

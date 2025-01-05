@@ -77,7 +77,7 @@ class ParameterListDocBuilder {
 	 * Returns the wikitext for a table row describing a single parameter.
 	 *
 	 * @param ParamDefinition $parameter
-	 * @param boolean $hasAliases
+	 * @param bool $hasAliases
 	 *
 	 * @return string
 	 */

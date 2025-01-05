@@ -31,7 +31,7 @@ class ConceptCache {
 	private $conceptQuerySegmentBuilder;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $upperLimit = 50;
 

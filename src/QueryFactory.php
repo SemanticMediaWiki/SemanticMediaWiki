@@ -75,7 +75,7 @@ class QueryFactory {
 	 *
 	 * @param string $string
 	 * @param int $condition
-	 * @param boolean $isDisjunctiveCondition
+	 * @param bool $isDisjunctiveCondition
 	 *
 	 * @return StringCondition
 	 */
@@ -119,7 +119,7 @@ class QueryFactory {
 	 * @param Store $store
 	 * @param Query $query
 	 * @param DIWikiPage[]|[] $results = array()
-	 * @param boolean $continue
+	 * @param bool $continue
 	 *
 	 * @return QueryResult
 	 */

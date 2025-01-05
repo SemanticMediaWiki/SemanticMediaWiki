@@ -80,7 +80,7 @@ class RequestOptionsProcessor {
 	 * @param RequestOptions|null $requestOptions
 	 * @param string $valueCol name of SQL column to which conditions apply
 	 * @param string $labelCol name of SQL column to which string conditions apply, if any
-	 * @param boolean $addAnd indicate whether the string should begin with " AND " if non-empty
+	 * @param bool $addAnd indicate whether the string should begin with " AND " if non-empty
 	 *
 	 * @return string
 	 */
@@ -165,7 +165,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @param Store $store
 	 * @param array $data array of SMWDataItem objects
-	 * @param SMWRequestOptions|null $requestoptions
+	 * @param SMWRequestOptions|null $requestOptions
 	 *
 	 * @return SMWDataItem[]
 	 */

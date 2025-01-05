@@ -58,7 +58,7 @@ class StringCondition {
 	public $isNot;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $condition;
 
@@ -67,7 +67,7 @@ class StringCondition {
 	 *
 	 * @param srting $string
 	 * @param int $condition
-	 * @param boolean $isOr
+	 * @param bool $isOr
 	 */
 	public function __construct( $string, $condition, $isOr = false, $isNot = false ) {
 		$this->string = $string;

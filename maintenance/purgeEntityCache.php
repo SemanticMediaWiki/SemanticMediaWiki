@@ -47,7 +47,7 @@ class purgeEntityCache extends \Maintenance {
 	private $messageReporter;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $lastId = 0;
 

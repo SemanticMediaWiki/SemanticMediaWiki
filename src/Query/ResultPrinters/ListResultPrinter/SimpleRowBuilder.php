@@ -37,7 +37,7 @@ class SimpleRowBuilder extends RowBuilder {
 
 			$otherFieldsText =
 				$this->get( 'other-fields-open' ) .
-				join( $this->get( 'propsep' ), $fieldTexts ) .
+				implode( $this->get( 'propsep' ), $fieldTexts ) .
 				$this->get( 'other-fields-close' );
 
 		} else {

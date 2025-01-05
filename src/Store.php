@@ -112,7 +112,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @return DataItem[]|[]
 	 */
-	abstract public function getInProperties( DataItem $object, $requestoptions = null );
+	abstract public function getInProperties( DataItem $object, $requestOptions = null );
 
 	/**
 	 * Convenience method to find the sortkey of an SMWDIWikiPage. The
@@ -416,7 +416,7 @@ abstract class Store implements QueryEngine {
 	 * context, but should preferably be plain text, possibly with some
 	 * linebreaks and weak markup.
 	 *
-	 * @param boolean $verbose
+	 * @param bool $verbose
 	 *
 	 * @return bool Success indicator
 	 */
@@ -426,7 +426,7 @@ abstract class Store implements QueryEngine {
 	 * Drop (delete) all storage structures created by setup(). This will
 	 * delete all semantic data and possibly leave the wiki uninitialised.
 	 *
-	 * @param boolean $verbose
+	 * @param bool $verbose
 	 */
 	abstract public function drop( $verbose = true );
 

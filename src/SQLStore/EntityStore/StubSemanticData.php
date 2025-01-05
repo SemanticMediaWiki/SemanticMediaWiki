@@ -64,7 +64,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @param DIWikiPage $subject to which this data refers
 	 * @param SQLStore $store (the parent store)
-	 * @param boolean $noDuplicates stating if duplicate data should be avoided
+	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
 	public function __construct( DIWikiPage $subject, SQLStore $store, $noDuplicates = true ) {
 		$this->store = $store;

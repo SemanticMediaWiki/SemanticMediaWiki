@@ -259,7 +259,7 @@ abstract class SMWDataValue {
 	 * in spite of it being of the right basic type. False is only returned
 	 * if the data item is fundamentally incompatible with the data value.
 	 *
-	 * @param $dataitem SMWDataItem
+	 * @param $dataItem SMWDataItem
 	 * @return bool
 	 */
 	public function setDataItem( SMWDataItem $dataItem ) {

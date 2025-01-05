@@ -69,7 +69,7 @@ class Importer implements MessageReporterAware {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isEnabled
+	 * @param bool $isEnabled
 	 */
 	public function isEnabled( $isEnabled ) {
 		$this->isEnabled = $isEnabled;

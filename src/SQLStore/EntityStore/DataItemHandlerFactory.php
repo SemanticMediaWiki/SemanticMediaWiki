@@ -34,7 +34,7 @@ class DataItemHandlerFactory {
 	private $handlers = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $fieldTypeFeatures = false;
 

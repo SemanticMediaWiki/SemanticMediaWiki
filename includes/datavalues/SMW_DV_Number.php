@@ -83,7 +83,7 @@ class SMWNumberValue extends SMWDataValue {
 	protected $m_unitin;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	protected $precision = null;
 
@@ -205,7 +205,7 @@ class SMWNumberValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
+	 * @param $dataItem SMWDataItem
 	 * @return bool
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {

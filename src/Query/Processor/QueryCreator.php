@@ -36,19 +36,19 @@ class QueryCreator implements QueryContext {
 
 	/**
 	 * @see smwgQDefaultLimit
-	 * @var integer
+	 * @var int
 	 */
 	private $defaultLimit = 0;
 
 	/**
 	 * @see smwgQFeatures
-	 * @var integer
+	 * @var int
 	 */
 	private $queryFeatures = 0;
 
 	/**
 	 * @see smwgQConceptFeatures
-	 * @var integer
+	 * @var int
 	 */
 	private $conceptFeatures = 0;
 

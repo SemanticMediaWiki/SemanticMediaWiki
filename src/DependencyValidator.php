@@ -33,7 +33,7 @@ class DependencyValidator {
 	private $entityCache;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL = 3600;
 

@@ -38,7 +38,7 @@ class TableSchemaManager {
 	private $options = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $featureFlags = false;
 

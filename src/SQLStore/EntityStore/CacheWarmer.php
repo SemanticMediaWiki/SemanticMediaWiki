@@ -36,7 +36,7 @@ class CacheWarmer {
 	private $displayTitleFinder;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $thresholdLimit = 3;
 

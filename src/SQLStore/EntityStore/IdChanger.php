@@ -158,8 +158,8 @@ class IdChanger {
 	 * @param int $new_id numeric ID to which the records are to be changed
 	 * @param int $old_ns namespace of old id's page (-1 to ignore it)
 	 * @param int $new_ns namespace of new id's page (-1 to ignore it)
-	 * @param boolean $s_data stating whether to update subject references
-	 * @param boolean $po_data stating if to update property/object references
+	 * @param bool $s_data stating whether to update subject references
+	 * @param bool $po_data stating if to update property/object references
 	 */
 	public function change( $old_id, $new_id, $old_ns = -1, $new_ns = -1, $s_data = true, $po_data = true ) {
 		$connection = $this->store->getConnection( 'mw.db' );

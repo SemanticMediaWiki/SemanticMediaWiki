@@ -17,7 +17,7 @@ use Title;
  */
 class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 
-	/** @var integer */
+	/** @var int */
 	protected $controlRefreshDataIndex;
 
 	private $applicationFactory;

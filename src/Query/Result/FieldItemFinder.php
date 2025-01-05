@@ -186,7 +186,7 @@ class FieldItemFinder {
 	 * if the limit should be taken into account, which is not always desired
 	 * (especially if results are to be cached for future use).
 	 *
-	 * @param boolean $useLimit
+	 * @param bool $useLimit
 	 *
 	 * @return RequestOptions|null
 	 */

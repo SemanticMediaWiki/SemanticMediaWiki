@@ -106,7 +106,7 @@ class HtmlForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isEditMode
+	 * @param bool $isEditMode
 	 */
 	public function isEditMode( $isEditMode ) {
 		$this->isEditMode = (bool)$isEditMode;
@@ -115,7 +115,7 @@ class HtmlForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isBorrowedMode
+	 * @param bool $isBorrowedMode
 	 */
 	public function isBorrowedMode( $isBorrowedMode ) {
 		$this->isBorrowedMode = (bool)$isBorrowedMode;
@@ -124,7 +124,7 @@ class HtmlForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isPostSubmit
+	 * @param bool $isPostSubmit
 	 */
 	public function isPostSubmit( $isPostSubmit ) {
 		$this->isPostSubmit = (bool)$isPostSubmit;

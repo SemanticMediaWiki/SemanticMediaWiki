@@ -101,7 +101,7 @@ class PageUpdater implements DeferrableUpdate {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isHtmlCacheUpdate
+	 * @param bool $isHtmlCacheUpdate
 	 */
 	public function isHtmlCacheUpdate( $isHtmlCacheUpdate ) {
 		$this->isHtmlCacheUpdate = $isHtmlCacheUpdate;

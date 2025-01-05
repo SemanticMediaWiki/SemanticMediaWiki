@@ -189,7 +189,7 @@ class ParserParameterProcessor {
 	 * @since 3.0
 	 *
 	 * @param array &$parameters
-	 * @param boolean $associative
+	 * @param bool $associative
 	 */
 	public static function sort( array &$parameters, $associative = true ) {
 		// Associative vs. simple index array sort

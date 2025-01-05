@@ -59,7 +59,7 @@ class HtmlTabs {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function isRTL( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;
@@ -81,7 +81,7 @@ class HtmlTabs {
 	 *
 	 * @since 3.1
 	 *
-	 * @param boolean $isSubTab
+	 * @param bool $isSubTab
 	 */
 	public function isSubTab( $isSubTab = true ) {
 		$this->isSubTab = $isSubTab;

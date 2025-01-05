@@ -15,7 +15,7 @@ use SMWDINumber as DINumber;
 class DurationProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $duration;
 

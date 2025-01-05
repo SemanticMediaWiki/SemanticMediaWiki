@@ -77,7 +77,7 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	private $httpVersion = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $featureSet = 0;
 

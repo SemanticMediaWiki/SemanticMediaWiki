@@ -51,7 +51,7 @@ class LinksUpdateComplete implements HookListener {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isReady
+	 * @param bool $isReady
 	 */
 	public function isReady( $isReady ) {
 		$this->isReady = (bool)$isReady;

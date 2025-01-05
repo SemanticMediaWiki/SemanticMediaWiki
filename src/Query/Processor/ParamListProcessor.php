@@ -62,7 +62,7 @@ class ParamListProcessor {
 	 * @since 3.0
 	 *
 	 * @param array $parameters
-	 * @param boolean $showMode
+	 * @param bool $showMode
 	 *
 	 * @return array
 	 */

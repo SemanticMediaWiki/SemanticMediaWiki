@@ -11,12 +11,12 @@ namespace SMW\Utils;
 class Timer {
 
 	/**
-	 * @var float|integer
+	 * @var float|int
 	 */
 	private static $start = [];
 
 	/**
-	 * @var float|integer
+	 * @var float|int
 	 */
 	private $times = [];
 

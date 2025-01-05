@@ -279,7 +279,7 @@ class SetupCheck {
 	 *
 	 * @since 3.1
 	 *
-	 * @param boolean $isCli
+	 * @param bool $isCli
 	 *
 	 * @return string
 	 */
@@ -353,7 +353,7 @@ class SetupCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isCli
+	 * @param bool $isCli
 	 */
 	public function showErrorAndAbort( $isCli = false ) {
 		echo $this->getError( $isCli );

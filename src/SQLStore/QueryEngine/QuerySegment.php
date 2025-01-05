@@ -62,12 +62,12 @@ class QuerySegment {
 	const Q_PROP_HIERARCHY = 6;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $type = self::Q_TABLE;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	public $depth;
 
@@ -170,12 +170,12 @@ class QuerySegment {
 	public $sortfields = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $queryNumber;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public static $qnum = 0;
 

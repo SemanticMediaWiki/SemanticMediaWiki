@@ -47,7 +47,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	 * @since 1.8
 	 *
 	 * @param string $format
-	 * @param boolean $isInline
+	 * @param bool $isInline
 	 *
 	 * @return \SMW\ResultPrinter
 	 */
@@ -77,7 +77,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	 * @since 1.8
 	 *
 	 * @param string $format
-	 * @param boolean $isInline
+	 * @param bool $isInline
 	 */
 	public function testConstructor( $format, $isInline ) {
 		$instance = $this->newInstance( $format, $isInline );

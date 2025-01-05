@@ -67,7 +67,7 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;

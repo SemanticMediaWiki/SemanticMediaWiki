@@ -33,17 +33,17 @@ class ValueListBuilder {
 	private $store;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $pagingLimit = 0;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	private $filterCount;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $maxPropertyValues = 3;
 
@@ -101,7 +101,7 @@ class ValueListBuilder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function isRTL( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;
@@ -110,7 +110,7 @@ class ValueListBuilder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $localTimeOffset
+	 * @param bool $localTimeOffset
 	 */
 	public function applyLocalTimeOffset( $localTimeOffset ) {
 		$this->localTimeOffset = $localTimeOffset;

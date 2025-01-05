@@ -98,7 +98,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;
@@ -155,7 +155,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @since 3.1
 	 *
-	 * @param boolean $catchExceptionAndRethrow
+	 * @param bool $catchExceptionAndRethrow
 	 */
 	public function catchExceptionAndRethrow( $catchExceptionAndRethrow ) {
 		$this->catchExceptionAndRethrow = (bool)$catchExceptionAndRethrow;

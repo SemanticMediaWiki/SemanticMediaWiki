@@ -86,7 +86,7 @@ interface ResultPrinter {
 	/**
 	 * Set whether errors should be shown. By default they are.
 	 *
-	 * @param boolean $show
+	 * @param bool $show
 	 */
 	public function setShowErrors( $show );
 

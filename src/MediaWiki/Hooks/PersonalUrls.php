@@ -119,7 +119,7 @@ class PersonalUrls implements HookListener {
 
 	// https://stackoverflow.com/questions/1783089/array-splice-for-associative-arrays
 	private function splice( $array, $values, $offset ) {
-		return array_slice( $array, 0, $offset, true ) + $values + array_slice( $array, $offset, NULL, true );
+		return array_slice( $array, 0, $offset, true ) + $values + array_slice( $array, $offset, null, true );
 	}
 
 	private function humanReadable( $num, $decimals = 0 ) {

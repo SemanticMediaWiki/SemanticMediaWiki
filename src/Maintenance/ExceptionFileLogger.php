@@ -32,7 +32,7 @@ class ExceptionFileLogger {
 	private $exceptionFile;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $exceptionCount = 0;
 

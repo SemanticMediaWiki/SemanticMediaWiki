@@ -35,7 +35,7 @@ class CachedListLookup implements ListLookup {
 	private $isFromCache = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $timestamp;
 

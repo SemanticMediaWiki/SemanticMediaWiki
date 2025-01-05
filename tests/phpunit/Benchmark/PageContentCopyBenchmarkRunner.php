@@ -43,7 +43,7 @@ class PageContentCopyBenchmarkRunner {
 	private $benchmarkReport = [];
 
 	/**
-	 * @var integer|count
+	 * @var int|count
 	 */
 	private $copyCount = null;
 

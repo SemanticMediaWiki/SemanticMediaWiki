@@ -70,7 +70,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	/**
 	 * Cache for the related MW page ID.
 	 * Set to -1 if not computed yet.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_id = -1;
 
@@ -86,7 +86,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * accept pages in this namespace. This field is initialized when
 	 * creating the object (based on the type id or base on the preference
 	 * of some subclass); it is not usually changed afterwards.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_fixNamespace = NS_MAIN;
 
@@ -202,7 +202,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
+	 * @param $dataItem SMWDataItem
 	 * @return bool
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {

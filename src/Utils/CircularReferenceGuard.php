@@ -21,7 +21,7 @@ class CircularReferenceGuard {
 	private $namespace = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $maxRecursionDepth = 1;
 

@@ -17,7 +17,7 @@ use Html;
 class HtmlColumnListRenderer {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numberOfColumns = 1;
 
@@ -32,22 +32,22 @@ class HtmlColumnListRenderer {
 	private $itemAttributes = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numRows = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numberOfResults = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $rowsPerColumn = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $columnWidth = 0;
 
@@ -103,7 +103,7 @@ class HtmlColumnListRenderer {
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function setColumnRTLDirectionalityState( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;

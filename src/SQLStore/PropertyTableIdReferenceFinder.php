@@ -148,7 +148,7 @@ class PropertyTableIdReferenceFinder {
 	 * @since 2.4
 	 *
 	 * @param int $id
-	 * @param boolean $secondary_ref
+	 * @param bool $secondary_ref
 	 *
 	 * @return DataItem|false
 	 */

@@ -170,9 +170,9 @@ class SpecialAsk extends SpecialPage {
 		$out->addHTML( HelpWidget::html() );
 
 		if ( $request->getCheck( 'bHelp' ) ) {
-			$helpLink = wfMessage( $request->getVal( 'bHelp' ) )->escaped();
+			$helpLink = $this->msg( $request->getVal( 'bHelp' ) )->escaped();
 		} else {
-			$helpLink = wfMessage( 'smw_ask_doculink' )->escaped();
+			$helpLink = $this->msg( 'smw_ask_doculink' )->escaped();
 		}
 
 		$this->addHelpLink( $helpLink, true );
@@ -334,7 +334,7 @@ class SpecialAsk extends SpecialPage {
 		if ( $this->queryString ) {
 			$this->getOutput()->setHTMLtitle( $this->queryString );
 		} else {
-			$this->getOutput()->setHTMLtitle( wfMessage( 'ask' )->text() );
+			$this->getOutput()->setHTMLtitle( $this->msg( 'ask' )->text() );
 		}
 
 		$urlArgs->set( 'offset', $this->parameters['offset'] );
@@ -583,13 +583,13 @@ class SpecialAsk extends SpecialPage {
 
 		$searchInfoText = '';
 
-		if ( $borrowedMessage !== null && wfMessage( $borrowedMessage )->exists() ) {
+		if ( $borrowedMessage !== null && $this->msg( $borrowedMessage )->exists() ) {
 			$html = html::rawElement(
 				'p',
 				[
 					'class' => 'plainlinks'
 				],
-				wfMessage( $borrowedMessage, $this->queryString )->parse()
+				$this->msg( $borrowedMessage, $this->queryString )->parse()
 			);
 		}
 
@@ -599,8 +599,8 @@ class SpecialAsk extends SpecialPage {
 			$borrowedTitle = $this->parameters['btitle'];
 		}
 
-		if ( $borrowedTitle !== null && wfMessage( $borrowedTitle )->exists() ) {
-			$this->getOutput()->setPageTitle( wfMessage( $borrowedTitle )->text() );
+		if ( $borrowedTitle !== null && $this->msg( $borrowedTitle )->exists() ) {
+			$this->getOutput()->setPageTitle( $this->msg( $borrowedTitle )->text() );
 		}
 	}
 

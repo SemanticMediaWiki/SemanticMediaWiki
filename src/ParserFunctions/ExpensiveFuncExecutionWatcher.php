@@ -26,7 +26,7 @@ class ExpensiveFuncExecutionWatcher {
 	private $parserData;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $expensiveThreshold = 10;
 

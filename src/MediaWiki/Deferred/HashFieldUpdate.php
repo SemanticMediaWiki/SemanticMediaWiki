@@ -28,7 +28,7 @@ class HashFieldUpdate implements DeferrableUpdate {
 	private $connection;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $id;
 

@@ -139,7 +139,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see SMWDataValue::loadDataItem()
 	 *
-	 * @param $dataitem SMWDataItem
+	 * @param $dataItem SMWDataItem
 	 *
 	 * @return bool
 	 */

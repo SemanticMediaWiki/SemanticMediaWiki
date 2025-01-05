@@ -174,7 +174,7 @@ class SemanticData implements JsonUnserializable {
 	 * This is kept public to keep track of the depth during a recursive processing
 	 * when accessed through the SubSemanticData instance.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $subContainerDepthCounter = 0;
 
@@ -182,7 +182,7 @@ class SemanticData implements JsonUnserializable {
 	 * Constructor.
 	 *
 	 * @param DIWikiPage $subject to which this data refers
-	 * @param boolean $noDuplicates stating if duplicate data should be avoided
+	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
 	public function __construct( DIWikiPage $subject, $noDuplicates = true ) {
 		$this->clear();

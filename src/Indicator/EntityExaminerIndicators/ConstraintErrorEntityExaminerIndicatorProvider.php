@@ -92,7 +92,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $checkConstraintErrors
+	 * @param bool $checkConstraintErrors
 	 */
 	public function setConstraintErrorCheck( $checkConstraintErrors ) {
 		$this->checkConstraintErrors = $checkConstraintErrors;

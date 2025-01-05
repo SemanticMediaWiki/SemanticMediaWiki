@@ -30,7 +30,7 @@ class QueryComparator {
 	 * @since 2.3
 	 *
 	 * @param string $comparatorList
-	 * @param boolean $strictComparators
+	 * @param bool $strictComparators
 	 */
 	public function __construct( $comparatorList, $strictComparators ) {
 		$this->comparators = $this->getEnabledComparators( $comparatorList, $strictComparators );

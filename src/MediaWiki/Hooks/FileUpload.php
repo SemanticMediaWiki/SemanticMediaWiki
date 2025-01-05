@@ -46,7 +46,7 @@ class FileUpload implements HookListener {
 	 * @since 3.0
 	 *
 	 * @param File $file
-	 * @param boolean $reUploadStatus
+	 * @param bool $reUploadStatus
 	 *
 	 * @return true
 	 */

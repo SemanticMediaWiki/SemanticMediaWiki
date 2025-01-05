@@ -75,7 +75,7 @@ class ExpResourceMapper {
 	/**
 	 * @since 2.2
 	 *
-	 * @param boolean $bcAuxiliaryUse
+	 * @param bool $bcAuxiliaryUse
 	 */
 	public function setBCAuxiliaryUse( $bcAuxiliaryUse ) {
 		$this->bcAuxiliaryUse = (bool)$bcAuxiliaryUse;
@@ -112,8 +112,8 @@ class ExpResourceMapper {
 	 * (see Exporter::newAuxiliaryExpElement) should be generated
 	 *
 	 * @param DIProperty $property
-	 * @param boolean $useAuxiliaryModifier
-	 * @param boolean $seekImportVocabulary
+	 * @param bool $useAuxiliaryModifier
+	 * @param bool $seekImportVocabulary
 	 *
 	 * @return ExpResource
 	 * @throws RuntimeException
@@ -149,7 +149,7 @@ class ExpResourceMapper {
 	 * occurring in MW titles).
 	 *
 	 * @param DIWikiPage $diWikiPage
-	 * @param boolean $useAuxiliaryModifier
+	 * @param bool $useAuxiliaryModifier
 	 *
 	 * @return ExpResource
 	 */
