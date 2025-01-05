@@ -237,7 +237,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getPropertyValues( ?DIWikiPage $subject = null, DIProperty $property, ?RequestOptions $requestOptions = null ) {
+	public function getPropertyValues( ?DIWikiPage $subject, DIProperty $property, ?RequestOptions $requestOptions = null ) {
 		$idTable = $this->store->getObjectIds();
 
 		if ( $property->isInverse() ) { // inverses are working differently
