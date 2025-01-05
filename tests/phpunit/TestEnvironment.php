@@ -2,11 +2,10 @@
 
 namespace SMW\Tests;
 
-use DeferredUpdates;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Localizer;
 use SMW\MediaWiki\Deferred\CallableUpdate;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**

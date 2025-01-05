@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 use Html;
 use SMW\Highlighter;
 use SMW\Message;
-use Title;
 
 /**
  * @private

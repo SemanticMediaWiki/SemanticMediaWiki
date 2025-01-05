@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
-use SMW\Store;
-use SMW\Exception\RedirectTargetUnresolvableException;
 use SMW\Exception\ParameterNotFoundException;
+use SMW\Exception\RedirectTargetUnresolvableException;
+use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

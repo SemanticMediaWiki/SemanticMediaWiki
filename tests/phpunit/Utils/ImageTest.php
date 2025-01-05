@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\Image;
 use SMW\DIWikiPage;
+use SMW\Utils\Image;
 
 /**
  * @covers \SMW\Utils\Image

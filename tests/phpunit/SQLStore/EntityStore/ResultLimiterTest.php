@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\ResultLimiter;
 use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\ResultLimiter;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\ResultLimiter

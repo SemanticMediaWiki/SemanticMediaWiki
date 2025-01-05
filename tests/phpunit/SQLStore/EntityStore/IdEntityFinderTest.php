@@ -6,7 +6,6 @@ use SMW\DIWikiPage;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
-use SMW\MediaWiki\Connection\Query;
 use SMW\Tests\TestEnvironment;
 
 /**

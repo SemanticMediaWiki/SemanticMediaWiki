@@ -2,15 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
-use SMW\Schema\CompartmentIterator;
-use SMW\Services\ServicesFactory;
-use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxRangeGroupValueFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxValueFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\ListValueFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\RangeValueFilter;
-use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxValueFilter;
-use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxRangeGroupValueFilter;
+use SMW\Schema\CompartmentIterator;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @license GNU GPL v2+

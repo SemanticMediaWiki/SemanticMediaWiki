@@ -2,13 +2,12 @@
 
 namespace SMW\MediaWiki\Page\ListBuilder;
 
-use Html;
 use SMW\DIProperty;
+use SMW\MediaWiki\Page\ListBuilder as ColsListBuilder;
+use SMW\Message;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
-use SMW\Message;
-use SMW\MediaWiki\Page\ListBuilder as ColsListBuilder;
 
 /**
  * @license GNU GPL v2+

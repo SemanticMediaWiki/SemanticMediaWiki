@@ -192,11 +192,11 @@ class DataValueServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 			TimeValueFormatter::class
 		];
 
-		$provider[] = array(
+		$provider[] = [
 			'UnitConverter',
 			[],
 			'\SMW\DataValues\Number\UnitConverter'
-		);
+		];
 
 		return $provider;
 	}

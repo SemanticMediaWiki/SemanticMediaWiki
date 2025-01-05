@@ -3,8 +3,8 @@
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
-use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\Condition;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ClassDescription;
 
 /**

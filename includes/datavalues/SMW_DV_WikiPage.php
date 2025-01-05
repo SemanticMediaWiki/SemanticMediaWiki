@@ -1,10 +1,9 @@
 <?php
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DIProperty;
 use SMW\Localizer;
-use SMW\Message;
 use SMW\MediaWiki\Pipetrick;
+use SMW\Message;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Image;
 
 /**

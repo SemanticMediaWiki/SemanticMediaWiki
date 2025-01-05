@@ -2,12 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
-use Html;
 use DateTime;
+use Html;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Message;
 use SMW\SetupFile;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 
 /**
  * @license GNU GPL v2+

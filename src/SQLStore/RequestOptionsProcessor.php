@@ -29,7 +29,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @return array
 	 */
-	public static function getSQLOptions( RequestOptions $requestOptions = null, $valueCol = '' ) {
+	public static function getSQLOptions( ?RequestOptions $requestOptions = null, $valueCol = '' ) {
 		$sqlConds = [];
 
 		if ( $requestOptions === null ) {
@@ -84,7 +84,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @return string
 	 */
-	public static function getSQLConditions( Store $store, RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
+	public static function getSQLConditions( Store $store, ?RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
 		$sqlConds = '';
 
 		if ( $requestOptions === null ) {
@@ -169,7 +169,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @return SMWDataItem[]
 	 */
-	public static function applyRequestOptions( Store $store, array $data, RequestOptions $requestOptions = null ) {
+	public static function applyRequestOptions( Store $store, array $data, ?RequestOptions $requestOptions = null ) {
 		if ( $data === [] || $requestOptions === null ) {
 			return $data;
 		}
@@ -184,7 +184,7 @@ class RequestOptionsProcessor {
 
 		foreach ( $data as $item ) {
 
-			list( $label, $value ) = self::getSortKeyForItem( $store, $item );
+			[ $label, $value ] = self::getSortKeyForItem( $store, $item );
 
 			$keepDataValue = self::applyBoundaryConditions( $requestOptions, $value, $isNumeric );
 			$keepDataValue = self::applyStringConditions( $requestOptions, $label, $keepDataValue );

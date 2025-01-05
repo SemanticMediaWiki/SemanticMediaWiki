@@ -4,8 +4,6 @@ namespace SMW\SQLStore\TableBuilder;
 
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
-use RuntimeException;
-use Hooks;
 
 /**
  * @private
@@ -405,7 +403,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function addTable( Table $table = null ) {
+	private function addTable( ?Table $table = null ) {
 		if ( $table === null ) {
 			return;
 		}

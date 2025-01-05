@@ -235,7 +235,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		// Check that it is the dataItem from `getPropertyValues`
-		$checkJobParameterCallback = function ( $jobs ) use( $dataItem ) {
+		$checkJobParameterCallback = static function ( $jobs ) use( $dataItem ) {
 			foreach ( $jobs as $job ) {
 				return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $dataItem );
 			}

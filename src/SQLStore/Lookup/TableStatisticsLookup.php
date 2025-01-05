@@ -3,9 +3,8 @@
 namespace SMW\SQLStore\Lookup;
 
 use SMW\SQLStore\SQLStore;
-use SMWQuery as Query;
 use SMWDataItem as DataItem;
-use Onoi\Cache\Cache;
+use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+
@@ -115,7 +114,7 @@ class TableStatisticsLookup {
 		$blob_field_null_row_count = $this->blob_field_null_row_count( $connection, $blobTable );
 		$unique_hash_field_terms_in_percent = 0;
 
-		list( $hash_field_multi_occurrence_total_count, $hash_field_single_occurrence_total_count ) = $this->hash_field_count(
+		[ $hash_field_multi_occurrence_total_count, $hash_field_single_occurrence_total_count ] = $this->hash_field_count(
 			$connection,
 			$blobTable
 		);

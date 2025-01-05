@@ -1,22 +1,20 @@
 <?php
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\Utils\HtmlTabs;
-use SMW\Utils\Pager;
-use SMW\Utils\HtmlColumns;
-use SMWDataItem as DataItem;
-use SMW\MediaWiki\Collator;
-use SMW\TypesRegistry;
+use SMW\DataValues\TypesValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\RequestOptions;
-use SMWInfolink as Infolink;
-use SMW\DataValues\TypesValue;
-use SMWErrorValue as ErrorValue;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\Message;
+use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\TypesRegistry;
+use SMW\Utils\HtmlColumns;
+use SMW\Utils\HtmlTabs;
+use SMW\Utils\Pager;
+use SMWErrorValue as ErrorValue;
+use SMWInfolink as Infolink;
 
 /**
  * This special page for MediaWiki provides information about available types

@@ -2,14 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use WebRequest;
-use SMW\Utils\UrlArgs;
-use Html;
-use Title;
 use SMW\DIProperty;
-use SMW\Store;
-use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\PrefetchItemLookup;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

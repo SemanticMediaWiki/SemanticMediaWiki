@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use SMW\Store;
 use SMW\MediaWiki\Collator;
 use SMWDataItem as DataItem;
 
@@ -32,7 +31,7 @@ class SortLetter {
 	 * @param Store $store
 	 * @param Collator $collator
 	 */
-	public function __construct( Store $store, Collator $collator = null ) {
+	public function __construct( Store $store, ?Collator $collator = null ) {
 		$this->store = $store;
 		$this->collator = $collator;
 

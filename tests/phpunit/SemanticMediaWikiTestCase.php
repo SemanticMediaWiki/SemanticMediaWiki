@@ -4,9 +4,9 @@ namespace SMW\Tests;
 
 use FauxRequest;
 use Language;
+use MediaWiki\MediaWikiServices;
 use ReflectionClass;
 use RequestContext;
-use MediaWiki\MediaWikiServices;
 use SMW\DependencyContainer;
 use SMW\DIWikiPage;
 use SMW\Settings;
@@ -42,7 +42,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @return string
 	 */
-	public abstract function getClass();
+	abstract public function getClass();
 
 	/**
 	 * Helper method that returns a MockObjectBuilder object
@@ -68,7 +68,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @return SimpleDependencyBuilder
 	 */
-	public function newDependencyBuilder( DependencyContainer $dependencyContainer = null ) {
+	public function newDependencyBuilder( ?DependencyContainer $dependencyContainer = null ) {
 		return new SimpleDependencyBuilder( $dependencyContainer );
 	}
 
@@ -177,7 +177,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @return DIWikiPage
 	 */
-	protected function newSubject( Title $title = null ) {
+	protected function newSubject( ?Title $title = null ) {
 		return DIWikiPage::newFromTitle( $title === null ? $this->newTitle() : $title );
 	}
 
@@ -248,7 +248,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 	 */
 	protected function arrayWrap( array $elements ) {
 		return array_map(
-			function ( $element ) {
+			static function ( $element ) {
 				return [ $element ];
 			},
 			$elements

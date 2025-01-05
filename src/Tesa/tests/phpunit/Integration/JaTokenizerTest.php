@@ -54,12 +54,12 @@ class JaTokenizerTest extends TestCase {
 	public function icuTextProvider() {
 		// https://github.com/NaturalNode/natural/blob/master/spec/tokenizer_ja_spec.js
 
-		$provider[] = array(
+		$provider[] = [
 			"計算機科学における字句解析 (じくかいせき、英: Lexical Analysis) とは、ソースコードを構成する文字の並びを、トークン (token) の並びに変換することをいう。\n" .
 			"ここでいう「トークン」とは、意味を持つコードの最小単位のこと。字句解析を行うプログラムは、字句解析器 (lexical analyzer, 略称：lexer) と呼ばれる。\n" .
 			"字句解析器はスキャナ (scanner) とトークナイザ (tokenizer) から構成される。\n",
 			//
-			array(
+			[
 				'計算機', '科学', 'における', '字句', '解析', 'じ', 'く', 'かい',
 				'せき', '、', '英', 'Lexical', 'Analysis', 'と', 'は', '、', 'ソース', 'コード', 'を',
 				'構成', 'する', '文字', 'の', '並び', 'を', '、', 'トーク',
@@ -72,8 +72,8 @@ class JaTokenizerTest extends TestCase {
 				'lexer', 'と', '呼ばれる', '。', '字句', '解析', '器', 'は',
 				'スキャナ', 'scanner', 'と', 'トーク', 'ナ', 'イザ', 'tokenizer', 'から',
 				'構成', 'さ', 'れる', '。'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}
@@ -92,12 +92,12 @@ class JaTokenizerTest extends TestCase {
 			'れる']
 		 */
 
-		$provider[] = array(
+		$provider[] = [
 			"計算機科学における字句解析 (じくかいせき、英: Lexical Analysis) とは、ソースコードを構成する文字の並びを、トークン (token) の並びに変換することをいう。\n" .
 			"ここでいう「トークン」とは、意味を持つコードの最小単位のこと。字句解析を行うプログラムは、字句解析器 (lexical analyzer, 略称：lexer) と呼ばれる。\n" .
 			"字句解析器はスキャナ (scanner) とトークナイザ (tokenizer) から構成される。\n",
 			//
-			array(
+			[
 				'計算', '機科', '学', 'に', 'おける', '字句', '解析', 'じくかい', 'せき', '英',
 				'Lexical', 'Analysis', 'と', 'は', 'ソースコード', 'を', '構成', 'する',
 				'文字', 'の', '並び', 'を', 'トークン', 'token', 'の', '並び', 'に', '変換',
@@ -106,8 +106,8 @@ class JaTokenizerTest extends TestCase {
 				'行う', 'プログラム', 'は', '字句', '解析', '器', 'lexical', 'analyzer',
 				'略称', 'lexer', 'と', '呼ば', 'れる', '字句', '解析', '器', 'は', 'スキャナ', 'scanner',
 				'と', 'トークナイザ', 'tokenizer', 'から', '構成', 'さ', 'れる',
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

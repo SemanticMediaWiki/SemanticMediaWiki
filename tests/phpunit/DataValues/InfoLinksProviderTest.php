@@ -7,9 +7,9 @@ use SMW\DataValueFactory;
 use SMW\DataValues\InfoLinksProvider;
 use SMW\DataValues\StringValue;
 use SMW\Message;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\InfoLinksProvider

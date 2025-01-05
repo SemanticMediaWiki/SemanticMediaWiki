@@ -24,7 +24,7 @@ class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider supportedDataItemProvider
 	 */
 	public function testMatchSupportedTypes( $dataItem, $xsdValue, $xsdType ) {
-		list( $type, $value ) = XsdValueMapper::map( $dataItem );
+		[ $type, $value ] = XsdValueMapper::map( $dataItem );
 
 		$this->assertEquals(
 			$xsdValue,

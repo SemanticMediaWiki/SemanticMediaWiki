@@ -61,10 +61,6 @@
 		{
 			"type": "special",
 			"about": "#2",
-			"skip-on": {
-				"mw-1.19.20": "Skipping because of spaces in output fields being different",
-				"mw-1.22.12": "Skipping because of spaces in output fields being different"
-			},
 			"special-page": {
 				"page": "Ask",
 				"query-parameters": "-5B-5BCategory:S0003-5D-5D/-3FCategory/-3FHas-20boolean=Text/mainlabel=/limit=100/offset=0/format=json/unescape=true/prettyprint=true/link=none",

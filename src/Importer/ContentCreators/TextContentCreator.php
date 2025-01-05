@@ -10,7 +10,6 @@ use SMW\Importer\ImportContents;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 use User;
 
 /**

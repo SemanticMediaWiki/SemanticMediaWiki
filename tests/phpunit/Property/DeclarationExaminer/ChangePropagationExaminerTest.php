@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
-use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
 use SMW\DataItemFactory;
+use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
 use SMW\SemanticData;
-use SMW\ProcessingErrorMsgHandler;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\ChangePropagationExaminer

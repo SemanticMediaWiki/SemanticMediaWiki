@@ -2,9 +2,8 @@
 
 namespace SMW\Listener\ChangeListener\ChangeListeners;
 
-use SMW\Listener\ChangeListener\ChangeListener;
 use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
-use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\Listener\ChangeListener\ChangeListener;
 
 /**
  * @license GNU GPL v2+

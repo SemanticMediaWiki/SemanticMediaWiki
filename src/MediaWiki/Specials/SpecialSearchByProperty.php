@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWInfolink as Infolink;
 use SpecialPage;
 
@@ -44,7 +44,7 @@ class SpecialSearchByProperty extends SpecialPage {
 		$output->addModules( 'ext.smw.tooltip' );
 		$output->addModules( 'ext.smw.autocomplete.property' );
 
-		list( $limit, $offset ) = $this->getLimitOffset();
+		[ $limit, $offset ] = $this->getLimitOffset();
 
 		if ( $request->getText( 'cl', '' ) !== '' ) {
 			$query = Infolink::decodeCompactLink( 'cl:' . $request->getText( 'cl' ) );

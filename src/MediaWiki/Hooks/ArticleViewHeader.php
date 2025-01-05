@@ -4,16 +4,15 @@ namespace SMW\MediaWiki\Hooks;
 
 use Html;
 use Page;
+use SMW\DependencyValidator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
-use SMW\DependencyValidator;
-use SMW\NamespaceExaminer;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\Message;
+use SMW\NamespaceExaminer;
+use SMW\OptionsAwareTrait;
 use SMW\Store;
-use Title;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleViewHeader

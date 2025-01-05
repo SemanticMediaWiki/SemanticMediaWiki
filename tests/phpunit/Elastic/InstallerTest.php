@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic;
 
 use SMW\Elastic\Installer;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Installer

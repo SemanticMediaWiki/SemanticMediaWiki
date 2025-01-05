@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
-use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\DataItemFactory;
-use SMW\SemanticData;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Property\DeclarationExaminer\CommonExaminer;
+use SMW\SemanticData;
 use SMW\Tests\PHPUnitCompat;
 
 /**

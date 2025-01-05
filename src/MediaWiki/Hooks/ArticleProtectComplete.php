@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use PSr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\HookListener;
-use PSr\Log\LoggerAwareTrait;
 use SMW\Message;
 use SMW\OptionsAwareTrait;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**

@@ -3,17 +3,13 @@
 namespace SMW\MediaWiki\Search\ProfileForm;
 
 use Html;
-use MWNamespace;
-use SMW;
-use SMW\Schema\SchemaFactory;
-use SMW\ProcessingErrorMsgHandler;
-use SMW\Utils\HtmlModal;
-use SMW\Store;
 use SMW\Message;
+use SMW\ProcessingErrorMsgHandler;
+use SMW\Schema\SchemaFactory;
+use SMW\Store;
+use SMW\Utils\HtmlModal;
 use SpecialSearch;
 use Title;
-use WikiPage;
-use Xml;
 
 /**
  * @license GNU GPL v2+
@@ -189,7 +185,7 @@ class ProfileForm {
 			);
 		}
 
-		list( $searchForms, $formList, $termPrefixes, $preselectNamespaces, $hiddenNamespaces ) = $this->buildSearchForms(
+		[ $searchForms, $formList, $termPrefixes, $preselectNamespaces, $hiddenNamespaces ] = $this->buildSearchForms(
 			$request
 		);
 

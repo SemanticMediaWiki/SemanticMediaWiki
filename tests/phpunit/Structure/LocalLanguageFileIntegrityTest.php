@@ -68,7 +68,7 @@ class LocalLanguageFileIntegrityTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function i18nFileProvider() {
-		return array_filter( $this->findFilesIn( $GLOBALS['smwgExtraneousLanguageFileDir'] ), function ( $args ) {
+		return array_filter( $this->findFilesIn( $GLOBALS['smwgExtraneousLanguageFileDir'] ), static function ( $args ) {
 			$file = $args[0];
 			$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 			$contents = $jsonFileReader->read();

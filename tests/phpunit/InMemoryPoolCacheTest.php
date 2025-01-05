@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\InMemoryPoolCache;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\InMemoryPoolCache

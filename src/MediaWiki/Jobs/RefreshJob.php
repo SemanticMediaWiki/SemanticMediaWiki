@@ -75,7 +75,7 @@ class RefreshJob extends Job {
 	 * @param $spos start index
 	 */
 	protected function refreshData( $spos ) {
-		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
+		$run = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
 
 		$entityRebuildDispatcher = ApplicationFactory::getInstance()->getStore()->refreshData(
 			$spos,

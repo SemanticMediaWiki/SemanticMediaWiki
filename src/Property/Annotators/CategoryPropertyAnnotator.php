@@ -2,14 +2,13 @@
 
 namespace SMW\Property\Annotators;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Parser\AnnotationProcessor;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\PropertyAnnotator;
-use SMW\DataValueFactory;
-use SMW\SemanticData;
-use SMW\Parser\AnnotationProcessor;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Handling category annotation

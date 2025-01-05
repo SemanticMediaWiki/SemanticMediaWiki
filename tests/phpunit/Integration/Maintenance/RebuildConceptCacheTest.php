@@ -22,7 +22,7 @@ class RebuildConceptCacheTest extends SMWIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->runnerFactory  = TestEnvironment::getUtilityFactory()->newRunnerFactory();
+		$this->runnerFactory = TestEnvironment::getUtilityFactory()->newRunnerFactory();
 	}
 
 	protected function tearDown(): void {

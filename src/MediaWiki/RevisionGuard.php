@@ -2,13 +2,12 @@
 
 namespace SMW\MediaWiki;
 
-use IDBAccessObject;
-use MediaWiki\Revision\RevisionRecord;
-use MediaWiki\Revision\RevisionLookup;
-use Title;
 use File;
+use IDBAccessObject;
+use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Revision\RevisionRecord;
+use Title;
 use WikiPage;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
  * @private
@@ -147,7 +146,7 @@ class RevisionGuard {
 	 *
 	 * @return File|null
 	 */
-	public function getFile( Title $title, File $file = null ) {
+	public function getFile( Title $title, ?File $file = null ) {
 		$origFile = $file;
 
 		$this->hookDispatcher->onChangeFile( $title, $file );

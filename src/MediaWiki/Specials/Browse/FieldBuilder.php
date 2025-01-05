@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Specials\Browse;
 use Html;
 use SMW\Message;
 use SpecialPage;
-use SMW\Localizer;
 
 /**
  * @private

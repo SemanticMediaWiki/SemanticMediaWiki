@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\NamespaceUriFinder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\NamespaceUriFinder

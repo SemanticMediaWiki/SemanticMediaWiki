@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use Psr\Log\LoggerAwareTrait;
+use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
 use SMW\SemanticData;
-use SMW\MediaWiki\HookListener;
-use Psr\Log\LoggerAwareTrait;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * LinksUpdateComplete hook is called at the end of LinksUpdate()

@@ -209,7 +209,7 @@ abstract class Page extends Article {
 	 *
 	 * @return string
 	 */
-	protected abstract function getHtml();
+	abstract protected function getHtml();
 
 	/**
 	 * Like Article's getTitle(), but returning a suitable SMWDIWikiPage.

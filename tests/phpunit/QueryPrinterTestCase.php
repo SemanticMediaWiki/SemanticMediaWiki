@@ -56,7 +56,7 @@ abstract class QueryPrinterTestCase extends \PHPUnit\Framework\TestCase {
 
 	protected function arrayWrap( array $elements ) {
 		return array_map(
-			function ( $element ) {
+			static function ( $element ) {
 				return [ $element ];
 			},
 			$elements

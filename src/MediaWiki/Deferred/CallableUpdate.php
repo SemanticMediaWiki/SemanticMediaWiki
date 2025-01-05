@@ -6,7 +6,6 @@ use Closure;
 use DeferrableUpdate;
 use DeferredUpdates;
 use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\Database;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -84,7 +83,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @param callable|null $callback
 	 */
-	public function __construct( callable $callback = null ) {
+	public function __construct( ?callable $callback = null ) {
 		if ( $callback === null ) {
 			$callback = [ $this, 'emptyCallback' ];
 		}

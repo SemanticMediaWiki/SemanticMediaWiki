@@ -3,7 +3,6 @@
 namespace SMW;
 
 use InvalidArgumentException;
-use RuntimeException;
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
 use SMW\Utils\DotArray;

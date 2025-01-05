@@ -3,9 +3,9 @@
 namespace SMW\Tests\MediaWiki\Specials;
 
 use SMW\MediaWiki\Specials\SpecialURIResolver;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialURIResolver

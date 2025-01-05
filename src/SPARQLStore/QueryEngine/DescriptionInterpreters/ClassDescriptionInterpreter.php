@@ -36,7 +36,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -59,7 +59,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
-		list( $condition, $namespaces ) = $this->mapCategoriesToConditionElements(
+		[ $condition, $namespaces ] = $this->mapCategoriesToConditionElements(
 			$description->getCategories(),
 			$description->getHierarchyDepth(),
 			$joinVariable

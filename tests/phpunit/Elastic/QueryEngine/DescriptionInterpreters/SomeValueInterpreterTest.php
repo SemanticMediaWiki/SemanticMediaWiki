@@ -2,11 +2,10 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
+use SMW\DataItemFactory;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
-use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\Query\DescriptionFactory;
-use SMW\DataItemFactory;
 use SMW\Tests\PHPUnitCompat;
 
 /**

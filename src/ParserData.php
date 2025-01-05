@@ -6,7 +6,6 @@ use ParserOptions;
 use ParserOutput;
 use Psr\Log\LoggerAwareTrait;
 use SMWDataValue as DataValue;
-use SMW\MediaWiki\RevisionGuard;
 use Title;
 
 /**
@@ -300,7 +299,7 @@ class ParserData {
 	 *
 	 * @param ParserOutput|null
 	 */
-	public function importFromParserOutput( ParserOutput $parserOutput = null ) {
+	public function importFromParserOutput( ?ParserOutput $parserOutput = null ) {
 		if ( $parserOutput === null ) {
 			return;
 		}

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Elastic\Exception;
 
-use SMW\Elastic\Exception\MissingEndpointConfigException;
 use RuntimeException;
+use SMW\Elastic\Exception\MissingEndpointConfigException;
 
 /**
  * @covers \SMW\Elastic\Exception\MissingEndpointConfigException

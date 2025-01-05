@@ -2,11 +2,10 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\DataTypeRegistry;
-use SMW\Store;
-use SMW\Message;
 use SMW\MediaWiki\HookListener;
+use SMW\Message;
 use SMW\OptionsAwareTrait;
+use SMW\Store;
 
 /**
  * Add extra statistic at the end of Special:Statistics

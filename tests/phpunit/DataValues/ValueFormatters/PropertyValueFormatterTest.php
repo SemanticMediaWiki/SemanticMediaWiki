@@ -3,11 +3,11 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataItemFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
-use SMW\DataValues\PropertyValue;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\PropertyValueFormatter

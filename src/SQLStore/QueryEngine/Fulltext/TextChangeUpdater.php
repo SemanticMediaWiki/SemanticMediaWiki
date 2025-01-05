@@ -4,9 +4,9 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Database;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DIWikiPage;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
@@ -184,7 +184,7 @@ class TextChangeUpdater {
 	 *
 	 * @param ChangeOp $changeOp
 	 */
-	public function doUpdateFromChangeDiff( ChangeDiff $changeDiff = null ) {
+	public function doUpdateFromChangeDiff( ?ChangeDiff $changeDiff = null ) {
 		if ( !$this->searchTableUpdater->isEnabled() || $changeDiff === null ) {
 			return;
 		}
@@ -215,7 +215,7 @@ class TextChangeUpdater {
 		}
 
 		foreach ( $updates as $key => $value ) {
-			list( $sid, $pid ) = explode( ':', $key, 2 );
+			[ $sid, $pid ] = explode( ':', $key, 2 );
 
 			if ( $this->searchTableUpdater->exists( $sid, $pid ) === false ) {
 				$this->searchTableUpdater->insert( $sid, $pid );

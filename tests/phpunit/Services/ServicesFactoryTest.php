@@ -220,7 +220,7 @@ class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructDeferredCallableUpdate() {
-		$callback = function () {
+		$callback = static function () {
 			return null;
 		};
 
@@ -273,7 +273,7 @@ class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function callbackContainerProvider() {
 		$provider[] = [
 			'ResultCache',
-			array(),
+			[],
 			'\SMW\Query\Cache\ResultCache'
 		];
 

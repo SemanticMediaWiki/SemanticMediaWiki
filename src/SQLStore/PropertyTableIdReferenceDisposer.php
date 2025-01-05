@@ -3,11 +3,11 @@
 namespace SMW\SQLStore;
 
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DIWikiPage;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
+use SMW\DIWikiPage;
 use SMW\Iterators\ResultIterator;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Wikimedia\Rdbms\DBError;
 
 /**
@@ -140,7 +140,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newOutdatedEntitiesResultIterator( RequestOptions $requestOptions = null ) {
+	public function newOutdatedEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
 		$options = [];
 
 		if ( $requestOptions !== null ) {
@@ -168,7 +168,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newByNamespaceInvalidEntitiesResultIterator( RequestOptions $requestOptions = null ) {
+	public function newByNamespaceInvalidEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
 		$options = [];
 
 		if ( $requestOptions !== null ) {

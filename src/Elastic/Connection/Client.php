@@ -7,9 +7,9 @@ use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Exception;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use SMW\Elastic\Config;
 use SMW\Elastic\Exception\InvalidJSONException;
 use SMW\Elastic\Exception\ReplicationException;
-use SMW\Elastic\Config;
 use SMW\Options;
 use SMW\Site;
 
@@ -78,7 +78,7 @@ class Client {
 	 * @param LockManager $lockManager
 	 * @param Options|null $options
 	 */
-	public function __construct( ElasticClient $client, LockManager $lockManager, Config $options = null ) {
+	public function __construct( ElasticClient $client, LockManager $lockManager, ?Config $options = null ) {
 		$this->client = $client;
 		$this->lockManager = $lockManager;
 		$this->options = $options;

@@ -2,12 +2,12 @@
 
 namespace SMW;
 
-use SMW\Utils\TemplateEngine;
-use SMW\Utils\Logo;
-use SMW\Localizer\LocalMessageProvider;
+use RuntimeException;
 use SMW\Exception\FileNotReadableException;
 use SMW\Exception\JSONFileParseException;
-use RuntimeException;
+use SMW\Localizer\LocalMessageProvider;
+use SMW\Utils\Logo;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @private
@@ -132,7 +132,7 @@ class SetupCheck {
 	 * @param array $vars
 	 * @param SetupFile|null $setupFile
 	 */
-	public function __construct( array $options, SetupFile $setupFile = null ) {
+	public function __construct( array $options, ?SetupFile $setupFile = null ) {
 		$this->options = $options;
 		$this->setupFile = $setupFile;
 		$this->templateEngine = new TemplateEngine();
@@ -175,7 +175,7 @@ class SetupCheck {
 	 *
 	 * @return SetupCheck
 	 */
-	public static function newFromDefaults( SetupFile $setupFile = null ) {
+	public static function newFromDefaults( ?SetupFile $setupFile = null ) {
 		if ( !defined( 'SMW_VERSION' ) ) {
 			$version = self::readFromFile( $GLOBALS['smwgIP'] . 'extension.json' )['version'];
 		} else {
@@ -536,7 +536,7 @@ class SetupCheck {
 		// Minify CSS rules, we keep them readable in the template to allow for
 		// better adaption
 		// @see http://manas.tungare.name/software/css-compression-in-php/
-		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", function ( $matches ) {
+		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", static function ( $matches ) {
 				// Remove space after colons
 				$style = str_replace( ': ', ':', $matches[0] );
 

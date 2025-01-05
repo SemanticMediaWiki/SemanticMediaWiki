@@ -5,8 +5,8 @@ namespace SMW\Tests\MediaWiki\Page\ListBuilder;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
-use SMWDITime as DITime;
 use SMW\Tests\TestEnvironment;
+use SMWDITime as DITime;
 
 /**
  * @covers \SMW\MediaWiki\Page\ListBuilder\ValueListBuilder

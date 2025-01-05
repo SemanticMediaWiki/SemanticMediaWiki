@@ -31,7 +31,7 @@ class NGramTokenizer implements Tokenizer {
 	 * @param Tokenizer $tokenizer
 	 * @param integer $ngramSize
 	 */
-	public function __construct( Tokenizer $tokenizer = null, $ngramSize = 2 ) {
+	public function __construct( ?Tokenizer $tokenizer = null, $ngramSize = 2 ) {
 		$this->tokenizer = $tokenizer;
 		$this->ngramSize = (int)$ngramSize;
 	}
@@ -90,11 +90,11 @@ class NGramTokenizer implements Tokenizer {
 			return $result;
 		}
 
-		return array();
+		return [];
 	}
 
 	private function createNGrams( $text, $ngramSize, $withMarker ) {
-		$ngramList = array();
+		$ngramList = [];
 
 		// Identify the beginning-of-word and end-of-word
 		if ( $withMarker ) {

@@ -6,7 +6,7 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Query\PrintRequest;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
 

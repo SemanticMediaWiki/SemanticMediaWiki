@@ -3,9 +3,6 @@
 namespace SMW\Tests\Elastic\Indexer;
 
 use SMW\Elastic\Indexer\TextSanitizer;
-use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\Indexer\TextSanitizer

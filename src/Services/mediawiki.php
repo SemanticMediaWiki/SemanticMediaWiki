@@ -4,7 +4,6 @@ namespace SMW\Services;
 
 use ImportStreamSource;
 use ImportStringSource;
-use JobQueueGroup;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
@@ -13,8 +12,6 @@ use SMW\MediaWiki\FileRepoFinder;
 use SMW\MediaWiki\NamespaceInfo;
 use SMW\MediaWiki\PermissionManager;
 use SMW\Utils\Logger;
-use WikiImporter;
-use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @codeCoverageIgnore
@@ -34,7 +31,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'ImportStringSource' => function ( $containerBuilder, $source ) {
+	'ImportStringSource' => static function ( $containerBuilder, $source ) {
 		$containerBuilder->registerExpectedReturnType( 'ImportStringSource', '\ImportStringSource' );
 		return new ImportStringSource( $source );
 	},
@@ -44,7 +41,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'ImportStreamSource' => function ( $containerBuilder, $source ) {
+	'ImportStreamSource' => static function ( $containerBuilder, $source ) {
 		$containerBuilder->registerExpectedReturnType( 'ImportStreamSource', '\ImportStreamSource' );
 		return new ImportStreamSource( $source );
 	},
@@ -54,7 +51,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'WikiImporter' => function ( $containerBuilder, \ImportSource $importSource ) {
+	'WikiImporter' => static function ( $containerBuilder, \ImportSource $importSource ) {
 		$services = MediaWikiServices::getInstance();
 		return $services->getWikiImporterFactory()->getWikiImporter(
 			$importSource,
@@ -67,7 +64,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'WikiPage' => function ( $containerBuilder, \Title $title ) {
+	'WikiPage' => static function ( $containerBuilder, \Title $title ) {
 		$containerBuilder->registerExpectedReturnType( 'WikiPage', '\WikiPage' );
 		return ServicesFactory::getInstance()->newPageCreator()->createPage( $title );
 	},
@@ -77,7 +74,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'MainConfig' => function () {
+	'MainConfig' => static function () {
 		return MediaWikiServices::getInstance()->getMainConfig();
 	},
 
@@ -86,7 +83,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'SearchEngineConfig' => function () {
+	'SearchEngineConfig' => static function () {
 		return MediaWikiServices::getInstance()->getSearchEngineConfig();
 	},
 
@@ -95,7 +92,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'MagicWordFactory' => function () {
+	'MagicWordFactory' => static function () {
 		return MediaWikiServices::getInstance()->getMagicWordFactory();
 	},
 
@@ -104,7 +101,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'PermissionManager' => function () {
+	'PermissionManager' => static function () {
 		return new PermissionManager( MediaWikiServices::getInstance()->getPermissionManager() );
 	},
 
@@ -113,7 +110,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'DBLoadBalancerFactory' => function () {
+	'DBLoadBalancerFactory' => static function () {
 		return MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 	},
 
@@ -122,7 +119,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'DBLoadBalancer' => function () {
+	'DBLoadBalancer' => static function () {
 		return MediaWikiServices::getInstance()->getDBLoadBalancer();
 	},
 
@@ -135,7 +132,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'DefaultSearchEngineTypeForDB' => function ( $containerBuilder, $dbProviderOrdbOrLb ) {
+	'DefaultSearchEngineTypeForDB' => static function ( $containerBuilder, $dbProviderOrdbOrLb ) {
 		return MediaWikiServices::getInstance()->getSearchEngineFactory()->getSearchEngineClass( $dbProviderOrdbOrLb );
 	},
 
@@ -144,7 +141,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'MediaWikiLogger' => function ( $containerBuilder, $channel = 'smw', $role = Logger::ROLE_DEVELOPER ) {
+	'MediaWikiLogger' => static function ( $containerBuilder, $channel = 'smw', $role = Logger::ROLE_DEVELOPER ) {
 		$containerBuilder->registerExpectedReturnType( 'MediaWikiLogger', '\Psr\Log\LoggerInterface' );
 
 		$logger = LoggerFactory::getInstance( $channel );
@@ -157,7 +154,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'NamespaceInfo' => function ( $containerBuilder ) {
+	'NamespaceInfo' => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'NamespaceInfo', '\SMW\MediaWiki\NamespaceInfo' );
 		$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
 
@@ -169,7 +166,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'FileRepoFinder' => function () {
+	'FileRepoFinder' => static function () {
 		$repoGroup = MediaWikiServices::getInstance()->getRepoGroup();
 
 		return new FileRepoFinder( $repoGroup );
@@ -180,7 +177,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'JobQueueGroup' => function ( $containerBuilder ) {
+	'JobQueueGroup' => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'JobQueueGroup', '\JobQueueGroup' );
 
 		return MediaWikiServices::getInstance()->getJobQueueGroup();
@@ -191,7 +188,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'Parser' => function () {
+	'Parser' => static function () {
 		return MediaWikiServices::getInstance()->getParser();
 	},
 
@@ -200,7 +197,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'ContentLanguage' => function () {
+	'ContentLanguage' => static function () {
 		return MediaWikiServices::getInstance()->getContentLanguage();
 	},
 
@@ -209,7 +206,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'RevisionLookup' => function () {
+	'RevisionLookup' => static function () {
 		return MediaWikiServices::getInstance()->getRevisionLookup();
 	},
 
@@ -218,11 +215,11 @@ return [
 	 *
 	 * @return callable
 	 */
-	'ParserCache' => function () {
+	'ParserCache' => static function () {
 		return MediaWikiServices::getInstance()->getParserCache();
 	},
 
-	'UserOptionsLookup' => function (): UserOptionsLookup {
+	'UserOptionsLookup' => static function (): UserOptionsLookup {
 		return MediaWikiServices::getInstance()->getUserOptionsLookup();
 	}
 

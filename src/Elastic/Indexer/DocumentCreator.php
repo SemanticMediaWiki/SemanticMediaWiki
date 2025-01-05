@@ -2,15 +2,12 @@
 
 namespace SMW\Elastic\Indexer;
 
-use SMW\Store;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SemanticData;
 use SMW\DataTypeRegistry;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Collator;
-use SMW\Parser\LinksEncoder;
-use SMWDIBlob as DIBlob;
-use SMWDITime as DITime;
+use SMW\SemanticData;
+use SMW\Store;
 use SMWDataItem as DataItem;
 
 /**

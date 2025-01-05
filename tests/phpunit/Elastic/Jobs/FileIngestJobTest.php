@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Elastic\Jobs;
 
-use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\DIWikiPage;
+use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
@@ -79,7 +79,7 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 	public function testPushIngestJob() {
 		$subject = DIWikiPage::newFromText( __METHOD__, NS_FILE );
 
-		$checkJobParameterCallback = function ( $job ) use( $subject ) {
+		$checkJobParameterCallback = static function ( $job ) use( $subject ) {
 			return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $subject );
 		};
 

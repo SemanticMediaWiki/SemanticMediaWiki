@@ -5,14 +5,14 @@ namespace SMW\MediaWiki\Hooks;
 use EditPage;
 use Html;
 use SMW\DIProperty;
-use SMW\Message;
-use SMW\NamespaceExaminer;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
+use SMW\GroupPermissions;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
-use SMW\GroupPermissions;
+use SMW\Message;
+use SMW\NamespaceExaminer;
+use SMW\OptionsAwareTrait;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial

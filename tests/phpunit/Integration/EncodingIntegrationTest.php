@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
-use Title;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SidebarBeforeOutput
@@ -30,7 +30,7 @@ class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider sidebarBeforeOutputDataProvider
 	 */
 	public function testSidebarBeforeOutputURLEncoding( $setup, $expected ) {
-		$sidebar  = [];
+		$sidebar = [];
 
 		foreach ( $setup['settings'] as $key => $value ) {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );

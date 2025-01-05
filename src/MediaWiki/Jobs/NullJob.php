@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Job;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**
@@ -20,7 +19,7 @@ class NullJob extends Job {
 	 * @param Title|null $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title = null, $params = [] ) {
+	public function __construct( ?Title $title = null, $params = [] ) {
 	}
 
 	/**

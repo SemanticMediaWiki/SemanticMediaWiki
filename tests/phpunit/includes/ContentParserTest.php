@@ -5,7 +5,6 @@ namespace SMW\Tests;
 use MediaWiki\Content\Renderer\ContentRenderer;
 use MediaWiki\MediaWikiServices;
 use SMW\ContentParser;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ContentParser

@@ -2,12 +2,10 @@
 
 namespace SMW\Maintenance;
 
-use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\CallbackMessageReporter;
+use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Setup;
 use SMW\Utils\CliMsgFormatter;
-use SMW\Maintenance\MaintenanceCheck;
 
 /**
  * Load the required class

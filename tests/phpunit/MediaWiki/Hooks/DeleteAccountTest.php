@@ -2,10 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\DeleteAccount;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\DeleteAccount

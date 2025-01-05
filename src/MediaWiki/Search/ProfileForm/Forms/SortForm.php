@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use Html;
-use WebRequest;
 use SMW\Message;
+use WebRequest;
 
 /**
  * @private

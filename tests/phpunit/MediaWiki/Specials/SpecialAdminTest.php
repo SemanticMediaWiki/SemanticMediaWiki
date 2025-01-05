@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Specials;
 
 use SMW\MediaWiki\Specials\SpecialAdmin;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
 

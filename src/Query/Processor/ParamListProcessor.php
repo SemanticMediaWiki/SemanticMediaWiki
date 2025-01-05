@@ -34,7 +34,7 @@ class ParamListProcessor {
 	 *
 	 * @param PrintRequestFactory|null $printRequestFactory
 	 */
-	public function __construct( PrintRequestFactory $printRequestFactory = null ) {
+	public function __construct( ?PrintRequestFactory $printRequestFactory = null ) {
 		$this->printRequestFactory = $printRequestFactory;
 
 		if ( $this->printRequestFactory === null ) {
@@ -189,7 +189,7 @@ class ParamListProcessor {
 		// request that contains `-3D` string
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
-			function ( array $matches ) {
+			static function ( array $matches ) {
 				return str_replace( [ '=' ], [ '0x003D' ], $matches[0] );
 			},
 			$param ?? ''

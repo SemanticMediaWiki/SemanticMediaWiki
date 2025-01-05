@@ -3,7 +3,6 @@
 namespace SMW\SPARQLStore;
 
 use Onoi\Cache\Cache;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
@@ -69,7 +68,7 @@ class TurtleTriplesBuilder {
 	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
 	 * @param Cache|null $cache
 	 */
-	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, Cache $cache = null ) {
+	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, ?Cache $cache = null ) {
 		$this->repositoryRedirectLookup = $repositoryRedirectLookup;
 		$this->cache = $cache;
 	}

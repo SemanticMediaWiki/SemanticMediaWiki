@@ -2,8 +2,6 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\Store;
-
 /**
  * @license GNU GPL v2+
  * @since 3.1

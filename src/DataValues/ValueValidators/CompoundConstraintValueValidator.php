@@ -2,8 +2,8 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use RuntimeException;
 use Psr\Log\LoggerAwareTrait;
+use RuntimeException;
 use SMWDataValue as DataValue;
 
 /**

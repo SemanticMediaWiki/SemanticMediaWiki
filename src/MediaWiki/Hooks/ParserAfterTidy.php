@@ -2,17 +2,17 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Onoi\Cache\Cache;
 use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use Psr\Log\LoggerAwareTrait;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\PageInfoProvider;
+use SMW\NamespaceExaminer;
+use SMW\OptionsAwareTrait;
 use SMW\ParserData;
 use SMW\SemanticData;
-use Onoi\Cache\Cache;
-use SMW\NamespaceExaminer;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
-use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\PageInfoProvider;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the

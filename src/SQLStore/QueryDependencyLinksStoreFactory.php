@@ -4,14 +4,12 @@ namespace SMW\SQLStore;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
-use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
-use SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter;
+use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
+use SMW\SQLStore\QueryDependency\QueryLinksTableDisposer;
 use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
-use SMW\SQLStore\QueryDependency\QueryLinksTableDisposer;
-use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use SMW\Store;
 
 /**

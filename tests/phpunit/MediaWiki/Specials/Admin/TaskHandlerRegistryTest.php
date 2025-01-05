@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
-use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
-use SMW\Tests\TestEnvironment;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry

@@ -46,7 +46,7 @@ class JsonContentsFileReader {
 	 * @param Cache|null $cache
 	 * @param string $languageFileDir
 	 */
-	public function __construct( Cache $cache = null, $languageFileDir = '' ) {
+	public function __construct( ?Cache $cache = null, $languageFileDir = '' ) {
 		$this->cache = $cache;
 		$this->languageFileDir = $languageFileDir;
 

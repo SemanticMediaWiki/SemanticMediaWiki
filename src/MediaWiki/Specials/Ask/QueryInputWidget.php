@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use Html;
 use SMW\Message;
 use SMW\Utils\HtmlDivTable;
 

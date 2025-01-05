@@ -2,16 +2,16 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Localizer\Message;
 use SMW\DIWikiPage;
+use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
-use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
-use SMW\Utils\TemplateEngine;
+use SMW\Localizer\Message;
+use SMW\Localizer\MessageLocalizerTrait;
+use SMW\MediaWiki\Permission\PermissionAware;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminerAware;
-use SMW\MediaWiki\Permission\PermissionAware;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @license GNU GPL v2+

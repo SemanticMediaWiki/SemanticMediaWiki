@@ -3,8 +3,8 @@
 namespace SMW\Elastic\Hooks;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\Store;
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
+use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 
 /**
@@ -109,7 +109,7 @@ class UpdateEntityCollationComplete {
 
 		$rebuilder->prepare();
 
-		list( $res, $last ) = $rebuilder->select(
+		[ $res, $last ] = $rebuilder->select(
 			$this->store,
 			$conditions
 		);

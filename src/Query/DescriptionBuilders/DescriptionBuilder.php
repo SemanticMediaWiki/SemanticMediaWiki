@@ -2,12 +2,12 @@
 
 namespace SMW\Query\DescriptionBuilders;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataItemFactory;
+use SMW\DIProperty;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\QueryComparator;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
-use SMW\DIProperty;
 
 /**
  * @private
@@ -57,7 +57,7 @@ abstract class DescriptionBuilder {
 	 * @param DescriptionFactory|null $descriptionFactory
 	 * @param DataItemFactory|null $dataItemFactory
 	 */
-	public function __construct( DescriptionFactory $descriptionFactory = null, DescriptionFactory $dataItemFactory = null ) {
+	public function __construct( ?DescriptionFactory $descriptionFactory = null, ?DescriptionFactory $dataItemFactory = null ) {
 		$this->descriptionFactory = $descriptionFactory;
 		$this->dataItemFactory = $dataItemFactory;
 
@@ -75,7 +75,7 @@ abstract class DescriptionBuilder {
 	 *
 	 * @param DataValue|null $dataValue
 	 */
-	public abstract function isBuilderFor( $dataValue );
+	abstract public function isBuilderFor( $dataValue );
 
 	/**
 	 * @since 2.3
@@ -115,7 +115,7 @@ abstract class DescriptionBuilder {
 	 * @param string $value
 	 * @param string|integer $comparator
 	 */
-	protected function prepareValue( DIProperty $property = null, &$value, &$comparator ) {
+	protected function prepareValue( ?DIProperty $property = null, &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 
 		// [[in:lorem ipsum]] / [[Has text::in:lorem ipsum]] to be turned into a

@@ -3,9 +3,7 @@
 namespace SMW\Tests\SQLStore\Rebuilder;
 
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Rebuilder\EntityValidator;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**

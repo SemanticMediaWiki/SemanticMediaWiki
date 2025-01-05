@@ -2,7 +2,6 @@
 
 namespace SMW\ParserFunctions;
 
-use ParamProcessor\ParamDefinition;
 use ParamProcessor\ProcessedParam;
 use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;

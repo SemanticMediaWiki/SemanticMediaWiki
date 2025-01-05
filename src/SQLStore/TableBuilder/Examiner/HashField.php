@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\TableBuilder\Examiner;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\Maintenance\populateHashField;
 use SMW\SQLStore\SQLStore;
-use SMW\Maintenance\populateHashField as PopulateHashField;
 use SMW\Utils\CliMsgFormatter;
 
 /**
@@ -33,7 +33,7 @@ class HashField {
 	 * @param SQLStore $store
 	 * @param PopulateHashField|null $populateHashField
 	 */
-	public function __construct( SQLStore $store, PopulateHashField $populateHashField = null ) {
+	public function __construct( SQLStore $store, ?PopulateHashField $populateHashField = null ) {
 		$this->store = $store;
 		$this->populateHashField = $populateHashField;
 	}

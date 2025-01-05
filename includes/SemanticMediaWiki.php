@@ -4,7 +4,6 @@ use SMW\Globals;
 use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory;
 use SMW\Setup;
-use SMW\SetupCheck;
 
 /**
  * @codeCoverageIgnore
@@ -219,13 +218,13 @@ class SemanticMediaWiki {
 			return;
 		}
 
-		/**@{
+		/** @{
 		 * Constants for the search type
 		 */
 		define( 'SMW_SPECIAL_SEARCHTYPE', 'SMWSearch' );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for the exporter/OWL serializer
 		 */
 		define( 'SMW_SERIALIZER_DECL_CLASS', 1 );
@@ -233,14 +232,14 @@ class SemanticMediaWiki {
 		define( 'SMW_SERIALIZER_DECL_APROP', 4 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants to indicate that the installer is called from the `ExtensionSchemaUpdates`
 		 * hook.
 		 */
 		define( 'SMW_EXTENSION_SCHEMA_UPDATER', 'smw/extension/schema/updater' );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * SMW\ResultPrinter related constants that define
 		 * how/if headers should be displayed
 		 */
@@ -250,7 +249,7 @@ class SemanticMediaWiki {
 		define( 'SMW_HEADERS_HIDE', 0 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for denoting output modes in many functions: HTML or Wiki?
 		 * "File" is for printing results into stand-alone files (e.g. building RSS)
 		 * and should be treated like HTML when building single strings. Only query
@@ -262,7 +261,7 @@ class SemanticMediaWiki {
 		define( 'SMW_OUTPUT_RAW', 4 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for displaying the factbox
 		 */
 		define( 'SMW_FACTBOX_HIDDEN', 1 );
@@ -277,7 +276,7 @@ class SemanticMediaWiki {
 
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for regulating equality reasoning
 		 */
 		define( 'SMW_EQ_NONE', 1 );
@@ -285,7 +284,7 @@ class SemanticMediaWiki {
 		define( 'SMW_EQ_FULL', 4 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for internal entity types
 		 */
 		define( 'SMW_SUBENTITY_MONOLINGUAL', '_ML' );
@@ -294,7 +293,7 @@ class SemanticMediaWiki {
 		define( 'SMW_SUBENTITY_ERROR', '_ERR' );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Flags to classify available query descriptions,
 		 * used to enable/disable certain features
 		 */
@@ -314,7 +313,7 @@ class SemanticMediaWiki {
 		define( 'SMW_ANY_QUERY', 0xFFFFFFFF );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for defining which concepts to show only if cached
 		 */
 		// show concept elements anywhere only if cached
@@ -325,7 +324,7 @@ class SemanticMediaWiki {
 		define( 'CONCEPT_CACHE_NONE', 0 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for identifying javascripts as used in SMWOutputs
 		 */
 		/// @deprecated Use module 'ext.smw.tooltips', see SMW_Ouptuts.php. Vanishes in SMW 1.7 at
@@ -338,7 +337,7 @@ class SemanticMediaWiki {
 		define( 'SMW_HEADER_STYLE', 4 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 *  Comparators for datavalues
 		 */
 		// Matches only datavalues that are equal to the given value.
@@ -369,7 +368,7 @@ class SemanticMediaWiki {
 		define( 'SMW_CMP_NOT', 24 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for date formats (using binary encoding of nine bits:
 		 * 3 positions x 3 interpretations)
 		 */
@@ -399,7 +398,7 @@ class SemanticMediaWiki {
 		define( 'SMW_DAY_YEAR', 3 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for date/time precision
 		 */
 		define( 'SMW_PREC_Y', 0 );
@@ -410,7 +409,7 @@ class SemanticMediaWiki {
 		define( 'SMW_PREC_YMDTZ', 4 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for SPARQL supported query features (mostly SPARQL 1.1) because we are unable
 		 * to verify against the REST API whether a feature is supported or not
 		 */
@@ -428,7 +427,7 @@ class SemanticMediaWiki {
 		define( 'SMW_SPARQL_QF_NOCASE', 32 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for SPARQL repository sepcific features
 		 */
 		// does not support any features
@@ -437,7 +436,7 @@ class SemanticMediaWiki {
 		define( 'SMW_SPARQL_CONNECTION_PING', 2 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Deprecated since 3.0, remove options after complete removal in 3.1
 		 */
 		define( 'SMW_HTTP_DEFERRED_ASYNC', true );
@@ -445,7 +444,7 @@ class SemanticMediaWiki {
 		define( 'SMW_HTTP_DEFERRED_LAZY_JOB', 8 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants DV features
 		 */
 		define( 'SMW_DV_NONE', 0 );
@@ -473,7 +472,7 @@ class SemanticMediaWiki {
 		define( 'SMW_DV_WPV_PIPETRICK', 2048 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for Fulltext types
 		 */
 		define( 'SMW_FT_NONE', 0 );
@@ -485,7 +484,7 @@ class SemanticMediaWiki {
 		define( 'SMW_FT_WIKIPAGE', 8 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for admin features
 		 */
 		define( 'SMW_ADM_NONE', 0 );
@@ -507,7 +506,7 @@ class SemanticMediaWiki {
 		define( 'SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN', 2048 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for ResultPrinter
 		 */
 		define( 'SMW_RF_NONE', 0 );
@@ -515,14 +514,14 @@ class SemanticMediaWiki {
 		define( 'SMW_RF_TEMPLATE_OUTSEP', 2 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for $smwgExperimentalFeatures
 		 */
 		define( 'SMW_QUERYRESULT_PREFETCH', 2 );
 		define( 'SMW_SHOWPARSER_USE_CURTAILMENT', 4 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for $smwgFieldTypeFeatures
 		 */
 		define( 'SMW_FIELDT_NONE', 0 );
@@ -532,7 +531,7 @@ class SemanticMediaWiki {
 		define( 'SMW_FIELDT_CHAR_LONG', 4 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for $smwgQueryProfiler
 		 */
 		define( 'SMW_QPRFL_NONE', 0 );
@@ -542,7 +541,7 @@ class SemanticMediaWiki {
 		define( 'SMW_QPRFL_DUR', 4 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for $smwgBrowseFeatures
 		 */
 		define( 'SMW_BROWSE_NONE', 0 );
@@ -560,7 +559,7 @@ class SemanticMediaWiki {
 		define( 'SMW_BROWSE_USE_API', 64 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for $smwgParserFeatures
 		 */
 		define( 'SMW_PARSER_NONE', 0 );
@@ -578,7 +577,7 @@ class SemanticMediaWiki {
 		define( 'SMW_PARSER_LINKS_IN_VALUES', 32 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for LinksInValue features
 		 */
 		// Using the PCRE approach
@@ -587,7 +586,7 @@ class SemanticMediaWiki {
 		define( 'SMW_LINV_OBFU', 4 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for $smwgCategoryFeatures
 		 */
 		define( 'SMW_CAT_NONE', 0 );
@@ -599,7 +598,7 @@ class SemanticMediaWiki {
 		define( 'SMW_CAT_HIERARCHY', 8 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for $smwgQSortFeatures
 		 */
 		define( 'SMW_QSORT_NONE', 0 );
@@ -611,7 +610,7 @@ class SemanticMediaWiki {
 		define( 'SMW_QSORT_UNCONDITIONAL', 8 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for $smwgRemoteReqFeatures
 		 */
 		// Remote responses are enabled
@@ -620,7 +619,7 @@ class SemanticMediaWiki {
 		define( 'SMW_REMOTE_REQ_SHOW_NOTE', 4 );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for Schema groups
 		 */
 		define( 'SMW_SCHEMA_GROUP_FORMAT', 'schema/group/format' );
@@ -629,7 +628,7 @@ class SemanticMediaWiki {
 		define( 'SMW_SCHEMA_GROUP_CONSTRAINT', 'schema/group/constraint' );
 		define( 'SMW_SCHEMA_GROUP_PROFILE', 'schema/group/profile' );
 
-		/**@{
+		/** @{
 		 * Constants for Special:Ask submit method
 		 */
 		define( 'SMW_SASK_SUBMIT_GET', 'get' );
@@ -637,7 +636,7 @@ class SemanticMediaWiki {
 		define( 'SMW_SASK_SUBMIT_POST', 'post' );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for constraint error check
 		 */
 		define( 'SMW_CONSTRAINT_ERR_CHECK_NONE', false );
@@ -645,7 +644,7 @@ class SemanticMediaWiki {
 		define( 'SMW_CONSTRAINT_ERR_CHECK_ALL', 'check/all' );
 		/**@}*/
 
-		/**@{
+		/** @{
 		 * Constants for content types
 		 */
 		define( 'CONTENT_MODEL_SMW_SCHEMA', 'smw/schema' );

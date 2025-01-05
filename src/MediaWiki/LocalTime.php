@@ -5,7 +5,6 @@ namespace SMW\MediaWiki;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
-use User;
 
 /**
  * @license GNU GPL v2+
@@ -44,7 +43,7 @@ class LocalTime {
 	 *
 	 * @return DateTime
 	 */
-	public static function getLocalizedTime( DateTime $dateTime, string $timeCorrection = null ) {
+	public static function getLocalizedTime( DateTime $dateTime, ?string $timeCorrection = null ) {
 		$tz = $timeCorrection ?? false;
 		$data = explode( '|', $tz, 3 );
 

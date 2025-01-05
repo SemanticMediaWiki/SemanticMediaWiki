@@ -3,9 +3,9 @@
 namespace SMW\Listener\ChangeListener;
 
 use Iterator;
-use SeekableIterator;
 use OutOfBoundsException;
 use RuntimeException;
+use SeekableIterator;
 use SMW\Iterators\DotSeekableIteratorTrait;
 
 /**

@@ -2,11 +2,9 @@
 
 namespace SMW;
 
-use SMW\Connection\ConnectionManager;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Hooks;
 use SMW\Utils\Logo;
-use SMW\GroupPermissions;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
  * Extension setup and registration
@@ -222,7 +220,7 @@ final class Setup {
 	}
 
 	private function initMessageCallbackHandler() {
-		Message::registerCallbackHandler( Message::TEXT, function ( $arguments, $language ) {
+		Message::registerCallbackHandler( Message::TEXT, static function ( $arguments, $language ) {
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}
@@ -234,7 +232,7 @@ final class Setup {
 			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->text();
 		} );
 
-		Message::registerCallbackHandler( Message::ESCAPED, function ( $arguments, $language ) {
+		Message::registerCallbackHandler( Message::ESCAPED, static function ( $arguments, $language ) {
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}
@@ -246,7 +244,7 @@ final class Setup {
 			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->escaped();
 		} );
 
-		Message::registerCallbackHandler( Message::PARSE, function ( $arguments, $language ) {
+		Message::registerCallbackHandler( Message::PARSE, static function ( $arguments, $language ) {
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}

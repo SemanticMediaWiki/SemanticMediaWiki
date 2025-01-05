@@ -153,7 +153,7 @@ class JsonTestCaseFileHandler {
 			// Support for { "skip-on": { "smw->2.5.x": "Reason is ..." }
 			// or { "skip-on": { "mw->1.30.x": "Reason is ..." }
 			if ( strpos( $id, 'mw-' ) !== false ) {
-				list( $noop, $versionToSkip ) = explode( "mw-", $id, 2 );
+				[ $noop, $versionToSkip ] = explode( "mw-", $id, 2 );
 			}
 
 			// Support for { "skip-on": { "mediawiki": [ ">1.29.x", "Reason is ..." ] }
@@ -261,26 +261,32 @@ class JsonTestCaseFileHandler {
 		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
 		foreach ( $skipOn as $id => $reason ) {
-
-			if ( strpos( $id, 'mw-' ) === false ) {
+			if ( strpos( $id, 'mediawiki' ) === false ) {
 				continue;
 			}
 
-			list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
+			$versionToSkip = $skipOn['mediawiki'][0];
 			$compare = '=';
 
-			if ( strpos( $versionToSkip, '.x' ) ) {
-				$versionToSkip = str_replace( '.x', '.9999', $versionToSkip );
-				$compare = '<';
+			if ( strpos( $versionToSkip, '=' ) ) {
+				$list = explode( "=", $versionToSkip );
+				$compare = $list[0] . '=';
+				if ( strpos( $versionToSkip, '.x' ) ) {
+					$versionToSkip = str_replace( '.x', '.9999', $list[1] );
+				}
 			}
 
-			if ( strpos( $versionToSkip, '<' ) ) {
-				$versionToSkip = str_replace( '<', '', $versionToSkip );
-				$compare = '<';
+			if ( !strpos( $versionToSkip, '=' ) ) {
+				$compare = $versionToSkip[0];
+				$list = explode( $compare, $versionToSkip );
+				if ( strpos( $versionToSkip, '.x' ) ) {
+					$versionToSkip = str_replace( '.x', '.9999', $list[1] );
+				}
 			}
 
 			if ( version_compare( $mwVersion, $versionToSkip, $compare ) ) {
-				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
+				$messageToShow = is_array( $reason ) && isset( $reason[1] ) ? $reason[1] : 'Test skipped!';
+				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$messageToShow})";
 				break;
 			}
 		}
@@ -464,7 +470,7 @@ class JsonTestCaseFileHandler {
 	 * @return array
 	 */
 	public function findTestCasesByType( $type ) {
-		return array_filter( $this->getContentsFor( 'tests' ), function ( $contents ) use( $type ) {
+		return array_filter( $this->getContentsFor( 'tests' ), static function ( $contents ) use( $type ) {
 			return isset( $contents['type'] ) && $contents['type'] === $type;
 		} );
 	}

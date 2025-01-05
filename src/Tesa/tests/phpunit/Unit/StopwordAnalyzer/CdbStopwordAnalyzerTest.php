@@ -72,89 +72,89 @@ class CdbStopwordAnalyzerTest extends TestCase {
 	}
 
 	public function languageProvider() {
-		$provider[] = array(
+		$provider[] = [
 			'en',
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'de'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ja'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'zh'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'es'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'fr'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'pt'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'pt-br'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function stopWordProvider() {
-		$provider[] = array(
+		$provider[] = [
 			'en',
 			'Foo',
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'en',
 			'the',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ja',
 			'それぞれ',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'zh',
 			'不单',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'es',
 			'arriba',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'fr',
 			'devrait',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'pt',
 			'conhecido',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'pt-br',
 			'mediante',
 			true
-		);
+		];
 
 		return $provider;
 	}

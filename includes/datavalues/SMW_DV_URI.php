@@ -232,7 +232,7 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		list( $url, $caption ) = $this->decodeUriContext( $this->m_caption, $linked );
+		[ $url, $caption ] = $this->decodeUriContext( $this->m_caption, $linked );
 
 		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
@@ -245,7 +245,7 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText( $linker = null ) {
-		list( $url, $caption ) = $this->decodeUriContext( $this->m_caption, $linker );
+		[ $url, $caption ] = $this->decodeUriContext( $this->m_caption, $linker );
 
 		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ||
@@ -261,7 +261,7 @@ class SMWURIValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 
-		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext, $linker );
+		[ $url, $wikitext ] = $this->decodeUriContext( $this->m_wikitext, $linker );
 
 		if ( $linker === null || $linker === false || $url === '' || $this->m_outformat == '-' ) {
 			return $wikitext;
@@ -279,7 +279,7 @@ class SMWURIValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 
-		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext, $linker );
+		[ $url, $wikitext ] = $this->decodeUriContext( $this->m_wikitext, $linker );
 
 		if ( is_null( $linker ) || $linker === false || $url === '' ||
 			$this->m_outformat == '-' || $this->m_outformat == 'nowiki' ) {

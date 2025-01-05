@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Structure;
 
-use SMW\Services\ServicesFactory;
-use SMW\SQLStore\TableBuilder\TableSchemaManager;
-use SMW\SQLStore\SQLStore;
 use ReflectionClass;
+use SMW\Services\ServicesFactory;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\TableBuilder\TableSchemaManager;
 
 /**
  * @group semantic-mediawiki

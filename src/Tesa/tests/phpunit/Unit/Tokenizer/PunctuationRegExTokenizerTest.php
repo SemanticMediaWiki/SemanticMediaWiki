@@ -73,39 +73,39 @@ class PunctuationRegExTokenizerTest extends TestCase {
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
 			->with( $string )
-			->willReturn( array( $string ) );
+			->willReturn( [ $string ] );
 
 		$instance = new PunctuationRegExTokenizer( $tokenizer );
 
 		$instance->setOption(
 			PunctuationRegExTokenizer::REGEX_EXEMPTION,
-			array( ',' )
+			[ ',' ]
 		);
 
 		$this->assertEquals(
-			array( '123,', '345' ),
+			[ '123,', '345' ],
 			$instance->tokenize( $string )
 		);
 	}
 
 	public function stringProvider() {
-		$provider[] = array(
+		$provider[] = [
 			'123, 345^456&[foo:bar]',
 			'',
-			array( '123', '345', '456', 'foo', 'bar' )
-		);
+			[ '123', '345', '456', 'foo', 'bar' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'123, 345^456&[foo:bar]',
-			array( ',', '&' ),
-			array( '123,', '345', '456&', 'foo', 'bar' )
-		);
+			[ ',', '&' ],
+			[ '123,', '345', '456&', 'foo', 'bar' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'123, 345^456&[foo:bar] 3.',
-			array( ',', '&' ),
-			array( '123,', '345', '456&', 'foo', 'bar', '3' )
-		);
+			[ ',', '&' ],
+			[ '123,', '345', '456&', 'foo', 'bar', '3' ]
+		];
 
 		return $provider;
 	}

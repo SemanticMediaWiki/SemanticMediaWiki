@@ -82,6 +82,6 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	/**
 	 * @since 3.1
 	 */
-	protected abstract function validate( DIProperty $property );
+	abstract protected function validate( DIProperty $property );
 
 }

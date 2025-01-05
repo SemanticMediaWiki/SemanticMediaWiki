@@ -159,7 +159,7 @@ class SearchResult {
 		$pid = null;
 
 		if ( strpos( $field, '.' ) !== false ) {
-			list( $pid, $field ) = explode( '.', $field );
+			[ $pid, $field ] = explode( '.', $field );
 		}
 
 		foreach ( $results as $key => $value ) {

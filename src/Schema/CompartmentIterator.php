@@ -2,13 +2,11 @@
 
 namespace SMW\Schema;
 
-use SeekableIterator;
-use Iterator;
 use Countable;
-use OutOfBoundsException;
-use RuntimeException;
-use SMW\Utils\DotArray;
+use Iterator;
+use SeekableIterator;
 use SMW\Iterators\SeekableIteratorTrait;
+use SMW\Utils\DotArray;
 
 /**
  * @license GNU GPL v2+

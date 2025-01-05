@@ -84,7 +84,7 @@ class ListLookup extends Lookup {
 		}
 
 		if ( isset( $parameters['search'] ) ) {
-			list( $res, $continueOffset ) = $this->fetchFromTable( $ns, $requestOptions, $parameters );
+			[ $res, $continueOffset ] = $this->fetchFromTable( $ns, $requestOptions, $parameters );
 		}
 
 		// Changing this output format requires to set a new version

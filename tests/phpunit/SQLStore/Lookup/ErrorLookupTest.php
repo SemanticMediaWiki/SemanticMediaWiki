@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
+use SMW\SQLStore\Lookup\ErrorLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ErrorLookup

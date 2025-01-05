@@ -3,10 +3,9 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DIWikiPage;
+use SMW\Exporter\ExporterFactory;
 use SMW\Localizer;
 use SMW\Tests\SMWIntegrationTestCase;
-use SMW\Exporter\ExporterFactory;
-use Title;
 
 /**
  * @group semantic-mediawiki

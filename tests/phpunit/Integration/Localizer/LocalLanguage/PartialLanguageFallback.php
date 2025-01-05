@@ -4,8 +4,8 @@ namespace SMW\Tests\Integration\Localizer\LocalLanguage;
 
 use SMW\Localizer\LocalLanguage\FallbackFinder;
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
-use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\Localizer\LocalLanguage\LanguageContents;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\Tests\TestEnvironment;
 
 /**

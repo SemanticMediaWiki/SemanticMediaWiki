@@ -8,7 +8,6 @@ use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\SemanticData;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\HashBuilder

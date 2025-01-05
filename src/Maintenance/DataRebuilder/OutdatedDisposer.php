@@ -3,10 +3,9 @@
 namespace SMW\Maintenance\DataRebuilder;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\IteratorFactory;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 
 /**
  * @private

@@ -2,14 +2,13 @@
 
 namespace SMW\DataValues;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\Message;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\PropertySpecificationLookup;
-use SMW\DataTypeRegistry;
-use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
+use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;
 use SMWWikiPageValue as WikiPageValue;

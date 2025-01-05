@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\PrefetchCache;
 use SMW\Tests\PHPUnitCompat;
 

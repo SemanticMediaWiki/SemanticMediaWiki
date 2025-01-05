@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Search;
 
-use SMW\DIWikiPage;
-use SMW\Utils\CharExaminer;
 use SearchSuggestion;
 use SearchSuggestionSet;
+use SMW\DIWikiPage;
 use SMW\Query\QueryResult;
+use SMW\Utils\CharExaminer;
 
 /**
  * @ingroup SMW

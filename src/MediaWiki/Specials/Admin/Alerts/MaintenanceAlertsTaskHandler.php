@@ -3,10 +3,7 @@
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
 use Html;
-use SMW\Message;
-use SMW\Utils\HtmlTabs;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 
 /**
  * @license GNU GPL v2+

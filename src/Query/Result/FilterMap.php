@@ -2,10 +2,8 @@
 
 namespace SMW\Query\Result;
 
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\Store;
 use SMW\SQLStore\EntityStore\FieldList;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

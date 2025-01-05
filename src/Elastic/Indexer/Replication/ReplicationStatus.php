@@ -2,12 +2,11 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
+use RuntimeException;
+use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMWDITime as DITime;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -217,7 +216,7 @@ class ReplicationStatus {
 			'body'  => $body
 		];
 
-		list( $res, $errors ) = $this->connection->search( $params );
+		[ $res, $errors ] = $this->connection->search( $params );
 		$time = null;
 
 		foreach ( $res as $result ) {

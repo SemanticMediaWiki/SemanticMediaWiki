@@ -3,11 +3,10 @@
 namespace SMW\Property\DeclarationExaminer;
 
 use SMW\DIProperty;
-use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
-use SMW\Store;
-use SMW\SemanticData;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
-use SMW\Message;
+use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
+use SMW\SemanticData;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+
@@ -44,7 +43,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 * @param Store $store
 	 * @param SemanticData $semanticData
 	 */
-	public function __construct( IDeclarationExaminer $declarationExaminer, Store $store, SemanticData $semanticData = null ) {
+	public function __construct( IDeclarationExaminer $declarationExaminer, Store $store, ?SemanticData $semanticData = null ) {
 		$this->declarationExaminer = $declarationExaminer;
 		$this->store = $store;
 		$this->semanticData = $semanticData;

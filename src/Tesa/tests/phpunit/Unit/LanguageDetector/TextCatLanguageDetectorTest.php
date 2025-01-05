@@ -24,7 +24,7 @@ class TextCatLanguageDetectorTest extends TestCase {
 	}
 
 	public function testDetectOnMock() {
-		$languageCandidates = array( 'en', 'de', 'fr', 'es', 'ja', 'zh' );
+		$languageCandidates = [ 'en', 'de', 'fr', 'es', 'ja', 'zh' ];
 
 		$textCat = $this->getMockBuilder( '\TextCat' )
 			->disableOriginalConstructor()
@@ -35,7 +35,7 @@ class TextCatLanguageDetectorTest extends TestCase {
 			->with(
 				'Foo',
 				$languageCandidates )
-			->willReturn( array() );
+			->willReturn( [] );
 
 		$instance = new TextCatLanguageDetector( $textCat );
 		$instance->setLanguageCandidates(

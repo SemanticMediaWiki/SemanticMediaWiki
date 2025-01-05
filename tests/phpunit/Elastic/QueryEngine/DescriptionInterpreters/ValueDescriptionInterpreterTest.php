@@ -2,11 +2,10 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
-use SMW\DIWikiPage;
-use SMW\Query\DescriptionFactory;
 use SMW\DataItemFactory;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\Options;
+use SMW\Query\DescriptionFactory;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter

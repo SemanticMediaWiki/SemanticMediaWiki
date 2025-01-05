@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Page;
-use SMW\MediaWiki\PageFactory;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\PageFactory;
 use SMW\Store;
 use Title;
 
@@ -43,7 +43,7 @@ class ArticleFromTitle implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( Title &$title, Page &$page = null ) {
+	public function process( Title &$title, ?Page &$page = null ) {
 		$ns = $title->getNamespace();
 
 		if ( $ns !== SMW_NS_PROPERTY && $ns !== SMW_NS_CONCEPT ) {

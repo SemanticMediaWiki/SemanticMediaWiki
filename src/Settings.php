@@ -2,11 +2,11 @@
 
 namespace SMW;
 
+use RuntimeException;
 use SMW\Exception\SettingNotFoundException;
 use SMW\Exception\SettingsAlreadyLoadedException;
 use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
-use RuntimeException;
 
 /**
  * @private

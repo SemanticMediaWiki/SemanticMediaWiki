@@ -2,9 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\TestEnvironment;
 use SMWInfolink as Infolink;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWInfolink

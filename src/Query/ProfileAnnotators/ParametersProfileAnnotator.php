@@ -35,7 +35,7 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
-		list( $sort, $order ) = $this->doSerializeSortKeys( $this->query );
+		[ $sort, $order ] = $this->doSerializeSortKeys( $this->query );
 
 		$options = [
 			'limit'  => $this->query->getLimit(),

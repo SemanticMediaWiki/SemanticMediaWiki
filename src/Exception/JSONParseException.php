@@ -2,8 +2,8 @@
 
 namespace SMW\Exception;
 
-use Seld\JsonLint\JsonParser;
 use RuntimeException;
+use Seld\JsonLint\JsonParser;
 
 /**
  * @license GNU GPL v2+

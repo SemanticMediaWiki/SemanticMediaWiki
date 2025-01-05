@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\DataValues\Number;
 
-use Language;
 use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\Tests\PHPUnitCompat;
 

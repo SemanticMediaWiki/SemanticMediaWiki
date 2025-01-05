@@ -3,9 +3,6 @@
 namespace SMW\Property\Annotators;
 
 use SMW\PropertyAnnotator;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use Title;
 
 /**
  * @license GNU GPL v2+

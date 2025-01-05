@@ -2,11 +2,11 @@
 
 namespace SMW\Listener\EventListener\EventListeners;
 
-use Onoi\EventDispatcher\EventListener;
 use Onoi\EventDispatcher\DispatchContext;
-use SMW\Query\Cache\ResultCache;
-use SMW\DIWikiPage;
+use Onoi\EventDispatcher\EventListener;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DIWikiPage;
+use SMW\Query\Cache\ResultCache;
 
 /**
  * @license GNU GPL v2+
@@ -37,7 +37,7 @@ class InvalidateResultCacheEventListener implements EventListener {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function execute( DispatchContext $dispatchContext = null ) {
+	public function execute( ?DispatchContext $dispatchContext = null ) {
 		if ( $dispatchContext === null ) {
 			return;
 		}

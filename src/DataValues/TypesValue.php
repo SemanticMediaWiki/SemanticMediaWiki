@@ -8,7 +8,6 @@ use SMWDataItem as DataItem;
 use SMWDataItemException as DataItemException;
 use SMWDataValue as DataValue;
 use SMWDIUri as DIUri;
-use SpecialPageFactory;
 use Title;
 
 /**

@@ -414,7 +414,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		return $feedItem;
 	}
 
-	private function parse( Title $title = null, $text ) {
+	private function parse( ?Title $title = null, $text ) {
 		if ( $title === null ) {
 			return $text;
 		}

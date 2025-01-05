@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\FileFetcher;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\FileFetcher;
 
 /**
  * @covers \SMW\Utils\FileFetcher

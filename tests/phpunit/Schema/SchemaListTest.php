@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Schema;
 
-use SMW\DIWikiPage;
-use SMW\Schema\SchemaList;
 use SMW\Schema\SchemaDefinition;
+use SMW\Schema\SchemaList;
 use SMW\Tests\PHPUnitCompat;
 
 /**

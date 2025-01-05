@@ -128,7 +128,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @param DIWikiPage|null $contextPage
 	 */
-	public function setContextPage( DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?DIWikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 
@@ -755,7 +755,7 @@ class LegacyParser implements Parser {
 
 			// Set an individual hierarchy depth
 			if ( strpos( $chunk, '+depth=' ) !== false ) {
-				list( $k, $depth ) = explode( '=', $chunk, 2 );
+				[ $k, $depth ] = explode( '=', $chunk, 2 );
 
 				if ( $description instanceof ClassDescription || $description instanceof SomeProperty || $description instanceof Disjunction ) {
 					$description->setHierarchyDepth( $depth );

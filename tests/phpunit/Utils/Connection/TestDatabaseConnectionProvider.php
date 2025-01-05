@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\Connection;
 
-use SMW\Services\ServicesFactory;
 use SMW\Connection\ConnectionProvider;
+use SMW\Services\ServicesFactory;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\ILoadBalancer;
 

@@ -6,9 +6,9 @@ use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\QueryEngine\Condition;
-use SMW\Elastic\QueryEngine\TermsLookup as ITermsLookup;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\Elastic\QueryEngine\SearchResult;
+use SMW\Elastic\QueryEngine\TermsLookup as ITermsLookup;
 use SMW\Options;
 use SMW\Store;
 
@@ -43,7 +43,7 @@ class TermsLookup implements ITermsLookup {
 	 * @param Store $store
 	 * @param Options $options
 	 */
-	public function __construct( Store $store, Options $options = null ) {
+	public function __construct( Store $store, ?Options $options = null ) {
 		$this->store = $store;
 		$this->options = $options;
 
@@ -351,7 +351,7 @@ class TermsLookup implements ITermsLookup {
 			return [];
 		}
 
-		list( $res, $errors ) = $connection->search(
+		[ $res, $errors ] = $connection->search(
 			$params
 		);
 

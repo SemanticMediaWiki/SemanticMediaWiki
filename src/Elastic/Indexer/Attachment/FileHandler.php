@@ -5,7 +5,6 @@ namespace SMW\Elastic\Indexer\Attachment;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\FileRepoFinder;
 use Title;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

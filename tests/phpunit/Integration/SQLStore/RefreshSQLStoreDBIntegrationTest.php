@@ -7,7 +7,6 @@ use SMW\Tests\Utils\MwHooksHandler;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use Title;
-use WikiPage;
 
 /**
  *

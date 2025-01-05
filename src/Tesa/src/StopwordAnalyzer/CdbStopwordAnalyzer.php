@@ -57,7 +57,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 * @return string
 	 */
 	public static function getLocation() {
-		return str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, __DIR__ . '/data/' );
+		return str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, __DIR__ . '/data/' );
 	}
 
 	/**

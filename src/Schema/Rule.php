@@ -2,10 +2,6 @@
 
 namespace SMW\Schema;
 
-use JsonSerializable;
-use SMW\Utils\DotArray;
-use IteratorAggregate;
-
 /**
  * @license GNU GPL v2+
  * @since 3.2

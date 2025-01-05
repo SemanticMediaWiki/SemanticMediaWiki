@@ -92,7 +92,7 @@ class SanitizerTest extends TestCase {
 
 	public function testReplace() {
 		$instance = new Sanitizer( 'テスト' );
-		$instance->replace( array( 'テスト' ), array( 'Test' ) );
+		$instance->replace( [ 'テスト' ], [ 'Test' ] );
 
 		$this->assertEquals(
 			'Test',
@@ -110,7 +110,7 @@ class SanitizerTest extends TestCase {
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
 			->with( $text )
-			->willReturn( array( 'Foo', 'bar', 'foobar' ) );
+			->willReturn( [ 'Foo', 'bar', 'foobar' ] );
 
 		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
 			->disableOriginalConstructor()
@@ -123,7 +123,7 @@ class SanitizerTest extends TestCase {
 		$instance = new Sanitizer( $text );
 
 		$stopwordAnalyzer = $this->sanitizerFactory->newArrayStopwordAnalyzer(
-			array( 'bar' )
+			[ 'bar' ]
 		);
 
 		$this->assertEquals(
@@ -146,7 +146,7 @@ class SanitizerTest extends TestCase {
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
 			->with( $text )
-			->willReturn( array( 'Foo', 'bar', 'foobar' ) );
+			->willReturn( [ 'Foo', 'bar', 'foobar' ] );
 
 		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
 			->disableOriginalConstructor()
@@ -159,11 +159,11 @@ class SanitizerTest extends TestCase {
 		$instance = new Sanitizer( $text );
 
 		$stopwordAnalyzer = $this->sanitizerFactory->newArrayStopwordAnalyzer(
-			array( 'bar' )
+			[ 'bar' ]
 		);
 
 		$instance->setOption( Sanitizer::MIN_LENGTH, 4 );
-		$instance->setOption( Sanitizer::WHITELIST, array( 'bar' ) );
+		$instance->setOption( Sanitizer::WHITELIST, [ 'bar' ] );
 
 		$this->assertEquals(
 			'bar foobar',
@@ -185,7 +185,7 @@ class SanitizerTest extends TestCase {
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
 			->with( $text )
-			->willReturn( array( 'foo', 'foo', 'テスト', 'テスト' ) );
+			->willReturn( [ 'foo', 'foo', 'テスト', 'テスト' ] );
 
 		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
 			->disableOriginalConstructor()

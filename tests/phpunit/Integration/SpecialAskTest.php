@@ -4,8 +4,8 @@ namespace SMW\Tests\Integration;
 
 use DOMDocument;
 use SMW\MediaWiki\Specials\SpecialAsk;
-use SMW\Tests\TestEnvironment;
 use SMW\SPARQLStore\RepositoryConnectionProvider;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki

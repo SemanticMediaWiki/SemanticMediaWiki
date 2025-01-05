@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Query\DescriptionBuilders;
 
-use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
 use SMW\DIProperty;
+use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -49,7 +49,7 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$recordValue->expects( $this->any() )
 			->method( 'getValuesFromString' )
 			->with( $this->stringContains( $value ) )
-			->willReturnCallback( function ( $value ) {
+			->willReturnCallback( static function ( $value ) {
 				 return explode( ';', $value );
 			} );
 

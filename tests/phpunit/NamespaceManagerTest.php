@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\NamespaceManager;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\NamespaceManager

@@ -5,7 +5,6 @@ namespace SMW\Tests;
 use ReflectionClass;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\QueryPage

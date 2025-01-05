@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Permission;
 
 use SMW\DataValues\AllowsPatternValue;
-use SMW\Protection\ProtectionValidator;
 use SMW\MediaWiki\PermissionManager;
+use SMW\Protection\ProtectionValidator;
 use Title;
 use User;
 

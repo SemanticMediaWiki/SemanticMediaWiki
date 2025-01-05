@@ -3,9 +3,9 @@
 namespace SMW\Schema;
 
 use Iterator;
+use IteratorAggregate;
 use JsonSerializable;
 use SMW\Utils\DotArray;
-use IteratorAggregate;
 
 /**
  * @license GNU GPL v2+

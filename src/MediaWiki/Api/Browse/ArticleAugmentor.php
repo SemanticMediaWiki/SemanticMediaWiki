@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Api\Browse;
 
 use SMW\MediaWiki\TitleFactory;
-use Title;
 
 /**
  * @license GNU GPL v2+

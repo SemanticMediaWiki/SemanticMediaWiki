@@ -7,8 +7,8 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\Query\DebugFormatter;
 use SMW\Iterators\ResultIterator;
+use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
@@ -282,7 +282,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		}
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
-		list( $startOpts, $useIndex, $tailOpts ) = $connection->makeSelectOptions( $sqlOptions );
+		[ $startOpts, $useIndex, $tailOpts ] = $connection->makeSelectOptions( $sqlOptions );
 
 		$sortfields = implode( ',', $qobj->sortfields );
 		$sortfields = $sortfields ? ', ' . $sortfields : '';

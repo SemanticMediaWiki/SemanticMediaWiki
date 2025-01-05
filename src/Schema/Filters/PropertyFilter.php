@@ -2,14 +2,12 @@
 
 namespace SMW\Schema\Filters;
 
-use SMW\Schema\SchemaList;
-use SMW\Schema\SchemaFilter;
+use RuntimeException;
+use SMW\DIProperty;
 use SMW\Schema\ChainableFilter;
-use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Compartment;
 use SMW\Schema\Rule;
-use SMW\DIProperty;
-use RuntimeException;
+use SMW\Schema\SchemaFilter;
 
 /**
  * @license GNU GPL v2+
@@ -76,7 +74,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			/**
 			 * `oneOf` matches against only one property
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"property": { "oneOf": [ "Foo", "Bar" ] }
@@ -84,15 +82,15 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = $this->matchOneOf( (array)$conditions['oneOf'] );
 		} elseif ( isset( $conditions['anyOf'] ) ) {
 			/**
 			 * `anyOf` matches against any (one or more) property
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"property": { "anyOf": [ "Foo", "Bar" ] }
@@ -100,15 +98,15 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = $this->matchAnyOf( (array)$conditions['anyOf'] );
 		} elseif ( isset( $conditions['allOf'] ) ) {
 			/**
 			 * `allOf` matches against all properties
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"property": { "allOf": [ "Foo", "Bar" ] }
@@ -116,8 +114,8 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = $this->matchAllOf( (array)$conditions['allOf'] );
 		} elseif ( isset( $conditions['not'] ) ) {
@@ -125,7 +123,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 * `not` on multiple properties means if "any of" them is validated then
 			 * the condition is fullfilled.
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"property": { "not": [ "Foo", "Bar" ] }
@@ -133,8 +131,8 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = !$this->matchAnyOf( (array)$conditions['not'] );
 			unset( $conditions['not'] );
@@ -146,7 +144,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 
 		if ( $matchedCondition && isset( $conditions['not'] ) ) {
 			/**
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"property": { "not": [ "Foobar" ], "oneOf": [ "Foo", "Bar" ] }
@@ -154,8 +152,8 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = !$this->matchAnyOf( (array)$conditions['not'] );
 

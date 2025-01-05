@@ -2,9 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Setup

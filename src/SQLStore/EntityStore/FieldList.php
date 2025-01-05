@@ -2,11 +2,6 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use RuntimeException;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
-
 /**
  * @private
  *

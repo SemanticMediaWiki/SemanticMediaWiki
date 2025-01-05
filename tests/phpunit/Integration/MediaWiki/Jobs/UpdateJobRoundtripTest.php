@@ -4,7 +4,6 @@ namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
@@ -146,7 +145,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		return $provider;
 	}
 
-	protected function assertJob( $type, Job &$job = null ) {
+	protected function assertJob( $type, ?Job &$job = null ) {
 		if ( $job === null ) {
 			$job = $this->jobQueueRunner->pop_type( $type );
 		}

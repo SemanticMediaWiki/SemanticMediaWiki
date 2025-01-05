@@ -6,14 +6,14 @@ use Exception;
 use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\TitleFactory;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
-use SMW\SQLStore\Rebuilder\Rebuilder;
-use SMW\Utils\CliMsgFormatter;
+use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 use Title;
 
 /**

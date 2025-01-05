@@ -4,10 +4,9 @@ namespace SMW\Tests\Property;
 
 use SMW\DataItemFactory;
 use SMW\Property\SpecificationLookup;
-use SMWContainerSemanticData as ContainerSemanticData;
-use SMWDataItem as DataItem;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Property\SpecificationLookup

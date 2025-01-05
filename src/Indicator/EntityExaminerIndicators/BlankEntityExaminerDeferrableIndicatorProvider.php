@@ -3,11 +3,8 @@
 namespace SMW\Indicator\EntityExaminerIndicators;
 
 use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\Message;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
-use SMW\Utils\TemplateEngine;
 use SMW\Localizer\MessageLocalizerTrait;
 
 /**

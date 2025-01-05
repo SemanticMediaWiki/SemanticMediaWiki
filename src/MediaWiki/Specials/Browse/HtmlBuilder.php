@@ -4,13 +4,13 @@ namespace SMW\MediaWiki\Specials\Browse;
 
 use Html;
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\RequestOptions;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMWDataValue;
 use TemplateParser;
@@ -303,7 +303,7 @@ class HtmlBuilder {
 		}
 
 		if ( $this->showincoming ) {
-			list( $indata, $more ) = $this->getInData();
+			[ $indata, $more ] = $this->getInData();
 
 			if ( !$this->getOption( 'showInverse' ) ) {
 				$leftside = !$leftside;
@@ -626,7 +626,7 @@ class HtmlBuilder {
 
 		// Sort by label instead of the key which may start with `_` or `__`
 		// and thereby distorts the lexicographical order
-		usort( $properties, function ( $a, $b ) {
+		usort( $properties, static function ( $a, $b ) {
 			return strnatcmp( $a->getLabel(), $b->getLabel() );
 		} );
 

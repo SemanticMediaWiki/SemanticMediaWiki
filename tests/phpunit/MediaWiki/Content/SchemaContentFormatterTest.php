@@ -149,7 +149,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setType( [ 'usage_lookup' => 'Foo' ] );
 
-		list( $usage, $count ) = $instance->getUsage( $schema );
+		[ $usage, $count ] = $instance->getUsage( $schema );
 
 		$this->assertContains(
 			'smw-columnlist-container',
@@ -184,7 +184,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setType( [ 'usage_lookup' => [ 'Foo', 'Bar' ] ] );
 
-		list( $usage, $count ) = $instance->getUsage( $schema );
+		[ $usage, $count ] = $instance->getUsage( $schema );
 
 		$this->assertContains(
 			'smw-columnlist-container',

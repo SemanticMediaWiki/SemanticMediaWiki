@@ -11,7 +11,6 @@ use SMW\HierarchyLookup;
 use SMW\Message;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
-use SMW\SPARQLStore\HierarchyFinder;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
@@ -106,7 +105,7 @@ class ConditionBuilder {
 	 * @param DescriptionInterpreterFactory $descriptionInterpreterFactory
 	 * @param EngineOptions|null $engineOptions
 	 */
-	public function __construct( DescriptionInterpreterFactory $descriptionInterpreterFactory, EngineOptions $engineOptions = null ) {
+	public function __construct( DescriptionInterpreterFactory $descriptionInterpreterFactory, ?EngineOptions $engineOptions = null ) {
 		$this->dispatchingDescriptionInterpreter = $descriptionInterpreterFactory->newDispatchingDescriptionInterpreter( $this );
 		$this->engineOptions = $engineOptions;
 
@@ -360,7 +359,7 @@ class ConditionBuilder {
 	 *
 	 * @return string|null
 	 */
-	public function tryToFindRedirectVariableForDataItem( DataItem $dataItem = null ) {
+	public function tryToFindRedirectVariableForDataItem( ?DataItem $dataItem = null ) {
 		if ( !$dataItem instanceof DIWikiPage || !$this->isSetFlag( SMW_SPARQL_QF_REDI ) ) {
 			return null;
 		}
@@ -394,7 +393,7 @@ class ConditionBuilder {
 
 		// Reuse an existing variable for the value to allow to be used more than
 		// once when referring to the same property/value redirect
-		list( $redirectByVariable, $namespaces ) = $this->redirectByVariableReplacementMap[$valueName];
+		[ $redirectByVariable, $namespaces ] = $this->redirectByVariableReplacementMap[$valueName];
 
 		return $redirectByVariable;
 	}
@@ -597,7 +596,7 @@ class ConditionBuilder {
 		$namespaces[$rediExpElement->getNamespaceId()] = $rediExpElement->getNamespace();
 
 		foreach ( $this->redirectByVariableReplacementMap as $valueName => $content ) {
-			list( $redirectByVariable, $ns ) = $content;
+			[ $redirectByVariable, $ns ] = $content;
 			$weakConditions[] = "$redirectByVariable " . "^" . $rediExpElement->getQName() . " $valueName .\n";
 			$namespaces = array_merge( $namespaces, $ns );
 		}

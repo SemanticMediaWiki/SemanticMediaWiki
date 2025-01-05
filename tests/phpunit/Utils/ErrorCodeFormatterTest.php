@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\ErrorCodeFormatter;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\ErrorCodeFormatter;
 
 /**
  * @covers \SMW\Utils\ErrorCodeFormatter

@@ -24,7 +24,7 @@ class CallbackConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$callback = function () {
+		$callback = static function () {
 		};
 
 		$this->assertInstanceOf(

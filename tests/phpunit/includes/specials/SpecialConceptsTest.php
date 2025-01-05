@@ -4,9 +4,7 @@ namespace SMW\Tests;
 
 use SMW\DIWikiPage;
 use SMW\SpecialConcepts;
-use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki

@@ -49,7 +49,7 @@ class ImportValueParser implements ValueParser {
 	 * @return array|null
 	 */
 	public function parse( $value ) {
-		list( $namespace, $section, $controlledVocabulary ) = $this->splitByNamespaceSection(
+		[ $namespace, $section, $controlledVocabulary ] = $this->splitByNamespaceSection(
 			$value
 		);
 
@@ -57,7 +57,7 @@ class ImportValueParser implements ValueParser {
 			return null;
 		}
 
-		list( $uri, $name, $typelist ) = $this->doParse(
+		[ $uri, $name, $typelist ] = $this->doParse(
 			$controlledVocabulary
 		);
 
@@ -95,7 +95,7 @@ class ImportValueParser implements ValueParser {
 			return null;
 		}
 
-		list( $namespace, $section ) = explode( ':', $value, 2 );
+		[ $namespace, $section ] = explode( ':', $value, 2 );
 
 		/*
 		 * A controlled vocabulary is a list of terms, with terms being unambiguous,
@@ -162,7 +162,7 @@ class ImportValueParser implements ValueParser {
 			return;
 		}
 
-		list( $uri, $name ) = explode( '|', $fristLine, 2 );
+		[ $uri, $name ] = explode( '|', $fristLine, 2 );
 
 		foreach ( $importDefintions as $importDefintion ) {
 
@@ -170,7 +170,7 @@ class ImportValueParser implements ValueParser {
 				continue;
 			}
 
-			list( $secname, $typestring ) = explode( '|', $importDefintion, 2 );
+			[ $secname, $typestring ] = explode( '|', $importDefintion, 2 );
 			$list[trim( $secname )] = $typestring;
 		}
 

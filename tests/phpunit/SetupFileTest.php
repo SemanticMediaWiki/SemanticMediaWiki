@@ -4,7 +4,6 @@ namespace SMW\Tests;
 
 use SMW\SetupFile;
 use SMW\Utils\File;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SetupFile

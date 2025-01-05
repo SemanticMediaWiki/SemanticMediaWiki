@@ -3,10 +3,10 @@
 namespace SMW\Tests\Schema;
 
 use Onoi\Cache\Cache;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMWDIBlob as DIBlob;
+use SMW\DIWikiPage;
 use SMW\Schema\SchemaFinder;
+use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Schema\SchemaFinder

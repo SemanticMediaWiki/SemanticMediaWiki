@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Elastic\Indexer\Attachment;
 
-use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\DIWikiPage;
+use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\Tests\PHPUnitCompat;
 
 /**

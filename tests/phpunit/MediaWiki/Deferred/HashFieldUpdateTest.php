@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki\Deferred;
 
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\Tests\TestEnvironment;
-use SMW\Site;
 
 /**
  * @covers \SMW\MediaWiki\Deferred\HashFieldUpdate

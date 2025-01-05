@@ -2,18 +2,16 @@
 
 namespace SMW\MediaWiki\Content;
 
-use SMW\Schema\Schema;
-use SMW\Schema\SchemaFactory;
-use SMW\Message;
-use SMW\Store;
+use Onoi\CodeHighlighter\Geshi;
+use Onoi\CodeHighlighter\Highlighter as CodeHighlighter;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWInfolink as Infolink;
-use Onoi\CodeHighlighter\Highlighter as CodeHighlighter;
-use Onoi\CodeHighlighter\Geshi;
 use SMW\MediaWiki\Page\ListBuilder;
+use SMW\Message;
+use SMW\Schema\Schema;
+use SMW\Store;
 use SMW\Utils\Html\SummaryTable;
-use Html;
+use SMWInfolink as Infolink;
 use Title;
 
 /**
@@ -137,7 +135,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return string
 	 */
-	public function getText( $text, Schema $schema = null, array $errors = [] ) {
+	public function getText( $text, ?Schema $schema = null, array $errors = [] ) {
 		$methods = [
 			'body'   => [ $schema, $errors, $text ],
 		// 'footer' => [ $schema ]
@@ -163,7 +161,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return array
 	 */
-	public function getUsage( Schema $schema = null ) {
+	public function getUsage( ?Schema $schema = null ) {
 		if ( $schema === null || !isset( $this->type['usage_lookup'] ) ) {
 			return [ '', 0 ];
 		}
@@ -208,7 +206,7 @@ class SchemaContentFormatter {
 			return '';
 		}
 
-		list( $usage, $usage_count ) = $this->getUsage( $schema );
+		[ $usage, $usage_count ] = $this->getUsage( $schema );
 
 		$params = [
 			'link' => '',

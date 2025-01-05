@@ -25,7 +25,7 @@ class CJKSimpleCharacterRegExTokenizer implements Tokenizer {
 	 *
 	 * @param Tokenizer $tokenizer
 	 */
-	public function __construct( Tokenizer $tokenizer = null ) {
+	public function __construct( ?Tokenizer $tokenizer = null ) {
 		$this->tokenizer = $tokenizer;
 	}
 
@@ -76,7 +76,7 @@ class CJKSimpleCharacterRegExTokenizer implements Tokenizer {
 			return $result;
 		}
 
-		return array();
+		return [];
 	}
 
 }

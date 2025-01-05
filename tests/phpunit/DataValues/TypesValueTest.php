@@ -3,7 +3,6 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\TypesValue;
-use SMW\DataValues\ValueParsers\TypesValueParser;
 
 /**
  * @covers \SMW\DataValues\TypesValue

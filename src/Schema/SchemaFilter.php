@@ -16,21 +16,21 @@ interface SchemaFilter {
 	 * For example, in case `NamespaceFilter` is marked with to be not required
 	 * then both rule sets will be for inspection.
 	 *
-	 *```
+	 * ```
 	 * {
 	 *	"if": {
 	 *		"category": { "anyOf": [ "Foo", "Bar" ] }
 	 *	}
-	 *}
-	 *```
-	 *```
+	 * }
+	 * ```
+	 * ```
 	 * {
 	 *	"if": {
 	 *		"namespace": "NS_MAIN",
 	 *		"category": { "anyOf": [ "Foo", "Bar" ] }
 	 *	}
-	 *}
-	 *```
+	 * }
+	 * ```
 	 */
 	const FILTER_CONDITION_NOT_REQUIRED = 'filter/condition/not_required';
 

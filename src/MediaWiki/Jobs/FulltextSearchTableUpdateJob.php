@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Job;
-use Hooks;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use Title;

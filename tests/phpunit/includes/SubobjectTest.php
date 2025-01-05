@@ -4,7 +4,6 @@ namespace SMW\Tests;
 
 use SMW\DataValueFactory;
 use SMW\Subobject;
-use SMW\Tests\TestEnvironment;
 use SMWDIBlob;
 use Title;
 

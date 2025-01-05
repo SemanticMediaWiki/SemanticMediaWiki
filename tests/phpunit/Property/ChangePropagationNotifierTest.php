@@ -4,9 +4,9 @@ namespace SMW\Tests\Property;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWDIBlob as DIBlob;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Tests\TestEnvironment;
+use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Property\ChangePropagationNotifier
@@ -165,7 +165,7 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 
 	public function dataItemDataProvider() {
 		// Single
-		$subject  = [
+		$subject = [
 			DIWikiPage::newFromText( __METHOD__ )
 		];
 

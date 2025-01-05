@@ -2,27 +2,24 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use Iterator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Utils\Flag;
+use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\Collator;
+use SMW\MediaWiki\Connection\Sequence;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
-use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\IdToDataItemMatchFinder;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
-use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableFieldUpdater;
-use SMWDataItem as DataItem;
-use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\Connection\Sequence;
 use SMW\TypesRegistry;
-use SMW\MediaWiki\Deferred\HashFieldUpdate;
-use SMW\Listener\ChangeListener\ChangeRecord;
-use Iterator;
+use SMW\Utils\Flag;
+use SMWDataItem as DataItem;
 
 /**
  * Class to access the SMW IDs table in SQLStore3.
@@ -385,7 +382,7 @@ class EntityIdManager {
 			$this->equalitySupport->not( SMW_EQ_NONE ) &&
 			$subobjectName === '' &&
 			$canonical ) {
-			list( $id, $sortkey ) = $this->entityIdFinder->fetchFieldsFromTableById(
+			[ $id, $sortkey ] = $this->entityIdFinder->fetchFieldsFromTableById(
 				$this->findRedirect( $title, $namespace ),
 				$title,
 				$namespace,
@@ -394,7 +391,7 @@ class EntityIdManager {
 				$sortkey
 			);
 		} else {
-			list( $id, $sortkey ) = $this->entityIdFinder->fetchFromTableByTitle(
+			[ $id, $sortkey ] = $this->entityIdFinder->fetchFromTableByTitle(
 				$title,
 				$namespace,
 				$iw,
@@ -1001,14 +998,14 @@ class EntityIdManager {
 	 *
 	 * @return string[]
 	 */
-	public function getDataItemsFromList( array $idlist, RequestOptions $requestOptions = null ) {
+	public function getDataItemsFromList( array $idlist, ?RequestOptions $requestOptions = null ) {
 		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}
 
 	/**
 	 * @deprecated since 3.0, use SMWSql3SmwIds::getDataItemsFromList
 	 */
-	public function getDataItemPoolHashListFor( array $idlist, RequestOptions $requestOptions = null ) {
+	public function getDataItemPoolHashListFor( array $idlist, ?RequestOptions $requestOptions = null ) {
 		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}
 
@@ -1123,7 +1120,7 @@ class EntityIdManager {
 	 * @param array $sequenceMap
 	 * @param array $countMap
 	 */
-	public function updateFieldMaps( $sid, array $sequenceMap = null, array $countMap = null ) {
+	public function updateFieldMaps( $sid, ?array $sequenceMap = null, ?array $countMap = null ) {
 		$this->auxiliaryFields->setFieldMaps( $sid, $sequenceMap, $countMap );
 	}
 

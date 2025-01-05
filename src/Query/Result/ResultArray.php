@@ -2,14 +2,13 @@
 
 namespace SMW\Query\Result;
 
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
+use SMW\DataValueFactory;
+use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
-use SMW\RequestOptions;
-use SMWDataItem as DataItem;
-use SMW\DIWikiPage;
 use SMW\Store;
+use SMWDataItem as DataItem;
 use SMWDataValue;
 use SMWQueryResult as QueryResult;
 
@@ -97,7 +96,7 @@ class ResultArray {
 	 * @param Store $store
 	 * @param fieldItemFinder|null $fieldItemFinder
 	 */
-	public function __construct( DIWikiPage $resultPage, PrintRequest $printRequest, Store $store, FieldItemFinder $fieldItemFinder = null ) {
+	public function __construct( DIWikiPage $resultPage, PrintRequest $printRequest, Store $store, ?FieldItemFinder $fieldItemFinder = null ) {
 		$this->result = $resultPage;
 		$this->printRequest = $printRequest;
 		$this->store = $store;
@@ -149,7 +148,7 @@ class ResultArray {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ) {
 		$this->queryToken = $queryToken;
 	}
 
@@ -158,7 +157,7 @@ class ResultArray {
 	 *
 	 * @param DIWikiPage|null $contextPage
 	 */
-	public function setContextPage( DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?DIWikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 

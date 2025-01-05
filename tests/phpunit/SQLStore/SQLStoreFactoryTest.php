@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\MediaWiki\Deferred\CallableUpdate;
-use SMW\Options;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\Tests\TestEnvironment;
 use SMWSQLStore3;

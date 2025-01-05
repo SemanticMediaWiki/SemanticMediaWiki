@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\SearchResultSet;
-use SMW\DIWikiPage;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchResultSet
@@ -166,13 +166,21 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewSearchSuggestionSet() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
 			->willReturn( true );
+
+		$title->expects( $this->any() )
+			->method( 'getText' )
+			->willReturn( 'MockPageTitle' );
+
+		$title->expects( $this->any() )
+			->method( 'getFullURL' )
+			->willReturn( 'https://example.com/mock-page-title' );
 
 		$page = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -215,7 +223,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewSearchSuggestionSet_FilterSameTitle() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -226,6 +234,14 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 		$title->expects( $this->any() )
 			->method( 'getPrefixedDBKey' )
 			->willReturn( 'Foo' );
+
+		$title->expects( $this->any() )
+			->method( 'getText' )
+			->willReturn( 'MockPageTitle' );
+
+		$title->expects( $this->any() )
+			->method( 'getFullURL' )
+			->willReturn( 'https://example.com/mock-page-title' );
 
 		$page_1 = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()

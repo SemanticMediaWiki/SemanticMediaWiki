@@ -2,16 +2,15 @@
 
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
-use SMW\DIWikiPage;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
+use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
-use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Query\PrintRequest;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Store;
+use SMWDataItem as DataItem;
 use SMWQuery as Query;
 use SMWRequestOptions as RequestOptions;
 
@@ -248,7 +247,7 @@ class QueryResultLookup {
 		// override $DIProperty for reference datatype
 		// with the first multiValue property
 		if ( DataTypeRegistry::getInstance()->isRecordType( $DIProperty->findPropertyTypeID() ) ) {
-			list( $DIProperty, $dataItem ) = $this->destructureDIContainer( $DIProperty, $dataItem, $pageRequestOptions );
+			[ $DIProperty, $dataItem ] = $this->destructureDIContainer( $DIProperty, $dataItem, $pageRequestOptions );
 		}
 
 		return $this->store->getPropertySubjects(

@@ -3,10 +3,8 @@
 namespace SMW\Tests\Constraint;
 
 use SMW\Constraint\ConstraintSchemaCompiler;
-use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
-use SMWDIBlob as DIBlob;
 use SMW\Message;
+use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Constraint\ConstraintSchemaCompiler

@@ -2,11 +2,10 @@
 
 namespace SMW\Tests\SQLStore\Installer;
 
-use SMW\MediaWiki\Database;
 use SMW\SetupFile;
 use SMW\SQLStore\Installer\VersionExaminer;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\VersionExaminer

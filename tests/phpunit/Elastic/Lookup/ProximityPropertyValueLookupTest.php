@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Elastic\Lookup;
 
-use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
-use SMW\Tests\PHPUnitCompat;
 use SMW\DIProperty;
+use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
 use SMW\RequestOptions;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Lookup\ProximityPropertyValueLookup

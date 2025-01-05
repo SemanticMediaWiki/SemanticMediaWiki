@@ -104,7 +104,7 @@ class ServicesContainerTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new ServicesContainer();
 
-		$closure = function ( $arg ) use( $fake ) {
+		$closure = static function ( $arg ) use( $fake ) {
 			$fake->runService( $arg );
 		};
 

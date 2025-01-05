@@ -2,19 +2,15 @@
 
 namespace SMW\MediaWiki\Content;
 
-use SMW\Schema\SchemaFactory;
-use SMW\Schema\Exception\SchemaTypeNotFoundException;
-use SMW\Exception\JSONParseException;
-use SMW\Schema\Schema;
-use SMW\ParserData;
-use SMW\Message;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Yaml\Exception\ParseException;
 use JsonContent;
+use ParserOptions;
+use SMW\Exception\JSONParseException;
+use SMW\Schema\SchemaFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 use Title;
 use User;
-use ParserOptions;
 
 /**
  * The content model supports both JSON and YAML (as a superset of JSON), allowing
@@ -161,7 +157,7 @@ class SchemaContent extends JsonContent {
 	 * @param SchemaFactory $schemaFactory
 	 * @param SchemaContentFormatter|null $contentFormatter
 	 */
-	public function setServices( SchemaFactory $schemaFactory, SchemaContentFormatter $contentFormatter = null ) {
+	public function setServices( SchemaFactory $schemaFactory, ?SchemaContentFormatter $contentFormatter = null ) {
 		$this->schemaFactory = $schemaFactory;
 		$this->contentFormatter = $contentFormatter;
 	}
@@ -261,7 +257,7 @@ class SchemaContent extends JsonContent {
 		$title_prefix = '';
 
 		if ( strpos( $schemaName, ':' ) !== false ) {
-			list( $title_prefix, ) = explode( ':', $schemaName );
+			[ $title_prefix, ] = explode( ':', $schemaName );
 		}
 
 		// Allow to use the schema validation against a possible

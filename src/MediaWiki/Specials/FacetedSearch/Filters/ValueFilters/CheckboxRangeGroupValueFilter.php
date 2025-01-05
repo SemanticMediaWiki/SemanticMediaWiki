@@ -2,15 +2,14 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
-use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
-use SMW\Schema\CompartmentIterator;
-use SMW\DIProperty;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Schema\CompartmentIterator;
+use SMW\Utils\TemplateEngine;
+use SMW\Utils\UrlArgs;
 use SMWDataItem as DataItem;
-use Html;
 
 /**
  * @license GNU GPL v2+

@@ -4,11 +4,11 @@ namespace SMW\Tests\Query\ResultPrinters;
 
 use ReflectionClass;
 use SMW\Query\ResultPrinters\AggregatablePrinter;
+use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 use SMWDataItem;
 use SMWDINumber;
 use SMWQueryResult;
-use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\ResultPrinters\AggregatablePrinter

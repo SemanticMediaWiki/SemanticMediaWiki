@@ -29,7 +29,7 @@ class TextCatLanguageDetector implements LanguageDetector {
 	 *
 	 * @param TextCat|null $textCat
 	 */
-	public function __construct( TextCat $textCat = null ) {
+	public function __construct( ?TextCat $textCat = null ) {
 		$this->textCat = $textCat;
 
 		if ( $this->textCat === null ) {

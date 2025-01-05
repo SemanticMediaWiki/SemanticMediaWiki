@@ -9,10 +9,10 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Utils\CliMsgFormatter;
 use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 use SMWQueryProcessor;
 use Title;
 

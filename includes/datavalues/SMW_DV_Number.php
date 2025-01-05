@@ -155,7 +155,7 @@ class SMWNumberValue extends SMWDataValue {
 			if ( $decseparator != '.' ) {
 				$numstring = str_replace( $decseparator, '.', $numstring );
 			}
-			list( $number ) = sscanf( $numstring, "%f" );
+			[ $number ] = sscanf( $numstring, "%f" );
 			if ( count( $parts ) >= 3 ) {
 				$asPrefix = $parts[0] !== '';
 				$unit = $this->normalizeUnit( $parts[0] !== '' ? $parts[0] : $parts[2] );

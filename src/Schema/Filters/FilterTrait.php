@@ -2,10 +2,9 @@
 
 namespace SMW\Schema\Filters;
 
-use SMW\Schema\SchemaList;
-use SMW\Schema\SchemaFilter;
-use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Compartment;
+use SMW\Schema\CompartmentIterator;
+use SMW\Schema\SchemaFilter;
 
 /**
  * @private

@@ -2,14 +2,14 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup;
+use SMW\SQLStore\Installer;
 use SMW\Store;
 use SMW\StoreFactory;
-use Onoi\MessageReporter\MessageReporterFactory;
-use Onoi\MessageReporter\MessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\Installer;
-use SMW\Setup;
-use SMW\Options;
 use SMW\Utils\CliMsgFormatter;
 
 /**

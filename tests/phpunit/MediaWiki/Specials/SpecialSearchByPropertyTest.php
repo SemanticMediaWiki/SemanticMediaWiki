@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Specials\SpecialSearchByProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 

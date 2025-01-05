@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\Site;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Site

@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\Store;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\JobFactory;
 

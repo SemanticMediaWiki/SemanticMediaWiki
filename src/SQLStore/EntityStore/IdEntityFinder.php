@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
 use SMW\DIWikiPage;
 use SMW\IteratorFactory;
 use SMW\RequestOptions;
@@ -53,7 +52,7 @@ class IdEntityFinder {
 	 *
 	 * @return DIWikiPage[]
 	 */
-	public function getDataItemsFromList( array $idList, RequestOptions $requestOptions = null ) {
+	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ) {
 		if ( $idList === [] ) {
 			return [];
 		}

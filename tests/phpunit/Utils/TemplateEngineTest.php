@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\TemplateEngine;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @covers \SMW\Utils\TemplateEngine

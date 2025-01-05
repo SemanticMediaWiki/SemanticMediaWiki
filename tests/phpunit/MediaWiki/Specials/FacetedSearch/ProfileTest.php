@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
 use SMW\MediaWiki\Specials\FacetedSearch\Profile;
-use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Profile

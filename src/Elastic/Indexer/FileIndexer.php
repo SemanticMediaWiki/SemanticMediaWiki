@@ -5,18 +5,13 @@ namespace SMW\Elastic\Indexer;
 use File;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
-use RuntimeException;
-use SMW\EntityCache;
 use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\Indexer\Indexer;
-use SMW\Elastic\QueryEngine\FieldMapper;
-use SMW\Store;
-use SMWContainerSemanticData as ContainerSemanticData;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
-use SMW\Elastic\Indexer\Attachment\FileHandler;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
+use SMW\Elastic\Indexer\Attachment\FileHandler;
+use SMW\EntityCache;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
+use SMW\Store;
 use Title;
 
 /**
@@ -165,7 +160,7 @@ class FileIndexer {
 	 * @param DIWikiPage $dataItem
 	 * @param File|null $file
 	 */
-	public function index( DIWikiPage $dataItem, File $file = null ) {
+	public function index( DIWikiPage $dataItem, ?File $file = null ) {
 		$title = $dataItem->getTitle();
 
 		// Allow any third-party extension to modify the file used as base for

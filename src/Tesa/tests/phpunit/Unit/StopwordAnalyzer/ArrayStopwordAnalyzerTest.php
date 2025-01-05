@@ -36,25 +36,25 @@ class ArrayStopwordAnalyzerTest extends TestCase {
 	}
 
 	public function stopWordsProvider() {
-		$defaultList = array( 'Foo', 'かつて', 'bAR' );
+		$defaultList = [ 'Foo', 'かつて', 'bAR' ];
 
-		$provider[] = array(
+		$provider[] = [
 			$defaultList,
 			'Foo',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$defaultList,
 			'かつて',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$defaultList,
 			'bar',
 			false
-		);
+		];
 
 		return $provider;
 	}

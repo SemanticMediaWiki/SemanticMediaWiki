@@ -2,13 +2,13 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValues\ValueParsers\AllowsListValueParser;
-use SMW\PropertySpecificationLookup;
 use SMW\Message;
+use SMW\PropertySpecificationLookup;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
-use SMWNumberValue as NumberValue;
 use SMWDIBlob as DIBlob;
+use SMWNumberValue as NumberValue;
 
 /**
  * @private
@@ -255,7 +255,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			return false;
 		}
 
-		list( $lower, $upper ) = explode( '...', $v );
+		[ $lower, $upper ] = explode( '...', $v );
 
 		if ( $value >= intval( $lower ) && $value <= intval( $upper ) ) {
 			return $isAllowed = true;

@@ -4,8 +4,8 @@ namespace SMW\Tests\Utils\Runners;
 
 use DomainException;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use RuntimeException;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**

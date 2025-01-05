@@ -2,12 +2,12 @@
 
 namespace SMW\Maintenance;
 
-use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\CallbackMessageReporter;
+use Onoi\MessageReporter\MessageReporter;
+use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\Utils\CliMsgFormatter;
-use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
 use Title;
 
 /**

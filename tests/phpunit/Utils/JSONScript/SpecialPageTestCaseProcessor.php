@@ -3,14 +3,13 @@
 namespace SMW\Tests\Utils\JSONScript;
 
 use FauxRequest;
-use Language;
 use MediaWiki\MediaWikiServices;
+use MediaWikiIntegrationTestCase;
 use OutputPage;
 use RequestContext;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
-use MediaWikiIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki

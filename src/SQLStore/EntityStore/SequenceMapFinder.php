@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\EntityStore;
 
 use SMW\MediaWiki\Database;
-use SMW\Utils\HmacSerializer;
 use SMW\SQLStore\SQLStore;
+use SMW\Utils\HmacSerializer;
 
 /**
  * @private
@@ -50,7 +50,7 @@ class SequenceMapFinder {
 	 * @param integer $sid
 	 * @param array $map
 	 */
-	public function setMap( $sid, array $map = null ) {
+	public function setMap( $sid, ?array $map = null ) {
 		if ( $map === null ) {
 			return;
 		}

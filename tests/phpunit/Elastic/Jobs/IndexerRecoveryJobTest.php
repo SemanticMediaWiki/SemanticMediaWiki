@@ -3,9 +3,9 @@
 namespace SMW\Tests\Elastic\Jobs;
 
 use SMW\Elastic\ElasticStore;
+use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\Tests\TestEnvironment;
-use SMW\Elastic\Indexer\Document;
 
 /**
  * @covers \SMW\Elastic\Jobs\IndexerRecoveryJob

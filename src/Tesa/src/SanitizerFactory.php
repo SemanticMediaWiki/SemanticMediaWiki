@@ -2,22 +2,22 @@
 
 namespace Onoi\Tesa;
 
-use Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer;
-use Onoi\Tesa\StopwordAnalyzer\NullStopwordAnalyzer;
-use Onoi\Tesa\StopwordAnalyzer\CdbStopwordAnalyzer;
-use Onoi\Tesa\StopwordAnalyzer\ArrayStopwordAnalyzer;
-use Onoi\Tesa\Synonymizer\Synonymizer;
-use Onoi\Tesa\Synonymizer\NullSynonymizer;
 use Onoi\Tesa\LanguageDetector\NullLanguageDetector;
 use Onoi\Tesa\LanguageDetector\TextCatLanguageDetector;
+use Onoi\Tesa\StopwordAnalyzer\ArrayStopwordAnalyzer;
+use Onoi\Tesa\StopwordAnalyzer\CdbStopwordAnalyzer;
+use Onoi\Tesa\StopwordAnalyzer\NullStopwordAnalyzer;
+use Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer;
+use Onoi\Tesa\Synonymizer\NullSynonymizer;
+use Onoi\Tesa\Synonymizer\Synonymizer;
 use Onoi\Tesa\Tokenizer\CJKSimpleCharacterRegExTokenizer;
-use Onoi\Tesa\Tokenizer\Tokenizer;
 use Onoi\Tesa\Tokenizer\GenericRegExTokenizer;
-use Onoi\Tesa\Tokenizer\JaCompoundGroupTokenizer;
 use Onoi\Tesa\Tokenizer\IcuWordBoundaryTokenizer;
-use Onoi\Tesa\Tokenizer\NGramTokenizer;
+use Onoi\Tesa\Tokenizer\JaCompoundGroupTokenizer;
 use Onoi\Tesa\Tokenizer\JaTinySegmenterTokenizer;
+use Onoi\Tesa\Tokenizer\NGramTokenizer;
 use Onoi\Tesa\Tokenizer\PunctuationRegExTokenizer;
+use Onoi\Tesa\Tokenizer\Tokenizer;
 
 /**
  * @license GNU GPL v2+
@@ -54,7 +54,8 @@ class SanitizerFactory {
 			$languageCode
 		);
 
-		return $cdbStopwordAnalyzer->isAvailable() ? $cdbStopwordAnalyzer : $this->newNullStopwordAnalyzer();;
+		return $cdbStopwordAnalyzer->isAvailable() ? $cdbStopwordAnalyzer : $this->newNullStopwordAnalyzer();
+		;
 	}
 
 	/**
@@ -73,7 +74,7 @@ class SanitizerFactory {
 	 *
 	 * @return StopwordAnalyzer
 	 */
-	public function newArrayStopwordAnalyzer( array $stopwords = array() ) {
+	public function newArrayStopwordAnalyzer( array $stopwords = [] ) {
 		return new ArrayStopwordAnalyzer( $stopwords );
 	}
 
@@ -98,7 +99,8 @@ class SanitizerFactory {
 			return $this->newNullSynonymizer();
 		}
 
-		return $this->newNullSynonymizer();;
+		return $this->newNullSynonymizer();
+		;
 	}
 
 	/* Synonymizer */
@@ -188,7 +190,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newIcuWordBoundaryTokenizer( Tokenizer $tokenizer = null ) {
+	public function newIcuWordBoundaryTokenizer( ?Tokenizer $tokenizer = null ) {
 		return new IcuWordBoundaryTokenizer( $tokenizer );
 	}
 
@@ -199,7 +201,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newGenericRegExTokenizer( Tokenizer $tokenizer = null ) {
+	public function newGenericRegExTokenizer( ?Tokenizer $tokenizer = null ) {
 		return new GenericRegExTokenizer( $tokenizer );
 	}
 
@@ -210,7 +212,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newPunctuationRegExTokenizer( Tokenizer $tokenizer = null ) {
+	public function newPunctuationRegExTokenizer( ?Tokenizer $tokenizer = null ) {
 		return new PunctuationRegExTokenizer( $tokenizer );
 	}
 
@@ -219,7 +221,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newJaCompoundGroupTokenizer( Tokenizer $tokinizer = null ) {
+	public function newJaCompoundGroupTokenizer( ?Tokenizer $tokinizer = null ) {
 		return new JaCompoundGroupTokenizer( $tokinizer );
 	}
 
@@ -228,7 +230,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newJaTinySegmenterTokenizer( Tokenizer $tokinizer = null ) {
+	public function newJaTinySegmenterTokenizer( ?Tokenizer $tokinizer = null ) {
 		return new JaTinySegmenterTokenizer( $tokinizer );
 	}
 
@@ -237,7 +239,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newCJKSimpleCharacterRegExTokenizer( Tokenizer $tokinizer = null ) {
+	public function newCJKSimpleCharacterRegExTokenizer( ?Tokenizer $tokinizer = null ) {
 		return new CJKSimpleCharacterRegExTokenizer( $tokinizer );
 	}
 
@@ -246,7 +248,7 @@ class SanitizerFactory {
 	 *
 	 * @return Tokenizer
 	 */
-	public function newNGramTokenizer( Tokenizer $tokinizer = null, $ngram = 2 ) {
+	public function newNGramTokenizer( ?Tokenizer $tokinizer = null, $ngram = 2 ) {
 		return new NGramTokenizer( $tokinizer, $ngram );
 	}
 

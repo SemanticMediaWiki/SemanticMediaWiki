@@ -3,12 +3,10 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Job;
-use Hooks;
+use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
-use SMW\SQLStore\SQLStore;
 use Title;
-use SMW\RequestOptions;
 
 /**
  * @license GNU GPL v2+
@@ -57,7 +55,7 @@ class EntityIdDisposerJob extends Job {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newOutdatedEntitiesResultIterator( RequestOptions $requestOptions = null ) {
+	public function newOutdatedEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
 		if ( $this->propertyTableIdReferenceDisposer === null ) {
 			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
 		}
@@ -72,7 +70,7 @@ class EntityIdDisposerJob extends Job {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newByNamespaceInvalidEntitiesResultIterator( RequestOptions $requestOptions = null ) {
+	public function newByNamespaceInvalidEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
 		if ( $this->propertyTableIdReferenceDisposer === null ) {
 			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
 		}

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Utils\Fixtures;
 
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @license GNU GPL v2+

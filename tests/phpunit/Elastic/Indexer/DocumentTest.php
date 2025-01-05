@@ -2,10 +2,8 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
-use SMW\Elastic\Indexer\Document;
 use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
-use SMW\Tests\TestEnvironment;
+use SMW\Elastic\Indexer\Document;
 
 /**
  * @covers \SMW\Elastic\Indexer\Document

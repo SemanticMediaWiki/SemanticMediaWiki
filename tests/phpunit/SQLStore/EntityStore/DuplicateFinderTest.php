@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Connection\Query;
 use SMW\IteratorFactory;
+use SMW\MediaWiki\Connection\Query;
+use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\Tests\PHPUnitCompat;
 
 /**

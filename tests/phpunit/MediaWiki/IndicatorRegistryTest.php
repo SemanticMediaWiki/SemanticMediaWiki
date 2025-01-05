@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\IndicatorRegistry;
-use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\MediaWiki\IndicatorRegistry

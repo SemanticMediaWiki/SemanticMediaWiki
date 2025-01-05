@@ -4,8 +4,8 @@ namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
 use SMW\Message;
-use SMWInfolink as Infolink;
 use SMW\Utils\UrlArgs;
+use SMWInfolink as Infolink;
 use Title;
 
 /**
@@ -354,7 +354,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function clipboardLink( Infolink $infolink = null ) {
+	public static function clipboardLink( ?Infolink $infolink = null ) {
 		if ( $infolink === null ) {
 			return '';
 		}

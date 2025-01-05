@@ -3,8 +3,8 @@
 namespace SMW\Elastic\Admin;
 
 use Html;
-use WebRequest;
 use SMW\Utils\JsonView;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

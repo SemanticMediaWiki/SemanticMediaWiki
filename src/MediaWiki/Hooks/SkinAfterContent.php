@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Skin;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * SkinAfterContent hook to add text after the page content and
@@ -32,7 +32,7 @@ class SkinAfterContent implements HookListener {
 	 *
 	 * @param Skin|null $skin
 	 */
-	public function __construct( Skin $skin = null ) {
+	public function __construct( ?Skin $skin = null ) {
 		$this->skin = $skin;
 	}
 

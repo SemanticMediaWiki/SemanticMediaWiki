@@ -7,8 +7,8 @@ use SMW\Importer\ImportContents;
 use SMW\Importer\Importer;
 use SMW\Importer\JsonContentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Importer\Importer
@@ -148,7 +148,7 @@ class ImporterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->contentCreator->expects( $this->once() )
 			->method( 'create' )
-			->with( $this->callback( function ( $importContents ) {
+			->with( $this->callback( static function ( $importContents ) {
 					$importContents->addError( 'BarError from create' );
 					$importContents->addError( [ 'Foo1', 'Foo2' ] );
 					return true;

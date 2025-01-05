@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWikiIntegrationTestCase;
 use SMW\DIWikiPage;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\HtmlValidator;
-use MediaWikiIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki

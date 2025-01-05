@@ -5,8 +5,8 @@ namespace SMW\MediaWiki\Template;
 use Parser;
 use ParserOptions;
 use RequestContext;
-use Title;
 use RuntimeException;
+use Title;
 
 /**
  * @license GNU GPL v2+

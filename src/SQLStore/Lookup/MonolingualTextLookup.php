@@ -2,16 +2,15 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\Store;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SQLStore\SQLStore;
-use SMW\Message;
+use InvalidArgumentException;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIBlob as DIBlob;
 use SMWDIContainer as DIContainer;
-use InvalidArgumentException;
 
 /**
  * @license GNU GPL v2+

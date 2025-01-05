@@ -52,7 +52,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $localName, $namespace, $namespaceId, DataItem $dataItem = null ) {
+	public function __construct( $localName, $namespace, $namespaceId, ?DataItem $dataItem = null ) {
 		if ( !is_string( $localName ) ) {
 			throw new InvalidArgumentException( '$localName needs to be a string' );
 		}
@@ -147,7 +147,7 @@ class ExpNsResource extends ExpResource {
 			throw new RuntimeException( "Invalid uri format, expected two '|' dividers" );
 		}
 
-		list( $localName, $namespace, $namespaceId ) = explode( '|', $serialization['uri'], 3 );
+		[ $localName, $namespace, $namespaceId ] = explode( '|', $serialization['uri'], 3 );
 
 		return new self(
 			$localName,

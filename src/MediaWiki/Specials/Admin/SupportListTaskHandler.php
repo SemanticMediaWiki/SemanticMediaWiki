@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Specials\Admin;
 
 use Html;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use WebRequest;
 
 /**
  * @license GNU GPL v2+

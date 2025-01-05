@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Integration\Parser;
 
-use ParserOutput;
-use ParserOptions;
 use MediaWiki\MediaWikiServices;
+use ParserOptions;
+use ParserOutput;
 use RequestContext;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki
@@ -60,7 +60,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\
 		$parser = MediaWikiServices::getInstance()->getParserFactory()->create();
 		$user = RequestContext::getMain()->getUser();
 		$options = new ParserOptions( $user );
-		$options->setTemplateCallback( function ( $title, $parser = false ) use ( $return ) {
+		$options->setTemplateCallback( static function ( $title, $parser = false ) use ( $return ) {
 			$text = $return;
 			$deps = [];
 
@@ -81,7 +81,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\
 		$parserOutput = new ParserOutput();
 		$title        = Title::newFromText( __METHOD__, $namespace );
 
-		$outputText   = $this->runTemplateTransclusion( $title, $text, $tmplValue );
+		$outputText = $this->runTemplateTransclusion( $title, $text, $tmplValue );
 
 		$this->testEnvironment->withConfiguration( $settings );
 

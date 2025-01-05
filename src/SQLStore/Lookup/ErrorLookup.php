@@ -2,12 +2,12 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Store;
-use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
+use SMW\DIWikiPage;
 use SMW\RequestOptions;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
+use SMWDataItem as DataItem;
 use Traversable;
 
 /**
@@ -65,7 +65,7 @@ class ErrorLookup {
 	 *
 	 * @return Iterator/array
 	 */
-	public function findErrorsByType( $errorType, DIWikiPage $subject = null, RequestOptions $requestOptions = null ) {
+	public function findErrorsByType( $errorType, ?DIWikiPage $subject = null, ?RequestOptions $requestOptions = null ) {
 		if ( $requestOptions === null ) {
 			$requestOptions = new RequestOptions();
 		}

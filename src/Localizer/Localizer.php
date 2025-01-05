@@ -8,13 +8,13 @@ use Language;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
 use RequestContext;
-use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\DIWikiPage;
-use SMW\Site;
-use SMW\NamespaceManager;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\MediaWiki\LocalTime;
 use SMW\MediaWiki\NamespaceInfo;
+use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory;
+use SMW\Site;
 use Title;
 use User;
 

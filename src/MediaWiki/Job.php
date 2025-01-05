@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
-use Psr\Log\LoggerAwareTrait;
 use Job as MediaWikiJob;
 use JobQueueGroup;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMW\Store;

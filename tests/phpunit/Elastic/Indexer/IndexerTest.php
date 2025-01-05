@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
+use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Indexer;
-use SMW\Services\ServicesContainer;
-use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
 
 /**

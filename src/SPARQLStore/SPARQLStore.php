@@ -5,18 +5,18 @@ namespace SMW\SPARQLStore;
 use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Options;
 use SMW\SemanticData;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 use SMWDataItem as DataItem;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 use SMWQuery as Query;
 use SMWTurtleSerializer as TurtleSerializer;
 use Title;
-use SMW\Utils\CliMsgFormatter;
-use SMW\Options;
 
 /**
  * Storage and query access point for a SPARQL supported RepositoryConnector to
@@ -62,7 +62,7 @@ class SPARQLStore extends Store {
 	 *
 	 * @param Store $baseStore
 	 */
-	public function __construct( Store $baseStore = null ) {
+	public function __construct( ?Store $baseStore = null ) {
 		$this->factory = new SPARQLStoreFactory( $this );
 		$this->baseStore = $baseStore;
 
