@@ -61,7 +61,7 @@ interface EntityLookup {
 	 *
 	 * @return DataItem[]|[]|Iterator
 	 */
-	public function getPropertyValues( ?DIWikiPage $subject = null, DIProperty $property, ?RequestOptions $requestOptions = null );
+	public function getPropertyValues( ?DIWikiPage $subject, DIProperty $property, ?RequestOptions $requestOptions = null );
 
 	/**
 	 * Get an array of all subjects that have the given value for the given
