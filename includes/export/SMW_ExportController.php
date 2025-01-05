@@ -108,7 +108,7 @@ class SMWExportController {
 	 * @param string $outfilename URL of the file that output should be written
 	 * to, or empty string for writing to the standard output.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function prepareSerialization( $outfilename = '' ) {
 		$this->serializer->clear();
@@ -629,9 +629,9 @@ class SMWExportController {
 	 * @param $res mixed encoding the restriction as described above
 	 * @param $ns integer the namespace constant to be checked
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	static public function fitsNsRestriction( $res, $ns ) {
+	public static function fitsNsRestriction( $res, $ns ) {
 		if ( $res === false ) {
 			return true;
 		}

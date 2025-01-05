@@ -10,7 +10,7 @@ use Title;
  * Facade to the MediaWiki `SearchEngine` which doesn't allow any factory
  * or callable to construct an instance.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author  Stephan Gambke
@@ -188,7 +188,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @see SearchEngine::getFeatureData
 	 *
-	 * @param String $feature
+	 * @param string $feature
 	 *
 	 * @return array|null
 	 */
@@ -335,7 +335,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getShowSuggestion() {
 		return $this->showSuggestion;

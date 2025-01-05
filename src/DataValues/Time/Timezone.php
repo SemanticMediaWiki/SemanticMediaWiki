@@ -9,7 +9,7 @@ use DateTimeZone;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -143,7 +143,7 @@ class Timezone {
 	 *
 	 * @param string $identifer
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isValid( $identifer ) {
 		$identifer = str_replace( ' ', '_', $identifer );
@@ -166,7 +166,7 @@ class Timezone {
 	 *
 	 * @param string $abbreviation
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isMilitary( $abbreviation ) {
 		$abbreviation = strtoupper( $abbreviation );

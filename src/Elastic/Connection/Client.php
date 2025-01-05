@@ -16,7 +16,7 @@ use SMW\Site;
 /**
  * Reduced interface to the Elasticsearch client class.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -426,7 +426,7 @@ class Client {
 	 * @see Client::ping
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function ping() {
 		if ( self::$ping !== null ) {
@@ -445,7 +445,7 @@ class Client {
 	 *
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function quick_ping( $timeout = 2 ) {
 		$hosts = $this->options->get( Config::ELASTIC_ENDPOINTS );
@@ -472,7 +472,7 @@ class Client {
 	 *
 	 * @param array $params
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function exists( array $params ) {
 		return $this->client->exists( $params );
@@ -772,7 +772,7 @@ class Client {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasMaintenanceLock() {
 		return $this->lockManager->hasMaintenanceLock();
@@ -800,7 +800,7 @@ class Client {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLock( $type ) {
 		return $this->lockManager->hasLock( $type );

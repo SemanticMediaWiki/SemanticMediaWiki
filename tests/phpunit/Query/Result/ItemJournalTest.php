@@ -10,7 +10,7 @@ use SMW\Query\Result\ItemJournal;
  * @covers \SMW\Query\Result\ItemJournal
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames

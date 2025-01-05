@@ -8,7 +8,7 @@ use SMWDIBlob as DIBlob;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

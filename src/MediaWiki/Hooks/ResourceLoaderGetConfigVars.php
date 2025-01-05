@@ -15,7 +15,7 @@ use SMW\OptionsAwareTrait;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -50,7 +50,7 @@ class ResourceLoaderGetConfigVars implements HookListener {
 	 *
 	 * @param array &$vars
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( array &$vars ) {
 		$vars['smw-config'] = [

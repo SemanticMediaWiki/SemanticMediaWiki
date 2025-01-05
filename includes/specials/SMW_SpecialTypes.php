@@ -20,7 +20,7 @@ use SMWInfolink as Infolink;
  * This special page for MediaWiki provides information about available types
  * and those related properties.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames

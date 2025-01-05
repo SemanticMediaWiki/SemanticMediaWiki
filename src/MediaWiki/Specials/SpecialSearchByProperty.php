@@ -17,7 +17,7 @@ use SpecialPage;
  * relation-object pair,i.e. a typed backlink. For example, it shows me all
  * persons born in Croatia, or all winners of the Academy Award for best actress.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames

@@ -260,7 +260,7 @@ abstract class SMWDataValue {
 	 * if the data item is fundamentally incompatible with the data value.
 	 *
 	 * @param $dataitem SMWDataItem
-	 * @return boolean
+	 * @return bool
 	 */
 	public function setDataItem( SMWDataItem $dataItem ) {
 		$this->m_dataitem = null;
@@ -545,7 +545,7 @@ abstract class SMWDataValue {
 	 * DataValue is expected to register a DescriptionBuilder with
 	 * DVDescriptionDeserializerRegistry.
 	 */
-	static public function prepareValue( &$value, &$comparator ) {
+	public static function prepareValue( &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 	}
 
@@ -749,7 +749,7 @@ abstract class SMWDataValue {
 	 * Convenience method that checks if the value that is used to sort
 	 * data of this type is numeric. This only works if the value is set.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isNumeric() {
 		if ( isset( $this->m_dataitem ) ) {
@@ -763,7 +763,7 @@ abstract class SMWDataValue {
 	 * Return true if a value was defined and understood by the given type,
 	 * and false if parsing errors occurred or no value was given.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid() {
 		return !$this->mHasErrors && isset( $this->m_dataitem );
@@ -779,7 +779,7 @@ abstract class SMWDataValue {
 	 *
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUse() {
 		return true;
@@ -788,7 +788,7 @@ abstract class SMWDataValue {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRestricted() {
 		return false;
@@ -895,7 +895,7 @@ abstract class SMWDataValue {
 	 *
 	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeature( $feature ) {
 		if ( $this->options !== null ) {
@@ -946,7 +946,7 @@ abstract class SMWDataValue {
 	 *
 	 * @param SMWDataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	abstract protected function loadDataItem( SMWDataItem $dataItem );
 

@@ -8,7 +8,7 @@ use SMWQueryResult as QueryResult;
 /**
  * Interface for SMW result printers.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -107,7 +107,7 @@ interface ResultPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExportFormat();
 

@@ -8,7 +8,7 @@ use SMWQuery as Query;
  * @covers \SMWQuery
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

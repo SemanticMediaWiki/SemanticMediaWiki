@@ -5,7 +5,7 @@ namespace SMW\Elastic\QueryEngine;
 use SMW\DIWikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -36,7 +36,7 @@ class Excerpts extends \SMW\Query\Excerpts {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasHighlight() {
 		return $this->noHighlight ? false : true;

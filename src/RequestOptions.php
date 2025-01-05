@@ -10,7 +10,7 @@ namespace SMW;
  * Options that should not be used or where default values should be used
  * can be left as initialised.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author Markus Krötzsch

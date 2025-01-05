@@ -19,7 +19,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 /**
  * Maintenance script for rebuilding the property usage statistics.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >

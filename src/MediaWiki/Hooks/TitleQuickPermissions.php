@@ -10,7 +10,7 @@ use Title;
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleQuickPermissions
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -46,7 +46,7 @@ class TitleQuickPermissions implements HookListener {
 	 * @param $action
 	 * @param &$errors
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( Title $title, $user, $action, &$errors ) {
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {

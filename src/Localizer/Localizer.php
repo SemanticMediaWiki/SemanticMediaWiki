@@ -19,7 +19,7 @@ use Title;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -114,7 +114,7 @@ class Localizer {
 	 *
 	 * @param User|null $user
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLocalTimeOffsetPreference( $user = null ) {
 		if ( !$user instanceof User ) {
@@ -293,7 +293,7 @@ class Localizer {
 	 *
 	 * @param string $languageCode
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isKnownLanguageTag( $languageCode ) {
 		$languageCode = mb_strtolower( $languageCode );

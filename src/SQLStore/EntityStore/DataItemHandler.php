@@ -8,7 +8,7 @@ use SMWDataItem as DataItem;
 /**
  * Classes extending this represent all store layout that is known about a certain dataitem
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -58,7 +58,7 @@ abstract class DataItemHandler {
 	 *
 	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeature( $feature ) {
 		return ( (int)$this->fieldTypeFeatures & $feature ) != 0;

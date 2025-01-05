@@ -33,7 +33,7 @@ use User;
  * alter results in a manner unpredictable based on hooks enabled by the time of
  * the test run.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

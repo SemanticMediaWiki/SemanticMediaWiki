@@ -81,11 +81,11 @@ class SMWExporter {
 	 */
 	private static $dispatchingResourceBuilder = null;
 
-	static protected $m_exporturl = false;
-	static protected $m_ent_wiki = false;
-	static protected $m_ent_property = false;
-	static protected $m_ent_category = false;
-	static protected $m_ent_wikiurl = false;
+	protected static $m_exporturl = false;
+	protected static $m_ent_wiki = false;
+	protected static $m_ent_property = false;
+	protected static $m_ent_category = false;
+	protected static $m_ent_wikiurl = false;
 
 	/**
 	 * @since 2.0
@@ -148,7 +148,7 @@ class SMWExporter {
 	/**
 	 * Make sure that necessary base URIs are initialised properly.
 	 */
-	static public function initBaseURIs() {
+	public static function initBaseURIs() {
 		if ( self::$m_exporturl !== false ) {
 			return;
 		}
@@ -390,7 +390,7 @@ class SMWExporter {
 	 * @param $dataItems array of SMWDataItem objects for the given property
 	 * @param &$data SMWExpData to add the data to
 	 */
-	static public function addPropertyValues( SMWDIProperty $property, array $dataItems, SMWExpData &$expData ) {
+	public static function addPropertyValues( SMWDIProperty $property, array $dataItems, SMWExpData &$expData ) {
 		$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
 
 		if ( $property->isUserDefined() ) {
@@ -430,14 +430,14 @@ class SMWExporter {
 	/**
 	 * @see ExpResourceMapper::mapPropertyToResourceElement
 	 */
-	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false, $seekImportVocabulary = true ) {
+	public static function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false, $seekImportVocabulary = true ) {
 		return self::$expResourceMapper->mapPropertyToResourceElement( $diProperty, $helperProperty, $seekImportVocabulary );
 	}
 
 	/**
 	 * @see ExpResourceMapper::mapWikiPageToResourceElement
 	 */
-	static public function getResourceElementForWikiPage( DIWikiPage $diWikiPage, $markForAuxiliaryUsage = false ) {
+	public static function getResourceElementForWikiPage( DIWikiPage $diWikiPage, $markForAuxiliaryUsage = false ) {
 		return self::$expResourceMapper->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
 	}
 
@@ -473,7 +473,7 @@ class SMWExporter {
 	 * @param $forNamespace integer the namespace of the page which has a value for this property
 	 * @return ExpNsResource|null
 	 */
-	static public function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ) {
+	public static function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ) {
 		switch ( $propertyKey ) {
 			case '_INST':
 				return self::getSpecialNsResource( 'rdf', 'type' );
@@ -546,7 +546,7 @@ class SMWExporter {
 	 * @param $localName string (e.g. "type")
 	 * @return ExpNsResource
 	 */
-	static public function getSpecialNsResource( $namespaceId, $localName ) {
+	public static function getSpecialNsResource( $namespaceId, $localName ) {
 		$namespace = self::getNamespaceUri( $namespaceId );
 		if ( $namespace !== '' ) {
 			return new ExpNsResource( $localName, $namespace, $namespaceId );
@@ -589,7 +589,7 @@ class SMWExporter {
 	 * @param $shortName string id (prefix) of the namespace
 	 * @return string of the expanded URI
 	 */
-	static public function getNamespaceUri( $shortName ) {
+	public static function getNamespaceUri( $shortName ) {
 		self::initBaseURIs();
 
 		if ( ( $uri = NamespaceUriFinder::getUri( $shortName ) ) !== false ) {
@@ -676,13 +676,13 @@ class SMWExporter {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	static public function hasHelperExpElement( DIProperty $property ) {
+	public static function hasHelperExpElement( DIProperty $property ) {
 		return ( $property->findPropertyTypeID() === '_dat' || $property->findPropertyTypeID() === '_geo' ) || ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) );
 	}
 
-	static protected function hasSpecialPropertyResource( DIProperty $property ) {
+	protected static function hasSpecialPropertyResource( DIProperty $property ) {
 		return $property->getKey() === '_SKEY' ||
 			$property->getKey() === '_INST' ||
 			$property->getKey() === '_MDAT' ||

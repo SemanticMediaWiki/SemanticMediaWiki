@@ -8,7 +8,7 @@ use SMW\Utils\StatsFormatter;
  * A multipurpose non-persistent static pool cache to keep selected items for
  * the duration of a request cacheable.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames

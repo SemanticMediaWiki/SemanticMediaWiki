@@ -33,7 +33,7 @@ use SpecialPage;
  * This special page for MediaWiki implements a customisable form for executing
  * queries outside of articles.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -87,7 +87,7 @@ class SpecialAsk extends SpecialPage {
 	/**
 	 * @see SpecialPage::doesWrites
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doesWrites() {
 		return true;

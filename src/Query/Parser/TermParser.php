@@ -12,7 +12,7 @@ namespace SMW\Query\Parser;
  * A custom prefix map allows to create assignments between a custom prefix and
  * a property set and hereby simplifies the search input process.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

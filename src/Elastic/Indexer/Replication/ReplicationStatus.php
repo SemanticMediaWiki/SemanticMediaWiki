@@ -9,7 +9,7 @@ use SMW\Elastic\QueryEngine\FieldMapper;
 use SMWDITime as DITime;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -63,7 +63,7 @@ class ReplicationStatus {
 	 *
 	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function exists( $id ) {
 		$params = [
@@ -117,7 +117,7 @@ class ReplicationStatus {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean|DITime
+	 * @return bool|DITime
 	 * @throws RuntimeException
 	 */
 	public function getModificationDate( $id ) {

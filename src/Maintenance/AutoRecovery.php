@@ -7,7 +7,7 @@ use SMW\Site;
 use SMW\Utils\File;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -155,7 +155,7 @@ class AutoRecovery {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has( $key ) {
 		if ( !$this->enabled ) {

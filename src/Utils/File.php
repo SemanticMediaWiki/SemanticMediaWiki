@@ -6,7 +6,7 @@ use RuntimeException;
 use SMW\Exception\FileNotWritableException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -46,7 +46,7 @@ class File {
 	 *
 	 * @param string $file
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function exists( $file ) {
 		return file_exists( self::dir( $file ) );

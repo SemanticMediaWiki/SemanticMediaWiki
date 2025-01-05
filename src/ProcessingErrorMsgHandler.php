@@ -11,7 +11,7 @@ use SMWDIContainer as DIContainer;
  * The handler encodes errors into a representation that can be retrieved from
  * the back-end and turn it into a string representation at a convenient time.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

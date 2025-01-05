@@ -29,7 +29,7 @@ use SMWDIContainer as DIContainer;
  * External output representation depends on the context (wiki, html)
  * whether the language code is omitted or not.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -178,7 +178,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
 		if ( $dataItem->getDIType() === DataItem::TYPE_CONTAINER ) {

@@ -16,7 +16,7 @@ use SMW\Store;
 use SMW\Utils\CircularReferenceGuard;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -61,7 +61,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canInterpretDescription( Description $description ) {
 		return $description instanceof ConceptDescription;

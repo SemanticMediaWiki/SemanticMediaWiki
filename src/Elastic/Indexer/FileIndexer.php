@@ -20,7 +20,7 @@ use Title;
  * outside of a normal wiki content (i.e. the indexed data is only stored in
  * Elasticsearch).
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -95,7 +95,7 @@ class FileIndexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param [] $versions
+	 * @param $versions
 	 */
 	public function setVersions( array $versions ) {
 		$this->versions = $versions;

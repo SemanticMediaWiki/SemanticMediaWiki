@@ -15,7 +15,7 @@ use Title;
  * @group Database
  * @group mediawiki-database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 4.1.2
  *
  * @author octfx

@@ -19,7 +19,7 @@ use Wikimedia\ScopedCallback;
  * interface are likely therefore this class should not be used other than by
  * SMW itself.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -83,7 +83,7 @@ class Database {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function releaseConnection() {
 		$this->connRef->releaseConnections();
@@ -92,7 +92,7 @@ class Database {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function ping() {
 		return true;
@@ -112,7 +112,7 @@ class Database {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isType( $type ) {
 		if ( $this->type === '' ) {
@@ -708,7 +708,7 @@ class Database {
 	 *
 	 * @param string $fname
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inSectionTransaction( $fname = __METHOD__ ) {
 		return $this->transactionHandler->inSectionTransaction( $fname );

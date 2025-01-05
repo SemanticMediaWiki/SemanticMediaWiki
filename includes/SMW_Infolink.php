@@ -8,7 +8,7 @@ use SMW\Site;
  * clean way. The class provides methods for creating source code for
  * realising them in wiki or html contexts.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author Markus Krötzsch
@@ -454,7 +454,7 @@ class SMWInfolink {
 	 * @param array $params
 	 * @param boolean $forTitle
 	 */
-	static public function encodeParameters( array $params, $forTitle = true ) {
+	public static function encodeParameters( array $params, $forTitle = true ) {
 		$result = '';
 
 		if ( $forTitle ) {
@@ -544,7 +544,7 @@ class SMWInfolink {
 	 *
 	 * @return array
 	 */
-	static public function decodeParameters( $titleParam = '', $allParams = false ) {
+	public static function decodeParameters( $titleParam = '', $allParams = false ) {
 		global $wgRequest;
 
 		$result = [];

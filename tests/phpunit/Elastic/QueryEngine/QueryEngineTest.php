@@ -11,7 +11,7 @@ use SMWQuery as Query;
  * @covers \SMW\Elastic\QueryEngine\QueryEngine
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

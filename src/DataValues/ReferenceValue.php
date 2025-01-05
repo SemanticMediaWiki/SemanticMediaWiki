@@ -37,7 +37,7 @@ use SMWDITime as DITime;
  * the next value string and will corespondent to the index of the `Has fields`
  * declaration.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

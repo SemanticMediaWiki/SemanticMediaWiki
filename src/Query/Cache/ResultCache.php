@@ -29,7 +29,7 @@ use SMWQueryResult as QueryResult;
  * Cache eviction is carried out either manually (action=purge) or executed
  * through the QueryDepedencyLinksStore.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

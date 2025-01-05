@@ -8,7 +8,7 @@ use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -104,7 +104,7 @@ class DependencyValidator {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasLikelyOutdatedDependencies( Title $title ): bool {
 		return self::$titles[$title->getPrefixedText()] ?? false;
@@ -115,7 +115,7 @@ class DependencyValidator {
 	 *
 	 * @param Page $page
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasArchaicDependencies( DIWikiPage $subject ) {
 		$title = $subject->getTitle();
@@ -157,7 +157,7 @@ class DependencyValidator {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canKeepParserCache( DIWikiPage $subject ) {
 		$key = $this->makeCacheKey( $subject->getTitle() );

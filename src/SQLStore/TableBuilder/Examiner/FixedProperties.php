@@ -7,7 +7,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\TypesRegistry;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

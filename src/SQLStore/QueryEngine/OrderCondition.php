@@ -14,7 +14,7 @@ use SMW\Query\Language\Description;
  * that joins with the SMW ID_TABELE so that the field alias.smw_title is
  * available for default sorting.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

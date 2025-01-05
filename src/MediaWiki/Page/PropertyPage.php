@@ -25,7 +25,7 @@ use SMWDataValue;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -144,7 +144,7 @@ class PropertyPage extends Page {
 	 *
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isLockedView() {
 		return $this->isLockedView;
@@ -155,7 +155,7 @@ class PropertyPage extends Page {
 	 *
 	 * @since 3.0
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	protected function getRedirectTargetURL() {
 		$label = $this->getTitle()->getText();

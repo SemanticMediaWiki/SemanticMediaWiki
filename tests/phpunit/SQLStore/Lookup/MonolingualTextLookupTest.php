@@ -11,7 +11,7 @@ use SMW\SQLStore\Lookup\MonolingualTextLookup;
  * @covers \SMW\SQLStore\Lookup\MonolingualTextLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames

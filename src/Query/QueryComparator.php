@@ -3,7 +3,7 @@
 namespace SMW\Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.5.3
  *
  * @author mwjames
@@ -96,7 +96,7 @@ class QueryComparator {
 	 * @param string $value
 	 * @param int $comparator
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function containsComparator( $value, $comparator = SMW_CMP_EQ ) {
 		return $this->extractComparatorFromString( $value ) === $comparator;

@@ -9,7 +9,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -54,7 +54,7 @@ class DependencyLinksValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canCheckDependencies() {
 		return $this->checkDependencies;
@@ -88,7 +88,7 @@ class DependencyLinksValidator {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasArchaicDependencies( DIWikiPage $subject ) {
 		$this->checkedDependencies = [];

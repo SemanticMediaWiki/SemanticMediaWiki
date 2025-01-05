@@ -26,7 +26,7 @@ use Title;
  * yet modelled and supported by a RepositoryConnector, which may become optional
  * in future.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -46,7 +46,7 @@ class SPARQLStore extends Store {
 	 * @since 1.8
 	 * @var string
 	 */
-	static public $baseStoreClass = 'SMWSQLStore3';
+	public static $baseStoreClass = 'SMWSQLStore3';
 
 	/**
 	 * Underlying store to use for basic read operations.
@@ -254,7 +254,7 @@ class SPARQLStore extends Store {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doSparqlDataDelete( DataItem $dataItem ) {
 		$extraNamespaces = [];

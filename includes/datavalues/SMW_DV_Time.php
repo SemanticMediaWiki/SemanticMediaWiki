@@ -211,7 +211,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @param $datecomponents array of strings that might belong to the specification of a date
 	 * @param &$date array set to result
 	 *
-	 * @return boolean stating if successful
+	 * @return bool stating if successful
 	 */
 	protected function interpretDateComponents( $datecomponents, &$date ) {
 		// The following code segment creates a bit vector to encode
@@ -287,7 +287,7 @@ class SMWTimeValue extends SMWDataValue {
 
 	/**
 	 * Initialise data from an anticipated JD value.
-	*/
+	 */
 	private function setDateFromJD( $components ) {
 		$datecomponents = $components->get( 'datecomponents' );
 		$calendarmodel = $components->get( 'calendarmodel' );
@@ -323,7 +323,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @param $seconds integer value between 0 and 59, or false if not given
 	 * @param $timeoffset double value for time offset (e.g. 3.5), or false if not given
 	 *
-	 * @return boolean stating if successful
+	 * @return bool stating if successful
 	 */
 	protected function setDateFromParsedValues( $components ) {
 		$datecomponents = $components->get( 'datecomponents' );

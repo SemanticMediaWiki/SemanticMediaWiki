@@ -7,7 +7,7 @@ use SMW\Localizer;
 use SMWDITime as DITime;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -51,7 +51,7 @@ class IntlTimeFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLocalTimeCorrection() {
 		return $this->hasLocalTimeCorrection;
@@ -62,7 +62,7 @@ class IntlTimeFormatter {
 	 *
 	 * @param int $formatFlag
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ) {
 		$dateTime = $this->dataItem->asDateTime();
@@ -120,7 +120,7 @@ class IntlTimeFormatter {
 	 *
 	 * @param string $format
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function format( $format ) {
 		$dateTime = $this->dataItem->asDateTime();
@@ -142,7 +142,7 @@ class IntlTimeFormatter {
 	 *
 	 * @param string $format
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function containsValidDateFormatRule( $format ) {
 		foreach ( str_split( $format ) as $value ) {

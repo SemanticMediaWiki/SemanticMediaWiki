@@ -10,7 +10,7 @@ use SMWQueryResult;
 /**
  * Print query results in lists.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @author Markus Krötzsch
  */
@@ -122,7 +122,7 @@ class ListResultPrinter extends ResultPrinter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function supportsRecursiveAnnotation() {
 		return true;

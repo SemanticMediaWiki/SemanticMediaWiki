@@ -12,7 +12,7 @@ use SMW\Store;
  * Find all entities related to a change propagation (only expected
  * to be used by `ChangePropagationDispatchJob`).
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

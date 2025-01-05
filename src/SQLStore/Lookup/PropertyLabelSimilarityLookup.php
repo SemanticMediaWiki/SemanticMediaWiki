@@ -12,7 +12,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -64,7 +64,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @param int $threshold
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function setThreshold( $threshold ) {
 		$this->threshold = $threshold;
@@ -196,7 +196,7 @@ class PropertyLabelSimilarityLookup {
 	 * @param DIProperty $first
 	 * @param DIProperty $second
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function isExempted( DIProperty $first, DIProperty $second ) {
 		if ( $this->exemptionProperty === null ) {

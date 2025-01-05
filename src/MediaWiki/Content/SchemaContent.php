@@ -23,7 +23,7 @@ use User;
  *
  * @see https://en.wikipedia.org/wiki/YAML#Comparison_with_JSON
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

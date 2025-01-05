@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -60,7 +60,7 @@ trait OptionsAwareTrait {
 	 * @param string $key
 	 * @param mixed $flag
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFlagSet( $key, $flag ) {
 		return $this->options->isFlagSet( $key, $flag );

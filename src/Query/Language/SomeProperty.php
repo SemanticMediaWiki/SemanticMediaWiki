@@ -12,7 +12,7 @@ use SMW\DIProperty;
  * properties in OWL. In conjunctive queries (OWL) and SPARQL (RDF), it is
  * represented by using variables in the object part of such properties.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -151,7 +151,7 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSingleton() {
 		return false;

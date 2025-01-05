@@ -11,7 +11,7 @@ use Traversable;
 /**
  * @see Guzzle::ChunkedIterator
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  */
 class ChunkedIterator extends IteratorIterator {

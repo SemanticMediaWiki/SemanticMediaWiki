@@ -9,7 +9,7 @@ use SpecialPage;
  * Convenience special page that just redirects to Special:Ask with a preset
  * of necessary parameters to query the processing error list.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

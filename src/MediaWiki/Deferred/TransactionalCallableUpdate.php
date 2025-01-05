@@ -11,7 +11,7 @@ use SMW\Site;
  * or isolations to ensure an undisturbed update process before and after
  * MediaWiki::preOutputCommit.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

@@ -5,7 +5,7 @@ namespace SMW\Exporter\Controller;
 use SMW\DIWikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -111,7 +111,7 @@ class Queue {
 	 * @param SMWDIWikiPage $st specifying the object to check
 	 * @param int $recdepth
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDone( DIWikiPage $dataItem, int $recdepth ): bool {
 		return $this->isHashDone( $dataItem->getSha1(), $recdepth );

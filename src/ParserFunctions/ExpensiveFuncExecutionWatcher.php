@@ -8,7 +8,7 @@ use SMWQuery as Query;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -67,7 +67,7 @@ class ExpensiveFuncExecutionWatcher {
 	 *
 	 * @param Query $query
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasReachedExpensiveLimit( Query $query ) {
 		if ( $this->expensiveExecutionLimit === false ) {
@@ -90,7 +90,7 @@ class ExpensiveFuncExecutionWatcher {
 	 *
 	 * @param Query $query
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function incrementExpensiveCount( Query $query ) {
 		if ( $this->expensiveExecutionLimit === false || $query->getLimit() == 0 || $query->getOption( Query::PROC_QUERY_TIME ) < $this->expensiveThreshold ) {
