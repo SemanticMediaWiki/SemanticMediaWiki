@@ -55,7 +55,7 @@ class Image {
 			// pathinfo( $dataItem->getDBKey(), PATHINFO_EXTENSION )
 		);
 
-		return array_key_exists( $extensions, self::$images_types );
+		return array_key_exists( $extension, self::$images_types );
 	}
 
 }
