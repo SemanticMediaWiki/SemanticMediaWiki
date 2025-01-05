@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\MediaWiki\Exception\ExtendedPermissionsError;
+use PermissionsError;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
@@ -47,8 +47,7 @@ class SpecialAdmin extends SpecialPage {
 	 */
 	public function execute( $query ) {
 		if ( !$this->userCanExecute( $this->getUser() ) ) {
-			// $this->mRestriction is private MW 1.23-
-			throw new ExtendedPermissionsError( 'smw-admin', [ 'smw-admin-permission-missing' ] );
+			throw new PermissionsError( 'smw-admin', [ 'smw-admin-permission-missing' ] );
 		}
 
 		// https://phabricator.wikimedia.org/T109652#1562641
