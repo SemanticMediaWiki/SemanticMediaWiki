@@ -21,6 +21,7 @@
 		<exclude name="Generic.ControlStructures.DisallowYodaConditions.Found" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.WrongStyle" />
 		<exclude name="Generic.Files.OneObjectStructurePerFile.MultipleFound" />
+		<exclude name="MediaWiki.Commenting.LicenseComment.InvalidLicenseTag" />
 		<exclude name="MediaWiki.PHPUnit.DeprecatedPHPUnitMethods.AssertInternalTypeGeneric" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVar" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.NotShortIntVar" />
