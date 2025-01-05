@@ -17,7 +17,7 @@ use Title;
  * the headings for the page titles. If "titlestyle" is not specified, a <h1> tag is
  * used.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.7
  *
  * @author Fernando Correia

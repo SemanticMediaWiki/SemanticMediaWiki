@@ -13,7 +13,7 @@ use Title;
 /**
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -99,9 +99,8 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @param mixed $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-
 	public function hasParameter( $key ) {
 		if ( !is_array( $this->params ) ) {
 			return false;
@@ -115,7 +114,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @param mixed $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getParameter( $key, $default = false ) {
 		return $this->hasParameter( $key ) ? $this->params[$key] : $default;
@@ -136,7 +135,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @param self[] $jobs
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function batchInsert( $jobs ) {
 		return ApplicationFactory::getInstance()->getJobQueue()->push( $jobs );

@@ -7,7 +7,7 @@ use SMWDataItem as DataItem;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -19,7 +19,7 @@ interface DataItemMapper {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMapperFor( DataItem $dataItem );
 

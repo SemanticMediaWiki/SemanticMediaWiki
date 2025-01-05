@@ -11,7 +11,7 @@ use SMW\Store;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -44,7 +44,7 @@ class DuplicateFinder {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasDuplicate( DataItem $dataItem ) {
 		$type = $dataItem->getDIType();

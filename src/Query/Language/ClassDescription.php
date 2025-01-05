@@ -12,7 +12,7 @@ use SMW\Localizer;
  * disjunction of such classes. Corresponds to (disjunctions of) atomic classes
  * in OWL and to (unions of) classes in RDF.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -73,7 +73,7 @@ class ClassDescription extends Description {
 	 *
 	 * @param ClassDescription $description
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMergableDescription( ClassDescription $description ) {
 		if ( isset( $this->isNegation ) && isset( $description->isNegation ) ) {

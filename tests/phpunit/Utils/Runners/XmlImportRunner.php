@@ -13,7 +13,7 @@ use SMW\Tests\TestEnvironment;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
@@ -63,7 +63,7 @@ class XmlImportRunner {
 
 	/**
 	 * @throws RuntimeException
-	 * @return boolean
+	 * @return bool
 	 */
 	public function run() {
 		$this->unregisterUploadsource();

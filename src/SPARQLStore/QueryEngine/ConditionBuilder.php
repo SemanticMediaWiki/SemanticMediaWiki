@@ -25,7 +25,7 @@ use SMWTurtleSerializer as TurtleSerializer;
  * Build an internal representation for a SPARQL condition from individual query
  * descriptions
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -403,7 +403,7 @@ class ConditionBuilder {
 	 *
 	 * @param int $featureFlag
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSetFlag( $featureFlag ) {
 		$canUse = true;

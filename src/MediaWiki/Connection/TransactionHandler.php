@@ -8,7 +8,7 @@ use Wikimedia\Rdbms\TransactionProfiler;
 use Wikimedia\ScopedCallback;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -79,7 +79,7 @@ class TransactionHandler {
 	 *
 	 * @param string $fname
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inSectionTransaction( $fname = __METHOD__ ) {
 		return $this->sectionTransaction === $fname;
@@ -88,7 +88,7 @@ class TransactionHandler {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasActiveSectionTransaction() {
 		return $this->sectionTransaction !== null;

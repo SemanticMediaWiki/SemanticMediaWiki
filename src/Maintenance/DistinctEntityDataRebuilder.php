@@ -17,7 +17,7 @@ use SMWQueryProcessor;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -110,7 +110,7 @@ class DistinctEntityDataRebuilder {
 	/**
 	 * @since 2.4
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doRebuild() {
 		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .

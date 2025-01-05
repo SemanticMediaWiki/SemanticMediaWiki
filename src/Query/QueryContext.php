@@ -7,7 +7,7 @@ namespace SMW\Query;
  * are used to preconfigure query (e.g. special pages show no further
  * results link)
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author Markus Krötzsch

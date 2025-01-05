@@ -7,7 +7,7 @@ use SMW\Store;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since  3.2
  *
  * @author mwjames
@@ -90,7 +90,7 @@ class TaskHandlerRegistry {
 	/**
 	 * @since 3.2
 	 *
-	 * @return string $type;
+	 * @param string $type
 	 *
 	 * @return TaskHandler[]
 	 */

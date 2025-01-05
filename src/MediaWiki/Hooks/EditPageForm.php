@@ -17,7 +17,7 @@ use SMW\OptionsAwareTrait;
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -60,7 +60,7 @@ class EditPageForm implements HookListener {
 	 *
 	 * @param EditPage $editPage
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( EditPage $editPage ) {
 		$html = '';

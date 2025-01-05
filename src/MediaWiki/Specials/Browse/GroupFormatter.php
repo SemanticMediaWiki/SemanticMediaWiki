@@ -12,7 +12,7 @@ use SMWDataItem as DataItem;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -76,7 +76,7 @@ class GroupFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isLastGroup( $group ) {
 		return $this->lastGroup === $group;
@@ -85,7 +85,7 @@ class GroupFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasGroups() {
 		return $this->groupLinks !== [];

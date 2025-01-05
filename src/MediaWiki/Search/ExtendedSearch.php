@@ -14,7 +14,7 @@ use SMWQueryResult as QueryResult;
  * If successful, the pages according to the query will be returned.
  * If not it falls back to the default search engine.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author  Stephan Gambke
@@ -368,7 +368,7 @@ class ExtendedSearch {
 	}
 
 	/**
-	 * @param String $term
+	 * @param string $term
 	 *
 	 * @return SMWQuery | null
 	 */

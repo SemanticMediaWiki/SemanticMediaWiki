@@ -51,7 +51,7 @@ class PrefetchCache {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCached( DIProperty $property ) {
 		return isset( $this->cache[$property->getKey()] );

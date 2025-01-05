@@ -8,7 +8,7 @@ namespace SMW\Utils;
  * For example, an array with `[ 'foo' => [ 'bar' => [ 'foobar' => 42 ] ] ]` can
  * be accessed using a simple dot path such as `foo.bar.foobar`.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

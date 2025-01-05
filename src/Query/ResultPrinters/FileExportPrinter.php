@@ -11,7 +11,7 @@ use SMWQueryResult;
  * Base class for file export result printers
  *
  * @since 1.8
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
@@ -27,7 +27,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExportFormat() {
 		return true;
@@ -78,7 +78,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @param SMWQueryResult $queryResult
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function getFileName( SMWQueryResult $queryResult ) {
 		return false;

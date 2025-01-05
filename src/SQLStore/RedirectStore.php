@@ -12,7 +12,7 @@ use SMW\Utils\Flag;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -95,7 +95,7 @@ class RedirectStore {
 	 * @param string $title DB key
 	 * @param int $namespace
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRedirect( $title, $namespace ) {
 		return $this->findRedirect( $title, $namespace ) != 0;

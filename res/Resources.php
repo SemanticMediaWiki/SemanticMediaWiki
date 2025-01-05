@@ -3,7 +3,7 @@
 /**
  * Collection of resource module definitions
  *
- * @license GNU GPL v2 or later
+ * @license GNU GPL v2
  * @since 1.8
  *
  * @author mwjames

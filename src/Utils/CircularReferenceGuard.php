@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -74,7 +74,7 @@ class CircularReferenceGuard {
 	 *
 	 * @param string $hash
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCircular( $hash ) {
 		return $this->get( $hash ) > $this->maxRecursionDepth;

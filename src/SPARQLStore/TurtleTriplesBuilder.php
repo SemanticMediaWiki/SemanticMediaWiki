@@ -14,7 +14,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -98,7 +98,7 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasTriples() {
 		return $this->hasTriplesForUpdate;

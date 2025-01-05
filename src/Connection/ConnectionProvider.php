@@ -5,7 +5,7 @@ namespace SMW\Connection;
 /**
  * Interface for database connection providers.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >

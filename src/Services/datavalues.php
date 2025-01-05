@@ -43,7 +43,7 @@ use SMWTimeValue as TimeValue;
  * with services being expected to require a prefix to match each individual instance
  * to a specific DataValue.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

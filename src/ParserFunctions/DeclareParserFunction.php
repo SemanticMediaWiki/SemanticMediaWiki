@@ -12,7 +12,7 @@ use SMWPropertyValue as PropertyValue;
  *
  * @see http://semantic-mediawiki.org/wiki/Help:Argument_declaration_in_templates
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.5.3
  *
  * @author Markus Krötzsch

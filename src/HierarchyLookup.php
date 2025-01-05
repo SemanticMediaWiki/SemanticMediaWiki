@@ -8,7 +8,7 @@ use Psr\Log\LoggerAwareTrait;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -145,7 +145,7 @@ class HierarchyLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSubproperty( DIProperty $property ) {
 		if ( $this->subpropertyDepth < 1 ) {
@@ -164,7 +164,7 @@ class HierarchyLookup {
 	 *
 	 * @param DIWikiPage $category
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSubcategory( DIWikiPage $category ) {
 		if ( $this->subcategoryDepth < 1 ) {

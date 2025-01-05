@@ -12,7 +12,7 @@ use OutOfBoundsException;
  * and in the way subject pages are referred to.
  *
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -114,7 +114,7 @@ class PropertyTableDefinition {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function usesIdSubject() {
 		return $this->idSubject;
@@ -136,7 +136,7 @@ class PropertyTableDefinition {
 	 *
 	 * @param string $tableType
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isTableType( string $tableType ): bool {
 		return $this->tableType === $tableType;
@@ -178,7 +178,7 @@ class PropertyTableDefinition {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFixedPropertyTable() {
 		return $this->fixedProperty !== false;

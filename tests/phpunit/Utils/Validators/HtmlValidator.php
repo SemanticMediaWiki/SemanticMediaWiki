@@ -6,7 +6,7 @@ use DOMDocument;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author Stephan Gambke
@@ -34,7 +34,7 @@ class HtmlValidator extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUse() {
 		if ( $this->canUse === null ) {

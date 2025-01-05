@@ -9,7 +9,7 @@ use SMW\MediaWiki\HookListener;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ExtensionTypes
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -21,7 +21,7 @@ class ExtensionTypes implements HookListener {
 	 *
 	 * @param array &$extensionTypes
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( array &$extensionTypes ) {
 		if ( !is_array( $extensionTypes ) ) {

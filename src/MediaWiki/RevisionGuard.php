@@ -17,7 +17,7 @@ use WikiPage;
  * data related to a revision in a consistent manner and lessen the potential
  * breakage during an update.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -46,7 +46,7 @@ class RevisionGuard {
 	 * @param Title $title
 	 * @param int|null &$latestRevID
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSkippableUpdate( Title $title, &$latestRevID = null ) {
 		$flag = IDBAccessObject::READ_LATEST;

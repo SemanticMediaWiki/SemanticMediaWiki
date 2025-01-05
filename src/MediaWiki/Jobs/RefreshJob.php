@@ -16,7 +16,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -46,7 +46,7 @@ class RefreshJob extends Job {
 	/**
 	 * @see Job::run
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function run() {
 		if ( $this->hasParameter( 'spos' ) ) {

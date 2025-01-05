@@ -5,7 +5,7 @@ namespace SMW\Listener\ChangeListener;
 use Psr\Log\LoggerAwareTrait;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -46,7 +46,7 @@ trait CallableChangeListenerTrait {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canTrigger( string $key ): bool {
 		return isset( $this->changeListeners[$key] );

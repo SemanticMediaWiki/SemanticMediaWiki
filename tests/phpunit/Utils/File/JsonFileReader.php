@@ -5,7 +5,7 @@ namespace SMW\Tests\Utils\File;
 use SMW\Exception\JSONFileParseException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -62,7 +62,7 @@ class JsonFileReader {
 	/**
 	 * @since 2.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isReadable() {
 		return is_file( $this->file ) && is_readable( $this->file );

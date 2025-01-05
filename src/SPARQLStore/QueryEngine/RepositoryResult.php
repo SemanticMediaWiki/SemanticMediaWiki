@@ -13,7 +13,7 @@ use SMWExpLiteral as ExpLiteral;
  *
  * @ingroup Sparql
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -126,7 +126,7 @@ class RepositoryResult implements Iterator {
 	 * the case that the results do not look at all like the result of
 	 * an ASK query).
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isBooleanTrue() {
 		if ( count( $this->data ) == 1 ) {

@@ -9,7 +9,7 @@ use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminerAware;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -106,7 +106,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	 * @param DIWikiPage $subject
 	 * @param array $options
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
 		if ( isset( $options['action'] ) && ( $options['action'] === 'edit' || $options['action'] === 'history' ) ) {

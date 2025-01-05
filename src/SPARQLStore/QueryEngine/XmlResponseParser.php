@@ -10,7 +10,7 @@ use SMWExpResource as ExpResource;
 /**
  * Class for parsing SPARQL results in XML format
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch

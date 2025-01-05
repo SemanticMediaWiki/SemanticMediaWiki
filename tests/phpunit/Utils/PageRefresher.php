@@ -14,7 +14,7 @@ use WikiPage;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  */
 class PageRefresher {

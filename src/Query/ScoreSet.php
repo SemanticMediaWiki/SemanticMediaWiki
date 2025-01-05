@@ -8,7 +8,7 @@ use SMW\DIWikiPage;
  * Record scores for query results retrieved from stores that support the computation
  * of relevance scores.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

@@ -3,7 +3,7 @@
 namespace SMW\DataValues\ValueValidators;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -20,7 +20,7 @@ interface ConstraintValueValidator {
 	/**
 	 * @since 2.4
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasConstraintViolation();
 

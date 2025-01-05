@@ -17,7 +17,7 @@ use WebResponse;
  * @group SMWExtension
  * @group medium
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.0.2
  *
  * @author mwjames

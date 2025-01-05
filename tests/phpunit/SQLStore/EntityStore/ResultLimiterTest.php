@@ -9,7 +9,7 @@ use SMW\SQLStore\EntityStore\ResultLimiter;
  * @covers \SMW\SQLStore\EntityStore\ResultLimiter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames

@@ -8,7 +8,7 @@ use InvalidArgumentException;
  * Examines if a specific namespace is enabled for the usage of the
  * Semantic MediaWiki extension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -48,7 +48,7 @@ class NamespaceExaminer {
 	 *
 	 * @param Title|DIWikiPage $object
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inNamespace( $object ) {
 		$namespace = null;
@@ -71,7 +71,7 @@ class NamespaceExaminer {
 	 *
 	 * @param int $namespace
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @throws InvalidArgumentException
 	 */
 	public function isSemanticEnabled( $namespace ) {

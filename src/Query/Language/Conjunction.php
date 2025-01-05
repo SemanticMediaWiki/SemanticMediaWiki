@@ -8,7 +8,7 @@ namespace SMW\Query\Language;
  *
  * Corresponds to conjunction in OWL and SPARQL. Not available in RDFS.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch

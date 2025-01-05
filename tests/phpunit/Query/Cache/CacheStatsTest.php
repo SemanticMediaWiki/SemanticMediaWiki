@@ -8,7 +8,7 @@ use SMW\Query\Cache\CacheStats;
  * @covers \SMW\Query\Cache\CacheStats
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

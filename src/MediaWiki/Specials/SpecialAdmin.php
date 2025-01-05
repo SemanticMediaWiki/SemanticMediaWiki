@@ -20,7 +20,7 @@ use SpecialPage;
  * Access to the special page and its function is limited to users with the
  * `smw-admin` right.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames

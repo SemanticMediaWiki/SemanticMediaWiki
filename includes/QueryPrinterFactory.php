@@ -8,7 +8,7 @@ use SMW\Query\Exception\ResultFormatNotFoundException;
 /**
  * Factory for "result formats", ie classes implementing QueryResultPrinter.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5 (since 1.9, renamed in 2.5)
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -128,7 +128,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @param string $formatName Format name or alias
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFormat( $formatName ) {
 		$formatName = $this->getCanonicalName( $formatName );

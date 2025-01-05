@@ -11,7 +11,7 @@ namespace SMW\Utils;
  * The shared secret key to generate the HMAC is by default MediaWiki's
  * $wgSecretKey.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -25,7 +25,7 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public static function encode( $data, $key = null, $algo = 'md5' ) {
 		if ( $key === null ) {
@@ -49,7 +49,7 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public static function decode( $data, $key = null, $algo = 'md5' ) {
 		if ( $key === null ) {
@@ -78,7 +78,7 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public static function serialize( $data, $key = null, $algo = 'md5' ) {
 		if ( $key === null ) {
@@ -102,7 +102,7 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return mixed|boolean
+	 * @return mixed|bool
 	 */
 	public static function unserialize( $data, $key = null, $algo = 'md5' ) {
 		if ( $key === null ) {
@@ -134,7 +134,7 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public static function compress( $data, $key = null, $algo = 'md5' ) {
 		if ( $key === null ) {
@@ -153,7 +153,7 @@ class HmacSerializer {
 	 * @param string|null $key
 	 * @param string $algo = 'md5'
 	 *
-	 * @return mixed|boolean
+	 * @return mixed|bool
 	 */
 	public static function uncompress( $data, $key = null, $algo = 'md5' ) {
 		if ( $key === null ) {

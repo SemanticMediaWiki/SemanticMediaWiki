@@ -8,7 +8,7 @@ use SMWOutputs;
 /**
  * Highlighter utility function for Semantic MediaWiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -118,7 +118,7 @@ class Highlighter {
 	 * @param string $text
 	 * @param string|null $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasHighlighterClass( $text, $type = null ) {
 		if ( strpos( $text, 'smw-highlighter' ) === false ) {

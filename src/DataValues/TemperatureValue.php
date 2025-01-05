@@ -9,7 +9,7 @@ use SMWNumberValue as NumberValue;
  * This datavalue implements unit support for measuring temperatures. This is
  * mostly an example implementation of how to realise custom unit types easily.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author Markus Krötzsch

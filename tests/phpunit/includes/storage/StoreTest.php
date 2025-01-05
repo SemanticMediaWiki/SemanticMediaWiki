@@ -34,8 +34,8 @@ class StoreTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	* @dataProvider getSemanticDataProvider
-	*/
+	 * @dataProvider getSemanticDataProvider
+	 */
 	public function testGetSemanticData( $titleText, $filter = false ) {
 		$title = Title::newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
@@ -56,8 +56,8 @@ class StoreTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	* @dataProvider getPropertyValuesDataProvider
-	*/
+	 * @dataProvider getPropertyValuesDataProvider
+	 */
 	public function testGetPropertyValues( $titleText, DIProperty $property, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
@@ -75,8 +75,8 @@ class StoreTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	* @dataProvider getPropertySubjectsDataProvider
-	*/
+	 * @dataProvider getPropertySubjectsDataProvider
+	 */
 	public function testGetPropertySubjects( DIProperty $property, $value, $requestOptions = null ) {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertySubjects( $property, $value, $requestOptions );
@@ -102,8 +102,8 @@ class StoreTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	* @dataProvider getPropertiesDataProvider
-	*/
+	 * @dataProvider getPropertiesDataProvider
+	 */
 	public function testGetProperties( $titleText, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );

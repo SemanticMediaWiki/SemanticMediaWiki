@@ -35,7 +35,7 @@ use SMWWikiPageValue;
  * objects/values, but never for subjects (pages as such). Hence it does not
  * provide a complete Title-like interface, or support for things like sortkey.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -214,7 +214,7 @@ class PropertyValue extends SMWDataValue {
 	 *
 	 * @param $dataitem DataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_PROPERTY ) {
@@ -321,7 +321,7 @@ class PropertyValue extends SMWDataValue {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRestricted() {
 		if ( !$this->isValid() ) {

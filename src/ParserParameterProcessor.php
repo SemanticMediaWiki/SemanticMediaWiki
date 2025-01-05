@@ -5,7 +5,7 @@ namespace SMW;
 use SMW\Utils\ErrorCodeFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -112,7 +112,7 @@ class ParserParameterProcessor {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasParameter( $key ) {
 		return isset( $this->parameters[$key] ) || array_key_exists( $key, $this->parameters );

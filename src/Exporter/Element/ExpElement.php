@@ -16,7 +16,7 @@ use SMWDataItem as DataItem;
  *
  * @note This class should not be instantiated directly.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch

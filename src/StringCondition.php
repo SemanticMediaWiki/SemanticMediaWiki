@@ -7,7 +7,7 @@ namespace SMW;
  * label of some entity. States that a given string should either be prefix,
  * postfix, or some arbitrary part of labels.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author Markus Krötzsch

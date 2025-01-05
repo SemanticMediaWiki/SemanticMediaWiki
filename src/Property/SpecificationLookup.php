@@ -17,7 +17,7 @@ use SMWDIBoolean as DIBoolean;
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
  * to ensure a singleton instance.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -514,7 +514,7 @@ class SpecificationLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasUniquenessConstraint( DIProperty $property ) {
 		$hasUniquenessConstraint = false;

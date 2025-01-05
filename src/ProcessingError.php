@@ -6,7 +6,7 @@ namespace SMW;
  * Describe a typed processing error allowing to distinguish different
  * types of errors.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

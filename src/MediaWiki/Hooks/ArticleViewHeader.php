@@ -20,7 +20,7 @@ use SMW\Store;
  * Note: This hook is not called on non-article pages (including edit pages) and
  * it is also not called prior to outputting the edit preview.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

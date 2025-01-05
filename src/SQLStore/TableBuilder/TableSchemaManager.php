@@ -10,7 +10,7 @@ use SMWDataItem as DataItem;
  *
  * Database type agnostic table/schema definition manager
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -108,7 +108,7 @@ class TableSchemaManager {
 	 *
 	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeatureFlag( $feature ) {
 		return ( (int)$this->featureFlags & $feature ) != 0;

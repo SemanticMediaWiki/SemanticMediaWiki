@@ -540,9 +540,9 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * This calculation assumes that neither calendar has a year 0.
 	 * @param $year integer year number
 	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return boolean
+	 * @return bool
 	 */
-	static public function isLeapYear( $year, $calendarmodel ) {
+	public static function isLeapYear( $year, $calendarmodel ) {
 		$astroyear = ( $year < 1 ) ? ( $year + 1 ) : $year;
 		if ( $calendarmodel == self::CM_JULIAN ) {
 			return ( $astroyear % 4 ) == 0;
@@ -559,9 +559,9 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @param $month integer month number
 	 * @param $year integer year number
 	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return boolean
+	 * @return bool
 	 */
-	static public function getDayNumberForMonth( $month, $year, $calendarmodel ) {
+	public static function getDayNumberForMonth( $month, $year, $calendarmodel ) {
 		if ( $month !== 2 ) {
 			return self::$m_daysofmonths[$month];
 		} elseif ( self::isLeapYear( $year, $calendarmodel ) ) {

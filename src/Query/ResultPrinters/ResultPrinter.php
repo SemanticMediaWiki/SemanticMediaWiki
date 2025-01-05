@@ -21,7 +21,7 @@ use SMWQueryResult as QueryResult;
  * output formatting and the corresponding parameters) and is subclassed by concrete
  * printers that provide the main formatting functionality.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -211,7 +211,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnabledFeature( $feature ) {
 		return ( (int)$GLOBALS['smwgResultFormatsFeatures'] & $feature ) != 0;
@@ -631,7 +631,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param QueryResult $results
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function linkFurtherResults( QueryResult $results ) {
 		return $this->mInline && $results->hasFurtherResults() && $this->mSearchlabel !== '';
@@ -682,7 +682,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExportFormat() {
 		return false;
@@ -691,7 +691,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeferrable() {
 		return false;
@@ -703,7 +703,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function supportsRecursiveAnnotation() {
 		return false;

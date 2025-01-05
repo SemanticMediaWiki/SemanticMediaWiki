@@ -13,7 +13,7 @@ use SMW\Utils\Pager;
 /**
  * Special page that lists available concepts
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames

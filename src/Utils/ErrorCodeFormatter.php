@@ -5,7 +5,7 @@ namespace SMW\Utils;
 /**
  * Convenience method to retrieved stringified error codes.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

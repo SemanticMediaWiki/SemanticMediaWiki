@@ -16,7 +16,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
@@ -67,7 +67,7 @@ class MaintenanceRunner {
 	/**
 	 * @since 1.9.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @throws RuntimeException
 	 * @throws DomainException
 	 */

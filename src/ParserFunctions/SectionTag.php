@@ -9,7 +9,7 @@ use PPFrame;
 /**
  * To support the generation of <section> ... </section>
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -43,7 +43,7 @@ class SectionTag {
 	 * @param Parser $parser
 	 * @param boolean $supportSectionTag
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function register( Parser $parser, $supportSectionTag = true ) {
 		if ( $supportSectionTag === false ) {
