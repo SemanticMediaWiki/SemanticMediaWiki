@@ -111,10 +111,10 @@ class SMWOutputs {
 					self::requireStyle( 'ext.smw.styles' );
 					self::requireStyle( 'ext.smw.tooltip.styles' );
 					self::requireResource( 'ext.smw.tooltip' );
-				break;
+					break;
 				case SMW_HEADER_STYLE:
 					self::requireStyle( 'ext.smw.styles' );
-				break;
+					break;
 			}
 		} else {
 			self::$headItems[$id] = $item;

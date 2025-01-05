@@ -28,7 +28,7 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit\Framework\TestCase {
 	protected $testDatabaseTableBuilder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isUsableUnitTestDatabase = true;
 

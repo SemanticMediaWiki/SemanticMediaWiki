@@ -16,7 +16,7 @@ class Template {
 	private $name;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $fields = [];
 

@@ -24,7 +24,7 @@ class MissingRedirectLookup {
 	private $namespaces;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $nosort = false;
 

@@ -116,7 +116,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return SMWQuery
 	 */
 	static public function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = [], $contextPage = null ) {
-		if ( $format === '' || is_null( $format ) ) {
+		if ( $format === '' || $format === null ) {
 			$format = $params['format']->getValue();
 		}
 
@@ -179,7 +179,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @since 1.7
 	 *
-	 * @param array $printRequests
+	 * @param array &$printRequests
 	 * @param array $rawParams
 	 */
 	public static function addThisPrintout( array &$printRequests, array $rawParams ) {
@@ -248,8 +248,8 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @since 1.8
 	 * @param array $rawParams user-provided list of unparsed parameters
-	 * @param integer $outputMode SMW_OUTPUT_WIKI, SMW_OUTPUT_HTML, ...
-	 * @param integer $context INLINE_QUERY, SPECIAL_PAGE, CONCEPT_DESC
+	 * @param int $outputMode SMW_OUTPUT_WIKI, SMW_OUTPUT_HTML, ...
+	 * @param int $context INLINE_QUERY, SPECIAL_PAGE, CONCEPT_DESC
 	 * @param boolean $showMode process like #show parser function?
 	 * @return array( SMWQuery, ProcessedParam[] )
 	 */
@@ -283,8 +283,8 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @param SMWQuery $query
 	 * @param array $params These need to be the result of a list fed to getProcessedParams
-	 * @param integer $outputMode
-	 * @param integer $context
+	 * @param int $outputMode
+	 * @param int $context
 	 * @since before 1.7, but public only since 1.8
 	 *
 	 * @return string
@@ -417,7 +417,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @since 1.6.2, return element type changed in 1.8
 	 *
-	 * @param integer|null $context
+	 * @param int|null $context
 	 * @param ResultPrinter|null $resultPrinter
 	 *
 	 * @return ParamDefinition[]

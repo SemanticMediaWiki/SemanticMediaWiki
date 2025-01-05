@@ -158,20 +158,20 @@ class SetupFile {
 	 * current activities relate to an install (new) or upgrade.
 	 */
 	public function setLatestVersion( $version ): void {
-		$latest = $this->get( SetupFile::LATEST_VERSION );
-		$previous = $this->get( SetupFile::PREVIOUS_VERSION );
+		$latest = $this->get( self::LATEST_VERSION );
+		$previous = $this->get( self::PREVIOUS_VERSION );
 
 		if ( $latest === null && $previous === null ) {
 			$this->set(
 				[
-					SetupFile::LATEST_VERSION => $version
+					self::LATEST_VERSION => $version
 				]
 			);
 		} elseif ( $latest !== $version ) {
 			$this->set(
 				[
-					SetupFile::LATEST_VERSION => $version,
-					SetupFile::PREVIOUS_VERSION => $latest
+					self::LATEST_VERSION => $version,
+					self::PREVIOUS_VERSION => $latest
 				]
 			);
 		}

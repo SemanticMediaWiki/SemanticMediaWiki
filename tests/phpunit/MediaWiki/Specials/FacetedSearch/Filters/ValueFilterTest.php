@@ -162,4 +162,3 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

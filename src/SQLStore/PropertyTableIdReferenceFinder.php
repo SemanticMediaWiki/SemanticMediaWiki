@@ -30,7 +30,7 @@ class PropertyTableIdReferenceFinder {
 	private $namespaceExaminer;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCapitalLinks = true;
 
@@ -92,7 +92,7 @@ class PropertyTableIdReferenceFinder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return boolean
 	 */
@@ -107,7 +107,7 @@ class PropertyTableIdReferenceFinder {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return boolean
 	 */
@@ -122,7 +122,7 @@ class PropertyTableIdReferenceFinder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return array
 	 */
@@ -147,7 +147,7 @@ class PropertyTableIdReferenceFinder {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param boolean $secondary_ref
 	 *
 	 * @return DataItem|false

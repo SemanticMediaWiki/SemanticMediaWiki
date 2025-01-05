@@ -30,8 +30,8 @@ class SkinTemplateNavigationUniversal implements HookListener {
 	/**
 	 * @since  2.0
 	 *
-	 * @param SkinTemplate $skinTemplate
-	 * @param array $links
+	 * @param SkinTemplate &$skinTemplate
+	 * @param array &$links
 	 */
 	public function __construct( SkinTemplate &$skinTemplate, array &$links ) {
 		$this->skinTemplate = $skinTemplate;

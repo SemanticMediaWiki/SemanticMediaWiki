@@ -100,7 +100,7 @@ class RedirectTargetLookup {
 	 * @since 3.2
 	 *
 	 * @param DIWikiPage $target
-	 * @param string $flag
+	 * @param string|null $flag
 	 *
 	 * @return DIWikiPage|false
 	 */

@@ -29,7 +29,7 @@ class File {
 	 *
 	 * @param string $file
 	 * @param string $content
-	 * @param integer $flags
+	 * @param int $flags
 	 */
 	public function write( $file, $contents, $flags = 0 ) {
 		$file = self::dir( $file );
@@ -56,7 +56,7 @@ class File {
 	 * @since 3.0
 	 *
 	 * @param string $file
-	 * @param integer|null $checkSum
+	 * @param int|null $checkSum
 	 *
 	 * @return string
 	 * @throws RuntimeException
@@ -89,7 +89,7 @@ class File {
 	 *
 	 * @param string $file
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getCheckSum( $file ) {
 		return md5_file( $file );

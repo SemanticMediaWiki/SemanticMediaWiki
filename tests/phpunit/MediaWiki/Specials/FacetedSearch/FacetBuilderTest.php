@@ -51,4 +51,3 @@ class FacetBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

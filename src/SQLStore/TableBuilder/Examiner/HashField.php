@@ -41,7 +41,7 @@ class HashField {
 	/**
 	 * @since 3.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function threshold() {
 		return PopulateHashField::COUNT_SCRIPT_EXECUTION_THRESHOLD;

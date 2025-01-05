@@ -128,5 +128,5 @@ class runImport extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = runImport::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

@@ -63,7 +63,7 @@ class CacheWarmer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $thresholdLimit
+	 * @param int $thresholdLimit
 	 */
 	public function setThresholdLimit( $thresholdLimit ) {
 		$this->thresholdLimit = $thresholdLimit;

@@ -44,7 +44,7 @@ class Queue {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getMembers(): array {
 		return $this->queue;

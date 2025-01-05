@@ -38,7 +38,7 @@ class SpecialStatsAddExtra implements HookListener {
 	private $language;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $dataTypeLabels = [];
 

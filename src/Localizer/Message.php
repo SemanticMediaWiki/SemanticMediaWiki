@@ -97,7 +97,7 @@ class Message {
 	 * @since 2.5
 	 *
 	 * @param string|array $parameters
-	 * @param integer|null $type
+	 * @param int|null $type
 	 *
 	 * @return string
 	 */
@@ -159,8 +159,8 @@ class Message {
 	 * @since 2.5
 	 *
 	 * @param string $json
-	 * @param integer|null $type
-	 * @param integer|null $language
+	 * @param int|null $type
+	 * @param int|null $language
 	 *
 	 * @return string|boolean
 	 */
@@ -194,8 +194,8 @@ class Message {
 	 * @since 2.4
 	 *
 	 * @param string|array $parameters
-	 * @param integer|null $type
-	 * @param integer|null $language
+	 * @param int|null $type
+	 * @param int|null $language
 	 *
 	 * @return string
 	 */
@@ -239,8 +239,8 @@ class Message {
 	 * @since 2.4
 	 *
 	 * @param array $parameters
-	 * @param integer $type
-	 * @param integer|string|Language $language
+	 * @param int|null $type
+	 * @param int|string|Language|null $language
 	 */
 	public static function getHash( $parameters, $type = null, $language = null ): string {
 		if ( $language instanceof Language ) {

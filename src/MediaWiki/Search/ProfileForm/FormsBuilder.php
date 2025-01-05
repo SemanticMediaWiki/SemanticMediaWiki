@@ -43,27 +43,27 @@ class FormsBuilder {
 	private $defaultForm = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $formList = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $preselectNsList = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $hiddenNsList = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $termPrefixes = [];
 
@@ -81,7 +81,7 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getParameters() {
 		return $this->parameters;
@@ -101,7 +101,7 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getTermPrefixes() {
 		return $this->termPrefixes;
@@ -110,7 +110,7 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getHiddenNsList() {
 		return $this->hiddenNsList;
@@ -119,7 +119,7 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPreselectNsList() {
 		$activeForm = $this->request->getVal( 'smw-form', $this->defaultForm );

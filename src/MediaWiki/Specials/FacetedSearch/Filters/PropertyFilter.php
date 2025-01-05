@@ -30,7 +30,7 @@ class PropertyFilter {
 	private $treeBuilder;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $params;
 

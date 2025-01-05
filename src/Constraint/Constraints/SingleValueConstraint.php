@@ -23,7 +23,7 @@ class SingleValueConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'single_value_constraint';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 

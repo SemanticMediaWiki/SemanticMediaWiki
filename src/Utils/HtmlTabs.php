@@ -13,17 +13,17 @@ use Html;
 class HtmlTabs {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $tabs = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $contents = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $hidden = [];
 
@@ -38,12 +38,12 @@ class HtmlTabs {
 	private $group = 'tabs';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRTL = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isSubTab = false;
 

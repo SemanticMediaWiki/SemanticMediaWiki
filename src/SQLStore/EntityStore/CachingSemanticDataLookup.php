@@ -93,7 +93,7 @@ class CachingSemanticDataLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function invalidateCache( $id ) {
 		unset( self::$data[$id] );
@@ -153,7 +153,7 @@ class CachingSemanticDataLookup {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param SemanticData $semanticData
 	 */
 	public function setLookupCache( $id, SemanticData $semanticData ) {
@@ -200,11 +200,11 @@ class CachingSemanticDataLookup {
 	 * @since 3.1
 	 *
 	 * @param array $subjects
-	 * @param DataItem $dataItem
+	 * @param DataItem|null $dataItem
 	 * @param PropertyTableDefinition $propertyTableDef
-	 * @param RequestOptions $requestOptions
+	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function prefetchDataFromTable( array $subjects, ?DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
 		$hash = '';
@@ -244,10 +244,10 @@ class CachingSemanticDataLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
-	 * @param DataItem $dataItem
+	 * @param int $id
+	 * @param DataItem|null $dataItem
 	 * @param PropertyTableDefinition $propertyTableDef
-	 * @param RequestOptions $requestOptions
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return RequestOptions|null
 	 */
@@ -258,8 +258,8 @@ class CachingSemanticDataLookup {
 	/**
 	 * Fetch and cache the data about one subject for one particular table
 	 *
-	 * @param integer $id
-	 * @param DIWikiPage $subject
+	 * @param int $id
+	 * @param DIWikiPage|null $subject
 	 * @param PropertyTableDefinition $propertyTableDef
 	 * @param RequestOptions|null $requestOptions
 	 *

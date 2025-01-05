@@ -23,7 +23,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 	private $allowsPatternValueParser;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 

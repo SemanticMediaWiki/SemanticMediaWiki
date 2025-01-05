@@ -21,15 +21,15 @@ class NGramTokenizer implements Tokenizer {
 	private $ngramSize = 2;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $withMarker = false;
 
 	/**
 	 * @since 0.1
 	 *
-	 * @param Tokenizer $tokenizer
-	 * @param integer $ngramSize
+	 * @param Tokenizer|null $tokenizer
+	 * @param int $ngramSize
 	 */
 	public function __construct( ?Tokenizer $tokenizer = null, $ngramSize = 2 ) {
 		$this->tokenizer = $tokenizer;
@@ -48,7 +48,7 @@ class NGramTokenizer implements Tokenizer {
 	/**
 	 * @since 0.1
 	 *
-	 * @param integer $ngramSize
+	 * @param int $ngramSize
 	 */
 	public function setNgramSize( $ngramSize ) {
 		$this->ngramSize = (int)$ngramSize;

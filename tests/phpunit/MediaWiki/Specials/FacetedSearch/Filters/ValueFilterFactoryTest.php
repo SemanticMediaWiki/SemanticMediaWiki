@@ -109,4 +109,3 @@ class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

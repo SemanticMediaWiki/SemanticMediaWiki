@@ -139,16 +139,16 @@ class RdfResultPrinter extends FileExportPrinter {
 			switch ( $printRequest->getMode() ) {
 				case PrintRequest::PRINT_PROP:
 					$property = $printRequest->getData()->getDataItem();
-				break;
+					break;
 				case PrintRequest::PRINT_CATS:
 					$property = new DIProperty( '_TYPE' );
-				break;
+					break;
 				case PrintRequest::PRINT_CCAT:
 					// not serialised right now
-				break;
+					break;
 				case PrintRequest::PRINT_THIS:
 					// ignored here (object is always included in export)
-				break;
+					break;
 			}
 
 			if ( $property !== null ) {

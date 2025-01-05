@@ -27,12 +27,12 @@ class PropertyStatisticsStore {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
@@ -70,8 +70,8 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 1.9
 	 *
-	 * @param integer $propertyId
-	 * @param integer $value
+	 * @param int $propertyId
+	 * @param int $value
 	 *
 	 * @return boolean Success indicator
 	 */
@@ -170,8 +170,8 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 1.9
 	 *
-	 * @param integer $propertyId
-	 * @param integer $value
+	 * @param int $propertyId
+	 * @param int $value
 	 *
 	 * @return boolean Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
@@ -213,8 +213,8 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 1.9
 	 *
-	 * @param integer $propertyId
-	 * @param integer $value
+	 * @param int $propertyId
+	 * @param int $value
 	 *
 	 * @return boolean Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
@@ -261,9 +261,9 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 2.2
 	 *
-	 * @param integer $propertyId
+	 * @param int $propertyId
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getUsageCount( $propertyId ) {
 		if ( !is_int( $propertyId ) ) {

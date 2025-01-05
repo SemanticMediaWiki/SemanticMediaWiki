@@ -26,7 +26,7 @@ class ElementFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer $type
+	 * @param int $type
 	 * @param callable $dataItemMapper
 	 */
 	public function registerCallableMapper( $type, callable $dataItemMapper ) {

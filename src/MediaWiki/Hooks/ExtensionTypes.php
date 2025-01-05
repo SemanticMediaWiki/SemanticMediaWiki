@@ -19,7 +19,7 @@ class ExtensionTypes implements HookListener {
 	/**
 	 * @since 2.0
 	 *
-	 * @param array $extensionTypes
+	 * @param array &$extensionTypes
 	 *
 	 * @return boolean
 	 */

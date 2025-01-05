@@ -32,7 +32,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicators = [];
 
@@ -47,7 +47,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	private $languageCode = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isDeferredMode = false;
 
@@ -133,7 +133,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getIndicators() {
 		return $this->indicators;
@@ -142,7 +142,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return [];

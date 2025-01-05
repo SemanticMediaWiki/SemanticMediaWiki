@@ -59,7 +59,7 @@ class DIProperty extends SMWDataItem {
 
 	/**
 	 * Whether to take the inverse of this property or not.
-	 * @var boolean
+	 * @var bool
 	 */
 	private $m_inverse;
 

@@ -17,7 +17,7 @@ use OutOfBoundsException;
 trait SeekableIteratorTrait {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $container = [];
 

@@ -74,7 +74,7 @@ class DIWikiPage extends SMWDataItem {
 	 * careful and since errors here do not have major consequences.
 	 *
 	 * @param string $dbkey
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobjectname
 	 */
@@ -219,7 +219,7 @@ class DIWikiPage extends SMWDataItem {
 	/**
 	 * @since  2.5
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function setId( $id ) {
 		$this->id = (int)$id;

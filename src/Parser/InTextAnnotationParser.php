@@ -76,7 +76,7 @@ class InTextAnnotationParser {
 	private $stripMarkerDecoder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isEnabledNamespace;
 
@@ -84,17 +84,17 @@ class InTextAnnotationParser {
 	 * Internal state for switching SMW link annotations off/on during parsing
 	 * ([[SMW::on]] and [[SMW:off]])
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isAnnotation = true;
 
 	/**
-	 * @var boolean|integer
+	 * @var bool|int
 	 */
 	private $isLinksInValues = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showErrors = true;
 

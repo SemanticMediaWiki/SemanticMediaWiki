@@ -172,4 +172,3 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	}
 
 }
-

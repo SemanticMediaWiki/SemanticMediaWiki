@@ -168,7 +168,7 @@ class Database {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer $ts
+	 * @param int $ts
 	 *
 	 * @return string
 	 */
@@ -181,7 +181,7 @@ class Database {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $prefix
+	 * @param string|null $prefix
 	 *
 	 * @return string
 	 */
@@ -465,7 +465,7 @@ class Database {
 		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
 		$row = $res->fetchRow();
 
-		return $this->insertId = is_null( $row[0] ) ? null : (int)$row[0];
+		return $this->insertId = $row[0] === null ? null : (int)$row[0];
 	}
 
 	/**
@@ -620,7 +620,7 @@ class Database {
 	 * @param string|null $prefix
 	 * @param string $fname
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function listTables( $prefix = null, $fname = __METHOD__ ) {
 		return $this->connRef->getConnection( 'read' )->listTables( $prefix, $fname );

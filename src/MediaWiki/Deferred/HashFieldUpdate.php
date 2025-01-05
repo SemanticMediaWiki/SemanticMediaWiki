@@ -38,7 +38,7 @@ class HashFieldUpdate implements DeferrableUpdate {
 	private $hash;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public static $isCommandLineMode;
 
@@ -46,7 +46,7 @@ class HashFieldUpdate implements DeferrableUpdate {
 	 * @since 3.1
 	 *
 	 * @param Database $connection
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $hash
 	 */
 	public function __construct( Database $connection, $id, $hash ) {
@@ -59,7 +59,7 @@ class HashFieldUpdate implements DeferrableUpdate {
 	 * @since 3.1
 	 *
 	 * @param Database $connection
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $hash
 	 */
 	public static function addUpdate( Database $connection, $id, $hash ) {

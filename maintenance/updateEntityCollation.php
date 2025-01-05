@@ -293,5 +293,5 @@ class updateEntityCollation extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = updateEntityCollation::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

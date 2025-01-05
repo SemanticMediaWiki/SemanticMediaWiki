@@ -71,7 +71,7 @@ interface EntityLookup {
 	 * @since 2.5
 	 *
 	 * @param DIWikiPage|null $subject
-	 * @param DIProperty $property
+	 * @param DIProperty|null $property
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return DIWikiPage[]|[]|Iterator

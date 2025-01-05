@@ -91,10 +91,10 @@ class MessageBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Title $title,
-	 * @param integer $offset,
-	 * @param integer $offset,
-	 * @param array $query,
+	 * @param Title $title
+	 * @param int $offset
+	 * @param int $offset
+	 * @param array $query
 	 * @param boolean|null $isAtTheEnd
 	 *
 	 * @return string

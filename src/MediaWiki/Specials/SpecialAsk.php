@@ -65,12 +65,12 @@ class SpecialAsk extends SpecialPage {
 	private $printouts = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEditMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isBorrowedMode = false;
 

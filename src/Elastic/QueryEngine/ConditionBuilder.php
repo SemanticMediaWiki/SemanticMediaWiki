@@ -123,12 +123,12 @@ class ConditionBuilder {
 	private $descriptionLog = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isConstantScore = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $initServices = false;
 
@@ -268,7 +268,7 @@ class ConditionBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getID( $dataItem ) {
 		if ( $dataItem instanceof DIProperty ) {
@@ -366,7 +366,7 @@ class ConditionBuilder {
 	 * @since 3.0
 	 *
 	 * @param DataItem|null $dataItem
-	 * @param integer $hierarchyDepth
+	 * @param int $hierarchyDepth
 	 *
 	 * @return array
 	 */

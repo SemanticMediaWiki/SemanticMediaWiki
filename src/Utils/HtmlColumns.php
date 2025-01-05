@@ -78,12 +78,12 @@ class HtmlColumns {
 	private $columnClass = 'smw-column';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRTL = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isResponsiveCols = false;
 
@@ -131,7 +131,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $responsiveColsThreshold
+	 * @param int $responsiveColsThreshold
 	 */
 	public function setResponsiveColsThreshold( $responsiveColsThreshold ) {
 		$this->responsiveColsThreshold = (int)$responsiveColsThreshold;
@@ -140,7 +140,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $columns
+	 * @param int $columns
 	 */
 	public function setColumns( $columns ) {
 		$this->columns = $columns;

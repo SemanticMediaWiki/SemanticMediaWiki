@@ -40,7 +40,7 @@ class ListBuilder {
 	private $property;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRTL = false;
 
@@ -118,7 +118,7 @@ class ListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $sort
+	 * @param int $sort
 	 */
 	public function sort( $sort ) {
 		$this->sort = $sort;

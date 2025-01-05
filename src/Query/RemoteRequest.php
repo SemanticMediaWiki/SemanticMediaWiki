@@ -33,7 +33,7 @@ class RemoteRequest implements QueryEngine {
 	const REQUEST_ID = "\x7fsmw-remote-request\x7f";
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
@@ -43,12 +43,12 @@ class RemoteRequest implements QueryEngine {
 	private $httpRequest;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $features = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $isConnected;
 
@@ -78,7 +78,7 @@ class RemoteRequest implements QueryEngine {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 *
 	 * @return boolean
 	 */

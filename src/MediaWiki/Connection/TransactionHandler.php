@@ -26,7 +26,7 @@ class TransactionHandler {
 	private $sectionTransaction;
 
 	/**
-	 * @var boolean|null
+	 * @var bool|null
 	 */
 	private $mutedTransactionProfiler;
 

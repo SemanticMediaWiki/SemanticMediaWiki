@@ -78,9 +78,9 @@ class QueryComparator {
 	 * @since 1.5.3
 	 *
 	 * @param string $string
-	 * @param integer $defaultComparator Item of the SMW_CMP_ enum
+	 * @param int $defaultComparator Item of the SMW_CMP_ enum
 	 *
-	 * @return integer Item of the SMW_CMP_ enum
+	 * @return int Item of the SMW_CMP_ enum
 	 */
 	public function getComparatorFromString( $string, $defaultComparator = SMW_CMP_EQ ) {
 		if ( $string === '' ) {
@@ -94,7 +94,7 @@ class QueryComparator {
 	 * @since 2.5
 	 *
 	 * @param string $value
-	 * @param integer $comparator
+	 * @param int $comparator
 	 *
 	 * @return boolean
 	 */
@@ -108,9 +108,9 @@ class QueryComparator {
 	 *
 	 * @since 2.4
 	 *
-	 * @param $value
+	 * @param &$value
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function extractComparatorFromString( &$value ) {
 		$comparator = SMW_CMP_EQ;

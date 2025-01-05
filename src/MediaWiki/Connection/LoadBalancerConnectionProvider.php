@@ -35,7 +35,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	private $groups;
 
 	/**
-	 * @var string|boolean $wiki
+	 * @var string|bool
 	 */
 	private $wiki;
 

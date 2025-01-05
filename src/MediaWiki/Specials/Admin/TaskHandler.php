@@ -37,7 +37,7 @@ abstract class TaskHandler {
 	private $store;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isApiTask = false;
 
@@ -56,7 +56,7 @@ abstract class TaskHandler {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
 	 * @return boolean
 	 */
@@ -77,7 +77,7 @@ abstract class TaskHandler {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $enabledFeatures
+	 * @param int $enabledFeatures
 	 */
 	public function setFeatureSet( $featureSet ) {
 		$this->featureSet = $featureSet;

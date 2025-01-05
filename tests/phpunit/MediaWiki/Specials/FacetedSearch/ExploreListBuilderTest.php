@@ -36,4 +36,3 @@ class ExploreListBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

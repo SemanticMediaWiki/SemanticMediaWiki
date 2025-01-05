@@ -36,4 +36,3 @@ class TreeBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

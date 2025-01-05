@@ -34,7 +34,7 @@ class AnnotationProcessor {
 	private $dataValueFactory;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $canAnnotate = true;
 

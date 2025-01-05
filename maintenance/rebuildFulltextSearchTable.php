@@ -249,5 +249,5 @@ class rebuildFulltextSearchTable extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = rebuildFulltextSearchTable::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

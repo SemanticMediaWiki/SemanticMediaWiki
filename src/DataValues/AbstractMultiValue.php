@@ -87,7 +87,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string|integer $index
+	 * @param string|int $index
 	 *
 	 * @return DataItem[]|null
 	 */
@@ -112,7 +112,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string|integer $index
+	 * @param string|int $index
 	 *
 	 * @return DIProperty|null
 	 */

@@ -116,8 +116,8 @@ class QueryResultLookup {
 	 * one.
 	 *
 	 * @param QueryOptions $pageRequestOptions
-	 * @param integer $count How many entities have the exact same value on the property?
-	 * @param integer $greater Should the values be bigger? Set false for smaller values.
+	 * @param int $count How many entities have the exact same value on the property?
+	 * @param int $greater Should the values be bigger? Set false for smaller values.
 	 *
 	 * @return array of array of SMWWikiPageValue, SMWDataValue with the
 	 * first being the entity, and the second the value

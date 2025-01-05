@@ -115,11 +115,11 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 
 			if ( $searchValue === $key || $searchValue === $value ) {
 				return true;
-			};
+			}
 
 			if ( is_array( $value ) ) {
 				return $this->matchArray( $value, $searchValue );
-			};
+			}
 		}
 
 		return $searchValue !== null ? false : true;

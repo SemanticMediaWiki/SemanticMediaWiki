@@ -52,7 +52,7 @@ class InternalParseBeforeLinks implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param Parser $parser
+	 * @param Parser &$parser
 	 * @param StripState $stripState
 	 */
 	public function __construct( Parser &$parser, $stripState ) {
@@ -63,7 +63,7 @@ class InternalParseBeforeLinks implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param string $text
+	 * @param string &$text
 	 *
 	 * @return true
 	 */

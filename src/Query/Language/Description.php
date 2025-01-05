@@ -144,7 +144,7 @@ abstract class Description {
 	/**
 	 * Compute the size of the description. Default is 1.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSize() {
 		return 1;
@@ -153,7 +153,7 @@ abstract class Description {
 	/**
 	 * Compute the depth of the description. Default is 0.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDepth() {
 		return 0;

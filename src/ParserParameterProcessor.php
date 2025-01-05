@@ -188,7 +188,7 @@ class ParserParameterProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $parameters
+	 * @param array &$parameters
 	 * @param boolean $associative
 	 */
 	public static function sort( array &$parameters, $associative = true ) {
@@ -281,7 +281,7 @@ class ParserParameterProcessor {
 			// This allows assignments of type |Has property=Test1,Test2|+sep=,
 			// as a means to support multiple value declaration
 			if ( substr( $nextElement[0], -5 ) === '+sep' ) {
-				$separator = isset( $nextElement[1] ) ? $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator : $this->defaultSeparator;
+				$separator = isset( $nextElement[1] ) ? ( $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator ) : $this->defaultSeparator;
 				next( $params );
 			}
 		}

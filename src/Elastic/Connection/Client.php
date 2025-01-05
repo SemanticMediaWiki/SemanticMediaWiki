@@ -42,7 +42,7 @@ class Client {
 	protected $client;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $ping;
 
@@ -67,7 +67,7 @@ class Client {
 	private $distribution;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $hasIndex = [];
 
@@ -154,7 +154,7 @@ class Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getIndexDefFileModificationTimeByType( $type ) {
 		static $filemtime = [];
@@ -169,7 +169,7 @@ class Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getVersion() {
 		$info = $this->info();

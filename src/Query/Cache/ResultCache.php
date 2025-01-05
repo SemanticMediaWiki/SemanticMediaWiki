@@ -86,12 +86,12 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	private $cacheStats;
 
 	/**
-	 * @var integer|boolean
+	 * @var int|bool
 	 */
 	private $nonEmbeddedCacheLifetime = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $enabledCache = true;
 
@@ -151,7 +151,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|integer $cacheKeyExtension
+	 * @param string|int $cacheKeyExtension
 	 */
 	public function setCacheKeyExtension( $cacheKeyExtension ) {
 		if ( is_array( $cacheKeyExtension ) ) {
@@ -209,7 +209,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|boolean $nonEmbeddedCacheLifetime
+	 * @param int|bool $nonEmbeddedCacheLifetime
 	 */
 	public function setNonEmbeddedCacheLifetime( $nonEmbeddedCacheLifetime ) {
 		$this->nonEmbeddedCacheLifetime = $nonEmbeddedCacheLifetime;

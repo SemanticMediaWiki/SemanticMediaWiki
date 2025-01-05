@@ -21,7 +21,7 @@ class FieldMapper {
 	const TYPE_FILTER = 'filter';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCompatMode = true;
 
@@ -37,7 +37,7 @@ class FieldMapper {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return string
 	 */
@@ -139,7 +139,7 @@ class FieldMapper {
 	 * @param array $results
 	 * @param array $params
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function field_filter( $field, $params ) {
 		$idList = [];

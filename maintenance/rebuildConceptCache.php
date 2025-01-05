@@ -219,5 +219,5 @@ class rebuildConceptCache extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = rebuildConceptCache::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

@@ -13,4 +13,3 @@ date_default_timezone_set( 'UTC' );
 if ( PHP_SAPI !== 'cli' ) {
 	die( 'Not an entry point' );
 }
-

@@ -34,17 +34,17 @@ class CallableUpdate implements DeferrableUpdate {
 	protected $callback;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isDeferrableUpdate = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isCommandLineMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isPending = false;
 
@@ -74,7 +74,7 @@ class CallableUpdate implements DeferrableUpdate {
 	private $stage;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $catchExceptionAndRethrow = false;
 

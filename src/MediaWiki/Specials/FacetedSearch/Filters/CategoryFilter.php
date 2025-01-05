@@ -29,7 +29,7 @@ class CategoryFilter {
 	private $treeBuilder;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $params;
 

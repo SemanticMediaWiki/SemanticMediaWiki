@@ -29,12 +29,12 @@ class RestrictionExaminer {
 	private $user;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $createProtectionRight = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isQueryContext = false;
 

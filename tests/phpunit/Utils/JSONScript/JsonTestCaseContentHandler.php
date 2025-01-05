@@ -94,7 +94,7 @@ class JsonTestCaseContentHandler {
 	 * @since 2.5
 	 *
 	 * @param array $pages
-	 * @param integer $defaultNamespace
+	 * @param int $defaultNamespace
 	 */
 	public function createPagesFrom( array $pages, $defaultNamespace = NS_MAIN ) {
 		foreach ( $pages as $page ) {
@@ -119,7 +119,7 @@ class JsonTestCaseContentHandler {
 	 * @since 2.5
 	 *
 	 * @param array $page
-	 * @param integer $defaultNamespace
+	 * @param int $defaultNamespace
 	 */
 	public function createPage( array $page, $namespace ) {
 		$pageContentLanguage = isset( $page['contentlanguage'] ) ? $page['contentlanguage'] : '';

@@ -40,7 +40,7 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getList() {
 		return $this->list;
@@ -66,7 +66,7 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function merge( SchemaList $schemaList ) {
 		$list = [];
@@ -130,7 +130,7 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function toArray() {
 		$list = [];

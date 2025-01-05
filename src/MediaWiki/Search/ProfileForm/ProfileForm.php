@@ -42,7 +42,7 @@ class ProfileForm {
 	private $formsFactory;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $searchableNamespaces = [];
 
@@ -66,7 +66,7 @@ class ProfileForm {
 	 * @return boolean
 	 */
 	public static function isValidProfile( $profile ) {
-		return $profile === ProfileForm::PROFILE_NAME;
+		return $profile === self::PROFILE_NAME;
 	}
 
 	/**

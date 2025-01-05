@@ -98,5 +98,5 @@ class rebuildPropertyStatistics extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = rebuildPropertyStatistics::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

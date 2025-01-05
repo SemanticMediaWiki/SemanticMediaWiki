@@ -79,4 +79,3 @@ class CheckboxRangeGroupValueFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

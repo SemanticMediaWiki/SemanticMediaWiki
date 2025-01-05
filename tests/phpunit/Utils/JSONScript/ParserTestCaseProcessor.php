@@ -63,7 +63,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	private $serializerFactory;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 

@@ -82,7 +82,7 @@ class AuxiliaryFields {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param array|null $seqmap
 	 * @param array|null $countmap
 	 */

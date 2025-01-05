@@ -46,7 +46,7 @@ class TemplateRendererFactory {
 			$this->addCommonTemplateFields( $this->templateRenderer );
 		}
 
-		return clone( $this->templateRenderer );
+		return clone $this->templateRenderer;
 	}
 
 	/**

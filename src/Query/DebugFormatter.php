@@ -74,7 +74,7 @@ class DebugFormatter {
 	 * contexts.
 	 *
 	 * @param $entries array of name => value of informative entries to display
-	 * @param $query SMWQuery or null, if given add basic data about this query as well
+	 * @param null $query SMWQuery or null, if given add basic data about this query as well
 	 *
 	 * @return string
 	 */

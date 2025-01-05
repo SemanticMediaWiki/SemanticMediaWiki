@@ -67,12 +67,12 @@ class AskParserFunction {
 	private $expensiveFuncExecutionWatcher;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $curtailmentMode = false;
 

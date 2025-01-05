@@ -36,4 +36,3 @@ class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

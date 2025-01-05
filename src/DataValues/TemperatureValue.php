@@ -124,22 +124,22 @@ class TemperatureValue extends NumberValue {
 			case 'Kelvin':
 			case 'kelvin':
 			case 'kelvins':
-			return 'K';
+				return 'K';
 			// There's a dedicated Unicode character (℃, U+2103) for degrees C.
 			// Your font may or may not display it; do not be alarmed.
 			case '°C':
 			case '℃':
 			case 'Celsius':
 			case 'centigrade':
-			return '°C';
+				return '°C';
 			case '°F':
 			case 'Fahrenheit':
-			return '°F';
+				return '°F';
 			case '°R':
 			case 'Rankine':
-			return '°R';
+				return '°R';
 			default:
-			return false;
+				return false;
 		}
 	}
 

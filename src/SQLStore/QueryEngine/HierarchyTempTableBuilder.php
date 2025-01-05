@@ -102,7 +102,7 @@ class HierarchyTempTableBuilder {
 	 * @param string $type
 	 * @param string $tablename
 	 * @param string $valueComposite
-	 * @param integer|null $depth
+	 * @param int|null $depth
 	 *
 	 * @throws RuntimeException
 	 */

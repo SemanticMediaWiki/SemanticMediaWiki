@@ -27,7 +27,7 @@ class Formatter {
 	 *
 	 * @param PrintRequest $printRequest
 	 * @param Linker|null $linker
-	 * @param integer|null $outputType
+	 * @param int|null $outputType
 	 *
 	 * @return string
 	 */

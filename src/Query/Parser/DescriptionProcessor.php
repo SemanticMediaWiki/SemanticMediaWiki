@@ -45,7 +45,7 @@ class DescriptionProcessor {
 	private $contextPage;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $selfReference = false;
 
@@ -57,7 +57,7 @@ class DescriptionProcessor {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $queryFeatures
+	 * @param int $queryFeatures
 	 */
 	public function __construct( $queryFeatures = false ) {
 		$this->queryFeatures = $queryFeatures === false ? $GLOBALS['smwgQFeatures'] : $queryFeatures;

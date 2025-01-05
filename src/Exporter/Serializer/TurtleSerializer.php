@@ -37,7 +37,7 @@ class TurtleSerializer extends Serializer {
 	 * If true, do not serialize namespace declarations and record them in
 	 * $sparql_namespaces instead for later retrieval.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $sparqlmode;
 

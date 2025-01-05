@@ -59,7 +59,7 @@ class PostProcHandler {
 	private $cache;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $options = [];
 

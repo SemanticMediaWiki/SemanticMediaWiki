@@ -27,22 +27,22 @@ class CustomForm {
 	private $field;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isActiveForm = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $fieldCounter = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $html5TypeMap = [
 		'_txt' => 'text',
@@ -66,7 +66,7 @@ class CustomForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getParameters() {
 		return $this->parameters;

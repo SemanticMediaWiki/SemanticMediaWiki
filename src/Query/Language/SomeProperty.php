@@ -51,7 +51,7 @@ class SomeProperty extends Description {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $hierarchyDepth
+	 * @param int $hierarchyDepth
 	 */
 	public function setHierarchyDepth( $hierarchyDepth ) {
 		if ( $hierarchyDepth > $GLOBALS['smwgQSubpropertyDepth'] ) {
@@ -64,7 +64,7 @@ class SomeProperty extends Description {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer|null
+	 * @return int|null
 	 */
 	public function getHierarchyDepth() {
 		return $this->hierarchyDepth;
@@ -160,7 +160,7 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSize() {
 		return 1 + $this->getDescription()->getSize();
@@ -169,7 +169,7 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDepth() {
 		return 1 + $this->getDescription()->getDepth();
@@ -178,7 +178,7 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryFeatures() {
 		return SMW_PROPERTY_QUERY | $this->description->getQueryFeatures();

@@ -23,7 +23,7 @@ class NamespaceDescription extends Description {
 	private $namespace;
 
 	/**
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function __construct( $namespace ) {
 		$this->namespace = $namespace;
@@ -42,7 +42,7 @@ class NamespaceDescription extends Description {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getNamespace() {
 		return $this->namespace;

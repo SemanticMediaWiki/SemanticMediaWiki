@@ -74,7 +74,7 @@ class PageContentCopyBenchmarkRunner {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|null $copyCount
+	 * @param int|null $copyCount
 	 */
 	public function setCopyCount( $copyCount = null ) {
 		$this->copyCount = $copyCount;

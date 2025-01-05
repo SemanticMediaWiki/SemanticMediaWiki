@@ -54,7 +54,7 @@ class Factbox {
 	private $featureSet = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isVisible = false;
 
@@ -93,7 +93,7 @@ class Factbox {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $featureSet
+	 * @param int $featureSet
 	 */
 	public function setFeatureSet( $featureSet ): void {
 		$this->featureSet = $featureSet;

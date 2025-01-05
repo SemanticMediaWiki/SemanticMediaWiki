@@ -27,7 +27,7 @@ class SequenceMapFinder {
 	private $idCacheManager;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $preloaded = [];
 
@@ -47,8 +47,8 @@ class SequenceMapFinder {
 	 *
 	 * @since 3.1
 	 *
-	 * @param integer $sid
-	 * @param array $map
+	 * @param int $sid
+	 * @param array|null $map
 	 */
 	public function setMap( $sid, ?array $map = null ) {
 		if ( $map === null ) {
@@ -78,7 +78,7 @@ class SequenceMapFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 *
 	 * @return array
 	 */

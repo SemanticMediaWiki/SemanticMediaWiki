@@ -9,6 +9,7 @@ use SMW\OptionsAwareTrait;
 use SMWInfolink as Infolink;
 use SpecialPage;
 use Title;
+
 /**
  * Called at the end of Skin::buildSidebar().
  *

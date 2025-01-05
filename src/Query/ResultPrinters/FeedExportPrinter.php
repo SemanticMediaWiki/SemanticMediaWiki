@@ -28,7 +28,7 @@ use WikiPage;
 final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $httpHeader = true;
 
@@ -100,7 +100,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @param $mode
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryMode( $mode ) {
 		if ( $mode == \SMWQueryProcessor::SPECIAL_PAGE ) {
@@ -161,7 +161,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * Returns a string that is to be sent to the caller
 	 *
 	 * @param QueryResult $res
-	 * @param integer $outputMode
+	 * @param int $outputMode
 	 *
 	 * @return string
 	 */

@@ -79,7 +79,7 @@ class KeywordValue extends StringValue {
 	/**
 	 * @see DataValue::getShortWikiText
 	 *
-	 * @param string $value
+	 * @param string|null $value
 	 */
 	public function getShortWikiText( $linker = null ) {
 		if ( !$this->isValid() ) {
@@ -246,7 +246,7 @@ class KeywordValue extends StringValue {
 		if ( $link_to === 'SPECIAL_ASK' ) {
 			$infolink = Infolink::newInternalLink( $this->m_caption, ':Special:Ask', false, [] );
 			$infolink->setParameter( "[[$label::$value]]", false );
-			$infolink->setCompactLink( $this->getOption( KeywordValue::OPT_COMPACT_INFOLINKS, false ) );
+			$infolink->setCompactLink( $this->getOption( self::OPT_COMPACT_INFOLINKS, false ) );
 
 			foreach ( $data['rule']['parameters'] as $key => $value ) {
 
@@ -265,7 +265,7 @@ class KeywordValue extends StringValue {
 
 		} elseif ( $link_to === 'SPECIAL_SEARCH_BY_PROPERTY' ) {
 			$infolink = Infolink::newInternalLink( $this->m_caption, ':Special:SearchByProperty', false, [] );
-			$infolink->setCompactLink( $this->getOption( KeywordValue::OPT_COMPACT_INFOLINKS, false ) );
+			$infolink->setCompactLink( $this->getOption( self::OPT_COMPACT_INFOLINKS, false ) );
 			$infolink->setParameter( ":$label" );
 			$infolink->setParameter( $value );
 		}

@@ -39,34 +39,34 @@ class InfoLinksProvider {
 	/**
 	 * Used to control the addition of the standard search link.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasSearchLink;
 
 	/**
 	 * Used to control service link creation.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasServiceLinks;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $enabledServiceLinks = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $compactLink = false;
 
 	/**
-	 * @var boolean|array
+	 * @var bool|array
 	 */
 	private $serviceLinkParameters = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $disabledLinksByKey = [ '_ERRT' ];
 
@@ -195,7 +195,7 @@ class InfoLinksProvider {
 	 * Return text serialisation of info links. Ensures more uniform layout
 	 * throughout wiki (Factbox, Property pages, ...).
 	 *
-	 * @param integer $outputformat Element of the SMW_OUTPUT_ enum
+	 * @param int $outputformat Element of the SMW_OUTPUT_ enum
 	 * @param Linker|null $linker
 	 *
 	 * @return string

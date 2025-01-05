@@ -24,7 +24,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
@@ -44,7 +44,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	private $postCommitableCallbacks = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $autoCommit = false;
 

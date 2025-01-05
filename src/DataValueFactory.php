@@ -54,7 +54,7 @@ class DataValueFactory {
 	private $defaultOutputFormatters;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $callables = [];
 
@@ -138,7 +138,7 @@ class DataValueFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $featureSet
+	 * @param int $featureSet
 	 */
 	public function setFeatureSet( $featureSet ) {
 		$this->featureSet = $featureSet;
@@ -249,7 +249,7 @@ class DataValueFactory {
 	 * Create a value for a data item.
 	 *
 	 * @param $dataItem DataItem
-	 * @param $property mixed null or SMWDIProperty property object for which this value is made
+	 * @param null $property mixed null or SMWDIProperty property object for which this value is made
 	 * @param $caption mixed user-defined caption, or false if none given
 	 * @param DIWikiPage|null $contextPage
 	 *
@@ -287,7 +287,7 @@ class DataValueFactory {
 	 * @param $property SMWDIProperty property object for which this value is made
 	 * @param $valueString mixed user value string, or false if unknown
 	 * @param $caption mixed user-defined caption, or false if none given
-	 * @param $contextPage SMWDIWikiPage that provides a context for parsing the value string, or null
+	 * @param null $contextPage SMWDIWikiPage that provides a context for parsing the value string, or null
 	 *
 	 * @return DataValue
 	 */

@@ -41,7 +41,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			ValueDescriptionInterpreter::Class,
+			ValueDescriptionInterpreter::class,
 			new ValueDescriptionInterpreter( $this->store, $this->conditionBuilder )
 		);
 	}

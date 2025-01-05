@@ -20,12 +20,12 @@ namespace SMW\Query\Parser;
 class TermParser {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $standard_prefix = [ 'in:', 'phrase:', 'not:', 'has:', 'category:' ];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $cache = [];
 
@@ -39,7 +39,7 @@ class TermParser {
 	 * - Input: `keyword:foo bar`
 	 * - Output: `([[Has keyword::foo bar]] || [[Keyword::foo bar]])`
 	 *
-	 * @var []
+	 * @var
 	 */
 	private $prefix_map = [];
 

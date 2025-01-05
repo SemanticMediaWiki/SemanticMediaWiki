@@ -31,7 +31,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 	private $outputFormatter;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isApiTask = true;
 

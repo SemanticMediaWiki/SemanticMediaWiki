@@ -41,7 +41,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$callback = function ( $type ) use( $database ) {
 			if ( $type === 'mw.db' ) {
 				return $connection;
-			};
+			}
 
 			return $this->elasticClient;
 		};

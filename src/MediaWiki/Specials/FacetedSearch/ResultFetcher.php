@@ -56,7 +56,7 @@ class ResultFetcher {
 	private $queryResult;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $params;
 
@@ -66,22 +66,22 @@ class ResultFetcher {
 	private $format = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $valueFilters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $propertyFilters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $categoryFilters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $errors = [];
 
@@ -151,7 +151,7 @@ class ResultFetcher {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPropertyFilters(): array {
 		return $this->propertyFilters;
@@ -160,7 +160,7 @@ class ResultFetcher {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getCategoryFilters(): array {
 		return $this->categoryFilters;

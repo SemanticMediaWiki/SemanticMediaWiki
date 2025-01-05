@@ -30,7 +30,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $title;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $editProtectionRight = false;
 

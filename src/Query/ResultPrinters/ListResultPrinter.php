@@ -104,7 +104,7 @@ class ListResultPrinter extends ResultPrinter {
 	 * @since 1.9
 	 *
 	 * @param SMWQueryResult $res
-	 * @param integer $outputMode
+	 * @param int $outputMode
 	 *
 	 * @return string
 	 */

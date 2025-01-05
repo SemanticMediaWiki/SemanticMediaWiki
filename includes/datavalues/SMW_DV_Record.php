@@ -296,15 +296,15 @@ class SMWRecordValue extends AbstractMultiValue {
 	protected function makeValueOutputText( $type, SMWDataValue $dataValue, $linker ) {
 		switch ( $type ) {
 			case 0:
-			return $dataValue->getShortWikiText( $linker );
+				return $dataValue->getShortWikiText( $linker );
 			case 1:
-			return $dataValue->getShortHTMLText( $linker );
+				return $dataValue->getShortHTMLText( $linker );
 			case 2:
-			return $dataValue->getShortWikiText( $linker );
+				return $dataValue->getShortWikiText( $linker );
 			case 3:
-			return $dataValue->getShortHTMLText( $linker );
+				return $dataValue->getShortHTMLText( $linker );
 			case 4:
-			return str_replace( ";", "\;", $dataValue->getWikiValue() );
+				return str_replace( ";", "\;", $dataValue->getWikiValue() );
 		}
 	}
 

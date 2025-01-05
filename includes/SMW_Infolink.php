@@ -49,7 +49,7 @@ class SMWInfolink {
 	/**
 	 * Indicates whether $target is a page name (true) or URL (false).
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $mInternal;
 
@@ -61,12 +61,12 @@ class SMWInfolink {
 	protected $mParams;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRestricted = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCompactLink = false;
 
@@ -431,7 +431,7 @@ class SMWInfolink {
 	 * @return Linker
 	 */
 	protected function getLinker( &$linker = null ) {
-		if ( is_null( $linker ) ) {
+		if ( $linker === null ) {
 			$linker = new Linker;
 		}
 		return $linker;

@@ -23,7 +23,7 @@ class FieldList {
 	const CATEGORY_LIST = 'list/category';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $countMaps = [];
 

@@ -25,7 +25,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	const ENFORCED_PARENTTYPE_INHERITANCE = 'mandatorytype.propertyannotator.subproperty.parent.type.inheritance';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $subpropertyParentTypeInheritance = false;
 

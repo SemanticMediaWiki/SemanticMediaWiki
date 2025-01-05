@@ -14,12 +14,12 @@ use SMW\Utils\HtmlDivTable;
 class SummaryTable {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $attributes = [];
 
@@ -45,7 +45,7 @@ class SummaryTable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public static function getModuleStyles() {
 		return [ 'ext.smw.styles', 'smw.summarytable' ];
@@ -63,7 +63,7 @@ class SummaryTable {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $ColumnThreshold
+	 * @param int $ColumnThreshold
 	 */
 	public function setColumnThreshold( $columnThreshold ) {
 		$this->columnThreshold = $columnThreshold;

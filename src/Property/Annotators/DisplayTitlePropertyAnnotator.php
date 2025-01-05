@@ -23,7 +23,7 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $defaultSort;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $canCreateAnnotation = true;
 

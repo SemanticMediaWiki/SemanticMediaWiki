@@ -22,7 +22,7 @@ class NonNegativeIntegerConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'non_negative_integer';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 

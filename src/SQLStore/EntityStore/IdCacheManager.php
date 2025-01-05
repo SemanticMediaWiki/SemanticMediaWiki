@@ -22,7 +22,7 @@ class IdCacheManager {
 	const REDIRECT_TARGET = 'redirect.target.lookup';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $caches;
 
@@ -96,10 +96,10 @@ class IdCacheManager {
 	 * @since 3.0
 	 *
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobject
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $sortkey
 	 */
 	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
@@ -134,7 +134,7 @@ class IdCacheManager {
 	 * @since 3.0
 	 *
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobject
 	 */
@@ -184,7 +184,7 @@ class IdCacheManager {
 	 *
 	 * @param DIWikiPage|array $args
 	 *
-	 * @return integer|boolean
+	 * @return int|bool
 	 */
 	public function getId( $args ) {
 		if ( $args instanceof DIWikiPage ) {
@@ -215,7 +215,7 @@ class IdCacheManager {
 	 * @since 3.0
 	 *
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobject
 	 *

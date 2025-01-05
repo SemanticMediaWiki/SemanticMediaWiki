@@ -66,7 +66,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * Convenience method that returns a constant that defines the concrete
 	 * class that implements this data item. Used to switch when processing
 	 * data items.
-	 * @return integer that specifies the basic type of data item
+	 * @return int that specifies the basic type of data item
 	 */
 	abstract public function getDIType();
 
@@ -161,7 +161,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * Create a data item of the given dataitem ID based on the the
 	 * provided serialization string and (optional) typeid.
 	 *
-	 * @param integer $diType dataitem ID
+	 * @param int $diType dataitem ID
 	 * @param string $serialization
 	 *
 	 * @return SMWDataItem
@@ -174,7 +174,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	/**
 	 * Gets the class name of the data item that has the provided type id.
 	 *
-	 * @param integer $diType Element of the SMWDataItem::TYPE_ enum
+	 * @param int $diType Element of the SMWDataItem::TYPE_ enum
 	 *
 	 * @throws InvalidArgumentException
 	 *
@@ -204,7 +204,8 @@ abstract class SMWDataItem implements JsonUnserializable {
 				return SMWDIProperty::class;
 			case self::TYPE_ERROR:
 				return SMWDIError::class;
-			case self::TYPE_NOTYPE: default:
+			case self::TYPE_NOTYPE:
+			default:
 				throw new InvalidArgumentException( "The value \"$diType\" is not a valid dataitem ID." );
 		}
 	}

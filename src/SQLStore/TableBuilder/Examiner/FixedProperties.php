@@ -22,12 +22,12 @@ class FixedProperties {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $fixedProperties = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $properties = [];
 

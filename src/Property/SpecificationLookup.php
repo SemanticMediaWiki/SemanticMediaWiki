@@ -49,7 +49,7 @@ class SpecificationLookup {
 	private $languageCode = 'en';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $skipCache = false;
 
@@ -428,7 +428,7 @@ class SpecificationLookup {
 	 * @param DIProperty|DIWikiPage $source
 	 * @param DIProperty $target
 	 *
-	 * @return []|DataItem[]
+	 * @return ]|DataItem[
 	 */
 	public function getSpecification( $source, DIProperty $target ) {
 		if ( $source instanceof DIProperty ) {
@@ -634,7 +634,7 @@ class SpecificationLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return integer|false
+	 * @return int|false
 	 */
 	public function getDisplayPrecision( DIProperty $property ) {
 		$displayPrecision = false;

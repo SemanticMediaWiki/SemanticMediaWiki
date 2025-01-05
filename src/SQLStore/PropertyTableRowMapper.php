@@ -36,7 +36,7 @@ class PropertyTableRowMapper {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param SemanticData $semanticData
 	 *
 	 * @return ChangeOp
@@ -81,7 +81,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param SemanticData $semanticData
 	 *
 	 * @return array
@@ -128,7 +128,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param SemanticData $semanticData
 	 *
 	 * @return array
@@ -268,8 +268,8 @@ class PropertyTableRowMapper {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $sid
-	 * @param &array $insertData
+	 * @param int $sid
+	 * @param &array &$insertData
 	 */
 	private function mapConceptTable( $sid, &$insertData ) {
 		$connection = $this->store->getConnection( 'mw.db' );

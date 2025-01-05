@@ -259,7 +259,7 @@ class EntityValidator {
 	 *
 	 * @param $row
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function findDuplicates( $row ) {
 		$connection = $this->store->getConnection( 'mw.db' );

@@ -55,7 +55,7 @@ class RecurringEvents {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $defaultNumRecurringEvents
+	 * @param int $defaultNumRecurringEvents
 	 */
 	public function setDefaultNumRecurringEvents( $defaultNumRecurringEvents ) {
 		$this->defaultNumRecurringEvents = $defaultNumRecurringEvents;
@@ -64,7 +64,7 @@ class RecurringEvents {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $maxNumRecurringEvents
+	 * @param int $maxNumRecurringEvents
 	 */
 	public function setMaxNumRecurringEvents( $maxNumRecurringEvents ) {
 		$this->maxNumRecurringEvents = $maxNumRecurringEvents;
@@ -130,7 +130,7 @@ class RecurringEvents {
 	 * SMWTimeValue.
 	 */
 	public function getJulianDay( $dateDataValue ) {
-		if ( is_null( $dateDataValue ) ) {
+		if ( $dateDataValue === null ) {
 			return null;
 		}
 		$dateDataItem = $dateDataValue->getDataItem();
@@ -218,7 +218,7 @@ class RecurringEvents {
 		}
 
 		// Check property
-		if ( is_null( $this->property ) ) {
+		if ( $this->property === null ) {
 			$this->errors[] = Message::get( 'smw-events-property-missing' );
 			return;
 		}
@@ -231,12 +231,12 @@ class RecurringEvents {
 		}
 
 		// If the period is null, or outside of normal bounds, set it to 1.
-		if ( is_null( $period ) || $period < 1 || $period > 500 ) {
+		if ( $period === null || $period < 1 || $period > 500 ) {
 			$period = 1;
 		}
 
 		// Handle 'week number', but only if it's of unit 'month'.
-		if ( $unit == 'month' && !is_null( $week_num ) ) {
+		if ( $unit == 'month' && $week_num !== null ) {
 			$unit = 'dayofweekinmonth';
 
 			if ( $week_num < -4 || $week_num > 5 || $week_num == 0 ) {
@@ -244,7 +244,7 @@ class RecurringEvents {
 			}
 		}
 
-		if ( $unit == 'dayofweekinmonth' && is_null( $week_num ) ) {
+		if ( $unit == 'dayofweekinmonth' && $week_num === null ) {
 			$week_num = ceil( $start_date->getDay() / 7 );
 		}
 
@@ -348,7 +348,7 @@ class RecurringEvents {
 			}
 
 			// should we stop?
-			if ( is_null( $end_date ) ) {
+			if ( $end_date === null ) {
 				$reached_end_date = $i > $this->defaultNumRecurringEvents;
 			} else {
 				$reached_end_date = ( $cur_date_jd > $end_date_jd ) || ( $i > $this->maxNumRecurringEvents );

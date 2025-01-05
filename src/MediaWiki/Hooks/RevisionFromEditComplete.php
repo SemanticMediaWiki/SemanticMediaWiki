@@ -101,7 +101,7 @@ class RevisionFromEditComplete implements HookListener {
 		);
 
 		$context = [
-			'context' => RevisionFromEditComplete::class,
+			'context' => self::class,
 			'title' => $title
 		];
 

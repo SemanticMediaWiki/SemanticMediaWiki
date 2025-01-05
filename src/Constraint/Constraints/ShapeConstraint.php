@@ -26,7 +26,7 @@ class ShapeConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'shape_constraint';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 

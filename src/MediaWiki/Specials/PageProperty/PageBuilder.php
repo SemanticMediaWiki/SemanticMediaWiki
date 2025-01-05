@@ -49,7 +49,7 @@ class PageBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $count
+	 * @param int $count
 	 *
 	 * @return string
 	 */

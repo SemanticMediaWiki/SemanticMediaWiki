@@ -27,12 +27,12 @@ class CsvFileIterator implements Iterator, Countable {
 	private $handle;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $parseHeader;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $header = [];
 
@@ -52,7 +52,7 @@ class CsvFileIterator implements Iterator, Countable {
 	private $key = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $count = false;
 
@@ -62,7 +62,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 * @param string $file
 	 * @param boolean $parseHeader
 	 * @param string $delimiter
-	 * @param integer $length
+	 * @param int $length
 	 */
 	public function __construct( $file, $parseHeader = false, $delimiter = ",", $length = 8000 ) {
 		try {
@@ -106,7 +106,7 @@ class CsvFileIterator implements Iterator, Countable {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getHeader() {
 		return $this->header;

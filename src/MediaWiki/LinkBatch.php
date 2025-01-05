@@ -22,12 +22,12 @@ class LinkBatch {
 	private static $instance;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $log = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $batch = [];
 

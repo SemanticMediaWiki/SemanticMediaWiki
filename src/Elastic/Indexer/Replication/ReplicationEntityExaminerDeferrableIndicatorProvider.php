@@ -37,17 +37,17 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	private $replicationCheck;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicators = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $checkReplication = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isDeferredMode = false;
 
@@ -137,7 +137,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getIndicators() {
 		return $this->indicators;
@@ -146,7 +146,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return [];

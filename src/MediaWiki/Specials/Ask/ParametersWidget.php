@@ -21,7 +21,7 @@ use Title;
 class ParametersWidget {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $isTooltipDisplay = false;
 
@@ -42,7 +42,7 @@ class ParametersWidget {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $defaultLimit
+	 * @param int $defaultLimit
 	 */
 	public static function setDefaultLimit( $defaultLimit ) {
 		self::$defaultLimit = $defaultLimit;

@@ -147,7 +147,7 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function getPendingJobsCount( DIWikiPage $subject ) {
 		$applicationFactory = ApplicationFactory::getInstance();

@@ -79,4 +79,3 @@ class RangeValueFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

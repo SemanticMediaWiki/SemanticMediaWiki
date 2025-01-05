@@ -33,7 +33,7 @@ class SubSemanticData implements JsonUnserializable {
 	 * @note This setting is merely for optimization. The SMW data model
 	 * never cares about the multiplicity of identical data assignments.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $noDuplicates;
 

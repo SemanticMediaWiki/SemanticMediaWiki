@@ -45,12 +45,12 @@ class QueryDependencyLinksStore {
 	private $namespaceExaminer;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEnabled = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
@@ -216,9 +216,9 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer|array $id
+	 * @param int|array $id
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function countDependencies( $id ) {
 		$count = 0;

@@ -13,7 +13,7 @@ use SMW\Constraint\Constraint;
 abstract class DeferrableConstraint implements Constraint {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 

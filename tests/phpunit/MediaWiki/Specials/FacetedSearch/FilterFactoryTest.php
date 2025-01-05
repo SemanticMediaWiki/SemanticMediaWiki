@@ -46,4 +46,3 @@ class FilterFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

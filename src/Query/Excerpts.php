@@ -15,22 +15,22 @@ use SMW\DIWikiPage;
 class Excerpts {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $excerpts = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $noHighlight = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $hasHighlight = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $stripTags = true;
 
@@ -48,7 +48,7 @@ class Excerpts {
 	 * @since 3.0
 	 *
 	 * @param DIWikiPage|string $hash
-	 * @param string|integer $score
+	 * @param string|int $score
 	 */
 	public function addExcerpt( $hash, $excerpt ) {
 		if ( $hash instanceof DIWikiPage ) {
@@ -63,7 +63,7 @@ class Excerpts {
 	 *
 	 * @param DIWikiPage|string $hash
 	 *
-	 * @return string|integer|false
+	 * @return string|int|false
 	 */
 	public function getExcerpt( $hash ) {
 		if ( $hash instanceof DIWikiPage ) {
@@ -82,7 +82,7 @@ class Excerpts {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getExcerpts() {
 		return $this->excerpts;

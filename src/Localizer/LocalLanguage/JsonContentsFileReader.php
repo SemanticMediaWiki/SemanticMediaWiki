@@ -31,7 +31,7 @@ class JsonContentsFileReader {
 	private $cache;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $skipCache = false;
 
@@ -76,7 +76,7 @@ class JsonContentsFileReader {
 	/**
 	 * @since 1.2.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getFileModificationTime( $languageCode ) {
 		return filemtime( $this->getLanguageFile( $languageCode ) );

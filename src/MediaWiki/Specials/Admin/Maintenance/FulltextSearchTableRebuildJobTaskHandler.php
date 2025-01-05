@@ -31,7 +31,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 	private $outputFormatter;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isApiTask = true;
 

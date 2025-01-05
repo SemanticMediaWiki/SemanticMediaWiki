@@ -71,7 +71,7 @@ class JsonFileReader {
 	/**
 	 * @since 2.1
 	 *
-	 * @return integer
+	 * @return int
 	 * @throws RuntimeException
 	 */
 	public function getModificationTime() {

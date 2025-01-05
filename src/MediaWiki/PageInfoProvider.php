@@ -69,7 +69,7 @@ class PageInfoProvider implements PageInfo {
 	/**
 	 * @since 1.9
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getModificationDate() {
 		return $this->wikiPage->getTimestamp();
@@ -81,7 +81,7 @@ class PageInfoProvider implements PageInfo {
 	 *
 	 * @since 1.9
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getCreationDate() {
 		return $this->revisionLookup->getFirstRevision(

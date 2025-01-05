@@ -106,11 +106,11 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 		$callback = static function ( $type ) use( $connection, $database, $client ) {
 			if ( $type === 'elastic' ) {
 				return $client;
-			};
+			}
 
 			if ( $type === 'mw.db' ) {
 				return $connection;
-			};
+			}
 
 			return $database;
 		};
@@ -182,11 +182,11 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 		$callback = static function ( $type ) use( $connection, $database, $client ) {
 			if ( $type === 'elastic' ) {
 				return $client;
-			};
+			}
 
 			if ( $type === 'mw.db' ) {
 				return $connection;
-			};
+			}
 
 			return $database;
 		};
@@ -298,7 +298,7 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 		$callback = static function ( $type ) use( $connection, $client ) {
 			if ( $type === 'mw.db' ) {
 				return $connection;
-			};
+			}
 
 			return $client;
 		};

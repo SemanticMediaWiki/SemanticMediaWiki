@@ -22,7 +22,7 @@ class MustExistsConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'must_exists';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 

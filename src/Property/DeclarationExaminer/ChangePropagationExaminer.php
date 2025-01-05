@@ -27,12 +27,12 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	private $semanticData;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isLocked = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $changePropagationProtection = true;
 
@@ -41,7 +41,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 *
 	 * @param DeclarationExaminer $DeclarationExaminer
 	 * @param Store $store
-	 * @param SemanticData $semanticData
+	 * @param SemanticData|null $semanticData
 	 */
 	public function __construct( IDeclarationExaminer $declarationExaminer, Store $store, ?SemanticData $semanticData = null ) {
 		$this->declarationExaminer = $declarationExaminer;

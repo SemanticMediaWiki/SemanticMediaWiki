@@ -13,7 +13,7 @@ abstract class Lookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @return string|integer
+	 * @return string|int
 	 */
 	abstract public function getVersion();
 

@@ -32,7 +32,7 @@ class AutoRecovery {
 	private $file;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $enabled = false;
 
@@ -87,7 +87,7 @@ class AutoRecovery {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $safeMargin
+	 * @param int $safeMargin
 	 */
 	public function safeMargin( $safeMargin ) {
 		$this->safeMargin = $safeMargin;

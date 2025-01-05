@@ -24,7 +24,7 @@ class SemanticDataValidator extends \PHPUnit\Framework\Assert {
 	use PHPUnitCompat;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $strictModeForValueMatch = true;
 
@@ -99,7 +99,7 @@ class SemanticDataValidator extends \PHPUnit\Framework\Assert {
 	/**
 	 * @since 1.9.1
 	 *
-	 * @param integer $count
+	 * @param int $count
 	 * @param SemanticData $semanticData
 	 * @param string|null $msg
 	 */
@@ -277,8 +277,8 @@ class SemanticDataValidator extends \PHPUnit\Framework\Assert {
 	/**
 	 * @since 1.9.1
 	 *
-	 * @param array $expected
-	 * @param DIProperty $property,
+	 * @param array &$expected
+	 * @param DIProperty $property
 	 * @param array $dataItems
 	 */
 	public function assertThatPropertyValuesAreSet( array &$expected, DIProperty $property, array $dataItems ) {

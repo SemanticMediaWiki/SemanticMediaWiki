@@ -79,7 +79,7 @@ class RepositoryResult implements Iterator {
 	/**
 	 * Get the number of rows in the result object.
 	 *
-	 * @return integer number of result rows
+	 * @return int number of result rows
 	 */
 	public function numRows() {
 		return count( $this->data );
@@ -89,7 +89,7 @@ class RepositoryResult implements Iterator {
 	 * Return error code. SMWSparqlResultWrapper::ERROR_NOERROR (0)
 	 * indicates that no error occurred.
 	 *
-	 * @return integer error code
+	 * @return int error code
 	 */
 	public function getErrorCode() {
 		return $this->errorCode;
@@ -147,7 +147,7 @@ class RepositoryResult implements Iterator {
 	 * other cases (including the case that the results do not look at all
 	 * like the result of a SELECT COUNT query).
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getNumericValue() {
 		if ( count( $this->data ) == 1 ) {

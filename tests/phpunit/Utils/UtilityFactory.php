@@ -159,7 +159,7 @@ class UtilityFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $file|null
+	 * @param string|null $file|null
 	 *
 	 * @return JsonFileReader
 	 */
@@ -217,7 +217,7 @@ class UtilityFactory {
 	 * @since 2.5
 	 *
 	 * @param $length
-	 * @param $prefix identify a specific random string during testing
+	 * @param null $prefix identify a specific random string during testing
 	 *
 	 * @return string
 	 */

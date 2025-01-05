@@ -290,13 +290,13 @@ abstract class Serializer {
 				switch ( $typeresource->getQName() ) {
 					case 'owl:Class':
 						$typeflag = SMW_SERIALIZER_DECL_CLASS;
-					break;
+						break;
 					case 'owl:ObjectProperty':
 						$typeflag = SMW_SERIALIZER_DECL_OPROP;
-					break;
+						break;
 					case 'owl:DatatypeProperty':
 						$typeflag = SMW_SERIALIZER_DECL_APROP;
-					break;
+						break;
 					default:
 						$typeflag = 0;
 				}

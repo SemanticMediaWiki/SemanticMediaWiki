@@ -27,7 +27,7 @@ class Flag {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 *
 	 * @return boolean
 	 */
@@ -38,7 +38,7 @@ class Flag {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 *
 	 * @return boolean
 	 */

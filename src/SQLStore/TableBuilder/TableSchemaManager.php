@@ -33,7 +33,7 @@ class TableSchemaManager {
 	private $tables = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $options = [];
 
@@ -97,7 +97,7 @@ class TableSchemaManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $featureFlags
+	 * @param int $featureFlags
 	 */
 	public function setFeatureFlags( $featureFlags ) {
 		$this->featureFlags = $featureFlags;
@@ -106,7 +106,7 @@ class TableSchemaManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
 	 * @return boolean
 	 */

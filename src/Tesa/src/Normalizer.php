@@ -15,7 +15,7 @@ class Normalizer {
 	 *
 	 * @param string $text
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 */
 	public static function applyTransliteration( $text, $flag = Transliterator::DIACRITICS ) {
 		return Transliterator::transliterate( $text, $flag );
@@ -70,7 +70,7 @@ class Normalizer {
 	 * @since 0.1
 	 *
 	 * @param string $text
-	 * @param integer|null $length
+	 * @param int|null $length
 	 *
 	 * @return string
 	 */

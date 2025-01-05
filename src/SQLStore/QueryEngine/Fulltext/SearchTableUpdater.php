@@ -97,8 +97,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $sid
-	 * @param integer $pid
+	 * @param int $sid
+	 * @param int $pid
 	 *
 	 * @return boolean
 	 */
@@ -119,8 +119,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $sid
-	 * @param integer $pid
+	 * @param int $sid
+	 * @param int $pid
 	 *
 	 * @return false|string
 	 */
@@ -145,8 +145,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $sid
-	 * @param integer $pid
+	 * @param int $sid
+	 * @param int $pid
 	 * @param string $text
 	 */
 	public function update( $sid, $pid, $text ) {
@@ -171,8 +171,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $sid
-	 * @param integer $pid
+	 * @param int $sid
+	 * @param int $pid
 	 */
 	public function insert( $sid, $pid ) {
 		$this->connection->insert(
@@ -189,8 +189,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $sid
-	 * @param integer $pid
+	 * @param int $sid
+	 * @param int $pid
 	 */
 	public function delete( $sid, $pid ) {
 		$this->connection->delete(

@@ -61,7 +61,7 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return boolean
 	 */
@@ -79,7 +79,7 @@ class ReplicationStatus {
 	 *
 	 * @param string $id
 	 *
-	 * @return []
+	 * @return
 	 */
 	private function modification_date_associated_revision( $id ) {
 		$params = [
@@ -151,9 +151,9 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getAssociatedRev( $id ) {
 		$params = [

@@ -40,7 +40,7 @@ class SpecialConstraintErrorList extends SpecialPage {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $limit
+	 * @param int $limit
 	 *
 	 * @return string
 	 */

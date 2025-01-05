@@ -25,7 +25,7 @@ class Normalizer {
 	 * @since 3.0
 	 *
 	 * @param string $text
-	 * @param integer|null $length
+	 * @param int|null $length
 	 *
 	 * @return string
 	 */

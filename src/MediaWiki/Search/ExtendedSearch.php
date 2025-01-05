@@ -62,17 +62,17 @@ class ExtendedSearch {
 	private $prefix;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $extraPrefixMap = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $namespaces = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $searchableNamespaces = [];
 
@@ -156,8 +156,8 @@ class ExtendedSearch {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $limit
-	 * @param integer $offset
+	 * @param int $limit
+	 * @param int $offset
 	 */
 	public function setLimitOffset( $limit, $offset = 0 ) {
 		$this->limit = intval( $limit );
@@ -176,7 +176,7 @@ class ExtendedSearch {
 	/**
 	 * @since 3.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLimit() {
 		return $this->limit;
@@ -185,7 +185,7 @@ class ExtendedSearch {
 	/**
 	 * @since 3.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getOffset() {
 		return $this->offset;
@@ -194,7 +194,7 @@ class ExtendedSearch {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getErrors() {
 		return $this->errors;

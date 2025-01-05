@@ -69,7 +69,7 @@ class DataTypeRegistry {
 	private $subTypes = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $browsableTypes = [];
 
@@ -104,7 +104,7 @@ class DataTypeRegistry {
 	];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $callables = [];
 
@@ -168,7 +168,7 @@ class DataTypeRegistry {
 	 *
 	 * @param $typeId string id string for the given type
 	 *
-	 * @return integer data item ID
+	 * @return int data item ID
 	 */
 	public function getDataItemByType( $typeId ) {
 		if ( isset( $this->typeDataItemIds[$typeId] ) ) {
@@ -546,7 +546,7 @@ class DataTypeRegistry {
 	 *
 	 * @param string $typeId
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getCallablesByTypeId( $typeId ) {
 		if ( !isset( $this->callables[$typeId] ) ) {

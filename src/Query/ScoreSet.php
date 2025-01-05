@@ -16,7 +16,7 @@ use SMW\DIWikiPage;
 class ScoreSet {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $scores = [];
 
@@ -33,7 +33,7 @@ class ScoreSet {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|integer $max_score
+	 * @param string|int $max_score
 	 */
 	public function max_score( $max_score ) {
 		$this->max_score = $max_score;
@@ -42,7 +42,7 @@ class ScoreSet {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|integer $min_score
+	 * @param string|int $min_score
 	 */
 	public function min_score( $min_score ) {
 		$this->min_score = $min_score;
@@ -55,7 +55,7 @@ class ScoreSet {
 	 * @since 3.0
 	 *
 	 * @param DIWikiPage|string $hash
-	 * @param string|integer $score
+	 * @param string|int $score
 	 */
 	public function addScore( $hash, $score, $pos = null ) {
 		if ( $hash instanceof DIWikiPage ) {
@@ -74,7 +74,7 @@ class ScoreSet {
 	 *
 	 * @param DIWikiPage|string $hash
 	 *
-	 * @return string|integer|false
+	 * @return string|int|false
 	 */
 	public function getScore( $hash ) {
 		if ( $hash instanceof DIWikiPage ) {
@@ -93,7 +93,7 @@ class ScoreSet {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getScores() {
 		return $this->scores;

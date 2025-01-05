@@ -103,18 +103,21 @@ class SMWWikiPageValue extends SMWDataValue {
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
 		switch ( $typeid ) {
-			case '_wpp': case '__sup':
-					$this->m_fixNamespace = SMW_NS_PROPERTY;
-			break;
-			case '_wpc': case '__suc': case '__sin':
-						$this->m_fixNamespace = NS_CATEGORY;
-			break;
+			case '_wpp':
+			case '__sup':
+				$this->m_fixNamespace = SMW_NS_PROPERTY;
+				break;
+			case '_wpc':
+			case '__suc':
+			case '__sin':
+				$this->m_fixNamespace = NS_CATEGORY;
+				break;
 			case '_wps':
 				$this->m_fixNamespace = SMW_NS_SCHEMA;
-			break;
+				break;
 			case '_wpu':
 				$this->m_fixNamespace = NS_USER;
-			break;
+				break;
 			default: // case '_wpg':
 				$this->m_fixNamespace = NS_MAIN;
 		}
@@ -167,7 +170,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		if ( $value[0] == '#' ) {
-			if ( is_null( $this->m_contextPage ) ) {
+			if ( $this->m_contextPage === null ) {
 				$this->addErrorMsg( [ 'smw-datavalue-wikipage-missing-fragment-context', $value ] );
 				return;
 			} else {
@@ -272,11 +275,11 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * user input, this includes the full value that one would also see in
 	 * MediaWiki.
 	 *
-	 * @param $linked mixed generate links if not null or false
+	 * @param null $linked mixed generate links if not null or false
 	 * @return string
 	 */
 	public function getShortWikiText( $linked = null ) {
-		if ( is_null( $linked ) || $linked === false ||
+		if ( $linked === null || $linked === false ||
 			$this->m_outformat == '-' || !$this->isValid() ||
 			$this->m_caption === '' ) {
 			$text = $this->m_caption !== false ? $this->m_caption : $this->getWikiValue();
@@ -338,7 +341,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * Display the value as in getShortWikiText() but create HTML.
 	 * The only difference is that images are not embedded.
 	 *
-	 * @param Linker $linker mixed the Linker object to use or null if no linking is desired
+	 * @param Linker|null $linker mixed the Linker object to use or null if no linking is desired
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
@@ -347,12 +350,12 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		// init the Title object, may reveal hitherto unnoticed errors:
-		if ( !is_null( $linker ) && $linker !== false &&
+		if ( $linker !== null && $linker !== false &&
 				$this->m_caption !== '' && $this->m_outformat != '-' ) {
 			$this->getTitle();
 		}
 
-		if ( is_null( $linker ) || $linker === false || !$this->isValid() ||
+		if ( $linker === null || $linker === false || !$this->isValid() ||
 				$this->m_outformat == '-' || $this->m_caption === '' ) {
 
 			$caption = $this->m_caption === false ? $this->getWikiValue() : $this->m_caption;
@@ -387,7 +390,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * getShortWikiText() but does not use the caption. Instead, it always
 	 * takes the long display form (wiki value).
 	 *
-	 * @param $linked mixed if true the result will be linked
+	 * @param null $linked mixed if true the result will be linked
 	 * @return string
 	 */
 	public function getLongWikiText( $linked = null ) {
@@ -401,7 +404,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			$noImage = true;
 		}
 
-		if ( is_null( $linked ) || $linked === false || $this->m_outformat == '-' ) {
+		if ( $linked === null || $linked === false || $this->m_outformat == '-' ) {
 			return $this->getWikiValue();
 		} elseif ( Image::isImage( $this->m_dataitem ) && $this->m_dataitem->getInterwiki() === '' && !$noImage ) {
 			// Embed images and other files
@@ -433,7 +436,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * Display the "long" value in HTML. This behaves largely like
 	 * getLongWikiText() but does not embed images.
 	 *
-	 * @param $linker mixed if a Linker is given, the result will be linked
+	 * @param null $linker mixed if a Linker is given, the result will be linked
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
@@ -442,7 +445,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		// init the Title object, may reveal hitherto unnoticed errors:
-		if ( !is_null( $linker ) && ( $this->m_outformat != '-' ) ) {
+		if ( $linker !== null && ( $this->m_outformat != '-' ) ) {
 			$this->getTitle();
 		}
 
@@ -584,7 +587,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	private function getArticleID() {
 		if ( $this->m_id === false ) {
-			$this->m_id = !is_null( $this->getTitle() ) ? $this->m_title->getArticleID() : 0;
+			$this->m_id = $this->getTitle() !== null ? $this->m_title->getArticleID() : 0;
 		}
 
 		return $this->m_id;

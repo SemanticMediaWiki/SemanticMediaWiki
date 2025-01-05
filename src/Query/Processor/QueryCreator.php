@@ -57,7 +57,7 @@ class QueryCreator implements QueryContext {
 	 *
 	 * @param QueryFactory $queryFactory
 	 * @param array|null $defaultNamespaces
-	 * @param integer $defaultLimit
+	 * @param int $defaultLimit
 	 */
 	public function __construct( QueryFactory $queryFactory, $defaultNamespaces = null, $defaultLimit = 50 ) {
 		$this->queryFactory = $queryFactory;
@@ -68,7 +68,7 @@ class QueryCreator implements QueryContext {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $queryFeatures
+	 * @param int $queryFeatures
 	 */
 	public function setQFeatures( $queryFeatures ) {
 		$this->queryFeatures = $queryFeatures;
@@ -77,7 +77,7 @@ class QueryCreator implements QueryContext {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $conceptFeatures
+	 * @param int $conceptFeatures
 	 */
 	public function setQConceptFeatures( $conceptFeatures ) {
 		$this->conceptFeatures = $conceptFeatures;

@@ -47,7 +47,7 @@ class Config extends Options {
 	 */
 	public function isDefaultStore(): bool {
 		$defaultStore = $this->get(
-			Config::DEFAULT_STORE
+			self::DEFAULT_STORE
 		);
 
 		return $defaultStore === ElasticStore::class || $defaultStore === 'SMWElasticStore';

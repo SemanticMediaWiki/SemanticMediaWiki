@@ -114,7 +114,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @since 2.2
 	 *
-	 * @param integer $dataItemId
+	 * @param int $dataItemId
 	 *
 	 * @return string
 	 */

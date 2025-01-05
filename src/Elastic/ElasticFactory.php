@@ -166,7 +166,7 @@ class ElasticFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Store $store
+	 * @param Store|null $store
 	 * @param MessageReporter|null $messageReporter
 	 *
 	 * @return Indexer
@@ -292,7 +292,7 @@ class ElasticFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Store $store
+	 * @param Store|null $store
 	 *
 	 * @return DocumentReplicationExaminer
 	 */
@@ -314,7 +314,7 @@ class ElasticFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Store $store
+	 * @param Store|null $store
 	 *
 	 * @return ReplicationCheck
 	 */

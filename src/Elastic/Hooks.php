@@ -22,7 +22,7 @@ class Hooks {
 	private $elasticFactory;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $handlers = [];
 
@@ -38,7 +38,7 @@ class Hooks {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getHandlers(): array {
 		return [

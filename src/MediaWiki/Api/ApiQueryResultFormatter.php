@@ -19,17 +19,17 @@ use SMWQueryResult;
 class ApiQueryResultFormatter {
 
 	/**
-	 * @var Integer|boolean
+	 * @var int|bool
 	 */
 	protected $continueOffset = false;
 
 	/**
-	 * @var String
+	 * @var string
 	 */
 	protected $type;
 
 	/**
-	 * @var Boolean
+	 * @var bool
 	 */
 	protected $isRawMode = false;
 
@@ -69,7 +69,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getContinueOffset() {
 		return $this->continueOffset;
@@ -201,7 +201,7 @@ class ApiQueryResultFormatter {
 	 * @since 1.9
 	 *
 	 * @param array &$arr
-	 * @param string $tag
+	 * @param string|null $tag
 	 */
 	public function setIndexedTagName( &$arr, $tag = null ) {
 		if ( !$this->isRawMode ) {

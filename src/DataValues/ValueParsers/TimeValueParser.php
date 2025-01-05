@@ -119,13 +119,13 @@ class TimeValueParser implements ValueParser {
 	 * further.
 	 *
 	 * @param $string string input time representation, e.g. "12 May 2007 13:45:23-3:30"
-	 * @param $datecomponents array of strings that might belong to the specification of a date
-	 * @param $calendarmodesl string if model was set in input, otherwise false
-	 * @param $era string '+' or '-' if provided, otherwise false
-	 * @param $hours integer set to a value between 0 and 24
-	 * @param $minutes integer set to a value between 0 and 59
-	 * @param $seconds integer set to a value between 0 and 59, or false if not given
-	 * @param $timeoffset double set to a value for time offset (e.g. 3.5), or false if not given
+	 * @param &$datecomponents array of strings that might belong to the specification of a date
+	 * @param &$calendarmodesl string if model was set in input, otherwise false
+	 * @param &$era string '+' or '-' if provided, otherwise false
+	 * @param &$hours integer set to a value between 0 and 24
+	 * @param &$minutes integer set to a value between 0 and 59
+	 * @param &$seconds integer set to a value between 0 and 59, or false if not given
+	 * @param &$timeoffset double set to a value for time offset (e.g. 3.5), or false if not given
 	 *
 	 * @return boolean stating if the parsing succeeded
 	 */
@@ -274,10 +274,10 @@ class TimeValueParser implements ValueParser {
 	 * false and does not set any values.
 	 *
 	 * @param $string string input time representation, e.g. "13:45:23-3:30"
-	 * @param $hours integer between 0 and 24
-	 * @param $minutes integer between 0 and 59
-	 * @param $seconds integer between 0 and 59, or false if not given
-	 * @param $timeoffset double for time offset (e.g. 3.5), or false if not given
+	 * @param &$hours integer between 0 and 24
+	 * @param &$minutes integer between 0 and 59
+	 * @param &$seconds integer between 0 and 59, or false if not given
+	 * @param &$timeoffset double for time offset (e.g. 3.5), or false if not given
 	 *
 	 * @return boolean stating if the parsing succeeded
 	 */
@@ -321,9 +321,9 @@ class TimeValueParser implements ValueParser {
 	 * false and does not set any values.
 	 *
 	 * @param $string string input time representation, e.g. "134523"
-	 * @param $hours integer between 0 and 24
-	 * @param $minutes integer between 0 and 59
-	 * @param $seconds integer between 0 and 59, or false if not given
+	 * @param &$hours integer between 0 and 24
+	 * @param &$minutes integer between 0 and 59
+	 * @param &$seconds integer between 0 and 59, or false if not given
 	 *
 	 * @return boolean stating if the parsing succeeded
 	 */
@@ -353,7 +353,7 @@ class TimeValueParser implements ValueParser {
 	 * returned. Otherwise, false is returned and $monthname is not changed.
 	 *
 	 * @param $string string month name or abbreviation to parse
-	 * @param $monthname string with standard 3-letter English month abbreviation
+	 * @param &$monthname string with standard 3-letter English month abbreviation
 	 *
 	 * @return boolean stating whether a month was found
 	 */

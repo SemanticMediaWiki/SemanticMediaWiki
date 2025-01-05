@@ -47,7 +47,7 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param array $data
 	 * @param string $type
 	 */
@@ -60,7 +60,7 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getId() {
 		return $this->id;
@@ -98,7 +98,7 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPriorityDeleteList() {
 		return $this->priorityDeleteList;
@@ -146,7 +146,7 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return boolean
 	 */
@@ -157,7 +157,7 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return Document
 	 */
@@ -177,7 +177,7 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function toArray() {
 		return [

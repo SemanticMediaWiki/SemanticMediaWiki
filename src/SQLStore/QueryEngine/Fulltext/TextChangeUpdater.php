@@ -38,17 +38,17 @@ class TextChangeUpdater {
 	private $searchTableUpdater;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $asDeferredUpdate = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isPrimary = false;
 
@@ -182,7 +182,7 @@ class TextChangeUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param ChangeOp $changeOp
+	 * @param ChangeOp|null $changeOp
 	 */
 	public function doUpdateFromChangeDiff( ?ChangeDiff $changeDiff = null ) {
 		if ( !$this->searchTableUpdater->isEnabled() || $changeDiff === null ) {

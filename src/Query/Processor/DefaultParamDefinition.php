@@ -22,7 +22,7 @@ class DefaultParamDefinition {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer|null $context
+	 * @param int|null $context
 	 * @param ResultPrinter|null $resultPrinter
 	 *
 	 * @return ParamDefinition[]
@@ -44,7 +44,7 @@ class DefaultParamDefinition {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer|null $context
+	 * @param int|null $context
 	 * @param ResultPrinter|null $resultPrinter
 	 *
 	 * @return ParamDefinition[]

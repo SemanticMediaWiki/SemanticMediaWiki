@@ -151,7 +151,7 @@ abstract class SMWDataValue {
 	/**
 	 * Boolean indicating if there where any errors.
 	 * Should be modified accordingly when modifying $mErrors.
-	 * @var boolean
+	 * @var bool
 	 */
 	private $mHasErrors = false;
 
@@ -186,7 +186,7 @@ abstract class SMWDataValue {
 	private $descriptionBuilderRegistry;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $callables = [];
 
@@ -430,7 +430,7 @@ abstract class SMWDataValue {
 	 * @since 2.4
 	 *
 	 * @param array|string|ProcessingError $error
-	 * @param integer|null $type
+	 * @param int|null $type
 	 */
 	public function addErrorMsg( $error, $type = Message::TEXT ) {
 		if ( $error instanceof ProcessingError ) {
@@ -690,7 +690,7 @@ abstract class SMWDataValue {
 	 * Return text serialisation of info links. Ensures more uniform layout
 	 * throughout wiki (Factbox, Property pages, ...).
 	 *
-	 * @param integer $outputFormat Element of the SMW_OUTPUT_ enum
+	 * @param int $outputFormat Element of the SMW_OUTPUT_ enum
 	 * @param Linker|null|bool $linker
 	 *
 	 * @return string
@@ -893,7 +893,7 @@ abstract class SMWDataValue {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
 	 * @return boolean
 	 */

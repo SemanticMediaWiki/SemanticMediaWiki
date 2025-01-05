@@ -147,7 +147,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	protected $recursiveTextProcessor;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $recursiveAnnotation = false;
 
@@ -156,7 +156,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * are not tranclucded (imported) into the target page when resolving a
 	 * query.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $transcludeAnnotation = true;
 
@@ -209,7 +209,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
 	 * @return boolean
 	 */
@@ -258,7 +258,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return string
 	 */
-	public final function getResult( QueryResult $results, array $fullParams, $outputMode ) {
+	final public function getResult( QueryResult $results, array $fullParams, $outputMode ) {
 		$this->outputMode = $outputMode;
 		$this->results = $results;
 
@@ -350,7 +350,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param string $result
 	 * @param QueryResult $results
-	 * @param integer $outputmode
+	 * @param int $outputmode
 	 *
 	 * @return string
 	 */
@@ -447,9 +447,10 @@ abstract class ResultPrinter implements IResultPrinter {
 		$link = isset( $params['link'] ) ? $params['link'] : '';
 
 		switch ( $link ) {
-			case 'head': case 'subject':
-					$this->mLinkFirst = true;
-					$this->mLinkOthers = false;
+			case 'head':
+			case 'subject':
+				$this->mLinkFirst = true;
+				$this->mLinkOthers = false;
 				break;
 			case 'all':
 				$this->mLinkFirst = true;
@@ -545,7 +546,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param $context
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryMode( $context ) {
 		// TODO: Now that we are using RequestContext object maybe

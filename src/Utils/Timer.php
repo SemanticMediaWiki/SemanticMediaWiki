@@ -28,8 +28,8 @@ class Timer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $outputType
-	 * @param integer $ts
+	 * @param int $outputType
+	 * @param int $ts
 	 *
 	 * @return string|bool
 	 */
@@ -73,9 +73,9 @@ class Timer {
 	 * @since 2.5
 	 *
 	 * @param string $name
-	 * @param integer|null $round
+	 * @param int|null $round
 	 *
-	 * @return float|integer
+	 * @return float|int
 	 */
 	public static function getElapsedTime( $name, $round = null ) {
 		if ( !isset( self::$start[$name] ) ) {
@@ -95,7 +95,7 @@ class Timer {
 	 * @since 3.0
 	 *
 	 * @param string $name
-	 * @param integer|null $round
+	 * @param int|null $round
 	 *
 	 * @return string
 	 */

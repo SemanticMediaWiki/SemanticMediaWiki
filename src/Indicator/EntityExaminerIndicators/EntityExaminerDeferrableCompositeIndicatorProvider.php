@@ -24,7 +24,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicatorProviders = [];
 
@@ -34,17 +34,17 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	private $permissionExaminer;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicators = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $modules = [ 'smw.entityexaminer' ];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isDeferredMode = false;
 
@@ -116,7 +116,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getIndicators() {
 		return $this->indicators;
@@ -125,7 +125,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return $this->modules;

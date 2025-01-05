@@ -45,22 +45,22 @@ class PageUpdater implements DeferrableUpdate {
 	private $fingerprint = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isHtmlCacheUpdate = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $asPoolPurge = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isPending = false;
 

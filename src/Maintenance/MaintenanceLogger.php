@@ -43,7 +43,7 @@ class MaintenanceLogger {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $maxNameChars
+	 * @param int $maxNameChars
 	 */
 	public function setMaxNameChars( $maxNameChars ) {
 		$this->maxNameChars = $maxNameChars;

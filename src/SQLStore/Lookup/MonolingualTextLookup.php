@@ -31,7 +31,7 @@ class MonolingualTextLookup {
 	private $caller = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $lookupCache = [];
 
@@ -146,7 +146,7 @@ class MonolingualTextLookup {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function newDataValue( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
 		$res = $this->fetchFromTable( $subject, $property, $languageCode );
@@ -194,7 +194,7 @@ class MonolingualTextLookup {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function fetchFromTable( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
 		/**

@@ -62,7 +62,7 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $threshold
+	 * @param int $threshold
 	 *
 	 * @return boolean
 	 */
@@ -98,7 +98,7 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLookupCount() {
 		return $this->lookupCount;
@@ -107,7 +107,7 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getPropertyMaxCount() {
 		$statistics = $this->store->getStatistics();

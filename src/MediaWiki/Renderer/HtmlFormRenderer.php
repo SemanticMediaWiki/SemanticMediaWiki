@@ -51,17 +51,17 @@ class HtmlFormRenderer {
 	private $name = '';
 
 	/**
-	 * @var string|boolean
+	 * @var string|bool
 	 */
 	private $method = false;
 
 	/**
-	 * @var string|boolean
+	 * @var string|bool
 	 */
 	private $useFieldset = false;
 
 	/**
-	 * @var string|boolean
+	 * @var string|bool
 	 */
 	private $actionUrl = false;
 
@@ -293,7 +293,7 @@ class HtmlFormRenderer {
 	 * @param string $name
 	 * @param string $value
 	 * @param string|null $id
-	 * @param integer $length
+	 * @param int $length
 	 * @param array $attributes
 	 *
 	 * @return HtmlFormRenderer
@@ -420,10 +420,10 @@ class HtmlFormRenderer {
 	 * @note Encapsulate as closure to ensure that the build contains all query
 	 * parameters that are necessary to build the paging links
 	 *
-	 * @param integer $limit
-	 * @param integer $offset
-	 * @param integer $count
-	 * @param integer|null $messageCount
+	 * @param int $limit
+	 * @param int $offset
+	 * @param int $count
+	 * @param int|null $messageCount
 	 *
 	 * @return HtmlFormRenderer
 	 */

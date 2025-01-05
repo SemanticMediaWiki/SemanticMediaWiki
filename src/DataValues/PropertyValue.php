@@ -121,7 +121,7 @@ class PropertyValue extends SMWDataValue {
 	 * original object's content.
 	 */
 	public function __clone() {
-		if ( !is_null( $this->m_wikipage ) ) {
+		if ( $this->m_wikipage !== null ) {
 			$this->m_wikipage = clone $this->m_wikipage;
 		}
 	}
@@ -417,7 +417,7 @@ class PropertyValue extends SMWDataValue {
 	 * Outputs a formatted property label that takes into account preferred/
 	 * canonical label characteristics
 	 *
-	 * @param integer|string $format
+	 * @param int|string $format
 	 * @param Linker|null $linker
 	 *
 	 * @return string

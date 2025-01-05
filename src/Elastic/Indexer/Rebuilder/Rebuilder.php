@@ -245,7 +245,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function delete( $id ) {
 		$index = $this->client->getIndexName( ElasticClient::TYPE_DATA );
@@ -269,7 +269,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param SemanticData $semanticData
 	 */
 	public function rebuild( $id, SemanticData $semanticData ) {

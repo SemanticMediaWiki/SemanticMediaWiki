@@ -35,14 +35,14 @@ class HtmlBuilder {
 	private $subject;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showoutgoing = true;
 
 	/**
 	 * To display incoming values?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showincoming = false;
 

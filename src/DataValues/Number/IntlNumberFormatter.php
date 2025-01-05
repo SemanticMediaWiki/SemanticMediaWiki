@@ -58,7 +58,7 @@ class IntlNumberFormatter {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $maxNonExpNumber
+	 * @param int $maxNonExpNumber
 	 */
 	public function __construct( $maxNonExpNumber ) {
 		$this->maxNonExpNumber = $maxNonExpNumber;
@@ -113,8 +113,8 @@ class IntlNumberFormatter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $type
-	 * @param string|integer $locale
+	 * @param int $type
+	 * @param string|int $locale
 	 *
 	 * @return string
 	 */
@@ -138,9 +138,9 @@ class IntlNumberFormatter {
 	 * to format a number that was not hand-formatted by a user.
 	 *
 	 * @param mixed $value input number
-	 * @param integer|false $precision optional positive integer, controls how many digits after
+	 * @param int|false $precision optional positive integer, controls how many digits after
 	 * the decimal point are shown
-	 * @param string|integer $format
+	 * @param string|int $format
 	 *
 	 * @since 2.1
 	 *
@@ -163,7 +163,7 @@ class IntlNumberFormatter {
 	 * precision settings, with some intelligence to produce readable output. Used
 	 * to format a number that was not hand-formatted by a user.
 	 *
-	 * @param integer|false $precision optional positive integer, controls how many digits after
+	 * @param int|false $precision optional positive integer, controls how many digits after
 	 * the decimal point are shown
 	 */
 	private function doFormatByHeuristicRuleWith( $value, $precision = false ): string {

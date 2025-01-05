@@ -220,5 +220,5 @@ class dumpRDF extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = dumpRDF::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

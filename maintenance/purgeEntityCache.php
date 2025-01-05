@@ -238,5 +238,5 @@ class purgeEntityCache extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = purgeEntityCache::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

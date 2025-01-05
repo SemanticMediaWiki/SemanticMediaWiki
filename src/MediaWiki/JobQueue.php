@@ -22,7 +22,7 @@ class JobQueue {
 	private $jobQueueGroup;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $disableCache = false;
 
@@ -60,7 +60,7 @@ class JobQueue {
 	 *
 	 * @param array $list
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function runFromQueue( array $list ) {
 		$log = [];
@@ -164,7 +164,7 @@ class JobQueue {
 	 *
 	 * @param string $type
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueueSize( $type ) {
 		$jobQueue = $this->jobQueueGroup->get( $this->mapLegacyType( $type ) );

@@ -97,7 +97,7 @@ class QueryResultFactory {
 			if ( count( $resultRow ) > 0 && $resultRow[0] instanceof ExpElement ) {
 				$dataItem = Exporter::getInstance()->findDataItemForExpElement( $resultRow[0] );
 
-				if ( !is_null( $dataItem ) ) {
+				if ( $dataItem !== null ) {
 					$resultDataItems[] = $dataItem;
 				}
 			}
@@ -122,13 +122,13 @@ class QueryResultFactory {
 
 		switch ( $repositoryResult->getErrorCode() ) {
 			case RepositoryResult::ERROR_NOERROR:
-			break;
+				break;
 			case RepositoryResult::ERROR_INCOMPLETE:
 				$result->addErrors( [ wfMessage( 'smw_db_sparqlqueryincomplete' )->inContentLanguage()->text() ] );
-			break;
+				break;
 			default:
 				$result->addErrors( [ wfMessage( 'smw_db_sparqlqueryproblem' )->inContentLanguage()->text() ] );
-			break;
+				break;
 		}
 
 		return $result;

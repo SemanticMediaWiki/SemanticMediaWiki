@@ -72,7 +72,7 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	private $httpRequest;
 
 	/**
-	 * @var boolean|integer
+	 * @var bool|int
 	 */
 	private $httpVersion = false;
 
@@ -130,7 +130,7 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	/**
 	 * @since 2.3
 	 *
-	 * @return integer $httpVersion
+	 * @return int $httpVersion
 	 */
 	public function setHttpVersionTo( $httpVersion ) {
 		$this->httpVersion = $httpVersion;
@@ -139,7 +139,7 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	/**
 	 * @since 3.2
 	 *
-	 * @return integer $featureSet
+	 * @return int $featureSet
 	 */
 	public function setFeatureSet( int $featureSet ) {
 		$this->featureSet = $featureSet;

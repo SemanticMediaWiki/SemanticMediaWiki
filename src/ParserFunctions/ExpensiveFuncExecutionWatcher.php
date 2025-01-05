@@ -31,7 +31,7 @@ class ExpensiveFuncExecutionWatcher {
 	private $expensiveThreshold = 10;
 
 	/**
-	 * @var integer|boolean
+	 * @var int|bool
 	 */
 	private $expensiveExecutionLimit = false;
 
@@ -47,7 +47,7 @@ class ExpensiveFuncExecutionWatcher {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $expensiveThreshold
+	 * @param int $expensiveThreshold
 	 */
 	public function setExpensiveThreshold( $expensiveThreshold ) {
 		$this->expensiveThreshold = $expensiveThreshold;
@@ -56,7 +56,7 @@ class ExpensiveFuncExecutionWatcher {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer|boolean $expensiveExecutionLimit
+	 * @param int|bool $expensiveExecutionLimit
 	 */
 	public function setExpensiveExecutionLimit( $expensiveExecutionLimit ) {
 		$this->expensiveExecutionLimit = $expensiveExecutionLimit;

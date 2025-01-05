@@ -59,12 +59,12 @@ class FileIndexer {
 	private $origin = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $sha1Check = true;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $versions = [];
 

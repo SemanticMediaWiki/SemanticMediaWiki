@@ -30,12 +30,12 @@ class LinksUpdateComplete implements HookListener {
 	private $namespaceExaminer;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $enabledDeferredUpdate = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isReady = true;
 

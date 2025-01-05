@@ -36,7 +36,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $version
+	 * @param int $version
 	 */
 	public function version( $version ) {
 		self::$version = (int)$version;
@@ -79,7 +79,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 	public static function getSerialization( DataItem $dataItem, $printRequest = null ) {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_WIKIPAGE:
-
 				// Support for a deserializable _rec type with 0.6
 				if ( $printRequest !== null && strpos( $printRequest->getTypeID(), '_rec' ) !== false ) {
 					$recordValue = DataValueFactory::getInstance()->newDataValueByItem(

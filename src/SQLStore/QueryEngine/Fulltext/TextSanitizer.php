@@ -72,7 +72,7 @@ class TextSanitizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $minTokenSize
+	 * @param int $minTokenSize
 	 */
 	public function setMinTokenSize( $minTokenSize ) {
 		$this->minTokenSize = $minTokenSize;

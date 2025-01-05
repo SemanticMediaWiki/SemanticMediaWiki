@@ -41,7 +41,7 @@ class JsonImportContentsFileDirReader {
 	private $errors = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $importFileDirs = [];
 

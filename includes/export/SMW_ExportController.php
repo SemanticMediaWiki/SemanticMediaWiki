@@ -138,7 +138,7 @@ class SMWExportController {
 	 * serialisation without limit.
 	 *
 	 * @param SMWDIWikiPage $diWikiPage specifying the page to be exported
-	 * @param integer $recursiondepth specifying the depth of recursion
+	 * @param int $recursiondepth specifying the depth of recursion
 	 */
 	protected function serializePage( SMWDIWikiPage $diWikiPage, $recursiondepth = 1 ) {
 		if ( $this->queue->isDone( $diWikiPage, $recursiondepth ) ) {
@@ -231,7 +231,7 @@ class SMWExportController {
 				foreach ( $inprops as $inprop ) {
 					$propWikiPage = $inprop->getCanonicalDiWikiPage();
 
-					if ( !is_null( $propWikiPage ) ) {
+					if ( $propWikiPage !== null ) {
 						$this->queue->add( $propWikiPage, 0 ); // no real recursion along properties
 					}
 
@@ -369,7 +369,7 @@ class SMWExportController {
 	protected function flush( $force = false ) {
 		if ( !$force && ( $this->delay_flush > 0 ) ) {
 			$this->delay_flush -= 1;
-		} elseif ( !is_null( $this->outputfile ) ) {
+		} elseif ( $this->outputfile !== null ) {
 			fwrite( $this->outputfile, $this->serializer->flushContent() );
 		} else {
 			ob_start();
@@ -388,7 +388,7 @@ class SMWExportController {
 	 * names (strings with namespace identifiers).
 	 *
 	 * @param array $pages list of page names to export
-	 * @param integer $recursion determines how pages are exported recursively:
+	 * @param int $recursion determines how pages are exported recursively:
 	 * "0" means that referenced resources are only declared briefly, "1" means
 	 * that all referenced resources are also exported recursively (propbably
 	 * retrieving the whole wiki).
@@ -450,9 +450,9 @@ class SMWExportController {
 	 *
 	 * @param string $outfile the output file URI, or false if printing to stdout
 	 * @param mixed $ns_restriction namespace restriction, see fitsNsRestriction()
-	 * @param integer $delay number of microseconds for which to sleep during
+	 * @param int $delay number of microseconds for which to sleep during
 	 * export to reduce server load in long-running operations
-	 * @param integer $delayeach number of pages to process between two sleeps
+	 * @param int $delayeach number of pages to process between two sleeps
 	 */
 	public function printAllToFile( $outfile, $ns_restriction, $delay, $delayeach ) {
 		if ( !$this->prepareSerialization( $outfile ) ) {
@@ -469,9 +469,9 @@ class SMWExportController {
 	 * @since  2.0
 	 *
 	 * @param mixed $ns_restriction namespace restriction, see fitsNsRestriction()
-	 * @param integer $delay number of microseconds for which to sleep during
+	 * @param int $delay number of microseconds for which to sleep during
 	 * export to reduce server load in long-running operations
-	 * @param integer $delayeach number of pages to process between two sleeps
+	 * @param int $delayeach number of pages to process between two sleeps
 	 */
 	public function printAllToOutput( $ns_restriction, $delay, $delayeach ) {
 		$this->prepareSerialization();
@@ -497,7 +497,7 @@ class SMWExportController {
 
 		for ( $id = 1; $id <= $end; $id += 1 ) {
 			$title = Title::newFromID( $id );
-			if ( is_null( $title ) || !$this->isSemanticEnabled( $title->getNamespace() ) ) {
+			if ( $title === null || !$this->isSemanticEnabled( $title->getNamespace() ) ) {
 				continue;
 			}
 			if ( !self::fitsNsRestriction( $ns_restriction, $title->getNamespace() ) ) {
@@ -543,9 +543,9 @@ class SMWExportController {
 	 * Print basic definitions a list of pages ordered by their page id.
 	 * Offset and limit refer to the count of existing pages, not to the
 	 * page id.
-	 * @param integer $offset the number of the first (existing) page to
+	 * @param int $offset the number of the first (existing) page to
 	 * serialize a declaration for
-	 * @param integer $limit the number of pages to serialize
+	 * @param int $limit the number of pages to serialize
 	 */
 	public function printPageList( $offset = 0, $limit = 30 ) {
 		global $smwgNamespacesWithSemanticLinks;

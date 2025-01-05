@@ -47,7 +47,7 @@ class Tokenizer {
 	 * $consume specifies whether the returned chunk should be removed from the
 	 * query string.
 	 *
-	 * @param string $currentString
+	 * @param string &$currentString
 	 * @param string $stoppattern
 	 * @param boolean $consume
 	 * @param boolean $trim

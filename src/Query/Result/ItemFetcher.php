@@ -47,7 +47,7 @@ class ItemFetcher {
 	private $dataItems = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $prefetch = true;
 

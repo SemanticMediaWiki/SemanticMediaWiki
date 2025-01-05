@@ -17,7 +17,7 @@ class MediaWikiNsContentReader {
 	use RevisionGuardAwareTrait;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $skipMessageCache = false;
 

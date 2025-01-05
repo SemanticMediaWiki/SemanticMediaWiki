@@ -40,7 +40,7 @@ class GroupFormatter {
 	private $schemaFinder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showGroup = true;
 

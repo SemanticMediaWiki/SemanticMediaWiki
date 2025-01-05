@@ -55,7 +55,7 @@ class ConstraintSchemaCompiler {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function compileConstraintSchema( DIProperty $property ) {
 		$constraintSchema = [];

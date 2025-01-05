@@ -69,23 +69,31 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$property = $description->getProperty();
 
 		switch ( $description->getComparator() ) {
-			case SMW_CMP_EQ:   $comparator = '=';
-			break;
-			case SMW_CMP_LESS: $comparator = '<';
-			break;
-			case SMW_CMP_GRTR: $comparator = '>';
-			break;
-			case SMW_CMP_LEQ:  $comparator = '<=';
-			break;
-			case SMW_CMP_GEQ:  $comparator = '>=';
-			break;
-			case SMW_CMP_NEQ:  $comparator = '!=';
-			break;
+			case SMW_CMP_EQ:
+				$comparator = '=';
+				break;
+			case SMW_CMP_LESS:
+				$comparator = '<';
+				break;
+			case SMW_CMP_GRTR:
+				$comparator = '>';
+				break;
+			case SMW_CMP_LEQ:
+				$comparator = '<=';
+				break;
+			case SMW_CMP_GEQ:
+				$comparator = '>=';
+				break;
+			case SMW_CMP_NEQ:
+				$comparator = '!=';
+				break;
 			case SMW_CMP_PRIM_LIKE;
-			case SMW_CMP_LIKE: $comparator = 'regex';
+			case SMW_CMP_LIKE:
+				$comparator = 'regex';
 			break;
 			case SMW_CMP_PRIM_NLKE;
-			case SMW_CMP_NLKE: $comparator = '!regex';
+			case SMW_CMP_NLKE:
+				$comparator = '!regex';
 			break;
 			default: $comparator = ''; // unkown, unsupported
 		}
@@ -213,7 +221,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			$expElement = $this->exporter->newExpElement( new DIBlob( $dataItem->getSortKey() ) );
 		} else {
 			$expElement = $this->exporter->newAuxiliaryExpElement( $dataItem );
-			if ( is_null( $expElement ) ) {
+			if ( $expElement === null ) {
 				$expElement = $this->exporter->newExpElement( $dataItem );
 			}
 		}

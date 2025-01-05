@@ -43,7 +43,7 @@ class DependencyValidator {
 	private $eTag;
 
 	/**
-	 * @var array $titles Title IDs marked as having outdated dependencies.
+	 * @var array Title IDs marked as having outdated dependencies.
 	 */
 	private static $titles = [];
 
@@ -63,7 +63,7 @@ class DependencyValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $cacheTTL
+	 * @param int $cacheTTL
 	 */
 	public function setCacheTTL( $cacheTTL ) {
 		$this->cacheTTL = $cacheTTL;
@@ -81,7 +81,7 @@ class DependencyValidator {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function makeCacheKey( Title $title ) {
 		return EntityCache::makeCacheKey( 'parsercacheinvalidator', $title->getPrefixedDBKey() );

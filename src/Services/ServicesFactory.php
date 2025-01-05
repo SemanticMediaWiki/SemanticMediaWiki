@@ -534,7 +534,7 @@ class ServicesFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param callable $callback
+	 * @param callable|null $callback
 	 */
 	public function newDeferredCallableUpdate( ?callable $callback = null ): CallableUpdate {
 		$deferredCallableUpdate = $this->containerBuilder->create(
@@ -560,7 +560,7 @@ class ServicesFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param callable $callback
+	 * @param callable|null $callback
 	 */
 	public function newDeferredTransactionalCallableUpdate( ?callable $callback = null ): DeferredTransactionalCallableUpdate {
 		$deferredTransactionalUpdate = $this->containerBuilder->create(

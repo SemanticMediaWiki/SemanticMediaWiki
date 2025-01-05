@@ -115,7 +115,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @since 1.7
 	 *
-	 * @param array $data
+	 * @param array &$data
 	 */
 	protected function applyDistributionParams( array &$data ) {
 		if ( $this->params['distributionsort'] == 'asc' ) {
@@ -244,7 +244,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * @since 1.7
 	 *
 	 * @param DataItem $dataItem
-	 * @param array $values
+	 * @param array &$values
 	 * @param string $name
 	 */
 	protected function addNumbersForDataItem( DataItem $dataItem, array &$values, $name ) {

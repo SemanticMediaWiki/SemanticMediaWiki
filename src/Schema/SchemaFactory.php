@@ -19,7 +19,7 @@ use SMW\Store;
 class SchemaFactory {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $types = [];
 
@@ -55,7 +55,7 @@ class SchemaFactory {
 	 *
 	 * @param string $type
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getType( $type ) {
 		return $this->getSchemaTypes()->getType( $type );

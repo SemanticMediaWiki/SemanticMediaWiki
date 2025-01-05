@@ -16,12 +16,12 @@ use SMW\Message;
 class SortWidget {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $sortingSupport = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $randSortingSupport = false;
 

@@ -37,7 +37,7 @@ class CircularReferenceGuard {
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer $maxRecursionDepth
+	 * @param int $maxRecursionDepth
 	 */
 	public function setMaxRecursionDepth( $maxRecursionDepth ) {
 		$this->maxRecursionDepth = (int)$maxRecursionDepth;
@@ -85,7 +85,7 @@ class CircularReferenceGuard {
 	 *
 	 * @param string $hash
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get( $hash ) {
 		if ( isset( self::$circularRefGuard[$this->namespace][$hash] ) ) {

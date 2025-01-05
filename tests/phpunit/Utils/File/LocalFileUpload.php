@@ -15,7 +15,7 @@ use UploadBase;
 class LocalFileUpload extends UploadBase {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $removeTemporaryFile = true;
 

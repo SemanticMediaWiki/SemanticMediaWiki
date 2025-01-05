@@ -73,4 +73,3 @@ class CheckboxValueFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

@@ -44,17 +44,17 @@ class HtmlForm {
 	private $callbacks = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEditMode = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isBorrowedMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isPostSubmit = false;
 
@@ -88,7 +88,7 @@ class HtmlForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Query $query
+	 * @param Query|null $query
 	 */
 	public function setQuery( ?Query $query = null ) {
 		$this->query = $query;

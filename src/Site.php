@@ -139,7 +139,7 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public static function stats() {
 		return [

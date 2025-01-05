@@ -31,27 +31,27 @@ class Query {
 	protected $type = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $table = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $fields = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $conditions = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $options = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $joins = [];
 
@@ -66,7 +66,7 @@ class Query {
 	public $index = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $autoCommit = false;
 

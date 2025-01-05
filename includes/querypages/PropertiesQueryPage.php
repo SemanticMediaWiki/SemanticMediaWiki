@@ -120,7 +120,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * @since 1.8
 	 *
 	 * @param DIProperty $property
-	 * @param integer $useCount
+	 * @param int $useCount
 	 * @return string
 	 */
 	protected function formatPropertyItem( DIProperty $property, $useCount ) {
@@ -189,7 +189,7 @@ class PropertiesQueryPage extends QueryPage {
 	 *
 	 * @param Title $title
 	 * @param DIProperty $property
-	 * @param integer $useCount
+	 * @param int $useCount
 	 *
 	 * @return array
 	 */

@@ -20,27 +20,27 @@ class ConstraintCheckRunner {
 	private $constraintRegistry;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $constraintChecks = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $constraints = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $constraintSchemas = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasDeferrableConstraint = false;
 
@@ -101,7 +101,7 @@ class ConstraintCheckRunner {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getConstraints() {
 		return $this->constraints;

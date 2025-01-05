@@ -51,7 +51,7 @@ class ManualEntryLogger {
 	 * @param string $target
 	 * @param string $comment
 	 *
-	 * @return integer|null
+	 * @return int|null
 	 */
 	public function log( $type, $performer, $target, $comment ) {
 		if ( !isset( $this->eventTypes[$type] ) || !$this->eventTypes[$type] ) {

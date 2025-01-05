@@ -44,7 +44,7 @@ class RevisionGuard {
 	 * @since 3.1
 	 *
 	 * @param Title $title
-	 * @param integer &$latestRevID
+	 * @param int|null &$latestRevID
 	 *
 	 * @return boolean
 	 */
@@ -69,7 +69,7 @@ class RevisionGuard {
 	 *
 	 * @param Title $title
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLatestRevID( Title $title ) {
 		$flag = IDBAccessObject::READ_LATEST;

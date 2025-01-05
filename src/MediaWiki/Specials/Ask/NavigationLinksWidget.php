@@ -148,7 +148,7 @@ class NavigationLinksWidget {
 	 *
 	 * @param Title $title
 	 * @param UrlArgs $urlArgs
-	 * @param integer $count
+	 * @param int $count
 	 * @param boolean $hasFurtherResults
 	 *
 	 * @return string

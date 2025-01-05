@@ -49,7 +49,7 @@ class DataItemFactory {
 	 * @since 2.4
 	 *
 	 * @param string|Title $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobjectName
 	 *
@@ -88,7 +88,7 @@ class DataItemFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $number
+	 * @param int $number
 	 *
 	 * @return DINumber
 	 */
@@ -123,9 +123,9 @@ class DataItemFactory {
 	 *
 	 * @param string $concept
 	 * @param string $docu
-	 * @param integer $queryfeatures
-	 * @param integer $size
-	 * @param integer $depth
+	 * @param int $queryfeatures
+	 * @param int $size
+	 * @param int $depth
 	 *
 	 * @return DIConcept
 	 */
@@ -150,14 +150,14 @@ class DataItemFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $calendarmodel
-	 * @param integer $year
-	 * @param integer|false $month
-	 * @param integer|false $day
-	 * @param integer|false $hour
-	 * @param integer|false $minute
-	 * @param integer|false $second
-	 * @param integer|false $timezone
+	 * @param int $calendarmodel
+	 * @param int $year
+	 * @param int|false $month
+	 * @param int|false $day
+	 * @param int|false $hour
+	 * @param int|false $minute
+	 * @param int|false $second
+	 * @param int|false $timezone
 	 *
 	 * @return DITime
 	 */

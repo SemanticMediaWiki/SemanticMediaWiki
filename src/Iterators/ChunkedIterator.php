@@ -30,7 +30,7 @@ class ChunkedIterator extends IteratorIterator {
 	 * @since 3.0
 	 *
 	 * @param Traversable|array $iterator
-	 * @param integer $chunkSize
+	 * @param int $chunkSize
 	 */
 	public function __construct( $iterable, $chunkSize = 500 ) {
 		$chunkSize = (int)$chunkSize;

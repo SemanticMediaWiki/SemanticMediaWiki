@@ -52,7 +52,7 @@ class DocumentCreator {
 	private $store;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $compatibilityMode = true;
 
@@ -85,7 +85,7 @@ class DocumentCreator {
 	/**
 	 * @since 3.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDocumentCreationDuration(): int {
 		return $this->documentCreationDuration;

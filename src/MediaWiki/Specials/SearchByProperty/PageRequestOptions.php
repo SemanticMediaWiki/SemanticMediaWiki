@@ -62,7 +62,7 @@ class PageRequestOptions {
 	public $offset = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $nearbySearch = false;
 

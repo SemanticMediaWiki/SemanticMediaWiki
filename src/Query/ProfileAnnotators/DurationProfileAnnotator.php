@@ -23,7 +23,7 @@ class DurationProfileAnnotator extends ProfileAnnotatorDecorator {
 	 * @since 1.9
 	 *
 	 * @param ProfileAnnotator $profileAnnotator
-	 * @param integer $duration
+	 * @param int $duration
 	 */
 	public function __construct( ProfileAnnotator $profileAnnotator, $duration ) {
 		parent::__construct( $profileAnnotator );

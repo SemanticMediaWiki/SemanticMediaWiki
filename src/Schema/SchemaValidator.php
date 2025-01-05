@@ -31,7 +31,7 @@ class SchemaValidator {
 	 *
 	 * @param Schema|null $schema
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function validate( ?Schema $schema = null ) {
 		if ( $schema === null || !is_string( $schema->info( Schema::SCHEMA_VALIDATION_FILE ) ) ) {

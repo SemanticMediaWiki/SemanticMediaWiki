@@ -105,7 +105,7 @@ class MockObjectBuilder extends \PHPUnit\Framework\TestCase {
 	 * @since 1.9
 	 *
 	 * @param $length
-	 * @param $prefix identify a specific random string during testing
+	 * @param null $prefix identify a specific random string during testing
 	 *
 	 * @return string
 	 */
@@ -132,7 +132,7 @@ class MockObjectBuilder extends \PHPUnit\Framework\TestCase {
 	 * @since 1.9
 	 *
 	 * @param $key
-	 * @param $default
+	 * @param null $default
 	 *
 	 * @return mixed|null
 	 */
@@ -146,7 +146,7 @@ class MockObjectBuilder extends \PHPUnit\Framework\TestCase {
 	 * @since 1.9
 	 *
 	 * @param $key
-	 * @param $default
+	 * @param null $default
 	 *
 	 * @return mixed|null
 	 */

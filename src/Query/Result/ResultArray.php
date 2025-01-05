@@ -291,7 +291,7 @@ class ResultArray {
 	 * The parameter $linker controls linking of title values and should
 	 * be some Linker object (or NULL for no linking).
 	 *
-	 * @param integer $outputMode
+	 * @param int $outputMode
 	 * @param mixed $linker
 	 *
 	 * @return string|false

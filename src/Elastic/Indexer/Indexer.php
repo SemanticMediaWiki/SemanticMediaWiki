@@ -55,12 +55,12 @@ class Indexer {
 	private $origin = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRebuild = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $versions = [];
 
@@ -259,7 +259,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|Title|integer $id
+	 * @param DIWikiPage|Title|int $id
 	 *
 	 * @return string
 	 */

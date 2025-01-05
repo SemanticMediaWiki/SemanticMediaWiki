@@ -37,17 +37,17 @@ class PropertyTableIdReferenceDisposer {
 	private $connection = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $redirectRemoval = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $fulltextTableUsage = false;
 
@@ -103,7 +103,7 @@ class PropertyTableIdReferenceDisposer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return boolean
 	 */
@@ -123,7 +123,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @since 2.4
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function removeOutdatedEntityReferencesById( $id ) {
 		if ( $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) ) {
@@ -210,7 +210,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @since 2.4
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function cleanUpTableEntriesById( $id ) {
 		if ( $this->onTransactionIdle ) {

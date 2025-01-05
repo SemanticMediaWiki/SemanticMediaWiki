@@ -64,7 +64,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @since 1.9
 	 *
-	 * @param DependencyContainer $dependencyContainer
+	 * @param DependencyContainer|null $dependencyContainer
 	 *
 	 * @return SimpleDependencyBuilder
 	 */
@@ -92,7 +92,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 	 * @since 1.9
 	 *
 	 * @param $namespace
-	 * @param $text|null
+	 * @param null $text|null
 	 *
 	 * @return Title
 	 */
@@ -200,7 +200,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 	 * @since 1.9
 	 *
 	 * @param $length
-	 * @param $prefix identify a specific random string during testing
+	 * @param null $prefix identify a specific random string during testing
 	 *
 	 * @return string
 	 */

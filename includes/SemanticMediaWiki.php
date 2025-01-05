@@ -28,7 +28,7 @@ class SemanticMediaWiki {
 			self::setupAliases();
 			self::setupDefines();
 			self::setupGlobals();
-			require_once ( dirname( __DIR__ ) . "/includes/GlobalFunctions.php" );
+			require_once dirname( __DIR__ ) . "/includes/GlobalFunctions.php";
 		}
 
 		// We're moving away from enableSemantics, so set this here.

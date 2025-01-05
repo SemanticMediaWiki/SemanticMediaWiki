@@ -30,12 +30,12 @@ class Importer implements MessageReporterAware {
 	private $messageReporter;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEnabled = true;
 
 	/**
-	 * @var integer|boolean
+	 * @var int|bool
 	 */
 	private $reqVersion = false;
 
@@ -78,7 +78,7 @@ class Importer implements MessageReporterAware {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|boolean $reqVersion
+	 * @param int|bool $reqVersion
 	 */
 	public function setReqVersion( $reqVersion ) {
 		$this->reqVersion = $reqVersion;
