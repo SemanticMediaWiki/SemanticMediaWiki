@@ -5,8 +5,8 @@ namespace SMW\Tests\SQLStore;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
 use Wikimedia\Rdbms\DBQueryError;
 
 /**
@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\DBQueryError;
  * @group medium
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -32,7 +32,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	 * "MWException: The value to add must be a positive integer" therefore
 	 * return true if this test runs on Windows
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function isWinOS() {
 		return strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN';
@@ -191,10 +191,10 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return call_user_func( $callback );
 			}
-			) );
+			);
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'update' );
@@ -270,7 +270,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->once() )
 			->method( 'update' )
@@ -281,10 +281,9 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 						'usage_count = usage_count + 1',
 						'null_count = null_count + 9999'
 					] ),
-				$this->equalTo(
-					[
+				[
 						'p_id' => 42
-					] ),
+					],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(
@@ -306,10 +305,9 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 						'usage_count' => 1,
 						'null_count' => 9999
 					] ),
-				$this->equalTo(
-					[
+				[
 						'p_id' => 42
-					] ),
+					],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(
@@ -326,7 +324,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'insert' )
-			->will( $this->throwException( $error ) );
+			->willThrowException( $error );
 
 		$connection->expects( $this->once() )
 			->method( 'update' )
@@ -337,7 +335,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 						'usage_count' => 12,
 						'null_count' => 0
 					] ),
-				$this->equalTo( [ 'p_id' => 42 ] ),
+				[ 'p_id' => 42 ],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(

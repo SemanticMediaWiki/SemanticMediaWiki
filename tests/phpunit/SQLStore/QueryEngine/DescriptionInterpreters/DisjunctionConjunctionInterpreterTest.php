@@ -11,7 +11,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\DisjunctionConjunctionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -36,7 +36,7 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase 
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()

@@ -13,7 +13,7 @@ use SMW\Tests\Utils\Validators\QuerySegmentValidator;
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -41,7 +41,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			ValueDescriptionInterpreter::Class,
+			ValueDescriptionInterpreter::class,
 			new ValueDescriptionInterpreter( $this->store, $this->conditionBuilder )
 		);
 	}
@@ -56,7 +56,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$objectIds->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -64,15 +64,15 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIds ) );
+			->willReturn( $objectIds );
 
 		$queryEngineFactory = new QueryEngineFactory( $this->store );
 

@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ComparatorMapper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -48,7 +48,7 @@ class ComparatorMapperTest extends \PHPUnit\Framework\TestCase {
 
 		$valueDescription->expects( $this->once() )
 			->method( 'getComparator' )
-			->will( $this->returnValue( $comparator ) );
+			->willReturn( $comparator );
 
 		$instance = new ComparatorMapper();
 

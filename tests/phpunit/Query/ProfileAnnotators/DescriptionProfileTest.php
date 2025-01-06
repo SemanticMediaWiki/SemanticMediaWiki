@@ -13,7 +13,7 @@ use SMWDIContainer as DIContainer;
  * @covers \SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -56,15 +56,15 @@ class DescriptionProfileTest extends \PHPUnit\Framework\TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$description->expects( $this->once() )
 			->method( 'getSize' )
-			->will( $this->returnValue( 2 ) );
+			->willReturn( 2 );
 
 		$description->expects( $this->once() )
 			->method( 'getDepth' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new DescriptionProfileAnnotator(
 			new NullProfileAnnotator( $container ),

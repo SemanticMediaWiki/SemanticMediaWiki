@@ -3,13 +3,13 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\SearchResultSet;
-use SMW\DIWikiPage;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchResultSet
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Stephan Gambke
@@ -29,7 +29,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$queryToken->expects( $this->any() )
 			->method( 'getTokens' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -37,7 +37,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getQueryToken' )
-			->will( $this->returnValue( $queryToken ) );
+			->willReturn( $queryToken );
 
 		$this->queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -50,15 +50,15 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$pageMock->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'getResults' )
-			->will( $this->returnValue( [ $pageMock, $pageMock, $pageMock ] ) );
+			->willReturn( [ $pageMock, $pageMock, $pageMock ] );
 
 		$this->resultSet = new SearchResultSet( $this->queryResult, 42 );
 	}
@@ -118,7 +118,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$excerpts->expects( $this->any() )
 			->method( 'getExcerpt' )
-			->will( $this->returnValue( 'Foo ...' ) );
+			->willReturn( 'Foo ...' );
 
 		$this->queryResult->setExcerpts( $excerpts );
 
@@ -138,7 +138,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$queryToken->expects( $this->any() )
 			->method( 'getTokens' )
-			->will( $this->returnValue( [ 'Foo' => 1, 'Bar' => 2 ] ) );
+			->willReturn( [ 'Foo' => 1, 'Bar' => 2 ] );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -146,7 +146,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getQueryToken' )
-			->will( $this->returnValue( $queryToken ) );
+			->willReturn( $queryToken );
 
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -155,7 +155,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$resultSet = new SearchResultSet( $queryResult, 42 );
 
@@ -166,13 +166,21 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewSearchSuggestionSet() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
+
+		$title->expects( $this->any() )
+			->method( 'getText' )
+			->willReturn( 'MockPageTitle' );
+
+		$title->expects( $this->any() )
+			->method( 'getFullURL' )
+			->willReturn( 'https://example.com/mock-page-title' );
 
 		$page = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -180,7 +188,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$page->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
 			->disableOriginalConstructor()
@@ -192,7 +200,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getQueryToken' )
-			->will( $this->returnValue( $queryToken ) );
+			->willReturn( $queryToken );
 
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -200,11 +208,11 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getResults' )
-			->will( $this->returnValue( [ $page ] ) );
+			->willReturn( [ $page ] );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$resultSet = new SearchResultSet( $queryResult, 42 );
 
@@ -215,17 +223,25 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewSearchSuggestionSet_FilterSameTitle() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'getPrefixedDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
+
+		$title->expects( $this->any() )
+			->method( 'getText' )
+			->willReturn( 'MockPageTitle' );
+
+		$title->expects( $this->any() )
+			->method( 'getFullURL' )
+			->willReturn( 'https://example.com/mock-page-title' );
 
 		$page_1 = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -233,7 +249,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$page_1->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$page_2 = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -241,7 +257,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$page_2->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$page_3 = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -257,11 +273,11 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getResults' )
-			->will( $this->returnValue( [ $page_1, $page_2, $page_3 ] ) );
+			->willReturn( [ $page_1, $page_2, $page_3 ] );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$resultSet = new SearchResultSet( $queryResult, 42 );
 

@@ -2,9 +2,9 @@
 
 namespace SMW\DataValues\Number;
 
-use SMW\PropertySpecificationLookup;
-use SMW\EntityCache;
 use SMW\DIProperty;
+use SMW\EntityCache;
+use SMW\PropertySpecificationLookup;
 use SMWDIBlob as DIBlob;
 use SMWNumberValue as NumberValue;
 
@@ -15,7 +15,7 @@ use SMWNumberValue as NumberValue;
  * The cache is evicted as soon as the subject that contains "Corresponds to"
  * is altered.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames

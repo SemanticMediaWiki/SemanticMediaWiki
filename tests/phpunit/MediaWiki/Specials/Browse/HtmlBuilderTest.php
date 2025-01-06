@@ -5,14 +5,14 @@ namespace SMW\Tests\MediaWiki\Specials\Browse;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\SemanticData;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\HtmlBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -38,7 +38,7 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
@@ -100,11 +100,11 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( new SemanticData( $subject ) ) );
+			->willReturn( new SemanticData( $subject ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new HtmlBuilder(
 			$this->store,
@@ -197,15 +197,15 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( new SemanticData( $subject ) ) );
+			->willReturn( new SemanticData( $subject ) );
 
 		$instance = new HtmlBuilder(
 			$this->store,
 			$subject
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->legacy()
 		);
 	}
@@ -215,7 +215,7 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( new SemanticData( $subject ) ) );
+			->willReturn( new SemanticData( $subject ) );
 
 		$instance = new HtmlBuilder(
 			$this->store,

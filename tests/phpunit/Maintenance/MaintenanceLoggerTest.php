@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Maintenance\MaintenanceLogger
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -38,8 +38,8 @@ class MaintenanceLoggerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'log' )
 			->with(
 				$this->stringContains( 'maintenance' ),
-				$this->equalTo( 'Foo' ),
-				$this->equalTo( 'Foo' ),
+				'Foo',
+				'Foo',
 				$this->stringContains( 'bar' ) );
 
 		$instance = new MaintenanceLogger( 'Foo', $manualEntryLogger );

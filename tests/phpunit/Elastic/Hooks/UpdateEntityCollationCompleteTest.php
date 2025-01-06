@@ -11,7 +11,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @covers \SMW\Elastic\Hooks\UpdateEntityCollationComplete
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -45,11 +45,11 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityIdManager ) );
+			->willReturn( $this->entityIdManager );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->rebuilder = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rebuilder' )
 			->disableOriginalConstructor()
@@ -66,14 +66,14 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 		$callback = static function ( $type ) use ( $connection, $database ) {
 			if ( $type === 'mw.db' ) {
 				return $database;
-			};
+			}
 
 			return $connection;
 		};
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnCallback( $callback ) );
+			->willReturnCallback( $callback );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
@@ -103,15 +103,15 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$this->rebuilder->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->rebuilder->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ new FakeResultWrapper( [ (object)$row ] ), 2 ] ) );
+			->willReturn( [ new FakeResultWrapper( [ (object)$row ] ), 2 ] );
 
 		$this->entityIdManager->expects( $this->any() )
 			->method( 'getDataItemById' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
 		$instance = new UpdateEntityCollationComplete(
 			$this->store,

@@ -3,16 +3,16 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DIWikiPage;
+use SMW\Exporter\ExporterFactory;
 use SMW\Localizer;
 use SMW\Tests\SMWIntegrationTestCase;
-use SMW\Exporter\ExporterFactory;
-use Title;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames

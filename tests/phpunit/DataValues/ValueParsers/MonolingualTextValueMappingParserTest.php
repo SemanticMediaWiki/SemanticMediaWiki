@@ -8,7 +8,7 @@ use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
  * @covers \SMW\DataValues\ValueParsers\MonolingualTextValueParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -28,7 +28,7 @@ class MonolingualTextValueMappingParserTest extends \PHPUnit\Framework\TestCase 
 	 */
 	public function testFullParsableString( $value, $expectedText, $expectedLanguageCode ) {
 		$instance = new MonolingualTextValueParser();
-		list( $text, $languageCode ) = $instance->parse( $value );
+		[ $text, $languageCode ] = $instance->parse( $value );
 
 		$this->assertEquals(
 			$expectedText,
@@ -43,7 +43,7 @@ class MonolingualTextValueMappingParserTest extends \PHPUnit\Framework\TestCase 
 
 	public function testParsableStringWithMissingLanguageCode() {
 		$instance = new MonolingualTextValueParser();
-		list( $text, $languageCode ) = $instance->parse( 'FooBar' );
+		[ $text, $languageCode ] = $instance->parse( 'FooBar' );
 
 		$this->assertEquals(
 			'FooBar',

@@ -5,7 +5,7 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 /**
  * Class RowBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -16,7 +16,7 @@ trait ParameterDictionaryUser {
 	private $configuration;
 
 	/**
-	 * @param ParameterDictionary $configuration
+	 * @param ParameterDictionary &$configuration
 	 */
 	public function setConfiguration( ParameterDictionary &$configuration ) {
 		$this->configuration = $configuration;

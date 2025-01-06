@@ -3,7 +3,7 @@
 namespace Onoi\Tesa\Tokenizer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -16,22 +16,22 @@ class NGramTokenizer implements Tokenizer {
 	private $tokenizer;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $ngramSize = 2;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $withMarker = false;
 
 	/**
 	 * @since 0.1
 	 *
-	 * @param Tokenizer $tokenizer
-	 * @param integer $ngramSize
+	 * @param Tokenizer|null $tokenizer
+	 * @param int $ngramSize
 	 */
-	public function __construct( Tokenizer $tokenizer = null, $ngramSize = 2 ) {
+	public function __construct( ?Tokenizer $tokenizer = null, $ngramSize = 2 ) {
 		$this->tokenizer = $tokenizer;
 		$this->ngramSize = (int)$ngramSize;
 	}
@@ -39,7 +39,7 @@ class NGramTokenizer implements Tokenizer {
 	/**
 	 * @since 0.1
 	 *
-	 * @param boolean $withMarker
+	 * @param bool $withMarker
 	 */
 	public function withMarker( $withMarker ) {
 		$this->withMarker = (bool)$withMarker;
@@ -48,7 +48,7 @@ class NGramTokenizer implements Tokenizer {
 	/**
 	 * @since 0.1
 	 *
-	 * @param integer $ngramSize
+	 * @param int $ngramSize
 	 */
 	public function setNgramSize( $ngramSize ) {
 		$this->ngramSize = (int)$ngramSize;
@@ -90,11 +90,11 @@ class NGramTokenizer implements Tokenizer {
 			return $result;
 		}
 
-		return array();
+		return [];
 	}
 
 	private function createNGrams( $text, $ngramSize, $withMarker ) {
-		$ngramList = array();
+		$ngramList = [];
 
 		// Identify the beginning-of-word and end-of-word
 		if ( $withMarker ) {

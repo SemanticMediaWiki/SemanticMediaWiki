@@ -11,7 +11,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\DataValues\ValueValidators\PatternConstraintValueValidator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -64,11 +64,11 @@ class PatternConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $allowedPattern ) );
+			->willReturn( $allowedPattern );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedPatternBy' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -77,15 +77,15 @@ class PatternConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '_txt' ) );
+			->willReturn( '_txt' );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
+			->willReturn( $property );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( $testString ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( $testString ) );
 
 		$instance = new PatternConstraintValueValidator(
 			$this->allowsPatternValueParser

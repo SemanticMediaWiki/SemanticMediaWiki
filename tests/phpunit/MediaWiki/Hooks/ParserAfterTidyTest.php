@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DataItemFactory;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use Title;
@@ -13,7 +12,7 @@ use Title;
  * @covers \SMW\MediaWiki\Hooks\ParserAfterTidy
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -110,13 +109,13 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 	public function testNotEnabledNamespace() {
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$title = MockTitle::buildMock( __METHOD__ );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
@@ -129,7 +128,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 		$this->parser->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance = new ParserAfterTidy(
 			$this->parser,
@@ -150,13 +149,13 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->any() )
 			->method( 'contains' )
-			->with( $this->equalTo( $key ) )
-			->will( $this->returnValue( $containsStatus ) );
+			->with( $key )
+			->willReturn( $containsStatus );
 
 		$cache->expects( $this->any() )
 			->method( 'fetch' )
-			->with( $this->equalTo( $key ) )
-			->will( $this->returnValue( $fetchStatus ) );
+			->with( $key )
+			->willReturn( $fetchStatus );
 
 		return $cache;
 	}
@@ -167,13 +166,13 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 	public function testProcess( $parameters ) {
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->testEnvironment->registerObject( 'Store', $parameters['store'] );
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
-			->will( $this->returnValue( isset( $parameters['revision'] ) ? $parameters['revision'] : null ) );
+			->willReturn( isset( $parameters['revision'] ) ? $parameters['revision'] : null );
 
 		$this->testEnvironment->redefineMediaWikiService( 'RevisionLookup', function () use ( $parameters ) {
 			$revisionLookup = $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
@@ -182,7 +181,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 			$revisionLookup->expects( $this->any() )
 				->method( 'getFirstRevision' )
-				->will( $this->returnValue( isset( $parameters['revision'] ) ? $parameters['revision'] : null ) );
+				->willReturn( isset( $parameters['revision'] ) ? $parameters['revision'] : null );
 
 			return $revisionLookup;
 		} );
@@ -193,7 +192,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 		$wikiPage->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $parameters['title'] ) );
+			->willReturn( $parameters['title'] );
 
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
@@ -201,7 +200,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 		$pageCreator->expects( $this->any() )
 			->method( 'createPage' )
-			->will( $this->returnValue( $wikiPage ) );
+			->willReturn( $wikiPage );
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
@@ -219,7 +218,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		$parserOutput->setExtensionData( 'smw-semanticdata-status', $parameters['data-status'] );
 		$parserOutput->setPageProperty( 'displaytitle', $displayTitle );
 
-		$text   = '';
+		$text = '';
 
 		$instance = new ParserAfterTidy(
 			$parser,
@@ -246,40 +245,32 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$parserOutput->expects( $this->any() )
-			->method( 'getCategoryLinks' )
-			->will( $this->returnValue( [] ) );
-
-		$parserOutput->expects( $this->any() )
-			->method( 'getCategories' )
-			->will( $this->returnValue( [] ) );
-
-		$parserOutput->expects( $this->any() )
 			->method( 'getImages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->cache->expects( $this->any() )
 			->method( 'fetch' )
 			->with( $this->stringContains( "smw:parseraftertidy" ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$text = '';
 		$title = Title::newFromText( __METHOD__ );
 
 		$this->parser->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->parser->expects( $this->any() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( $parserOptions ) );
+			->willReturn( $parserOptions );
 
 		$this->parser->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$instance = new ParserAfterTidy(
 			$this->parser,
@@ -297,7 +288,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 	public function testSemanticDataParserOuputUpdateIntegration() {
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$settings = [
 			'smwgMainCacheType'             => 'hash',
@@ -363,15 +354,15 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'inNamespace' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 5001 ) );
+			->willReturn( 5001 );
 
 		$provider[] = [
 			[
@@ -396,11 +387,11 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'inNamespace' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$provider[] = [
 			[
@@ -425,11 +416,11 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$provider[] = [
 			[
@@ -457,20 +448,16 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		$title = MockTitle::buildMock( __METHOD__ );
 
 		$title->expects( $this->any() )
-			->method( 'getRestrictions' )
-			->will( $this->returnValue( [] ) );
-
-		$title->expects( $this->any() )
 			->method( 'inNamespace' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_FILE ) );
+			->willReturn( NS_FILE );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 3001 ) );
+			->willReturn( 3001 );
 
 		$provider[] = [
 			[
@@ -496,15 +483,15 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'inNamespace' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 5001 ) );
+			->willReturn( 5001 );
 
 		$provider[] = [
 			[
@@ -525,11 +512,11 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 5001 ) );
+			->willReturn( 5001 );
 
 		$provider[] = [
 			[

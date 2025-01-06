@@ -10,7 +10,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Jobs\EntityIdDisposerJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -31,7 +31,7 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->getMockForAbstractClass();
@@ -42,7 +42,7 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$store->setConnectionManager( $connectionManager );
 
@@ -134,7 +134,7 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 

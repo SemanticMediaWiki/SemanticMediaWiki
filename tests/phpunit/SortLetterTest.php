@@ -8,7 +8,7 @@ use SMW\SortLetter;
  * @covers \SMW\SortLetter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
@@ -43,15 +43,15 @@ class SortLetterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItem->expects( $this->any() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( \SMWDataItem::TYPE_WIKIPAGE ) );
+			->willReturn( \SMWDataItem::TYPE_WIKIPAGE );
 
 		$this->store->expects( $this->once() )
 			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->collator->expects( $this->once() )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
+			->willReturn( 'F' );
 
 		$instance = new SortLetter(
 			$this->store,

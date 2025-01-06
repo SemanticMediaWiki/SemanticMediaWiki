@@ -8,7 +8,7 @@ use SMW\SemanticData;
 /**
  * Decorator implementing the ProfileAnnotator interface
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -91,6 +91,6 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	/**
 	 * @since 1.9
 	 */
-	protected abstract function addPropertyValues();
+	abstract protected function addPropertyValues();
 
 }

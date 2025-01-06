@@ -13,7 +13,7 @@ use SMW\InMemoryPoolCache;
  * @covers \SMW\Exporter\ExpResourceMapper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -107,8 +107,7 @@ class ExpResourceMapperTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will(
-				$this->returnValue( [ new \SMWDIBlob( 'foo:bar:fom:fuz' ) ] ) );
+			->willReturn( [ new \SMWDIBlob( 'foo:bar:fom:fuz' ) ] );
 
 		$instance = new ExpResourceMapper(
 			$store

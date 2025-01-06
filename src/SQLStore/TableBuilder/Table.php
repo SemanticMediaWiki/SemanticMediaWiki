@@ -7,7 +7,7 @@ use RuntimeException;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class Table {
 	private $name;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCoreTable = true;
 
@@ -37,7 +37,7 @@ class Table {
 	 * @since 2.5
 	 *
 	 * @param string $name
-	 * @param boolean $isCoreTable
+	 * @param bool $isCoreTable
 	 */
 	public function __construct( $name, bool $isCoreTable = true ) {
 		$this->name = $name;
@@ -56,7 +56,7 @@ class Table {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCoreTable(): bool {
 		return $this->isCoreTable;

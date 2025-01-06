@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use RuntimeException;
 use MediaWiki\Json\JsonUnserializer;
+use RuntimeException;
 use SMW\Exception\DataItemException;
 use SMW\Exception\DataTypeLookupException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
@@ -59,7 +59,7 @@ class DIProperty extends SMWDataItem {
 
 	/**
 	 * Whether to take the inverse of this property or not.
-	 * @var boolean
+	 * @var bool
 	 */
 	private $m_inverse;
 

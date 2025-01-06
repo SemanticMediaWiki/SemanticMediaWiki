@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\Query\QueryResult
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -81,15 +81,15 @@ class QueryResultTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->serializeToArray();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getNext()
 		);
 
 		$instance->getHash();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getNext()
 		);
 	}

@@ -11,7 +11,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\ParserFunctions\DocumentationParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since  2.4
  *
  * @author mwjames
@@ -37,7 +37,7 @@ class DocumentationParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$language->expects( $this->any() )
 			->method( 'getValue' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$processingResult = $this->getMockBuilder( ProcessingResult::class )
 			->disableOriginalConstructor()
@@ -45,14 +45,14 @@ class DocumentationParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$processingResult->expects( $this->any() )
 			->method( 'getParameters' )
-			->will( $this->returnValue( [
+			->willReturn( [
 				'language'   => $language,
 				'format'     => $processedParam,
 				'parameters' => $processedParam ]
-			) );
+			);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->handle( $parser, $processingResult )
 		);
 	}

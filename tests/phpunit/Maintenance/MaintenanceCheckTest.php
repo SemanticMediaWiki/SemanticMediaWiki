@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Maintenance\MaintenanceCheck
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -28,8 +28,8 @@ class MaintenanceCheckTest extends \PHPUnit\Framework\TestCase {
 	public function testCanExecute() {
 		$instance = new MaintenanceCheck();
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->canExecute()
 		);
 	}
@@ -37,8 +37,8 @@ class MaintenanceCheckTest extends \PHPUnit\Framework\TestCase {
 	public function testGetMessage() {
 		$instance = new MaintenanceCheck();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getMessage()
 		);
 	}

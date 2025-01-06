@@ -2,31 +2,29 @@
 
 namespace SMW\Tests;
 
-use MediaWikiIntegrationTestCase;
-use Title;
 use BacklinkCache;
 use HashBagOStuff;
+use MediaWiki\MediaWikiServices;
+use MediaWikiIntegrationTestCase;
 use ObjectCache;
-use RequestContext;
+use PHPUnit\Framework\TestResult;
 use RuntimeException;
+use SMW\DataValueFactory;
+use SMW\MediaWiki\LinkBatch;
+use SMW\PropertyRegistry;
+use SMW\Services\ServicesFactory;
+use SMW\StoreFactory;
+use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use SMWQueryProcessor;
-use MediaWiki\MediaWikiServices;
-use SMW\StoreFactory;
-use SMW\DataValueFactory;
-use SMW\PropertyRegistry;
-use SMW\MediaWiki\LinkBatch;
-use SMW\Services\ServicesFactory;
-use SMW\Tests\TestEnvironment;
-use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
-use PHPUnit\Framework\TestResult;
+use Title;
 
 /**
  * @group semantic-mediawiki
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Marko Ilic
@@ -55,17 +53,17 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	protected $storesToBeExcluded = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $destroyDatabaseTablesBeforeRun = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $destroyDatabaseTablesAfterRun = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isUsableUnitTestDatabase = true;
 
@@ -95,8 +93,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	}
 
 	 /**
-	 * Reset Semantic MediaWiki-related services and caches.
-	 */
+	  * Reset Semantic MediaWiki-related services and caches.
+	  */
 	private function resetSMWServices(): void {
 		LinkBatch::reset();
 		DataValueFactory::getInstance()->clear();

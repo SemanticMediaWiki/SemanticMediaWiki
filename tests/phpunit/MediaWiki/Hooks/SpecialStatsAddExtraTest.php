@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SpecialStatsAddExtra
  * @group smenatic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -43,7 +43,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( $setup['statistics'] ) );
+			->willReturn( $setup['statistics'] );
 
 		$extraStats = $setup['extraStats'];
 
@@ -86,7 +86,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( $statistics ) );
+			->willReturn( $statistics );
 
 		$instance = new SpecialStatsAddExtra(
 			$store
@@ -105,8 +105,8 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 		$instance->process( $extraStats );
 
 		$this->assertEquals(
-			$extraStats,
-			$expected
+			$expected,
+			$extraStats
 		);
 	}
 
@@ -115,11 +115,11 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 
 			if ( $searchValue === $key || $searchValue === $value ) {
 				return true;
-			};
+			}
 
 			if ( is_array( $value ) ) {
 				return $this->matchArray( $value, $searchValue );
-			};
+			}
 		}
 
 		return $searchValue !== null ? false : true;

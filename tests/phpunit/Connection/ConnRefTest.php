@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Connection\ConnRef
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -32,7 +32,7 @@ class ConnRefTest extends \PHPUnit\Framework\TestCase {
 
 		$connectionProvider->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$connectionProvider->expects( $this->once() )
 			->method( 'releaseConnection' );

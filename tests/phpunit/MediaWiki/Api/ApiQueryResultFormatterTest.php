@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Api\ApiQueryResultFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -60,15 +60,15 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'toArray' )
-			->will( $this->returnValue( $parameters['result'] ) );
+			->willReturn( $parameters['result'] );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'hasFurtherResults' )
-			->will( $this->returnValue( $parameters['furtherResults'] ) );
+			->willReturn( $parameters['furtherResults'] );
 
 		$instance = new ApiQueryResultFormatter( $queryResult );
 
@@ -98,7 +98,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( $parameters['errors'] ) );
+			->willReturn( $parameters['errors'] );
 
 		$instance = new ApiQueryResultFormatter( $queryResult );
 

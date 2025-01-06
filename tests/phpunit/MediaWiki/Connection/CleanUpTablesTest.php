@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Connection\CleanUpTables
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -46,15 +46,15 @@ class CleanUpTablesTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'listTables' )
-			->will( $this->returnValue( [ 'abcsmw_foo' ] ) );
+			->willReturn( [ 'abcsmw_foo' ] );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
-			->with( $this->equalTo( 'DROP TABLE abcsmw_foo' ) );
+			->with( 'DROP TABLE abcsmw_foo' );
 
 		$instance = new CleanUpTables(
 			$connection
@@ -71,19 +71,19 @@ class CleanUpTablesTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'postgres' ) );
+			->willReturn( 'postgres' );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'listTables' )
-			->will( $this->returnValue( [ 'abcsmw_foo' ] ) );
+			->willReturn( [ 'abcsmw_foo' ] );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
-			->with( $this->equalTo( 'DROP TABLE IF EXISTS abcsmw_foo CASCADE' ) );
+			->with( 'DROP TABLE IF EXISTS abcsmw_foo CASCADE' );
 
 		$instance = new CleanUpTables(
 			$connection

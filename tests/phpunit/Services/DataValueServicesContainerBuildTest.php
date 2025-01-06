@@ -31,7 +31,7 @@ use SMWTimeValue as TimeValue;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -192,11 +192,11 @@ class DataValueServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 			TimeValueFormatter::class
 		];
 
-		$provider[] = array(
+		$provider[] = [
 			'UnitConverter',
 			[],
 			'\SMW\DataValues\Number\UnitConverter'
-		);
+		];
 
 		return $provider;
 	}

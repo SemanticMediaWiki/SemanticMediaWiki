@@ -6,20 +6,19 @@ use ParserOutput;
 use ReflectionClass;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Factbox\Factbox;
 use SMW\Factbox\CheckMagicWords;
+use SMW\Factbox\Factbox;
 use SMW\ParserData;
 use SMW\SemanticData;
-use SMW\TableFormatter;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\Factbox
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -148,15 +147,15 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'hasVisibleSpecialProperties' )
-			->will( $this->returnValue( $setup['hasVisibleSpecialProperties'] ) );
+			->willReturn( $setup['hasVisibleSpecialProperties'] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'hasVisibleProperties' )
-			->will( $this->returnValue( $setup['hasVisibleProperties'] ) );
+			->willReturn( $setup['hasVisibleProperties'] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'isEmpty' )
-			->will( $this->returnValue( $setup['isEmpty'] ) );
+			->willReturn( $setup['isEmpty'] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -164,7 +163,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
@@ -172,11 +171,11 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$parserData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$parserData->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
@@ -195,7 +194,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$factbox->expects( $this->any() )
 			->method( 'buildHTML' )
-			->will( $this->returnValue( $setup['invokedContent'] ) );
+			->willReturn( $setup['invokedContent'] );
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
@@ -352,23 +351,23 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$property->expects( $this->any() )
 			->method( 'isUserDefined' )
-			->will( $this->returnValue( $test['isUserDefined'] ) );
+			->willReturn( $test['isUserDefined'] );
 
 		$property->expects( $this->any() )
 			->method( 'findPropertyTypeID' )
-			->will( $this->returnValue( '_wpg' ) );
+			->willReturn( '_wpg' );
 
 		$property->expects( $this->any() )
 			->method( 'isShown' )
-			->will( $this->returnValue( $test['isShown'] ) );
+			->willReturn( $test['isShown'] );
 
 		$property->expects( $this->any() )
 			->method( 'getLabel' )
-			->will( $this->returnValue( 'Quuey' ) );
+			->willReturn( 'Quuey' );
 
 		$property->expects( $this->any() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( \SMWDataItem::TYPE_PROPERTY ) );
+			->willReturn( \SMWDataItem::TYPE_PROPERTY );
 
 		$parserData->setSemanticData(
 			new SemanticData( DIWikiPage::newFromTitle( $title ) )
@@ -449,11 +448,11 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'isEmpty' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$parserData = new ParserData(
 			$title,
@@ -470,11 +469,11 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ new DIProperty( '_SKEY' ) ] ) );
+			->willReturn( [ new DIProperty( '_SKEY' ) ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'isEmpty' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$parserData = new ParserData(
 			$title,

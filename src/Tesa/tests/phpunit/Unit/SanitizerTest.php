@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Onoi\Tesa\Sanitizer
  * @group onoi-tesa
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -92,7 +92,7 @@ class SanitizerTest extends TestCase {
 
 	public function testReplace() {
 		$instance = new Sanitizer( 'テスト' );
-		$instance->replace( array( 'テスト' ), array( 'Test' ) );
+		$instance->replace( [ 'テスト' ], [ 'Test' ] );
 
 		$this->assertEquals(
 			'Test',
@@ -109,8 +109,8 @@ class SanitizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $text ) )
-			->will( $this->returnValue( array( 'Foo', 'bar', 'foobar' ) ) );
+			->with( $text )
+			->willReturn( [ 'Foo', 'bar', 'foobar' ] );
 
 		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
 			->disableOriginalConstructor()
@@ -118,12 +118,12 @@ class SanitizerTest extends TestCase {
 
 		$synonymizer->expects( $this->any() )
 			->method( 'synonymize' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new Sanitizer( $text );
 
 		$stopwordAnalyzer = $this->sanitizerFactory->newArrayStopwordAnalyzer(
-			array( 'bar' )
+			[ 'bar' ]
 		);
 
 		$this->assertEquals(
@@ -141,12 +141,12 @@ class SanitizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'isWordTokenizer' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $text ) )
-			->will( $this->returnValue( array( 'Foo', 'bar', 'foobar' ) ) );
+			->with( $text )
+			->willReturn( [ 'Foo', 'bar', 'foobar' ] );
 
 		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
 			->disableOriginalConstructor()
@@ -154,16 +154,16 @@ class SanitizerTest extends TestCase {
 
 		$synonymizer->expects( $this->any() )
 			->method( 'synonymize' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new Sanitizer( $text );
 
 		$stopwordAnalyzer = $this->sanitizerFactory->newArrayStopwordAnalyzer(
-			array( 'bar' )
+			[ 'bar' ]
 		);
 
 		$instance->setOption( Sanitizer::MIN_LENGTH, 4 );
-		$instance->setOption( Sanitizer::WHITELIST, array( 'bar' ) );
+		$instance->setOption( Sanitizer::WHITELIST, [ 'bar' ] );
 
 		$this->assertEquals(
 			'bar foobar',
@@ -180,12 +180,12 @@ class SanitizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'isWordTokenizer' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $text ) )
-			->will( $this->returnValue( array( 'foo', 'foo', 'テスト', 'テスト' ) ) );
+			->with( $text )
+			->willReturn( [ 'foo', 'foo', 'テスト', 'テスト' ] );
 
 		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
 			->disableOriginalConstructor()
@@ -193,7 +193,7 @@ class SanitizerTest extends TestCase {
 
 		$synonymizer->expects( $this->any() )
 			->method( 'synonymize' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new Sanitizer( $text );
 

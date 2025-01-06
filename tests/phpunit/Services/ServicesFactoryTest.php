@@ -8,7 +8,7 @@ use SMW\Services\ServicesFactory;
  * @covers \SMW\Services\ServicesFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -220,7 +220,7 @@ class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructDeferredCallableUpdate() {
-		$callback = function () {
+		$callback = static function () {
 			return null;
 		};
 
@@ -273,7 +273,7 @@ class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function callbackContainerProvider() {
 		$provider[] = [
 			'ResultCache',
-			array(),
+			[],
 			'\SMW\Query\Cache\ResultCache'
 		];
 

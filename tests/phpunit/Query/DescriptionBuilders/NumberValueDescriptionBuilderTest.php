@@ -8,7 +8,7 @@ use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
  * @covers \SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -44,15 +44,15 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$numberValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$numberValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( new \SMWDINumber( 42 ) ) );
+			->willReturn( new \SMWDINumber( 42 ) );
 
 		$numberValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( new \SMW\DIProperty( 'Foo' ) ) );
+			->willReturn( new \SMW\DIProperty( 'Foo' ) );
 
 		$instance = new NumberValueDescriptionBuilder();
 
@@ -69,7 +69,7 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$numberValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new NumberValueDescriptionBuilder();
 

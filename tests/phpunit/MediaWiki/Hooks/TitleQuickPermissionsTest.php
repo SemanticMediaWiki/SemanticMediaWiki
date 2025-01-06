@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\TitleQuickPermissions;
 use SMW\Tests\TestEnvironment;
 
@@ -10,7 +9,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Hooks\TitleQuickPermissions
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -60,7 +59,7 @@ class TitleQuickPermissionsTest extends \PHPUnit\Framework\TestCase {
 	public function testProcessOnArchaicDependencies_TitleQuickPermissions() {
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->titlePermissions->expects( $this->once() )
 			->method( 'checkPermissionFor' );
@@ -81,7 +80,7 @@ class TitleQuickPermissionsTest extends \PHPUnit\Framework\TestCase {
 	public function testProcessOnDisabledNamespace() {
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->titlePermissions->expects( $this->never() )
 			->method( 'checkPermissionFor' );

@@ -3,14 +3,13 @@
 namespace SMW\Tests;
 
 use SMW\Site;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Site
  * @group semantic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -31,71 +30,71 @@ class SiteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsReadOnly() {
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			Site::isReadOnly()
 		);
 	}
 
 	public function testIsReady() {
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			Site::isReady()
 		);
 	}
 
 	public function testName() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			Site::name()
 		);
 	}
 
 	public function testWikiurl() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			Site::wikiurl()
 		);
 	}
 
 	public function testLanguageCode() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			Site::languageCode()
 		);
 	}
 
 	public function testIsCommandLineMode() {
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			Site::isCommandLineMode()
 		);
 	}
 
 	public function testIsCapitalLinks() {
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			Site::isCapitalLinks()
 		);
 	}
 
 	public function testGetCacheExpireTime() {
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			Site::getCacheExpireTime( 'parser' )
 		);
 	}
 
 	public function testStats() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			Site::stats()
 		);
 	}
 
 	public function testGetJobClasses() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			Site::getJobClasses()
 		);
 

@@ -17,34 +17,31 @@ use SMW\DataValueFactory;
 use SMW\DeferredTransactionalCallableUpdate;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxText;
-use SMW\Listener\EventListener\EventHandler;
 use SMW\HierarchyLookup;
 use SMW\InMemoryPoolCache;
 use SMW\InTextAnnotationParser;
 use SMW\IteratorFactory;
+use SMW\Listener\EventListener\EventHandler;
 use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Deferred\CallableUpdate;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
-use SMW\MediaWiki\TitleFactory;
-use SMW\MediaWiki\HookDispatcher;
-use SMW\NamespaceExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
-use SMW\SQLStore\RedirectStore;
+use SMW\MediaWiki\TitleFactory;
+use SMW\NamespaceExaminer;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;
 use SMW\PostProcHandler;
-use SMW\Property\AnnotatorFactory;
 use SMW\PropertyLabelFinder;
 use SMW\PropertySpecificationLookup;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
-use SMW\Schema\SchemaFactory;
 use SMW\SemanticData;
 use SMW\SerializerFactory;
 use SMW\Settings;
@@ -56,7 +53,7 @@ use Title;
 /**
  * Application instances access for internal and external use
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -84,7 +81,7 @@ class ServicesFactory {
 	 * @param ContainerBuilder|null $containerBuilder
 	 * @param string $servicesFileDir
 	 */
-	public function __construct( ContainerBuilder $containerBuilder = null, $servicesFileDir = '' ) {
+	public function __construct( ?ContainerBuilder $containerBuilder = null, $servicesFileDir = '' ) {
 		$this->containerBuilder = $containerBuilder;
 		$this->servicesFileDir = $servicesFileDir;
 	}
@@ -182,7 +179,7 @@ class ServicesFactory {
 	 *
 	 * @return PermissionExaminer
 	 */
-	public function newPermissionExaminer( \User $user = null ): PermissionExaminer {
+	public function newPermissionExaminer( ?\User $user = null ): PermissionExaminer {
 		return new PermissionExaminer( $this->containerBuilder->create( 'PermissionManager' ), $user );
 	}
 
@@ -193,7 +190,7 @@ class ServicesFactory {
 	 *
 	 * @return PreferenceExaminer
 	 */
-	public function newPreferenceExaminer( \User $user = null ): PreferenceExaminer {
+	public function newPreferenceExaminer( ?\User $user = null ): PreferenceExaminer {
 		return $this->containerBuilder->create( 'PreferenceExaminer', $user );
 	}
 
@@ -537,9 +534,9 @@ class ServicesFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param callable $callback
+	 * @param callable|null $callback
 	 */
-	public function newDeferredCallableUpdate( callable $callback = null ): CallableUpdate {
+	public function newDeferredCallableUpdate( ?callable $callback = null ): CallableUpdate {
 		$deferredCallableUpdate = $this->containerBuilder->create(
 			'DeferredCallableUpdate',
 			$callback
@@ -563,9 +560,9 @@ class ServicesFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param callable $callback
+	 * @param callable|null $callback
 	 */
-	public function newDeferredTransactionalCallableUpdate( callable $callback = null ): DeferredTransactionalCallableUpdate {
+	public function newDeferredTransactionalCallableUpdate( ?callable $callback = null ): DeferredTransactionalCallableUpdate {
 		$deferredTransactionalUpdate = $this->containerBuilder->create(
 			'DeferredTransactionalCallableUpdate',
 			$callback,

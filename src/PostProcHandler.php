@@ -5,8 +5,8 @@ namespace SMW;
 use Html;
 use Onoi\Cache\Cache;
 use ParserOutput;
-use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMWQuery as Query;
 use Title;
 use WebRequest;
@@ -23,7 +23,7 @@ use WebRequest;
  * The PostProc relies on JavaScript (ext.smw.util.postproc.js) that triggers a
  * web API request and reloads the page on completion of this request.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -59,7 +59,7 @@ class PostProcHandler {
 	private $cache;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $options = [];
 

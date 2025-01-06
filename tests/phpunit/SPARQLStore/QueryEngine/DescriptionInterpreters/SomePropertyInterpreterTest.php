@@ -20,7 +20,7 @@ use SMWDITime as DITime;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -106,8 +106,8 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$hierarchyLookup->expects( $this->once() )
 			->method( 'hasSubproperty' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( true ) );
+			->with( $property )
+			->willReturn( true );
 
 		$resultVariable = 'result';
 

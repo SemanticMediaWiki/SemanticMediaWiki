@@ -4,25 +4,24 @@ namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\Installer;
 use SMW\SetupFile;
-use SMW\Setup;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\Maintenance\MaintenanceCheck;
 use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -70,7 +69,7 @@ class populateHashField extends \Maintenance {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $complete
+	 * @param bool $complete
 	 */
 	public function setComplete( $complete ) {
 		$this->cliMsgFormatter = new CliMsgFormatter();
@@ -216,9 +215,9 @@ class populateHashField extends \Maintenance {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Iterator $rows
+	 * @param Iterator|null $rows
 	 */
-	public function populate( \Iterator $rows = null ) {
+	public function populate( ?\Iterator $rows = null ) {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$this->cliMsgFormatter->setStartTime( (int)microtime( true ) );
 
@@ -285,5 +284,7 @@ class populateHashField extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = populateHashField::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

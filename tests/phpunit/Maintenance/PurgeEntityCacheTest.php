@@ -4,19 +4,19 @@ namespace SMW\Tests\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
 use SMW\EntityCache;
 use SMW\Maintenance\purgeEntityCache;
-use Wikimedia\Rdbms\FakeResultWrapper;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
-use SMW\DIWikiPage;
 use Wikimedia\Rdbms\Database;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\Maintenance\purgeEntityCache
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -73,17 +73,17 @@ class PurgeEntityCacheTest extends TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( $fields ),
+				$fields,
 				$this->anything() )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->entityCache->expects( $this->atLeastOnce() )
 			->method( 'invalidate' )
-			->with( $this->equalTo( $subject ) );
+			->with( $subject );
 
 		$instance = new purgeEntityCache();
 

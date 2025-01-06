@@ -3,14 +3,14 @@
 namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\CsvFileIterator;
-use SMW\Utils\TempFile;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\TempFile;
 
 /**
  * @covers \SMW\Iterators\CsvFileIterator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -78,11 +78,11 @@ class CsvFileIteratorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertEquals(
-			$res,
 			[
 				[ '1', 'Foo', 'abc' ],
 				[ '2', 'Bar', '123' ]
-			]
+			],
+			$res
 		);
 	}
 
@@ -108,20 +108,20 @@ class CsvFileIteratorTest extends \PHPUnit\Framework\TestCase {
 		}
 
 		$this->assertEquals(
-			$instance->getHeader(),
 			[
 				'No',
 				'Text',
 				'Other'
-			]
+			],
+			$instance->getHeader()
 		);
 
 		$this->assertEquals(
-			$res,
 			[
 				[ '1', 'Foo', 'abc' ],
 				[ '2', 'Bar', '123' ]
-			]
+			],
+			$res
 		);
 	}
 

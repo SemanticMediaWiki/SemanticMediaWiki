@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\StatsFormatter;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\StatsFormatter;
 
 /**
  * @covers \SMW\Utils\StatsFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

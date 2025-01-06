@@ -12,7 +12,7 @@ use SMWDataItem;
  * @group semantic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -37,7 +37,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		$test->expects( $this->once() )
 			->method( 'doRun' );
 
-		$callback = function () use( $test ) {
+		$callback = static function () use( $test ) {
 			return $test;
 		};
 
@@ -93,8 +93,8 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 			);
 		}
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$dataValue->getErrors()
 		);
 	}
@@ -118,7 +118,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}
 		} else {
-			$this->assertInternalType( 'array', $dataValue->getErrors() );
+			$this->assertIsArray( $dataValue->getErrors() );
 		}
 
 		// Check interface parameters
@@ -151,7 +151,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}
 		} else {
-			$this->assertInternalType( 'array', $dataValue->getErrors() );
+			$this->assertIsArray( $dataValue->getErrors() );
 		}
 
 		// Check interface parameters

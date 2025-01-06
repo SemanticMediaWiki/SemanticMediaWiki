@@ -7,7 +7,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Query\PrintRequest;
 use SMW\Subobject;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
@@ -24,9 +24,10 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

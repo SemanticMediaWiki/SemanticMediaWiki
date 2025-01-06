@@ -2,18 +2,17 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
+use SMW\DataItemFactory;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
-use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\Query\DescriptionFactory;
-use SMW\DataItemFactory;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -162,7 +161,7 @@ class SomeValueInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function testInterpretDescription_PageValue( $dataItem, $comparator, $options, $expected ) {
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 
 		$this->conditionBuilder->setOptions( new Options(
 			[

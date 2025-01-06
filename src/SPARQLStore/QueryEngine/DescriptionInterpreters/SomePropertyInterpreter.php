@@ -18,7 +18,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -41,7 +41,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -66,7 +66,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		$property = $description->getProperty();
 
-		list( $innerOrderByProperty, $innerCondition, $innerJoinVariable ) = $this->doResolveInnerConditionRecursively(
+		[ $innerOrderByProperty, $innerCondition, $innerJoinVariable ] = $this->doResolveInnerConditionRecursively(
 			$property,
 			$description->getDescription()
 		);
@@ -83,7 +83,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$namespaces
 		);
 
-		list( $subjectName, $objectName, $nonInverseProperty ) = $this->doExchangeForWhenInversePropertyIsUsed(
+		[ $subjectName, $objectName, $nonInverseProperty ] = $this->doExchangeForWhenInversePropertyIsUsed(
 			$property,
 			$objectName,
 			$joinVariable

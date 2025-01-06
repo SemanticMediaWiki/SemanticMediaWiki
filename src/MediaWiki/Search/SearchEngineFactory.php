@@ -2,18 +2,18 @@
 
 namespace SMW\MediaWiki\Search;
 
-use RuntimeException;
 use SearchEngine;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Exception\ClassNotFoundException;
 use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Exception\ClassNotFoundException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author  mwjames
@@ -23,15 +23,15 @@ class SearchEngineFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param IConnectionProvider|IDatabase $connection
+	 * @param mixed|null $connection Either IConnectionProvider (MW 1.41+) or IDatabase (MW 1.40)
 	 *
 	 * @return SearchEngine
 	 * @throws SearchEngineInvalidTypeException
 	 */
 	public function newFallbackSearchEngine( $connection = null ) {
 		if ( $connection !== null &&
-			!$connection instanceof IConnectionProvider &&
-			!$connection instanceof IDatabase
+			( !$connection instanceof IConnectionProvider &&
+			!$connection instanceof IDatabase )
 		) {
 			// TODO: Once MW 1.39 support is dropped, we can put the type as IConnectionProvider.
 			throw new RuntimeException( 'Expected $connection be instanceof either IConnectionProvider or IDatabase' );
@@ -41,16 +41,17 @@ class SearchEngineFactory {
 		$settings = $applicationFactory->getSettings();
 
 		if ( $connection === null ) {
+			// For MW 1.41+, getConnectionManager()->getConnection() returns IConnectionProvider
+			// For MW 1.40, it returns IDatabase
 			$connection = $applicationFactory->getConnectionManager()->getConnection( DB_REPLICA );
 		}
+
+		$dbLoadBalancer = $applicationFactory->create( 'DBLoadBalancer' );
 
 		$type = $settings->get( 'smwgFallbackSearchType' );
 		$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
 
-		$dbLoadBalancer = $applicationFactory->create( 'DBLoadBalancer' );
-
 		if ( is_callable( $type ) ) {
-			// #3939
 			$fallbackSearchEngine = $type( $dbLoadBalancer );
 		} elseif ( $type !== null && $this->isValidSearchDatabaseType( $type ) ) {
 			$fallbackSearchEngine = new $type( $dbLoadBalancer );

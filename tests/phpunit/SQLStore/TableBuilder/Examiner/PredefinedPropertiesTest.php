@@ -3,14 +3,14 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -54,7 +54,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'getPropertyInterwiki' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -62,7 +62,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'replace' );
@@ -74,11 +74,11 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new PredefinedProperties(
 			$store
@@ -119,11 +119,11 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 					'smw_title' => 'Foo',
 					'smw_namespace' => SMW_NS_PROPERTY,
 					'smw_subobject' => '' ] ) )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$connection->expects( $this->at( 1 ) )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -132,11 +132,11 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new PredefinedProperties(
 			$store
@@ -169,11 +169,11 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new PredefinedProperties(
 			$store

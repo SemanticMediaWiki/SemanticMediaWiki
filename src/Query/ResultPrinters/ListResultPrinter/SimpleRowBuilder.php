@@ -8,7 +8,7 @@ use SMWResultArray;
 /**
  * Class SimpleRowBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -37,7 +37,7 @@ class SimpleRowBuilder extends RowBuilder {
 
 			$otherFieldsText =
 				$this->get( 'other-fields-open' ) .
-				join( $this->get( 'propsep' ), $fieldTexts ) .
+				implode( $this->get( 'propsep' ), $fieldTexts ) .
 				$this->get( 'other-fields-close' );
 
 		} else {

@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\ParserFunctions\InfoParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since  2.4
  *
  * @author mwjames
@@ -42,14 +42,14 @@ class InfoParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$processingResult->expects( $this->any() )
 			->method( 'getParameters' )
-			->will( $this->returnValue( [
+			->willReturn( [
 				'message'  => $processedParam,
 				'max-width'  => $processedParam,
 				'theme'  => $processedParam,
-				'icon'     => $processedParam ] ) );
+				'icon'     => $processedParam ] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->handle( $parser, $processingResult )
 		);
 	}

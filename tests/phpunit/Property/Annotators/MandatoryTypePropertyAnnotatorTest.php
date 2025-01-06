@@ -15,7 +15,7 @@ use SMWDIUri as DIUri;
  * @covers \SMW\Property\Annotators\MandatoryTypePropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -56,7 +56,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->never() )
 			->method( 'getPropertyValues' );
@@ -77,7 +77,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->never() )
 			->method( 'getPropertyValues' );

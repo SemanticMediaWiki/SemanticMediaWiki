@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -11,7 +11,7 @@ namespace SMW\Utils;
 class Lru {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $size;
 
@@ -37,7 +37,7 @@ class Lru {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|integer $key
+	 * @param string|int $key
 	 * @param mixed $value
 	 */
 	public function set( $key, $value ) {
@@ -59,7 +59,7 @@ class Lru {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|integer $key
+	 * @param string|int $key
 	 *
 	 * @return mixed
 	 */
@@ -78,7 +78,7 @@ class Lru {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|integer $key
+	 * @param string|int $key
 	 */
 	public function delete( $key ) {
 		if ( !isset( $this->cache[$key] ) ) {

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Onoi\Tesa\Tokenizer\PunctuationRegExTokenizer
  * @group onoi-tesa
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -51,7 +51,7 @@ class PunctuationRegExTokenizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'isWordTokenizer' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new PunctuationRegExTokenizer( $tokenizer );
 
@@ -72,40 +72,40 @@ class PunctuationRegExTokenizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $string ) )
-			->will( $this->returnValue( array( $string ) ) );
+			->with( $string )
+			->willReturn( [ $string ] );
 
 		$instance = new PunctuationRegExTokenizer( $tokenizer );
 
 		$instance->setOption(
 			PunctuationRegExTokenizer::REGEX_EXEMPTION,
-			array( ',' )
+			[ ',' ]
 		);
 
 		$this->assertEquals(
-			array( '123,', '345' ),
+			[ '123,', '345' ],
 			$instance->tokenize( $string )
 		);
 	}
 
 	public function stringProvider() {
-		$provider[] = array(
+		$provider[] = [
 			'123, 345^456&[foo:bar]',
 			'',
-			array( '123', '345', '456', 'foo', 'bar' )
-		);
+			[ '123', '345', '456', 'foo', 'bar' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'123, 345^456&[foo:bar]',
-			array( ',', '&' ),
-			array( '123,', '345', '456&', 'foo', 'bar' )
-		);
+			[ ',', '&' ],
+			[ '123,', '345', '456&', 'foo', 'bar' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'123, 345^456&[foo:bar] 3.',
-			array( ',', '&' ),
-			array( '123,', '345', '456&', 'foo', 'bar', '3' )
-		);
+			[ ',', '&' ],
+			[ '123,', '345', '456&', 'foo', 'bar', '3' ]
+		];
 
 		return $provider;
 	}

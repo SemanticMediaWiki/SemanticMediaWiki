@@ -2,15 +2,14 @@
 
 namespace SMW\Tests;
 
-use SMW\SetupCheck;
-use SMW\Tests\PHPUnitCompat;
 use ReflectionClass;
+use SMW\SetupCheck;
 
 /**
  * @covers \SMW\SetupCheck
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -44,12 +43,12 @@ class SetupCheckTest extends \PHPUnit\Framework\TestCase {
 	public function testHasError() {
 		$this->setupFile->expects( $this->any() )
 			->method( 'inMaintenanceMode' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new SetupCheck( [], $this->setupFile );
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->hasError()
 		);
 	}
@@ -57,8 +56,8 @@ class SetupCheckTest extends \PHPUnit\Framework\TestCase {
 	public function testIsCli() {
 		$instance = new SetupCheck( [], $this->setupFile );
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isCli()
 		);
 	}
@@ -108,7 +107,7 @@ class SetupCheckTest extends \PHPUnit\Framework\TestCase {
 	public function testGetError_CliOutput( $errorType ) {
 		$this->setupFile->expects( $this->any() )
 			->method( 'getMaintenanceMode' )
-			->will( $this->returnValue( [ 'Foo' => 'bar' ] ) );
+			->willReturn( [ 'Foo' => 'bar' ] );
 
 		$instance = new SetupCheck(
 			[
@@ -124,8 +123,8 @@ class SetupCheckTest extends \PHPUnit\Framework\TestCase {
 			$errorType
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getError( true )
 		);
 	}
@@ -136,7 +135,7 @@ class SetupCheckTest extends \PHPUnit\Framework\TestCase {
 	public function testGetError_NoCliHTMLOutput( $errorType ) {
 		$this->setupFile->expects( $this->any() )
 			->method( 'getMaintenanceMode' )
-			->will( $this->returnValue( [ 'Foo' => 'bar' ] ) );
+			->willReturn( [ 'Foo' => 'bar' ] );
 
 		$instance = new SetupCheck(
 			[

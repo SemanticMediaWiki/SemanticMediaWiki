@@ -8,7 +8,7 @@ use SMW\Factbox\CheckMagicWords;
  * @covers \SMW\Factbox\CheckMagicWords
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -32,7 +32,7 @@ class CheckMagicWordsTest extends \PHPUnit\Framework\TestCase {
 
 		$parserOutput->expects( $this->any() )
 			->method( 'getExtensionData' )
-			->will( $this->returnValue( $magicWords ) );
+			->willReturn( $magicWords );
 
 		$instance = new CheckMagicWords(
 			$options

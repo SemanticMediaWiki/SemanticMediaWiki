@@ -4,13 +4,12 @@ namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group semantic-mediawiki
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames

@@ -10,7 +10,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\ChangeOp\ChangeOp
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -54,8 +54,8 @@ class ChangeOpTest extends \PHPUnit\Framework\TestCase {
 			$fixedPropertyRecord[1]
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getFixedPropertyRecords()
 		);
 
@@ -113,8 +113,8 @@ class ChangeOpTest extends \PHPUnit\Framework\TestCase {
 			$instance->getTableChangeOps( 'smw_di_number' )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableChangeOps()
 		);
 	}
@@ -201,8 +201,8 @@ class ChangeOpTest extends \PHPUnit\Framework\TestCase {
 			$diff
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHash()
 		);
 	}

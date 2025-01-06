@@ -6,7 +6,7 @@ use SMW\Message;
 use SMW\ProcessingError;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -16,7 +16,7 @@ class ConstraintError implements ProcessingError {
 	const ERROR_TYPE = 'constraint';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
@@ -29,7 +29,7 @@ class ConstraintError implements ProcessingError {
 	 * @since 3.1
 	 *
 	 * @param string|[] $parameters
-	 * @param integer|string|null $type
+	 * @param int|string|null $type
 	 */
 	public function __construct( $parameters, $type = null ) {
 		$this->parameters = $parameters;

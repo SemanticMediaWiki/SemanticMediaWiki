@@ -3,16 +3,15 @@
 namespace SMW\SQLStore\Installer;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use RuntimeException;
 use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
-use SMW\Setup;
-use RuntimeException;
 use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

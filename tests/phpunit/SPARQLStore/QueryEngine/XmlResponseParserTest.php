@@ -3,16 +3,16 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 use SMWExpLiteral as ExpLiteral;
 use SMWExpResource as ExpResource;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\XmlResponseParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

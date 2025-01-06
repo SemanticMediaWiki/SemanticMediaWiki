@@ -10,7 +10,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Importer\JsonContentIterator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -45,7 +45,7 @@ class JsonContentIteratorTest extends \PHPUnit\Framework\TestCase {
 	public function testGetIterator() {
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
 			->method( 'getContentList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new JsonContentIterator(
 			$this->jsonImportContentsFileDirReader

@@ -7,13 +7,12 @@ use ParserOutput;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\Tests\TestEnvironment;
 use Title;
-use TitleValue;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\LinksUpdateComplete
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -37,7 +36,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'isSkippableUpdate' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
@@ -54,7 +53,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
@@ -79,27 +78,27 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 11001 ) );
+			->willReturn( 11001 );
 
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 9999 ) );
+			->willReturn( 9999 );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$title->expects( $this->any() )
 			->method( 'getPrefixedText' )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$parserOutput = new ParserOutput();
 		$parserOutput->setTitleText( $title->getPrefixedText() );
@@ -110,11 +109,11 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -123,7 +122,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'clearData' );
@@ -172,11 +171,11 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$linksUpdate->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$linksUpdate->expects( $this->atLeastOnce() )
 			->method( 'getParserOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$instance = new LinksUpdateComplete(
 			$this->namespaceExaminer
@@ -220,11 +219,11 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$linksUpdate->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$linksUpdate->expects( $this->atLeastOnce() )
 			->method( 'getParserOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$linksUpdate->expects( $this->any() )
 			->method( 'isRecursive' )

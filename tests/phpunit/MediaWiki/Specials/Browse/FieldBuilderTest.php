@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\Browse\FieldBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -19,8 +19,8 @@ class FieldBuilderTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testGetQueryFormData() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			FieldBuilder::getQueryFormData( 'Foo' )
 		);
 	}
@@ -28,8 +28,8 @@ class FieldBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testCreateLink() {
 		$parameters = [];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			FieldBuilder::createLink( 'Foo', $parameters )
 		);
 	}

@@ -7,7 +7,7 @@ use MediaWiki\MediaWikiServices;
 /**
  * @see https://www.semantic-mediawiki.org/wiki/SMW_logo
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

@@ -10,7 +10,7 @@ use SMWDIUri as DIUri;
  * @covers \SMW\DataItemFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -58,7 +58,7 @@ class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$instance = new DataItemFactory();
 

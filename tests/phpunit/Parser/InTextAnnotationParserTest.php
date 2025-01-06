@@ -5,7 +5,6 @@ namespace SMW\Tests\Parser;
 use ParserOutput;
 use ReflectionClass;
 use SMW\DIProperty;
-use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Parser\LinksProcessor;
@@ -17,7 +16,7 @@ use Title;
  * @covers \SMW\Parser\InTextAnnotationParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -284,16 +283,16 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'canUse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'hasStripMarker' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'unstrip' )
 			->with( $this->stringContains( '<nowiki>Bar</nowiki>' ) )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$parserData = new ParserData(
 			Title::newFromText( __METHOD__ ),

@@ -9,7 +9,7 @@ use SMW\Exporter\Controller\Queue;
  * @covers \SMW\Exporter\Queue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -72,19 +72,19 @@ class QueueTest extends \PHPUnit\Framework\TestCase {
 		$instance = new Queue();
 		$instance->add( $dataItem, 2 );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->count()
 		);
 
 		$instance->done( $dataItem, 1 );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->count()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->count()
 		);

@@ -9,7 +9,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Api\Tasks\UpdateTask
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -53,7 +53,7 @@ class UpdateTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $updateJob ) );
+			->willReturn( $updateJob );
 
 		$instance = new UpdateTask(
 			$this->jobFactory

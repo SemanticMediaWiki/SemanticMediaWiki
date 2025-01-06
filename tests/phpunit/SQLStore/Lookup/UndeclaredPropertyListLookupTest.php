@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use RuntimeException;
 use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
@@ -12,7 +11,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
@@ -35,7 +34,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->requestOptions->expects( $this->any() )
 			->method( 'getExtraConditions' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 	}
 
 	public function testCanConstruct() {
@@ -56,8 +55,8 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 			$this->requestOptions
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTimestamp()
 		);
 
@@ -136,20 +135,20 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->once() )
 			->method( 'findTypeTableId' )
-			->with( $this->equalTo( '_foo' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->with( '_foo' )
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$defaultPropertyType = '_foo';
 
@@ -161,8 +160,8 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 
@@ -192,20 +191,20 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->once() )
 			->method( 'findTypeTableId' )
-			->with( $this->equalTo( '_foo' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->with( '_foo' )
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$defaultPropertyType = '_foo';
 
@@ -217,8 +216,8 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 
@@ -235,7 +234,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$tableDefinition->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -246,12 +245,12 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'findTypeTableId' )
-			->with( $this->equalTo( '_foo' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->with( '_foo' )
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$defaultPropertyType = '_foo';
 
@@ -263,8 +262,8 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 

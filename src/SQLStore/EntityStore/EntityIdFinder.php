@@ -3,21 +3,16 @@
 namespace SMW\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
-use SMW\IteratorFactory;
-use SMW\RequestOptions;
-use SMW\SQLStore\SQLStore;
-use SMW\DIProperty;
-use SMW\TypesRegistry;
-use SMW\PropertyRegistry;
-use SMW\SQLStore\RedirectStore;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\SQLStore\propertyTable\propertyTableHashes;
+use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -40,7 +35,7 @@ class EntityIdFinder {
 	private $idCacheManager;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $fetchPropertyTableHashes = false;
 
@@ -60,7 +55,7 @@ class EntityIdFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $fetchPropertyTableHashes
+	 * @param bool $fetchPropertyTableHashes
 	 */
 	public function setFetchPropertyTableHashes( $fetchPropertyTableHashes ) {
 		$this->fetchPropertyTableHashes = $fetchPropertyTableHashes;
@@ -71,7 +66,7 @@ class EntityIdFinder {
 	 *
 	 * @param DIWikiPage $dataItem
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function findIdByItem( DIWikiPage $dataItem ) {
 		if ( ( $id = $this->idCacheManager->getId( $dataItem ) ) !== false ) {
@@ -113,9 +108,9 @@ class EntityIdFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $title
-	 * @param string|integer $namespace
+	 * @param string|int $namespace
 	 * @param string $iw
 	 * @param string $subobjectName
 	 * @param string &$sortkey
@@ -183,7 +178,7 @@ class EntityIdFinder {
 	 * @since 3.1
 	 *
 	 * @param string $title
-	 * @param string|integer $namespace
+	 * @param string|int $namespace
 	 * @param string $iw
 	 * @param string $subobjectName
 	 * @param string &$sortkey
@@ -264,8 +259,8 @@ class EntityIdFinder {
 	 * @since 3.1
 	 *
 	 * @param string $title
-	 * @param string|integer $namespace
-	 * @param string $iw
+	 * @param string|int $namespace
+	 * @param string|null $iw
 	 * @param string $subobjectName
 	 *
 	 * @return array

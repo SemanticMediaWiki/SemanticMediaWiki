@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\HtmlVTabs;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\HtmlVTabs;
 
 /**
  * @covers \SMW\Utils\HtmlVTabs
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -23,15 +23,15 @@ class HtmlVTabsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetModules() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			HtmlVTabs::getModules()
 		);
 	}
 
 	public function testGetModuleStyles() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			HtmlVTabs::getModuleStyles()
 		);
 	}

@@ -3,14 +3,14 @@
 namespace SMW\Tests\MediaWiki\Specials\PropertyLabelSimilarity;
 
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -56,7 +56,7 @@ class ContentsBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$requestOptions->expects( $this->atLeastOnce() )
 			->method( 'getExtraConditions' )
-			->will( $this->returnValue( [ 'type' => 'Foo', 'threshold' => 50 ] ) );
+			->willReturn( [ 'type' => 'Foo', 'threshold' => 50 ] );
 
 		$methods = [
 			'setName',
@@ -76,7 +76,7 @@ class ContentsBuilderTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -87,8 +87,8 @@ class ContentsBuilderTest extends \PHPUnit\Framework\TestCase {
 			$this->htmlFormRenderer
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml( $requestOptions )
 		);
 	}

@@ -11,7 +11,7 @@ use SMWQueryProcessor as QueryProcessor;
 /**
  * Definition for the format parameter.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -64,9 +64,9 @@ class ResultFormat extends StringParam {
 	 *
 	 * @since 1.6.2
 	 *
-	 * @param string $format
+	 * @param string &$format
 	 *
-	 * @return boolean Indicates if the passed format was an alias, and thus was changed.
+	 * @return bool Indicates if the passed format was an alias, and thus was changed.
 	 */
 	public static function resolveFormatAliases( &$format ) {
 		global $smwgResultAliases;
@@ -152,7 +152,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @param mixed $value
 	 * @param IParam $param
-	 * @param IParamDefinition[] $definitions
+	 * @param IParamDefinition[] &$definitions
 	 * @param IParam[] $params
 	 *
 	 * @return mixed

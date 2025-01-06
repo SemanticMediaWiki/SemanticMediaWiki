@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Structure;
 
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group semantic-mediawiki
  * @group system-test
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -54,13 +54,13 @@ class I18nJsonFileIntegrityTest extends \PHPUnit\Framework\TestCase {
 	public function testMediaWikiI18NJsonDecodeEncode( $file ) {
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$jsonFileReader->getModificationTime()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$jsonFileReader->read()
 		);
 	}
@@ -71,15 +71,15 @@ class I18nJsonFileIntegrityTest extends \PHPUnit\Framework\TestCase {
 	public function testSemanticMediaWikiI18NJsonDecodeEncode( $file ) {
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$jsonFileReader->getModificationTime()
 		);
 
 		$contents = $jsonFileReader->read();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$contents
 		);
 

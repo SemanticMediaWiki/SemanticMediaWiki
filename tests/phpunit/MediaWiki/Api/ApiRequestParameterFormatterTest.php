@@ -3,14 +3,14 @@
 namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\MediaWiki\Api\ApiRequestParameterFormatter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Api\ApiRequestParameterFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -63,7 +63,7 @@ class ApiRequestParameterFormatterTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ApiRequestParameterFormatter( $parameters );
 		$result = $instance->getAskApiParameters();
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
 	}
 

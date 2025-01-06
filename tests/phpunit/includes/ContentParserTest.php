@@ -5,13 +5,12 @@ namespace SMW\Tests;
 use MediaWiki\Content\Renderer\ContentRenderer;
 use MediaWiki\MediaWikiServices;
 use SMW\ContentParser;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ContentParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -81,7 +80,7 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 		$this->parser->expects( $this->any() )
 			->method( 'parse' )
 			->with( $this->stringContains( $text ) )
-			->will( $this->returnValue( $this->parserOutput ) );
+			->willReturn( $this->parserOutput );
 
 		$instance = new ContentParser(
 			$this->title,
@@ -112,7 +111,7 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 
 			$contentRenderer->expects( $this->any() )
 				->method( 'getParserOutput' )
-				->will( $this->returnValue( $this->parserOutput ) );
+				->willReturn( $this->parserOutput );
 
 			return $contentRenderer;
 		} );
@@ -123,11 +122,11 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 
 		$revision->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
-			->will( $this->returnValue( $revision ) );
+			->willReturn( $revision );
 
 		$instance = new ContentParser(
 			$this->title,

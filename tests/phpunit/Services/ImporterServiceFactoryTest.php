@@ -10,7 +10,7 @@ use SMW\Settings;
  * @covers \SMW\Services\ImporterServiceFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -54,7 +54,7 @@ class ImporterServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->containerBuilder->registerObject( 'ConnectionManager', $connectionManager );
 

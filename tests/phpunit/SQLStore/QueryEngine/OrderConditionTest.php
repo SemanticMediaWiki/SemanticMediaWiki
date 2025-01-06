@@ -11,7 +11,7 @@ use SMW\Tests\PHPUnitCompat;
  * @group semantic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -51,7 +51,7 @@ class OrderConditionTest extends \PHPUnit\Framework\TestCase {
 
 		$this->conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'findQuerySegment' )
-			->will( $this->returnValue( $querySegment ) );
+			->willReturn( $querySegment );
 
 		$instance = new OrderCondition();
 
@@ -77,7 +77,7 @@ class OrderConditionTest extends \PHPUnit\Framework\TestCase {
 
 		$this->conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'findQuerySegment' )
-			->will( $this->returnValue( $querySegment ) );
+			->willReturn( $querySegment );
 
 		$instance = new OrderCondition();
 

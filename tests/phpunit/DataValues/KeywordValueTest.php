@@ -6,14 +6,14 @@ use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\KeywordValue;
 use SMW\PropertySpecificationLookup;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\KeywordValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -51,15 +51,15 @@ class KeywordValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getPropertySpecificationLookup' )
-			->will( $this->returnValue( $this->propertySpecificationLookup ) );
+			->willReturn( $this->propertySpecificationLookup );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getDataValueFactory' )
-			->will( $this->returnValue( DataValueFactory::getInstance() ) );
+			->willReturn( DataValueFactory::getInstance() );
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
@@ -78,7 +78,7 @@ class KeywordValueTest extends \PHPUnit\Framework\TestCase {
 	public function testErrorWhenLengthExceedsLimit() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new KeywordValue();
 		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
@@ -86,7 +86,7 @@ class KeywordValueTest extends \PHPUnit\Framework\TestCase {
 		$instance->setUserValue( 'LTVCLTVCSGFzLTIwa2V5d29yZC0yMHRlc3Q6OnRFc3QtMjAyLTVELTVEL2Zvcm1hdD1jYXRlZ29yeS8tM0ZIYXMtMjBkZXNjcmlwdGlvbgLTVCLTVCSGFzLTIwa2V5d29yZC0yMHRlc3Q6OnRFc3QtMjAyLTVELTVEL2Zvcm1hdD1jYXRlZ29yeS8tM0ZIYXMtMjBkZXNjcmlwdGlvbgLTVCLTVCSGFzLTIwaLTVCLTVCSGFzLTIwa..........' );
 		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->getShortWikiText()
 		);
@@ -100,7 +100,7 @@ class KeywordValueTest extends \PHPUnit\Framework\TestCase {
 	public function testGetShortWikiText_WithoutLink() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new KeywordValue();
 		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );

@@ -3,14 +3,14 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\HashField
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -50,14 +50,14 @@ class HashFieldTest extends \PHPUnit\Framework\TestCase {
 
 		$resultWrapper->expects( $this->once() )
 			->method( 'numRows' )
-			->will( $this->returnValue( HashField::threshold() - 1 ) );
+			->willReturn( HashField::threshold() - 1 );
 
 		$this->populateHashField->expects( $this->atLeastOnce() )
 			->method( 'populate' );
 
 		$this->populateHashField->expects( $this->once() )
 			->method( 'fetchRows' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$instance = new HashField(
 			$this->store,
@@ -80,14 +80,14 @@ class HashFieldTest extends \PHPUnit\Framework\TestCase {
 
 		$resultWrapper->expects( $this->once() )
 			->method( 'numRows' )
-			->will( $this->returnValue( HashField::threshold() + 1 ) );
+			->willReturn( HashField::threshold() + 1 );
 
 		$this->populateHashField->expects( $this->atLeastOnce() )
 			->method( 'setComplete' );
 
 		$this->populateHashField->expects( $this->once() )
 			->method( 'fetchRows' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$instance = new HashField(
 			$this->store,

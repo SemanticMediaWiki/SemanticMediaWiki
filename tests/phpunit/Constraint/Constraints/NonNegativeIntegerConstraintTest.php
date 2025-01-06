@@ -3,14 +3,14 @@
 namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
-use SMW\Tests\PHPUnitCompat;
 use SMW\DataItemFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Constraint\Constraints\NonNegativeIntegerConstraint
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -69,11 +69,11 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDINumber( -1 ) ) );
+			->willReturn( $this->dataItemFactory->newDINumber( -1 ) );
 
 		$instance = new NonNegativeIntegerConstraint();
 

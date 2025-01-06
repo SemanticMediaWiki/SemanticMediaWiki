@@ -3,14 +3,14 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\EntityCollation;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\EntityCollation
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -47,7 +47,7 @@ class EntityCollationTest extends \PHPUnit\Framework\TestCase {
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'entity_collation' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$this->setupFile->expects( $this->once() )
 			->method( 'addIncompleteTask' );
@@ -70,7 +70,7 @@ class EntityCollationTest extends \PHPUnit\Framework\TestCase {
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'entity_collation' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new EntityCollation(
 			$this->store

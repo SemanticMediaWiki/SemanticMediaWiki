@@ -2,15 +2,13 @@
 
 namespace SMW\Tests\Query\Result;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\Result\FilterMap;
 
 /**
  * @covers \SMW\Query\Result\FilterMap
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -34,7 +32,7 @@ class FilterMapTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityIdManager ) );
+			->willReturn( $this->entityIdManager );
 	}
 
 	public function testCanConstruct() {
@@ -47,7 +45,7 @@ class FilterMapTest extends \PHPUnit\Framework\TestCase {
 	public function testGetCountListByType() {
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'preload' )
-			->with( $this->equalTo( [ 'Foo' ] ) );
+			->with( [ 'Foo' ] );
 
 		$instance = new FilterMap(
 			$this->store,

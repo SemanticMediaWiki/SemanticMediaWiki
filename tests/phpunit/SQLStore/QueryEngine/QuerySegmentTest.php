@@ -8,7 +8,7 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
  * @covers \SMW\SQLStore\QueryEngine\QuerySegment
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -26,7 +26,7 @@ class QuerySegmentTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QuerySegment();
 		$instance->reset();
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->queryNumber
 		);
@@ -36,7 +36,7 @@ class QuerySegmentTest extends \PHPUnit\Framework\TestCase {
 			$instance->alias
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance::$qnum
 		);
@@ -56,22 +56,22 @@ class QuerySegmentTest extends \PHPUnit\Framework\TestCase {
 			$instance->sortfields
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->joinfield
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->joinTable
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->from
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->where
 		);

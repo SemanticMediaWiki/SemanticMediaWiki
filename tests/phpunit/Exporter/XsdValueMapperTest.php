@@ -11,7 +11,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Exporter\XsdValueMapper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider supportedDataItemProvider
 	 */
 	public function testMatchSupportedTypes( $dataItem, $xsdValue, $xsdType ) {
-		list( $type, $value ) = XsdValueMapper::map( $dataItem );
+		[ $type, $value ] = XsdValueMapper::map( $dataItem );
 
 		$this->assertEquals(
 			$xsdValue,
@@ -106,7 +106,7 @@ class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItem->expects( $this->any() )
 			->method( '__toString' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		# 0
 		$provider[] = [

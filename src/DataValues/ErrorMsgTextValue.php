@@ -10,7 +10,7 @@ use SMWDIBlob as DIBlob;
 /**
  * Handling of a language dependent error message encoded by Message::encode.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -40,9 +40,9 @@ class ErrorMsgTextValue extends DataValue {
 	/**
 	 * @see DataValue::loadDataItem
 	 *
-	 * @param SMWDataItem $dataitem
+	 * @param SMWDataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
 		if ( !$dataItem instanceof DIBlob ) {

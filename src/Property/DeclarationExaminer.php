@@ -6,7 +6,7 @@ use SMW\DIProperty;
 use SMW\SemanticData;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -30,7 +30,7 @@ interface DeclarationExaminer {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isLocked();
 

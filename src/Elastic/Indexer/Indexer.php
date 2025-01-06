@@ -2,29 +2,23 @@
 
 namespace SMW\Elastic\Indexer;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
-use SMW\Services\ServicesContainer;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\SQLStore\ChangeOp\ChangeDiff;
-use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
-use SMW\Store;
-use SMW\Utils\CharArmor;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\MediaWiki\Collator;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
+use SMW\Store;
 use SMW\Utils\Timer;
-use SMWDIBlob as DIBlob;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -61,12 +55,12 @@ class Indexer {
 	private $origin = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRebuild = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $versions = [];
 
@@ -84,7 +78,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param [] $versions
+	 * @param $versions
 	 */
 	public function setVersions( array $versions ) {
 		$this->versions = $versions;
@@ -113,7 +107,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAccessible() {
 		return $this->canReplicate();
@@ -122,7 +116,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isRebuild
+	 * @param bool $isRebuild
 	 */
 	public function isRebuild( $isRebuild = true ) {
 		$this->isRebuild = $isRebuild;
@@ -265,7 +259,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|Title|integer $id
+	 * @param DIWikiPage|Title|int $id
 	 *
 	 * @return string
 	 */

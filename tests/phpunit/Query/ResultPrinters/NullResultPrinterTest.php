@@ -8,7 +8,7 @@ use SMW\Query\ResultPrinters\NullResultPrinter;
  * @covers \SMW\Query\ResultPrinters\NullResultPrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -29,7 +29,7 @@ class NullResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new NullResultPrinter( '' );
 

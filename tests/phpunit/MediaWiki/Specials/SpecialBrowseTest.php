@@ -11,7 +11,7 @@ use Title;
  * @covers \SMW\MediaWiki\Specials\SpecialBrowse
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -34,7 +34,7 @@ class SpecialBrowseTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();

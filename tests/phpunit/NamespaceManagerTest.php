@@ -3,13 +3,12 @@
 namespace SMW\Tests;
 
 use SMW\NamespaceManager;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\NamespaceManager
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -32,15 +31,15 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->localLanguage->expects( $this->any() )
 			->method( 'fetch' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$this->localLanguage->expects( $this->any() )
 			->method( 'getNamespaces' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->localLanguage->expects( $this->any() )
 			->method( 'getNamespaceAliases' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->default = [
 			'smwgNamespacesWithSemanticLinks' => [],
@@ -83,8 +82,8 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetCanonicalNames() {
 		$result = NamespaceManager::getCanonicalNames();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 
@@ -109,8 +108,8 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetCanonicalNamesWithTypeNamespace() {
 		$result = NamespaceManager::getCanonicalNames();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 
@@ -121,8 +120,8 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBuildNamespaceIndex() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			NamespaceManager::buildNamespaceIndex( 100 )
 		);
 	}
@@ -248,15 +247,15 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$localLanguage->expects( $this->any() )
 			->method( 'fetch' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$localLanguage->expects( $this->any() )
 			->method( 'getNamespaces' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getNamespaceAliases' )
-			->will( $this->returnValue( [ 'Foo' => SMW_NS_PROPERTY ] ) );
+			->willReturn( [ 'Foo' => SMW_NS_PROPERTY ] );
 
 		$vars = $this->default + [
 			'wgExtraNamespaces'  => '',

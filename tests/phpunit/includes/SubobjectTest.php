@@ -4,7 +4,6 @@ namespace SMW\Tests;
 
 use SMW\DataValueFactory;
 use SMW\Subobject;
-use SMW\Tests\TestEnvironment;
 use SMWDIBlob;
 use Title;
 
@@ -14,7 +13,7 @@ use Title;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -153,15 +152,15 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'findPropertyTypeID' )
-			->will( $this->returnValue( $parameters['property']['typeId'] ) );
+			->willReturn( $parameters['property']['typeId'] );
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'getKey' )
-			->will( $this->returnValue( $parameters['property']['key'] ) );
+			->willReturn( $parameters['property']['key'] );
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'getLabel' )
-			->will( $this->returnValue( $parameters['property']['label'] ) );
+			->willReturn( $parameters['property']['label'] );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$parameters['dataItem'],

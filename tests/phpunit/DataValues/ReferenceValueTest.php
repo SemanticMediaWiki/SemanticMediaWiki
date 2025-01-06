@@ -4,14 +4,14 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\ReferenceValue;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ReferenceValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -62,11 +62,11 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -94,11 +94,11 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -144,11 +144,11 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

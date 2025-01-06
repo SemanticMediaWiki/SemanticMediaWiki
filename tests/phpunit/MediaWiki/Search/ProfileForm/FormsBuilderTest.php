@@ -3,14 +3,14 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm;
 
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\FormsBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -57,15 +57,15 @@ class FormsBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$customForm->expects( $this->any() )
 			->method( 'getParameters' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->formsFactory->expects( $this->any() )
 			->method( 'newOpenForm' )
-			->will( $this->returnValue( $openForm ) );
+			->willReturn( $openForm );
 
 		$this->formsFactory->expects( $this->any() )
 			->method( 'newCustomForm' )
-			->will( $this->returnValue( $customForm ) );
+			->willReturn( $customForm );
 
 		$instance = new FormsBuilder(
 			$this->webRequest,

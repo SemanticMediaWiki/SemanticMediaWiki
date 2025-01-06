@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Onoi\Tesa\Tokenizer\IcuWordBoundaryTokenizer
  * @group onoi-tesa
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -57,7 +57,7 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 
 		$instance->setOption(
 			IcuWordBoundaryTokenizer::REGEX_EXEMPTION,
-			array( 'Foo' )
+			[ 'Foo' ]
 		);
 	}
 
@@ -79,89 +79,89 @@ class IcuWordBoundaryTokenizerTest extends TestCase {
 	}
 
 	public function stringProvider() {
-		$provider[] = array(
+		$provider[] = [
 			"安全テスト",
-			array( '安全', 'テスト' )
-		);
+			[ '安全', 'テスト' ]
+		];
 
 		// Would expect 'すもも', 'も', 'もも', 'も', 'もも', 'の', 'うち', '。'
-		$provider[] = array(
+		$provider[] = [
 			"すもももももももものうち。",
-			array( 'すもも', 'も', 'も', 'も', 'も', 'も', 'もの', 'うち', '。' )
-		);
+			[ 'すもも', 'も', 'も', 'も', 'も', 'も', 'もの', 'うち', '。' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"李も桃も桃のうち。",
-			array( '李', 'も', '桃', 'も', '桃', 'の', 'うち', '。' )
-		);
+			[ '李', 'も', '桃', 'も', '桃', 'の', 'うち', '。' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"إسرائيل",
-			array( 'إسرائيل' )
-		);
+			[ 'إسرائيل' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"검색엔ㅇㅏ진",
-			array( '검색엔', 'ㅇㅏ', '진' )
-		);
+			[ '검색엔', 'ㅇㅏ', '진' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"검색엔ㅇㅏ진1234abcdfrA",
-			array( '검색엔', 'ㅇㅏ', '진', '1234abcdfrA' )
-		);
+			[ '검색엔', 'ㅇㅏ', '진', '1234abcdfrA' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"1234abcdfrA",
-			array( '1234abcdfrA' )
-		);
+			[ '1234abcdfrA' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"公明執ようなＳＮＳもストーカー行為の対象に",
-			array(
+			[
 				'公明', '執よう', 'な', 'ＳＮＳ', 'も',
 				'ストーカー', '行為', 'の', '対象', 'に'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"公明執",
-			array( '公明', '執' )
-		);
+			[ '公明', '執' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"IQテスト",
-			array( 'IQ', 'テスト' )
-		);
+			[ 'IQ', 'テスト' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"foo テスト bar",
-			array( 'foo', 'テスト', 'bar' )
-		);
+			[ 'foo', 'テスト', 'bar' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"foo テスト bar 123abc ^&'",
-			array( 'foo', 'テスト', 'bar', '123abc', '^', '&', "'" )
-		);
+			[ 'foo', 'テスト', 'bar', '123abc', '^', '&', "'" ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			"was discovered in 1957 and first sold as a medication in 1971",
-			array(
+			[
 				'was', 'discovered', 'in', '1957', 'and',
 				'first', 'sold', 'as', 'a', 'medication', 'in', '1971'
-			)
-		);
+			]
+		];
 
 		// See JaTinySegmenterTokenizerTest for comparison
-		$provider[] = array(
+		$provider[] = [
 			'日本語の新聞記事であれば文字単位で95%程度の精度で分かち書きが行えます。 ',
-			array(
+			[
 				'日本語', 'の', '新聞', '記事', 'で',
 				'あれ', 'ば', '文字', '単位',
 				'で', '95', '%', '程度',
 				'の', '精度', 'で', '分かち書き',
 				'が', '行', 'え', 'ます', '。'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

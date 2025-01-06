@@ -8,7 +8,7 @@ namespace SMW\Tests;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -26,7 +26,7 @@ class CommonDataItemTest extends \PHPUnit\Framework\TestCase {
 
 			$dataItem->expects( $this->any() )
 				->method( 'getSerialization' )
-				->will( $this->returnValue( $value ) );
+				->willReturn( $value );
 
 			$items[] = $dataItem;
 		}

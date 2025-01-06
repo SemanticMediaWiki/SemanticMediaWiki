@@ -8,7 +8,7 @@ use SMW\Settings;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -37,7 +37,7 @@ class ImporterServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->callbackContainerFactory = new CallbackContainerFactory();
 		$this->servicesFileDir = $GLOBALS['smwgServicesFileDir'];

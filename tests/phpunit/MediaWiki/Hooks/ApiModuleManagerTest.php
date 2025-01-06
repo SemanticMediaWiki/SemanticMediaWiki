@@ -8,7 +8,7 @@ use SMW\MediaWiki\Hooks\ApiModuleManager;
  * @covers \SMW\MediaWiki\Hooks\ApiModuleManager
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -49,7 +49,7 @@ class ApiModuleManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$apiModuleManager->expects( $this->once() )
 			->method( 'addModules' )
-			 ->with( $this->equalTo( $modules ) );
+			 ->with( $modules );
 
 		$instance = new ApiModuleManager();
 		$instance->process( $apiModuleManager );

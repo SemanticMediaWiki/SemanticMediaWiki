@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\JsonView;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\JsonView;
 
 /**
  * @covers \SMW\Utils\JsonView
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -36,8 +36,8 @@ class JsonViewTest extends \PHPUnit\Framework\TestCase {
 			$messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->create( 'foo', 'bar' )
 		);
 	}

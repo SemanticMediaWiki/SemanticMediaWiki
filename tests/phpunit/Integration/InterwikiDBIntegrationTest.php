@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use MediaWiki\MediaWikiServices;
 use SMW\DIWikiPage;
-use SMW\SemanticData;
+use SMW\Exporter\ExporterFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\Exporter\ExporterFactory;
 use SMWQuery as Query;
 use Title;
 
@@ -16,7 +16,7 @@ use Title;
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -30,6 +30,8 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $queryResultValidator;
 	private $queryParser;
+	private $semanticDataFactory;
+	private $pageCreator;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -49,26 +51,29 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 			->invokeHooksFromRegistry();
 
 		// Manipulate the interwiki prefix on-the-fly
-		$GLOBALS['wgHooks']['InterwikiLoadPrefix'][] = function ( $prefix, &$interwiki ) {
-			if ( $prefix !== 'iw-test' ) {
-				return true;
+		MediaWikiServices::getInstance()->getHookContainer()->register(
+			'InterwikiLoadPrefix',
+			static function ( $prefix, &$interwiki ) {
+				if ( $prefix !== 'iw-test' ) {
+					return true;
+				}
+
+				$interwiki = [
+					'iw_prefix' => 'iw-test',
+					'iw_url' => 'http://www.example.org/$1',
+					'iw_api' => false,
+					'iw_wikiid' => 'foo',
+					'iw_local' => true,
+					'iw_trans' => false,
+				];
+
+				return false;
 			}
-
-			$interwiki = [
-				'iw_prefix' => 'iw-test',
-				'iw_url' => 'http://www.example.org/$1',
-				'iw_api' => false,
-				'iw_wikiid' => 'foo',
-				'iw_local' => true,
-				'iw_trans' => false,
-			];
-
-			return false;
-		};
+		);
 	}
 
 	protected function tearDown(): void {
-		unset( $GLOBALS['wgHooks']['InterwikiLoadPrefix'] );
+		MediaWikiServices::getInstance()->getHookContainer()->clear( 'InterwikiLoadPrefix' );
 
 		parent::tearDown();
 	}

@@ -8,7 +8,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -40,7 +40,7 @@ class TextSanitizerTest extends \PHPUnit\Framework\TestCase {
 
 		$sanitizer->expects( $this->atLeastOnce() )
 			->method( 'sanitizeWith' )
-			->will( $this->returnValue( $text ) );
+			->willReturn( $text );
 
 		$stopwordAnalyzer = $this->getMockBuilder( '\Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer' )
 			->disableOriginalConstructor()
@@ -56,19 +56,19 @@ class TextSanitizerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->sanitizerFactory->expects( $this->atLeastOnce() )
 			->method( 'newSanitizer' )
-			->will( $this->returnValue( $sanitizer ) );
+			->willReturn( $sanitizer );
 
 		$this->sanitizerFactory->expects( $this->atLeastOnce() )
 			->method( 'newPreferredTokenizerByLanguage' )
-			->will( $this->returnValue( $tokenizer ) );
+			->willReturn( $tokenizer );
 
 		$this->sanitizerFactory->expects( $this->atLeastOnce() )
 			->method( 'newStopwordAnalyzerByLanguage' )
-			->will( $this->returnValue( $stopwordAnalyzer ) );
+			->willReturn( $stopwordAnalyzer );
 
 		$this->sanitizerFactory->expects( $this->atLeastOnce() )
 			->method( 'newSynonymizerByLanguage' )
-			->will( $this->returnValue( $synonymizer ) );
+			->willReturn( $synonymizer );
 
 		$instance = new TextSanitizer(
 			$this->sanitizerFactory

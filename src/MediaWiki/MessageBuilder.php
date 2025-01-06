@@ -16,7 +16,7 @@ use Title;
  * components and decrease depdencency on the Language object with SMW's code
  * base
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
@@ -33,7 +33,7 @@ class MessageBuilder {
 	 *
 	 * @param Language|null $language
 	 */
-	public function __construct( Language $language = null ) {
+	public function __construct( ?Language $language = null ) {
 		$this->language = $language;
 	}
 
@@ -65,7 +65,7 @@ class MessageBuilder {
 	 * @since 2.1
 	 *
 	 * @param mixed $number
-	 * @param boolean $useForSpecialNumbers set to true for numbers like dates
+	 * @param bool $useForSpecialNumbers set to true for numbers like dates
 	 *
 	 * @return string
 	 */
@@ -91,11 +91,11 @@ class MessageBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Title $title,
-	 * @param integer $offset,
-	 * @param integer $offset,
-	 * @param array $query,
-	 * @param boolean|null $isAtTheEnd
+	 * @param Title $title
+	 * @param int $offset
+	 * @param int $offset
+	 * @param array $query
+	 * @param bool|null $isAtTheEnd
 	 *
 	 * @return string
 	 */

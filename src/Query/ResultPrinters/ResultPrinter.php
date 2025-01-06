@@ -21,7 +21,7 @@ use SMWQueryResult as QueryResult;
  * output formatting and the corresponding parameters) and is subclassed by concrete
  * printers that provide the main formatting functionality.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -147,7 +147,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	protected $recursiveTextProcessor;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $recursiveAnnotation = false;
 
@@ -156,7 +156,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * are not tranclucded (imported) into the target page when resolving a
 	 * query.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $transcludeAnnotation = true;
 
@@ -173,7 +173,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * Do not override in deriving classes.
 	 *
 	 * @param string $format
-	 * @param boolean $inline Optional since 1.9
+	 * @param bool $inline Optional since 1.9
 	 */
 	public function __construct( $format, $inline = true ) {
 		global $smwgQDefaultLinking;
@@ -209,9 +209,9 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnabledFeature( $feature ) {
 		return ( (int)$GLOBALS['smwgResultFormatsFeatures'] & $feature ) != 0;
@@ -249,7 +249,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * @see IResultPrinter::getResult
 	 *
-	 * @note: since 1.8 this method is final, since it's the entry point.
+	 * @note since 1.8 this method is final, since it's the entry point.
 	 * Most logic has been moved out to buildResult, which you can override.
 	 *
 	 * @param $results QueryResult
@@ -258,7 +258,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return string
 	 */
-	public final function getResult( QueryResult $results, array $fullParams, $outputMode ) {
+	final public function getResult( QueryResult $results, array $fullParams, $outputMode ) {
 		$this->outputMode = $outputMode;
 		$this->results = $results;
 
@@ -350,7 +350,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param string $result
 	 * @param QueryResult $results
-	 * @param integer $outputmode
+	 * @param int $outputmode
 	 *
 	 * @return string
 	 */
@@ -447,9 +447,10 @@ abstract class ResultPrinter implements IResultPrinter {
 		$link = isset( $params['link'] ) ? $params['link'] : '';
 
 		switch ( $link ) {
-			case 'head': case 'subject':
-					$this->mLinkFirst = true;
-					$this->mLinkOthers = false;
+			case 'head':
+			case 'subject':
+				$this->mLinkFirst = true;
+				$this->mLinkOthers = false;
 				break;
 			case 'all':
 				$this->mLinkFirst = true;
@@ -479,7 +480,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * Depending on current linking settings, returns a linker object
 	 * for making hyperlinks or NULL if no links should be created.
 	 *
-	 * @param boolean $firstcol True of this is the first result column (having special linkage settings).
+	 * @param bool $firstcol True of this is the first result column (having special linkage settings).
 	 *
 	 * @return Linker|null
 	 */
@@ -545,7 +546,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param $context
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryMode( $context ) {
 		// TODO: Now that we are using RequestContext object maybe
@@ -578,7 +579,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * @see IResultPrinter::setShowErrors
 	 *
-	 * @param boolean $show
+	 * @param bool $show
 	 */
 	public function setShowErrors( $show ) {
 		$this->mShowErrors = $show;
@@ -608,7 +609,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @return string
 	 */
 	protected function escapeText( $text, $outputmode ) {
-		return $outputmode == SMW_OUTPUT_HTML ? htmlspecialchars( $text ) : $text;
+		return $outputmode == SMW_OUTPUT_HTML ? htmlspecialchars( $text ?? '' ) : $text;
 	}
 
 	/**
@@ -630,7 +631,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param QueryResult $results
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function linkFurtherResults( QueryResult $results ) {
 		return $this->mInline && $results->hasFurtherResults() && $this->mSearchlabel !== '';
@@ -681,7 +682,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExportFormat() {
 		return false;
@@ -690,7 +691,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeferrable() {
 		return false;
@@ -702,7 +703,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function supportsRecursiveAnnotation() {
 		return false;

@@ -4,13 +4,12 @@ namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Tests\PHPUnitCompat;
-use SMWDITime as DITime;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\ReplicationError
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -52,8 +51,8 @@ class ReplicationErrorTest extends \PHPUnit\Framework\TestCase {
 			ReplicationError::TYPE_EXCEPTION
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->is( ReplicationError::TYPE_EXCEPTION )
 		);
 	}

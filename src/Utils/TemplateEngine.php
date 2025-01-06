@@ -2,11 +2,11 @@
 
 namespace SMW\Utils;
 
-use SMW\Exception\FileNotReadableException;
 use RuntimeException;
+use SMW\Exception\FileNotReadableException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -19,7 +19,7 @@ class TemplateEngine {
 	const HTML_TIDY = 2;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $templates = [];
 
@@ -29,12 +29,12 @@ class TemplateEngine {
 	private $templateDir;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $container = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $compiled = [];
 

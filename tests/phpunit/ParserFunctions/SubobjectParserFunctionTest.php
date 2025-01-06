@@ -10,15 +10,15 @@ use SMW\ParserData;
 use SMW\ParserFunctions\SubobjectParserFunction;
 use SMW\ParserParameterFormatter;
 use SMW\Subobject;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
  * @covers \SMW\ParserFunctions\SubobjectParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -65,8 +65,8 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$instance = $this->acquireInstance( $subobject );
 		$result   = $instance->parse( new ParserParameterFormatter( $parameters ) );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$result
 		);
 	}
@@ -148,7 +148,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$instance = $this->acquireInstance( $subobject );
 		$instance->parse( new ParserParameterFormatter( $parameters ) );
 
-		// Expected to be stable for PHP and HHVM as well
+		// Expected to be stable for PHP as well
 		$this->assertEquals(
 			'_be96d37a4d7c35be8673cb4229b8fdec',
 			$subobject->getSubobjectId()
@@ -221,7 +221,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			new ParserParameterFormatter( $parameters )
 		);
 
-		// Expected to be stable for PHP and HHVM as well
+		// Expected to be stable for PHP as well
 		$this->assertEquals(
 			'_ec7323184d89fe1409b5cfaf09950a95',
 			$subobject->getSubobjectId()
@@ -708,7 +708,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @return SubobjectParserFunction
 	 */
-	private function acquireInstance( Subobject $subobject, ParserOutput $parserOutput = null ) {
+	private function acquireInstance( Subobject $subobject, ?ParserOutput $parserOutput = null ) {
 		if ( $parserOutput === null ) {
 			$parserOutput = new ParserOutput();
 		}

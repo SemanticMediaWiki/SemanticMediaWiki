@@ -3,14 +3,13 @@
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
-use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -54,7 +53,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function testInterpretDescription_NotEmpty() {
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'interpretDescription' )
-			->will( $this->returnValue( $this->conditionBuilder->newCondition( [ 'Foo' ] ) ) );
+			->willReturn( $this->conditionBuilder->newCondition( [ 'Foo' ] ) );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -62,7 +61,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new ConjunctionInterpreter(
 			$this->conditionBuilder

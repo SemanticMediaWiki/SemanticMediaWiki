@@ -2,14 +2,14 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
-use SMW\DIProperty;
-use SMW\Store;
-use SMW\SemanticData;
-use SMW\Message;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\Message;
+use SMW\SemanticData;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -40,9 +40,9 @@ class CommonExaminer extends DeclarationExaminer {
 	 * @since 3.1
 	 *
 	 * @param Store $store
-	 * @param SemanticData $semanticData
+	 * @param SemanticData|null $semanticData
 	 */
-	public function __construct( Store $store, SemanticData $semanticData = null ) {
+	public function __construct( Store $store, ?SemanticData $semanticData = null ) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
 	}

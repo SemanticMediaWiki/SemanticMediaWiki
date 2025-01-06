@@ -9,7 +9,7 @@ use SMW\DataValues\ValueParsers\ImportValueParser;
  * @covers \SMW\DataValues\ImportValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -31,7 +31,7 @@ class ImportValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new ImportValueParser( $mediaWikiNsContentReader ) ) );
+			->willReturn( new ImportValueParser( $mediaWikiNsContentReader ) );
 	}
 
 	public function testCanConstruct() {

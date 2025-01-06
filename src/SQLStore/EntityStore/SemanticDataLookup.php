@@ -4,19 +4,19 @@ namespace SMW\SQLStore\EntityStore;
 
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\DataModel\SequenceMap;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\SemanticData;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMW\SQLStore\Lookup\RedirectTargetLookup;
-use SMW\DataModel\SequenceMap;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -52,7 +52,7 @@ class SemanticDataLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, RequestOptions $requestOptions = null ) {
+	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, ?RequestOptions $requestOptions = null ) {
 		if ( $requestOptions === null || !isset( $requestOptions->conditionConstraint ) ) {
 			return $requestOptions;
 		}
@@ -119,14 +119,14 @@ class SemanticDataLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
-	 * @param DataItem $dataItem
+	 * @param int $id
+	 * @param DataItem|null $dataItem
 	 * @param PropertyTableDefinition $propTable
-	 * @param RequestOptions $requestOptions
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticData( $id, DataItem $dataItem = null, PropertyTableDefinition $propTable, RequestOptions $requestOptions = null ) {
+	public function getSemanticData( $id, ?DataItem $dataItem = null, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
 		if ( !$dataItem instanceof DIWikiPage ) {
 			throw new RuntimeException( 'Expected a DIWikiPage instance' );
 		}
@@ -207,11 +207,11 @@ class SemanticDataLookup {
 	 * @param array $subjects
 	 * @param DIProperty $property
 	 * @param PropertyTableDefinition $propTable
-	 * @param RequestOptions $requestOptions
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
-	public function prefetchDataFromTable( array $subjects, DIProperty $property, PropertyTableDefinition $propTable, RequestOptions $requestOptions = null ) {
+	public function prefetchDataFromTable( array $subjects, DIProperty $property, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
 		$ids = [];
 		$isSubject = true;
 		$entityIdManager = $this->store->getObjectIds();
@@ -260,7 +260,7 @@ class SemanticDataLookup {
 		// the result set so that the `PrefetchCache/Lookup` can distinguish
 		// items by subject during the lazy load
 		foreach ( $res as $key => $data ) {
-			list( $sid, $i, $hash ) = explode( '#', $key );
+			[ $sid, $i, $hash ] = explode( '#', $key );
 
 			if ( !isset( $result[$sid] ) ) {
 				$result[$sid] = [];
@@ -306,14 +306,14 @@ class SemanticDataLookup {
 	 * without the property keys. Container dataItems will be encoded with
 	 * nested arrays like in case (1).
 	 *
-	 * @param integer $id
-	 * @param DataItem $dataItem
+	 * @param int $id
+	 * @param DataItem|null $dataItem
 	 * @param PropertyTableDefinition $propTable
-	 * @param RequestOptions $requestOptions
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
-	public function fetchSemanticDataFromTable( $id, DataItem $dataItem = null, PropertyTableDefinition $propTable, RequestOptions $requestOptions = null ) {
+	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem = null, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
 		$isSubject = $dataItem instanceof DIWikiPage || $dataItem === null;
 
 		// stop if there is not enough data:
@@ -578,7 +578,7 @@ class SemanticDataLookup {
 				$params['propertyKey'] = $row->prop;
 			}
 
-			list( $hash, $r ) = $this->buildResultFromRow( $row, $params );
+			[ $hash, $r ] = $this->buildResultFromRow( $row, $params );
 
 			if ( $hash === '' ) {
 				continue;

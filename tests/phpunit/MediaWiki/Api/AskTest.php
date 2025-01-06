@@ -3,14 +3,14 @@
 namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\MediaWiki\Api\Ask;
-use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\MwApiFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\Ask
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -48,7 +48,7 @@ class AskTest extends \PHPUnit\Framework\TestCase {
 			'query' => implode( '|', $query )
 		] );
 
-		$this->assertInternalType( 'array', $results );
+		$this->assertIsArray( $results );
 
 		// If their is no printrequests array we expect an error array
 		if ( isset( $results['query']['printrequests'] ) ) {

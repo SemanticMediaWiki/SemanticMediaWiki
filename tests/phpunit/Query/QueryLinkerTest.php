@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers SMW\Query\QueryLinker
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -32,11 +32,11 @@ class QueryLinkerTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$query->expects( $this->once() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$parameters = [
 			'Foo' => 'Bar',
@@ -59,11 +59,11 @@ class QueryLinkerTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$query->expects( $this->once() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( $sortKeys ) );
+			->willReturn( $sortKeys );
 
 		$link = QueryLinker::get( $query );
 		$link->setCompactLink( false );

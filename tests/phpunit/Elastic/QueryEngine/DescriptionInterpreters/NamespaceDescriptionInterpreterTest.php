@@ -3,14 +3,13 @@
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
-use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

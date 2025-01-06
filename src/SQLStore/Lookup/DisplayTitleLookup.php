@@ -2,13 +2,13 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use RuntimeException;
+use SMW\DIProperty;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\DIProperty;
-use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

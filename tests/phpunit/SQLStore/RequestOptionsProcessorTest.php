@@ -10,7 +10,7 @@ use SMWStringCondition as StringCondition;
  * @covers \SMW\SQLStore\RequestOptionsProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.3
  *
  * @author mwjames
@@ -72,11 +72,11 @@ class RequestOptionsProcessorTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->assertEquals(
 			$expected,

@@ -8,7 +8,7 @@ use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author Markus Krötzsch
@@ -102,14 +102,14 @@ class HierarchyTempTableBuilder {
 	 * @param string $type
 	 * @param string $tablename
 	 * @param string $valueComposite
-	 * @param integer|null $depth
+	 * @param int|null $depth
 	 *
 	 * @throws RuntimeException
 	 */
 	public function fillTempTable( $type, $tablename, $valueComposite, $depth = null ) {
 		$this->temporaryTableBuilder->create( $tablename );
 
-		list( $smwtable, $d ) = $this->getTableDefinitionByType( $type );
+		[ $smwtable, $d ] = $this->getTableDefinitionByType( $type );
 
 		if ( $depth === null ) {
 			$depth = $d;

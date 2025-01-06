@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Query\RemoteRequest
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -41,7 +41,7 @@ class RemoteRequestTest extends \PHPUnit\Framework\TestCase {
 	public function testGetQueryResult_CannotConnect() {
 		$this->httpRequest->expects( $this->once() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$parameters = [
 			'url' => 'http://example.org/Foo'
@@ -63,15 +63,15 @@ class RemoteRequestTest extends \PHPUnit\Framework\TestCase {
 
 		$this->httpRequest->expects( $this->once() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->httpRequest->expects( $this->once() )
 			->method( 'execute' )
-			->will( $this->returnValue( $output ) );
+			->willReturn( $output );
 
 		$this->httpRequest->expects( $this->once() )
 			->method( 'getLastError' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$parameters = [
 			'url' => 'http://example.org/Foo'

@@ -4,13 +4,12 @@ namespace SMW\Tests;
 
 use SMW\DataTypeRegistry;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataTypeRegistry
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -63,7 +62,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterDatatypeWithCallable() {
-		$callback = function () {
+		$callback = static function () {
 			return new FooValue();
 		};
 
@@ -138,8 +137,8 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetDefaultDataItemTypeIdForValidDataItemType() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$this->dataTypeRegistry->getDefaultDataItemByType( 1 )
 		);
 	}
@@ -164,15 +163,15 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( [ '_wpg' => 'Page' ] ) );
+			->willReturn( [ '_wpg' => 'Page' ] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( [ 'URI'  => '_uri' ] ) );
+			->willReturn( [ 'URI'  => '_uri' ] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DataTypeRegistry(
 			$localLanguage
@@ -198,15 +197,15 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( [ 'URI'  => '_uri' ] ) );
+			->willReturn( [ 'URI'  => '_uri' ] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DataTypeRegistry(
 			$localLanguage
@@ -257,23 +256,23 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$localLanguage->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $localLanguage ) );
+			->willReturn( $localLanguage );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'findDatatypeByLabel' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$instance = new DataTypeRegistry(
 			$localLanguage
@@ -297,15 +296,15 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DataTypeRegistry(
 			$localLanguage
@@ -324,15 +323,15 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DataTypeRegistry(
 			$localLanguage
@@ -352,15 +351,15 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DataTypeRegistry(
 			$localLanguage
@@ -385,15 +384,15 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DataTypeRegistry(
 			$localLanguage
@@ -416,15 +415,15 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( [ $inputLabel => $id ] ) );
+			->willReturn( [ $inputLabel => $id ] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DataTypeRegistry(
 			$localLanguage
@@ -444,15 +443,15 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( [ $id => $inputLabel ] ) );
+			->willReturn( [ $id => $inputLabel ] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DataTypeRegistry(
 			$localLanguage
@@ -464,7 +463,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterCallableGetCallablesByTypeId() {
-		$callback = function () {
+		$callback = static function () {
 			return 'foo';
 		};
 
@@ -474,15 +473,15 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DataTypeRegistry(
 			$localLanguage

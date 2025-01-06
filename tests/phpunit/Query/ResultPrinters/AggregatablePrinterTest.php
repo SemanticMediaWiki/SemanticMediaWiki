@@ -4,17 +4,17 @@ namespace SMW\Tests\Query\ResultPrinters;
 
 use ReflectionClass;
 use SMW\Query\ResultPrinters\AggregatablePrinter;
+use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 use SMWDataItem;
 use SMWDINumber;
 use SMWQueryResult;
-use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\ResultPrinters\AggregatablePrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -64,11 +64,11 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getNext' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [ $expected['message'] ] ) );
+			->willReturn( [ $expected['message'] ] );
 
 		$this->resultPrinterReflector->addParameters(
 			$this->aggregatablePrinter,
@@ -121,7 +121,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 				]
 			);
 
-			$this->assertInternalType( 'integer', $values[$name] );
+			$this->assertIsInt( $values[$name] );
 			$this->assertEquals( $expected[$name], $values[$name] );
 		}
 	}
@@ -145,8 +145,8 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 			SMW_OUTPUT_HTML
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 
@@ -247,11 +247,11 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 			$printRequest->expects( $this->any() )
 				->method( 'getText' )
-				->will( $this->returnValue( $value['printRequest'] ) );
+				->willReturn( $value['printRequest'] );
 
 			$printRequest->expects( $this->any() )
 				->method( 'getLabel' )
-				->will( $this->returnValue( $value['printRequest'] ) );
+				->willReturn( $value['printRequest'] );
 
 			$printRequests[] = $printRequest;
 
@@ -261,11 +261,11 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 			$dataItem->expects( $this->any() )
 				->method( 'getDIType' )
-				->will( $this->returnValue( SMWDataItem::TYPE_NUMBER ) );
+				->willReturn( SMWDataItem::TYPE_NUMBER );
 
 			$dataItem->expects( $this->any() )
 				->method( 'getNumber' )
-				->will( $this->returnValue( $value['number'] ) );
+				->willReturn( $value['number'] );
 
 			$dataValue = $this->getMockBuilder( '\SMWNumberValue' )
 				->disableOriginalConstructor()
@@ -273,15 +273,15 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 			$dataValue->expects( $this->any() )
 				->method( 'getTypeID' )
-				->will( $this->returnValue( '_num' ) );
+				->willReturn( '_num' );
 
 			$dataValue->expects( $this->any() )
 				->method( 'getShortWikiText' )
-				->will( $this->returnValue( $value['dataValue'] ) );
+				->willReturn( $value['dataValue'] );
 
 			$dataValue->expects( $this->any() )
 				->method( 'getDataItem' )
-				->will( $this->returnValue( $dataItem ) );
+				->willReturn( $dataItem );
 
 			$resultArray = $this->getMockBuilder( '\SMWResultArray' )
 				->disableOriginalConstructor()
@@ -290,19 +290,19 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 			$resultArray->expects( $this->any() )
 				->method( 'getText' )
-				->will( $this->returnValue( $value['printRequest'] ) );
+				->willReturn( $value['printRequest'] );
 
 			$resultArray->expects( $this->any() )
 				->method( 'getPrintRequest' )
-				->will( $this->returnValue( $printRequest ) );
+				->willReturn( $printRequest );
 
 			$resultArray->expects( $this->any() )
 				->method( 'getNextDataValue' )
-				->will( $this->onConsecutiveCalls( $dataValue, false ) );
+				->willReturnOnConsecutiveCalls( $dataValue, false );
 
 			$resultArray->expects( $this->any() )
 				->method( 'getNextDataItem' )
-				->will( $this->onConsecutiveCalls( $dataItem, false ) );
+				->willReturnOnConsecutiveCalls( $dataItem, false );
 
 			$resultArrays[] = $resultArray;
 		}
@@ -313,19 +313,19 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( $printRequests ) );
+			->willReturn( $printRequests );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getNext' )
-			->will( $this->onConsecutiveCalls( $resultArrays, false ) );
+			->willReturnOnConsecutiveCalls( $resultArrays, false );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getLink' )
-			->will( $this->returnValue( new \SMWInfolink( true, 'Lala', 'Lula' ) ) );
+			->willReturn( new \SMWInfolink( true, 'Lala', 'Lula' ) );
 
 		$queryResult->expects( $this->any() )
 			->method( 'hasFurtherResults' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		return $queryResult;
 	}

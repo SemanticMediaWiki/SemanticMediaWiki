@@ -3,18 +3,18 @@
 namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\ShowParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -53,7 +53,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$this->expensiveFuncExecutionWatcher->expects( $this->any() )
 			->method( 'hasReachedExpensiveLimit' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -61,7 +61,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -69,7 +69,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
@@ -131,7 +131,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$this->messageFormatter->expects( $this->any() )
 			->method( 'addFromKey' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$this->messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );

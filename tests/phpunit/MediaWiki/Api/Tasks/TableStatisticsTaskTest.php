@@ -9,7 +9,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Api\Tasks\TableStatisticsTask
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -56,8 +56,8 @@ class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'service' )
-			->with( $this->equalTo( 'TableStatisticsLookup' ) )
-			->will( $this->returnValue( $tableStatisticsLookup ) );
+			->with( 'TableStatisticsLookup' )
+			->willReturn( $tableStatisticsLookup );
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -65,7 +65,7 @@ class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' );

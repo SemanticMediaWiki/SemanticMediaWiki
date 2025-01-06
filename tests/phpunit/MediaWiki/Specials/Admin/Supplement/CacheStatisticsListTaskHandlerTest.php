@@ -3,14 +3,14 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
 use SMW\MediaWiki\Specials\Admin\Supplement\CacheStatisticsListTaskHandler;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Supplement\CacheStatisticsListTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -38,7 +38,7 @@ class CacheStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->outputFormatter->expects( $this->any() )
 			->method( 'encodeAsJson' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
@@ -60,8 +60,8 @@ class CacheStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}

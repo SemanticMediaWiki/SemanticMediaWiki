@@ -10,7 +10,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Jobs\ChangePropagationDispatchJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -75,7 +75,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->testEnvironment->registerObject( 'Cache', $cache );
 
@@ -98,7 +98,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->testEnvironment->registerObject( 'Cache', $cache );
 
@@ -173,7 +173,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTableInfoFetcher->expects( $this->atLeastOnce() )
 			->method( 'getDefaultDataItemTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -185,27 +185,27 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -228,14 +228,14 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $dataItem ] ) );
+			->willReturn( [ $dataItem ] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		// Check that it is the dataItem from `getPropertyValues`
-		$checkJobParameterCallback = function ( $jobs ) use( $dataItem ) {
+		$checkJobParameterCallback = static function ( $jobs ) use( $dataItem ) {
 			foreach ( $jobs as $job ) {
 				return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $dataItem );
 			}

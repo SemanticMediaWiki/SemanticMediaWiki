@@ -9,7 +9,7 @@ use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
  * @covers \SMW\SQLStore\TableBuilder\TemporaryTableBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -57,8 +57,8 @@ class TemporaryTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'isType' )
-			->with( $this->equalTo( 'postgres' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'postgres' )
+			->willReturn( true );
 
 		$instance = new TemporaryTableBuilder(
 			$this->connection
@@ -70,7 +70,7 @@ class TemporaryTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testCreateWithAutoCommitFlag() {
 		$this->connection->expects( $this->once() )
 			->method( 'setFlag' )
-			->with( $this->equalTo( Database::AUTO_COMMIT ) );
+			->with( Database::AUTO_COMMIT );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
@@ -108,7 +108,7 @@ class TemporaryTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testDropWithAutoCommitFlag() {
 		$this->connection->expects( $this->once() )
 			->method( 'setFlag' )
-			->with( $this->equalTo( Database::AUTO_COMMIT ) );
+			->with( Database::AUTO_COMMIT );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )

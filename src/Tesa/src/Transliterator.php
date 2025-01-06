@@ -8,7 +8,7 @@ namespace Onoi\Tesa;
  * @see http://www.loc.gov/catdir/cpso/roman.html
  * @see https://en.wikipedia.org/wiki/List_of_ISO_transliterations
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -41,7 +41,7 @@ class Transliterator {
 	 *
 	 * @var array
 	 */
-	private static $diacriticsMap = array(
+	private static $diacriticsMap = [
 			"Á" => "A", "Ă" => "A", "Ắ" => "A", "Ặ" => "A", "Ằ" => "A", "Ẳ" => "A", "Ẵ" => "A",
 			"Ǎ" => "A", "Â" => "A", "Ấ" => "A", "Ậ" => "A", "Ầ" => "A", "Ẩ" => "A", "Ẫ" => "A",
 			"Ä" => "AE", "Ǟ" => "A", "Ȧ" => "A", "Ǡ" => "A", "Ạ" => "A", "Ȁ" => "A", "À" => "A",
@@ -161,7 +161,7 @@ class Transliterator {
 			"ƶ" => "z", "ɀ" => "z", "ﬀ" => "ff", "ﬃ" => "ffi", "ﬄ" => "ffl", "ﬁ" => "fi",
 			"ﬂ" => "fl", "ĳ" => "ij", "œ" => "oe", "ﬆ" => "st", "ₐ" => "a", "ₑ" => "e", "ᵢ" => "i",
 			"ⱼ" => "j", "ₒ" => "o", "ᵣ" => "r", "ᵤ" => "u", "ᵥ" => "v", "ₓ" => "x"
-		);
+		];
 
 		/**
 		 * @see http://en.wikipedia.org/wiki/ISO_843
@@ -172,7 +172,7 @@ class Transliterator {
 		 *
 		 * @var array
 		 */
-	private static $greekMap = array(
+	private static $greekMap = [
 
 			"ου" => "ou",
 			"Ου" => "Ou",
@@ -252,18 +252,18 @@ class Transliterator {
 			"ψ" => "ps",
 			"ω" => "ō",
 			"ώ" => "ṓ",
-		);
+		];
 
 	/**
 	 * @var array
 	 */
-	private static $transliterationMap = array();
+	private static $transliterationMap = [];
 
 	/**
 	 * @since 0.1
 	 *
 	 * @param string $string
-	 * @param integer $flag
+	 * @param int $flag
 	 *
 	 * @return string
 	 */
@@ -275,7 +275,7 @@ class Transliterator {
 		}
 
 		if ( !isset( self::$transliterationMap[$flag] ) ) {
-			$transliterationMap = array();
+			$transliterationMap = [];
 
 			if ( $flag === ( $flag | self::GREEK ) ) {
 				$transliterationMap += self::$greekMap;

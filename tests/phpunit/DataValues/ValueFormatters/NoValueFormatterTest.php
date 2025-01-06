@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
-use RuntimeException;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 use SMW\Tests\PHPUnitCompat;
 
@@ -10,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\DataValues\ValueFormatters\NoValueFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -46,7 +45,7 @@ class NoValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItem->expects( $this->once() )
 			->method( 'getSerialization' )
-			->will( $this->returnValue( 'isFromSerializationMethod' ) );
+			->willReturn( 'isFromSerializationMethod' );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -55,11 +54,11 @@ class NoValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->once() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
 		$instance = new NoValueFormatter( $dataValue );
 

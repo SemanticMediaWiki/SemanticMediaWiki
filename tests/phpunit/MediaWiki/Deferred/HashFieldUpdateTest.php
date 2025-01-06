@@ -4,13 +4,12 @@ namespace SMW\Tests\MediaWiki\Deferred;
 
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\Tests\TestEnvironment;
-use SMW\Site;
 
 /**
  * @covers \SMW\MediaWiki\Deferred\HashFieldUpdate
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -49,8 +48,8 @@ class HashFieldUpdateTest extends \PHPUnit\Framework\TestCase {
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'smw_hash' => '' ] ),
-				$this->equalTo( [ 'smw_id' => 1001 ] ) );
+				[ 'smw_hash' => '' ],
+				[ 'smw_id' => 1001 ] );
 
 		HashFieldUpdate::$isCommandLineMode = true;
 		HashFieldUpdate::addUpdate( $this->connection, 1001, '' );
@@ -61,8 +60,8 @@ class HashFieldUpdateTest extends \PHPUnit\Framework\TestCase {
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'smw_hash' => '__hash__' ] ),
-				$this->equalTo( [ 'smw_id' => 42 ] ) );
+				[ 'smw_hash' => '__hash__' ],
+				[ 'smw_id' => 42 ] );
 
 		$instance = new HashFieldUpdate(
 			$this->connection,

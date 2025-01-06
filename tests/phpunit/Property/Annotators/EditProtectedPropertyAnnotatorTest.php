@@ -7,13 +7,12 @@ use SMW\DataItemFactory;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\Property\Annotators\EditProtectedPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -98,7 +97,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getRestrictions' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$instance = new EditProtectedPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
@@ -116,11 +115,11 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$provider = [];
 
@@ -152,11 +151,11 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		# 2
 		$provider[] = [
@@ -175,11 +174,11 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		# 3
 		$provider[] = [

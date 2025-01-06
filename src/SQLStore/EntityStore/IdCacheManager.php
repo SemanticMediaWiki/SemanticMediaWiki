@@ -4,10 +4,9 @@ namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
 use SMW\DIWikiPage;
-use SMW\SQLStore\SQLStore;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -23,7 +22,7 @@ class IdCacheManager {
 	const REDIRECT_TARGET = 'redirect.target.lookup';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $caches;
 
@@ -68,7 +67,7 @@ class IdCacheManager {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function get( $key ) {
 		if ( !isset( $this->caches[$key] ) ) {
@@ -83,7 +82,7 @@ class IdCacheManager {
 	 *
 	 * @param string $hash
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasCache( $hash ) {
 		if ( !is_string( $hash ) ) {
@@ -97,10 +96,10 @@ class IdCacheManager {
 	 * @since 3.0
 	 *
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobject
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $sortkey
 	 */
 	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
@@ -135,7 +134,7 @@ class IdCacheManager {
 	 * @since 3.0
 	 *
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobject
 	 */
@@ -185,7 +184,7 @@ class IdCacheManager {
 	 *
 	 * @param DIWikiPage|array $args
 	 *
-	 * @return integer|boolean
+	 * @return int|bool
 	 */
 	public function getId( $args ) {
 		if ( $args instanceof DIWikiPage ) {
@@ -216,11 +215,11 @@ class IdCacheManager {
 	 * @since 3.0
 	 *
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobject
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function getSort( $args ) {
 		if ( is_array( $args ) ) {

@@ -3,24 +3,23 @@
 namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
-use Onoi\MessageReporter\CallbackMessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Setup;
-use SMW\Utils\CliMsgFormatter;
-use SMW\Maintenance\MaintenanceCheck;
 use SMW\Localizer\CopyLocalMessages;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -174,5 +173,7 @@ class runLocalMessageCopy extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = runLocalMessageCopy::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

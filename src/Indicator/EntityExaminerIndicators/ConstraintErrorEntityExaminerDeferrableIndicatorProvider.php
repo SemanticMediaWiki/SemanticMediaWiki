@@ -2,11 +2,10 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -14,14 +13,14 @@ use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 class ConstraintErrorEntityExaminerDeferrableIndicatorProvider extends ConstraintErrorEntityExaminerIndicatorProvider implements DeferrableIndicatorProvider {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isDeferredMode = false;
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $type
+	 * @param bool $type
 	 */
 	public function setDeferredMode( bool $isDeferredMode ) {
 		$this->isDeferredMode = $isDeferredMode;
@@ -30,7 +29,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProvider extends Constrain
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;

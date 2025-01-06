@@ -4,14 +4,12 @@ namespace SMW\Tests\Property;
 
 use Html;
 use SMW\Property\DeclarationExaminerMsgBuilder;
-use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminerMsgBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -41,7 +39,7 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testBuildHTML( $messages, $expected ) {
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( $messages ) );
+			->willReturn( $messages );
 
 		$instance = new DeclarationExaminerMsgBuilder();
 

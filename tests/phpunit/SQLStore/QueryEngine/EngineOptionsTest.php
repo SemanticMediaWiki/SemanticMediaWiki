@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\QueryEngine\EngineOptions
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -28,13 +28,13 @@ class EngineOptionsTest extends \PHPUnit\Framework\TestCase {
 	public function testInitialState() {
 		$instance = new EngineOptions();
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->get( 'smwgIgnoreQueryErrors' )
 		);
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->get( 'smwgQSortFeatures' )
 		);
 	}

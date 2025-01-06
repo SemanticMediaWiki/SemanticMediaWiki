@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\TemplateEngine;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @covers \SMW\Utils\TemplateEngine
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

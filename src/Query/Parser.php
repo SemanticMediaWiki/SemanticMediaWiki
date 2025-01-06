@@ -5,7 +5,7 @@ namespace SMW\Query;
 use SMW\Query\Language\Description;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -25,7 +25,7 @@ interface Parser {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getErrors();
 
@@ -36,7 +36,7 @@ interface Parser {
 	 *
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function containsSelfReference();
 

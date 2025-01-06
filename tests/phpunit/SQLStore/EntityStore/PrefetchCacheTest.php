@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\PrefetchCache;
 use SMW\Tests\PHPUnitCompat;
 
@@ -11,7 +11,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\EntityStore\PrefetchCache
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -59,16 +59,16 @@ class PrefetchCacheTest extends \PHPUnit\Framework\TestCase {
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'getSMWPageID' )
-			->with( $this->equalTo( __METHOD__ ) )
-			->will( $this->returnValue( 42 ) );
+			->with( __METHOD__ )
+			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->prefetchItemLookup->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ 42 => [ DIWikiPage::newFromText( 'Bar' ) ] ] ) );
+			->willReturn( [ 42 => [ DIWikiPage::newFromText( 'Bar' ) ] ] );
 
 		$instance = new PrefetchCache(
 			$this->store,

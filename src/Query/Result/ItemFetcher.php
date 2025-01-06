@@ -2,9 +2,7 @@
 
 namespace SMW\Query\Result;
 
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
-use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Parser\InTextAnnotationParser;
@@ -14,10 +12,9 @@ use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -50,7 +47,7 @@ class ItemFetcher {
 	private $dataItems = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $prefetch = true;
 
@@ -87,7 +84,7 @@ class ItemFetcher {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ) {
 		$this->queryToken = $queryToken;
 	}
 

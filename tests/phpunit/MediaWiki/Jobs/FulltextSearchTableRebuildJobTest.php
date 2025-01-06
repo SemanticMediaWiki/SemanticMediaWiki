@@ -4,8 +4,8 @@ namespace SMW\Tests\MediaWiki\Jobs;
 
 use RuntimeException;
 use SMW\DIWikiPage;
-use SMW\StoreFactory;
 use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
+use SMW\StoreFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 
@@ -13,7 +13,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
  * @covers \SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -28,7 +28,7 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit\Framework\TestCase {
 	protected $testDatabaseTableBuilder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isUsableUnitTestDatabase = true;
 

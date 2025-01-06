@@ -2,14 +2,13 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use ParserOutput;
 use SMW\MediaWiki\FileRepoFinder;
 
 /**
  * @covers \SMW\MediaWiki\FileRepoFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -38,7 +37,7 @@ class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->repoGroup->expects( $this->once() )
 			->method( 'findFile' )
-			->will( $this->returnValue( $file ) );
+			->willReturn( $file );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -59,29 +58,33 @@ class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$db = $this->getMockBuilder( '\Database' )
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			// Mock the IReadableDatabase interface
+			$db = $this->getMockBuilder( \Wikimedia\Rdbms\IReadableDatabase::class )
 			->disableOriginalConstructor()
 			->getMock();
+		} else {
+			$db = $this->getMockBuilder( '\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+		}
 
 		$localRepo = $this->getMockBuilder( '\LocalRepo' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		// Ensure getReplicaDB returns a mock of IReadableDatabase
 		$localRepo->expects( $this->any() )
 			->method( 'getReplicaDB' )
-			->will( $this->returnValue( $db ) );
+			->willReturn( $db );
 
 		$this->repoGroup->expects( $this->any() )
 			->method( 'getLocalRepo' )
-			->will( $this->returnValue( $localRepo ) );
+			->willReturn( $localRepo );
 
 		$localRepo->expects( $this->once() )
 			->method( 'findBySha1' )
-			->will( $this->returnValue( [ $file ] ) );
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+			->willReturn( [ $file ] );
 
 		$instance = new FileRepoFinder(
 			$this->repoGroup

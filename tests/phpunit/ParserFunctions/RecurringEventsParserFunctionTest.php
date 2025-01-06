@@ -2,14 +2,13 @@
 
 namespace SMW\Tests\ParserFunctions;
 
-use ParserOutput;
-use ReflectionClass;
 use MediaWiki\MediaWikiServices;
+use ParserOutput;
 use SMW\MessageFormatter;
 use SMW\ParserData;
-use SMW\RecurringEvents;
 use SMW\ParserFunctions\RecurringEventsParserFunction;
 use SMW\ParserParameterProcessor;
+use SMW\RecurringEvents;
 use SMW\Subobject;
 use Title;
 
@@ -17,7 +16,7 @@ use Title;
  * @covers \SMW\ParserFunctions\RecurringEventsParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -321,7 +320,7 @@ class RecurringEventsParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		// |include=March 16, 2010;March 23, 2010
 		// |exclude=January 18, 2010;January 25, 2010
 		// }}
-		$provider[]  = [
+		$provider[] = [
 			[
 				'_FooBar',
 				'property=Has date',

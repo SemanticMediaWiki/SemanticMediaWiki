@@ -19,7 +19,7 @@ use Wikimedia\ScopedCallback;
  * interface are likely therefore this class should not be used other than by
  * SMW itself.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -53,12 +53,12 @@ class Database {
 	private $transactionHandler;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $flags = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $insertId = null;
 
@@ -83,7 +83,7 @@ class Database {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function releaseConnection() {
 		$this->connRef->releaseConnections();
@@ -92,7 +92,7 @@ class Database {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function ping() {
 		return true;
@@ -112,7 +112,7 @@ class Database {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isType( $type ) {
 		if ( $this->type === '' ) {
@@ -168,7 +168,7 @@ class Database {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer $ts
+	 * @param int $ts
 	 *
 	 * @return string
 	 */
@@ -181,7 +181,7 @@ class Database {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $prefix
+	 * @param string|null $prefix
 	 *
 	 * @return string
 	 */
@@ -465,7 +465,7 @@ class Database {
 		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
 		$row = $res->fetchRow();
 
-		return $this->insertId = is_null( $row[0] ) ? null : (int)$row[0];
+		return $this->insertId = $row[0] === null ? null : (int)$row[0];
 	}
 
 	/**
@@ -620,7 +620,7 @@ class Database {
 	 * @param string|null $prefix
 	 * @param string $fname
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function listTables( $prefix = null, $fname = __METHOD__ ) {
 		return $this->connRef->getConnection( 'read' )->listTables( $prefix, $fname );
@@ -708,7 +708,7 @@ class Database {
 	 *
 	 * @param string $fname
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inSectionTransaction( $fname = __METHOD__ ) {
 		return $this->transactionHandler->inSectionTransaction( $fname );

@@ -6,10 +6,8 @@ use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\StoreFactory;
-use SMWTestsDatabaseTestCase;
 use SMWRequestOptions;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * Tests for the SMWStore class.
@@ -36,8 +34,8 @@ class StoreTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	* @dataProvider getSemanticDataProvider
-	*/
+	 * @dataProvider getSemanticDataProvider
+	 */
 	public function testGetSemanticData( $titleText, $filter = false ) {
 		$title = Title::newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
@@ -58,15 +56,15 @@ class StoreTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	* @dataProvider getPropertyValuesDataProvider
-	*/
+	 * @dataProvider getPropertyValuesDataProvider
+	 */
 	public function testGetPropertyValues( $titleText, DIProperty $property, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertyValues( $subject, $property, $requestOptions );
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertContainsOnlyInstancesOf( '\SMWDataItem', $result );
 	}
 
@@ -77,8 +75,8 @@ class StoreTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	* @dataProvider getPropertySubjectsDataProvider
-	*/
+	 * @dataProvider getPropertySubjectsDataProvider
+	 */
 	public function testGetPropertySubjects( DIProperty $property, $value, $requestOptions = null ) {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertySubjects( $property, $value, $requestOptions );
@@ -104,15 +102,15 @@ class StoreTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	* @dataProvider getPropertiesDataProvider
-	*/
+	 * @dataProvider getPropertiesDataProvider
+	 */
 	public function testGetProperties( $titleText, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
 		$result = $store->getProperties( $subject, $requestOptions );
 
-		$this->assertTrue( is_array( $result ) );
+		$this->assertIsArray( $result );
 
 		foreach ( $result as $property ) {
 			$this->assertInstanceOf(
@@ -181,7 +179,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getStatistics();
 
-		$this->assertTrue( is_array( $result ) );
+		$this->assertIsArray( $result );
 		$this->assertArrayHasKey( 'PROPUSES', $result );
 		$this->assertArrayHasKey( 'USEDPROPS', $result );
 		$this->assertArrayHasKey( 'DECLPROPS', $result );
@@ -208,7 +206,7 @@ class StoreTest extends SMWIntegrationTestCase {
 
 		$instance->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $expected ] ) );
+			->willReturn( [ $expected ] );
 
 		$this->assertEquals(
 			$expected,

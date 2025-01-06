@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxValueFilter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -48,7 +48,7 @@ class CheckboxValueFilterTest extends \PHPUnit\Framework\TestCase {
 	public function testCreate_NoFilter() {
 		$this->templateEngine->expects( $this->any() )
 			->method( 'publish' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$params = [
 			'min_item' => 1
@@ -66,11 +66,10 @@ class CheckboxValueFilterTest extends \PHPUnit\Framework\TestCase {
 		$filters = [];
 		$raw = [];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->create( $this->urlArgs, 'Foo', $filters, $raw )
 		);
 	}
 
 }
-

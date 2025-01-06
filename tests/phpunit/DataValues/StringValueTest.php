@@ -9,7 +9,7 @@ use SMW\DataValues\ValueFormatters\StringValueFormatter;
  * @covers \SMW\DataValues\StringValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -31,7 +31,7 @@ class StringValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 	}
 
 	public function testCanConstruct() {
@@ -49,7 +49,7 @@ class StringValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $stringValueFormatter ) );
+			->willReturn( $stringValueFormatter );
 
 		$instance->setDataValueServiceFactory(
 			$this->dataValueServiceFactory

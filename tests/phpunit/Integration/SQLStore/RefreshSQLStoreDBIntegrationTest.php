@@ -7,7 +7,6 @@ use SMW\Tests\Utils\MwHooksHandler;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use Title;
-use WikiPage;
 
 /**
  *
@@ -15,9 +14,10 @@ use WikiPage;
  * @group SMWExtension
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

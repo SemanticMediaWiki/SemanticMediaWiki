@@ -11,7 +11,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\DataValues\MonolingualTextValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -35,11 +35,11 @@ class MonolingualTextValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new MonolingualTextValueParser() ) );
+			->willReturn( new MonolingualTextValueParser() );
 	}
 
 	public function testCanConstruct() {
@@ -146,7 +146,7 @@ class MonolingualTextValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $monolingualTextValueFormatter ) );
+			->willReturn( $monolingualTextValueFormatter );
 
 		$instance->setDataValueServiceFactory(
 			$this->dataValueServiceFactory
@@ -168,7 +168,7 @@ class MonolingualTextValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $monolingualTextValueFormatter ) );
+			->willReturn( $monolingualTextValueFormatter );
 
 		$instance->setDataValueServiceFactory(
 			$this->dataValueServiceFactory

@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Search;
 
 use Content;
-use Title;
 use SearchEngine;
 use RuntimeException;
+use Title;
 use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
 
@@ -13,7 +13,7 @@ use Wikimedia\Rdbms\IDatabase;
  * Facade to the MediaWiki `SearchEngine` which doesn't allow any factory
  * or callable to construct an instance.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author  Stephan Gambke
@@ -37,8 +37,8 @@ class ExtendedSearchEngine extends SearchEngine {
 	 */
 	public function __construct( $connection = null ) {
 		if ( $connection !== null &&
-			!$connection instanceof IConnectionProvider &&
-			!$connection instanceof IDatabase
+			( !$connection instanceof IConnectionProvider &&
+			!$connection instanceof IDatabase )
 		) {
 			// TODO: Once MW 1.39 support is dropped, we can put the type as IConnectionProvider.
 			throw new RuntimeException( 'Expected $connection be instanceof either IConnectionProvider or IDatabase' );
@@ -75,7 +75,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * @param null|SearchEngine $fallbackSearch
 	 */
-	public function setFallbackSearchEngine( SearchEngine $fallbackSearchEngine = null ) {
+	public function setFallbackSearchEngine( ?SearchEngine $fallbackSearchEngine = null ) {
 		$this->fallbackSearchEngine = $fallbackSearchEngine;
 	}
 
@@ -146,7 +146,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTextFromContent( Title $t, Content $c = null ) {
+	public function getTextFromContent( Title $t, ?Content $c = null ) {
 		return $this->fallbackSearchEngine->getTextFromContent( $t, $c );
 	}
 
@@ -199,7 +199,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @see SearchEngine::getFeatureData
 	 *
-	 * @param String $feature
+	 * @param string $feature
 	 *
 	 * @return array|null
 	 */
@@ -307,7 +307,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getErrors() {
 		return $this->extendedSearch->getErrors();
@@ -346,7 +346,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getShowSuggestion() {
 		return $this->showSuggestion;

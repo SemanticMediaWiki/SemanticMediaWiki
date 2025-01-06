@@ -2,16 +2,13 @@
 
 namespace SMW;
 
-use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\NamespaceExaminer;
-use SMW\DIWikiPage;
-use SMW\EntityCache;
-use Title;
 use Page;
+use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
+use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -36,7 +33,7 @@ class DependencyValidator {
 	private $entityCache;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL = 3600;
 
@@ -46,7 +43,7 @@ class DependencyValidator {
 	private $eTag;
 
 	/**
-	 * @var array $titles Title IDs marked as having outdated dependencies.
+	 * @var array Title IDs marked as having outdated dependencies.
 	 */
 	private static $titles = [];
 
@@ -66,7 +63,7 @@ class DependencyValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $cacheTTL
+	 * @param int $cacheTTL
 	 */
 	public function setCacheTTL( $cacheTTL ) {
 		$this->cacheTTL = $cacheTTL;
@@ -84,7 +81,7 @@ class DependencyValidator {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function makeCacheKey( Title $title ) {
 		return EntityCache::makeCacheKey( 'parsercacheinvalidator', $title->getPrefixedDBKey() );
@@ -107,7 +104,7 @@ class DependencyValidator {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasLikelyOutdatedDependencies( Title $title ): bool {
 		return self::$titles[$title->getPrefixedText()] ?? false;
@@ -118,7 +115,7 @@ class DependencyValidator {
 	 *
 	 * @param Page $page
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasArchaicDependencies( DIWikiPage $subject ) {
 		$title = $subject->getTitle();
@@ -160,7 +157,7 @@ class DependencyValidator {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canKeepParserCache( DIWikiPage $subject ) {
 		$key = $this->makeCacheKey( $subject->getTitle() );

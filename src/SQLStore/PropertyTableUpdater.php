@@ -2,16 +2,16 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store;
-use SMW\Parameters;
 use SMW\DIProperty;
-use SMW\SQLStore\Exception\TableMissingIdFieldException;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\Parameters;
+use SMW\SQLStore\Exception\TableMissingIdFieldException;
+use SMW\Store;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -67,7 +67,7 @@ class PropertyTableUpdater {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param Parameters $parameters
 	 */
 	public function update( $id, Parameters $parameters ) {
@@ -146,7 +146,7 @@ class PropertyTableUpdater {
 	 *
 	 * @param PropertyTableDefinition $propertyTable
 	 * @param array $rows array of rows to insert/delete
-	 * @param boolean $insert
+	 * @param bool $insert
 	 */
 	private function update_rows( PropertyTableDefinition $propertyTable, array $rows, $insert ) {
 		if ( empty( $rows ) ) {

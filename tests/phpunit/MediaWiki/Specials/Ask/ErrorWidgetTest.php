@@ -10,7 +10,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\Ask\ErrorWidget
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -20,22 +20,22 @@ class ErrorWidgetTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testSessionFailure() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ErrorWidget::sessionFailure()
 		);
 	}
 
 	public function testNoScript() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ErrorWidget::noScript()
 		);
 	}
 
 	public function testNoResult() {
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ErrorWidget::noResult()
 		);
 	}
@@ -50,7 +50,7 @@ class ErrorWidgetTest extends \PHPUnit\Framework\TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( $errors ) );
+			->willReturn( $errors );
 
 		$this->assertEquals(
 			$expected,

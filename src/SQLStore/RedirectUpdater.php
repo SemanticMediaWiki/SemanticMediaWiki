@@ -2,23 +2,19 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Utils\Flag;
-use SMW\SemanticData;
-use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
-use SMW\SQLStore\PropertyStatisticsStore;
-use SMW\SQLStore\TableFieldUpdater;
-use SMW\Store;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\EntityStore\IdChanger;
-use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\DIWikiPage;
 use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\SQLStore\EntityStore\IdChanger;
+use SMW\Store;
+use SMW\Utils\Flag;
 use Title;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -46,12 +42,12 @@ class RedirectUpdater {
 	private $propertyStatisticsStore;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $lookupCache = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $equalitySupport = 0;
 
@@ -73,7 +69,7 @@ class RedirectUpdater {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $equalitySupport
+	 * @param int $equalitySupport
 	 */
 	public function setEqualitySupport( int $equalitySupport ) {
 		$this->equalitySupport = new Flag( $equalitySupport );
@@ -103,9 +99,9 @@ class RedirectUpdater {
 	 * @since 1.8
 	 *
 	 * @param string $source
-	 * @param integer $oldnamespace
+	 * @param int $oldnamespace
 	 * @param string $target
-	 * @param integer $newnamespace
+	 * @param int $newnamespace
 	 */
 	public function moveSubobjects( $source, $oldnamespace, $target, $newnamespace ) {
 		$idTable = $this->store->getObjectIds();
@@ -145,8 +141,8 @@ class RedirectUpdater {
 	 *
 	 * @param Title $oldTitle
 	 * @param Title $newTitle
-	 * @param integer $pageId
-	 * @param integer $redirectId
+	 * @param int $pageId
+	 * @param int $redirectId
 	 */
 	public function doUpdate( DIWikiPage $source, DIWikiPage $target, array $options ) {
 		$idTable = $this->store->getObjectIds();
@@ -208,7 +204,7 @@ class RedirectUpdater {
 	 *
 	 * @param array $redirects
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function shouldCleanUpAnnotationsAndRedirects( array $redirects = [] ): bool {
 		if ( $redirects === [] ) {
@@ -277,13 +273,13 @@ class RedirectUpdater {
 	 * @since 1.8
 	 *
 	 * @param string $subject_t
-	 * @param integer $subject_ns
+	 * @param int|null $subject_ns
 	 * @param string $curtarget_t
-	 * @param integer $curtarget_ns
+	 * @param int $curtarget_ns
 	 *
-	 * @return integer the new canonical ID of the subject
+	 * @return int the new canonical ID of the subject
 	 */
-	public function updateRedirects( DIWikiPage $source, DIWikiPage $target = null ) {
+	public function updateRedirects( DIWikiPage $source, ?DIWikiPage $target = null ) {
 		// Track count changes for redi property
 		$count = 0;
 

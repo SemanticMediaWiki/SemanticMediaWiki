@@ -3,14 +3,13 @@
 namespace SMW\Tests;
 
 use SMW\ParserFunctionFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctionFactory
  * @group smenatic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -97,8 +96,8 @@ class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 			$definition[1]
 		);
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$definition[2]
 		);
 	}
@@ -107,7 +106,7 @@ class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->parserData->expects( $this->at( 0 ) )
 			->method( 'setOption' )
 			->with(
-				$this->equalTo( \SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE ),
+				\SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE,
 				$this->anything() );
 
 		$parser = $this->parserFactory->create( __METHOD__ );

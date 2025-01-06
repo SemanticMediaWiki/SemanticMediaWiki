@@ -8,13 +8,12 @@ use MediaWiki\MediaWikiServices;
 use RequestContext;
 use RuntimeException;
 use SMW\Tests\TestEnvironment;
-use WikiImporter;
 
 /**
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
@@ -46,7 +45,7 @@ class XmlImportRunner {
 	}
 
 	/**
-	 * @param boolean $verbose
+	 * @param bool $verbose
 	 *
 	 * @return XmlImportRunner
 	 */
@@ -64,12 +63,11 @@ class XmlImportRunner {
 
 	/**
 	 * @throws RuntimeException
-	 * @return boolean
+	 * @return bool
 	 */
 	public function run() {
 		$this->unregisterUploadsource();
 		$start = microtime( true );
-		$config = null;
 
 		$source = ImportStreamSource::newFromFile(
 			$this->assertThatFileIsReadableOrThrowException( $this->file )
@@ -79,24 +77,11 @@ class XmlImportRunner {
 			throw new RuntimeException( 'Import returned with error(s) ' . serialize( $source->errors ) );
 		}
 
-		// WikiImporter::__construct without a Config instance was deprecated in MediaWiki 1.25.
-		if ( class_exists( '\ConfigFactory' ) ) {
-			$config = \ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
-		}
-
 		$services = MediaWikiServices::getInstance();
-		$importer = new WikiImporter(
+
+		$importer = $services->getWikiImporterFactory()->getWikiImporter(
 			$source->value,
-			$config,
-			$services->getHookContainer(),
-			$services->getContentLanguage(),
-			$services->getNamespaceInfo(),
-			$services->getTitleFactory(),
-			$services->getWikiPageFactory(),
-			$services->getWikiRevisionUploadImporter(),
-			$services->getPermissionManager(),
-			$services->getContentHandlerFactory(),
-			$services->getSlotRoleRegistry()
+			RequestContext::getMain()->getAuthority()
 		);
 		$importer->setDebug( $this->verbose );
 
@@ -143,7 +128,7 @@ class XmlImportRunner {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getElapsedImportTimeInSeconds() {
 		return round( $this->importTime, 7 );

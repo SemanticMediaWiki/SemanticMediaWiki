@@ -13,7 +13,7 @@ use SMW\Query\Language\ValueDescription;
  * @covers \SMW\Query\Language\SomeProperty
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -247,8 +247,8 @@ class SomePropertyTest extends \PHPUnit\Framework\TestCase {
 			$instance->prune( $maxsize, $maxDepth, $log )
 		);
 
-		$this->assertEquals( 0, $maxsize );
-		$this->assertEquals( 1, $maxDepth );
+		$this->assertSame( 0, $maxsize );
+		$this->assertSame( 1, $maxDepth );
 
 		$maxsize  = 0;
 		$maxDepth = 1;

@@ -10,7 +10,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\DataValues\ValueValidators\CompoundConstraintValueValidator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -44,11 +44,11 @@ class CompoundConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$constraintValueValidator->expects( $this->once() )
 			->method( 'validate' )
-			->with( $this->equalTo( 'Foo' ) );
+			->with( 'Foo' );
 
 		$constraintValueValidator->expects( $this->once() )
 			->method( 'hasConstraintViolation' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new CompoundConstraintValueValidator();
 		$instance->setLogger( $this->spyLogger );

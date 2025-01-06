@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use WebRequest;
-use SMWInfolink as Infolink;
 use SMW\Localizer\Localizer;
-use RuntimeException;
+use SMWInfolink as Infolink;
+use WebRequest;
 
 /**
  * @private
@@ -21,7 +20,7 @@ use RuntimeException;
  * - csum: defines a checksum to verify whether the query string was modified
  *   during a request
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -46,22 +45,22 @@ class ParametersProcessor {
 	private $format = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $filterConditions = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $propertyFilters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $valueFilters = [];
 
@@ -189,7 +188,7 @@ class ParametersProcessor {
 
 		if ( in_array( $request->getVal( 'order', 'asc' ), [ 'asc', 'desc' ] ) ) {
 			$this->parameters[] = 'order=' . $request->getVal( 'order', 'asc' );
-		} else if ( $request->getVal( 'order', 'asc' ) === 'recent' ) {
+		} elseif ( $request->getVal( 'order', 'asc' ) === 'recent' ) {
 			$this->parameters[] = 'order=desc';
 			$this->parameters[] = 'sort=Modification date';
 		}

@@ -11,7 +11,7 @@ use RuntimeException;
  * Convenience class with methods to generate a SQL query statement where value
  * quotes and name transformations are done automatically.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -31,27 +31,27 @@ class Query {
 	protected $type = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $table = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $fields = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $conditions = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $options = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $joins = [];
 
@@ -61,12 +61,12 @@ class Query {
 	public $alias = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $index = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $autoCommit = false;
 
@@ -117,7 +117,7 @@ class Query {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasField( $field = '' ) {
 		if ( (string)$field === '' ) {
@@ -130,7 +130,7 @@ class Query {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasCondition() {
 		return $this->conditions !== [];

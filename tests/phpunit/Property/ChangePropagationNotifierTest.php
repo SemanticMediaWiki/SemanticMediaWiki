@@ -4,15 +4,15 @@ namespace SMW\Tests\Property;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWDIBlob as DIBlob;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Tests\TestEnvironment;
+use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Property\ChangePropagationNotifier
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -46,7 +46,7 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 
 		$this->serializerFactory->expects( $this->any() )
 			->method( 'newSemanticDataSerializer' )
-			->will( $this->returnValue( $semanticDataSerializer ) );
+			->willReturn( $semanticDataSerializer );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -130,11 +130,11 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] ) );
+			->willReturnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -142,11 +142,11 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( $dataValues ) );
+			->willReturn( $dataValues );
 
 		$instance = new ChangePropagationNotifier(
 			$store,
@@ -165,7 +165,7 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 
 	public function dataItemDataProvider() {
 		// Single
-		$subject  = [
+		$subject = [
 			DIWikiPage::newFromText( __METHOD__ )
 		];
 

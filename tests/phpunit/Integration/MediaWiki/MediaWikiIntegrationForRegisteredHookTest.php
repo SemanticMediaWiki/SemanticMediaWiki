@@ -3,22 +3,21 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use RequestContext;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use WikiPage;
 
 /**
  * @group semantic-mediawiki
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

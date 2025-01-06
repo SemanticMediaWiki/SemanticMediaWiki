@@ -4,17 +4,9 @@ namespace SMW\SQLStore\TableBuilder;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\NullMessageReporter;
-use SMW\DIProperty;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\MediaWiki\Collator;
 use SMW\PropertyRegistry;
 use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\Installer;
 use SMW\SQLStore\TableBuilder as ITableBuilder;
-use SMW\SQLStore\TableBuilder\Examiner\HashField;
-use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
-use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
-use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
 use SMWSql3SmwIds;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
@@ -24,7 +16,7 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  * Allows to execute SQLStore or table specific examination tasks that are
  * expected to be part of the installation or removal routine.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

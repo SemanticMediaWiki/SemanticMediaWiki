@@ -8,7 +8,6 @@ use SMWDataItem as DataItem;
 use SMWDataItemException as DataItemException;
 use SMWDataValue as DataValue;
 use SMWDIUri as DIUri;
-use SpecialPageFactory;
 use Title;
 
 /**
@@ -20,7 +19,7 @@ use Title;
  * in SMW (built-in). Third, they use type ids for storing data (DB keys)
  * instead of using page titles.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch

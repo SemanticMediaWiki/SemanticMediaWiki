@@ -3,15 +3,15 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWRecordValue as RecordValue;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWRecordValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -63,11 +63,11 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -95,11 +95,11 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -145,11 +145,11 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -190,7 +190,7 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getDescriptionBuilderRegistry' )
-			->will( $this->returnValue( new \SMW\Query\DescriptionBuilderRegistry() ) );
+			->willReturn( new \SMW\Query\DescriptionBuilderRegistry() );
 
 		$instance = new RecordValue( '_rec' );
 		$instance->setFieldProperties( $properties );

@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -42,11 +42,11 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandlerTest extends \
 
 		$connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)[ 'count' => 50000 ] ) );
+			->willReturn( (object)[ 'count' => 50000 ] );
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler(
 			$this->store

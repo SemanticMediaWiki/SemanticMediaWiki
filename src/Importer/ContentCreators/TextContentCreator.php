@@ -10,11 +10,10 @@ use SMW\Importer\ImportContents;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

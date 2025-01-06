@@ -2,16 +2,16 @@
 
 namespace SMW\Tests\Maintenance;
 
+use SMW\DIWikiPage;
 use SMW\Maintenance\updateQueryDependencies;
 use SMW\Tests\TestEnvironment;
-use SMW\DIWikiPage;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\Maintenance\updateQueryDependencies
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -70,7 +70,7 @@ class UpdateQueryDependenciesTest extends \PHPUnit\Framework\TestCase {
 
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $updateJob ) );
+			->willReturn( $updateJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -99,15 +99,15 @@ class UpdateQueryDependenciesTest extends \PHPUnit\Framework\TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new updateQueryDependencies();
 

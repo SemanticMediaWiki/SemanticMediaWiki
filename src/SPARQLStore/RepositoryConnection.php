@@ -3,7 +3,7 @@
 namespace SMW\SPARQLStore;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -71,7 +71,7 @@ interface RepositoryConnection {
 	 * @param $where string condition for data to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = [] );
 
@@ -105,7 +105,7 @@ interface RepositoryConnection {
 	 *
 	 * @param string $sparql complete SPARQL update query (INSERT or DELETE)
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doUpdate( $sparql );
 
@@ -127,7 +127,7 @@ interface RepositoryConnection {
 	 *
 	 * @param string $payload Turtle serialization of data to send
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doHttpPost( $payload );
 

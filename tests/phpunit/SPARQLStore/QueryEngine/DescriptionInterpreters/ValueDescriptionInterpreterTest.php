@@ -18,7 +18,7 @@ use SMWDIUri as DIUri;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -71,7 +71,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$conditionBuilder->expects( $this->once() )
 			->method( 'isSetFlag' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new ValueDescriptionInterpreter( $conditionBuilder );
 
@@ -121,7 +121,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$conditionBuilder->expects( $this->once() )
 			->method( 'tryToFindRedirectVariableForDataItem' )
-			->will( $this->returnValue( '?r1' ) );
+			->willReturn( '?r1' );
 
 		$conditionBuilder->setResultVariable( $resultVariable );
 		$conditionBuilder->setJoinVariable( $resultVariable );

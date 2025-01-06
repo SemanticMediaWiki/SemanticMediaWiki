@@ -10,7 +10,7 @@ use SMWDataValue as DataValue;
 use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -207,7 +207,7 @@ class QueryResultValidator extends \PHPUnit\Framework\Assert {
 	 * @return QueryResultValidator
 	 */
 	public function useWikiValueForDataValueValidation() {
-		$this->dataValueValidationMethod = function ( DataValue $expectedDataValue, DataValue $dataValue ) {
+		$this->dataValueValidationMethod = static function ( DataValue $expectedDataValue, DataValue $dataValue ) {
 			return $expectedDataValue->getWikiValue() === $dataValue->getWikiValue();
 		};
 

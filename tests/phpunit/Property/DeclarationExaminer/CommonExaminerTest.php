@@ -2,17 +2,17 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
-use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\DataItemFactory;
-use SMW\SemanticData;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Property\DeclarationExaminer\CommonExaminer;
+use SMW\SemanticData;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\CommonExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -38,7 +38,7 @@ class CommonExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityManager ) );
+			->willReturn( $this->entityManager );
 
 		$this->semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -97,7 +97,7 @@ class CommonExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testCheckUniqueness() {
 		$this->entityManager->expects( $this->any() )
 			->method( 'isUnique' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new CommonExaminer(
 			$this->store

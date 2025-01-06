@@ -5,15 +5,15 @@ namespace SMW\Tests\SPARQLStore;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
+use SMW\Tests\PHPUnitCompat;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\TurtleTriplesBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -52,7 +52,7 @@ class TurtleTriplesBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->repositoryRedirectLookup->expects( $this->atLeastOnce() )
 			->method( 'findRedirectTargetResource' )
-			->will( $this->returnValue( $expNsResource ) );
+			->willReturn( $expNsResource );
 
 		$instance = new TurtleTriplesBuilder(
 			$this->repositoryRedirectLookup
@@ -64,13 +64,13 @@ class TurtleTriplesBuilderTest extends \PHPUnit\Framework\TestCase {
 			$instance->hasTriples()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTriples()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getPrefixes()
 		);
 	}
@@ -88,7 +88,7 @@ class TurtleTriplesBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->repositoryRedirectLookup->expects( $this->atLeastOnce() )
 			->method( 'findRedirectTargetResource' )
-			->will( $this->returnValue( $expNsResource ) );
+			->willReturn( $expNsResource );
 
 		$instance = new TurtleTriplesBuilder(
 			$this->repositoryRedirectLookup
@@ -97,8 +97,8 @@ class TurtleTriplesBuilderTest extends \PHPUnit\Framework\TestCase {
 		$instance->setTriplesChunkSize( 1 );
 		$instance->doBuildTriplesFrom( $semanticData );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getChunkedTriples()
 		);
 	}

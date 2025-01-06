@@ -15,7 +15,7 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -99,8 +99,8 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$hierarchyLookup->expects( $this->once() )
 			->method( 'hasSubcategory' )
-			->with( $this->equalTo( $category ) )
-			->will( $this->returnValue( true ) );
+			->with( $category )
+			->willReturn( true );
 
 		$resultVariable = 'result';
 

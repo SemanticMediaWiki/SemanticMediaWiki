@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SPARQLStore\QueryEngine\Condition\FilterCondition
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -28,23 +28,23 @@ class FilterConditionTest extends \PHPUnit\Framework\TestCase {
 	public function testCommonMethods() {
 		$instance = new FilterCondition( 'filter' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getCondition()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->namespaces
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getWeakConditionString()
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isSafe()
 		);
 	}

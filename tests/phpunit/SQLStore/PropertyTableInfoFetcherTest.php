@@ -4,15 +4,15 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\DIProperty;
 use SMW\SQLStore\PropertyTableInfoFetcher;
-use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableInfoFetcher
  * @group semantic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
@@ -43,8 +43,8 @@ class PropertyTableInfoFetcherTest extends \PHPUnit\Framework\TestCase {
 			$this->propertyTypeFinder
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getPropertyTableDefinitions()
 		);
 

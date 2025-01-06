@@ -10,7 +10,7 @@ use SMW\Elastic\Config;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -35,11 +35,11 @@ class DummyClient extends Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @param \Elasticsearch\Client $client
+	 * @param \Elasticsearch\Client|null $client
 	 * @param Cache|null $cache
 	 * @param Config|null $config
 	 */
-	public function __construct( $client = null, Cache $cache = null, Config $config = null ) {
+	public function __construct( $client = null, ?Cache $cache = null, ?Config $config = null ) {
 		$this->client = $client;
 		$this->cache = $cache;
 		$this->config = $config;

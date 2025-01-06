@@ -10,7 +10,7 @@ use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
  * @covers \SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -40,8 +40,8 @@ class DispatchingResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$resourceBuilder->expects( $this->once() )
 			->method( 'isResourceBuilderFor' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( true ) );
+			->with( $property )
+			->willReturn( true );
 
 		$instance = new DispatchingResourceBuilder();
 		$instance->addResourceBuilder( $resourceBuilder );
@@ -75,7 +75,7 @@ class DispatchingResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$resourceBuilder->expects( $this->once() )
 			->method( 'isResourceBuilderFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$resourceBuilder->expects( $this->once() )
 			->method( 'addResourceValue' );
@@ -100,7 +100,7 @@ class DispatchingResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$resourceBuilder->expects( $this->once() )
 			->method( 'isResourceBuilderFor' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$defaultResourceBuilder = $this->getMockBuilder( ResourceBuilder::class )
 			->disableOriginalConstructor()

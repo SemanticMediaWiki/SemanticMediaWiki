@@ -2,17 +2,16 @@
 
 namespace SMW\Tests\SQLStore\Installer;
 
-use SMW\MediaWiki\Database;
 use SMW\SetupFile;
 use SMW\SQLStore\Installer\VersionExaminer;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\VersionExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -53,11 +52,11 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getServerInfo' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new VersionExaminer(
 			$connection
@@ -83,7 +82,7 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new VersionExaminer(
 			$connection
@@ -104,11 +103,11 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getServerInfo' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$this->setupFile->expects( $this->once() )
 			->method( 'remove' );
@@ -120,9 +119,8 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
-		$this->assertEquals(
-			true,
-			$instance->meetsVersionMinRequirement( [ 'foo' => 1 ] )
+		$this->assertTrue(
+						$instance->meetsVersionMinRequirement( [ 'foo' => 1 ] )
 		);
 	}
 
@@ -134,11 +132,11 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getServerInfo' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$this->setupFile->expects( $this->once() )
 			->method( 'set' );
@@ -153,9 +151,8 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
-		$this->assertEquals(
-			false,
-			$instance->meetsVersionMinRequirement( [ 'foo' => 2 ] )
+		$this->assertFalse(
+						$instance->meetsVersionMinRequirement( [ 'foo' => 2 ] )
 		);
 
 		$this->assertContains(

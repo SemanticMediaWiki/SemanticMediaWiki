@@ -15,7 +15,7 @@ use Title;
  * @covers \SMW\Property\Annotators\PredefinedPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -67,7 +67,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $parameters['pageInfo'] as $method => $returnValue ) {
 			$pageInfo->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnValue( $returnValue ) );
+				->willReturn( $returnValue );
 		}
 
 		$instance = new PredefinedPropertyAnnotator(
@@ -174,7 +174,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$userPage->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_USER ) );
+			->willReturn( NS_USER );
 
 		$provider[] = [
 			[
@@ -197,7 +197,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 		$userPage->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_USER ) );
+			->willReturn( NS_USER );
 
 		$provider[] = [
 			[

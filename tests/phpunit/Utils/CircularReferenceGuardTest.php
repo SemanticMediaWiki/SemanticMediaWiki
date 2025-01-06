@@ -8,7 +8,7 @@ use SMW\Utils\CircularReferenceGuard;
  * @covers \SMW\Utils\CircularReferenceGuard
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -26,7 +26,7 @@ class CircularReferenceGuardTest extends \PHPUnit\Framework\TestCase {
 		$instance = new CircularReferenceGuard( 'bar' );
 		$instance->setMaxRecursionDepth( 1 );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->get( 'Foo' )
 		);
@@ -45,7 +45,7 @@ class CircularReferenceGuardTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->unmark( 'Foo' );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->get( 'Foo' )
 		);
@@ -63,14 +63,14 @@ class CircularReferenceGuardTest extends \PHPUnit\Framework\TestCase {
 	public function testVerifyRetainedReferenceFromPreviousInvocation() {
 		$instance = new CircularReferenceGuard( 'bar' );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->get( 'Foo' )
 		);
 
 		$instance->reset( 'bar' );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->get( 'Foo' )
 		);

@@ -10,7 +10,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Exporter\ElementFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -46,7 +46,7 @@ class ElementFactoryTest extends \PHPUnit\Framework\TestCase {
 		$dataItemFactory = new DataItemFactory();
 		$instance = new ElementFactory();
 
-		$instance->registerCallableMapper( \SMWDataItem::TYPE_BLOB, function ( $datatem ) {
+		$instance->registerCallableMapper( \SMWDataItem::TYPE_BLOB, static function ( $datatem ) {
 			return new \stdclass;
 		} );
 
@@ -113,7 +113,7 @@ class ElementFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$dataItem->expects( $this->any() )
 			->method( '__toString' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		# 0
 		$provider[] = [

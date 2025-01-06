@@ -7,7 +7,7 @@ use SMW\Query\PrintRequestFactory;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -34,7 +34,7 @@ class ParamListProcessor {
 	 *
 	 * @param PrintRequestFactory|null $printRequestFactory
 	 */
-	public function __construct( PrintRequestFactory $printRequestFactory = null ) {
+	public function __construct( ?PrintRequestFactory $printRequestFactory = null ) {
 		$this->printRequestFactory = $printRequestFactory;
 
 		if ( $this->printRequestFactory === null ) {
@@ -62,7 +62,7 @@ class ParamListProcessor {
 	 * @since 3.0
 	 *
 	 * @param array $parameters
-	 * @param boolean $showMode
+	 * @param bool $showMode
 	 *
 	 * @return array
 	 */
@@ -189,7 +189,7 @@ class ParamListProcessor {
 		// request that contains `-3D` string
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
-			function ( array $matches ) {
+			static function ( array $matches ) {
 				return str_replace( [ '=' ], [ '0x003D' ], $matches[0] );
 			},
 			$param ?? ''

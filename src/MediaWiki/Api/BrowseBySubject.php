@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Browse a subject api module
@@ -18,7 +18,7 @@ use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
  *
  * @ingroup Api
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

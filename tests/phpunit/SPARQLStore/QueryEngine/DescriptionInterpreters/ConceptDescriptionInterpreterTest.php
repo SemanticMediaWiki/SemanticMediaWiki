@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ConceptDescription;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
@@ -16,7 +16,7 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -39,7 +39,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->applicationFactory->registerObject( 'Store', $store );
@@ -122,9 +122,9 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( new DIProperty( '_CONC' ) ) )
-			->will( $this->returnValue( [
-				new DIConcept( '[[Foo::+]]', 'Bar', 1, 0, 0 ) ] ) );
+			->with( new DIProperty( '_CONC' ) )
+			->willReturn( [
+				new DIConcept( '[[Foo::+]]', 'Bar', 1, 0, 0 ) ] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -132,8 +132,8 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->with( $this->equalTo( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) ) )
-			->will( $this->returnValue( $semanticData ) );
+			->with( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) )
+			->willReturn( $semanticData );
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->applicationFactory->registerObject( 'Store', $store );

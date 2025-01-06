@@ -7,7 +7,7 @@ use SMWDITime as DITime;
 /**
  * @covers \SMWDITime
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -37,8 +37,8 @@ class DITimeTest extends \PHPUnit\Framework\TestCase {
 			new \DateTime( '2012-07-08 11:14:15.638276' )
 		);
 
-		$this->assertEquals(
-			'15.638276',
+		$this->assertSame(
+			15.638276,
 			$instance->getSecond()
 		);
 
