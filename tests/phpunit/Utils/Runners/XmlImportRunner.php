@@ -85,7 +85,7 @@ class XmlImportRunner {
 		);
 		$importer->setDebug( $this->verbose );
 
-		if ( version_compare( MW_VERSION, '1.43', '>=' ) ) {
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
 			$reporter = new ImportReporter(
 				$importer,
 				false,
