@@ -136,7 +136,7 @@ class FieldMapper {
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $field
+	 * @param string $field
 	 * @param array $params
 	 *
 	 * @return
