@@ -187,9 +187,8 @@ class AnnotatorFactory {
 			$defaultSort
 		);
 
-		$displayTitlePropertyAnnotator->canCreateAnnotation(
-			( ApplicationFactory::getInstance()->getSettings()->get( 'smwgDVFeatures' ) & SMW_DV_WPV_DTITLE ) != 0
-		);
+		$smwgDVFeatures = ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgDVFeatures' ) & SMW_DV_WPV_DTITLE );
+		$displayTitlePropertyAnnotator->canCreateAnnotation( $smwgDVFeatures != 0 );
 
 		return $displayTitlePropertyAnnotator;
 	}

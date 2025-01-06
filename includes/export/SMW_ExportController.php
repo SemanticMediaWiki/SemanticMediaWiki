@@ -409,7 +409,7 @@ class SMWExportController {
 		// transform pages into queued short titles
 		foreach ( $pages as $page ) {
 			$title = Title::newFromText( $page );
-			if ( null === $title ) {
+			if ( $title === null ) {
 				continue; // invalid title name given
 			}
 			if ( $revisiondate !== '' ) { // filter page list by revision date

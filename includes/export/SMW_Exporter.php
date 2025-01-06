@@ -159,7 +159,7 @@ class SMWExporter {
 
 		$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver' );
 
-		if ( '' == $smwgNamespace ) {
+		if ( $smwgNamespace == '' ) {
 			$smwgNamespace = $resolver->getFullURL() . '/';
 		} elseif ( $smwgNamespace[0] == '.' ) {
 			$smwgNamespace = "http://" . substr( $smwgNamespace, 1 ) . $resolver->getLocalURL() . '/';

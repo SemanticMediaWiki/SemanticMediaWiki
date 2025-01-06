@@ -83,7 +83,7 @@ class LocalTime {
 		}
 
 		# No difference ?
-		if ( 0 == $minDiff ) {
+		if ( $minDiff == 0 ) {
 			return $dateTime;
 		}
 
