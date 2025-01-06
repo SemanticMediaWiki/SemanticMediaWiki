@@ -7,7 +7,6 @@ use SMW\Exception\ClassNotFoundException;
 use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
-use SMW\Exception\ClassNotFoundException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
