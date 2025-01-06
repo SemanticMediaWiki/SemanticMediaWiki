@@ -214,7 +214,7 @@ class IdCacheManager {
 	 *
 	 * @since 3.0
 	 *
-	 * @param mixed ...$args
+	 * @param $args
 	 *
 	 * @return string|bool
 	 */
