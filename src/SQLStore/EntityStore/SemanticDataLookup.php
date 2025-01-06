@@ -48,6 +48,7 @@ class SemanticDataLookup {
 	 * @since 3.0
 	 *
 	 * @param PropertyTableDefinition $propertyTableDef
+	 * @param DIProperty $property
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return RequestOptions|null

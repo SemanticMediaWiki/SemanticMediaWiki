@@ -153,7 +153,7 @@ class SubobjectParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param ParserParameterProcessor $params
+	 * @param ParserParameterProcessor $parameters
 	 *
 	 * @return string|null
 	 */

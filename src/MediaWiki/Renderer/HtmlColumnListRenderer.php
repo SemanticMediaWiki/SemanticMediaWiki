@@ -91,7 +91,7 @@ class HtmlColumnListRenderer {
 	/**
 	 * @since 2.2
 	 *
-	 * @param string $columnListClass
+	 * @param string $columnClass
 	 *
 	 * @return HtmlColumnListRenderer
 	 */

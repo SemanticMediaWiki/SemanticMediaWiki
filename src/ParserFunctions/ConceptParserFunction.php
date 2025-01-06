@@ -67,7 +67,7 @@ class ConceptParserFunction {
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $params
+	 * @param array $rawParams
 	 *
 	 * @return string|null
 	 */

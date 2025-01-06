@@ -109,10 +109,11 @@ class Pager {
 	 * Generate (prev x| next x) (20|50|100...) type links for paging
 	 *
 	 * @param Title $title Title object to link
-	 * @param int $offset
 	 * @param int $limit
+	 * @param int $offset
 	 * @param int $count
 	 * @param array $query Optional URL query parameter string
+	 * @param string $prefix
 	 *
 	 * @return string
 	 */

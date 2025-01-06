@@ -175,7 +175,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @since 1.7
 	 *
-	 * @param SMWQueryResult $result
+	 * @param QueryResult $queryResult
 	 *
 	 * @return array
 	 */

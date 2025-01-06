@@ -95,7 +95,7 @@ class PropertiesQueryPage extends QueryPage {
 	 *
 	 * @param Skin $skin provided by MediaWiki, not needed here
 	 * @param mixed $result
-	 * @return String
+	 * @return string
 	 * @throws PropertyNotFoundException if the result was not of a supported type
 	 */
 	function formatResult( $skin, $result ) {

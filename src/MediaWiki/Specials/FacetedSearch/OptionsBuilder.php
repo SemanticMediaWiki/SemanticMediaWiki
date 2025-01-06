@@ -23,7 +23,7 @@ class OptionsBuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @param int $size
+	 * @param Profile $profile
 	 */
 	public function __construct( Profile $profile ) {
 		$this->profile = $profile;
@@ -67,7 +67,7 @@ class OptionsBuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @param int $size
+	 * @param string $format
 	 */
 	public function format( string $format ) {
 		$html = [];

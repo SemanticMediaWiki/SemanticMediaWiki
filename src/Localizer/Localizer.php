@@ -213,7 +213,7 @@ class Localizer {
 	/**
 	 * @since 2.4
 	 *
-	 * @param Language|string $languageCode
+	 * @param Language|string $language
 	 *
 	 * @return LocalLanguage
 	 */
@@ -347,7 +347,7 @@ class Localizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param int $ns
+	 * @param int $index
 	 * @param string $url
 	 *
 	 * @return string

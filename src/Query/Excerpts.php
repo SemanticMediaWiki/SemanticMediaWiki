@@ -48,7 +48,7 @@ class Excerpts {
 	 * @since 3.0
 	 *
 	 * @param DIWikiPage|string $hash
-	 * @param string|int $score
+	 * @param string|int $excerpt
 	 */
 	public function addExcerpt( $hash, $excerpt ) {
 		if ( $hash instanceof DIWikiPage ) {

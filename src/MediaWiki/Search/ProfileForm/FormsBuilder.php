@@ -90,7 +90,7 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $form
+	 * @param string $key
 	 *
 	 * @return string
 	 */

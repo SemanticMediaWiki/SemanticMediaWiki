@@ -139,8 +139,7 @@ class HtmlTabs {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $id
-	 * @param string $name
+	 * @param string $html
 	 * @param array $params
 	 *
 	 * @return string

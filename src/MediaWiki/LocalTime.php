@@ -39,7 +39,7 @@ class LocalTime {
 	 * @since 3.0
 	 *
 	 * @param DateTime $dateTime
-	 * @param string|null $user
+	 * @param string|null $timeCorrection
 	 *
 	 * @return DateTime
 	 */

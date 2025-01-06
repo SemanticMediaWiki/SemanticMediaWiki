@@ -24,7 +24,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $result
+	 * @param string $search
 	 *
 	 * @return QueryPage
 	 */

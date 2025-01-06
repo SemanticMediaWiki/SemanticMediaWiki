@@ -32,7 +32,7 @@ class UpdateTask extends Task {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Title $title
+	 * @param array $parameters
 	 *
 	 * @return array
 	 */

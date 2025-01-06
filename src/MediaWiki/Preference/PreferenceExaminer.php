@@ -45,7 +45,7 @@ class PreferenceExaminer {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $right
+	 * @param string $key
 	 *
 	 * @return bool
 	 */

@@ -71,7 +71,7 @@ class FileIndexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Indexer $indexer
+	 * @param Store $store
 	 * @param EntityCache $entityCache
 	 * @param FileHandler $fileHandler
 	 * @param FileAttachment $fileAttachment

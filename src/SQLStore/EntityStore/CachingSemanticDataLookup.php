@@ -259,7 +259,7 @@ class CachingSemanticDataLookup {
 	 * Fetch and cache the data about one subject for one particular table
 	 *
 	 * @param int $id
-	 * @param DIWikiPage|null $subject
+	 * @param DataItem|null $dataItem
 	 * @param PropertyTableDefinition $propertyTableDef
 	 * @param RequestOptions|null $requestOptions
 	 *

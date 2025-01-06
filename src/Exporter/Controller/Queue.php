@@ -94,7 +94,7 @@ class Queue {
 	/**
 	 * @since 3.2
 	 *
-	 * @param SMWDIWikiPage $st specifying the object to check
+	 * @param DIWikiPage $dataItem specifying the object to check
 	 *
 	 * @return bool
 	 */
@@ -108,7 +108,7 @@ class Queue {
 	 *
 	 * @since 3.2
 	 *
-	 * @param SMWDIWikiPage $st specifying the object to check
+	 * @param DIWikiPage $dataItem specifying the object to check
 	 * @param int $recdepth
 	 *
 	 * @return bool
@@ -123,7 +123,7 @@ class Queue {
 	 *
 	 * @since 3.2
 	 *
-	 * @param SMWDIWikiPage $st specifying the object to check
+	 * @param DIWikiPage $dataItem specifying the object to check
 	 * @param int $recdepth
 	 */
 	public function done( DIWikiPage $dataItem, int $recdepth ) {

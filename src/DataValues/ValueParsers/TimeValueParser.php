@@ -120,12 +120,14 @@ class TimeValueParser implements ValueParser {
 	 *
 	 * @param $string string input time representation, e.g. "12 May 2007 13:45:23-3:30"
 	 * @param &$datecomponents array of strings that might belong to the specification of a date
-	 * @param &$calendarmodesl string if model was set in input, otherwise false
+	 * @param &$calendarmodel string if model was set in input, otherwise false
 	 * @param &$era string '+' or '-' if provided, otherwise false
 	 * @param &$hours integer set to a value between 0 and 24
 	 * @param &$minutes integer set to a value between 0 and 59
 	 * @param &$seconds integer set to a value between 0 and 59, or false if not given
+	 * @param &$microseconds
 	 * @param &$timeoffset double set to a value for time offset (e.g. 3.5), or false if not given
+	 * @param &timezone
 	 *
 	 * @return bool stating if the parsing succeeded
 	 */

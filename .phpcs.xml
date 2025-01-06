@@ -56,8 +56,6 @@
 		<exclude name="PSR2.Methods.MethodDeclaration.Underscore" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingReturnType" />
 		<exclude name="MediaWiki.Usage.ExtendClassUsage.FunctionConfigUsage" />
-		<exclude name="MediaWiki.Commenting.DocComment.SpacingDocStarSingleLine" />
-		<exclude name="MediaWiki.Commenting.FunctionComment.UppercasePrimitiveStringReturn" />
 		<exclude name="MediaWiki.NamingConventions.PrefixedGlobalFunctions.allowedPrefix" />
 		<exclude name="MediaWiki.Commenting.LicenseComment.LicenseTagNonFileComment" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCategoryCollation" />
