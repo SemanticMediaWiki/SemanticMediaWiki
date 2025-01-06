@@ -117,7 +117,7 @@ class AnnotatorFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SemanticData $semanticData
+	 * @param PropertyAnnotator $propertyAnnotator
 	 * @param Title $title
 	 *
 	 * @return EditProtectedPropertyAnnotator

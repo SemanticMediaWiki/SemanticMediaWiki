@@ -76,7 +76,7 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param int $chunkSize
+	 * @param int $triplesChunkSize
 	 */
 	public function setTriplesChunkSize( $triplesChunkSize ) {
 		$this->triplesChunkSize = (int)$triplesChunkSize;

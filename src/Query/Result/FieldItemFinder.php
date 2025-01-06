@@ -66,6 +66,7 @@ class FieldItemFinder {
 	 * @since 2.5
 	 *
 	 * @param Store $store
+	 * @param ItemFetcher|null $itemFetcher
 	 * @param PrintRequest|null $printRequest
 	 */
 	public function __construct( Store $store, ?ItemFetcher $itemFetcher = null, ?PrintRequest $printRequest = null ) {

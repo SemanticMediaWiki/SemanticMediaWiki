@@ -33,6 +33,7 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 	/**
 	 * @since 2.3
 	 *
+	 * @param string $dataValue
 	 * @param string $value
 	 *
 	 * @return Description

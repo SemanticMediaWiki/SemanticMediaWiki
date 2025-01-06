@@ -89,7 +89,7 @@ class DuplicateFinder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|null $name
+	 * @param string|null $table
 	 *
 	 * @return Iterator|[]
 	 */

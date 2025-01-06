@@ -136,7 +136,7 @@ class FieldMapper {
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $results
+	 * @param array $field
 	 * @param array $params
 	 *
 	 * @return
@@ -178,7 +178,6 @@ class FieldMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $type
 	 * @param array $params
 	 *
 	 * @return array
@@ -196,7 +195,6 @@ class FieldMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $type
 	 * @param array $params
 	 *
 	 * @return array
@@ -210,8 +208,9 @@ class FieldMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $type
-	 * @param array $params
+	 * @param $field
+	 * @param $coordinates
+	 * @param $distance
 	 *
 	 * @return array
 	 */
@@ -224,8 +223,11 @@ class FieldMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $type
-	 * @param array $params
+	 * @param $field
+	 * @param $top
+	 * @param $left
+	 * @param $bottom
+	 * @param $right
 	 *
 	 * @return array
 	 */

@@ -386,9 +386,9 @@ class SMWExporter {
 	 * specified property data itme. This method is called when
 	 * constructing export data structures from SemanticData objects.
 	 *
-	 * @param $property SMWDIProperty
-	 * @param $dataItems array of SMWDataItem objects for the given property
-	 * @param &$data SMWExpData to add the data to
+	 * @param SMWDIProperty $property
+	 * @param array $dataItems of SMWDataItem objects for the given property
+	 * @param SMWExpData &$expData to add the data to
 	 */
 	public static function addPropertyValues( SMWDIProperty $property, array $dataItems, SMWExpData &$expData ) {
 		$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );

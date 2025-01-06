@@ -229,6 +229,7 @@ class ElasticFactory {
 	/**
 	 * @since 3.0
 	 *
+	 * @param Store $store
 	 * @param Indexer $indexer
 	 *
 	 * @return FileIndexer

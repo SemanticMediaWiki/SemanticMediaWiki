@@ -119,7 +119,7 @@ class JsonTestCaseContentHandler {
 	 * @since 2.5
 	 *
 	 * @param array $page
-	 * @param int $defaultNamespace
+	 * @param int $namespace
 	 */
 	public function createPage( array $page, $namespace ) {
 		$pageContentLanguage = isset( $page['contentlanguage'] ) ? $page['contentlanguage'] : '';

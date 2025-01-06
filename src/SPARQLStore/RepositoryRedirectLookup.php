@@ -55,7 +55,7 @@ class RepositoryRedirectLookup {
 	 * @since 1.6
 	 *
 	 * @param ExpNsResource $expNsResource string URI to check
-	 * @param bool &$existsthat is set to true if $expNsResource is in the
+	 * @param bool &$exists is set to true if $expNsResource is in the
 	 * store; always false for blank nodes; always true for subobjects
 	 *
 	 * @return ExpNsResource

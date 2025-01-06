@@ -225,18 +225,18 @@ class SMWNumberValue extends SMWDataValue {
 	/**
 	 * @see DataValue::setOutputFormat
 	 *
-	 * @param $string $formatstring
+	 * @param string $formatString
 	 */
-	public function setOutputFormat( $formatstring ) {
-		if ( $formatstring == $this->m_outformat ) {
+	public function setOutputFormat( $formatString ) {
+		if ( $formatString == $this->m_outformat ) {
 			return null;
 		}
 
 		// #1591
-		$this->findPreferredLanguageFrom( $formatstring );
+		$this->findPreferredLanguageFrom( $formatString );
 
 		// #1335
-		$this->m_outformat = $this->findPrecisionFrom( $formatstring );
+		$this->m_outformat = $this->findPrecisionFrom( $formatString );
 
 		if ( $this->isValid() ) { // update caption/unitin for this format
 			$this->m_caption = false;

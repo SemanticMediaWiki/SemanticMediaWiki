@@ -38,7 +38,6 @@
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestFunction" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamName" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotClass" />
-		<exclude name="MediaWiki.Commenting.FunctionComment.ParamNameNoMatch" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.ForbiddenTestdox" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.is_resource" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.proc_open" />
