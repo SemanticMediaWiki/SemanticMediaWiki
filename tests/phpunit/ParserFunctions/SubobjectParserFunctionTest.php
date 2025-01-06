@@ -10,15 +10,15 @@ use SMW\ParserData;
 use SMW\ParserFunctions\SubobjectParserFunction;
 use SMW\ParserParameterFormatter;
 use SMW\Subobject;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
  * @covers \SMW\ParserFunctions\SubobjectParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -708,7 +708,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @return SubobjectParserFunction
 	 */
-	private function acquireInstance( Subobject $subobject, ParserOutput $parserOutput = null ) {
+	private function acquireInstance( Subobject $subobject, ?ParserOutput $parserOutput = null ) {
 		if ( $parserOutput === null ) {
 			$parserOutput = new ParserOutput();
 		}

@@ -9,7 +9,7 @@ use OutOfBoundsException;
  * trait is required to add `Iterator, Countable, SeekableIterator` as
  * implementation detail.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -19,7 +19,7 @@ trait DotSeekableIteratorTrait {
 	use SeekableIteratorTrait;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $seekable = [];
 

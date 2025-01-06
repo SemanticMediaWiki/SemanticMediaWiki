@@ -8,7 +8,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
  * @covers \SMW\SPARQLStore\QueryEngine\Condition\FalseCondition
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

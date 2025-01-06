@@ -2,15 +2,15 @@
 
 namespace SMW\Tests\Query\DescriptionBuilders;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames

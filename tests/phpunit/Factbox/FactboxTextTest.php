@@ -8,7 +8,7 @@ use SMW\Factbox\FactboxText;
  * @covers \SMW\Factbox\FactboxText
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 4.1.1
  *
  * @author Morne Alberts

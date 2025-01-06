@@ -2,14 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
-use SMW\DIProperty;
 use SMW\MediaWiki\Api\Browse\SubjectLookup;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\SubjectLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

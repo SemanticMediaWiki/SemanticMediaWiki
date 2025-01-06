@@ -8,7 +8,7 @@ use SMW\Elastic\QueryEngine\Condition;
  * @covers \SMW\Elastic\QueryEngine\Condition
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

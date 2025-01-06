@@ -8,7 +8,7 @@ use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -142,7 +142,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 				default:
 					$expectedPostField = '&default-graph-uri=' . $encodedDefaultGraph;
 					break;
-			};
+			}
 
 			$provider[] = [ $repositoryConnector, $expectedPostField ];
 		}
@@ -163,7 +163,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 				default:
 					$expectedPostField = 'update=';
 					break;
-			};
+			}
 
 			$provider[] = [ $repositoryConnector, $expectedPostField ];
 		}

@@ -2,12 +2,12 @@
 
 namespace SMW\Tests;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Subobject;
 use SMWDITime as DITime;
 use Title;
@@ -16,7 +16,7 @@ use Title;
  * @covers \SMW\SemanticData
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -554,7 +554,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 			$instance->getExtensionData( 'Foo' )
 		);
 
-		$callback = function () { return 42;
+		$callback = static function () { return 42;
 		};
 
 		$instance->setExtensionData( 'Bar', $callback );

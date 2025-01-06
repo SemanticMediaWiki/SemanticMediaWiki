@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\FileFetcher;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\FileFetcher;
 
 /**
  * @covers \SMW\Utils\FileFetcher
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

@@ -2,14 +2,14 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup;
+use SMW\SQLStore\Installer;
 use SMW\Store;
 use SMW\StoreFactory;
-use Onoi\MessageReporter\MessageReporterFactory;
-use Onoi\MessageReporter\MessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\Installer;
-use SMW\Setup;
-use SMW\Options;
 use SMW\Utils\CliMsgFormatter;
 
 /**
@@ -188,10 +188,10 @@ class setupStore extends \Maintenance {
 		global $smwgIP;
 
 		if ( !isset( $smwgIP ) ) {
-			$smwgIP = dirname( __FILE__ ) . '/../';
+			$smwgIP = __DIR__ . '/../';
 		}
 
-		require_once ( $smwgIP . 'includes/GlobalFunctions.php' );
+		require_once $smwgIP . 'includes/GlobalFunctions.php';
 	}
 
 	protected function getStore() {
@@ -231,7 +231,7 @@ class setupStore extends \Maintenance {
 	/**
 	 * @param string $storeName
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasDeletionVerification() {
 		$cliMsgFormatter = new CliMsgFormatter();
@@ -273,5 +273,5 @@ class setupStore extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = setupStore::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

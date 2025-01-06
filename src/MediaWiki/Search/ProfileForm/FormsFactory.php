@@ -2,18 +2,18 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm;
 
-use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
-use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
-use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
-use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
-use WebRequest;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use WebRequest;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

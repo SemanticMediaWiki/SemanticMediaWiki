@@ -17,7 +17,7 @@ use User;
 /**
  * Handles protection validation.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -40,27 +40,27 @@ class ProtectionValidator {
 	private $permissionManager;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $editProtectionRight = false;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $createProtectionRight = false;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $changePropagationProtection = true;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $importPerformers = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $importPerformerProtectionLookupCache = [];
 
@@ -124,7 +124,7 @@ class ProtectionValidator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param string|bool $editProtectionRight
 	 */
 	public function setEditProtectionRight( $editProtectionRight ) {
 		$this->editProtectionRight = $editProtectionRight;
@@ -142,7 +142,7 @@ class ProtectionValidator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $createProtectionRight
+	 * @param string|bool $createProtectionRight
 	 */
 	public function setCreateProtectionRight( $createProtectionRight ) {
 		$this->createProtectionRight = $createProtectionRight;
@@ -160,7 +160,7 @@ class ProtectionValidator {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $changePropagationProtection
+	 * @param bool $changePropagationProtection
 	 */
 	public function setChangePropagationProtection( $changePropagationProtection ) {
 		$this->changePropagationProtection = (bool)$changePropagationProtection;
@@ -180,7 +180,7 @@ class ProtectionValidator {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasEditProtectionOnNamespace( Title $title ) {
 		$subject = DIWikiPage::newFromTitle(
@@ -204,7 +204,7 @@ class ProtectionValidator {
 	 * @param Title $title
 	 * @param User $user
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isClassifiedAsImportPerformerProtected( Title $title, User $user ): bool {
 		if ( $this->importPerformers === [] ) {
@@ -243,7 +243,7 @@ class ProtectionValidator {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasChangePropagationProtection( Title $title ) {
 		$subject = DIWikiPage::newFromTitle( $title )->asBase();
@@ -265,7 +265,7 @@ class ProtectionValidator {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProtection( Title $title ) {
 		$subject = DIWikiPage::newFromTitle(
@@ -278,11 +278,11 @@ class ProtectionValidator {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Title $title
+	 * @param Title|null $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function hasCreateProtection( Title $title = null ) {
+	public function hasCreateProtection( ?Title $title = null ) {
 		if ( $title === null ) {
 			return false;
 		}
@@ -300,11 +300,11 @@ class ProtectionValidator {
 	 *
 	 * @since 2.5
 	 *
-	 * @param Title $title
+	 * @param Title|null $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function hasEditProtection( Title $title = null ) {
+	public function hasEditProtection( ?Title $title = null ) {
 		if ( $title === null ) {
 			return false;
 		}

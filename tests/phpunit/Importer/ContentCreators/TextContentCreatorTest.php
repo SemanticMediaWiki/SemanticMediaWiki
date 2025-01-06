@@ -10,7 +10,7 @@ use WikiPage;
  * @covers \SMW\Importer\ContentCreators\TextContentCreator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -61,7 +61,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 	public function testCreate() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return call_user_func( $callback );
 			}
 			);
@@ -127,7 +127,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 	public function testCreate_WithError() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return call_user_func( $callback );
 			}
 			);
@@ -246,7 +246,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 	public function testCreate_ReplaceableOnCreator() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return call_user_func( $callback );
 			}
 			);
@@ -329,7 +329,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 	public function testCreate_ReplaceableOnCreator_WithNoAvailableUser() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return call_user_func( $callback );
 			}
 			);

@@ -2,10 +2,11 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWikiIntegrationTestCase;
 use RuntimeException;
 use SMW\DIWikiPage;
-use SMW\Services\ServicesFactory;
 use SMW\SerializerFactory;
+use SMW\Services\ServicesFactory;
 use SMW\Store;
 use SMW\Tests\Utils\PageReader;
 use SMW\Tests\Utils\UtilityFactory;
@@ -13,14 +14,13 @@ use SMW\Tests\Utils\Validators\IncomingSemanticDataValidator;
 use SMW\Tests\Utils\Validators\SemanticDataValidator;
 use SMW\Tests\Utils\Validators\StringValidator;
 use User;
-use MediaWikiIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -63,7 +63,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	private $serializerFactory;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 
@@ -86,7 +86,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	/**
 	 * @since 2.2
 	 *
-	 * @param boolean $debugMode
+	 * @param bool $debugMode
 	 */
 	public function setDebugMode( $debugMode ) {
 		$this->debug = $debugMode;

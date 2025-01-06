@@ -8,7 +8,7 @@ namespace SMW\SPARQLStore\QueryEngine\Condition;
  *
  * @ingroup SMWStore
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -78,7 +78,7 @@ abstract class Condition {
 	 * requires that all filtered variables occur in some graph pattern,
 	 * and that the condition is not empty.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	abstract public function isSafe();
 

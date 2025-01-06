@@ -3,14 +3,14 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
-use SMWExpLiteral as ExpLiteral;
 use SMW\Tests\PHPUnitCompat;
+use SMWExpLiteral as ExpLiteral;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\RepositoryResult
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -121,4 +121,3 @@ class RepositoryResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

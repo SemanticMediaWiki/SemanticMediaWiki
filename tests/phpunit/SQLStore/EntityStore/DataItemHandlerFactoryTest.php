@@ -3,14 +3,14 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
-use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlerFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames

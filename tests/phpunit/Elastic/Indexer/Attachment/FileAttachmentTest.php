@@ -2,15 +2,15 @@
 
 namespace SMW\Tests\Elastic\Indexer\Attachment;
 
-use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\DIWikiPage;
+use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Indexer\Attachment\FileAttachment
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

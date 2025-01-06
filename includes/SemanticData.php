@@ -4,11 +4,11 @@ namespace SMW;
 
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
-use SMW\DataModel\SubSemanticData;
 use SMW\DataModel\SequenceMap;
+use SMW\DataModel\SubSemanticData;
+use SMW\Exception\SemanticDataImportException;
 use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
-use SMW\Exception\SemanticDataImportException;
 use SMWContainerSemanticData;
 use SMWDataItem;
 use SMWDataValue;
@@ -60,7 +60,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @var string
 	 */
-	static protected $mPropertyPrefix = '';
+	protected static $mPropertyPrefix = '';
 
 	/**
 	 * States whether this is a stub object. Stubbing might happen on
@@ -68,7 +68,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @todo Check why this is public and document this here. Or fix it.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $stubObject;
 
@@ -90,7 +90,7 @@ class SemanticData implements JsonUnserializable {
 	/**
 	 * States whether the container holds any normal properties.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $mHasVisibleProps = false;
 
@@ -100,7 +100,7 @@ class SemanticData implements JsonUnserializable {
 	 * label). For some settings we need this to decide if a Factbox is
 	 * displayed.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $mHasVisibleSpecs = false;
 
@@ -113,7 +113,7 @@ class SemanticData implements JsonUnserializable {
 	 * @note This setting is merely for optimization. The SMW data model
 	 * never cares about the multiplicity of identical data assignments.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $mNoDuplicates;
 
@@ -174,7 +174,7 @@ class SemanticData implements JsonUnserializable {
 	 * This is kept public to keep track of the depth during a recursive processing
 	 * when accessed through the SubSemanticData instance.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $subContainerDepthCounter = 0;
 
@@ -182,7 +182,7 @@ class SemanticData implements JsonUnserializable {
 	 * Constructor.
 	 *
 	 * @param DIWikiPage $subject to which this data refers
-	 * @param boolean $noDuplicates stating if duplicate data should be avoided
+	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
 	public function __construct( DIWikiPage $subject, $noDuplicates = true ) {
 		$this->clear();
@@ -213,7 +213,7 @@ class SemanticData implements JsonUnserializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStub(): bool {
 		return false;
@@ -265,7 +265,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty( DIProperty $property ) {
 		return isset( $this->mProperties[$property->getKey()] ) || array_key_exists( $property->getKey(), $this->mProperties );
@@ -430,7 +430,7 @@ class SemanticData implements JsonUnserializable {
 	 * function DIProperty::isShown(). The name is kept for
 	 * compatibility.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasVisibleProperties() {
 		return $this->mHasVisibleProps;
@@ -444,7 +444,7 @@ class SemanticData implements JsonUnserializable {
 	 * function DIProperty::isShown(). The name is kept for
 	 * compatibility.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasVisibleSpecialProperties() {
 		return $this->mHasVisibleSpecs;
@@ -769,7 +769,7 @@ class SemanticData implements JsonUnserializable {
 				if ( isset( $this->sequenceMap[$key] ) && SequenceMap::canMap( $property ) ) {
 					$sequenceMap = array_flip( $this->sequenceMap[$key] );
 
-					usort( $this->mPropVals[$key], function ( $a, $b ) use( $sequenceMap ) {
+					usort( $this->mPropVals[$key], static function ( $a, $b ) use( $sequenceMap ) {
 						$pos_a = $sequenceMap[md5( $a->getHash() )];
 						$pos_b = $sequenceMap[md5( $b->getHash() )];
 
@@ -833,9 +833,9 @@ class SemanticData implements JsonUnserializable {
 	 * @see SubSemanticData::hasSubSemanticData
 	 * @since 1.9
 	 *
-	 * @param string $subobjectName|null
+	 * @param string|null $subobjectName|null
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSubSemanticData( $subobjectName = null ) {
 		return $this->subSemanticData->hasSubSemanticData( $subobjectName );
@@ -870,7 +870,7 @@ class SemanticData implements JsonUnserializable {
 	 * @since 1.8
 	 *
 	 * @param SemanticData $semanticData
-	*/
+	 */
 	public function removeSubSemanticData( SemanticData $semanticData ) {
 		$this->hash = null;
 		$this->subSemanticData->removeSubSemanticData( $semanticData );
@@ -888,12 +888,12 @@ class SemanticData implements JsonUnserializable {
 		# in the future.
 		$json = [
 			'stubObject' => $this->stubObject,
-			'mPropVals' => array_map( function ( $x ) {
-					return array_map( function ( $y ) {
+			'mPropVals' => array_map( static function ( $x ) {
+					return array_map( static function ( $y ) {
 						return $y->jsonSerialize();
 					}, $x );
 			}, $this->mPropVals ),
-			'mProperties' => array_map( function ( $x ) {
+			'mProperties' => array_map( static function ( $x ) {
 					return $x->jsonSerialize();
 			}, $this->mProperties ),
 			'mHasVisibleProps' => $this->mHasVisibleProps,

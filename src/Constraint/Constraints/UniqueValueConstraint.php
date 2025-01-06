@@ -2,20 +2,19 @@
 
 namespace SMW\Constraint\Constraints;
 
+use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
 use SMW\PropertySpecificationLookup;
-use SMW\Store;
 use SMW\RequestOptions;
+use SMW\Store;
 use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
-use RuntimeException;
 
 /**
  * The `unique_value_constraint` implicitly requires a `GLOBAL_SCOPE` (instead
  * of only an `ENTITY_SCOPE` which would just require a `single_value_constraint`).
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -38,7 +37,7 @@ class UniqueValueConstraint implements Constraint {
 	private $propertySpecificationLookup;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 
@@ -112,7 +111,7 @@ class UniqueValueConstraint implements Constraint {
 		// Exclude the current page from the result match to check whether another
 		// page matches the condition and if so then the value can no longer be
 		// assigned and is not unique
-		$requestOptions->addExtraCondition( function ( $store, $query, $alias ) use( $contextPage ) {
+		$requestOptions->addExtraCondition( static function ( $store, $query, $alias ) use( $contextPage ) {
 				return $query->neq( "$alias.s_id", $store->getObjectIds()->getId( $contextPage ) );
 		}
 		);

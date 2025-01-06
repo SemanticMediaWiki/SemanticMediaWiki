@@ -3,17 +3,17 @@
 namespace SMW\Property\DeclarationExaminer;
 
 use ExtensionRegistry;
-use SMW\DIProperty;
-use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\DataTypeRegistry;
-use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
 use SMW\DataValues\MonolingualTextValue;
-use SMWDataItem as DataItem;
-use SMW\Store;
+use SMW\DIProperty;
 use SMW\Message;
+use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
+use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
+use SMW\Store;
+use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

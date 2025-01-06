@@ -7,7 +7,7 @@ use SiteStats;
 use WikiMap;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -19,7 +19,7 @@ class Site {
 	 *
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isReadOnly() {
 		// MediaWiki\Services\ServiceDisabledException from line 340 of
@@ -36,7 +36,7 @@ class Site {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isReady() {
 		// #3341
@@ -93,7 +93,7 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isCommandLineMode() {
 		return MW_ENTRY_POINT === 'cli' || defined( 'MEDIAWIKI_JOB_RUNNER' );
@@ -102,7 +102,7 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isCapitalLinks() {
 		return $GLOBALS['wgCapitalLinks'];
@@ -139,7 +139,7 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public static function stats() {
 		return [

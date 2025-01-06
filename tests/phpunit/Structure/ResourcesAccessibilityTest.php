@@ -3,16 +3,13 @@
 namespace SMW\Tests\Structure;
 
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use MediaWiki\ResourceLoader\ResourceLoader;
 use MediaWiki\ResourceLoader\Context;
-use ResourceLoaderModule;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

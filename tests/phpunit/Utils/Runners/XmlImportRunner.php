@@ -8,13 +8,12 @@ use MediaWiki\MediaWikiServices;
 use RequestContext;
 use RuntimeException;
 use SMW\Tests\TestEnvironment;
-use WikiImporter;
 
 /**
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
@@ -46,7 +45,7 @@ class XmlImportRunner {
 	}
 
 	/**
-	 * @param boolean $verbose
+	 * @param bool $verbose
 	 *
 	 * @return XmlImportRunner
 	 */
@@ -64,7 +63,7 @@ class XmlImportRunner {
 
 	/**
 	 * @throws RuntimeException
-	 * @return boolean
+	 * @return bool
 	 */
 	public function run() {
 		$this->unregisterUploadsource();
@@ -129,7 +128,7 @@ class XmlImportRunner {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getElapsedImportTimeInSeconds() {
 		return round( $this->importTime, 7 );

@@ -2,18 +2,18 @@
 
 namespace SMW\Tests\Elastic;
 
-use SMW\Elastic\ElasticStore;
+use SMW\DIWikiPage;
 use SMW\Elastic\Config;
+use SMW\Elastic\ElasticStore;
 use SMW\Options;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\Elastic\ElasticStore
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -103,14 +103,14 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function ( $type ) use( $connection, $database, $client ) {
+		$callback = static function ( $type ) use( $connection, $database, $client ) {
 			if ( $type === 'elastic' ) {
 				return $client;
-			};
+			}
 
 			if ( $type === 'mw.db' ) {
 				return $connection;
-			};
+			}
 
 			return $database;
 		};
@@ -179,14 +179,14 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function ( $type ) use( $connection, $database, $client ) {
+		$callback = static function ( $type ) use( $connection, $database, $client ) {
 			if ( $type === 'elastic' ) {
 				return $client;
-			};
+			}
 
 			if ( $type === 'mw.db' ) {
 				return $connection;
-			};
+			}
 
 			return $database;
 		};
@@ -234,7 +234,7 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 		$subject = DIWikiPage::newFromText( __METHOD__, NS_FILE );
 
 		// Check that the IngestJob is referencing to the same subject instance
-		$checkJobParameterCallback = function ( $job ) use( $subject ) {
+		$checkJobParameterCallback = static function ( $job ) use( $subject ) {
 			return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $subject );
 		};
 
@@ -295,10 +295,10 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function ( $type ) use( $connection, $client ) {
+		$callback = static function ( $type ) use( $connection, $client ) {
 			if ( $type === 'mw.db' ) {
 				return $connection;
-			};
+			}
 
 			return $client;
 		};

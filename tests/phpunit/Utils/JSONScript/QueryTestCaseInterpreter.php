@@ -6,12 +6,12 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Query\PrintRequest;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -35,7 +35,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasCondition() {
 		return isset( $this->contents['condition'] );
@@ -62,7 +62,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryMode() {
 		return isset( $this->contents['parameters']['querymode'] ) ? constant( $this->contents['parameters']['querymode'] ) : \SMWQuery::MODE_INSTANCES;
@@ -71,7 +71,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLimit() {
 		return isset( $this->contents['parameters']['limit'] ) ? (int)$this->contents['parameters']['limit'] : 100;
@@ -80,7 +80,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getOffset() {
 		return isset( $this->contents['parameters']['offset'] ) ? (int)$this->contents['parameters']['offset'] : 0;
@@ -98,7 +98,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFromCache() {
 		return isset( $this->contents['assert-queryresult']['isFromCache'] ) ? (bool)$this->contents['assert-queryresult']['isFromCache'] : null;
@@ -107,7 +107,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function checkSorting() {
 		return isset( $this->contents['assert-queryresult']['check-sorting'] ) ? (bool)$this->contents['assert-queryresult']['check-sorting'] : false;
@@ -160,7 +160,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSortKeys() {
 		if ( isset( $this->contents['parameters']['sort'] ) ) {
@@ -178,7 +178,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.3
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRequiredToClearStoreCache() {
 		return isset( $this->contents['store']['clear-cache'] ) && $this->contents['store']['clear-cache'];
@@ -187,7 +187,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getExpectedCount() {
 		return isset( $this->contents['assert-queryresult']['count'] ) ? (int)$this->contents['assert-queryresult']['count'] : 0;
@@ -259,7 +259,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getExpectedErrorCount() {
 		if ( !isset( $this->contents['assert-queryresult']['error'] ) ) {
@@ -312,7 +312,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getExpectedConceptCache() {
 		return isset( $this->contents['conceptcache'] ) ? $this->contents['conceptcache'] : [];

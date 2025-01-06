@@ -11,7 +11,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\SQLStore\Installer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -271,7 +271,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 			$this->tableOptimizer
 		);
 
-		$callback = function () use( $instance ) {
+		$callback = static function () use( $instance ) {
 			$instance->reportMessage( 'Foo' );
 		};
 

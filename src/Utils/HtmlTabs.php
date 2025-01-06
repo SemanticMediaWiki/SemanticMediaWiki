@@ -5,7 +5,7 @@ namespace SMW\Utils;
 use Html;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -13,17 +13,17 @@ use Html;
 class HtmlTabs {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $tabs = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $contents = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $hidden = [];
 
@@ -38,12 +38,12 @@ class HtmlTabs {
 	private $group = 'tabs';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRTL = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isSubTab = false;
 
@@ -59,7 +59,7 @@ class HtmlTabs {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function isRTL( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;
@@ -81,7 +81,7 @@ class HtmlTabs {
 	 *
 	 * @since 3.1
 	 *
-	 * @param boolean $isSubTab
+	 * @param bool $isSubTab
 	 */
 	public function isSubTab( $isSubTab = true ) {
 		$this->isSubTab = $isSubTab;

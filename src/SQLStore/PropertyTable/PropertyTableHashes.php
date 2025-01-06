@@ -3,15 +3,14 @@
 namespace SMW\SQLStore\PropertyTable;
 
 use RuntimeException;
-use SMW\DIProperty;
 use SMW\MediaWiki\Database;
-use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -44,7 +43,7 @@ class PropertyTableHashes {
 	 *
 	 * @since 3.1
 	 *
-	 * @param integer $id ID of the page as stored in SMW IDs table
+	 * @param int $id ID of the page as stored in SMW IDs table
 	 * @param string[] of hash values with table names as keys
 	 */
 	public function setPropertyTableHashes( $id, $hash = null ) {
@@ -97,7 +96,7 @@ class PropertyTableHashes {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $id ID of the page as stored in the SMW IDs table
+	 * @param int $id ID of the page as stored in the SMW IDs table
 	 *
 	 * @return array
 	 */

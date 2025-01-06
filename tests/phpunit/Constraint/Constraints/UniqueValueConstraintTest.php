@@ -2,17 +2,17 @@
 
 namespace SMW\Tests\Constraint\Constraints;
 
-use SMW\DataItemFactory;
-use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\Constraint\ConstraintError;
-use SMW\Tests\TestEnvironment;
+use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\DataItemFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Constraint\Constraints\UniqueValueConstraint
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

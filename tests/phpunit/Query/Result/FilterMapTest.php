@@ -2,15 +2,13 @@
 
 namespace SMW\Tests\Query\Result;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\Result\FilterMap;
 
 /**
  * @covers \SMW\Query\Result\FilterMap
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

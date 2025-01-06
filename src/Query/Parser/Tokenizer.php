@@ -3,7 +3,7 @@
 namespace SMW\Query\Parser;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -47,10 +47,10 @@ class Tokenizer {
 	 * $consume specifies whether the returned chunk should be removed from the
 	 * query string.
 	 *
-	 * @param string $currentString
+	 * @param string &$currentString
 	 * @param string $stoppattern
-	 * @param boolean $consume
-	 * @param boolean $trim
+	 * @param bool $consume
+	 * @param bool $trim
 	 *
 	 * @return string
 	 */

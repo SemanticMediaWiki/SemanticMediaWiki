@@ -17,7 +17,7 @@ use Title;
  *
  * @ingroup QueryPage
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -120,7 +120,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * @since 1.8
 	 *
 	 * @param DIProperty $property
-	 * @param integer $useCount
+	 * @param int $useCount
 	 * @return string
 	 */
 	protected function formatPropertyItem( DIProperty $property, $useCount ) {
@@ -189,7 +189,7 @@ class PropertiesQueryPage extends QueryPage {
 	 *
 	 * @param Title $title
 	 * @param DIProperty $property
-	 * @param integer $useCount
+	 * @param int $useCount
 	 *
 	 * @return array
 	 */

@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter\Serializer;
 
-use SMWExpData as ExpData;
-use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
+use SMWExpData as ExpData;
 
 /**
  * Abstract class for serializing exported data (encoded as ExpData object)
@@ -23,7 +23,7 @@ use SMW\Exporter\Element\ExpNsResource;
  * (only the latter two are mutually exclusive). This class determines the
  * required declaration from the context in which an element is used.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.5.5
  *
  * @author Markus Krötzsch
@@ -290,13 +290,13 @@ abstract class Serializer {
 				switch ( $typeresource->getQName() ) {
 					case 'owl:Class':
 						$typeflag = SMW_SERIALIZER_DECL_CLASS;
-					break;
+						break;
 					case 'owl:ObjectProperty':
 						$typeflag = SMW_SERIALIZER_DECL_OPROP;
-					break;
+						break;
 					case 'owl:DatatypeProperty':
 						$typeflag = SMW_SERIALIZER_DECL_APROP;
-					break;
+						break;
 					default:
 						$typeflag = 0;
 				}
@@ -345,7 +345,7 @@ abstract class Serializer {
 	 *
 	 * @param ExpNsResource $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isOWLClassTypeProperty( ExpNsResource $property ): bool {
 		$locname = $property->getLocalName();

@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
-use SemanticMediaWiki;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SemanticMediaWiki;
 
 /**
  * @covers \SemanticMediaWiki

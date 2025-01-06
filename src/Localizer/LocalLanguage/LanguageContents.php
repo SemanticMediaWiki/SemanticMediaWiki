@@ -5,7 +5,7 @@ namespace SMW\Localizer\LocalLanguage;
 use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -52,7 +52,7 @@ class LanguageContents {
 	 *
 	 * @param string $languageCode
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isLoaded( $languageCode ) {
 		return isset( $this->contents[$languageCode] ) || array_key_exists( $languageCode, $this->contents );
@@ -63,7 +63,7 @@ class LanguageContents {
 	 *
 	 * @param string $languageCode
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function load( $languageCode ) {
 		if ( !$this->isLoaded( $languageCode ) && !$this->jsonContentsFileReader->canReadByLanguageCode( $languageCode ) ) {

@@ -1,10 +1,5 @@
 <?php
 
-use SMW\MediaWiki\Connection\Sequence;
-use SMW\MediaWiki\Connection\CleanUpTables;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
-
 if ( PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' ) {
 	die( 'Not an entry point' );
 }
@@ -40,7 +35,7 @@ $autoloader->addClassMap( [
 /**
  * Register a shutdown function the invoke a final clean-up
  */
-register_shutdown_function( function () {
+register_shutdown_function( static function () {
 	if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 		return;
 	}

@@ -3,13 +3,12 @@
 namespace SMW\Tests\Integration\Localizer;
 
 use SMW\Localizer\CopyLocalMessages;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Localizer\CopyLocalMessages
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames

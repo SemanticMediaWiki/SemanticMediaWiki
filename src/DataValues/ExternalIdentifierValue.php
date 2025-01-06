@@ -7,7 +7,7 @@ use SMW\DIProperty;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -43,7 +43,7 @@ class ExternalIdentifierValue extends StringValue {
 	/**
 	 * @see DataValue::getShortWikiText
 	 *
-	 * @param string $value
+	 * @param string|null $value
 	 */
 	public function getShortWikiText( $linker = null ) {
 		if ( !$this->isValid() ) {

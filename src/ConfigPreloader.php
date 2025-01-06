@@ -10,7 +10,7 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
  * Convenience class to allow users to inject some default settings from
  * individual files directly from `enableSemantics`.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -18,7 +18,7 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
 class ConfigPreloader {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $config = [];
 

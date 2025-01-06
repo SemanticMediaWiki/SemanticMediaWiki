@@ -8,7 +8,7 @@ use SMW\Elastic\Indexer\Attachment\FileHandler;
  * @covers \SMW\Elastic\Indexer\Attachment\FileHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -52,7 +52,7 @@ class FileHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->fileRepoFinder
 		);
 
-		$instance->setReadCallback( function ( $read_url ) use( $url ) {
+		$instance->setReadCallback( static function ( $read_url ) use( $url ) {
 			if ( $read_url !== $url ) {
 				throw new \RuntimeException( "Invalid read URL!" );
 			}

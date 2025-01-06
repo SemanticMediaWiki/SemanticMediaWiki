@@ -2,16 +2,14 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DIWikiPage;
+use SMW\IteratorFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\IteratorFactory;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -34,12 +32,12 @@ class QueryLinksTableDisposer {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $waitForReplication = false;
 
@@ -119,7 +117,7 @@ class QueryLinksTableDisposer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param stdClass|integer $id
+	 * @param stdClass|int $id
 	 */
 	public function cleanUpTableEntriesById( $id ) {
 		$fname = __METHOD__;

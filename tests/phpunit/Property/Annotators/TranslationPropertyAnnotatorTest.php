@@ -3,16 +3,16 @@
 namespace SMW\Tests\Property\Annotators;
 
 use SMW\DataItemFactory;
-use SMW\SemanticData;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\TranslationPropertyAnnotator;
+use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\Annotators\TranslationPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

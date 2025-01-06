@@ -4,14 +4,12 @@ namespace SMW\Tests;
 
 use SMW\DIWikiPage;
 use SMW\SpecialConcepts;
-use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

@@ -2,10 +2,8 @@
 
 namespace SMW\Maintenance;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
-use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\ElasticStore;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
@@ -22,7 +20,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 // @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -395,7 +393,7 @@ class rebuildElasticIndex extends \Maintenance {
 		$this->rebuilder->prepare();
 		$this->rebuilder->set( 'skip-fileindex', $this->getOption( 'skip-fileindex' ) );
 
-		list( $res, $last ) = $this->rebuilder->select(
+		[ $res, $last ] = $this->rebuilder->select(
 			$this->store,
 			$this->select_conditions()
 		);
@@ -544,5 +542,5 @@ class rebuildElasticIndex extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = rebuildElasticIndex::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

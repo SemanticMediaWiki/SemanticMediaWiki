@@ -8,18 +8,18 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\CacheWarmer;
 use SMW\SQLStore\EntityStore\EntityIdFinder;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\SQLStore\EntityStore\SequenceMapFinder;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\SQLStore\RedirectStore;
-use SMW\SQLStore\EntityStore\EntityIdManager;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\EntityIdManager
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
@@ -254,7 +254,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$sortkey = $parameters['sortkey'];
 
-		$result  = $instance->getSMWPageIDandSort(
+		$result = $instance->getSMWPageIDandSort(
 			$parameters['title'],
 			$parameters['namespace'],
 			$parameters['iw'],
@@ -304,7 +304,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$sortkey = $parameters['sortkey'];
 
-		$result  = $instance->makeSMWPageID(
+		$result = $instance->makeSMWPageID(
 			$parameters['title'],
 			$parameters['namespace'],
 			$parameters['iw'],

@@ -4,8 +4,6 @@ namespace SMW\Tests\Localizer;
 
 use DateTime;
 use IContextSource;
-use Language;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
 use SMW\Localizer\Localizer;
 
@@ -13,7 +11,7 @@ use SMW\Localizer\Localizer;
  * @covers \SMW\Localizer\Localizer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames

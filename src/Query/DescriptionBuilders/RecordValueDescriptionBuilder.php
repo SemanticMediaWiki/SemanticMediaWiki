@@ -13,7 +13,7 @@ use SMWRecordValue as RecordValue;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -91,11 +91,11 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 	private function getDescriptionFor( $subdescriptions ) {
 		switch ( count( $subdescriptions ) ) {
 			case 0:
-			return new ThingDescription();
+				return new ThingDescription();
 			case 1:
-			return reset( $subdescriptions );
+				return reset( $subdescriptions );
 			default:
-			return new Conjunction( $subdescriptions );
+				return new Conjunction( $subdescriptions );
 		}
 	}
 

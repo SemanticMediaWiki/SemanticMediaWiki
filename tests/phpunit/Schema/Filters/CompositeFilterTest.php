@@ -3,15 +3,12 @@
 namespace SMW\Tests\Schema\Filters;
 
 use SMW\Schema\Filters\CompositeFilter;
-use SMW\Schema\Compartment;
-use SMW\Schema\Rule;
-use SMW\Schema\CompartmentIterator;
 
 /**
  * @covers \SMW\Schema\Filters\CompositeFilter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

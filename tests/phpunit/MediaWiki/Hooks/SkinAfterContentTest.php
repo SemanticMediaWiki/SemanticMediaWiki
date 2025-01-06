@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\Factbox\FactboxText;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\SkinAfterContent;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -12,7 +12,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  * @covers \SMW\MediaWiki\Hooks\SkinAfterContent
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -206,7 +206,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		// #2 Special page
-		$text  = __METHOD__ . 'text-2';
+		$text = __METHOD__ . 'text-2';
 
 		$title = MockTitle::buildMock( __METHOD__ . 'specialpage' );
 
@@ -244,7 +244,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		// #3 "edit" request
-		$text   = __METHOD__ . 'text-3';
+		$text = __METHOD__ . 'text-3';
 
 		$title = MockTitle::buildMock( __METHOD__ . 'edit-request' );
 
@@ -289,7 +289,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		// #4 "delete" request
-		$text   = __METHOD__ . 'text-4';
+		$text = __METHOD__ . 'text-4';
 
 		$title = MockTitle::buildMock( __METHOD__ . 'delete-request' );
 
@@ -326,7 +326,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		// #5 "purge" request
-		$text   = __METHOD__ . 'text-purge';
+		$text = __METHOD__ . 'text-purge';
 
 		$title = MockTitle::buildMock( __METHOD__ . 'purge-request' );
 

@@ -4,14 +4,14 @@ namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\TableBuilder\Examiner\CountMapField;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\CountMapField
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

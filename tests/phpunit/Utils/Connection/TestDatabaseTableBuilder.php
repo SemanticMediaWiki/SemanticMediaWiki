@@ -5,13 +5,13 @@ namespace SMW\Tests\Utils\Connection;
 use CloneDatabase;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider;
-use SMW\Tests\Utils\PageCreator;
 use SMW\Store;
+use SMW\Tests\Utils\PageCreator;
 use Title;
 use Wikimedia\Rdbms\IDatabase;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

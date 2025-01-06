@@ -12,7 +12,7 @@ use SMW\ResultPrinter;
  *
  * @file
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author mwjames
  */
 
@@ -56,7 +56,7 @@ abstract class QueryPrinterTestCase extends \PHPUnit\Framework\TestCase {
 
 	protected function arrayWrap( array $elements ) {
 		return array_map(
-			function ( $element ) {
+			static function ( $element ) {
 				return [ $element ];
 			},
 			$elements

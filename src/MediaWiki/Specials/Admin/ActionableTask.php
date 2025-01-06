@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Specials\Admin;
 use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -24,7 +24,7 @@ interface ActionableTask {
 	 *
 	 * @param string $action
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isTaskFor( string $action ): bool;
 

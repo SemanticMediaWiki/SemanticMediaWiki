@@ -33,44 +33,44 @@ class DIConcept extends \SMWDataItem {
 	protected $m_docu;
 	/**
 	 * Flags of query features.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_features;
 	/**
 	 * Size of the query.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_size;
 	/**
 	 * Depth of the query.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_depth;
 
 	/**
 	 * Status
-	 * @var integer
+	 * @var int
 	 */
 	protected $cacheStatus;
 
 	/**
 	 * Date
-	 * @var integer
+	 * @var int
 	 */
 	protected $cacheDate;
 
 	/**
 	 * Count
-	 * @var integer
+	 * @var int
 	 */
 	protected $cacheCount;
 
 	/**
 	 * @param string $concept the concept query string
 	 * @param string $docu user documentation
-	 * @param integer $queryefeatures flags about query features
-	 * @param integer $size concept query size
-	 * @param integer $depth concept query depth
+	 * @param int $queryefeatures flags about query features
+	 * @param int $size concept query size
+	 * @param int $depth concept query depth
 	 */
 	public function __construct( $concept, $docu, $queryfeatures, $size, $depth ) {
 		$this->m_concept  = $concept;

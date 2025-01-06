@@ -20,7 +20,7 @@ use Title;
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -29,8 +29,7 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $title;
 
-	protected function setUp(): void
-	{
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();

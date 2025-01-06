@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration\Constraint;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Constraint\ConstraintRegistry;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

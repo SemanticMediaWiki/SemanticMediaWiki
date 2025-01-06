@@ -6,7 +6,6 @@ use ParserOptions;
 use ParserOutput;
 use Psr\Log\LoggerAwareTrait;
 use SMWDataValue as DataValue;
-use SMW\MediaWiki\RevisionGuard;
 use Title;
 
 /**
@@ -15,7 +14,7 @@ use Title;
  * Provides access to a semantic data container that is generated
  * either from the ParserOutput or is a newly created container
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -87,7 +86,7 @@ class ParserData {
 	private $errors = [];
 
 	/**
-	 * @var $canCreateUpdateJob
+	 * @var
 	 */
 	private $canCreateUpdateJob = true;
 
@@ -208,7 +207,7 @@ class ParserData {
 	/**
 	 * @since 2.4
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isBlocked() {
 		return $this->hasAnnotationBlock();
@@ -217,7 +216,7 @@ class ParserData {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAnnotationBlock() {
 		// ParserOutput::getExtensionData returns null if no value was set for this key
@@ -232,7 +231,7 @@ class ParserData {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUse() {
 		return !$this->hasAnnotationBlock();
@@ -300,7 +299,7 @@ class ParserData {
 	 *
 	 * @param ParserOutput|null
 	 */
-	public function importFromParserOutput( ParserOutput $parserOutput = null ) {
+	public function importFromParserOutput( ?ParserOutput $parserOutput = null ) {
 		if ( $parserOutput === null ) {
 			return;
 		}
@@ -367,7 +366,7 @@ class ParserData {
 	 *
 	 * @param ParserOutput $parserOutput
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasSemanticData( ParserOutput $parserOutput ) {
 		return $parserOutput->getExtensionData( 'smw-semanticdata-status' ) ?? false;
@@ -389,7 +388,7 @@ class ParserData {
 	 *
 	 * @since 1.9
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function updateStore( $opts = [] ) {
 		$isDeferrableUpdate = false;

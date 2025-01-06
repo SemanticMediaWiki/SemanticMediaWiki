@@ -3,7 +3,6 @@
 namespace SMW\Query\ResultPrinters;
 
 use Html;
-use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\Query\PrintRequest;
@@ -17,7 +16,7 @@ use SMWResultArray as ResultArray;
 /**
  * Print query results in tables
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -318,7 +317,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @param SMWDataValue[] $dataValues
 	 * @param $outputMode
-	 * @param boolean $isSubject
+	 * @param bool $isSubject
 	 *
 	 * @return string
 	 */

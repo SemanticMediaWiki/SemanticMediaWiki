@@ -7,8 +7,8 @@ use ParamProcessor\ProcessingResult;
 use Parser;
 use ParserHooks\HookDefinition;
 use ParserHooks\HookHandler;
-use SMWOutputs;
 use SMW\Highlighter;
+use SMWOutputs;
 
 /**
  * Class that provides the {{#info}} parser function
@@ -53,7 +53,7 @@ class InfoParserFunction implements HookHandler {
 		if ( strpos( $message ?? '', 'smw-highlighter' ) !== '' ) {
 			$message = preg_replace_callback(
 					"/" . "<span class=\"smw-highlighter\"(.*)?>(.*)?<\/span>" . "/m",
-					function ( $matches ) {
+					static function ( $matches ) {
 						return strip_tags( $matches[0] );
 					},
 					$message ?? ''
@@ -77,7 +77,7 @@ class InfoParserFunction implements HookHandler {
 
 		$result = $highlighter->getHtml();
 
-		if ( !is_null( $parser->getTitle() ) && $parser->getTitle()->isSpecialPage() ) {
+		if ( $parser->getTitle() !== null && $parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
 			SMWOutputs::commitToOutputPage( $wgOut );
 		} else {

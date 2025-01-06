@@ -2,13 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
 use SMW\Localizer\MessageLocalizerTrait;
-use Html;
+use SMW\Utils\TemplateEngine;
+use SMW\Utils\UrlArgs;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -41,11 +40,11 @@ class ExtraFieldBuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @param UrlArgs $urlArgs
+	 * @param UrlArgs|null $urlArgs
 	 *
 	 * @return string
 	 */
-	public function buildHTML( UrlArgs $urlArgs = null ): string {
+	public function buildHTML( ?UrlArgs $urlArgs = null ): string {
 		if ( ( $fieldList = $this->profile->get( 'search.extra_fields.field_list', [] ) ) === [] ) {
 			return '';
 		}

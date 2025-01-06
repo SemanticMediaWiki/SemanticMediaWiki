@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Connection;
 
-use RuntimeException;
 use SMW\Connection\ConnectionManager;
 use SMW\Tests\PHPUnitCompat;
 
@@ -10,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Connection\ConnectionManager
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -79,7 +78,7 @@ class ConnectionManagerTest extends \PHPUnit\Framework\TestCase {
 		$connectionProvider->expects( $this->once() )
 			->method( 'getConnection' );
 
-		$callback = function () use( $connectionProvider ) {
+		$callback = static function () use( $connectionProvider ) {
 			return $connectionProvider->getConnection();
 		};
 

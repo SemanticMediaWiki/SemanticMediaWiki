@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine;
 /**
  * Class for representing a single (sub)query description.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -62,12 +62,12 @@ class QuerySegment {
 	const Q_PROP_HIERARCHY = 6;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $type = self::Q_TABLE;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	public $depth;
 
@@ -77,12 +77,12 @@ class QuerySegment {
 	public $fingerprint = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $null = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $not = false;
 
@@ -170,12 +170,12 @@ class QuerySegment {
 	public $sortfields = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $queryNumber;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public static $qnum = 0;
 

@@ -2,18 +2,17 @@
 
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
+use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Tests\PHPUnitCompat;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMWDITime as DITime;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

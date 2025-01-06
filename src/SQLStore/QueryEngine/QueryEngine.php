@@ -7,8 +7,8 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\Query\DebugFormatter;
 use SMW\Iterators\ResultIterator;
+use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
@@ -21,7 +21,7 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 /**
  * Class that implements query answering for SQLStore.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -217,13 +217,13 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		switch ( $query->querymode ) {
 			case Query::MODE_DEBUG:
 				$result = $this->getDebugQueryResult( $query, $rootid );
-			break;
+				break;
 			case Query::MODE_COUNT:
 				$result = $this->getCountQueryResult( $query, $rootid );
-			break;
+				break;
 			default:
 				$result = $this->getInstanceQueryResult( $query, $rootid );
-			break;
+				break;
 		}
 
 		$this->querySegmentListProcessor->cleanUp();
@@ -237,7 +237,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * the proper debug output for the given query.
 	 *
 	 * @param Query $query
-	 * @param integer $rootid
+	 * @param int $rootid
 	 *
 	 * @return string
 	 */
@@ -282,7 +282,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		}
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
-		list( $startOpts, $useIndex, $tailOpts ) = $connection->makeSelectOptions( $sqlOptions );
+		[ $startOpts, $useIndex, $tailOpts ] = $connection->makeSelectOptions( $sqlOptions );
 
 		$sortfields = implode( ',', $qobj->sortfields );
 		$sortfields = $sortfields ? ', ' . $sortfields : '';
@@ -321,9 +321,9 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * the proper counting output for the given query.
 	 *
 	 * @param Query $query
-	 * @param integer $rootid
+	 * @param int $rootid
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	private function getCountQueryResult( Query $query, $rootid ) {
 		$queryResult = $this->queryFactory->newQueryResult(
@@ -386,7 +386,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * we want here. It would be nice if we could eliminate the bug in POSTGRES as well.
 	 *
 	 * @param Query $query
-	 * @param integer $rootid
+	 * @param int $rootid
 	 *
 	 * @return QueryResult
 	 */
@@ -535,7 +535,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * Get a SQL option array for the given query and preprocessed query object at given id.
 	 *
 	 * @param Query $query
-	 * @param integer $rootId
+	 * @param int $rootId
 	 *
 	 * @return array
 	 */

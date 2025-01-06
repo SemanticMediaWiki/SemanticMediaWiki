@@ -8,7 +8,7 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -83,7 +83,7 @@ class AllowsPatternValueParser implements ValueParser {
 				continue;
 			}
 
-			list( $reference, $regex ) = explode( '|', $part, 2 );
+			[ $reference, $regex ] = explode( '|', $part, 2 );
 			$list[trim( $reference )] = $regex;
 		}
 

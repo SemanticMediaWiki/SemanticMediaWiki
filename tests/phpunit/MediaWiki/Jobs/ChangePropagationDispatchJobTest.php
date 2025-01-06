@@ -10,7 +10,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Jobs\ChangePropagationDispatchJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -235,7 +235,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		// Check that it is the dataItem from `getPropertyValues`
-		$checkJobParameterCallback = function ( $jobs ) use( $dataItem ) {
+		$checkJobParameterCallback = static function ( $jobs ) use( $dataItem ) {
 			foreach ( $jobs as $job ) {
 				return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $dataItem );
 			}

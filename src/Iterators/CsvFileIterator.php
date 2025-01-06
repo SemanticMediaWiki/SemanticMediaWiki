@@ -2,17 +2,16 @@
 
 namespace SMW\Iterators;
 
-use Exception;
-use Iterator;
 use Countable;
-use SMW\Exception\FileNotFoundException;
+use Iterator;
 use RuntimeException;
+use SMW\Exception\FileNotFoundException;
 use SplFileObject;
 
 /**
  * @see http://php.net/manual/en/function.fgetcsv.php
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  */
 class CsvFileIterator implements Iterator, Countable {
@@ -28,12 +27,12 @@ class CsvFileIterator implements Iterator, Countable {
 	private $handle;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $parseHeader;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $header = [];
 
@@ -43,7 +42,7 @@ class CsvFileIterator implements Iterator, Countable {
 	private $delimiter;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $length;
 
@@ -53,7 +52,7 @@ class CsvFileIterator implements Iterator, Countable {
 	private $key = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $count = false;
 
@@ -61,9 +60,9 @@ class CsvFileIterator implements Iterator, Countable {
 	 * @since 3.0
 	 *
 	 * @param string $file
-	 * @param boolean $parseHeader
+	 * @param bool $parseHeader
 	 * @param string $delimiter
-	 * @param integer $length
+	 * @param int $length
 	 */
 	public function __construct( $file, $parseHeader = false, $delimiter = ",", $length = 8000 ) {
 		try {
@@ -107,7 +106,7 @@ class CsvFileIterator implements Iterator, Countable {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getHeader() {
 		return $this->header;

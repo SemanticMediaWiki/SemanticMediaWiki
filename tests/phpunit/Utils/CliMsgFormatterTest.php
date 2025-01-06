@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\CliMsgFormatter;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @covers \SMW\Utils\CliMsgFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

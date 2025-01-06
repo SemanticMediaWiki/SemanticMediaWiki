@@ -5,7 +5,7 @@ namespace SMW\Elastic\QueryEngine;
 use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -13,12 +13,12 @@ use InvalidArgumentException;
 class SearchResult {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $raw = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $errors = [];
 
@@ -33,7 +33,7 @@ class SearchResult {
 	private $filterField = '_id';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $container = [
 		'info' => [],
@@ -82,7 +82,7 @@ class SearchResult {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer|null $cutoff
+	 * @param int|null $cutoff
 	 *
 	 * @return array
 	 */
@@ -110,9 +110,9 @@ class SearchResult {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $cutoff
+	 * @param int $cutoff
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function doFilterResults( array $results, $cutoff = null ) {
 		$this->results = [];
@@ -159,7 +159,7 @@ class SearchResult {
 		$pid = null;
 
 		if ( strpos( $field, '.' ) !== false ) {
-			list( $pid, $field ) = explode( '.', $field );
+			[ $pid, $field ] = explode( '.', $field );
 		}
 
 		foreach ( $results as $key => $value ) {

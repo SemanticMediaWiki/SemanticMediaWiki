@@ -2,11 +2,11 @@
 
 namespace SMW;
 
+use RuntimeException;
 use SMW\Exception\SettingNotFoundException;
 use SMW\Exception\SettingsAlreadyLoadedException;
 use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
-use RuntimeException;
 
 /**
  * @private
@@ -14,7 +14,7 @@ use RuntimeException;
  * Encapsulate Semantic MediaWiki specific settings from GLOBALS access using a
  * dedicated interface.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

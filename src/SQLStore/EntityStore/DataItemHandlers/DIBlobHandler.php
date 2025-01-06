@@ -11,7 +11,7 @@ use SMWDIBlob as DIBlob;
 /**
  * This class implements Store access to blob (string) data items.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata

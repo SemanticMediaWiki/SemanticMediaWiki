@@ -8,7 +8,7 @@ use SMW\Utils\Stats;
  * @covers \SMW\Utils\Stats
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

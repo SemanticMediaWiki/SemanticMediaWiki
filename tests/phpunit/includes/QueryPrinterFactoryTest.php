@@ -2,8 +2,8 @@
 
 namespace SMW\Tests;
 
-use SMW\QueryPrinterFactory;
 use SMW\Query\ResultPrinter;
+use SMW\QueryPrinterFactory;
 use SMW\TableResultPrinter;
 use SMWListResultPrinter;
 
@@ -11,7 +11,7 @@ use SMWListResultPrinter;
  * @covers \SMW\QueryPrinterFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >

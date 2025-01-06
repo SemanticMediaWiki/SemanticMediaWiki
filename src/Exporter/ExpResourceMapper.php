@@ -12,10 +12,9 @@ use SMW\InMemoryPoolCache;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWExporter as Exporter;
-use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -46,12 +45,12 @@ class ExpResourceMapper {
 	/**
 	 * @note Legacy setting expected to vanish with 3.0
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $bcAuxiliaryUse = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $seekImportVocabulary = true;
 
@@ -76,7 +75,7 @@ class ExpResourceMapper {
 	/**
 	 * @since 2.2
 	 *
-	 * @param boolean $bcAuxiliaryUse
+	 * @param bool $bcAuxiliaryUse
 	 */
 	public function setBCAuxiliaryUse( $bcAuxiliaryUse ) {
 		$this->bcAuxiliaryUse = (bool)$bcAuxiliaryUse;
@@ -113,8 +112,8 @@ class ExpResourceMapper {
 	 * (see Exporter::newAuxiliaryExpElement) should be generated
 	 *
 	 * @param DIProperty $property
-	 * @param boolean $useAuxiliaryModifier
-	 * @param boolean $seekImportVocabulary
+	 * @param bool $useAuxiliaryModifier
+	 * @param bool $seekImportVocabulary
 	 *
 	 * @return ExpResource
 	 * @throws RuntimeException
@@ -150,7 +149,7 @@ class ExpResourceMapper {
 	 * occurring in MW titles).
 	 *
 	 * @param DIWikiPage $diWikiPage
-	 * @param boolean $useAuxiliaryModifier
+	 * @param bool $useAuxiliaryModifier
 	 *
 	 * @return ExpResource
 	 */
@@ -186,9 +185,9 @@ class ExpResourceMapper {
 		$importDataItem = $this->findImportDataItem( $diWikiPage, $modifier );
 
 		if ( $this->seekImportVocabulary && $importDataItem instanceof DataItem ) {
-			list( $localName, $namespace, $namespaceId ) = $this->defineElementsForImportDataItem( $importDataItem );
+			[ $localName, $namespace, $namespaceId ] = $this->defineElementsForImportDataItem( $importDataItem );
 		} else {
-			list( $localName, $namespace, $namespaceId ) = $this->defineElementsForDiWikiPage( $diWikiPage, $modifier );
+			[ $localName, $namespace, $namespaceId ] = $this->defineElementsForDiWikiPage( $diWikiPage, $modifier );
 		}
 
 		$resource = new ExpNsResource(

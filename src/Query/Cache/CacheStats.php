@@ -5,7 +5,7 @@ namespace SMW\Query\Cache;
 use SMW\Utils\Stats;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -38,7 +38,7 @@ class CacheStats extends Stats {
 	 * @return array
 	 */
 	public function getStats() {
-		$stats = array_filter( parent::getStats(), function ( $key ) {
+		$stats = array_filter( parent::getStats(), static function ( $key ) {
 			return $key !== false;
 		} );
 

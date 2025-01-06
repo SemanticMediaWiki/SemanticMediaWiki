@@ -5,19 +5,19 @@ namespace SMW\Tests\Serializers;
 use SMW\DataItemFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\Serializers\QueryResultSerializer;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
 use Title;
 
 /**
  * @covers \SMW\Serializers\QueryResultSerializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

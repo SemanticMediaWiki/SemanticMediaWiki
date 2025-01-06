@@ -2,22 +2,22 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Jobs\RefreshJob;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\RefreshJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
 class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 
-	/** @var integer */
+	/** @var int */
 	protected $controlRefreshDataIndex;
 
 	private $applicationFactory;
@@ -162,7 +162,7 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @since  1.9
 	 *
-	 * @param integer $index
+	 * @param int &$index
 	 */
 	public function refreshDataCallback( &$index ) {
 		$this->controlRefreshDataIndex = $index;

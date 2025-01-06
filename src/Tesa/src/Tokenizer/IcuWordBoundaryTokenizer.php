@@ -5,7 +5,7 @@ namespace Onoi\Tesa\Tokenizer;
 use IntlRuleBasedBreakIterator;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -32,7 +32,7 @@ class IcuWordBoundaryTokenizer implements Tokenizer {
 	 *
 	 * @param Tokenizer|null $tokenizer
 	 */
-	public function __construct( Tokenizer $tokenizer = null ) {
+	public function __construct( ?Tokenizer $tokenizer = null ) {
 		$this->tokenizer = $tokenizer;
 	}
 
@@ -68,7 +68,7 @@ class IcuWordBoundaryTokenizer implements Tokenizer {
 	/**
 	 * @since 0.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAvailable() {
 		return class_exists( 'IntlRuleBasedBreakIterator' );
@@ -96,14 +96,14 @@ class IcuWordBoundaryTokenizer implements Tokenizer {
 		}
 
 		if ( !$this->isAvailable() ) {
-			return $this->tokenizer !== null ? $this->tokenizer->tokenize( $string ) : array( $string );
+			return $this->tokenizer !== null ? $this->tokenizer->tokenize( $string ) : [ $string ];
 		}
 
 		return $this->createTokens( $string );
 	}
 
 	private function createTokens( $string ) {
-		$tokens = array();
+		$tokens = [];
 
 		if ( $tokenizer = IntlRuleBasedBreakIterator::createWordInstance( $this->locale ) ) {
 			$tokenizer->setText( $string );

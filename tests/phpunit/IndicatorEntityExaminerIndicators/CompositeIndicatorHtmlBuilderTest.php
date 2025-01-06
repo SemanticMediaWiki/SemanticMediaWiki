@@ -2,18 +2,18 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
+use SMW\DIWikiPage;
 use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
 use SMW\Localizer\MessageLocalizer;
-use SMW\Utils\TemplateEngine;
-use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

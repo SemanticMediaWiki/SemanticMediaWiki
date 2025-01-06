@@ -2,16 +2,16 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\Utils\TemplateEngine;
+use RuntimeException;
+use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
-use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
-use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
-use RuntimeException;
+use SMW\Utils\TemplateEngine;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

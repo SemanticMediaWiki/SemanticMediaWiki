@@ -2,16 +2,15 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use RuntimeException;
 use SMW\MediaWiki\DeepRedirectTargetResolver;
-use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\MediaWiki\DeepRedirectTargetResolver
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames

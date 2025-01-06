@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Specials\Browse;
 use Html;
 use SMW\Message;
 use SpecialPage;
-use SMW\Localizer;
 
 /**
  * @private
@@ -14,7 +13,7 @@ use SMW\Localizer;
  * for now this is the easiest way to unclutter the mammoth Browse class and
  * splitting up responsibilities.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames

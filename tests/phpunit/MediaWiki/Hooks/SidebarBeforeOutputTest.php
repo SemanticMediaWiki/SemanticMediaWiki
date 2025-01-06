@@ -9,7 +9,7 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Hooks\SidebarBeforeOutput
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 

@@ -2,25 +2,24 @@
 
 namespace SMW\Tests\Factbox;
 
-use Language;
-use ParserOutput;
 use MediaWiki\MediaWikiServices;
-use SMW\Factbox\FactboxText;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use ParserOutput;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\EntityCache;
 use SMW\Factbox\CachedFactbox;
+use SMW\Factbox\FactboxText;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
-use SMW\EntityCache;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\CachedFactbox
  * @group semantic-mediawiki
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

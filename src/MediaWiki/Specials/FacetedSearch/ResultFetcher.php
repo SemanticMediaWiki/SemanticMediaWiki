@@ -3,23 +3,17 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
 use Html;
-use SMW\Store;
-use SMW\Localizer\Message;
-use SMWQueryProcessor as QueryProcessor;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\TableBuilder\FieldType;
-use SMWQuery as Query;
+use RuntimeException;
 use SMW\DIProperty;
-use SMW\RequestOptions;
-use SMWDITime as DITime;
-use SMW\DataValueFactory;
+use SMW\Localizer\Message;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\FilterMap;
-use SMW\DataTypeRegistry;
-use RuntimeException;
+use SMW\Store;
+use SMWQuery as Query;
+use SMWQueryProcessor as QueryProcessor;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -62,7 +56,7 @@ class ResultFetcher {
 	private $queryResult;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $params;
 
@@ -72,22 +66,22 @@ class ResultFetcher {
 	private $format = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $valueFilters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $propertyFilters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $categoryFilters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $errors = [];
 
@@ -157,7 +151,7 @@ class ResultFetcher {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPropertyFilters(): array {
 		return $this->propertyFilters;
@@ -166,7 +160,7 @@ class ResultFetcher {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getCategoryFilters(): array {
 		return $this->categoryFilters;

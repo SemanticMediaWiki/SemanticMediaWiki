@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use ParserOptions;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use Title;
@@ -13,7 +13,7 @@ use Title;
  * @covers \SMW\MediaWiki\Hooks\InternalParseBeforeLinks
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

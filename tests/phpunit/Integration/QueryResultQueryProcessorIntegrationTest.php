@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
@@ -19,7 +19,7 @@ use SMWQueryProcessor as QueryProcessor;
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -91,7 +91,7 @@ class QueryResultQueryProcessorIntegrationTest extends SMWIntegrationTestCase {
 			'limit=1'
 		];
 
-		list( $queryString, $parameters, $printouts ) = QueryProcessor::getComponentsFromFunctionParams(
+		[ $queryString, $parameters, $printouts ] = QueryProcessor::getComponentsFromFunctionParams(
 			$rawParams,
 			false
 		);
@@ -134,7 +134,7 @@ class QueryResultQueryProcessorIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	private function getQueryResultFor( $queryString ) {
-		list( $query, $formattedParams ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $formattedParams ] = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$queryString,
 			SMW_OUTPUT_WIKI,
 			QueryProcessor::INLINE_QUERY,

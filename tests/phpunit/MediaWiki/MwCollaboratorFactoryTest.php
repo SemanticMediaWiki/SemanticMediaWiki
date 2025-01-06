@@ -3,15 +3,15 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Revision\RevisionLookup;
+use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\MwCollaboratorFactory;
 
 /**
  * @covers \SMW\MediaWiki\MwCollaboratorFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames

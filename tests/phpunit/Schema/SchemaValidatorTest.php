@@ -2,16 +2,14 @@
 
 namespace SMW\Tests\Schema;
 
-use SMW\DataItemFactory;
-use SMW\Schema\SchemaValidator;
 use SMW\Schema\SchemaDefinition;
-use SMW\Tests\TestEnvironment;
+use SMW\Schema\SchemaValidator;
 
 /**
  * @covers \SMW\Schema\SchemaValidator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

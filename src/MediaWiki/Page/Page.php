@@ -13,7 +13,7 @@ use SMWOutputs as Outputs;
  * article pages for Concept and Property pages. This is mainly parameter
  * handling and some very basic output control.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Nikolas Iwan
@@ -25,7 +25,7 @@ abstract class Page extends Article {
 	/**
 	 * Limit for results per page.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $limit;
 
@@ -135,7 +135,7 @@ abstract class Page extends Article {
 	/**
 	 * @since 3.0
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	protected function getRedirectTargetURL() {
 		return false;
@@ -153,7 +153,7 @@ abstract class Page extends Article {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isLockedView() {
 		return false;
@@ -209,7 +209,7 @@ abstract class Page extends Article {
 	 *
 	 * @return string
 	 */
-	protected abstract function getHtml();
+	abstract protected function getHtml();
 
 	/**
 	 * Like Article's getTitle(), but returning a suitable SMWDIWikiPage.

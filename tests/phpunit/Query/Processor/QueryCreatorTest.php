@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Query\Processor;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Query\Processor\QueryCreator;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @covers SMW\Query\Processor\QueryCreator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

@@ -8,7 +8,7 @@ use SMWQueryProcessor as QueryProcessor;
  * @covers SMWQueryProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

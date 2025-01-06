@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
-use Psr\Log\LoggerAwareTrait;
 use Job as MediaWikiJob;
 use JobQueueGroup;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMW\Store;
@@ -13,7 +13,7 @@ use Title;
 /**
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -23,7 +23,7 @@ abstract class Job extends MediaWikiJob {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isEnabledJobQueue = true;
 
@@ -56,7 +56,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean|true $enableJobQueue
+	 * @param bool|true $enableJobQueue
 	 *
 	 * @return AbstractJob
 	 */
@@ -88,7 +88,7 @@ abstract class Job extends MediaWikiJob {
 	/**
 	 * @since  2.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getJobCount() {
 		return count( $this->jobs );
@@ -99,9 +99,8 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @param mixed $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-
 	public function hasParameter( $key ) {
 		if ( !is_array( $this->params ) ) {
 			return false;
@@ -115,7 +114,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @param mixed $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getParameter( $key, $default = false ) {
 		return $this->hasParameter( $key ) ? $this->params[$key] : $default;
@@ -136,7 +135,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @param self[] $jobs
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function batchInsert( $jobs ) {
 		return ApplicationFactory::getInstance()->getJobQueue()->push( $jobs );
@@ -169,7 +168,7 @@ abstract class Job extends MediaWikiJob {
 	 * @see Translate::TTMServerMessageUpdateJob
 	 * @since 3.0
 	 *
-	 * @param integer $delay
+	 * @param int $delay
 	 */
 	public function setDelay( $delay ) {
 		$isDelayedJobsEnabled = $this->getJobQueue()->isDelayedJobsEnabled(

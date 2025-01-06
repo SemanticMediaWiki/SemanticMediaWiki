@@ -4,7 +4,6 @@ namespace SMW\Tests\Utils;
 
 use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
 use User;
 use WikiPage;
@@ -13,7 +12,7 @@ use WikiPage;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  */
 class PageDeleter {

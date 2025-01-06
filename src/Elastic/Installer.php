@@ -2,16 +2,16 @@
 
 namespace SMW\Elastic;
 
-use SMW\Elastic\Indexer\Rebuilder\Rollover;
-use SMW\Elastic\Connection\Client as ElasticClient;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Indexer\Rebuilder\Rollover;
 use SMW\SetupFile;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
