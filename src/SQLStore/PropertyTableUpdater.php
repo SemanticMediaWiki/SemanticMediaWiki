@@ -191,11 +191,16 @@ class PropertyTableUpdater {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$tableName = $propertyTable->getName();
 
-		$connection->insert(
-			$tableName,
-			$rows,
-			__METHOD__ . "-$tableName"
-		);
+		// Due to https://github.com/wikimedia/mediawiki/commit/551ec29ea676cc73cd127b2f9cfc9bedcfc9fdc5
+		// we have to cap this in a try and catch to keep previous behaviour. This is for MW 1.42+.
+		try {
+			$connection->insert(
+				$tableName,
+				$rows,
+				__METHOD__ . "-$tableName"
+			);
+		} catch ( DBQueryError $e ) {
+		}
 	}
 
 	private function delete( PropertyTableDefinition $propertyTable, array $rows ) {
