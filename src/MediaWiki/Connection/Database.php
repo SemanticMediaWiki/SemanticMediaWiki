@@ -416,6 +416,15 @@ class Database {
 	}
 
 	/**
+	 * @see IDatabase::rollback
+	 *
+	 * @since 5.0
+	 */
+	public function rollback( $fname = __METHOD__ ) {
+		return $this->connRef->getConnection( 'write' )->selectRow( $fname );
+	}
+
+	/**
 	 * @see IDatabase::affectedRows
 	 *
 	 * @since 1.9
