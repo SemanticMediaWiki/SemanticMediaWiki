@@ -147,7 +147,7 @@ class PropertyStatisticsStore {
 				$this->log( $method . ' (onTransactionIdle)' );
 				$this->onTransactionIdle = false;
 				$this->addToUsageCounts( $additions );
-			} );
+			}, $method );
 
 			return $success;
 		}
