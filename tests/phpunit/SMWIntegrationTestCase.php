@@ -18,6 +18,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use SMWQueryProcessor;
 use Title;
+use Wikimedia\Rdbms\ChangedTablesTracker;
 
 /**
  * @group semantic-mediawiki
