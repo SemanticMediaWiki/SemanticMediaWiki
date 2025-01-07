@@ -176,10 +176,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		$dbw = $this->getDBConnection();
 		$dbw->rollback();
 
-		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
-			\Wikimedia\Rdbms\ChangedTablesTracker::startTracking();
-		}
-
 		parent::tearDown();
 	}
 
