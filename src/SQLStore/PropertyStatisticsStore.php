@@ -110,12 +110,11 @@ class PropertyStatisticsStore {
 				],
 				__METHOD__
 			);
-		} catch ( DBQueryError | \Wikimedia\Rdbms\DBTransactionStateError $e ) {
-			$this->connection->rollback( __METHOD__ );
+		} catch ( DBQueryError $e ) {
 			// #2345 Do nothing as it most likely an "Error: 1264 Out of range
 			// value for column" in strict mode
 			// As an unsigned int, we expected it to be 0
-			$this->setUsageCount( $pid, [ 0, 0 ] );
+			$this->setUsageCount( $pid, [ 0, 0 ], __METHOD__ );
 		}
 
 		return true;
@@ -177,7 +176,7 @@ class PropertyStatisticsStore {
 	 * @return bool Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
-	public function setUsageCount( $propertyId, $value ) {
+	public function setUsageCount( $propertyId, $value, $fname = __METHOD__ ) {
 		$usageCount = 0;
 		$nullCount = 0;
 
@@ -205,7 +204,7 @@ class PropertyStatisticsStore {
 			[
 				'p_id' => $propertyId
 			],
-			__METHOD__
+			$fname
 		);
 	}
 
