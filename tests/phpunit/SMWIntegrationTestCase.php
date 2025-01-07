@@ -80,6 +80,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
+		ChangedTablesTracker::stopTracking();
+
 		// Clear any cached user to ensure a clean state for each test
 		$user = $this->getTestUser()->getUser();
 		$user->clearInstanceCache( $user->mFrom );
@@ -171,6 +173,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		// Ensure all transactions are closed before ending the test
 		$dbw = $this->getDBConnection();
 		$dbw->rollback();
+
+		ChangedTablesTracker::startTracking();
 
 		parent::tearDown();
 	}
