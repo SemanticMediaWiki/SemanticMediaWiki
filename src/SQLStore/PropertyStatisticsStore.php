@@ -111,6 +111,7 @@ class PropertyStatisticsStore {
 				__METHOD__
 			);
 		} catch ( DBQueryError | \Wikimedia\Rdbms\DBTransactionStateError $e ) {
+			$this->connection->rollback( __METHOD__ );
 			// #2345 Do nothing as it most likely an "Error: 1264 Out of range
 			// value for column" in strict mode
 			// As an unsigned int, we expected it to be 0
