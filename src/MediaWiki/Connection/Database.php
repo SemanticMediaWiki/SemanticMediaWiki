@@ -416,12 +416,12 @@ class Database {
 	}
 
 	/**
-	 * @see IDatabase::cancelAtomic
+	 * @see IDatabase::rollback
 	 *
 	 * @since 5.0
 	 */
-	public function cancelAtomic( $fname = __METHOD__ ) {
-		return $this->connRef->getConnection( 'write' )->cancelAtomic( $fname );
+	public function rollback( $fname = __METHOD__ ) {
+		return $this->connRef->getConnection( 'write' )->rollback( $fname );
 	}
 
 	/**
