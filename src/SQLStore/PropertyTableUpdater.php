@@ -7,6 +7,7 @@ use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Parameters;
 use SMW\SQLStore\Exception\TableMissingIdFieldException;
 use SMW\Store;
+use Wikimedia\Rdbms\DBQueryError;
 
 /**
  * @private
