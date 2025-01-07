@@ -773,10 +773,10 @@ class Database {
 	 *
 	 * @param callable $callback
 	 */
-	public function onTransactionCommitOrIdle( callable $callback ) {
+	public function onTransactionCommitOrIdle( callable $callback, $fname = __METHOD__ ) {
 		$connection = $this->connRef->getConnection( 'write' );
 
-		$connection->onTransactionCommitOrIdle( $callback );
+		$connection->onTransactionCommitOrIdle( $callback, $fname );
 	}
 
 	/**
