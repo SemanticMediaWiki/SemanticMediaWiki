@@ -152,18 +152,22 @@ class QuerySegmentListProcessor {
 				$seg->joinType = $joinType;
 				$seg->joinTable = $subQuery->joinTable;
 				$seg->alias = $subQuery->alias;
-				$seg->where = "$joinField$op=" . $subQuery->joinfield;
 
-				if ( $subQuery->from ) {
-					$seg->fromSegs = array_merge( $subQuery->fromSegs );
-				}
-
+				// Move conditions referencing the joined table into the join condition
 				if ( $subQuery->where !== '' && $subQuery->where !== null ) {
+					$seg->where = "$joinField$op=" . $subQuery->joinfield;
 					if ( $joinType === 'LEFT' || $joinType === 'LEFT OUTER' ) {
 						$seg->where .= ' AND (' . $subQuery->where . ')';
 					} else {
 						$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
 					}
+				} else {
+					$seg->where = "$joinField$op=" . $subQuery->joinfield;
+				}
+
+				// Merge any nested joins
+				if ( !empty( $subQuery->fromSegs ) ) {
+					$seg->fromSegs = array_merge( $seg->fromSegs, $subQuery->fromSegs );
 				}
 
 				$query->fromSegs[] = $seg;
@@ -189,7 +193,11 @@ class QuerySegmentListProcessor {
 				}
 
 				$query->where .= ( ( $query->where === '' || $subQuery->where === null ) ? '' : ' AND ' ) . $condition;
-				$query->fromSegs = array_merge( $query->fromSegs, $subQuery->fromSegs );
+
+				// Merge any nested joins
+				if ( !empty( $subQuery->fromSegs ) ) {
+					$query->fromSegs = array_merge( $query->fromSegs, $subQuery->fromSegs );
+				}
 
 			} else { // interpret empty joinfields as impossible condition (empty result)
 				$query->joinfield = ''; // make whole query false
@@ -197,11 +205,6 @@ class QuerySegmentListProcessor {
 				$query->where = '';
 				$query->fromSegs = [];
 				break;
-			}
-
-			if ( $subQuery->where !== '' && $subQuery->where !== null &&
-				 !( $subQuery->joinType === 'LEFT' || $subQuery->joinType === 'LEFT OUTER' ) ) {
-				$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
 			}
 		}
 
