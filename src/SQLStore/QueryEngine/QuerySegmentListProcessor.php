@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMWQuery as Query;
 use RuntimeException;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
+use SMWQuery as Query;
 use Wikimedia\Rdbms\JoinGroup;
 use Wikimedia\Rdbms\JoinGroupBase;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
