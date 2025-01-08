@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\TraversalPropertyLookup
@@ -46,13 +47,89 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( false );
 
+		$propertyTableDef->expects( $this->atLeastOnce() )
+			->method( 'getName' )
+			->willReturn( 'smw_table' );
+
+		// Mock the subquery builder
+		$subqueryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subqueryBuilder->expects( $this->once() )
+			->method( 'select' )
+			->with( 'p_id' )
+			->willReturnSelf();
+
+		$subqueryBuilder->expects( $this->once() )
+			->method( 'from' )
+			->with( 'smw_table' )
+			->willReturnSelf();
+
+		$subqueryBuilder->expects( $this->atLeastOnce() )
+			->method( 'where' )
+			->willReturnSelf();
+
+		// Mock the main query builder
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'newSubquery' )
+			->willReturn( $subqueryBuilder );
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'from' )
+			->with( 'smw_object_ids' )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'join' )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->atLeastOnce() )
+			->method( 'where' )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'select' )
+			->with( 'smw_title,smw_sortkey,smw_iw' )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'distinct' )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'caller' )
+			->willReturnSelf();
+
+		$resultWrapper = $this->createMock( '\Wikimedia\Rdbms\IResultWrapper' );
+		$queryBuilder->expects( $this->once() )
+			->method( 'fetchResultSet' )
+			->willReturn( $resultWrapper );
+
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		$connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->with( 'read' )
+			->willReturn( $queryBuilder );
+
 		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( [] );
+			->method( 'addQuotes' )
+			->willReturnCallback( static function ( $value ) {
+				return "'$value'";
+			} );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'applySqlOptions' )
+			->willReturnCallback( static function ( $builder, $options ) {
+				return $builder;
+			} );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -75,10 +152,7 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDataItemHandlerForDIType' )
 			->willReturn( $dataItemHandler );
 
-		$instance = new TraversalPropertyLookup(
-			$store
-		);
-
+		$instance = new TraversalPropertyLookup( $store );
 		$instance->fetchFromTable( $propertyTableDef, $dataItem );
 	}
 
@@ -88,6 +162,10 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$resultWrapper->expects( $this->once() )
+			->method( 'numRows' )
+			->willReturn( 1 );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
@@ -105,13 +183,54 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( true );
 
+		$propertyTableDef->expects( $this->atLeastOnce() )
+			->method( 'getName' )
+			->willReturn( 'smw_table' );
+
+		$propertyTableDef->expects( $this->once() )
+			->method( 'usesIdSubject' )
+			->willReturn( true );
+
+		// Mock the query builder
+		$queryBuilder = $this->getMockBuilder( SelectQueryBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'from' )
+			->with( 'smw_table', 't1' )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'select' )
+			->with( 's_id' )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'limit' )
+			->with( 1 )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->atLeastOnce() )
+			->method( 'where' )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'caller' )
+			->willReturnSelf();
+
+		$queryBuilder->expects( $this->once() )
+			->method( 'fetchResultSet' )
+			->willReturn( $resultWrapper );
+
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->willReturn( $resultWrapper );
+		$connection->expects( $this->once() )
+			->method( 'newSelectQueryBuilder' )
+			->with( 'read' )
+			->willReturn( $queryBuilder );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -126,11 +245,7 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDataItemHandlerForDIType' )
 			->willReturn( $dataItemHandler );
 
-		$instance = new TraversalPropertyLookup(
-			$store
-		);
-
+		$instance = new TraversalPropertyLookup( $store );
 		$instance->fetchFromTable( $propertyTableDef, $dataItem );
 	}
-
 }

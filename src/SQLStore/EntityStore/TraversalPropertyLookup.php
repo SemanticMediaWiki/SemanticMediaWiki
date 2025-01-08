@@ -71,8 +71,9 @@ class TraversalPropertyLookup {
 			// from the inner join
 			$options['GROUP BY'] = 'p_id';
 
-			$subquery = $builder->newSubquery();
-			$subquery->select( 'p_id' )->from( $propertyTableDef->getName() );
+			$subquery = $builder->newSubquery()
+				->select( 'p_id' )
+				->from( $propertyTableDef->getName() );
 			$this->buildWhereConds( $subquery, $dataItem );
 			$connection->applySqlOptions( $subquery, $options );
 
