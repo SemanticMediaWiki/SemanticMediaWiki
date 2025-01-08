@@ -161,9 +161,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		if ( $this->testEnvironment !== null ) {
 			$this->testEnvironment->tearDown();
 		}
-		// Ensure all transactions are closed before ending the test
-		$dbw = $this->getDBConnection();
-		$dbw->rollback();
 
 		parent::tearDown();
 	}
@@ -217,7 +214,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 			$message = "Database was excluded and is not expected to support this test";
 		}
 
-		if ( in_array( $this->getDBConnection()->getType(), $excludedDatabase ) ) {
+		if ( in_array( $this->db->getType(), $excludedDatabase ) ) {
 			$this->markTestSkipped( $message );
 		}
 	}
