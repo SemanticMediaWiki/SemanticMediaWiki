@@ -105,9 +105,10 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'caller' )
 			->willReturnSelf();
 
+		$resultWrapper = $this->createMock( '\Wikimedia\Rdbms\IResultWrapper' );
 		$queryBuilder->expects( $this->once() )
 			->method( 'fetchResultSet' )
-			->willReturn( [] );
+			->willReturn( $resultWrapper );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
