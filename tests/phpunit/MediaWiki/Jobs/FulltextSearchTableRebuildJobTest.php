@@ -19,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  */
 class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
 
-	private $testEnvironment;
+	protected $testEnvironment;
 
 	/**
 	 * @var bool
