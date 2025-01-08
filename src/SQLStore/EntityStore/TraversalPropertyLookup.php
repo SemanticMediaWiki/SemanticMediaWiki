@@ -4,12 +4,10 @@ namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
 use SMW\DIContainer;
-use SMW\MediaWiki\Connection\OptionsBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition as PropertyTableDef;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
-use Wikimedia\Rdbms\Subquery;
 
 /**
  * @license GNU GPL v2
@@ -88,8 +86,12 @@ class TraversalPropertyLookup {
 			$conditions .= $this->store->getSQLConditions( $subOptions, 'smw_sortkey', 'smw_sortkey', $conditions !== '' );
 			$options = $this->store->getSQLOptions( $subOptions, '' );
 
-			if ( $conditions ) $builder->where( $conditions );
-			if ( ! empty( $options ) ) $connection->applySqlOptions( $builder, $options );
+			if ( $conditions ) {
+				$builder->where( $conditions );
+			}
+			if ( ! empty( $options ) ) {
+				$connection->applySqlOptions( $builder, $options );
+			}
 			$builder->select( 'smw_title,smw_sortkey,smw_iw' )->distinct();
 
 			$result = $builder->caller( __METHOD__ )->fetchResultSet();
@@ -113,7 +115,9 @@ class TraversalPropertyLookup {
 	}
 
 	private function buildWhereConds( $builder, $dataItem ) {
-		if ( $dataItem == null ) return;
+		if ( $dataItem == null ) {
+			return;
+		}
 
 		$dataItemHandler = $this->store->getDataItemHandlerForDIType( $dataItem->getDIType() );
 		$builder->where( $dataItemHandler->getWhereConds( $dataItem ) );
