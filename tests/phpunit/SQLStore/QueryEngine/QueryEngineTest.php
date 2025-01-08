@@ -62,6 +62,25 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getErrors' )
 			->willReturn( [] );
 
+		// Set up conditionBuilder to return a valid rootid
+		$this->conditionBuilder->expects( $this->once() )
+			->method( 'buildCondition' )
+			->willReturn( 1 );
+
+		// Set up querySegmentList
+		$querySegment = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegment' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$querySegment->joinTable = 'smw_object_ids';
+		$querySegment->alias = 'table1';
+		$querySegment->joinfield = 'smw_id';
+		$querySegment->where = '';
+
+		$this->conditionBuilder->expects( $this->any() )
+			->method( 'getQuerySegmentList' )
+			->willReturn( [ 1 => $querySegment ] );
+
 		$this->querySegmentListProcessor->expects( $this->any() )
 			->method( 'getExecutedQueries' )
 			->willReturn( [] );
@@ -79,7 +98,6 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query->querymode = Query::MODE_DEBUG;
 
 		$this->assertIsString(
-
 			$instance->getQueryResult( $query )
 		);
 	}
@@ -114,5 +132,4 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 			$instance->getQueryResult( $query )
 		);
 	}
-
 }
