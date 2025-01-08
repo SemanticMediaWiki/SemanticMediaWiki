@@ -89,7 +89,7 @@ class TraversalPropertyLookup {
 			if ( $conditions ) {
 				$builder->where( $conditions );
 			}
-			if ( ! empty( $options ) ) {
+			if ( !empty( $options ) ) {
 				$connection->applySqlOptions( $builder, $options );
 			}
 			$builder->select( 'smw_title,smw_sortkey,smw_iw' )->distinct();
