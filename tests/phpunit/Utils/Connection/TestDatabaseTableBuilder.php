@@ -62,8 +62,15 @@ class TestDatabaseTableBuilder {
 		$this->connectionProvider = $connectionProvider;
 		$this->availableDatabaseTypes = $this->supportedDatabaseTypes;
 
-		self::$UTDB_PREFIX = 'unittest_';
+		self::$UTDB_PREFIX = 'sunittest_';
 		self::$MWDB_PREFIX = $GLOBALS['wgDBprefix'];
+
+		// MediaWikiTestCase changes the GLOBAL state therefore
+		// we have to ensure that we really use the original DB and
+		// not an existing 'unittest_' created by a MW test
+		if ( self::$MWDB_PREFIX === 'unittest_' ) {
+			self::$MWDB_PREFIX = '';
+		}
 	}
 
 	/**
