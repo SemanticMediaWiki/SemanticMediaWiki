@@ -8,12 +8,12 @@ use SMW\Utils\Url;
  * @covers \SMW\Utils\Url
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class UrlTest extends \PHPUnit_Framework_TestCase {
+class UrlTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider urlProvider

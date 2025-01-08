@@ -2,20 +2,18 @@
 
 namespace SMW\Tests\Query\Cache;
 
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\Query\Cache\CacheStats;
 
 /**
  * @covers \SMW\Query\Cache\CacheStats
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class CacheStatsTest extends \PHPUnit_Framework_TestCase {
+class CacheStatsTest extends \PHPUnit\Framework\TestCase {
 
 	private $cache;
 
@@ -41,7 +39,7 @@ class CacheStatsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$instance = new CacheStats(
 			$this->cache,
@@ -62,7 +60,7 @@ class CacheStatsTest extends \PHPUnit_Framework_TestCase {
 	public function testGetStatsEmpty() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new CacheStats(
 			$this->cache,

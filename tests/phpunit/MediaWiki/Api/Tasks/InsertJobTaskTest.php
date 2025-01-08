@@ -9,12 +9,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Api\Tasks\InsertJobTask
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
+class InsertJobTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $jobFactory;
 	private $testEnvironment;
@@ -54,10 +54,10 @@ class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newByType' )
 			->with(
-				$this->equalTo( 'Foobar' ),
+				'Foobar',
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( $nullJob ) );
+			->willReturn( $nullJob );
 
 		$instance = new InsertJobTask(
 			$this->jobFactory

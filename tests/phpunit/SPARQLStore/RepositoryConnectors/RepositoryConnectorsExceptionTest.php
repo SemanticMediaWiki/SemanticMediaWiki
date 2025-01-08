@@ -13,12 +13,12 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
+class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -117,7 +117,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 
 		$httpRequest->expects( $this->atLeastOnce() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 22 ) );
+			->willReturn( 22 );
 
 		$instance = new $httpConnector(
 			new RepositoryClient( $this->defaultGraph, '', '', 'unreachableDataEndpoint' ),

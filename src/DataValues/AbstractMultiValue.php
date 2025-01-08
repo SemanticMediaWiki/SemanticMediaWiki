@@ -2,15 +2,15 @@
 
 namespace SMW\DataValues;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWPropertyListValue as PropertyListValue;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -87,7 +87,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string|integer $index
+	 * @param string|int $index
 	 *
 	 * @return DataItem[]|null
 	 */
@@ -112,7 +112,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string|integer $index
+	 * @param string|int $index
 	 *
 	 * @return DIProperty|null
 	 */
@@ -143,7 +143,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @return DIProperty[]|[]
 	 */
-	protected function getFieldProperties( DIProperty $property = null ) {
+	protected function getFieldProperties( ?DIProperty $property = null ) {
 		if ( $property === null || $property->getDiWikiPage() === null ) {
 			return [];
 		}

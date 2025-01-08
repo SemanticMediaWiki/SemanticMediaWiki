@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Adam78",
 			"Bencemac",
 			"Dani",
 			"David92003",
@@ -83,7 +84,7 @@
 	"smw_nofloat": "„$1” nem egy szám.",
 	"smw_infinite": "Ilyen nagy számok („$1”) nem támogatottak.",
 	"smw_unitnotallowed": "A(z) \"$1\" nem érvényes mértékegysége ennek a tulajdonságnak.",
-	"smw_nounitsdeclared": "Nem határozták meg mértékegységet ennek a tulajdonságnak.",
+	"smw_nounitsdeclared": "Nincs meghatározva mértékegység ehhez a tulajdonsághoz.",
 	"smw_novalues": "Nincsenek megadva értékek.",
 	"smw_nodatetime": "A(z) „$1” dátum nem értelmezhető.",
 	"smw_toomanyclosing": "A(z) „$1” túl sokszor fordul elő a lekérdezésben.",

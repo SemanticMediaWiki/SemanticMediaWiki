@@ -10,7 +10,7 @@ use Title;
 /**
  * @group semantic-mediawiki-benchmark
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -43,7 +43,7 @@ class PageEditCopyBenchmarkRunner {
 	private $benchmarkReport = [];
 
 	/**
-	 * @var integer|count
+	 * @var int|count
 	 */
 	private $editRepetitionCount = null;
 
@@ -74,7 +74,7 @@ class PageEditCopyBenchmarkRunner {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|null $copyCount
+	 * @param int|null $copyCount
 	 */
 	public function setEditRepetitionCount( $editRepetitionCount = null ) {
 		$this->editRepetitionCount = $editRepetitionCount;

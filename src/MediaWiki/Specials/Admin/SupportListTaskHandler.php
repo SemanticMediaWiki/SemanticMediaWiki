@@ -4,10 +4,9 @@ namespace SMW\MediaWiki\Specials\Admin;
 
 use Html;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -59,10 +58,9 @@ class SupportListTaskHandler extends TaskHandler {
 	private function ennvironmentSection() {
 		$info = $this->getStore()->getInfo() + [
 			'smw' => SMW_VERSION,
-			'mediawiki' => MW_VERSION
-		] + (
-			defined( 'HHVM_VERSION' ) ? [ 'hhvm' => HHVM_VERSION ] : [ 'php' => PHP_VERSION ]
-		);
+			'mediawiki' => MW_VERSION,
+			'php' => PHP_VERSION
+		];
 
 		return Html::rawElement(
 			'h3',

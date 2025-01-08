@@ -2,21 +2,19 @@
 
 namespace SMW\Tests\Schema;
 
-use SMW\DataItemFactory;
-use SMW\Schema\SchemaValidator;
 use SMW\Schema\SchemaDefinition;
-use SMW\Tests\TestEnvironment;
+use SMW\Schema\SchemaValidator;
 
 /**
  * @covers \SMW\Schema\SchemaValidator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
+class SchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
@@ -36,7 +34,7 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$jsonSchemaValidator->expects( $this->never() )
 			->method( 'validate' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 
@@ -56,16 +54,16 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'validate' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 
 		$info = [
-			SchemaDefinition::SCHEMA_VALIDATION_FILE => SMW_PHPUNIT_DIR . '/Fixtures/Schema/empty_schema.json'
+			SchemaDefinition::SCHEMA_VALIDATION_FILE => \SMW_PHPUNIT_DIR . '/Fixtures/Schema/empty_schema.json'
 		];
 
 		$this->assertEmpty(
@@ -80,20 +78,20 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'validate' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'isValid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [ '...' ] ) );
+			->willReturn( [ '...' ] );
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 
 		$info = [
-			SchemaDefinition::SCHEMA_VALIDATION_FILE => SMW_PHPUNIT_DIR . '/Fixtures/Schema/empty_schema.json'
+			SchemaDefinition::SCHEMA_VALIDATION_FILE => \SMW_PHPUNIT_DIR . '/Fixtures/Schema/empty_schema.json'
 		];
 
 		$this->assertNotEmpty(
@@ -108,7 +106,7 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$jsonSchemaValidator->expects( $this->never() )
 			->method( 'validate' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 

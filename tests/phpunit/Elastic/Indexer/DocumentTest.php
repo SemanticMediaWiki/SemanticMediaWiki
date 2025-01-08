@@ -2,21 +2,19 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
-use SMW\Elastic\Indexer\Document;
 use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
-use SMW\Tests\TestEnvironment;
+use SMW\Elastic\Indexer\Document;
 
 /**
  * @covers \SMW\Elastic\Indexer\Document
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class DocumentTest extends \PHPUnit_Framework_TestCase {
+class DocumentTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

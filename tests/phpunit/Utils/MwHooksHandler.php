@@ -7,7 +7,7 @@ use RuntimeException;
 use SMW\MediaWiki\Hooks;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -81,7 +81,6 @@ class MwHooksHandler {
 		'SMW::SQLStore::Installer::AfterCreateTablesComplete',
 		'SMW::SQLStore::Installer::AfterDropTablesComplete'
 	];
-
 
 	public function __construct() {
 		$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();

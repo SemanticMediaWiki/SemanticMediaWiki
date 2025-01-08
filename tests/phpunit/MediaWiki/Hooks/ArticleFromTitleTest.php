@@ -9,12 +9,12 @@ use Title;
  * @covers \SMW\MediaWiki\Hooks\ArticleFromTitle
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
+class ArticleFromTitleTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -44,7 +44,7 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( $namespace ) );
+			->willReturn( $namespace );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()

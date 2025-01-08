@@ -4,8 +4,6 @@ namespace SMW\Tests\Localizer;
 
 use DateTime;
 use IContextSource;
-use Language;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
 use SMW\Localizer\Localizer;
 
@@ -13,12 +11,12 @@ use SMW\Localizer\Localizer;
  * @covers \SMW\Localizer\Localizer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class LocalizerTest extends \PHPUnit_Framework_TestCase {
+class LocalizerTest extends \PHPUnit\Framework\TestCase {
 
 	private $language;
 	private $namespaceInfo;
@@ -211,7 +209,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $pageLanguage ) );
+			->willReturn( $pageLanguage );
 
 		$this->assertEquals(
 			$pageLanguage,
@@ -247,7 +245,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$language->expects( $this->once() )
 			->method( 'getCode' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$this->assertInstanceOf(
 			'\SMW\Localizer\LocalLanguage\LocalLanguage',
@@ -256,7 +254,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConvertDoubleWidth() {
-		$this->assertEquals(
+		$this->assertSame(
 			'2000',
 			Localizer::convertDoubleWidth( '２０００' )
 		);
@@ -284,7 +282,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	public function testNormalizeTitleText() {
 		$this->language->expects( $this->once() )
 			->method( 'ucfirst' )
-			->will( $this->returnValue( 'Fo_o' ) );
+			->willReturn( 'Fo_o' );
 
 		$instance = $this->newLocalizer();
 
@@ -297,11 +295,11 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	public function testGetCanonicalizedUrlByNamespace() {
 		$this->language->expects( $this->exactly( 3 ) )
 			->method( 'getNsText' )
-			->will( $this->returnValue( 'Spécial' ) );
+			->willReturn( 'Spécial' );
 
 		$this->namespaceInfo->expects( $this->exactly( 3 ) )
 			->method( 'getCanonicalName' )
-			->will( $this->returnValue( 'Special' ) );
+			->willReturn( 'Special' );
 
 		$instance = $this->newLocalizer();
 
@@ -324,7 +322,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	public function testGetCanonicalName() {
 		$this->namespaceInfo->expects( $this->once() )
 			->method( 'getCanonicalName' )
-			->will( $this->returnValue( 'Help' ) );
+			->willReturn( 'Help' );
 
 		$instance = $this->newLocalizer();
 

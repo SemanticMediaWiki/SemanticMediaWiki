@@ -10,12 +10,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Elastic\Admin\IndicesInfoProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class IndicesInfoProviderTest extends \PHPUnit_Framework_TestCase {
+class IndicesInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -30,7 +30,7 @@ class IndicesInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->outputFormatter->expects( $this->any() )
 			->method( 'encodeAsJson' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
@@ -43,7 +43,7 @@ class IndicesInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( new DummyClient() ) );
+			->willReturn( new DummyClient() );
 	}
 
 	public function testCanConstruct() {
@@ -74,8 +74,8 @@ class IndicesInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
@@ -83,7 +83,7 @@ class IndicesInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testHandleRequest() {
 		$this->outputFormatter->expects( $this->once() )
 			->method( 'addParentLink' )
-			->with(	$this->equalTo( [ 'action' => 'elastic' ] ) );
+			->with(	[ 'action' => 'elastic' ] );
 
 		$instance = new IndicesInfoProvider(
 			$this->outputFormatter

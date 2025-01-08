@@ -3,7 +3,6 @@
 namespace SMW\SPARQLStore;
 
 use Onoi\Cache\Cache;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
@@ -15,7 +14,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -49,12 +48,12 @@ class TurtleTriplesBuilder {
 	private $prefixes = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasTriplesForUpdate = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $triplesChunkSize = 80;
 
@@ -69,7 +68,7 @@ class TurtleTriplesBuilder {
 	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
 	 * @param Cache|null $cache
 	 */
-	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, Cache $cache = null ) {
+	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, ?Cache $cache = null ) {
 		$this->repositoryRedirectLookup = $repositoryRedirectLookup;
 		$this->cache = $cache;
 	}
@@ -77,7 +76,7 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $chunkSize
+	 * @param int $chunkSize
 	 */
 	public function setTriplesChunkSize( $triplesChunkSize ) {
 		$this->triplesChunkSize = (int)$triplesChunkSize;
@@ -99,7 +98,7 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasTriples() {
 		return $this->hasTriplesForUpdate;
@@ -221,7 +220,7 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param Element $expElement object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 *
 	 * @return ExpElement
 	 */
@@ -249,7 +248,7 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param ExpResource $expResource object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 *
 	 * @return ExpElement
 	 */
@@ -288,7 +287,7 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param ExpData $expData object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
 	 *
 	 * @return ExpData

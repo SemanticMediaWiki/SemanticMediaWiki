@@ -4,12 +4,12 @@ namespace SMW\ParserFunctions;
 
 use Html;
 use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\PostProcHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWInfolink;
 use SMWQueryProcessor as QueryProcessor;
 use Title;
@@ -17,7 +17,7 @@ use Title;
 /**
  * Class that provides the {{#concept}} parser function
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author Markus Krötzsch
@@ -43,7 +43,7 @@ class ConceptParserFunction {
 
 	/**
 	 * @since 1.9
-	 * 
+	 *
 	 * @param ParserData $parserData
 	 * @param MessageFormatter $messageFormatter
 	 */
@@ -72,7 +72,7 @@ class ConceptParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $rawParams ) {
-		$this->parserData->getOutput()->addModules( [ 'ext.smw.style' ] );
+		$this->parserData->getOutput()->addModules( [ 'ext.smw.styles' ] );
 
 		$title = $this->parserData->getTitle();
 		$property = new DIProperty( '_CONC' );
@@ -132,12 +132,9 @@ class ConceptParserFunction {
 		$message = '';
 
 		if ( wfMessage( 'smw-concept-introductory-message' )->exists() ) {
-			$message = Html::rawElement(
-				'div',
-				[
-					'class' => 'plainlinks smw-callout smw-callout-info'
-				],
-				wfMessage( 'smw-concept-introductory-message', $title->getText() )->text()
+			$message = Html::noticeBox(
+				wfMessage( 'smw-concept-introductory-message', $title->getText() )->text(),
+				'plainlinks'
 			);
 		}
 
@@ -162,7 +159,7 @@ class ConceptParserFunction {
 	private function buildQuery( $conceptQueryString ) {
 		$rawParams = [ $conceptQueryString ];
 
-		list( $query, ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, ] = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
 			QueryProcessor::CONCEPT_DESC,

@@ -11,13 +11,13 @@ use Traversable;
 /**
  * @see Guzzle::ChunkedIterator
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  */
 class ChunkedIterator extends IteratorIterator {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $chunkSize = 0;
 
@@ -30,7 +30,7 @@ class ChunkedIterator extends IteratorIterator {
 	 * @since 3.0
 	 *
 	 * @param Traversable|array $iterator
-	 * @param integer $chunkSize
+	 * @param int $chunkSize
 	 */
 	public function __construct( $iterable, $chunkSize = 500 ) {
 		$chunkSize = (int)$chunkSize;

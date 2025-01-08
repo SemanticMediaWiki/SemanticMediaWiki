@@ -10,12 +10,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class FulltextSearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
+class FulltextSearchTableUpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
@@ -63,11 +63,28 @@ class FulltextSearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-		$provider[] = [
-			'diff' => [ 1, 2 ]
+		return [
+			[
+				'diff' => [
+					'slot:id' => 'itemName#123#extraData',
+					1,
+					2
+				]
+			],
+			[
+				'diff' => [
+					'slot:id' => 'itemName#123#extraData#additionalInfo',
+					1,
+					2
+				]
+			],
+			[
+				'diff' => [
+					1,
+					2
+				]
+			]
 		];
-
-		return $provider;
 	}
 
 }

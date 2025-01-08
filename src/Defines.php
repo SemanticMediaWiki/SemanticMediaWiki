@@ -6,5 +6,5 @@
  * @deprecated 4.0.0
  * @codeCoverageIgnore
  */
-require_once( dirname( __DIR__ ) . "/includes/SemanticMediaWiki.php" );
+require_once dirname( __DIR__ ) . "/includes/SemanticMediaWiki.php";
 SemanticMediaWiki::setupDefines();

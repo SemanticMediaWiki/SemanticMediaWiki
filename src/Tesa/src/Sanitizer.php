@@ -2,13 +2,12 @@
 
 namespace Onoi\Tesa;
 
-use Onoi\Tesa\Tokenizer\Tokenizer;
-use Onoi\Tesa\Synonymizer\Synonymizer;
 use Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer;
-use RuntimeException;
+use Onoi\Tesa\Synonymizer\Synonymizer;
+use Onoi\Tesa\Tokenizer\Tokenizer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -33,7 +32,7 @@ class Sanitizer {
 	/**
 	 * @var array
 	 */
-	private $whiteList = array();
+	private $whiteList = [];
 
 	/**
 	 * @var array
@@ -56,7 +55,7 @@ class Sanitizer {
 	 * @param mixed $value
 	 */
 	public function setOption( $name, $value ) {
-		if ( $name === self::WHITELIST && is_array( $value ) && $value !== array() ) {
+		if ( $name === self::WHITELIST && is_array( $value ) && $value !== [] ) {
 			$this->whiteList = array_fill_keys( $value, true );
 		}
 
@@ -77,7 +76,7 @@ class Sanitizer {
 	/**
 	 * @since 0.1
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 */
 	public function applyTransliteration( $flag = Transliterator::DIACRITICS ) {
 		$this->string = Normalizer::applyTransliteration( $this->string, $flag );
@@ -88,7 +87,7 @@ class Sanitizer {
 	 *
 	 * @since 0.1
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 */
 	public function convertDoubleWidth() {
 		$this->string = Normalizer::convertDoubleWidth( $this->string );
@@ -112,7 +111,7 @@ class Sanitizer {
 			return $this->string;
 		}
 
-		$index = array();
+		$index = [];
 		$pos = 0;
 
 		foreach ( $words as $key => $word ) {
@@ -126,7 +125,7 @@ class Sanitizer {
 			}
 
 			// Simple proximity, check for same words appearing next to each other
-			if ( isset( $index[$pos-1] ) && $index[$pos-1] === $word ) {
+			if ( isset( $index[$pos - 1] ) && $index[$pos - 1] === $word ) {
 				continue;
 			}
 
@@ -147,7 +146,7 @@ class Sanitizer {
 	/**
 	 * @since 0.1
 	 *
-	 * @param integer $length
+	 * @param int $length
 	 */
 	public function reduceLengthTo( $length ) {
 		$this->string = Normalizer::reduceLengthTo( $this->string, $length );

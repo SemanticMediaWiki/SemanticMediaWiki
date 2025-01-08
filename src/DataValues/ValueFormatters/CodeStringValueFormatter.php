@@ -6,7 +6,7 @@ use SMWDataValue as DataValue;
 use SMWOutputs as Outputs;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -38,7 +38,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 		// HTML-safe (it will also work in wiki context). The result will
 		// contain mark-up that must not be escaped again.
 
-		Outputs::requireResource( 'ext.smw.style' );
+		Outputs::requireResource( 'ext.smw.styles' );
 
 		if ( $this->isJson( $text ) ) {
 			$result = self::asJson( $text );

@@ -2,15 +2,12 @@
 
 namespace SMW\Elastic\Indexer;
 
-use SMW\Store;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SemanticData;
 use SMW\DataTypeRegistry;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Collator;
-use SMW\Parser\LinksEncoder;
-use SMWDIBlob as DIBlob;
-use SMWDITime as DITime;
+use SMW\SemanticData;
+use SMW\Store;
 use SMWDataItem as DataItem;
 
 /**
@@ -42,7 +39,7 @@ use SMWDataItem as DataItem;
  *    ]
  * }
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -55,12 +52,12 @@ class DocumentCreator {
 	private $store;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $compatibilityMode = true;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $documentCreationDuration = 0;
 
@@ -79,7 +76,7 @@ class DocumentCreator {
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $compatibilityMode
+	 * @param bool $compatibilityMode
 	 */
 	public function setCompatibilityMode( $compatibilityMode ) {
 		$this->compatibilityMode = $compatibilityMode;
@@ -88,7 +85,7 @@ class DocumentCreator {
 	/**
 	 * @since 3.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDocumentCreationDuration(): int {
 		return $this->documentCreationDuration;
@@ -303,7 +300,7 @@ class DocumentCreator {
 	private function makeSubject( DIWikiPage $subject ) {
 		$title = $subject->getDBKey();
 
-		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $title[0] !== '_' ) {
+		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || !str_starts_with( $title ?? '', '_' ) ) {
 			$title = str_replace( '_', ' ', $title );
 		}
 

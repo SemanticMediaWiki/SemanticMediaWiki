@@ -146,7 +146,6 @@
 	"smw-admin-support": "Teni subtenon",
 	"smw-admin-bugsreport": "Cimoj povas esti raportitaj al <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw-admin-statistics": "Statistiko",
-	"smw-admin-supplementary-elastic-title": "Elasticsearch",
 	"smw-admin-supplementary-elastic-section-subtitle": "Elasticsearch",
 	"smw-admin-supplementary-elastic-mappings-summary": "Resumo",
 	"smw-admin-supplementary-elastic-nodes-title": "Nodoj",

@@ -3,11 +3,12 @@
 namespace SMW\SQLStore;
 
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DIWikiPage;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
+use SMW\DIWikiPage;
 use SMW\Iterators\ResultIterator;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\Rdbms\DBError;
 
 /**
  * @private
@@ -16,7 +17,7 @@ use SMW\RequestOptions;
  * that are contained in either the ID_TABLE or related property tables with
  * reference to a matchable ID.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -36,17 +37,17 @@ class PropertyTableIdReferenceDisposer {
 	private $connection = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $redirectRemoval = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $fulltextTableUsage = false;
 
@@ -68,7 +69,7 @@ class PropertyTableIdReferenceDisposer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $redirectRemoval
+	 * @param bool $redirectRemoval
 	 */
 	public function setRedirectRemoval( $redirectRemoval ) {
 		$this->redirectRemoval = $redirectRemoval;
@@ -77,7 +78,7 @@ class PropertyTableIdReferenceDisposer {
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $fulltextTableUsage
+	 * @param bool $fulltextTableUsage
 	 */
 	public function setFulltextTableUsage( bool $fulltextTableUsage ) {
 		$this->fulltextTableUsage = $fulltextTableUsage;
@@ -102,9 +103,9 @@ class PropertyTableIdReferenceDisposer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDisposable( $id ) {
 		return $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) === false;
@@ -122,7 +123,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @since 2.4
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function removeOutdatedEntityReferencesById( $id ) {
 		if ( $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) ) {
@@ -139,7 +140,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newOutdatedEntitiesResultIterator( RequestOptions $requestOptions = null ) {
+	public function newOutdatedEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
 		$options = [];
 
 		if ( $requestOptions !== null ) {
@@ -167,7 +168,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newByNamespaceInvalidEntitiesResultIterator( RequestOptions $requestOptions = null ) {
+	public function newByNamespaceInvalidEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
 		$options = [];
 
 		if ( $requestOptions !== null ) {
@@ -209,7 +210,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @since 2.4
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function cleanUpTableEntriesById( $id ) {
 		if ( $this->onTransactionIdle ) {
@@ -321,9 +322,9 @@ class PropertyTableIdReferenceDisposer {
 		// Error: 126 Incorrect key file for table '.\mw@002d25@002d01\smw_ft_search.MYI'; ...
 		try {
 			if ( $this->fulltextTableUsage ) {
-				$tableExists = $this->connection->tableExists( SQLStore::FT_SEARCH_TABLE );
+				$tableExists = $this->connection->tableExists( SQLStore::FT_SEARCH_TABLE, __METHOD__ );
 			}
-		} catch ( \DBError $e ) {
+		} catch ( DBError $e ) {
 			ApplicationFactory::getInstance()->getMediaWikiLogger()->info( __METHOD__ . ' reported: ' . $e->getMessage() );
 		}
 

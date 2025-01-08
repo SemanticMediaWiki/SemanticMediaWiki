@@ -7,7 +7,7 @@ use SMW\Exception\JSONFileParseException;
 use SMW\Utils\FileFetcher;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -31,7 +31,7 @@ class CopyLocalMessages {
 	 *
 	 * @param string $file
 	 */
-	public function __construct( string $file, string $languageFileDir = null ) {
+	public function __construct( string $file, ?string $languageFileDir = null ) {
 		$this->file = $file;
 		$this->languageFileDir = $languageFileDir
 							  ?? ( !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )

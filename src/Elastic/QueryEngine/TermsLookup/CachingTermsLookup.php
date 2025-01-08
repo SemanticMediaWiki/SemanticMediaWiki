@@ -7,7 +7,7 @@ use RuntimeException;
 use SMW\Elastic\QueryEngine\Condition;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -30,7 +30,7 @@ class CachingTermsLookup extends TermsLookup {
 	private $cache;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $quick_cache = [];
 

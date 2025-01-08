@@ -3,7 +3,7 @@
 use SMW\Exception\DataItemException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SMWDIGeoCoord extends SMWDataItem {
@@ -50,20 +50,17 @@ class SMWDIGeoCoord extends SMWDataItem {
 				if ( array_key_exists( 'alt', $args[0] ) ) {
 					$this->altitude = (float)$args[0]['alt'];
 				}
-			}
-			else {
+			} else {
 				throw new DataItemException( 'Invalid coordinate data passed to the SMWDIGeoCoord constructor' );
 			}
-		}
-		elseif ( $count === 2 || $count === 3 ) {
+		} elseif ( $count === 2 || $count === 3 ) {
 			$this->setLatitude( $args[0] );
 			$this->setLongitude( $args[1] );
 
 			if ( $count === 3 ) {
 				$this->altitude = (float)$args[2];
 			}
-		}
-		else {
+		} else {
 			throw new DataItemException( 'Invalid coordinate data passed to the SMWDIGeoCoord constructor' );
 		}
 	}
@@ -109,7 +106,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	public function getCoordinateSet() {
 		$coords = [ 'lat' => $this->latitude, 'lon' => $this->longitude ];
 
-		if ( !is_null( $this->altitude ) ) {
+		if ( $this->altitude !== null ) {
 			$coords['alt'] = $this->altitude;
 		}
 
@@ -121,7 +118,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * @see SMWDataItem::getSortKey()
 	 */
 	public function getSortKey() {
-		return $this->latitude . ',' . $this->longitude . ( $this->altitude !== null ? ','. $this->altitude : '' );
+		return $this->latitude . ',' . $this->longitude . ( $this->altitude !== null ? ',' . $this->altitude : '' );
 	}
 
 	/**

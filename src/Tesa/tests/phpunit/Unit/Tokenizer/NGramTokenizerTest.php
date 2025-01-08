@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Onoi\Tesa\Tokenizer\NGramTokenizer
  * @group onoi-tesa
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -27,12 +27,6 @@ class NGramTokenizerTest extends TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testTokenize( $string, $ngram, $expected ) {
-		if ( version_compare( phpversion(), '5.4', '<' ) ) {
-			$this->markTestSkipped(
-				"Ehh, PHP 5.3 returns with unexpected results"
-			);
-		}
-
 		$instance = new NGramTokenizer( null, $ngram );
 
 		$this->assertEquals(
@@ -49,13 +43,13 @@ class NGramTokenizerTest extends TestCase {
 		// http://cloudmark.github.io/Language-Detection
 		$string = 'TEXT';
 
-		$expected = array(
+		$expected = [
 			'_tex',
 			'text',
 			'ext_',
 			'xt__',
 			't___'
-		);
+		];
 
 		$instance = new NGramTokenizer( null, 4 );
 		$instance->withMarker( true );
@@ -69,12 +63,12 @@ class NGramTokenizerTest extends TestCase {
 	public function testTokenizeWithStartEndMarker2() {
 		$string = '教授は';
 
-		$expected = array(
+		$expected = [
 			'_教授',
 			'教授は',
 			'授は_',
 			'は__'
-		);
+		];
 
 		$instance = new NGramTokenizer( null, 3 );
 		$instance->withMarker( true );
@@ -84,6 +78,7 @@ class NGramTokenizerTest extends TestCase {
 			$instance->tokenize( $string )
 		);
 	}
+
 	public function testTokenizeWithOption() {
 		$string = '红色中华';
 
@@ -96,35 +91,35 @@ class NGramTokenizerTest extends TestCase {
 
 		$tokenizer->expects( $this->once() )
 			->method( 'tokenize' )
-			->with( $this->equalTo( $string ) )
-			->will( $this->returnValue( array( $string ) ) );
+			->with( $string )
+			->willReturn( [ $string ] );
 
 		$instance = new NGramTokenizer( $tokenizer );
 
 		$instance->setOption(
 			NGramTokenizer::REGEX_EXEMPTION,
-			array( 'Foo' )
+			[ 'Foo' ]
 		);
 
 		$this->assertEquals(
-			array( '红色', '色中', '中华' ),
+			[ '红色', '色中', '中华' ],
 			$instance->tokenize( $string )
 		);
 	}
 
 	public function stringProvider() {
-		$provider[] = array(
+		$provider[] = [
 			'TEXT',
 			'4',
-			array(
+			[
 				'text'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'12345678',
 			'2',
-			array(
+			[
 				'12',
 				'23',
 				'34',
@@ -132,36 +127,36 @@ class NGramTokenizerTest extends TestCase {
 				'56',
 				'67',
 				'78'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'12345678',
 			'3',
-			array(
+			[
 				'123',
 				'234',
 				'345',
 				'456',
 				'567',
 				'678'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'hello',
 			'3',
-			array(
+			[
 				'hel',
 				'ell',
 				'llo'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Hello World!',
 			'3',
-			array(
+			[
 				'hel',
 				'ell',
 				'llo',
@@ -172,37 +167,37 @@ class NGramTokenizerTest extends TestCase {
 				'orl',
 				'rld',
 				'ld!'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Новости',
 			'3',
-			array(
+			[
 				'нов',
 				'ово',
 				'вос',
 				'ост',
 				'сти'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'1時36分更新',
 			'3',
-			array(
+			[
 				'1時3',
 				'時36',
 				'36分',
 				'6分更',
 				'分更新'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'こんにちは世界！',
 			'2',
-			array(
+			[
 				'こん',
 				'んに',
 				'にち',
@@ -210,8 +205,8 @@ class NGramTokenizerTest extends TestCase {
 				'は世',
 				'世界',
 				'界！'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

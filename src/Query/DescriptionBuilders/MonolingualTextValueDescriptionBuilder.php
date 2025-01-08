@@ -14,7 +14,7 @@ use SMWDIBlob as DIBlob;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -56,7 +56,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 		$this->dataValue = $dataValue;
 
 		$subdescriptions = [];
-		list( $text, $languageCode ) = $this->dataValue->getValuesFromString( $value );
+		[ $text, $languageCode ] = $this->dataValue->getValuesFromString( $value );
 
 		foreach ( $this->dataValue->getPropertyDataItems() as $property ) {
 

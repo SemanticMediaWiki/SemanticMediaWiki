@@ -2,13 +2,11 @@
 
 namespace SMW\Elastic\Jobs;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Job;
-use SMW\Elastic\ElasticFactory;
-use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\DIWikiPage;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
+use SMW\MediaWiki\Job;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**

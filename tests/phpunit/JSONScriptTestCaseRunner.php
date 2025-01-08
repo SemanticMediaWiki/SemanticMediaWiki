@@ -18,14 +18,15 @@ use SMW\Tests\Utils\UtilityFactory;
  * native PHP.
  *
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
+abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	/**
 	 * @var FileReader
@@ -48,7 +49,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	private $configValueCallback = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $deletePagesOnTearDown = true;
 
@@ -88,7 +89,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 		} elseif ( $this->getStore() instanceof \SMW\Elastic\ElasticStore ) {
 			$this->connectorId = 'elastic';
 		} else {
-			$this->connectorId = strtolower( $this->getDBConnection()->getType() );
+			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
 		}
 	}
 
@@ -128,7 +129,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	protected function getDependencyDefinitions() {
 		return [];
@@ -156,14 +157,14 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 			$lang = $languageFactory->getLanguage( $val );
 
 			// https://github.com/wikimedia/mediawiki/commit/49ce67be93dfbb40d036703dad2278ea9843f1ad
-			$this->testEnvironment->redefineMediaWikiService( 'ContentLanguage', function () use ( $lang ) {
+			$this->testEnvironment->redefineMediaWikiService( 'ContentLanguage', static function () use ( $lang ) {
 				return $lang;
 			} );
 
 			return $lang;
 		} );
 
-		$this->registerConfigValueCallback( 'wgLang', function ( $val ) {
+		$this->registerConfigValueCallback( 'wgLang', static function ( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
 			Localizer::clear();
 			\SMW\NamespaceManager::clear();
@@ -198,7 +199,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 *
 	 * @param string $file
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function canTestCaseFile( $file ) {
 		// Filter specific files on-the-fly
@@ -285,11 +286,11 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->getDBConnection()->getType() ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->connectorId ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 	}
@@ -298,7 +299,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 * @since 2.5
 	 *
 	 * @param array $pages
-	 * @param integer $defaultNamespace
+	 * @param int $defaultNamespace
 	 */
 	protected function createPagesFrom( array $pages, $defaultNamespace = NS_MAIN ) {
 		$this->jsonTestCaseContentHandler->skipOn(

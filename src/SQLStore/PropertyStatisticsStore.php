@@ -2,16 +2,16 @@
 
 namespace SMW\SQLStore;
 
-use MWException;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
+use Wikimedia\Rdbms\DBQueryError;
 
 /**
  * Simple implementation of PropertyStatisticsTable using MediaWikis
  * database abstraction layer and a single table.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -27,12 +27,12 @@ class PropertyStatisticsStore {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
@@ -51,7 +51,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;
@@ -70,10 +70,10 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 1.9
 	 *
-	 * @param integer $propertyId
-	 * @param integer $value
+	 * @param int $propertyId
+	 * @param int $value
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 */
 	public function addToUsageCount( $pid, $value ) {
 		$usageVal = 0;
@@ -110,7 +110,7 @@ class PropertyStatisticsStore {
 				],
 				__METHOD__
 			);
-		} catch ( \DBQueryError $e ) {
+		} catch ( DBQueryError $e ) {
 			// #2345 Do nothing as it most likely an "Error: 1264 Out of range
 			// value for column" in strict mode
 			// As an unsigned int, we expected it to be 0
@@ -131,7 +131,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @param array $additions
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 */
 	public function addToUsageCounts( array $additions ) {
 		$success = true;
@@ -170,10 +170,10 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 1.9
 	 *
-	 * @param integer $propertyId
-	 * @param integer $value
+	 * @param int $propertyId
+	 * @param int $value
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function setUsageCount( $propertyId, $value ) {
@@ -213,10 +213,10 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 1.9
 	 *
-	 * @param integer $propertyId
-	 * @param integer $value
+	 * @param int $propertyId
+	 * @param int $value
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function insertUsageCount( $propertyId, $value ) {
@@ -248,7 +248,7 @@ class PropertyStatisticsStore {
 				],
 				__METHOD__
 			);
-		} catch ( \DBQueryError $e ) {
+		} catch ( DBQueryError $e ) {
 			// Most likely hit "Error: 1062 Duplicate entry ..."
 			$this->setUsageCount( $propertyId, $value );
 		}
@@ -261,9 +261,9 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 2.2
 	 *
-	 * @param integer $propertyId
+	 * @param int $propertyId
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getUsageCount( $propertyId ) {
 		if ( !is_int( $propertyId ) ) {
@@ -333,7 +333,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 1.9
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 */
 	public function deleteAll() {
 		return $this->connection->delete(

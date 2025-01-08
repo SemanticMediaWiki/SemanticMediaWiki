@@ -2,22 +2,21 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
-use SMW\DIWikiPage;
-use SMW\Query\DescriptionFactory;
 use SMW\DataItemFactory;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\Options;
+use SMW\Query\DescriptionFactory;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private DescriptionFactory $descriptionFactory;
 	private DataItemFactory $dataItemFactory;
@@ -34,7 +33,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 	}
 
 	public function testCanConstruct() {
@@ -159,6 +158,5 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			'{"bool":{"must":[{"multi_match":{"fields":["text_copy"],"query":"テスト","type":"phrase"}}]}}'
 		];
 	}
-
 
 }

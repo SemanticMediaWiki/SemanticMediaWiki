@@ -8,9 +8,9 @@ use MediaWiki\Revision\SlotRecord;
 use Parser;
 use ParserOptions;
 use RequestContext;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
 use Title;
 use User;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
 
 /**
  * Fetches the ParserOutput either by parsing an invoked text component,
@@ -19,7 +19,7 @@ use SMW\MediaWiki\RevisionGuardAwareTrait;
  *
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -44,7 +44,7 @@ class ContentParser {
 	protected $errors = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $skipInTextAnnotationParser = false;
 
@@ -73,7 +73,7 @@ class ContentParser {
 	 *
 	 * @return ContentParser
 	 */
-	public function setRevision( RevisionRecord $revision = null ) {
+	public function setRevision( ?RevisionRecord $revision = null ) {
 		$this->revision = $revision;
 		return $this;
 	}
@@ -156,22 +156,14 @@ class ContentParser {
 
 		// Avoid "The content model 'xyz' is not registered on this wiki."
 		try {
-			$rev = version_compare( MW_VERSION, '1.42', '<' ) ? $revision->getId() : $revision;
 			$services = MediaWikiServices::getInstance();
-			if ( method_exists( $services, 'getContentRenderer' ) ) {
-				$contentRenderer = $services->getContentRenderer();
-				$this->parserOutput = $contentRenderer->getParserOutput(
-					$content,
-					$this->getTitle(),
-					$rev
-				);
-			} else {
-				$this->parserOutput = $content->getParserOutput(
-					$this->getTitle(),
-					$rev
-				);
-			}
-		} catch( \MWUnknownContentModelException $e ) {
+			$contentRenderer = $services->getContentRenderer();
+			$this->parserOutput = $contentRenderer->getParserOutput(
+				$content,
+				$this->getTitle(),
+				version_compare( MW_VERSION, '1.42', '<' ) ? $revision->getId() : $revision
+			);
+		} catch ( \MWUnknownContentModelException $e ) {
 			$this->parserOutput = null;
 		}
 

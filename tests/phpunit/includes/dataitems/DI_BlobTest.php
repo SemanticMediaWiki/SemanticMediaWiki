@@ -13,6 +13,7 @@ namespace SMW\Tests;
  * @group SMW
  * @group SMWExtension
  * @group SMWDataItems
+ * @group Database
  *
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >

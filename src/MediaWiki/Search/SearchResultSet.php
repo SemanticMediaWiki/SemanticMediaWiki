@@ -2,16 +2,16 @@
 
 namespace SMW\MediaWiki\Search;
 
-use SMW\DIWikiPage;
-use SMW\Utils\CharExaminer;
 use SearchSuggestion;
 use SearchSuggestionSet;
+use SMW\DIWikiPage;
 use SMW\Query\QueryResult;
+use SMW\Utils\CharExaminer;
 
 /**
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author  Stephan Gambke

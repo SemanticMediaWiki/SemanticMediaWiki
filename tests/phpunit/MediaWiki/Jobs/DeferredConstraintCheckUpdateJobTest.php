@@ -10,12 +10,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class DeferredConstraintCheckUpdateJobTest extends \PHPUnit_Framework_TestCase {
+class DeferredConstraintCheckUpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $jobQueue;

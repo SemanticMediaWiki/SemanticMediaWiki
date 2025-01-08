@@ -3,6 +3,7 @@
 namespace SMW\Property\Annotators;
 
 use Html;
+use MediaWiki\MediaWikiServices;
 use ParserOutput;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\Message;
@@ -10,7 +11,7 @@ use SMW\PropertyAnnotator;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -29,7 +30,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $title;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $editProtectionRight = false;
 
@@ -47,7 +48,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param string|bool $editProtectionRight
 	 */
 	public function setEditProtectionRight( $editProtectionRight ) {
 		$this->editProtectionRight = $editProtectionRight;
@@ -112,13 +113,14 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function hasEditProtection() {
-		//$this->title->flushRestrictions();
+		// $this->title->flushRestrictions();
 
 		if ( !PageInfoProvider::isProtected( $this->title, 'edit' ) ) {
 			return false;
 		}
 
-		$restrictions = array_flip( $this->title->getRestrictions( 'edit' ) );
+		$restrictionStore = MediaWikiServices::getInstance()->getRestrictionStore();
+		$restrictions = array_flip( $restrictionStore->getRestrictions( $this->title, 'edit' ) );
 
 		// There could by any edit protections but the `Is edit protected` is
 		// bound to the `smwgEditProtectionRight` setting

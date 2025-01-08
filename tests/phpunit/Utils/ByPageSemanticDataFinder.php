@@ -9,15 +9,13 @@ use SMW\Services\ServicesFactory;
 use SMW\Store;
 use Title;
 use UnexpectedValueException;
-use User;
-use WikiPage;
 
 /**
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames

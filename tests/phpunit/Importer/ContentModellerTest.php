@@ -9,12 +9,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Importer\ContentModeller
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ContentModellerTest extends \PHPUnit_Framework_TestCase {
+class ContentModellerTest extends \PHPUnit\Framework\TestCase {
 
 	private $contentModeller;
 	private $testEnvironment;

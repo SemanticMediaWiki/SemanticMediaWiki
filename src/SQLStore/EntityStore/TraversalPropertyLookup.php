@@ -5,11 +5,11 @@ namespace SMW\SQLStore\EntityStore;
 use RuntimeException;
 use SMW\DIContainer;
 use SMW\MediaWiki\Connection\OptionsBuilder;
-use SMW\Options;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition as PropertyTableDef;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
+use Wikimedia\Rdbms\Subquery;
 
 /**
  * @license GNU GPL v2
@@ -40,7 +40,7 @@ class TraversalPropertyLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function fetchFromTable( PropertyTableDef $propertyTableDef, DataItem $dataItem, RequestOptions $requestOptions = null ) {
+	public function fetchFromTable( PropertyTableDef $propertyTableDef, DataItem $dataItem, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$builder = $connection->newSelectQueryBuilder( 'read' );
 

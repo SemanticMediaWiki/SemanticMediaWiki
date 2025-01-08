@@ -3,9 +3,10 @@
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use SMW\MediaWiki\Database;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -52,7 +53,7 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnabled() {
 		return $this->searchTable->isEnabled();
@@ -77,7 +78,7 @@ class SearchTableUpdater {
 	 *
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function optimize() {
 		if ( !$this->connection->isType( 'mysql' ) ) {
@@ -86,7 +87,8 @@ class SearchTableUpdater {
 
 		$this->connection->query(
 			"OPTIMIZE TABLE " . $this->searchTable->getTableName(),
-			__METHOD__
+			__METHOD__,
+			ISQLPlatform::QUERY_CHANGE_SCHEMA
 		);
 
 		return true;
@@ -95,10 +97,10 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $sid
-	 * @param integer $pid
+	 * @param int $sid
+	 * @param int $pid
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function exists( $sid, $pid ) {
 		$row = $this->connection->selectRow(
@@ -117,8 +119,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $sid
-	 * @param integer $pid
+	 * @param int $sid
+	 * @param int $pid
 	 *
 	 * @return false|string
 	 */
@@ -143,8 +145,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $sid
-	 * @param integer $pid
+	 * @param int $sid
+	 * @param int $pid
 	 * @param string $text
 	 */
 	public function update( $sid, $pid, $text ) {
@@ -169,8 +171,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $sid
-	 * @param integer $pid
+	 * @param int $sid
+	 * @param int $pid
 	 */
 	public function insert( $sid, $pid ) {
 		$this->connection->insert(
@@ -187,8 +189,8 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $sid
-	 * @param integer $pid
+	 * @param int $sid
+	 * @param int $pid
 	 */
 	public function delete( $sid, $pid ) {
 		$this->connection->delete(

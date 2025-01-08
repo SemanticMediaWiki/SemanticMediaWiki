@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
 use SMW\DIProperty;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\Runners\MaintenanceRunner;
 use SMW\Tests\Utils\UtilityFactory;
@@ -14,16 +14,15 @@ use Title;
  * @group SMWExtension
  * @group semantic-mediawiki-import
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
  */
-class RebuildDataMaintenanceTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -72,13 +71,13 @@ class RebuildDataMaintenanceTest extends DatabaseTestCase {
 			'Property:Has quantity',
 			'Property:Has temperature',
 			'Property:Has text'
-		];
+		 ];
 
-		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
+		 $this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$main = Title::newFromText( 'Lorem ipsum' );
+		 $main = Title::newFromText( 'Lorem ipsum' );
 
-		$expectedSomeProperties = [
+		 $expectedSomeProperties = [
 			'properties' => [
 				new DIProperty( 'Has boolean' ),
 				new DIProperty( 'Has date' ),
@@ -91,18 +90,18 @@ class RebuildDataMaintenanceTest extends DatabaseTestCase {
 				new DIProperty( 'Has Url' ),
 				new DIProperty( 'Has annotation uri' )
 			]
-		];
+		 ];
 
-		$this->maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildData' );
-		$this->maintenanceRunner->setQuiet();
+		 $this->maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildData' );
+		 $this->maintenanceRunner->setQuiet();
 
-		$this->semanticDataFinder = new ByPageSemanticDataFinder;
-		$this->semanticDataFinder->setTitle( $main )->setStore( $this->getStore() );
+		 $this->semanticDataFinder = new ByPageSemanticDataFinder;
+		 $this->semanticDataFinder->setTitle( $main )->setStore( $this->getStore() );
 
-		$this->assertRunWithoutOptions( $expectedSomeProperties );
-		$this->assertRunWithFullDeleteOption( $expectedSomeProperties );
-		$this->assertRunWithIdRangeOption( $expectedSomeProperties );
-//		$this->assertRunWithCategoryOption( $expectedSomeProperties );
+		 $this->assertRunWithoutOptions( $expectedSomeProperties );
+		 $this->assertRunWithFullDeleteOption( $expectedSomeProperties );
+		 $this->assertRunWithIdRangeOption( $expectedSomeProperties );
+// $this->assertRunWithCategoryOption( $expectedSomeProperties );
 //		$this->assertRunWithSparqlStoreForPropertyOption( $expectedSomeProperties );
 //		$this->assertRunWithSparqlStoreForQueryOption( $expectedSomeProperties );
 	}

@@ -7,9 +7,9 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\Query\DebugFormatter;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Connection\Database as SMWDatabase;
+use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
@@ -17,11 +17,12 @@ use SMWDataItem as DataItem;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 use SMWSQLStore3 as SQLStore;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * Class that implements query answering for SQLStore.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -150,8 +151,8 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 */
 	public function getQueryResult( Query $query ) {
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
-		     $query->querymode != Query::MODE_DEBUG &&
-		     count( $query->getErrors() ) > 0 ) {
+			 $query->querymode != Query::MODE_DEBUG &&
+			 count( $query->getErrors() ) > 0 ) {
 			return $this->queryFactory->newQueryResult( $this->store, $query, [], false );
 			// NOTE: we check this here to prevent unnecessary work, but we check
 			// it after query processing below again in case more errors occurred.
@@ -217,13 +218,13 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		switch ( $query->querymode ) {
 			case Query::MODE_DEBUG:
 				$result = $this->getDebugQueryResult( $query, $rootid );
-			break;
+				break;
 			case Query::MODE_COUNT:
 				$result = $this->getCountQueryResult( $query, $rootid );
-			break;
+				break;
 			default:
 				$result = $this->getInstanceQueryResult( $query, $rootid );
-			break;
+				break;
 		}
 
 		$this->querySegmentListProcessor->cleanUp();
@@ -237,7 +238,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * the proper debug output for the given query.
 	 *
 	 * @param Query $query
-	 * @param integer $rootid
+	 * @param int $rootid
 	 *
 	 * @return string
 	 */
@@ -290,7 +291,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$query = "EXPLAIN $format $sql";
 		}
 
-		$res = $connection->query( $query, __METHOD__ );
+		$res = $connection->query( $query, __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
 
 		$qobj = $this->querySegmentList[$rootid] ?? 0;
 		$entries['SQL Explain'] = $debugFormatter->prettifyExplain( new ResultIterator( $res ) );
@@ -304,9 +305,9 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * the proper counting output for the given query.
 	 *
 	 * @param Query $query
-	 * @param integer $rootid
+	 * @param int $rootid
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	private function getCountQueryResult( Query $query, $rootid ) {
 		$queryResult = $this->queryFactory->newQueryResult(
@@ -394,7 +395,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * compute the proper result instance output for the given query.
 	 *
 	 * @param Query $query
-	 * @param integer $rootid
+	 * @param int $rootid
 	 *
 	 * @return QueryResult
 	 */
@@ -429,7 +430,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		);
 
 		while ( ( $count < $query->getLimit() ) && ( $row = $res->fetchObject() ) ) {
-			if ( $row->iw === '' || $row->iw[0] != ':' )  {
+			if ( $row->iw === '' || $row->iw[0] != ':' ) {
 
 				// Catch exception for non-existing predefined properties that
 				// still registered within non-updated pages (@see bug 48711)
@@ -519,7 +520,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * Get a SQL option array for the given query and preprocessed query object at given id.
 	 *
 	 * @param Query $query
-	 * @param integer $rootId
+	 * @param int $rootId
 	 *
 	 * @return array
 	 */

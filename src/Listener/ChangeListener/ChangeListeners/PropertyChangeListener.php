@@ -2,17 +2,16 @@
 
 namespace SMW\Listener\ChangeListener\ChangeListeners;
 
-use SMW\Listener\ChangeListener\ChangeListener;
-use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
-use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\Store;
-use SMW\DIProperty;
-use SMW\Exception\PropertyLabelNotResolvedException;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use RuntimeException;
+use SMW\DIProperty;
+use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
+use SMW\Listener\ChangeListener\ChangeListener;
+use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -28,12 +27,12 @@ class PropertyChangeListener implements ChangeListener {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $propertyIdKeyMap = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $changes = [];
 
@@ -88,7 +87,7 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $pid
+	 * @param int $pid
 	 * @param array $record
 	 *
 	 * @throws RuntimeException

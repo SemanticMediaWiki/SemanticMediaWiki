@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Services\ServicesContainer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
+class ServicesContainerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -104,7 +104,7 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ServicesContainer();
 
-		$closure = function ( $arg ) use( $fake ) {
+		$closure = static function ( $arg ) use( $fake ) {
 			$fake->runService( $arg );
 		};
 

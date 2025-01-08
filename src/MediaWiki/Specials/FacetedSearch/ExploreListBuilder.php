@@ -2,15 +2,14 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use WebRequest;
-use SMW\Utils\UrlArgs;
 use Html;
-use Title;
-use SMW\Message;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Message;
+use SMW\Utils\UrlArgs;
+use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -93,6 +92,5 @@ class ExploreListBuilder {
 			)
 		);
 	}
-
 
 }

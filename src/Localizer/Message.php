@@ -13,7 +13,7 @@ use SMW\InMemoryPoolCache;
  * (e.g MW's Message class). It is expected that a registered handler returns a
  * simple string representation for the parameters, type, and language given.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -97,7 +97,7 @@ class Message {
 	 * @since 2.5
 	 *
 	 * @param string|array $parameters
-	 * @param integer|null $type
+	 * @param int|null $type
 	 *
 	 * @return string
 	 */
@@ -119,6 +119,9 @@ class Message {
 		$encode[] = $type;
 
 		foreach ( $message as $value ) {
+			// Ensure $value is a string before using substr()
+			$value = $value ?? '';
+
 			// Check if the value is already encoded, and if decode to keep the
 			// structure intact
 			if ( substr( $value, 0, 1 ) === '[' && ( $dc = json_decode( $value, true ) ) && json_last_error() === JSON_ERROR_NONE ) {
@@ -142,15 +145,13 @@ class Message {
 	}
 
 	/**
-	 * @FIXME Needs to be MW agnostic !
+	 * @fixme Needs to be MW agnostic !
 	 *
 	 * @since 2.5
 	 *
 	 * @param string $messageId
-	 *
-	 * @return boolean
 	 */
-	public static function exists( $message ) {
+	public static function exists( $message ): bool {
 		return wfMessage( $message )->exists();
 	}
 
@@ -158,10 +159,10 @@ class Message {
 	 * @since 2.5
 	 *
 	 * @param string $json
-	 * @param integer|null $type
-	 * @param integer|null $language
+	 * @param int|null $type
+	 * @param int|null $language
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public static function decode( $message, $type = null, $language = null ) {
 		$message = json_decode( $message );
@@ -193,12 +194,12 @@ class Message {
 	 * @since 2.4
 	 *
 	 * @param string|array $parameters
-	 * @param integer|null $type
-	 * @param integer|null $language
+	 * @param int|null $type
+	 * @param int|null $language
 	 *
 	 * @return string
 	 */
-	public static function get( $parameters, $type = null, $language = null ) {
+	public static function get( $parameters, $type = null, $language = null ): string {
 		$handler = null;
 		$parameters = (array)$parameters;
 
@@ -238,12 +239,10 @@ class Message {
 	 * @since 2.4
 	 *
 	 * @param array $parameters
-	 * @param integer $type
-	 * @param integer|string|Language $language
-	 *
-	 * @return string
+	 * @param int|null $type
+	 * @param int|string|Language|null $language
 	 */
-	public static function getHash( $parameters, $type = null, $language = null ) {
+	public static function getHash( $parameters, $type = null, $language = null ): string {
 		if ( $language instanceof Language ) {
 			$language = $language->getCode();
 		}

@@ -2,27 +2,28 @@
 
 namespace SMW\Tests;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Listener\EventListener\EventHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
-use SMW\Tests\Utils\JSONScript\ParserTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\ParserHtmlTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\QueryTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\QueryTestCaseInterpreter;
-use SMW\Tests\Utils\JSONScript\RdfTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\ApiTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
+use SMW\Tests\Utils\JSONScript\ParserHtmlTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\ParserTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\QueryTestCaseInterpreter;
+use SMW\Tests\Utils\JSONScript\QueryTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\RdfTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
 
 /**
  * It is provided for external extensions that seek a simple way of creating tests
  * with (or without) Semantic MediaWiki integration in mind.
  *
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

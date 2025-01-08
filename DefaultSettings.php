@@ -9,5 +9,5 @@
  * @deprecated 4.0.0
  * @codeCoverageIgnore
  */
-require_once( __DIR__ . "/includes/SemanticMediaWiki.php" );
+require_once __DIR__ . "/includes/SemanticMediaWiki.php";
 return SemanticMediaWiki::getDefaultSettings();

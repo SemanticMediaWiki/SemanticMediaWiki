@@ -483,7 +483,7 @@
 	"smw-admin-supplementary-operational-table-statistics-legend-general": "This is an explanatory message used on a subpage to special page \"Semantic MediaWiki\".",
 	"smw-admin-supplementary-operational-table-statistics-legend-id-table": "This is an informatory message explaining statistics shown.",
 	"smw-admin-supplementary-operational-table-statistics-legend-blob-table": "This is an explanatory message used on a subpage to special page \"Semantic MediaWiki\".",
-	"smw-admin-supplementary-elastic-title": "This is the label of a link on special page \"SemanticMediaWiki\".\n\nElasticsearch is the name of a [https://www.elastic.co/elasticsearch back-end search engine]. It does ''not'' use “CamelCase”.",
+	"smw-admin-supplementary-elastic-title": "{{Optional}}\nThis is the label of a link on special page \"SemanticMediaWiki\".\n\nElasticsearch is the name of a [https://www.elastic.co/elasticsearch back-end search engine]. It does ''not'' use “CamelCase”.",
 	"smw-admin-supplementary-elastic-section-subtitle": "This is a section header on special page \"Semantic MediaWiki\".\n\nElasticsearch is the name of a [https://www.elastic.co/elasticsearch back-end search engine]. It does ''not'' use “CamelCase”.",
 	"smw-admin-supplementary-elastic-intro": "This is an informatory message that describes the link accessible via $1.\n\nParameters:\n* $1 - holds the name specified in {{Msg-mw|Smw-admin-supplementary-elastic-title}}",
 	"smw-admin-supplementary-elastic-docu": "This is an informatory message describing a section on special page \"SemanticMediawiki\"\n\nElasticsearch is the name of a [https://www.elastic.co/elasticsearch back-end search engine]. It does ''not'' use “CamelCase”.",

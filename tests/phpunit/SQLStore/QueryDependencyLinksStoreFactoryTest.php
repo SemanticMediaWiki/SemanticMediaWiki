@@ -8,12 +8,12 @@ use SMW\SQLStore\QueryDependencyLinksStoreFactory;
  * @covers \SMW\SQLStore\QueryDependencyLinksStoreFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class QueryDependencyLinksStoreFactoryTest extends \PHPUnit_Framework_TestCase {
+class QueryDependencyLinksStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

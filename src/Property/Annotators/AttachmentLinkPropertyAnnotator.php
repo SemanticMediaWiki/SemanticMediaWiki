@@ -3,12 +3,9 @@
 namespace SMW\Property\Annotators;
 
 use SMW\PropertyAnnotator;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -16,7 +13,7 @@ use Title;
 class AttachmentLinkPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $attachments;
 
@@ -59,6 +56,5 @@ class AttachmentLinkPropertyAnnotator extends PropertyAnnotatorDecorator {
 				$this->dataItemFactory->newDIWikiPage( $attachment, NS_FILE )
 			);
 		}
-
 	}
 }

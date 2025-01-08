@@ -2,15 +2,14 @@
 
 namespace SMW\Tests;
 
-use DeferredUpdates;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Localizer;
 use SMW\MediaWiki\Deferred\CallableUpdate;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -112,14 +111,9 @@ class TestEnvironment {
 	 * @param string $name
 	 */
 	public function resetMediaWikiService( $name ) {
-		// MW 1.27+ (yet 1.27.0.rc has no access to "resetServiceForTesting")
-		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) || !method_exists( \MediaWiki\MediaWikiServices::getInstance(), 'resetServiceForTesting' ) ) {
-			return null;
-		}
-
 		try {
 			\MediaWiki\MediaWikiServices::getInstance()->resetServiceForTesting( $name );
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			// Do nothing just avoid a
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
 		}
@@ -146,7 +140,7 @@ class TestEnvironment {
 
 		try {
 			\MediaWiki\MediaWikiServices::getInstance()->redefineService( $name, $service );
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			// Do nothing just avoid a
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
 		}
@@ -162,15 +156,11 @@ class TestEnvironment {
 
 		$lbFactory = \MediaWiki\MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
-		// MW 1.33+
-		if ( method_exists( $lbFactory, 'setLocalDomainPrefix' ) ) {
-			$lbFactory->setLocalDomainPrefix( $prefix );
-		} else {
-			$lbFactory->setDomainPrefix( $prefix );
-		}
+		$lbFactory->setLocalDomainPrefix( $prefix );
 
 		$GLOBALS['wgDBprefix'] = $prefix;
 	}
+
 	/**
 	 * @see https://github.com/wikimedia/mediawiki/commit/7b4eafda0d986180d20f37f2489b70e8eca00df4
 	 * @since 3.2
@@ -187,6 +177,24 @@ class TestEnvironment {
 		}
 
 		$permissionManager->overrideUserRightsForTesting( $user, $permissions );
+	}
+
+	public function resetDBLoadBalancer() {
+		try {
+			// Get the MediaWiki service container
+			$services = \MediaWiki\MediaWikiServices::getInstance();
+
+			// Check if DBLoadBalancer is available
+			if ( $services->has( 'DBLoadBalancer' ) ) {
+				return;  // DBLoadBalancer is already initialized
+			}
+
+			// Reinitialize DBLoadBalancer if missing
+			$services->set( 'DBLoadBalancer', new DBLoadBalancer() );
+		} catch ( \Exception $e ) {
+			// Handle exception or log
+			error_log( 'Error resetting DBLoadBalancer: ' . $e->getMessage() );
+		}
 	}
 
 	/**
@@ -284,7 +292,7 @@ class TestEnvironment {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 * @param string $url
 	 *
 	 * @return string

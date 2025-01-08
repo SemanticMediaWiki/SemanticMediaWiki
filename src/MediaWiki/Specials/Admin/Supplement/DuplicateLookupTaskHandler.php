@@ -3,14 +3,14 @@
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
 use Html;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Message;
 use WebRequest;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
-use SMW\MediaWiki\Specials\Admin\ActionableTask;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -130,28 +130,31 @@ class DuplicateLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 		// Ajax is doing the query and result display to avoid a timeout issue
 		$html = Html::rawElement(
-				'div',
-				[
-					'class' => 'smw-admin-supplementary-duplicate-lookup',
-					'style' => 'opacity:0.5;position: relative;',
-					'data-config' => json_encode(
-						[
-							'contentClass' => 'smw-admin-supplementary-duplookup-content',
-							'errorClass'   => 'smw-admin-supplementary-duplookup-error'
-						]
-					)
-				],
-				Html::rawElement(
-				'div',
-				[
-					'class' => 'smw-admin-supplementary-duplookup-error'
-				]
-			) . Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-admin-supplementary-duplicate-lookup',
+				'style' => 'opacity:0.5;position: relative;',
+				'data-config' => json_encode(
+					[
+						'contentClass' => 'smw-admin-supplementary-duplookup-content',
+						'errorClass'   => 'smw-admin-supplementary-duplookup-error'
+					]
+				)
+			],
+			Html::errorBox(
+				// Since message boxes can be rendered differently in different MW version,
+				// insert a div wrapper so JS can target that
+				Html::rawElement( 'div', [ 'class' => 'smw-message-content' ] ),
+				'',
+				'smw-message--hidden smw-admin-supplementary-duplookup-error'
+			) .
+			Html::rawElement(
 				'div',
 				[
 					'class' => 'smw-jsonview-menu',
 				]
-			) . Html::rawElement(
+			) .
+			Html::rawElement(
 				'pre',
 				[
 					'class' => 'smw-admin-supplementary-duplookup-content'

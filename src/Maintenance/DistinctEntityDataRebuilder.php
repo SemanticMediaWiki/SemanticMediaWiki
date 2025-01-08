@@ -9,15 +9,15 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Utils\CliMsgFormatter;
 use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 use SMWQueryProcessor;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -55,7 +55,7 @@ class DistinctEntityDataRebuilder {
 	private $filters = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $rebuildCount = 0;
 
@@ -110,13 +110,13 @@ class DistinctEntityDataRebuilder {
 	/**
 	 * @since 2.4
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doRebuild() {
 		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .
 		( $this->options->has( 'categories' ) ? 'category' : '' ) .
 		( $this->options->has( 'namespace' ) ? $this->options->get( 'namespace' ) : '' ) .
-		( $this->options->has( 'query' ) ? 'query (' . $this->options->get( 'query' ) .')' : '' ) .
+		( $this->options->has( 'query' ) ? 'query (' . $this->options->get( 'query' ) . ')' : '' ) .
 		( $this->options->has( 'p' ) ? 'property' : '' );
 
 		$pages = [];

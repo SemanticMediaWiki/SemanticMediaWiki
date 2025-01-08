@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Template;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -11,7 +11,7 @@ namespace SMW\MediaWiki\Template;
 class TemplateSet {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $templates = [];
 

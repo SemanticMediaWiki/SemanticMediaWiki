@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\TableBuilder\Table
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class TableTest extends \PHPUnit_Framework_TestCase {
+class TableTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -72,8 +72,8 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 			$instance->getAttributes()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHash()
 		);
 	}

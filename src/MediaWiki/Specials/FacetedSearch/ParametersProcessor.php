@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use WebRequest;
-use SMWInfolink as Infolink;
 use SMW\Localizer\Localizer;
-use RuntimeException;
+use SMWInfolink as Infolink;
+use WebRequest;
 
 /**
  * @private
@@ -21,7 +20,7 @@ use RuntimeException;
  * - csum: defines a checksum to verify whether the query string was modified
  *   during a request
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -46,22 +45,22 @@ class ParametersProcessor {
 	private $format = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $filterConditions = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $propertyFilters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $valueFilters = [];
 
@@ -184,12 +183,12 @@ class ParametersProcessor {
 
 		$this->parameters = $this->makeParameters( $query, $request );
 
-		$this->parameters[] = 'limit='. $limit;
-		$this->parameters[] = 'offset='. $request->getVal( 'offset', 0 );
+		$this->parameters[] = 'limit=' . $limit;
+		$this->parameters[] = 'offset=' . $request->getVal( 'offset', 0 );
 
 		if ( in_array( $request->getVal( 'order', 'asc' ), [ 'asc', 'desc' ] ) ) {
-			$this->parameters[] = 'order='. $request->getVal( 'order', 'asc' );
-		} else if ( $request->getVal( 'order', 'asc' ) === 'recent' ) {
+			$this->parameters[] = 'order=' . $request->getVal( 'order', 'asc' );
+		} elseif ( $request->getVal( 'order', 'asc' ) === 'recent' ) {
 			$this->parameters[] = 'order=desc';
 			$this->parameters[] = 'sort=Modification date';
 		}
@@ -247,7 +246,7 @@ class ParametersProcessor {
 			if ( isset( $clear['p'] ) && isset( $pv[$clear['p']] ) ) {
 				unset( $pv[$clear['p']] );
 				$request->setVal( 'pv', $pv );
-			} elseif( isset( $clear['p.all'] ) ) {
+			} elseif ( isset( $clear['p.all'] ) ) {
 				$pv = [];
 				$request->setVal( 'pv', $pv );
 				$request->unsetVal( 'clear' );
@@ -272,7 +271,7 @@ class ParametersProcessor {
 			if ( isset( $clear['c'] ) && isset( $c[$clear['c']] ) ) {
 				unset( $c[$clear['c']] );
 				$request->setVal( 'c', $c );
-			} elseif( isset( $clear['c.all'] ) ) {
+			} elseif ( isset( $clear['c.all'] ) ) {
 				$c = [];
 				$request->setVal( 'c', $c );
 				$request->unsetVal( 'clear' );
@@ -419,7 +418,7 @@ class ParametersProcessor {
 
 			foreach ( $filter as $value ) {
 
-				if ( $value === '' || isset( $clear['v'] ) && $clear['v'] === $value ) {
+				if ( $value === '' || ( isset( $clear['v'] ) && $clear['v'] === $value ) ) {
 					continue;
 				}
 
@@ -442,7 +441,7 @@ class ParametersProcessor {
 					} elseif ( $not === '!' ) {
 						$conditions[$prop][] = "<q>[[$prop::≤$min]] OR [[$prop::≥$max]]</q>";
 					} elseif ( $min === $max ) {
-					//	$conditions[$prop][] = "<q>[[$prop::$max]]</q>";
+					// $conditions[$prop][] = "<q>[[$prop::$max]]</q>";
 					} else {
 						$conditions[$prop][] = "[[$prop::≥$min]][[$prop::≤$max]]";
 					}

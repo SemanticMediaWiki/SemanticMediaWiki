@@ -2,21 +2,20 @@
 
 namespace SMW\Tests\Schema;
 
-use SMW\DIWikiPage;
-use SMW\Schema\SchemaList;
 use SMW\Schema\SchemaDefinition;
+use SMW\Schema\SchemaList;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\SchemaList
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class SchemaListTest extends \PHPUnit_Framework_TestCase {
+class SchemaListTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -39,8 +38,8 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	public function testJsonSerialize() {
 		$instance = new SchemaList( [] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->jsonSerialize()
 		);
 	}
@@ -48,8 +47,8 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	public function testGetFingerprint() {
 		$instance = new SchemaList( [] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getFingerprint()
 		);
 	}
@@ -145,9 +144,8 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 			$instance->get( 'NotAvailableKey' )
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->get( 'NotAvailableKey', null )
+		$this->assertNull(
+						$instance->get( 'NotAvailableKey', null )
 		);
 	}
 

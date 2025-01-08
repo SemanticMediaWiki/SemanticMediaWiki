@@ -7,7 +7,7 @@ use SMWResultArray;
 /**
  * Class TemplateRowBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -52,7 +52,6 @@ class TemplateRowBuilder extends RowBuilder {
 		$templateRenderer->packFieldsForTemplate( $this->get( 'template' ) );
 
 		return $templateRenderer->render();
-
 	}
 
 	/**

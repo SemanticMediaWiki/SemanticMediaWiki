@@ -4,9 +4,9 @@ namespace SMW\Tests;
 
 use FauxRequest;
 use Language;
+use MediaWiki\MediaWikiServices;
 use ReflectionClass;
 use RequestContext;
-use MediaWiki\MediaWikiServices;
 use SMW\DependencyContainer;
 use SMW\DIWikiPage;
 use SMW\Settings;
@@ -28,12 +28,12 @@ use WebRequest;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
+abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Returns the name of the deriving class being tested
@@ -42,7 +42,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return string
 	 */
-	public abstract function getClass();
+	abstract public function getClass();
 
 	/**
 	 * Helper method that returns a MockObjectBuilder object
@@ -64,11 +64,11 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @since 1.9
 	 *
-	 * @param DependencyContainer $dependencyContainer
+	 * @param DependencyContainer|null $dependencyContainer
 	 *
 	 * @return SimpleDependencyBuilder
 	 */
-	public function newDependencyBuilder( DependencyContainer $dependencyContainer = null ) {
+	public function newDependencyBuilder( ?DependencyContainer $dependencyContainer = null ) {
 		return new SimpleDependencyBuilder( $dependencyContainer );
 	}
 
@@ -92,7 +92,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 *
 	 * @param $namespace
-	 * @param $text|null
+	 * @param null $text|null
 	 *
 	 * @return Title
 	 */
@@ -177,7 +177,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return DIWikiPage
 	 */
-	protected function newSubject( Title $title = null ) {
+	protected function newSubject( ?Title $title = null ) {
 		return DIWikiPage::newFromTitle( $title === null ? $this->newTitle() : $title );
 	}
 
@@ -200,7 +200,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 *
 	 * @param $length
-	 * @param $prefix identify a specific random string during testing
+	 * @param null $prefix identify a specific random string during testing
 	 *
 	 * @return string
 	 */
@@ -221,7 +221,6 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 		if ( !( $store instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
-
 	}
 
 	protected function getStore() {
@@ -249,7 +248,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	protected function arrayWrap( array $elements ) {
 		return array_map(
-			function ( $element ) {
+			static function ( $element ) {
 				return [ $element ];
 			},
 			$elements

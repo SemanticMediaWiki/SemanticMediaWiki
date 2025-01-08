@@ -2,14 +2,14 @@
 
 namespace SMW\Constraint\Constraints;
 
+use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
-use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
-use RuntimeException;
+use SMWDataValue as DataValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -22,7 +22,7 @@ class NamespaceConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'allowed_namespaces';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 

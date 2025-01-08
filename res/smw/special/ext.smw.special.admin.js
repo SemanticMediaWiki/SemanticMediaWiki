@@ -196,7 +196,10 @@
 		this.context.css( 'opacity', 1 );
 		this.context.find( '.smw-jsonview-menu' ).hide();
 		this.context.find( '.' + this.contentClass ).hide();
-		this.context.find( '.' + this.errorClass ).append( error ).addClass( 'smw-callout smw-callout-error' );
+
+		var errorBox = this.context.find( '.' + this.errorClass );
+		errorBox.removeClass( 'smw-message--hidden' );
+		errorBox.find( '.smw-message-content' ).append( error );
 	};
 
 	/**

@@ -2,23 +2,22 @@
 
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
+use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Tests\PHPUnitCompat;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMWDITime as DITime;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\ReplicationCheck
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
+class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -41,7 +40,7 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->idTable ) );
+			->willReturn( $this->idTable );
 
 		$this->documentReplicationExaminer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer' )
 			->disableOriginalConstructor()
@@ -57,7 +56,7 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
@@ -78,8 +77,8 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getErrorTitle()
 		);
 	}
@@ -91,8 +90,8 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getSeverityType()
 		);
 	}
@@ -117,7 +116,7 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 	public function testProcess() {
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new ReplicationCheck(
 			$this->store,
@@ -144,15 +143,15 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->documentReplicationExaminer->expects( $this->once() )
 			->method( 'check' )
-			->will( $this->returnValue( $error ) );
+			->willReturn( $error );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new ReplicationCheck(
 			$this->store,
@@ -179,7 +178,7 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$elasticClient->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$elasticClient->expects( $this->never() )
 			->method( 'hasMaintenanceLock' );
@@ -189,7 +188,7 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $elasticClient ) );
+			->willReturn( $elasticClient );
 
 		$instance = new ReplicationCheck(
 			$this->store,
@@ -218,18 +217,18 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$elasticClient->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$elasticClient->expects( $this->once() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->documentReplicationExaminer->expects( $this->never() )
 			->method( 'check' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $elasticClient ) );
+			->willReturn( $elasticClient );
 
 		$instance = new ReplicationCheck(
 			$this->store,
@@ -266,24 +265,24 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$config->expects( $this->any() )
 			->method( 'dotGet' )
-			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
-			->will( $this->returnValue( true ) );
+			->with(	'indexer.experimental.file.ingest' )
+			->willReturn( true );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
+			->willReturn( $config );
 
 		$this->documentReplicationExaminer->expects( $this->once() )
 			->method( 'check' )
-			->will( $this->returnValue( $error ) );
+			->willReturn( $error );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new ReplicationCheck(
 			$this->store,
@@ -311,7 +310,7 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 			[
 				'id' => 42,
 				'time_es' => DITime::newFromTimestamp( 1272508900 )->asDateTime()->format( 'Y-m-d H:i:s' ),
-				'time_store' =>DITime::newFromTimestamp( 1272508903 )->asDateTime()->format( 'Y-m-d H:i:s' )
+				'time_store' => DITime::newFromTimestamp( 1272508903 )->asDateTime()->format( 'Y-m-d H:i:s' )
 			]
 		);
 
@@ -321,24 +320,24 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$config->expects( $this->any() )
 			->method( 'dotGet' )
-			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
-			->will( $this->returnValue( true ) );
+			->with(	'indexer.experimental.file.ingest' )
+			->willReturn( true );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
+			->willReturn( $config );
 
 		$this->documentReplicationExaminer->expects( $this->once() )
 			->method( 'check' )
-			->will( $this->returnValue( $error ) );
+			->willReturn( $error );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new ReplicationCheck(
 			$this->store,
@@ -381,24 +380,24 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$config->expects( $this->any() )
 			->method( 'dotGet' )
-			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
-			->will( $this->returnValue( true ) );
+			->with(	'indexer.experimental.file.ingest' )
+			->willReturn( true );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
+			->willReturn( $config );
 
 		$this->documentReplicationExaminer->expects( $this->once() )
 			->method( 'check' )
-			->will( $this->returnValue( $error ) );
+			->willReturn( $error );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new ReplicationCheck(
 			$this->store,
@@ -439,24 +438,24 @@ class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$config->expects( $this->any() )
 			->method( 'dotGet' )
-			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
-			->will( $this->returnValue( true ) );
+			->with(	'indexer.experimental.file.ingest' )
+			->willReturn( true );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
+			->willReturn( $config );
 
 		$this->documentReplicationExaminer->expects( $this->once() )
 			->method( 'check' )
-			->will( $this->returnValue( $error ) );
+			->willReturn( $error );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 
 		$instance = new ReplicationCheck(
 			$this->store,

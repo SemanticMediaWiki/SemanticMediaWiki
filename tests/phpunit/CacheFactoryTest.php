@@ -10,12 +10,12 @@ use SMW\CacheFactory;
  * @covers \SMW\CacheFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
+class CacheFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -45,8 +45,8 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testGetCachePrefix() {
 		$instance = new CacheFactory( 'hash' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getCachePrefix()
 		);
 	}
@@ -58,12 +58,12 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new CacheFactory( 'hash' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getPurgeCacheKey( $title )
 		);
 

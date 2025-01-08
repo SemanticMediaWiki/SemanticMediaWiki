@@ -5,7 +5,7 @@ namespace SMW\Importer;
 use Onoi\MessageReporter\MessageReporterAware;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -17,7 +17,7 @@ interface ContentCreator extends MessageReporterAware {
 	 *
 	 * @param ImportContents $importContents
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canCreateContentsFor( ImportContents $importContents );
 

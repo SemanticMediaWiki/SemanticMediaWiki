@@ -2,22 +2,22 @@
 
 namespace SMW\Tests\Schema\Filters;
 
-use SMW\Schema\Filters\PropertyFilter;
 use SMW\Schema\Compartment;
-use SMW\Schema\Rule;
 use SMW\Schema\CompartmentIterator;
+use SMW\Schema\Filters\PropertyFilter;
+use SMW\Schema\Rule;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\Filters\PropertyFilter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
+class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -44,7 +44,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.property' ) );
+			->with(	'if.property' );
 
 		$instance = new PropertyFilter();
 		$instance->filter( $compartment );
@@ -57,7 +57,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.property' ) );
+			->with(	'if.property' );
 
 		$instance = new PropertyFilter();
 		$instance->addOption( PropertyFilter::FILTER_CONDITION_NOT_REQUIRED, true );
@@ -75,7 +75,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function () {
+		$callback = static function () {
 			return null;
 		};
 
@@ -107,7 +107,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyFilterProvider
 	 */
 	public function testHasMatches_Callback_Compartment( $properties, $compartment, $expected ) {
-		$callback = function () use ( $properties ) {
+		$callback = static function () use ( $properties ) {
 			return $properties;
 		};
 

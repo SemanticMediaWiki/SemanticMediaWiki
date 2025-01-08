@@ -11,12 +11,12 @@ use SMWDataItem as DataItem;
  * @covers \SMW\SQLStore\PropertyTableDefinitionBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableDefinitionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $propertyTypeFinder;
 	private $mwHooksHandler;
@@ -90,7 +90,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertyTypeFinder->expects( $this->any() )
 			->method( 'findTypeID' )
-			->will( $this->returnValue( '_num' ) );
+			->willReturn( '_num' );
 
 		$instance = new PropertyTableDefinitionBuilder(
 			$this->propertyTypeFinder

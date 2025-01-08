@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWikiIntegrationTestCase;
 use SMW\Query\Parser as QueryParser;
 use SMW\Store;
 use SMW\Tests\Utils\Validators\QueryResultValidator;
@@ -11,14 +12,15 @@ use Title;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class QueryTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var Store
@@ -36,7 +38,7 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $numberValidator;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 

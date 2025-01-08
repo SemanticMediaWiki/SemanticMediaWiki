@@ -2,13 +2,8 @@
 
 namespace Onoi\Tesa;
 
-use Onoi\Tesa\Tokenizer\Tokenizer;
-use Onoi\Tesa\Synonymizer\Synonymizer;
-use Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer;
-use RuntimeException;
-
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -20,7 +15,7 @@ class Normalizer {
 	 *
 	 * @param string $text
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 */
 	public static function applyTransliteration( $text, $flag = Transliterator::DIACRITICS ) {
 		return Transliterator::transliterate( $text, $flag );
@@ -39,7 +34,7 @@ class Normalizer {
 		static $full = null;
 		static $half = null;
 
-		//,。／？《》〈〉；：“”＂〃＇｀［］｛｝＼｜～！－＝＿＋）（()＊…—─％￥＃
+		// ,。／？《》〈〉；：“”＂〃＇｀［］｛｝＼｜～！－＝＿＋）（()＊…—─％￥＃
 		//,./?«»();:“”
 
 		if ( $full === null ) {
@@ -48,7 +43,7 @@ class Normalizer {
 
 			// http://php.net/manual/en/function.str-split.php, mb_str_split
 			$length = mb_strlen( $fullWidth, "UTF-8" );
-			$full = array();
+			$full = [];
 
 			for ( $i = 0; $i < $length; $i += 1 ) {
 				$full[] = mb_substr( $fullWidth, $i, 1, "UTF-8" );
@@ -59,7 +54,6 @@ class Normalizer {
 
 		return str_replace( $full, $half, trim( $text ) );
 	}
-
 
 	/**
 	 * @since 0.1
@@ -76,7 +70,7 @@ class Normalizer {
 	 * @since 0.1
 	 *
 	 * @param string $text
-	 * @param integer|null $length
+	 * @param int|null $length
 	 *
 	 * @return string
 	 */

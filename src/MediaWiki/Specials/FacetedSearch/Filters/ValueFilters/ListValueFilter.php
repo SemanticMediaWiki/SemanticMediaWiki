@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
-use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Utils\TemplateEngine;
+use SMW\Utils\UrlArgs;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -30,7 +30,7 @@ class ListValueFilter {
 	private $urlArgs;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $params;
 
@@ -160,12 +160,12 @@ class ListValueFilter {
 			foreach ( $l as $k => $v ) {
 				if ( $k === 'linked' && $v !== [] ) {
 					foreach ( $v as $key => $value ) {
-						$linked[] = $value ;
+						$linked[] = $value;
 					}
 				}
 				if ( $k === 'unlinked' && $v !== [] ) {
 					foreach ( $v as $key => $value ) {
-						$unlinked[] = $value ;
+						$unlinked[] = $value;
 					}
 				}
 			}
@@ -237,9 +237,9 @@ class ListValueFilter {
 			'filter-items-condition',
 			[
 				'property' => $property,
-				'or-selected' => $condition === 'or' ? 'selected': '',
-				'and-selected' => $condition === 'and' ? 'selected': '',
-				'not-selected' => $condition === 'not' ? 'selected': ''
+				'or-selected' => $condition === 'or' ? 'selected' : '',
+				'and-selected' => $condition === 'and' ? 'selected' : '',
+				'not-selected' => $condition === 'not' ? 'selected' : ''
 			]
 		);
 

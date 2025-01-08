@@ -7,7 +7,7 @@ use SMW\Query\PrintRequest;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author Markus Krötzsch
@@ -27,7 +27,7 @@ class Formatter {
 	 *
 	 * @param PrintRequest $printRequest
 	 * @param Linker|null $linker
-	 * @param integer|null $outputType
+	 * @param int|null $outputType
 	 *
 	 * @return string
 	 */

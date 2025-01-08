@@ -12,12 +12,12 @@ use SMW\Query\Parser\DescriptionProcessor;
  * @covers SMW\Query\Parser\DescriptionProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
+class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

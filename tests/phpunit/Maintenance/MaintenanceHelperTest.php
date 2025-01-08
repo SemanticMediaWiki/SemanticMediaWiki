@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Maintenance\MaintenanceHelper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
+class MaintenanceHelperTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -32,15 +32,15 @@ class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
 		$instance->setGlobalToValue( 'FOObar', 99 );
 
 		$this->assertEquals(
-			$GLOBALS['FOObar'],
-			99
+			99,
+			$GLOBALS['FOObar']
 		);
 
 		$instance->reset();
 
 		$this->assertEquals(
-			$GLOBALS['FOObar'],
-			42
+			42,
+			$GLOBALS['FOObar']
 		);
 
 		unset( $GLOBALS['FOObar'] );
@@ -61,8 +61,8 @@ class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
 	public function testRuntimeMonitor( $runtimeKey ) {
 		$instance = new MaintenanceHelper();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getRuntimeValues()
 		);
 

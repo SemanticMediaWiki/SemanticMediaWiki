@@ -2,20 +2,20 @@
 
 namespace SMW\Tests\Listener\ChangeListener\ChangeListeners;
 
-use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\DIProperty;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
+class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -57,15 +57,14 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 
 		$entityIdManager->expects( $this->atLeastOnce() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$instance = new PropertyChangeListener( $this->store );
 		$instance->addListenerCallback( $property, [ $this, 'observeChange' ] );
-
 
 		$this->assertFalse(
 			$instance->canTrigger( 'bar' )
@@ -85,11 +84,11 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 
 		$entityIdManager->expects( $this->atLeastOnce() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$instance = new PropertyChangeListener( $this->store );
 		$instance->addListenerCallback( $property, [ $this, 'observeChange' ] );
@@ -128,7 +127,7 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new PropertyChangeListener(
 			$this->store

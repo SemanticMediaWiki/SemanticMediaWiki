@@ -8,12 +8,12 @@ use SMW\Utils\Flag;
  * @covers \SMW\Utils\Flag
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class FlagTest extends \PHPUnit_Framework_TestCase {
+class FlagTest extends \PHPUnit\Framework\TestCase {
 
 	public function testIs() {
 		$instance = new Flag( 2 | 4 | 16 );

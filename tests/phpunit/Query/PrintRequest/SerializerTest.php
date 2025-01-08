@@ -12,12 +12,12 @@ use SMW\Query\PrintRequest\Serializer;
  * @covers SMW\Query\PrintRequest\Serializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SerializerTest extends \PHPUnit_Framework_TestCase {
+class SerializerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider textProvider

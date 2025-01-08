@@ -10,7 +10,7 @@ use SMWQueryResult;
 /**
  * Print query results in lists.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @author Markus Krötzsch
  */
@@ -98,14 +98,13 @@ class ListResultPrinter extends ResultPrinter {
 		return $this->params['template'] !== '' || $this->params['introtemplate'] !== '' || $this->params['outrotemplate'] !== '';
 	}
 
-
 	/**
 	 * Get text for further results link. Used only during getResultText().
 	 *
 	 * @since 1.9
 	 *
 	 * @param SMWQueryResult $res
-	 * @param integer $outputMode
+	 * @param int $outputMode
 	 *
 	 * @return string
 	 */
@@ -123,7 +122,7 @@ class ListResultPrinter extends ResultPrinter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function supportsRecursiveAnnotation() {
 		return true;

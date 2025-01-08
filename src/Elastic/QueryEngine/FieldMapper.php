@@ -8,7 +8,7 @@ use SMW\DIProperty;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -21,14 +21,14 @@ class FieldMapper {
 	const TYPE_FILTER = 'filter';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCompatMode = true;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isCompatMode
+	 * @param bool $isCompatMode
 	 */
 	public function isCompatMode( $isCompatMode ) {
 		$this->isCompatMode = $isCompatMode;
@@ -37,7 +37,7 @@ class FieldMapper {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return string
 	 */
@@ -73,7 +73,7 @@ class FieldMapper {
 	 *
 	 * @param string $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isPhrase( $value = '' ) {
 		return $value[0] === '"' && substr( $value, -1 ) === '"';
@@ -84,7 +84,7 @@ class FieldMapper {
 	 *
 	 * @param string $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasWildcard( $value = '' ) {
 		return strpos( $value, '*' ) !== false && strpos( $value, '\*' ) === false;
@@ -95,7 +95,7 @@ class FieldMapper {
 	 *
 	 * @param string $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function containsReservedChar( $value ) {
 		$reservedChars = [
@@ -139,7 +139,7 @@ class FieldMapper {
 	 * @param array $results
 	 * @param array $params
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function field_filter( $field, $params ) {
 		$idList = [];
@@ -306,7 +306,7 @@ class FieldMapper {
 	 * @return array
 	 */
 	public function multi_match( $fields, $value, array $params = [] ) {
-		//return $this->multi_match( $field, trim( $value, '"' ) , [ "type" => "phrase" ] );
+		// return $this->multi_match( $field, trim( $value, '"' ) , [ "type" => "phrase" ] );
 
 		if ( strpos( $value, '"' ) !== false ) {
 			$value = trim( $value, '"' );
@@ -364,7 +364,7 @@ class FieldMapper {
 	 */
 	public function query_string_compat( $value, array $params = [] ) {
 		$wildcard = '';
-	//	$params = [];
+	// $params = [];
 
 		// Reserved characters are: + - = && || > < ! ( ) { } [ ] ^ " ~ * ? : \ /
 		// Failed the search with: {"error":{"root_cause":[{"type":"query_shard_exception","reason":"Failed to parse query [*{*]
@@ -384,7 +384,7 @@ class FieldMapper {
 		} elseif ( substr_count( $value, '"' ) == 2 && strpos( $value, '~' ) !== false ) {
 			// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_fuzziness
 			// [[Has page::phrase:some text~2]] as "some text"~2
-			list( $value, $fuzziness ) = explode( '~', $value );
+			[ $value, $fuzziness ] = explode( '~', $value );
 			$value = "$value\"~" . str_replace( '"', '', $fuzziness );
 		}
 
@@ -425,7 +425,7 @@ class FieldMapper {
 
 			// Use case: `[[Has text::~foo bar*]]`
 			if ( strpos( $value, ' ' ) !== false && substr( $value, -1 ) === '*' ) {
-				//	$value = substr( $value, 0, -1 );
+				// $value = substr( $value, 0, -1 );
 				$wildcard = '*';
 				$params['analyze_wildcard'] = true;
 			}
@@ -434,7 +434,7 @@ class FieldMapper {
 			// ... ( and ) signifies precedence
 			// ... " wraps a number of tokens to signify a phrase for searching
 			if ( strpos( $value, ' ' ) !== false && strpos( $value, '"' ) === false ) {
-				//	$value = "\"($value)\"$wildcard";
+				// $value = "\"($value)\"$wildcard";
 			}
 		}
 
@@ -459,7 +459,7 @@ class FieldMapper {
 	 */
 	public function query_string( $fields, $value, array $params = [] ) {
 		if ( $this->isCompatMode ) {
-			list( $value, $params ) = $this->query_string_compat( $value, $params );
+			[ $value, $params ] = $this->query_string_compat( $value, $params );
 		}
 
 		if ( !is_array( $fields ) ) {
@@ -641,7 +641,7 @@ class FieldMapper {
 		$str = is_array( $params ) ? json_encode( $params ) : (string)$params;
 
 		// P:, or iP:
-		list( $prefix, $id ) = explode( ':', $replacement );
+		[ $prefix, $id ] = explode( ':', $replacement );
 
 		$params = [];
 		$params[] = json_decode( $str, true );

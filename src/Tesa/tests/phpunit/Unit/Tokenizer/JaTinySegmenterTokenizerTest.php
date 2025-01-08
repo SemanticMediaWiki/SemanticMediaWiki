@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Onoi\Tesa\Tokenizer\JaTinySegmenterTokenizer
  * @group onoi-tesa
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -40,9 +40,9 @@ class JaTinySegmenterTokenizerTest extends TestCase {
 	}
 
 	public function stringProvider() {
-		$provider[] = array(
+		$provider[] = [
 			'極めてコンパクトな日本語分かち書きソフトウェアです。',
-			array(
+			[
 				'極め', // should be 極めて
 				'て',
 				'コンパクト',
@@ -54,12 +54,12 @@ class JaTinySegmenterTokenizerTest extends TestCase {
 				'ソフトウェア',
 				'です',
 				'。'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'日本語の新聞記事であれば文字単位で95%程度の精度で分かち書きが行えます。 ',
-			array(
+			[
 				'日本語',
 				'の',
 				'新聞',
@@ -84,24 +84,24 @@ class JaTinySegmenterTokenizerTest extends TestCase {
 				'ます',
 				'。'
 
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'私の名前は中野です',
-			array(
+			[
 				'私',
 				'の',
 				'名前',
 				'は',
 				'中野',
 				'です'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'TinySegmenterは25kBで書かれています。',
-			array(
+			[
 				'TinySegmenter',
 				'は',
 				'2',
@@ -114,12 +114,12 @@ class JaTinySegmenterTokenizerTest extends TestCase {
 				'い',
 				'ます',
 				'。'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'隣の客はAK47振りかざしてギャアギャアわめきたてる客だ。',
-			array(
+			[
 				'隣',
 				'の',
 				'客',
@@ -138,13 +138,13 @@ class JaTinySegmenterTokenizerTest extends TestCase {
 				'客',
 				'だ',
 				'。'
-			)
-		);
+			]
+		];
 
 		// See JaCompoundGroupTokenizerTest for comparison
-		$provider[] = array(
+		$provider[] = [
 			'と歓声を上げていました。 十勝農業改良普及センターによりますと',
-			array(
+			[
 				'と',
 				'歓声',
 				'を',
@@ -161,13 +161,13 @@ class JaTinySegmenterTokenizerTest extends TestCase {
 				'により',
 				'ます',
 				'と'
-			)
-		);
+			]
+		];
 
 		// See IcuWordBoundaryTokenizerTest
-		$provider[] = array(
+		$provider[] = [
 			"公明執ようなＳＮＳもストーカー行為の対象に",
-			array(
+			[
 				'公明執',
 				'よう',
 				'な',
@@ -178,8 +178,8 @@ class JaTinySegmenterTokenizerTest extends TestCase {
 				'の',
 				'対象',
 				'に'
-			)
-		);
+			]
+		];
 
 		// https://github.com/chezou/TinySegmenter.jl/blob/master/test/timemachineu8j.txt
 

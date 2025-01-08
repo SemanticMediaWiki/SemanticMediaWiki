@@ -4,24 +4,20 @@ namespace SMW\Property;
 
 use MediaWiki\MediaWikiServices;
 use RuntimeException;
-use SMW\Query\DescriptionFactory;
-use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
-use SMWQuery as Query;
-use SMW\Store;
-use SMW\EntityCache;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\EntityCache;
 use SMW\Message;
-use SMW\DataValueFactory;
 use SMW\PropertyRegistry;
-
+use SMW\Store;
+use SMWDIBoolean as DIBoolean;
 
 /**
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
  * to ensure a singleton instance.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -53,7 +49,7 @@ class SpecificationLookup {
 	private $languageCode = 'en';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $skipCache = false;
 
@@ -390,7 +386,7 @@ class SpecificationLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $skipCache
+	 * @param bool $skipCache
 	 */
 	public function skipCache( $skipCache = true ) {
 		$this->skipCache = $skipCache;
@@ -432,7 +428,7 @@ class SpecificationLookup {
 	 * @param DIProperty|DIWikiPage $source
 	 * @param DIProperty $target
 	 *
-	 * @return []|DataItem[]
+	 * @return ]|DataItem[
 	 */
 	public function getSpecification( $source, DIProperty $target ) {
 		if ( $source instanceof DIProperty ) {
@@ -518,7 +514,7 @@ class SpecificationLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasUniquenessConstraint( DIProperty $property ) {
 		$hasUniquenessConstraint = false;
@@ -638,7 +634,7 @@ class SpecificationLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return integer|false
+	 * @return int|false
 	 */
 	public function getDisplayPrecision( DIProperty $property ) {
 		$displayPrecision = false;
@@ -699,11 +695,11 @@ class SpecificationLookup {
 
 		// If a local property description wasn't available for a predefined property
 		// the try to find a system translation
-		if ( trim( $text ) === '' && !$property->isUserDefined() ) {
+		if ( trim( $text ?? '' ) === '' && !$property->isUserDefined() ) {
 			$text = $this->getPredefinedPropertyDescription( $property, $languageCode, $linker );
 		}
 
-		$text = trim( $text );
+		$text = trim( $text ?? '' );
 
 		$this->entityCache->saveSub( $key, $sub_key, $text );
 		$this->entityCache->associate( $subject, $key );
@@ -781,7 +777,7 @@ class SpecificationLookup {
 	private function getTextByLanguageCode( $subject, $property, $languageCode ) {
 		try {
 			$monolingualTextLookup = $this->store->service( 'MonolingualTextLookup' );
-		} catch( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+		} catch ( \SMW\Services\Exception\ServiceNotFoundException $e ) {
 			return '';
 		}
 

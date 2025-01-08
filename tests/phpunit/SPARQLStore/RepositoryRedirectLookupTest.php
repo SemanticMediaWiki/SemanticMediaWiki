@@ -6,21 +6,21 @@ use SMW\DIWikiPage;
 use SMW\Exporter\Escaper;
 use SMW\InMemoryPoolCache;
 use SMW\SPARQLStore\RepositoryRedirectLookup;
+use SMW\Tests\PHPUnitCompat;
 use SMWExpLiteral as ExpLiteral;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryRedirectLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
+class RepositoryRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -240,7 +240,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$repositoryResult->expects( $this->once() )
 			->method( 'current' )
-			->will( $this->returnValue( $listReturnValue ) );
+			->willReturn( $listReturnValue );
 
 		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
@@ -248,7 +248,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$repositoryConnection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( $repositoryResult ) );
+			->willReturn( $repositoryResult );
 
 		return $repositoryConnection;
 	}

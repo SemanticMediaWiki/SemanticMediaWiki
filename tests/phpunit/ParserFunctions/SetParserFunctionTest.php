@@ -3,24 +3,24 @@
 namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\ParameterFormatterFactory;
 use SMW\ParserFunctions\SetParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\SetParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -73,11 +73,11 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$messageFormatter->expects( $this->once() )
 			->method( 'getHtml' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
@@ -89,8 +89,8 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$templateRenderer
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->parse( ParameterFormatterFactory::newFromArray( $params ) )
 		);
 	}
@@ -110,7 +110,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
@@ -151,7 +151,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$templateRenderer = new WikitextTemplateRenderer();
 

@@ -3,6 +3,8 @@
 namespace SMW\Property;
 
 use SMW\MediaWiki\RedirectTargetFinder;
+use SMW\PageInfo;
+use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
 use SMW\Property\Annotators\CategoryPropertyAnnotator;
 use SMW\Property\Annotators\DisplayTitlePropertyAnnotator;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
@@ -13,17 +15,14 @@ use SMW\Property\Annotators\RedirectPropertyAnnotator;
 use SMW\Property\Annotators\SchemaPropertyAnnotator;
 use SMW\Property\Annotators\SortKeyPropertyAnnotator;
 use SMW\Property\Annotators\TranslationPropertyAnnotator;
-use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
-use SMW\Store;
+use SMW\PropertyAnnotator;
 use SMW\Schema\Schema;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\PropertyAnnotator;
-use SMW\PageInfo;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -60,11 +59,11 @@ class AnnotatorFactory {
 	 * @since 3.0
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
-	 * @param Schema $schema
+	 * @param Schema|null $schema
 	 *
 	 * @return SchemaPropertyAnnotator
 	 */
-	public function newSchemaPropertyAnnotator( PropertyAnnotator $propertyAnnotator, Schema $schema = null ) {
+	public function newSchemaPropertyAnnotator( PropertyAnnotator $propertyAnnotator, ?Schema $schema = null ) {
 		$schemaPropertyAnnotator = new SchemaPropertyAnnotator(
 			$propertyAnnotator,
 			$schema

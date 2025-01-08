@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\OutputFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
+class OutputFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -47,8 +47,8 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testGetSpecialPageLinkWith() {
 		$instance = new OutputFormatter( $this->outputPage );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getSpecialPageLinkWith()
 		);
 	}
@@ -56,8 +56,8 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testEncodeAsJson() {
 		$instance = new OutputFormatter( $this->outputPage );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->encodeAsJson( [] )
 		);
 	}

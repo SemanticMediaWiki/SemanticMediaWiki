@@ -9,7 +9,7 @@ use SMW\Utils\File;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -32,7 +32,7 @@ class ExceptionFileLogger {
 	private $exceptionFile;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $exceptionCount = 0;
 
@@ -47,7 +47,7 @@ class ExceptionFileLogger {
 	 * @param string $namespace
 	 * @param File|null $file
 	 */
-	public function __construct( $namespace = 'smw', File $file = null ) {
+	public function __construct( $namespace = 'smw', ?File $file = null ) {
 		$this->namespace = $namespace;
 		$this->file = $file;
 
@@ -87,7 +87,7 @@ class ExceptionFileLogger {
 	/**
 	 * @since 2.4
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getExceptionCount() {
 		return $this->exceptionCount;

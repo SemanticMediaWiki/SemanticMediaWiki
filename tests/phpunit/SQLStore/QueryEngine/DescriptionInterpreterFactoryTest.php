@@ -8,12 +8,12 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
+class DescriptionInterpreterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $connection;
@@ -31,7 +31,7 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()

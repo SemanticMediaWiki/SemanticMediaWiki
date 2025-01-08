@@ -10,12 +10,12 @@ use Title;
  * @covers \SMW\MediaWiki\Specials\SpecialMissingRedirectAnnotations
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class SpecialMissingRedirectAnnotationsTest extends \PHPUnit_Framework_TestCase {
+class SpecialMissingRedirectAnnotationsTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -53,17 +53,17 @@ class SpecialMissingRedirectAnnotationsTest extends \PHPUnit_Framework_TestCase 
 
 		$missingRedirectLookup->expects( $this->once() )
 			->method( 'findMissingRedirects' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$this->store->expects( $this->at( 0 ) )
 			->method( 'service' )
-			->with( $this->equalTo( 'SortLetter' ) )
-			->will( $this->returnValue( $sortLetter ) );
+			->with( 'SortLetter' )
+			->willReturn( $sortLetter );
 
 		$this->store->expects( $this->at( 1 ) )
 			->method( 'service' )
-			->with( $this->equalTo( 'MissingRedirectLookup' ) )
-			->will( $this->returnValue( $missingRedirectLookup ) );
+			->with( 'MissingRedirectLookup' )
+			->willReturn( $missingRedirectLookup );
 
 		$instance = new SpecialMissingRedirectAnnotations();
 

@@ -2,15 +2,13 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use SMW\Store;
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Utils\TemplateEngine;
+use SMW\Utils\UrlArgs;
 use Title;
-use Html;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -201,7 +199,7 @@ class FacetBuilder {
 				continue;
 			}
 
-			$clear = $urlArgs->getArray( 'clear' ) ;
+			$clear = $urlArgs->getArray( 'clear' );
 
 			if (
 				isset( $pv[$property] ) &&

@@ -3,21 +3,19 @@
 namespace SMW\Tests\Constraint;
 
 use SMW\Constraint\ConstraintSchemaCompiler;
-use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
-use SMWDIBlob as DIBlob;
 use SMW\Message;
+use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Constraint\ConstraintSchemaCompiler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
+class ConstraintSchemaCompilerTest extends \PHPUnit\Framework\TestCase {
 
 	private $schemaFinder;
 	private $propertySpecificationLookup;
@@ -47,7 +45,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 			$this->propertySpecificationLookup
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->prettify( [] )
 		);
@@ -68,7 +66,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$this->assertSame(
-			json_encode( $constraintSchema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES |JSON_UNESCAPED_UNICODE ),
+			json_encode( $constraintSchema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ),
 			$instance->prettify( $constraintSchema )
 		);
 	}
@@ -76,11 +74,11 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	public function testCompileConstraintSchema_allowed_values() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValues' )
-			->will( $this->returnValue( [ new DIBlob( 'foo' ) ] ) );
+			->willReturn( [ new DIBlob( 'foo' ) ] );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedListValues' )
-			->will( $this->returnValue( [ new DIBlob( 'bar' ) ] ) );
+			->willReturn( [ new DIBlob( 'bar' ) ] );
 
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
@@ -88,7 +86,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$property->expects( $this->any() )
 			->method( 'findPropertyValueType' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$instance = new ConstraintSchemaCompiler(
 			$this->schemaFinder,
@@ -120,15 +118,15 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedPatternBy' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedListValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
@@ -136,7 +134,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$property->expects( $this->any() )
 			->method( 'findPropertyValueType' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$instance = new ConstraintSchemaCompiler(
 			$this->schemaFinder,
@@ -162,15 +160,15 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	public function testCompileConstraintSchema_unique_value_constraint() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'hasUniquenessConstraint' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedListValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
@@ -178,7 +176,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$property->expects( $this->any() )
 			->method( 'findPropertyValueType' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$instance = new ConstraintSchemaCompiler(
 			$this->schemaFinder,

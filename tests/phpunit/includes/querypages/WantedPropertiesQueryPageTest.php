@@ -5,18 +5,17 @@ namespace SMW\Tests;
 use SMW\DataItemFactory;
 use SMW\Settings;
 use SMW\WantedPropertiesQueryPage;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\WantedPropertiesQueryPage
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
+class WantedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -61,8 +60,8 @@ class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			[ $error, null ]
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$result
 		);
 

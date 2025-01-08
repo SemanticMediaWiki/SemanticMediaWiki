@@ -12,12 +12,12 @@ use SMWExpData as ExpData;
  * @covers \SMW\Exporter\ResourceBuilders\AuxiliaryPropertyValueResourceBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class AuxiliaryPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class AuxiliaryPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $testEnvironment;

@@ -8,12 +8,12 @@ use SMW\IteratorFactory;
  * @covers \SMW\IteratorFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
+class IteratorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -33,13 +33,11 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstructMappingIterator() {
 		$instance = new IteratorFactory();
 
-		$iterator = $this->getMockBuilder( '\ArrayIterator' )
-			->disableOriginalConstructor()
-			->getMock();
+		$iterator = new \ArrayIterator( [] );
 
 		$this->assertInstanceOf(
 			'\SMW\Iterators\MappingIterator',
-			$instance->newMappingIterator( $iterator, function (){
+			$instance->newMappingIterator( $iterator, static function (){
 			} )
 		);
 	}

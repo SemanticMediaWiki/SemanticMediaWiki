@@ -2,11 +2,11 @@
 
 namespace SMW;
 
+use RuntimeException;
 use SMW\Exception\SettingNotFoundException;
 use SMW\Exception\SettingsAlreadyLoadedException;
 use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
-use RuntimeException;
 
 /**
  * @private
@@ -14,7 +14,7 @@ use RuntimeException;
  * Encapsulate Semantic MediaWiki specific settings from GLOBALS access using a
  * dedicated interface.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -200,7 +200,7 @@ class Settings extends Options {
 			'smwgElasticsearchConfig' => $GLOBALS['smwgElasticsearchConfig'],
 			'smwgElasticsearchProfile' => $GLOBALS['smwgElasticsearchProfile'],
 			'smwgElasticsearchEndpoints' => $GLOBALS['smwgElasticsearchEndpoints'],
-            'smwgElasticsearchCredentials' => $GLOBALS['smwgElasticsearchCredentials'],
+			'smwgElasticsearchCredentials' => $GLOBALS['smwgElasticsearchCredentials'],
 			'smwgPostEditUpdate' => $GLOBALS['smwgPostEditUpdate'],
 			'smwgSpecialAskFormSubmitMethod' => $GLOBALS['smwgSpecialAskFormSubmitMethod'],
 			'smwgSupportSectionTag' => $GLOBALS['smwgSupportSectionTag'],
@@ -209,6 +209,8 @@ class Settings extends Options {
 			'smwgCheckForConstraintErrors' => $GLOBALS['smwgCheckForConstraintErrors'],
 			'smwgPlainList' => $GLOBALS['smwgPlainList'],
 			'smwgDetectOutdatedData' => $GLOBALS['smwgDetectOutdatedData'],
+			'smwgIgnoreUpgradeKeyCheck' => $GLOBALS['smwgIgnoreUpgradeKeyCheck'],
+			'smwgEnableExportRDFLink' => $GLOBALS['smwgEnableExportRDFLink']
 		];
 
 		$this->isLoaded = true;

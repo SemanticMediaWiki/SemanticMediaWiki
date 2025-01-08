@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
+class QuerySegmentListProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

@@ -3,6 +3,7 @@
  * @since 3.0
  *
  * @author mwjames
+ * @author thomas-topway-it
  */
 
 /* global jQuery, mediaWiki, mw */
@@ -150,7 +151,8 @@
 		 */
 		addToolbarExportLinks: function ( context ) {
 
-			var toolbar = context.parent().find( '.smw-datatable-toolbar' ),
+			// @see https://datatables.net/examples/layout/custom-nodes.html
+			var toolbar = $('<div class="smw-datatable-toolbar">'),
 				query = context.data( 'query' ),
 				exportFormats = {
 				'JSON': {
@@ -220,6 +222,8 @@
 			toolbar.find( '.action a' ).on( 'click', function( e ) {
 				toolbar.find( '.smw-dropdown input' ).prop( 'checked', false );
 			} );
+			
+			return toolbar;
 		},
 
 		/**
@@ -255,9 +259,10 @@
 				if ( $.fn.dataTable.isDataTable( context ) ) {
 					return;
 				}
-
-				var table = context.DataTable( {
-					dom: 'l<"smw-datatable-toolbar float-right">frtip',
+				
+				var conf = {
+					// *** use the new layout feature
+					// dom: 'l<"smw-datatable-toolbar float-right">frtip',
 					searchHighlight: true,
 					language: {
 						"sProcessing": mw.msg( 'smw-format-datatable-processing' ),
@@ -281,7 +286,26 @@
 							"sSortDescending": mw.msg( 'smw-format-datatable-sortdescending' )
 						}
 					}
-				} );
+				};
+
+				var toolbar = self.addToolbarExportLinks( context );
+				
+				// @see https://datatables.net/reference/option/layout
+				// @see https://datatables.net/examples/layout/ids-and-classes.html
+				conf.layout = {
+					topStart: 'pageLength',
+					topEnd: 'search',
+					bottomStart: 'info',
+					bottomEnd: 'paging',
+					top1Start: {
+						features: [{
+							div: {}
+						}]
+					},
+					top1End: toolbar
+ 				};
+
+				var table = context.DataTable( conf );
 
 				// Remove accented characters from the search input
 				context.parent().find( 'input' ).on( "keyup", function () {
@@ -289,8 +313,6 @@
 						$.fn.DataTable.ext.type.search.string( $.trim( this.value ) )
 					).draw();
 				} );
-
-				self.addToolbarExportLinks( context );
 
 				// Fire to instantiate the tooltip after the DT has been generated
 				mw.hook( 'smw.tooltip' ).fire( context );

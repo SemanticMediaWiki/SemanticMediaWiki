@@ -4,19 +4,19 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use ReflectionClass;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\MwApiFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\Query
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class QueryTest extends \PHPUnit_Framework_TestCase {
+class QueryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -90,15 +90,15 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'toArray' )
-			->will( $this->returnValue( $test ) );
+			->willReturn( $test );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'hasFurtherResults' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$apiResult = $this->apiFactory->newApiResult( [] );
 
@@ -112,23 +112,22 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'getResult' )
-			->will( $this->returnValue( $apiResult ) );
+			->willReturn( $apiResult );
 
 		$method->invoke( $instance, $queryResult );
 
-		// MW 1.25
-		$result = method_exists( $apiResult, 'getResultData' ) ? $apiResult->getResultData() : $instance->getData();
+		$result = $apiResult->getResultData();
 
 		// This came with 1.25, no idea what this suppose to be
 		unset( $result['warnings'] );
 		unset( $result['_type'] );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 
-		//$this->assertEquals(
+		// $this->assertEquals(
 		//	array( 'query' => $test, 'query-continue-offset' => 10 ),
 		//	$result
 		//);

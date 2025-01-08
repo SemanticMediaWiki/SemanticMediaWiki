@@ -79,15 +79,15 @@ class PrintRequest {
 	/**
 	 * Create a print request.
 	 *
-	 * @param integer $mode a constant defining what to printout
+	 * @param int $mode a constant defining what to printout
 	 * @param string $label the string label to describe this printout
 	 * @param mixed $data optional data for specifying some request, might be a property object, title, or something else; interpretation depends on $mode
 	 * @param mixed $outputformat optional string for specifying an output format, e.g. an output unit
 	 * @param array|null $params optional array of further, named parameters for the print request
 	 */
-	public function __construct( $mode, $label, $data = null, $outputformat = false, array $params = null ) {
+	public function __construct( $mode, $label, $data = null, $outputformat = false, ?array $params = null ) {
 		if ( ( ( $mode == self::PRINT_CATS || $mode == self::PRINT_THIS ) &&
-				!is_null( $data ) ) ||
+				$data !== null ) ||
 			( $mode == self::PRINT_PROP &&
 				( !( $data instanceof PropertyValue ) || !$data->isValid() ) ) ||
 			( $mode == self::PRINT_CHAIN &&
@@ -116,7 +116,7 @@ class PrintRequest {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isDisconnected
+	 * @param bool $isDisconnected
 	 */
 	public function isDisconnected( $isDisconnected ) {
 		$this->isDisconnected = (bool)$isDisconnected;
@@ -140,7 +140,7 @@ class PrintRequest {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLabelMarker() {
 		return $this->labelMarker;
@@ -149,9 +149,9 @@ class PrintRequest {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $mode
+	 * @param int $mode
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMode( $mode ) {
 		return $this->m_mode === $mode;
@@ -348,7 +348,7 @@ class PrintRequest {
 	 *
 	 * @param string $text
 	 * @param boalean $showMode = false
-	 * @param boolean $useCanonicalLabel = false
+	 * @param bool $useCanonicalLabel = false
 	 *
 	 * @return PrintRequest|null
 	 */

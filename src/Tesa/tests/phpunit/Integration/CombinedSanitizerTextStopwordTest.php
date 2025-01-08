@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @group onoi-tesa
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -38,22 +38,22 @@ class CombinedSanitizerTextStopwordTest extends TestCase {
 
 	public function textByLanguageProvider() {
 		// https://en.wikipedia.org/wiki/Stop_words
-		$provider[] = array(
+		$provider[] = [
 			'en',
 			//
 			'In computing, stop words are words which are filtered out before or after processing of ' .
 			'natural language data (text).[1] Though stop words usually refer to the most common words ' .
 			'in a language, there is no single universal list of stop words used by all natural language ' .
-			'processing tools, and indeed not all tools even use such a list. Some tools specifically avoid '.
+			'processing tools, and indeed not all tools even use such a list. Some tools specifically avoid ' .
 			'removing these stop words to support phrase search.',
 			//
 			'computing stop words filtered processing natural language data text stop words refer common ' .
 			'words language single universal list stop words natural language processing tools list tools ' .
 			'specifically avoid removing stop words support phrase search'
-		);
+		];
 
 		// https://es.wikipedia.org/wiki/Palabra_vac%C3%ADa
-		$provider[] = array(
+		$provider[] = [
 			'es',
 			//
 			'Palabras vacías es el nombre que reciben las palabras sin significado como artículos, pronombres, ' .
@@ -66,10 +66,10 @@ class CombinedSanitizerTextStopwordTest extends TestCase {
 			'son filtradas después del procesamiento datos lenguaje natural texto hans peter luhn pioneros ' .
 			'recuperación información atribuye acuñación locución inglesa stop words del concepto diseño está ' .
 			'controlada introducción humana automática'
-		);
+		];
 
 		// https://de.wikipedia.org/wiki/Stoppwort
-		$provider[] = array(
+		$provider[] = [
 			'de',
 			//
 			'Stoppwörter nennt man im Information Retrieval Wörter, die bei einer Volltextindexierung nicht beachtet ' .
@@ -78,10 +78,10 @@ class CombinedSanitizerTextStopwordTest extends TestCase {
 			//
 			'stoppwörter nennt information retrieval wörter volltextindexierung beachtet häufig auftreten gewöhnlich ' .
 			'relevanz erfassung dokumentinhalts besitzen'
-		);
+		];
 
 		// https://en.wikipedia.org/wiki/Query_expansion
-		$provider[] = array(
+		$provider[] = [
 			'en',
 			//
 			"The goal of query expansion in this regard is by increasing recall, precision can potentially increase " .
@@ -93,7 +93,7 @@ class CombinedSanitizerTextStopwordTest extends TestCase {
 			"goal query expansion regard increasing recall precision potentially increase decrease mathematically " .
 			"equated including result set pages relevant quality equally relevant pages included result set potential " .
 			"relevant user desired query included query expansion relevance"
-		);
+		];
 
 		return $provider;
 	}

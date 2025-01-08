@@ -3,20 +3,21 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DIProperty;
-use SMW\Tests\DatabaseTestCase;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\DIWikiPage;
+use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class SemanticDataCountMapIntegrationTest extends DatabaseTestCase {
+class SemanticDataCountMapIntegrationTest extends SMWIntegrationTestCase {
 
 	private $semanticDataFactory;
 	private $mwHooksHandler;

@@ -49,7 +49,7 @@
 	"tests": [
 		{
 			"type": "format",
-			"about": "#0 (1.31+) asc template output using named arguments and userparam",
+			"about": "#0 asc template output using named arguments and userparam",
 			"subject": "test-asc-order-named-args-userparam",
 			"assert-output": {
 				"to-contain": [
@@ -64,7 +64,7 @@
 		},
 		{
 			"type": "format",
-			"about": "#1 (1.31+) desc template output using named arguments and userparam",
+			"about": "#1 desc template output using named arguments and userparam",
 			"subject": "test-desc-order-namedargs-userparam",
 			"assert-output": {
 				"to-contain": [

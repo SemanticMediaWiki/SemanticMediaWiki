@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Onoi\Tesa\LanguageDetector\TextCatLanguageDetector
  * @group onoi-tesa
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class TextCatLanguageDetectorTest extends TestCase {
 	}
 
 	public function testDetectOnMock() {
-		$languageCandidates = array( 'en', 'de', 'fr', 'es', 'ja', 'zh' );
+		$languageCandidates = [ 'en', 'de', 'fr', 'es', 'ja', 'zh' ];
 
 		$textCat = $this->getMockBuilder( '\TextCat' )
 			->disableOriginalConstructor()
@@ -33,9 +33,9 @@ class TextCatLanguageDetectorTest extends TestCase {
 		$textCat->expects( $this->once() )
 			->method( 'classify' )
 			->with(
-				$this->equalTo( 'Foo' ),
-				$this->equalTo( $languageCandidates ) )
-			->will( $this->returnValue( array() ) );
+				'Foo',
+				$languageCandidates )
+			->willReturn( [] );
 
 		$instance = new TextCatLanguageDetector( $textCat );
 		$instance->setLanguageCandidates(

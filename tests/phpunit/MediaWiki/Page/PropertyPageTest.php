@@ -9,12 +9,12 @@ use SMW\MediaWiki\Page\PropertyPage;
  * @covers \SMW\MediaWiki\Page\PropertyPage
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class PropertyPageTest extends \PHPUnit_Framework_TestCase {
+class PropertyPageTest extends \PHPUnit\Framework\TestCase {
 
 	private $title;
 	private $store;
@@ -48,8 +48,8 @@ class PropertyPageTest extends \PHPUnit_Framework_TestCase {
 			$this->declarationExaminerFactory
 		);
 
-		$this->assertEquals(
-			'',
+		$this->assertSame(
+			null,
 			$instance->view()
 		);
 	}

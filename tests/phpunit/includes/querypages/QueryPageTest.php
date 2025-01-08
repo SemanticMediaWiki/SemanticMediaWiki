@@ -5,18 +5,17 @@ namespace SMW\Tests;
 use ReflectionClass;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\QueryPage
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
  */
-class QueryPageTest extends \PHPUnit_Framework_TestCase {
+class QueryPageTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -64,9 +63,8 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 		$search = __METHOD__;
 		$result = $this->newInstance( $test )->linkParameters();
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
-
 	}
 
 	/**
@@ -98,7 +96,7 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		$this->assertInternalType( 'string', $result );
+		$this->assertIsString( $result );
 
 		// https://github.com/sebastianbergmann/phpunit/issues/1380
 		// $this->assertTag( $matcher, $result );

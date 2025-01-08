@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\DataValues\LanguageCodeValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
+class LanguageCodeValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

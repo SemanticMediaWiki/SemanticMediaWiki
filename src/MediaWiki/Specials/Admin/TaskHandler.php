@@ -2,13 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use SMW\Message;
-use SMW\Store;
-use WebRequest;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -23,13 +21,13 @@ abstract class TaskHandler {
 	const SECTION_SUPPLEMENT = 'section/supplement';
 	const SECTION_SCHEMA = 'section/schema';
 	const SECTION_MAINTENANCE = 'section/maintenance';
-	const SECTION_DEPRECATION ='section/deprecation';
-	const SECTION_ALERTS ='section/alerts';
-	const SECTION_SUPPORT ='section/support';
-	const ACTIONABLE ='actionable';
+	const SECTION_DEPRECATION = 'section/deprecation';
+	const SECTION_ALERTS = 'section/alerts';
+	const SECTION_SUPPORT = 'section/support';
+	const ACTIONABLE = 'actionable';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $featureSet = 0;
 
@@ -39,7 +37,7 @@ abstract class TaskHandler {
 	private $store;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isApiTask = false;
 
@@ -58,9 +56,9 @@ abstract class TaskHandler {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeature( $feature ) {
 		return ( ( (int)$this->featureSet & $feature ) == $feature );
@@ -79,7 +77,7 @@ abstract class TaskHandler {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $enabledFeatures
+	 * @param int $enabledFeatures
 	 */
 	public function setFeatureSet( $featureSet ) {
 		$this->featureSet = $featureSet;
@@ -124,7 +122,7 @@ abstract class TaskHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isApiTask() {
 		return false;

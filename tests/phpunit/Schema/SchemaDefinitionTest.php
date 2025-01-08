@@ -8,12 +8,12 @@ use SMW\Schema\SchemaDefinition;
  * @covers \SMW\Schema\SchemaDefinition
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
+class SchemaDefinitionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SchemaDefinition( 'foo', [] );

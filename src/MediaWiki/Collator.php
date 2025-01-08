@@ -6,7 +6,7 @@ use Collation;
 use MediaWiki\MediaWikiServices;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -131,7 +131,7 @@ class Collator {
 	 * @param string $old
 	 * @param string $new
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isIdentical( $old, $new ) {
 		return $this->collation->getSortKey( $old ) === $this->collation->getSortKey( $new );

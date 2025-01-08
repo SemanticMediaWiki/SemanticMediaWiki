@@ -3,10 +3,9 @@
 namespace SMW\Utils;
 
 use SMW\DIWikiPage;
-use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -16,7 +15,7 @@ class Image {
 	/**
 	 * @see http://php.net/manual/en/function.image-type-to-extension.php
 	 *
-	 * @var []
+	 * @var
 	 */
 	private static $images_types = [
 		'gif' => 'image/gif',
@@ -44,7 +43,7 @@ class Image {
 	 *
 	 * @param DIWikiPage $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isImage( DIWikiPage $dataItem ) {
 		if ( $dataItem->getNamespace() !== NS_FILE || $dataItem->getSubobjectName() !== '' ) {
@@ -56,7 +55,7 @@ class Image {
 			// pathinfo( $dataItem->getDBKey(), PATHINFO_EXTENSION )
 		);
 
-		return in_array( $extension, array_keys( self::$images_types ) );
+		return array_key_exists( $extension, self::$images_types );
 	}
 
 }

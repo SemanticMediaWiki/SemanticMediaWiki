@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Alison",
+			"Kscanne",
 			"MinecraftAustralia",
 			"Nmacu",
 			"පසිඳු කාවින්ද"
@@ -18,6 +19,7 @@
 	"smw_ask_defaultformat": "réamhshocrú",
 	"smw_ask_show_embed": "Taispeáin cód leabaithe",
 	"smw_sbv_property": "Airí",
+	"browse": "Brabhsáil an vicí",
 	"smw_browse_go": "Gabh",
 	"smw_browse_show_incoming": "taispeáin tréithe a nascann anseo",
 	"smw_pp_type": "Airí",

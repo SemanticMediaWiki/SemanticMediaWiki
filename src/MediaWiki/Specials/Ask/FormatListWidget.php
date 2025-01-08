@@ -8,7 +8,7 @@ use SMWQueryProcessor as QueryProcessor;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -106,7 +106,7 @@ class FormatListWidget {
 			}
 		}
 
-		usort( $formats, function ( $x, $y ) {
+		usort( $formats, static function ( $x, $y ) {
 			return strcasecmp( $x['name'], $y['name'] );
 		} );
 

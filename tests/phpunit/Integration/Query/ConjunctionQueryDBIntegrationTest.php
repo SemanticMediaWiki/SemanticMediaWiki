@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
@@ -21,14 +21,15 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
+class ConjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
@@ -159,7 +160,7 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 			$semanticDataOfDreamland->getSubject()
 		];
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$queryResult->getCount()
 		);
@@ -236,7 +237,7 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$queryResult->getCount()
 		);

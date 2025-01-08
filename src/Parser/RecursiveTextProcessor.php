@@ -10,8 +10,8 @@ use ParserOutput;
 use RequestContext;
 use RuntimeException;
 use SMW\Localizer\Localizer;
-use SMW\ParserData;
 use SMW\MediaWiki\Template\TemplateExpander;
+use SMW\ParserData;
 use SMWOutputs;
 use Title;
 
@@ -21,7 +21,7 @@ use Title;
  * Helper class in processing content that requires to be parsed internally and
  * recursively mostly in connection with templates.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -37,22 +37,22 @@ class RecursiveTextProcessor {
 	 * Incremented while expanding templates inserted during printout; stop
 	 * expansion at some point
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $recursionDepth = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $maxRecursionDepth = 2;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $recursiveAnnotation = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $uniqid;
 
@@ -82,7 +82,7 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getError() {
 		return $this->error;
@@ -93,7 +93,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string|integer|null $uniqid
+	 * @param string|int|null $uniqid
 	 */
 	public function uniqid( $uniqid = null ) {
 		$this->uniqid = $uniqid ?? uniqid();
@@ -102,7 +102,7 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $maxRecursionDepth
+	 * @param int $maxRecursionDepth
 	 */
 	public function setMaxRecursionDepth( $maxRecursionDepth ) {
 		$this->maxRecursionDepth = $maxRecursionDepth;
@@ -111,7 +111,7 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $transcludeAnnotation
+	 * @param bool $transcludeAnnotation
 	 */
 	public function transcludeAnnotation( $transcludeAnnotation ) {
 		$parserOutput = $this->getParserOutputSafe();
@@ -162,7 +162,7 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $recursiveAnnotation
+	 * @param bool $recursiveAnnotation
 	 */
 	public function setRecursiveAnnotation( $recursiveAnnotation ) {
 		$this->recursiveAnnotation = (bool)$recursiveAnnotation;

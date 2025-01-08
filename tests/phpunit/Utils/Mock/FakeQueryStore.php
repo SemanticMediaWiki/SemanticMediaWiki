@@ -18,7 +18,7 @@ use SMWQuery;
  * @group semantic-mediawiki-integration
  * @group mediawiki-databaseless
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9.2
  *
  * @author mwjames

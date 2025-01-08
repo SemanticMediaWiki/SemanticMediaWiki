@@ -2,16 +2,15 @@
 
 namespace SMW\Elastic\Lookup;
 
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMWDITime as DITime;
-use SMWDataItem as DataItem;
 use SMW\DIProperty;
-use SMW\Store;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\RequestOptions;
-use RuntimeException;
+use SMW\Store;
+use SMWDataItem as DataItem;
+use SMWDITime as DITime;
 
 /**
  * Experimental implementation to showcase how a Elasticsearch specific implementation
@@ -20,7 +19,7 @@ use RuntimeException;
  * The class is targeted to be used for API (e.g. autocomplete etc.) intensive
  * services.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -140,12 +139,12 @@ class ProximityPropertyValueLookup {
 			'body'  => $body
 		];
 
-		list( $res, $errors ) = $connection->search( $params );
+		[ $res, $errors ] = $connection->search( $params );
 
 		if ( isset( $res['aggregations'] ) ) {
-			list( $list, $i ) = $this->match_aggregations( $res['aggregations'], $diType, $limit );
+			[ $list, $i ] = $this->match_aggregations( $res['aggregations'], $diType, $limit );
 		} elseif ( isset( $res['hits'] ) ) {
-			list( $list, $i ) = $this->match_hits( $res['hits'], $pid, $field, $limit );
+			[ $list, $i ] = $this->match_hits( $res['hits'], $pid, $field, $limit );
 		} else {
 			$list = [];
 			$i = 0;

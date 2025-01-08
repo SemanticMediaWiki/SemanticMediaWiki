@@ -6,7 +6,7 @@ use RuntimeException;
 use SMW\Tests\Utils\File\JsonFileReader;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -35,14 +35,14 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isIncomplete() {
 		$meta = $this->getFileContentsFor( 'meta' );
 		$isIncomplete = isset( $meta['is-incomplete'] ) ? (bool)$meta['is-incomplete'] : false;
 
 		if ( $isIncomplete ) {
-			$this->reasonToSkip = '"'. $this->getFileContentsFor( 'description' ) . '" has been marked as incomplete.';
+			$this->reasonToSkip = '"' . $this->getFileContentsFor( 'description' ) . '" has been marked as incomplete.';
 		}
 
 		return $isIncomplete;
@@ -51,7 +51,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getDebugMode() {
 		$meta = $this->getFileContentsFor( 'meta' );
@@ -62,7 +62,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAllRequirements( $dependencyDef = [] ) {
 		$requires = $this->getContentsFor( 'requires' );
@@ -98,7 +98,7 @@ class JsonTestCaseFileHandler {
 	 * @param array $case
 	 * @param string $identifier
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function requiredToSkipFor( array $case, $identifier ) {
 		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : [];
@@ -153,11 +153,7 @@ class JsonTestCaseFileHandler {
 			// Support for { "skip-on": { "smw->2.5.x": "Reason is ..." }
 			// or { "skip-on": { "mw->1.30.x": "Reason is ..." }
 			if ( strpos( $id, 'mw-' ) !== false ) {
-				list( $noop, $versionToSkip ) = explode( "mw-", $id, 2 );
-			}
-
-			if ( strpos( $id, 'hhvm-' ) !== false ) {
-				list( $noop, $versionToSkip ) = explode( "hhvm-", $id, 2 );
+				[ $noop, $versionToSkip ] = explode( "mw-", $id, 2 );
 			}
 
 			// Support for { "skip-on": { "mediawiki": [ ">1.29.x", "Reason is ..." ] }
@@ -165,11 +161,9 @@ class JsonTestCaseFileHandler {
 				$version = SMW_VERSION;
 			} elseif ( strpos( $id, 'mediawiki' ) !== false || strpos( $id, 'mw' ) !== false ) {
 				$version = MW_VERSION;
-			} elseif ( strpos( $id, 'hhvm' ) !== false ) {
-				$version = defined( 'HHVM_VERSION' ) ? HHVM_VERSION : 0;
 			} elseif ( strpos( $id, 'php' ) !== false ) {
 				$version = defined( 'PHP_VERSION' ) ? PHP_VERSION : 0;
- 			}
+			}
 
 			if ( $versionToSkip !== '' && ( $versionToSkip[0] === '<' || $versionToSkip[0] === '>' ) ) {
 				$compare = $versionToSkip[0];
@@ -203,7 +197,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function requiredToSkipForConnector( $connectorId ) {
 		$connectorId = strtolower( $connectorId );
@@ -211,7 +205,7 @@ class JsonTestCaseFileHandler {
 
 		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
-		if ( in_array( $connectorId, array_keys( $skipOn ) ) ) {
+		if ( array_key_exists( $connectorId, $skipOn ) ) {
 			$this->reasonToSkip = $skipOn[$connectorId];
 		}
 
@@ -221,7 +215,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function requiredToSkipForJsonVersion( $version ) {
 		$meta = $this->getFileContentsFor( 'meta' );
@@ -236,7 +230,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function requiredToSkipOnSiteLanguage( $siteLanguage ) {
 		$meta = $this->getFileContentsFor( 'meta' );
@@ -260,33 +254,39 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function requiredToSkipForMwVersion( $mwVersion ) {
 		$meta = $this->getFileContentsFor( 'meta' );
 		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
 		foreach ( $skipOn as $id => $reason ) {
-
-			if ( strpos( $id, 'mw-' ) === false ) {
+			if ( strpos( $id, 'mediawiki' ) === false ) {
 				continue;
 			}
 
-			list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
+			$versionToSkip = $skipOn['mediawiki'][0];
 			$compare = '=';
 
-			if ( strpos( $versionToSkip, '.x' ) ) {
-				$versionToSkip = str_replace( '.x', '.9999', $versionToSkip );
-				$compare = '<';
+			if ( strpos( $versionToSkip, '=' ) ) {
+				$list = explode( "=", $versionToSkip );
+				$compare = $list[0] . '=';
+				if ( strpos( $versionToSkip, '.x' ) ) {
+					$versionToSkip = str_replace( '.x', '.9999', $list[1] );
+				}
 			}
 
-			if ( strpos( $versionToSkip, '<' ) ) {
-				$versionToSkip = str_replace( '<', '', $versionToSkip );
-				$compare = '<';
+			if ( !strpos( $versionToSkip, '=' ) ) {
+				$compare = $versionToSkip[0];
+				$list = explode( $compare, $versionToSkip );
+				if ( strpos( $versionToSkip, '.x' ) ) {
+					$versionToSkip = str_replace( '.x', '.9999', $list[1] );
+				}
 			}
 
 			if ( version_compare( $mwVersion, $versionToSkip, $compare ) ) {
-				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
+				$messageToShow = is_array( $reason ) && isset( $reason[1] ) ? $reason[1] : 'Test skipped!';
+				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$messageToShow})";
 				break;
 			}
 		}
@@ -319,7 +319,7 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @return array|integer|string|boolean
+	 * @return array|int|string|bool
 	 * @throws RuntimeException
 	 */
 	public function getSettingsFor( $key, $callback = null ) {
@@ -430,9 +430,9 @@ class JsonTestCaseFileHandler {
 	 * @return array
 	 */
 	public function getContentsFor( $key ) {
-		try{
+		try {
 			$contents = $this->getFileContentsFor( $key );
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			$contents = [];
 		}
 
@@ -470,7 +470,7 @@ class JsonTestCaseFileHandler {
 	 * @return array
 	 */
 	public function findTestCasesByType( $type ) {
-		return array_filter( $this->getContentsFor( 'tests' ), function ( $contents ) use( $type ) {
+		return array_filter( $this->getContentsFor( 'tests' ), static function ( $contents ) use( $type ) {
 			return isset( $contents['type'] ) && $contents['type'] === $type;
 		} );
 	}
@@ -480,7 +480,7 @@ class JsonTestCaseFileHandler {
 	 *
 	 * @param string $type
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function countTestCasesByType( $type ) {
 		return count( $this->findTestCasesByType( $type ) );

@@ -5,7 +5,7 @@ namespace Onoi\Tesa\Tokenizer;
 use Onoi\Tesa\CharacterExaminer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -15,7 +15,7 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 	/**
 	 * @var array
 	 */
-	private $compound = array(
+	private $compound = [
 		"あっ",
 		"あり",
 		"ある",
@@ -129,7 +129,7 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 		"。",
 		"「",
 		"」"
-	);
+	];
 
 	/**
 	 * @var Tokenizer
@@ -139,9 +139,9 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 	/**
 	 * @since 0.1
 	 *
-	 * @param Tokenizer $tokenizer
+	 * @param Tokenizer|null $tokenizer
 	 */
-	public function __construct( Tokenizer $tokenizer = null ) {
+	public function __construct( ?Tokenizer $tokenizer = null ) {
 		$this->tokenizer = $tokenizer;
 	}
 
@@ -194,7 +194,7 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 			return array_values( $result );
 		}
 
-		return array();
+		return [];
 	}
 
 	/**

@@ -14,7 +14,7 @@ project and is deployed independently.
 
 ## Requirements
 
-- PHP 5.3 / HHVM 3.5 or later
+- PHP 7.4
 - Recommended to enable the [ICU][icu] extension
 
 ## Installation

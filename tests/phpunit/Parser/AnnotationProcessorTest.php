@@ -2,19 +2,18 @@
 
 namespace SMW\Tests\Parser;
 
-use SMW\Parser\LinksProcessor;
 use SMW\Parser\AnnotationProcessor;
 
 /**
  * @covers \SMW\Parser\AnnotationProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class AnnotationProcessorTest extends \PHPUnit_Framework_TestCase {
+class AnnotationProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticData;
 	private $dataValueFactory;

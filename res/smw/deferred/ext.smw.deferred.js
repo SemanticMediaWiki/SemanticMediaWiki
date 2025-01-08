@@ -124,7 +124,7 @@
 
 			self.container.find( '#deferred-control' ).replaceWith( "<div id='deferred-control'></div>" );
 			self.container.find( '.irs' ).hide();
-			self.replaceOutput( error, "smw-callout smw-callout-error" );
+			self.replaceOutput( error, "error" );
 		} );
 	};
 

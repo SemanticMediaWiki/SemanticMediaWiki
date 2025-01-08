@@ -2,21 +2,21 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\MonolingualTextLookup;
-use SMW\MediaWiki\Connection\Query;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Query;
+use SMW\SQLStore\Lookup\MonolingualTextLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\MonolingualTextLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
+class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -43,11 +43,11 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'tablename' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$query = new Query( $connection );
 
@@ -63,7 +63,7 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -71,23 +71,23 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$instance = new MonolingualTextLookup(
 			$this->store
@@ -105,7 +105,7 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 		yield 'Foo' => [
 			new DIWikiPage( 'Foo', NS_MAIN, '', '' ),
 			'fr',
-			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,'.
+			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,' .
 			' t2.o_hash AS text_short, t2.o_blob AS text_long, t3.o_hash AS lcode FROM  AS t0' .
 			' INNER JOIN smw_object_ids AS o0 ON t0.o_id=o0.smw_id' .
 			' INNER JOIN smw_object_ids AS o1 ON t0.s_id=o1.smw_id' .
@@ -119,7 +119,7 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 		yield 'Foo#_ML123' => [
 			new DIWikiPage( 'Foo', NS_MAIN, '', '_ML123' ),
 			'en',
-			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,'.
+			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,' .
 			' t2.o_hash AS text_short, t2.o_blob AS text_long, t3.o_hash AS lcode FROM  AS t0' .
 			' INNER JOIN smw_object_ids AS o0 ON t0.o_id=o0.smw_id' .
 			' INNER JOIN smw_object_ids AS t1 ON t0.p_id=t1.smw_id' .
@@ -147,11 +147,11 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'readQuery' )
-			->will( $this->returnValue( [ (object)$row ] ) );
+			->willReturn( [ (object)$row ] );
 
 		$query = new Query( $connection );
 
@@ -172,23 +172,23 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$instance = new MonolingualTextLookup(
 			$this->store
