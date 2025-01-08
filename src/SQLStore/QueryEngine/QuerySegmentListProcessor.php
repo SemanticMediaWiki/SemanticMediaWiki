@@ -152,17 +152,12 @@ class QuerySegmentListProcessor {
 				$seg->joinType = $joinType;
 				$seg->joinTable = $subQuery->joinTable;
 				$seg->alias = $subQuery->alias;
+				$seg->fromSegs = [];
 
-				// Move conditions referencing the joined table into the join condition
+				// Move all conditions into join conditions
+				$seg->where = "$joinField$op=" . $subQuery->joinfield;
 				if ( $subQuery->where !== '' && $subQuery->where !== null ) {
-					$seg->where = "$joinField$op=" . $subQuery->joinfield;
-					if ( $joinType === 'LEFT' || $joinType === 'LEFT OUTER' ) {
-						$seg->where .= ' AND (' . $subQuery->where . ')';
-					} else {
-						$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
-					}
-				} else {
-					$seg->where = "$joinField$op=" . $subQuery->joinfield;
+					$seg->where .= ' AND (' . $subQuery->where . ')';
 				}
 
 				// Merge any nested joins
@@ -170,11 +165,8 @@ class QuerySegmentListProcessor {
 					$seg->fromSegs = array_merge( $seg->fromSegs, $subQuery->fromSegs );
 				}
 
+				$query->fromSegs = isset( $query->fromSegs ) ? $query->fromSegs : [];
 				$query->fromSegs[] = $seg;
-
-				if ( $joinType === 'LEFT' ) {
-					$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->joinfield . ' IS NULL)';
-				}
 
 			} elseif ( $subQuery->joinfield !== '' ) { // Require joinfield as "value" via WHERE.
 				$condition = '';
@@ -192,10 +184,12 @@ class QuerySegmentListProcessor {
 					$condition = "($condition)";
 				}
 
+				$query->where = isset( $query->where ) ? $query->where : '';
 				$query->where .= ( ( $query->where === '' || $subQuery->where === null ) ? '' : ' AND ' ) . $condition;
 
 				// Merge any nested joins
 				if ( !empty( $subQuery->fromSegs ) ) {
+					$query->fromSegs = isset( $query->fromSegs ) ? $query->fromSegs : [];
 					$query->fromSegs = array_merge( $query->fromSegs, $subQuery->fromSegs );
 				}
 
@@ -250,14 +244,31 @@ class QuerySegmentListProcessor {
 			if ( $subQuery->joinTable !== '' ) {
 				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' .
 					   $this->connection->tableName( $query->alias ) .
-					   " SELECT DISTINCT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
-					   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where" : '' );
+					   " SELECT DISTINCT $subQuery->joinfield FROM " .
+					   $this->connection->tableName( $subQuery->joinTable ) .
+					   " AS $subQuery->alias";
+
+				// Add joins for all fromSegs
+				if ( !empty( $subQuery->fromSegs ) ) {
+					foreach ( $subQuery->fromSegs as $seg ) {
+						$joinType = $seg->joinType === 'LEFT' ? 'LEFT JOIN' : 'INNER JOIN';
+						$sql .= " $joinType " . $this->connection->tableName( $seg->joinTable ) .
+							   " AS " . $seg->alias . " ON " . $seg->where;
+					}
+				}
+
+				// Add WHERE conditions
+				if ( $subQuery->where ) {
+					$sql .= " WHERE " . $subQuery->where;
+				}
+
 			} elseif ( $subQuery->joinfield !== '' ) {
 				$values = '';
 				foreach ( $subQuery->joinfield as $value ) {
 					$values .= ( $values ? ',' : '' ) . '(' . $this->connection->addQuotes( $value ) . ')';
 				}
-				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' . $this->connection->tableName( $query->alias ) . " (id) VALUES $values";
+				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' . $this->connection->tableName( $query->alias ) .
+					   " (id) VALUES $values";
 			}
 
 			if ( $sql ) {
