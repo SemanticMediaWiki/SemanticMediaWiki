@@ -21,8 +21,6 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  */
 class QuerySegmentListProcessor {
 
-	// ConditionTreeProcessor
-
 	/**
 	 * @var Database
 	 */
@@ -120,7 +118,7 @@ class QuerySegmentListProcessor {
 
 	private function segment( QuerySegment &$query ) {
 		switch ( $query->type ) {
-			case QuerySegment::Q_TABLE: // .
+			case QuerySegment::Q_TABLE:
 				$this->table( $query );
 				break;
 			case QuerySegment::Q_CONJUNCTION:
@@ -130,7 +128,7 @@ class QuerySegmentListProcessor {
 				$this->disjunction( $query );
 				break;
 			case QuerySegment::Q_PROP_HIERARCHY:
-			case QuerySegment::Q_CLASS_HIERARCHY: // make a saturated hierarchy
+			case QuerySegment::Q_CLASS_HIERARCHY:
 				$this->hierarchy( $query );
 				break;
 			case QuerySegment::Q_VALUE:
@@ -145,35 +143,29 @@ class QuerySegmentListProcessor {
 		foreach ( $query->components as $qid => $joinField ) {
 			$subQuery = $this->querySegmentList[$qid];
 			$this->segment( $subQuery );
-			$alias = $subQuery->alias;
 
 			if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
 				$op = $subQuery->not ? '!' : '';
-
 				$joinType = $subQuery->joinType ? $subQuery->joinType : 'INNER';
-				$t = $this->connection->tableName( $subQuery->joinTable ) . " AS $subQuery->alias";
-				// If the alias is the same as the table name and if there is a prefix, MediaWiki does not declare the unprefixed alias
-				$joinTable = $subQuery->joinTable === $subQuery->alias ? $this->connection->tableName( $subQuery->joinTable ) : $subQuery->joinTable;
-
-				if ( $subQuery->from ) {
-					$t = "($t $subQuery->from)";
-
-					$alias = 'nested' . $subQuery->alias;
-					$query->fromTables[$alias] = array_merge( $subQuery->fromTables, [ $subQuery->alias => $joinTable ] );
-					$query->joinConditions = array_merge( $query->joinConditions, $subQuery->joinConditions );
-				} else {
-					$query->fromTables[$alias] = $joinTable;
-				}
-				$query->joinConditions[$alias] = [ $joinType . ' JOIN', "$joinField$op=" . $subQuery->joinfield ];
-
-				$query->from .= " $joinType JOIN $t ON $joinField$op=" . $subQuery->joinfield;
 
 				$seg = new QuerySegment();
-				$seg->joinType  = $subQuery->joinType;
+				$seg->joinType = $joinType;
 				$seg->joinTable = $subQuery->joinTable;
 				$seg->alias = $subQuery->alias;
 				$seg->where = "$joinField$op=" . $subQuery->joinfield;
-				$seg->fromSegs = $subQuery->fromSegs;
+
+				if ( $subQuery->from ) {
+					$seg->fromSegs = array_merge( $subQuery->fromSegs );
+				}
+
+				if ( $subQuery->where !== '' && $subQuery->where !== null ) {
+					if ( $joinType === 'LEFT' || $joinType === 'LEFT OUTER' ) {
+						$seg->where .= ' AND (' . $subQuery->where . ')';
+					} else {
+						$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
+					}
+				}
+
 				$query->fromSegs[] = $seg;
 
 				if ( $joinType === 'LEFT' ) {
@@ -184,7 +176,7 @@ class QuerySegmentListProcessor {
 				$condition = '';
 
 				if ( $subQuery->null === true ) {
-						$condition .= ( $condition ? ' OR ' : '' ) . "$joinField IS NULL";
+					$condition .= ( $condition ? ' OR ' : '' ) . "$joinField IS NULL";
 				} else {
 					foreach ( $subQuery->joinfield as $value ) {
 						$op = $subQuery->not ? '!' : '';
@@ -197,26 +189,19 @@ class QuerySegmentListProcessor {
 				}
 
 				$query->where .= ( ( $query->where === '' || $subQuery->where === null ) ? '' : ' AND ' ) . $condition;
-				$query->from .= $subQuery->from;
 				$query->fromSegs = array_merge( $query->fromSegs, $subQuery->fromSegs );
+
 			} else { // interpret empty joinfields as impossible condition (empty result)
 				$query->joinfield = ''; // make whole query false
 				$query->joinTable = '';
 				$query->where = '';
-				$query->from = '';
 				$query->fromSegs = [];
 				break;
 			}
 
-			if ( $subQuery->where !== '' && $subQuery->where !== null ) {
-				if ( $subQuery->joinType === 'LEFT' || $subQuery->joinType === 'LEFT OUTER' ) {
-					$query->from .= ' AND (' . $subQuery->where . ')';
-					if ( !empty( $query->fromSegs ) ) {
-						end( $query->fromSegs )->where .= ' AND (' . $subQuery->where . ')';
-					}
-				} else {
-					$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
-				}
+			if ( $subQuery->where !== '' && $subQuery->where !== null &&
+				 !( $subQuery->joinType === 'LEFT' || $subQuery->joinType === 'LEFT OUTER' ) ) {
+				$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
 			}
 		}
 
@@ -227,10 +212,8 @@ class QuerySegmentListProcessor {
 		reset( $query->components );
 		$key = false;
 
-		// Pick one subquery as anchor point ...
 		foreach ( $query->components as $qkey => $qid ) {
 			$key = $qkey;
-
 			if ( $this->querySegmentList[$qkey]->joinTable !== '' ) {
 				break;
 			}
@@ -239,16 +222,12 @@ class QuerySegmentListProcessor {
 		$result = $this->querySegmentList[$key];
 		unset( $query->components[$key] );
 
-		// Execute it first (may change jointable and joinfield, e.g. when
-		// making temporary tables)
 		$this->segment( $result );
 
-		// ... and append to this query the remaining queries.
 		foreach ( $query->components as $qid => $joinfield ) {
 			$result->components[$qid] = $result->joinfield;
 		}
 
-		// Second execute, now incorporating remaining conditions.
 		$this->segment( $result );
 		$query = $result;
 	}
@@ -271,20 +250,12 @@ class QuerySegmentListProcessor {
 					   " SELECT DISTINCT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
 					   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where" : '' );
 			} elseif ( $subQuery->joinfield !== '' ) {
-				// NOTE: this works only for single "unconditional" values without further
-				// WHERE or FROM. The execution must take care of not creating any others.
 				$values = '';
-
-				// This produces an error on postgres with
-				// pg_query(): Query failed: ERROR:  duplicate key value violates
-				// unique constraint "sunittest_t3_pkey" DETAIL:  Key (id)=(274) already exists.
-
 				foreach ( $subQuery->joinfield as $value ) {
 					$values .= ( $values ? ',' : '' ) . '(' . $this->connection->addQuotes( $value ) . ')';
 				}
-
 				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' . $this->connection->tableName( $query->alias ) . " (id) VALUES $values";
-			} // else: // interpret empty joinfields as impossible condition (empty result), ignore
+			}
 
 			if ( $sql ) {
 				$this->executedQueries[$query->alias][] = $sql;
@@ -302,21 +273,11 @@ class QuerySegmentListProcessor {
 		$query->type = QuerySegment::Q_TABLE;
 		$query->where = '';
 		$query->components = [];
-
 		$query->joinTable = $query->alias;
 		$query->joinfield = "$query->alias.id";
-		$query->sortfields = []; // Make sure we got no sortfields.
-
-		// TODO: currently this eliminates sortkeys, possibly keep them (needs
-		// different temp table format though, maybe not such a good thing to do)
+		$query->sortfields = [];
 	}
 
-	/**
-	 * Find subproperties or subcategories. This may require iterative computation,
-	 * and temporary tables are used in many cases.
-	 *
-	 * @param QuerySegment &$query
-	 */
 	private function hierarchy( QuerySegment &$query ) {
 		switch ( $query->type ) {
 			case QuerySegment::Q_PROP_HIERARCHY:
@@ -331,12 +292,11 @@ class QuerySegmentListProcessor {
 			$type
 		);
 
-		// An individual depth was annotated as part of the query
 		if ( $query->depth !== null ) {
 			$depth = $query->depth;
 		}
 
-		if ( $depth <= 0 ) { // treat as value, no recursion
+		if ( $depth <= 0 ) {
 			$query->type = QuerySegment::Q_VALUE;
 			return;
 		}
@@ -349,7 +309,6 @@ class QuerySegmentListProcessor {
 			$valuecond .= ( $valuecond ? ' OR ' : '' ) . 'o_id=' . $this->connection->addQuotes( $value );
 		}
 
-		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
 		$res = $this->connection->select(
 			$smwtable,
 			's_id',
@@ -358,7 +317,7 @@ class QuerySegmentListProcessor {
 			[ 'LIMIT' => 1 ]
 		);
 
-		if ( !$res->fetchObject() ) { // no subobjects, we are done!
+		if ( !$res->fetchObject() ) {
 			$res->free();
 			$query->type = QuerySegment::Q_VALUE;
 			return;
@@ -382,12 +341,6 @@ class QuerySegmentListProcessor {
 		);
 	}
 
-	/**
-	 * After querying, make sure no temporary database tables are left.
-	 *
-	 * @todo I might be better to keep the tables and possibly reuse them later
-	 * on. Being temporary, the tables will vanish with the session anyway.
-	 */
 	public function cleanUp() {
 		foreach ( $this->executedQueries as $table => $log ) {
 			$this->temporaryTableBuilder->drop( $this->connection->tableName( $table ) );
@@ -416,9 +369,6 @@ class QuerySegmentListProcessor {
 			}
 			$table = $seg->joinTable;
 			if ( $table === $seg->alias ) {
-				// Bug: Temporary table `t1` renamed to `wt1` by MW SQLPlatform,
-				// however join('t1','t1') yields "JOIN `wt1`" instead of "JOIN `wt1` AS `t1`",
-				// causing "Table t1 not found".  Using subquery as workaround.
 				$table = $topBuilder->newSubquery()->select( '*' )->from( $table );
 			}
 			if ( empty( $seg->fromSegs ) ) {
@@ -431,5 +381,4 @@ class QuerySegmentListProcessor {
 			}
 		}
 	}
-
 }
