@@ -6,6 +6,9 @@ use RuntimeException;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMWQuery as Query;
+use Wikimedia\Rdbms\JoinGroup;
+use Wikimedia\Rdbms\JoinGroupBase;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -165,6 +168,14 @@ class QuerySegmentListProcessor {
 
 				$query->from .= " $joinType JOIN $t ON $joinField$op=" . $subQuery->joinfield;
 
+				$seg = new QuerySegment();
+				$seg->joinType  = $subQuery->joinType;
+				$seg->joinTable = $subQuery->joinTable;
+				$seg->alias = $subQuery->alias;
+				$seg->where = "$joinField$op=" . $subQuery->joinfield;
+				$seg->fromSegs = $subQuery->fromSegs;
+				$query->fromSegs[] = $seg;
+
 				if ( $joinType === 'LEFT' ) {
 					$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->joinfield . ' IS NULL)';
 				}
@@ -187,22 +198,20 @@ class QuerySegmentListProcessor {
 
 				$query->where .= ( ( $query->where === '' || $subQuery->where === null ) ? '' : ' AND ' ) . $condition;
 				$query->from .= $subQuery->from;
-				$query->fromTables = array_merge( $query->fromTables, $subQuery->fromTables );
-				$query->joinConditions = array_merge( $query->joinConditions, $subQuery->joinConditions );
+				$query->fromSegs = array_merge( $query->fromSegs, $subQuery->fromSegs );
 			} else { // interpret empty joinfields as impossible condition (empty result)
 				$query->joinfield = ''; // make whole query false
 				$query->joinTable = '';
 				$query->where = '';
 				$query->from = '';
-				$query->fromTables = [];
-				$query->joinConditions = [];
+				$query->fromSegs = [];
 				break;
 			}
 
 			if ( $subQuery->where !== '' && $subQuery->where !== null ) {
-				if ( $subQuery->joinType === 'LEFT' || $subQuery->joinType == 'LEFT OUTER' ) {
+				if ( $subQuery->joinType === 'LEFT' || $subQuery->joinType === 'LEFT OUTER' ) {
 					$query->from .= ' AND (' . $subQuery->where . ')';
-					$query->joinConditions[$alias][1] .= ' AND (' . $subQuery->where . ')';
+					end( $query->fromSegs )->where .= ' AND (' . $subQuery->where . ')';
 				} else {
 					$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
 				}
@@ -380,6 +389,42 @@ class QuerySegmentListProcessor {
 	public function cleanUp() {
 		foreach ( $this->executedQueries as $table => $log ) {
 			$this->temporaryTableBuilder->drop( $this->connection->tableName( $table ) );
+		}
+	}
+
+	/**
+	 * Apply QuerySegment->fromSegs to a SelectQueryBuilder.
+	 * @since 4.2
+	 * 
+	 * @param QuerySegment $qobj QuerySegment to build the joins from
+	 * @param JoinGroupBase $builder First call must be SelectQueryBuilder, but become JoinGroup on recursive calls.
+	 * @param SelectQueryBuilder $topBuilder Top level builder passed in from the original call
+	 * @throw InvalidArgumentException if QuerySegment->joinType is not empty, LEFT, LEFT OUTER, or INNER.
+	 */
+	public static function applyFromSegments( QuerySegment $qobj, JoinGroupBase $builder, SelectQueryBuilder $topBuilder = null ) : void {
+		if ( $topBuilder === null ) $topBuilder = $builder;
+		foreach ( $qobj->fromSegs as $seg ) {
+			$joinMethod = 'join';
+			if ( $seg->joinType === 'LEFT'|| $seg->joinType === 'LEFT OUTER' ) {
+				$joinMethod = 'leftJoin';
+			} elseif ( !empty( $seg->joinType ) && $seg->joinType !== 'INNER' ) {
+				throw new InvalidArgumentException( "Unknown QuerySegment->joinType `{$seg->joinType}`" );
+			}
+			$table = $seg->joinTable;
+			if ( $table === $seg->alias ) {
+				// Bug: Temporary table `t1` renamed to `wt1` by MW SQLPlatform,
+				// however join('t1','t1') yields "JOIN `wt1`" instead of "JOIN `wt1` AS `t1`",
+				// causing "Table t1 not found".  Using subquery as workaround.
+				$table = $topBuilder->newSubquery()->select( '*' )->from( $table );
+			}
+			if ( empty( $seg->fromSegs ) ) {
+				$builder->{$joinMethod}( $table, $seg->alias, $seg->where );
+			} else {
+				$grp = new JoinGroup( $seg->alias . 'jg' );
+				$grp->table( $table, $seg->alias );
+				self::applyFromSegments( $seg, $grp, $topBuilder );
+				$builder->{$joinMethod}( $grp, $grp->getAlias(), $seg->where );
+			}
 		}
 	}
 

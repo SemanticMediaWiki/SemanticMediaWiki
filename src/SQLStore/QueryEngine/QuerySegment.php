@@ -111,34 +111,17 @@ class QuerySegment {
 	public $indexField = '';
 
 	/**
+	 * Still used by ConceptCache.  Otherwise replaced by $fromSegs
 	 * @var string
 	 */
 	public $from = '';
 
 	/**
-	 * @var string[] Array of tables compatible with MediaWiki’s IReadableDatabase::select()
-	 *
-	 * The values are always the table names, and if the index is a string then it is its alias.
-	 * It is not necessary to use $db->tableName() for the table names, this is handled by MediaWiki.
-	 *
-	 * Example:
-	 *  [ 'page', 't0' => 'smw_object_ids' ]
+	 * Array of QuerySegment to build joins (replace $from) for Rdbms.
+	 * @since 4.2
+	 * @var array
 	 */
-	public $fromTables = [];
-
-	/**
-	 * @var string[][] Array of JOIN conditions created to be compatible with MediaWiki’s IReadableDatabase::select()
-	 *
-	 * The key in the first array must be a string, and represent the table or alias; the corresponding values
-	 * are a list with index 0 and 1, where the value at index 0 is the the type of JOIN and the value at index 1
-	 * is the condition.
-	 * It is not necessary to use $db->tableName() for the table names, this is handled by MediaWiki.
-	 *
-	 *
-	 * Example:
-	 *   [ 'page' => [ 'LEFT JOIN', 'page_latest=rev_id' ] ]
-	 */
-	public $joinConditions = [];
+	public $fromSegs = [];
 
 	/**
 	 * @var string
@@ -199,4 +182,15 @@ class QuerySegment {
 		self::$qnum++;
 	}
 
+	/**
+	 * @since 4.2
+	 */
+	public function innerToLeftJoin() {
+		foreach ( $this->fromSegs as $seg ) {
+			if ( !$seg->joinType || $seg->joinType == 'INNER' ) {
+				$seg->joinType = 'LEFT';
+			}
+			$seg->innerToLeftJoin();
+		}
+	}
 }

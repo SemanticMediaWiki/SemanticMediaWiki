@@ -72,6 +72,11 @@ class QuerySegmentTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertSame(
+			[],
+			$instance->fromSegs
+		);
+
+		$this->assertSame(
 			'',
 			$instance->where
 		);
