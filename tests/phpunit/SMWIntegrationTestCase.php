@@ -8,7 +8,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use ObjectCache;
 use PHPUnit\Framework\TestResult;
-use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\MediaWiki\LinkBatch;
 use SMW\PropertyRegistry;
