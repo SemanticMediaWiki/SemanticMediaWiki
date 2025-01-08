@@ -124,9 +124,12 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 				return "'$value'";
 			} );
 
+		// Fix: Return the builder from applySqlOptions
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'applySqlOptions' )
-			->willReturnSelf();
+			->willReturnCallback( static function ( $builder, $options ) {
+				return $builder;
+			} );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -228,6 +231,13 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newSelectQueryBuilder' )
 			->with( 'read' )
 			->willReturn( $queryBuilder );
+
+		// Fix: Return the builder from applySqlOptions
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'applySqlOptions' )
+			->willReturnCallback( static function ( $builder, $options ) {
+				return $builder;
+			} );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
