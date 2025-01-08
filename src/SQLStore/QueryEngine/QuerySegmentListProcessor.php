@@ -2,9 +2,9 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
+use SMWQuery as Query;
 use RuntimeException;
 use SMW\MediaWiki\Database;
-use SMWQuery as Query;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use Wikimedia\Rdbms\JoinGroup;
 use Wikimedia\Rdbms\JoinGroupBase;
@@ -211,7 +211,9 @@ class QuerySegmentListProcessor {
 			if ( $subQuery->where !== '' && $subQuery->where !== null ) {
 				if ( $subQuery->joinType === 'LEFT' || $subQuery->joinType === 'LEFT OUTER' ) {
 					$query->from .= ' AND (' . $subQuery->where . ')';
-					end( $query->fromSegs )->where .= ' AND (' . $subQuery->where . ')';
+					if ( !empty( $query->fromSegs ) ) {
+						end( $query->fromSegs )->where .= ' AND (' . $subQuery->where . ')';
+					}
 				} else {
 					$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
 				}
