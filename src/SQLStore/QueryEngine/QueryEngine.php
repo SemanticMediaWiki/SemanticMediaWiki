@@ -353,12 +353,14 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @since 4.2
 	 *
-	 * @return SelectQueryBuilder null if no query required (result is empty)
+	 * @return SelectQueryBuilder|null null if no query required (result is empty)
 	 */
-	private function getQueryBuilder( SMWDatabase $connection, Query $query, int $rootid, string $mode = '' ) : ?\Wikimedia\Rdbms\SelectQueryBuilder {
+	private function getQueryBuilder( SMWDatabase $connection, Query $query, int $rootid, string $mode = '' ): ?\Wikimedia\Rdbms\SelectQueryBuilder {
 		$builder = $connection->newSelectQueryBuilder( 'read' );
 		$qobj = $this->querySegmentList[$rootid] ?? null;
-		if ( $qobj === null || $qobj->joinfield === '' ) return null;
+		if ( $qobj === null || $qobj->joinfield === '' ) {
+			return null;
+		}
 
 		$sql_options = $this->getSQLOptions( $query, $rootid );
 
@@ -371,14 +373,14 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		} else {
 			$builder
 				->distinct()
-				->select([
+				->select( [
 					"id" => "$t0.smw_id",
 					"t"  => "$t0.smw_title",
 					"ns" => "$t0.smw_namespace",
 					"iw" => "$t0.smw_iw",
 					"so" => "$t0.smw_subobject",
 					"sortkey" => "$t0.smw_sortkey",
-					]);
+				] );
 			// Selecting sort fields is required in standard SQL (but MySQL does not require it).
 			if ( !empty( $qobj->sortfields ) ) {
 				$builder->select( $qobj->sortfields );

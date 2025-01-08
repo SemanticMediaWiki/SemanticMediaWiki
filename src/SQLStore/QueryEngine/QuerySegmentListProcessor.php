@@ -4,12 +4,12 @@ namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
 use SMW\MediaWiki\Database;
-use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMWQuery as Query;
+use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use Wikimedia\Rdbms\JoinGroup;
 use Wikimedia\Rdbms\JoinGroupBase;
-use Wikimedia\Rdbms\SelectQueryBuilder;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @license GPL-2.0-or-later
@@ -395,17 +395,19 @@ class QuerySegmentListProcessor {
 	/**
 	 * Apply QuerySegment->fromSegs to a SelectQueryBuilder.
 	 * @since 4.2
-	 * 
+	 *
 	 * @param QuerySegment $qobj QuerySegment to build the joins from
 	 * @param JoinGroupBase $builder First call must be SelectQueryBuilder, but become JoinGroup on recursive calls.
-	 * @param SelectQueryBuilder $topBuilder Top level builder passed in from the original call
-	 * @throw InvalidArgumentException if QuerySegment->joinType is not empty, LEFT, LEFT OUTER, or INNER.
+	 * @param SelectQueryBuilder|null $topBuilder Top level builder passed in from the original call
+	 * @throws InvalidArgumentException if QuerySegment->joinType is not empty, LEFT, LEFT OUTER, or INNER.
 	 */
-	public static function applyFromSegments( QuerySegment $qobj, JoinGroupBase $builder, SelectQueryBuilder $topBuilder = null ) : void {
-		if ( $topBuilder === null ) $topBuilder = $builder;
+	public static function applyFromSegments( QuerySegment $qobj, JoinGroupBase $builder, ?SelectQueryBuilder $topBuilder = null ): void {
+		if ( $topBuilder === null ) {
+			$topBuilder = $builder;
+		}
 		foreach ( $qobj->fromSegs as $seg ) {
 			$joinMethod = 'join';
-			if ( $seg->joinType === 'LEFT'|| $seg->joinType === 'LEFT OUTER' ) {
+			if ( $seg->joinType === 'LEFT' || $seg->joinType === 'LEFT OUTER' ) {
 				$joinMethod = 'leftJoin';
 			} elseif ( !empty( $seg->joinType ) && $seg->joinType !== 'INNER' ) {
 				throw new InvalidArgumentException( "Unknown QuerySegment->joinType `{$seg->joinType}`" );

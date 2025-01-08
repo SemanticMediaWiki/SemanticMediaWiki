@@ -207,7 +207,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 						" AS ids{$query->alias} ON ids{$query->alias}.smw_id={$query->alias}.{$o_id}";
 				$seg = new QuerySegment();
 				$seg->joinTable = SQLStore::ID_TABLE;
-				$seg->alias = 'ids'.$query->alias;
+				$seg->alias = 'ids' . $query->alias;
 				$seg->where = "ids{$query->alias}.smw_id={$query->alias}.{$o_id}";
 				$query->fromSegs[] = $seg;
 				$query->sortfields[$sortkey] = "ids{$query->alias}.smw_sort";
