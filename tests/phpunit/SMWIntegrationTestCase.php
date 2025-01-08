@@ -80,6 +80,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
+		$GLOBALS['wgDBStrictWarnings'] = false;
 		// Clear any cached user to ensure a clean state for each test
 		$user = $this->getTestUser()->getUser();
 		$user->clearInstanceCache( $user->mFrom );
