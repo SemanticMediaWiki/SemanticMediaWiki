@@ -787,7 +787,7 @@ class EntityIdManager {
 	 * @since 3.0
 	 *
 	 * @param int $sid
-	 * @param int $sid
+	 * @param int $rev_id
 	 */
 	public function updateRevField( $sid, $rev_id ) {
 		$this->tableFieldUpdater->updateRevField( $sid, $rev_id );
@@ -993,7 +993,7 @@ class EntityIdManager {
 	/**
 	 * @since 2.3
 	 *
-	 * @param int $id
+	 * @param array $idlist
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return string[]
@@ -1074,7 +1074,7 @@ class EntityIdManager {
 	 *
 	 * @since 1.8
 	 *
-	 * @param int $subjectId ID of the page as stored in the SMW IDs table
+	 * @param int $sid ID of the page as stored in the SMW IDs table
 	 *
 	 * @return array
 	 */

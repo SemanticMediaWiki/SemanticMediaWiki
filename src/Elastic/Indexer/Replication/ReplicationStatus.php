@@ -31,7 +31,7 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 *
-	 * @param ElasticClient $elasticClient
+	 * @param ElasticClient $connection
 	 */
 	public function __construct( ElasticClient $connection ) {
 		$this->connection = $connection;

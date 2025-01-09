@@ -18,7 +18,7 @@ class TemplateSet {
 	/**
 	 * @since 3.1
 	 *
-	 * @param string $name
+	 * @param array $templates
 	 */
 	public function __construct( array $templates = [] ) {
 		$this->templates = $templates;

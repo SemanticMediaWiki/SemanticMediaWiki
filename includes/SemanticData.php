@@ -833,7 +833,7 @@ class SemanticData implements JsonUnserializable {
 	 * @see SubSemanticData::hasSubSemanticData
 	 * @since 1.9
 	 *
-	 * @param string|null $subobjectName|null
+	 * @param string|null $subobjectName
 	 *
 	 * @return bool
 	 */

@@ -32,7 +32,7 @@ class ConfigPreloader {
 	 *
 	 * @since 3.2
 	 *
-	 * @param array $files
+	 * @param array ...$files
 	 *
 	 * @return self
 	 */
@@ -56,7 +56,7 @@ class ConfigPreloader {
 	 *
 	 * @since 3.2
 	 *
-	 * @param array $files
+	 * @param array ...$files
 	 *
 	 * @return self
 	 */

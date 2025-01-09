@@ -39,7 +39,7 @@ class ConceptCache {
 	 * @since 2.2
 	 *
 	 * @param SMWSQLStore3 $store
-	 * @param ConceptQuerySegmentBuilder $conceptQueryResolver
+	 * @param ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder
 	 */
 	public function __construct( SMWSQLStore3 $store, ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder ) {
 		$this->store = $store;

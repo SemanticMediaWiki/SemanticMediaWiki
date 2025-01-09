@@ -85,10 +85,10 @@ class JulianDay implements CalendarModel {
 	 * calendar model. This calculation assumes that neither calendar
 	 * has a year 0.
 	 *
+	 * @param $calendarmodel integer either CM_GREGORIAN or CM_JULIAN
 	 * @param $year integer representing the year
 	 * @param $month integer representing the month
 	 * @param $day integer representing the day
-	 * @param $calendarmodel integer either CM_GREGORIAN or CM_JULIAN
 	 *
 	 * @return float Julian Day number
 	 * @throws RuntimeException

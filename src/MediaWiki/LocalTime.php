@@ -39,7 +39,7 @@ class LocalTime {
 	 * @since 3.0
 	 *
 	 * @param DateTime $dateTime
-	 * @param string|null $user
+	 * @param string|null $timeCorrection
 	 *
 	 * @return DateTime
 	 */
@@ -83,7 +83,7 @@ class LocalTime {
 		}
 
 		# No difference ?
-		if ( 0 == $minDiff ) {
+		if ( $minDiff == 0 ) {
 			return $dateTime;
 		}
 

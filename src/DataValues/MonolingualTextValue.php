@@ -82,7 +82,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	/**
 	 * @since 2.5
 	 *
-	 * @param $userValue
+	 * @param $text
 	 * @param string $languageCode
 	 *
 	 * @return string

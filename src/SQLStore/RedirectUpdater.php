@@ -139,10 +139,9 @@ class RedirectUpdater {
 	 *
 	 * @since 1.8
 	 *
-	 * @param Title $oldTitle
-	 * @param Title $newTitle
-	 * @param int $pageId
-	 * @param int $redirectId
+	 * @param DIWikiPage $source
+	 * @param DIWikiPage $target
+	 * @param array $options
 	 */
 	public function doUpdate( DIWikiPage $source, DIWikiPage $target, array $options ) {
 		$idTable = $this->store->getObjectIds();
@@ -272,10 +271,8 @@ class RedirectUpdater {
 	 *
 	 * @since 1.8
 	 *
-	 * @param string $subject_t
-	 * @param int|null $subject_ns
-	 * @param string $curtarget_t
-	 * @param int $curtarget_ns
+	 * @param DIWikiPage $source
+	 * @param DIWikiPage|null $target
 	 *
 	 * @return int the new canonical ID of the subject
 	 */

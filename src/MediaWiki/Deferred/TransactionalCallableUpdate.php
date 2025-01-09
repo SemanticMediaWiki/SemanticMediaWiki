@@ -52,7 +52,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @since 3.1
 	 *
 	 * @param callable $callback
-	 * @param Database $instance
+	 * @param Database $connection
 	 */
 	public static function newUpdate( callable $callback, Database $connection ) {
 		$transactionalCallableUpdate = new self( $callback, $connection );

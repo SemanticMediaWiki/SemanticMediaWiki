@@ -148,7 +148,7 @@ class ServicesFactory {
 	 * not to be relied upon for external access.
 	 *
 	 *
-	 * @param string $service
+	 * @param string ...$service
 	 *
 	 * @return mixed
 	 */
@@ -164,7 +164,7 @@ class ServicesFactory {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string $service
+	 * @param string ...$service
 	 *
 	 * @return mixed
 	 */

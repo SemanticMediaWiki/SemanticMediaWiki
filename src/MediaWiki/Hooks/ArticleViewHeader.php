@@ -49,7 +49,7 @@ class ArticleViewHeader implements HookListener {
 	 *
 	 * @param Store $store
 	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param DependencyValidator $dependencyLinksValidator
+	 * @param DependencyValidator $dependencyValidator
 	 */
 	public function __construct( Store $store, NamespaceExaminer $namespaceExaminer, DependencyValidator $dependencyValidator ) {
 		$this->store = $store;

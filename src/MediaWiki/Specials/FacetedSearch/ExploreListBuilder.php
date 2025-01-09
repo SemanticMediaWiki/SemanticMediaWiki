@@ -26,7 +26,7 @@ class ExploreListBuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @param int $size
+	 * @param Profile $profile
 	 */
 	public function __construct( Profile $profile ) {
 		$this->profile = $profile;
@@ -35,7 +35,7 @@ class ExploreListBuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $profile
+	 * @param Title $title
 	 *
 	 * @return string
 	 */

@@ -5,7 +5,6 @@ namespace SMW\MediaWiki;
 use IContextSource;
 use Language;
 use MediaWiki\Navigation\PagerNavigationBuilder;
-use MediaWiki\Navigation\PrevNextNavigationRenderer;
 use Message;
 use RequestContext;
 use RuntimeException;
@@ -92,7 +91,7 @@ class MessageBuilder {
 	 * @since 2.1
 	 *
 	 * @param Title $title
-	 * @param int $offset
+	 * @param int $limit
 	 * @param int $offset
 	 * @param array $query
 	 * @param bool|null $isAtTheEnd
@@ -102,32 +101,25 @@ class MessageBuilder {
 	public function prevNextToText( Title $title, $limit, $offset, array $query, $isAtTheEnd ) {
 		$limit = (int)$limit;
 		$offset = (int)$offset;
-		if ( class_exists( PagerNavigationBuilder::class ) ) {
-			// MW > 1.39
-			$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
-			$navBuilder
-				->setPage( $title )
-				->setLinkQuery( [ 'limit' => $limit, 'offset' => $offset ] + $query )
-				->setLimitLinkQueryParam( 'limit' )
-				->setCurrentLimit( (int)$limit )
-				->setPrevTooltipMsg( 'prevn-title' )
-				->setNextTooltipMsg( 'nextn-title' )
-				->setLimitTooltipMsg( 'shown-title' );
+		$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+		$navBuilder
+			->setPage( $title )
+			->setLinkQuery( [ 'limit' => $limit, 'offset' => $offset ] + $query )
+			->setLimitLinkQueryParam( 'limit' )
+			->setCurrentLimit( (int)$limit )
+			->setPrevTooltipMsg( 'prevn-title' )
+			->setNextTooltipMsg( 'nextn-title' )
+			->setLimitTooltipMsg( 'shown-title' );
 
-			if ( $offset > 0 ) {
-				$navBuilder->setPrevLinkQuery( [ 'offset' => (string)max( $offset - $limit, 0 ) ] );
-			}
-
-			if ( !$isAtTheEnd ) {
-				$navBuilder->setNextLinkQuery( [ 'offset' => (string)( $offset + $limit ) ] );
-			}
-
-			return $navBuilder->getHtml();
-		} else {
-			// MW 1.34 - MW 1.39
-			$prevNext = new PrevNextNavigationRenderer( RequestContext::getMain() );
-			return $prevNext->buildPrevNextNavigation( $title, $offset, $limit, $query, $isAtTheEnd );
+		if ( $offset > 0 ) {
+			$navBuilder->setPrevLinkQuery( [ 'offset' => (string)max( $offset - $limit, 0 ) ] );
 		}
+
+		if ( !$isAtTheEnd ) {
+			$navBuilder->setNextLinkQuery( [ 'offset' => (string)( $offset + $limit ) ] );
+		}
+
+		return $navBuilder->getHtml();
 	}
 
 	/**

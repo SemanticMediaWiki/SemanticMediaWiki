@@ -77,7 +77,7 @@ abstract class TaskHandler {
 	/**
 	 * @since 3.1
 	 *
-	 * @param int $enabledFeatures
+	 * @param int $featureSet
 	 */
 	public function setFeatureSet( $featureSet ) {
 		$this->featureSet = $featureSet;

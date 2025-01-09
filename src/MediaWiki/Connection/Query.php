@@ -108,7 +108,7 @@ class Query {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $field
+	 * @param array ...$field
 	 */
 	public function field( ...$field ) {
 		$this->fields[] = $field;
@@ -141,7 +141,7 @@ class Query {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $table
+	 * @param array ...$table
 	 */
 	public function table( ...$table ) {
 		if ( strpos( $table[0] ?? '', 'SELECT' ) !== false ) {

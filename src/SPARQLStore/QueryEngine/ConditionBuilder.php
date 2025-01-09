@@ -445,7 +445,7 @@ class ConditionBuilder {
 	 * Extend the given SPARQL condition by a suitable order by variable,
 	 * possibly adding conditions if required for the type of data.
 	 *
-	 * @param Condition &$sparqlCondition condition to modify
+	 * @param Condition &$condition condition to modify
 	 * @param string $mainVariable the variable that represents the value to be ordered
 	 * @param int $diType DataItem type id
 	 */

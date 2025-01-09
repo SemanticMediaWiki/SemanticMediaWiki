@@ -247,7 +247,9 @@ class CachedFactbox {
 	 *
 	 * @param string $key
 	 * @param string $text
-	 * @param int|null $revisionId
+	 * @param int|null $rev_id
+	 * @param string $lang
+	 * @param mixed|null $feature_set
 	 */
 	public function addContentToCache( $key, $text, $rev_id = null, $lang = 'en', $feature_set = null ) {
 		$this->saveToCache(

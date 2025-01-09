@@ -50,8 +50,8 @@ class SearchTableRebuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SearchTableUpdater $searchTableUpdater
 	 * @param Database $connection
+	 * @param SearchTableUpdater $searchTableUpdater
 	 */
 	public function __construct( Database $connection, SearchTableUpdater $searchTableUpdater ) {
 		$this->connection = $connection;

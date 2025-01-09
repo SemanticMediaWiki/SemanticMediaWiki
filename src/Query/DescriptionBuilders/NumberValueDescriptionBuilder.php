@@ -32,6 +32,7 @@ class NumberValueDescriptionBuilder extends DescriptionBuilder {
 	/**
 	 * @since 3.0
 	 *
+	 * @param NumberValue $dataValue
 	 * @param string $value
 	 *
 	 * @return Description

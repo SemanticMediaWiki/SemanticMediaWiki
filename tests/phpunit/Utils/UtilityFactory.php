@@ -159,7 +159,7 @@ class UtilityFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string|null $file|null
+	 * @param string|null $file
 	 *
 	 * @return JsonFileReader
 	 */

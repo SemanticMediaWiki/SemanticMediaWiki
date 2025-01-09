@@ -104,7 +104,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $columnListClass
+	 * @param string $columnClass
 	 */
 	public function setColumnClass( $columnClass ) {
 		$this->columnClass = htmlspecialchars( $columnClass );

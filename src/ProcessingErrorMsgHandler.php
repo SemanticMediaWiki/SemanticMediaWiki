@@ -145,7 +145,7 @@ class ProcessingErrorMsgHandler {
 	/**
 	 * @since 2.5
 	 *
-	 * @param array|string $errorMsg
+	 * @param array|string $error
 	 * @param DIProperty|null $property
 	 *
 	 * @return DIContainer

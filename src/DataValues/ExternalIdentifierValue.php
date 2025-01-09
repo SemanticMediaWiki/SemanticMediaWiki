@@ -43,7 +43,7 @@ class ExternalIdentifierValue extends StringValue {
 	/**
 	 * @see DataValue::getShortWikiText
 	 *
-	 * @param string|null $value
+	 * @param string|null $linker
 	 */
 	public function getShortWikiText( $linker = null ) {
 		if ( !$this->isValid() ) {

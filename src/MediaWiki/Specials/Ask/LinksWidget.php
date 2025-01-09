@@ -237,7 +237,7 @@ class LinksWidget {
 	 * @since 2.5
 	 *
 	 * @param Title $title
-	 * @param string $urlTail
+	 * @param UrlArgs $urlArgs
 	 * @param bool $hideForm
 	 * @param bool $isEmpty
 	 *
@@ -268,7 +268,7 @@ class LinksWidget {
 	 * @since 3.0
 	 *
 	 * @param Title $title
-	 * @param string $urlTail
+	 * @param UrlArgs $urlArgs
 	 * @param bool $isEmpty
 	 *
 	 * @return string
@@ -313,7 +313,7 @@ class LinksWidget {
 	 * @since 3.0
 	 *
 	 * @param Title $title
-	 * @param string $urlTail
+	 * @param UrlArgs $urlArgs
 	 * @param bool $isFromCache
 	 *
 	 * @return string

@@ -187,7 +187,7 @@ class SQLStoreUpdater {
 	 *
 	 * @since 1.8
 	 *
-	 * @param SemanticData $data
+	 * @param SemanticData $semanticData
 	 */
 	public function doDataUpdate( SemanticData $semanticData ) {
 		// Deprecated since 3.1, use SMW::SQLStore::BeforeDataUpdateComplete
