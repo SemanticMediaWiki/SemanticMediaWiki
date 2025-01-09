@@ -116,7 +116,7 @@ abstract class DescriptionBuilder {
 	 * @param string|null &$value
 	 * @param string|int &$comparator
 	 */
-	protected function prepareValue( ?DIProperty $property = null, &$value, &$comparator ) {
+	protected function prepareValue( ?DIProperty $property, &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 
 		// [[in:lorem ipsum]] / [[Has text::in:lorem ipsum]] to be turned into a

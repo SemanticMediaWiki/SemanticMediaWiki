@@ -127,7 +127,7 @@ class SemanticDataLookup {
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticData( $id, ?DataItem $dataItem = null, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
+	public function getSemanticData( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
 		if ( !$dataItem instanceof DIWikiPage ) {
 			throw new RuntimeException( 'Expected a DIWikiPage instance' );
 		}
@@ -314,7 +314,7 @@ class SemanticDataLookup {
 	 *
 	 * @return array
 	 */
-	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem = null, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
+	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
 		$isSubject = $dataItem instanceof DIWikiPage || $dataItem === null;
 
 		// stop if there is not enough data:
