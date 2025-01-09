@@ -3,7 +3,7 @@
 namespace SMW\Importer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -34,7 +34,7 @@ class ImportContents {
 	private $importPerformer = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $namespace = 0;
 
@@ -156,7 +156,7 @@ class ImportContents {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function setNamespace( $namespace ) {
 		$this->namespace = $namespace;

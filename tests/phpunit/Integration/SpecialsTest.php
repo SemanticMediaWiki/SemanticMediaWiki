@@ -8,14 +8,13 @@ use RequestContext;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
-use SpecialPageFactory;
 
 /**
  * Tests for registered special pages
  *
  * @file
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >

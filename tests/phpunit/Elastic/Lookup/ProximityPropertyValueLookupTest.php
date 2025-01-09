@@ -2,16 +2,16 @@
 
 namespace SMW\Tests\Elastic\Lookup;
 
-use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
-use SMW\Tests\PHPUnitCompat;
 use SMW\DIProperty;
+use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
 use SMW\RequestOptions;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Lookup\ProximityPropertyValueLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

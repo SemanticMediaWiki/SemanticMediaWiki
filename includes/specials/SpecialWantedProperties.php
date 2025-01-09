@@ -9,7 +9,7 @@ use SMWOutputs;
  * wanted properties
  *
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author Markus Krötzsch
@@ -51,7 +51,7 @@ class SpecialWantedProperties extends SpecialPage {
 		$page->setContext( $this->getContext() );
 		$page->setTitle( $this->getPageTitle() );
 
-		list( $limit, $offset ) = $this->getLimitOffset();
+		[ $limit, $offset ] = $this->getLimitOffset();
 		$page->doQuery( $offset, $limit );
 
 		// Ensure locally collected output data is pushed to the output!

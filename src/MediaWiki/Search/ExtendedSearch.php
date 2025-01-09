@@ -2,12 +2,10 @@
 
 namespace SMW\MediaWiki\Search;
 
-use SMW\Store;
-use RuntimeException;
 use SearchEngine;
+use SMW\Store;
 use SMWQuery;
 use SMWQueryResult as QueryResult;
-use Title;
 
 /**
  * Search engine that will try to find wiki pages by interpreting the search
@@ -16,7 +14,7 @@ use Title;
  * If successful, the pages according to the query will be returned.
  * If not it falls back to the default search engine.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author  Stephan Gambke
@@ -64,27 +62,27 @@ class ExtendedSearch {
 	private $prefix;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $extraPrefixMap = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $namespaces = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $searchableNamespaces = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $limit = 10;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $offset = 0;
 
@@ -158,8 +156,8 @@ class ExtendedSearch {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $limit
-	 * @param integer $offset
+	 * @param int $limit
+	 * @param int $offset
 	 */
 	public function setLimitOffset( $limit, $offset = 0 ) {
 		$this->limit = intval( $limit );
@@ -178,7 +176,7 @@ class ExtendedSearch {
 	/**
 	 * @since 3.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLimit() {
 		return $this->limit;
@@ -187,7 +185,7 @@ class ExtendedSearch {
 	/**
 	 * @since 3.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getOffset() {
 		return $this->offset;
@@ -196,7 +194,7 @@ class ExtendedSearch {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getErrors() {
 		return $this->errors;
@@ -370,7 +368,7 @@ class ExtendedSearch {
 	}
 
 	/**
-	 * @param String $term
+	 * @param string $term
 	 *
 	 * @return SMWQuery | null
 	 */

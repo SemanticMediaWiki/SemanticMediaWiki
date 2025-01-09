@@ -2,16 +2,16 @@
 
 namespace SMW\Exporter;
 
-use SMW\Exporter\Serializer\Serializer;
-use SMW\Exporter\Serializer\RDFXMLSerializer;
-use SMW\Exporter\Serializer\TurtleSerializer;
+use InvalidArgumentException;
 use SMW\Exporter\Controller\Queue;
+use SMW\Exporter\Serializer\RDFXMLSerializer;
+use SMW\Exporter\Serializer\Serializer;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMWExportController as ExportController;
 use SMWExporter as Exporter;
-use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -57,11 +57,9 @@ class ExporterFactory {
 			case 'application/x-turtle':
 			case 'turtle':
 				return $this->newTurtleSerializer();
-				break;
 			case 'application/rdf+xml':
 			case 'rdfxml':
 				return $this->newRDFXMLSerializer();
-				break;
 		}
 
 		throw new InvalidArgumentException( "$type is not matchable to a registered serializer!" );

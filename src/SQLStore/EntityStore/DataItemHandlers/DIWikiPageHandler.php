@@ -4,9 +4,9 @@ namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMWDataItem as DataItem;
 
@@ -20,7 +20,7 @@ use SMWDataItem as DataItem;
  * dataitems. The store recognizes this special behavior from the field type
  * 'p' that the handler reports for its only data field.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -203,7 +203,7 @@ class DIWikiPageHandler extends DataItemHandler {
 
 			$wikipage = $property->getCanonicalDiWikiPage( $dbkeys[4] );
 
-			if ( !is_null( $wikipage ) ) {
+			if ( $wikipage !== null ) {
 				return $wikipage;
 			}
 		}

@@ -5,8 +5,8 @@ namespace SMW\Tests\MediaWiki\Connection;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
-use SMW\Tests\PHPUnitCompat;
 use SMW\MediaWiki\Connection\Database;
+use SMW\Tests\PHPUnitCompat;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
@@ -16,7 +16,7 @@ use Wikimedia\Rdbms\IResultWrapper;
  * @covers \SMW\MediaWiki\Connection\Database
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

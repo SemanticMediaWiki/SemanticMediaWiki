@@ -1,9 +1,9 @@
 <?php
 
-use SMW\Query\PrintRequest;
-use SMW\Localizer\Localizer;
-use SMW\StoreFactory;
 use SMW\DataValueFactory;
+use SMW\Localizer\Localizer;
+use SMW\Query\PrintRequest;
+use SMW\StoreFactory;
 
 /**
  * Helper class to generate HTML lists of wiki pages, with support for paged
@@ -63,7 +63,7 @@ class SMWPageLister {
 		$resultCount = count( $this->mDiWikiPages );
 		$beyondLimit = ( $resultCount > $this->mLimit );
 
-		if ( !is_null( $this->mUntil ) && $this->mUntil !== '' ) {
+		if ( $this->mUntil !== null && $this->mUntil !== '' ) {
 			if ( $beyondLimit ) {
 				$first = StoreFactory::getStore()->getWikiPageSortKey( $this->mDiWikiPages[1] );
 			} else {
@@ -71,7 +71,7 @@ class SMWPageLister {
 			}
 
 			$last = $this->mUntil;
-		} elseif ( $beyondLimit || ( !is_null( $this->mFrom ) && $this->mFrom !== '' ) ) {
+		} elseif ( $beyondLimit || ( $this->mFrom !== null && $this->mFrom !== '' ) ) {
 			$first = $this->mFrom;
 
 			if ( $beyondLimit ) {

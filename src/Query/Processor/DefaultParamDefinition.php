@@ -2,15 +2,15 @@
 
 namespace SMW\Query\Processor;
 
-use SMW\Query\ResultPrinter;
-use SMW\Message;
 use ParamProcessor\ParamDefinition;
+use SMW\Message;
 use SMW\Query\QueryContext;
+use SMW\Query\ResultPrinter;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -22,12 +22,12 @@ class DefaultParamDefinition {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer|null $context
+	 * @param int|null $context
 	 * @param ResultPrinter|null $resultPrinter
 	 *
 	 * @return ParamDefinition[]
 	 */
-	public static function getParamDefinitions( $context = null, ResultPrinter $resultPrinter = null ) {
+	public static function getParamDefinitions( $context = null, ?ResultPrinter $resultPrinter = null ) {
 		return self::buildParamDefinitions( $GLOBALS, $context, $resultPrinter );
 	}
 
@@ -44,12 +44,13 @@ class DefaultParamDefinition {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer|null $context
+	 * @param $vars
+	 * @param int|null $context
 	 * @param ResultPrinter|null $resultPrinter
 	 *
 	 * @return ParamDefinition[]
 	 */
-	public static function buildParamDefinitions( $vars, $context = null, ResultPrinter $resultPrinter = null ) {
+	public static function buildParamDefinitions( $vars, $context = null, ?ResultPrinter $resultPrinter = null ) {
 		$params = [];
 
 		$allowedFormats = $vars['smwgResultFormats'];

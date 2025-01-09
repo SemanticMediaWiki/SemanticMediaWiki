@@ -18,7 +18,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 // @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -149,5 +149,5 @@ class removeDuplicateEntities extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = removeDuplicateEntities::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

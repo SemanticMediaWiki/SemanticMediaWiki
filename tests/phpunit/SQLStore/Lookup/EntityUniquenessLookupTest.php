@@ -3,13 +3,12 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
-use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\SQLStore\Lookup\EntityUniquenessLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames

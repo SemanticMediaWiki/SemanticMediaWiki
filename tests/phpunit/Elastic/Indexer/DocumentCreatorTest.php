@@ -2,17 +2,16 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
-use SMW\Elastic\Indexer\DocumentCreator;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\Tests\PHPUnitCompat;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\Indexer\DocumentCreator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

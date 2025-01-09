@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -25,7 +25,7 @@ class Normalizer {
 	 * @since 3.0
 	 *
 	 * @param string $text
-	 * @param integer|null $length
+	 * @param int|null $length
 	 *
 	 * @return string
 	 */

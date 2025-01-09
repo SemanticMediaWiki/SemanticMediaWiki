@@ -2,13 +2,10 @@
 
 namespace SMW\Tests;
 
-use Exception;
-use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestListenerDefaultImplementation;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Framework\Warning;
 use WeakMap;
 
 class ExecutionTimeTestListener implements TestListener {
@@ -23,7 +20,7 @@ class ExecutionTimeTestListener implements TestListener {
 	/**
 	 * Threshold that defines "slow" in terms of seconds
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $slowThreshold = 10;
 

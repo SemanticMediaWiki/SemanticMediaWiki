@@ -2,19 +2,17 @@
 
 namespace SMW\Tests\Exporter\Serializer;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\RDFXMLSerializer;
 use SMW\Tests\PHPUnitCompat;
 use SMWExpData as ExpData;
-use SMW\Exporter\Element\ExpNsResource;
-use SMW\Exporter\Element\ExpLiteral;
 
 /**
  * @covers \SMW\Exporter\Serializer\RDFXMLSerializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

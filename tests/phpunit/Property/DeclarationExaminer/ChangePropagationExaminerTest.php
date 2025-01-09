@@ -2,18 +2,17 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
-use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
 use SMW\DataItemFactory;
+use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
 use SMW\SemanticData;
-use SMW\ProcessingErrorMsgHandler;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\ChangePropagationExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

@@ -11,7 +11,7 @@ use SMW\Site;
  * or isolations to ensure an undisturbed update process before and after
  * MediaWiki::preOutputCommit.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
@@ -44,7 +44,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	private $postCommitableCallbacks = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $autoCommit = false;
 
@@ -52,7 +52,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @since 3.1
 	 *
 	 * @param callable $callback
-	 * @param Database $instance
+	 * @param Database $connection
 	 */
 	public static function newUpdate( callable $callback, Database $connection ) {
 		$transactionalCallableUpdate = new self( $callback, $connection );
@@ -70,7 +70,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @param callable|null $callback
 	 * @param Database|null $connection
 	 */
-	public function __construct( callable $callback = null, Database $connection = null ) {
+	public function __construct( ?callable $callback = null, ?Database $connection = null ) {
 		parent::__construct( $callback );
 		$this->connection = $connection;
 		$this->connection->onTransactionResolution( [ $this, 'cancelOnRollback' ], __METHOD__ );
@@ -214,10 +214,11 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	}
 
 	private function runOnTransactionIdle() {
-		$this->connection->onTransactionCommitOrIdle( function () {
+		$fname = __METHOD__;
+		$this->connection->onTransactionCommitOrIdle( function () use ( $fname ) {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (onTransactionIdle)' ],
-				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin() ]
+				[ 'method' => $fname, 'role' => 'developer', 'origin' => $this->getOrigin() ]
 			);
 			$this->onTransactionIdle = false;
 			$this->doUpdate();

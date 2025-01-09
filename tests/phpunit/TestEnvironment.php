@@ -2,15 +2,14 @@
 
 namespace SMW\Tests;
 
-use DeferredUpdates;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Localizer;
 use SMW\MediaWiki\Deferred\CallableUpdate;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -293,8 +292,8 @@ class TestEnvironment {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $index
-	 * @param string $url
+	 * @param int $index
+	 * @param string $text
 	 *
 	 * @return string
 	 */

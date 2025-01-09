@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\Tests\PHPUnitCompat;
@@ -12,7 +12,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\EntityStore\PrefetchItemLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

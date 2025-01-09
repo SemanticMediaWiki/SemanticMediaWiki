@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
-use SMW\Store;
-use SMW\Exception\RedirectTargetUnresolvableException;
 use SMW\Exception\ParameterNotFoundException;
+use SMW\Exception\RedirectTargetUnresolvableException;
+use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -34,7 +34,7 @@ class SubjectLookup extends Lookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @return string|integer
+	 * @return string|int
 	 */
 	public function getVersion() {
 		return 'SubjectLookup:' . self::VERSION;

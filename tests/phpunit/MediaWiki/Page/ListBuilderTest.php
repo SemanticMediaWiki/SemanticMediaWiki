@@ -2,15 +2,15 @@
 
 namespace SMW\Tests\MediaWiki\Page;
 
-use SMW\MediaWiki\Page\ListBuilder;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Page\ListBuilder;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Page\ListBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -115,7 +115,7 @@ class ListBuilderTest extends \PHPUnit\Framework\TestCase {
 			$this->store
 		);
 
-		$instance->setItemFormatter( function ( $dataValue, $linker ) {
+		$instance->setItemFormatter( static function ( $dataValue, $linker ) {
 			return 'Bar';
 		} );
 

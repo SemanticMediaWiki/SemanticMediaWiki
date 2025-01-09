@@ -8,7 +8,7 @@ use RuntimeException;
  * Convenience mock builder for Iterator classes
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -63,7 +63,7 @@ class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @since  2.5
 	 *
-	 * @param integer $num
+	 * @param int $num
 	 *
 	 * @return IteratorMockBuilder
 	 */
@@ -115,7 +115,7 @@ class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @since  2.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLastCounter() {
 		return $this->counter;

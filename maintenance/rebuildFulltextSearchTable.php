@@ -4,11 +4,11 @@ namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\CallbackMessageReporter;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
 use SMW\Setup;
+use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Utils\CliMsgFormatter;
+use SMWDataItem as DataItem;
 
 /**
  * Load the required class
@@ -22,7 +22,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 // @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -249,5 +249,5 @@ class rebuildFulltextSearchTable extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = rebuildFulltextSearchTable::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

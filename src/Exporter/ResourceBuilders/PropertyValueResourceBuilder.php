@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\Exporter\ResourceBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;
@@ -12,7 +12,7 @@ use SMWExporter as Exporter;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -34,7 +34,7 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	 *
 	 * @param Exporter|null $exporter
 	 */
-	public function __construct( Exporter $exporter = null ) {
+	public function __construct( ?Exporter $exporter = null ) {
 		$this->exporter = $exporter;
 
 		if ( $this->exporter === null ) {

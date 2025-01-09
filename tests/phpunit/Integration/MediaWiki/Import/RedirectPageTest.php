@@ -4,10 +4,10 @@ namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\InSemanticDataFetcher;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group SMW
@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames

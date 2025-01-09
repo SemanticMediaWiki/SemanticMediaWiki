@@ -3,14 +3,14 @@
 namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
-use SMW\Setup;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Utils\CliMsgFormatter;
+use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class
@@ -24,7 +24,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 // @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -47,7 +47,7 @@ class purgeEntityCache extends \Maintenance {
 	private $messageReporter;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $lastId = 0;
 
@@ -238,5 +238,5 @@ class purgeEntityCache extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = purgeEntityCache::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

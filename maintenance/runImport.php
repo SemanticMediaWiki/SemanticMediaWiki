@@ -2,12 +2,10 @@
 
 namespace SMW\Maintenance;
 
-use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\CallbackMessageReporter;
+use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Setup;
 use SMW\Utils\CliMsgFormatter;
-use SMW\Maintenance\MaintenanceCheck;
 
 /**
  * Load the required class
@@ -21,7 +19,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 // @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -130,5 +128,5 @@ class runImport extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = runImport::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

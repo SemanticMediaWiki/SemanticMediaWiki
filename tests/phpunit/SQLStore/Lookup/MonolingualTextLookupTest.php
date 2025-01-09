@@ -2,16 +2,16 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\MonolingualTextLookup;
-use SMW\MediaWiki\Connection\Query;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Query;
+use SMW\SQLStore\Lookup\MonolingualTextLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\MonolingualTextLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames

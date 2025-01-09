@@ -7,13 +7,12 @@ use SMW\DataItemFactory;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\Property\Annotators\EditProtectedPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

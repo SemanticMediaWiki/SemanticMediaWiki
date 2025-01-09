@@ -2,16 +2,16 @@
 
 namespace SMW\Tests\Elastic\QueryEngine;
 
+use SMW\DIWikiPage;
 use SMW\Elastic\QueryEngine\QueryEngine;
 use SMW\Query\QueryResult;
-use SMW\DIWikiPage;
 use SMWQuery as Query;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\QueryEngine
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -41,7 +41,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$callback = function ( $type ) use( $database ) {
 			if ( $type === 'mw.db' ) {
 				return $connection;
-			};
+			}
 
 			return $this->elasticClient;
 		};

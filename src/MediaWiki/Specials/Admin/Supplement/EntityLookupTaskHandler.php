@@ -3,18 +3,18 @@
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Message;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use WebRequest;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
-use SMW\MediaWiki\Specials\Admin\ActionableTask;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -142,7 +142,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	/**
-	 * @param integer $id
+	 * @param int $id
 	 * @param User|null $use
 	 */
 	private function doDispose( $id ) {
@@ -160,7 +160,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function getForm( $webRequest, $id ) {
-		list( $result, $error ) = $this->createInfoMessageById( $webRequest, $id );
+		[ $result, $error ] = $this->createInfoMessageById( $webRequest, $id );
 
 		if ( $id < 1 ) {
 			$id = null;

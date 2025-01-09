@@ -13,7 +13,7 @@ use Title;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -31,7 +31,7 @@ class ConceptCache {
 	private $conceptQuerySegmentBuilder;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $upperLimit = 50;
 
@@ -39,7 +39,7 @@ class ConceptCache {
 	 * @since 2.2
 	 *
 	 * @param SMWSQLStore3 $store
-	 * @param ConceptQuerySegmentBuilder $conceptQueryResolver
+	 * @param ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder
 	 */
 	public function __construct( SMWSQLStore3 $store, ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder ) {
 		$this->store = $store;
@@ -49,7 +49,7 @@ class ConceptCache {
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer $upperLimit
+	 * @param int $upperLimit
 	 */
 	public function setUpperLimit( $upperLimit ) {
 		$this->upperLimit = (int)$upperLimit;

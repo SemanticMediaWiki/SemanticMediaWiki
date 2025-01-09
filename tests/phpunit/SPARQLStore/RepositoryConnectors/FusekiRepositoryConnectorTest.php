@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
-use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
 use SMW\SPARQLStore\RepositoryClient;
+use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

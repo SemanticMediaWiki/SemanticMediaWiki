@@ -2,11 +2,11 @@
 
 namespace SMW\Elastic;
 
-use SMW\Options;
 use RuntimeException;
+use SMW\Options;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -43,11 +43,11 @@ class Config extends Options {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDefaultStore(): bool {
 		$defaultStore = $this->get(
-			Config::DEFAULT_STORE
+			self::DEFAULT_STORE
 		);
 
 		return $defaultStore === ElasticStore::class || $defaultStore === 'SMWElasticStore';

@@ -23,14 +23,14 @@ use RuntimeException;
  */
 class JaTinySegmenterTokenizer implements Tokenizer {
 
-	private $patterns_ = array(
+	private $patterns_ = [
 		"[一二三四五六七八九十百千万億兆]" => "M", // numbers (japanese)
 		"[一-龠々〆ヵヶ]" => "H", // kanji & misc characters
 		"[ぁ-ん]" => "I", // hiragana
 		"[ァ-ヴーｱ-ﾝﾞｰ]" => "K", // katakana
 		"[a-zA-Zａ-ｚＡ-Ｚ]" => "A", // ascii / romaji letters
 		"[0-9０-９]" => "N", // ascii / romaji numbers
-	);
+	];
 
 	/**
 	 * @var Tokenizer
@@ -51,9 +51,9 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	/**
 	 * @since 0.1
 	 *
-	 * @param Tokenizer $tokenizer
+	 * @param Tokenizer|null $tokenizer
 	 */
-	public function __construct( Tokenizer $tokenizer = null ) {
+	public function __construct( ?Tokenizer $tokenizer = null ) {
 		$this->tokenizer = $tokenizer;
 	}
 
@@ -111,7 +111,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 
 	protected function segment( $input, $encoding = null ) {
 		if ( !$input ) {
-			return array();
+			return [];
 		}
 
 		if ( !$encoding ) {
@@ -122,10 +122,10 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 			$input = mb_convert_encoding( $input, 'UTF-8', $encoding );
 		}
 
-		$result = array();
-		$seg = array( "B3", "B2", "B1" );
+		$result = [];
+		$seg = [ "B3", "B2", "B1" ];
 
-		$ctype = array( "O", "O", "O" );
+		$ctype = [ "O", "O", "O" ];
 		$o = $this->mb_string_to_array_( $input );
 
 		for ( $i = 0; $i < count( $o ); ++$i ) {
@@ -249,7 +249,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	}
 
 	private function mb_string_to_array_( $str, $encoding = 'UTF-8' ) {
-		$result = array();
+		$result = [];
 		$length = mb_strlen( $str, $encoding );
 
 		for ( $i = 0; $i < $length; ++$i ) {

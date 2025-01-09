@@ -1,11 +1,10 @@
 <?php
 
+use SMW\ConfigPreloader;
 use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\Highlighter;
-use SMW\NamespaceManager;
-use SMW\ProcessingErrorMsgHandler;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
-use SMW\ConfigPreloader;
+use SMW\ProcessingErrorMsgHandler;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
@@ -100,9 +99,9 @@ function smwfAbort( $text ) {
  * $icon should be one of: 'warning' (default), 'info'.
  *
  * @param array $messages
- * @param string $icon Acts like an enum. Callers must ensure safety, since this value is used directly in the output.
+ * @param string $type Acts like an enum. Callers must ensure safety, since this value is used directly in the output.
  * @param string $separator
- * @param boolean $escape Should the messages be escaped or not (ie when they already are)
+ * @param bool $escape Should the messages be escaped or not (ie when they already are)
  *
  * @return string
  */
@@ -209,7 +208,7 @@ function smwfGetLinker() {
  * available as early on. Moreover, jobs and special pages are registered.
  *
  * @param mixed $namespace
- * @param boolean $complete
+ * @param bool $complete
  *
  * @return ConfigPreloader
  *

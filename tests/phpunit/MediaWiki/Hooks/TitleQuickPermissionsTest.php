@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\TitleQuickPermissions;
 use SMW\Tests\TestEnvironment;
 
@@ -10,7 +9,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Hooks\TitleQuickPermissions
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

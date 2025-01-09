@@ -5,10 +5,9 @@ namespace SMW\MediaWiki\Specials\Ask;
 use Html;
 use SMW\Message;
 use SMW\Utils\HtmlModal;
-use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames

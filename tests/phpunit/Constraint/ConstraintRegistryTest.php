@@ -3,14 +3,13 @@
 namespace SMW\Tests\Constraint;
 
 use SMW\Constraint\ConstraintRegistry;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Constraint\ConstraintRegistry
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -124,7 +123,7 @@ class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->registerConstraint( 'foo', function () use( $constraint ) {
+		$instance->registerConstraint( 'foo', static function () use( $constraint ) {
 			return $constraint;
 		}
 		);

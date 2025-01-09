@@ -2,15 +2,15 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SubobjectListFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

@@ -11,7 +11,7 @@ use SMW\PropertyAnnotator;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -30,7 +30,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $title;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $editProtectionRight = false;
 
@@ -48,7 +48,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param string|bool $editProtectionRight
 	 */
 	public function setEditProtectionRight( $editProtectionRight ) {
 		$this->editProtectionRight = $editProtectionRight;

@@ -12,7 +12,7 @@ use Title;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.8
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -21,19 +21,19 @@ use Title;
 class ParametersWidget {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $isTooltipDisplay = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $defaultLimit = 50;
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isTooltipDisplay
+	 * @param bool $isTooltipDisplay
 	 */
 	public static function setTooltipDisplay( $isTooltipDisplay ) {
 		self::$isTooltipDisplay = (bool)$isTooltipDisplay;
@@ -42,7 +42,7 @@ class ParametersWidget {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $defaultLimit
+	 * @param int $defaultLimit
 	 */
 	public static function setDefaultLimit( $defaultLimit ) {
 		self::$defaultLimit = $defaultLimit;
@@ -128,8 +128,7 @@ class ParametersWidget {
 	 *
 	 * @since 1.8
 	 *
-	 * @param string $format
-	 * @param array $parameters The current values for the parameters (name => value)
+	 * @param array $values The current values for the parameters (name => value)
 	 *
 	 * @return string
 	 */

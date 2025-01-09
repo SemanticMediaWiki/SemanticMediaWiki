@@ -4,18 +4,18 @@ namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use ReflectionClass;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Localizer;
 use SMW\ParserFunctions\AskParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\AskParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

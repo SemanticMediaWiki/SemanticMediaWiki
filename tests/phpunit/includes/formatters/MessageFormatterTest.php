@@ -5,14 +5,13 @@ namespace SMW\Tests;
 use Message;
 use ReflectionClass;
 use SMW\MessageFormatter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * Tests for the MessageFormatter class
  *
  * @file
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -145,7 +144,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	 * @since  1.9
 	 *
 	 * @param array $messages
-	 * @param integer $count
+	 * @param int $count
 	 */
 	public function testFormat( array $messages, $count ) {
 		$instance = $this->getInstance();

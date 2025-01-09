@@ -11,7 +11,7 @@ use SMW\Query\PrintRequest;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author Markus Krötzsch
@@ -46,7 +46,7 @@ class Deserializer {
 			$useCanonicalLabel = $options['canonical_label'];
 		}
 
-		list( $parts, $outputFormat, $printRequestLabel ) = self::getPartsFromText(
+		[ $parts, $outputFormat, $printRequestLabel ] = self::getPartsFromText(
 			$text
 		);
 
@@ -132,7 +132,7 @@ class Deserializer {
 		if ( $printmode === PrintRequest::PRINT_THIS ) {
 			// Cover the case of `?#Test=#-`
 			if ( strrpos( $label, '#' ) !== false ) {
-				list( $label, $outputFormat ) = explode( '#', $label );
+				[ $label, $outputFormat ] = explode( '#', $label );
 
 				// `?#=foo#` is equal to `?#=foo#-`
 				if ( $outputFormat === '' ) {
@@ -166,7 +166,7 @@ class Deserializer {
 	private static function getPartsFromText( $text ) {
 		// #1464
 		// Temporary encode "=" within a <> entity (<span>...</span>)
-		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", function ( $matches ) {
+		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", static function ( $matches ) {
 			foreach ( $matches as $match ) {
 				return str_replace( [ '=' ], [ '-3D' ], $match );
 			}

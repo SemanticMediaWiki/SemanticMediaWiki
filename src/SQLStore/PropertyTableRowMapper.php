@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore;
 
-use RuntimeException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
@@ -13,7 +12,7 @@ use SMWDIError as DIError;
 /**
  * Builds a table row representation for a SemanticData object.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -37,13 +36,13 @@ class PropertyTableRowMapper {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param SemanticData $semanticData
 	 *
 	 * @return ChangeOp
 	 */
 	public function newChangeOp( $id, SemanticData $semanticData ) {
-		list( $dataArray, $textItems, $propertyList, $fixedPropertyList ) = $this->mapToRows(
+		[ $dataArray, $textItems, $propertyList, $fixedPropertyList ] = $this->mapToRows(
 			$id,
 			$semanticData
 		);
@@ -82,13 +81,13 @@ class PropertyTableRowMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param SemanticData $semanticData
 	 *
 	 * @return array
 	 */
 	public function mapToRows( $sid, SemanticData $semanticData ) {
-		list( $rows, $textItems, $propertyList, $fixedPropertyList ) = $this->mapData(
+		[ $rows, $textItems, $propertyList, $fixedPropertyList ] = $this->mapData(
 			$sid,
 			$semanticData
 		);
@@ -104,7 +103,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param array $fieldArray
+	 * @param array $array
 	 *
 	 * @return string
 	 */
@@ -129,7 +128,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param SemanticData $semanticData
 	 *
 	 * @return array
@@ -269,8 +268,8 @@ class PropertyTableRowMapper {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $sid
-	 * @param &array $insertData
+	 * @param int $sid
+	 * @param &array &$insertData
 	 */
 	private function mapConceptTable( $sid, &$insertData ) {
 		$connection = $this->store->getConnection( 'mw.db' );

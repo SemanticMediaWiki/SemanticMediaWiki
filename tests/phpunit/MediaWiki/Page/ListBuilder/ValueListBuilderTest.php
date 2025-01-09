@@ -5,14 +5,14 @@ namespace SMW\Tests\MediaWiki\Page\ListBuilder;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
-use SMWDITime as DITime;
 use SMW\Tests\TestEnvironment;
+use SMWDITime as DITime;
 
 /**
  * @covers \SMW\MediaWiki\Page\ListBuilder\ValueListBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

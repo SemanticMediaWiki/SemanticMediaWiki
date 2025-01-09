@@ -3,15 +3,14 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\SearchEngineFactory;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
-use SMWQuery;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchEngineFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author Stephan Gambke
@@ -115,7 +114,7 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function () use( $fallbackSearchEngine ) {
+		$callback = static function () use( $fallbackSearchEngine ) {
 			return $fallbackSearchEngine;
 		};
 
@@ -130,7 +129,7 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromInvalidCallableThrowsException() {
-		$callback = function () {
+		$callback = static function () {
 			return new \stdClass;
 		};
 

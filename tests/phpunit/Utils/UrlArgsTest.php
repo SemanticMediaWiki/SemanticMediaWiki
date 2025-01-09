@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\UrlArgs;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\UrlArgs;
 
 /**
  * @covers \SMW\Utils\UrlArgs
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

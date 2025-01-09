@@ -2,18 +2,15 @@
 
 namespace SMW\MediaWiki\Search;
 
-use RuntimeException;
 use SearchEngine;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Exception\ClassNotFoundException;
 use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
-use SMW\Exception\ClassNotFoundException;
-use Wikimedia\Rdbms\IDatabase;
-use Wikimedia\Rdbms\IConnectionProvider;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author  mwjames

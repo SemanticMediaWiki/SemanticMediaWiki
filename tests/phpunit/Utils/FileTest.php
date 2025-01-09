@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\File;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\File;
 
 /**
  * @covers \SMW\Utils\File
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

@@ -9,7 +9,7 @@ use SMW\RequestOptions;
 use SMW\SemanticData;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -36,9 +36,9 @@ class QueryReferenceBacklinks {
 	 * @param SemanticData $semanticData
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function addReferenceLinksTo( SemanticData $semanticData, RequestOptions $requestOptions = null ) {
+	public function addReferenceLinksTo( SemanticData $semanticData, ?RequestOptions $requestOptions = null ) {
 		if ( !$this->queryDependencyLinksStore->isEnabled() ) {
 			return false;
 		}
@@ -66,12 +66,11 @@ class QueryReferenceBacklinks {
 	 * @since 2.5
 	 *
 	 * @param DIWikiPage $subject
-	 * @param integer $limit
-	 * @param integer $offset
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
-	public function findReferenceLinks( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
+	public function findReferenceLinks( DIWikiPage $subject, ?RequestOptions $requestOptions = null ) {
 		$queryTargetLinksHashList = $this->queryDependencyLinksStore->findDependencyTargetLinksForSubject(
 			$subject,
 			$requestOptions
@@ -86,7 +85,7 @@ class QueryReferenceBacklinks {
 	 * @param DIProperty $property
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doesRequireFurtherLink( DIProperty $property, DIWikiPage $subject, &$html ) {
 		if ( $property->getKey() !== '_ASK' ) {

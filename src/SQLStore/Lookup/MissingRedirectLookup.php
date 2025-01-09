@@ -6,7 +6,7 @@ use SMW\SQLStore\RedirectStore;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class MissingRedirectLookup {
 	private $namespaces;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $nosort = false;
 
@@ -40,7 +40,7 @@ class MissingRedirectLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @param array $namesspaces
+	 * @param array $namespaces
 	 */
 	public function setNamespaceMatrix( array $namespaces ) {
 		$this->namespaces = $namespaces;
@@ -59,7 +59,7 @@ class MissingRedirectLookup {
 	 * @return Iterator/array
 	 */
 	public function findMissingRedirects() {
-		$namespaces = array_keys( array_filter( $this->namespaces, function ( $v ) {
+		$namespaces = array_keys( array_filter( $this->namespaces, static function ( $v ) {
 			return $v;
 		}
 		) );

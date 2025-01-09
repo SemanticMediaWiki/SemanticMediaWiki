@@ -5,7 +5,7 @@ namespace SMW\Tests\Utils\File;
 use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class DummyFileCreator {
 	private $file = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $size = 100;
 

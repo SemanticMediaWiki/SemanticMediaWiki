@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Search\Exception;
 use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

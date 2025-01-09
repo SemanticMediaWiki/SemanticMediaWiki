@@ -2,15 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use WebRequest;
-use SMW\Utils\UrlArgs;
 use Html;
-use Title;
-use SMW\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -27,7 +23,7 @@ class OptionsBuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @param int $size
+	 * @param Profile $profile
 	 */
 	public function __construct( Profile $profile ) {
 		$this->profile = $profile;
@@ -71,7 +67,7 @@ class OptionsBuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @param int $size
+	 * @param string $format
 	 */
 	public function format( string $format ) {
 		$html = [];

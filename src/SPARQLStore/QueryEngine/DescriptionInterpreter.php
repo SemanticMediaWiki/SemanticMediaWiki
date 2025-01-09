@@ -5,7 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine;
 use SMW\Query\Language\Description;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -17,7 +17,7 @@ interface DescriptionInterpreter {
 	 *
 	 * @param Description $description
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canInterpretDescription( Description $description );
 

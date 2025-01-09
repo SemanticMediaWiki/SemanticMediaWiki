@@ -12,7 +12,7 @@ use SMWDIBoolean as DIBoolean;
 /**
  * This datavalue implements the handling of Boolean datavalues.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author Markus Krötzsch
@@ -61,7 +61,7 @@ class BooleanValue extends DataValue {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_BOOLEAN ) {
@@ -162,7 +162,7 @@ class BooleanValue extends DataValue {
 	/**
 	 * @since 1.6
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getBoolean() {
 		return !$this->isValid() ? false : $this->m_dataitem->getBoolean();

@@ -3,12 +3,12 @@
 namespace SMW\MediaWiki\Specials;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Encoder;
-use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
+use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\Message;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWInfolink as Infolink;
 use SpecialPage;
 use TemplateParser;
@@ -16,7 +16,7 @@ use TemplateParser;
 /**
  * A factbox view on one specific article, showing all the Semantic data about it
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author mwjames
@@ -209,7 +209,7 @@ class SpecialBrowse extends SpecialPage {
 			] );
 		}
 
-		$this->addHelpLink( wfMessage( 'smw-specials-browse-helplink' )->escaped(), true );
+		$this->addHelpLink( $this->msg( 'smw-specials-browse-helplink' )->escaped(), true );
 	}
 
 	/**

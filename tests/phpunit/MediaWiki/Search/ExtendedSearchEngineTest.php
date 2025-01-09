@@ -3,15 +3,14 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
-use SMWQuery;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Search\ExtendedSearchEngine
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Stephan Gambke

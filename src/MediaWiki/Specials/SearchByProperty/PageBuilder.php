@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\StringValue;
@@ -12,11 +11,12 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author Denny Vrandecic
@@ -74,12 +74,12 @@ class PageBuilder {
 		$this->pageRequestOptions->initialize();
 		$this->messageBuilder = $this->htmlFormRenderer->getMessageBuilder();
 
-		list( $resultMessage, $resultList, $resultCount ) = $this->getResultHtml();
+		[ $resultMessage, $resultList, $resultCount ] = $this->getResultHtml();
 
 		if ( ( $resultList === '' || $resultList === null ) &&
 			$this->pageRequestOptions->property->getDataItem() instanceof DIProperty &&
 			$this->pageRequestOptions->valueString === '' ) {
-			list( $resultMessage, $resultList, $resultCount ) = $this->tryToFindAtLeastOnePropertyTableReferenceFor(
+			[ $resultMessage, $resultList, $resultCount ] = $this->tryToFindAtLeastOnePropertyTableReferenceFor(
 				$this->pageRequestOptions->property->getDataItem()
 			);
 		}
@@ -250,13 +250,13 @@ class PageBuilder {
 	 * ones.
 	 *
 	 * @param array $results (array of (array of one or two SMWDataValues))
-	 * @param integer $number How many results should be displayed? -1 for all
-	 * @param boolean $first If less results should be displayed than
+	 * @param int $number How many results should be displayed? -1 for all
+	 * @param bool $first If less results should be displayed than
 	 * 	given, should they show the first $number results, or the last
 	 * 	$number results?
-	 * @param boolean $highlight Should the results be highlighted?
+	 * @param bool $highlight Should the results be highlighted?
 	 *
-	 * @return string  HTML with the bullet list, including header
+	 * @return string HTML with the bullet list, including header
 	 */
 	private function makeResultList( $results, $number, $first, $highlight = false ) {
 		if ( $number > 0 ) {

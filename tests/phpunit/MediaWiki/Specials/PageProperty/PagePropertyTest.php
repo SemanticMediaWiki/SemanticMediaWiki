@@ -5,14 +5,14 @@ namespace SMW\Tests\MediaWiki\Specials\PageProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PageProperty\PageBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

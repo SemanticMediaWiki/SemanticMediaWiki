@@ -2,17 +2,17 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWikiIntegrationTestCase;
 use SMW\DIWikiPage;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\HtmlValidator;
-use MediaWikiIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -39,7 +39,7 @@ class ParserHtmlTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUse() {
 		return $this->htmlValidator->canUse();

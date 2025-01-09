@@ -5,14 +5,13 @@ namespace SMW\Tests;
 use SMW\DataItemFactory;
 use SMW\DIWikiPage;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ProcessingErrorMsgHandler
  * @group semantic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

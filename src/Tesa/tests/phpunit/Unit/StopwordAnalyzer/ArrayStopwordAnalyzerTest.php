@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Onoi\Tesa\StopwordAnalyzer\ArrayStopwordAnalyzer
  * @group onoi-tesa
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -36,25 +36,25 @@ class ArrayStopwordAnalyzerTest extends TestCase {
 	}
 
 	public function stopWordsProvider() {
-		$defaultList = array( 'Foo', 'かつて', 'bAR' );
+		$defaultList = [ 'Foo', 'かつて', 'bAR' ];
 
-		$provider[] = array(
+		$provider[] = [
 			$defaultList,
 			'Foo',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$defaultList,
 			'かつて',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$defaultList,
 			'bar',
 			false
-		);
+		];
 
 		return $provider;
 	}

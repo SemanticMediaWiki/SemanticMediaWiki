@@ -2,17 +2,15 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\SetupFile;
-use SMW\Message;
-use SpecialPage;
 use Html;
-use SMW\Utils\HtmlTabs;
 use SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks;
+use SMW\Utils\HtmlTabs;
+use SpecialPage;
 
 /**
  * Displays pending tasks in connection with Semantic MediaWiki.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @since 3.2
  * @author mwjames

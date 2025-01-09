@@ -3,14 +3,14 @@
 namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\NamespaceConstraint;
-use SMW\Tests\TestEnvironment;
 use SMW\DataItemFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Constraint\Constraints\NamespaceConstraint
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

@@ -3,15 +3,15 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\DIWikiPage;
-use SMW\SQLStore\SQLStoreUpdater;
 use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\SQLStoreUpdater;
 use Title;
 
 /**
  * @covers \SMW\SQLStore\SQLStoreUpdater
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames

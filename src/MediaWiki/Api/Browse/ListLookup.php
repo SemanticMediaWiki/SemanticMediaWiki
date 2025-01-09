@@ -10,7 +10,7 @@ use SMW\Store;
 use SMW\StringCondition;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -42,7 +42,7 @@ class ListLookup extends Lookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @return string|integer
+	 * @return string|int
 	 */
 	public function getVersion() {
 		return 'ListLookup:' . self::VERSION;
@@ -84,7 +84,7 @@ class ListLookup extends Lookup {
 		}
 
 		if ( isset( $parameters['search'] ) ) {
-			list( $res, $continueOffset ) = $this->fetchFromTable( $ns, $requestOptions, $parameters );
+			[ $res, $continueOffset ] = $this->fetchFromTable( $ns, $requestOptions, $parameters );
 		}
 
 		// Changing this output format requires to set a new version

@@ -2,13 +2,12 @@
 
 namespace SMW\Maintenance;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\SQLStore\SQLStore;
-use SMW\Utils\HmacSerializer;
 use SMW\DIWikiPage;
-use SMW\Maintenance\MaintenanceCheck;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\HmacSerializer;
 
 /**
  * Load the required class
@@ -22,7 +21,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 // @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -276,5 +275,5 @@ class updateEntityCountMap extends \Maintenance {
 
 // @codeCoverageIgnoreStart
 $maintClass = updateEntityCountMap::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
 // @codeCoverageIgnoreEnd

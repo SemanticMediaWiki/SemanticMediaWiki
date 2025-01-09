@@ -2,16 +2,14 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\DisplayTitleLookup;
-use SMW\MediaWiki\Connection\Query;
 use SMW\DIWikiPage;
-use SMW\DIProperty;
+use SMW\SQLStore\Lookup\DisplayTitleLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\DisplayTitleLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames

@@ -3,14 +3,14 @@
 namespace SMW\Tests\MediaWiki\Specials\PropertyLabelSimilarity;
 
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

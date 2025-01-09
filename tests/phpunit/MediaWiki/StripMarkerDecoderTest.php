@@ -3,13 +3,12 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\StripMarkerDecoder;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\StripMarkerDecoder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since  3.0
  *
  * @author mwjames

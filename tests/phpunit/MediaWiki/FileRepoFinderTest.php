@@ -2,14 +2,13 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use ParserOutput;
 use SMW\MediaWiki\FileRepoFinder;
 
 /**
  * @covers \SMW\MediaWiki\FileRepoFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames

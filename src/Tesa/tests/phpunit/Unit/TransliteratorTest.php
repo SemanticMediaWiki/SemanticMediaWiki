@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Onoi\Tesa\Transliterator
  * @group onoi-tesa
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -34,125 +34,125 @@ class TransliteratorTest extends TestCase {
 	}
 
 	public function characterProvider() {
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'unknownFlag',
 			'Foo',
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž',
 			Transliterator::NONE,
 			'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž',
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž',
 			Transliterator::DIACRITICS,
 			'AAAAAEAaaaaaeaOOOOOOEOoooooeoEEEEeeeeðCcÐIIIIiiiiUUUUEuuuueNnSsYyyZz'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ỆᶍǍᶆṔƚÉ áéíóúýčďěňřšťžů',
 			Transliterator::DIACRITICS,
 			'ExAmPlE aeiouycdenrstzu'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'àáâãäå',
 			Transliterator::DIACRITICS,
 			'aaaaaea'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'èéêë',
 			Transliterator::DIACRITICS,
 			'eeee'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'òóôõö',
 			Transliterator::DIACRITICS,
 			'oooooe'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ùúûü',
 			Transliterator::DIACRITICS,
 			'uuuue'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ç',
 			Transliterator::DIACRITICS,
 			'c'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'æ',
 			Transliterator::DIACRITICS,
 			'ae'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ñ',
 			Transliterator::DIACRITICS,
 			'n'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'œ',
 			Transliterator::DIACRITICS,
 			'oe'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ýÿ',
 			Transliterator::DIACRITICS,
 			'yy'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ß',
 			Transliterator::DIACRITICS,
 			'ss'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Vilʹândimaa',
 			Transliterator::DIACRITICS,
 			'Vilʹandimaa'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Ελληνική Δημοκρατία',
 			Transliterator::GREEK,
 			'Ellīnikī́ Dīmokratía'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Ελληνική Δημοκρατία',
 			Transliterator::DIACRITICS | Transliterator::GREEK,
 			'Ellinikí Dimokratia'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Γκ γκ γξ Ει ει Ηυ Μπ μπ',
 			Transliterator::GREEK,
 			'Gk gk gx Ei ei Īy Mp mp'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Μετατροπή του ελληνικού αλφαβήτου με λατινικούς χαρακτήρες',
 			Transliterator::GREEK,
 			'Metatropī́ tou ellīnikoú alfavī́tou me latinikoús charaktī́res',
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Ελληνικός Οργανισμός Τυποποίησης',
 			Transliterator::GREEK,
 			'Ellīnikós Organismós Typopoíīsīs',
-		);
+		];
 
 		return $provider;
 	}

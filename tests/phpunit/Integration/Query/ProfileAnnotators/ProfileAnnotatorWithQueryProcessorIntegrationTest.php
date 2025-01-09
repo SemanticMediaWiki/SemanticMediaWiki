@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\Query\ProfileAnnotators;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Localizer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMWQueryProcessor;
 
@@ -12,7 +12,7 @@ use SMWQueryProcessor;
  * @covers \SMWQueryProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -36,7 +36,7 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit\Framewo
 	 * @dataProvider queryDataProvider
 	 */
 	public function testCreateProfile( array $rawParams, array $expected ) {
-		list( $query, $formattedParams ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $formattedParams ] = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
 			SMWQueryProcessor::INLINE_QUERY,

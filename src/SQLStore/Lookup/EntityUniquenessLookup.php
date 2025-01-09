@@ -2,20 +2,18 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use RuntimeException;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\IteratorFactory;
+use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMWDataItem as DataItem;
-use SMW\RequestOptions;
-use SMW\IteratorFactory;
-use InvalidArgumentException;
-use RuntimeException;
 use SMWDIContainer as DIContainer;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

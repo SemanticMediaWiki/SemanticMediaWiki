@@ -2,18 +2,16 @@
 
 namespace SMW\Tests;
 
-use SMW\ArrayAccessor;
 use SMW\DataItemFactory;
 use SMW\PropertiesQueryPage;
 use SMW\Settings;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\PropertiesQueryPage
  * @group semantic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

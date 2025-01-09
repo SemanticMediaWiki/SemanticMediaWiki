@@ -2,14 +2,14 @@
 
 namespace SMW\Factbox;
 
-use SMW\EntityCache;
 use OutputPage;
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Parser\InTextAnnotationParser;
-use Title;
 use Psr\Log\LoggerAwareTrait;
+use SMW\EntityCache;
+use SMW\Parser\InTextAnnotationParser;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HmacSerializer;
+use Title;
 
 /**
  * Factbox output caching
@@ -17,7 +17,7 @@ use SMW\Utils\HmacSerializer;
  * Use a EntityCache to avoid unaltered content being re-parsed every time the
  * OutputPage hook is executed.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -32,37 +32,37 @@ class CachedFactbox {
 	private $entityCache;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCached = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $featureSet = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $showFactboxEdit = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $showFactbox = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEnabled = true;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $timestamp;
 
@@ -81,7 +81,7 @@ class CachedFactbox {
 	/**
 	 * @since 1.9
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCached() {
 		return $this->isCached;
@@ -90,7 +90,7 @@ class CachedFactbox {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $featureSet
+	 * @param int $featureSet
 	 */
 	public function setFeatureSet( $featureSet ) {
 		$this->featureSet = $featureSet;
@@ -99,7 +99,7 @@ class CachedFactbox {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $showFactboxEdit
+	 * @param int $showFactboxEdit
 	 */
 	public function setShowFactboxEdit( $showFactboxEdit ) {
 		$this->showFactboxEdit = $showFactboxEdit;
@@ -108,7 +108,7 @@ class CachedFactbox {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $showFactbox
+	 * @param int $showFactbox
 	 */
 	public function setShowFactbox( $showFactbox ) {
 		$this->showFactbox = $showFactbox;
@@ -117,7 +117,7 @@ class CachedFactbox {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $cacheTTL
+	 * @param int $cacheTTL
 	 */
 	public function setCacheTTL( $cacheTTL ) {
 		$this->cacheTTL = $cacheTTL;
@@ -126,7 +126,7 @@ class CachedFactbox {
 	/**
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnabled( $isEnabled ) {
 		$this->isEnabled = $isEnabled;
@@ -135,7 +135,7 @@ class CachedFactbox {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimestamp() {
 		return $this->timestamp;
@@ -144,7 +144,7 @@ class CachedFactbox {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function makeCacheKey( $id ) {
 		if ( $id instanceof Title ) {
@@ -247,7 +247,9 @@ class CachedFactbox {
 	 *
 	 * @param string $key
 	 * @param string $text
-	 * @param integer|null $revisionId
+	 * @param int|null $rev_id
+	 * @param string $lang
+	 * @param mixed|null $feature_set
 	 */
 	public function addContentToCache( $key, $text, $rev_id = null, $lang = 'en', $feature_set = null ) {
 		$this->saveToCache(

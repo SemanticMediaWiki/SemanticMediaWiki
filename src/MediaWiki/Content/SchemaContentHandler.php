@@ -4,20 +4,20 @@ namespace SMW\MediaWiki\Content;
 
 use Content;
 use JsonContentHandler;
-use ParserOutput;
-use Status;
-use Title;
-use WikiPage;
-use MediaWiki\Content\ValidationParams;
 use MediaWiki\Content\Renderer\ContentParseParams;
 use MediaWiki\Content\Transform\PreSaveTransformParams;
+use MediaWiki\Content\ValidationParams;
 use MediaWiki\MediaWikiServices;
+use ParserOutput;
 use SMW\ParserData;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\Schema;
+use Status;
+use Title;
+use WikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

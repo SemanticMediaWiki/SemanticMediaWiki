@@ -2,17 +2,17 @@
 
 namespace SMW\Tests\Schema\Filters;
 
-use SMW\Schema\Filters\PropertyFilter;
 use SMW\Schema\Compartment;
-use SMW\Schema\Rule;
 use SMW\Schema\CompartmentIterator;
+use SMW\Schema\Filters\PropertyFilter;
+use SMW\Schema\Rule;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\Filters\PropertyFilter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -75,7 +75,7 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function () {
+		$callback = static function () {
 			return null;
 		};
 
@@ -107,7 +107,7 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider propertyFilterProvider
 	 */
 	public function testHasMatches_Callback_Compartment( $properties, $compartment, $expected ) {
-		$callback = function () use ( $properties ) {
+		$callback = static function () use ( $properties ) {
 			return $properties;
 		};
 

@@ -5,19 +5,19 @@ namespace SMW\MediaWiki\Hooks;
 use EditPage;
 use Html;
 use SMW\DIProperty;
-use SMW\Message;
-use SMW\NamespaceExaminer;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
+use SMW\GroupPermissions;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
-use SMW\GroupPermissions;
+use SMW\Message;
+use SMW\NamespaceExaminer;
+use SMW\OptionsAwareTrait;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -60,7 +60,7 @@ class EditPageForm implements HookListener {
 	 *
 	 * @param EditPage $editPage
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( EditPage $editPage ) {
 		$html = '';

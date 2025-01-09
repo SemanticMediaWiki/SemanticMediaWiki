@@ -5,7 +5,7 @@ namespace Onoi\Tesa\LanguageDetector;
 use TextCat;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 0.1
  *
  * @author mwjames
@@ -29,7 +29,7 @@ class TextCatLanguageDetector implements LanguageDetector {
 	 *
 	 * @param TextCat|null $textCat
 	 */
-	public function __construct( TextCat $textCat = null ) {
+	public function __construct( ?TextCat $textCat = null ) {
 		$this->textCat = $textCat;
 
 		if ( $this->textCat === null ) {

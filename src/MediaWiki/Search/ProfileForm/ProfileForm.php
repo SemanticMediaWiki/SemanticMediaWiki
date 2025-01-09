@@ -3,20 +3,16 @@
 namespace SMW\MediaWiki\Search\ProfileForm;
 
 use Html;
-use MWNamespace;
-use SMW;
-use SMW\Schema\SchemaFactory;
-use SMW\ProcessingErrorMsgHandler;
-use SMW\Utils\HtmlModal;
-use SMW\Store;
 use SMW\Message;
+use SMW\ProcessingErrorMsgHandler;
+use SMW\Schema\SchemaFactory;
+use SMW\Store;
+use SMW\Utils\HtmlModal;
 use SpecialSearch;
 use Title;
-use WikiPage;
-use Xml;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -46,7 +42,7 @@ class ProfileForm {
 	private $formsFactory;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $searchableNamespaces = [];
 
@@ -67,10 +63,10 @@ class ProfileForm {
 	 *
 	 * @param string $profile
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isValidProfile( $profile ) {
-		return $profile === ProfileForm::PROFILE_NAME;
+		return $profile === self::PROFILE_NAME;
 	}
 
 	/**
@@ -189,7 +185,7 @@ class ProfileForm {
 			);
 		}
 
-		list( $searchForms, $formList, $termPrefixes, $preselectNamespaces, $hiddenNamespaces ) = $this->buildSearchForms(
+		[ $searchForms, $formList, $termPrefixes, $preselectNamespaces, $hiddenNamespaces ] = $this->buildSearchForms(
 			$request
 		);
 

@@ -2,19 +2,16 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
-use SMW\DIWikiPage;
-use SMW\IteratorFactory;
-use SMW\RequestOptions;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\RedirectStore;
-use SMW\SQLStore\PropertyTableInfoFetcher;
-use SMW\Store;
 use InvalidArgumentException;
+use SMW\IteratorFactory;
+use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -47,7 +44,7 @@ class DuplicateFinder {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasDuplicate( DataItem $dataItem ) {
 		$type = $dataItem->getDIType();
@@ -92,7 +89,7 @@ class DuplicateFinder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|null $name
+	 * @param string|null $table
 	 *
 	 * @return Iterator|[]
 	 */

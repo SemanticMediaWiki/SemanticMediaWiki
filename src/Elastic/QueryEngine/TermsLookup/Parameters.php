@@ -5,7 +5,7 @@ namespace SMW\Elastic\QueryEngine\TermsLookup;
 use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -53,7 +53,7 @@ class Parameters {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has( $key ) {
 		return isset( $this->parameters[$key] ) || array_key_exists( $key, $this->parameters );

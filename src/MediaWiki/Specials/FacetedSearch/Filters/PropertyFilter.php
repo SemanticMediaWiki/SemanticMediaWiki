@@ -2,16 +2,15 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
-use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
-use Html;
+use SMW\Utils\TemplateEngine;
+use SMW\Utils\UrlArgs;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -31,7 +30,7 @@ class PropertyFilter {
 	private $treeBuilder;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $params;
 

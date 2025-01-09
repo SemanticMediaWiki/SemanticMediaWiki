@@ -5,11 +5,11 @@ namespace SMW\MediaWiki\Hooks;
 use OutputPage;
 use ParserOutput;
 use SMW\Factbox\FactboxText;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\IndicatorRegistry;
-use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\NamespaceExaminer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**
@@ -24,7 +24,7 @@ use Title;
  *
  * @ingroup FunctionHook
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

@@ -10,7 +10,7 @@ use Wikimedia\Rdbms\Platform\SQLPlatform;
  * The contract of the Database interface has changed in MW 1.28 and introduced
  * incompatibilities which this class tries to bypass.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

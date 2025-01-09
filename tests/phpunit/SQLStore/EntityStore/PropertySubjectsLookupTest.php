@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
-use SMW\Options;
 use SMW\SQLStore\EntityStore\PropertySubjectsLookup;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
@@ -11,7 +10,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @covers \SMW\SQLStore\EntityStore\PropertySubjectsLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

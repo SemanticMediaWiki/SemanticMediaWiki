@@ -3,13 +3,12 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use Html;
-use Title;
 use WebRequest;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -27,12 +26,12 @@ class OpenForm {
 	private $field;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isActiveForm = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
@@ -49,7 +48,7 @@ class OpenForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getParameters() {
 		return $this->parameters;
@@ -58,7 +57,7 @@ class OpenForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isActiveForm
+	 * @param bool $isActiveForm
 	 */
 	public function isActiveForm( $isActiveForm ) {
 		$this->isActiveForm = (bool)$isActiveForm;

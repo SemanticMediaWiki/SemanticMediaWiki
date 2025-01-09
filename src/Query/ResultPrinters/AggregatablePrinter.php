@@ -21,7 +21,7 @@ use SMWQueryResult as QueryResult;
  * * baz (1)
  * * ohi (1)
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -78,7 +78,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @param array $data label => value
 	 */
-	protected abstract function getFormatOutput( array $data );
+	abstract protected function getFormatOutput( array $data );
 
 	/**
 	 * Method gets called right before the result is returned
@@ -115,7 +115,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @since 1.7
 	 *
-	 * @param array $data
+	 * @param array &$data
 	 */
 	protected function applyDistributionParams( array &$data ) {
 		if ( $this->params['distributionsort'] == 'asc' ) {
@@ -244,7 +244,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * @since 1.7
 	 *
 	 * @param DataItem $dataItem
-	 * @param array $values
+	 * @param array &$values
 	 * @param string $name
 	 */
 	protected function addNumbersForDataItem( DataItem $dataItem, array &$values, $name ) {

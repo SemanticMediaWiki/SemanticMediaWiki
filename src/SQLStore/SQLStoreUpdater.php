@@ -4,22 +4,20 @@ namespace SMW\SQLStore;
 
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Enum;
+use SMW\Parameters;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Status;
 use SMWDIBlob as DIBlob;
-use SMW\Parameters;
-use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\Enum;
 use Title;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Markus Krötzsch
@@ -189,7 +187,7 @@ class SQLStoreUpdater {
 	 *
 	 * @since 1.8
 	 *
-	 * @param SemanticData $data
+	 * @param SemanticData $semanticData
 	 */
 	public function doDataUpdate( SemanticData $semanticData ) {
 		// Deprecated since 3.1, use SMW::SQLStore::BeforeDataUpdateComplete
@@ -363,7 +361,7 @@ class SQLStoreUpdater {
 		}
 
 		// Take care of all remaining property table data
-		list( $insertRows, $deleteRows, $newHashes ) = $this->propertyTableRowDiffer->computeTableRowDiff(
+		[ $insertRows, $deleteRows, $newHashes ] = $this->propertyTableRowDiffer->computeTableRowDiff(
 			$sid,
 			$data
 		);

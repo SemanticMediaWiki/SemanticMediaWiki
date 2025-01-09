@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Factbox\FactboxCache;
 use SMW\MediaWiki\Hooks\ArticlePurge;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use WikiPage;
@@ -13,7 +12,7 @@ use WikiPage;
  * @covers \SMW\MediaWiki\Hooks\ArticlePurge
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

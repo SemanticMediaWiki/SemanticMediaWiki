@@ -7,7 +7,7 @@ namespace SMW;
  * label of some entity. States that a given string should either be prefix,
  * postfix, or some arbitrary part of labels.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author Markus Krötzsch
@@ -48,17 +48,17 @@ class StringCondition {
 	 * Whether to match the strings as conjunction or
 	 * disjunction.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isOr;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isNot;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $condition;
 
@@ -66,8 +66,8 @@ class StringCondition {
 	 * @since 1.0
 	 *
 	 * @param srting $string
-	 * @param integer $condition
-	 * @param boolean $isOr
+	 * @param int $condition
+	 * @param bool $isOr
 	 */
 	public function __construct( $string, $condition, $isOr = false, $isNot = false ) {
 		$this->string = $string;

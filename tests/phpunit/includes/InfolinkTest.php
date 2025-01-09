@@ -2,15 +2,13 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\TestEnvironment;
 use SMWInfolink as Infolink;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWInfolink
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

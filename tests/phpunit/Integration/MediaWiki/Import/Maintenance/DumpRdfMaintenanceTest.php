@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Listener\EventListener\EventHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -14,7 +14,7 @@ use SMW\Tests\Utils\UtilityFactory;
  * @group mediawiki-database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

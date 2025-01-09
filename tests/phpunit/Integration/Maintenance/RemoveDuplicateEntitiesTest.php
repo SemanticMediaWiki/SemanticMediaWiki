@@ -10,7 +10,7 @@ use SMW\Tests\TestEnvironment;
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -22,7 +22,7 @@ class RemoveDuplicateEntitiesTest extends SMWIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->runnerFactory  = TestEnvironment::getUtilityFactory()->newRunnerFactory();
+		$this->runnerFactory = TestEnvironment::getUtilityFactory()->newRunnerFactory();
 	}
 
 	protected function tearDown(): void {

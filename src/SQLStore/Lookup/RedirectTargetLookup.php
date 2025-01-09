@@ -2,14 +2,13 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Store;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\RedirectStore;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -101,7 +100,7 @@ class RedirectTargetLookup {
 	 * @since 3.2
 	 *
 	 * @param DIWikiPage $target
-	 * @param string $flag
+	 * @param string|null $flag
 	 *
 	 * @return DIWikiPage|false
 	 */

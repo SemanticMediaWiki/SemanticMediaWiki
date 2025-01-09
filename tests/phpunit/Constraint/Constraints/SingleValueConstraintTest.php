@@ -3,14 +3,14 @@
 namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\SingleValueConstraint;
-use SMW\Tests\PHPUnitCompat;
 use SMW\DataItemFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Constraint\Constraints\SingleValueConstraint
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -71,7 +71,7 @@ class SingleValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->willReturn( function () use( $semanticData ) { return $semanticData;
+			->willReturn( static function () use( $semanticData ) { return $semanticData;
 			} );
 
 		$dataValue->expects( $this->atLeastOnce() )

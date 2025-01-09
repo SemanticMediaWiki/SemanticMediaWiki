@@ -3,16 +3,16 @@
 namespace SMW\Tests\Integration\SQLStore\Lookup;
 
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\DIWikiPage;
 
 /**
  * @group semantic-mediawiki
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

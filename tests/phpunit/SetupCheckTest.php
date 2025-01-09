@@ -2,15 +2,14 @@
 
 namespace SMW\Tests;
 
-use SMW\SetupCheck;
-use SMW\Tests\PHPUnitCompat;
 use ReflectionClass;
+use SMW\SetupCheck;
 
 /**
  * @covers \SMW\SetupCheck
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

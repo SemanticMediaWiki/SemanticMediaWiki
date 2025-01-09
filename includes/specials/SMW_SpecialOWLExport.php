@@ -24,27 +24,29 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 	public function execute( $page ) {
 		$this->setHeaders();
-		global $wgOut, $wgRequest;
 
-		$wgOut->setPageTitle( wfMessage( 'exportrdf' )->text() );
+		$out = $this->getOutput();
+		$request = $this->getRequest();
+
+		$out->setPageTitle( $this->msg( 'exportrdf' )->text() );
 
 		// see if we can find something to export:
-		$page = is_null( $page ) ? $wgRequest->getVal( 'page' ) : rawurldecode( $page );
+		$page = $page === null ? $request->getVal( 'page' ) : rawurldecode( $page );
 		$pages = false;
 
-		if ( !is_null( $page ) || $wgRequest->getCheck( 'page' ) ) {
-			$page = is_null( $page ) ? $wgRequest->getCheck( 'text' ) : $page;
+		if ( $page !== null || $request->getCheck( 'page' ) ) {
+			$page = $page === null ? $request->getCheck( 'text' ) : $page;
 
 			if ( $page !== '' ) {
 				$pages = [ $page ];
 			}
 		}
 
-		if ( $pages === false && $wgRequest->getCheck( 'pages' ) ) {
-			$pageBlob = $wgRequest->getText( 'pages' );
+		if ( $pages === false && $request->getCheck( 'pages' ) ) {
+			$pageBlob = $request->getText( 'pages' );
 
 			if ( $pageBlob !== '' ) {
-				$pages = explode( "\n", $wgRequest->getText( 'pages' ) );
+				$pages = explode( "\n", $request->getText( 'pages' ) );
 			}
 		}
 
@@ -52,14 +54,14 @@ class SMWSpecialOWLExport extends SpecialPage {
 			$this->exportPages( $pages );
 			return;
 		} else {
-			$offset = $wgRequest->getVal( 'offset' );
+			$offset = $request->getVal( 'offset' );
 
 			if ( isset( $offset ) ) {
 				$this->startRDFExport();
 				$this->export_controller->printPageList( $offset );
 				return;
 			} else {
-				$stats = $wgRequest->getVal( 'stats' );
+				$stats = $request->getVal( 'stats' );
 
 				if ( isset( $stats ) ) {
 					$this->startRDFExport();
@@ -77,48 +79,51 @@ class SMWSpecialOWLExport extends SpecialPage {
 	 * Create the HTML user interface for this special page.
 	 */
 	protected function showForm() {
-		global $wgOut, $smwgAllowRecursiveExport, $smwgExportBacklinks, $smwgExportAll;
+		global $smwgAllowRecursiveExport, $smwgExportBacklinks, $smwgExportAll;
+
+		$out = $this->getOutput();
 
 		$user = $this->getUser();
 
 		$html = '<form name="tripleSearch" action="" method="POST">' . "\n" .
-					'<p>' . wfMessage( 'smw_exportrdf_docu' )->text() . "</p>\n" .
+					'<p>' . $this->msg( 'smw_exportrdf_docu' )->text() . "</p>\n" .
 					'<input type="hidden" name="postform" value="1"/>' . "\n" .
 					'<textarea name="pages" cols="40" rows="10"></textarea><br />' . "\n";
 
 		if ( $user->isAllowed( 'delete' ) || $smwgAllowRecursiveExport ) {
-			$html .= '<input type="checkbox" name="recursive" value="1" id="rec">&#160;<label for="rec">' . wfMessage( 'smw_exportrdf_recursive' )->text() . '</label></input><br />' . "\n";
+			$html .= '<input type="checkbox" name="recursive" value="1" id="rec">&#160;<label for="rec">' . $this->msg( 'smw_exportrdf_recursive' )->text() . '</label></input><br />' . "\n";
 		}
 
 		if ( $user->isAllowed( 'delete' ) || $smwgExportBacklinks ) {
-			$html .= '<input type="checkbox" name="backlinks" value="1" default="true" id="bl">&#160;<label for="bl">' . wfMessage( 'smw_exportrdf_backlinks' )->text() . '</label></input><br />' . "\n";
+			$html .= '<input type="checkbox" name="backlinks" value="1" default="true" id="bl">&#160;<label for="bl">' . $this->msg( 'smw_exportrdf_backlinks' )->text() . '</label></input><br />' . "\n";
 		}
 
 		if ( $user->isAllowed( 'delete' ) || $smwgExportAll ) {
 			$html .= '<br />';
-			$html .= '<input type="text" name="date" value="' . date( DATE_W3C, mktime( 0, 0, 0, 1, 1, 2000 ) ) . '" id="date">&#160;<label for="ea">' . wfMessage( 'smw_exportrdf_lastdate' )->text() . '</label></input><br />' . "\n";
+			$html .= '<input type="text" name="date" value="' . date( DATE_W3C, mktime( 0, 0, 0, 1, 1, 2000 ) ) . '" id="date">&#160;<label for="ea">' . $this->msg( 'smw_exportrdf_lastdate' )->text() . '</label></input><br />' . "\n";
 		}
 
-		$html .= '<br /><input type="submit"  value="' . wfMessage( 'smw_exportrdf_submit' )->text() . "\"/>\n</form>";
+		$html .= '<br /><input type="submit"  value="' . $this->msg( 'smw_exportrdf_submit' )->text() . "\"/>\n</form>";
 
-		$wgOut->addHTML( $html );
+		$out->addHTML( $html );
 	}
 
 	/**
-	 * Prepare $wgOut for printing non-HTML data.
+	 * Prepare $this->getOutput() for printing non-HTML data.
 	 */
 	protected function startRDFExport() {
-		global $wgOut, $wgRequest;
+		$out = $this->getOutput();
+		$request = $this->getRequest();
 
 		$exporterFactory = new ExporterFactory();
 
-		$syntax = $wgRequest->getText( 'syntax' );
+		$syntax = $request->getText( 'syntax' );
 
 		if ( $syntax === '' ) {
-			$syntax = $wgRequest->getVal( 'syntax' );
+			$syntax = $request->getVal( 'syntax' );
 		}
 
-		$wgOut->disable();
+		$out->disable();
 		ob_start();
 
 		if ( $syntax == 'turtle' ) {
@@ -130,7 +135,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 			// We do not add this parameter to RDF links within the export
 			// though; it is only meant to help some tools to see that HTML
 			// included resources are RDF (from there on they should be fine).
-			$mimetype = ( $wgRequest->getVal( 'xmlmime' ) == 'rdf' ) ? 'application/rdf+xml' : 'application/xml';
+			$mimetype = ( $request->getVal( 'xmlmime' ) == 'rdf' ) ? 'application/rdf+xml' : 'application/xml';
 			$serializer = $exporterFactory->newRDFXMLSerializer();
 		}
 
@@ -144,18 +149,20 @@ class SMWSpecialOWLExport extends SpecialPage {
 	 * @param array $pages containing the string names of pages to be exported
 	 */
 	protected function exportPages( $pages ) {
-		global $wgRequest, $smwgExportBacklinks, $smwgAllowRecursiveExport;
+		global $smwgExportBacklinks, $smwgAllowRecursiveExport;
+
+		$request = $this->getRequest();
 
 		$user = $this->getUser();
 
 		// Effect: assume "no" from missing parameters generated by checkboxes.
-		$postform = $wgRequest->getText( 'postform' ) == 1;
+		$postform = $request->getText( 'postform' ) == 1;
 
 		$recursive = 0;  // default, no recursion
-		$rec = $wgRequest->getText( 'recursive' );
+		$rec = $request->getText( 'recursive' );
 
 		if ( $rec === '' ) {
-			$rec = $wgRequest->getVal( 'recursive' );
+			$rec = $request->getVal( 'recursive' );
 		}
 
 		if ( ( $rec == '1' ) && ( $smwgAllowRecursiveExport || $user->isAllowed( 'delete' ) ) ) {
@@ -163,22 +170,22 @@ class SMWSpecialOWLExport extends SpecialPage {
 		}
 
 		$backlinks = $smwgExportBacklinks; // default
-		$bl = $wgRequest->getText( 'backlinks' );
+		$bl = $request->getText( 'backlinks' );
 
 		if ( $bl === '' ) {
 			// TODO: wtf? this does not make a lot of sense...
-			$bl = $wgRequest->getVal( 'backlinks' );
+			$bl = $request->getVal( 'backlinks' );
 		}
 
 		if ( ( $bl == '1' ) && ( $user->isAllowed( 'delete' ) ) ) {
 			$backlinks = true; // admins can always switch on backlinks
-		} elseif ( ( $bl == '0' ) || ( '' == $bl && $postform ) ) {
+		} elseif ( ( $bl == '0' ) || ( $bl == '' && $postform ) ) {
 			$backlinks = false; // everybody can explicitly switch off backlinks
 		}
 
-		$date = $wgRequest->getText( 'date' );
+		$date = $request->getText( 'date' );
 		if ( $date === '' ) {
-			$date = $wgRequest->getVal( 'date', '' );
+			$date = $request->getVal( 'date', '' );
 		}
 
 		if ( $date !== '' ) {

@@ -2,15 +2,15 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 use SMWQueryProcessor;
 
 /**
  * @group semantic-mediawiki
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9.2
  *
  * @author mwjames
@@ -165,7 +165,7 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	protected function makeQueryResultFromRawParameters( $rawParams ) {
-		list( $query, $params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $params ] = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
 			SMWQueryProcessor::INLINE_QUERY,

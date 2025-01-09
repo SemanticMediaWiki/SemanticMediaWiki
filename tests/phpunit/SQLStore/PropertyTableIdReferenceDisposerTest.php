@@ -11,7 +11,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\SQLStore\PropertyTableIdReferenceDisposer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -271,7 +271,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return call_user_func( $callback );
 			}
 			);
@@ -322,7 +322,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return $callback();
 			} );
 

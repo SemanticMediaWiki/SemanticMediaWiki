@@ -3,18 +3,18 @@
 namespace SMW\Tests\Integration;
 
 use ReflectionClass;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Serializers\SemanticDataSerializer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Subobject;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

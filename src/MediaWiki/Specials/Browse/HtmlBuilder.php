@@ -4,19 +4,19 @@ namespace SMW\MediaWiki\Specials\Browse;
 
 use Html;
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\RequestOptions;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMWDataValue;
 use TemplateParser;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author Denny Vrandecic
@@ -35,42 +35,42 @@ class HtmlBuilder {
 	private $subject;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showoutgoing = true;
 
 	/**
 	 * To display incoming values?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showincoming = false;
 
 	/**
 	 * At which incoming property are we currently?
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $offset = 0;
 
 	/**
 	 * How many incoming values should be asked for
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $incomingValuesCount = 8;
 
 	/**
 	 * How many outgoing values should be asked for
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $outgoingValuesCount = 200;
 
 	/**
 	 * How many incoming properties should be asked for
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $incomingPropertiesCount = 21;
 
@@ -303,7 +303,7 @@ class HtmlBuilder {
 		}
 
 		if ( $this->showincoming ) {
-			list( $indata, $more ) = $this->getInData();
+			[ $indata, $more ] = $this->getInData();
 
 			if ( !$this->getOption( 'showInverse' ) ) {
 				$leftside = !$leftside;
@@ -626,7 +626,7 @@ class HtmlBuilder {
 
 		// Sort by label instead of the key which may start with `_` or `__`
 		// and thereby distorts the lexicographical order
-		usort( $properties, function ( $a, $b ) {
+		usort( $properties, static function ( $a, $b ) {
 			return strnatcmp( $a->getLabel(), $b->getLabel() );
 		} );
 

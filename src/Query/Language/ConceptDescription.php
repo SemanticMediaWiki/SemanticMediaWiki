@@ -10,7 +10,7 @@ use SMW\DIWikiPage;
  * Corresponds to classes in (the EL fragment of) OWL DL, and to some extent to
  * tree-shaped queries in SPARQL.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch

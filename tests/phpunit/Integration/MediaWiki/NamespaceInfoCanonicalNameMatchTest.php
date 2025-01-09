@@ -4,14 +4,13 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Settings;
-use SMW\Tests\Utils\MwHooksHandler;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\MwHooksHandler;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

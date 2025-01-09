@@ -4,14 +4,14 @@ namespace SMW\Tests\Query\ResultPrinters;
 
 use ParamProcessor\ParamDefinition;
 use SMW\Query\ResultPrinters\ResultPrinter;
-use SMWQueryProcessor as QueryProcessor;
 use SMW\Tests\PHPUnitCompat;
+use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @covers \SMW\Query\ResultPrinters\ResultPrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >

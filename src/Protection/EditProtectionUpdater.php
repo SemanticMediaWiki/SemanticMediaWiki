@@ -16,7 +16,7 @@ use User;
 use WikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -34,12 +34,12 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	private $user;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRestrictedUpdate = false;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $editProtectionRight = false;
 
@@ -54,7 +54,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	 * @param WikiPage $wikiPage
 	 * @param User|null $user
 	 */
-	public function __construct( WikiPage $wikiPage, User $user = null ) {
+	public function __construct( WikiPage $wikiPage, ?User $user = null ) {
 		$this->wikiPage = $wikiPage;
 		$this->user = $user;
 
@@ -77,7 +77,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param string|bool $editProtectionRight
 	 */
 	public function setEditProtectionRight( $editProtectionRight ) {
 		$this->editProtectionRight = $editProtectionRight;
@@ -86,7 +86,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRestrictedUpdate() {
 		return $this->isRestrictedUpdate;
@@ -103,7 +103,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 			return;
 		}
 
-		list( $isEditProtected, $isAnnotationBySystem ) = $this->fetchEditProtectedInfo( $semanticData );
+		[ $isEditProtected, $isAnnotationBySystem ] = $this->fetchEditProtectedInfo( $semanticData );
 
 		$title = $this->wikiPage->getTitle();
 

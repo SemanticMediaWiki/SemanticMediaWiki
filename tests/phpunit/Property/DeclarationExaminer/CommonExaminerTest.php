@@ -2,17 +2,17 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
-use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\DataItemFactory;
-use SMW\SemanticData;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Property\DeclarationExaminer\CommonExaminer;
+use SMW\SemanticData;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\CommonExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

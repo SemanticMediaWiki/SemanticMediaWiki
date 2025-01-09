@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Localizer\LocalLanguage;
 
-use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\Localizer\LocalLanguage\LanguageContents;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
  * @covers \SMW\Localizer\LocalLanguage
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
