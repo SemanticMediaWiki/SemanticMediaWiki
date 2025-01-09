@@ -483,14 +483,14 @@ class SMWExportController {
 	 */
 	protected function printAll( $ns_restriction, $delay, $delayeach ) {
 		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
-		$db = wfGetDB( DB_REPLICA );
+		$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 
 		$this->delay_flush = 10;
 
 		$this->serializer->startSerialization();
 		$this->serializer->serializeExpData( $this->expDataFactory->newOntologyExpData( '' ) );
 
-		$end = $db->selectField( 'page', 'max(page_id)', false, __METHOD__ );
+		$end = $dbr->selectField( 'page', 'max(page_id)', false, __METHOD__ );
 		$a_count = 0; // DEBUG
 		$d_count = 0; // DEBUG
 		$delaycount = $delayeach;
@@ -550,7 +550,7 @@ class SMWExportController {
 	public function printPageList( $offset = 0, $limit = 30 ) {
 		global $smwgNamespacesWithSemanticLinks;
 
-		$db = wfGetDB( DB_REPLICA );
+		$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
@@ -564,10 +564,10 @@ class SMWExportController {
 				if ( $query !== '' ) {
 					$query .= ' OR ';
 				}
-				$query .= 'page_namespace = ' . $db->addQuotes( $ns );
+				$query .= 'page_namespace = ' . $dbr->addQuotes( $ns );
 			}
 		}
-		$res = $db->select( $db->tableName( 'page' ),
+		$res = $dbr->select( $dbr->tableName( 'page' ),
 							'page_id,page_title,page_namespace', $query,
 							'SMW::RDF::PrintPageList', [ 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ] );
 		$foundpages = false;
