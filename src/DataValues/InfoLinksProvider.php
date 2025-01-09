@@ -114,7 +114,7 @@ class InfoLinksProvider {
 	 *
 	 * @since 2.4
 	 *
-	 * @param Infolink $link
+	 * @param Infolink $infoLink
 	 */
 	public function addInfolink( Infolink $infoLink ) {
 		$this->infoLinks[] = $infoLink;

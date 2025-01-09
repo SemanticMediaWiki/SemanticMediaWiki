@@ -33,7 +33,7 @@ class HtmlModal {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $html
+	 * @param string $name
 	 * @param array $attributes
 	 *
 	 * @return string
@@ -64,7 +64,7 @@ class HtmlModal {
 	 *
 	 * @since 3.1
 	 *
-	 * @param string $html
+	 * @param string $name
 	 * @param array $attributes
 	 *
 	 * @return string
@@ -85,6 +85,7 @@ class HtmlModal {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string $title
 	 * @param string $html
 	 * @param array $attributes
 	 *

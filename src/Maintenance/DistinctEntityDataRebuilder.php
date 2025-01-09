@@ -74,7 +74,7 @@ class DistinctEntityDataRebuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param MessageReporter $reporter
+	 * @param Options $options
 	 */
 	public function setOptions( Options $options ) {
 		$this->options = $options;

@@ -70,7 +70,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @since 1.9
 	 *
-	 * @param int $propertyId
+	 * @param int $pid
 	 * @param int $value
 	 *
 	 * @return bool Success indicator

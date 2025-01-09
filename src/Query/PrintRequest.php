@@ -271,10 +271,10 @@ class PrintRequest {
 	/**
 	 * Serialise this object like print requests given in \#ask.
 	 *
-	 * @param $params boolean that sets if the serialization should
+	 * @param $showParams boolean that sets if the serialization should
 	 *                include the extra print request parameters
 	 */
-	public function getSerialisation( $showparams = false ) {
+	public function getSerialisation( $showParams = false ) {
 		// In case of  disconnected instance (QueryProcessor::addThisPrintout as
 		// part of a post-processing) return an empty serialization when the
 		// mainLabel is available to avoid an extra `?...`
@@ -282,7 +282,7 @@ class PrintRequest {
 			return '';
 		}
 
-		return Serializer::serialize( $this, $showparams );
+		return Serializer::serialize( $this, $showParams );
 	}
 
 	/**

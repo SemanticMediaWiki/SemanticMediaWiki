@@ -131,7 +131,9 @@ class SchemaContentFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Schema $schema
+	 * @param $text
+	 * @param Schema|null $schema
+	 * @param array $errors
 	 *
 	 * @return string
 	 */

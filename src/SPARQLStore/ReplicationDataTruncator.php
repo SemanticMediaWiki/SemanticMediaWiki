@@ -32,7 +32,7 @@ class ReplicationDataTruncator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SemanticData $semanticDat
+	 * @param SemanticData $semanticData
 	 *
 	 * @return SemanticData
 	 */

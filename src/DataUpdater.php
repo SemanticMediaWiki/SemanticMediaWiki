@@ -117,7 +117,7 @@ class DataUpdater {
 	/**
 	 * @since 3.0
 	 *
-	 * @param bool $isChangeProp
+	 * @param bool $isDeferrableUpdate
 	 */
 	public function isDeferrableUpdate( $isDeferrableUpdate ) {
 		$this->isDeferrableUpdate = (bool)$isDeferrableUpdate;

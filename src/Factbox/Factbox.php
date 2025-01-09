@@ -190,7 +190,8 @@ class Factbox {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $rendered
+	 * @param string $list
+	 * @param string $attachment
 	 * @param string $derived
 	 */
 	public static function tabs( $list, $attachment = '', $derived = '' ): string {

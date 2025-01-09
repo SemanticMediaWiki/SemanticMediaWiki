@@ -428,7 +428,7 @@ class DataTypeRegistry {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string $diType
+	 * @param string $typeId
 	 *
 	 * @return string|null
 	 */

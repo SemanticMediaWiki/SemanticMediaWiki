@@ -293,7 +293,7 @@ class TestEnvironment {
 	 * @since 2.5
 	 *
 	 * @param int $index
-	 * @param string $url
+	 * @param string $text
 	 *
 	 * @return string
 	 */

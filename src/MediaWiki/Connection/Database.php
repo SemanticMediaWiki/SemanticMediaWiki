@@ -219,6 +219,7 @@ class Database {
 	 * @param string $tableName
 	 * @param $fields
 	 * @param array|string $conditions
+	 * @param string $fname
 	 * @param array $options
 	 * @param array $joinConditions
 	 *

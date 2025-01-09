@@ -35,7 +35,7 @@ class StripMarkerDecoder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param bool $decoderState
+	 * @param bool $isSupported
 	 */
 	public function isSupported( $isSupported ) {
 		$this->isSupported = $isSupported;

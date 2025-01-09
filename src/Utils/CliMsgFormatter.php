@@ -56,7 +56,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $string
+	 * @param string $text
 	 *
 	 * @return string
 	 */
@@ -67,7 +67,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $string
+	 * @param string $text
 	 *
 	 * @return string
 	 */
@@ -78,7 +78,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $string
+	 * @param string $text
 	 *
 	 * @return string
 	 */
@@ -270,7 +270,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $value
+	 * @param string $message
 	 * @param int $seconds
 	 */
 	public function countDown( string $message, int $seconds ) {

@@ -110,7 +110,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @param Skin $skin provided by MediaWiki, not needed here
 	 * @param mixed $result
 	 *
-	 * @return String
+	 * @return string
 	 * @throws InvalidResultException if the result was not of a supported type
 	 */
 	function formatResult( $skin, $result ) {

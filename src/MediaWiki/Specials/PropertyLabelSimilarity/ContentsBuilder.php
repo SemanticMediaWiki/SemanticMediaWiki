@@ -40,7 +40,7 @@ class ContentsBuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param RequestOptions $requestOption
+	 * @param RequestOptions $requestOptions
 	 */
 	public function getHtml( RequestOptions $requestOptions ) {
 		$threshold = 90;

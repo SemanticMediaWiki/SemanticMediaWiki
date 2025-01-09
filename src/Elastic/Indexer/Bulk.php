@@ -88,7 +88,7 @@ class Bulk implements JsonSerializable {
 	 * @since 3.0
 	 *
 	 * @param array $params
-	 * @param array $source
+	 * @param array $doc
 	 */
 	public function upsert( array $params, array $doc ) {
 		$this->bulk['body'][] = [ 'update' => $params + $this->head ];

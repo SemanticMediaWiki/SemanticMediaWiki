@@ -47,7 +47,7 @@ class Sequence {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $tableName
+	 * @param string $table
 	 * @param string $field
 	 *
 	 * @return string
@@ -59,7 +59,7 @@ class Sequence {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $tableName
+	 * @param string $table
 	 * @param string $field
 	 *
 	 * @return int

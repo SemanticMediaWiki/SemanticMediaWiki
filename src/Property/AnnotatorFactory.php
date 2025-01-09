@@ -117,7 +117,7 @@ class AnnotatorFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SemanticData $semanticData
+	 * @param PropertyAnnotator $propertyAnnotator
 	 * @param Title $title
 	 *
 	 * @return EditProtectedPropertyAnnotator
@@ -187,9 +187,8 @@ class AnnotatorFactory {
 			$defaultSort
 		);
 
-		$displayTitlePropertyAnnotator->canCreateAnnotation(
-			( ApplicationFactory::getInstance()->getSettings()->get( 'smwgDVFeatures' ) & SMW_DV_WPV_DTITLE ) != 0
-		);
+		$smwgDVFeatures = ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgDVFeatures' ) & SMW_DV_WPV_DTITLE );
+		$displayTitlePropertyAnnotator->canCreateAnnotation( $smwgDVFeatures != 0 );
 
 		return $displayTitlePropertyAnnotator;
 	}

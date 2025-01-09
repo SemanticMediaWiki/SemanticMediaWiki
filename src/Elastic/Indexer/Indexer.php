@@ -96,7 +96,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $type
+	 * @param DIWikiPage $dataItem
 	 *
 	 * @return string
 	 */

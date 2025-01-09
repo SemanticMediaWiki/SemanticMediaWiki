@@ -28,7 +28,7 @@ class File {
 	 * @since 3.0
 	 *
 	 * @param string $file
-	 * @param string $content
+	 * @param string $contents
 	 * @param int $flags
 	 */
 	public function write( $file, $contents, $flags = 0 ) {

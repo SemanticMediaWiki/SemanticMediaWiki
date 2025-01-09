@@ -99,7 +99,7 @@ function smwfAbort( $text ) {
  * $icon should be one of: 'warning' (default), 'info'.
  *
  * @param array $messages
- * @param string $icon Acts like an enum. Callers must ensure safety, since this value is used directly in the output.
+ * @param string $type Acts like an enum. Callers must ensure safety, since this value is used directly in the output.
  * @param string $separator
  * @param bool $escape Should the messages be escaped or not (ie when they already are)
  *
