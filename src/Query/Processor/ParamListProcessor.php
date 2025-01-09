@@ -3,7 +3,6 @@
 namespace SMW\Query\Processor;
 
 use SMW\Query\PrintRequestFactory;
-use SMW\Query\Processor\SizeFormatterOption;
 
 /**
  * @private
