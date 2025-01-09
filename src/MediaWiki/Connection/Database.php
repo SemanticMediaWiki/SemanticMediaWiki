@@ -425,6 +425,23 @@ class Database {
 	}
 
 	/**
+	 * @see IDatabase::begin
+	 *
+	 * @since 5.0
+	 */
+	public function begin( $fname = __METHOD__ ) {
+		return $this->connRef->getConnection( 'write' )->begin( $fname );
+	}
+
+	/**
+	 * @see IDatabase::commit
+	 *
+	 * @since 5.0
+	 */
+	public function commit( $fname = __METHOD__ ) {
+		return $this->connRef->getConnection( 'write' )->commit( $fname );
+	}
+	/**
 	 * @see IDatabase::affectedRows
 	 *
 	 * @since 1.9
