@@ -32,19 +32,6 @@ div.smwtt {
 	color: #000000;
 }
 
-/* Tooltips, show persistent tooltips for non-JavaScript clients */
-span.smwttpersist span.smwttcontent {
-	color: #888888;
-	font-style: italic;
-	font-size: 90%;
-}
-
-/* Tooltips, hide inline tooltips for non-JavaScript clients */
-span.smwttinline span.smwttcontent {
-	display: none;
-	speak: none;
-}
-
 /* Tooltips, colored anchors? */
 span.smwttactivepersist {
 	cursor: help;
@@ -63,11 +50,6 @@ img.smwttimg {
 	padding-left: 4px;
 }
 
-/* New tooltip content is always hidden */
-.smwttcontent {
-	display: none;
-}
-
 /* New tooltip icon defaults */
 .smwtticon {
 	padding: 12px 12px 0 0;
@@ -79,37 +61,48 @@ img.smwttimg {
 	background-position: left bottom;
 	background-repeat: no-repeat;
 	background-size: 12px 12px;
+
+	h2 & {
+		vertical-align: 2px;
+	}
+
+	big & {
+		vertical-align: 0px;
+	}
+
+	/* New tooltip, Individual assigned icons ( inline-block is important because the icon <span> is empty) */
+	&.info {
+		background-image: url( ../assets/smw-icon-tooltip-info.png );
+	}
+
+	&.question {
+		background-image: url( ../assets/smw-icon-tooltip-question.png );
+	}
+
+	&.service {
+		background-image: url( ../assets/smw-icon-tooltip-question.png );
+	}
+
+	&.warning {
+		background-image: url( ../assets/smw-icon-tooltip-warning.png );
+	}
+
+	&.error {
+		background-image: url( ../assets/smw-icon-tooltip-error.png );
+	}
+
+	&.note {
+		background-image: url( ../assets/smw-icon-tooltip-question.png );
+	}
 }
 
-h2 .smwtticon {
-	vertical-align: 2px;
-}
+/* New tooltip content is always hidden */
+.smwttcontent {
+	display: none;
 
-big .smwtticon {
-	vertical-align: 0px;
-}
-
-/* New tooltip, Individual assigned icons ( inline-block is important because the icon <span> is empty) */
-.smwtticon.info {
-	background-image: url( ../assets/smw-icon-tooltip-info.png );
-}
-
-.smwtticon.question {
-	background-image: url( ../assets/smw-icon-tooltip-question.png );
-}
-
-.smwtticon.service {
-	background-image: url( ../assets/smw-icon-tooltip-question.png );
-}
-
-.smwtticon.warning {
-	background-image: url( ../assets/smw-icon-tooltip-warning.png );
-}
-
-.smwtticon.error {
-	background-image: url( ../assets/smw-icon-tooltip-error.png );
-}
-
-.smwtticon.note {
-	background-image: url( ../assets/smw-icon-tooltip-question.png );
+	/* Tooltips, hide inline tooltips for non-JavaScript clients */
+	span.smwttinline & {
+		display: none;
+		speak: none;
+	}
 }
