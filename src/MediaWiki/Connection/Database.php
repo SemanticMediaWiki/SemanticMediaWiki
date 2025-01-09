@@ -441,6 +441,7 @@ class Database {
 	public function commit( $fname = __METHOD__ ) {
 		return $this->connRef->getConnection( 'write' )->commit( $fname );
 	}
+
 	/**
 	 * @see IDatabase::affectedRows
 	 *
