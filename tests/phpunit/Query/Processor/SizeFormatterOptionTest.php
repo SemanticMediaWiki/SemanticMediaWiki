@@ -34,8 +34,7 @@ class SizeFormatterOptionTest extends TestCase {
 		$this->assertEquals( $expectedParams, $result['serialization']['printouts'][self::MAIN_IMAGE]['params'] );
 	}
 
-	public function sizeParameterProvider(): array
-	{
+	public function sizeParameterProvider(): array {
 		return [
 			'width parameter' => [ 'width', '50px', self::MAIN_IMAGE . ' #50px', [ 'width' => '50px' ] ],
 			'height parameter' => [ 'height', '90px', self::MAIN_IMAGE . ' #x90px', [ 'height' => '90px' ] ],

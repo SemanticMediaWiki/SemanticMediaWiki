@@ -2,8 +2,6 @@
 
 namespace SMW\Query\Processor;
 
-use InvalidArgumentException;
-
 /**
  * The interface is used as custom options formatter used in ask queries
  * Custom created formatter like SizeFormatterOption or LinkFormatterOption implements

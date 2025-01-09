@@ -4,8 +4,6 @@ namespace SMW\Query\Processor;
 
 use SMW\Query\PrintRequestFactory;
 use SMW\Query\Processor\SizeFormatterOption;
-use SMW\Query\Processor\LinkFormatterOption;
-use SMW\Query\Processor\TableHeaderFormatterOption;
 
 /**
  * @private

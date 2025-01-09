@@ -25,7 +25,8 @@ class LinkFormatterOption implements FormatterOptionsInterface {
 	 */
 	const PRINT_THIS = 'print.this';
 
-	public function addPrintRequest( $name, $param, $previousPrintout, $serialization ) {}
+	public function addPrintRequest( $name, $param, $previousPrintout, $serialization ) {
+	}
 
 	public function addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization ) {
 		if ( $previousPrintout === null ) {
