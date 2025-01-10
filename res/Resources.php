@@ -131,7 +131,7 @@ return [
 	// Critical CSS for ext.smw.tooltip
 	'ext.smw.tooltip.styles' => $moduleTemplate + [
 		'styles' => [
-			'smw/util/ext.smw.tooltip.css'
+			'smw/util/ext.smw.tooltip.less'
 		],
 		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
