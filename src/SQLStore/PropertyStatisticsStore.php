@@ -116,7 +116,7 @@ class PropertyStatisticsStore {
 	 * @since 5.0
 	 *
 	 * @param string $field
-	 * @param string $delta
+	 * @param int $delta
 	 *
 	 * @return string
 	 */
