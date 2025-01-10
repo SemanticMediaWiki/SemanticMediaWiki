@@ -64,14 +64,7 @@ class TransactionHandler {
 			return null;
 		}
 
-		if ( method_exists( $this->transactionProfiler, 'silenceForScope' ) ) {
-			return $this->transactionProfiler->silenceForScope();
-		} else {
-			$this->transactionProfiler->setSilenced( true );
-			return new ScopedCallback( function () {
-				$this->transactionProfiler->setSilenced( false );
-			} );
-		}
+		return $this->transactionProfiler->silenceForScope();
 	}
 
 	/**
@@ -174,7 +167,7 @@ class TransactionHandler {
 	 * @param array $opts Options to waitForReplication
 	 */
 	public function commitAndWaitForReplication( $fname, $ticket, array $opts = [] ) {
-		if ( !is_int( $ticket ) || !method_exists( $this->loadBalancerFactory, 'commitAndWaitForReplication' ) ) {
+		if ( !is_int( $ticket ) ) {
 			return;
 		}
 
@@ -182,11 +175,6 @@ class TransactionHandler {
 	}
 
 	private function primaryDbHasChanges(): bool {
-		if ( method_exists( $this->loadBalancerFactory, 'hasPrimaryChanges' ) ) {
-			return $this->loadBalancerFactory->hasPrimaryChanges();
-		} else {
-			return $this->loadBalancerFactory->hasMasterChanges();
-		}
+		return $this->loadBalancerFactory->hasPrimaryChanges();
 	}
-
 }
