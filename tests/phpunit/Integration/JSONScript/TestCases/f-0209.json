@@ -40,7 +40,8 @@
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
-		}
+		},
+		"smwgEnabledDeferredUpdate": false
 	},
 	"meta": {
 		"version": "2",
