@@ -109,7 +109,7 @@ class DIUriHandler extends DataItemHandler {
 
 		return [
 			'o_blob' => $text,
-			'o_serialized' => $serialization,
+			'o_serialized' => substr( $serialization, 0, $this->getMaxLength() ),
 		];
 	}
 
