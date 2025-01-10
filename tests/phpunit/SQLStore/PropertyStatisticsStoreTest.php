@@ -256,7 +256,8 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 				],
 				[ [ 'p_id' ] ],
 				[
-					'p_id' => 42
+					'usage_count' => 1,
+					'null_count' => 9999,
 				],
 				$this->anything() );
 
@@ -310,7 +311,8 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 					] ),
 				[ [ 'p_id' ] ],
 				[
-					'p_id' => 42
+					'usage_count' => 12,
+					'null_count' => 0,
 				],
 				$this->anything() );
 
