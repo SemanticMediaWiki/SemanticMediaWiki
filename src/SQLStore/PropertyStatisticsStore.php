@@ -216,7 +216,8 @@ class PropertyStatisticsStore {
 			],
 			[ [ 'p_id' ] ],
 			[
-				'p_id' => $propertyId
+				'usage_count' => $usageCount,
+				'null_count' => $nullCount,
 			],
 			__METHOD__
 		);
