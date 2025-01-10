@@ -5,7 +5,6 @@ namespace SMW\SQLStore;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
-use Wikimedia\Rdbms\DBQueryError;
 
 /**
  * Simple implementation of PropertyStatisticsTable using MediaWikis
@@ -71,7 +70,7 @@ class PropertyStatisticsStore {
 	 * @since 1.9
 	 *
 	 * @param int $pid
-	 * @param int $value
+	 * @param int|array $value
 	 *
 	 * @return bool Success indicator
 	 */
@@ -98,26 +97,39 @@ class PropertyStatisticsStore {
 			return true;
 		}
 
-		try {
-			$this->connection->update(
-				SQLStore::PROPERTY_STATISTICS_TABLE,
-				[
-					'usage_count = usage_count ' . ( $usageVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $usageVal ) ),
-					'null_count = null_count ' . ( $nullVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $nullVal ) ),
-				],
-				[
-					'p_id' => $pid
-				],
-				__METHOD__
-			);
-		} catch ( DBQueryError $e ) {
-			// #2345 Do nothing as it most likely an "Error: 1264 Out of range
-			// value for column" in strict mode
-			// As an unsigned int, we expected it to be 0
-			$this->setUsageCount( $pid, [ 0, 0 ] );
-		}
+		$this->connection->update(
+			SQLStore::PROPERTY_STATISTICS_TABLE,
+			[
+				$this->safeIncrement( 'usage_count', $usageVal ),
+				$this->safeIncrement( 'null_count', $nullVal )
+			],
+			[
+				'p_id' => $pid
+			],
+			__METHOD__
+		);
 
 		return true;
+	}
+
+	/**
+	 * @since 5.0
+	 *
+	 * @param string $field
+	 * @param string $delta
+	 *
+	 * @return string
+	 */
+	private function safeIncrement( string $field, int $delta ) {
+		if ( $delta < 0 ) {
+			return $field . '=' . $this->connection->conditional(
+				$this->connection->expr( $field, '>=', abs( $delta ) ),
+				$field . ' - ' . $this->connection->addQuotes( abs( $delta ) ),
+				0
+			);
+		} else {
+			return "$field = $field + " . $this->connection->addQuotes( abs( $delta ) );
+		}
 	}
 
 	/**
@@ -166,49 +178,6 @@ class PropertyStatisticsStore {
 	}
 
 	/**
-	 * Updates an existing usage count.
-	 *
-	 * @since 1.9
-	 *
-	 * @param int $propertyId
-	 * @param int $value
-	 *
-	 * @return bool Success indicator
-	 * @throws PropertyStatisticsInvalidArgumentException
-	 */
-	public function setUsageCount( $propertyId, $value ) {
-		$usageCount = 0;
-		$nullCount = 0;
-
-		if ( is_array( $value ) ) {
-			$usageCount = $value[0];
-			$nullCount = $value[1];
-		} else {
-			$usageCount = $value;
-		}
-
-		if ( !is_int( $usageCount ) || $usageCount < 0 || !is_int( $nullCount ) || $nullCount < 0 ) {
-			throw new PropertyStatisticsInvalidArgumentException( 'The value to add must be a positive integer' );
-		}
-
-		if ( !is_int( $propertyId ) || $propertyId <= 0 ) {
-			throw new PropertyStatisticsInvalidArgumentException( 'The property id to add must be a positive integer' );
-		}
-
-		return $this->connection->update(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			[
-				'usage_count' => $usageCount,
-				'null_count' => $nullCount,
-			],
-			[
-				'p_id' => $propertyId
-			],
-			__METHOD__
-		);
-	}
-
-	/**
 	 * Adds a new usage count.
 	 *
 	 * @since 1.9
@@ -238,20 +207,19 @@ class PropertyStatisticsStore {
 			throw new PropertyStatisticsInvalidArgumentException( 'The property id to add must be a positive integer' );
 		}
 
-		try {
-			$this->connection->insert(
-				SQLStore::PROPERTY_STATISTICS_TABLE,
-				[
-					'usage_count' => $usageCount,
-					'null_count' => $nullCount,
-					'p_id' => $propertyId,
-				],
-				__METHOD__
-			);
-		} catch ( DBQueryError $e ) {
-			// Most likely hit "Error: 1062 Duplicate entry ..."
-			$this->setUsageCount( $propertyId, $value );
-		}
+		$this->connection->upsert(
+			SQLStore::PROPERTY_STATISTICS_TABLE,
+			[
+				'usage_count' => $usageCount,
+				'null_count' => $nullCount,
+				'p_id' => $propertyId,
+			],
+			[ [ 'p_id' ] ],
+			[
+				'p_id' => $propertyId
+			],
+			__METHOD__
+		);
 
 		return true;
 	}
