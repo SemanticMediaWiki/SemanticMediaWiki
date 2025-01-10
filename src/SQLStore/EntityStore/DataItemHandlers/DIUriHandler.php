@@ -90,7 +90,8 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return [ 'o_serialized' => rawurldecode( $dataItem->getSerialization() ) ];
+		$serialization = rawurldecode( $dataItem->getSerialization() );
+		return [ 'o_serialized' => substr( $serialization, 0, $this->getMaxLength() ) ];
 	}
 
 	/**
