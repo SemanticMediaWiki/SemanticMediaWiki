@@ -479,11 +479,29 @@ class SMWExportController {
 	}
 
 	/**
+	 * Get a handle for performing database read operations.
+	 *
+	 * This is pretty much wfGetDB() in disguise with support for MW 1.39+
+	 * _without_ triggering WMF CI warnings/errors.
+	 *
+	 * @see https://phabricator.wikimedia.org/T273239
+	 *
+	 * @return \Wikimedia\Rdbms\IDatabase|\Wikimedia\Rdbms\IReadableDatabase
+	 */
+	public static function getDBHandle () {
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			return MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+		} else {
+			return MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
+		}
+	}
+
+	/**
 	 * @since 2.0 made protected; use printAllToFile or printAllToOutput
 	 */
 	protected function printAll( $ns_restriction, $delay, $delayeach ) {
 		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
-		$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+		$dbr = self::getDBHandle();
 
 		$this->delay_flush = 10;
 
@@ -550,7 +568,7 @@ class SMWExportController {
 	public function printPageList( $offset = 0, $limit = 30 ) {
 		global $smwgNamespacesWithSemanticLinks;
 
-		$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+		$dbr = self::getDBHandle();
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
