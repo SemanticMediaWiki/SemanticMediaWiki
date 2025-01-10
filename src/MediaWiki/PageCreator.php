@@ -24,12 +24,7 @@ class PageCreator {
 	 * @return WikiPage
 	 */
 	public function createPage( Title $title ) {
-		if ( method_exists( WikiPageFactory::class, 'newFromTitle' ) ) {
-			return MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
-		} else {
-			// MW <= 1.35
-			return WikiPage::factory( $title );
-		}
+		return MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
 	}
 
 	/**
