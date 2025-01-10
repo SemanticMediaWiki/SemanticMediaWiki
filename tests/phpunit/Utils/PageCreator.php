@@ -66,11 +66,8 @@ class PageCreator {
 			$services->getHookContainer()->register( 'PageContentLanguage', static function ( $titleByHook, &$pageLang ) use( $title, $pageContentLanguage ) {
 				// Only change the pageContentLanguage for the selected page
 				if ( $title->getPrefixedDBKey() === $titleByHook->getPrefixedDBKey() ) {
-					$pageLang = $pageContentLanguage;
+					$pageLang = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( $pageContentLanguage );
 				}
-
-				// MW 1.19
-				return true;
 			} );
 		}
 
