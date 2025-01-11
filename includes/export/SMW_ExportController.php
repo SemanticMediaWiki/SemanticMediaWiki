@@ -489,7 +489,7 @@ class SMWExportController {
 	 * @return \Wikimedia\Rdbms\IDatabase|\Wikimedia\Rdbms\IReadableDatabase
 	 */
 	public static function getDBHandle() {
-		if ( version_compare( MW_VERSION, '1.40', '>=' ) ) {
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
 			return MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 		} else {
 			return MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
