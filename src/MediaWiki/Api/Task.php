@@ -42,13 +42,7 @@ class Task extends ApiBase {
 		);
 
 		if ( json_last_error() !== JSON_ERROR_NONE || !is_array( $parameters ) ) {
-
-			// 1.29+
-			if ( method_exists( $this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-api-invalid-parameters' ] );
-			} else {
-				$this->dieUsageMsg( 'smw-api-invalid-parameters' );
-			}
+			$this->dieWithError( [ 'smw-api-invalid-parameters' ] );
 		}
 
 		$this->taskFactory = new TaskFactory();
