@@ -31,7 +31,7 @@ trait MessageLocalizerTrait {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string|array $args
+	 * @param string|array ...$args
 	 *
 	 * @return string
 	 */

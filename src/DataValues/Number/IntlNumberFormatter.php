@@ -163,6 +163,7 @@ class IntlNumberFormatter {
 	 * precision settings, with some intelligence to produce readable output. Used
 	 * to format a number that was not hand-formatted by a user.
 	 *
+	 * @param $value
 	 * @param int|false $precision optional positive integer, controls how many digits after
 	 * the decimal point are shown
 	 */

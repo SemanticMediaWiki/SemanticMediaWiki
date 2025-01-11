@@ -53,7 +53,7 @@ class EntityCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param string|array $key
+	 * @param array ...$params
 	 *
 	 * @return string
 	 */
@@ -78,7 +78,7 @@ class EntityCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param string|array $key
+	 * @param array ...$params
 	 *
 	 * @return string
 	 */
@@ -139,7 +139,7 @@ class EntityCache {
 	 * @since 3.1
 	 *
 	 * @param string $key
-	 * @param mixed $value
+	 * @param mixed $sub
 	 */
 	public function fetchSub( $key, $sub ) {
 		$res = $this->cache->fetch( $key );

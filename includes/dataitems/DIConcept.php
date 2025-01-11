@@ -68,14 +68,14 @@ class DIConcept extends \SMWDataItem {
 	/**
 	 * @param string $concept the concept query string
 	 * @param string $docu user documentation
-	 * @param int $queryefeatures flags about query features
+	 * @param int $queryFeatures flags about query features
 	 * @param int $size concept query size
 	 * @param int $depth concept query depth
 	 */
-	public function __construct( $concept, $docu, $queryfeatures, $size, $depth ) {
+	public function __construct( $concept, $docu, $queryFeatures, $size, $depth ) {
 		$this->m_concept  = $concept;
 		$this->m_docu     = $docu;
-		$this->m_features = $queryfeatures;
+		$this->m_features = $queryFeatures;
 		$this->m_size     = $size;
 		$this->m_depth    = $depth;
 	}

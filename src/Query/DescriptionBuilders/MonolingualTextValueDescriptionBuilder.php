@@ -38,6 +38,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 	/**
 	 * @since 2.4
 	 *
+	 * @param MonolingualTextValue $dataValue
 	 * @param string $value
 	 *
 	 * @return Description

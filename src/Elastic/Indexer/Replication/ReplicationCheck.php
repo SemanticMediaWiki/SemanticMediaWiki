@@ -116,7 +116,7 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage|Title $title
+	 * @param DIWikiPage|Title $subject
 	 */
 	public function deleteReplicationTrail( $subject ) {
 		if ( $subject instanceof \Title ) {

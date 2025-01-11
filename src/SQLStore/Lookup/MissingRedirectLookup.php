@@ -40,7 +40,7 @@ class MissingRedirectLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @param array $namesspaces
+	 * @param array $namespaces
 	 */
 	public function setNamespaceMatrix( array $namespaces ) {
 		$this->namespaces = $namespaces;

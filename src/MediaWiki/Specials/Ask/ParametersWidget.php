@@ -128,8 +128,7 @@ class ParametersWidget {
 	 *
 	 * @since 1.8
 	 *
-	 * @param string $format
-	 * @param array $parameters The current values for the parameters (name => value)
+	 * @param array $values The current values for the parameters (name => value)
 	 *
 	 * @return string
 	 */

@@ -389,7 +389,10 @@ class InTextAnnotationParser {
 	 *
 	 * @since 1.9
 	 *
+	 * @param $subject
 	 * @param array $properties
+	 * @param $value
+	 * @param $valueCaption
 	 *
 	 * @return string
 	 */

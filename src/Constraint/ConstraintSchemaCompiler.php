@@ -28,6 +28,7 @@ class ConstraintSchemaCompiler {
 	/**
 	 * @since 3.1
 	 *
+	 * @param SchemaFinder $schemaFinder
 	 * @param PropertySpecificationLookup $propertySpecificationLookup
 	 */
 	public function __construct( SchemaFinder $schemaFinder, PropertySpecificationLookup $propertySpecificationLookup ) {

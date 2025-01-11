@@ -28,7 +28,7 @@ class ValueFormatter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DataValue $value
+	 * @param DataValue $dataValue
 	 *
 	 * @return string
 	 */
@@ -61,9 +61,10 @@ class ValueFormatter {
 	 *
 	 * @since 2.5
 	 *
-	 * @param DataValue $value
-	 * @param PropertyValue $property
+	 * @param DataValue $dataValue
+	 * @param PropertyValue $propertyValue
 	 * @param bool $incoming
+	 * @param \User|null $user
 	 *
 	 * @return string
 	 */
@@ -131,7 +132,7 @@ class ValueFormatter {
 	 *
 	 * @since 2.5
 	 *
-	 * @param PropertyValue $property
+	 * @param PropertyValue $propertyValue
 	 * @param bool $incoming
 	 * @param bool $showInverse
 	 *

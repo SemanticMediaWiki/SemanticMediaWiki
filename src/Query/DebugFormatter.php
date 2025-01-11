@@ -125,7 +125,7 @@ class DebugFormatter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param array $rows
+	 * @param iterable $res
 	 *
 	 * @return string
 	 */

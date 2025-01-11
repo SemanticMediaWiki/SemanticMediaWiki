@@ -864,8 +864,10 @@ abstract class SMWDataValue {
 	/**
 	 * @since 2.4
 	 *
-	 * @return string $key
-	 * @param mxied $value
+	 * @param string $key
+	 * @param mixed $value
+	 *
+	 * @return void
 	 */
 	public function setOption( $key, $value ) {
 		if ( $this->options === null ) {

@@ -42,7 +42,7 @@ class IteratorFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Iterator/array $$iterable
+	 * @param Iterator|array $iterable
 	 * @param int $chunkSize
 	 *
 	 * @return ChunkedIterator

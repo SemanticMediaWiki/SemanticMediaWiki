@@ -137,7 +137,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param DataItem $type
 	 *
 	 * @return bool
 	 */

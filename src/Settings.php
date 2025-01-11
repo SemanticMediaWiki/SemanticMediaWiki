@@ -301,7 +301,7 @@ class Settings extends Options {
 	 * @since 3.2
 	 *
 	 * @param string $key
-	 * @param mixed $key
+	 * @param mixed $mung
 	 *
 	 * @return mixed
 	 * @throws RuntimeException

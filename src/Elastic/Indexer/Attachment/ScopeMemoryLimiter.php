@@ -22,7 +22,7 @@ class ScopeMemoryLimiter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $url
+	 * @param string $memoryLimit
 	 *
 	 * @return string
 	 */

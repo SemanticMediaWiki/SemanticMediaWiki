@@ -39,7 +39,6 @@ class QueryResultDependencyListResolver {
 	/**
 	 * @since 2.3
 	 *
-	 * @param $queryResult Can be a string for when format=Debug
 	 * @param HierarchyLookup $hierarchyLookup
 	 */
 	public function __construct( HierarchyLookup $hierarchyLookup ) {

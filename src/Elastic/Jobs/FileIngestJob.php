@@ -36,7 +36,8 @@ class FileIngestJob extends Job {
 	/**
 	 * @since 3.2
 	 *
-	 * @param File|null $file
+	 * @param Title $title
+	 * @param array $params
 	 */
 	public static function pushIngestJob( Title $title, array $params = [] ) {
 		if ( $title->getNamespace() !== NS_FILE ) {

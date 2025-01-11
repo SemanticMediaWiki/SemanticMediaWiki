@@ -153,8 +153,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * might not be entirely correct. Especially, the SPARQL 1.1 HTTP error
 	 * codes for Update are not defined yet (April 15 2011).
 	 *
-	 * @param $pingQueryEndpoint boolean true if the query endpoint should be
-	 * pinged, false if the update endpoint should be pinged
+	 * @param int $endpointType
 	 *
 	 * @return bool to indicate success
 	 */
@@ -220,8 +219,10 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * rdfs, property, xsd, so these do not have to be included in
 	 * $extraNamespaces.
 	 *
-	 * @param $where string WHERE part of the query, without surrounding { }
-	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @param string|array $vars
+	 * @param string $where WHERE part of the query, without surrounding { }
+	 * @param array $options
+	 * @param aray $extraNamespaces (associative) of namespaceId => namespaceUri
 	 *
 	 * @return string SPARQL query
 	 */

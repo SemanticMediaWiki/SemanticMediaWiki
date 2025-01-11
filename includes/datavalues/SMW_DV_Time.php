@@ -315,13 +315,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * If errors occur, error messages are added to the objects list of
 	 * errors, and false is returned. Otherwise, true is returned.
 	 *
-	 * @param $datecomponents array of strings that might belong to the specification of a date
-	 * @param $calendarmodesl string if model was set in input, otherwise false
-	 * @param $era string '+' or '-' if provided, otherwise false
-	 * @param $hours integer value between 0 and 24
-	 * @param $minutes integer value between 0 and 59
-	 * @param $seconds integer value between 0 and 59, or false if not given
-	 * @param $timeoffset double value for time offset (e.g. 3.5), or false if not given
+	 * @param $components
 	 *
 	 * @return bool stating if successful
 	 */

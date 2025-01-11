@@ -3,7 +3,6 @@
 namespace SMW;
 
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use Page;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use Title;
 
@@ -113,7 +112,7 @@ class DependencyValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Page $page
+	 * @param DIWikiPage $subject
 	 *
 	 * @return bool
 	 */

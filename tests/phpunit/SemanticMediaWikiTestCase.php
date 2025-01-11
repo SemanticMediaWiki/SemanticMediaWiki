@@ -92,7 +92,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 	 * @since 1.9
 	 *
 	 * @param $namespace
-	 * @param null $text|null
+	 * @param null $text
 	 *
 	 * @return Title
 	 */
@@ -137,7 +137,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Returns RequestContext object
 	 *
-	 * @param array $params
+	 * @param array $request
 	 *
 	 * @return RequestContext
 	 */

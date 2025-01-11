@@ -8,7 +8,6 @@ use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilterFactory;
 use SMW\Schema\SchemaFactory;
 use SMW\Utils\TemplateEngine;
-use SMW\Utils\UrlArgs;
 
 /**
  * @license GPL-2.0-or-later
@@ -71,7 +70,6 @@ class FilterFactory {
 	/**
 	 * @since 3.2
 	 *
-	 * @param UrlArgs $urlArgs
 	 * @param array $params
 	 *
 	 * @return ValueFilter

@@ -110,7 +110,8 @@ class SearchResult {
 	/**
 	 * @since 3.0
 	 *
-	 * @param int $cutoff
+	 * @param array $results
+	 * @param int|null $cutoff
 	 *
 	 * @return
 	 */

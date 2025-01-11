@@ -22,7 +22,7 @@ class UniquenessConstraintValue extends BooleanValue {
 	/**
 	 * @see DataValue::parseUserValue
 	 *
-	 * @param string $value
+	 * @param string $userValue
 	 */
 	protected function parseUserValue( $userValue ) {
 		if ( !$this->isEnabledFeature( SMW_DV_PVUC ) ) {
