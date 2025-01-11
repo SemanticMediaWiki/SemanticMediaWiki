@@ -479,18 +479,36 @@ class SMWExportController {
 	}
 
 	/**
+	 * Get a handle for performing database read operations.
+	 *
+	 * This is pretty much wfGetDB() in disguise with support for MW 1.39+
+	 * _without_ triggering WMF CI warnings/errors.
+	 *
+	 * @see https://phabricator.wikimedia.org/T273239
+	 *
+	 * @return \Wikimedia\Rdbms\IDatabase|\Wikimedia\Rdbms\IReadableDatabase
+	 */
+	public static function getDBHandle() {
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			return MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+		} else {
+			return MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
+		}
+	}
+
+	/**
 	 * @since 2.0 made protected; use printAllToFile or printAllToOutput
 	 */
 	protected function printAll( $ns_restriction, $delay, $delayeach ) {
 		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
-		$db = wfGetDB( DB_REPLICA );
+		$dbr = self::getDBHandle();
 
 		$this->delay_flush = 10;
 
 		$this->serializer->startSerialization();
 		$this->serializer->serializeExpData( $this->expDataFactory->newOntologyExpData( '' ) );
 
-		$end = $db->selectField( 'page', 'max(page_id)', false, __METHOD__ );
+		$end = $dbr->selectField( 'page', 'max(page_id)', false, __METHOD__ );
 		$a_count = 0; // DEBUG
 		$d_count = 0; // DEBUG
 		$delaycount = $delayeach;
@@ -550,7 +568,7 @@ class SMWExportController {
 	public function printPageList( $offset = 0, $limit = 30 ) {
 		global $smwgNamespacesWithSemanticLinks;
 
-		$db = wfGetDB( DB_REPLICA );
+		$dbr = self::getDBHandle();
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
@@ -564,10 +582,10 @@ class SMWExportController {
 				if ( $query !== '' ) {
 					$query .= ' OR ';
 				}
-				$query .= 'page_namespace = ' . $db->addQuotes( $ns );
+				$query .= 'page_namespace = ' . $dbr->addQuotes( $ns );
 			}
 		}
-		$res = $db->select( $db->tableName( 'page' ),
+		$res = $dbr->select( $dbr->tableName( 'page' ),
 							'page_id,page_title,page_namespace', $query,
 							'SMW::RDF::PrintPageList', [ 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ] );
 		$foundpages = false;
