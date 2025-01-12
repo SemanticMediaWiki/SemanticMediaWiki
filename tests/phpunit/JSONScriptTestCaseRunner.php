@@ -153,6 +153,11 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 			Localizer::clear();
 			// #4682, Avoid any surprises when the `wgLanguageCode` is changed during a test
 			\SMW\NamespaceManager::clear();
+
+			// Fixes #5951.
+			MediaWikiServices::getInstance()->resetServiceForTesting( 'TitleParser' );
+			MediaWikiServices::getInstance()->resetServiceForTesting( '_MediaWikiTitleCodec' );
+
 			$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 			$lang = $languageFactory->getLanguage( $val );
 
