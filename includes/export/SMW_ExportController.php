@@ -489,10 +489,14 @@ class SMWExportController {
 	 * @return \Wikimedia\Rdbms\IDatabase|\Wikimedia\Rdbms\IReadableDatabase
 	 */
 	public static function getDBHandle() {
-		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
-			return MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
-		} else {
-			return MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
+		try {
+			if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+				return MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+			} else {
+				return MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
+			}
+		} catch ( Exception $e ) {
+			throw new RuntimeException( 'Failed to obtain database handle: ' . $e->getMessage(), 0, $e );
 		}
 	}
 
