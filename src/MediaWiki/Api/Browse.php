@@ -38,12 +38,7 @@ class Browse extends ApiBase {
 		if ( json_last_error() !== JSON_ERROR_NONE || !is_array( $parameters ) ) {
 			$error = new JSONParseException( $params['params'] );
 
-			// 1.29+
-			if ( method_exists( $this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-api-invalid-parameters', 'JSON: ' . $error->getMessage() ] );
-			} else {
-				$this->dieUsage( 'JSON: ' . $error->getMessage(), 'smw-api-invalid-parameters' );
-			}
+			$this->dieWithError( [ 'smw-api-invalid-parameters', 'JSON: ' . $error->getMessage() ] );
 		}
 
 		if ( $params['browse'] === 'category' ) {
@@ -261,19 +256,9 @@ class Browse extends ApiBase {
 		try {
 			$res = $subjectLookup->lookup( $parameters );
 		} catch ( RedirectTargetUnresolvableException $e ) {
-			// 1.29+
-			if ( method_exists( $this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
-			} else {
-				$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable' );
-			}
+			$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
 		} catch ( ParameterNotFoundException $e ) {
-			// 1.29+
-			if ( method_exists( $this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-parameter-missing', $e->getName() ] );
-			} else {
-				$this->dieUsage( $e->getName(), 'smw-parameter-missing' );
-			}
+			$this->dieWithError( [ 'smw-parameter-missing', $e->getName() ] );
 		}
 
 		return $res;
