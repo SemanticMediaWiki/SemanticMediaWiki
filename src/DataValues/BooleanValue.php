@@ -101,14 +101,10 @@ class BooleanValue extends DataValue {
 			$this->falseCaption = '&nbsp;';
 		} else { // format "truelabel, falselabel" (hopefully)
 			$captions = explode( ',', $formatstring, 2 );
-			if ( count( $captions ) == 2 ) { // note: escaping needed to be safe; MW-sanitising would be an alternative
-				if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
-					$this->trueCaption = \Sanitizer::removeSomeTags( trim( $captions[0] ) );
-					$this->falseCaption = \Sanitizer::removeSomeTags( trim( $captions[1] ) );
-				} else {
-					$this->trueCaption = \Sanitizer::removeHTMLtags( trim( $captions[0] ) );
-					$this->falseCaption = \Sanitizer::removeHTMLtags( trim( $captions[1] ) );
-				}
+			if ( count( $captions ) == 2 ) {
+				// note: escaping needed to be safe; MW-sanitising would be an alternative
+				$this->trueCaption = Sanitizer::removeSomeTags( trim( $captions[0] ) );
+				$this->falseCaption = Sanitizer::removeSomeTags( trim( $captions[1] ) );
 			} // else: no format that is recognised, ignore
 		}
 
