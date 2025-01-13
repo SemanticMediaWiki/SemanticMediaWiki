@@ -304,11 +304,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		if ( Image::isImage( $this->m_dataitem ) && $this->m_dataitem->getInterwiki() === '' && !$noImage ) {
 			$linkEscape = '';
-			if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
-				$sanitizedHtml = Sanitizer::removeSomeTags( $this->m_outformat );
-			} else {
-				$sanitizedHtml = Sanitizer::removeHTMLtags( $this->m_outformat );
-			}
+			$sanitizedHtml = Sanitizer::removeSomeTags( $this->m_outformat );
 			$options = $this->m_outformat === false ? 'frameless|border|text-top|' : str_replace( ';', '|', $sanitizedHtml );
 			$defaultCaption = '|' . $this->getShortCaptionText() . '|' . $options;
 		} else {
@@ -359,19 +355,11 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->m_outformat == '-' || $this->m_caption === '' ) {
 
 			$caption = $this->m_caption === false ? $this->getWikiValue() : $this->m_caption;
-			if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
-				return Sanitizer::removeSomeTags( $caption );
-			} else {
-				return Sanitizer::removeHTMLtags( $caption );
-			}
+			return Sanitizer::removeSomeTags( $caption );
 		}
 
 		$caption = $this->m_caption === false ? $this->getShortCaptionText() : $this->m_caption;
-		if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
-			$caption = Sanitizer::removeSomeTags( $caption );
-		} else {
-			$caption = Sanitizer::removeHTMLtags( $caption );
-		}
+		$caption = Sanitizer::removeSomeTags( $caption );
 
 		if ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
 			return $linker->makeMediaLinkObj( $this->getTitle(), $caption );
@@ -453,11 +441,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 
-		if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
-			$sanitizerCallback = [ Sanitizer::class, 'removeSomeTags' ];
-		} else {
-			$sanitizerCallback = [ Sanitizer::class, 'removeHTMLtags' ];
-		}
+		$sanitizerCallback = [ Sanitizer::class, 'removeSomeTags' ];
 
 		if ( $linker === null || $linker === false || $this->m_outformat == '-' ) {
 			return call_user_func( $sanitizerCallback, $this->getWikiValue() );

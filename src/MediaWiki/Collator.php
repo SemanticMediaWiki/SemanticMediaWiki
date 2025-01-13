@@ -59,12 +59,7 @@ class Collator {
 
 		if ( !isset( self::$instance[$collationName] ) ) {
 			$services = MediaWikiServices::getInstance();
-			// BC for MW <= 1.36
-			if ( method_exists( $services, 'getCollationFactory' ) ) {
-				$collation = $services->getCollationFactory()->makeCollation( $collationName );
-			} else {
-				$collation = Collation::factory( $collationName );
-			}
+			$collation = $services->getCollationFactory()->makeCollation( $collationName );
 
 			self::$instance[$collationName] = new self( $collation, $collationName );
 		}

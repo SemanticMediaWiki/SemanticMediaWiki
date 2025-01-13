@@ -94,13 +94,7 @@ class EditInfo {
 			$content->getContentHandler()->getDefaultFormat()
 		);
 
-		// #3943
-		// https://github.com/wikimedia/mediawiki/commit/fdbb64f3546e6fda0ee0ce003467b4cfb13a090f
-		if ( method_exists( $prepareEdit, 'getOutput' ) ) {
-			$this->parserOutput = $prepareEdit->getOutput();
-		} else {
-			$this->parserOutput = isset( $prepareEdit->output ) ? $prepareEdit->output : null;
-		}
+		$this->parserOutput = $prepareEdit->getOutput();
 
 		return $this;
 	}

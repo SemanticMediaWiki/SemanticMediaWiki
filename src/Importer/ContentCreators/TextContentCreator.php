@@ -63,10 +63,6 @@ class TextContentCreator implements ContentCreator {
 	 * @param ImportContents $importContents
 	 */
 	public function create( ImportContents $importContents ) {
-		if ( !class_exists( 'ContentHandler' ) ) {
-			return $this->messageReporter->reportMessage( "\nContentHandler doesn't exist therefore importing is not possible.\n" );
-		}
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$indent = '   ...';
