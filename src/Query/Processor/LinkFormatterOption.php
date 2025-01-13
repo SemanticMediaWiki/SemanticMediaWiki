@@ -15,64 +15,64 @@ namespace SMW\Query\Processor;
  */
 class LinkFormatterOption implements FormatterOptionsInterface {
 
-    const FORMAT_LEGACY = 'format.legacy';
-    const PRINT_THIS = 'print.this';
+	const FORMAT_LEGACY = 'format.legacy';
+	const PRINT_THIS = 'print.this';
 
-    public function addPrintRequest( $name, $param, $previousPrintout, $serialization ) {
-        // Implementation omitted.
-    }
+	public function addPrintRequest( $name, $param, $previousPrintout, $serialization ) {
+		// Implementation omitted.
+	}
 
-    public function addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization ) {
-        if ( $previousPrintout === null ) {
-            return;
-        }
+	public function addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization ) {
+		if ( $previousPrintout === null ) {
+			return;
+		}
 
-        $param = substr( $param, 1 );
+		$param = substr( $param, 1 );
 
-        if ( !empty( $param ) ) {
-            $label = $serialization['printouts'][$previousPrintout]['label'] ?? '';
+		if ( !empty( $param ) ) {
+			$label = $serialization['printouts'][$previousPrintout]['label'] ?? '';
 
-            // Use helper method to format label.
-            $labelToSave = $this->formatLabel( $label, $param );
+			// Use helper method to format label.
+			$labelToSave = $this->formatLabel( $label, $param );
 
-            // Save the label in serialization.
-            $serialization['printouts'][$previousPrintout] = [
-                'label' => $labelToSave,
-                'params' => [],
-            ];
-        } else {
-            $serialization['printouts'][$previousPrintout]['params'] = null;
-        }
+			// Save the label in serialization.
+			$serialization['printouts'][$previousPrintout] = [
+				'label' => $labelToSave,
+				'params' => [],
+			];
+		} else {
+			$serialization['printouts'][$previousPrintout]['params'] = null;
+		}
 
-        return [
-            'serialization' => $serialization,
-            'previousPrintout' => $previousPrintout,
-        ];
-    }
+		return [
+			'serialization' => $serialization,
+			'previousPrintout' => $previousPrintout,
+		];
+	}
 
-    /**
-     * Formats a label based on parameters and existing label content.
-     *
-     * @param string $label The existing label.
-     * @param string $param The parameter to append.
-     * @return string The formatted label.
-     */
-    private function formatLabel( $label, $param ) {
-        if ( str_contains( $label, '#' ) ) {
-            if ( str_contains( $label, '=' ) ) {
-                $parts = explode( '=', $label );
-                return $parts[0] . ';' . $param . $parts[1];
-            }
-            return str_replace( '=', '', $label . ';' . $param );
-        }
+	/**
+	 * Formats a label based on parameters and existing label content.
+	 *
+	 * @param string $label The existing label.
+	 * @param string $param The parameter to append.
+	 * @return string The formatted label.
+	 */
+	private function formatLabel( $label, $param ) {
+		if ( str_contains( $label, '#' ) ) {
+			if ( str_contains( $label, '=' ) ) {
+				$parts = explode( '=', $label );
+				return $parts[0] . ';' . $param . $parts[1];
+			}
+			return str_replace( '=', '', $label . ';' . $param );
+		}
 
-        if ( str_contains( $label, '=' ) ) {
-            $parts = explode( '=', $label );
-            return $parts[0] !== ''
-                ? $parts[0] . '#' . $param . $parts[1]
-                : str_replace( '=', '', $label . ' #' . $param );
-        }
+		if ( str_contains( $label, '=' ) ) {
+			$parts = explode( '=', $label );
+			return $parts[0] !== ''
+				? $parts[0] . '#' . $param . $parts[1]
+				: str_replace( '=', '', $label . ' #' . $param );
+		}
 
-        return str_replace( '=', '', $label . ' #' . $param );
-    }
+		return str_replace( '=', '', $label . ' #' . $param );
+	}
 }
