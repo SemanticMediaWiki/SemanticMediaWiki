@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Search;
 
 use Content;
-use SearchEngine;
 use RuntimeException;
+use SearchEngine;
 use Title;
 use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
