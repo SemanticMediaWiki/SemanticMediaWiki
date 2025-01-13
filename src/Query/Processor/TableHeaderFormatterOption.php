@@ -4,27 +4,21 @@ namespace SMW\Query\Processor;
 
 /**
  * The class supports formatter option to format table headers
- * The class implements FormatterOptionsInterface which holds the
- * functions for adding print requests and handling parameters
+ * Implements FormatterOptionsInterface for adding print requests
+ * and handling parameters.
  *
  * @license GNU GPL v2+
- * @since 3.0
+ * @since 5.0.0
  *
  * @author milic
  */
 class TableHeaderFormatterOption implements FormatterOptionsInterface {
 
-	/**
-	 * Format type
-	 */
 	const FORMAT_LEGACY = 'format.legacy';
-
-	/**
-	 * Identify the PrintThis instance
-	 */
 	const PRINT_THIS = 'print.this';
 
 	public function addPrintRequest( $name, $param, $previousPrintout, $serialization ) {
+		// Implementation omitted.
 	}
 
 	public function addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization ) {
@@ -37,33 +31,12 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 		$parts = [];
 
 		if ( !empty( $param ) ) {
-			// check the previous label, remove and split it by '='
-			$label = $serialization['printouts'][$previousPrintout]['label'];
-			$partsLabel = explode( '=', $label );
+			$label = $serialization['printouts'][$previousPrintout]['label'] ?? '';
 
-			if ( isset( $partsLabel[1] ) && $partsLabel[1] === '' && !strpos( $partsLabel[0], '#' ) ) {
-				$labelToSave = $label . ' ' . '#' . $param;
-				$labelToSave = str_replace( '=', '', $labelToSave );
-			} else {
-				if ( strpos( $label, '#' ) ) {
-					$parts = explode( '=', $label );
-					if ( count( $parts ) > 1 ) {
-						$labelToSave = $parts[0] . ';' . $param . '=' . $parts[1];
-					} else {
-						$labelToSave = $label . ';' . $param;
-						$labelToSave = str_replace( '=', '', $labelToSave );
-					}
-				} else {
-					$labelToSave = $label . ' ' . '#' . $param;
-					$parts = explode( '=', $labelToSave );
-					if ( count( $parts ) === 1 ) {
-						$labelToSave = str_replace( '=', '', $labelToSave );
-					} else {
-						$labelToSave = $parts[0] . '' . $parts[2] . '=' . $parts[1];
-					}
-				}
-			}
+			// Use helper method to format label.
+			$labelToSave = $this->formatLabel( $label, $param );
 
+			// Save the label in serialization.
 			$serialization['printouts'][$previousPrintout] = [
 				'label' => $labelToSave,
 				'params' => []
@@ -77,5 +50,37 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 			'serialization' => $serialization,
 			'previousPrintout' => $previousPrintout,
 		];
+	}
+
+	/**
+	 * Formats a label based on parameters and existing label content.
+	 *
+	 * @param string $label The existing label.
+	 * @param string $param The parameter to append.
+	 * @return string The formatted label.
+	 */
+	private function formatLabel( $label, $param ) {
+		$partsLabel = explode( '=', $label );
+
+		if ( isset( $partsLabel[1] ) && $partsLabel[1] === '' && !strpos( $partsLabel[0], '#' ) ) {
+			return str_replace( '=', '', $label . ' ' . '#' . $param );
+		} else {
+			if ( strpos( $label, '#' ) ) {
+				$parts = explode( '=', $label );
+				if ( count( $parts ) > 1 ) {
+					return $parts[0] . ';' . $param . '=' . $parts[1];
+				} else {
+					return str_replace( '=', '', $label . ';' . $param );
+				}
+			} else {
+				$labelToSave = $label . ' ' . '#' . $param;
+				$parts = explode( '=', $labelToSave );
+				if ( count( $parts ) === 1 ) {
+					return str_replace( '=', '', $labelToSave );
+				} else {
+					return $parts[0] . '' . $parts[2] . '=' . $parts[1];
+				}
+			}
+		}
 	}
 }
