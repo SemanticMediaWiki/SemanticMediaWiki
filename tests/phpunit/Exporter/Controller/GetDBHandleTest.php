@@ -21,9 +21,6 @@ class GetDBHandleTest extends TestCase {
 	public function testGetDBHandle() {
 		$mwVersion = MW_VERSION;
 
-		// Store original instance for cleanup
-		$originalServices = MediaWikiServices::getInstance();
-
 		if ( version_compare( $mwVersion, '1.42', '>=' ) ) {
 			$connectionProvider = $this->createMock( \Wikimedia\Rdbms\ConnectionProvider::class );
 			$replicaDatabase = $this->createMock( \Wikimedia\Rdbms\IDatabase::class );
@@ -32,7 +29,7 @@ class GetDBHandleTest extends TestCase {
 			$mediaWikiServices = $this->createMock( MediaWikiServices::class );
 			$mediaWikiServices->method( 'getConnectionProvider' )->willReturn( $connectionProvider );
 
-			MediaWikiServices::setInstanceForTesting( $mediaWikiServices );
+			MediaWikiServices::getInstance()->setService( 'ConnectionProvider', $connectionProvider );
 
 			$this->assertSame( $replicaDatabase, SMWExportController::getDBHandle() );
 
@@ -45,9 +42,10 @@ class GetDBHandleTest extends TestCase {
 			$mediaWikiServices->method( 'getConnectionProvider' )
 				->willReturn( $connectionProvider );
 
-			MediaWikiServices::setInstanceForTesting( $mediaWikiServices );
+			MediaWikiServices::getInstance()->setService( 'ConnectionProvider', $connectionProvider );
 
 			$this->expectException( \RuntimeException::class );
+			$this->expectExceptionMessage( 'Failed to obtain database handle: Connection failed' );
 			SMWExportController::getDBHandle();
 		} else {
 			$dbLoadBalancer = $this->createMock( \Wikimedia\Rdbms\LoadBalancer::class );
@@ -60,12 +58,12 @@ class GetDBHandleTest extends TestCase {
 			$mediaWikiServices = $this->createMock( MediaWikiServices::class );
 			$mediaWikiServices->method( 'getDBLoadBalancer' )->willReturn( $dbLoadBalancer );
 
-			MediaWikiServices::setInstanceForTesting( $mediaWikiServices );
+			MediaWikiServices::getInstance()->setService( 'DBLoadBalancer', $dbLoadBalancer );
 
 			$this->assertSame( $replicaDatabase, SMWExportController::getDBHandle() );
 		}
 
 		// Cleanup
-		MediaWikiServices::setInstanceForTesting( $originalServices );
+		MediaWikiServices::getInstance()->resetServices();
 	}
 }
