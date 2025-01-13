@@ -214,10 +214,7 @@ class IdCacheManager {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $title
-	 * @param int $namespace
-	 * @param string $interwiki
-	 * @param string $subobject
+	 * @param $args
 	 *
 	 * @return string|bool
 	 */

@@ -49,7 +49,7 @@ class PropertyTableDefinitionBuilder {
 	/**
 	 * @since 1.9
 	 *
-	 * @param array $diType
+	 * @param array $diTypes
 	 * @param array $specialProperties
 	 * @param array $userDefinedFixedProperties
 	 */

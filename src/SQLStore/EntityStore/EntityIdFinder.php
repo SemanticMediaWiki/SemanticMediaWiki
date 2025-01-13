@@ -6,7 +6,6 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\SQLStore\propertyTable\propertyTableHashes;
-use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
 
 /**
@@ -43,7 +42,7 @@ class EntityIdFinder {
 	 * @since 3.1
 	 *
 	 * @param Database $connection
-	 * @param RedirectStore $redirectStore
+	 * @param PropertyTableHashes $propertyTableHashes
 	 * @param IdCacheManager $idCacheManager
 	 */
 	public function __construct( Database $connection, PropertyTableHashes $propertyTableHashes, IdCacheManager $idCacheManager ) {

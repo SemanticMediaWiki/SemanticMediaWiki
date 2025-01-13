@@ -238,7 +238,6 @@ class MessageFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param bool $escape
 	 * @param bool $html
 	 *
 	 * @return string

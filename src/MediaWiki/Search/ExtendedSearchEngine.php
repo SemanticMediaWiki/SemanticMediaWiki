@@ -73,7 +73,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @since 2.1
 	 *
-	 * @param null|SearchEngine $fallbackSearch
+	 * @param null|SearchEngine $fallbackSearchEngine
 	 */
 	public function setFallbackSearchEngine( ?SearchEngine $fallbackSearchEngine = null ) {
 		$this->fallbackSearchEngine = $fallbackSearchEngine;

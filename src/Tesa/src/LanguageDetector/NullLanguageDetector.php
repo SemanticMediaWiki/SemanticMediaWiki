@@ -13,7 +13,7 @@ class NullLanguageDetector implements LanguageDetector {
 	/**
 	 * @since 0.1
 	 *
-	 * @param string $word
+	 * @param string $text
 	 *
 	 * @return null
 	 */

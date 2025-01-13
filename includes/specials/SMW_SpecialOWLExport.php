@@ -179,7 +179,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 		if ( ( $bl == '1' ) && ( $user->isAllowed( 'delete' ) ) ) {
 			$backlinks = true; // admins can always switch on backlinks
-		} elseif ( ( $bl == '0' ) || ( '' == $bl && $postform ) ) {
+		} elseif ( ( $bl == '0' ) || ( $bl == '' && $postform ) ) {
 			$backlinks = false; // everybody can explicitly switch off backlinks
 		}
 

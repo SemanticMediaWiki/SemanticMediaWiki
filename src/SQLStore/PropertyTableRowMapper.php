@@ -103,7 +103,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param array $fieldArray
+	 * @param array $array
 	 *
 	 * @return string
 	 */

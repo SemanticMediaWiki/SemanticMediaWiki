@@ -8,7 +8,6 @@ use SMW\DependencyValidator;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
-use Title;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue
@@ -46,7 +45,7 @@ class RejectParserCacheValue implements HookListener {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Title $title
+	 * @param Page $page
 	 *
 	 * @return bool
 	 */

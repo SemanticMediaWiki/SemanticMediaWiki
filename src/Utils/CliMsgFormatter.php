@@ -56,7 +56,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $string
+	 * @param string $text
 	 *
 	 * @return string
 	 */
@@ -67,7 +67,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $string
+	 * @param string $text
 	 *
 	 * @return string
 	 */
@@ -78,7 +78,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $string
+	 * @param string $text
 	 *
 	 * @return string
 	 */
@@ -95,7 +95,20 @@ class CliMsgFormatter {
 	 * @return string
 	 */
 	public function progress( int $i, int $total ): string {
-		return min( 100, round( ( $i / $total ) * 100 ) ) . " %";
+		return $this->calculateProgress( $i, $total ) . " %";
+	}
+
+	/**
+	 * @codeCoverageIgnore
+	 */
+	private function calculateProgress( int $i, int $total ): int {
+		$value = 100;
+
+		if ( $i >= 0 && $total > 0 ) {
+			$value = min( 100, round( ( $i / $total ) * 100 ) );
+		}
+
+		return $value;
 	}
 
 	/**
@@ -118,7 +131,7 @@ class CliMsgFormatter {
 			$last = $total;
 		}
 
-		$progress = min( 100, round( ( $i / $total ) * 100 ) );
+		$progress = $this->calculateProgress( $i, $total );
 
 		if ( $remainingTime === null ) {
 			return sprintf( "%s / %s (%3.0f%%)", $current, $last, $progress );
@@ -257,7 +270,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $value
+	 * @param string $message
 	 * @param int $seconds
 	 */
 	public function countDown( string $message, int $seconds ) {

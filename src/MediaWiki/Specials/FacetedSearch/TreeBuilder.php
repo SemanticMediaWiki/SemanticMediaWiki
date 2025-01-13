@@ -69,7 +69,7 @@ class TreeBuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @param array $categories
+	 * @param array $subjects
 	 * @param string $type
 	 *
 	 * @return

@@ -160,7 +160,7 @@ class PropertyChainValue extends StringValue {
 	 * @see DataValue::parseUserValue
 	 * @note called by DataValue::setUserValue
 	 *
-	 * @param string $userValue
+	 * @param string $value
 	 */
 	protected function parseUserValue( $value ) {
 		if ( $value === '' ) {

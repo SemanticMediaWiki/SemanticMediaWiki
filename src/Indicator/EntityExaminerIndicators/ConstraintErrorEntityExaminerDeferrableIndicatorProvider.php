@@ -20,7 +20,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProvider extends Constrain
 	/**
 	 * @since 3.2
 	 *
-	 * @param bool $type
+	 * @param bool $isDeferredMode
 	 */
 	public function setDeferredMode( bool $isDeferredMode ) {
 		$this->isDeferredMode = $isDeferredMode;

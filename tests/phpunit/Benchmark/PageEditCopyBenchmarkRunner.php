@@ -74,7 +74,7 @@ class PageEditCopyBenchmarkRunner {
 	/**
 	 * @since 2.5
 	 *
-	 * @param int|null $copyCount
+	 * @param int|null $editRepetitionCount
 	 */
 	public function setEditRepetitionCount( $editRepetitionCount = null ) {
 		$this->editRepetitionCount = $editRepetitionCount;

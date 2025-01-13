@@ -182,7 +182,7 @@ class HtmlFormRenderer {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $description
+	 * @param string $text
 	 * @param array $attributes
 	 *
 	 * @return HtmlFormRenderer
@@ -293,7 +293,7 @@ class HtmlFormRenderer {
 	 * @param string $name
 	 * @param string $value
 	 * @param string|null $id
-	 * @param int $length
+	 * @param int $size
 	 * @param array $attributes
 	 *
 	 * @return HtmlFormRenderer

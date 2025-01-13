@@ -91,7 +91,7 @@ class RestrictionExaminer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $error
+	 * @param string $errorMsg
 	 *
 	 * @return DIProperty|null
 	 */

@@ -65,25 +65,22 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testNewDefaultFallbackSearchEngineForNullFallbackSearchType() {
 		$searchEngine = 'SearchDatabase';
 
-		if ( class_exists( 'SearchEngine' ) ) {
+		$reflection = new \ReflectionClass( 'SearchEngine' );
 
-			$reflection = new \ReflectionClass( 'SearchEngine' );
-
-			if ( $reflection->isInstantiable() ) {
-				$searchEngine = 'SearchEngine';
-			}
+		if ( $reflection->isInstantiable() ) {
+			$searchEngine = 'SearchEngine';
 		}
 
 		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
 			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getSearchEngine' ] )
-			->getMockForAbstractClass();
+				->disableOriginalConstructor()
+				->setMethods( [ 'getSearchEngine' ] )
+				->getMockForAbstractClass();
 		} else {
 			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getSearchEngine' ] )
-			->getMockForAbstractClass();
+				->disableOriginalConstructor()
+				->setMethods( [ 'getSearchEngine' ] )
+				->getMockForAbstractClass();
 		}
 
 		$connection->expects( $this->any() )

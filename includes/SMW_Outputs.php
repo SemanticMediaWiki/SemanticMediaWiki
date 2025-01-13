@@ -85,7 +85,7 @@ class SMWOutputs {
 	 * recorded multiple times in SMWOutputs.
 	 *
 	 * @param string $id
-	 * @param string $item
+	 * @param string $script
 	 */
 	public static function requireScript( $id, $script ) {
 		self::$scripts[$id] = $script;

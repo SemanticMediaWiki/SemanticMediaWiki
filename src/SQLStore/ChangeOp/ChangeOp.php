@@ -110,6 +110,7 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @since 2.3
 	 *
+	 * @param string $tableName
 	 * @param array $fixedPropertyRecord
 	 */
 	public function addFixedPropertyRecord( $tableName, array $fixedPropertyRecord ) {
@@ -179,7 +180,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @since 3.0
 	 *
 	 * @param int $id
-	 * @param array $data
+	 * @param array $textItems
 	 */
 	public function addTextItems( $id, array $textItems ) {
 		if ( $this->textItemsFlag ) {

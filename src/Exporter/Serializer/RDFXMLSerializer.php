@@ -282,7 +282,7 @@ class RDFXMLSerializer extends Serializer {
 	 * assuming that an opening property tag is alerady there.
 	 *
 	 * @param $expResourceProperty ExpNsResource the property to use
-	 * @param $expResource array of (ExpResource or ExpData)
+	 * @param $collection array of (ExpResource or ExpData)
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
 	 *

@@ -675,13 +675,8 @@ class Hooks {
 	}
 
 	private function getETag( $parserCache, $page, $pOpts ) {
-		if ( method_exists( $parserCache, 'makeParserOutputKey' ) ) {
-			// 1.36+
-			return 'W/"' . $parserCache->makeParserOutputKey( $page, $pOpts	) .
-				"--" . $page->getTouched() . '"';
-		} else {
-			return $parserCache->getETag( $page, $pOpts );
-		}
+		return 'W/"' . $parserCache->makeParserOutputKey( $page, $pOpts	) .
+			"--" . $page->getTouched() . '"';
 	}
 
 	/**

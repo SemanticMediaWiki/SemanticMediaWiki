@@ -44,6 +44,7 @@ class DefaultParamDefinition {
 	 *
 	 * @since 3.0
 	 *
+	 * @param $vars
 	 * @param int|null $context
 	 * @param ResultPrinter|null $resultPrinter
 	 *

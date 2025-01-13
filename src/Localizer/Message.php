@@ -96,7 +96,7 @@ class Message {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string|array $parameters
+	 * @param string|array $message
 	 * @param int|null $type
 	 *
 	 * @return string
@@ -149,7 +149,7 @@ class Message {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string $messageId
+	 * @param string $message
 	 */
 	public static function exists( $message ): bool {
 		return wfMessage( $message )->exists();
@@ -158,9 +158,9 @@ class Message {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $json
+	 * @param string|array $message
 	 * @param int|null $type
-	 * @param int|null $language
+	 * @param mixed|null $language
 	 *
 	 * @return string|bool
 	 */

@@ -49,7 +49,7 @@ class IndexerRecoveryJob extends Job {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string|array $key
+	 * @param $subject
 	 *
 	 * @return string
 	 */
@@ -87,6 +87,7 @@ class IndexerRecoveryJob extends Job {
 	/**
 	 * @since 3.2
 	 *
+	 * @param Title $title
 	 * @param array $params
 	 */
 	public static function pushFromParams( Title $title, array $params ) {

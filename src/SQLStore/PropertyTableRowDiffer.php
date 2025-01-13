@@ -278,7 +278,7 @@ class PropertyTableRowDiffer {
 	 * @since 1.8
 	 *
 	 * @param int $sid
-	 * @param TableDefinition $tableDeclaration
+	 * @param TableDefinition $propertyTable
 	 *
 	 * @return array
 	 */

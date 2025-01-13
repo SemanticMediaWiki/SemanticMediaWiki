@@ -56,7 +56,7 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param ConstraintCheckRunner $schemaFinder
+	 * @param ConstraintCheckRunner $constraintCheckRunner
 	 * @param SchemaFinder $schemaFinder
 	 */
 	public function __construct( ConstraintCheckRunner $constraintCheckRunner, SchemaFinder $schemaFinder ) {

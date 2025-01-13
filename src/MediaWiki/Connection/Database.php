@@ -219,6 +219,7 @@ class Database {
 	 * @param string $tableName
 	 * @param $fields
 	 * @param array|string $conditions
+	 * @param string $fname
 	 * @param array $options
 	 * @param array $joinConditions
 	 *
@@ -754,7 +755,7 @@ class Database {
 	public function onTransactionResolution( callable $callback, $fname = __METHOD__ ) {
 		$connection = $this->connRef->getConnection( 'write' );
 
-		if ( method_exists( $connection, 'onTransactionResolution' ) && $connection->trxLevel() ) {
+		if ( $connection->trxLevel() ) {
 			$connection->onTransactionResolution( $callback, $fname );
 		}
 	}
@@ -766,13 +767,7 @@ class Database {
 	 */
 	public function onTransactionCommitOrIdle( callable $callback ) {
 		$connection = $this->connRef->getConnection( 'write' );
-
-		// https://gerrit.wikimedia.org/r/#/c/mediawiki/core/+/432036/
-		if ( method_exists( $connection, 'onTransactionCommitOrIdle' ) ) {
-			$connection->onTransactionCommitOrIdle( $callback );
-		} else {
-			$connection->onTransactionCommitOrIdle( $callback );
-		}
+		$connection->onTransactionCommitOrIdle( $callback );
 	}
 
 	/**
@@ -804,5 +799,4 @@ class Database {
 
 		return $text;
 	}
-
 }
