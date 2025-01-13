@@ -28,7 +28,6 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 
 		$param = substr( $param, 1 );
 		$param = str_replace( 'thclass=', 'class', $param );
-		$parts = [];
 
 		if ( !empty( $param ) ) {
 			$label = $serialization['printouts'][$previousPrintout]['label'] ?? '';

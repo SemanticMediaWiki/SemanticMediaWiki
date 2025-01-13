@@ -5,28 +5,22 @@ namespace SMW\Query\Processor;
 /**
  * The class supports size formatter option in ask queries
  * example ?Main Image=|width=+30px or ?Main Image=|height=+30px
- * The class implements FormatterOptionsInterface which holds the
- * functions for adding print requests and handling parameters
+ * Implements FormatterOptionsInterface for adding print requests
+ * and handling parameters.
  *
  *
  * @license GNU GPL v2+
- * @since 3.0
+ * @since 5.0.0
  *
  * @author milic
  */
 class SizeFormatterOption implements FormatterOptionsInterface {
 
-	/**
-	 * Format type
-	 */
 	const FORMAT_LEGACY = 'format.legacy';
-
-	/**
-	 * Identify the PrintThis instance
-	 */
 	const PRINT_THIS = 'print.this';
 
 	public function addPrintRequest( $name, $param, $previousPrintout, $serialization ) {
+		// Implementation omitted.
 	}
 
 	public function addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization ) {
@@ -38,37 +32,13 @@ class SizeFormatterOption implements FormatterOptionsInterface {
 		$parts = explode( '=', $param, 2 );
 
 		if ( !empty( $param ) ) {
-			// fetch the previous label
-			$label = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
+			$label = $serialization['printouts'][$previousPrintout]['label'] ?? '';
 
-			// check the label and create final label with correct format
-			if ( strpos( $label, '#' ) ) {
-				$labelToSave = $label . ';' . $param;
-				if ( str_contains( $labelToSave, 'width=' ) ) {
-					$adjustWidthParam = rtrim( $param, "px" );
-					$widthParts = explode( '=', $adjustWidthParam );
-					$adjustedHeight = explode( '#', $label );
-					$labelToSave = $adjustedHeight[0] . '' . '#' . $widthParts[1] . '' . $adjustedHeight[1];
-				} elseif ( str_contains( $labelToSave, 'height=' ) ) {
-					$adjustedWidth = rtrim( $label, "px" );
-					$heightParts = explode( '=', $param );
-					$labelToSave = $adjustedWidth . '' . 'x' . '' . $heightParts[1];
-				}
-			} else {
-				$labelToSave = $label . ' ' . '#' . $param;
-				if ( str_contains( $labelToSave, 'width=' ) ) {
-					$labelToSave = str_replace( 'width=', '', $labelToSave );
-					$labelToSave = str_replace( '=', '', $labelToSave );
-				} elseif ( str_contains( $labelToSave, 'height=' ) ) {
-					$labelToSave = str_replace( 'height=', 'x', $labelToSave );
-					$labelToSave = str_replace( '=', '', $labelToSave );
-				} else {
-					$labelToSave = str_replace( '=', '', $labelToSave );
-				}
-			}
+			// Use helper method to format label.
+			$labelToSave = $this->formatLabel( $label, $param );
 
-			// save the label as a part of serialization
-			$serialization[ 'printouts' ][ $previousPrintout ] = [
+			// Save the label in serialization.
+			$serialization['printouts'][$previousPrintout] = [
 				'label' => $labelToSave,
 				'params' => []
 			];
@@ -84,5 +54,41 @@ class SizeFormatterOption implements FormatterOptionsInterface {
 			'serialization' => $serialization,
 			'previousPrintout' => $previousPrintout,
 		];
+	}
+
+	/**
+	 * Formats a label based on parameters and existing label content.
+	 *
+	 * @param string $label The existing label.
+	 * @param string $param The parameter to append.
+	 * @return string The formatted label.
+	 */
+	private function formatLabel( $label, $param ) {
+		if ( strpos( $label, '#' ) ) {
+			$labelToSave = $label . ';' . $param;
+			if ( str_contains( $labelToSave, 'width=' ) ) {
+				$adjustWidthParam = rtrim( $param, "px" );
+				$widthParts = explode( '=', $adjustWidthParam );
+				$adjustedHeight = explode( '#', $label );
+				return $adjustedHeight[0] . '' . '#' . $widthParts[1] . '' . $adjustedHeight[1];
+			} elseif ( str_contains( $labelToSave, 'height=' ) ) {
+				$adjustedWidth = rtrim( $label, "px" );
+				$heightParts = explode( '=', $param );
+				return $adjustedWidth . '' . 'x' . '' . $heightParts[1];
+			}
+		} else {
+			$labelToSave = $label . ' ' . '#' . $param;
+			if ( str_contains( $labelToSave, 'width=' ) ) {
+				$labelToSave = str_replace( 'width=', '', $labelToSave );
+				$labelToSave = str_replace( '=', '', $labelToSave );
+				return $labelToSave;
+			} elseif ( str_contains( $labelToSave, 'height=' ) ) {
+				$labelToSave = str_replace( 'height=', 'x', $labelToSave );
+				$labelToSave = str_replace( '=', '', $labelToSave );
+				return $labelToSave;
+			} else {
+				return str_replace( '=', '', $labelToSave );
+			}
+		}
 	}
 }
