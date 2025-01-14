@@ -26,6 +26,8 @@
  * @author mwjames
  */
 
+@import '../tokens.less';
+
 /**
  * Special:Admin
  */
@@ -185,7 +187,6 @@
 .smw-icon-alert {
 	background-image: url( ../assets/smw-icon-alert.svg );
 	background-repeat: no-repeat;
-	padding: 0 0 0 16px;
 	background-position: center;
 }
 
@@ -193,16 +194,22 @@
 	padding-top: 5px !important;
 }
 
+// TODO: Handle color in tab component instead
 .smw-admin input.nav-tab:checked + label.nav-label {
-	border-top-color: orange;
+	color: @color-emphasized;
+	box-shadow: @box-shadow-inset-medium-vertical orange;
 }
 
+// TODO: Handle color in tab component instead
 .smw-admin input.nav-tab:checked + label.nav-label.smw-tab-warning {
-	border-top-color: rgb( 204, 0, 0 );
+	color: @color-emphasized;
+	box-shadow: @box-shadow-inset-medium-vertical @color-destructive;
 }
 
+// TODO: Handle color in tab component instead
 .smw-admin input.nav-tab:checked + label.nav-label.smw-tab-notice {
-    border-top-color: rgb( 255, 178, 15 );
+	color: @color-emphasized;
+	box-shadow: @box-shadow-inset-medium-vertical @color-warning;
 }
 
 .client-nojs .smw-admin-supplementary-duplookup-content:after {
