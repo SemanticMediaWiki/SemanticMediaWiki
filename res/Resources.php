@@ -33,7 +33,7 @@ return [
 			'smw/ext.smw.css',
 			'smw/ext.smw.dropdown.css',
 			'smw/ext.smw.table.css',
-			'smw/ext.smw.tabs.css',
+			'smw/ext.smw.tabs.less',
 			'smw/smw.indicators.css',
 			'smw/smw.jsonview.css'
 		],

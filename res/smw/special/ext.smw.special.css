@@ -182,12 +182,6 @@
 	display: block;
 }
 
-.smw-tab-icon,
-.smw-tab-alert-symbol {
-	margin-left: -10px;
-	margin-right: 10px;
-}
-
 .smw-icon-alert {
 	background-image: url( ../assets/smw-icon-alert.svg );
 	background-repeat: no-repeat;
@@ -196,22 +190,19 @@
 }
 
 .smw-admin section {
-	border: 0px solid #aaa;
-	padding: 5px 0 0 0 !important;
+	padding-top: 5px !important;
 }
 
 .smw-admin input.nav-tab:checked + label.nav-label {
-	border: 1px solid #aaa;
-	border-top: 2px solid orange;
-	border-bottom: 1px solid #fff;
+	border-top-color: orange;
 }
 
 .smw-admin input.nav-tab:checked + label.nav-label.smw-tab-warning {
-	border-top: 2px solid rgb(204, 0, 0);
+	border-top-color: rgb( 204, 0, 0 );
 }
 
 .smw-admin input.nav-tab:checked + label.nav-label.smw-tab-notice {
-    border-top: 2px solid rgb(255, 178, 15);
+    border-top-color: rgb( 255, 178, 15 );
 }
 
 .client-nojs .smw-admin-supplementary-duplookup-content:after {
@@ -259,20 +250,5 @@ h3.smw-title {
 		display: flex;
 		flex-direction: column;
 		flex-wrap: wrap;
-	}
-
-	.smw-tabs.smw-admin {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.smw-tabs.smw-admin label.nav-label {
-		text-align: unset;
-		border-top: 1px solid;
-	}
-
-	.smw-tabs.smw-admin input.nav-tab:checked + label.nav-label {
-		border-left: 0px;
-		border-right: 0px;
 	}
 }
