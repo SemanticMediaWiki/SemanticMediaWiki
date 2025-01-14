@@ -826,16 +826,24 @@ class Database {
 	 * @return Wikimedia\Rdbms\SelectQueryBuilder
 	 */
 	public function applySqlOptions( \Wikimedia\Rdbms\SelectQueryBuilder $builder, array $sql_options ): \Wikimedia\Rdbms\SelectQueryBuilder {
-		if ( !empty( $sql_options[ 'LIMIT' ] ) ) {
+		if ( isset( $sql_options['LIMIT'] ) ) {
+			$limit = (int)$sql_options['LIMIT'];
+			if ( $limit < 0 ) {
+				throw new InvalidArgumentException( 'LIMIT must be non-negative' );
+			}
 			$builder->limit( $sql_options[ 'LIMIT' ] );
 		}
-		if ( !empty( $sql_options[ 'OFFSET' ] ) ) {
+		if ( isset( $sql_options['OFFSET'] ) ) {
+			$offset = (int)$sql_options['OFFSET'];
+			if ( $offset < 0 ) {
+				throw new InvalidArgumentException( 'OFFSET must be non-negative' );
+			}
 			$builder->offset( $sql_options[ 'OFFSET' ] );
 		}
-		if ( !empty( $sql_options[ 'GROUP BY' ] ) ) {
+		if ( isset( $sql_options['GROUP BY'] ) && trim( $sql_options['GROUP BY'] ) !== '' ) {
 			$builder->groupBy( $sql_options[ 'GROUP BY' ] );
 		}
-		if ( !empty( $sql_options[ 'ORDER BY' ] ) ) {
+		if ( isset( $sql_options['ORDER BY'] ) && trim( $sql_options['ORDER BY'] ) !== '' ) {
 			$builder->orderBy( $sql_options[ 'ORDER BY' ] );
 		}
 		if ( isset( $sql_options[ 'DISTINCT' ] ) ) {
