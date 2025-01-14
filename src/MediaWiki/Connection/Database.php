@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Connection;
 
 use Exception;
+use InvalidArgumentException;
 use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
