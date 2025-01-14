@@ -92,7 +92,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 
 		// smw-admin-propertystatistics
 		$this->htmlFormRenderer
-				->addHeader( 'h4', $this->msg( 'smw-admin-propertystatistics-title' ) )
+				->addHeader( 'h3', $this->msg( 'smw-admin-propertystatistics-title' ) )
 				->addParagraph( $this->msg( 'smw-admin-propertystatistics-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] );
 
 		if ( $this->hasFeature( SMW_ADM_PSTATS ) && !$this->hasPendingJob() ) {

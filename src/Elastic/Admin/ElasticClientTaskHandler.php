@@ -107,7 +107,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		);
 
 		$html = Html::rawElement(
-			'h3',
+			'h2',
 			[],
 			$this->msg( 'smw-admin-supplementary-elastic-section-subtitle' )
 		) . Html::rawElement(
@@ -153,7 +153,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		$config = $connection->getConfig();
 
 		$html = Html::rawElement(
-			'h3',
+			'h2',
 			[ 'class' => 'smw-title' ],
 			$this->msg( [ 'smw-admin-supplementary-elastic-replication-header-title' ] )
 		) . Html::rawElement(
@@ -161,7 +161,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 			[],
 			$this->msg( [ 'smw-admin-supplementary-elastic-no-connection' ], Message::PARSE )
 		) . Html::rawElement(
-			'h4',
+			'h3',
 			[ 'class' => 'smw-title' ],
 			$this->msg( [ 'smw-admin-supplementary-elastic-endpoints' ] )
 		) . Html::rawElement(
