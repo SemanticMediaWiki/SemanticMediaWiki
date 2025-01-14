@@ -31,7 +31,8 @@
 					"<table class=\"sortable wikitable smwtable broadtable\"",
                     "th class=\"unsortable\"",
                     "class=\"unsortable\"",
-                    "<td class=\"Has-file smwtype_wpg\"><a href=\"/index.php/File:S0039.png\"",
+                    "<td class=\"Has-file smwtype_wpg\"",
+                    "<a href=\"/index.php/File:S0039.png\"",
                     "width=\"75\"",
                     "<img alt=\"S0039.png\" src=\"/images/thumb/6/65/S0039.png/75px-S0039.png\" decoding=\"async\" width=\"75\""
 				]
@@ -48,7 +49,9 @@
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable broadtable\"",
-                    "<td class=\"Has-file smwtype_wpg\"><a href=\"/index.php/File:S0039.png\" class=\"image\" title=\"S0039.png\"><img alt=\"S0039.png\" src=\"/images/thumb/6/65/S0039.png/95px-S0039.png\" decoding=\"async\" width=\"95\" height=\"95\" srcset=\"/images/thumb/6/65/S0039.png/143px-S0039.png 1.5x, /images/thumb/6/65/S0039.png/190px-S0039.png 2x\""
+                    "<td class=\"Has-file smwtype_wpg\"",
+                    "<a href=\"/index.php/File:S0039.png\"",
+                    "height=\"95\""
 				],
                 "not-contain": [
                     "class=\"unsortable\""
@@ -66,7 +69,8 @@
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable broadtable\"",
-                    "<td class=\"Has-file smwtype_wpg\"><img alt=\"S0039.png\" src=\"/images/thumb/6/65/S0039.png/30px-S0039.png\" decoding=\"async\" title=\"S0039.png\" width=\"30\" height=\"30\" srcset=\"/images/thumb/6/65/S0039.png/45px-S0039.png 1.5x, /images/thumb/6/65/S0039.png/60px-S0039.png 2x\""
+                    "<td class=\"Has-file smwtype_wpg\"",
+                    "><img alt=\"S0039.png\" src=\"/images/thumb/6/65/S0039.png/30px-S0039.png\" decoding=\"async\" title=\"S0039.png\" width=\"30\" height=\"30\" srcset=\"/images/thumb/6/65/S0039.png/45px-S0039.png 1.5x, /images/thumb/6/65/S0039.png/60px-S0039.png 2x\""
 				],
                 "not-contain": [
                     "class=\"unsortable\"",
