@@ -832,14 +832,14 @@ class Database {
 			if ( $limit < 0 ) {
 				throw new InvalidArgumentException( 'LIMIT must be non-negative' );
 			}
-			$builder->limit( $sql_options[ 'LIMIT' ] );
+			$builder->limit( $limit );
 		}
 		if ( isset( $sql_options['OFFSET'] ) ) {
 			$offset = (int)$sql_options['OFFSET'];
 			if ( $offset < 0 ) {
 				throw new InvalidArgumentException( 'OFFSET must be non-negative' );
 			}
-			$builder->offset( $sql_options[ 'OFFSET' ] );
+			$builder->offset( $offset );
 		}
 		if ( isset( $sql_options['GROUP BY'] ) && trim( $sql_options['GROUP BY'] ) !== '' ) {
 			$builder->groupBy( $sql_options[ 'GROUP BY' ] );
