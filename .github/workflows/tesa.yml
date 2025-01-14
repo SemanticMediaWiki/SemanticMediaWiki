@@ -35,7 +35,7 @@ jobs:
           key: composer-cache-php${{ matrix.php }}
 
       - name: Composer install
-        run: composer install --no-progress --no-suggest --no-interaction --prefer-dist --optimize-autoloader
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Add PHPUnit
         run: composer require phpunit/phpunit:^9
