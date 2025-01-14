@@ -17,10 +17,6 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 	const FORMAT_LEGACY = 'format.legacy';
 	const PRINT_THIS = 'print.this';
 
-	public function addPrintRequest( $name, $param, $previousPrintout, $serialization ) {
-		// Implementation omitted.
-	}
-
 	public function addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization ) {
 		if ( $previousPrintout === null ) {
 			return;
