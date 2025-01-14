@@ -177,13 +177,12 @@ h3.smw-title {
 }
 
 .smw-schema input.nav-tab:checked + label.nav-label  {
-	border: 1px solid #ddd;
-	border-top: 2px solid #337ab7;
-	border-bottom: 1px solid #fff;
+	border-top-color: 2px solid #337ab7;
+	border-bottom-color: 1px solid #fff;
 }
 
 .smw-schema input.nav-tab:checked + label.nav-label.error-label {
-	border-top: 2px solid #cc0000;
+	border-top-color: #cc0000;
 }
 
 .skin-chameleon .content-no-highlight {
