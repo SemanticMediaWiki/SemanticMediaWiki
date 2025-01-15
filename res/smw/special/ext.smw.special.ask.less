@@ -27,6 +27,9 @@
  * @licence GNU GPL v2+
  * @author mwjames
  */
+
+@import '../tokens.less';
+
 .float-right {
 	float: right;
 }
@@ -563,22 +566,24 @@ display: inline-block;
 	display: block;
 }
 
+// TODO: Handle color in tab component instead
 .smw-tabs input.nav-tab:checked + label.nav-label.result-cache {
-    border-top: 2px solid orange;
+	color: @color-emphasized;
+	box-shadow: @box-shadow-inset-medium-vertical orange;
 }
 
 .smw-tabs input.nav-tab:checked + label.nav-label.clipboard-bookmark {
-    border:0;
+    box-shadow: none;
 }
 
 .smw-tabs input.nav-tab:checked + label.nav-label.edit-action {
-    border: 0;
+    box-shadow: none;
 }
 
 .smw-tabs label.nav-label.edit-action,
 .smw-tabs label.nav-label.compact-action,
 .smw-tabs label.nav-label.clipboard-bookmark.smw-tab-right {
-	padding: 5px 0px;
+	padding-inline: 0px;
 }
 
 .clipboard.smw-icon-bookmark {
@@ -587,7 +592,7 @@ display: inline-block;
 }
 
 .smw-tabs input.nav-tab:checked + label.nav-label.compact-action {
-    border:0;
+    box-shadow: none;
 }
 
 /**

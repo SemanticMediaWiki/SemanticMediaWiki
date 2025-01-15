@@ -33,7 +33,7 @@ return [
 			'smw/ext.smw.css',
 			'smw/ext.smw.dropdown.css',
 			'smw/ext.smw.table.css',
-			'smw/ext.smw.tabs.css',
+			'smw/ext.smw.tabs.less',
 			'smw/smw.indicators.css',
 			'smw/smw.jsonview.css'
 		],
@@ -75,7 +75,7 @@ return [
 
 	'ext.smw.special.styles' => $moduleTemplate + [
 		'styles' => [
-			'smw/special/ext.smw.special.css',
+			'smw/special/ext.smw.special.less',
 			'smw/special/ext.smw.special.preferences.css'
 		],
 		'targets' => [ 'mobile', 'desktop' ]
@@ -348,7 +348,7 @@ return [
 
 	// Special:Ask
 	'ext.smw.ask.styles' => $moduleTemplate + [
-		'styles' => 'smw/special/ext.smw.special.ask.css',
+		'styles' => 'smw/special/ext.smw.special.ask.less',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -618,7 +618,7 @@ return [
 	// Schema content styles
 	'smw.content.schema' => $moduleTemplate + [
 		'styles' => [
-			'smw/content/smw.schema.css',
+			'smw/content/smw.schema.less',
 			'smw/ext.smw.table.css'
 		],
 		'targets' => [

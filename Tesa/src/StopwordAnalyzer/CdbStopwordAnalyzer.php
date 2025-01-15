@@ -68,7 +68,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 * @return string
 	 */
 	public static function getTargetByLanguage( $language ) {
-		return self::getLocation() . 'cdb/' . strtolower( $language ) . '.cdb';
+		return self::getLocation() . 'cdb/' . strtolower( $language ?? '' ) . '.cdb';
 	}
 
 	/**
@@ -95,7 +95,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 * @return bool
 	 */
 	public static function createCdbByLanguage( $location, $language ) {
-		$language = strtolower( $language );
+		$language = strtolower( $language ?? '' );
 		$source = $location . $language . '.json';
 
 		if ( !file_exists( $source ) ) {

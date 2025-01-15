@@ -170,7 +170,7 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 			[],
 			$this->msg( 'smw-admin-supplementary-operational-table-statistics-legend-general', Message::PARSE )
 		) . Html::rawElement(
-			'h4',
+			'h3',
 			[],
 			'smw_object_ids'
 		) . Html::rawElement(
@@ -178,7 +178,7 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 			[],
 			$this->msg( 'smw-admin-supplementary-operational-table-statistics-legend-id-table', Message::PARSE )
 		) . Html::rawElement(
-			'h4',
+			'h3',
 			[],
 			'smw_di_blob'
 		) . Html::rawElement(
