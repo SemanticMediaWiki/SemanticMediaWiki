@@ -28,6 +28,8 @@
  * @author mwjames
  */
 
+@import '../tokens.less';
+
 .content-highlight {
 	font-size: 1.2em;
 	margin: 0;
@@ -164,10 +166,6 @@ h3.smw-title {
 	border-right: 0px solid #ddd;
 }
 
-.smw-schema label.nav-label {
-	padding: 5px 20px;
-}
-
 .schema-body pre {
     margin-top: 0px
 }
@@ -176,14 +174,10 @@ h3.smw-title {
     margin-top: 10px
 }
 
-.smw-schema input.nav-tab:checked + label.nav-label  {
-	border: 1px solid #ddd;
-	border-top: 2px solid #337ab7;
-	border-bottom: 1px solid #fff;
-}
-
+// TODO: Handle color in tab component instead
 .smw-schema input.nav-tab:checked + label.nav-label.error-label {
-	border-top: 2px solid #cc0000;
+    color: @color-emphasized;
+	box-shadow: @box-shadow-inset-medium-vertical @color-destructive;
 }
 
 .skin-chameleon .content-no-highlight {

@@ -22,7 +22,8 @@
 		]
 	},
 	"AutoloadNamespaces": {
-		"SMW\\": "src/"
+		"SMW\\": "src/",
+		"SMW\\Maintenance": "maintenance/"
 	},
 	"Hooks": {
 		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces",

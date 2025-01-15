@@ -8,7 +8,7 @@ namespace Onoi\Tesa\Tokenizer;
  *
  * @author mwjames
  */
-class PunctuationRegExTokenizer implements Tokenizer {
+class CJKSimpleCharacterRegExTokenizer implements Tokenizer {
 
 	/**
 	 * @var Tokenizer
@@ -50,34 +50,33 @@ class PunctuationRegExTokenizer implements Tokenizer {
 	 * {@inheritDoc}
 	 */
 	public function isWordTokenizer() {
-		return $this->tokenizer !== null ? $this->tokenizer->isWordTokenizer() : true;
+		return false;
 	}
 
 	/**
 	 * @since 0.1
 	 *
-	 * @param string $string
-	 *
-	 * @return array|false
+	 * {@inheritDoc}
 	 */
 	public function tokenize( $string ) {
 		if ( $this->tokenizer !== null ) {
 			$string = implode( " ", $this->tokenizer->tokenize( $string ) );
 		}
 
+		// Filter is based on https://github.com/kitech/cms-drupal/blob/master/modules/csplitter/filter.txt
 		$pattern = str_replace(
 			$this->patternExemption,
 			'',
-			'＿－・，、；：！？．。…◆★◇□■（）【】《》〈〉；：“”＂〃＇｀［］｛｝｢｣＠＊＼／＆＃％｀＾＋＜＝＞｜～≪≫─＄＂_\-･,､;:!?.｡()[\]{}「」@*\/&#%`^+<=>|~«»$"\s'
+			'([\s\、，,。／？《》〈〉；：“”＂〃＇｀［］｛｝＼｜～！－＝＿＋）（()＊…—─％￥…◆★◇□■【】＃·啊吧把并被才从的得当对但到地而该过个给还和叫将就可来了啦里没你您哪那呢去却让使是时省随他我为现县向像象要由矣已以也又与于在之这则最乃\/\(\)\[\]{}<>\r\n"]|(?<!\d)\.(?!\d))'
 		);
 
-		$result = preg_split( '/[' . $pattern . ']+/u', $string, null, PREG_SPLIT_NO_EMPTY );
+		$result = preg_split( '/' . $pattern . '/u', $string, -1, PREG_SPLIT_NO_EMPTY );
 
-		if ( $result === false ) {
-			$result = [];
+		if ( $result !== false ) {
+			return $result;
 		}
 
-		return $result;
+		return [];
 	}
 
 }

@@ -116,7 +116,7 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 			],
 			$this->msg( 'smw-admin-supplementary-section-intro', Message::PARSE )
 		) . Html::rawElement(
-			'h3',
+			'h2',
 			[],
 			$this->msg( 'smw-admin-supplementary-section-subtitle' )
 		);
