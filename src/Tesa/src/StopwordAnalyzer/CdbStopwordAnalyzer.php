@@ -67,7 +67,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 *
 	 * @return string
 	 */
-	public static function getTargetByLanguage( $language ) {
+	public static function getTargetByLanguage( string $language ) {
 		return self::getLocation() . 'cdb/' . strtolower( $language ) . '.cdb';
 	}
 
