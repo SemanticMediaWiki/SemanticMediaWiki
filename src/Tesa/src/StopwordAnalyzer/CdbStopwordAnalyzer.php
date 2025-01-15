@@ -94,7 +94,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 *
 	 * @return bool
 	 */
-	public static function createCdbByLanguage( $location, $language ) {
+	public static function createCdbByLanguage( string $location, string $language ) {
 		$language = strtolower( $language );
 		$source = $location . $language . '.json';
 
