@@ -70,7 +70,7 @@ class CJKSimpleCharacterRegExTokenizer implements Tokenizer {
 			'([\s\、，,。／？《》〈〉；：“”＂〃＇｀［］｛｝＼｜～！－＝＿＋）（()＊…—─％￥…◆★◇□■【】＃·啊吧把并被才从的得当对但到地而该过个给还和叫将就可来了啦里没你您哪那呢去却让使是时省随他我为现县向像象要由矣已以也又与于在之这则最乃\/\(\)\[\]{}<>\r\n"]|(?<!\d)\.(?!\d))'
 		);
 
-		$result = preg_split( '/' . $pattern . '/u', $string, null, PREG_SPLIT_NO_EMPTY );
+		$result = preg_split( '/' . $pattern . '/u', $string, -1, PREG_SPLIT_NO_EMPTY );
 
 		if ( $result !== false ) {
 			return $result;
