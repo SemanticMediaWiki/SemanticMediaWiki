@@ -57,6 +57,10 @@
 		transition-property: @transition-property-base;
 		transition-duration: @transition-duration-base;
 
+		@media ( max-width: @max-width-breakpoint-mobile ) {
+			box-shadow: inset 0 -1px 0 0 @border-color-subtle;
+		}
+
 		.smw-tab-icon {
 			display: inline-block;
 			min-width: @min-size-icon-small;
@@ -106,10 +110,6 @@
 		&:checked + label.nav-label {
 			color: @color-progressive;
 			box-shadow: @box-shadow-inset-medium-vertical @box-shadow-color-progressive-selected;
-
-			@media ( max-width: @max-width-breakpoint-mobile ) {
-				background-color: @background-color-progressive-subtle;
-			}
 
 			&.cached {
 				box-shadow: @box-shadow-inset-medium-vertical orange;
