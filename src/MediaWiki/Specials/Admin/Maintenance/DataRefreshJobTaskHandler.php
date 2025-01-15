@@ -79,7 +79,7 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 	 */
 	public function getHtml() {
 		$this->htmlFormRenderer
-			->addHeader( 'h4', $this->msg( 'smw_smwadmin_datarefresh' ) )
+			->addHeader( 'h3', $this->msg( 'smw_smwadmin_datarefresh' ) )
 			->addParagraph( $this->msg( 'smw_smwadmin_datarefreshdocu' ) );
 
 		if ( !$this->hasFeature( SMW_ADM_REFRESH ) ) {

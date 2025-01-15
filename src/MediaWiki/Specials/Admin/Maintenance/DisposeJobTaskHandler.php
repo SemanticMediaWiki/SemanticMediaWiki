@@ -97,7 +97,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 
 		// smw-admin-outdateddisposal
 		$this->htmlFormRenderer
-				->addHeader( 'h4', $this->msg( 'smw-admin-outdateddisposal-title' ) )
+				->addHeader( 'h3', $this->msg( 'smw-admin-outdateddisposal-title' ) )
 				->addParagraph(
 					$this->msg( 'smw-admin-outdateddisposal-intro', Message::PARSE ),
 					[

@@ -92,7 +92,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 
 		if ( $this->hasFeature( SMW_ADM_FULLT ) && !$this->hasPendingJob() ) {
 			$this->htmlFormRenderer
-				->addHeader( 'h4', $this->msg( 'smw-admin-fulltext-title' ) )
+				->addHeader( 'h3', $this->msg( 'smw-admin-fulltext-title' ) )
 				->addParagraph( $this->msg( 'smw-admin-fulltext-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] )
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'fulltrebuild' )
@@ -107,7 +107,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 				);
 		} elseif ( $this->hasFeature( SMW_ADM_FULLT ) ) {
 			$this->htmlFormRenderer
-				->addHeader( 'h4', $this->msg( 'smw-admin-fulltext-title' ) )
+				->addHeader( 'h3', $this->msg( 'smw-admin-fulltext-title' ) )
 				->addParagraph( $this->msg( 'smw-admin-fulltext-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] )
 				->addParagraph(
 					Html::element(

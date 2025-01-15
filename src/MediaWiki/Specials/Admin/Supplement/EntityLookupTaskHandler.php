@@ -171,7 +171,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'lookup' )
 			->addParagraph( $error )
-			->addHeader( 'h3', $this->msg( 'smw-admin-idlookup-title' ), [ 'class' => 'smw-title' ] )
+			->addHeader( 'h2', $this->msg( 'smw-admin-idlookup-title' ), [ 'class' => 'smw-title' ] )
 			->addParagraph( $this->msg( 'smw-admin-idlookup-docu' ) )
 			->addInputField(
 				$this->msg( 'smw-admin-objectid' ),
@@ -199,7 +199,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'lookup' )
 			->addHiddenField( 'id', $id )
-			->addHeader( 'h3', $this->msg( 'smw-admin-iddispose-title' ), [ 'class' => 'smw-title' ] )
+			->addHeader( 'h2', $this->msg( 'smw-admin-iddispose-title' ), [ 'class' => 'smw-title' ] )
 			->addParagraph( $this->msg( 'smw-admin-iddispose-docu', Message::PARSE ), [ 'class' => 'plainlinks' ] )
 			->addInputField(
 				$this->msg( 'smw-admin-objectid' ),
