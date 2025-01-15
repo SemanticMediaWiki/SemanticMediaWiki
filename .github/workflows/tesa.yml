@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - .github/workflows/tesa.yml
-      - src/Tesa/**
+      - Tesa/**
       - composer.json
 
 jobs:
@@ -41,4 +41,4 @@ jobs:
         run: composer require phpunit/phpunit:^9
 
       - name: PHPUnit
-        run: vendor/bin/phpunit -c src/Tesa/phpunit.xml.dist
+        run: vendor/bin/phpunit -c Tesa/phpunit.xml.dist

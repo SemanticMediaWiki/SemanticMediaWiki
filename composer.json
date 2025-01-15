@@ -84,7 +84,7 @@
 			"SMW\\": "src/",
 			"SMW\\Maintenance\\": "maintenance/",
 			"SMW\\Tests\\": "tests/phpunit/",
-			"Onoi\\Tesa\\": "src/Tesa/src/"
+			"Onoi\\Tesa\\": "Tesa/src/"
 		},
 		"psr-0": {
 			"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
