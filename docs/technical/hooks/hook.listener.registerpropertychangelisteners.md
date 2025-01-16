@@ -22,6 +22,7 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Listener::
 use MediaWiki\MediaWikiServices;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\DIProperty;
 
 class ActOnPropertyChange {
 
