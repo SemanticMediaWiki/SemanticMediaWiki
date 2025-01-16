@@ -26,6 +26,8 @@
  * @author mwjames
  */
 
+@import '../tokens.less';
+
 /**
  * Special:Admin
  */
@@ -182,36 +184,32 @@
 	display: block;
 }
 
-.smw-tab-icon,
-.smw-tab-alert-symbol {
-	margin-left: -10px;
-	margin-right: 10px;
-}
-
 .smw-icon-alert {
 	background-image: url( ../assets/smw-icon-alert.svg );
 	background-repeat: no-repeat;
-	padding: 0 0 0 16px;
 	background-position: center;
 }
 
 .smw-admin section {
-	border: 0px solid #aaa;
-	padding: 5px 0 0 0 !important;
+	padding-top: 5px !important;
 }
 
+// TODO: Handle color in tab component instead
 .smw-admin input.nav-tab:checked + label.nav-label {
-	border: 1px solid #aaa;
-	border-top: 2px solid orange;
-	border-bottom: 1px solid #fff;
+	color: @color-emphasized;
+	box-shadow: @box-shadow-inset-medium-vertical orange;
 }
 
+// TODO: Handle color in tab component instead
 .smw-admin input.nav-tab:checked + label.nav-label.smw-tab-warning {
-	border-top: 2px solid rgb(204, 0, 0);
+	color: @color-emphasized;
+	box-shadow: @box-shadow-inset-medium-vertical @color-destructive;
 }
 
+// TODO: Handle color in tab component instead
 .smw-admin input.nav-tab:checked + label.nav-label.smw-tab-notice {
-    border-top: 2px solid rgb(255, 178, 15);
+	color: @color-emphasized;
+	box-shadow: @box-shadow-inset-medium-vertical @color-warning;
 }
 
 .client-nojs .smw-admin-supplementary-duplookup-content:after {
@@ -227,30 +225,6 @@
 	padding: 10px 0 10px 0;
 }
 
-.smw-admin h3,
-h3.smw-title,
-h4.smw-title,
-h3 .smw-title {
-	background: #f5f5f5;
-	padding: 2px 5px;
-	margin-top: 10px !important;
-	margin-bottom: 10px !important;
-}
-
-.smw-admin h3,
-h3.smw-title {
-	background: unset;
-    padding: 2px 5px;
-    margin-top: 10px !important;
-    margin-bottom: 10px !important;
-    color: #000;
-    padding-right: 10px;
-    font-weight: 400 !important;
-    font-size: 18px !important;
-    border-bottom: 1px solid #ddd;
-    line-height: 2.3 !important;
-}
-
 /**
  * Responsive settings
  */
@@ -259,20 +233,5 @@ h3.smw-title {
 		display: flex;
 		flex-direction: column;
 		flex-wrap: wrap;
-	}
-
-	.smw-tabs.smw-admin {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.smw-tabs.smw-admin label.nav-label {
-		text-align: unset;
-		border-top: 1px solid;
-	}
-
-	.smw-tabs.smw-admin input.nav-tab:checked + label.nav-label {
-		border-left: 0px;
-		border-right: 0px;
 	}
 }

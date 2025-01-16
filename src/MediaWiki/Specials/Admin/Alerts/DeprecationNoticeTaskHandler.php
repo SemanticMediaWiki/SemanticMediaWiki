@@ -203,7 +203,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		}
 
 		$html = Html::rawElement(
-			'h4',
+			'h3',
 			[],
 			$this->msg( $title )
 		) . Html::rawElement(

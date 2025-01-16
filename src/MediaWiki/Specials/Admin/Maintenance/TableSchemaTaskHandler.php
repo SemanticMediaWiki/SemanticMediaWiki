@@ -88,7 +88,7 @@ class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 			->setName( 'buildtables' )
 			->setMethod( 'get' )
 			->addHiddenField( 'action', $this->getTask() )
-			->addHeader( 'h3', $this->msg( 'smw-admin-db' ) )
+			->addHeader( 'h2', $this->msg( 'smw-admin-db' ) )
 			->addParagraph( $this->msg( 'smw-admin-dbdocu' ) );
 
 		$this->htmlFormRenderer

@@ -90,8 +90,6 @@ class ConceptCache {
 	 * @return string[] array with error messages
 	 */
 	public function refresh( Title $concept ) {
-		global $wgDBtype;
-
 		$db = $this->store->getConnection();
 
 		$cid = $this->store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
@@ -127,7 +125,7 @@ class ConceptCache {
 		$concCacheTableName = $db->tablename( SMWSQLStore3::CONCEPT_CACHE_TABLE );
 
 		// Build the INSERT query with proper joins
-		$sql = "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .
+		$sql = "INSERT " . ( ( $db->getType() == 'postgres' ) ? '' : 'IGNORE ' ) .
 			   "INTO $concCacheTableName" .
 			   " SELECT DISTINCT t0.s_id AS s_id, $cid AS o_id FROM (" .
 			   " SELECT {$querySegment->joinfield} AS s_id FROM " .
