@@ -830,14 +830,14 @@ class Database {
 		if ( isset( $sql_options['LIMIT'] ) ) {
 			$limit = (int)$sql_options['LIMIT'];
 			if ( $limit < 0 ) {
-				throw new InvalidArgumentException( 'LIMIT must be non-negative' );
+				throw new InvalidArgumentException( sprintf( 'LIMIT must be non-negative, got: %d', $limit ) );
 			}
 			$builder->limit( $limit );
 		}
 		if ( isset( $sql_options['OFFSET'] ) ) {
 			$offset = (int)$sql_options['OFFSET'];
 			if ( $offset < 0 ) {
-				throw new InvalidArgumentException( 'OFFSET must be non-negative' );
+				throw new InvalidArgumentException( sprintf( 'OFFSET must be non-negative, got: %d', $offset ) );
 			}
 			$builder->offset( $offset );
 		}
