@@ -804,11 +804,9 @@ class Database {
 	/**
 	 * Create and return a new SelectQueryBuilder from the read or write connection.
 	 *
-	 * @since 4.2
+	 * @since 5.0
 	 *
 	 * @param string $mode 'read', 'write', or other db config id
-	 *
-	 * @return Wikimedia\Rdbms\SelectQueryBuilder
 	 */
 	public function newSelectQueryBuilder( string $mode ): \Wikimedia\Rdbms\SelectQueryBuilder {
 		$conn = $this->connRef->getConnection( $mode );
@@ -819,12 +817,7 @@ class Database {
 	 * Apply SQLOptions to a SelectQueryBuilder.
 	 * Supported options: LIMIT, OFFSET, GROUP BY, ORDER BY, DISTINCT
 	 *
-	 * @since 4.2
-	 *
-	 * @param Wikimedia\Rdbms\SelectQueryBuilder $builder
-	 * @param array $sql_options
-	 *
-	 * @return Wikimedia\Rdbms\SelectQueryBuilder
+	 * @since 5.0
 	 */
 	public function applySqlOptions( \Wikimedia\Rdbms\SelectQueryBuilder $builder, array $sql_options ): \Wikimedia\Rdbms\SelectQueryBuilder {
 		if ( isset( $sql_options['LIMIT'] ) ) {
