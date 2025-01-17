@@ -1,6 +1,6 @@
 * Since: 3.1
 * Description: Hook to extend the `SemanticData` object before the update is completed. (`SMWSQLStore3::updateDataBefore` was deprecated with 3.1)
-* Reference class: `SMWSQLStore3Writers`
+* Reference class: [`SQLStoreUpdater.php`][SQLStoreUpdater.php]
 
 ### Signature
 
@@ -14,3 +14,5 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::
 	return true;
 } );
 ```
+
+[SQLStoreUpdater.php]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/SQLStoreUpdater.php
