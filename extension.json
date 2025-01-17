@@ -34,9 +34,7 @@
 	},
 	"TestAutoloadNamespaces": {
  		"SMW\\Test\\": "tests/phpunit",
- 		"SMW\\Tests\\": "tests/phpunit",
- 		"SMW\\Tests\\Fixtures\\": "tests/phpunit/Fixtures",
- 		"SMW\\Tests\\Utils\\": "tests/phpunit/Utils"
+ 		"SMW\\Tests\\": "tests/phpunit"
  	},
  	"TestAutoloadClasses": {
  		"SMW\\Maintenance\\rebuildConceptCache": "maintenance/rebuildConceptCache.php",
