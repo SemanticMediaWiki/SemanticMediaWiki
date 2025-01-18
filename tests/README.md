@@ -20,11 +20,11 @@ Information about PHPUnit in connection with MediaWiki can be found at [smw.org]
 
 ## Running tests
 
-Verify that PHPUnit is installed
+Verify that PHPUnit is installed, and check your version
 <pre>
 > cd myMediawikiFolder
-> composer show phpunit/phpunit | grep versions
-versions : * 6.5.14
+> vendor/bin/phpunit --version
+PHPUnit 9.6.19 by Sebastian Bergmann and contributors.
 </pre>
 
 In case PHPUnit is not installed, run `composer install --dev`
@@ -35,32 +35,29 @@ Verify that your MediaWiki installation comes with its test files and folders (e
 Run `composer phpunit` from the Semantic MediaWiki base directory (e.g. `myMediawikiFolder/extensions/SemanticMediaWiki`) using a standard command line tool which should output something like:
 
 <pre>
-$ composer phpunit
+> php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist --bootstrap tests/bootstrap.php
 
-Using PHP 7.2.30
+Using PHP 8.1.31
 
-Semantic MediaWiki: 3.2.0-alpha, git: abc234b
-                    SMWSQLStore (postgres:9.5.10)
+Semantic MediaWiki: 5.0.0-alpha, git: 3ebf551
+                    SMWSQLStore (mysql:10.3.39-MariaDB-log)
 
-MediaWiki:          1.31.7, git: 42e0b35 (refs/heads/REL1_31)
-                    Extension vendor autoloader
+MediaWiki:          1.43.0, git: ac62dc3
+                    MediaWiki vendor autoloader
 
 Site language:      en
-Execution time:     2020-04-25 06:53
+Execution time:     2025-01-18 05:46
 
 Debug logs:         Disabled
-Xdebug:             Disabled (or not installed)
+Xdebug:             3.4.1
 
-Intl/ICU:           1.1.0 / 52.1
-PCRE:               8.41 2017-07-05
+Intl/ICU:           8.1.31 / 74.2
+PCRE:               10.32 2018-09-10
 
-PHPUnit 6.5.14 by Sebastian Bergmann and contributors.
+PHPUnit 9.6.19 by Sebastian Bergmann and contributors.
 
-Runtime:       PHP 7.2.30
-Configuration: /home/travis/build/SemanticMediaWiki/mw/extensions/SemanticMediaWiki/phpunit.xml.dist
-
-.............................................................   61 / 8526 (  0%)
-.............................................................  122 / 8526 (  1%)
+Runtime:       PHP 8.1.31
+Configuration: phpunit.xml.dist
 </pre>
 
 Note that running all tests may take a while.
@@ -83,7 +80,7 @@ To run a single testsuite, use `--filter`, e.g `composer phpunit -- --filter Par
 
 Writing meaningful tests isn't difficult but requires some diligence on how to setup a test and its environment. One simple rule is to avoid the use of hidden expectations or inheritance as remedy for the "less code is good code" aesthetics. Allow the code to be readable and if possible follow the [arrange, act, assert][aaa] pattern.
 
-For a short introduction on "How to write a test for Semantic MediaWiki", have a look at [this](https://www.youtube.com/watch?v=v6JRfk5ZmsI) video.
+For an introduction on "Writing PHP unit tests for MediaWiki", have a look at this [Wikimedia Tech Talk](https://www.youtube.com/live/HOWKHUA-wAI?t=278) by Kosta Harlan. For Testing and Continuous Integration see [Luke Eversfield and Marko Ilic's presentation](https://www.youtube.com/watch?v=0kTebage1VQ).
 
 <pre>
 /tests
@@ -107,7 +104,7 @@ For a short introduction on "How to write a test for Semantic MediaWiki", have a
 
 ### Unit tests
 
-The use of `MediaWikiTestCase` is discouraged (as its binds tests and the test environment to MediaWiki) and it is best to rely on `PHPUnit_Framework_TestCase` and where a MW database connection is required, use the `MwDBaseUnitTestCase` instead.
+The use of `MediaWikiTestCase` is discouraged (as its binds tests and the test environment to MediaWiki) and it is best to rely on `\PHPUnit\Framework\TestCase` and where a MW database connection is required, use the `MwDBaseUnitTestCase` instead.
 
 * `QueryPrinterTestCase` base class for all query and result printers
 * `SpecialPageTestCase` derives from `SemanticMediaWikiTestCase`
