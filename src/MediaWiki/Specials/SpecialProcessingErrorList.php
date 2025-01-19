@@ -9,7 +9,7 @@ use SpecialPage;
  * Convenience special page that just redirects to Special:Ask with a preset
  * of necessary parameters to query the processing error list.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -39,7 +39,7 @@ class SpecialProcessingErrorList extends SpecialPage {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $limit
+	 * @param int $limit
 	 *
 	 * @return string
 	 */
@@ -50,7 +50,7 @@ class SpecialProcessingErrorList extends SpecialPage {
 				'po'     => '?Has improper value for|?Has processing error text',
 				'p'      => 'class=sortable-20smwtable-2Dstriped-20smwtable-2Dclean/sep=ul',
 				'eq'     => 'no',
-				'limit'  =>  $limit,
+				'limit'  => $limit,
 				'bTitle' => 'processingerrorlist',
 				'bHelp'  => 'smw-processingerrorlist-helplink',
 				'bMsg'   => 'smw-processingerrorlist-intro'
@@ -62,11 +62,6 @@ class SpecialProcessingErrorList extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/maintenance';
 	}
 

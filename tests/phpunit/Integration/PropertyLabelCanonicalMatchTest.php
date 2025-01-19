@@ -8,22 +8,22 @@ use SMW\PropertyRegistry;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PropertyLabelCanonicalMatchTest extends \PHPUnit_Framework_TestCase {
+class PropertyLabelCanonicalMatchTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider canonicalLabelProvider
 	 */
 	public function testFindPropertyIdByLabel( $label, $expectedKey, $expectedLabel ) {
-		list( $labelMatch, $property ) = $this->findPropertyIdByLabel( $label );
+		[ $labelMatch, $property ] = $this->findPropertyIdByLabel( $label );
 
 		$this->assertEquals(
-			$labelMatch,
-			$expectedLabel
+			$expectedLabel,
+			$labelMatch
 		);
 
 		$this->assertEquals(
@@ -36,11 +36,11 @@ class PropertyLabelCanonicalMatchTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider canonicalLabelProvider
 	 */
 	public function testNewFromUserLabel( $label, $expectedKey, $expectedLabel ) {
-		list( $labelMatch, $property ) = $this->newFromUserLabel( $label );
+		[ $labelMatch, $property ] = $this->newFromUserLabel( $label );
 
 		$this->assertEquals(
-			$labelMatch,
-			$expectedLabel
+			$expectedLabel,
+			$labelMatch
 		);
 
 		$this->assertEquals(
@@ -53,11 +53,11 @@ class PropertyLabelCanonicalMatchTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider canonicalLabelWithLanguageProvider
 	 */
 	public function testNewFromUserLabelWithLanguage( $label, $languageCode, $expectedKey, $expectedLabel ) {
-		list( $labelMatch, $property ) = $this->newFromUserLabel( $label, $languageCode );
+		[ $labelMatch, $property ] = $this->newFromUserLabel( $label, $languageCode );
 
 		$this->assertEquals(
-			$labelMatch,
-			$expectedLabel
+			$expectedLabel,
+			$labelMatch
 		);
 
 		$this->assertEquals(

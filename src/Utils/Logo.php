@@ -1,12 +1,13 @@
 <?php
 
 namespace SMW\Utils;
+
 use MediaWiki\MediaWikiServices;
 
 /**
  * @see https://www.semantic-mediawiki.org/wiki/SMW_logo
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -21,7 +22,7 @@ class Logo {
 	 * @return string
 	 */
 	public static function get( $key ) {
-		if ( $key === 'small' || $key === '100x90' ) {
+		if ( $key === 'small' ) {
 			return self::small();
 		}
 
@@ -34,14 +35,14 @@ class Logo {
 		$extAssets = MediaWikiServices::getInstance()
 			->getMainConfig()
 			->get( 'ExtensionAssetsPath' );
-		return "$extAssets/SemanticMediaWiki/res/smw/logo_small.png";
+		return "$extAssets/SemanticMediaWiki/res/smw/assets/logo_small.svg";
 	}
 
 	private static function footer() {
 		$extAssets = MediaWikiServices::getInstance()
 			->getMainConfig()
 			->get( 'ExtensionAssetsPath' );
-		return "$extAssets/SemanticMediaWiki/res/smw/logo_footer.png";
+		return "$extAssets/SemanticMediaWiki/res/smw/assets/logo_footer.svg";
 	}
 
 }

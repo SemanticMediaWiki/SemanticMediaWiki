@@ -9,12 +9,12 @@ use SMW\MediaWiki\LocalTime;
  * @covers \SMW\MediaWiki\LocalTime
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
  */
-class LocalTimeTest extends \PHPUnit_Framework_TestCase {
+class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 
 	public function testNoModifiedLocalTime() {
 		$dateTime = LocalTime::getLocalizedTime(

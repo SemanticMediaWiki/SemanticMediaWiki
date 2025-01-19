@@ -5,7 +5,7 @@ namespace SMW\Elastic\Indexer\Replication;
 use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -71,7 +71,7 @@ class ReplicationError {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is( $type ): bool {
 		return $this->type === $type;

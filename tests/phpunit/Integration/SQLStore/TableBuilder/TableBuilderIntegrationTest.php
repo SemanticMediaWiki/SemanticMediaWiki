@@ -8,18 +8,19 @@ use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
 use SMW\SQLStore\TableBuilder\SQLiteTableBuilder;
 use SMW\SQLStore\TableBuilder\Table;
 use SMW\SQLStore\TableBuilder\TableBuilder;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class TableBuilderIntegrationTest extends DatabaseTestCase {
+class TableBuilderIntegrationTest extends SMWIntegrationTestCase {
 
 	private $messageReporterFactory;
 	private $tableBuilder;

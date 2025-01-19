@@ -2,8 +2,8 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMWQuery as Query;
 use SMW\Query\Language\NamespaceDescription;
+use SMWQuery as Query;
 
 class PrefixParameterProcessor {
 

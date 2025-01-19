@@ -2,8 +2,8 @@
 
 namespace SMW\Elastic\Indexer;
 
-use SMW\Elastic\Connection\Client as ElasticClient;
 use JsonSerializable;
+use SMW\Elastic\Connection\Client as ElasticClient;
 
 /**
  * @note Elasticsearch provides a bulk API to perform several index/delete operations
@@ -12,7 +12,7 @@ use JsonSerializable;
  * This class builds a call stack for a single bulk request and can contain different
  * operational tasks.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -88,7 +88,7 @@ class Bulk implements JsonSerializable {
 	 * @since 3.0
 	 *
 	 * @param array $params
-	 * @param array $source
+	 * @param array $doc
 	 */
 	public function upsert( array $params, array $doc ) {
 		$this->bulk['body'][] = [ 'update' => $params + $this->head ];

@@ -8,7 +8,7 @@ use SMW\Services\ServicesFactory;
 /**
  * Holds the annotation value input order by property.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -16,7 +16,7 @@ use SMW\Services\ServicesFactory;
 class SequenceMap {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $canMap = [];
 

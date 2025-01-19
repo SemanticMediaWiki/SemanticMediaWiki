@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Iterators;
 
-use SMW\Iterators\SeekableIteratorTrait;
 use SMW\Iterators\DotSeekableIteratorTrait;
 use SMW\Tests\PHPUnitCompat;
 
@@ -10,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Iterators\DotSeekableIteratorTrait
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class DotSeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
+class DotSeekableIteratorTraitTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

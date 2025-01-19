@@ -18,7 +18,7 @@ use Xml;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class ParameterInput {
@@ -39,7 +39,7 @@ class ParameterInput {
 	 *
 	 * @since 1.9
 	 *
-	 * @var mixed: string or false
+	 * @var mixed string or false
 	 */
 	protected $currentValue;
 
@@ -245,7 +245,7 @@ class ParameterInput {
 		$options[] = '<option value=""></option>';
 
 		$currentValues = (array)$this->getValueToUse();
-		if ( is_null( $currentValues ) ) {
+		if ( $currentValues === null ) {
 			$currentValues = [];
 		}
 

@@ -2,12 +2,12 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -30,7 +30,7 @@ class PropertyTableIdReferenceFinder {
 	private $namespaceExaminer;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCapitalLinks = true;
 
@@ -92,9 +92,9 @@ class PropertyTableIdReferenceFinder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasResidualPropertyTableReference( $id ) {
 		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
@@ -107,9 +107,9 @@ class PropertyTableIdReferenceFinder {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasResidualReferenceForId( $id ) {
 		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
@@ -122,7 +122,7 @@ class PropertyTableIdReferenceFinder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return array
 	 */
@@ -147,8 +147,8 @@ class PropertyTableIdReferenceFinder {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $id
-	 * @param boolean $secondary_ref
+	 * @param int $id
+	 * @param bool $secondary_ref
 	 *
 	 * @return DataItem|false
 	 */

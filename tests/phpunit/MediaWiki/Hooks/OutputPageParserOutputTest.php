@@ -2,29 +2,28 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use Language;
-use ParserOutput;
 use MediaWiki\MediaWikiServices;
-use SMW\Factbox\FactboxText;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use ParserOutput;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Factbox\FactboxText;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\OutputPageParserOutput
  * @group semantic-mediawiki
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
+class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -87,7 +86,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	public function testProcess( $parameters, $expected ) {
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( $parameters['smwgNamespacesWithSemanticLinks'] ) );
+			->willReturn( $parameters['smwgNamespacesWithSemanticLinks'] );
 
 		$entityCache = new \SMW\EntityCache(
 			$this->applicationFactory->newCacheFactory()->newFixedInMemoryCache()
@@ -119,7 +118,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$factboxFactory->expects( $this->any() )
 			->method( 'newCachedFactbox' )
-			->will( $this->returnValue( $cachedFactbox ) );
+			->willReturn( $cachedFactbox );
 
 		$this->testEnvironment->registerObject( 'FactboxFactory', $factboxFactory );
 
@@ -164,7 +163,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
@@ -174,42 +173,42 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'hasVisibleProperties' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $title ) ] ) );
+			->willReturn( [ DIWikiPage::newFromTitle( $title ) ] );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ new DIProperty( __METHOD__ . 'property' ) ] ) );
+			->willReturn( [ new DIProperty( __METHOD__ . 'property' ) ] );
 
-		#0 Simple factbox build, returning content
+		# 0 Simple factbox build, returning content
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-content' );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 9098 ) );
+			->willReturn( 9098 );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -217,15 +216,15 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
+			->willReturn( new \RequestContext() );
 
 		$outputPage->expects( $this->any() )
 			->method( 'getLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$provider[] = [
 			[
@@ -238,20 +237,20 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 Disabled namespace, no return value expected
+		# 1 Disabled namespace, no return value expected
 		$title = MockTitle::buildMock( __METHOD__ . 'title-ns-disabled' );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 90000 ) );
+			->willReturn( 90000 );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -259,7 +258,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$provider[] = [
 			[
@@ -277,11 +276,11 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -289,7 +288,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$provider[] = [
 			[
@@ -307,11 +306,11 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isRedirect' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -319,14 +318,14 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest() );
 
 		$outputPage->expects( $this->any() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $context ) );
+			->willReturn( $context );
 
 		$provider[] = [
 			[
@@ -344,11 +343,11 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -356,18 +355,18 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$context = new \RequestContext();
 		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $context ) );
+			->willReturn( $context );
 
 		$outputPage->expects( $this->any() )
 			->method( 'getLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$provider[] = [
 			[

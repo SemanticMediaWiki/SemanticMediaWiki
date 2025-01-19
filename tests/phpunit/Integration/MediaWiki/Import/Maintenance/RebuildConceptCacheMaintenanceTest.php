@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
@@ -11,16 +11,15 @@ use Title;
  * @group SMWExtension
  * @group semantic-mediawiki-import
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
  */
-class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -79,9 +78,9 @@ class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 		// $this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$conceptPage = $this->createConceptPage( 'Lorem ipsum concept', '[[Category:Lorem ipsum]]' );
-	 	$this->importedTitles[] = $conceptPage;
+		$this->importedTitles[] = $conceptPage;
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildConceptCache' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildConceptCache' );
 		$maintenanceRunner->setQuiet();
 
 		$maintenanceRunner

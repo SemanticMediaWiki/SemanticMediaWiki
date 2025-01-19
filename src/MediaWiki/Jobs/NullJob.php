@@ -3,11 +3,10 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Job;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -20,7 +19,8 @@ class NullJob extends Job {
 	 * @param Title|null $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title = null, $params = [] ) {}
+	public function __construct( ?Title $title = null, $params = [] ) {
+	}
 
 	/**
 	 * @see Job::run
@@ -36,6 +36,7 @@ class NullJob extends Job {
 	 *
 	 * @since  2.5
 	 */
-	public function insert() {}
+	public function insert() {
+	}
 
 }

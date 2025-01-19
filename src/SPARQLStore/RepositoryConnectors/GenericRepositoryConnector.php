@@ -14,7 +14,7 @@ use SMWExporter as Exporter;
 /**
  * Basic database connector for exchanging data via SPARQL.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -130,7 +130,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	/**
 	 * @since  2.0
 	 *
-	 * @param integer $timeout in seconds
+	 * @param int $timeout in seconds
 	 */
 	public function setConnectionTimeout( $timeout = 10 ) {
 		$this->httpRequest->setOption( CURLOPT_CONNECTTIMEOUT, $timeout );
@@ -139,7 +139,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function shouldPing(): bool {
 		return $this->repositoryClient->isFlagSet( SMW_SPARQL_CONNECTION_PING );
@@ -153,10 +153,9 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * might not be entirely correct. Especially, the SPARQL 1.1 HTTP error
 	 * codes for Update are not defined yet (April 15 2011).
 	 *
-	 * @param $pingQueryEndpoint boolean true if the query endpoint should be
-	 * pinged, false if the update endpoint should be pinged
+	 * @param int $endpointType
 	 *
-	 * @return boolean to indicate success
+	 * @return bool to indicate success
 	 */
 	public function ping( $endpointType = self::ENDP_QUERY ) {
 		if ( $endpointType == self::ENDP_QUERY ) {
@@ -220,8 +219,10 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * rdfs, property, xsd, so these do not have to be included in
 	 * $extraNamespaces.
 	 *
-	 * @param $where string WHERE part of the query, without surrounding { }
-	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @param string|array $vars
+	 * @param string $where WHERE part of the query, without surrounding { }
+	 * @param array $options
+	 * @param aray $extraNamespaces (associative) of namespaceId => namespaceUri
 	 *
 	 * @return string SPARQL query
 	 */
@@ -328,7 +329,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @param $where string condition for data to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = [] ) {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
@@ -355,7 +356,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @param $objectName string Turtle name of marking object/value
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ) {
 		return $this->delete( "?s ?p ?o", "?s $propertyName $objectName . ?s ?p ?o", $extraNamespaces );
@@ -364,7 +365,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	/**
 	 * Convenience method for deleting all triples of the entire store
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function deleteAll() {
 		return $this->delete( "?s ?p ?o", "?s ?p ?o" );
@@ -381,7 +382,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @param $where string condition for data to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ) {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
@@ -402,7 +403,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @param $triples string of triples to insert
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function insertData( $triples, $extraNamespaces = [] ) {
 		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
@@ -430,7 +431,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 * @param $triples string of triples to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function deleteData( $triples, $extraNamespaces = [] ) {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
@@ -507,7 +508,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @param $sparql string with the complete SPARQL update query (INSERT or DELETE)
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doUpdate( $sparql ) {
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
@@ -550,7 +551,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @param $payload string Turtle serialization of data to send
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doHttpPost( $payload ) {
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {

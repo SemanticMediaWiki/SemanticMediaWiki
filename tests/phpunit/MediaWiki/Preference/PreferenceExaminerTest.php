@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Preference;
 
+use MediaWiki\User\UserOptionsLookup;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\Tests\PHPUnitCompat;
 
@@ -9,12 +10,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Preference\PreferenceExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class PreferenceExaminerTest extends \PHPUnit_Framework_TestCase {
+class PreferenceExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -36,17 +37,16 @@ class PreferenceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasPreferenceOf() {
-		$this->user->expects( $this->any() )
+		$userOptionsLookup = $this->createMock( UserOptionsLookup::class );
+
+		$userOptionsLookup->expects( $this->any() )
 			->method( 'getOption' )
-			->with( $this->equalTo( 'foo' ) )
-			->will( $this->returnValue( false ) );
+			->with( $this->user, 'foo', false )
+			->willReturn( false );
 
-		$instance = new PreferenceExaminer();
+		$instance = new PreferenceExaminer( $this->user, $userOptionsLookup );
 
-		$instance->setUser( $this->user );
-
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
 			$instance->hasPreferenceOf( 'foo' )
 		);
 	}
@@ -54,8 +54,8 @@ class PreferenceExaminerTest extends \PHPUnit_Framework_TestCase {
 	public function testHasPreferenceOf_NoUser() {
 		$instance = new PreferenceExaminer();
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasPreferenceOf( 'foo' )
 		);
 	}

@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
 
 use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class DeprecationNoticeTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -58,8 +58,8 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
@@ -102,8 +102,8 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}

@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
-use Title;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SidebarBeforeOutput
@@ -17,12 +17,12 @@ use SMW\Tests\PHPUnitCompat;
  * @group semantic-mediawiki-integration
  * @group mediawiki-databaseless
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
+class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -30,7 +30,7 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sidebarBeforeOutputDataProvider
 	 */
 	public function testSidebarBeforeOutputURLEncoding( $setup, $expected ) {
-		$sidebar  = [];
+		$sidebar = [];
 
 		foreach ( $setup['settings'] as $key => $value ) {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
@@ -95,16 +95,16 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( Title::newFromText( $text, NS_MAIN ) ) );
+			->willReturn( Title::newFromText( $text, NS_MAIN ) );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'msg' )
-			->will( $this->returnValue( $message ) )
+			->willReturn( $message )
 			->with( 'smw_browselink' );
 
 		$skin->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $output ) );
+			->willReturn( $output );
 
 		return [ 'settings' => $settings, 'skin' => $skin ];
 	}

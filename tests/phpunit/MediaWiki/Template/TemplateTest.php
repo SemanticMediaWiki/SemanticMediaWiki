@@ -8,12 +8,12 @@ use SMW\MediaWiki\Template\Template;
  * @covers \SMW\MediaWiki\Template\Template
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class TemplateTest extends \PHPUnit_Framework_TestCase {
+class TemplateTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

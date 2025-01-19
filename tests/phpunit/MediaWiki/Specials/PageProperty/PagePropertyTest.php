@@ -5,19 +5,19 @@ namespace SMW\Tests\MediaWiki\Specials\PageProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PageProperty\PageBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class PagePropertyTest extends \PHPUnit_Framework_TestCase {
+class PagePropertyTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -68,7 +68,7 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -79,8 +79,8 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 			$this->options
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildForm()
 		);
 	}
@@ -91,8 +91,8 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 			$this->options
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHtml( [] )
 		);
 	}
@@ -106,8 +106,8 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 			$this->options
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHtml( [ DIWikiPage::newFromText( 'Foo' ) ] )
 		);
 	}

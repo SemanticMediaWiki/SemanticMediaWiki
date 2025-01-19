@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 use SMW\Query\Language\ValueDescription;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -18,7 +18,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @param ValueDescription $description
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canHaveMatchCondition( ValueDescription $description ) {
 		if ( !$this->isEnabled() ) {
@@ -119,7 +119,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 * @return string
 	 */
 	public function getQuerySearchModifier( &$value ) {
-		//  @see http://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
+		// @see http://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
 		// "MySQL can perform boolean full-text searches using the IN BOOLEAN
 		// MODE modifier. With this modifier, certain characters have special
 		// meaning at the beginning or end of words ..."

@@ -3,7 +3,7 @@
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class PHPUnitEnvironment {
 	/**
 	 * @param array $args
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasDebugRequest( $args ) {
 		return array_search( '--debug', $args ) || array_search( '--debug-tests', $args );
@@ -35,14 +35,14 @@ class PHPUnitEnvironment {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function enabledDebugLogs() {
 		return $GLOBALS['wgDebugLogGroups'] !== [] || $GLOBALS['wgDebugLogFile'] !== '';
 	}
 
 	/**
-	 * @return boolean|integer
+	 * @return bool|int
 	 */
 	public function getXdebugInfo() {
 		if ( extension_loaded( 'xdebug' ) &&
@@ -54,7 +54,7 @@ class PHPUnitEnvironment {
 	}
 
 	/**
-	 * @return boolean|string
+	 * @return bool|string
 	 */
 	public function getIntlInfo() {
 		if ( extension_loaded( 'intl' ) ) {
@@ -65,7 +65,7 @@ class PHPUnitEnvironment {
 	}
 
 	/**
-	 * @return boolean|string
+	 * @return bool|string
 	 */
 	public function getPcreInfo() {
 		return defined( 'PCRE_VERSION' ) ? PCRE_VERSION : false;
@@ -96,7 +96,7 @@ class PHPUnitEnvironment {
 
 		try {
 			$store_info = json_encode( smwfGetStore()->getInfo(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
-		} catch( \Wikimedia\Rdbms\DBConnectionError $e ) {
+		} catch ( \Wikimedia\Rdbms\DBConnectionError $e ) {
 			$store_info = 'No connection';
 		}
 
@@ -157,7 +157,7 @@ class PHPUnitEnvironment {
 					exec( "git ls-remote https://github.com/wikimedia/mediawiki $refs", $output );
 				}
 
-				$this->gitHead['mw'] = isset( $output[0] ) ? substr( $output[0], 0, 7 ) . " ($refs)"  : 'n/a';
+				$this->gitHead['mw'] = isset( $output[0] ) ? substr( $output[0], 0, 7 ) . " ($refs)" : 'n/a';
 			} else {
 				$this->gitHead['mw'] = 'N/A';
 			}

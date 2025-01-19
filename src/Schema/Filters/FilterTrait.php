@@ -2,15 +2,14 @@
 
 namespace SMW\Schema\Filters;
 
-use SMW\Schema\SchemaList;
-use SMW\Schema\SchemaFilter;
-use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Compartment;
+use SMW\Schema\CompartmentIterator;
+use SMW\Schema\SchemaFilter;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -23,7 +22,7 @@ trait FilterTrait {
 	private $matches = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $options = [];
 

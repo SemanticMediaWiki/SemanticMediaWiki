@@ -2,13 +2,12 @@
 
 namespace SMW\MediaWiki;
 
-use IDBAccessObject;
-use MediaWiki\Revision\RevisionRecord;
-use MediaWiki\Revision\RevisionLookup;
-use Title;
 use File;
+use IDBAccessObject;
+use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Revision\RevisionRecord;
+use Title;
 use WikiPage;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
  * @private
@@ -18,7 +17,7 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
  * data related to a revision in a consistent manner and lessen the potential
  * breakage during an update.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -45,9 +44,9 @@ class RevisionGuard {
 	 * @since 3.1
 	 *
 	 * @param Title $title
-	 * @param integer &$latestRevID
+	 * @param int|null &$latestRevID
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSkippableUpdate( Title $title, &$latestRevID = null ) {
 		$flag = IDBAccessObject::READ_LATEST;
@@ -70,7 +69,7 @@ class RevisionGuard {
 	 *
 	 * @param Title $title
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLatestRevID( Title $title ) {
 		$flag = IDBAccessObject::READ_LATEST;
@@ -147,7 +146,7 @@ class RevisionGuard {
 	 *
 	 * @return File|null
 	 */
-	public function getFile( Title $title, File $file = null ) {
+	public function getFile( Title $title, ?File $file = null ) {
 		$origFile = $file;
 
 		$this->hookDispatcher->onChangeFile( $title, $file );

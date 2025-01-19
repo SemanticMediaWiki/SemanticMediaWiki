@@ -8,7 +8,7 @@ use Psr\Log\LoggerAwareTrait;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -45,26 +45,26 @@ class HierarchyLookup {
 	private $cache;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $inMemoryCache = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL = 60 * 60 * 24 * 7;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $subcategoryDepth = 10;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $subpropertyDepth = 10;
 
@@ -125,7 +125,7 @@ class HierarchyLookup {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $subcategoryDepth
+	 * @param int $subcategoryDepth
 	 */
 	public function setSubcategoryDepth( $subcategoryDepth ) {
 		$this->subcategoryDepth = (int)$subcategoryDepth;
@@ -134,7 +134,7 @@ class HierarchyLookup {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $subpropertyDepth
+	 * @param int $subpropertyDepth
 	 */
 	public function setSubpropertyDepth( $subpropertyDepth ) {
 		$this->subpropertyDepth = (int)$subpropertyDepth;
@@ -145,7 +145,7 @@ class HierarchyLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSubproperty( DIProperty $property ) {
 		if ( $this->subpropertyDepth < 1 ) {
@@ -164,7 +164,7 @@ class HierarchyLookup {
 	 *
 	 * @param DIWikiPage $category
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSubcategory( DIWikiPage $category ) {
 		if ( $this->subcategoryDepth < 1 ) {

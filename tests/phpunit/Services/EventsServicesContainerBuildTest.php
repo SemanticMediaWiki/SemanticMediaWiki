@@ -7,12 +7,12 @@ use Onoi\CallbackContainer\CallbackContainerFactory;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class EventsServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
+class EventsServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 
 	private $callbackContainerFactory;
 	private $servicesFileDir;

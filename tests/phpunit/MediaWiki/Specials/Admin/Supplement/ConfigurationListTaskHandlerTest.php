@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
 use SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class ConfigurationListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -38,7 +38,7 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->outputFormatter->expects( $this->any() )
 			->method( 'encodeAsJson' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
@@ -60,8 +60,8 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}

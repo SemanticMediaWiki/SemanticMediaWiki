@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Query\ResultPrinters\CsvFileExportPrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class CsvFileExportPrinterTest extends \PHPUnit_Framework_TestCase {
+class CsvFileExportPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -32,12 +32,12 @@ class CsvFileExportPrinterTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new CsvFileExportPrinter( 'csv' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getResult( $queryResult, [], SMW_OUTPUT_WIKI )
 		);
 	}
@@ -53,15 +53,15 @@ class CsvFileExportPrinterTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->once() )
 			->method( 'getQueryLink' )
-			->will( $this->returnValue( $link ) );
+			->willReturn( $link );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getCount' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new CsvFileExportPrinter( 'csv' );
 		$instance->getResult( $queryResult, [], SMW_OUTPUT_WIKI );

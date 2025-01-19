@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
-use ReflectionClass;
-use SMW\Tests\PHPUnitCompat;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Wikimedia\Rdbms\ILoadBalancer;
 
@@ -12,12 +11,12 @@ use Wikimedia\Rdbms\ILoadBalancer;
  * @covers \SMW\MediaWiki\Connection\LoadBalancerConnectionProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
  */
-class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
+class LoadBalancerConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -46,7 +45,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->loadBalancer->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$instance = new LoadBalancerConnectionProvider(
 			DB_REPLICA
@@ -73,7 +72,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$loadBalancer->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$instance = new LoadBalancerConnectionProvider(
 			DB_REPLICA

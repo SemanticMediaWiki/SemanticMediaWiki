@@ -2,68 +2,65 @@
 
 namespace SMW\SQLStore;
 
-use Onoi\Cache\Cache;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
-use SMW\MediaWiki\Collator;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
-use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\DIWikiPage;
-use SMW\Options;
+use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\MediaWiki\Collator;
+use SMW\Services\ServicesContainer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMW\SortLetter;
 use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\SQLStore\EntityStore\AuxiliaryFields;
+use SMW\SQLStore\EntityStore\CacheWarmer;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
-use SMW\SQLStore\EntityStore\PrefetchItemLookup;
-use SMW\SQLStore\EntityStore\IdCacheManager;
-use SMW\SQLStore\EntityStore\CacheWarmer;
-use SMW\SQLStore\EntityStore\IdEntityFinder;
-use SMW\SQLStore\EntityStore\EntityIdFinder;
-use SMW\SQLStore\EntityStore\SequenceMapFinder;
-use SMW\SQLStore\EntityStore\AuxiliaryFields;
-use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\SQLStore\EntityStore\DuplicateFinder;
+use SMW\SQLStore\EntityStore\EntityIdFinder;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
+use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\SQLStore\EntityStore\IdChanger;
+use SMW\SQLStore\EntityStore\IdEntityFinder;
+use SMW\SQLStore\EntityStore\PrefetchCache;
+use SMW\SQLStore\EntityStore\PrefetchItemLookup;
+use SMW\SQLStore\EntityStore\PropertiesLookup;
+use SMW\SQLStore\EntityStore\PropertySubjectsLookup;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
+use SMW\SQLStore\EntityStore\SequenceMapFinder;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
-use SMW\SQLStore\EntityStore\PropertySubjectsLookup;
-use SMW\SQLStore\EntityStore\PropertiesLookup;
-use SMW\SQLStore\EntityStore\PrefetchCache;
-use SMW\SQLStore\EntityStore\EntityIdManager;
-use SMW\SQLStore\PropertyTable\PropertyTableHashes;
+use SMW\SQLStore\Installer\TableOptimizer;
+use SMW\SQLStore\Installer\VersionExaminer;
+use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
 use SMW\SQLStore\Lookup\CachedListLookup;
+use SMW\SQLStore\Lookup\DisplayTitleLookup;
+use SMW\SQLStore\Lookup\EntityUniquenessLookup;
+use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\SQLStore\Lookup\ListLookup;
+use SMW\SQLStore\Lookup\MissingRedirectLookup;
+use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;
+use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
+use SMW\SQLStore\Lookup\SingleEntityQueryLookup;
+use SMW\SQLStore\Lookup\TableStatisticsLookup;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
-use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
-use SMW\SQLStore\Lookup\MissingRedirectLookup;
-use SMW\SQLStore\Lookup\MonolingualTextLookup;
-use SMW\SQLStore\Lookup\DisplayTitleLookup;
-use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
-use SMW\SQLStore\Lookup\ErrorLookup;
-use SMW\SQLStore\Lookup\EntityUniquenessLookup;
-use SMW\SQLStore\Lookup\TableStatisticsLookup;
-use SMW\SQLStore\Lookup\SingleEntityQueryLookup;
-use SMW\SQLStore\TableBuilder\TableBuilder;
-use SMW\SQLStore\TableBuilder\TableSchemaManager;
-use SMW\SQLStore\TableBuilder\TableBuildExaminer;
-use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
-use SMW\SQLStore\Installer\VersionExaminer;
-use SMW\SQLStore\Installer\TableOptimizer;
+use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\SQLStore\Rebuilder\EntityValidator;
 use SMW\SQLStore\Rebuilder\Rebuilder;
-use SMW\Utils\CircularReferenceGuard;
+use SMW\SQLStore\TableBuilder\TableBuilder;
+use SMW\SQLStore\TableBuilder\TableBuildExaminer;
+use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
+use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMWRequestOptions as RequestOptions;
-use SMW\Services\ServicesContainer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -92,7 +89,7 @@ class SQLStoreFactory {
 	 * @param SQLStore $store
 	 * @param MessageReporter|null $messageReporter
 	 */
-	public function __construct( SQLStore $store, MessageReporter $messageReporter = null ) {
+	public function __construct( SQLStore $store, ?MessageReporter $messageReporter = null ) {
 		$this->store = $store;
 		$this->messageReporter = $messageReporter;
 
@@ -221,7 +218,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newPropertyUsageCachedListLookup( RequestOptions $requestOptions = null ) {
+	public function newPropertyUsageCachedListLookup( ?RequestOptions $requestOptions = null ) {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$propertyUsageListLookup = new PropertyUsageListLookup(
@@ -244,7 +241,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newUnusedPropertyCachedListLookup( RequestOptions $requestOptions = null ) {
+	public function newUnusedPropertyCachedListLookup( ?RequestOptions $requestOptions = null ) {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$unusedPropertyListLookup = new UnusedPropertyListLookup(
@@ -267,7 +264,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newUndeclaredPropertyCachedListLookup( RequestOptions $requestOptions = null ) {
+	public function newUndeclaredPropertyCachedListLookup( ?RequestOptions $requestOptions = null ) {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$undeclaredPropertyListLookup = new UndeclaredPropertyListLookup(
@@ -287,8 +284,8 @@ class SQLStoreFactory {
 	 * @since 2.2
 	 *
 	 * @param ListLookup $listLookup
-	 * @param boolean $useCache
-	 * @param integer $cacheExpiry
+	 * @param bool $useCache
+	 * @param int $cacheExpiry
 	 *
 	 * @return ListLookup
 	 */
@@ -662,7 +659,7 @@ class SQLStoreFactory {
 	 *
 	 * @return IdEntityFinder
 	 */
-	public function newEntityIdFinder( IdCacheManager $idCacheManager, PropertyTableHashes $propertyTableHashes = null ) {
+	public function newEntityIdFinder( IdCacheManager $idCacheManager, ?PropertyTableHashes $propertyTableHashes = null ) {
 		if ( $propertyTableHashes === null ) {
 			$propertyTableHashes = $this->newPropertyTableHashes( $idCacheManager );
 		}

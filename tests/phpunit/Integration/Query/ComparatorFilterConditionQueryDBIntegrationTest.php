@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\Query;
 use SMW\DIProperty;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMwConjunction as Conjunction;
 use SMWDIBlob as DIBlob;
@@ -21,14 +21,15 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
+class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
@@ -128,7 +129,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 		$property = new DIProperty( 'SomeNumericPropertyToFilter' );
 		$property->setPropertyTypeId( '_num' );
 
-		#0 Numeric Greater Equal, Less Equal
+		# 0 Numeric Greater Equal, Less Equal
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -148,7 +149,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#1 Numeric Greater, Equal
+		# 1 Numeric Greater, Equal
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -169,7 +170,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#2 Numeric Greater, Less
+		# 2 Numeric Greater, Less
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -188,7 +189,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#3 Numeric Greater, Not Like
+		# 3 Numeric Greater, Not Like
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -215,7 +216,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 		$property = new DIProperty( 'SomeBlobPropertyToFilter' );
 		$property->setPropertyTypeId( '_txt' );
 
-		#4 Text, Greater Equal, Less Equal
+		# 4 Text, Greater Equal, Less Equal
 		$provider[] = [
 			[
 				'AA' => new DIBlob( 'AA' ),
@@ -235,7 +236,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#5 Text, Like, Like
+		# 5 Text, Like, Like
 		$provider[] = [
 			[
 				'A'   => new DIBlob( 'A' ),
@@ -256,7 +257,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#6 Text, Like, Not Like
+		# 6 Text, Like, Not Like
 		$provider[] = [
 			[
 				'AABA' => new DIBlob( 'AABA' ),
@@ -283,7 +284,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 		$property = new DIProperty( 'SomeDatePropertyToFilter' );
 		$property->setPropertyTypeId( '_dat' );
 
-		#7 Date, Greater Equal, Less Equal
+		# 7 Date, Greater Equal, Less Equal
 		$provider[] = [
 			[
 				'197001' => new DITime( 1, 1970, 01, 01, 1, 1 ),
@@ -303,7 +304,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#7 Date, Greater Equal, Less Equal
+		# 7 Date, Greater Equal, Less Equal
 		$provider[] = [
 			[
 				'1970011' => new DITime( 1, 1970, 01, 01, 1, 1 ),

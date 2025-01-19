@@ -6,27 +6,11 @@ use IContextSource;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Revision\SlotRecord;
 use MediaWiki\User\UserIdentity;
-use Onoi\HttpRequest\HttpRequestFactory;
-use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
-use SMW\NamespaceManager;
-use SMW\SemanticData;
-use SMW\Setup;
-use SMW\Site;
-use SMW\SQLStore\QueryDependencyLinksStoreFactory;
-use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use ParserHooks\HookRegistrant;
-use SkinTemplate;
 use SMW\DataTypeRegistry;
-use SMW\ParserFunctions\DocumentationParserFunction;
-use SMW\ParserFunctions\InfoParserFunction;
-use SMW\ParserFunctions\SectionTag;
-use SMW\SetupFile;
-use SMW\Store;
-use SMW\Options;
+use SMW\MediaWiki\Hooks\AdminLinks;
+use SMW\MediaWiki\Hooks\ApiModuleManager;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\Hooks\ArticleFromTitle;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
@@ -34,6 +18,7 @@ use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\MediaWiki\Hooks\ArticleViewHeader;
 use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
+use SMW\MediaWiki\Hooks\DeleteAccount;
 use SMW\MediaWiki\Hooks\EditPageForm;
 use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
 use SMW\MediaWiki\Hooks\ExtensionTypes;
@@ -41,12 +26,13 @@ use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
-use SMW\MediaWiki\Hooks\RevisionFromEditComplete;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
+use SMW\MediaWiki\Hooks\PageMoveComplete;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\MediaWiki\Hooks\PersonalUrls;
 use SMW\MediaWiki\Hooks\RejectParserCacheValue;
 use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
+use SMW\MediaWiki\Hooks\RevisionFromEditComplete;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
@@ -54,19 +40,23 @@ use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
 use SMW\MediaWiki\Hooks\TitleIsMovable;
-use SMW\MediaWiki\Hooks\PageMoveComplete;
 use SMW\MediaWiki\Hooks\TitleQuickPermissions;
 use SMW\MediaWiki\Hooks\UserChange;
-use SMW\MediaWiki\Hooks\DeleteAccount;
-use SMW\MediaWiki\Hooks\AdminLinks;
-use SMW\MediaWiki\Hooks\SpecialPageList;
-use SMW\MediaWiki\Hooks\ApiModuleManager;
-use SMW\Maintenance\RunImport;
-use StubGlobalUser;
+use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
+use SMW\NamespaceManager;
+use SMW\ParserFunctions\DocumentationParserFunction;
+use SMW\ParserFunctions\InfoParserFunction;
+use SMW\ParserFunctions\SectionTag;
+use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SetupFile;
+use SMW\Site;
+use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
+use SMW\Store;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -94,7 +84,7 @@ class Hooks {
 	 *
 	 * @param string $name
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRegistered( $name ) {
 		return isset( $this->handlers[$name] );
@@ -126,7 +116,7 @@ class Hooks {
 	 *
 	 * @param string $name
 	 *
-	 * @return Callable|false
+	 * @return callable|false
 	 */
 	public function getHandlerFor( $name ) {
 		return isset( $this->handlers[$name] ) ? $this->handlers[$name] : false;
@@ -159,7 +149,7 @@ class Hooks {
 	 * @param array &$vars
 	 */
 	public static function registerExtensionCheck( array &$vars ) {
-		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = function ( $outputPage ) {
+		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = static function ( $outputPage ) {
 			$beforePageDisplay = new BeforePageDisplay();
 
 			$beforePageDisplay->setOptions(
@@ -314,12 +304,6 @@ class Hooks {
 			'AdminLinks' => [ $this, 'onAdminLinks' ],
 			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]
 		];
-
-		if ( version_compare( MW_VERSION, '1.37', '<' ) ) {
-			$this->handlers += [
-				'PersonalUrls' => [ $this, 'onPersonalUrls' ]
-			];
-		}
 	}
 
 	/**
@@ -467,7 +451,8 @@ class Hooks {
 		$beforePageDisplay->setOptions(
 			[
 				'incomplete_tasks' => $setupFile->findIncompleteTasks(),
-				'is_upgrade' => $setupFile->get( SetupFile::PREVIOUS_VERSION )
+				'is_upgrade' => $setupFile->get( SetupFile::PREVIOUS_VERSION ),
+				'smwgEnableExportRDFLink' => $GLOBALS['smwgEnableExportRDFLink'],
 			]
 		);
 
@@ -574,6 +559,7 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
 
+		$user = User::newFromIdentity( $user );
 		$editInfo = $mwCollaboratorFactory->newEditInfo(
 			$wikiPage,
 			$revision,
@@ -689,13 +675,8 @@ class Hooks {
 	}
 
 	private function getETag( $parserCache, $page, $pOpts ) {
-		if ( method_exists( $parserCache, 'makeParserOutputKey' ) ) {
-			// 1.36+
-			return 'W/"' . $parserCache->makeParserOutputKey( $page, $pOpts	) .
-				"--" . $page->getTouched() . '"';
-		} else {
-			return $parserCache->getETag( $page, $pOpts );
-		}
+		return 'W/"' . $parserCache->makeParserOutputKey( $page, $pOpts	) .
+			"--" . $page->getTouched() . '"';
 	}
 
 	/**
@@ -862,7 +843,7 @@ class Hooks {
 	 */
 	public function onSpecialStatsAddExtra( &$extraStats, IContextSource $context ) {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$context->getOutput()->addModules( 'smw.tippy' );
+		$context->getOutput()->addModules( 'ext.smw.tooltip' );
 
 		$specialStatsAddExtra = new SpecialStatsAddExtra(
 			$applicationFactory->getStore()
@@ -1241,12 +1222,7 @@ class Hooks {
 		);
 
 		$userChange->setOrigin( 'BlockIpComplete' );
-		if ( method_exists( $block, 'getTargetUserIdentity' ) ) {
-			// MW 1.37+
-			$userChange->process( $block->getTargetUserIdentity() );
-		} else {
-			$userChange->process( $block->getTarget() );
-		}
+		$userChange->process( $block->getTargetUserIdentity() );
 
 		return true;
 	}
@@ -1264,12 +1240,7 @@ class Hooks {
 		);
 
 		$userChange->setOrigin( 'UnblockUserComplete' );
-		if ( method_exists( $block, 'getTargetUserIdentity' ) ) {
-			// MW 1.37+
-			$userChange->process( $block->getTargetUserIdentity() );
-		} else {
-			$userChange->process( $block->getTarget() );
-		}
+		$userChange->process( $block->getTargetUserIdentity() );
 
 		return true;
 	}

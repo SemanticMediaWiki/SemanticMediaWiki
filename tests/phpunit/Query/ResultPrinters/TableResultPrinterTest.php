@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Query\ResultPrinters\TableResultPrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TableResultPrinterTest extends \PHPUnit_Framework_TestCase {
+class TableResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -32,12 +32,12 @@ class TableResultPrinterTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new TableResultPrinter( 'table' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getResult( $queryResult, [], SMW_OUTPUT_WIKI )
 		);
 	}

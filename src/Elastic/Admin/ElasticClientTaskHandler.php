@@ -3,20 +3,19 @@
 namespace SMW\Elastic\Admin;
 
 use Html;
+use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use WebRequest;
-use SMW\Elastic\Indexer\ReplicationStatus;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\Config;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -108,7 +107,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		);
 
 		$html = Html::rawElement(
-			'h3',
+			'h2',
 			[],
 			$this->msg( 'smw-admin-supplementary-elastic-section-subtitle' )
 		) . Html::rawElement(
@@ -154,7 +153,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		$config = $connection->getConfig();
 
 		$html = Html::rawElement(
-			'h3',
+			'h2',
 			[ 'class' => 'smw-title' ],
 			$this->msg( [ 'smw-admin-supplementary-elastic-replication-header-title' ] )
 		) . Html::rawElement(
@@ -162,7 +161,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 			[],
 			$this->msg( [ 'smw-admin-supplementary-elastic-no-connection' ], Message::PARSE )
 		) . Html::rawElement(
-			'h4',
+			'h3',
 			[ 'class' => 'smw-title' ],
 			$this->msg( [ 'smw-admin-supplementary-elastic-endpoints' ] )
 		) . Html::rawElement(

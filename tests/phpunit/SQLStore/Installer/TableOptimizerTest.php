@@ -2,21 +2,20 @@
 
 namespace SMW\Tests\SQLStore\Installer;
 
-use SMW\MediaWiki\Database;
 use SMW\SQLStore\Installer\TableOptimizer;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\TableOptimizer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class TableOptimizerTest extends \PHPUnit_Framework_TestCase {
+class TableOptimizerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -65,6 +64,5 @@ class TableOptimizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->runForTables( [ $table ] );
 	}
-
 
 }

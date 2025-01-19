@@ -49,13 +49,7 @@
 				// input help will be shown
 				context.on( 'keyup keypres mouseenter', function( e ) {
 
-					// MW 1.27 - MW 1.31
-					var highlighter = context.parent().find( '.oo-ui-widget' );
-
-					// MW 1.32+
-					if ( highlighter.length == 0 ) {
-						highlighter = $( '.oo-ui-defaultOverlay > .oo-ui-widget' );
-					};
+					var highlighter = $( '.oo-ui-defaultOverlay > .oo-ui-widget' );
 
 					// Disable (hide) the MW's search input highlighter
 					if ( context.val().search( /\[|\[\[|in:|not:|has:|phrase:|::/gi ) > -1 ) {

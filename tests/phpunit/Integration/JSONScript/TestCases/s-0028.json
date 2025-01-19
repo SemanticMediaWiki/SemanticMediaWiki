@@ -42,14 +42,14 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwb-value\">S1",
-					"<span class=\"smwb-value\">S2",
-					"<span class=\"smwb-value\">S3",
-					"<span class=\"smwb-value\">S4",
-					"<span class=\"smwb-value\">S5"
+					"<span class=\"smw-factbox-value\">S1",
+					"<span class=\"smw-factbox-value\">S2",
+					"<span class=\"smw-factbox-value\">S3",
+					"<span class=\"smw-factbox-value\">S4",
+					"<span class=\"smw-factbox-value\">S5"
 				],
 				"not-contain": [
-					"<span class=\"smwb-value\">S6"
+					"<span class=\"smw-factbox-value\">S6"
 				]
 			}
 		},
@@ -66,11 +66,11 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwb-ivalue\"><a href=\".*/Example/S0028/2\"",
-					"<span class=\"smwb-ivalue\"><a href=\".*/Example/S0028/3\""
+					"<span class=\"smw-factbox-value\"><a href=\".*/Example/S0028/2\"",
+					"<span class=\"smw-factbox-value\"><a href=\".*/Example/S0028/3\""
 				],
 				"not-contain": [
-					"<span class=\"smwb-ivalue\"><a href=\".*/Example/S0028/4\""
+					"<span class=\"smw-factbox-value\"><a href=\".*/Example/S0028/4\""
 				]
 			}
 		}

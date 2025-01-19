@@ -3,17 +3,16 @@
 namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
-use SMW\MediaWiki\Specials\Admin\ActionableTask;
-use Title;
-use WebRequest;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -80,7 +79,7 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 	 */
 	public function getHtml() {
 		$this->htmlFormRenderer
-			->addHeader( 'h4', $this->msg( 'smw_smwadmin_datarefresh' ) )
+			->addHeader( 'h3', $this->msg( 'smw_smwadmin_datarefresh' ) )
 			->addParagraph( $this->msg( 'smw_smwadmin_datarefreshdocu' ) );
 
 		if ( !$this->hasFeature( SMW_ADM_REFRESH ) ) {

@@ -8,12 +8,12 @@ use SMW\OptionsAwareTrait;
  * @covers \SMW\OptionsAwareTrait
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class OptionsAwareTraitTest extends \PHPUnit_Framework_TestCase {
+class OptionsAwareTraitTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSetGetOptions() {
 		$instance = $this->newOptionsAware();

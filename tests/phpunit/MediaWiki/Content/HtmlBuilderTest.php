@@ -3,19 +3,18 @@
 namespace SMW\Tests\MediaWiki\Content;
 
 use SMW\MediaWiki\Content\HtmlBuilder;
-use SMW\Schema\Schema;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Content\HtmlBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
+class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -32,8 +31,8 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testBuild( $key, $params ) {
 		$instance = new HtmlBuilder();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->build( $key, $params )
 		);
 	}
@@ -105,7 +104,6 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 				'href' => 'Foo'
 			]
 		];
-
 	}
 
 }

@@ -3,16 +3,16 @@
 namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\Highlighter;
 use SMW\Localizer;
 use SMW\Message;
-use SMWDataValue as DataValue;
-use SMW\DataValues\PropertyValue;
 use SMW\PropertySpecificationLookup;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMWDataValue as DataValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -136,7 +136,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		// Display title goes before a translated label (but not preferred)
 		if ( $preferredLabel === '' && $displayTitle !== '' ) {
 			$label = $displayTitle;
-			//	$canonicalLabel = $displayTitle;
+			// $canonicalLabel = $displayTitle;
 		}
 
 		// Internal format only used by PropertyValue

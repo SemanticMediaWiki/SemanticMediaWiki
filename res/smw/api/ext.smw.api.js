@@ -29,8 +29,6 @@
 ( function( $, mw, smw ) {
 	'use strict';
 
-	/*global md5 */
-
 	/**
 	 * Constructor to create an object to interact with the Semantic
 	 * MediaWiki Api
@@ -81,6 +79,33 @@
 		},
 
 		/**
+		 * Generates a 53-bit string hash using the cyrb53 algorithm.
+		 *
+		 * @param {string} str - The string to hash
+		 * @param {number} [seed=0] - An optional seed value
+		 * @return {number} A 53-bit integer hash of the string
+		 * @throws {Error} If str is not a string
+		 * @see https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript/52171480#52171480
+		 */
+		hash: function( str, seed = 0 ) {
+			if (typeof str !== 'string') {
+				throw new Error( 'Input must be a string' );
+			}
+			var h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+			for(var i = 0, ch; i < str.length; i++) {
+				ch = str.charCodeAt(i);
+				h1 = Math.imul(h1 ^ ch, 2654435761);
+				h2 = Math.imul(h2 ^ ch, 1597334677);
+			}
+			h1  = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+			h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+			h2  = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+			h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+		  
+			return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+		},
+
+		/**
 		 * Returns results from the SMWApi
 		 *
 		 * On the topic of converters (see http://bugs.jquery.com/ticket/9095)
@@ -113,9 +138,9 @@
 				// stored resultObjects, each change in the queryString will result
 				// in another hash key which will ensure only objects are stored
 				// with this key can be reused
-				var hash = md5( queryString );
+				var hash = self.hash( queryString );
 
-				var resultObject = $.jStorage.get( hash );
+				var resultObject = mw.storage.get( hash );
 				if ( resultObject !== null ) {
 					var results = self.parse( resultObject );
 					results.isCached = true;
@@ -136,9 +161,7 @@
 					// Store only the string as we want to return a typed object
 					// If useCache is not a number use 15 min as default ttl
 					if ( useCache ){
-						$.jStorage.set( hash, data, {
-							TTL: $.type( useCache ) === 'number' ? useCache : 900000
-						} );
+						mw.storage.set( hash, data, ( typeof useCache === 'number' ) ? useCache : 900000 );
 					}
 
 					var results;

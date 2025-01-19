@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Factbox\AttachmentFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
+class AttachmentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -40,8 +40,8 @@ class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHTML( [] )
 		);
 	}
@@ -53,8 +53,8 @@ class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHTML( [ $item ] )
 		);
 	}

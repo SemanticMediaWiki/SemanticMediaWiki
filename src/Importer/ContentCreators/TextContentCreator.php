@@ -10,11 +10,10 @@ use SMW\Importer\ImportContents;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -64,10 +63,6 @@ class TextContentCreator implements ContentCreator {
 	 * @param ImportContents $importContents
 	 */
 	public function create( ImportContents $importContents ) {
-		if ( !class_exists( 'ContentHandler' ) ) {
-			return $this->messageReporter->reportMessage( "\nContentHandler doesn't exist therefore importing is not possible.\n" );
-		}
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$indent = '   ...';
@@ -154,28 +149,14 @@ class TextContentCreator implements ContentCreator {
 			$user = User::newSystemUser( $importContents->getImportPerformer(), [ 'steal' => true ] );
 		}
 
-		if ( method_exists( $page, 'doUserEditContent' ) ) {
-			// MW 1.36+
-			// Use the global user if necessary (same as doEditContent())
-			$user = $user ?? RequestContext::getMain()->getUser();
-			$status = $page->doUserEditContent(
-				$content,
-				$user,
-				$importContents->getDescription(),
-				EDIT_FORCE_BOT
-			);
-		} else {
-			// <= MW 1.35
-			$status = $page->doEditContent(
-				$content,
-				$importContents->getDescription(),
-				EDIT_FORCE_BOT,
-				false,
-				$user
-			);
-		}
-
-
+		// Use the global user if necessary (same as doEditContent())
+		$user = $user ?? RequestContext::getMain()->getUser();
+		$status = $page->doUserEditContent(
+			$content,
+			$user,
+			$importContents->getDescription(),
+			EDIT_FORCE_BOT
+		);
 
 		if ( !$status->isOk() ) {
 			$action = 'FAILED';

@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\SortForm
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SortFormTest extends \PHPUnit_Framework_TestCase {
+class SortFormTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -36,8 +36,8 @@ class SortFormTest extends \PHPUnit_Framework_TestCase {
 	public function testMakeFields() {
 		$this->webRequest->expects( $this->at( 0 ) )
 			->method( 'getVal' )
-			->with( $this->equalTo( 'sort' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->with( 'sort' )
+			->willReturn( 'Foo' );
 
 		$instance = new SortForm(
 			$this->webRequest

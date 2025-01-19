@@ -8,7 +8,7 @@ namespace SMW\Query\Language;
  *
  * Corresponds to disjunction in OWL and SPARQL. Not available in RDFS.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -31,7 +31,7 @@ class Disjunction extends Description {
 	/**
 	 * Used if disjunction is trivially true already
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isTrue = false;
 
@@ -67,7 +67,7 @@ class Disjunction extends Description {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $hierarchyDepth
+	 * @param int $hierarchyDepth
 	 */
 	public function setHierarchyDepth( $hierarchyDepth ) {
 		$this->fingerprint = null;
@@ -100,7 +100,7 @@ class Disjunction extends Description {
 		if ( !$this->isTrue ) {
 			// Combine class descriptions only when those describe the same state
 			if ( $description instanceof ClassDescription ) {
-				if ( is_null( $this->classDescription ) ) { // first class description
+				if ( $this->classDescription === null ) { // first class description
 					$this->classDescription = $description;
 					$this->descriptions[$description->getFingerprint()] = $description;
 				} elseif ( $this->classDescription->isMergableDescription( $description ) ) {

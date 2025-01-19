@@ -4,19 +4,19 @@ namespace SMW\Tests\Integration\Localizer\LocalLanguage;
 
 use SMW\Localizer\LocalLanguage\FallbackFinder;
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
-use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\Localizer\LocalLanguage\LanguageContents;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
+class PartialLanguageFallback extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
@@ -37,7 +37,7 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 	public function testDeclarationsLoadedPartiallyFromFallback() {
 		$JsonContentsFileReader = new JsonContentsFileReader(
 			null,
-			SMW_PHPUNIT_DIR . '/Fixtures/Localizer/LocalLanguage/'
+			\SMW_PHPUNIT_DIR . '/Fixtures/Localizer/LocalLanguage/'
 		);
 
 		$languageContents = new LanguageContents(

@@ -3,23 +3,23 @@
 namespace SMW\Tests\Integration;
 
 use ReflectionClass;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Serializers\SemanticDataSerializer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Subobject;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit\Framework\TestCase {
 
 	private function newSerializerInstance() {
 		return new SemanticDataSerializer();
@@ -39,7 +39,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 			$serialized,
 			$this->newSerializerInstance()->serialize( $this->newDeserializerInstance()->deserialize( $serialized ) )
 		);
-
 
 		$this->assertEquals(
 			$data->getHash(),

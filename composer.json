@@ -63,7 +63,7 @@
 		"wikimedia/textcat": "^2|^1.1"
 	},
 	"require-dev": {
-		"mediawiki/mediawiki-codesniffer": "44.0.0",
+		"mediawiki/mediawiki-codesniffer": "45.0.0",
 		"mediawiki/mediawiki-phan-config": "0.14.0",
 		"mediawiki/minus-x": "1.1.3",
 		"phpmd/phpmd": "~2.1",
@@ -76,7 +76,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "4.x-dev"
+			"dev-master": "5.x-dev"
 		}
 	},
 	"autoload": {
@@ -84,7 +84,7 @@
 			"SMW\\": "src/",
 			"SMW\\Maintenance\\": "maintenance/",
 			"SMW\\Tests\\": "tests/phpunit/",
-			"Onoi\\Tesa\\": "src/Tesa/src/"
+			"Onoi\\Tesa\\": "Tesa/src/"
 		},
 		"psr-0": {
 			"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
@@ -100,12 +100,17 @@
 	"config": {
 		"process-timeout": 0,
 		"allow-plugins": {
-			"composer/installers": true
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
 	},
 	"scripts": {
 		"test": [
-			"@phpunit"
+			"@lint",
+			"@phpcs",
+			"minus-x check .",
+			"@phpunit:unit",
+			"@phpunit:integration"
 		],
 		"test-coverage": [
 			"@phpunit-coverage"
@@ -118,30 +123,15 @@
 			"@phpcs-fix"
 		],
 		"lint": "parallel-lint . --exclude vendor --exclude node_modules",
-		"phpcs": "phpcs -ps -d memory_limit=2G",
-		"phpcs-fix": "phpcbf -p",
-		"phpunit": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
-		"phpunit-coverage": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist --testdox --coverage-text --coverage-html coverage/php --coverage-clover coverage/php/coverage.xml",
+		"phpcs": "phpcs -ps --cache -d memory_limit=2G",
+		"phpcs-fix": "phpcbf",
+		"phpunit": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist --bootstrap tests/bootstrap.php",
+		"phpunit:unit": "@phpunit --testsuite=semantic-mediawiki-unit",
+		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
+		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-html coverage/php --coverage-clover coverage/php/coverage.xml",
 		"phpdbg": "phpdbg -qrr ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"minus-x": "minus-x check .",
-		"unit": [
-			"composer dump-autoload",
-			"composer phpunit -- --testsuite=semantic-mediawiki-unit"
-		],
-		"integration": "composer phpunit -- --testsuite=semantic-mediawiki-integration",
 		"benchmark": "composer phpunit  -- --group semantic-mediawiki-benchmark",
-		"quick-benchmark": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark",
-		"cs-standalone": [
-			"composer validate --no-interaction",
-			"vendor/bin/phpcs src/* includes/* tests/* --standard=phpcs.xml --extensions=php -sp"
-		],
-		"cs": [
-			"composer cs-standalone",
-			"vendor/bin/phpmd src/,includes/,tests/ text phpmd.xml"
-		],
-		"ci": [
-			"composer phpunit",
-			"composer cs"
-		]
+		"quick-benchmark": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark"
 	}
 }

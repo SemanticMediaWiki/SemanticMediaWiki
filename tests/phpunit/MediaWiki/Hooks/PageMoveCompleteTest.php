@@ -5,18 +5,17 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use SMW\MediaWiki\Hooks\PageMoveComplete;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\PageMoveComplete
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class PageMoveCompleteTest extends \PHPUnit_Framework_TestCase {
+class PageMoveCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	private $user;
 	private $testEnvironment;
@@ -112,7 +111,7 @@ class PageMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'deleteSubject' )
-			->with( $this->equalTo( $oldTitle ) );
+			->with( $oldTitle );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

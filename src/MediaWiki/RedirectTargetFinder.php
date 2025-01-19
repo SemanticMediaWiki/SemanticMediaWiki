@@ -6,7 +6,7 @@ use ContentHandler;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -38,7 +38,7 @@ class RedirectTargetFinder {
 	 *
 	 * @param Title|null
 	 */
-	public function setRedirectTarget( Title $redirectTarget = null ) {
+	public function setRedirectTarget( ?Title $redirectTarget = null ) {
 		$this->redirectTarget = $redirectTarget;
 	}
 
@@ -54,7 +54,7 @@ class RedirectTargetFinder {
 	/**
 	 * @since 2.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasRedirectTarget() {
 		return $this->redirectTarget instanceof Title;

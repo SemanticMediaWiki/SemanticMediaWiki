@@ -10,12 +10,12 @@ use Title;
  * @covers \SMW\MediaWiki\Specials\SpecialProcessingErrorList
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SpecialProcessingErrorListTest extends \PHPUnit_Framework_TestCase {
+class SpecialProcessingErrorListTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;

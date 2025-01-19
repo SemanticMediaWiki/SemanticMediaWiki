@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
 use SMW\MediaWiki\Specials\FacetedSearch\Profile;
-use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Profile
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ProfileTest extends \PHPUnit_Framework_TestCase {
+class ProfileTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -55,7 +55,7 @@ class ProfileTest extends \PHPUnit_Framework_TestCase {
 
 		$profile->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnValue( 'default' ) );
+			->willReturn( 'default' );
 
 		$iteratorMockBuilder = new IteratorMockBuilder();
 		$iteratorMockBuilder->setClass( '\SMW\Schema\CompartmentIterator' );
@@ -69,7 +69,7 @@ class ProfileTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaList->expects( $this->any() )
 			->method( 'newCompartmentIteratorByKey' )
-			->will( $this->returnValue( $compartmentIterator ) );
+			->willReturn( $compartmentIterator );
 
 		$schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
 			->disableOriginalConstructor()
@@ -77,22 +77,21 @@ class ProfileTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaFinder->expects( $this->any() )
 			->method( 'getSchemaListByType' )
-			->will( $this->returnValue( $schemaList ) );
+			->willReturn( $schemaList );
 
 		$this->schemaFactory->expects( $this->any() )
 			->method( 'newSchemaFinder' )
-			->will( $this->returnValue( $schemaFinder ) );
+			->willReturn( $schemaFinder );
 
 		$instance = new Profile(
 			$this->schemaFactory,
 			'foo'
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->getProfileCount()
 		);
 	}
 
 }
-

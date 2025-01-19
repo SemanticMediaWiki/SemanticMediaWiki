@@ -9,7 +9,7 @@ use SMW\Message;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -37,9 +37,9 @@ class Pager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Title   $title
-	 * @param integer $limit
-	 * @param integer $offset
+	 * @param Title $title
+	 * @param int $limit
+	 * @param int $offset
 	 *
 	 * @return string
 	 */
@@ -109,10 +109,11 @@ class Pager {
 	 * Generate (prev x| next x) (20|50|100...) type links for paging
 	 *
 	 * @param Title $title Title object to link
-	 * @param int $offset
 	 * @param int $limit
-	 * @param integer $count
+	 * @param int $offset
+	 * @param int $count
 	 * @param array $query Optional URL query parameter string
+	 * @param string $prefix
 	 *
 	 * @return string
 	 */

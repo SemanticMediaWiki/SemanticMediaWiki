@@ -6,12 +6,12 @@ use DOMDocument;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author Stephan Gambke
  */
-class HtmlValidator extends \PHPUnit_Framework_Assert {
+class HtmlValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @var array
@@ -19,7 +19,7 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 	private $documentCache = [];
 
 	/**
-	 * @var null|boolean
+	 * @var null|bool
 	 */
 	private $canUse;
 
@@ -34,7 +34,7 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUse() {
 		if ( $this->canUse === null ) {
@@ -74,7 +74,6 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 		libxml_use_internal_errors( false );
 
 		$this->documentCache[ $cacheKey ] = ( $result === true ) ? $document : false;
-
 	}
 
 	/**

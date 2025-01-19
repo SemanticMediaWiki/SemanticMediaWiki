@@ -2,19 +2,18 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use RuntimeException;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SQLStore\SQLStore;
-use SMWQueryResult as QueryResult;
 use Iterator;
-use SMW\MediaWiki\LinkBatch;
+use SMW\DIProperty;
 use SMW\DisplayTitleFinder;
+use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\MediaWiki\LinkBatch;
+use SMW\SQLStore\SQLStore;
+use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -37,7 +36,7 @@ class CacheWarmer {
 	private $displayTitleFinder;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $thresholdLimit = 3;
 
@@ -64,7 +63,7 @@ class CacheWarmer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $thresholdLimit
+	 * @param int $thresholdLimit
 	 */
 	public function setThresholdLimit( $thresholdLimit ) {
 		$this->thresholdLimit = $thresholdLimit;

@@ -10,12 +10,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\NamespaceInfo
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class NamespaceInfoTest extends \PHPUnit_Framework_TestCase {
+class NamespaceInfoTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

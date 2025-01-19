@@ -9,12 +9,12 @@ use SMW\Importer\ImportContents;
  * @covers \SMW\Importer\ContentCreators\XmlContentCreator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
+class XmlContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $importerServiceFactory;
 	private $wikiImporter;
@@ -22,10 +22,6 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		if ( !interface_exists( '\ImportSource' ) ) {
-			$this->markTestSkipped( "ImportSource interface is unknown (MW 1.25-)" );
-		}
 
 		$importStreamSource = $this->getMockBuilder( '\ImportStreamSource' )
 			->disableOriginalConstructor()
@@ -41,11 +37,11 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->importerServiceFactory->expects( $this->any() )
 			->method( 'newImportStreamSource' )
-			->will( $this->returnValue( $importStreamSource ) );
+			->willReturn( $importStreamSource );
 
 		$this->importerServiceFactory->expects( $this->any() )
 			->method( 'newWikiImporter' )
-			->will( $this->returnValue( $this->wikiImporter ) );
+			->willReturn( $this->wikiImporter );
 
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
 			->disableOriginalConstructor()

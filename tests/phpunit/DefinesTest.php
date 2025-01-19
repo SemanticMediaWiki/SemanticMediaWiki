@@ -5,12 +5,12 @@ namespace SMW\Tests;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class DefinesTest extends  \PHPUnit_Framework_TestCase {
+class DefinesTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider constantsDataProvider

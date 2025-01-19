@@ -8,12 +8,12 @@ use SMW\Elastic\QueryEngine\FieldMapper;
  * @covers \SMW\Elastic\QueryEngine\FieldMapper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class FieldMapperTest extends \PHPUnit_Framework_TestCase {
+class FieldMapperTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

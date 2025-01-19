@@ -8,7 +8,7 @@ use SMWOutputs;
 /**
  * Highlighter utility function for Semantic MediaWiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -71,12 +71,12 @@ class Highlighter {
 	const TYPE_REFERENCE = 10;
 
 	/**
-	 * @var array $options
+	 * @var array
 	 */
 	private $options;
 
 	/**
-	 * @var int $type
+	 * @var int
 	 */
 	private $type;
 
@@ -118,7 +118,7 @@ class Highlighter {
 	 * @param string $text
 	 * @param string|null $type
 	 *
-	 * @return booelan
+	 * @return bool
 	 */
 	public static function hasHighlighterClass( $text, $type = null ) {
 		if ( strpos( $text, 'smw-highlighter' ) === false ) {
@@ -156,8 +156,9 @@ class Highlighter {
 	 * @return string
 	 */
 	public function getHtml() {
+		SMWOutputs::requireStyle( 'ext.smw.styles' );
 		SMWOutputs::requireStyle( 'ext.smw.tooltip.styles' );
-		SMWOutputs::requireResource( 'ext.smw.tooltips' );
+		SMWOutputs::requireResource( 'ext.smw.tooltip' );
 		return $this->getContainer();
 	}
 
@@ -189,33 +190,33 @@ class Highlighter {
 	 *
 	 * @param string $type
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function getTypeId( $type ) {
 		// TODO: why do we have a htmlspecialchars here?!
 		switch ( strtolower( htmlspecialchars( $type ?? '' ) ) ) {
 			case 'property':
-			return self::TYPE_PROPERTY;
+				return self::TYPE_PROPERTY;
 			case 'text':
-			return self::TYPE_TEXT;
+				return self::TYPE_TEXT;
 			case 'quantity':
-			return self::TYPE_QUANTITY;
+				return self::TYPE_QUANTITY;
 			case 'warning':
-			return self::TYPE_WARNING;
+				return self::TYPE_WARNING;
 			case 'error':
-			return self::TYPE_ERROR;
+				return self::TYPE_ERROR;
 			case 'info':
-			return self::TYPE_INFO;
+				return self::TYPE_INFO;
 			case 'help':
-			return self::TYPE_HELP;
+				return self::TYPE_HELP;
 			case 'note':
-			return self::TYPE_NOTE;
+				return self::TYPE_NOTE;
 			case 'service':
-			return self::TYPE_SERVICE;
+				return self::TYPE_SERVICE;
 			case 'reference':
-			return self::TYPE_REFERENCE;
+				return self::TYPE_REFERENCE;
 			default:
-			return self::TYPE_NOTYPE;
+				return self::TYPE_NOTYPE;
 		}
 	}
 
@@ -368,7 +369,7 @@ class Highlighter {
 				$settings['state'] = 'persistent';
 				$settings['title'] = 'smw-ui-tooltip-title-info';
 				$settings['captionclass'] = 'smwbuiltin';
-		};
+		}
 
 		return $settings;
 	}

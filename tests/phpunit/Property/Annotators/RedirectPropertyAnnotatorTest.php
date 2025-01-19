@@ -11,12 +11,12 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\Property\Annotators\RedirectPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class RedirectPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -89,7 +89,6 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => ':Lala'
 			]
 		];
-
 
 		// #2 Invalid free text
 		$provider[] = [

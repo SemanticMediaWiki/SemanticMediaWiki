@@ -4,19 +4,18 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Settings;
-use SMW\Tests\Utils\MwHooksHandler;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\MwHooksHandler;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
+class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -53,7 +52,7 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'isDefinedConstant' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance->init( $default );
 	}
@@ -67,8 +66,8 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 		$index = NamespaceManager::buildNamespaceIndex( $applicationFactory->getSettings()->get( 'smwgNamespaceIndex' ) );
 		$names = NamespaceManager::getCanonicalNames();
 
-		$this->assertInternalType( 'array', $names );
-		$this->assertInternalType( 'array', $index );
+		$this->assertIsArray( $names );
+		$this->assertIsArray( $index );
 
 		foreach ( $index as $ns => $idx ) {
 

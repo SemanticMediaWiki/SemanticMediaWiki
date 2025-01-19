@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\TitleFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.0
  *
  * @author mwjames
  */
-class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
+class TitleFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -46,8 +46,8 @@ class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testNewFromIDs() {
 		$instance = new TitleFactory();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->newFromIDs( [ 9999999 ] )
 		);
 	}
@@ -60,8 +60,8 @@ class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertCount( 0, $out );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$out
 		);
 	}

@@ -8,12 +8,12 @@ use SMW\Utils\HtmlDivTable;
  * @covers \SMW\Utils\HtmlDivTable
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class HtmlDivTableTest extends \PHPUnit_Framework_TestCase {
+class HtmlDivTableTest extends \PHPUnit\Framework\TestCase {
 
 	public function testOpenClose() {
 		$this->assertEquals(

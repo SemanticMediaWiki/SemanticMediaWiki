@@ -2,17 +2,17 @@
 
 namespace SMW\SQLStore\Installer;
 
-use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\SetupFile;
-use SMW\Utils\CliMsgFormatter;
-use SMW\SQLStore\TableBuilder;
 use DateTime;
 use DateTimeZone;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\SetupFile;
+use SMW\SQLStore\TableBuilder;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

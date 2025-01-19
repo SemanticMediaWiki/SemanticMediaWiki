@@ -2,20 +2,20 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\Pager;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\Pager;
 use Title;
 
 /**
  * @covers \SMW\Utils\Pager
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class PagerTest extends \PHPUnit_Framework_TestCase {
+class PagerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,8 +25,8 @@ class PagerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPrefixedText' )
 			->willReturn( 'Test' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			Pager::filter( $title )
 		);
 	}

@@ -3,13 +3,12 @@
 namespace SMW\MediaWiki;
 
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Page\WikiPageFactory;
 use Title;
 use WikiFilePage;
 use WikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -24,12 +23,7 @@ class PageCreator {
 	 * @return WikiPage
 	 */
 	public function createPage( Title $title ) {
-		if ( method_exists( WikiPageFactory::class, 'newFromTitle' ) ) {
-			return MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
-		} else {
-			// MW <= 1.35
-			return WikiPage::factory( $title );
-		}
+		return MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
 	}
 
 	/**

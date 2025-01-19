@@ -3,8 +3,8 @@
 namespace SMW\Tests\Utils\JSONScript;
 
 use FauxRequest;
-use Language;
 use MediaWiki\MediaWikiServices;
+use MediaWikiIntegrationTestCase;
 use OutputPage;
 use RequestContext;
 use SMW\Tests\Utils\File\ContentsReader;
@@ -13,14 +13,15 @@ use SpecialPage;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var Store
@@ -33,7 +34,7 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $stringValidator;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 

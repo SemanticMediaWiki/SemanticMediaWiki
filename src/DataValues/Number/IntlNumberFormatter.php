@@ -8,7 +8,7 @@ use SMW\Options;
 use SMWNumberValue as NumberValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -46,19 +46,19 @@ class IntlNumberFormatter {
 	private $options = null;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $maxNonExpNumber = null;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $defaultPrecision = 3;
 
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $maxNonExpNumber
+	 * @param int $maxNonExpNumber
 	 */
 	public function __construct( $maxNonExpNumber ) {
 		$this->maxNonExpNumber = $maxNonExpNumber;
@@ -113,8 +113,8 @@ class IntlNumberFormatter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $type
-	 * @param string|integer $locale
+	 * @param int $type
+	 * @param string|int $locale
 	 *
 	 * @return string
 	 */
@@ -138,9 +138,9 @@ class IntlNumberFormatter {
 	 * to format a number that was not hand-formatted by a user.
 	 *
 	 * @param mixed $value input number
-	 * @param integer|false $precision optional positive integer, controls how many digits after
+	 * @param int|false $precision optional positive integer, controls how many digits after
 	 * the decimal point are shown
-	 * @param string|integer $format
+	 * @param string|int $format
 	 *
 	 * @since 2.1
 	 *
@@ -163,7 +163,8 @@ class IntlNumberFormatter {
 	 * precision settings, with some intelligence to produce readable output. Used
 	 * to format a number that was not hand-formatted by a user.
 	 *
-	 * @param integer|false $precision optional positive integer, controls how many digits after
+	 * @param $value
+	 * @param int|false $precision optional positive integer, controls how many digits after
 	 * the decimal point are shown
 	 */
 	private function doFormatByHeuristicRuleWith( $value, $precision = false ): string {
@@ -189,10 +190,10 @@ class IntlNumberFormatter {
 			$absValue = abs( (float)$value );
 			if ( $absValue >= $this->maxNonExpNumber ) {
 				$doScientific = true;
-			} elseif ( $absValue < pow( 10, - $precision ) ) {
+			} elseif ( $absValue < pow( 10, -$precision ) ) {
 				$doScientific = true;
 			} elseif ( $absValue < 1 ) {
-				if ( $absValue < pow( 10, - $precision ) ) {
+				if ( $absValue < pow( 10, -$precision ) ) {
 					$doScientific = true;
 				} else {
 					// Increase decimal places for small numbers, e.g. .00123 should be 5 places.
@@ -226,8 +227,8 @@ class IntlNumberFormatter {
 			$end = $decseparator . str_repeat( '0', $precision );
 			$lenEnd = strlen( $end );
 
-			if ( substr( $value, - $lenEnd ) === $end ) {
-				$value = substr( $value, 0, - $lenEnd );
+			if ( substr( $value, -$lenEnd ) === $end ) {
+				$value = substr( $value, 0, -$lenEnd );
 			} else {
 				$decseparator = preg_quote( $decseparator, '/' );
 				// If above replacement occurred, no need to do the next one.
@@ -307,7 +308,7 @@ class IntlNumberFormatter {
 		}
 
 		$value = (float)$value;
-		$isNegative = $value < 0 || $value == 0 && strval( $value ) === '-0';
+		$isNegative = $value < 0 || ( $value == 0 && strval( $value ) === '-0' );
 
 		// Format to some level of precision; number_format does rounding and
 		// locale formatting, x and y are used temporarily since number_format

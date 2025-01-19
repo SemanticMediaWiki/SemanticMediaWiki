@@ -8,12 +8,12 @@ use SMW\Utils\Lru;
  * @covers \SMW\Utils\Lru
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class LruTest extends \PHPUnit_Framework_TestCase {
+class LruTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSetGet() {
 		$instance = new Lru( 3 );

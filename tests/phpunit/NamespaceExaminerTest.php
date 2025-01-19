@@ -8,12 +8,12 @@ use SMW\NamespaceExaminer;
  * @covers \SMW\NamespaceExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
  */
-class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
+class NamespaceExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -31,7 +31,7 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 		$instance->setValidNamespaces( [ NS_MAIN ] );
@@ -54,7 +54,7 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$subject->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 		$instance->setValidNamespaces( [ NS_MAIN ] );

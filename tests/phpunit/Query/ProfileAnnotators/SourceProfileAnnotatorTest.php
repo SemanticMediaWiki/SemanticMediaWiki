@@ -13,12 +13,12 @@ use SMWDIContainer as DIContainer;
  * @covers \SMW\Query\ProfileAnnotators\SourceProfileAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SourceProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class SourceProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 

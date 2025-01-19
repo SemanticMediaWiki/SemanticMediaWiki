@@ -5,18 +5,18 @@ namespace SMW\Tests\Utils\Validators;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class QuerySegmentValidator extends \PHPUnit_Framework_Assert {
+class QuerySegmentValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @since 2.1
 	 *
-	 * @param  mixed $expected
-	 * @param  QuerySegment[] $querySegment
+	 * @param mixed $expected
+	 * @param QuerySegment[] $querySegment
 	 */
 	public function assertThatContainerContains( $expected, array $querySegment ) {
 		$expected = is_array( $expected ) ? $expected : [ $expected ];
@@ -40,8 +40,8 @@ class QuerySegmentValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 2.1
 	 *
-	 * @param  mixed $expected
-	 * @param  QuerySegment $querySegment
+	 * @param mixed $expected
+	 * @param QuerySegment $querySegment
 	 */
 	public function assertThatContainerHasProperties( $expected, QuerySegment $querySegment ) {
 		$this->assertPublicProperty( $expected, $querySegment, 'type' );

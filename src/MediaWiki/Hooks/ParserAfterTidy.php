@@ -2,17 +2,17 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Onoi\Cache\Cache;
 use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use Psr\Log\LoggerAwareTrait;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\PageInfoProvider;
+use SMW\NamespaceExaminer;
+use SMW\OptionsAwareTrait;
 use SMW\ParserData;
 use SMW\SemanticData;
-use Onoi\Cache\Cache;
-use SMW\NamespaceExaminer;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
-use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\PageInfoProvider;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -20,7 +20,7 @@ use SMW\MediaWiki\PageInfoProvider;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -49,20 +49,20 @@ class ParserAfterTidy implements HookListener {
 	private $cache;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isReady = true;
 
 	/**
 	 * @since  1.9
 	 *
-	 * @param Parser $parser
-	 * @param NamespaceExaminer $NamespaceExaminer
+	 * @param Parser &$parser
+	 * @param NamespaceExaminer $namespaceExaminer
 	 * @param Cache $cache
 	 */
 	public function __construct( Parser &$parser, NamespaceExaminer $namespaceExaminer, Cache $cache ) {
@@ -76,7 +76,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
@@ -85,7 +85,7 @@ class ParserAfterTidy implements HookListener {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isReady
+	 * @param bool $isReady
 	 */
 	public function isReady( $isReady ) {
 		$this->isReady = (bool)$isReady;
@@ -94,7 +94,7 @@ class ParserAfterTidy implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param string $text
+	 * @param string &$text
 	 *
 	 * @return true
 	 */
@@ -133,16 +133,9 @@ class ParserAfterTidy implements HookListener {
 
 		$parserOutput = $this->parser->getOutput();
 
-		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
-			// T301915
-			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
-			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
-		} else {
-			// MW < 1.38
-			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
-			$parserDefaultSort = $this->parser->getDefaultSort();
-		}
-
+		// T301915
+		$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
+		$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
 
 		$parserCategories = [];
 		// MW >= 1.40
@@ -215,12 +208,7 @@ class ParserAfterTidy implements HookListener {
 			$semanticData
 		);
 
-		// MW >= 1.38
-		if ( method_exists( $parserOutput, 'getCategoryNames' ) ) {
-			$parserCategoryKeys = $parserOutput->getCategoryNames();
-		} else {
-			$parserCategoryKeys = array_keys( $parserOutput->getCategories() );
-		}
+		$parserCategoryKeys = $parserOutput->getCategoryNames();
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newCategoryPropertyAnnotator(
 			$propertyAnnotator,
@@ -241,15 +229,9 @@ class ParserAfterTidy implements HookListener {
 			$parserOutput
 		);
 
-		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
-			// T301915
-			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
-			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' ) ?? '';
-		} else {
-			// MW < 1.38
-			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
-			$parserDefaultSort = $this->parser->getDefaultSort();
-		}
+		// T301915
+		$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
+		$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' ) ?? '';
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newDisplayTitlePropertyAnnotator(
 			$propertyAnnotator,

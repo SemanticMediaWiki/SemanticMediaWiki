@@ -6,12 +6,11 @@ use RuntimeException;
 use SMW\QueryEngine;
 use SMW\Store;
 use SMW\StoreAware;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

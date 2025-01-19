@@ -4,24 +4,24 @@ namespace SMW\Tests\Factbox;
 
 use ParserOutput;
 use ReflectionClass;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Factbox\Factbox;
 use SMW\Factbox\CheckMagicWords;
+use SMW\Factbox\Factbox;
 use SMW\ParserData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\Factbox
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
+class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -94,7 +94,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput->expects( $this->any() )
 			->method( 'getExtensionData' )
-			->will( $this->returnValue( $expected['magicWords'] ) );
+			->willReturn( $expected['magicWords'] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -125,7 +125,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $magic->invoke( $instance );
 
-		$this->assertInternalType( 'integer', $result );
+		$this->assertIsInt( $result );
 		$this->assertEquals( $expected['constants'], $result );
 	}
 

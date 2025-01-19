@@ -9,7 +9,7 @@ use Title;
 use WikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -32,7 +32,7 @@ class ParserCachePurgeJob extends Job {
 	 *
 	 * @param WikiPage|null $page
 	 */
-	public function updateParserCache( WikiPage $page = null ) {
+	public function updateParserCache( ?WikiPage $page = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$logger = $applicationFactory->getMediaWikiLogger();
 

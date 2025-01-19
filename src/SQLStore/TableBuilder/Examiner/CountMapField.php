@@ -3,14 +3,14 @@
 namespace SMW\SQLStore\TableBuilder\Examiner;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\Maintenance\updateEntityCountMap;
+use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder;
-use SMW\SetupFile;
-use SMW\Maintenance\updateEntityCountMap as UpdateEntityCountMap;
 use SMW\Utils\CliMsgFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

@@ -5,7 +5,7 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 /**
  * Class RowBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -38,6 +38,5 @@ abstract class RowBuilder {
 	public function setValueTextsBuilder( $valueTextsBuilder ) {
 		$this->valueTextsBuilder = $valueTextsBuilder;
 	}
-
 
 }

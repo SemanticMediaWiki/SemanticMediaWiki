@@ -3,19 +3,19 @@
 namespace SMW\Tests\Integration;
 
 use SMW\ConfigPreloader;
-use SMW\Utils\FileFetcher;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\FileFetcher;
 
 /**
  * @covers \SMW\ConfigPreloader
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
+class ConfigPreloaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -38,7 +38,7 @@ class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 *@dataProvider configFileProvider
+	 * @dataProvider configFileProvider
 	 */
 	public function testLoadDefaultConfigFrom( $file ) {
 		$instance = new ConfigPreloader();
@@ -50,7 +50,7 @@ class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 *@dataProvider configFileProvider
+	 * @dataProvider configFileProvider
 	 */
 	public function testLoadConfigFrom( $file ) {
 		$instance = new ConfigPreloader();

@@ -12,7 +12,7 @@ use SMW\ResultPrinter;
  *
  * @file
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author mwjames
  */
 
@@ -23,7 +23,7 @@ use SMW\ResultPrinter;
  * @group SMW
  * @group SMWExtension
  */
-abstract class QueryPrinterTestCase extends \PHPUnit_Framework_TestCase {
+abstract class QueryPrinterTestCase extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Helper method sets result printer parameters
@@ -52,12 +52,11 @@ abstract class QueryPrinterTestCase extends \PHPUnit_Framework_TestCase {
 		}
 
 		return $instance;
-
 	}
 
 	protected function arrayWrap( array $elements ) {
 		return array_map(
-			function ( $element ) {
+			static function ( $element ) {
 				return [ $element ];
 			},
 			$elements

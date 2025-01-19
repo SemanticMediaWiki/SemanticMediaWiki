@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\SortWidget;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\SortWidget
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SortWidgetTest extends \PHPUnit_Framework_TestCase {
+class SortWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

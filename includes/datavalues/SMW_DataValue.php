@@ -13,10 +13,10 @@ use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\Message;
 use SMW\Options;
+use SMW\ProcessingError;
 use SMW\Query\QueryComparator;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Utils\CharArmor;
-use SMW\ProcessingError;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided
@@ -151,7 +151,7 @@ abstract class SMWDataValue {
 	/**
 	 * Boolean indicating if there where any errors.
 	 * Should be modified accordingly when modifying $mErrors.
-	 * @var boolean
+	 * @var bool
 	 */
 	private $mHasErrors = false;
 
@@ -186,7 +186,7 @@ abstract class SMWDataValue {
 	private $descriptionBuilderRegistry;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $callables = [];
 
@@ -259,8 +259,8 @@ abstract class SMWDataValue {
 	 * in spite of it being of the right basic type. False is only returned
 	 * if the data item is fundamentally incompatible with the data value.
 	 *
-	 * @param $dataitem SMWDataItem
-	 * @return boolean
+	 * @param $dataItem SMWDataItem
+	 * @return bool
 	 */
 	public function setDataItem( SMWDataItem $dataItem ) {
 		$this->m_dataitem = null;
@@ -311,7 +311,7 @@ abstract class SMWDataValue {
 	 *
 	 * @param SMWDIWikiPage|null $contextPage
 	 */
-	public function setContextPage( SMWDIWikiPage $contextPage = null ) {
+	public function setContextPage( ?SMWDIWikiPage $contextPage = null ) {
 		$this->m_contextPage = $contextPage;
 
 		$this->setOption(
@@ -430,7 +430,7 @@ abstract class SMWDataValue {
 	 * @since 2.4
 	 *
 	 * @param array|string|ProcessingError $error
-	 * @param integer|null $type
+	 * @param int|null $type
 	 */
 	public function addErrorMsg( $error, $type = Message::TEXT ) {
 		if ( $error instanceof ProcessingError ) {
@@ -545,7 +545,7 @@ abstract class SMWDataValue {
 	 * DataValue is expected to register a DescriptionBuilder with
 	 * DVDescriptionDeserializerRegistry.
 	 */
-	static public function prepareValue( &$value, &$comparator ) {
+	public static function prepareValue( &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 	}
 
@@ -690,7 +690,7 @@ abstract class SMWDataValue {
 	 * Return text serialisation of info links. Ensures more uniform layout
 	 * throughout wiki (Factbox, Property pages, ...).
 	 *
-	 * @param integer $outputFormat Element of the SMW_OUTPUT_ enum
+	 * @param int $outputFormat Element of the SMW_OUTPUT_ enum
 	 * @param Linker|null|bool $linker
 	 *
 	 * @return string
@@ -749,7 +749,7 @@ abstract class SMWDataValue {
 	 * Convenience method that checks if the value that is used to sort
 	 * data of this type is numeric. This only works if the value is set.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isNumeric() {
 		if ( isset( $this->m_dataitem ) ) {
@@ -763,7 +763,7 @@ abstract class SMWDataValue {
 	 * Return true if a value was defined and understood by the given type,
 	 * and false if parsing errors occurred or no value was given.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid() {
 		return !$this->mHasErrors && isset( $this->m_dataitem );
@@ -779,7 +779,7 @@ abstract class SMWDataValue {
 	 *
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUse() {
 		return true;
@@ -788,7 +788,7 @@ abstract class SMWDataValue {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRestricted() {
 		return false;
@@ -851,7 +851,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return Options|null $options
 	 */
-	public function copyOptions( Options $options = null ) {
+	public function copyOptions( ?Options $options = null ) {
 		if ( $options === null ) {
 			return;
 		}
@@ -864,8 +864,10 @@ abstract class SMWDataValue {
 	/**
 	 * @since 2.4
 	 *
-	 * @return string $key
-	 * @param mxied $value
+	 * @param string $key
+	 * @param mixed $value
+	 *
+	 * @return void
 	 */
 	public function setOption( $key, $value ) {
 		if ( $this->options === null ) {
@@ -893,9 +895,9 @@ abstract class SMWDataValue {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeature( $feature ) {
 		if ( $this->options !== null ) {
@@ -946,7 +948,7 @@ abstract class SMWDataValue {
 	 *
 	 * @param SMWDataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	abstract protected function loadDataItem( SMWDataItem $dataItem );
 

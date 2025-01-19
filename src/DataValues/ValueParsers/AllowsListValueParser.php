@@ -8,7 +8,7 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -107,7 +107,7 @@ class AllowsListValueParser implements ValueParser {
 
 			// Allow something like * Foo|Bar
 			if ( strpos( $part, '|' ) !== false ) {
-				list( $reference, $val ) = explode( '|', $part, 2 );
+				[ $reference, $val ] = explode( '|', $part, 2 );
 				$list[$reference] = $val;
 			} else {
 				$list[$part] = $part;

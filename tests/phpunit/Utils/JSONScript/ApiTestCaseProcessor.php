@@ -2,18 +2,20 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWikiIntegrationTestCase;
 use SMW\Tests\Utils\File\ContentsReader;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class ApiTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var MwApiFactory
@@ -26,7 +28,7 @@ class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $stringValidator;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 

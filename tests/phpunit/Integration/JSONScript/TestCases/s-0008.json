@@ -60,9 +60,9 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwb-value\">verdadero&#160;&#160;",
+					"<span class=\"smw-factbox-value\">verdadero&#160;&#160;",
 					"SearchByProperty/:Has-20boolean/true",
-					"<span class=\"smwb-value\">08:56:00 12 ene 1991&#160;&#160;"
+					"<span class=\"smw-factbox-value\">08:56:00 12 ene 1991&#160;&#160;"
 				]
 			}
 		},
@@ -78,9 +78,9 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwb-value\">1,2e-13&#160;&#160;",
-					"<span class=\"smwb-value\">72,769&#160;&#160;",
-					"<span class=\"smwb-value\">1,334e-13&#160;&#160;",
+					"<span class=\"smw-factbox-value\">1,2e-13&#160;&#160;",
+					"<span class=\"smw-factbox-value\">72,769&#160;&#160;",
+					"<span class=\"smw-factbox-value\">1,334e-13&#160;&#160;",
 					"Special:SearchByProperty/:Has-20number/1.2e-2D13",
 					"Special:SearchByProperty/:Has-20number/72.769482308",
 					"Special:SearchByProperty/:Has-20number/1.334e-2D13"
@@ -99,7 +99,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwb-value\">1,008&#160;u (1,673533e-27&#160;kg)&#160;&#160;",
+					"<span class=\"smw-factbox-value\">1,008&#160;u (1,673533e-27&#160;kg)&#160;&#160;",
 					"Special:SearchByProperty/:Has-20atomic-20mass-20unit/1.007825-20u"
 				]
 			}
@@ -116,7 +116,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwb-value\">123&#160;&#160;",
+					"<span class=\"smw-factbox-value\">123&#160;&#160;",
 					"Special:SearchByProperty/:Has-20number/123"
 				]
 			}
@@ -152,7 +152,6 @@
 	},
 	"meta": {
 		"skip-on": {
-			"mw-1.25.6": "Somehow the content lang is not set correctly on Travis (locally works fine).",
 			"sitelanguage": [ "ja", "Some issues with NS_SPECIAL when 'ja' is used as sitelanguage." ]
 		},
 		"version": "2",

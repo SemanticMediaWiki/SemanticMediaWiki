@@ -2,20 +2,20 @@
 
 namespace SMW\Tests\MediaWiki\Template;
 
-use SMW\MediaWiki\Template\TemplateExpander;
 use SMW\MediaWiki\Template\Template;
+use SMW\MediaWiki\Template\TemplateExpander;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Template\TemplateExpander
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class TemplateExpanderTest extends \PHPUnit_Framework_TestCase {
+class TemplateExpanderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -41,7 +41,7 @@ class TemplateExpanderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->parser->expects( $this->once() )
 			->method( 'preprocess' )
-			->with( $this->equalTo( '{{Foo}}' ) );
+			->with( '{{Foo}}' );
 
 		$instance = new TemplateExpander(
 			$this->parser

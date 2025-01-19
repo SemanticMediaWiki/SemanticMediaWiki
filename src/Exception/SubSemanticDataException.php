@@ -5,7 +5,7 @@ namespace SMW\Exception;
 use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

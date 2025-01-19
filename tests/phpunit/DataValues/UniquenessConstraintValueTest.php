@@ -10,12 +10,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\DataValues\UniquenessConstraintValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
+class UniquenessConstraintValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;

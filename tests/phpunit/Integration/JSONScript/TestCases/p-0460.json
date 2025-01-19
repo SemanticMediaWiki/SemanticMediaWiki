@@ -85,23 +85,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#2 (1.31-) (number, invalid, outside of specified range)",
-			"skip-on": {
-				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
-			"subject": "Example/P0460/3",
-			"assert-output": {
-				"to-contain": [
-					"10<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;10&quot; is not in the list (&gt;1, ) of allowed values for the &quot;Has ranged number&quot; property.\">"
-				]
-			}
-		},
-		{
-			"type": "parser",
-			"about": "#2 (1.31+) (number, invalid, outside of specified range)",
-			"skip-on": {
-				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#2 (number, invalid, outside of specified range)",
 			"subject": "Example/P0460/3",
 			"assert-output": {
 				"to-contain": [
@@ -141,23 +125,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#6 (1.31-) (number, invalid, outside of specified bounds)",
-			"skip-on": {
-				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
-			"subject": "Example/P0460/7",
-			"assert-output": {
-				"to-contain": [
-					"60.1<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;60.1&quot; is not in the list (1..10, 50...60, 70) of allowed values for the &quot;Has bounded number&quot; property.\">"
-				]
-			}
-		},
-		{
-			"type": "parser",
-			"about": "#6 (1.31+) (number, invalid, outside of specified bounds)",
-			"skip-on": {
-				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#6 (number, invalid, outside of specified bounds)",
 			"subject": "Example/P0460/7",
 			"assert-output": {
 				"to-contain": [
@@ -177,23 +145,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#8 (1.31-) (quantity, invalid, outside of specified range, bounds)",
-			"skip-on": {
-				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
-			"subject": "Example/P0460/9",
-			"assert-output": {
-				"to-contain": [
-					"200.1km²<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;200.1 km²&quot; is not within that range of &quot;1..200&quot; specified by the allows value constraint for the &quot;Has bounded quantity&quot; property.\">"
-				]
-			}
-		},
-		{
-			"type": "parser",
-			"about": "#8 (1.31+) (quantity, invalid, outside of specified range, bounds)",
-			"skip-on": {
-				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#8 (quantity, invalid, outside of specified range, bounds)",
 			"subject": "Example/P0460/9",
 			"assert-output": {
 				"to-contain": [

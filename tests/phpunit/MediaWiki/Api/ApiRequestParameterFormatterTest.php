@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\MediaWiki\Api\ApiRequestParameterFormatter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Api\ApiRequestParameterFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
+class ApiRequestParameterFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -63,7 +63,7 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ApiRequestParameterFormatter( $parameters );
 		$result = $instance->getAskApiParameters();
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
 	}
 
@@ -74,7 +74,7 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 			[ [ 'parameters' => [ 'Lila' ] ], 'parameters', [] ],
 			[ [ 'parameters' => [ 'Lila=isFunny' ] ], 'parameters', [ 'Lila' => 'isFunny' ] ],
 			[ [ 'parameters' => [ 'Lila=isFunny', 'Lula=isHappy' ] ], 'parameters', [ 'Lila' => 'isFunny', 'Lula' => 'isHappy' ] ],
-		//	array( array( 'printouts'  => array( '?Linda' ) ),         'printouts', array( $this->newPrintRequest( '?Linda' ) ) ),
+		// array( array( 'printouts'  => array( '?Linda' ) ),         'printouts', array( $this->newPrintRequest( '?Linda' ) ) ),
 		//	array( array( 'printouts'  => array( '?Luna', '?Mars' ) ), 'printouts', array( $this->newPrintRequest( '?Luna' ), $this->newPrintRequest( '?Mars' ) ) ),
 		];
 	}

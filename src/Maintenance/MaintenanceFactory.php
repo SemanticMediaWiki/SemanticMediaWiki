@@ -4,14 +4,14 @@ namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Localizer\LocalMessageProvider;
 use SMW\MediaWiki\ManualEntryLogger;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\Store;
-use SMW\Localizer\LocalMessageProvider;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -43,7 +43,7 @@ class MaintenanceFactory {
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param Callable|null $reporterCallback
+	 * @param callable|null $reporterCallback
 	 *
 	 * @return DataRebuilder
 	 */
@@ -66,7 +66,7 @@ class MaintenanceFactory {
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param Callable|null $reporterCallback
+	 * @param callable|null $reporterCallback
 	 *
 	 * @return ConceptCacheRebuilder
 	 */
@@ -87,7 +87,7 @@ class MaintenanceFactory {
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param Callable|null $reporterCallback
+	 * @param callable|null $reporterCallback
 	 *
 	 * @return PropertyStatisticsRebuilder
 	 */
@@ -111,10 +111,10 @@ class MaintenanceFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @return RebuildPropertyStatistics
+	 * @return rebuildPropertyStatistics
 	 */
 	public function newRebuildPropertyStatistics() {
-		return new RebuildPropertyStatistics();
+		return new rebuildPropertyStatistics();
 	}
 
 	/**

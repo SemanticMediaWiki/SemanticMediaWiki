@@ -5,18 +5,17 @@ namespace SMW\Tests;
 use MediaWiki\Content\Renderer\ContentRenderer;
 use MediaWiki\MediaWikiServices;
 use SMW\ContentParser;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ContentParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
  */
-class ContentParserTest extends \PHPUnit_Framework_TestCase {
+class ContentParserTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -53,9 +52,7 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
-			$this->contentRenderer = MediaWikiServices::getInstance()->getContentRenderer();
-		}
+		$this->contentRenderer = MediaWikiServices::getInstance()->getContentRenderer();
 	}
 
 	protected function tearDown(): void {
@@ -83,7 +80,7 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 		$this->parser->expects( $this->any() )
 			->method( 'parse' )
 			->with( $this->stringContains( $text ) )
-			->will( $this->returnValue( $this->parserOutput ) );
+			->willReturn( $this->parserOutput );
 
 		$instance = new ContentParser(
 			$this->title,
@@ -107,23 +104,17 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		if ( version_compare( MW_VERSION, '1.38', '<' ) ) {
-			$content->expects( $this->any() )
+		$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', function () {
+			$contentRenderer = $this->getMockBuilder( '\MediaWiki\Content\Renderer\ContentRenderer' )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$contentRenderer->expects( $this->any() )
 				->method( 'getParserOutput' )
-				->will( $this->returnValue( $this->parserOutput ) );
-		} else {
-			$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', function () {
-				$contentRenderer = $this->getMockBuilder( '\MediaWiki\Content\Renderer\ContentRenderer' )
-					->disableOriginalConstructor()
-					->getMock();
+				->willReturn( $this->parserOutput );
 
-				$contentRenderer->expects( $this->any() )
-					->method( 'getParserOutput' )
-					->will( $this->returnValue( $this->parserOutput ) );
-
-				return $contentRenderer;
-			} );
-		}
+			return $contentRenderer;
+		} );
 
 		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
@@ -131,11 +122,11 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 
 		$revision->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
-			->will( $this->returnValue( $revision ) );
+			->willReturn( $revision );
 
 		$instance = new ContentParser(
 			$this->title,

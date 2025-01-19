@@ -3,25 +3,24 @@
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
 use Maps\Semantic\ValueDescriptions\AreaDescription;
+use RuntimeException;
 use SMW\DataTypeRegistry;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Elastic\QueryEngine\ConditionBuilder;
+use SMW\DIWikiPage;
 use SMW\Elastic\QueryEngine\Condition;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\Query\Language\ValueDescription;
-use SMWDataItem as DataItem;
+use SMW\Utils\CharExaminer;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWDIGeoCoord as DIGeoCoord;
 use SMWDInumber as DINumber;
 use SMWDITime as DITime;
 use SMWDIUri as DIUri;
-use SMW\Utils\CharExaminer;
-use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -261,7 +260,7 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param DIBlob $dataItem
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */
@@ -336,7 +335,7 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param DIUri $dataItem
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */
@@ -389,7 +388,7 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param DIGeoCoord $dataItem
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */
@@ -438,7 +437,7 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param mixed $value
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */

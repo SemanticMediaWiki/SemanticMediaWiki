@@ -22,12 +22,12 @@ use SMWDINumber as DINumber;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\DisjunctionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class DisjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 

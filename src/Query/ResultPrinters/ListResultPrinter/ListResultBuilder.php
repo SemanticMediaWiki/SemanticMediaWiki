@@ -10,7 +10,7 @@ use SMWQueryResult;
 /**
  * Class ListResultBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -72,7 +72,7 @@ class ListResultBuilder {
 	private $templateRendererFactory;
 	private $listPlainByDefault;
 
-	public function __construct( SMWQueryResult $queryResult, Linker $linker, bool $listPlainByDefault = null ) {
+	public function __construct( SMWQueryResult $queryResult, Linker $linker, ?bool $listPlainByDefault = null ) {
 		$this->linker = $linker;
 		$this->queryResult = $queryResult;
 		$this->configuration = new ParameterDictionary();
@@ -85,11 +85,10 @@ class ListResultBuilder {
 	public function getResultText() {
 		$this->prepareBuilt();
 
-		return
-			$this->getTemplateCall( 'introtemplate' ) .
+		return $this->getTemplateCall( 'introtemplate' ) .
 			$this->get( 'result-open-tag' ) .
 
-			join( $this->get( 'sep' ), $this->getRowTexts() ) .
+			implode( $this->get( 'sep' ), $this->getRowTexts() ) .
 
 			$this->get( 'result-close-tag' ) .
 			$this->getTemplateCall( 'outrotemplate' );
@@ -185,7 +184,6 @@ class ListResultBuilder {
 		$templateRenderer->packFieldsForTemplate( $templatename );
 
 		return $templateRenderer->render();
-
 	}
 
 	/**

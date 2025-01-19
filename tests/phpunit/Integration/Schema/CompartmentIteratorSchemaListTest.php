@@ -2,19 +2,19 @@
 
 namespace SMW\Tests\Integration\Schema;
 
-use SMW\Schema\SchemaList;
 use SMW\Schema\SchemaDefinition;
+use SMW\Schema\SchemaList;
 
 /**
  * @group semantic-mediawiki-integration
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class CompartmentIteratorSchemaListTest extends \PHPUnit_Framework_TestCase {
+class CompartmentIteratorSchemaListTest extends \PHPUnit\Framework\TestCase {
 
 	private $schemaList;
 
@@ -25,14 +25,14 @@ class CompartmentIteratorSchemaListTest extends \PHPUnit_Framework_TestCase {
 
 		$schema = new SchemaDefinition(
 			'fake_iterator_schema',
-			json_decode( file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
+			json_decode( file_get_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
 		);
 
 		$this->schemaList->add( $schema );
 
 		$schema = new SchemaDefinition(
 			'fake_iterator_schema_extra',
-			json_decode( file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
+			json_decode( file_get_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
 		);
 
 		$this->schemaList->add( $schema );

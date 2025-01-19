@@ -11,12 +11,12 @@ use Title;
  * @covers \SMW\MediaWiki\Specials\SpecialAsk
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SpecialAskTest extends \PHPUnit_Framework_TestCase {
+class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 

@@ -6,30 +6,30 @@ use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\SemanticData;
-use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem as DataItem;
 
 /**
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
  */
-class SemanticDataValidator extends \PHPUnit_Framework_Assert {
+class SemanticDataValidator extends \PHPUnit\Framework\Assert {
 
 	use PHPUnitCompat;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $strictModeForValueMatch = true;
 
 	/**
-	 * @param boolean $strictMode
+	 * @param bool $strictMode
 	 */
 	public function setStrictModeForValueMatch( $strictMode ) {
 		$this->strictModeForValueMatch = (bool)$strictMode;
@@ -99,7 +99,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 1.9.1
 	 *
-	 * @param integer $count
+	 * @param int $count
 	 * @param SemanticData $semanticData
 	 * @param string|null $msg
 	 */
@@ -185,7 +185,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		}
 
 		$this->assertTrue( $runAssertThatPropertyHasCharacteristicsAs, __METHOD__ );
-
 	}
 
 	/**
@@ -247,7 +246,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 			if ( isset( $expected['propertyValues'] ) ) {
 				$pv = $semanticData->getPropertyValues( $property );
-				$report[$property->getKey()] =  $this->formatAsString( $pv );
+				$report[$property->getKey()] = $this->formatAsString( $pv );
 
 				$this->assertThatPropertyValuesAreSet(
 					$expected,
@@ -278,8 +277,8 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 1.9.1
 	 *
-	 * @param array $expected
-	 * @param DIProperty $property,
+	 * @param array &$expected
+	 * @param DIProperty $property
 	 * @param array $dataItems
 	 */
 	public function assertThatPropertyValuesAreSet( array &$expected, DIProperty $property, array $dataItems ) {
@@ -318,7 +317,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	private function assertThatSemanticDataIsIndeedEmpty( SemanticData $semanticData ) {
 		$property = new DIProperty( '_SKEY' );
 
-		foreach( $semanticData->getPropertyValues( $property ) as $dataItem ) {
+		foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
 			$semanticData->removePropertyObjectValue( $property, $dataItem );
 		}
 
@@ -412,7 +411,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 				continue;
 			}
 
-			if ( ( is_numeric( $value ) && is_numeric( $propertyValue ) )  && $value == $propertyValue ) {
+			if ( ( is_numeric( $value ) && is_numeric( $propertyValue ) ) && $value == $propertyValue ) {
 				unset( $expected['propertyValues'][$key] );
 				continue;
 			}

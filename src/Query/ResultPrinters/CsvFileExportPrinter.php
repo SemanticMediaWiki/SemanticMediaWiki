@@ -9,7 +9,7 @@ use SMWQueryResult as QueryResult;
 /**
  * CSV export support
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Nathan R. Yergler

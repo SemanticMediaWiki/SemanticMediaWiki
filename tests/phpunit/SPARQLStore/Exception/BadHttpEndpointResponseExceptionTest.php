@@ -8,12 +8,12 @@ use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
  * @covers \SMW\SPARQLStore\Exception\BadHttpEndpointResponseException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class BadHttpEndpointResponseExceptionTest extends \PHPUnit_Framework_TestCase {
+class BadHttpEndpointResponseExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -13,7 +13,7 @@ use SMWQueryResult;
  *
  * @ingroup Api
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -76,9 +76,9 @@ abstract class Query extends ApiBase {
 		$resultFormatter->doFormat();
 
 		if ( $resultFormatter->getContinueOffset() ) {
-		//	$result->disableSizeCheck();
+		// $result->disableSizeCheck();
 			$result->addValue( null, 'query-continue-offset', $resultFormatter->getContinueOffset() );
-		//	$result->enableSizeCheck();
+		// $result->enableSizeCheck();
 		}
 
 		$result->addValue(

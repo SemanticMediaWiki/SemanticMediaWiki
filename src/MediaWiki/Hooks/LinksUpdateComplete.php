@@ -2,19 +2,19 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use Psr\Log\LoggerAwareTrait;
+use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
 use SMW\SemanticData;
-use SMW\MediaWiki\HookListener;
-use Psr\Log\LoggerAwareTrait;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * LinksUpdateComplete hook is called at the end of LinksUpdate()
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateComplete
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -30,12 +30,12 @@ class LinksUpdateComplete implements HookListener {
 	private $namespaceExaminer;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $enabledDeferredUpdate = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isReady = true;
 
@@ -51,7 +51,7 @@ class LinksUpdateComplete implements HookListener {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isReady
+	 * @param bool $isReady
 	 */
 	public function isReady( $isReady ) {
 		$this->isReady = (bool)$isReady;

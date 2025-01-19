@@ -23,7 +23,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<div id=\"ask-status\" class=\"smw-ask-status plainlinks\"><noscript><div class=\"smw-callout smw-callout-error\">"
+					"smw-error-noscript"
 				]
 			}
 		},

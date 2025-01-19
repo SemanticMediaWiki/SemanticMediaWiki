@@ -1,0 +1,255 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @since 5.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+@import 'tokens.less';
+
+/**
+ * Factbox component
+ * Used primarily in Special:Browse
+ */
+.smw-factbox {
+	border: @border-base;
+	border-radius: @border-radius-base;
+	line-height: @line-height-xx-small;
+
+	&-header,
+	&-pagination,
+	&-section-heading,
+	&-property-name,
+	&-property-values {
+		padding-inline: @spacing-75;
+	}
+
+	&-header,
+	&-pagination {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		column-gap: @spacing-100;
+	}
+
+	&-header {
+		position: sticky;
+		top: 0;
+		z-index: @z-index-sticky;
+		padding-block: @spacing-100;
+		background-color: @background-color-base;
+	}
+
+	&-header,
+	&-section {
+		border-bottom: @border-base;
+	}
+
+	&-title,
+	&-section-heading {
+		line-height: @line-height-xxx-small;
+		font-weight: @font-weight-bold;
+	}
+
+	&-title {
+		font-size: @font-size-x-large;
+	}
+
+	&-actions {
+		white-space: nowrap;
+
+		a + a {
+			margin-inline-start: @spacing-50;
+			border-inline-start: @border-subtle;
+			padding-inline-start: @spacing-50;
+		}
+	}
+
+	&-section {
+		&:last-child {
+			border-bottom: 0;
+		}
+
+		.smw-factbox-property {
+			flex-direction: row;
+
+			&-name {
+				text-align: start;
+
+				@media ( min-width: @min-width-breakpoint-tablet ) {
+					text-align: end;
+				}
+			}
+
+			&-values {
+				text-align: start;
+			}
+		}
+
+		&[ data-mw-smw-factbox-direction = "end" ] {
+			.smw-factbox-property {
+				flex-direction: row-reverse;
+
+				&-name {
+					text-align: end;
+
+					@media ( min-width: @min-width-breakpoint-tablet ) {
+						text-align: start;
+					}
+				}
+
+				&-values {
+					text-align: end;
+				}
+			}
+		}
+	}
+
+	&-section-heading {
+		padding-block: @spacing-75;
+	}
+
+	&-property {
+		border-top: @border-subtle;
+		word-break: break-word;
+
+		@media ( min-width: @min-width-breakpoint-tablet ) {
+			display: flex;
+		}
+
+		&-name,
+		&-values {
+			padding-block: @spacing-50;
+		}
+
+		&-name {
+			background-color: @background-color-neutral-subtle;
+			font-weight: @font-weight-bold;
+			flex-basis: 30%;
+		}
+
+		&-values {
+			flex-basis: 70%;
+		}
+
+		&:first-child {
+			border-top: 0;
+		}
+	}
+
+	&-message {
+		// Remove message box border as it conflicts with factbox borders
+		border: 0 !important;
+	}
+
+	&-pagination {
+		border-top: @border-subtle;
+		padding-block: @spacing-75;
+
+		&-status {
+			color: @color-subtle;
+		}
+	}
+
+	&[ aria-busy = "true" ] {
+		.smw-factbox-header {
+			position: relative;
+			padding-block: @spacing-100;
+			overflow: hidden;
+	
+			&::after {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				width: 33.33%;
+				height: 2px;
+				background-color: @background-color-progressive;
+				animation-name: cdx-progress-bar-inline;
+				animation-duration: @animation-duration-medium;
+				animation-timing-function: @animation-timing-function-base;
+				animation-iteration-count: @animation-iteration-count-base;
+			}
+		}
+	}
+
+	&-container {
+		.smw-factbox {
+			font-size: @font-size-small;
+		}
+	}
+
+	&-table-wrapper {
+		overflow-x: auto;
+		margin: -@border-width-base; // hide table border since we have border at factbox
+
+		.wikitable {
+			margin: 0;
+			width: 100%;
+			display: table; // enforce table layout because we already have a wrapper to handle responsiveness
+		}
+	}
+}
+
+/**
+ * Tab styles required for on page factbox
+ * TODO: This shouldn't be here and the tab implementation is quite hacky,
+ * remove this when we rework tabs
+ */
+.smw-factbox-container.smw-tabs {
+	section {
+		border: 0; // border is handled by factbox, no need for another one
+	}
+
+	#tab-facts-list:checked ~ #tab-content-facts-list ,
+	#tab-facts-attachment:checked ~ #tab-content-facts-attachment {
+		display: block;
+	}
+}
+
+/** TODO: Icon should be handled somewhere else, remove this when we rework icons */
+.smw-factbox-actions .rdflink a {
+	display: flex;
+	align-items: center;
+	gap: @spacing-50;
+
+	&::before {
+		content: '';
+		display: block;
+		min-width: @min-size-icon-small;
+		min-height: @min-size-icon-small;
+		background-size: contain;
+		background-image: url( assets/smw-icon-rdf.svg );
+	}
+}
+
+@keyframes cdx-progress-bar-inline {
+	0% {
+		transform: translate( -100% );
+	}
+
+	100% {
+		transform: translate( 300% );
+	}
+}

@@ -5,7 +5,7 @@ namespace SMW\Query;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -27,7 +27,7 @@ class QueryStringifier {
 	 * @since 3.0
 	 *
 	 * @param Query $query
-	 * @param boolean $printParameters
+	 * @param bool $printParameters
 	 *
 	 * @return string
 	 */
@@ -45,7 +45,7 @@ class QueryStringifier {
 			$serialized['parameters']['source'] = $query->getQuerySource();
 		}
 
-		list( $serialized['sort'], $serialized['order'] ) = self::sortKeys(
+		[ $serialized['sort'], $serialized['order'] ] = self::sortKeys(
 			$query
 		);
 

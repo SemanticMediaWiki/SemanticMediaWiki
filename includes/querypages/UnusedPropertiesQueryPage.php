@@ -12,7 +12,7 @@ use SMWDIError;
  *
  * @ingroup QueryPage
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -52,7 +52,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @return boolean
+	 * @return bool
 	 */
 	function isExpensive() {
 		return false; // Disables caching for now
@@ -60,7 +60,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @return boolean
+	 * @return bool
 	 */
 	function isSyndicated() {
 		return false; // TODO: why not?
@@ -110,7 +110,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @param Skin $skin provided by MediaWiki, not needed here
 	 * @param mixed $result
 	 *
-	 * @return String
+	 * @return string
 	 * @throws InvalidResultException if the result was not of a supported type
 	 */
 	function formatResult( $skin, $result ) {

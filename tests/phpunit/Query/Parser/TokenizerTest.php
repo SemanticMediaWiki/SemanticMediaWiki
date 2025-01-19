@@ -8,12 +8,12 @@ use SMW\Query\Parser\Tokenizer;
  * @covers \SMW\Query\Parser\Tokenizer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TokenizerTest extends \PHPUnit_Framework_TestCase {
+class TokenizerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

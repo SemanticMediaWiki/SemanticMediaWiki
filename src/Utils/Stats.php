@@ -9,7 +9,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  * Collect statistics in a provisional schema-free storage that depends on the
  * availability of the cache back-end.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -41,12 +41,12 @@ class Stats {
 	private $cache;
 
 	/**
-	 * @var string|integer
+	 * @var string|int
 	 */
 	private $id;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $shouldRecord = true;
 
@@ -98,7 +98,7 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $shouldRecord
+	 * @param bool $shouldRecord
 	 */
 	public function shouldRecord( $shouldRecord ) {
 		$this->shouldRecord = (bool)$shouldRecord;
@@ -135,7 +135,7 @@ class Stats {
 	 * @since 2.5
 	 *
 	 * @param string|array $key
-	 * @param string|integer $default
+	 * @param string|int $default
 	 */
 	public function init( $key, $default ) {
 		$this->stats[$key] = $default;
@@ -146,7 +146,7 @@ class Stats {
 	 * @since 2.5
 	 *
 	 * @param string|array $key
-	 * @param string|integer $value
+	 * @param string|int $value
 	 */
 	public function set( $key, $value ) {
 		$this->stats[$key] = $value;
@@ -157,7 +157,7 @@ class Stats {
 	 * @since 2.5
 	 *
 	 * @param string|array $key
-	 * @param integer $value
+	 * @param int $value
 	 */
 	public function calcMedian( $key, $value ) {
 		if ( !isset( $this->stats[$key] ) ) {
@@ -216,7 +216,7 @@ class Stats {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $asPending
+	 * @param bool $asPending
 	 */
 	public function recordStats( $asPending = false ) {
 		if ( $this->shouldRecord === false ) {

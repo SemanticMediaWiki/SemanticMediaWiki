@@ -8,7 +8,7 @@ use SMW\SemanticData;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.0
  *
  * @author mwjames
@@ -47,7 +47,7 @@ class SemanticDataFactory {
 	/**
 	 * @since  2.0
 	 *
-	 * @param string $title
+	 * @param string|null $title
 	 *
 	 * @return SemanticData
 	 * @throws RuntimeException
