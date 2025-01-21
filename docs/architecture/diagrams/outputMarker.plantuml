@@ -1,0 +1,157 @@
+@startuml outputMarker
+actor "Wiki Page" as User #DDDDDD
+participant "AskParserFunction" as APF #ADD8E6
+participant "SMW_QueryProcessor" as QP #90EE90
+participant "ParamListProcessor" as PLP #FFB6C1
+participant "FormatterOption" as FO #FFFACD
+participant "PrintRequestFactory" as PRF #D3D3D3
+participant "PrintRequest" as PR #E6E6FA
+participant "Deserializer" as DSR #FFE4E1
+participant "ResultPrinter" as RP #FAFAD2
+participant "QueryCreator" as QC #F0E68C
+
+note right of APF
+Example #ask query:
+<includeonly>{{#ask:
+  [[Category:Person]]
+  [[Works At::{{#if:{{{1|}}}|{{{1|}}}|{{FULLPAGENAME}}}}]]
+  |?Name={{int:SA Contact Name}}=|+thclass=unsortable
+  |format=broadtable
+  |mainlabel=-
+  |offset=0
+}}</includeonly>
+end note
+
+User -> APF: parse(array $functionParams)
+activate APF #90EE90
+note right of APF
+APF Lifecycle - Parsing started
+end note
+
+APF -> QP: getQueryAndParamsFromFunctionParams($functionParams)
+activate QP #90EE90
+note right of QP
+QP Lifecycle - Query processing initiated
+note right: $functionParams = [\nParser,\n'?Name=',\n'+thclass=unsortable'\n]
+end note
+
+QP -> QP: getComponentsFromFunctionParams($rawParams, $showMode)
+note right of QP
+QP Lifecycle - Extracting components from function parameters
+note right: $rawParams = [\n'[[Category:Person]]',\n'?Name=',\n'+thclass=unsortable'\n]
+end note
+
+QP -> PLP: format($rawParams, $showMode)
+activate PLP #90EE90
+note right of PLP
+PLP Lifecycle - Formatting parameters
+note right: $parameters = [\n'[[Category:Person]]',\n'?Name=',\n'+thclass=unsortable'\n]
+end note
+
+PLP -> PLP: preprocess($parameters, $showMode)
+note right of PLP
+PLP Lifecycle - Preprocessing parameters
+end note
+
+PLP -> FO: Trigger formatters (e.g., Link, Size, TableHeader)
+activate FO #90EE90
+note right of FO
+FO Lifecycle - Formatting parameters like links and table headers
+note right: $name = '?Name', $param = '+thclass=unsortable'\nserialization.label = 'Name #thclass=Name'
+end note
+
+FO -> PLP: Add to serialization
+deactivate FO
+PLP -> QP: Return serialization object
+note left of PLP
+QP Lifecycle - Returning serialized parameters
+note left: serialization = {\nlabel: 'Name #thclass=Name',\nparams: '+thclass=unsortable'\n}
+end note
+deactivate PLP
+
+QP -> PRF: legacy_format(serialization)
+activate PRF #90EE90
+note right of PRF
+PRF Lifecycle - Formatting legacy print request
+end note
+
+PRF -> PR: newFromText('Name #thclass=Name', ...)
+activate PR #90EE90
+note right of PR
+PR Lifecycle - Parsing serialized data
+note right: serialization.label = $text in this function
+end note
+
+PR -> DSR: deserialize('Name #thclass=Name', ...)
+activate DSR #90EE90
+note right of DSR
+DSR Lifecycle - Deserializing print request data
+end note
+
+DSR -> PR: Parsed data returned
+note right of DSR
+note right: label = 'Name'\nm_outputformat = 'class=unsortable'
+end note
+deactivate DSR
+
+PR -> PR: Update outputformat based on params
+deactivate PR
+PRF -> QP: Return PrintRequest
+deactivate PRF
+note right of PRF
+PRF Lifecycle - Complete
+note right of PRF #FF6347
+end note
+
+QP -> QC: createQuery($queryString, $params, $context, $format, array $extraPrintouts, $contextPage)
+activate QC #90EE90
+note right of QC
+QC Lifecycle - Creating query with parameters
+note right: $extraPrintouts = [\n{\nm_label: 'Name',\nm_outputformat: 'class=unsortable'\n}\n]\n$queryString = '[[Category:Person]]'
+end note
+
+QC -> QC: Process $queryString and $params
+note right of QC
+QC Lifecycle - Processing query and parameters
+end note
+
+QC -> RP: getResults()
+activate RP #90EE90
+note right of RP
+RP Lifecycle - Preparing query results
+end note
+
+RP -> RP: Prepare results
+RP -> QC: Return results
+deactivate RP
+note right of RP
+RP Lifecycle - Results ready
+note right of RP #FF6347
+end note
+
+QC -> QP: Return query results
+deactivate QC
+note right of QC
+QC Lifecycle - Query results returned
+note right of QC #FF6347
+end note
+
+QP -> APF: Return processed data
+note left of QP
+QP Lifecycle - Returning processed query results
+note left #FF6347
+end note
+deactivate QP
+
+APF -> User: Display query results
+note right of APF
+APF Lifecycle - Displaying results to the user
+note right of APF #FF6347
+end note
+deactivate APF
+
+note right of APF
+APF Lifecycle - Complete
+note right of APF #FF6347
+end note
+@enduml
