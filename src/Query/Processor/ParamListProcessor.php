@@ -229,8 +229,7 @@ class ParamListProcessor {
 			$printRequest = $this->printRequestFactory->newFromText(
 				$request['label'],
 				$showMode,
-				$asCanonicalLabel,
-				$request['params']
+				$asCanonicalLabel
 			);
 
 			if ( $printRequest === null ) {
@@ -241,6 +240,19 @@ class ParamListProcessor {
 				$printRequest->setParameter( $key, $value );
 			}
 
+			// get outputFormat for each ?property and update params like thclass and link
+			$outputFormat = $printRequest->getOutputFormat();
+
+			if ( str_contains( $outputFormat, 'thclass' ) ) {
+				$outputFormat = str_replace( 'thclass', 'class=' . $request['params']['thclass'], $outputFormat );
+			}
+
+			if ( str_contains( $outputFormat, 'link' ) ) {
+				$outputFormat = str_replace( 'link', 'link=' . $request['params']['link'], $outputFormat );
+			}
+
+			// set updated outputFormat for each ?property
+			$printRequest->setOutputFormat( $outputFormat );
 			$printouts[] = $printRequest;
 		}
 

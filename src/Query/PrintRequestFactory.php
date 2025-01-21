@@ -45,8 +45,8 @@ class PrintRequestFactory {
 	 *
 	 * @return PrintRequest|null
 	 */
-	public function newFromText( $text, $showMode = false, $asCanonicalLabel = false, ?array $params = null ) {
-		return PrintRequest::newFromText( $text, $showMode, $asCanonicalLabel, $params );
+	public function newFromText( $text, $showMode = false, $asCanonicalLabel = false ) {
+		return PrintRequest::newFromText( $text, $showMode, $asCanonicalLabel );
 	}
 
 	/**

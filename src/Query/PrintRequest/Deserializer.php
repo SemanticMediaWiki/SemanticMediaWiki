@@ -142,9 +142,7 @@ class Deserializer {
 		}
 
 		try {
-			$params = [];
-			$params = $options['params'] ?? [];
-			$printRequest = new PrintRequest( $printmode, $label, $data, trim( $outputFormat ?? '' ), $params );
+			$printRequest = new PrintRequest( $printmode, $label, $data, trim( $outputFormat ?? '' ) );
 			$printRequest->markThisLabel( $text );
 		} catch ( InvalidArgumentException $e ) {
 			// something still went wrong; give up
