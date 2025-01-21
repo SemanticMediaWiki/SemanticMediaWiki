@@ -142,7 +142,9 @@ class Deserializer {
 		}
 
 		try {
-			$printRequest = new PrintRequest( $printmode, $label, $data, trim( $outputFormat ?? '' ) );
+			$params = [];
+			$params = $options['params'] ?? [];
+			$printRequest = new PrintRequest( $printmode, $label, $data, trim( $outputFormat ?? '' ), $params );
 			$printRequest->markThisLabel( $text );
 		} catch ( InvalidArgumentException $e ) {
 			// something still went wrong; give up
@@ -184,12 +186,6 @@ class Deserializer {
 		$propparts = explode( '#', $parts[0], 2 );
 		$printRequestLabel = trim( $propparts[0] );
 		$outputFormat = isset( $propparts[1] ) ? trim( $propparts[1] ) : false;
-
-		if ( isset( $outputFormat ) ) {
-			if ( str_contains( $outputFormat, 'link' ) || str_contains( $outputFormat, 'class' ) ) {
-				$outputFormat = str_replace( [ 'link', 'class' ], [ 'link=', 'class=' ], $outputFormat );
-			}
-		}
 
 		return [ $parts, $outputFormat, Localizer::getInstance()->normalizeTitleText( $printRequestLabel ) ];
 	}
