@@ -22,19 +22,27 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 			return;
 		}
 
-		$param = substr( $param, 1 );
-		$param = str_replace( 'thclass=', 'class', $param );
-
 		if ( !empty( $param ) ) {
+			$param = substr( $param, 1 );
+			// $param = str_replace( 'thclass=', 'class', $param );
+			$partsParam = explode( '=', $param, 2 );
+
 			$label = $serialization['printouts'][$previousPrintout]['label'] ?? '';
+			$params = $serialization['printouts'][$previousPrintout]['params'] ?? '';
+
+			if ( !empty( $params ) ) {
+				$params['thclass'] = $partsParam[1];
+			} else {
+				$params = [ 'thclass' => $partsParam[1] ];
+			}
 
 			// Use helper method to format label.
 			$labelToSave = $this->formatLabel( $label, $param );
 
-			// Save the label in serialization.
+			// Save the label and additional params in serialization.
 			$serialization['printouts'][$previousPrintout] = [
 				'label' => $labelToSave,
-				'params' => []
+				'params' => $params
 			];
 
 		} else {
@@ -56,6 +64,7 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 	 */
 	private function formatLabel( $label, $param ) {
 		$partsLabel = explode( '=', $label );
+		$paramParts = explode( '=', $param );
 
 		if ( isset( $partsLabel[1] ) && $partsLabel[1] === '' && !strpos( $partsLabel[0], '#' ) ) {
 			return str_replace( '=', '', $label . ' ' . '#' . $param );
@@ -65,7 +74,7 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 				if ( count( $parts ) > 1 ) {
 					return $parts[0] . ';' . $param . '=' . $parts[1];
 				} else {
-					return str_replace( '=', '', $label . ';' . $param );
+					return str_replace( '=', '', $label . ';' . $paramParts[0] );
 				}
 			} else {
 				$labelToSave = $label . ' ' . '#' . $param;

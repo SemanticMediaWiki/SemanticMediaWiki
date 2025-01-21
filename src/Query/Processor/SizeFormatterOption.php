@@ -24,22 +24,31 @@ class SizeFormatterOption implements FormatterOptionsInterface {
 			return;
 		}
 
-		$param = substr( $param, 1 );
-		if ( empty( $param ) ) {
-			return;
+		if ( !empty( $param ) ) {
+			$param = substr( $param, 1 );
+
+			$parts = explode( '=', $param, 2 );
+			$label = $serialization['printouts'][$previousPrintout]['label'] ?? '';
+			$params = $serialization['printouts'][$previousPrintout]['params'] ?? '';
+
+			if ( !empty( $params ) ) {
+				$params[ $parts[0] ] = $parts[1];
+			} else {
+				$params = [ $parts[0] => $parts[1] ];
+			}
+
+			// Use helper method to format label.
+			$labelToSave = $this->formatLabel( $label, $param );
+
+			// Save the label and additional params in serialization.
+			$serialization['printouts'][$previousPrintout] = [
+				'label' => $labelToSave,
+				'params' => $params
+			];
+
+		} else {
+			$serialization['printouts'][$previousPrintout]['params'] = null;
 		}
-
-		$parts = explode( '=', $param, 2 );
-		$label = $serialization['printouts'][$previousPrintout]['label'] ?? '';
-
-		$labelToSave = $this->formatLabel( $label, $param );
-
-		$serialization['printouts'][$previousPrintout] = [
-			'label' => $labelToSave,
-			'params' => []
-		];
-
-		$serialization['printouts'][$previousPrintout]['params'][trim( $parts[0] )] = $parts[1] ?? null;
 
 		return [
 			'serialization' => $serialization,

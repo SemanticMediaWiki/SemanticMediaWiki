@@ -27,7 +27,7 @@ class LinkFormatterOptionTest extends TestCase {
 			'printouts' => [
 				'Main Image' => [
 					'label' => 'Main Image #40px;link',
-					'params' => []
+					'params' => [ 'link' => '' ]
 				],
 			],
 		];
@@ -54,7 +54,7 @@ class LinkFormatterOptionTest extends TestCase {
 			'printouts' => [
 				'Job Title' => [
 					'label' => 'Job Title #link',
-					'params' => []
+					'params' => [ 'link' => '' ]
 				],
 			],
 		];
@@ -81,7 +81,7 @@ class LinkFormatterOptionTest extends TestCase {
 			'printouts' => [
 				'Image' => [
 					'label' => 'Image #40x50px;classunsortable;link',
-					'params' => []
+					'params' => [ 'link' => '' ]
 				],
 			],
 		];

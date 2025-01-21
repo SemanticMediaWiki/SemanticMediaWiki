@@ -26,8 +26,8 @@ class TableHeaderFormatterOptionTest extends TestCase {
 		$expectedSerialization = [
 			'printouts' => [
 				'Main Image' => [
-					'label' => 'Main Image #40px;classunsortable',
-					'params' => []
+					'label' => 'Main Image #40px;thclass',
+					'params' => [ 'thclass' => 'unsortable' ]
 				],
 			],
 		];
@@ -37,7 +37,7 @@ class TableHeaderFormatterOptionTest extends TestCase {
 		$serialization = [
 			'printouts' => [
 				'Job Title' => [
-					'label' => 'Job Title'
+					'label' => 'Job Title=Job Title='
 				],
 			],
 		];
@@ -46,8 +46,8 @@ class TableHeaderFormatterOptionTest extends TestCase {
 		$expectedSerialization = [
 			'printouts' => [
 				'Job Title' => [
-					'label' => 'Job Title #classunsortable',
-					'params' => []
+					'label' => 'Job Title #thclass=Job Title',
+					'params' => [ 'thclass' => 'unsortable' ]
 				],
 			],
 		];
@@ -66,8 +66,8 @@ class TableHeaderFormatterOptionTest extends TestCase {
 		$expectedSerialization = [
 			'printouts' => [
 				'Image' => [
-					'label' => 'Image #40x50px;link;classunsortable',
-					'params' => []
+					'label' => 'Image #40x50px;link;thclass',
+					'params' => [ 'thclass' => 'unsortable' ]
 				],
 			],
 		];

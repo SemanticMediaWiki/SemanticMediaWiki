@@ -27,14 +27,22 @@ class LinkFormatterOption implements FormatterOptionsInterface {
 
 		if ( !empty( $param ) ) {
 			$label = $serialization['printouts'][$previousPrintout]['label'] ?? '';
+			$params = $serialization['printouts'][$previousPrintout]['params'] ?? '';
+			$partsParam = explode( '=', $param, 2 );
+
+			if ( !empty( $params ) ) {
+				$params['link'] = $partsParam[1];
+			} else {
+				$params = [ 'link' => $partsParam[1] ];
+			}
 
 			// Use helper method to format label.
 			$labelToSave = $this->formatLabel( $label, $param );
 
-			// Save the label in serialization.
+			// Save the label and additional params in serialization.
 			$serialization['printouts'][$previousPrintout] = [
 				'label' => $labelToSave,
-				'params' => [],
+				'params' => $params,
 			];
 		} else {
 			$serialization['printouts'][$previousPrintout]['params'] = null;
