@@ -229,7 +229,8 @@ class ParamListProcessor {
 			$printRequest = $this->printRequestFactory->newFromText(
 				$request['label'],
 				$showMode,
-				$asCanonicalLabel
+				$asCanonicalLabel,
+				$request['params']
 			);
 
 			if ( $printRequest === null ) {
