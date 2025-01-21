@@ -106,6 +106,14 @@ class PrintRequest {
 			$this->m_outputformat = 'x'; // changed default for Boolean case
 		}
 
+		if ( str_contains( $this->m_outputformat, 'thclass' ) ) {
+			$this->m_outputformat = str_replace( 'thclass', 'class=' . $params['thclass'], $this->m_outputformat );
+		}
+
+		if ( str_contains( $this->m_outputformat, 'link' ) ) {
+			$this->m_outputformat = str_replace( 'link', 'link=' . $params['link'], $this->m_outputformat );
+		}
+
 		$this->setLabel( $label );
 
 		if ( $params !== null ) {
@@ -352,10 +360,11 @@ class PrintRequest {
 	 *
 	 * @return PrintRequest|null
 	 */
-	public static function newFromText( $text, $showMode = false, $useCanonicalLabel = false ) {
+	public static function newFromText( $text, $showMode = false, $useCanonicalLabel = false, ?array $params = null ) {
 		$options = [
 			'show_mode' => $showMode,
-			'canonical_label' => $useCanonicalLabel
+			'canonical_label' => $useCanonicalLabel,
+			'params' => $params
 		];
 
 		return Deserializer::deserialize( $text, $options );
