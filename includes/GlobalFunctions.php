@@ -60,7 +60,7 @@ function smwfNormalTitleText( $text ) {
  *
  * @param string $text
  */
-function smwfXMLContentEncode( $text ) {
+function smwfXMLContentEncode( string $text ) {
 	return str_replace( [ '&', '<', '>' ], [ '&amp;', '&lt;', '&gt;' ], Sanitizer::decodeCharReferences( $text ) );
 }
 
@@ -70,7 +70,7 @@ function smwfXMLContentEncode( $text ) {
  *
  * @param string $text
  */
-function smwfHTMLtoUTF8( $text ) {
+function smwfHTMLtoUTF8( string $text ) {
 	return Sanitizer::decodeCharReferences( $text );
 }
 
