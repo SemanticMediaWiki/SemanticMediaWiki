@@ -58,20 +58,20 @@ function smwfNormalTitleText( $text ) {
  * Escapes text in a way that allows it to be used as XML content (e.g. as a
  * string value for some property).
  *
- * @param string $text
+ * @param string|null $text
  */
-function smwfXMLContentEncode( $text ) {
-	return str_replace( [ '&', '<', '>' ], [ '&amp;', '&lt;', '&gt;' ], Sanitizer::decodeCharReferences( $text ) );
+function smwfXMLContentEncode( ?string $text ) {
+	return str_replace( [ '&', '<', '>' ], [ '&amp;', '&lt;', '&gt;' ], Sanitizer::decodeCharReferences( $text ?? '' ) );
 }
 
 /**
  * Decodes character references and inserts Unicode characters instead, using
  * the MediaWiki Sanitizer.
  *
- * @param string $text
+ * @param string|null $text
  */
-function smwfHTMLtoUTF8( $text ) {
-	return Sanitizer::decodeCharReferences( $text );
+function smwfHTMLtoUTF8( ?string $text ) {
+	return Sanitizer::decodeCharReferences( $text ?? '' );
 }
 
 /**
