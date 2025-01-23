@@ -147,7 +147,7 @@ class RecursiveTextProcessor {
 
 		$track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK );
 
-		if ( is_array( $track ) && $track !== [] ) {
+		if ( isset( $track[$this->uniqid] ) ) {
 			unset( $track[$this->uniqid] );
 		}
 
