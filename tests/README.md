@@ -80,7 +80,7 @@ To run a single testsuite, use `--filter`, e.g `composer phpunit -- --filter Par
 
 Writing meaningful tests isn't difficult but requires some diligence on how to setup a test and its environment. One simple rule is to avoid the use of hidden expectations or inheritance as remedy for the "less code is good code" aesthetics. Allow the code to be readable and if possible follow the [arrange, act, assert][aaa] pattern.
 
-For an introduction on "Writing PHP unit tests for MediaWiki", have a look at this [Wikimedia Tech Talk](https://www.youtube.com/live/HOWKHUA-wAI?t=278) by Kosta Harlan. For Testing and Continuous Integration see [Luke Eversfield and Marko Ilic's presentation](https://www.youtube.com/watch?v=0kTebage1VQ).
+For an introduction to "Writing PHP unit tests for MediaWiki", take a look at this [Wikimedia Tech Talk](https://www.youtube.com/live/HOWKHUA-wAI?t=278) by Kosta Harlan. For Testing and Continuous Integration, see [Luke Eversfield and Marko Ilic's presentation](https://www.youtube.com/watch?v=0kTebage1VQ).
 
 <pre>
 /tests
@@ -104,7 +104,7 @@ For an introduction on "Writing PHP unit tests for MediaWiki", have a look at th
 
 ### Unit tests
 
-The use of `MediaWikiTestCase` is discouraged (as its binds tests and the test environment to MediaWiki) and it is best to rely on `\PHPUnit\Framework\TestCase` and where a MW database connection is required, use the `MwDBaseUnitTestCase` instead.
+The use of `MediaWikiTestCase` is discouraged (as it binds tests and the test environment to MediaWiki) and it is best to rely on `\PHPUnit\Framework\TestCase` and where an MW database connection is required, use the `MwDBaseUnitTestCase` instead.
 
 * `QueryPrinterTestCase` base class for all query and result printers
 * `SpecialPageTestCase` derives from `SemanticMediaWikiTestCase`
