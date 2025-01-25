@@ -12,6 +12,7 @@ use SMW\SerializerFactory;
 use SMW\Store;
 use SMWInfolink;
 use SMWQuery as Query;
+use SMWQueryProcessor;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -437,7 +438,7 @@ class QueryResult {
 	}
 
 	/**
-	 * @see DISerializer::getSerializedQueryResult
+	 * @see SMW\Serializers\QueryResultSerializer::getSerializedQueryResult
 	 * @since 1.7
 	 * @return array
 	 */
@@ -478,12 +479,28 @@ class QueryResult {
 			'meta' => [
 				'hash'   => md5( json_encode( $serializeArray ) ),
 				'count'  => $this->getCount(),
+				'total'  => $this->getTotalCount(),
 				'offset' => $this->mQuery->getOffset(),
 				'source' => $this->mQuery->getQuerySource(),
 				'time'   => number_format( ( microtime( true ) - $time ), 6, '.', '' )
 				]
 			]
 		);
+	}
+	
+	/**
+	 * Returns the total number of query results regardless of maximum to retrieval
+	 *
+	 * @return integer
+	 */
+	public function getTotalCount(): int {
+		$store = $this->mStore;
+		$queryStr = self::getQueryString();
+		$processedParams = \SMWQueryProcessor::getProcessedParams( [] );
+		$countQuery = \SMWQueryProcessor::createQuery( $queryStr, $processedParams, \SMWQueryProcessor::INLINE_QUERY, 'count' );
+		$queryRes = $store->getQueryResult( $countQuery );
+		$total = $queryRes instanceof \SMWQueryResult ? $queryRes->getCountValue() : 0;
+		return $total ?? 0;
 	}
 
 	/**
