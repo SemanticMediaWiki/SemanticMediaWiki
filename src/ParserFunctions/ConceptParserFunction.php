@@ -72,7 +72,7 @@ class ConceptParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $rawParams ) {
-		$this->parserData->getOutput()->addModuleStyles( [ 
+		$this->parserData->getOutput()->addModuleStyles( [
 			'ext.smw.styles',
 			'mediawiki.codex.messagebox.styles'
 		] );

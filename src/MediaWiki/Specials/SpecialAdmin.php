@@ -65,7 +65,7 @@ class SpecialAdmin extends SpecialPage {
 		$output->addModuleStyles( [
 			'ext.smw.styles',
 			'ext.smw.special.styles',
-			'mediawiki.codex.messagebox.styles'	
+			'mediawiki.codex.messagebox.styles'
 		] );
 		$output->addModules( 'ext.smw.admin' );
 
