@@ -48,7 +48,7 @@ Some user interface changes are deployed to make user facing front-end component
 
 Be advised that the [SMWSearch](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch) feature (and so the [SEARCH_FORM_SCHEMA](https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/SEARCH_FORM_SCHEMA) feature) is not working yet. See issue [#5782](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5782). If you use those features, change the MediaWiki [$wgSearchType](https://www.mediawiki.org/wiki/Manual:$wgSearchType) parameter to something other than `SMWSearch`. 
 
-There is no need to run the "update.php" maintenance script or any of the rebuild data scripts (but it is still advisable to do it if you can).
+There is no need to run the "update.php" maintenance script or any of the rebuild data scripts (but it is still advisable to do so in order to make [table_optimizations](https://www.semantic-mediawiki.org/wiki/Database/Table_optimization) on the database).
 
 
 ## Contributors
@@ -64,7 +64,6 @@ There is no need to run the "update.php" maintenance script or any of the rebuil
 * Robert Vogel
 * Simon Stier
 * Yvar
-* alistair3149
 * Alexander Mashin
 * Ferdinand Bachmann
 * Youri vd Bogert
