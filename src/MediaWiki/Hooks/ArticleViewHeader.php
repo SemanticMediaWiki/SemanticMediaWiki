@@ -126,6 +126,7 @@ class ArticleViewHeader implements HookListener {
 			);
 		}
 
+		$output->addModuleStyles( [ 'mediawiki.codex.messagebox.styles' ] );
 		$output->addHTML( $message );
 
 		// No Message means `useParserCache`otherwise refresh the output to
