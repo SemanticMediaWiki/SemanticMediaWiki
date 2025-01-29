@@ -24,9 +24,9 @@ There is no need to run the "update.php" maintenance script or any of the rebuil
 ## Contributors
 
 * translatewiki.net
-* Marko Ilic
+* Marko Ilic ([gesinn.it](https://gesinn.it))
 * Sébastien Beyou
-* Alexander
+* Alexander Gesinn ([gesinn.it](https://gesinn.it))
 * Jeroen De Dauw ([Professional Wiki](https://professional.wiki/))
 * Karsten Hoffmeyer ([Professional Wiki](https://professional.wiki/))
 * Robert Vogel
