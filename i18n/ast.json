@@ -316,7 +316,7 @@
 	"smw-admin-announce": "Anuncia la to wiki",
 	"smw-admin-announce-text": "Si la to wiki ye pública, puedes rexistrala en <a href=\"https://wikiapiary.com\">WikiApiary</a>, la wiki de siguimientu wikis.",
 	"smw-admin-deprecation-notice-title": "Avisos d'obsolescencia",
-	"smw-admin-deprecation-notice-docu": "La siguiente sección contien axustes que se quedaron anticuaos o se desaniciaron, pero que detectóse que tán activos nesta wiki. Espérase que cualquier versión futura desanicie l'encontu d'estes configuraciones.",
+	"smw-admin-deprecation-notice-docu": "La siguiente sección contién axustes que se quedaron anticuaos o se desaniciaron, pero que detectóse que tán activos nesta wiki. Espérase que cualquier versión futura desanicie l'encontu d'estes configuraciones.",
 	"smw-admin-deprecation-notice-config-notice": "[https://www.semantic-mediawiki.org/wiki/Help:$1 $1] ta anticuáu y va desaniciase na versión $2",
 	"smw-admin-deprecation-notice-config-notice-option": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> desaniciará (o reemplazará) {{PLURAL:$2|la opción siguiente|les opciones siguientes}}:",
 	"smw-admin-deprecation-notice-config-notice-option-list": "<code>$1</code> ta anticuáu y va desaniciase'n $2",
