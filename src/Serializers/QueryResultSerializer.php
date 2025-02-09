@@ -97,6 +97,10 @@ class QueryResultSerializer implements DispatchableSerializer {
 					foreach ( $recordValue->getPropertyDataItems() as $property ) {
 						$label = $property->getLabel();
 
+                                                if ( $recordValue->getDataItem()->getDIType() === DataItem::TYPE_ERROR ) {
+                                                        continue;
+                                                }
+
 						$recordDiValues[$label] = [
 							'label'  => $label,
 							'key'    => $property->getKey(),
