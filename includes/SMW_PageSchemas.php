@@ -227,7 +227,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$propertyDropdownAttrs = [
 			'id' => 'property_dropdown',
 			'name' => 'smw_property_type_num',
-			'value' => $propType
+			'value' => $propType ?? ''
 		];
 		$html_text .= "Type: " . Xml::tags( 'select', $propertyDropdownAttrs, $select_body ) . "</p>\n";
 
