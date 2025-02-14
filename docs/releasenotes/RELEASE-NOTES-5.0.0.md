@@ -55,10 +55,10 @@ There is no need to run the "update.php" maintenance script or any of the rebuil
 
 * translatewiki.net
 * paladox
-* Marko Ilic
 * alistair3149
+* Marko Ilic ([gesinn.it](https://gesinn.it))
 * Sébastien Beyou
-* Alexander
+* Alexander Gesinn ([gesinn.it](https://gesinn.it))
 * Jeroen De Dauw ([Professional Wiki](https://professional.wiki/))
 * Karsten Hoffmeyer ([Professional Wiki](https://professional.wiki/))
 * Robert Vogel

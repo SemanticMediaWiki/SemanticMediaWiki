@@ -417,6 +417,24 @@ class Database {
 	}
 
 	/**
+	 * @see IDatabase::conditional
+	 *
+	 * @since 5.0
+	 */
+	public function conditional( $cond, $caseTrueExpression, $caseFalseExpression ) {
+		return $this->connRef->getConnection( 'read' )->conditional( $cond, $caseTrueExpression, $caseFalseExpression );
+	}
+
+	/**
+	 * @see IDatabase::expr
+	 *
+	 * @since 5.0
+	 */
+	public function expr( string $field, string $op, $value ) {
+		return $this->connRef->getConnection( 'read' )->expr( $field, $op, $value );
+	}
+
+	/**
 	 * @see IDatabase::affectedRows
 	 *
 	 * @since 1.9

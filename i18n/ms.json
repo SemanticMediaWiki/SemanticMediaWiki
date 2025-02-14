@@ -96,6 +96,7 @@
 	"smw-concept-cache-text": "Konsep ini mempunyai sejumlah $1 laman, dan kali terakhir dikemaskinikan pada $3, $2.",
 	"smw-admin-configutation-tab-namespaces": "Ruang nama",
 	"smw-livepreview-loading": "Memuatkan...",
+	"smw-search-syntax": "Sintaks",
 	"smw-search-profile-extended-section-namespace": "Ruang nama",
 	"smw-type-tab-types": "Jenis",
 	"smw-datavalue-external-formatter-invalid-uri": " \"$1\" ialah URL yang tidak sah.",
