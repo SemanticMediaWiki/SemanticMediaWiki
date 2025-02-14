@@ -1,6 +1,6 @@
 # Semantic MediaWiki 5.0.0
 
-Released on TBD.
+Released on March 10, 2025.
 
 ## Summary
 
@@ -20,7 +20,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ### User interface changes
 
-Some user interface changes are deployed to make user-facing front-end components more intuitive and 
+Some user interface changes are deployed to make user-facing front-end components more intuitive and
 mobile-friendly by using [Codex](https://doc.wikimedia.org/codex/main/) from Wikimedia Foundation:
 
 * Start using Codex Design tokens and improve various styles ([#5786](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5786))
