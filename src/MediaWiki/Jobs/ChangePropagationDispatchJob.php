@@ -277,7 +277,7 @@ class ChangePropagationDispatchJob extends Job {
 		// Filter duplicates
 		$contents = implode( "\n", array_keys( array_flip( $data ) ) );
 
-		$checkSum = md5( $contents ); 
+		$checkSum = md5( $contents );
 
 		$changePropagationDispatchJob = new ChangePropagationDispatchJob(
 			$this->getTitle(),
