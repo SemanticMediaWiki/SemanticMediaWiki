@@ -260,11 +260,11 @@ class ChangePropagationDispatchJob extends Job {
 		$i = 0;
 
 		foreach ( $chunkedIterator as $chunk ) {
-			$this->pushChangePropagationDispatchJob( $tempFile, $i++, $chunk );
+			$this->pushChangePropagationDispatchJob( $i++, $chunk );
 		}
 	}
 
-	private function pushChangePropagationDispatchJob( $tempFile, $num, $chunk ) {
+	private function pushChangePropagationDispatchJob( $num, $chunk ) {
 		$data = [];
 		// Used as a job key
 		$file = "smw_chgprop_$num\_tmp";
