@@ -191,7 +191,7 @@ class ChangePropagationDispatchJob extends Job {
 		$subject = DIWikiPage::newFromTitle( $this->getTitle() );
 
 		if ( $this->hasParameter( 'data' ) ) {
-			return $this->dispatchFromFile( $subject, $this->getParameter( 'data' ) );
+			return $this->dispatchFromData( $subject, $this->getParameter( 'data' ) );
 		}
 
 		if ( $this->hasParameter( 'schema_change_propagation' ) ) {
@@ -291,7 +291,7 @@ class ChangePropagationDispatchJob extends Job {
 		$changePropagationDispatchJob->lazyPush();
 	}
 
-	private function dispatchFromFile( $subject, $data ) {
+	private function dispatchFromData( $subject, $data ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$cache = $applicationFactory->getCache();
 
