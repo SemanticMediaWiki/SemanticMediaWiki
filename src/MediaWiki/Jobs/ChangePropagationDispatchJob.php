@@ -190,8 +190,8 @@ class ChangePropagationDispatchJob extends Job {
 	public function run() {
 		$subject = DIWikiPage::newFromTitle( $this->getTitle() );
 
-		if ( $this->hasParameter( 'dataFile' ) ) {
-			return $this->dispatchFromFile( $subject, $this->getParameter( 'dataFile' ) );
+		if ( $this->hasParameter( 'data' ) ) {
+			return $this->dispatchFromData( $subject, $this->getParameter( 'data' ) );
 		}
 
 		if ( $this->hasParameter( 'schema_change_propagation' ) ) {
@@ -258,52 +258,38 @@ class ChangePropagationDispatchJob extends Job {
 		);
 
 		$i = 0;
-		$tempFile = $applicationFactory->create( 'TempFile' );
-
-		$file = $tempFile->generate(
-			'smw_chgprop_',
-			$subject->getHash(),
-			uniqid()
-		);
 
 		foreach ( $chunkedIterator as $chunk ) {
-			$this->pushChangePropagationDispatchJob( $tempFile, $file, $i++, $chunk );
+			$this->pushChangePropagationDispatchJob( $i++, $chunk );
 		}
 	}
 
-	private function pushChangePropagationDispatchJob( $tempFile, $file, $num, $chunk ) {
+	private function pushChangePropagationDispatchJob( $num, $chunk ) {
 		$data = [];
-		$file .= "_$num.tmp";
 
 		// Filter any subobject
 		foreach ( $chunk as $val ) {
 			$data[] = ( $val instanceof DIWikiPage ? $val->asBase()->getHash() : $val );
 		}
 
-		// Filter duplicates and write the temp file
-		$tempFile->write(
-			$file,
-			implode( "\n", array_keys( array_flip( $data ) ) )
-		);
+		// Filter duplicates
+		$contents = implode( "\n", array_keys( array_flip( $data ) ) );
 
-		$checkSum = $tempFile->getCheckSum( $file );
+		$checkSum = md5( $contents );
 
-		// Use the checkSum as verification method to avoid manipulation of the
-		// contents by third-parties
 		$changePropagationDispatchJob = new ChangePropagationDispatchJob(
 			$this->getTitle(),
 			[
-				'dataFile' => $file,
-				'checkSum' => $checkSum
+				'data' => $contents
 			] + self::newRootJobParams(
-				"ChangePropagationDispatchJob:$file:$checkSum"
+				"ChangePropagationDispatchJob:smw_chgprop_$num\_tmp:$checkSum"
 			)
 		);
 
 		$changePropagationDispatchJob->lazyPush();
 	}
 
-	private function dispatchFromFile( $subject, $file ) {
+	private function dispatchFromData( $subject, $data ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$cache = $applicationFactory->getCache();
 
@@ -315,7 +301,6 @@ class ChangePropagationDispatchJob extends Job {
 			$subject
 		);
 
-		$tempFile = $applicationFactory->create( 'TempFile' );
 		$key = smwfCacheKey( self::CACHE_NAMESPACE, $subject->getHash() );
 
 		// SemanticData hasn't been updated, re-enter the cycle to ensure that
@@ -339,19 +324,12 @@ class ChangePropagationDispatchJob extends Job {
 			return true;
 		}
 
-		$contents = $tempFile->read(
-			$file,
-			$this->getParameter( 'checkSum' )
-		);
-
 		// @see ChangePropagationDispatchJob::pushChangePropagationDispatchJob
-		$dataItems = explode( "\n", $contents );
+		$dataItems = explode( "\n", $data );
 
 		$this->scheduleChangePropagationUpdateJobFromList(
 			$dataItems
 		);
-
-		$tempFile->delete( $file );
 
 		return true;
 	}

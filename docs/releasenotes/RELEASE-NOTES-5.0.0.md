@@ -43,6 +43,12 @@ Some user interface changes are deployed to make user facing front-end component
 
 * Allow RDF link in the head element to be disabled ([#5776](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5776))
 
+## Breaking changes
+
+- [#6021](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6021) ChangePropagationDispatchJob: Don't presume job will be run on same server
+
+  The param 'dataFile' and 'checkSum' have been dropped in ChangePropagationDispatchJob. No longer is a temp file created, instead the contents is supplied
+  in the 'data' param.
 
 ## Upgrading
 
