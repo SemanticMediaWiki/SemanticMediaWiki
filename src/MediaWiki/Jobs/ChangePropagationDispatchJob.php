@@ -266,8 +266,6 @@ class ChangePropagationDispatchJob extends Job {
 
 	private function pushChangePropagationDispatchJob( $num, $chunk ) {
 		$data = [];
-		// Used as a job key
-		$file = "smw_chgprop_$num\_tmp";
 
 		// Filter any subobject
 		foreach ( $chunk as $val ) {
@@ -284,7 +282,7 @@ class ChangePropagationDispatchJob extends Job {
 			[
 				'data' => $contents
 			] + self::newRootJobParams(
-				"ChangePropagationDispatchJob:$file:$checkSum"
+				"ChangePropagationDispatchJob:smw_chgprop_$num\_tmp:$checkSum"
 			)
 		);
 
