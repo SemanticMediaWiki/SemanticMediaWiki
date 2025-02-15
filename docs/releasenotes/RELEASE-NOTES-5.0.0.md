@@ -17,6 +17,13 @@ Anyone using MediaWiki 1.41 or above or PHP 8.1 or above is recommended to upgra
 
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
+## Breaking changes
+
+- [#6021](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6021) ChangePropagationDispatchJob: Don't presume job will be run on same server
+
+  The param 'dataFile' and 'checkSum' have been dropped in ChangePropagationDispatchJob. No longer is a temp file created, instead the contents is supplied
+  in the 'data' param.
+
 ## Upgrading
 
 There is no need to run the "update.php" maintenance script or any of the rebuild data scripts.
