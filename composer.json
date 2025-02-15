@@ -42,7 +42,7 @@
 		"source": "https://github.com/SemanticMediaWiki/SemanticMediaWiki"
 	},
 	"require": {
-		"php": ">=7.4",
+		"php": ">=8.1",
 		"ext-mbstring": "*",
 		"composer/installers": "^2.2.0|^1.0.1",
 		"psr/log": "~1.0",
