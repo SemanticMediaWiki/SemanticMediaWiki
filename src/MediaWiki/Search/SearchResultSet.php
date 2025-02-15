@@ -177,12 +177,7 @@ class SearchResultSet extends \SearchResultSet {
 	 * @return string[]
 	 */
 	public function termMatches() {
-		$tokens = $this->getTokens()
-		if ( $tokens !== [] ) {
-			return $tokens;
-		}
-
-		return [];
+		return $this->getTokens();
 	}
 
 	private function getTokens() {
