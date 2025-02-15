@@ -158,13 +158,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 
 		$context = new RequestContext();
 		$context->setTitle( $this->title );
-
-		// Use of OutputPage::addParserOutputNoText was deprecated in MediaWiki 1.24
-		if ( method_exists( $context->getOutput(), 'addParserOutputMetadata' ) ) {
-			$context->getOutput()->addParserOutputMetadata( $parserOutput );
-		} else {
-			$context->getOutput()->addParserOutputNoText( $parserOutput );
-		}
+		$context->getOutput()->addParserOutputMetadata( $parserOutput );
 	}
 
 }
