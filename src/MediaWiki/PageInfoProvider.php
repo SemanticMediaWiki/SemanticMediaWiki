@@ -4,7 +4,6 @@ namespace SMW\MediaWiki;
 
 use IDBAccessObject;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use SMW\PageInfo;
