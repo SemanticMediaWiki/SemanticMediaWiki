@@ -117,15 +117,9 @@ class ValueTextsBuilder {
 			return $text;
 		}
 
-		if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
-			return Sanitizer::removeSomeTags(
-				$text, [ 'removeTags' => [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ] ]
-			);
-		} else {
-			return Sanitizer::removeHTMLtags(
-				$text, null, [], [], [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ]
-			);
-		}
+		return Sanitizer::removeSomeTags(
+			$text, [ 'removeTags' => [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ] ]
+		);
 	}
 
 	/**
