@@ -99,7 +99,7 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 		$page->setContext( $this->makeRequestContext(
 			$request,
 			new MockSuperUser,
-			$this->getTitle( $page )
+			$page->getPageTitle()
 		) );
 
 		$out = $page->getOutput();
@@ -193,14 +193,4 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 		return $context;
 	}
-
-	/**
-	 * Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
-	 *
-	 * @return Title
-	 */
-	private function getTitle( SpecialPage $page ) {
-		return method_exists( $page, 'getPageTitle' ) ? $page->getPageTitle() : $page->getTitle();
-	}
-
 }
