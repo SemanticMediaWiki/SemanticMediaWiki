@@ -2,22 +2,15 @@
 
 namespace SMW\MediaWiki\Content;
 
-use SMW\Schema\SchemaFactory;
-use SMW\Schema\Exception\SchemaTypeNotFoundException;
-use SMW\Exception\JSONParseException;
-use SMW\Schema\Schema;
-use SMW\ParserData;
-use SMW\Message;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Yaml\Exception\ParseException;
 use JsonContent;
+use ParserOptions;
+use SMW\Exception\JSONParseException;
+use SMW\Schema\SchemaFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 use Title;
 use User;
-use ParserOptions;
-use ParserOutput;
-use WikiPage;
-use Status;
 
 /**
  * The content model supports both JSON and YAML (as a superset of JSON), allowing
@@ -30,7 +23,7 @@ use Status;
  *
  * @see https://en.wikipedia.org/wiki/YAML#Comparison_with_JSON
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -53,12 +46,12 @@ class SchemaContent extends JsonContent {
 	private $parse;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isYaml = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isValid;
 
@@ -101,7 +94,6 @@ class SchemaContent extends JsonContent {
 	 * @return null|string
 	 */
 	public function toJson() {
-
 		if ( $this->isValid() ) {
 			return json_encode( $this->parse );
 		}
@@ -115,7 +107,6 @@ class SchemaContent extends JsonContent {
 	 * @param boolean
 	 */
 	public function isYaml() {
-
 		if ( $this->isValid() ) {
 			return $this->isYaml;
 		}
@@ -130,188 +121,11 @@ class SchemaContent extends JsonContent {
 	 * {@inheritDoc}
 	 */
 	public function isValid() {
-
 		if ( $this->isValid === null ) {
 			$this->decodeJSONContent();
 		}
 
 		return $this->isValid;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function fillParserOutput( Title $title, $revId, ParserOptions $options, $generateHtml, ParserOutput &$output ) {
-
-		if ( !$generateHtml || !$this->isValid() ) {
-			return;
-		}
-
-		$this->initServices();
-
-		$output->addModuleStyles(
-			$this->contentFormatter->getModuleStyles()
-		);
-
-		$output->addModules(
-			$this->contentFormatter->getModules()
-		);
-
-		$parserData = new ParserData( $title, $output );
-		$schema = null;
-
-		$this->contentFormatter->isYaml(
-			$this->isYaml
-		);
-
-		$this->setTitlePrefix( $title );
-
-		try {
-			$schema = $this->schemaFactory->newSchema(
-				$title->getDBKey(),
-				$this->toJson()
-			);
-		} catch ( SchemaTypeNotFoundException $e ) {
-
-			$this->contentFormatter->setUnknownType(
-				$e->getType()
-			);
-
-			$output->setText(
-				$this->contentFormatter->getText( $this->mText )
-			);
-
-			$parserData->addError(
-				[ [ 'smw-schema-error-type-unknown', $e->getType() ] ]
-			);
-
-			$parserData->copyToParserOutput();
-		}
-
-		if ( $schema === null ) {
-			return;
-		}
-
-		$output->setIndicator(
-			'mw-helplink',
-			$this->contentFormatter->getHelpLink( $schema )
-		);
-
-		$errors = $this->schemaFactory->newSchemaValidator()->validate(
-			$schema
-		);
-
-		foreach ( $errors as $error ) {
-			if ( isset( $error['property'] ) && isset( $error['message'] ) ) {
-
-				if ( $error['property'] === 'title_prefix' ) {
-					if ( isset( $error['enum'] ) ) {
-						$group = end( $error['enum'] );
-					} elseif ( isset( $error['const'] ) ) {
-						$group = $error['const'];
-					} else {
-						continue;
-					}
-
-					$error['message'] = Message::get( [ 'smw-schema-error-title-prefix', $group ] );
-				}
-
-				$parserData->addError(
-					[ [ 'smw-schema-error-violation', $error['property'], $error['message'] ] ]
-				);
-			} else {
-				$parserData->addError( (array)$error );
-			}
-		}
-
-		$this->contentFormatter->setType(
-			$this->schemaFactory->getType( $schema->get( 'type' ) )
-		);
-
-		$output->setText(
-			$this->contentFormatter->getText( $this->mText, $schema, $errors )
-		);
-
-		$parserData->copyToParserOutput();
-	}
-
-	/**
-	 * @see Content::prepareSave
-	 * @since 3.1
-	 *
-	 * {@inheritDoc}
-	 */
-	public function prepareSave( WikiPage $page, $flags, $parentRevId, User $user ) {
-
-		$this->initServices();
-		$title = $page->getTitle();
-
-		$this->setTitlePrefix( $title );
-
-		$errors = [];
-		$schema = null;
-
-		try {
-			$schema = $this->schemaFactory->newSchema(
-				$title->getDBKey(),
-				$this->toJson()
-			);
-		} catch ( SchemaTypeNotFoundException $e ) {
-			if ( !$this->isValid && $this->errorMsg !== '' ) {
-				$errors[] = [ 'smw-schema-error-json', $this->errorMsg ];
-			} elseif ( $e->getType() === '' || $e->getType() === null ) {
-				$errors[] = [ 'smw-schema-error-type-missing' ];
-			} else {
-				$errors[] = [ 'smw-schema-error-type-unknown', $e->getType() ];
-			}
-		}
-
-		if ( $schema !== null ) {
-			$errors = $this->schemaFactory->newSchemaValidator()->validate(
-				$schema
-			);
-
-			$schema_link = pathinfo(
-				$schema->info( Schema::SCHEMA_VALIDATION_FILE ),
-				PATHINFO_FILENAME
-			);
-		}
-
-		$status = Status::newGood();
-
-		if ( $errors !== [] && $schema === null ) {
-			array_unshift( $errors, [ 'smw-schema-error-input' ] );
-		} elseif ( $errors !== [] ) {
-			array_unshift( $errors, [ 'smw-schema-error-input-schema', $schema_link ] );
-		}
-
-		foreach ( $errors as $error ) {
-
-			if ( isset( $error['property'] ) && $error['property'] === 'title_prefix' ) {
-
-				if ( isset( $error['enum'] ) ) {
-					$group = end( $error['enum'] );
-				} elseif ( isset( $error['const'] ) ) {
-					$group = $error['const'];
-				} else {
-					continue;
-				}
-
-				$error = [ 'smw-schema-error-title-prefix', "$group:" ];
-			}
-
-			if ( isset( $error['message'] ) ) {
-				$status->fatal( 'smw-schema-error-violation', $error['property'], $error['message'] );
-			} elseif ( is_string( $error ) ) {
-				$status->fatal( $error );
-			} else {
-				$status->fatal( ...$error );
-			}
-		}
-
-		return $status;
 	}
 
 	/**
@@ -343,7 +157,7 @@ class SchemaContent extends JsonContent {
 	 * @param SchemaFactory $schemaFactory
 	 * @param SchemaContentFormatter|null $contentFormatter
 	 */
-	public function setServices( SchemaFactory $schemaFactory, SchemaContentFormatter $contentFormatter = null ) {
+	public function setServices( SchemaFactory $schemaFactory, ?SchemaContentFormatter $contentFormatter = null ) {
 		$this->schemaFactory = $schemaFactory;
 		$this->contentFormatter = $contentFormatter;
 	}
@@ -359,8 +173,7 @@ class SchemaContent extends JsonContent {
 		return str_replace( [ "\r\n", "\r" ], "\n", rtrim( $text ) );
 	}
 
-	private function initServices() {
-
+	public function initServices() {
 		if ( $this->schemaFactory === null ) {
 			$this->schemaFactory = new SchemaFactory();
 		}
@@ -372,8 +185,25 @@ class SchemaContent extends JsonContent {
 		}
 	}
 
-	private function decodeJSONContent() {
+	/**
+	 * Gets the content formatter.
+	 *
+	 * @return SchemaContentFormatter|null The content formatter instance or null if not set.
+	 */
+	public function getContentFormatter() {
+		return $this->contentFormatter;
+	}
 
+	/**
+	 * Gets the schema factory.
+	 *
+	 * @return SchemaFactory The schema factory instance.
+	 */
+	public function getSchemaFactory() {
+		return $this->schemaFactory;
+	}
+
+	private function decodeJSONContent() {
 		// Support either JSON or YAML, if the class is available! Do a quick
 		// check on `{ ... }` to decide whether it is a non-JSON string.
 		if (
@@ -412,8 +242,7 @@ class SchemaContent extends JsonContent {
 		}
 	}
 
-	private function setTitlePrefix( Title $title ) {
-
+	public function setTitlePrefix( Title $title ) {
 		if ( $this->parse === null ) {
 			$this->decodeJSONContent();
 		}
@@ -428,7 +257,7 @@ class SchemaContent extends JsonContent {
 		$title_prefix = '';
 
 		if ( strpos( $schemaName, ':' ) !== false ) {
-			list( $title_prefix, ) = explode( ':',  $schemaName );
+			[ $title_prefix, ] = explode( ':', $schemaName );
 		}
 
 		// Allow to use the schema validation against a possible
@@ -437,4 +266,7 @@ class SchemaContent extends JsonContent {
 		$this->parse->title_prefix = $title_prefix;
 	}
 
+	public function getErrorMsg() {
+		return $this->errorMsg;
+	}
 }

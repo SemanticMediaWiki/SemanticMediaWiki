@@ -6,7 +6,7 @@ use SMW\Localizer;
 use SMW\Query\PrintRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author Markus Krötzsch
@@ -18,7 +18,7 @@ class Serializer {
 	 * @since 2.5
 	 *
 	 * @param PrintRequest $printRequest
-	 * @param boolean $showparams that sets if the serialization should include
+	 * @param bool $showparams that sets if the serialization should include
 	 * the extra print request parameters
 	 *
 	 * @return string
@@ -55,7 +55,6 @@ class Serializer {
 	}
 
 	private static function doSerializeCat( $printRequest, $parameters ) {
-
 		$catlabel = Localizer::getInstance()->getNsText( NS_CATEGORY );
 		$result = '?' . $catlabel;
 
@@ -67,7 +66,6 @@ class Serializer {
 	}
 
 	private static function doSerializeCcat( $printRequest, $parameters ) {
-
 		$printname = $printRequest->getData()->getPrefixedText();
 		$result = '?' . $printname;
 
@@ -83,7 +81,6 @@ class Serializer {
 	}
 
 	private static function doSerializeProp( $printRequest, $parameters ) {
-
 		$printname = '';
 
 		$label = $printRequest->getLabel();
@@ -132,7 +129,6 @@ class Serializer {
 	}
 
 	private static function doSerializeThis( $printRequest, $parameters ) {
-
 		$result = '?';
 
 		// Has leading ?#

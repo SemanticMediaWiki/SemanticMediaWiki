@@ -8,15 +8,14 @@ use SMW\Elastic\QueryEngine\Condition;
  * @covers \SMW\Elastic\QueryEngine\Condition
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ConditionTest extends \PHPUnit_Framework_TestCase {
+class ConditionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Condition::class,
 			new Condition()
@@ -27,7 +26,6 @@ class ConditionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testResolveConditionParameters( $paramsters, $type, $expected ) {
-
 		$instance = new Condition( $paramsters );
 		$instance->type( $type );
 
@@ -41,7 +39,6 @@ class ConditionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeProvider
 	 */
 	public function testType( $type, $expected ) {
-
 		$instance = new Condition( [] );
 		$instance->type( $type );
 
@@ -52,7 +49,6 @@ class ConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConditionLogs() {
-
 		$cond = new Condition( [ 'foobar' ] );
 		$cond->log( 'foo_log' );
 
@@ -68,7 +64,6 @@ class ConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		yield [
 			'',
 			'',
@@ -119,7 +114,6 @@ class ConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function typeProvider() {
-
 		yield [
 			'must',
 			Condition::TYPE_MUST

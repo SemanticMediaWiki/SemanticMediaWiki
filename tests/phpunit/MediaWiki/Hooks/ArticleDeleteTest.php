@@ -11,18 +11,18 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Hooks\ArticleDelete
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
+class ArticleDeleteTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $jobFactory;
 	private $eventDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment(
@@ -48,13 +48,12 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -68,7 +67,6 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -79,7 +77,7 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateDispatcherJob' )
-			->will( $this->returnValue( $updateDispatcherJob ) );
+			->willReturn( $updateDispatcherJob );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -92,11 +90,11 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( [ new DIProperty( 'Foo' ) ] ) );
+			->willReturn( [ new DIProperty( 'Foo' ) ] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )

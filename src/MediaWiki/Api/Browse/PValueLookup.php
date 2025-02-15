@@ -2,18 +2,12 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DataTypeRegistry;
-use SMW\DataValueFactory;
-use SMW\RequestOptions;
 use SMW\DIProperty;
-use SMW\SQLStore\SQLStore;
+use SMW\RequestOptions;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDITime as DIime;
-use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -39,7 +33,7 @@ class PValueLookup extends Lookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @return string|integer
+	 * @return string|int
 	 */
 	public function getVersion() {
 		return __METHOD__ . self::VERSION;
@@ -53,7 +47,6 @@ class PValueLookup extends Lookup {
 	 * @return array
 	 */
 	public function lookup( array $parameters ) {
-
 		$limit = 20;
 		$offset = 0;
 

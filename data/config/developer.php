@@ -7,8 +7,8 @@
  * @since 3.2
  */
 
-error_reporting(E_STRICT|E_ALL);
-ini_set("display_errors", 1);
+error_reporting( E_STRICT | E_ALL );
+ini_set( "display_errors", 1 );
 
 return [
 
@@ -50,13 +50,13 @@ return [
 	 * @see $smwgJobQueueWatchlist
 	 */
 	'smwgJobQueueWatchlist' => [
-	    'smw.update',
-	    'smw.fulltextSearchTableUpdate',
-	    'smw.changePropagationUpdate',
-	    'smw.changePropagationClassUpdate',
-	    'smw.changePropagationDispatch',
-	    'smw.elasticIndexerRecovery',
-	    'smw.elasticFileIngest'
+		'smw.update',
+		'smw.fulltextSearchTableUpdate',
+		'smw.changePropagationUpdate',
+		'smw.changePropagationClassUpdate',
+		'smw.changePropagationDispatch',
+		'smw.elasticIndexerRecovery',
+		'smw.elasticFileIngest'
 	]
 
 ];

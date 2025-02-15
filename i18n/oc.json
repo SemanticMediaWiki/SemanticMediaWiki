@@ -77,6 +77,7 @@
 	"smw_exportrdf_submit": "Exportar",
 	"uriresolver": "Resolveire d'URI",
 	"properties": "Proprietats",
+	"smw-categories": "Categorias",
 	"smw_properties_docu": "Sus aqueste wiki, son utilizadas las proprietats seguentas.",
 	"smw_property_template": "$1 del tipe $2 ($3 {{PLURAL:$3|utilizacion|utilizacions}})",
 	"smw_propertylackspage": "Tota proprietat deuriá èsser descrita per una pagina !",

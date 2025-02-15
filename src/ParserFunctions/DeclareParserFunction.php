@@ -2,7 +2,6 @@
 
 namespace SMW\ParserFunctions;
 
-use Parser;
 use PPFrame;
 use SMW\DataValueFactory;
 use SMW\ParserData;
@@ -13,7 +12,7 @@ use SMWPropertyValue as PropertyValue;
  *
  * @see http://semantic-mediawiki.org/wiki/Help:Argument_declaration_in_templates
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.5.3
  *
  * @author Markus Krötzsch
@@ -47,7 +46,6 @@ class DeclareParserFunction {
 	 * @param array $args
 	 */
 	public function parse( PPFrame $frame, array $args ) {
-
 		// @todo Save as metadata
 		if ( !$frame->isTemplate() ) {
 			return '';
@@ -84,7 +82,6 @@ class DeclareParserFunction {
 	}
 
 	private function matchValueArgument( PropertyValue $propertyValue, $propertystring, $valuestring ) {
-
 		if ( $propertyValue->getPropertyTypeID() === '_wpg' ) {
 			$matches = [];
 			preg_match_all( '/\[\[([^\[\]]*)\]\]/u', $valuestring, $matches );
@@ -108,7 +105,6 @@ class DeclareParserFunction {
 	}
 
 	private function addDataValue( $property, $value ) {
-
 		$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 			$property,
 			$value,

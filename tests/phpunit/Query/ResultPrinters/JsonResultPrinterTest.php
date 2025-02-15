@@ -2,28 +2,27 @@
 
 namespace SMW\Tests\Query\ResultPrinters;
 
-use ReflectionClass;
 use SMW\Query\ResultPrinters\JsonResultPrinter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Query\ResultPrinters\JsonResultPrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
+class JsonResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $queryResult;
 	private $resultPrinterReflector;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
@@ -34,7 +33,6 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JsonResultPrinter::class,
 			new JsonResultPrinter( 'json' )
@@ -47,7 +45,6 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMimeType() {
-
 		$instance = new JsonResultPrinter( 'json' );
 
 		$this->assertEquals(
@@ -60,7 +57,6 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider filenameDataProvider
 	 */
 	public function testGetFileName( $filename, $expected ) {
-
 		$instance = new JsonResultPrinter( 'json' );
 
 		$this->resultPrinterReflector->addParameters(
@@ -75,7 +71,6 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetResultText() {
-
 		$res = [
 			'lala' => __METHOD__,
 			'lula' => 999388383838
@@ -85,11 +80,11 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'serializeToArray' )
-			->will( $this->returnValue( $res ) );
+			->willReturn( $res );
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'getCount' )
-			->will( $this->returnValue( count( $res ) ) );
+			->willReturn( count( $res ) );
 
 		$instance = new JsonResultPrinter( 'json' );
 
@@ -99,8 +94,8 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 			SMW_OUTPUT_FILE
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$results
 		);
 
@@ -111,13 +106,12 @@ class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function filenameDataProvider() {
-
 		$provider = [];
 
 		$provider[] = [ 'Lala', 'Lala.json' ];
 		$provider[] = [ 'Lala Lilu', 'Lala_Lilu.json' ];
-		$provider[] = [ 'Foo.jso' , 'Foo.jso.json'];
-		$provider[] = [ '' , 'result.json'];
+		$provider[] = [ 'Foo.jso', 'Foo.jso.json' ];
+		$provider[] = [ '', 'result.json' ];
 
 		return $provider;
 	}

@@ -9,19 +9,19 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Specials\Admin\Maintenance\DataRefreshJobTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;
 	private $outputFormatter;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -41,13 +41,12 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DataRefreshJobTaskHandler::class,
 			new DataRefreshJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter )
@@ -55,7 +54,6 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$methods = [
 			'setName',
 			'setMethod',
@@ -68,7 +66,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -83,20 +81,19 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoRefreshOn_Yes() {
-
 		$refreshJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\RefreshJob' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'smw.refresh' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw.refresh' )
+			->willReturn( true );
 
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'pop' )
-			->with( $this->equalTo( 'smw.refresh' ) )
-			->will( $this->returnValue( false ) );
+			->with( 'smw.refresh' )
+			->willReturn( false );
 
 		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
@@ -104,7 +101,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newByType' )
-			->will( $this->returnValue( $refreshJob ) );
+			->willReturn( $refreshJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -114,7 +111,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$webRequest->expects( $this->atLeastOnce() )
 			->method( 'getText' )
-			->will( $this->returnValue( 'yes' ) );
+			->willReturn( 'yes' );
 
 		$instance = new DataRefreshJobTaskHandler(
 			$this->htmlFormRenderer,
@@ -126,10 +123,9 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoRefreshOn_Stop() {
-
 		$this->jobQueue->expects( $this->once() )
 			->method( 'delete' )
-			->with( $this->equalTo( 'smw.refresh' ) );
+			->with( 'smw.refresh' );
 
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
@@ -137,7 +133,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$webRequest->expects( $this->atLeastOnce() )
 			->method( 'getText' )
-			->will( $this->returnValue( 'stop' ) );
+			->willReturn( 'stop' );
 
 		$instance = new DataRefreshJobTaskHandler(
 			$this->htmlFormRenderer,

@@ -8,22 +8,21 @@ use SMW\StoreFactory;
  * @covers \SMW\StoreFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
+class StoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		StoreFactory::clear();
 		parent::tearDown();
 	}
 
 	public function testGetDefaultStore() {
-
 		$instance = StoreFactory::getStore();
 
 		$this->assertInstanceOf(
@@ -45,7 +44,6 @@ class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDifferentStoreIdInstanceInvocation() {
-
 		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMWSQLStore3' ) );
 		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMWSparqlStore' ) );
 

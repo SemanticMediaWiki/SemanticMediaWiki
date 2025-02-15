@@ -11,12 +11,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\DataValues\ValueValidators\ConstraintSchemaValueValidator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
+class ConstraintSchemaValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -25,7 +25,7 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	private $schemafinder;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -53,14 +53,12 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
-
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConstraintSchemaValueValidator::class,
 			new ConstraintSchemaValueValidator( $this->constraintCheckRunner, $this->schemafinder )
@@ -68,7 +66,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasNoConstraintViolationOnNonRelatedValue() {
-
 		$instance = new ConstraintSchemaValueValidator(
 			$this->constraintCheckRunner,
 			$this->schemafinder
@@ -82,12 +79,11 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchEmptyConstraintSchemaList() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->schemafinder->expects( $this->once() )
 			->method( 'getConstraintSchema' )
-			->with( $this->equalTo( $property ) );
+			->with( $property );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty(
 			$property
@@ -106,7 +102,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunConstraintCheck() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty(
@@ -123,19 +118,19 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->schemafinder->expects( $this->once() )
 			->method( 'getConstraintSchema' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( $schemaList ) );
+			->with( $property )
+			->willReturn( $schemaList );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'load' );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'check' )
-			->with( $this->equalTo( $dataValue ) );
+			->with( $dataValue );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'hasViolation' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new ConstraintSchemaValueValidator(
 			$this->constraintCheckRunner,
@@ -150,7 +145,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunConstraintCheckTriggerDeferredConstraintCheckUpdateJob() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN );
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
@@ -168,23 +162,23 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->schemafinder->expects( $this->once() )
 			->method( 'getConstraintSchema' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( $schemaList ) );
+			->with( $property )
+			->willReturn( $schemaList );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'load' );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'check' )
-			->with( $this->equalTo( $dataValue ) );
+			->with( $dataValue );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'hasViolation' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->constraintCheckRunner->expects( $this->once() )
 			->method( 'hasDeferrableConstraint' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'push' )
@@ -203,7 +197,6 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkPushedJobInstance( array $jobs ) {
-
 		foreach ( $jobs as $job ) {
 			if ( is_a( $job, '\SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob' ) ) {
 				return true;

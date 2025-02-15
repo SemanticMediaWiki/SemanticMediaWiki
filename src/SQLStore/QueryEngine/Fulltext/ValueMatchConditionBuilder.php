@@ -9,7 +9,7 @@ use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -40,7 +40,7 @@ class ValueMatchConditionBuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnabled() {
 		return $this->searchTable->isEnabled();
@@ -60,7 +60,7 @@ class ValueMatchConditionBuilder {
 	 *
 	 * @param string $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasMinTokenLength( $value ) {
 		return $this->searchTable->hasMinTokenLength( $value );
@@ -71,7 +71,7 @@ class ValueMatchConditionBuilder {
 	 *
 	 * @param string $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExemptedProperty( DIProperty $property ) {
 		return $this->searchTable->isExemptedProperty( $property );
@@ -93,7 +93,7 @@ class ValueMatchConditionBuilder {
 	 *
 	 * @param ValueDescription $description
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canHaveMatchCondition( ValueDescription $description ) {
 		return false;
@@ -112,7 +112,6 @@ class ValueMatchConditionBuilder {
 	}
 
 	protected function getMatchableTextFromDescription( ValueDescription $description ) {
-
 		$matchableText = false;
 
 		if ( $description->getDataItem() instanceof DIBlob ) {

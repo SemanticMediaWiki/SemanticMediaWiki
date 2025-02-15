@@ -8,7 +8,7 @@ use SMW\ProcessingErrorMsgHandler;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -21,12 +21,10 @@ class ErrorWidget {
 	 * @return string
 	 */
 	public static function disabled() {
-		return Html::element(
-			'div',
-			[
-				'class' => 'smw-callout smw-callout-error'
-			],
-			Message::get( 'smw_iq_disabled', Message::TEXT, Message::USER_LANGUAGE )
+		return Html::errorBox(
+			Message::get( 'smw_iq_disabled', Message::TEXT, Message::USER_LANGUAGE ),
+			'',
+			'smw-error-disabled'
 		);
 	}
 
@@ -36,13 +34,9 @@ class ErrorWidget {
 	 * @return string
 	 */
 	public static function noResult() {
-		return Html::element(
-			'div',
-			[
-				'id'    => 'no-result',
-				'class' => 'smw-callout smw-callout-info'
-			],
-			Message::get( 'smw_result_noresults', Message::TEXT, Message::USER_LANGUAGE )
+		return Html::noticeBox(
+			Message::get( 'smw_result_noresults', Message::TEXT, Message::USER_LANGUAGE ),
+			'smw-notice-result-noresults'
 		);
 	}
 
@@ -61,12 +55,10 @@ class ErrorWidget {
 			Html::rawElement(
 				'noscript',
 				[],
-				Html::rawElement(
-					'div',
-					[
-						'class' => 'smw-callout smw-callout-error',
-					],
-					Message::get( 'smw-noscript', Message::PARSE, Message::USER_LANGUAGE )
+				Html::errorBox(
+					Message::get( 'smw-noscript', Message::PARSE, Message::USER_LANGUAGE ),
+					'',
+					'smw-error-noscript'
 				)
 			)
 		);
@@ -78,12 +70,10 @@ class ErrorWidget {
 	 * @return string
 	 */
 	public static function sessionFailure() {
-		return Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-callout smw-callout-error'
-			],
-			Message::get( 'sessionfailure', Message::TEXT, Message::USER_LANGUAGE )
+		return Html::errorBox(
+			Message::get( 'sessionfailure', Message::TEXT, Message::USER_LANGUAGE ),
+			'',
+			'smw-error-session-failure'
 		);
 	}
 
@@ -94,8 +84,7 @@ class ErrorWidget {
 	 *
 	 * @return string
 	 */
-	public static function queryError( Query $query = null ) {
-
+	public static function queryError( ?Query $query = null ) {
 		if ( $query === null || !is_array( $query->getErrors() ) || $query->getErrors() === [] ) {
 			return '';
 		}
@@ -118,17 +107,10 @@ class ErrorWidget {
 		if ( count( $errors ) > 1 ) {
 			$error = '<ul><li>' . implode( '</li><li>', $errors ) . '</li></ul>';
 		} else {
-			$error =  implode( ' ', $errors );
+			$error = implode( ' ', $errors );
 		}
 
-		return Html::rawElement(
-			'div',
-			[
-				'id'    => 'result-error',
-				'class' => 'smw-callout smw-callout-error'
-			],
-			$error
-		);
+		return Html::errorBox( $error, '', 'smw-error-result-error' );
 	}
 
 }

@@ -8,13 +8,12 @@ use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWDINumber as DINumber;
 use SMWDITime as DITime;
-use SMW\Exporter\Element\ExpLiteral;
 
 /**
  * This class only maps primitive types (string, boolean, integers ) mostly to
  * be encoded as literal and all other dataitems are handled separately.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -31,7 +30,6 @@ class XsdValueMapper {
 	 * @throws RuntimeException
 	 */
 	public static function map( DataItem $dataItem ) {
-
 		if ( $dataItem instanceof DIBoolean ) {
 			$val = self::mapBoolean( $dataItem );
 		} elseif ( $dataItem instanceof DINumber ) {
@@ -69,7 +67,6 @@ class XsdValueMapper {
 	}
 
 	private static function mapGregorianCalendarModelTime( DITime $dataItem ) {
-
 		if ( $dataItem->getYear() > 0 ) {
 			$xsdvalue = str_pad( $dataItem->getYear(), 4, "0", STR_PAD_LEFT );
 		} else {

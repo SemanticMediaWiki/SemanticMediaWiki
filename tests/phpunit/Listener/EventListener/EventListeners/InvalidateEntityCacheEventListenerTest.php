@@ -2,26 +2,26 @@
 
 namespace SMW\Tests\Listener\EventListener\EventListeners;
 
+use Onoi\EventDispatcher\DispatchContext;
 use SMW\DIWikiPage;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
-use Onoi\EventDispatcher\DispatchContext;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class InvalidateEntityCacheEventListenerTest extends \PHPUnit_Framework_TestCase {
+class InvalidateEntityCacheEventListenerTest extends \PHPUnit\Framework\TestCase {
 
 	private $entityCache;
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
@@ -31,12 +31,11 @@ class InvalidateEntityCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			InvalidateEntityCacheEventListener::class,
 			new InvalidateEntityCacheEventListener( $this->entityCache )
@@ -44,7 +43,6 @@ class InvalidateEntityCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testExecute_OnSubject() {
-
 		$context = DispatchContext::newFromArray(
 			[
 				'subject' => DIWikiPage::newFromText( __METHOD__ ),
@@ -67,7 +65,6 @@ class InvalidateEntityCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testExecute_OnTitle() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

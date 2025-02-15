@@ -1,13 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
-			"Saimawnkham"
+			"Saimawnkham",
+			"Sengwan365"
 		]
 	},
 	"smw_printername_category": "ပိူင်ထၢၼ်ႈ",
+	"smw-categories": "ပိူင်ထၢၼ်ႈ",
 	"browse": "ပိုတ်ႇႁႃ ဝီႇၶီႇ",
 	"smw-admin-maintenance-no-description": "ဢမ်ႇမီး ၶေႃႈသပ်းလႅင်း။",
 	"smw-property-reserved-category": "ပိူင်ထၢၼ်ႈ",
+	"smw-preparing": "တိုၵ့်ႁၢင်ႈႁႅၼ်း",
 	"smw-schema-type-description": "သႂ်ႇ ၶေႃႈသပ်းလႅင်း",
 	"smw-listingcontinuesabbrev": "သိုပ်ႇ"
 }

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWikiIntegrationTestCase;
 use SMW\Query\Parser as QueryParser;
 use SMW\Store;
 use SMW\Tests\Utils\Validators\QueryResultValidator;
@@ -11,14 +12,15 @@ use Title;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class QueryTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var Store
@@ -36,7 +38,7 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $numberValidator;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 
@@ -85,7 +87,6 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param QueryTestCaseInterpreter $queryTestCaseInterpreter
 	 */
 	public function processQueryCase( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
-
 		if ( !$queryTestCaseInterpreter->hasCondition() ) {
 			$this->markTestSkipped( 'Found no condition for ' . $queryTestCaseInterpreter->isAbout() );
 		}
@@ -178,7 +179,6 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param QueryTestCaseInterpreter $queryTestCaseInterpreter
 	 */
 	public function processConceptCase( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
-
 		if ( !$queryTestCaseInterpreter->hasCondition() ) {
 			$this->markTestSkipped( 'Found no condition for ' . $queryTestCaseInterpreter->isAbout() );
 		}
@@ -236,7 +236,6 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param QueryTestCaseInterpreter $queryTestCaseInterpreter
 	 */
 	public function processFormatCase( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
-
 		if ( $queryTestCaseInterpreter->fetchTextFromOutputSubject() === '' ) {
 			$this->markTestSkipped( 'No content found for ' . $queryTestCaseInterpreter->isAbout() );
 		}
@@ -244,7 +243,7 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		$textOutput = $queryTestCaseInterpreter->fetchTextFromOutputSubject();
 
 		// Strip HTML comments
-		$textOutput = preg_replace('/<!--(.*)-->/Uis', '', $textOutput );
+		$textOutput = preg_replace( '/<!--(.*)-->/Uis', '', $textOutput );
 
 		$this->stringValidator->assertThatStringContains(
 			$queryTestCaseInterpreter->getExpectedFormatOuputFor( 'to-contain' ),
@@ -254,7 +253,6 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function printDescriptionToOutput( $about, $description ) {
-
 		if ( !$this->debug ) {
 			return;
 		}
@@ -264,7 +262,6 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function printQueryResultToOutput( $queryResult ) {
-
 		if ( is_string( $queryResult ) ) {
 			return print_r( str_replace( [ "&#x0020;", "&#x003A;" ], [ " ", ":" ], $queryResult ) );
 		}

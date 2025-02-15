@@ -4,9 +4,9 @@ namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMWDataItem as DataItem;
 
@@ -20,7 +20,7 @@ use SMWDataItem as DataItem;
  * dataitems. The store recognizes this special behavior from the field type
  * 'p' that the handler reports for its only data field.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -86,7 +86,7 @@ class DIWikiPageHandler extends DataItemHandler {
 
 			// In-property lookup
 			'o_id,p_id',
-			//'o_id,p_id,s_sort',
+			// 'o_id,p_id,s_sort',
 
 			// SMWSQLStore3Readers::getPropertySubjects
 			// SELECT DISTINCT s_id FROM `smw_di_wikipage` WHERE (p_id='64' AND o_id='104') ORDER BY s_sort ASC
@@ -100,7 +100,6 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getIndexHint( $key ) {
-
 		// Store::getPropertySubjects has seen to choose the wrong index
 
 		// ELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
@@ -132,7 +131,6 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-
 		$oid = $this->store->getObjectIds()->getSMWPageID(
 			$dataItem->getDBkey(),
 			$dataItem->getNamespace(),
@@ -149,7 +147,6 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-
 		$oid = $this->store->getObjectIds()->makeSMWPageID(
 			$dataItem->getDBkey(),
 			$dataItem->getNamespace(),
@@ -184,7 +181,6 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-
 		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 5 ) {
 			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 		}
@@ -197,7 +193,7 @@ class DIWikiPageHandler extends DataItemHandler {
 
 			try {
 				$property = new DIProperty( $dbkeys[0] );
-			} catch( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				// Most likely an outdated, no longer existing predefined
 				// property, mark it as outdate
 				$dbkeys[2] = SMW_SQL3_SMWIW_OUTDATED;
@@ -207,7 +203,7 @@ class DIWikiPageHandler extends DataItemHandler {
 
 			$wikipage = $property->getCanonicalDiWikiPage( $dbkeys[4] );
 
-			if ( !is_null( $wikipage ) ) {
+			if ( $wikipage !== null ) {
 				return $wikipage;
 			}
 		}
@@ -216,7 +212,6 @@ class DIWikiPageHandler extends DataItemHandler {
 	}
 
 	private function newDiWikiPage( $dbkeys ) {
-
 		$diWikiPage = new DIWikiPage(
 			$dbkeys[0],
 			intval( $dbkeys[1] ),

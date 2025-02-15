@@ -9,20 +9,19 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\Lookup\SingleEntityQueryLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
+class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 	private $idTable;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -33,11 +32,10 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->idTable ) );
+			->willReturn( $this->idTable );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SingleEntityQueryLookup::class,
 			new SingleEntityQueryLookup( $this->store )
@@ -50,14 +48,13 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonValueDescriptionReturnsEmptyQueryResult() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ThingDescription' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$description->expects( $this->any() )
 			->method( 'getPrintrequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -65,7 +62,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new SingleEntityQueryLookup(
 			$this->store
@@ -78,10 +75,9 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResult_PageEntity() {
-
 		$this->idTable->expects( $this->any() )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -89,8 +85,8 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->with( $this->equalTo( $dataItem ) )
-			->will( $this->returnValue( $dataItem ) );
+			->with( $dataItem )
+			->willReturn( $dataItem );
 
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
@@ -98,11 +94,11 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$valueDescription->expects( $this->any() )
 			->method( 'getPrintrequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$valueDescription->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -110,11 +106,11 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $valueDescription ) );
+			->willReturn( $valueDescription );
 
 		$instance = new SingleEntityQueryLookup(
 			$this->store
@@ -133,7 +129,6 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResult_SubobjectEntity() {
-
 		$dataItem_base = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -144,17 +139,17 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->with( $this->equalTo( $dataItem ) )
-			->will( $this->returnValue( $dataItem ) );
+			->with( $dataItem )
+			->willReturn( $dataItem );
 
 		$dataItem->expects( $this->once() )
 			->method( 'asBase' )
-			->will( $this->returnValue( $dataItem_base ) );
+			->willReturn( $dataItem_base );
 
 		$this->idTable->expects( $this->any() )
 			->method( 'findAssociatedRev' )
-			->with( $this->equalTo( $dataItem_base ) )
-			->will( $this->returnValue( 1001 ) );
+			->with( $dataItem_base )
+			->willReturn( 1001 );
 
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
@@ -162,11 +157,11 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$valueDescription->expects( $this->any() )
 			->method( 'getPrintrequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$valueDescription->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -174,11 +169,11 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $valueDescription ) );
+			->willReturn( $valueDescription );
 
 		$instance = new SingleEntityQueryLookup(
 			$this->store
@@ -197,7 +192,6 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResult_LimitNull() {
-
 		$this->idTable->expects( $this->never() )
 			->method( 'findAssociatedRev' );
 
@@ -211,11 +205,11 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$valueDescription->expects( $this->any() )
 			->method( 'getPrintrequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$valueDescription->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -223,11 +217,11 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $valueDescription ) );
+			->willReturn( $valueDescription );
 
 		$instance = new SingleEntityQueryLookup(
 			$this->store

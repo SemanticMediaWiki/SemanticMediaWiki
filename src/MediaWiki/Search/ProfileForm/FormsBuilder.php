@@ -5,13 +5,12 @@ namespace SMW\MediaWiki\Search\ProfileForm;
 use Html;
 use RuntimeException;
 use SMW\Message;
-use Title;
 use WebRequest;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -44,27 +43,27 @@ class FormsBuilder {
 	private $defaultForm = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $formList = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $preselectNsList = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $hiddenNsList = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $termPrefixes = [];
 
@@ -82,7 +81,7 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getParameters() {
 		return $this->parameters;
@@ -91,7 +90,7 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $form
+	 * @param string $key
 	 *
 	 * @return string
 	 */
@@ -102,7 +101,7 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getTermPrefixes() {
 		return $this->termPrefixes;
@@ -111,7 +110,7 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getHiddenNsList() {
 		return $this->hiddenNsList;
@@ -120,10 +119,9 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPreselectNsList() {
-
 		$activeForm = $this->request->getVal( 'smw-form', $this->defaultForm );
 
 		if ( $activeForm === null ) {
@@ -145,7 +143,6 @@ class FormsBuilder {
 	 * @return string
 	 */
 	public function buildFormList() {
-
 		$list = [];
 		$name = '';
 		$value = '';
@@ -170,7 +167,7 @@ class FormsBuilder {
 				'type' => 'button',
 				'id' => 'smw-search-forms',
 				'class' => 'smw-selectmenu-button is-disabled',
-				'title' => Message::get( 'smw-search-profile-extended-section-form', Message::TEXT, Message::USER_LANGUAGE  ),
+				'title' => Message::get( 'smw-search-profile-extended-section-form', Message::TEXT, Message::USER_LANGUAGE ),
 				'name' => 'smw-form',
 				'value' => $value,
 				'data-list' => json_encode( $list ),
@@ -195,7 +192,6 @@ class FormsBuilder {
 	 * @return string
 	 */
 	public function buildForm( array $data ) {
-
 		if ( !isset( $data['forms'] ) ) {
 			throw new RuntimeException( "Missing forms definition" );
 		}
@@ -265,7 +261,6 @@ class FormsBuilder {
 	}
 
 	private function form_fields( $data, $activeForm, $name, $definition ) {
-
 		// Short form, URL query conform
 		$s = self::toLowerCase( $name );
 		$this->formList[$s] = [ 'name' => $name, 'selected' => $activeForm === $s ];
@@ -331,7 +326,6 @@ class FormsBuilder {
 	}
 
 	private function findDescription( $descriptions, $name, $isActiveForm ) {
-
 		if ( !isset( $descriptions[$name] ) ) {
 			return '';
 		}

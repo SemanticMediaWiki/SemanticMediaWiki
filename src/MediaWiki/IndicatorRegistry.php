@@ -2,16 +2,16 @@
 
 namespace SMW\MediaWiki;
 
-use Title;
 use OutputPage;
 use SMW\DIWikiPage;
 use SMW\Indicator\IndicatorProvider;
-use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionAware;
+use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminerAware;
+use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -24,17 +24,17 @@ class IndicatorRegistry {
 	private $indicatorProviders = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicators = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $modules = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $inlineStyles = [];
 
@@ -43,8 +43,7 @@ class IndicatorRegistry {
 	 *
 	 * @param IndicatorProvider|null $indicatorProvider
 	 */
-	public function addIndicatorProvider( IndicatorProvider $indicatorProvider = null ) {
-
+	public function addIndicatorProvider( ?IndicatorProvider $indicatorProvider = null ) {
 		if ( $indicatorProvider === null ) {
 			return;
 		}
@@ -59,10 +58,9 @@ class IndicatorRegistry {
 	 * @param PermissionExaminer $permissionExaminer
 	 * @param array $options
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndicator( Title $title, PermissionExaminer $permissionExaminer, array $options ) {
-
 		$subject = DIWikiPage::newFromTitle(
 			$title
 		);

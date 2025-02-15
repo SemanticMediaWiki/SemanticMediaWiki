@@ -6,7 +6,7 @@ use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -20,8 +20,7 @@ class Escaper {
 	 *
 	 * @return string
 	 */
-	static public function encodePage( DIWikiPage $diWikiPage ) {
-
+	public static function encodePage( DIWikiPage $diWikiPage ) {
 		$localName = '';
 
 		if ( $diWikiPage->getInterwiki() !== '' ) {
@@ -46,7 +45,7 @@ class Escaper {
 	 *
 	 * @return string
 	 */
-	static public function armorChars( $string ) {
+	public static function armorChars( $string ) {
 		return str_replace( [ '/' ], [ '-2F' ], $string );
 	}
 
@@ -58,8 +57,7 @@ class Escaper {
 	 *
 	 * @return string
 	 */
-	static public function encodeUri( $uri ) {
-
+	public static function encodeUri( $uri ) {
 		$uri = $GLOBALS['smwgExportResourcesAsIri'] ? $uri : wfUrlencode( $uri );
 
 		$uri = str_replace(
@@ -84,8 +82,7 @@ class Escaper {
 	 *
 	 * @return string
 	 */
-	static public function decodeUri( $uri ) {
-
+	public static function decodeUri( $uri ) {
 		$uri = str_replace(
 			[ '-2A', '-2C', '-3B', '-3C', '-3E', '-28', '-29', '-5B', '-5D', '-7B', '-7D', '-5C', '-24', '-5E', '-3A', '-22', '-23', '-26', '-27', '-2B', '-21', '-25', '-' ],
 			[ '*', ',', ';', '<', '>', '(', ')', '[', ']', '{', '}', '\\', '$', '^', ':', '"', '#', '&', "'", '+', '!', '%', '%' ],

@@ -10,7 +10,7 @@ use SMW\Message;
  * To support regular expressions in connection with the `Allows pattern`
  * property.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -40,7 +40,6 @@ class AllowsPatternValue extends StringValue {
 	 * @param string $value
 	 */
 	protected function parseUserValue( $value ) {
-
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}
@@ -70,7 +69,6 @@ class AllowsPatternValue extends StringValue {
 	 * @return string
 	 */
 	public function getShortWikiText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -99,7 +97,6 @@ class AllowsPatternValue extends StringValue {
 	 * @return string
 	 */
 	public function getShortHtmlText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}

@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"AidaBishkek",
 			"Bosogo",
 			"Growingup"
 		]
@@ -11,12 +12,17 @@
 	"smw_printername_template": "Калып",
 	"smw_printername_category": "Категория",
 	"validator-type-class-SMWParamSource": "текст",
+	"smw-categories": "Категориялар",
+	"smw-special-property-searchform-options": "Параметрлер",
 	"smw-special-wantedproperties-filter-label": "Чыпка:",
 	"smw_purge": "Жаңыртуу",
 	"types": "Түрлөр",
 	"smw_ask_queryhead": "Суроо",
+	"smw_ask_defaultformat": "демейки",
 	"smw-ask-delete": "[Өчүрүү]",
+	"smw-ask-options": "Параметрлер",
 	"smw-ask-result": "Натыйжа",
+	"smw-ask-format": "Формат",
 	"smw_sbv_value": "Чоңдук:",
 	"browse": "Wikiни кароо",
 	"smw_result_prev": "Мурунку",
@@ -26,9 +32,11 @@
 	"smw-ui-tooltip-title-quantity": "Сан",
 	"smw-ui-tooltip-title-info": "Маалымат",
 	"smw-ui-tooltip-title-warning": "Ката",
+	"smw-ui-tooltip-title-error": "Ката",
 	"smw-ui-tooltip-title-parameter": "Параметр",
 	"smw-ui-tooltip-title-event": "Иш-чара",
 	"smw-ui-tooltip-title-note": "Эскертме",
+	"smw-ui-tooltip-title-reference": "Булак",
 	"smw-admin-configutation-tab-namespaces": "Аталыш мейкиндиктери",
 	"smw-livepreview-loading": "Жүктөлүүдө...",
 	"smw-search-profile-extended-section-namespace": "Аталыш мейкиндиги",

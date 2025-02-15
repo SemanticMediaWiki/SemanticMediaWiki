@@ -2,8 +2,6 @@
 
 namespace SMW\Tests\Utils\Runners;
 
-use Job;
-use JobQueueGroup;
 use MediaWiki\MediaWikiServices;
 use SMW\Connection\ConnectionProvider;
 use SMW\Tests\TestEnvironment;
@@ -15,7 +13,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseConnectionProvider;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  */
 class JobQueueRunner {
@@ -36,7 +34,7 @@ class JobQueueRunner {
 	 * @param string|null $type
 	 * @param ConnectionProvider|null $connectionProvider
 	 */
-	public function __construct( $type = null, ConnectionProvider $connectionProvider = null ) {
+	public function __construct( $type = null, ?ConnectionProvider $connectionProvider = null ) {
 		$this->type = $type;
 		$this->connectionProvider = $connectionProvider;
 		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
@@ -76,7 +74,6 @@ class JobQueueRunner {
 	 * @since 1.9.2
 	 */
 	public function run() {
-
 		$conds = '';
 		$connection = $this->connectionProvider->getConnection();
 
@@ -107,7 +104,6 @@ class JobQueueRunner {
 	 * @since  2.0
 	 */
 	public function deleteAllJobs() {
-
 		$conditions = '*';
 		$connection = $this->connectionProvider->getConnection();
 
@@ -136,26 +132,14 @@ class JobQueueRunner {
 	 */
 	private function pop() {
 		$offset = 0;
-
-		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
-			// MW 1.37+
-			return MediaWikiServices::getInstance()->getJobQueueGroup()->pop();
-		} else {
-			return JobQueueGroup::singleton()->pop();
-		}
+		return MediaWikiServices::getInstance()->getJobQueueGroup()->pop();
 	}
 
 	/**
 	 * @see https://gerrit.wikimedia.org/r/#/c/162009/
 	 */
 	public function pop_type( $type ) {
-
-		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
-			// MW 1.37+
-			return MediaWikiServices::getInstance()->getJobQueueGroup()->get( $type )->pop();
-		} else {
-			return JobQueueGroup::singleton()->get( $type )->pop();
-		}
+		return MediaWikiServices::getInstance()->getJobQueueGroup()->get( $type )->pop();
 	}
 
 }

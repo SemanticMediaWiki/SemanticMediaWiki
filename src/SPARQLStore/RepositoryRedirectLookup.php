@@ -11,7 +11,7 @@ use SMWExpResource as ExpResource;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -55,14 +55,13 @@ class RepositoryRedirectLookup {
 	 * @since 1.6
 	 *
 	 * @param ExpNsResource $expNsResource string URI to check
-	 * @param boolean $existsthat is set to true if $expNsResource is in the
+	 * @param bool &$exists is set to true if $expNsResource is in the
 	 * store; always false for blank nodes; always true for subobjects
 	 *
 	 * @return ExpNsResource
 	 * @throws RuntimeException
 	 */
 	public function findRedirectTargetResource( ExpNsResource $expNsResource, &$exists ) {
-
 		$exists = true;
 
 		if ( $expNsResource->isBlankNode() || $this->isNonRedirectableResource( $expNsResource ) ) {
@@ -82,7 +81,7 @@ class RepositoryRedirectLookup {
 			return $expNsResource;
 		}
 
-		if ( is_array( $firstRow ) && count( $firstRow ) > 1 && !is_null( $firstRow[1] ) ) {
+		if ( is_array( $firstRow ) && count( $firstRow ) > 1 && $firstRow[1] !== null ) {
 			return $this->getResourceForTargetElement( $expNsResource, $firstRow[1] );
 		}
 
@@ -90,7 +89,6 @@ class RepositoryRedirectLookup {
 	}
 
 	private function doLookupResourceUriTargetFor( ExpNsResource $expNsResource ) {
-
 		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheById( self::POOLCACHE_ID );
 
 		if ( !$poolCache->contains( $expNsResource->getUri() ) ) {
@@ -112,7 +110,6 @@ class RepositoryRedirectLookup {
 	}
 
 	private function lookupResourceUriTargetFromDatabase( ExpNsResource $expNsResource ) {
-
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expNsResource );
 		$rediUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getInstance()->getSpecialPropertyResource( '_REDI' ) );
 		$skeyUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' ) );
@@ -128,7 +125,6 @@ class RepositoryRedirectLookup {
 	}
 
 	private function getResourceForTargetElement( ExpNsResource $expNsResource, $rediTargetElement ) {
-
 		if ( !$rediTargetElement instanceof ExpResource ) {
 			throw new RuntimeException( 'Expected a ExpResource instance' );
 		}

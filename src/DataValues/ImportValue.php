@@ -2,12 +2,12 @@
 
 namespace SMW\DataValues;
 
+use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\Message;
+use SMW\Services\ServicesFactory;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
-use SMW\MediaWiki\MediaWikiNsContentReader;
-use SMW\Services\ServicesFactory;
 
 /**
  * This datavalue implements datavalues used by special property '_IMPO' used
@@ -98,7 +98,7 @@ class ImportValue extends DataValue {
 			$this
 		);
 
-		list( $this->namespace, $this->term, $this->uri, $this->declarativeName, $this->termType ) = $importValueParser->parse(
+		[ $this->namespace, $this->term, $this->uri, $this->declarativeName, $this->termType ] = $importValueParser->parse(
 			$value
 		);
 
@@ -129,12 +129,11 @@ class ImportValue extends DataValue {
 	/**
 	 * @see SMWDataValue::loadDataItem
 	 *
-	 * @param DataItem $dataitem
+	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-
 		if ( !$dataItem instanceof DIBlob ) {
 			return false;
 		}
@@ -157,14 +156,14 @@ class ImportValue extends DataValue {
 		return true;
 	}
 
-	private function getDeclarativeName( string $namespace ) : string {
+	private function getDeclarativeName( string $namespace ): string {
 		if ( array_key_exists( $namespace, $this->declarativeNames ) ) {
 			return $this->declarativeNames[$namespace];
 		}
 
 		// @see ImportValueParser
 		$controlledVocabulary = $this->mediaWikiNsContentReader->read(
-			ImportValue::IMPORT_PREFIX . $namespace
+			self::IMPORT_PREFIX . $namespace
 		);
 
 		if ( $controlledVocabulary === '' ) {
@@ -180,7 +179,7 @@ class ImportValue extends DataValue {
 			return $this->declarativeNames[$namespace] = '';
 		}
 
-		list( $uri, $name ) = explode( '|', $fristLine, 2 );
+		[ $uri, $name ] = explode( '|', $fristLine, 2 );
 
 		return $this->declarativeNames[$namespace] = $name;
 	}
@@ -203,7 +202,6 @@ class ImportValue extends DataValue {
 	 * @see DataValue::getLongWikiText
 	 */
 	public function getLongWikiText( $linked = null ) {
-
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
@@ -215,7 +213,6 @@ class ImportValue extends DataValue {
 	 * @see DataValue::getLongHTMLText
 	 */
 	public function getLongHTMLText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}

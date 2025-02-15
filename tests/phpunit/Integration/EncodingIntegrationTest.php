@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
-use Title;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SidebarBeforeOutput
@@ -17,12 +17,12 @@ use SMW\Tests\PHPUnitCompat;
  * @group semantic-mediawiki-integration
  * @group mediawiki-databaseless
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
+class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -30,10 +30,9 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sidebarBeforeOutputDataProvider
 	 */
 	public function testSidebarBeforeOutputURLEncoding( $setup, $expected ) {
+		$sidebar = [];
 
-		$sidebar  = [];
-
-		foreach ( $setup['settings'] as $key => $value) {
+		foreach ( $setup['settings'] as $key => $value ) {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 		}
 
@@ -51,14 +50,13 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			$expected,
-			$sidebar['TOOLBOX'][0]['href']
+			$sidebar['TOOLBOX']['smwbrowselink']['href']
 		);
 
 		ApplicationFactory::clear();
 	}
 
 	public function sidebarBeforeOutputDataProvider() {
-
 		$specialName = str_replace( '%3A', ':',
 			\SMW\Encoder::encode( \SpecialPage::getTitleFor( 'Browse' )->getPrefixedText() )
 		);
@@ -68,13 +66,12 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013/11/05' ), "$specialName/:2013-2F11-2F05" ];
 		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013-06-30' ), "$specialName/:2013-2D06-2D30" ];
 		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013$06&30' ), "$specialName/:2013-2406-2630" ];
-		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013\Foo' ),   "$specialName/:2013-5CFoo" ];
+		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013\Foo' ), "$specialName/:2013-5CFoo" ];
 
 		return $provider;
 	}
 
 	private function newSidebarBeforeOutputSetup( $text ) {
-
 		$settings = [
 			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 			'smwgBrowseFeatures'           => SMW_BROWSE_TLINK
@@ -98,16 +95,16 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( Title::newFromText( $text, NS_MAIN ) ) );
+			->willReturn( Title::newFromText( $text, NS_MAIN ) );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'msg' )
-			->will( $this->returnValue( $message ) )
+			->willReturn( $message )
 			->with( 'smw_browselink' );
 
 		$skin->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $output ) );
+			->willReturn( $output );
 
 		return [ 'settings' => $settings, 'skin' => $skin ];
 	}

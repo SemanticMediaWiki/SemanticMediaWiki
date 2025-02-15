@@ -8,15 +8,14 @@ use SMW\Exception\PredefinedPropertyLabelMismatchException;
  * @covers \SMW\Exception\PredefinedPropertyLabelMismatchException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PredefinedPropertyLabelMismatchExceptionTest extends \PHPUnit_Framework_TestCase {
+class PredefinedPropertyLabelMismatchExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new PredefinedPropertyLabelMismatchException();
 
 		$this->assertInstanceof(

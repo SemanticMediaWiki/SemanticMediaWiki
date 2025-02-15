@@ -3,16 +3,16 @@
 namespace SMW\Elastic\Connection;
 
 use Elasticsearch\ClientBuilder;
-use SMW\Elastic\Exception\ClientBuilderNotFoundException;
-use SMW\Elastic\Exception\MissingEndpointConfigException;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Elastic\Config;
-use Psr\Log\LoggerAwareTrait;
+use SMW\Elastic\Exception\ClientBuilderNotFoundException;
+use SMW\Elastic\Exception\MissingEndpointConfigException;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -55,7 +55,6 @@ class ConnectionProvider implements IConnectionProvider {
 	 * @return Client
 	 */
 	public function getConnection() {
-
 		if ( $this->connection !== null ) {
 			return $this->connection;
 		}
@@ -67,7 +66,7 @@ class ConnectionProvider implements IConnectionProvider {
 			throw new MissingEndpointConfigException();
 		}
 
-		$endpoints = array_map( [$this, 'buildHostString'], $endpoints );
+		$endpoints = array_map( [ $this, 'buildHostString' ], $endpoints );
 
 		$params = [
 			'hosts' => $endpoints,
@@ -95,7 +94,7 @@ class ConnectionProvider implements IConnectionProvider {
 			$user = $authentication['user'] ?? $authentication[0];
 			$pass = $authentication['pass'] ?? $authentication[1];
 
-			$params['basicAuthentication'] = [$user, $pass];
+			$params['basicAuthentication'] = [ $user, $pass ];
 		}
 
 		if ( $this->hasAvailableClientBuilder() ) {
@@ -126,7 +125,6 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function newClient( $clientBuilder = null ) {
-
 		if ( $clientBuilder === null ) {
 			return new DummyClient();
 		}
@@ -142,7 +140,6 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function hasEndpoints( $endpoints ) {
-
 		if ( $this->config->isDefaultStore() === false ) {
 			return true;
 		}
@@ -151,7 +148,6 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function hasAvailableClientBuilder() {
-
 		if ( $this->config->isDefaultStore() === false ) {
 			return false;
 		}
@@ -175,7 +171,6 @@ class ConnectionProvider implements IConnectionProvider {
 	 * @return string
 	 */
 	private function buildHostString( $host ): string {
-
 		if ( is_string( $host ) ) {
 			return $host;
 		}

@@ -8,7 +8,7 @@ use SMW\SemanticData;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.0
  *
  * @author mwjames
@@ -23,7 +23,6 @@ class SemanticDataFactory {
 	 * @param Title|string $title
 	 */
 	public function setTitle( $title ) {
-
 		if ( is_string( $title ) ) {
 			$title = Title::newFromText( $title );
 		}
@@ -48,13 +47,12 @@ class SemanticDataFactory {
 	/**
 	 * @since  2.0
 	 *
-	 * @param string $title
+	 * @param string|null $title
 	 *
 	 * @return SemanticData
 	 * @throws RuntimeException
 	 */
 	public function newEmptySemanticData( $title = null ) {
-
 		if ( $title instanceof DIWikiPage ) {
 			$this->setSubject( $title );
 		} elseif ( $title !== null ) {

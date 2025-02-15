@@ -3,42 +3,41 @@
 namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\ParserFunctions\DeclareParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\DeclareParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class DeclareParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -53,7 +52,6 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider argumentProvider
 	 */
 	public function testParse( $args, $expected ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -65,20 +63,20 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$ppframe->expects( $this->any() )
 			->method( 'isTemplate' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$ppframe->expects( $this->any() )
 			->method( 'expand' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$ppframe->expects( $this->any() )
 			->method( 'getArgument' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new DeclareParserFunction( $parserData );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->parse( $ppframe, $args )
 		);
 
@@ -89,7 +87,6 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function argumentProvider() {
-
 		$provider[] = [
 			[ 'Has foo=Bar' ],
 			[

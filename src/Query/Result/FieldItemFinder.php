@@ -2,25 +2,23 @@
 
 namespace SMW\Query\Result;
 
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
+use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Parser\InTextAnnotationParser;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 
 /**
  * Returns the result content (DI objects) for a single PrintRequest, representing
  * as cell of the intersection between a subject row and a print column.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author Markus Krötzsch
@@ -55,12 +53,12 @@ class FieldItemFinder {
 	private $itemFetcher;
 
 	/**
-	 * @var boolean|array
+	 * @var bool|array
 	 */
 	private static $catCacheObj = false;
 
 	/**
-	 * @var boolean|array
+	 * @var bool|array
 	 */
 	private static $catCache = false;
 
@@ -68,9 +66,10 @@ class FieldItemFinder {
 	 * @since 2.5
 	 *
 	 * @param Store $store
-	 * @param PrintRequest $printRequest
+	 * @param ItemFetcher|null $itemFetcher
+	 * @param PrintRequest|null $printRequest
 	 */
-	public function __construct( Store $store, ItemFetcher $itemFetcher = null, PrintRequest $printRequest = null ) {
+	public function __construct( Store $store, ?ItemFetcher $itemFetcher = null, ?PrintRequest $printRequest = null ) {
 		$this->store = $store;
 		$this->printRequest = $printRequest;
 		$this->itemFetcher = $itemFetcher;
@@ -95,8 +94,7 @@ class FieldItemFinder {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( QueryToken $queryToken = null ) {
-
+	public function setQueryToken( ?QueryToken $queryToken = null ) {
 		if ( $queryToken === null ) {
 			return;
 		}
@@ -118,7 +116,6 @@ class FieldItemFinder {
 	 * @param DataItem[]|[]
 	 */
 	public function findFor( DataItem $dataItem ) {
-
 		$content = [];
 
 		if ( $this->printRequest === null ) {
@@ -190,7 +187,7 @@ class FieldItemFinder {
 	 * if the limit should be taken into account, which is not always desired
 	 * (especially if results are to be cached for future use).
 	 *
-	 * @param boolean $useLimit
+	 * @param bool $useLimit
 	 *
 	 * @return RequestOptions|null
 	 */
@@ -232,7 +229,6 @@ class FieldItemFinder {
 	}
 
 	private function getResultsForProperty( $dataItem ) {
-
 		$content = $this->fetchContent(
 			$dataItem
 		);
@@ -305,7 +301,6 @@ class FieldItemFinder {
 	}
 
 	private function fetchContent( DataItem $dataItem ) {
-
 		$dataValue = $this->printRequest->getData();
 		$dataItems = [ $dataItem ];
 

@@ -8,7 +8,7 @@ use SMWResultArray;
 /**
  * Class SimpleRowBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -25,7 +25,6 @@ class SimpleRowBuilder extends RowBuilder {
 	 * @return string
 	 */
 	public function getRowText( array $fields, $rownum = 0 ) {
-
 		$fieldTexts = $this->getFieldTexts( $fields );
 
 		$firstFieldText = array_shift( $fieldTexts );
@@ -38,15 +37,14 @@ class SimpleRowBuilder extends RowBuilder {
 
 			$otherFieldsText =
 				$this->get( 'other-fields-open' ) .
-				join( $this->get( 'propsep' ), $fieldTexts ) .
+				implode( $this->get( 'propsep' ), $fieldTexts ) .
 				$this->get( 'other-fields-close' );
 
 		} else {
 			$otherFieldsText = '';
 		}
 
-		return
-			$firstFieldText .
+		return $firstFieldText .
 			$otherFieldsText;
 	}
 
@@ -56,7 +54,6 @@ class SimpleRowBuilder extends RowBuilder {
 	 * @return array
 	 */
 	private function getFieldTexts( array $fields ) {
-
 		$columnNumber = 0;
 		$fieldTexts = [];
 
@@ -84,7 +81,6 @@ class SimpleRowBuilder extends RowBuilder {
 	 * @return string
 	 */
 	private function getFieldLabel( SMWResultArray $field ) {
-
 		$showHeaders = $this->get( 'show-headers' );
 
 		if ( $showHeaders === SMW_HEADERS_HIDE || $field->getPrintRequest()->getLabel() === '' ) {
@@ -93,12 +89,10 @@ class SimpleRowBuilder extends RowBuilder {
 
 		$linker = $showHeaders === SMW_HEADERS_PLAIN ? null : $this->getLinker();
 
-		return
-			$this->get( 'field-label-open-tag' ) .
+		return $this->get( 'field-label-open-tag' ) .
 			$field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, $linker ) .
 			$this->get( 'field-label-close-tag' ) .
 			$this->get( 'field-label-separator' );
-
 	}
 
 	/**

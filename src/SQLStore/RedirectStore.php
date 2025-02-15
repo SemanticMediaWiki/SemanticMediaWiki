@@ -4,15 +4,15 @@ namespace SMW\SQLStore;
 
 use Onoi\Cache\Cache;
 use SMW\InMemoryPoolCache;
+use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\Store;
 use SMW\Utils\Flag;
-use SMW\Listener\ChangeListener\ChangeRecord;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -37,7 +37,7 @@ class RedirectStore {
 	private $equalitySupport = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
@@ -47,7 +47,7 @@ class RedirectStore {
 	 * @param Store $store
 	 * @param Cache|null $cache
 	 */
-	public function __construct( Store $store, Cache $cache = null ) {
+	public function __construct( Store $store, ?Cache $cache = null ) {
 		$this->store = $store;
 		$this->cache = $cache;
 
@@ -59,7 +59,7 @@ class RedirectStore {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function setCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
@@ -68,7 +68,7 @@ class RedirectStore {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $equalitySupport
+	 * @param int $equalitySupport
 	 */
 	public function setEqualitySupport( int $equalitySupport ) {
 		$this->equalitySupport = new Flag( $equalitySupport );
@@ -93,9 +93,9 @@ class RedirectStore {
 	 * @since 3.0
 	 *
 	 * @param string $title DB key
-	 * @param integer $namespace
+	 * @param int $namespace
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRedirect( $title, $namespace ) {
 		return $this->findRedirect( $title, $namespace ) != 0;
@@ -107,12 +107,11 @@ class RedirectStore {
 	 * @since 2.1
 	 *
 	 * @param string $title DB key
-	 * @param integer $namespace
+	 * @param int $namespace
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function findRedirect( $title, $namespace ) {
-
 		$hash = $this->makeHash(
 			$title,
 			$namespace
@@ -132,12 +131,11 @@ class RedirectStore {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function addRedirect( $id, $title, $namespace ) {
-
 		$this->insert( $id, $title, $namespace );
 
 		$hash = $this->makeHash(
@@ -153,10 +151,9 @@ class RedirectStore {
 	 *
 	 * @param string $id
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function updateRedirect( $id, $title, $namespace ) {
-
 		$this->deleteRedirect( $title, $namespace );
 
 		if ( !$this->canCreateUpdateJobs() || $this->equalitySupport->is( SMW_EQ_NONE ) ) {
@@ -177,21 +174,24 @@ class RedirectStore {
 			}
 
 			$query = [
-				'from' => '',
-				'fields' => ''
+				'from' => [],
+				'fields' => [],
+				'condition' => [],
+				'options' => [],
+				'join' => [],
 			];
 
 			$query['condition'] = [ 'p_id' => $id ];
 
+			$query['from'] = [ $proptable->getName() ];
 			if ( $proptable->usesIdSubject() ) {
-				$query['from'] .= $connection->tableName( $proptable->getName() );
-				$query['from'] .= ' INNER JOIN ';
-				$query['from'] .= $connection->tableName( SQLStore::ID_TABLE ) . ' ON s_id=smw_id';
-				$query['fields'] = 'DISTINCT smw_title AS t,smw_namespace AS ns';
+				$query['from'][] = SQLStore::ID_TABLE;
+				$query['join'] = [ SQLStore::ID_TABLE => [ 'INNER JOIN', 's_id=smw_id' ] ];
+				$query['fields'] = [ 't' => 'smw_title', 'ns' => 'smw_namespace' ];
 			} else {
-				$query['from'] = $connection->tableName( $proptable->getName() );
-				$query['fields'] = 'DISTINCT s_title AS t,s_namespace AS ns';
+				$query['fields'] = [ 't' => 's_title', 'ns' => 's_namespace' ];
 			}
+			$query['options'] = [ 'DISTINCT' ];
 
 			if ( $namespace === SMW_NS_PROPERTY && !$proptable->isFixedPropertyTable() ) {
 				$this->findUpdateJobs( $connection, $query, $jobs );
@@ -207,7 +207,6 @@ class RedirectStore {
 				$this->findUpdateJobs( $connection, $query, $jobs );
 			}
 		}
-
 
 		// Generally, redirect updates can be lazily run during the online processing
 		$immediateMode = false;
@@ -235,10 +234,9 @@ class RedirectStore {
 	 * @since 2.1
 	 *
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function deleteRedirect( $title, $namespace ) {
-
 		$this->delete( $title, $namespace );
 
 		$hash = $this->makeHash(
@@ -250,7 +248,6 @@ class RedirectStore {
 	}
 
 	private function select( $title, $namespace ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -267,7 +264,6 @@ class RedirectStore {
 	}
 
 	private function insert( $id, $title, $namespace ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -303,7 +299,6 @@ class RedirectStore {
 	}
 
 	private function delete( $title, $namespace ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$connection->delete(
@@ -320,12 +315,13 @@ class RedirectStore {
 	}
 
 	private function findUpdateJobs( $connection, $query, &$jobs ) {
-
 		$res = $connection->select(
 			$query['from'],
 			$query['fields'],
 			$query['condition'],
-			__METHOD__
+			__METHOD__,
+			$query['options'],
+			$query['join']
 		);
 
 		foreach ( $res as $row ) {

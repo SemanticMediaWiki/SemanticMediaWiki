@@ -8,12 +8,12 @@ use RuntimeException;
  * Convenience mock builder for Iterator classes
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
+class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 
 	private $iteratorClass;
 	private $items = [];
@@ -63,7 +63,7 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @since  2.5
 	 *
-	 * @param integer $num
+	 * @param int $num
 	 *
 	 * @return IteratorMockBuilder
 	 */
@@ -75,11 +75,10 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @since  2.0
 	 *
-	 * @return PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit\Framework\MockObject\MockObject
 	 * @throws RuntimeException
 	 */
 	public function getMockForIterator() {
-
 		$instance = $this->getMockBuilder( $this->iteratorClass )
 			->disableOriginalConstructor()
 			->setMethods( $this->methods )
@@ -96,11 +95,11 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 
 			$instance->expects( $this->at( $this->counter++ ) )
 				->method( 'valid' )
-				->will( $this->returnValue( true ) );
+				->willReturn( true );
 
 			$instance->expects( $this->at( $this->counter++ ) )
 				->method( 'current' )
-				->will( $this->returnValue( $value ) );
+				->willReturn( $value );
 
 			$instance->expects( $this->at( $this->counter++ ) )
 				->method( 'next' );
@@ -108,7 +107,7 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->at( $this->counter++ ) )
 			->method( 'valid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		return $instance;
 	}
@@ -116,10 +115,9 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @since  2.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLastCounter() {
 		return $this->counter;
 	}
-
 }

@@ -5,13 +5,13 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -29,17 +29,17 @@ class SearchTable {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEnabled = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $minTokenSize = 3;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $indexableDataTypes = 0;
 
@@ -72,7 +72,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $indexableDataTypes
+	 * @param int $indexableDataTypes
 	 */
 	public function setIndexableDataTypes( $indexableDataTypes ) {
 		$this->indexableDataTypes = $indexableDataTypes;
@@ -90,12 +90,11 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExemptedPropertyById( $id ) {
-
 		$dataItem = $this->getDataItemById( $id );
 
 		if ( !$dataItem instanceof DIWikiPage || $dataItem->getDBKey() === '' ) {
@@ -106,7 +105,7 @@ class SearchTable {
 			$property = DIProperty::newFromUserLabel(
 				$dataItem->getDBKey()
 			);
-		} catch( PredefinedPropertyLabelMismatchException $e ) {
+		} catch ( PredefinedPropertyLabelMismatchException $e ) {
 			// The property no longer exists (or is no longer available) therefore
 			// exempt it.
 			return true;
@@ -120,10 +119,9 @@ class SearchTable {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExemptedProperty( DIProperty $property ) {
-
 		$dataItemTypeId = DataTypeRegistry::getInstance()->getDataItemId(
 			$property->findPropertyTypeID()
 		);
@@ -139,12 +137,11 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param DataItem $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValidByType( $type ) {
-
 		$indexType = SMW_FT_NONE;
 
 		if ( $type === DataItem::TYPE_BLOB ) {
@@ -165,7 +162,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $enabled
+	 * @param bool $enabled
 	 */
 	public function setEnabled( $enabled ) {
 		$this->isEnabled = (bool)$enabled;
@@ -174,7 +171,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnabled() {
 		return $this->isEnabled;
@@ -210,7 +207,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getMinTokenSize() {
 		return $this->minTokenSize;
@@ -219,7 +216,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @return integer $minTokenSize
+	 * @return int $minTokenSize
 	 */
 	public function setMinTokenSize( $minTokenSize ) {
 		$this->minTokenSize = (int)$minTokenSize;
@@ -230,7 +227,7 @@ class SearchTable {
 	 *
 	 * @param string $token
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasMinTokenLength( $token ) {
 		return mb_strlen( $token ) >= $this->minTokenSize;
@@ -241,7 +238,7 @@ class SearchTable {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getIdByProperty( DIProperty $property ) {
 		return $this->store->getObjectIds()->getId( $property->getCanonicalDiWikiPage() );
@@ -250,7 +247,7 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return DIWikiPage|null
 	 */

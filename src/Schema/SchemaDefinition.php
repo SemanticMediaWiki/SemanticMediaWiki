@@ -2,10 +2,8 @@
 
 namespace SMW\Schema;
 
-use JsonSerializable;
-
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -42,7 +40,6 @@ class SchemaDefinition extends Compartment implements Schema {
 	 * @return string|null
 	 */
 	public function info( $key, $default = null ) {
-
 		if ( isset( $this->info[$key] ) ) {
 			return $this->info[$key];
 		}
@@ -63,7 +60,7 @@ class SchemaDefinition extends Compartment implements Schema {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function toArray() {
 		return $this->data;

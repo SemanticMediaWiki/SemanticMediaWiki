@@ -16,7 +16,7 @@ use SMWDataItem as DataItem;
  * concept table to store extra cache data, but also due to the design of
  * concept DIs. This will be cleaned up at some point.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -109,7 +109,6 @@ class DIConceptHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-
 		if ( is_array( $dbkeys ) && count( $dbkeys ) == 5 ) {
 			return new DIConcept(
 				$dbkeys[0],

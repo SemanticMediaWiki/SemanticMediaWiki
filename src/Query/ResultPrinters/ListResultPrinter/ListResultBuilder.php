@@ -10,7 +10,7 @@ use SMWQueryResult;
 /**
  * Class ListResultBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -72,7 +72,7 @@ class ListResultBuilder {
 	private $templateRendererFactory;
 	private $listPlainByDefault;
 
-	public function __construct( SMWQueryResult $queryResult, Linker $linker, bool $listPlainByDefault = null ) {
+	public function __construct( SMWQueryResult $queryResult, Linker $linker, ?bool $listPlainByDefault = null ) {
 		$this->linker = $linker;
 		$this->queryResult = $queryResult;
 		$this->configuration = new ParameterDictionary();
@@ -83,21 +83,18 @@ class ListResultBuilder {
 	 * @return string
 	 */
 	public function getResultText() {
-
 		$this->prepareBuilt();
 
-		return
-			$this->getTemplateCall( 'introtemplate' ) .
+		return $this->getTemplateCall( 'introtemplate' ) .
 			$this->get( 'result-open-tag' ) .
 
-			join( $this->get( 'sep' ), $this->getRowTexts() ) .
+			implode( $this->get( 'sep' ), $this->getRowTexts() ) .
 
 			$this->get( 'result-close-tag' ) .
 			$this->getTemplateCall( 'outrotemplate' );
 	}
 
 	private function prepareBuilt() {
-
 		$format = $this->getEffectiveFormat();
 
 		$this->configuration->setDefault(
@@ -120,7 +117,6 @@ class ListResultBuilder {
 	 * @return string
 	 */
 	private function getEffectiveFormat() {
-
 		$format = $this->get( 'format' );
 
 		if ( in_array( $format, [ 'ol', 'ul', 'plainlist' ] ) ) {
@@ -178,7 +174,6 @@ class ListResultBuilder {
 	 * @return string
 	 */
 	private function getTemplateCall( $param ) {
-
 		$templatename = $this->get( $param );
 
 		if ( $templatename === '' ) {
@@ -189,14 +184,12 @@ class ListResultBuilder {
 		$templateRenderer->packFieldsForTemplate( $templatename );
 
 		return $templateRenderer->render();
-
 	}
 
 	/**
 	 * @return TemplateRendererFactory
 	 */
 	private function getTemplateRendererFactory() {
-
 		if ( $this->templateRendererFactory === null ) {
 			$this->templateRendererFactory = new TemplateRendererFactory( $this->getQueryResult() );
 			$this->templateRendererFactory->setUserparam( $this->get( 'userparam' ) );
@@ -216,7 +209,6 @@ class ListResultBuilder {
 	 * @return string[]
 	 */
 	private function getRowTexts() {
-
 		$queryResult = $this->getQueryResult();
 		$queryResult->reset();
 
@@ -241,7 +233,6 @@ class ListResultBuilder {
 	 * @return RowBuilder
 	 */
 	private function getRowBuilder() {
-
 		if ( $this->get( 'template' ) === '' ) {
 			$rowBuilder = new SimpleRowBuilder();
 			$rowBuilder->setLinker( $this->linker );
@@ -250,7 +241,7 @@ class ListResultBuilder {
 		}
 
 		$prefixParameterProcessor = new PrefixParameterProcessor( $this->queryResult->getQuery(),
-			$this->configuration->get('prefix') );
+			$this->configuration->get( 'prefix' ) );
 
 		$valueTextsBuilder = new ValueTextsBuilder( $prefixParameterProcessor );
 		$valueTextsBuilder->setLinker( $this->linker );

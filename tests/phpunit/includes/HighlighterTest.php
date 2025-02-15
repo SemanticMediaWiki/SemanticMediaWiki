@@ -3,18 +3,17 @@
 namespace SMW\Tests;
 
 use SMW\Highlighter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Highlighter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class HighlighterTest extends \PHPUnit_Framework_TestCase {
+class HighlighterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -22,7 +21,6 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getTypeDataProvider
 	 */
 	public function testCanConstruct( $type ) {
-
 		$this->assertInstanceOf(
 			'\SMW\Highlighter',
 			Highlighter::factory( $type )
@@ -35,8 +33,8 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 	public function testGetTypeId( $type, $expected ) {
 		$results = Highlighter::getTypeId( $type );
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$results
 		);
 
@@ -47,7 +45,6 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDecode() {
-
 		$this->assertEquals(
 			'&<> ',
 			Highlighter::decode( '&amp;&lt;&gt;&#160;<nowiki></nowiki>' )
@@ -58,7 +55,6 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getTypeDataProvider
 	 */
 	public function testGetHtml( $type ) {
-
 		$instance = Highlighter::factory( $type );
 
 		$instance->setContent( [
@@ -66,8 +62,8 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 		] );
 
 		// Check without caption/content set
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 
@@ -77,14 +73,13 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 		] );
 
 		// Check with caption/content set
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
 
 	public function testHasHighlighterClass() {
-
 		$instance = Highlighter::factory(
 			Highlighter::TYPE_WARNING
 		);
@@ -100,7 +95,7 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 
 	public function getTypeDataProvider() {
 		return [
-			[ '' , Highlighter::TYPE_NOTYPE ],
+			[ '', Highlighter::TYPE_NOTYPE ],
 			[ 'property', Highlighter::TYPE_PROPERTY ],
 			[ 'text', Highlighter::TYPE_TEXT ],
 			[ 'info', Highlighter::TYPE_INFO ],

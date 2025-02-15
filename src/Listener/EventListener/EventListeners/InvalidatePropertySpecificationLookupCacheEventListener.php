@@ -2,13 +2,13 @@
 
 namespace SMW\Listener\EventListener\EventListeners;
 
-use Onoi\EventDispatcher\EventListener;
 use Onoi\EventDispatcher\DispatchContext;
-use SMW\PropertySpecificationLookup;
+use Onoi\EventDispatcher\EventListener;
 use Psr\Log\LoggerAwareTrait;
+use SMW\PropertySpecificationLookup;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -38,8 +38,7 @@ class InvalidatePropertySpecificationLookupCacheEventListener implements EventLi
 	 *
 	 * {@inheritDoc}
 	 */
-	public function execute( DispatchContext $dispatchContext = null ) {
-
+	public function execute( ?DispatchContext $dispatchContext = null ) {
 		$subject = $dispatchContext->get( 'subject' );
 		$context = $dispatchContext->get( 'context' );
 

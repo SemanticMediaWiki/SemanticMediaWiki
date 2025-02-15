@@ -2,44 +2,43 @@
 
 namespace SMW\Tests\Integration\Schema;
 
-use SMW\Schema\SchemaList;
 use SMW\Schema\SchemaDefinition;
+use SMW\Schema\SchemaList;
 
 /**
  * @group semantic-mediawiki-integration
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class CompartmentIteratorSchemaListTest extends \PHPUnit_Framework_TestCase {
+class CompartmentIteratorSchemaListTest extends \PHPUnit\Framework\TestCase {
 
 	private $schemaList;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->schemaList = new SchemaList( [] );
 
 		$schema = new SchemaDefinition(
 			'fake_iterator_schema',
-			json_decode( file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
+			json_decode( file_get_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
 		);
 
 		$this->schemaList->add( $schema );
 
 		$schema = new SchemaDefinition(
 			'fake_iterator_schema_extra',
-			json_decode( file_get_contents( SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
+			json_decode( file_get_contents( \SMW_PHPUNIT_DIR . '/Fixtures/Schema/fake_iterator_schema.json' ), true )
 		);
 
 		$this->schemaList->add( $schema );
 	}
 
 	public function testCompartmentIterator_Find() {
-
 		$expected = [
 			'89ee4354fb0d6b0a6db5ac190299ded38f25a1e2' => [ 'bar_3_a', 'fake iterator schema' ],
 			'14d81e4f959865b6d4f9ac80c7b614f750823470' => [ 'bar_3_b', 'fake iterator schema' ],
@@ -72,7 +71,6 @@ class CompartmentIteratorSchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompartmentIterator_Find_Empty() {
-
 		$compartmentIterator = $this->schemaList->newCompartmentIteratorByKey(
 			'filter_2'
 		);

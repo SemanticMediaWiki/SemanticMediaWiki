@@ -3,26 +3,28 @@
 namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
-use SMW\Setup;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Utils\CliMsgFormatter;
+use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -45,7 +47,7 @@ class purgeEntityCache extends \Maintenance {
 	private $messageReporter;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $lastId = 0;
 
@@ -72,7 +74,6 @@ class purgeEntityCache extends \Maintenance {
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter->reportMessage( $message );
 		}
@@ -84,7 +85,6 @@ class purgeEntityCache extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( $this->canExecute() !== true ) {
 			exit;
 		}
@@ -136,7 +136,6 @@ class purgeEntityCache extends \Maintenance {
 	}
 
 	private function fetchRows() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$this->lastId = (int)$connection->selectField(
@@ -165,7 +164,6 @@ class purgeEntityCache extends \Maintenance {
 	}
 
 	private function canExecute() {
-
 		if ( !Setup::isEnabled() ) {
 			return $this->reportMessage(
 				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
@@ -183,7 +181,6 @@ class purgeEntityCache extends \Maintenance {
 	}
 
 	private function doPurge( \Iterator $rows ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -192,7 +189,7 @@ class purgeEntityCache extends \Maintenance {
 		$i = 0;
 
 		if ( $count == 0 ) {
-			return $this->reportMessage( "   ... no entities selected ...\n"  );
+			return $this->reportMessage( "   ... no entities selected ...\n" );
 		}
 
 		$this->reportMessage(
@@ -211,11 +208,10 @@ class purgeEntityCache extends \Maintenance {
 			$this->entityCache->invalidate( $this->newFromRow( $row ) );
 		}
 
-		$this->reportMessage( "\n"  );
+		$this->reportMessage( "\n" );
 	}
 
 	public function newFromRow( $row ) {
-
 		$namespace = (int)$row->smw_namespace;
 		$title = $row->smw_title;
 
@@ -223,7 +219,7 @@ class purgeEntityCache extends \Maintenance {
 			try {
 				$property = DIProperty::newFromUserLabel( $row->smw_title );
 				$title = str_replace( ' ', '_', $property->getLabel() );
-			} catch( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				//
 			}
 		}
@@ -240,5 +236,7 @@ class purgeEntityCache extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = purgeEntityCache::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

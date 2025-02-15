@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
-use SMW\Elastic\Indexer\FileIndexer;
 use SMW\DIWikiPage;
+use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Store;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
@@ -12,12 +12,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Elastic\Indexer\FileIndexer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class FileIndexerTest extends \PHPUnit_Framework_TestCase {
+class FileIndexerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -30,9 +30,8 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 	private $revisionGuard;
 	private Store $store;
 
-	protected function setUp() : void {
-
-		$this->testEnvironment =  new TestEnvironment();
+	protected function setUp(): void {
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
 			->disableOriginalConstructor()
@@ -66,13 +65,12 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FileIndexer::class,
 			new FileIndexer( $this->store, $this->entityCache, $this->fileHandler, $this->fileAttachment )
@@ -80,7 +78,6 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIndex() {
-
 		$url = 'http://example.org/Foo.txt';
 
 		$file = $this->getMockBuilder( '\File' )
@@ -89,11 +86,11 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 
 		$file->expects( $this->once() )
 			->method( 'getFullURL' )
-			->will( $this->returnValue( $url ) );
+			->willReturn( $url );
 
 		$this->revisionGuard->expects( $this->once() )
 			->method( 'getFile' )
-			->will( $this->returnValue( $file ) );
+			->willReturn( $file );
 
 		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
@@ -104,7 +101,7 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $client ) );
+			->willReturn( $client );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' )

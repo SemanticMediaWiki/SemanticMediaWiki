@@ -5,14 +5,14 @@ namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 use SMW\DIWikiPage;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ValueDescription;
+use SMW\Utils\CharExaminer;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWDInumber as DINumber;
 use SMWDITime as DITime;
-use SMW\Utils\CharExaminer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -46,7 +46,6 @@ class ValueDescriptionInterpreter {
 	 * @return Condition
 	 */
 	public function interpretDescription( ValueDescription $description, $isConjunction = false ) {
-
 		$dataItem = $description->getDataItem();
 		$comparator = $description->getComparator();
 
@@ -73,7 +72,7 @@ class ValueDescriptionInterpreter {
 			$field = "$pid.$field";
 		}
 
-		//$description->getHierarchyDepth(); ??
+		// $description->getHierarchyDepth(); ??
 		$hierarchyDepth = null;
 
 		$hierarchy = $this->conditionBuilder->findHierarchyMembers(
@@ -154,7 +153,6 @@ class ValueDescriptionInterpreter {
 	}
 
 	private function proximity_bool( $field, $value ) {
-
 		$params = [];
 		$hasWildcard = strpos( $value, '*' ) !== false;
 
@@ -166,7 +164,7 @@ class ValueDescriptionInterpreter {
 
 		// Wide proximity uses ~~ as identifier as in [[~~ ... ]] or
 		// [[in:fox jumps]]
-		if ( $value[0] === '~' ) {
+		if ( str_starts_with( $value ?? '', '~' ) ) {
 			$isWide = true;
 
 			// Remove the ~ to avoid a `QueryShardException[Failed to parse query ...`
@@ -183,7 +181,6 @@ class ValueDescriptionInterpreter {
 		// Wide or simple proximity? + wildcard?
 		// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#operator-min
 		if ( $hasWildcard && $isWide && !$isPhrase ) {
-
 			// cjk.best.effort.proximity.match
 			if ( $this->isCJK( $value ) ) {
 				// Increase match accuracy by relying on a `phrase` to define char
@@ -192,7 +189,6 @@ class ValueDescriptionInterpreter {
 			} else {
 				$params = $this->fieldMapper->query_string( $field, $value, [ 'minimum_should_match' => 1 ] );
 			}
-
 		} elseif ( $hasWildcard && !$isWide && !$isPhrase ) {
 			// [[~Foo/Bar/*]] (simple proximity) is only used on subject.sortkey
 			// which is why we want to use a `not_analyzed` field to exactly
@@ -220,7 +216,6 @@ class ValueDescriptionInterpreter {
 	 * worse off hence remove `*` in case of CJK usage.
 	 */
 	private function isCJK( &$text ) {
-
 		// Only use the examiner on the standard index_def since ICU provides
 		// better CJK and may handle `*` more sufficiently
 		if ( !$this->conditionBuilder->getOption( 'cjk.best.effort.proximity.match', false ) ) {
@@ -231,7 +226,7 @@ class ValueDescriptionInterpreter {
 			return false;
 		}
 
-		if ( $text[0] === '*' ) {
+		if ( str_starts_with( $text ?? '', '*' ) ) {
 			$text = mb_substr( $text, 1 );
 		}
 

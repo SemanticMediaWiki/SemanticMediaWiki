@@ -7,7 +7,7 @@ namespace SMW\Elastic\Connection;
  *
  * !! Only used during integration testing!!
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -21,7 +21,6 @@ class TestClient extends Client {
 	 * @param array $params
 	 */
 	public function bulk( array $params ) {
-
 		if ( $params === [] ) {
 			return;
 		}
@@ -41,7 +40,6 @@ class TestClient extends Client {
 	 * @return mixed
 	 */
 	public function count( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -62,7 +60,6 @@ class TestClient extends Client {
 	 * @return array
 	 */
 	public function search( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -81,7 +78,6 @@ class TestClient extends Client {
 	 * @return mixed
 	 */
 	public function explain( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}

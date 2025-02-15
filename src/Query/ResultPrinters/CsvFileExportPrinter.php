@@ -9,7 +9,7 @@ use SMWQueryResult as QueryResult;
 /**
  * CSV export support
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Nathan R. Yergler
@@ -107,7 +107,6 @@ class CsvFileExportPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
-
 		// Always return a link for when the output mode is not a file request,
 		// a file request is normally only initiated when resolving the query
 		// via Special:Ask
@@ -124,7 +123,6 @@ class CsvFileExportPrinter extends FileExportPrinter {
 	}
 
 	private function getCsvLink( QueryResult $res, $outputMode ) {
-
 		// Can be viewed as HTML if requested, no more parsing needed
 		$this->isHTML = $outputMode == SMW_OUTPUT_HTML;
 
@@ -137,7 +135,6 @@ class CsvFileExportPrinter extends FileExportPrinter {
 	}
 
 	private function getCsv( Csv $csv, $res ) {
-
 		$sep = str_replace( '_', ' ', $this->params['sep'] );
 		$vsep = str_replace( '_', ' ', $this->params['valuesep'] );
 

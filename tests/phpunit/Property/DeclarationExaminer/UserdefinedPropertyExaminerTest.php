@@ -3,22 +3,22 @@
 namespace SMW\Tests\Property\DeclarationExaminer;
 
 use ExtensionRegistry;
-use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
 use SMW\DataItemFactory;
+use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
 use SMW\SemanticData;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
+class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -28,7 +28,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	private $propertyTableInfoFetcher;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -43,11 +43,11 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$this->propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
@@ -59,16 +59,15 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $this->propertyTableInfoFetcher ) );
+			->willReturn( $this->propertyTableInfoFetcher );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			UserdefinedPropertyExaminer::class,
 			new UserdefinedPropertyExaminer( $this->declarationExaminer, $this->store )
@@ -76,10 +75,9 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsFixedTable() {
-
 		$this->propertyTableInfoFetcher->expects( $this->any() )
 			->method( 'isFixedTableProperty' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -102,17 +100,16 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider recordTypeProvider
 	 */
 	public function testRecordType_FieldList( $type, $name ) {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $dataItemFactory->newDIProperty( '_LIST' ) ) )
-			->will( $this->returnValue( [] ) );
+			->with( $dataItemFactory->newDIProperty( '_LIST' ) )
+			->willReturn( [] );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$instance = new UserdefinedPropertyExaminer(
 			$this->declarationExaminer,
@@ -133,7 +130,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIgnoreRecordType_MonolingualText() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$instance = new UserdefinedPropertyExaminer(
@@ -158,21 +154,20 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider recordTypeProvider
 	 */
 	public function testRecordType_MultipleFieldList( $type, $name ) {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $dataItemFactory->newDIProperty( '_LIST' ) ) )
-			->will( $this->returnValue(
+			->with( $dataItemFactory->newDIProperty( '_LIST' ) )
+			->willReturn(
 				[
 					$dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_PROPERTY ),
 					$dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_PROPERTY )
-				] ) );
+				] );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$instance = new UserdefinedPropertyExaminer(
 			$this->declarationExaminer,
@@ -193,7 +188,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExternalIdentifier_MissingFormatter() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$instance = new UserdefinedPropertyExaminer(
@@ -215,7 +209,6 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGeoType_MissingMapsExtension() {
-
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 			$this->markTestSkipped( 'Skipping test because the Maps extension is installed!' );
 		}
@@ -241,28 +234,27 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testImportTypeDeclarationMismatch() {
-
 		$dataItemFactory = new DataItemFactory();
 		$imported_type = $dataItemFactory->newDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_num' );
 		$user_type = $dataItemFactory->newDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_dat' );
 
 		$this->semanticData->expects( $this->at( 0 ) )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( $dataItemFactory->newDIProperty( '_IMPO' ) ) )
-			->will( $this->returnValue( true ) );
+			->with( $dataItemFactory->newDIProperty( '_IMPO' ) )
+			->willReturn( true );
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getOption' )
-			->with( $this->equalTo( \SMW\Property\Annotators\MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) )
-			->will( $this->returnValue( $imported_type ) );
+			->with( \SMW\Property\Annotators\MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE )
+			->willReturn( $imported_type );
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $user_type ] ) );
+			->willReturn( [ $user_type ] );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$instance = new UserdefinedPropertyExaminer(
 			$this->declarationExaminer,
@@ -280,14 +272,13 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckSubpropertyParentTypeMismatch_ForcedInheritance() {
-
 		$declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -315,7 +306,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$instance = new UserdefinedPropertyExaminer(
 			$declarationExaminer,
@@ -333,14 +324,13 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckSubpropertyParentTypeMismatch() {
-
 		$declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -358,7 +348,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$instance = new UserdefinedPropertyExaminer(
 			$declarationExaminer,

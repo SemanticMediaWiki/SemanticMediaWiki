@@ -12,7 +12,7 @@ use Title;
  * `...Sub` methods provide a convenient support layer to extend or remove values
  * from a cache entry.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -53,12 +53,11 @@ class EntityCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param string|array $key
+	 * @param array ...$params
 	 *
 	 * @return string
 	 */
 	public static function makeCacheKey( ...$params ) {
-
 		$namespace = self::CACHE_NAMESPACE;
 
 		if ( is_string( $params[0] ) && $params[0][0] === ':' ) {
@@ -79,7 +78,7 @@ class EntityCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param string|array $key
+	 * @param array ...$params
 	 *
 	 * @return string
 	 */
@@ -90,7 +89,7 @@ class EntityCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getStats() {
 		return $this->cache->getStats();
@@ -101,7 +100,7 @@ class EntityCache {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function contains( $key ) {
 		return $this->cache->contains( $key );
@@ -140,10 +139,9 @@ class EntityCache {
 	 * @since 3.1
 	 *
 	 * @param string $key
-	 * @param mixed $value
+	 * @param mixed $sub
 	 */
 	public function fetchSub( $key, $sub ) {
-
 		$res = $this->cache->fetch( $key );
 		$sub = md5( $sub );
 
@@ -160,10 +158,9 @@ class EntityCache {
 	 * @param string $key
 	 * @param string $sub
 	 * @param mixed $value
-	 * @param integer $ttl
+	 * @param int $ttl
 	 */
 	public function saveSub( $key, $sub, $value = null, $ttl = 0 ) {
-
 		$res = $this->cache->fetch( $key );
 		$sub = md5( $sub );
 
@@ -182,10 +179,9 @@ class EntityCache {
 	 * @param string $key
 	 * @param string $sub
 	 * @param mixed $value
-	 * @param integer $ttl
+	 * @param int $ttl
 	 */
 	public function overrideSub( $key, $sub, $value = null, $ttl = 0 ) {
-
 		$res = [
 			md5( $sub ) => $value
 		];
@@ -198,10 +194,9 @@ class EntityCache {
 	 *
 	 * @param string $key
 	 * @param string $sub
-	 * @param integer $ttl
+	 * @param int $ttl
 	 */
 	public function deleteSub( $key, $sub, $ttl = 0 ) {
-
 		$res = $this->cache->fetch( $key );
 		$sub = md5( $sub );
 
@@ -223,7 +218,6 @@ class EntityCache {
 	 * @param DIWikiPage|Title $subject
 	 */
 	public function associate( $subject, $key ) {
-
 		if ( $subject === null ) {
 			return;
 		}
@@ -262,10 +256,9 @@ class EntityCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage|Title $subject
+	 * @param DIWikiPage|Title|null $subject
 	 */
 	public function invalidate( $subject = null ) {
-
 		if ( $subject === null ) {
 			return;
 		}

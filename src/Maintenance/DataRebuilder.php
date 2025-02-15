@@ -6,14 +6,14 @@ use Exception;
 use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\TitleFactory;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
-use SMW\SQLStore\Rebuilder\Rebuilder;
-use SMW\Utils\CliMsgFormatter;
+use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 use Title;
 
 /**
@@ -22,7 +22,7 @@ use Title;
  *
  * @note This is an internal class and should not be used outside of smw-core
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
@@ -73,12 +73,12 @@ class DataRebuilder {
 	private $cliMsgFormatter;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $rebuildCount = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $exceptionCount = 0;
 
@@ -172,10 +172,9 @@ class DataRebuilder {
 	/**
 	 * @since 1.9.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function rebuild() {
-
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Notice' )
 		);
@@ -247,7 +246,6 @@ class DataRebuilder {
 	}
 
 	private function rebuildFromSelection( $params = [] ) {
-
 		if ( $params !== [] ) {
 			foreach ( $params as $key => $value ) {
 				$this->options->set( $key, $value );
@@ -290,7 +288,6 @@ class DataRebuilder {
 	}
 
 	private function rebuildAll() {
-
 		$this->entityRebuildDispatcher = $this->store->refreshData(
 			$this->start,
 			1
@@ -373,7 +370,7 @@ class DataRebuilder {
 		$current_id = 0;
 		$max = ( $this->end ? "$this->end" : $maxId );
 
-		while (( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 )) {
+		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
 			if ( $this->autoRecovery !== null ) {
 				$this->autoRecovery->set( self::AUTO_RECOVERY_ID, (int)$id );
@@ -463,7 +460,6 @@ class DataRebuilder {
 	}
 
 	private function doUpdateById( &$id ) {
-
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
 			$this->entityRebuildDispatcher->rebuild( $id );
 		} else {
@@ -487,7 +483,6 @@ class DataRebuilder {
 	}
 
 	private function getHumanReadableTextFrom( $id, array $entities ) {
-
 		if ( !$this->options->has( 'v' ) ) {
 			return [ '', '' ];
 		}
@@ -510,7 +505,6 @@ class DataRebuilder {
 	}
 
 	private function performFullDelete() {
-
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Delete data' )
 		);
@@ -587,7 +581,6 @@ class DataRebuilder {
 	}
 
 	private function runOutdatedDisposer() {
-
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Disposal (outdated)', 3, '-', true ) . "\n"
 		);
@@ -605,7 +598,6 @@ class DataRebuilder {
 	}
 
 	private function is_writable( $startIdFile ) {
-
 		if ( !is_writable( file_exists( $startIdFile ) ? $startIdFile : dirname( $startIdFile ) ) ) {
 			die( "Cannot use a startidfile that we can't write to.\n" );
 		}

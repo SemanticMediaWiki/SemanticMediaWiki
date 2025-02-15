@@ -11,12 +11,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\Lookup\UnusedPropertyListLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
  */
-class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
+class UnusedPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -24,8 +24,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	private $propertyStatisticsStore;
 	private $requestOptions;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +39,6 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\Lookup\UnusedPropertyListLookup',
 			new UnusedPropertyListLookup( $this->store, $this->propertyStatisticsStore, null )
@@ -48,15 +46,14 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListLookupInterfaceMethodAccess() {
-
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
 			$this->propertyStatisticsStore,
 			$this->requestOptions
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTimestamp()
 		);
 
@@ -71,7 +68,6 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupIdentifierChangedByRequestOptions() {
-
 		$requestOptions = new RequestOptions();
 
 		$instance = new UnusedPropertyListLookup(
@@ -97,7 +93,6 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryTofetchListForMissingOptionsThrowsException() {
-
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
 			$this->propertyStatisticsStore
@@ -108,7 +103,6 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForValidProperty() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -122,15 +116,15 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
@@ -140,8 +134,8 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 
@@ -156,7 +150,6 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForInvalidProperty() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -177,15 +170,15 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->equalTo( [ 'ORDER BY' => 'smw_sort', 'LIMIT' => 1001, 'OFFSET' => 0 ] ),
 				$this->anything() )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
 			->disableOriginalConstructor()
@@ -202,8 +195,8 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 

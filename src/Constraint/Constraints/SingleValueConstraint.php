@@ -2,16 +2,15 @@
 
 namespace SMW\Constraint\Constraints;
 
+use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
 use SMW\Message;
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
 use SMW\SemanticData;
-use RuntimeException;
+use SMWDataValue as DataValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -24,7 +23,7 @@ class SingleValueConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'single_value_constraint';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 
@@ -52,7 +51,6 @@ class SingleValueConstraint implements Constraint {
 	 * {@inheritDoc}
 	 */
 	public function checkConstraint( array $constraint, $dataValue ) {
-
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -67,7 +65,6 @@ class SingleValueConstraint implements Constraint {
 	}
 
 	private function check( $single_value, $dataValue ) {
-
 		if ( $single_value === false ) {
 			return;
 		}
@@ -86,7 +83,6 @@ class SingleValueConstraint implements Constraint {
 	}
 
 	private function reportError( $dataValue, $property ) {
-
 		$this->hasViolation = true;
 
 		$error = [

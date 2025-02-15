@@ -14,7 +14,7 @@ use SMWExpData as ExpData;
 use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -31,7 +31,6 @@ class SerializerFactory {
 	 * @return Serializer
 	 */
 	public function getSerializerFor( $object ) {
-
 		$serializer = null;
 
 		if ( $object instanceof SemanticData ) {
@@ -57,7 +56,6 @@ class SerializerFactory {
 	 * @return Deserializer
 	 */
 	public function getDeserializerFor( array $serialization ) {
-
 		$deserializer = null;
 
 		if ( isset( $serialization['serializer'] ) ) {

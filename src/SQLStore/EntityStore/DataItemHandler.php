@@ -8,7 +8,7 @@ use SMWDataItem as DataItem;
 /**
  * Classes extending this represent all store layout that is known about a certain dataitem
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -26,7 +26,7 @@ abstract class DataItemHandler {
 	protected $store;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $fieldTypeFeatures = false;
 
@@ -47,7 +47,7 @@ abstract class DataItemHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $fieldTypeFeatures
+	 * @param int $fieldTypeFeatures
 	 */
 	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
 		$this->fieldTypeFeatures = $fieldTypeFeatures;
@@ -56,9 +56,9 @@ abstract class DataItemHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeature( $feature ) {
 		return ( (int)$this->fieldTypeFeatures & $feature ) != 0;
@@ -70,7 +70,6 @@ abstract class DataItemHandler {
 	 * @param boolean
 	 */
 	public function isDbType( $dbType ) {
-
 		if ( $this->dbType === null ) {
 			$this->dbType = $this->store->getConnection( 'mw.db' )->getType();
 		}

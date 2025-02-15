@@ -8,18 +8,17 @@ use SMW\SQLStore\TableBuilder\FieldType;
  * @covers \SMW\SQLStore\TableBuilder\FieldType
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class FieldTypeTest extends \PHPUnit_Framework_TestCase {
+class FieldTypeTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider fieldTypeProvider
 	 */
 	public function testMapType( $fieldType, $fieldTypes, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			FieldType::mapType( $fieldType, $fieldTypes )
@@ -27,7 +26,6 @@ class FieldTypeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function fieldTypeProvider() {
-
 		$fieldTypes = [
 			'double' => 'DOUBLE'
 		];

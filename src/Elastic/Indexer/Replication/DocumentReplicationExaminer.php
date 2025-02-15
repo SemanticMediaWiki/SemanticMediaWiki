@@ -2,20 +2,12 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
-use Onoi\Cache\Cache;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\MediaWiki\Api\Tasks\Task;
-use SMW\Message;
-use SMW\EntityCache;
-use Html;
-use SMW\Utils\TemplateEngine;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use Title;
+use SMW\DIWikiPage;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -39,7 +31,7 @@ class DocumentReplicationExaminer {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $replicationStatusResponse = [];
 
@@ -64,8 +56,7 @@ class DocumentReplicationExaminer {
 	 *
 	 * @return ReplicationError|null
 	 */
-	public function check( DIWikiPage $subject, array $params = [] ) : ?ReplicationError {
-
+	public function check( DIWikiPage $subject, array $params = [] ): ?ReplicationError {
 		$id = $this->store->getObjectIds()->getSMWPageID(
 			$subject->getDBKey(),
 			$subject->getNamespace(),
@@ -100,7 +91,6 @@ class DocumentReplicationExaminer {
 	}
 
 	private function findError( $subject, $params, $dataItems, $id ) {
-
 		$replicationError = $this->hasMissingModificationDate( $dataItems, $id );
 
 		if ( $replicationError instanceof ReplicationError ) {
@@ -133,7 +123,6 @@ class DocumentReplicationExaminer {
 	}
 
 	private function isMissingDocument( $params, $id ) {
-
 		if ( !isset( $params[self::CHECK_DOCUMENT_EXISTS] ) || $params[self::CHECK_DOCUMENT_EXISTS] === false ) {
 			return false;
 		}
@@ -148,7 +137,6 @@ class DocumentReplicationExaminer {
 	}
 
 	private function runCheck( $method, $id ) {
-
 		try {
 			$replicationStatusResponse = $this->replicationStatus->get( $method, $id );
 		} catch ( \Elasticsearch\Common\Exceptions\BadRequest400Exception $e ) {
@@ -161,7 +149,6 @@ class DocumentReplicationExaminer {
 	}
 
 	private function hasMissingModificationDate( $dataItems, $id ) {
-
 		if ( $this->replicationStatusResponse['modification_date'] !== false && $dataItems !== [] ) {
 			return false;
 		}
@@ -170,7 +157,6 @@ class DocumentReplicationExaminer {
 	}
 
 	private function hasModificationDateDiff( $dataItems, $id ) {
-
 		$dataItem = end( $dataItems );
 
 		if ( $dataItem->equals( $this->replicationStatusResponse['modification_date'] ) ) {
@@ -187,7 +173,6 @@ class DocumentReplicationExaminer {
 	}
 
 	private function hasAssociatedRevisionDiff( $id ) {
-
 		$associatedRev = $this->store->getObjectIds()->findAssociatedRev(
 			$id
 		);
@@ -206,7 +191,6 @@ class DocumentReplicationExaminer {
 	}
 
 	private function hasMissingFileAttachment( $params, $subject ) {
-
 		if ( !isset( $params[self::CHECK_MISSING_FILE_ATTACHMENT] ) || $params[self::CHECK_MISSING_FILE_ATTACHMENT] === false ) {
 			return false;
 		}

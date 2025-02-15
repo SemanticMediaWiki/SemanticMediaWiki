@@ -19,20 +19,21 @@ use SMWExporter as Exporter;
  *
  * @group SMW
  * @group SMWExtension
+ * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
+class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $dataValueFactory;
 	private $exportDataValidator;
 	private $fixturesProvider;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -43,7 +44,6 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExportRedirect() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$redirectProperty = new DIProperty( '_REDI' );
@@ -63,7 +63,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource(  'owl', 'sameAs' ) )
+			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'owl', 'sameAs' ) )
 		);
 
 		$expectedResourceElement = new ExpNsResource(
@@ -81,7 +81,6 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExportPageWithNumericProperty() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$property = new DIProperty( '123' );
@@ -125,7 +124,6 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExportPageWithNonNumericProperty() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$property = new DIProperty( 'A123' );
@@ -169,7 +167,6 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExportSubproperty() {
-
 		$semanticData = $this->semanticDataFactory
 			->setSubject( new DIWikiPage( 'SomeSubproperty', SMW_NS_PROPERTY ) )
 			->newEmptySemanticData();
@@ -200,7 +197,6 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExportCategory() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$semanticData->addDataValue(
@@ -229,7 +225,6 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExportSubcategory() {
-
 		$semanticData = $this->semanticDataFactory
 			->setSubject( new DIWikiPage( 'SomeSubcategory', NS_CATEGORY ) )
 			->newEmptySemanticData();
@@ -260,7 +255,6 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExportSubobject() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$subobject = new Subobject( $semanticData->getSubject()->getTitle() );
@@ -309,7 +303,6 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExportSubSemanticData() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$factsheet = $this->fixturesProvider->getFactsheet( 'berlin' );

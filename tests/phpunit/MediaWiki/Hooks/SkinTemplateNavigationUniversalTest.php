@@ -8,15 +8,14 @@ use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
  * @covers \SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class SkinTemplateNavigationUniversalTest extends \PHPUnit_Framework_TestCase {
+class SkinTemplateNavigationUniversalTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -30,7 +29,6 @@ class SkinTemplateNavigationUniversalTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -45,7 +43,7 @@ class SkinTemplateNavigationUniversalTest extends \PHPUnit_Framework_TestCase {
 
 		$user->expects( $this->atLeastOnce() )
 			->method( 'isAllowed' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$output = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -57,19 +55,19 @@ class SkinTemplateNavigationUniversalTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $output ) );
+			->willReturn( $output );
 
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'msg' )
-			->will( $this->returnValue( $message ) );
+			->willReturn( $message );
 
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$links = [];
 

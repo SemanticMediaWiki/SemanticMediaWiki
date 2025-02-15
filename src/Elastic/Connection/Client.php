@@ -7,16 +7,16 @@ use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Exception;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use SMW\Elastic\Config;
 use SMW\Elastic\Exception\InvalidJSONException;
 use SMW\Elastic\Exception\ReplicationException;
-use SMW\Elastic\Config;
 use SMW\Options;
 use SMW\Site;
 
 /**
  * Reduced interface to the Elasticsearch client class.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -42,7 +42,7 @@ class Client {
 	protected $client;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $ping;
 
@@ -67,7 +67,7 @@ class Client {
 	private $distribution;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $hasIndex = [];
 
@@ -78,7 +78,7 @@ class Client {
 	 * @param LockManager $lockManager
 	 * @param Options|null $options
 	 */
-	public function __construct( ElasticClient $client, LockManager $lockManager, Config $options = null ) {
+	public function __construct( ElasticClient $client, LockManager $lockManager, ?Config $options = null ) {
 		$this->client = $client;
 		$this->lockManager = $lockManager;
 		$this->options = $options;
@@ -154,10 +154,9 @@ class Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getIndexDefFileModificationTimeByType( $type ) {
-
 		static $filemtime = [];
 
 		if ( !isset( $filemtime[$type] ) ) {
@@ -170,10 +169,9 @@ class Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getVersion() {
-
 		$info = $this->info();
 
 		if (
@@ -205,7 +203,6 @@ class Client {
 	 * @param array
 	 */
 	public function info(): array {
-
 		if ( !$this->ping() ) {
 			return [];
 		}
@@ -220,7 +217,6 @@ class Client {
 	 * @param array $params
 	 */
 	public function stats( string $type = 'indices', array $params = [] ): array {
-
 		$indices = [
 			$this->getIndexName( self::TYPE_DATA ),
 			$this->getIndexName( self::TYPE_LOOKUP )
@@ -260,7 +256,6 @@ class Client {
 	 * @param array
 	 */
 	public function cat( $type, $params = [] ) {
-
 		$res = [];
 
 		if ( $type === 'indices' ) {
@@ -285,7 +280,6 @@ class Client {
 	 * @param boolean
 	 */
 	public function hasIndex( $type ) {
-
 		if ( isset( self::$hasIndex[$type] ) && self::$hasIndex[$type] ) {
 			return true;
 		}
@@ -302,7 +296,6 @@ class Client {
 	 * @param string $type
 	 */
 	public function createIndex( $type ) {
-
 		$index = $this->getIndexName( $type );
 		$version = 'v1';
 
@@ -337,7 +330,6 @@ class Client {
 	 * @param string $index
 	 */
 	public function deleteIndex( string $index ) {
-
 		$params = [
 			'index' => $index,
 		];
@@ -403,7 +395,6 @@ class Client {
 	 * @param array $params
 	 */
 	public function validate( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -435,10 +426,9 @@ class Client {
 	 * @see Client::ping
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function ping() {
-
 		if ( self::$ping !== null ) {
 			return self::$ping;
 		}
@@ -455,10 +445,9 @@ class Client {
 	 *
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function quick_ping( $timeout = 2 ) {
-
 		$hosts = $this->options->get( Config::ELASTIC_ENDPOINTS );
 
 		foreach ( $hosts as $host ) {
@@ -483,7 +472,7 @@ class Client {
 	 *
 	 * @param array $params
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function exists( array $params ) {
 		return $this->client->exists( $params );
@@ -522,7 +511,6 @@ class Client {
 	 * @return array|string
 	 */
 	public function update( array $params ) {
-
 		$context = [
 			'method' => __METHOD__,
 			'role' => 'production',
@@ -532,7 +520,7 @@ class Client {
 
 		try {
 			return $this->client->update( $params );
-		} catch( Exception $e ) {
+		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Updated failed for document {id} with: {exception}, DOC: {doc}', $context );
 
@@ -549,7 +537,6 @@ class Client {
 	 * @return array|string
 	 */
 	public function index( array $params ) {
-
 		$context = [
 			'method' => __METHOD__,
 			'role' => 'production',
@@ -559,7 +546,7 @@ class Client {
 
 		try {
 			return $this->client->index( $params );
-		} catch( Exception $e ) {
+		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Index failed for document {id} with: {exception}', $context );
 
@@ -574,7 +561,6 @@ class Client {
 	 * @param array $params
 	 */
 	public function bulk( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -610,9 +596,9 @@ class Client {
 			}
 
 			return $response;
-		} catch( ReplicationException $e ) {
+		} catch ( ReplicationException $e ) {
 			throw new ReplicationException( $e->getMessage() );
-		} catch( Exception $e ) {
+		} catch ( Exception $e ) {
 			$context['exception'] = $e->getMessage();
 			$this->logger->info( 'Bulk update failed with {exception}', $context );
 
@@ -630,7 +616,6 @@ class Client {
 	 * @return mixed
 	 */
 	public function count( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -674,7 +659,6 @@ class Client {
 	 * @return array
 	 */
 	public function search( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -719,7 +703,6 @@ class Client {
 	 * @return mixed
 	 */
 	public function explain( array $params ) {
-
 		if ( $params === [] ) {
 			return [];
 		}
@@ -789,7 +772,7 @@ class Client {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasMaintenanceLock() {
 		return $this->lockManager->hasMaintenanceLock();
@@ -817,7 +800,7 @@ class Client {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLock( $type ) {
 		return $this->lockManager->hasLock( $type );
@@ -849,7 +832,6 @@ class Client {
 	 * @return bool
 	 */
 	public function isOpenSearch(): bool {
-
 		if ( !isset( $this->distribution ) ) {
 			$info = $this->info();
 			$this->distribution = $info['version']['distribution'] ?? 'elasticsearch';

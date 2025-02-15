@@ -4,7 +4,6 @@ namespace SMW;
 
 use FileFetcher\FileFetcher;
 use FileFetcher\SimpleFileFetcher;
-use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Elastic\ElasticStore;
 use SMW\SQLStore\Installer;
@@ -13,7 +12,7 @@ use SMW\Utils\File;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -65,7 +64,7 @@ class SetupFile {
 
 	private /* SmwJsonRepo */ $repo;
 
-	public function __construct( File $file = null, FileFetcher $fileFetcher = null ) {
+	public function __construct( ?File $file = null, ?FileFetcher $fileFetcher = null ) {
 		$this->repo = $GLOBALS['smwgSmwJsonRepo'] ??
 			new FileSystemSmwJsonRepo(
 				$fileFetcher ?? new SimpleFileFetcher(),
@@ -159,27 +158,26 @@ class SetupFile {
 	 * current activities relate to an install (new) or upgrade.
 	 */
 	public function setLatestVersion( $version ): void {
-		$latest = $this->get( SetupFile::LATEST_VERSION );
-		$previous = $this->get( SetupFile::PREVIOUS_VERSION );
+		$latest = $this->get( self::LATEST_VERSION );
+		$previous = $this->get( self::PREVIOUS_VERSION );
 
 		if ( $latest === null && $previous === null ) {
 			$this->set(
 				[
-					SetupFile::LATEST_VERSION => $version
+					self::LATEST_VERSION => $version
 				]
 			);
 		} elseif ( $latest !== $version ) {
 			$this->set(
 				[
-					SetupFile::LATEST_VERSION => $version,
-					SetupFile::PREVIOUS_VERSION => $latest
+					self::LATEST_VERSION => $version,
+					self::PREVIOUS_VERSION => $latest
 				]
 			);
 		}
 	}
 
 	public function addIncompleteTask( string $key, array $args = [] ): void {
-
 		$incomplete_tasks = $this->get( self::INCOMPLETE_TASKS );
 
 		if ( $incomplete_tasks === null ) {
@@ -203,7 +201,7 @@ class SetupFile {
 		$this->set( [ self::INCOMPLETE_TASKS => $incomplete_tasks ] );
 	}
 
-	public function hasDatabaseMinRequirement( array $vars = [] ) : bool {
+	public function hasDatabaseMinRequirement( array $vars = [] ): bool {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -276,7 +274,6 @@ class SetupFile {
 	}
 
 	public function finalize( array $vars = [] ): void {
-
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -341,7 +338,6 @@ class SetupFile {
 	}
 
 	public function remove( string $key, $vars = [] ): void {
-
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -384,7 +380,7 @@ class SetupFile {
 
 		try {
 			$this->repo->saveSmwJson( $vars['smwgConfigFileDir'], $vars[self::SMW_JSON] );
-		} catch( RuntimeException $e ) {
+		} catch ( RuntimeException $e ) {
 			// Users may not have `wgShowExceptionDetails` enabled and would
 			// therefore not see the exception error message hence we fail hard
 			// and die

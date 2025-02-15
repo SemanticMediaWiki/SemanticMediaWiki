@@ -2,13 +2,13 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
+use RuntimeException;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotator;
-use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class SchemaLinkProfileAnnotator extends ProfileAnnotatorDecorator {
 	 * @since 3.0
 	 *
 	 * @param ProfileAnnotator $profileAnnotator
-	 * @param string $SchemaLink
+	 * @param string $schemaLink
 	 */
 	public function __construct( ProfileAnnotator $profileAnnotator, $schemaLink ) {
 		parent::__construct( $profileAnnotator );
@@ -35,7 +35,6 @@ class SchemaLinkProfileAnnotator extends ProfileAnnotatorDecorator {
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
-
 		if ( $this->schemaLink === '' ) {
 			return;
 		}

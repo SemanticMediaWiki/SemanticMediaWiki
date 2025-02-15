@@ -2,17 +2,17 @@
 
 namespace SMW\Property;
 
-use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
-use SMW\Property\DeclarationExaminer\ProtectionExaminer;
+use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
+use SMW\Property\DeclarationExaminer\ProtectionExaminer;
 use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
-use SMW\Store;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -36,8 +36,7 @@ class DeclarationExaminerFactory {
 	 *
 	 * @return DeclarationExaminer
 	 */
-	public function newDeclarationExaminer( Store $store, SemanticData $semanticData = null ) {
-
+	public function newDeclarationExaminer( Store $store, ?SemanticData $semanticData = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

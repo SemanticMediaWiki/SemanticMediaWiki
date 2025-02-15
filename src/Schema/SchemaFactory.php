@@ -3,16 +3,15 @@
 namespace SMW\Schema;
 
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Schema\Exception\SchemaTypeNotFoundException;
-use SMW\Schema\Exception\SchemaConstructionFailedException;
-use SMW\Schema\Exception\SchemaParameterTypeMismatchException;
-use SMW\Store;
-use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\Schema\Exception\SchemaConstructionFailedException;
+use SMW\Schema\Exception\SchemaTypeNotFoundException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -20,7 +19,7 @@ use SMW\DIWikiPage;
 class SchemaFactory {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $types = [];
 
@@ -43,8 +42,7 @@ class SchemaFactory {
 	 *
 	 * @return SchemaTypes
 	 */
-	public function getSchemaTypes() : SchemaTypes {
-
+	public function getSchemaTypes(): SchemaTypes {
 		if ( $this->schemaTypes === null ) {
 			$this->schemaTypes = $this->newSchemaTypes( $this->types );
 		}
@@ -57,7 +55,7 @@ class SchemaFactory {
 	 *
 	 * @param string $type
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getType( $type ) {
 		return $this->getSchemaTypes()->getType( $type );
@@ -68,8 +66,7 @@ class SchemaFactory {
 	 *
 	 * @param Schema|null $schema
 	 */
-	public function pushChangePropagationDispatchJob( Schema $schema = null ) {
-
+	public function pushChangePropagationDispatchJob( ?Schema $schema = null ) {
 		if ( $schema === null ) {
 			return;
 		}
@@ -107,7 +104,6 @@ class SchemaFactory {
 	 * @throws RuntimeException
 	 */
 	public function newSchema( $name, $data ) {
-
 		if ( is_string( $data ) ) {
 			if ( ( $data = json_decode( $data, true ) ) === null || json_last_error() !== JSON_ERROR_NONE ) {
 				throw new RuntimeException( "Invalid JSON format." );
@@ -150,7 +146,6 @@ class SchemaFactory {
 	 * @since 3.1
 	 */
 	public function newSchemaFinder( ?Store $store = null ): SchemaFinder {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -180,12 +175,11 @@ class SchemaFactory {
 	 *
 	 * @return SchemaFilterFactory
 	 */
-	public function newSchemaFilterFactory() : SchemaFilterFactory {
+	public function newSchemaFilterFactory(): SchemaFilterFactory {
 		return new SchemaFilterFactory();
 	}
 
 	private function newSchemaTypes( array $types ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

@@ -2,15 +2,14 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
-use Html;
 use DateTime;
+use Html;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Message;
 use SMW\SetupFile;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -42,8 +41,7 @@ class LastOptimizationRunMaintenanceAlertTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() : string {
-
+	public function getHtml(): string {
 		if ( !$this->hasFeature( SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN ) ) {
 			return '';
 		}
@@ -61,7 +59,6 @@ class LastOptimizationRunMaintenanceAlertTaskHandler extends TaskHandler {
 	}
 
 	private function buildHTML( $lastRun, $daysDiff ) {
-
 		if ( $daysDiff < self::DAYS_THRESHOLD ) {
 			return '';
 		}

@@ -8,18 +8,17 @@ use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
  * @covers \SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
+class ScopeMemoryLimiterTest extends \PHPUnit\Framework\TestCase {
 
 	private $testCaller;
 	private $memoryLimitFromCallable;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ScopeMemoryLimiter::class,
 			new ScopeMemoryLimiter()
@@ -35,7 +34,6 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider toIntProvider
 	 */
 	public function testToInt( $string, $expected ) {
-
 		$instance = new ScopeMemoryLimiter();
 
 		$this->assertEquals(
@@ -45,7 +43,6 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public static function toIntProvider() {
-
 		yield 'Empty string' => [
 			'',
 			-1,
@@ -88,14 +85,19 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecute() {
-
+		// Retrieve the original memory limit
 		$memoryLimitBefore = $originalMemoryLimitBefore = ini_get( 'memory_limit' );
 		$converter = new ScopeMemoryLimiter();
 
+		// Handle unlimited memory limit (-1) by setting a dynamic buffer
 		if ( $memoryLimitBefore === "-1" ) {
-			$memoryLimitBefore = memory_get_usage() + $converter->toInt( '10M' );
+			$currentUsage = memory_get_usage();
+			$buffer = $converter->toInt( '20M' );
+			$memoryLimitBefore = $currentUsage + $buffer;
+
 			ini_set( 'memory_limit', $memoryLimitBefore );
 		}
+
 		$this->testCaller = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'calledFromCallable' ] )
@@ -104,27 +106,31 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 		$this->testCaller->expects( $this->once() )
 			->method( 'calledFromCallable' );
 
-		$memoryLimit = $memoryLimitBefore + $converter->toInt( '1M' );
+		// Calculate the new memory limit with an additional buffer
+		$additionalBuffer = $converter->toInt( '1M' );
+		$memoryLimit = $memoryLimitBefore + $additionalBuffer;
 
-		$instance = new ScopeMemoryLimiter(
-			$memoryLimit
-		);
+		// Create the ScopeMemoryLimiter instance with the calculated limit
+		$instance = new ScopeMemoryLimiter( $memoryLimit );
 
+		// Execute the callable within the memory-limited scope
 		$instance->execute( [ $this, 'runCallable' ] );
 
+		// Assert that the callable was executed with the expected memory limit
 		$this->assertEquals(
 			$memoryLimit,
 			$this->memoryLimitFromCallable,
 			"Limit we expected got set."
 		);
 
+		// Assert that the memory limit was successfully reset to the original value
 		$this->assertEquals(
 			$memoryLimitBefore,
 			$instance->getMemoryLimit(),
-			"Limit was reset successsfully."
+			"Limit was reset successfully."
 		);
 
+		// Restore the original memory limit
 		ini_set( 'memory_limit', $originalMemoryLimitBefore );
 	}
-
 }

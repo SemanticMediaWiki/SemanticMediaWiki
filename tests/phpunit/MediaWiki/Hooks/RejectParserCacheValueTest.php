@@ -9,12 +9,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Hooks\RejectParserCacheValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
+class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dependencyValidator;
@@ -23,7 +23,7 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 	private $entityCache;
 	private $logger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -45,13 +45,12 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RejectParserCacheValue::class,
 			new RejectParserCacheValue( $this->namespaceExaminer, $this->dependencyValidator )
@@ -59,14 +58,13 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcesCanKeepParserCache() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -74,15 +72,15 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 
 		$page->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->dependencyValidator->expects( $this->once() )
 			->method( 'canKeepParserCache' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new RejectParserCacheValue(
 			$this->namespaceExaminer,
@@ -99,14 +97,13 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcesCanNOTKeepParserCache() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -114,15 +111,15 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 
 		$page->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->dependencyValidator->expects( $this->once() )
 			->method( 'canKeepParserCache' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new RejectParserCacheValue(
 			$this->namespaceExaminer,
@@ -139,7 +136,6 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnDisabledNamespace() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -150,11 +146,11 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 
 		$page->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->dependencyValidator->expects( $this->never() )
 			->method( 'canKeepParserCache' );

@@ -2,14 +2,14 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
-use SMW\DIProperty;
-use SMW\Store;
-use SMW\SemanticData;
-use SMW\Message;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\Message;
+use SMW\SemanticData;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -40,9 +40,9 @@ class CommonExaminer extends DeclarationExaminer {
 	 * @since 3.1
 	 *
 	 * @param Store $store
-	 * @param SemanticData $semanticData
+	 * @param SemanticData|null $semanticData
 	 */
-	public function __construct( Store $store, SemanticData $semanticData = null ) {
+	public function __construct( Store $store, ?SemanticData $semanticData = null ) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
 	}
@@ -62,7 +62,6 @@ class CommonExaminer extends DeclarationExaminer {
 	 * @param array $propertyReservedNameList
 	 */
 	public function setPropertyReservedNameList( array $propertyReservedNameList ) {
-
 		foreach ( $propertyReservedNameList as $name ) {
 
 			if ( strpos( $name, 'smw-property-reserved' ) !== false ) {
@@ -88,7 +87,6 @@ class CommonExaminer extends DeclarationExaminer {
 	 * {@inheritDoc}
 	 */
 	protected function validate( DIProperty $property ) {
-
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$property
 		);
@@ -104,7 +102,6 @@ class CommonExaminer extends DeclarationExaminer {
 	}
 
 	private function checkNamespace() {
-
 		if (
 			isset( $this->namespacesWithSemanticLinks[SMW_NS_PROPERTY] ) &&
 			$this->namespacesWithSemanticLinks[SMW_NS_PROPERTY] ) {
@@ -115,7 +112,6 @@ class CommonExaminer extends DeclarationExaminer {
 	}
 
 	private function checkReservedName( $propertyName ) {
-
 		if ( !isset( $this->propertyReservedNameList[$propertyName] ) ) {
 			return;
 		}
@@ -124,7 +120,6 @@ class CommonExaminer extends DeclarationExaminer {
 	}
 
 	private function checkUniqueness( $property ) {
-
 		if ( $this->store->getObjectIds()->isUnique( $property ) ) {
 			return;
 		}
@@ -133,7 +128,6 @@ class CommonExaminer extends DeclarationExaminer {
 	}
 
 	private function checkErrorMessages() {
-
 		$property = new DIProperty( '_ERRC' );
 
 		if ( $this->semanticData === null || !$this->semanticData->hasProperty( $property ) ) {
@@ -157,7 +151,6 @@ class CommonExaminer extends DeclarationExaminer {
 	}
 
 	private function checkTypeDeclaration() {
-
 		$property = new DIProperty( '_TYPE' );
 
 		if ( $this->semanticData === null ) {
@@ -174,7 +167,6 @@ class CommonExaminer extends DeclarationExaminer {
 	}
 
 	private function checkCommonMessage( $propertyName ) {
-
 		if ( Message::exists( 'smw-property-introductory-message' ) ) {
 			$this->messages[] = [ 'info', 'smw-property-introductory-message', $propertyName ];
 		}

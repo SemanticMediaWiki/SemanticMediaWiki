@@ -9,23 +9,23 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Specials\Admin\SupportListTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class SupportListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-		//	->setMEthods( [ 'getInfo' ] )
+		// ->setMEthods( [ 'getInfo' ] )
 			->getMockForAbstractClass();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -37,13 +37,12 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\Admin\SupportListTaskHandler',
 			new SupportListTaskHandler( $this->htmlFormRenderer )
@@ -51,7 +50,6 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$methods = [
 			'setName',
 			'setMethod',
@@ -65,7 +63,7 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -79,6 +77,5 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->getHtml();
 	}
-
 
 }

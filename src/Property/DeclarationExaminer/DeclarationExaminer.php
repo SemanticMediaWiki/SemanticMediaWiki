@@ -6,7 +6,7 @@ use SMW\DIProperty;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -74,7 +74,6 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	 * {@inheritDoc}
 	 */
 	public function check( DIProperty $property ) {
-
 		$this->declarationExaminer->check( $property );
 		$this->messages = array_merge( $this->messages, $this->declarationExaminer->getMessages() );
 		$this->validate( $property );
@@ -83,6 +82,6 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	/**
 	 * @since 3.1
 	 */
-	protected abstract function validate( DIProperty $property );
+	abstract protected function validate( DIProperty $property );
 
 }

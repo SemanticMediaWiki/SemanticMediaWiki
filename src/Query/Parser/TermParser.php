@@ -12,7 +12,7 @@ namespace SMW\Query\Parser;
  * A custom prefix map allows to create assignments between a custom prefix and
  * a property set and hereby simplifies the search input process.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -20,12 +20,12 @@ namespace SMW\Query\Parser;
 class TermParser {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $standard_prefix = [ 'in:', 'phrase:', 'not:', 'has:', 'category:' ];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $cache = [];
 
@@ -39,7 +39,7 @@ class TermParser {
 	 * - Input: `keyword:foo bar`
 	 * - Output: `([[Has keyword::foo bar]] || [[Keyword::foo bar]])`
 	 *
-	 * @var []
+	 * @var
 	 */
 	private $prefix_map = [];
 
@@ -58,7 +58,6 @@ class TermParser {
 	 * @return string
 	 */
 	public function parse( $term ) {
-
 		$hash = md5( $term );
 
 		if ( isset( self::$cache[$hash] ) ) {
@@ -150,7 +149,7 @@ class TermParser {
 				$term = str_replace( 'has:', "$next::+$last", $term );
 			}
 
-			if ( $continue && $last === ']]' || $new === '(' || $new === '||' ) {
+			if ( ( $continue && $last === ']]' ) || $new === '(' || $new === '||' ) {
 				continue;
 			}
 
@@ -176,7 +175,6 @@ class TermParser {
 	}
 
 	private function close( &$custom, $prefix ) {
-
 		// Standard closing
 		if ( $custom === '' ) {
 			return "]]";
@@ -210,7 +208,6 @@ class TermParser {
 	}
 
 	private function normalize_compact_form( $exp, $pattern, &$term ) {
-
 		if ( strpos( $term, "$exp:(" ) === false ) {
 			return;
 		}

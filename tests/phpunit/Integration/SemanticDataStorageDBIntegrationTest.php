@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Subobject;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
@@ -20,15 +20,16 @@ use Title;
  *
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
+ * @group Database
  *
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
+class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $applicationFactory;
 	private $mwHooksHandler;
@@ -39,7 +40,7 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	private $pageDeleter;
 	private $pageCreator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -57,8 +58,7 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$this->pageDeleter
 			->doDeletePoolOfPages( $this->subjects );
 
@@ -69,7 +69,6 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUserDefined_PageProperty_ToSemanticDataForStorage() {
-
 		$property = new DIProperty( 'SomePageProperty' );
 
 		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
@@ -93,7 +92,6 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testFixedProperty_MDAT_ToSemanticDataForStorage() {
-
 		$property = new DIProperty( '_MDAT' );
 
 		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
@@ -117,7 +115,6 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testFixedProperty_ASK_NotForStorage() {
-
 		$property = new DIProperty( '_ASK' );
 
 		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
@@ -131,7 +128,6 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testAddUserDefinedBlobPropertyAsObjectToSemanticDataForStorage() {
-
 		$property = new DIProperty( 'SomeBlobProperty' );
 		$property->setPropertyTypeId( '_txt' );
 
@@ -152,7 +148,6 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testAddUserDefinedPropertyAsDataValueToSemanticDataForStorage() {
-
 		$propertyAsString = 'SomePropertyAsString';
 
 		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
@@ -176,7 +171,6 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testAddSubobjectToSemanticDataForStorage() {
-
 		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
@@ -210,7 +204,6 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testFetchSemanticDataForPreExistingSimpleRedirect() {
-
 		$this->applicationFactory->clear();
 
 		$this->pageCreator
@@ -240,7 +233,6 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testFetchSemanticDataForPreExistingDoubleRedirect() {
-
 		$this->pageCreator
 			->createPage( Title::newFromText( 'Foo-B' ) )
 			->doEdit( '#REDIRECT [[Foo-C]]' );
@@ -280,7 +272,6 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	 * Issue 622/619
 	 */
 	public function testPrepareToFetchCorrectSemanticDataFromInternalCache() {
-
 		$redirect = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
 
 		$this->pageCreator
@@ -306,7 +297,6 @@ class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 	 * @depends testPrepareToFetchCorrectSemanticDataFromInternalCache
 	 */
 	public function testVerifyToFetchCorrectSemanticDataFromInternalCache() {
-
 		$redirect = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
 		$target = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-C' ) );
 

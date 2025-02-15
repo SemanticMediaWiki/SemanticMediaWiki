@@ -13,25 +13,24 @@ use SMW\InMemoryPoolCache;
  * @covers \SMW\Exporter\ExpResourceMapper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
+class ExpResourceMapperTest extends \PHPUnit\Framework\TestCase {
 
 	private $inMemoryPoolCache;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->inMemoryPoolCache = InMemoryPoolCache::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->inMemoryPoolCache->clear();
 	}
 
 	public function testInvalidateCache() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.expresource.mapper' );
@@ -64,7 +63,6 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMapPropertyToResourceElement() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -83,7 +81,6 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider diWikiPageProvider
 	 */
 	public function testMapWikiPageToResourceElement( $dataItem, $modifier, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -104,15 +101,13 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider importDataProvider
 	 */
 	public function testMapWikiPageToResourceElementForImportMatch( $dataItem, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will(
-				$this->returnValue( [ new \SMWDIBlob( 'foo:bar:fom:fuz' ) ] ) );
+			->willReturn( [ new \SMWDIBlob( 'foo:bar:fom:fuz' ) ] );
 
 		$instance = new ExpResourceMapper(
 			$store
@@ -133,12 +128,11 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function diWikiPageProvider() {
-
 		// Constant
 		$wiki = \SMWExporter::getInstance()->getNamespaceUri( 'wiki' );
 		$property = \SMWExporter::getInstance()->getNamespaceUri( 'property' );
 
-		#0
+		# 0
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, '', '' ),
 			'',
@@ -149,7 +143,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '' ),
 			'',
@@ -160,7 +154,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '1234' ),
 			'',
@@ -171,7 +165,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 Extra modififer doesn't not alter the object when a subobject is used
+		# 3 Extra modififer doesn't not alter the object when a subobject is used
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '1234' ),
 			'abc',
@@ -182,7 +176,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
 			'',
@@ -193,7 +187,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
 			true,
@@ -204,7 +198,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#6
+		# 6
 		$name = Escaper::encodePage(
 			new DIWikiPage( '-Foo', SMW_NS_PROPERTY, '', '' )
 		);
@@ -219,7 +213,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#7
+		# 7
 		$provider[] = [
 			new DIWikiPage( 'Foo/Bar', SMW_NS_PROPERTY, '', '' ),
 			'',
@@ -234,7 +228,6 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function importDataProvider() {
-
 		// || is not the result we normally would expect but mocking the
 		// dataValueFactory at this point is not worth the hassle therefore
 		// we live with || output

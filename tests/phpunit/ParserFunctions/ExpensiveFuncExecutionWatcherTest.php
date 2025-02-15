@@ -8,16 +8,16 @@ use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
  * @covers \SMW\ParserFunctions\ExpensiveFuncExecutionWatcher
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since  3.0
  *
  * @author mwjames
  */
-class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
+class ExpensiveFuncExecutionWatcherTest extends \PHPUnit\Framework\TestCase {
 
 	private $parserData;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->parserData = $this->getMockBuilder( '\SMW\ParserData' )
@@ -26,7 +26,6 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\ParserFunctions\ExpensiveFuncExecutionWatcher',
 			new ExpensiveFuncExecutionWatcher( $this->parserData )
@@ -34,14 +33,13 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasReachedExpensiveLimit() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -49,11 +47,11 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 100 ) );
+			->willReturn( 100 );
 
 		$this->parserData->expects( $this->once() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$instance = new ExpensiveFuncExecutionWatcher(
 			$this->parserData
@@ -67,20 +65,19 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIncrementExpensiveCountOnExsitingCounter() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$parserOutput->expects( $this->once() )
 			->method( 'setExtensionData' )
 			->with(
-				$this->equalTo( ExpensiveFuncExecutionWatcher::EXPENSIVE_COUNTER ),
-				$this->equalTo( 43 ) );
+				ExpensiveFuncExecutionWatcher::EXPENSIVE_COUNTER,
+				43 );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -88,15 +85,15 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 100 ) );
+			->willReturn( 100 );
 
 		$query->expects( $this->once() )
 			->method( 'getOption' )
-			->will( $this->returnValue( 100 ) );
+			->willReturn( 100 );
 
 		$this->parserData->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$instance = new ExpensiveFuncExecutionWatcher(
 			$this->parserData
@@ -109,7 +106,6 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIncrementExpensiveCountOnNull() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -117,8 +113,8 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput->expects( $this->once() )
 			->method( 'setExtensionData' )
 			->with(
-				$this->equalTo( ExpensiveFuncExecutionWatcher::EXPENSIVE_COUNTER ),
-				$this->equalTo( 1 ) );
+				ExpensiveFuncExecutionWatcher::EXPENSIVE_COUNTER,
+				1 );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -126,15 +122,15 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 100 ) );
+			->willReturn( 100 );
 
 		$query->expects( $this->once() )
 			->method( 'getOption' )
-			->will( $this->returnValue( 100 ) );
+			->willReturn( 100 );
 
 		$this->parserData->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$instance = new ExpensiveFuncExecutionWatcher(
 			$this->parserData

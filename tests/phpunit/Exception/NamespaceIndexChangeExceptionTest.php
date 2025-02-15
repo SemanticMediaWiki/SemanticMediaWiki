@@ -8,15 +8,14 @@ use SMW\Exception\NamespaceIndexChangeException;
  * @covers \SMW\Exception\NamespaceIndexChangeException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class NamespaceIndexChangeExceptionTest extends \PHPUnit_Framework_TestCase {
+class NamespaceIndexChangeExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new NamespaceIndexChangeException( 'Foo', 'Bar' );
 
 		$this->assertInstanceof(

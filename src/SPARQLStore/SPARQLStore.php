@@ -5,18 +5,18 @@ namespace SMW\SPARQLStore;
 use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Options;
 use SMW\SemanticData;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 use SMWDataItem as DataItem;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 use SMWQuery as Query;
 use SMWTurtleSerializer as TurtleSerializer;
 use Title;
-use SMW\Utils\CliMsgFormatter;
-use SMW\Options;
 
 /**
  * Storage and query access point for a SPARQL supported RepositoryConnector to
@@ -26,7 +26,7 @@ use SMW\Options;
  * yet modelled and supported by a RepositoryConnector, which may become optional
  * in future.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -46,22 +46,23 @@ class SPARQLStore extends Store {
 	 * @since 1.8
 	 * @var string
 	 */
-	static public $baseStoreClass = 'SMWSQLStore3';
+	public static $baseStoreClass = 'SMWSQLStore3';
 
 	/**
 	 * Underlying store to use for basic read operations.
+	 * Public since 5.0. (https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5749)
 	 *
 	 * @since 1.8
 	 * @var Store
 	 */
-	private $baseStore;
+	public $baseStore;
 
 	/**
 	 * @since 1.8
 	 *
-	 * @param Store $baseStore
+	 * @param Store|null $baseStore
 	 */
-	public function __construct( Store $baseStore = null ) {
+	public function __construct( ?Store $baseStore = null ) {
 		$this->factory = new SPARQLStoreFactory( $this );
 		$this->baseStore = $baseStore;
 
@@ -134,7 +135,6 @@ class SPARQLStore extends Store {
 	 * @since 1.6
 	 */
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
-
 		$oldWikiPage = DIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = DIWikiPage::newFromTitle( $newtitle );
 		$oldExpResource = Exporter::getInstance()->newExpElement( $oldWikiPage );
@@ -185,7 +185,6 @@ class SPARQLStore extends Store {
 	 * @param SemanticData $semanticData
 	 */
 	public function doSparqlDataUpdate( SemanticData $semanticData ) {
-
 		$connection = $this->getConnection( 'sparql' );
 
 		if (
@@ -209,7 +208,7 @@ class SPARQLStore extends Store {
 			$this->doSparqlFlatDataUpdate( $subSemanticData, $turtleTriplesBuilder );
 		}
 
-		//wfDebugLog( 'smw', ' InMemoryPoolCache: ' . json_encode( \SMW\InMemoryPoolCache::getInstance()->getStats() ) );
+		// wfDebugLog( 'smw', ' InMemoryPoolCache: ' . json_encode( \SMW\InMemoryPoolCache::getInstance()->getStats() ) );
 
 		// Reset internal cache
 		$turtleTriplesBuilder->reset();
@@ -220,7 +219,6 @@ class SPARQLStore extends Store {
 	 * @param TurtleTriplesBuilder $turtleTriplesBuilder
 	 */
 	private function doSparqlFlatDataUpdate( SemanticData $semanticData, TurtleTriplesBuilder $turtleTriplesBuilder ) {
-
 		$turtleTriplesBuilder->doBuildTriplesFrom( $semanticData );
 
 		if ( !$turtleTriplesBuilder->hasTriples() ) {
@@ -256,10 +254,9 @@ class SPARQLStore extends Store {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doSparqlDataDelete( DataItem $dataItem ) {
-
 		$extraNamespaces = [];
 
 		$expResource = Exporter::getInstance()->newExpElement( $dataItem );
@@ -288,7 +285,6 @@ class SPARQLStore extends Store {
 	 * @since 1.6
 	 */
 	public function getQueryResult( Query $query ) {
-
 		// Use a fallback QueryEngine in case the QueryEndpoint is inaccessible
 		if ( !$this->hasQueryEndpoint() ) {
 			return $this->baseStore->getQueryResult( $query );
@@ -490,7 +486,6 @@ class SPARQLStore extends Store {
 	 * @return array
 	 */
 	public function getInfo( $type = null ) {
-
 		$respositoryConnetion = $this->getConnection( 'sparql' );
 		$repositoryClient = $respositoryConnetion->getRepositoryClient();
 

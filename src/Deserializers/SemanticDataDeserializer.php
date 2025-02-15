@@ -15,7 +15,7 @@ use SMWDIContainer as DIContainer;
 use SMWErrorValue as ErrorValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -37,7 +37,6 @@ class SemanticDataDeserializer implements Deserializer {
 	 * @throws RuntimeException
 	 */
 	public function deserialize( $data ) {
-
 		$semanticData = null;
 
 		if ( isset( $data['version'] ) && $data['version'] !== 0.1 && $data['version'] !== 2 ) {
@@ -61,7 +60,6 @@ class SemanticDataDeserializer implements Deserializer {
 	 * @return null
 	 */
 	private function doDeserialize( $data, &$semanticData ) {
-
 		$property = null;
 
 		if ( !isset( $data['data'] ) ) {
@@ -98,7 +96,6 @@ class SemanticDataDeserializer implements Deserializer {
 	 * @return DataItem
 	 */
 	private function doDeserializeDataItem( $property, $data, $value, $semanticData ) {
-
 		$dataItem = null;
 
 		if ( !is_array( $value ) ) {
@@ -144,7 +141,6 @@ class SemanticDataDeserializer implements Deserializer {
 		if ( $property !== null && $dataItem !== null ) {
 			$semanticData->addPropertyObjectValue( $property, $dataItem );
 		}
-
 	}
 
 	/**
@@ -157,7 +153,6 @@ class SemanticDataDeserializer implements Deserializer {
 	 * @return DIContainer|null
 	 */
 	private function doDeserializeSubSemanticData( $data, $id, $semanticData ) {
-
 		if ( !isset( $data['sobj'] ) ) {
 			return new DIContainer( $semanticData );
 		}
@@ -184,10 +179,9 @@ class SemanticDataDeserializer implements Deserializer {
 	 * the serialization and the deserialization (e.g for when the
 	 * serialization object is stored in cache, DB etc.)
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	private function getDataItemId( DIProperty $property ) {
-
 		if ( !isset( $this->dataItemTypeIdCache[$property->getKey()] ) ) {
 			$this->dataItemTypeIdCache[$property->getKey()] = DataTypeRegistry::getInstance()->getDataItemId( $property->findPropertyTypeID() );
 		}

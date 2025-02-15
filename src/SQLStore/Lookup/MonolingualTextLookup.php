@@ -2,19 +2,18 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\Store;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SQLStore\SQLStore;
-use SMW\Message;
+use InvalidArgumentException;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIBlob as DIBlob;
 use SMWDIContainer as DIContainer;
-use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -32,7 +31,7 @@ class MonolingualTextLookup {
 	private $caller = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $lookupCache = [];
 
@@ -69,7 +68,6 @@ class MonolingualTextLookup {
 	 * @return DIContainer|null
 	 */
 	public function newDIContainer( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
-
 		if ( $subject->getSubobjectName() !== '' && $languageCode !== null ) {
 			throw new InvalidArgumentException( "Expected for a container reference no language code." );
 		}
@@ -148,10 +146,9 @@ class MonolingualTextLookup {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function newDataValue( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
-
 		$res = $this->fetchFromTable( $subject, $property, $languageCode );
 		$dataValue = null;
 
@@ -197,10 +194,9 @@ class MonolingualTextLookup {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function fetchFromTable( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
-
 		/**
 		 * This method avoids access to `Store::getSemanticData` in order to
 		 * optimize the query and produce something like:
@@ -333,7 +329,6 @@ class MonolingualTextLookup {
 	}
 
 	private function getPropertyTable( DIProperty $property ) {
-
 		$propTableId = $this->store->findPropertyTableID(
 			$property
 		);
@@ -348,7 +343,6 @@ class MonolingualTextLookup {
 	}
 
 	private function newContainerSemanticData( $row ) {
-
 		if ( $row instanceof DIWikiPage ) {
 			$subject = $row;
 		} else {

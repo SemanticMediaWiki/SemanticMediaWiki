@@ -8,7 +8,7 @@ use RequestContext;
 /**
  * Module to support various tasks initiate using the API interface
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -34,7 +34,6 @@ class Task extends ApiBase {
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
-
 		$params = $this->extractRequestParams();
 
 		$parameters = json_decode(
@@ -43,13 +42,7 @@ class Task extends ApiBase {
 		);
 
 		if ( json_last_error() !== JSON_ERROR_NONE || !is_array( $parameters ) ) {
-
-			// 1.29+
-			if ( method_exists( $this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-api-invalid-parameters' ] );
-			} else {
-				$this->dieUsageMsg( 'smw-api-invalid-parameters' );
-			}
+			$this->dieWithError( [ 'smw-api-invalid-parameters' ] );
 		}
 
 		$this->taskFactory = new TaskFactory();

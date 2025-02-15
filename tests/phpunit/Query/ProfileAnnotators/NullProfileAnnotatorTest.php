@@ -11,15 +11,14 @@ use SMWDIContainer as DIContainer;
  * @covers \SMW\Query\ProfileAnnotators\NullProfileAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class NullProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class NullProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$container = $this->getMockBuilder( '\SMWDIContainer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,8 +30,7 @@ class NullProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMethodAccess() {
-
-		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', '_QUERYadcb944aa33b2c972470b73964c547c0' );
+		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', '_QUERYadcb944aa33b2c972470b73964c547c0' );
 
 		$container = new DIContainer(
 			new ContainerSemanticData( $subject	)

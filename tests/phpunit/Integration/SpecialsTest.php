@@ -5,17 +5,16 @@ namespace SMW\Tests\Integration;
 use FauxRequest;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
-use SpecialPageFactory;
 
 /**
  * Tests for registered special pages
  *
  * @file
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -37,9 +36,10 @@ use SpecialPageFactory;
  *
  * @group SMW
  * @group SMWExtension
+ * @group Database
  * @group medium
  */
-class SpecialsTest extends DatabaseTestCase {
+class SpecialsTest extends SMWIntegrationTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -56,11 +56,9 @@ class SpecialsTest extends DatabaseTestCase {
 	 * @param $specialPageProvider
 	 */
 	public function testSpecial( callable $specialPageProvider ) {
-
 		try {
 			$specialPageProvider()->execute( '' );
-		}
-		catch ( \Exception $exception ) {
+		} catch ( \Exception $exception ) {
 			if ( !( $exception instanceof \PermissionsError ) && !( $exception instanceof \ErrorPageError ) ) {
 				throw $exception;
 			}
@@ -78,7 +76,6 @@ class SpecialsTest extends DatabaseTestCase {
 	 * @param $specialPageProvider
 	 */
 	public function testSpecialAliasesContLang( callable $specialPageProvider ) {
-
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 
 		// Test for languages
@@ -95,7 +92,7 @@ class SpecialsTest extends DatabaseTestCase {
 			// Check against available aliases
 			foreach ( $aliases as $n => $values ) {
 				foreach ( $values as $value ) {
-					if( $name === $value ) {
+					if ( $name === $value ) {
 						$found = true;
 						break;
 					}
@@ -138,7 +135,7 @@ class SpecialsTest extends DatabaseTestCase {
 		foreach ( $specialPages as $special ) {
 			// Defer instantiating the special pages until the test runs
 			// to avoid prematurely capturing service references that may become stale later.
-			$specialPageCallable = static function() use ( $special, $request ): SpecialPage {
+			$specialPageCallable = static function () use ( $special, $request ): SpecialPage {
 				$specialPage = MediaWikiServices::getInstance()->getSpecialPageFactory()->getPage(
 					$special
 				);
@@ -150,7 +147,7 @@ class SpecialsTest extends DatabaseTestCase {
 				return $specialPage;
 			};
 
-			$specialPageWithSuperUserCallable = static function() use ( $special, $request ): SpecialPage {
+			$specialPageWithSuperUserCallable = static function () use ( $special, $request ): SpecialPage {
 				$specialPage = MediaWikiServices::getInstance()->getSpecialPageFactory()->getPage(
 					$special
 				);

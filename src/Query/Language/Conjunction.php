@@ -8,7 +8,7 @@ namespace SMW\Query\Language;
  *
  * Corresponds to conjunction in OWL and SPARQL. Not available in RDFS.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -38,7 +38,6 @@ class Conjunction extends Description {
 	 * @return string
 	 */
 	public function getFingerprint() {
-
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
 		}
@@ -62,7 +61,6 @@ class Conjunction extends Description {
 	}
 
 	public function addDescription( Description $description ) {
-
 		$this->fingerprint = null;
 
 		if ( !( $description instanceof ThingDescription ) ) {

@@ -9,15 +9,14 @@ use SMW\Exporter\Controller\Queue;
  * @covers \SMW\Exporter\Queue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class QueueTest extends \PHPUnit_Framework_TestCase {
+class QueueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Queue::class,
 			new Queue()
@@ -25,7 +24,6 @@ class QueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMembers() {
-
 		$dataItem = DIWikiPage::newFromText( 'Foo' );
 		$instance = new Queue();
 
@@ -38,7 +36,6 @@ class QueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReset() {
-
 		$dataItem = DIWikiPage::newFromText( 'Foo' );
 		$instance = new Queue();
 
@@ -55,7 +52,6 @@ class QueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDone() {
-
 		$dataItem = DIWikiPage::newFromText( 'Foo' );
 		$instance = new Queue();
 
@@ -71,25 +67,24 @@ class QueueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAndCount() {
-
 		$dataItem = DIWikiPage::newFromText( 'Foo' );
 
 		$instance = new Queue();
 		$instance->add( $dataItem, 2 );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->count()
 		);
 
 		$instance->done( $dataItem, 1 );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->count()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->count()
 		);

@@ -3,12 +3,12 @@
 namespace SMW\SQLStore;
 
 use SMW\DataTypeRegistry;
-use SMW\TypesRegistry;
 use SMW\DIProperty;
+use SMW\TypesRegistry;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -60,7 +60,7 @@ class PropertyTableInfoFetcher {
 		DataItem::TYPE_TIME       => 'smw_di_time',
 		DataItem::TYPE_GEO        => 'smw_di_coords', // currently created only if Semantic Maps are installed
 		DataItem::TYPE_WIKIPAGE   => 'smw_di_wikipage',
-		//DataItem::TYPE_CONCEPT    => '', // _CONC is the only property of this type
+		// DataItem::TYPE_CONCEPT    => '', // _CONC is the only property of this type
 	];
 
 	/**
@@ -114,12 +114,11 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @since 2.2
 	 *
-	 * @param integer $dataItemId
+	 * @param int $dataItemId
 	 *
 	 * @return string
 	 */
 	public static function findTableIdForDataItemTypeId( $dataItemId ) {
-
 		if ( array_key_exists( $dataItemId, self::$defaultDiTypeTableIdMap ) ) {
 			return self::$defaultDiTypeTableIdMap[$dataItemId];
 		}
@@ -141,10 +140,9 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFixedTableProperty( DIProperty $property ) {
-
 		if ( $this->fixedPropertyTableIds === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}
@@ -163,7 +161,6 @@ class PropertyTableInfoFetcher {
 	 * @return string
 	 */
 	public function findTableIdForProperty( DIProperty $property ) {
-
 		if ( $this->fixedPropertyTableIds === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}
@@ -190,7 +187,6 @@ class PropertyTableInfoFetcher {
 	 * @return TableDefinition[]
 	 */
 	public function getPropertyTableDefinitions() {
-
 		if ( $this->propertyTableDefinitions === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}
@@ -207,7 +203,6 @@ class PropertyTableInfoFetcher {
 	}
 
 	private function buildDefinitionsForPropertyTables() {
-
 		$enabledSpecialProperties = TypesRegistry::getFixedProperties( 'default_fixed' );
 
 		$customFixedSpecialPropertyList = array_flip(

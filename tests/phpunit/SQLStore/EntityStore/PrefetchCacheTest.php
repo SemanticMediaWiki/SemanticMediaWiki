@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\PrefetchCache;
 use SMW\Tests\PHPUnitCompat;
 
@@ -11,12 +11,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\EntityStore\PrefetchCache
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class PrefetchCacheTest extends \PHPUnit_Framework_TestCase {
+class PrefetchCacheTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -24,8 +24,7 @@ class PrefetchCacheTest extends \PHPUnit_Framework_TestCase {
 	private $prefetchItemLookup;
 	private $requestOptions;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +39,6 @@ class PrefetchCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PrefetchCache::class,
 			new PrefetchCache( $this->store, $this->prefetchItemLookup )
@@ -48,7 +46,6 @@ class PrefetchCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCacheAndFetch() {
-
 		$property = new DIProperty( 'Foo' );
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -62,16 +59,16 @@ class PrefetchCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'getSMWPageID' )
-			->with( $this->equalTo( __METHOD__ ) )
-			->will( $this->returnValue( 42 ) );
+			->with( __METHOD__ )
+			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->prefetchItemLookup->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ 42 => [ DIWikiPage::newFromText( 'Bar' ) ] ] ) );
+			->willReturn( [ 42 => [ DIWikiPage::newFromText( 'Bar' ) ] ] );
 
 		$instance = new PrefetchCache(
 			$this->store,

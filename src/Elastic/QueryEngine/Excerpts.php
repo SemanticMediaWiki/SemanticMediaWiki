@@ -5,7 +5,7 @@ namespace SMW\Elastic\QueryEngine;
 use SMW\DIWikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -17,10 +17,9 @@ class Excerpts extends \SMW\Query\Excerpts {
 	 *
 	 * @param DIWikiPage|string $hash
 	 *
-	 * @return string|integer|false
+	 * @return string|int|false
 	 */
 	public function getExcerpt( $hash ) {
-
 		if ( $hash instanceof DIWikiPage ) {
 			$hash = $hash->getHash();
 		}
@@ -37,14 +36,13 @@ class Excerpts extends \SMW\Query\Excerpts {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasHighlight() {
 		return $this->noHighlight ? false : true;
 	}
 
 	private function format( $v ) {
-
 		// https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
 		// By default, highlighted text is wrapped in <em> and </em> tags
 

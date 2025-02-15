@@ -4,7 +4,6 @@ namespace SMW\Tests;
 
 use SMW\DataValueFactory;
 use SMW\Subobject;
-use SMW\Tests\TestEnvironment;
 use SMWDIBlob;
 use Title;
 
@@ -14,12 +13,12 @@ use Title;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SubobjectTest extends \PHPUnit_Framework_TestCase {
+class SubobjectTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -27,7 +26,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -42,7 +41,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -54,7 +52,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetSemanticWithInvalidIdThrowsException() {
-
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -62,7 +59,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetEmptySemanticData() {
-
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 		$instance->setEmptyContainerForId( 'Foo' );
 
@@ -86,13 +82,12 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getDataProvider
 	 */
 	public function testgetSubobjectId( array $parameters, array $expected ) {
-
 		$instance = $this->acquireInstanceForId(
 			Title::newFromText( __METHOD__ ),
 			$parameters['identifier']
 		);
 
-		if ( $expected['identifier'] !== '_'  ) {
+		if ( $expected['identifier'] !== '_' ) {
 			return $this->assertEquals( $expected['identifier'], $instance->getSubobjectId() );
 		}
 
@@ -106,7 +101,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getDataProvider
 	 */
 	public function testGetProperty( array $parameters ) {
-
 		$instance = $this->acquireInstanceForId(
 			Title::newFromText( __METHOD__ ),
 			$parameters['identifier']
@@ -122,13 +116,12 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getDataProvider
 	 */
 	public function testAddDataValue( array $parameters, array $expected ) {
-
 		$instance = $this->acquireInstanceForId(
 			Title::newFromText( __METHOD__ ),
 			$parameters['identifier']
 		);
 
-		foreach ( $parameters['properties'] as $property => $value ){
+		foreach ( $parameters['properties'] as $property => $value ) {
 
 			$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 				$property,
@@ -153,22 +146,21 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider newDataValueProvider
 	 */
 	public function testDataValueExaminer( array $parameters, array $expected ) {
-
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'findPropertyTypeID' )
-			->will( $this->returnValue( $parameters['property']['typeId'] ) );
+			->willReturn( $parameters['property']['typeId'] );
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'getKey' )
-			->will( $this->returnValue( $parameters['property']['key'] ) );
+			->willReturn( $parameters['property']['key'] );
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'getLabel' )
-			->will( $this->returnValue( $parameters['property']['label'] ) );
+			->willReturn( $parameters['property']['label'] );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$parameters['dataItem'],
@@ -191,7 +183,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddDataValueWithInvalidSemanticDataThrowsException() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -203,7 +194,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticDataInvalidSemanticDataThrowsException() {
-
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
@@ -214,7 +204,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorProvider
 	 */
 	public function testErrorHandlingOnErrors( $errors, $expected ) {
-
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		foreach ( $errors as $error ) {
@@ -243,7 +232,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function getDataProvider() {
-
 		$provider = [];
 
 		// #0 / asserting conditions for a named identifier
@@ -360,7 +348,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function newDataValueProvider() {
-
 		$provider = [];
 
 		// #0 Bug 49530
@@ -388,7 +375,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 * @return Subobject
 	 */
 	private function acquireInstanceForId( Title $title, $id = '' ) {
-
 		$instance = new Subobject( $title );
 
 		if ( $id === '' && $id !== null ) {
@@ -401,10 +387,9 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function errorProvider() {
-
 		$provider = [];
 
-		#0
+		# 0
 		$provider[] = [
 			[
 				'Foo',
@@ -413,7 +398,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			1
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			[
 				'Foo',
@@ -422,7 +407,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			2
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			[
 				[ 'Foo' => 'Bar' ],
@@ -431,7 +416,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			1
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			[
 				[ 'Foo' => 'Bar' ],

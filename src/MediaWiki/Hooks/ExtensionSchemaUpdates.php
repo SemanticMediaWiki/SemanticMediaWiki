@@ -4,20 +4,19 @@ namespace SMW\MediaWiki\Hooks;
 
 use DatabaseUpdater;
 use Maintenance;
-use ReflectionProperty;
-use SMW\Options;
-use SMW\Store;
-use SMW\SQLStore\Installer;
-use SMW\StoreFactory;
 use Onoi\MessageReporter\MessageReporterFactory;
+use ReflectionProperty;
 use SMW\MediaWiki\HookListener;
+use SMW\Options;
+use SMW\SQLStore\Installer;
+use SMW\Store;
 
 /**
  * Schema update to set up the needed database tables
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -32,19 +31,18 @@ class ExtensionSchemaUpdates implements HookListener {
 	/**
 	 * @since  2.0
 	 *
-	 * @param DatabaseUpdater $updater = null
+	 * @param DatabaseUpdater|null $updater = null
 	 */
-	public function __construct( DatabaseUpdater $updater = null ) {
+	public function __construct( ?DatabaseUpdater $updater = null ) {
 		$this->updater = $updater;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param array $params
+	 * @param array &$params
 	 */
 	public static function addMaintenanceUpdateParams( &$params ) {
-
 		// For details, see https://github.com/wikimedia/mediawiki/commit/a6facc8a0a4f9b54e0cfb1e5ef6f3991de752342
 		$params['skip-optimize'] = [
 			'desc' => 'SMW, allow to skip the table optimization during the Store setup'
@@ -59,7 +57,6 @@ class ExtensionSchemaUpdates implements HookListener {
 	 * @return true
 	 */
 	public function process( Store $store ) {
-
 		$verbose = true;
 
 		$options = new Options(
@@ -112,7 +109,6 @@ class ExtensionSchemaUpdates implements HookListener {
 	}
 
 	private function hasMaintenanceArg( $key ) {
-
 		$maintenance = null;
 
 		// We don't have access to the `update.php` internals due to lack

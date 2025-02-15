@@ -13,7 +13,7 @@ use SMWQueryResult;
  *
  * @ingroup Api
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -33,7 +33,6 @@ abstract class Query extends ApiBase {
 	 * @return SMWQuery
 	 */
 	protected function getQuery( $queryString, array $printouts, array $parameters = [] ) {
-
 		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
 
 		$query = SMWQueryProcessor::createQuery(
@@ -59,7 +58,7 @@ abstract class Query extends ApiBase {
 	 * @return SMWQueryResult
 	 */
 	protected function getQueryResult( SMWQuery $query ) {
-		return ApplicationFactory::getInstance()->getStore()->getQueryResult( $query );
+		return ApplicationFactory::getInstance()->getQuerySourceFactory()->get( $query->getQuerySource() )->getQueryResult( $query );
 	}
 
 	/**
@@ -70,7 +69,6 @@ abstract class Query extends ApiBase {
 	 * @param SMWQueryResult $queryResult
 	 */
 	protected function addQueryResult( SMWQueryResult $queryResult, $outputFormat = 'json' ) {
-
 		$result = $this->getResult();
 
 		$resultFormatter = new ApiQueryResultFormatter( $queryResult );
@@ -78,9 +76,9 @@ abstract class Query extends ApiBase {
 		$resultFormatter->doFormat();
 
 		if ( $resultFormatter->getContinueOffset() ) {
-		//	$result->disableSizeCheck();
+		// $result->disableSizeCheck();
 			$result->addValue( null, 'query-continue-offset', $resultFormatter->getContinueOffset() );
-		//	$result->enableSizeCheck();
+		// $result->enableSizeCheck();
 		}
 
 		$result->addValue(

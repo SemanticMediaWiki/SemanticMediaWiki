@@ -6,11 +6,11 @@ use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIProperty;
 use SMW\MediaWiki\Database;
-use SMWDataItem as DataItem;
 use SMW\Utils\CliMsgFormatter;
+use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -33,12 +33,12 @@ class SearchTableRebuilder {
 	private $messageReporter;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $reportVerbose = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $optimization = false;
 
@@ -50,8 +50,8 @@ class SearchTableRebuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SearchTableUpdater $searchTableUpdater
 	 * @param Database $connection
+	 * @param SearchTableUpdater $searchTableUpdater
 	 */
 	public function __construct( Database $connection, SearchTableUpdater $searchTableUpdater ) {
 		$this->connection = $connection;
@@ -80,7 +80,7 @@ class SearchTableRebuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $reportVerbose
+	 * @param bool $reportVerbose
 	 */
 	public function reportVerbose( $reportVerbose ) {
 		$this->reportVerbose = (bool)$reportVerbose;
@@ -89,7 +89,7 @@ class SearchTableRebuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $optimization
+	 * @param bool $optimization
 	 */
 	public function requestOptimization( $optimization ) {
 		$this->optimization = (bool)$optimization;
@@ -98,7 +98,7 @@ class SearchTableRebuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canRebuild() {
 		return $this->searchTableUpdater->isEnabled();
@@ -109,10 +109,9 @@ class SearchTableRebuilder {
 	 *
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function rebuild() {
-
 		if ( !$this->canRebuild() ) {
 			return;
 		}
@@ -141,7 +140,6 @@ class SearchTableRebuilder {
 	 * @return array
 	 */
 	public function getQualifiedTableList() {
-
 		$tableList = [];
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
@@ -174,7 +172,6 @@ class SearchTableRebuilder {
 	}
 
 	private function doOptimize() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -201,7 +198,6 @@ class SearchTableRebuilder {
 	}
 
 	private function doRebuild() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 		$propertyTables = [];
 
@@ -271,7 +267,6 @@ class SearchTableRebuilder {
 	}
 
 	private function doRebuildByPropertyTable( $proptable ) {
-
 		$searchTable = $this->getSearchTable();
 
 		if ( $proptable->getDiType() === DataItem::TYPE_URI ) {
@@ -320,7 +315,6 @@ class SearchTableRebuilder {
 	}
 
 	private function doRebuildFromRows( $searchTable, $table, $pid, $rows ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$i = 0;
@@ -359,7 +353,7 @@ class SearchTableRebuilder {
 				$this->searchTableUpdater->insert( $sid, $pid );
 			}
 
-			$this->searchTableUpdater->update( $sid, $pid, trim( $text ) . ' ' . $indexableText );
+			$this->searchTableUpdater->update( $sid, $pid, trim( $text ?? '' ) . ' ' . $indexableText );
 		}
 
 		$this->reportMessage( "\n" );
@@ -372,7 +366,6 @@ class SearchTableRebuilder {
 	}
 
 	private function getIndexableTextFromRow( $searchTable, $row ) {
-
 		$indexableText = '';
 
 		// Page, Uri, or blob?

@@ -3,18 +3,17 @@
 namespace SMW\Tests;
 
 use SMW\NamespaceUriFinder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\NamespaceUriFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class NamespaceUriFinderTest extends \PHPUnit_Framework_TestCase {
+class NamespaceUriFinderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -29,7 +28,6 @@ class NamespaceUriFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceProvider() {
-
 		$provider[] = [
 			'Foo',
 			'boolean'

@@ -5,7 +5,7 @@ namespace SMW\Utils;
 use Html;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -73,7 +73,6 @@ class HtmlTable {
 	 * @return string
 	 */
 	public function table( $attributes = [], $transpose = false, $htmlContext = false ) {
-
 		$table = $this->buildTable( $transpose, $htmlContext );
 
 		if ( $transpose ) {
@@ -92,7 +91,6 @@ class HtmlTable {
 	}
 
 	private function buildTable( $transpose, $htmlContext ) {
-
 		if ( $transpose ) {
 			return $this->transpose( $htmlContext );
 		}
@@ -112,7 +110,6 @@ class HtmlTable {
 	}
 
 	private function transpose( $htmlContext ) {
-
 		$rows = [];
 
 		foreach ( $this->headers as $hIndex => $header ) {
@@ -131,7 +128,6 @@ class HtmlTable {
 	}
 
 	private function createRow( $content, $attributes, $count ) {
-
 		$alternate = $count % 2 == 0 ? 'row-odd' : 'row-even';
 
 		if ( isset( $attributes['class'] ) ) {
@@ -144,7 +140,6 @@ class HtmlTable {
 	}
 
 	private function concatenateHeaders( $headers, $htmlContext ) {
-
 		if ( $htmlContext ) {
 			return Html::rawElement( 'thead', [], implode( '', $headers ) );
 		}
@@ -153,7 +148,6 @@ class HtmlTable {
 	}
 
 	private function concatenateRows( $rows, $htmlContext ) {
-
 		if ( $htmlContext ) {
 			return Html::rawElement( 'tbody', [], implode( '', $rows ) );
 		}
@@ -162,7 +156,6 @@ class HtmlTable {
 	}
 
 	private function getTransposedCell( $index, $row ) {
-
 		if ( isset( $row['cells'][$index] ) ) {
 			return $row['cells'][$index];
 		}

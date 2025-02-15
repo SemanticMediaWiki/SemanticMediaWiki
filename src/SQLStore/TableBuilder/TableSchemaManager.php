@@ -4,15 +4,13 @@ namespace SMW\SQLStore\TableBuilder;
 
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
-use RuntimeException;
-use Hooks;
 
 /**
  * @private
  *
  * Database type agnostic table/schema definition manager
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -35,12 +33,12 @@ class TableSchemaManager {
 	private $tables = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $options = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $featureFlags = false;
 
@@ -59,7 +57,6 @@ class TableSchemaManager {
 	 * @return string
 	 */
 	public function getHash() {
-
 		$hash = [];
 
 		foreach ( $this->getTables() as $table ) {
@@ -90,7 +87,6 @@ class TableSchemaManager {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = false ) {
-
 		if ( isset( $this->options[$key] ) ) {
 			return $this->options[$key];
 		}
@@ -101,7 +97,7 @@ class TableSchemaManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $featureFlags
+	 * @param int $featureFlags
 	 */
 	public function setFeatureFlags( $featureFlags ) {
 		$this->featureFlags = $featureFlags;
@@ -110,9 +106,9 @@ class TableSchemaManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeatureFlag( $feature ) {
 		return ( (int)$this->featureFlags & $feature ) != 0;
@@ -126,7 +122,6 @@ class TableSchemaManager {
 	 * @return Table|null
 	 */
 	public function findTable( $tableName ) {
-
 		foreach ( $this->getTables() as $table ) {
 			if ( $table->getName() === $tableName ) {
 				return $table;
@@ -142,7 +137,6 @@ class TableSchemaManager {
 	 * @return Table[]
 	 */
 	public function getTables() {
-
 		if ( $this->tables !== [] ) {
 			return $this->tables;
 		}
@@ -174,8 +168,7 @@ class TableSchemaManager {
 	}
 
 	private function newEntityIdTable() {
-
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// ID_TABLE
 		$table = new Table( SQLStore::ID_TABLE );
@@ -235,7 +228,6 @@ class TableSchemaManager {
 	}
 
 	private function newEntityAuxiliaryTable() {
-
 		// ID_AUXILIARY_TABLE
 		$table = new Table( SQLStore::ID_AUXILIARY_TABLE );
 
@@ -251,7 +243,6 @@ class TableSchemaManager {
 	}
 
 	private function newConceptCacheTable() {
-
 		// CONCEPT_CACHE_TABLE (member elements (s)->concepts (o) )
 		$table = new Table( SQLStore::CONCEPT_CACHE_TABLE );
 
@@ -264,7 +255,6 @@ class TableSchemaManager {
 	}
 
 	private function newQueryLinksTable() {
-
 		// QUERY_LINKS_TABLE
 		$table = new Table( SQLStore::QUERY_LINKS_TABLE );
 
@@ -279,7 +269,6 @@ class TableSchemaManager {
 	}
 
 	private function newFulltextSearchTable() {
-
 		// Avoid the creation unless it is enabled hereby avoids issues in
 		// regards to the default `MyISAM` storage engine (especially when mixed with
 		// InnoDB, transactional mode).Those who enable the full-text need to
@@ -312,7 +301,6 @@ class TableSchemaManager {
 	}
 
 	private function newPropertyStatisticsTable() {
-
 		// PROPERTY_STATISTICS_TABLE
 		$table = new Table( SQLStore::PROPERTY_STATISTICS_TABLE );
 
@@ -331,7 +319,6 @@ class TableSchemaManager {
 	}
 
 	private function newPropertyTable( $propertyTable, $diHandler ) {
-
 		// Prepare indexes. By default, property-value tables
 		// have the following indexes:
 		//
@@ -416,8 +403,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function addTable( Table $table = null ) {
-
+	private function addTable( ?Table $table = null ) {
 		if ( $table === null ) {
 			return;
 		}

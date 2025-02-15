@@ -2,29 +2,26 @@
 
 namespace SMW\SQLStore;
 
-use Hooks;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
-use SMW\SQLStore\TableBuilder\TableSchemaManager;
-use SMW\SQLStore\TableBuilder\TableBuildExaminer;
-use SMW\SQLStore\Installer\VersionExaminer;
-use SMW\SQLStore\Installer\TableOptimizer;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Options;
-use SMW\Site;
-use SMW\TypesRegistry;
+use SMW\Setup;
 use SMW\SetupFile;
+use SMW\SQLStore\Installer\TableOptimizer;
+use SMW\SQLStore\Installer\VersionExaminer;
+use SMW\SQLStore\TableBuilder\TableBuildExaminer;
+use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\Timer;
-use SMW\Setup;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -119,7 +116,6 @@ class Installer implements MessageReporter {
 	 * @param Options|array $options
 	 */
 	public function setOptions( $options ) {
-
 		if ( !$options instanceof Options ) {
 			$options = new Options( $options );
 		}
@@ -139,10 +135,9 @@ class Installer implements MessageReporter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Options|boolean $verbose
+	 * @param Options|bool $verbose
 	 */
 	public function install( $verbose = true ) {
-
 		if ( $verbose instanceof Options ) {
 			$this->options = $verbose;
 		}
@@ -293,10 +288,9 @@ class Installer implements MessageReporter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $verbose
+	 * @param bool $verbose
 	 */
 	public function uninstall( $verbose = true ) {
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$this->initMessageReporter( $verbose );
@@ -355,7 +349,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function initMessageReporter( $verbose = true ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter;
 		}
@@ -373,7 +366,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function runTableOptimization() {
-
 		if ( !$this->options->safeGet( self::OPT_TABLE_OPTIMIZE, false ) ) {
 			return $this->messageReporter->reportMessage(
 				"Table optimization was not enabled (or skipped), stopping the task.\n"
@@ -386,7 +378,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function addSupplementJobs() {
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		if ( !$this->options->safeGet( self::OPT_SUPPLEMENT_JOBS, false ) ) {
@@ -433,7 +424,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function outputReport( $timer ) {
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$keys = $timer->keys;
 
@@ -457,7 +447,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function printHead() {
-
 		if (
 			$this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) &&
 			$this->options->get( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
@@ -468,7 +457,6 @@ class Installer implements MessageReporter {
 	}
 
 	private function printBottom() {
-
 		if ( $this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
 			$this->messageReporter->reportMessage( $this->cliMsgFormatter->section( '', 0, '=' ) );
 			$this->messageReporter->reportMessage( "\n" );

@@ -9,15 +9,14 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Specials\Ask\ParameterInput
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ParameterInputTest extends \PHPUnit_Framework_TestCase {
+class ParameterInputTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$paramDefinition = $this->getMockBuilder( '\ParamProcessor\ParamDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,7 +31,6 @@ class ParameterInputTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider listValueProvider
 	 */
 	public function testGetHtmlOnCheckboxList( $currentValue, $allowedValues, $expected ) {
-
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$paramDefinition = $this->getMockBuilder( '\ParamProcessor\ParamDefinition' )
@@ -41,11 +39,11 @@ class ParameterInputTest extends \PHPUnit_Framework_TestCase {
 
 		$paramDefinition->expects( $this->atLeastOnce() )
 			->method( 'getAllowedValues' )
-			->will( $this->returnValue( $allowedValues ) );
+			->willReturn( $allowedValues );
 
 		$paramDefinition->expects( $this->any() )
 			->method( 'isList' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new ParameterInput(
 			$paramDefinition,
@@ -59,7 +57,6 @@ class ParameterInputTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function listValueProvider() {
-
 		$provider[] = [
 			'Foo',
 			[ 'Foo', 'Bar' ],

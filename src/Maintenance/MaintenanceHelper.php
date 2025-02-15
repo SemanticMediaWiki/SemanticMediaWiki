@@ -6,7 +6,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CliMsgFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -40,7 +40,6 @@ class MaintenanceHelper {
 	 * @return array
 	 */
 	public function getRuntimeValues() {
-
 		$memory = memory_get_peak_usage( false );
 		$time = microtime( true ) - $this->runtime['start'];
 
@@ -62,7 +61,6 @@ class MaintenanceHelper {
 	 * @return string
 	 */
 	public function getFormattedRuntimeValues( $indent = '' ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 		$output = '';
 
@@ -93,7 +91,6 @@ class MaintenanceHelper {
 	 * @param string $value
 	 */
 	public function setGlobalToValue( $key, $value ) {
-
 		if ( !isset( $GLOBALS[$key] ) ) {
 			return;
 		}
@@ -107,7 +104,6 @@ class MaintenanceHelper {
 	 * @since 2.2
 	 */
 	public function reset() {
-
 		foreach ( $this->globals as $key => $value ) {
 			$GLOBALS[$key] = $value;
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );

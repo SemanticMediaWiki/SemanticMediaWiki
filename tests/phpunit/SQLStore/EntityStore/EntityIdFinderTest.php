@@ -2,23 +2,20 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
-use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\EntityIdFinder;
-use SMW\MediaWiki\Connection\Query;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\EntityIdFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
+class EntityIdFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $cache;
@@ -26,7 +23,7 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	private $idCacheManager;
 	private Database $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -39,7 +36,7 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
@@ -51,7 +48,6 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EntityIdFinder::class,
 			new EntityIdFinder( $this->connection, $this->propertyTableHashes, $this->idCacheManager )
@@ -59,7 +55,6 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindIdByItem() {
-
 		$row = [
 			'smw_id' => 42
 		];
@@ -70,14 +65,14 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'getId' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->idCacheManager->expects( $this->once() )
 			->method( 'setCache' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$instance = new EntityIdFinder(
 			$this->connection,
@@ -92,7 +87,6 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchFieldsFromTableById() {
-
 		$row = [
 			'smw_id' => 42,
 			'smw_hash' => '00000000000',
@@ -109,7 +103,7 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$instance = new EntityIdFinder(
 			$this->connection,
@@ -126,7 +120,6 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchFromTableByTitle() {
-
 		$row = [
 			'smw_id' => 42,
 			'smw_hash' => '00000000000',
@@ -143,7 +136,7 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$instance = new EntityIdFinder(
 			$this->connection,
@@ -160,7 +153,6 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindIdsByTitle() {
-
 		$rows = [
 			(object)[ 'smw_id' => 42 ],
 			(object)[ 'smw_id' => 1001 ],
@@ -172,7 +164,7 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( $rows ) );
+			->willReturn( $rows );
 
 		$instance = new EntityIdFinder(
 			$this->connection,

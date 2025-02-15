@@ -17,7 +17,7 @@ use Title;
  *
  * @ingroup QueryPage
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -56,7 +56,6 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return string
 	 */
 	public function getCacheInfo() {
-
 		if ( $this->listLookup->isFromCache() ) {
 			return $this->msg( 'smw-sp-properties-cache-info', $this->getLanguage()->userTimeAndDate( $this->listLookup->getTimestamp(), $this->getUser() ) )->parse();
 		}
@@ -96,11 +95,10 @@ class PropertiesQueryPage extends QueryPage {
 	 *
 	 * @param Skin $skin provided by MediaWiki, not needed here
 	 * @param mixed $result
-	 * @return String
+	 * @return string
 	 * @throws PropertyNotFoundException if the result was not of a supported type
 	 */
 	function formatResult( $skin, $result ) {
-
 		[ $dataItem, $useCount ] = $result;
 
 		if ( $dataItem instanceof DIProperty ) {
@@ -122,11 +120,10 @@ class PropertiesQueryPage extends QueryPage {
 	 * @since 1.8
 	 *
 	 * @param DIProperty $property
-	 * @param integer $useCount
+	 * @param int $useCount
 	 * @return string
 	 */
 	protected function formatPropertyItem( DIProperty $property, $useCount ) {
-
 		// Clear formatter before invoking messages
 		$this->getMessageFormatter()->clear();
 
@@ -192,12 +189,11 @@ class PropertiesQueryPage extends QueryPage {
 	 *
 	 * @param Title $title
 	 * @param DIProperty $property
-	 * @param integer $useCount
+	 * @param int $useCount
 	 *
 	 * @return array
 	 */
 	private function getUserDefinedPropertyInfo( $title, $property, $useCount ) {
-
 		if ( $useCount <= $this->settings->get( 'smwgPropertyLowUsageThreshold' ) ) {
 			$this->getMessageFormatter()->addFromKey( 'smw_propertyhardlyused' );
 		}
@@ -247,7 +243,6 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return array
 	 */
 	private function getPredefinedPropertyInfo( DIProperty $property ) {
-
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $property, null );
 
 		$dataValue->setLinkAttributes( [
@@ -275,6 +270,13 @@ class PropertiesQueryPage extends QueryPage {
 	function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getPropertiesSpecial( $requestOptions );
 		return $this->listLookup->fetchList();
+	}
+
+	/**
+	 * @return array|null
+	 */
+	public function getQueryInfo(): ?array {
+		return null;
 	}
 
 }

@@ -4,24 +4,22 @@ namespace SMW\Tests;
 
 use SMW\DIWikiPage;
 use SMW\SpecialConcepts;
-use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SpecialConceptsTest extends \PHPUnit_Framework_TestCase {
+class SpecialConceptsTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -29,7 +27,6 @@ class SpecialConceptsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SpecialConcepts::class,
 			new SpecialConcepts()
@@ -37,7 +34,6 @@ class SpecialConceptsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecute() {
-
 		$expected = 'p class="smw-special-concept-docu plainlinks"';
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
@@ -68,7 +64,6 @@ class SpecialConceptsTest extends \PHPUnit_Framework_TestCase {
 	 * @depends testExecute
 	 */
 	public function testGetHtmlForAnEmptySubject() {
-
 		$instance = new SpecialConcepts();
 
 		$this->stringValidator->assertThatStringContains(
@@ -81,7 +76,6 @@ class SpecialConceptsTest extends \PHPUnit_Framework_TestCase {
 	 * @depends testGetHtmlForAnEmptySubject
 	 */
 	public function testGetHtmlForSingleSubject() {
-
 		$subject  = DIWikiPage::newFromText( __METHOD__ );
 		$instance = new SpecialConcepts();
 

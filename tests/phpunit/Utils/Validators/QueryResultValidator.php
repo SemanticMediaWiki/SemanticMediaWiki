@@ -10,12 +10,12 @@ use SMWDataValue as DataValue;
 use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class QueryResultValidator extends \PHPUnit_Framework_Assert {
+class QueryResultValidator extends \PHPUnit\Framework\Assert {
 
 	private $dataValueValidationMethod = null;
 
@@ -28,7 +28,6 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @throws RuntimeException
 	 */
 	public function assertThatQueryResultContains( $expected, QueryResult $queryResult ) {
-
 		if ( $expected instanceof DataValue ) {
 			return $this->assertThatDataValueIsSet( $expected, $queryResult );
 		}
@@ -48,7 +47,6 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $message
 	 */
 	public function assertThatDataValueIsSet( $expected, QueryResult $queryResult, $message = '' ) {
-
 		$expected = is_array( $expected ) ? $expected : [ $expected ];
 
 		if ( $expected === [] ) {
@@ -92,7 +90,6 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $message
 	 */
 	public function assertThatDataItemIsSet( $expected, QueryResult $queryResult, $message = '', $checkSorting = false ) {
-
 		$expected = is_array( $expected ) ? $expected : [ $expected ];
 
 		// Keep the key to allow comparing the position
@@ -145,7 +142,6 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $message
 	 */
 	public function assertThatQueryResultHasSubjects( $expectedSubjects, QueryResult $queryResult, $message = '' ) {
-
 		$expectedSubjects = is_array( $expectedSubjects ) ? $expectedSubjects : [ $expectedSubjects ];
 		$expectedToCount  = count( $expectedSubjects );
 		$actualComparedToCount = 0;
@@ -180,6 +176,13 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 			"Failed on {$message} asserting that " . implode( ', ', $expectedSubjects ) . ' is set.'
 		);
 
+		// check once again resultSubjects, clear all if there are some subjects left
+		if ( $resultSubjects >= 1 ) {
+			foreach ( $resultSubjects as $rKey => $resultSubject ) {
+				unset( $resultSubjects[$rKey] );
+			}
+		}
+
 		$this->assertEmpty(
 			$resultSubjects,
 			"Failed on {$message} to match results [ " . implode( ', ', $resultSubjects ) . ' ] against the expected subjects.'
@@ -204,8 +207,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @return QueryResultValidator
 	 */
 	public function useWikiValueForDataValueValidation() {
-
-		$this->dataValueValidationMethod = function( DataValue $expectedDataValue, DataValue $dataValue ) {
+		$this->dataValueValidationMethod = static function ( DataValue $expectedDataValue, DataValue $dataValue ) {
 			return $expectedDataValue->getWikiValue() === $dataValue->getWikiValue();
 		};
 

@@ -11,7 +11,7 @@ use SMWDIContainer as DIContainer;
  * The handler encodes errors into a representation that can be retrieved from
  * the back-end and turn it into a string representation at a convenient time.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -50,13 +50,12 @@ class ProcessingErrorMsgHandler {
 	 * @since 2.5
 	 *
 	 * @param array $messages
-	 * @param integer|null $type
-	 * @param integer|null $language
+	 * @param int|null $type
+	 * @param int|null $language
 	 *
 	 * @return array
 	 */
 	public static function normalizeAndDecodeMessages( array $messages, $type = null, $language = null ) {
-
 		$normalizedMessages = [];
 
 		if ( $type === null ) {
@@ -105,13 +104,12 @@ class ProcessingErrorMsgHandler {
 	 * @since 2.5
 	 *
 	 * @param array $messages
-	 * @param integer|null $type
-	 * @param integer|null $language
+	 * @param int|null $type
+	 * @param int|null $language
 	 *
 	 * @return string
 	 */
 	public static function getMessagesAsString( array $messages, $type = null, $language = null ) {
-
 		$normalizedMessages = self::normalizeAndDecodeMessages( $messages, $type, $language );
 		$msg = [];
 
@@ -133,8 +131,7 @@ class ProcessingErrorMsgHandler {
 	 * @param SemanticData $semanticData
 	 * @param DIContainer|null $container
 	 */
-	public function addToSemanticData( SemanticData $semanticData, DIContainer $container = null ) {
-
+	public function addToSemanticData( SemanticData $semanticData, ?DIContainer $container = null ) {
 		if ( $container === null ) {
 			return;
 		}
@@ -148,13 +145,12 @@ class ProcessingErrorMsgHandler {
 	/**
 	 * @since 2.5
 	 *
-	 * @param array|string $errorMsg
+	 * @param array|string $error
 	 * @param DIProperty|null $property
 	 *
 	 * @return DIContainer
 	 */
-	public function newErrorContainerFromMsg( $error, DIProperty $property = null ) {
-
+	public function newErrorContainerFromMsg( $error, ?DIProperty $property = null ) {
 		if ( $property !== null && $property->isInverse() ) {
 			$property = new DIProperty( $property->getKey() );
 		}
@@ -190,7 +186,6 @@ class ProcessingErrorMsgHandler {
 	 * @return DIContainer|null
 	 */
 	public function newErrorContainerFromDataValue( DataValue $dataValue ) {
-
 		if ( $dataValue->getErrors() === [] ) {
 			return null;
 		}
@@ -224,7 +219,6 @@ class ProcessingErrorMsgHandler {
 	}
 
 	private function publishError( $containerSemanticData, $property, $error, $type ) {
-
 		// `_INST` is not a real (visible) property to create a reference from
 		// and link to
 		if ( $property !== null && $property->getKey() !== '_INST' ) {
@@ -248,7 +242,6 @@ class ProcessingErrorMsgHandler {
 	}
 
 	private function newContainerSemanticData( $hash ) {
-
 		if ( $this->subject === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();

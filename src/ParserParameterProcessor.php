@@ -5,7 +5,7 @@ namespace SMW;
 use SMW\Utils\ErrorCodeFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -112,7 +112,7 @@ class ParserParameterProcessor {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasParameter( $key ) {
 		return isset( $this->parameters[$key] ) || array_key_exists( $key, $this->parameters );
@@ -145,7 +145,6 @@ class ParserParameterProcessor {
 	 * @return array
 	 */
 	public function getParameterValuesByKey( $key ) {
-
 		if ( $this->hasParameter( $key ) ) {
 			return $this->parameters[$key];
 		}
@@ -189,11 +188,10 @@ class ParserParameterProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $parameters
-	 * @param boolean $associative
+	 * @param array &$parameters
+	 * @param bool $associative
 	 */
 	public static function sort( array &$parameters, $associative = true ) {
-
 		// Associative vs. simple index array sort
 		if ( $associative ) {
 			ksort( $parameters );
@@ -271,7 +269,6 @@ class ParserParameterProcessor {
 	}
 
 	private function lookAheadOnNextElement( &$params, &$pipe ) {
-
 		$separator = '';
 
 		if ( !next( $params ) ) {
@@ -283,8 +280,8 @@ class ParserParameterProcessor {
 		if ( $nextElement !== [] ) {
 			// This allows assignments of type |Has property=Test1,Test2|+sep=,
 			// as a means to support multiple value declaration
-			if ( substr( $nextElement[0], - 5 ) === '+sep' ) {
-				$separator = isset( $nextElement[1] ) ? $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator : $this->defaultSeparator;
+			if ( substr( $nextElement[0], -5 ) === '+sep' ) {
+				$separator = isset( $nextElement[1] ) ? ( $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator ) : $this->defaultSeparator;
 				next( $params );
 			}
 		}
@@ -298,7 +295,6 @@ class ParserParameterProcessor {
 	}
 
 	private function parseFromJson( $results ) {
-
 		if ( !isset( $results['@json'] ) || !isset( $results['@json'][0] ) ) {
 			return $results;
 		}
@@ -318,8 +314,7 @@ class ParserParameterProcessor {
 			return $results;
 		}
 
-		array_walk( $params, function( &$value, $key ) {
-
+		array_walk( $params, static function ( &$value, $key ) {
 			if ( $value === '' ) {
 				$value = [];
 			}

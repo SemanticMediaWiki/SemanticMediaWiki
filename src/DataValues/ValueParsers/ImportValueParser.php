@@ -8,7 +8,7 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -49,8 +49,7 @@ class ImportValueParser implements ValueParser {
 	 * @return array|null
 	 */
 	public function parse( $value ) {
-
-		list( $namespace, $section, $controlledVocabulary ) = $this->splitByNamespaceSection(
+		[ $namespace, $section, $controlledVocabulary ] = $this->splitByNamespaceSection(
 			$value
 		);
 
@@ -58,7 +57,7 @@ class ImportValueParser implements ValueParser {
 			return null;
 		}
 
-		list( $uri, $name, $typelist ) = $this->doParse(
+		[ $uri, $name, $typelist ] = $this->doParse(
 			$controlledVocabulary
 		);
 
@@ -86,7 +85,6 @@ class ImportValueParser implements ValueParser {
 	 * @return array|null
 	 */
 	private function splitByNamespaceSection( $value ) {
-
 		if ( strpos( $value, ':' ) === false ) {
 
 			$this->errors[] = [
@@ -97,7 +95,7 @@ class ImportValueParser implements ValueParser {
 			return null;
 		}
 
-		list( $namespace, $section ) = explode( ':', $value, 2 );
+		[ $namespace, $section ] = explode( ':', $value, 2 );
 
 		/*
 		 * A controlled vocabulary is a list of terms, with terms being unambiguous,
@@ -126,7 +124,6 @@ class ImportValueParser implements ValueParser {
 	 * @return array|null
 	 */
 	private function checkForValidType( $namespace, $section, $uri, $typelist ) {
-
 		if ( $uri === '' ) {
 
 			$this->errors[] = [
@@ -155,7 +152,6 @@ class ImportValueParser implements ValueParser {
 	 * @return array|null
 	 */
 	private function doParse( $controlledVocabulary ) {
-
 		$list = [];
 		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $controlledVocabulary ) );
 
@@ -166,7 +162,7 @@ class ImportValueParser implements ValueParser {
 			return;
 		}
 
-		list( $uri, $name ) = explode( '|', $fristLine, 2 );
+		[ $uri, $name ] = explode( '|', $fristLine, 2 );
 
 		foreach ( $importDefintions as $importDefintion ) {
 
@@ -174,7 +170,7 @@ class ImportValueParser implements ValueParser {
 				continue;
 			}
 
-			list( $secname, $typestring ) = explode( '|', $importDefintion, 2 );
+			[ $secname, $typestring ] = explode( '|', $importDefintion, 2 );
 			$list[trim( $secname )] = $typestring;
 		}
 

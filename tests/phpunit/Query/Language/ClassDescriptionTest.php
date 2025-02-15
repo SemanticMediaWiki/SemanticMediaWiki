@@ -12,24 +12,23 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Query\Language\ClassDescription
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $cat_name;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->cat_name = Localizer::getInstance()->getNsText( NS_CATEGORY );
 	}
 
 	public function testCanConstruct() {
-
 		$class = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,14 +46,12 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructThrowsException() {
-
 		$this->expectException( 'Exception' );
 
 		new ClassDescription( new \stdClass );
 	}
 
 	public function testCommonMethods() {
-
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$class = new DIWikiPage( 'Foo', NS_CATEGORY );
@@ -65,16 +62,15 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( "[[{$ns}:Foo]]", $instance->getQueryString() );
 		$this->assertEquals( " <q>[[{$ns}:Foo]]</q> ", $instance->getQueryString( true ) );
 
-		$this->assertEquals( false, $instance->isSingleton() );
+		$this->assertFalse( $instance->isSingleton() );
 		$this->assertEquals( [], $instance->getPrintRequests() );
 
-		$this->assertEquals( 1, $instance->getSize() );
-		$this->assertEquals( 0, $instance->getDepth() );
+		$this->assertSame( 1, $instance->getSize() );
+		$this->assertSame( 0, $instance->getDepth() );
 		$this->assertEquals( 2, $instance->getQueryFeatures() );
 	}
 
 	public function testAddDescription() {
-
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
@@ -92,7 +88,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddClass() {
-
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
@@ -110,7 +105,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsMergableDescription() {
-
 		$cat = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$instance = new ClassDescription(
@@ -129,7 +123,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testClass_Negation() {
-
 		$cat = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$instance = new ClassDescription(
@@ -157,7 +150,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFingerprint() {
-
 		$instance = new ClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY )
 		);
@@ -194,7 +186,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrune() {
-
 		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
 
 		$maxsize  = 1;
@@ -217,7 +208,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStableFingerprint() {
-
 		$instance = new ClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY )
 		);
@@ -229,7 +219,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHierarchyDepthToBeCeiledOnMaxQSubcategoryDepthSetting() {
-
 		$instance = new ClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY )
 		);
@@ -243,7 +232,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryStringWithHierarchyDepth() {
-
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$instance = new ClassDescription(
@@ -259,7 +247,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVaryingHierarchyDepthCausesDifferentFingerprint() {
-
 		$instance = new ClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY )
 		);

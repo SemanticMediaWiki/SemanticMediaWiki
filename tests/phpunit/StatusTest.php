@@ -8,17 +8,16 @@ use SMW\Status;
  * @covers \SMW\Status
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
  */
-class StatusTest extends \PHPUnit_Framework_TestCase {
+class StatusTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Status::class,
 			new Status()
@@ -26,7 +25,6 @@ class StatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHas() {
-
 		$instance = new Status( [ 'Foo' => 123 ] );
 
 		$this->assertTrue(
@@ -35,7 +33,6 @@ class StatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIs() {
-
 		$instance = new Status( [ 'Foo' => 123 ] );
 
 		$this->assertTrue(
@@ -44,7 +41,6 @@ class StatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$instance = new Status( [ 'Foo' => 123 ] );
 
 		$this->assertEquals(
@@ -54,7 +50,6 @@ class StatusTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnregisteredKeyThrowsException() {
-
 		$instance = new Status();
 
 		$this->expectException( 'InvalidArgumentException' );

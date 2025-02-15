@@ -10,7 +10,7 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
  * Convenience class to allow users to inject some default settings from
  * individual files directly from `enableSemantics`.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -18,7 +18,7 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
 class ConfigPreloader {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $config = [];
 
@@ -32,12 +32,11 @@ class ConfigPreloader {
 	 *
 	 * @since 3.2
 	 *
-	 * @param array $files
+	 * @param array ...$files
 	 *
 	 * @return self
 	 */
-	public function loadDefaultConfigFrom( ...$files ) : ConfigPreloader {
-
+	public function loadDefaultConfigFrom( ...$files ): ConfigPreloader {
 		$dir = $GLOBALS['smwgDir'] . '/data/config/';
 
 		foreach ( $files as $file ) {
@@ -57,12 +56,11 @@ class ConfigPreloader {
 	 *
 	 * @since 3.2
 	 *
-	 * @param array $files
+	 * @param array ...$files
 	 *
 	 * @return self
 	 */
-	public function loadConfigFrom( ...$files ) : ConfigPreloader {
-
+	public function loadConfigFrom( ...$files ): ConfigPreloader {
 		foreach ( $files as $file ) {
 			$this->load( $file );
 		}
@@ -71,7 +69,6 @@ class ConfigPreloader {
 	}
 
 	private function load( $file ) {
-
 		$file = str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( !is_readable( $file ) ) {

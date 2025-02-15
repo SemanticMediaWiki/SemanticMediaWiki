@@ -21,7 +21,7 @@ use Title;
  *
  * @ingroup Serializers
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.7
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -29,14 +29,14 @@ use Title;
 class QueryResultSerializer implements DispatchableSerializer {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $version = 2;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $version
+	 * @param int $version
 	 */
 	public function version( $version ) {
 		self::$version = (int)$version;
@@ -51,7 +51,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 * @throws OutOfBoundsException
 	 */
 	public function serialize( $queryResult ) {
-
 		if ( !( $this->isSerializerFor( $queryResult ) ) ) {
 			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
 		}
@@ -80,7 +79,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 	public static function getSerialization( DataItem $dataItem, $printRequest = null ) {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_WIKIPAGE:
-
 				// Support for a deserializable _rec type with 0.6
 				if ( $printRequest !== null && strpos( $printRequest->getTypeID(), '_rec' ) !== false ) {
 					$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -177,7 +175,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @since 1.7
 	 *
-	 * @param SMWQueryResult $result
+	 * @param QueryResult $queryResult
 	 *
 	 * @return array
 	 */
@@ -252,7 +250,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 	}
 
 	private static function serialize_printrequest( $printRequest ) {
-
 		$serialized = [
 			'label'  => $printRequest->getLabel(),
 			'key'    => '',

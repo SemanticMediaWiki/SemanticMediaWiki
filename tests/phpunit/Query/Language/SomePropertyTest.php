@@ -13,15 +13,14 @@ use SMW\Query\Language\ValueDescription;
  * @covers \SMW\Query\Language\SomeProperty
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class SomePropertyTest extends \PHPUnit_Framework_TestCase {
+class SomePropertyTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +45,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider somePropertyProvider
 	 */
 	public function testCommonMethods( $property, $description, $expected ) {
-
 		$instance = new SomeProperty( $property, $description );
 
 		$this->assertEquals(
@@ -99,7 +97,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider comparativeHashProvider
 	 */
 	public function testGetFingerprint( $description, $compareTo, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			$description->getFingerprint() === $compareTo->getFingerprint()
@@ -107,8 +104,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function somePropertyProvider() {
-
-		#0
+		# 0
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -131,7 +127,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -154,7 +150,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2
+		# 2
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -177,7 +173,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3, 1096
+		# 3, 1096
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -203,7 +199,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4, 1096
+		# 4, 1096
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -233,7 +229,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrune() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -252,8 +247,8 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			$instance->prune( $maxsize, $maxDepth, $log )
 		);
 
-		$this->assertEquals( 0, $maxsize );
-		$this->assertEquals( 1, $maxDepth );
+		$this->assertSame( 0, $maxsize );
+		$this->assertSame( 1, $maxDepth );
 
 		$maxsize  = 0;
 		$maxDepth = 1;
@@ -266,7 +261,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStableFingerprint() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -286,7 +280,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHierarchyDepthToBeCeiledOnMaxQSubpropertyDepthSetting() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -308,7 +301,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryStringWithHierarchyDepth() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -330,7 +322,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVaryingHierarchyDepthCausesDifferentFingerprint() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -358,7 +349,6 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function comparativeHashProvider() {
-
 		// Same property, different description === different hash
 		$provider[] = [
 			new SomeProperty(

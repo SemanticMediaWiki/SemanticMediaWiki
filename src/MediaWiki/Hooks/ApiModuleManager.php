@@ -6,7 +6,7 @@ use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -21,7 +21,6 @@ class ApiModuleManager implements HookListener {
 	 * @param ApiModuleManager $apiModuleManager
 	 */
 	public function process( \ApiModuleManager $apiModuleManager ) {
-
 		if ( $this->getOption( 'SMW_EXTENSION_LOADED' ) === false ) {
 			return;
 		}

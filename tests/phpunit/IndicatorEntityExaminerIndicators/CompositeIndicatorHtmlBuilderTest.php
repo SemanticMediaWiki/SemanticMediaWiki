@@ -2,23 +2,23 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
+use SMW\DIWikiPage;
 use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
 use SMW\Localizer\MessageLocalizer;
-use SMW\Utils\TemplateEngine;
-use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
+class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -27,7 +27,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private MessageLocalizer $messageLocalizer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -38,13 +38,12 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CompositeIndicatorHtmlBuilder::class,
 			new CompositeIndicatorHtmlBuilder( $this->templateEngine )
@@ -52,10 +51,9 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_Empty() {
-
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( '__foo__' ) );
+			->willReturn( '__foo__' );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -89,19 +87,18 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_TypedIndicator_SEVERITY_ERROR() {
-
 		$typableSeverityIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$typableSeverityIndicatorProvider->expects( $this->any() )
 			->method( 'isSeverityType' )
-			->with( $this->equalTo( $typableSeverityIndicatorProvider::SEVERITY_ERROR ) )
-			->will( $this->returnValue( true ) );
+			->with( $typableSeverityIndicatorProvider::SEVERITY_ERROR )
+			->willReturn( true );
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( '__foo__' ) );
+			->willReturn( '__foo__' );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -135,7 +132,6 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_TypedIndicator_SEVERITY_WARNING() {
-
 		$typableSeverityIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -145,11 +141,11 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			->withConsecutive(
 				[ $this->equalTo( $typableSeverityIndicatorProvider::SEVERITY_ERROR ) ],
 				[ $this->equalTo( $typableSeverityIndicatorProvider::SEVERITY_WARNING ) ] )
-			->will( $this->onConsecutiveCalls( false, true ) );
+			->willReturnOnConsecutiveCalls( false, true );
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( '__foo__' ) );
+			->willReturn( '__foo__' );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -183,14 +179,13 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_Deferrable() {
-
 		$deferrableIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( '__foo__' ) );
+			->willReturn( '__foo__' );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -224,7 +219,6 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_Composite() {
-
 		$composite = [
 			'abc_123' => [ 'content' => '__content_123', 'title' => '_title_123' ]
 		];
@@ -235,11 +229,11 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$compositeIndicatorProvider->expects( $this->any() )
 			->method( 'getIndicators' )
-			->will( $this->returnValue( $composite ) );
+			->willReturn( $composite );
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( '__foo__' ) );
+			->willReturn( '__foo__' );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 

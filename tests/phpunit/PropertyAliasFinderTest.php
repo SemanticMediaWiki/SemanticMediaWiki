@@ -8,17 +8,17 @@ use SMW\PropertyAliasFinder;
  * @covers \SMW\PropertyAliasFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
+class PropertyAliasFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $cache;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -31,7 +31,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$languageIndependentPropertyLabels = [];
 
 		$this->assertInstanceOf(
@@ -41,7 +40,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPropertyAliasById() {
-
 		$propertyAliases = [ 'Bar' => '_Foo' ];
 
 		$instance = new PropertyAliasFinder(
@@ -61,7 +59,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPropertyIdByAlias() {
-
 		$canonicalPropertyAliases = [ 'Bar' => '_Foo' ];
 
 		$instance = new PropertyAliasFinder(
@@ -77,7 +74,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterAliasByFixedLabel() {
-
 		$instance = new PropertyAliasFinder(
 			$this->cache
 		);
@@ -91,7 +87,6 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterAliasByFixedLabel_withContentLanguage() {
-
 		$instance = new PropertyAliasFinder(
 			$this->cache
 		);
@@ -107,10 +102,9 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetKnownPropertyAliasesByLanguageCodeCached() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ '⧼smw-bar⧽' => '_Foo' ] ) );
+			->willReturn( [ '⧼smw-bar⧽' => '_Foo' ] );
 
 		$instance = new PropertyAliasFinder(
 			$this->cache
@@ -131,10 +125,9 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetKnownPropertyAliasesByLanguageCode() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new PropertyAliasFinder(
 			$this->cache
@@ -142,7 +135,7 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->registerAliasByMsgKey( '_Foo', 'smw-bar' );
 
-		$msgKey = version_compare( MW_VERSION, '1.28', '<' ) ? '<smw-bar>' : '⧼smw-bar⧽' ;
+		$msgKey = '⧼smw-bar⧽';
 
 		$this->assertEquals(
 			[ $msgKey => '_Foo' ],

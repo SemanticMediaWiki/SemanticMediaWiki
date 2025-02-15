@@ -15,7 +15,7 @@ use SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector;
  *
  * Provides a RepositoryConnection on the available settings.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -72,12 +72,12 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	private $httpRequest;
 
 	/**
-	 * @var boolean|integer
+	 * @var bool|int
 	 */
 	private $httpVersion = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $featureSet = 0;
 
@@ -130,7 +130,7 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	/**
 	 * @since 2.3
 	 *
-	 * @return integer $httpVersion
+	 * @return int $httpVersion
 	 */
 	public function setHttpVersionTo( $httpVersion ) {
 		$this->httpVersion = $httpVersion;
@@ -139,7 +139,7 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	/**
 	 * @since 3.2
 	 *
-	 * @return integer $featureSet
+	 * @return int $featureSet
 	 */
 	public function setFeatureSet( int $featureSet ) {
 		$this->featureSet = $featureSet;
@@ -154,7 +154,6 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	 * @throws RuntimeException
 	 */
 	public function getConnection() {
-
 		if ( $this->connection === null ) {
 			$this->connection = $this->connectTo( strtolower( $this->connectorId ) );
 		}
@@ -172,7 +171,6 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	}
 
 	private function connectTo( $id ) {
-
 		if ( $this->httpRequest === null ) {
 			$this->httpRequest = new CurlRequest( curl_init() );
 		}
@@ -205,7 +203,6 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	}
 
 	private function createRepositoryConnector( $id, $repositoryClient ) {
-
 		$repositoryConnector = $this->repositoryConnectors['default'];
 
 		if ( isset( $this->repositoryConnectors[$id] ) ) {

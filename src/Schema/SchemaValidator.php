@@ -5,7 +5,7 @@ namespace SMW\Schema;
 use SMW\Utils\JsonSchemaValidator;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -31,10 +31,9 @@ class SchemaValidator {
 	 *
 	 * @param Schema|null $schema
 	 *
-	 * @return []
+	 * @return
 	 */
-	public function validate( Schema $schema = null ) {
-
+	public function validate( ?Schema $schema = null ) {
 		if ( $schema === null || !is_string( $schema->info( Schema::SCHEMA_VALIDATION_FILE ) ) ) {
 			return [];
 		}

@@ -10,7 +10,7 @@ use SMW\MediaWiki\HookListener;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -30,8 +30,8 @@ class SkinTemplateNavigationUniversal implements HookListener {
 	/**
 	 * @since  2.0
 	 *
-	 * @param SkinTemplate $skinTemplate
-	 * @param array $links
+	 * @param SkinTemplate &$skinTemplate
+	 * @param array &$links
 	 */
 	public function __construct( SkinTemplate &$skinTemplate, array &$links ) {
 		$this->skinTemplate = $skinTemplate;
@@ -44,7 +44,6 @@ class SkinTemplateNavigationUniversal implements HookListener {
 	 * @return true
 	 */
 	public function process() {
-
 		if ( $this->skinTemplate->getUser()->isAllowed( 'purge' ) ) {
 			$this->skinTemplate->getOutput()->addModules( 'ext.smw.purge' );
 			$this->links['actions']['purge'] = [

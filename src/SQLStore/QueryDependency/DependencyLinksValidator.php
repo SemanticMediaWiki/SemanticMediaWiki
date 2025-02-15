@@ -3,13 +3,13 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -24,12 +24,12 @@ class DependencyLinksValidator {
 	private $store;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $checkDependencies = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $checkedDependencies = [];
 
@@ -45,7 +45,7 @@ class DependencyLinksValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $checkDependencies
+	 * @param bool $checkDependencies
 	 */
 	public function setCheckDependencies( $checkDependencies ) {
 		$this->checkDependencies = (bool)$checkDependencies;
@@ -54,7 +54,7 @@ class DependencyLinksValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canCheckDependencies() {
 		return $this->checkDependencies;
@@ -63,7 +63,7 @@ class DependencyLinksValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getCheckedDependencies() {
 		return $this->checkedDependencies;
@@ -88,10 +88,9 @@ class DependencyLinksValidator {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasArchaicDependencies( DIWikiPage $subject ) {
-
 		$this->checkedDependencies = [];
 
 		if ( $this->checkDependencies === false ) {
@@ -117,10 +116,8 @@ class DependencyLinksValidator {
 		// INNER JOIN smw_object_ids AS p ON ((s_id=p.smw_id))
 		// INNER JOIN smw_object_ids AS v ON ((o_id=v.smw_id))
 		// WHERE p.smw_hash = 'xxx' AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete')
-		$id_table = $connection->tableName( SQLStore::ID_TABLE );
-
 		$rows = $connection->select(
-			[ $proptables[$tableid]->getName(), $id_table . ' AS p', $id_table . ' AS v' ],
+			[ $proptables[$tableid]->getName(), "p" => SQLStore::ID_TABLE, "v" => SQLStore::ID_TABLE ],
 			[
 				'v.smw_id', 'v.smw_subobject', 'v.smw_touched'
 			],
@@ -131,11 +128,11 @@ class DependencyLinksValidator {
 			],
 			__METHOD__,
 			[
-			//	'ORDER BY' => 'v.smw_touched'
+			// 'ORDER BY' => 'v.smw_touched'
 			],
 			[
-				$id_table . ' AS p' => [ 'INNER JOIN', [ 's_id=p.smw_id' ] ],
-				$id_table . ' AS v' => [ 'INNER JOIN', [ 'o_id=v.smw_id' ] ]
+				"p" => [ 'INNER JOIN', [ 's_id=p.smw_id' ] ],
+				"v" => [ 'INNER JOIN', [ 'o_id=v.smw_id' ] ]
 			]
 		);
 
@@ -167,10 +164,8 @@ class DependencyLinksValidator {
 		// INNER JOIN smw_query_links AS p ON ((p.o_id=smw_id))
 		// WHERE p.s_id = '18341' AND (smw_touched > '2019-01-08 17:45:03')
 		// LIMIT 1
-		$links_table = $connection->tableName( SQLStore::QUERY_LINKS_TABLE );
-
 		$row = $connection->selectRow(
-			[ SQLStore::ID_TABLE, $links_table . ' AS p' ],
+			[ SQLStore::ID_TABLE, "p" => SQLStore::QUERY_LINKS_TABLE ],
 			[
 				'smw_id'
 			],
@@ -181,7 +176,7 @@ class DependencyLinksValidator {
 			__METHOD__,
 			[],
 			[
-				$links_table . ' AS p' => [ 'INNER JOIN', [ 'p.o_id=smw_id' ] ],
+				"p" => [ 'INNER JOIN', [ 'p.o_id=smw_id' ] ],
 			]
 		);
 

@@ -5,19 +5,19 @@ namespace SMW\Elastic\Indexer\Rebuilder;
 use Exception;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Indexer\DocumentCreator;
+use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Installer;
 use SMW\SemanticData;
-use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\SQLStore\SQLStore;
-use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -86,7 +86,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function ping() {
 		return $this->client->ping();
@@ -111,7 +111,6 @@ class Rebuilder {
 	 * @return array
 	 */
 	public function select( Store $store, array $conditions ) {
-
 		$connection = $store->getConnection( 'mw.db' );
 
 		$res = $connection->select(
@@ -139,10 +138,9 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function rollover() {
-
 		if ( $this->versions === [] ) {
 			return false;
 		}
@@ -172,7 +170,6 @@ class Rebuilder {
 	 * @since 3.0
 	 */
 	public function deleteAndSetupIndices() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage( "\n" );
@@ -201,10 +198,9 @@ class Rebuilder {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndices() {
-
 		return $this->client->hasIndex( ElasticClient::TYPE_DATA ) &&
 			$this->client->hasIndex( ElasticClient::TYPE_LOOKUP );
 	}
@@ -221,7 +217,6 @@ class Rebuilder {
 	 * @since 3.0
 	 */
 	public function setDefaults() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage( "\n" );
@@ -250,10 +245,9 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function delete( $id ) {
-
 		$index = $this->client->getIndexName( ElasticClient::TYPE_DATA );
 
 		if ( isset( $this->versions[ElasticClient::TYPE_DATA] ) ) {
@@ -275,11 +269,10 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param SemanticData $semanticData
 	 */
 	public function rebuild( $id, SemanticData $semanticData ) {
-
 		$dataItem = $semanticData->getSubject();
 		$dataItem->setId( $id );
 
@@ -298,7 +291,7 @@ class Rebuilder {
 
 		$this->indexer->setVersions( $this->versions );
 		$this->indexer->isRebuild();
-	//	$this->indexer->setState( Indexer::REBUILD_STATE );
+	// $this->indexer->setState( Indexer::REBUILD_STATE );
 
 		$dataItem = $semanticData->getSubject();
 		$dataItem->setId( $id );
@@ -319,7 +312,6 @@ class Rebuilder {
 	 * @since 3.0
 	 */
 	public function refresh() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -344,7 +336,6 @@ class Rebuilder {
 	}
 
 	private function fetchRawText( $dataItem ) {
-
 		$config = $this->client->getConfig();
 
 		if (
@@ -361,7 +352,6 @@ class Rebuilder {
 	}
 
 	private function prepareIndexByType( $type ) {
-
 		$index = $this->client->getIndexName( $type );
 
 		if ( isset( $this->versions[$type] ) ) {
@@ -387,7 +377,6 @@ class Rebuilder {
 	}
 
 	private function setDefaultByType( $type ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -455,7 +444,6 @@ class Rebuilder {
 	}
 
 	private function createIndexByType( $type ) {
-
 		// If for some reason a recent rebuild didn't finish, use
 		// the locked version as master
 		if ( ( $version = $this->client->getLock( $type ) ) === false ) {
@@ -484,7 +472,6 @@ class Rebuilder {
 	}
 
 	private function rolloverByTypeAndVersion( $type, $version ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$old = $this->installer->rollover(

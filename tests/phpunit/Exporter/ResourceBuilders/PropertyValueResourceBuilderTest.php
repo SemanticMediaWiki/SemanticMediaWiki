@@ -12,17 +12,17 @@ use SMWExpData as ExpData;
  * @covers \SMW\Exporter\ResourceBuilders\PropertyValueResourceBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class PropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->testEnvironment = new TestEnvironment();
@@ -30,13 +30,12 @@ class PropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			PropertyValueResourceBuilder::class,
 			new PropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class PropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddResourceValue() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN );
 

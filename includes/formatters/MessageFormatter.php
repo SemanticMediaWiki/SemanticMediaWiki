@@ -10,7 +10,7 @@ use StubUserLang;
  * Class implementing message output formatting
  *
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -36,7 +36,7 @@ class MessageFormatter {
 	/** @var string */
 	protected $separator = ' <!--br-->';
 
-	/** @var boolean */
+	/** @var bool */
 	protected $escape = true;
 
 	/** @var Language|StubUserLang */
@@ -67,7 +67,7 @@ class MessageFormatter {
 	 *
 	 * @return MessageFormatter
 	 */
-	public static function newFromArray( Language $language, array $messages =  [] ) {
+	public static function newFromArray( Language $language, array $messages = [] ) {
 		$instance = new self( $language );
 		return $instance->addFromArray( $messages );
 	}
@@ -105,13 +105,12 @@ class MessageFormatter {
 	 * @return MessageFormatter
 	 */
 	public function addFromArray( array $messages ) {
-
 		$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
 		foreach ( $messages as $message ) {
 			if ( is_string( $message ) ) {
 				$this->messages[md5( $message )] = $message;
-			} else{
+			} else {
 				$this->messages[] = $message;
 			}
 		}
@@ -154,7 +153,7 @@ class MessageFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $escape
+	 * @param bool $escape
 	 *
 	 * @return MessageFormatter
 	 */
@@ -180,7 +179,7 @@ class MessageFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function exists() {
 		return $this->messages !== [];
@@ -239,13 +238,11 @@ class MessageFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $escape
-	 * @param boolean $html
+	 * @param bool $html
 	 *
 	 * @return string
 	 */
 	protected function getString( $html = true ) {
-
 		if ( $this->escape ) {
 			$messages = array_map( 'htmlspecialchars', array_values( $this->doFormat( $this->messages ) ) );
 		} else {
@@ -274,7 +271,6 @@ class MessageFormatter {
 	 * @return string
 	 */
 	public function getHtml() {
-
 		if ( $this->exists() ) {
 
 			$highlighter = Highlighter::factory( $this->type );

@@ -8,18 +8,17 @@ use SMW\Utils\Url;
  * @covers \SMW\Utils\Url
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class UrlTest extends \PHPUnit_Framework_TestCase {
+class UrlTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider urlProvider
 	 */
 	public function testGet( $url, $flags, $expected ) {
-
 		$instance = new Url( $url );
 
 		$this->assertEquals(
@@ -32,7 +31,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider pathProvider
 	 */
 	public function testPath( $url, $path, $expected ) {
-
 		$instance = new Url( $url );
 
 		$this->assertEquals(
@@ -42,7 +40,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function urlProvider() {
-
 		yield [
 			'http://usr:pss@example.com:81/mypath/myfile.html?a=b&b[]=2&b[]=3#myfragment',
 			[ PHP_URL_SCHEME, PHP_URL_HOST ],
@@ -69,7 +66,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function pathProvider() {
-
 		yield [
 			'http://usr:pss@example.com:81/mypath/myfile.html?a=b&b[]=2&b[]=3#myfragment',
 			'',

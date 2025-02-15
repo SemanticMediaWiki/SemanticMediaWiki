@@ -7,7 +7,7 @@ use SMW\Message;
 use SMW\SetupFile;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class IncompleteSetupTasks {
 	 *
 	 * @param SetupFile|null $setupFile
 	 */
-	public function __construct( SetupFile $setupFile = null ) {
+	public function __construct( ?SetupFile $setupFile = null ) {
 		$this->setupFile = $setupFile;
 
 		if ( $this->setupFile === null ) {
@@ -37,7 +37,7 @@ class IncompleteSetupTasks {
 	 *
 	 * @return string
 	 */
-	public function getTitle() : string {
+	public function getTitle(): string {
 		return 'smw-pendingtasks-tab-setup';
 	}
 
@@ -46,8 +46,7 @@ class IncompleteSetupTasks {
 	 *
 	 * @return string
 	 */
-	public function getHtml() : string {
-
+	public function getHtml(): string {
 		$incompleteTasks = $this->setupFile->findIncompleteTasks();
 		$count = $this->setupFile->get( SetupFile::PREVIOUS_VERSION ) !== null ? 2 : 1;
 
@@ -57,8 +56,7 @@ class IncompleteSetupTasks {
 			$html = Html::rawElement(
 				'p',
 				[
-					'style' => 'margin-top:10px;color:#888',
-					//'class' => 'smw-callout smw-callout-error'
+					'style' => 'margin-top:10px;color:#888'
 				],
 				Message::get( [ 'smw-pendingtasks-setup-intro', $count ], Message::PARSE, Message::USER_LANGUAGE )
 			) . $this->buildList( $incompleteTasks );
@@ -68,7 +66,6 @@ class IncompleteSetupTasks {
 	}
 
 	private function buildList( array $messages ) {
-
 		$html = '';
 
 		foreach ( $messages as $message ) {

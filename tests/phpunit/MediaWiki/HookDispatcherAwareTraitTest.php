@@ -8,15 +8,14 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
  * @covers \SMW\MediaWiki\HookDispatcherAwareTrait
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class HookDispatcherAwareTraitTest extends \PHPUnit_Framework_TestCase {
+class HookDispatcherAwareTraitTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSetHookDispatcher() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();

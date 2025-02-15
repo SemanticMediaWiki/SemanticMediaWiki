@@ -11,12 +11,12 @@ use SMW\SQLStore\EntityStore\EntityLookup;
  * @covers \SMW\SQLStore\EntityStore\EntityLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class EntityLookupTest extends \PHPUnit_Framework_TestCase {
+class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $factory;
@@ -26,8 +26,7 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	private $propertiesLookup;
 	private $semanticDataLookup;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -54,7 +53,7 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->idTable ) );
+			->willReturn( $this->idTable );
 
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
@@ -62,23 +61,22 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->factory->expects( $this->any() )
 			->method( 'newTraversalPropertyLookup' )
-			->will( $this->returnValue( $this->traversalPropertyLookup ) );
+			->willReturn( $this->traversalPropertyLookup );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertySubjectsLookup' )
-			->will( $this->returnValue( $this->propertySubjectsLookup ) );
+			->willReturn( $this->propertySubjectsLookup );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertiesLookup' )
-			->will( $this->returnValue( $this->propertiesLookup ) );
+			->willReturn( $this->propertiesLookup );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newSemanticDataLookup' )
-			->will( $this->returnValue( $this->semanticDataLookup ) );
+			->willReturn( $this->semanticDataLookup );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EntityLookup::class,
 			new EntityLookup( $this->store, $this->factory )
@@ -86,7 +84,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
@@ -95,16 +92,16 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->idTable->expects( $this->once() )
 			->method( 'getSMWPageIDandSort' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'getSemanticDataById' )
-			->with( $this->equalTo( 42 ) )
-			->will( $this->returnValue( $semanticData ) );
+			->with( 42 )
+			->willReturn( $semanticData );
 
 		$instance = new EntityLookup(
 			$this->store,
@@ -115,7 +112,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetProperties() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
@@ -124,23 +120,23 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propTable->expects( $this->once() )
 			->method( 'getName' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$this->idTable->expects( $this->once() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->idTable->expects( $this->once() )
 			->method( 'getPropertyTableHashes' )
-			->will( $this->returnValue( [ '_foo' => '...' ] ) );
+			->willReturn( [ '_foo' => '...' ] );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+			->willReturn( [ '_foo' => $propTable ] );
 
 		$this->propertiesLookup->expects( $this->once() )
 			->method( 'fetchFromTable' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new EntityLookup(
 			$this->store,
@@ -151,7 +147,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues() {
-
 		$property = new DIProperty( 'Bar' );
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -161,27 +156,27 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->idTable->expects( $this->once() )
-			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 1001 ) );
+			->method( 'getSMWPageIDandSort' )
+			->willReturn( 1001 );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+			->willReturn( [ '_foo' => $propTable ] );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$instance = new EntityLookup(
 			$this->store,
@@ -192,7 +187,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues_Property_Inverse() {
-
 		$property = new DIProperty( 'Bar', true );
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -202,19 +196,19 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->idTable->expects( $this->once() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+			->willReturn( [ '_foo' => $propTable ] );
 
 		$this->propertySubjectsLookup->expects( $this->once() )
 			->method( 'fetchFromTable' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new EntityLookup(
 			$this->store,
@@ -225,7 +219,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues_Subject_Null() {
-
 		$property = new DIProperty( 'Bar' );
 		$subject = null;
 
@@ -235,19 +228,19 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->idTable->expects( $this->once() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+			->willReturn( [ '_foo' => $propTable ] );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'fetchSemanticDataFromTable' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new EntityLookup(
 			$this->store,
@@ -258,7 +251,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertySubjects() {
-
 		$property = new DIProperty( 'Bar' );
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -268,19 +260,19 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->idTable->expects( $this->once() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+			->willReturn( [ '_foo' => $propTable ] );
 
 		$this->propertySubjectsLookup->expects( $this->once() )
 			->method( 'fetchFromTable' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new EntityLookup(
 			$this->store,
@@ -291,7 +283,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAllPropertySubjects() {
-
 		$property = new DIProperty( 'Bar' );
 
 		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
@@ -300,19 +291,19 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->idTable->expects( $this->once() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+			->willReturn( [ '_foo' => $propTable ] );
 
 		$this->propertySubjectsLookup->expects( $this->once() )
 			->method( 'fetchFromTable' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new EntityLookup(
 			$this->store,
@@ -323,7 +314,6 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetInProperties() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
@@ -332,15 +322,15 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propTable->expects( $this->once() )
 			->method( 'getDiType' )
-			->will( $this->returnValue( $subject->getDIType() ) );
+			->willReturn( $subject->getDIType() );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+			->willReturn( [ '_foo' => $propTable ] );
 
 		$this->traversalPropertyLookup->expects( $this->once() )
 			->method( 'fetchFromTable' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new EntityLookup(
 			$this->store,

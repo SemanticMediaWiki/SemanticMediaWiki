@@ -8,18 +8,17 @@ use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
  * @covers \SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
+class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 
 	private $preferenceExaminer;
 	private $messageLocalizer;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -30,7 +29,6 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,11 +44,10 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$this->preferenceExaminer->expects( $this->at( 1 ) )
 			->method( 'hasPreferenceOf' )
-			->with( $this->equalTo( 'smw-prefs-general-options-suggester-textinput' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw-prefs-general-options-suggester-textinput' )
+			->willReturn( true );
 
 		$search = $this->getMockBuilder( '\SMWSearch' )
 			->disableOriginalConstructor()
@@ -66,7 +63,7 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 
 		$specialSearch->expects( $this->atLeastOnce() )
 			->method( 'getSearchEngine' )
-			->will( $this->returnValue( $search ) );
+			->willReturn( $search );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -91,11 +88,10 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_DisabledInfo() {
-
 		$this->preferenceExaminer->expects( $this->at( 2 ) )
 			->method( 'hasPreferenceOf' )
-			->with( $this->equalTo( 'smw-prefs-general-options-disable-search-info' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw-prefs-general-options-disable-search-info' )
+			->willReturn( true );
 
 		$search = $this->getMockBuilder( '\SMWSearch' )
 			->disableOriginalConstructor()
@@ -111,7 +107,7 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 
 		$specialSearch->expects( $this->atLeastOnce() )
 			->method( 'getSearchEngine' )
-			->will( $this->returnValue( $search ) );
+			->willReturn( $search );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()

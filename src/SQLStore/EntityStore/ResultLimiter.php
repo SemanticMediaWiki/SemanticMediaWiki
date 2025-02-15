@@ -13,12 +13,12 @@ use SMW\RequestOptions;
 class ResultLimiter {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $size = -1;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $counter = [];
 
@@ -28,7 +28,6 @@ class ResultLimiter {
 	 * @param RequestOptions $requestOptions
 	 */
 	public function calcSize( RequestOptions $requestOptions ) {
-
 		$this->size = -1;
 		$this->counter = [];
 
@@ -54,12 +53,11 @@ class ResultLimiter {
 	 *
 	 * @since 3.2
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canSkip( $id ) {
-
 		if ( $this->size < 0 ) {
 			return false;
 		}

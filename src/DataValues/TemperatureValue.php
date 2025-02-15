@@ -9,7 +9,7 @@ use SMWNumberValue as NumberValue;
  * This datavalue implements unit support for measuring temperatures. This is
  * mostly an example implementation of how to realise custom unit types easily.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author Markus Krötzsch
@@ -33,7 +33,6 @@ class TemperatureValue extends NumberValue {
 	 * NumberValue::convertToMainUnit
 	 */
 	protected function convertToMainUnit( $number, $unit ) {
-
 		$this->m_unitin = $this->getUnitID( $unit );
 
 		if ( ( $value = $this->convertToKelvin( $number, $this->m_unitin ) ) === false ) {
@@ -49,7 +48,6 @@ class TemperatureValue extends NumberValue {
 	 * NumberValue::makeConversionValues
 	 */
 	protected function makeConversionValues() {
-
 		if ( $this->m_unitvalues !== false ) {
 			return; // do this only once
 		}
@@ -81,9 +79,8 @@ class TemperatureValue extends NumberValue {
 	 * NumberValue::makeUserValue
 	 */
 	protected function makeUserValue() {
-
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
-		     ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
+			 ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
 			$printUnit = $this->normalizeUnit( $this->m_outformat );
 			$this->m_unitin = $this->getUnitID( $printUnit );
 		} else {
@@ -127,22 +124,22 @@ class TemperatureValue extends NumberValue {
 			case 'Kelvin':
 			case 'kelvin':
 			case 'kelvins':
-			return 'K';
+				return 'K';
 			// There's a dedicated Unicode character (℃, U+2103) for degrees C.
 			// Your font may or may not display it; do not be alarmed.
 			case '°C':
 			case '℃':
 			case 'Celsius':
 			case 'centigrade':
-			return '°C';
+				return '°C';
 			case '°F':
 			case 'Fahrenheit':
-			return '°F';
+				return '°F';
 			case '°R':
 			case 'Rankine':
-			return '°R';
+				return '°R';
 			default:
-			return false;
+				return false;
 		}
 	}
 
@@ -161,7 +158,6 @@ class TemperatureValue extends NumberValue {
 	}
 
 	private function getPreferredDisplayUnit() {
-
 		$unit = $this->getUnit();
 
 		if ( $this->getProperty() === null ) {
@@ -180,17 +176,13 @@ class TemperatureValue extends NumberValue {
 	}
 
 	private function convertToKelvin( $number, $unit ) {
-
 		switch ( $unit ) {
 			case 'K':
 				return $number;
-			break;
 			case '°C':
 				return $number + 273.15;
-			break;
 			case '°F':
 				return ( $number - 32 ) / 1.8 + 273.15;
-			break;
 			case '°R':
 				return ( $number ) / 1.8;
 		}
@@ -199,20 +191,15 @@ class TemperatureValue extends NumberValue {
 	}
 
 	private function convertToUnit( $number, $unit ) {
-
 		switch ( $unit ) {
 			case 'K':
 				return $number;
-			break;
 			case '°C':
 				return $number - 273.15;
-			break;
 			case '°F':
 				return ( $number - 273.15 ) * 1.8 + 32;
-			break;
 			case '°R':
 				return ( $number ) * 1.8;
-			break;
 			// default: unit not supported
 		}
 

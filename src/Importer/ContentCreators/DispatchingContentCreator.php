@@ -8,7 +8,7 @@ use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -51,7 +51,6 @@ class DispatchingContentCreator implements ContentCreator {
 	 * @param ImportContents $importContents
 	 */
 	public function canCreateContentsFor( ImportContents $importContents ) {
-
 		foreach ( $this->contentCreators as $contentCreator ) {
 			if ( $contentCreator->canCreateContentsFor( $importContents ) ) {
 				return true;
@@ -68,7 +67,6 @@ class DispatchingContentCreator implements ContentCreator {
 	 * @throws RuntimeException
 	 */
 	public function create( ImportContents $importContents ) {
-
 		foreach ( $this->contentCreators as $contentCreator ) {
 			if ( $contentCreator->canCreateContentsFor( $importContents ) ) {
 				$contentCreator->setMessageReporter( $this->messageReporter );

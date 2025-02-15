@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers SMW\Query\QueryLinker
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
+class QueryLinkerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\Query\QueryLinker',
 			new QueryLinker()
@@ -27,18 +26,17 @@ class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->once() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$query->expects( $this->once() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$parameters = [
 			'Foo' => 'Bar',
@@ -55,18 +53,17 @@ class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sortOrderProvider
 	 */
 	public function testSort_PredefinedProperty( $sortKeys, $expected ) {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->once() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$query->expects( $this->once() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( $sortKeys ) );
+			->willReturn( $sortKeys );
 
 		$link = QueryLinker::get( $query );
 		$link->setCompactLink( false );
@@ -78,27 +75,25 @@ class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function sortOrderProvider() {
-
-		yield[
+		yield [
 			[ '_MDAT' => 'DESC' ],
 			'&order=desc&sort=Modification%20date'
 		];
 
-		yield[
+		yield [
 			[ '' => 'ASC' ],
 			'&mainlabel=&source=&offset='
 		];
 
-		yield[
+		yield [
 			[ 'Foo_bar' => 'ASC' ],
 			'&mainlabel=&source=&offset=&order=asc&sort=Foo%20bar'
 		];
 
-		yield[
+		yield [
 			[ '' => 'ASC', 'Foo_bar' => 'DESC' ],
 			'&mainlabel=&source=&offset=&order=asc%2Cdesc&sort=%2CFoo%20bar'
 		];
-
 	}
 
 }

@@ -11,7 +11,7 @@ use SMWDITime as DITime;
 /**
  * This class implements Store access to Time data items.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -69,7 +69,6 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getIndexHint( $key ) {
-
 		if ( 'property.subjects' && $this->isDbType( 'mysql' ) ) {
 			return 's_id';
 		}
@@ -125,7 +124,6 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-
 		if ( is_string( $dbkeys ) ) {
 			return DITime::doUnserialize( $dbkeys );
 		}

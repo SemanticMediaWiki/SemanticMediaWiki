@@ -9,7 +9,7 @@ use SMW\Localizer;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -67,7 +67,6 @@ class TimeValueParser implements ValueParser {
 	 * @return string|false
 	 */
 	public function parse( $userValue ) {
-
 		$this->errors = [];
 		$this->userValue = $userValue;
 
@@ -120,18 +119,19 @@ class TimeValueParser implements ValueParser {
 	 * further.
 	 *
 	 * @param $string string input time representation, e.g. "12 May 2007 13:45:23-3:30"
-	 * @param $datecomponents array of strings that might belong to the specification of a date
-	 * @param $calendarmodesl string if model was set in input, otherwise false
-	 * @param $era string '+' or '-' if provided, otherwise false
-	 * @param $hours integer set to a value between 0 and 24
-	 * @param $minutes integer set to a value between 0 and 59
-	 * @param $seconds integer set to a value between 0 and 59, or false if not given
-	 * @param $timeoffset double set to a value for time offset (e.g. 3.5), or false if not given
+	 * @param &$datecomponents array of strings that might belong to the specification of a date
+	 * @param &$calendarmodel string if model was set in input, otherwise false
+	 * @param &$era string '+' or '-' if provided, otherwise false
+	 * @param &$hours integer set to a value between 0 and 24
+	 * @param &$minutes integer set to a value between 0 and 59
+	 * @param &$seconds integer set to a value between 0 and 59, or false if not given
+	 * @param &$microseconds
+	 * @param &$timeoffset double set to a value for time offset (e.g. 3.5), or false if not given
+	 * @param &timezone
 	 *
-	 * @return boolean stating if the parsing succeeded
+	 * @return bool stating if the parsing succeeded
 	 */
 	private function parseDateString( $string, &$datecomponents, &$calendarmodel, &$era, &$hours, &$minutes, &$seconds, &$microseconds, &$timeoffset, &$timezone ) {
-
 		$calendarmodel = $timezoneoffset = $era = $ampm = false;
 		$hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
 
@@ -196,7 +196,7 @@ class TimeValueParser implements ValueParser {
 				$datecomponents[] = $match; // we check later if this makes sense
 				$matchisdate = true;
 			} elseif ( is_numeric( $match ) &&
-			           ( $prevmatchwasdate || count( $datecomponents ) == 0 ) ) {
+					   ( $prevmatchwasdate || count( $datecomponents ) == 0 ) ) {
 				$datecomponents[] = $match;
 				$matchisnumber = true;
 				$matchisdate = true;
@@ -276,15 +276,14 @@ class TimeValueParser implements ValueParser {
 	 * false and does not set any values.
 	 *
 	 * @param $string string input time representation, e.g. "13:45:23-3:30"
-	 * @param $hours integer between 0 and 24
-	 * @param $minutes integer between 0 and 59
-	 * @param $seconds integer between 0 and 59, or false if not given
-	 * @param $timeoffset double for time offset (e.g. 3.5), or false if not given
+	 * @param &$hours integer between 0 and 24
+	 * @param &$minutes integer between 0 and 59
+	 * @param &$seconds integer between 0 and 59, or false if not given
+	 * @param &$timeoffset double for time offset (e.g. 3.5), or false if not given
 	 *
-	 * @return boolean stating if the parsing succeeded
+	 * @return bool stating if the parsing succeeded
 	 */
 	private static function parseTimeString( $string, &$hours, &$minutes, &$seconds, &$timeoffset ) {
-
 		if ( !preg_match( "/^[T]?([0-2]?[0-9]):([0-5][0-9])(:[0-5][0-9])?(([+\-][0-2]?[0-9])(:(30|00))?)?$/u", $string, $match ) ) {
 			return false;
 		} else {
@@ -324,14 +323,13 @@ class TimeValueParser implements ValueParser {
 	 * false and does not set any values.
 	 *
 	 * @param $string string input time representation, e.g. "134523"
-	 * @param $hours integer between 0 and 24
-	 * @param $minutes integer between 0 and 59
-	 * @param $seconds integer between 0 and 59, or false if not given
+	 * @param &$hours integer between 0 and 24
+	 * @param &$minutes integer between 0 and 59
+	 * @param &$seconds integer between 0 and 59, or false if not given
 	 *
-	 * @return boolean stating if the parsing succeeded
+	 * @return bool stating if the parsing succeeded
 	 */
 	private static function parseMilTimeString( $string, &$hours, &$minutes, &$seconds ) {
-
 		if ( !preg_match( "/^([0-2][0-9])([0-5][0-9])([0-5][0-9])?$/u", $string, $match ) ) {
 			return false;
 		} else {
@@ -357,12 +355,11 @@ class TimeValueParser implements ValueParser {
 	 * returned. Otherwise, false is returned and $monthname is not changed.
 	 *
 	 * @param $string string month name or abbreviation to parse
-	 * @param $monthname string with standard 3-letter English month abbreviation
+	 * @param &$monthname string with standard 3-letter English month abbreviation
 	 *
-	 * @return boolean stating whether a month was found
+	 * @return bool stating whether a month was found
 	 */
 	private function parseMonthString( $string, &$monthname ) {
-
 		// takes precedence over English month names!
 		$monthnum = Localizer::getInstance()->getLang( $this->languageCode )->findMonthNumberByLabel( $string );
 

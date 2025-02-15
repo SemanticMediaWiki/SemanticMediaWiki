@@ -2,27 +2,26 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class UpdateEntityCollationTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class UpdateEntityCollationTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
@@ -38,8 +37,7 @@ class UpdateEntityCollationTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -47,7 +45,6 @@ class UpdateEntityCollationTest extends DatabaseTestCase {
 	}
 
 	public function testSortFieldUpdate() {
-
 		$version = $this->getStore()->getInfo( 'es' );
 
 		// Testing against ES 5.6 may cause a "Can't update
@@ -79,7 +76,7 @@ class UpdateEntityCollationTest extends DatabaseTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\UpdateEntityCollation' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\updateEntityCollation' );
 		$maintenanceRunner->setQuiet()->run();
 	}
 

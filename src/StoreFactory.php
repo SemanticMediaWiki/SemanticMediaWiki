@@ -2,16 +2,16 @@
 
 namespace SMW;
 
-use RuntimeException;
-use SMW\Exception\StoreNotFoundException;
 use Onoi\MessageReporter\NullMessageReporter;
 use Psr\Log\NullLogger;
+use RuntimeException;
+use SMW\Exception\StoreNotFoundException;
 
 /**
  * Factory method that returns an instance of the default store, or an
  * alternative store instance.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -33,7 +33,6 @@ class StoreFactory {
 	 * @throws StoreNotFoundException
 	 */
 	public static function getStore( $class = null ) {
-
 		if ( $class === null ) {
 			$class = $GLOBALS['smwgDefaultStore'];
 		}
@@ -53,7 +52,6 @@ class StoreFactory {
 	}
 
 	private static function newFromClass( $class ) {
-
 		if ( !class_exists( $class ) ) {
 			throw new RuntimeException( "{$class} was not found!" );
 		}

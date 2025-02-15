@@ -2,25 +2,22 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\DIWikiPage;
 use SMW\Exporter\ExpDataFactory;
-use SMW\Tests\TestEnvironment;
-use SMW\Serializers\ExpDataSerializer;
 
 /**
  * @covers \SMW\Exporter\ExpDataFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
+class ExpDataFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $exporter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->exporter = $this->getMockBuilder( '\SMWExporter' )
@@ -29,7 +26,6 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExpDataFactory::class,
 			new ExpDataFactory( $this->exporter )
@@ -37,18 +33,17 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSiteExpData() {
-
 		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->exporter->expects( $this->atLeastOnce() )
 			->method( 'newExpNsResourceById' )
-			->will( $this->returnValue( $expNsResource ) );
+			->willReturn( $expNsResource );
 
 		$this->exporter->expects( $this->atLeastOnce() )
 			->method( 'expandURI' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$instance = new ExpDataFactory(
 			$this->exporter
@@ -61,18 +56,17 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewDefinedExpData() {
-
 		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->exporter->expects( $this->atLeastOnce() )
 			->method( 'newExpNsResourceById' )
-			->will( $this->returnValue( $expNsResource ) );
+			->willReturn( $expNsResource );
 
 		$this->exporter->expects( $this->atLeastOnce() )
 			->method( 'expandURI' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$instance = new ExpDataFactory(
 			$this->exporter
@@ -85,14 +79,13 @@ class ExpDataFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewOntologyExpData() {
-
 		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->exporter->expects( $this->atLeastOnce() )
 			->method( 'newExpNsResourceById' )
-			->will( $this->returnValue( $expNsResource ) );
+			->willReturn( $expNsResource );
 
 		$instance = new ExpDataFactory(
 			$this->exporter

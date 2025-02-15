@@ -10,7 +10,7 @@ namespace SMW;
  * Options that should not be used or where default values should be used
  * can be left as initialised.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author Markus Krötzsch
@@ -114,7 +114,7 @@ class RequestOptions {
 	private $options = [];
 
 	/**
-	 * @var String|null
+	 * @var string|null
 	 */
 	private $caller;
 
@@ -148,9 +148,9 @@ class RequestOptions {
 	 * @since 1.0
 	 *
 	 * @param string $string to match
-	 * @param integer $condition one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
-	 * @param boolean $isOr
-	 * @param boolean $isNot
+	 * @param int $condition one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
+	 * @param bool $isOr
+	 * @param bool $isNot
 	 */
 	public function addStringCondition( $string, $condition, $isOr = false, $isNot = false ) {
 		$this->stringConditions[] = new StringCondition( $string, $condition, $isOr, $isNot );
@@ -221,7 +221,6 @@ class RequestOptions {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
-
 		if ( isset( $this->options[$key] ) ) {
 			return $this->options[$key];
 		}
@@ -232,7 +231,7 @@ class RequestOptions {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function setLimit( $limit ) {
 		$this->limit = (int)$limit;
@@ -241,7 +240,7 @@ class RequestOptions {
 	/**
 	 * @since 2.5
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLimit() {
 		return (int)$this->limit;
@@ -250,7 +249,7 @@ class RequestOptions {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $offset
+	 * @param int $offset
 	 */
 	public function setOffset( $offset ) {
 		$this->offset = (int)$offset;
@@ -259,7 +258,7 @@ class RequestOptions {
 	/**
 	 * @since 2.5
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getOffset() {
 		return (int)$this->offset;
@@ -268,7 +267,7 @@ class RequestOptions {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $lookahead
+	 * @param int $lookahead
 	 */
 	public function setLookahead( int $lookahead ) {
 		$this->lookahead = $lookahead;
@@ -277,9 +276,9 @@ class RequestOptions {
 	/**
 	 * @since 3.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
-	public function getLookahead() : int {
+	public function getLookahead(): int {
 		return $this->lookahead;
 	}
 
@@ -289,7 +288,6 @@ class RequestOptions {
 	 * @return string
 	 */
 	public function getHash() {
-
 		$stringConditions = '';
 
 		foreach ( $this->stringConditions as $stringCondition ) {

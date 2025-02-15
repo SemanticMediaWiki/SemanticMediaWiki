@@ -3,7 +3,7 @@
 namespace SMW\DataValues;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -22,10 +22,9 @@ class UniquenessConstraintValue extends BooleanValue {
 	/**
 	 * @see DataValue::parseUserValue
 	 *
-	 * @param string $value
+	 * @param string $userValue
 	 */
 	protected function parseUserValue( $userValue ) {
-
 		if ( !$this->isEnabledFeature( SMW_DV_PVUC ) ) {
 			$this->addErrorMsg(
 				[

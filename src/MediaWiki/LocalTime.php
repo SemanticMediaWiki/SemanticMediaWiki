@@ -5,10 +5,9 @@ namespace SMW\MediaWiki;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
-use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -17,14 +16,14 @@ class LocalTime {
 
 	/**
 	 * @see $GLOBALS['wgLocalTZoffset']
-	 * @var integer
+	 * @var int
 	 */
 	private static $localTimeOffset = 0;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $localTimeOffset
+	 * @param int $localTimeOffset
 	 */
 	public static function setLocalTimeOffset( $localTimeOffset ) {
 		self::$localTimeOffset = $localTimeOffset;
@@ -40,12 +39,11 @@ class LocalTime {
 	 * @since 3.0
 	 *
 	 * @param DateTime $dateTime
-	 * @param string|null $user
+	 * @param string|null $timeCorrection
 	 *
 	 * @return DateTime
 	 */
-	public static function getLocalizedTime( DateTime $dateTime, string $timeCorrection = null ) {
-
+	public static function getLocalizedTime( DateTime $dateTime, ?string $timeCorrection = null ) {
 		$tz = $timeCorrection ?? false;
 		$data = explode( '|', $tz, 3 );
 
@@ -85,7 +83,7 @@ class LocalTime {
 		}
 
 		# No difference ?
-		if ( 0 == $minDiff ) {
+		if ( $minDiff == 0 ) {
 			return $dateTime;
 		}
 

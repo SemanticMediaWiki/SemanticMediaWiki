@@ -83,6 +83,7 @@
 	"smw_exportrdf_submit": "Esporte",
 	"uriresolver": "URIResolver",
 	"properties": "Proprietà",
+	"smw-categories": "Le Categorije",
 	"smw_property_template": "$1 de tipe $2 ($3 {{PLURAL:$3|ause}})",
 	"smw-special-property-searchform-options": "Opziune",
 	"smw-special-wantedproperties-filter-label": "Filtre:",

@@ -12,7 +12,7 @@ use OutOfBoundsException;
  * and in the way subject pages are referred to.
  *
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -43,7 +43,7 @@ class PropertyTableDefinition {
 	 * DIType of this table.
 	 *
 	 * @since 1.8
-	 * @var integer
+	 * @var int
 	 */
 	protected $diType;
 
@@ -58,7 +58,7 @@ class PropertyTableDefinition {
 	 * other or to the contents of the store.
 	 *
 	 * @since 1.8
-	 * @var string|boolean false
+	 * @var string|bool false
 	 */
 	protected $fixedProperty;
 
@@ -70,7 +70,7 @@ class PropertyTableDefinition {
 	 * table. New tables should really keep the default "true" here.
 	 *
 	 * @since 1.8
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $idSubject = true;
 
@@ -85,7 +85,7 @@ class PropertyTableDefinition {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $DIType constant
+	 * @param int $DIType constant
 	 * @param string $tableName logocal table name (not the DB version)
 	 * @param string|false $fixedProperty property key if any
 	 */
@@ -114,7 +114,7 @@ class PropertyTableDefinition {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function usesIdSubject() {
 		return $this->idSubject;
@@ -136,9 +136,9 @@ class PropertyTableDefinition {
 	 *
 	 * @param string $tableType
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isTableType( string $tableType ) : bool {
+	public function isTableType( string $tableType ): bool {
 		return $this->tableType === $tableType;
 	}
 
@@ -164,7 +164,6 @@ class PropertyTableDefinition {
 	 * @throws OutOfBoundsException
 	 */
 	public function getFixedProperty() {
-
 		if ( $this->fixedProperty === false ) {
 			throw new OutOfBoundsException( 'Attempt to get the fixed property from a table that does not hold one' );
 		}
@@ -179,7 +178,7 @@ class PropertyTableDefinition {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFixedPropertyTable() {
 		return $this->fixedProperty !== false;
@@ -201,7 +200,7 @@ class PropertyTableDefinition {
 	 *
 	 * @since 1.8
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDiType() {
 		return $this->diType;

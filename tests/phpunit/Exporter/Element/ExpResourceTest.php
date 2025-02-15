@@ -5,24 +5,23 @@ namespace SMW\Tests\Exporter\Element;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpResource;
-use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Exporter\Element\ExpResource
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ExpResourceTest extends \PHPUnit_Framework_TestCase {
+class ExpResourceTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Exporter\Element\ExpResource',
 			new ExpResource( '', null )
@@ -39,7 +38,6 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constructorProvider
 	 */
 	public function testAccessToMethods( $uri, $dataItem, $isBlankNode ) {
-
 		$instance = new ExpResource(
 			$uri,
 			$dataItem
@@ -65,7 +63,6 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constructorProvider
 	 */
 	public function testSerializiation( $uri, $dataItem, $isBlankNode, $expected ) {
-
 		$instance = new ExpResource(
 			$uri,
 			$dataItem
@@ -86,7 +83,6 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider invalidConstructorProvider
 	 */
 	public function testInvalidConstructorThrowsException( $uri, $dataItem ) {
-
 		$this->expectException( 'InvalidArgumentException' );
 
 		$instance = new ExpResource(
@@ -99,7 +95,6 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider serializationMissingElementProvider
 	 */
 	public function testDeserializiationForMissingElementThrowsException( $serialization ) {
-
 		$this->expectException( 'RuntimeException' );
 
 		ExpElement::newFromSerialization(
@@ -108,8 +103,7 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function constructorProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			'', null,
 			true,
@@ -120,7 +114,7 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'Foo', null,
 			false,
@@ -131,7 +125,7 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			'Foo', new DIWikiPage( 'Foo', NS_MAIN ),
 			false,
@@ -149,8 +143,7 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function invalidConstructorProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			[], null
 		];
@@ -159,27 +152,26 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function serializationMissingElementProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			[]
 		];
 
-		#1 Missing dataitem
+		# 1 Missing dataitem
 		$provider[] = [
 			[
 				'type' => ExpResource::TYPE_RESOURCE
 			]
 		];
 
-		#2 Bogus type
+		# 2 Bogus type
 		$provider[] = [
 			[
 				'type' => 'BogusType'
 			]
 		];
 
-		#3 Missing uri
+		# 3 Missing uri
 		$provider[] = [
 			[
 				'type' => ExpResource::TYPE_RESOURCE,

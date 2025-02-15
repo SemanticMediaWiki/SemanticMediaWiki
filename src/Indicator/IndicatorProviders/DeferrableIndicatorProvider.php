@@ -9,7 +9,7 @@ use SMW\Indicator\IndicatorProvider;
  * examination or validation tasks therefore should only be carried out after the
  * page has been rendered.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -19,7 +19,7 @@ interface DeferrableIndicatorProvider extends IndicatorProvider {
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $deferredMode
+	 * @param bool $deferredMode
 	 */
 	public function setDeferredMode( bool $deferredMode );
 
@@ -29,8 +29,8 @@ interface DeferrableIndicatorProvider extends IndicatorProvider {
 	 *
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isDeferredMode() : bool;
+	public function isDeferredMode(): bool;
 
 }

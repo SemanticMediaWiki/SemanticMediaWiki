@@ -2,7 +2,9 @@
 	"@metadata": {
 		"authors": [
 			"Afalau",
+			"Ceirios",
 			"Ham II",
+			"Lloffiwr",
 			"Robin Owain"
 		]
 	},
@@ -10,9 +12,19 @@
 	"smw_printername_table": "Tabl",
 	"smw_printername_category": "Categori",
 	"validator-type-class-SMWParamSource": "testun",
+	"smw-categories": "Categorïau",
 	"smw_purge": "Adnewyddu",
 	"browse": "Pori'r wici",
 	"smw-livepreview-loading": "Wrthi'n llwytho…",
+	"smw-data-lookup": "Wrthi'n nôl data...",
+	"smw-processing": "Wrthi'n prosesu...",
+	"smw-loading": "Wrthi'n llwytho...",
+	"smw-fetching": "Wrthi'n nôl...",
+	"smw-preparing": "Wrthi'n paratoi...",
+	"smw-facetedsearch-intro-tab-explore": "Archwilio",
+	"smw-facetedsearch-format-table": "Tabl",
+	"smw-facetedsearch-input-filter-placeholder": "Hidlo...",
+	"smw-search-placeholder": "Chwilio...",
 	"smw-listingcontinuesabbrev": "parh.",
 	"smw-showingresults": "Yn dangos $1 {{PLURAL:$1|canlyniad|canlyniad|ganlyniad|chanlyniad|chanlyniad|canlyniad}} isod gan ddechrau gyda rhif '''$2'''."
 }

@@ -7,25 +7,23 @@ use SMWDITime as DITime;
 /**
  * @covers \SMWDITime
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class DITimeTest extends \PHPUnit_Framework_TestCase {
+class DITimeTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMWDITime',
-			new DITime(  DITime::CM_GREGORIAN, 1970 )
+			new DITime( DITime::CM_GREGORIAN, 1970 )
 		);
 	}
 
 	public function testNewFromTimestamp() {
-
 		$instance = DITime::newFromTimestamp( '1362200400' );
 
 		$this->assertInstanceOf(
@@ -35,13 +33,12 @@ class DITimeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFromDateTime() {
-
 		$instance = DITime::newFromDateTime(
 			new \DateTime( '2012-07-08 11:14:15.638276' )
 		);
 
-		$this->assertEquals(
-			'15.638276',
+		$this->assertSame(
+			15.638276,
 			$instance->getSecond()
 		);
 
@@ -65,7 +62,6 @@ class DITimeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDateTimeRoundTrip() {
-
 		$dateTime = new \DateTime( '2012-07-08 11:14:15.638276' );
 
 		$instance = DITime::newFromDateTime(
@@ -79,7 +75,6 @@ class DITimeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDateTimeWithLargeMs() {
-
 		$dateTime = new \DateTime( '1300-11-02 12:03:25.888499' );
 
 		$instance = new DITime(
@@ -93,7 +88,6 @@ class DITimeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDateTimeWithHistoricDate() {
-
 		$dateTime = new \DateTime( '-0900-02-02 00:00:00' );
 
 		$instance = new DITime(
@@ -107,7 +101,6 @@ class DITimeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeserializationOnIncompleteFormat() {
-
 		$instance = new DITime(
 			1, 2013, 0, 2, 0
 		);
@@ -122,7 +115,6 @@ class DITimeTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider jdProvider
 	 */
 	public function testNewFromJD( $jd, $expected ) {
-
 		$this->assertEquals(
 			DITime::doUnserialize( $expected ),
 			DITime::newFromJD( $jd )
@@ -130,19 +122,16 @@ class DITimeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToDeserializeOnNonNumericElementsThrowsException() {
-
 		$this->expectException( '\SMW\Exception\DataItemException' );
 		DITime::doUnserialize( '1/2013/0/2/0/foo' );
 	}
 
 	public function testTryToDeserializeOnInvalidCountOfElementsThrowsException() {
-
 		$this->expectException( '\SMW\Exception\DataItemException' );
 		DITime::doUnserialize( '1' );
 	}
 
 	public function jdProvider() {
-
 		$provider[] = [
 			'2488345.500000',
 			'1/2100/10/04'

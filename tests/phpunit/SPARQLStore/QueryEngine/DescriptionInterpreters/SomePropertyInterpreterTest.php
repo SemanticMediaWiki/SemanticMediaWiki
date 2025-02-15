@@ -20,23 +20,22 @@ use SMWDITime as DITime;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
+class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -48,7 +47,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanInterpretDescription() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\SomeProperty' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -68,7 +66,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testSomeProperty( $description, $orderByProperty, $sortkeys, $expectedConditionType, $expectedConditionString ) {
-
 		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -98,7 +95,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHierarchyPattern() {
-
 		$engineOptions = new EngineOptions();
 		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBP );
 
@@ -110,8 +106,8 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$hierarchyLookup->expects( $this->once() )
 			->method( 'hasSubproperty' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( true ) );
+			->with( $property )
+			->willReturn( true );
 
 		$resultVariable = 'result';
 
@@ -143,14 +139,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
 
-		$description =  new SomeProperty(
-			new DIProperty( 'Foo'),
+		$description = new SomeProperty(
+			new DIProperty( 'Foo' ),
 			new Disjunction()
 		);
 
@@ -172,8 +167,8 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 1
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new SomeProperty(
-			new DIProperty( 'Foo'),
+		$description = new SomeProperty(
+			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
 
@@ -218,12 +213,12 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 3
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new SomeProperty(
-			new DIProperty( 'Foo'),
+		$description = new SomeProperty(
+			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
 
-		$orderByProperty = new DIProperty( 'Foo');
+		$orderByProperty = new DIProperty( 'Foo' );
 		$sortkeys = [];
 
 		$expected = $stringBuilder

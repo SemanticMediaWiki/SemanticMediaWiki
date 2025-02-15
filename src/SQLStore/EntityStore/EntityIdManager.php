@@ -2,27 +2,24 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use Iterator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Utils\Flag;
+use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\Collator;
+use SMW\MediaWiki\Connection\Sequence;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
-use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\IdToDataItemMatchFinder;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
-use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableFieldUpdater;
-use SMWDataItem as DataItem;
-use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\Connection\Sequence;
 use SMW\TypesRegistry;
-use SMW\MediaWiki\Deferred\HashFieldUpdate;
-use SMW\Listener\ChangeListener\ChangeRecord;
-use Iterator;
+use SMW\Utils\Flag;
+use SMWDataItem as DataItem;
 
 /**
  * Class to access the SMW IDs table in SQLStore3.
@@ -56,7 +53,7 @@ use Iterator;
  * properties are represented by language-independent keys rather than proper
  * titles. SMWDIHandlerWikiPage takes care of this.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Markus Krötzsch
@@ -177,7 +174,7 @@ class EntityIdManager {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $equalitySupport
+	 * @param int $equalitySupport
 	 */
 	public function setEqualitySupport( int $equalitySupport ) {
 		$this->equalitySupport = new Flag( $equalitySupport );
@@ -193,7 +190,6 @@ class EntityIdManager {
 	 * @param ChangeRecord $changeRecord
 	 */
 	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ) {
-
 		if ( $key === 'smwgQEqualitySupport' ) {
 			$this->setEqualitySupport( $changeRecord->get( $key ) );
 		}
@@ -216,10 +212,9 @@ class EntityIdManager {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRedirect( DIWikiPage $subject ) {
-
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -233,12 +228,11 @@ class EntityIdManager {
 	 * @since 2.1
 	 *
 	 * @param string $title DB key
-	 * @param integer $namespace
+	 * @param int $namespace
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function findRedirect( $title, $namespace ) {
-
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -251,12 +245,11 @@ class EntityIdManager {
 	 *
 	 * @since 2.1
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function addRedirect( $id, $title, $namespace ) {
-
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -269,12 +262,11 @@ class EntityIdManager {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function updateRedirect( $id, $title, $namespace ) {
-
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -288,10 +280,9 @@ class EntityIdManager {
 	 * @since 2.1
 	 *
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function deleteRedirect( $title, $namespace ) {
-
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -317,14 +308,14 @@ class EntityIdManager {
 	 * @since 1.8
 	 *
 	 * @param string $title DB key
-	 * @param integer $namespace namespace
+	 * @param int $namespace namespace
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
-	 * @param string $sortkey call-by-ref will be set to sortkey
-	 * @param boolean $canonical should redirects be resolved?
-	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @param string &$sortkey call-by-ref will be set to sortkey
+	 * @param bool $canonical should redirects be resolved?
+	 * @param bool $fetchHashes should the property hashes be obtained and cached?
 	 *
-	 * @return integer SMW id or 0 if there is none
+	 * @return int SMW id or 0 if there is none
 	 */
 	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes = false ) {
 		$id = $this->getPredefinedData( $title, $namespace, $iw, $subobjectName, $sortkey );
@@ -346,17 +337,16 @@ class EntityIdManager {
 	 * @since 1.8
 	 *
 	 * @param string $title DB key
-	 * @param integer $namespace namespace
+	 * @param int $namespace namespace
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
-	 * @param string $sortkey call-by-ref will be set to sortkey
-	 * @param boolean $canonical should redirects be resolved?
-	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @param string &$sortkey call-by-ref will be set to sortkey
+	 * @param bool $canonical should redirects be resolved?
+	 * @param bool $fetchHashes should the property hashes be obtained and cached?
 	 *
-	 * @return integer SMW id or 0 if there is none
+	 * @return int SMW id or 0 if there is none
 	 */
 	protected function getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes ) {
-
 		$sha1 = $this->idCacheManager->computeSha1(
 			[
 				$title,
@@ -392,7 +382,7 @@ class EntityIdManager {
 			$this->equalitySupport->not( SMW_EQ_NONE ) &&
 			$subobjectName === '' &&
 			$canonical ) {
-			list( $id, $sortkey ) = $this->entityIdFinder->fetchFieldsFromTableById(
+			[ $id, $sortkey ] = $this->entityIdFinder->fetchFieldsFromTableById(
 				$this->findRedirect( $title, $namespace ),
 				$title,
 				$namespace,
@@ -401,7 +391,7 @@ class EntityIdManager {
 				$sortkey
 			);
 		} else {
-			list( $id, $sortkey ) = $this->entityIdFinder->fetchFromTableByTitle(
+			[ $id, $sortkey ] = $this->entityIdFinder->fetchFromTableByTitle(
 				$title,
 				$namespace,
 				$iw,
@@ -431,10 +421,9 @@ class EntityIdManager {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isUnique( DataItem $dataItem ) {
-
 		if ( $this->duplicateFinder === null ) {
 			$this->duplicateFinder = $this->factory->newDuplicateFinder();
 		}
@@ -445,10 +434,9 @@ class EntityIdManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function findDuplicates() {
-
 		if ( $this->duplicateFinder === null ) {
 			$this->duplicateFinder = $this->factory->newDuplicateFinder();
 		}
@@ -492,7 +480,7 @@ class EntityIdManager {
 	 * @since 2.3
 	 *
 	 * @param string $title DB key
-	 * @param integer $namespace namespace
+	 * @param int $namespace namespace
 	 * @param string|null $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
 	 *
@@ -527,14 +515,13 @@ class EntityIdManager {
 	 * @return int
 	 */
 	public function getId( DIWikiPage $subject ) {
-
 		// Try to match a predefined property
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
 			try {
 				$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
-			} catch( \SMW\Exception\PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( \SMW\Exception\PredefinedPropertyLabelMismatchException $e ) {
 				return 0;
-			} catch( \SMW\Exception\PropertyLabelNotResolvedException $e ) {
+			} catch ( \SMW\Exception\PropertyLabelNotResolvedException $e ) {
 				return 0;
 			}
 
@@ -566,13 +553,13 @@ class EntityIdManager {
 	 * @since 1.8
 	 *
 	 * @param string $title DB key
-	 * @param integer $namespace namespace
+	 * @param int $namespace namespace
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
-	 * @param boolean $canonical should redirects be resolved?
-	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @param bool $canonical should redirects be resolved?
+	 * @param bool $fetchHashes should the property hashes be obtained and cached?
 	 *
-	 * @return integer SMW id or 0 if there is none
+	 * @return int SMW id or 0 if there is none
 	 */
 	public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $fetchHashes = false ) {
 		$sort = '';
@@ -594,14 +581,14 @@ class EntityIdManager {
 	 * @since 1.8
 	 *
 	 * @param string $title DB key
-	 * @param integer $namespace namespace
+	 * @param int $namespace namespace
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
-	 * @param boolean $canonical should redirects be resolved?
+	 * @param bool $canonical should redirects be resolved?
 	 * @param string $sortkey call-by-ref will be set to sortkey
-	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @param bool $fetchHashes should the property hashes be obtained and cached?
 	 *
-	 * @return integer SMW id or 0 if there is none
+	 * @return int SMW id or 0 if there is none
 	 */
 	public function makeSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $sortkey = '', $fetchHashes = false ) {
 		$id = $this->getPredefinedData( $title, $namespace, $iw, $subobjectName, $sortkey );
@@ -624,17 +611,16 @@ class EntityIdManager {
 	 * @since 1.8
 	 *
 	 * @param string $title DB key
-	 * @param integer $namespace namespace
+	 * @param int $namespace namespace
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
-	 * @param boolean $canonical should redirects be resolved?
+	 * @param bool $canonical should redirects be resolved?
 	 * @param string $sortkey call-by-ref will be set to sortkey
-	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @param bool $fetchHashes should the property hashes be obtained and cached?
 	 *
-	 * @return integer SMW id or 0 if there is none
+	 * @return int SMW id or 0 if there is none
 	 */
 	protected function makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes ) {
-
 		$oldsort = '';
 		$id = $this->getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical, $fetchHashes );
 		$db = $this->store->getConnection( 'mw.db' );
@@ -728,12 +714,11 @@ class EntityIdManager {
 	/**
 	 * @since  2.1
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param DIWikiPage $subject
-	 * @param integer|string|null $interwiki
+	 * @param int|string|null $interwiki
 	 */
 	public function updateInterwikiField( $sid, DIWikiPage $subject, $interwiki = null ) {
-
 		if ( $interwiki === null ) {
 			$interwiki = $subject->getInterWiki();
 		}
@@ -765,7 +750,7 @@ class EntityIdManager {
 	 * @since 3.0
 	 *
 	 * @param DIWikiPage|string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $iw
 	 */
 	public function findAssociatedRev( $title, $namespace = '', $iw = '' ) {
@@ -801,8 +786,8 @@ class EntityIdManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $sid
-	 * @param integer $sid
+	 * @param int $sid
+	 * @param int $rev_id
 	 */
 	public function updateRevField( $sid, $rev_id ) {
 		$this->tableFieldUpdater->updateRevField( $sid, $rev_id );
@@ -819,7 +804,7 @@ class EntityIdManager {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSMWPropertyID( DIProperty $property ) {
 		$key = $property->getKey();
@@ -850,10 +835,9 @@ class EntityIdManager {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function makeSMWPropertyID( DIProperty $property ) {
-
 		$key = $property->getKey();
 
 		if ( isset( self::$special_ids[$key] ) && is_int( self::$special_ids[$key] ) ) {
@@ -887,13 +871,13 @@ class EntityIdManager {
 	 *
 	 * @since 1.8
 	 *
-	 * @param string $title DB key
-	 * @param integer $namespace namespace
-	 * @param string $iw interwiki prefix
-	 * @param string $subobjectName
-	 * @param string $sortkey
+	 * @param string &$title DB key
+	 * @param int &$namespace namespace
+	 * @param string &$iw interwiki prefix
+	 * @param string &$subobjectName
+	 * @param string &$sortkey
 	 *
-	 * @return integer predefined id or 0 if none
+	 * @return int predefined id or 0 if none
 	 */
 	protected function getPredefinedData( &$title, &$namespace, &$iw, &$subobjectName, &$sortkey ) {
 		if ( $namespace == SMW_NS_PROPERTY &&
@@ -927,8 +911,8 @@ class EntityIdManager {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $curid
-	 * @param integer $targetid
+	 * @param int $curid
+	 * @param int $targetid
 	 */
 	public function moveSMWPageID( $curid, $targetid = 0 ) {
 		$idChanger = $this->factory->newIdChanger();
@@ -985,10 +969,10 @@ class EntityIdManager {
 	 * @since 1.8
 	 *
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobject
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $sortkey
 	 */
 	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
@@ -998,7 +982,7 @@ class EntityIdManager {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return DIWikiPage|null
 	 */
@@ -1009,19 +993,19 @@ class EntityIdManager {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $id
+	 * @param array $idlist
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return string[]
 	 */
-	public function getDataItemsFromList( array $idlist, RequestOptions $requestOptions = null ) {
+	public function getDataItemsFromList( array $idlist, ?RequestOptions $requestOptions = null ) {
 		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}
 
 	/**
 	 * @deprecated since 3.0, use SMWSql3SmwIds::getDataItemsFromList
 	 */
-	public function getDataItemPoolHashListFor( array $idlist, RequestOptions $requestOptions = null ) {
+	public function getDataItemPoolHashListFor( array $idlist, ?RequestOptions $requestOptions = null ) {
 		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}
 
@@ -1033,7 +1017,7 @@ class EntityIdManager {
 	 * @since 1.8
 	 *
 	 * @param string $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobject
 	 */
@@ -1045,7 +1029,6 @@ class EntityIdManager {
 	 * @since 3.0
 	 */
 	public function initCache() {
-
 		// Tests indicate that it is more memory efficient to have two
 		// arrays (IDs and sortkeys) than to have one array that stores both
 		// values in some data structure (other than a single string).
@@ -1091,7 +1074,7 @@ class EntityIdManager {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $subjectId ID of the page as stored in the SMW IDs table
+	 * @param int $sid ID of the page as stored in the SMW IDs table
 	 *
 	 * @return array
 	 */
@@ -1104,7 +1087,7 @@ class EntityIdManager {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $sid ID of the page as stored in SMW IDs table
+	 * @param int $sid ID of the page as stored in SMW IDs table
 	 * @param string[] of hash values with table names as keys
 	 */
 	public function setPropertyTableHashes( $sid, $hash = null ) {
@@ -1118,8 +1101,7 @@ class EntityIdManager {
 	 *
 	 * @return FieldList
 	 */
-	public function preload( array $subjects ) : FieldList {
-
+	public function preload( array $subjects ): FieldList {
 		$fieldList = $this->auxiliaryFields->prefetchFieldList(
 			$subjects
 		);
@@ -1134,24 +1116,23 @@ class EntityIdManager {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $sid
-	 * @param array $sequenceMap
-	 * @param array $countMap
+	 * @param int $sid
+	 * @param array|null $sequenceMap
+	 * @param array|null $countMap
 	 */
-	public function updateFieldMaps( $sid, array $sequenceMap = null, array $countMap = null ) {
+	public function updateFieldMaps( $sid, ?array $sequenceMap = null, ?array $countMap = null ) {
 		$this->auxiliaryFields->setFieldMaps( $sid, $sequenceMap, $countMap );
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param string|null $key
 	 *
 	 * @return array
 	 */
 	public function getSequenceMap( $sid, $key = null ) {
-
 		$sequenceMap = $this->sequenceMapFinder->findMapById( $sid );
 
 		if ( $key === null ) {

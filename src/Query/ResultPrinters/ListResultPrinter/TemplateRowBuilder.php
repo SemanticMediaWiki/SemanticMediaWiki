@@ -7,7 +7,7 @@ use SMWResultArray;
 /**
  * Class TemplateRowBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -35,7 +35,6 @@ class TemplateRowBuilder extends RowBuilder {
 	 * @return string
 	 */
 	public function getRowText( array $fields, $rownum = 0 ) {
-
 		$templateRenderer = $this->templateRendererFactory->getTemplateRenderer();
 
 		foreach ( $fields as $column => $field ) {
@@ -53,7 +52,6 @@ class TemplateRowBuilder extends RowBuilder {
 		$templateRenderer->packFieldsForTemplate( $this->get( 'template' ) );
 
 		return $templateRenderer->render();
-
 	}
 
 	/**
@@ -63,7 +61,6 @@ class TemplateRowBuilder extends RowBuilder {
 	 * @return string
 	 */
 	private function getFieldLabel( SMWResultArray $field, $column ) {
-
 		if ( $this->get( 'named args' ) === false ) {
 			return intval( $column + 1 );
 		}

@@ -7,7 +7,7 @@ use SMW\Localizer;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -25,17 +25,17 @@ class PropertyValueParser implements ValueParser {
 	private $invalidCharacterList = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCapitalLinks = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $reqCapitalizedFirstChar = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isQueryContext = false;
 
@@ -62,7 +62,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @since 3.0
 	 *
-	 * @param boolean $isCapitalLinks
+	 * @param bool $isCapitalLinks
 	 */
 	public function isCapitalLinks( $isCapitalLinks ) {
 		$this->isCapitalLinks = (bool)$isCapitalLinks;
@@ -74,7 +74,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $reqCapitalizedFirstChar
+	 * @param bool $reqCapitalizedFirstChar
 	 */
 	public function reqCapitalizedFirstChar( $reqCapitalizedFirstChar ) {
 		$this->reqCapitalizedFirstChar = (bool)$reqCapitalizedFirstChar;
@@ -86,7 +86,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isQueryContext
+	 * @param bool $isQueryContext
 	 */
 	public function isQueryContext( $isQueryContext ) {
 		$this->isQueryContext = (bool)$isQueryContext;
@@ -100,7 +100,6 @@ class PropertyValueParser implements ValueParser {
 	 * @return array
 	 */
 	public function parse( $userValue ) {
-
 		$this->errors = [];
 
 		// #1727 <Foo> or <Foo-<Bar> are not permitted but
@@ -117,7 +116,6 @@ class PropertyValueParser implements ValueParser {
 	}
 
 	private function hasValidCharacters( $value ) {
-
 		if ( trim( $value ) === '' ) {
 			$this->errors[] = [ 'smw_emptystring' ];
 			return false;
@@ -161,7 +159,6 @@ class PropertyValueParser implements ValueParser {
 	}
 
 	private function getNormalizedValueFrom( $value ) {
-
 		$inverse = false;
 		$capitalizedName = '';
 		$value = (string)$value;
@@ -188,7 +185,6 @@ class PropertyValueParser implements ValueParser {
 	}
 
 	private function doNormalize( $text, $isCapitalLinks ) {
-
 		$text = trim( $text );
 
 		if ( $isCapitalLinks ) {

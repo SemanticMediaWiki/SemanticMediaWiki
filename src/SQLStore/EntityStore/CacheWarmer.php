@@ -2,19 +2,18 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use RuntimeException;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SQLStore\SQLStore;
-use SMWQueryResult as QueryResult;
 use Iterator;
-use SMW\MediaWiki\LinkBatch;
+use SMW\DIProperty;
 use SMW\DisplayTitleFinder;
+use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\MediaWiki\LinkBatch;
+use SMW\SQLStore\SQLStore;
+use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -37,7 +36,7 @@ class CacheWarmer {
 	private $displayTitleFinder;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $thresholdLimit = 3;
 
@@ -64,7 +63,7 @@ class CacheWarmer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $thresholdLimit
+	 * @param int $thresholdLimit
 	 */
 	public function setThresholdLimit( $thresholdLimit ) {
 		$this->thresholdLimit = $thresholdLimit;
@@ -76,7 +75,6 @@ class CacheWarmer {
 	 * @param array $list
 	 */
 	public function prepareCache( $list = [] ) {
-
 		$hashList = [];
 		$linkBatch = LinkBatch::singleton();
 		$linkBatch->setCaller( __METHOD__ );
@@ -141,7 +139,6 @@ class CacheWarmer {
 	 * @param array $hashList
 	 */
 	public function prefetchFromList( $hashList = [] ) {
-
 		if ( $hashList === [] ) {
 			return;
 		}
@@ -194,7 +191,6 @@ class CacheWarmer {
 	 * @param array $idList
 	 */
 	public function loadByIds( $idList = [] ) {
-
 		if ( $idList === [] ) {
 			return;
 		}

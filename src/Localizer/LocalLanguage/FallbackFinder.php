@@ -5,7 +5,7 @@ namespace SMW\Localizer\LocalLanguage;
 use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -60,7 +60,6 @@ class FallbackFinder {
 	 * @return string
 	 */
 	public function getFallbackLanguageBy( $languageCode = '' ) {
-
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		if ( isset( $this->fallbackLanguages[$languageCode] ) ) {

@@ -9,17 +9,17 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\DataModel\SequenceMap
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class SequenceMapTest extends \PHPUnit_Framework_TestCase {
+class SequenceMapTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $schemaFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -32,7 +32,6 @@ class SequenceMapTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SequenceMap::class,
 			new SequenceMap()
@@ -40,15 +39,14 @@ class SequenceMapTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanMap() {
-
 		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$schemaList->expects( $this->atLeastOnce() )
 			->method( 'get' )
-			->with( $this->equalTo( 'profile' ) )
-			->will( $this->returnValue( [ 'sequence_map' => true ] ) );
+			->with( 'profile' )
+			->willReturn( [ 'sequence_map' => true ] );
 
 		$schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
 			->disableOriginalConstructor()
@@ -56,11 +54,11 @@ class SequenceMapTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaFinder->expects( $this->atLeastOnce() )
 			->method( 'newSchemaList' )
-			->will( $this->returnValue( $schemaList ) );
+			->willReturn( $schemaList );
 
 		$this->schemaFactory->expects( $this->atLeastOnce() )
 			->method( 'newSchemaFinder' )
-			->will( $this->returnValue( $schemaFinder ) );
+			->willReturn( $schemaFinder );
 
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()

@@ -4,36 +4,36 @@ namespace SMW\MediaWiki\Specials;
 
 use Html;
 use ParamProcessor\Param;
-use SMW\Query\QuerySourceFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\MediaWiki\Specials\Ask\FormatListWidget;
 use SMW\MediaWiki\Specials\Ask\HelpWidget;
+use SMW\MediaWiki\Specials\Ask\HtmlForm;
 use SMW\MediaWiki\Specials\Ask\LinksWidget;
 use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
 use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
-use SMW\MediaWiki\Specials\Ask\HtmlForm;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
+use SMW\Query\QuerySourceFactory;
 use SMW\Query\RemoteRequest;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinterDependency;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Services\ServicesFactory;
 use SMW\Utils\HtmlModal;
+use SMW\Utils\UrlArgs;
 use SMWInfolink as Infolink;
 use SMWOutputs;
 use SMWQuery;
 use SMWQueryProcessor as QueryProcessor;
-use SMW\Query\QueryResult;
 use SpecialPage;
-use SMW\Utils\UrlArgs;
-use SMW\Services\ServicesFactory;
 
 /**
  * This special page for MediaWiki implements a customisable form for executing
  * queries outside of articles.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -65,12 +65,12 @@ class SpecialAsk extends SpecialPage {
 	private $printouts = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEditMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isBorrowedMode = false;
 
@@ -87,7 +87,7 @@ class SpecialAsk extends SpecialPage {
 	/**
 	 * @see SpecialPage::doesWrites
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doesWrites() {
 		return true;
@@ -99,7 +99,6 @@ class SpecialAsk extends SpecialPage {
 	 * @param string $p
 	 */
 	public function execute( $p ) {
-
 		$this->setHeaders();
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
@@ -171,9 +170,9 @@ class SpecialAsk extends SpecialPage {
 		$out->addHTML( HelpWidget::html() );
 
 		if ( $request->getCheck( 'bHelp' ) ) {
-			$helpLink = wfMessage( $request->getVal( 'bHelp' ) )->escaped();
+			$helpLink = $this->msg( $request->getVal( 'bHelp' ) )->escaped();
 		} else {
-			$helpLink = wfMessage( 'smw_ask_doculink' )->escaped();
+			$helpLink = $this->msg( 'smw_ask_doculink' )->escaped();
 		}
 
 		$this->addHelpLink( $helpLink, true );
@@ -186,12 +185,6 @@ class SpecialAsk extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/search';
 	}
 
@@ -199,10 +192,13 @@ class SpecialAsk extends SpecialPage {
 		$out = $this->getOutput();
 		$request = $this->getRequest();
 
-		$out->addModuleStyles( 'ext.smw.style' );
-		$out->addModuleStyles( 'ext.smw.ask.styles' );
-		$out->addModuleStyles( 'ext.smw.table.styles' );
-		$out->addModuleStyles( 'ext.smw.page.styles' );
+		$out->addModuleStyles( [
+			'ext.smw.styles',
+			'ext.smw.ask.styles',
+			'ext.smw.page.styles',
+			'ext.smw.table.styles',
+			'mediawiki.codex.messagebox.styles'
+		] );
 
 		$out->addModuleStyles(
 			HtmlModal::getModuleStyles()
@@ -269,7 +265,6 @@ class SpecialAsk extends SpecialPage {
 	 * @param string $p
 	 */
 	protected function extractQueryParameters( $p ) {
-
 		$request = $this->getRequest();
 		$this->isEditMode = false;
 
@@ -294,7 +289,6 @@ class SpecialAsk extends SpecialPage {
 	}
 
 	protected function makeHTMLResult() {
-
 		$result = '';
 		$res = null;
 		$settings = ApplicationFactory::getInstance()->getSettings();
@@ -341,7 +335,7 @@ class SpecialAsk extends SpecialPage {
 		if ( $this->queryString ) {
 			$this->getOutput()->setHTMLtitle( $this->queryString );
 		} else {
-			$this->getOutput()->setHTMLtitle( wfMessage( 'ask' )->text() );
+			$this->getOutput()->setHTMLtitle( $this->msg( 'ask' )->text() );
 		}
 
 		$urlArgs->set( 'offset', $this->parameters['offset'] );
@@ -379,7 +373,7 @@ class SpecialAsk extends SpecialPage {
 
 		$htmlForm->setCallbacks(
 			[
-				'code_handler' => function() {
+				'code_handler' => function () {
 					return $this->print_code();
 				}
 			]
@@ -423,7 +417,6 @@ class SpecialAsk extends SpecialPage {
 	}
 
 	private function fetchResults( &$printer, &$queryobj, &$urlArgs ) {
-
 		// Copy the printout to retain the original state while in case of no
 		// specific subject (THIS) request extend the query with a
 		// `PrintRequest::PRINT_THIS` column
@@ -548,14 +541,13 @@ class SpecialAsk extends SpecialPage {
 			'from_cache' => $isFromCache
 		];
 	}
-	
+
 	/**
 	 * Generate wikitext for the current query expressed as an {{#ask:}} parser function invocation.
 	 * The return value is not HTML-safe; the caller must take care of escaping it.
 	 * @return string
 	 */
 	private function print_code() {
-
 		$code = $this->queryString ? $this->queryString . "\n" : "\n";
 
 		foreach ( $this->printouts as $printout ) {
@@ -580,7 +572,6 @@ class SpecialAsk extends SpecialPage {
 	}
 
 	private function print_borrowed_msg( &$html, &$searchInfoText ) {
-
 		if ( !$this->isBorrowedMode ) {
 			return;
 		}
@@ -593,13 +584,13 @@ class SpecialAsk extends SpecialPage {
 
 		$searchInfoText = '';
 
-		if ( $borrowedMessage !== null && wfMessage( $borrowedMessage )->exists() ) {
+		if ( $borrowedMessage !== null && $this->msg( $borrowedMessage )->exists() ) {
 			$html = html::rawElement(
 				'p',
 				[
 					'class' => 'plainlinks'
 				],
-				wfMessage( $borrowedMessage, $this->queryString )->parse()
+				$this->msg( $borrowedMessage, $this->queryString )->parse()
 			);
 		}
 
@@ -609,13 +600,12 @@ class SpecialAsk extends SpecialPage {
 			$borrowedTitle = $this->parameters['btitle'];
 		}
 
-		if ( $borrowedTitle !== null && wfMessage( $borrowedTitle )->exists() ) {
-			$this->getOutput()->setPageTitle( wfMessage( $borrowedTitle )->text() );
+		if ( $borrowedTitle !== null && $this->msg( $borrowedTitle )->exists() ) {
+			$this->getOutput()->setPageTitle( $this->msg( $borrowedTitle )->text() );
 		}
 	}
 
 	private function newUrlArgs() {
-
 		$urlArgs = new UrlArgs();
 
 		// build parameter strings for URLs, based on current settings
@@ -665,7 +655,6 @@ class SpecialAsk extends SpecialPage {
 	}
 
 	private function fetchQueryResult( $params ) {
-
 		$res = null;
 		$debug = '';
 		$duration = 0;

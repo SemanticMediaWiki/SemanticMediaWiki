@@ -1,8 +1,10 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Liangent"
+		]
 	},
-	"smw-createproperty-isproperty": "In jak viƶagī az nav'i $1 ast.",
+	"smw-categories": "Gurūhho",
 	"smw-livepreview-loading": "Dar holi bor şudan…",
 	"smw-listingcontinuesabbrev": "idoma",
 	"smw-showingresults": "Namoişi {{PLURAL:$1|'''1''' natiça|'''$1''' natoiç}} dar zer oƣoz az #'''$2'''."

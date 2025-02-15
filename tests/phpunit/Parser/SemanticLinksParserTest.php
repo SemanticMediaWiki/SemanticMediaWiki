@@ -9,15 +9,14 @@ use SMW\Parser\SemanticLinksParser;
  * @covers \SMW\Parser\SemanticLinksParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SemanticLinksParserTest extends \PHPUnit_Framework_TestCase {
+class SemanticLinksParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$linksProcessor = $this->getMockBuilder( 'SMW\Parser\LinksProcessor' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -34,7 +33,6 @@ class SemanticLinksParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textProvider
 	 */
 	public function testParse( $text, $expected ) {
-
 		$instance = new SemanticLinksParser(
 			new LinksProcessor()
 		);
@@ -46,7 +44,6 @@ class SemanticLinksParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-
 		$provider = [];
 
 		$provider[] = [

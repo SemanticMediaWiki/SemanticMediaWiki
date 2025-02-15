@@ -2,25 +2,23 @@
 
 namespace SMW\Tests\Query\Result;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\Result\FilterMap;
 
 /**
  * @covers \SMW\Query\Result\FilterMap
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class FilterMapTest extends \PHPUnit_Framework_TestCase {
+class FilterMapTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $entityIdManager;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
@@ -34,11 +32,10 @@ class FilterMapTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityIdManager ) );
+			->willReturn( $this->entityIdManager );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FilterMap::class,
 			new FilterMap( $this->store, [] )
@@ -46,10 +43,9 @@ class FilterMapTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCountListByType() {
-
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'preload' )
-			->with( $this->equalTo( [ 'Foo' ] ) );
+			->with( [ 'Foo' ] );
 
 		$instance = new FilterMap(
 			$this->store,

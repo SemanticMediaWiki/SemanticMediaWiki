@@ -2,24 +2,23 @@
 
 namespace SMW\Tests\Property;
 
+use Html;
 use SMW\Property\DeclarationExaminerMsgBuilder;
-use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminerMsgBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
+class DeclarationExaminerMsgBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $declarationExaminer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
@@ -28,7 +27,6 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DeclarationExaminerMsgBuilder::class,
 			new DeclarationExaminerMsgBuilder()
@@ -39,10 +37,9 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider messageProvider
 	 */
 	public function testBuildHTML( $messages, $expected ) {
-
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( $messages ) );
+			->willReturn( $messages );
 
 		$instance = new DeclarationExaminerMsgBuilder();
 
@@ -52,67 +49,60 @@ class DeclarationExaminerMsgBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function messageProvider() {
-
-		if ( version_compare( MW_VERSION, '1.28', '<' ) ) {
-			yield [
-				[ [ 'plain', 'foo' ] ],
-				'<div id="foo" class="plainlinks foo">&lt;foo&gt;</div>'
-			];
-
-			// ranking
-			yield [
-				[ [ 'plain', 'bar' ], [ 'error', 'foo' ] ],
-				'<div id="foo" class="plainlinks foo smw-callout smw-callout-error">&lt;foo&gt;</div><div id="bar" class="plainlinks bar">&lt;bar&gt;</div>'
-			];
-
-			//_list
-			yield [
-				[ [ 'error', '_msgkey' => 'foo', '_list' => [ 'a', 'b' ] ] ],
-				'<div id="foo" class="plainlinks foo smw-callout smw-callout-error">&lt;foo&gt;<ul><li>a</li><li>b</li></ul></div>'
-			];
-
-			// _merge
-			yield [
-				[ [ 'error', '_merge' => [ 'a', 'b' ] ] ],
-				'<div id="a-b" class="plainlinks a-b smw-callout smw-callout-error">&lt;a&gt;&nbsp;&lt;b&gt;</div>'
-			];
-
-			// Unknown type
-			yield [
-				[ [ '__foobar__', 'foo' ] ],
-				''
-			];
-		} else {
-			yield [
-				[ [ 'plain', 'foo' ] ],
-				'<div id="foo" class="plainlinks foo">⧼foo⧽</div>'
-			];
-
-			// ranking
-			yield [
-				[ [ 'plain', 'bar' ], [ 'error', 'foo' ] ],
-				'<div id="foo" class="plainlinks foo smw-callout smw-callout-error">⧼foo⧽</div><div id="bar" class="plainlinks bar">⧼bar⧽</div>'
-			];
-
-			//_list
-			yield [
-				[ [ 'error', '_msgkey' => 'foo', '_list' => [ 'a', 'b' ] ] ],
-				'<div id="foo" class="plainlinks foo smw-callout smw-callout-error">⧼foo⧽<ul><li>a</li><li>b</li></ul></div>'
-			];
-
-			// _merge
-			yield [
-				[ [ 'error', '_merge' => [ 'a', 'b' ] ] ],
-				'<div id="a-b" class="plainlinks a-b smw-callout smw-callout-error">⧼a⧽&nbsp;⧼b⧽</div>'
-			];
-
-			// Unknown type
-			yield [
-				[ [ '__foobar__', 'foo' ] ],
-				''
-			];
+	/**
+	 * Return a message box using core MW method
+	 * This is required because the output is different depending on the MW version
+	 *
+	 * @param string $type
+	 * @param string $key
+	 * @param string $content
+	 * @return $string HTML of the message box
+	 */
+	private function getMessageBoxHTML( $type, $key, $content ) {
+		$class = "plainlinks $key";
+		switch ( $type ) {
+			case 'plain':
+				return Html::rawElement( 'div', [ 'class' => $class ], $content );
+			case 'error':
+				return Html::errorBox( $content, '', $class );
+			case 'info':
+				return Html::noticeBox( $content, $class );
+			case 'warning':
+				return Html::warningBox( $content, $class );
+			default:
+				return '';
 		}
+	}
+
+	public function messageProvider() {
+		yield [
+			[ [ 'plain', 'foo' ] ],
+			$this->getMessageBoxHTML( 'plain', 'foo', '⧼foo⧽' )
+		];
+
+		// Test message ranking: error messages should appear before plain messages
+		yield [
+			[ [ 'plain', 'bar' ], [ 'error', 'foo' ] ],
+			$this->getMessageBoxHTML( 'error', 'foo', '⧼foo⧽' ) . $this->getMessageBoxHTML( 'plain', 'bar', '⧼bar⧽' )
+		];
+
+		// Test list rendering: messages with _list should generate HTML unordered lists
+		yield [
+			[ [ 'error', '_msgkey' => 'foo', '_list' => [ 'a', 'b' ] ] ],
+			$this->getMessageBoxHTML( 'error', 'foo', '⧼foo⧽<ul><li>a</li><li>b</li></ul>' )
+		];
+
+		// Test message merging: multiple messages should be combined with proper spacing
+		yield [
+			[ [ 'error', '_merge' => [ 'a', 'b' ] ] ],
+			$this->getMessageBoxHTML( 'error', 'a-b', '⧼a⧽&nbsp;⧼b⧽' )
+		];
+
+		// Test unknown type
+		yield [
+			[ [ '__foobar__', 'foo' ] ],
+			''
+		];
 	}
 
 }

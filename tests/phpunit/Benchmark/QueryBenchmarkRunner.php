@@ -4,17 +4,16 @@ namespace SMW\Tests\Benchmark;
 
 use RuntimeException;
 use SMW\DIProperty;
-use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Query\PrintRequest;
 use SMW\Store;
 use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
 use SMWQueryParser as QueryParser;
-use Title;
 
 /**
  * @group semantic-mediawiki-benchmark
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -69,11 +68,10 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 	 * @param array $case
 	 */
 	public function run( array $case ) {
-
 		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
-		if ( !isset( $case['query'] ) && !is_array( $case['query']  ) ) {
+		if ( !isset( $case['query'] ) && !is_array( $case['query'] ) ) {
 			throw new RuntimeException( 'Query specification is not available.' );
 		}
 
@@ -101,7 +99,6 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 	}
 
 	private function doQuery( array $case, $query ) {
-
 		$this->benchmarker->clear();
 
 		$memoryBefore = memory_get_peak_usage( false );
@@ -133,7 +130,6 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 	}
 
 	private function createQuery( array $case, $mode, array $printouts = [] ) {
-
 		$description = $this->queryParser->getQueryDescription(
 			$case['query']['condition']
 		);

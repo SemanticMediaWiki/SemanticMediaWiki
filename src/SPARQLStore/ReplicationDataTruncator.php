@@ -8,7 +8,7 @@ use SMW\SemanticData;
 /**
  * Truncate a SemanticData instance for the replication process
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -32,12 +32,11 @@ class ReplicationDataTruncator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SemanticData $semanticDat
+	 * @param SemanticData $semanticData
 	 *
 	 * @return SemanticData
 	 */
 	public function doTruncate( SemanticData $semanticData ) {
-
 		if ( $this->propertyExemptionList === [] ) {
 			return $semanticData;
 		}

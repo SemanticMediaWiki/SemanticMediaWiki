@@ -2,14 +2,13 @@
 
 namespace SMW\Query\Result;
 
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
+use SMW\DataValueFactory;
+use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
-use SMW\RequestOptions;
-use SMWDataItem as DataItem;
-use SMW\DIWikiPage;
 use SMW\Store;
+use SMWDataItem as DataItem;
 use SMWDataValue;
 use SMWQueryResult as QueryResult;
 
@@ -18,7 +17,7 @@ use SMWQueryResult as QueryResult;
  * i.e. basically an array of SMWDataItems with some additional parameters.
  * The content of the array is fetched on demand only.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author Markus Krötzsch
@@ -76,7 +75,6 @@ class ResultArray {
 	 * @return self
 	 */
 	public static function factory( DIWikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ) {
-
 		$resultArray = new self(
 			$resultPage,
 			$printRequest,
@@ -98,7 +96,7 @@ class ResultArray {
 	 * @param Store $store
 	 * @param fieldItemFinder|null $fieldItemFinder
 	 */
-	public function __construct( DIWikiPage $resultPage, PrintRequest $printRequest, Store $store, FieldItemFinder $fieldItemFinder = null ) {
+	public function __construct( DIWikiPage $resultPage, PrintRequest $printRequest, Store $store, ?FieldItemFinder $fieldItemFinder = null ) {
 		$this->result = $resultPage;
 		$this->printRequest = $printRequest;
 		$this->store = $store;
@@ -150,7 +148,7 @@ class ResultArray {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ) {
 		$this->queryToken = $queryToken;
 	}
 
@@ -159,7 +157,7 @@ class ResultArray {
 	 *
 	 * @param DIWikiPage|null $contextPage
 	 */
-	public function setContextPage( DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?DIWikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 
@@ -243,8 +241,8 @@ class ResultArray {
 		}
 
 		if ( $this->printRequest->getMode() == PrintRequest::PRINT_PROP &&
-		    DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
-		    $this->printRequest->getParameter( 'index' ) !== false ) {
+			DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
+			$this->printRequest->getParameter( 'index' ) !== false ) {
 
 			/**
 			 * @var \SMWRecordValue $recordValue
@@ -293,7 +291,7 @@ class ResultArray {
 	 * The parameter $linker controls linking of title values and should
 	 * be some Linker object (or NULL for no linking).
 	 *
-	 * @param integer $outputMode
+	 * @param int $outputMode
 	 * @param mixed $linker
 	 *
 	 * @return string|false
@@ -313,7 +311,6 @@ class ResultArray {
 	 * done when needed.
 	 */
 	protected function loadContent() {
-
 		if ( $this->content !== false ) {
 			return;
 		}

@@ -2,16 +2,14 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
-use Html;
 use SMW\DIProperty;
-use Title;
-use WebRequest;
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
+use WebRequest;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -29,22 +27,22 @@ class CustomForm {
 	private $field;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isActiveForm = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $fieldCounter = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $html5TypeMap = [
 		'_txt' => 'text',
@@ -68,7 +66,7 @@ class CustomForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getParameters() {
 		return $this->parameters;
@@ -77,7 +75,7 @@ class CustomForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isActiveForm
+	 * @param bool $isActiveForm
 	 */
 	public function isActiveForm( $isActiveForm ) {
 		$this->isActiveForm = (bool)$isActiveForm;
@@ -89,7 +87,6 @@ class CustomForm {
 	 * @param array $definition
 	 */
 	public function makeFields( $definition ) {
-
 		$fields = [];
 		$this->parameters = [];
 		$nameList = [];
@@ -140,7 +137,6 @@ class CustomForm {
 	}
 
 	private function makeField( $name, $property, $value, $options ) {
-
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
 		$options = !is_array( $options ) ? [] : $options;
 

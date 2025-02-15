@@ -3,21 +3,19 @@
 namespace SMW\Tests\Constraint;
 
 use SMW\Constraint\ConstraintError;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Constraint\ConstraintError
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ConstraintErrorTest extends \PHPUnit_Framework_TestCase {
+class ConstraintErrorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConstraintError::class,
 			new ConstraintError( 'Foo' )
@@ -30,7 +28,6 @@ class ConstraintErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new ConstraintError( 'Foo' );
 
 		$this->assertSame(
@@ -40,7 +37,6 @@ class ConstraintErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHash() {
-
 		$instance = new ConstraintError( 'Foo' );
 
 		$this->assertSame(
@@ -50,7 +46,6 @@ class ConstraintErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEncode() {
-
 		$instance = new ConstraintError( 'Foo' );
 
 		$this->assertSame(

@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Iohanen"
+			"Iohanen",
+			"Paul Beppler"
 		]
 	},
+	"smw-categories": "Kategoriee",
 	"browse": "Semantisches Browse",
 	"smw-livepreview-loading": "Am loode …",
 	"smw-listingcontinuesabbrev": "(Fortsetzung)",

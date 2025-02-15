@@ -5,26 +5,26 @@ namespace SMW\Tests\MediaWiki\Page\ListBuilder;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
-use SMWDITime as DITime;
 use SMW\Tests\TestEnvironment;
+use SMWDITime as DITime;
 
 /**
  * @covers \SMW\MediaWiki\Page\ListBuilder\ValueListBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
+class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $prefetchItemLookup;
 	private $testEnvironment;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( [ 'smwgCompactLinkSupport' => false ] );
@@ -39,13 +39,12 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ValueListBuilder::class,
 			new ValueListBuilder( $this->store )
@@ -53,25 +52,23 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateEmptyList() {
-
 		$instance = new ValueListBuilder( $this->store );
 
 		$property = new DIProperty( 'Foo' );
 		$dataItem = new DIWikiPage( 'Bar', NS_MAIN );
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->createHtml( $property, $dataItem, [] )
 		);
 	}
 
 	public function testCreateHtml() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->prefetchItemLookup->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $subject->getHash() => [ DIWikiPage::newFromText( 'Bar' ) ] ] ) );
+			->willReturn( [ $subject->getHash() => [ DIWikiPage::newFromText( 'Bar' ) ] ] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -80,15 +77,15 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( [ $subject ] ) );
+			->willReturn( [ $subject ] );
 
 		$store->expects( $this->once() )
 			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$store->expects( $this->once() )
 			->method( 'service' )
-			->will( $this->returnValue( $this->prefetchItemLookup ) );
+			->willReturn( $this->prefetchItemLookup );
 
 		$instance = new ValueListBuilder( $store );
 		$instance->setLanguageCode( 'en' );
@@ -107,12 +104,11 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateHtml_TimeOffset() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->prefetchItemLookup->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $subject->getHash() => [ new DITime( DITime::CM_GREGORIAN, 1970 ) ] ] ) );
+			->willReturn( [ $subject->getHash() => [ new DITime( DITime::CM_GREGORIAN, 1970 ) ] ] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -121,15 +117,15 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( [ $subject ] ) );
+			->willReturn( [ $subject ] );
 
 		$store->expects( $this->once() )
 			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$store->expects( $this->once() )
 			->method( 'service' )
-			->will( $this->returnValue( $this->prefetchItemLookup ) );
+			->willReturn( $this->prefetchItemLookup );
 
 		$instance = new ValueListBuilder( $store );
 		$instance->setLanguageCode( 'en' );

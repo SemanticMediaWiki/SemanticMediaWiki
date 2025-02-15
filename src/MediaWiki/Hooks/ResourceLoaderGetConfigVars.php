@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\Localizer;
-use SMW\MediaWiki\NamespaceInfo;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\NamespaceInfo;
 use SMW\OptionsAwareTrait;
 
 /**
@@ -15,7 +15,7 @@ use SMW\OptionsAwareTrait;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -48,12 +48,11 @@ class ResourceLoaderGetConfigVars implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param array $vars
+	 * @param array &$vars
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( array &$vars ) {
-
 		$vars['smw-config'] = [
 			'version' => SMW_VERSION,
 			'namespaces' => [],

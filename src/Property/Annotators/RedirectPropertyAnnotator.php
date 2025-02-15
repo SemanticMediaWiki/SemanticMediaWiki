@@ -10,7 +10,7 @@ use SMW\PropertyAnnotator;
 /**
  * Handling redirect annotation
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -37,7 +37,6 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
-
 		if ( !$this->redirectTargetFinder->hasRedirectTarget() ) {
 			return;
 		}

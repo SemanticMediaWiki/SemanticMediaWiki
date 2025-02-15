@@ -8,7 +8,7 @@ use SMW\Services\Exception\ServiceNotFoundException;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -35,7 +35,6 @@ class ServicesContainer {
 	 * @return mixed
 	 */
 	public function get( $key, ...$args ) {
-
 		if ( !isset( $this->services[$key] ) ) {
 			throw new ServiceNotFoundException( "$key is an unknown service!" );
 		}

@@ -3,30 +3,32 @@
 namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
-use SMW\Setup;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Exception\PropertyLabelNotResolvedException;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\Utils\CliMsgFormatter;
-use SMW\Elastic\Indexer\Replication\ReplicationError;
+use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
+use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -59,7 +61,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 	private $lastId = 0;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $missingDocuments = [];
 
@@ -93,7 +95,6 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter->reportMessage( $message );
 		}
@@ -105,7 +106,6 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( $this->canExecute() !== true ) {
 			exit;
 		}
@@ -217,7 +217,6 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 	}
 
 	private function canExecute() {
-
 		if ( !Setup::isEnabled() ) {
 			return $this->reportMessage(
 				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
@@ -235,7 +234,6 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 	}
 
 	private function fetchRows() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$this->lastId = (int)$connection->selectField(
@@ -281,7 +279,6 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 	}
 
 	private function checkAndRebuild( \Iterator $rows ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -290,7 +287,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 		$errorCount = [];
 
 		if ( $count == 0 ) {
-			return $this->reportMessage( "   ... no entities selected ...\n"  );
+			return $this->reportMessage( "   ... no entities selected ...\n" );
 		}
 
 		$this->reportMessage(
@@ -302,7 +299,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 		);
 
 		$this->reportMessage( "\nInspecting documents ...\n" );
-		$cliMsgFormatter->setStartTime( (int) microtime( true ) );
+		$cliMsgFormatter->setStartTime( (int)microtime( true ) );
 
 		foreach ( $rows as $row ) {
 
@@ -386,7 +383,6 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 	}
 
 	public function newFromRow( $row ) {
-
 		$namespace = (int)$row->smw_namespace;
 		$title = $row->smw_title;
 
@@ -394,9 +390,9 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 			try {
 				$property = DIProperty::newFromUserLabel( $row->smw_title );
 				$title = str_replace( ' ', '_', $property->getLabel() );
-			} catch( PropertyLabelNotResolvedException $e ) {
+			} catch ( PropertyLabelNotResolvedException $e ) {
 				return;
-			} catch( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				return;
 			}
 		}
@@ -413,5 +409,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = rebuildElasticMissingDocuments::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

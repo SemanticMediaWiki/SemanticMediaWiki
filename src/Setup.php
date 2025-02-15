@@ -2,16 +2,14 @@
 
 namespace SMW;
 
-use SMW\Connection\ConnectionManager;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Hooks;
 use SMW\Utils\Logo;
-use SMW\GroupPermissions;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
  * Extension setup and registration
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -42,10 +40,9 @@ final class Setup {
 	 *
 	 * @since 3.1
 	 *
-	 * @param array $vars
+	 * @param array &$vars
 	 */
 	public static function registerExtensionCheck( &$vars ) {
-
 		$uncaughtExceptionHandler = new UncaughtExceptionHandler(
 			SetupCheck::newFromDefaults()
 		);
@@ -68,10 +65,9 @@ final class Setup {
 	/**
 	 * @since 3.2
 	 *
-	 * @param array $vars
+	 * @param array &$vars
 	 */
 	public static function releaseExtensionCheck( &$vars ) {
-
 		// Restore the exception handler from before Setup::registerExtensionCheck
 		// and before MediaWiki setup has added its own in `Setup.php` after
 		// declaring `MW_SERVICE_BOOTSTRAP_COMPLETE` using
@@ -162,12 +158,15 @@ final class Setup {
 	}
 
 	private function addDefaultConfigurations( &$vars, $rootDir ) {
-
 		// Convenience function for extensions depending on a SMW specific
 		// test infrastructure
 		if ( !defined( 'SMW_PHPUNIT_AUTOLOADER_FILE' ) ) {
 			$smwDir = dirname( $rootDir );
 			define( 'SMW_PHPUNIT_AUTOLOADER_FILE', "$smwDir/tests/autoloader.php" );
+		}
+
+		if ( !defined( 'SMW_PHPUNIT_DIR' ) ) {
+			define( 'SMW_PHPUNIT_DIR', __DIR__ . '/../tests/phpunit' );
 		}
 
 		$vars['wgLogTypes'][] = 'smw';
@@ -182,38 +181,25 @@ final class Setup {
 
 		foreach ( $vars['smwgResourceLoaderDefFiles'] as $key => $file ) {
 			if ( is_readable( $file ) ) {
-				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include( $file ) );
+				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include $file );
 			}
-		}
-
-		// #3626
-		//
-		// Required due to support of LTS (1.31)
-		// Do replace `mediawiki.api.parse` (Resources.php) with `mediawiki.api`
-		// starting with the next supported LTS (likely MW 1.35)
-		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
-			$vars['wgResourceModules']['mediawiki.api.parse'] = [
-				'dependencies' => 'mediawiki.api',
-				'targets' => [ 'desktop', 'mobile' ]
-			];
 		}
 	}
 
 	private function initConnectionProviders() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
 		$connectionManager = $applicationFactory->getConnectionManager();
 
 		$connectionManager->registerConnectionProvider(
-			DB_MASTER,
-			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_MASTER )
+			DB_PRIMARY,
+			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_PRIMARY )
 		);
 
 		$connectionManager->registerConnectionProvider(
 			DB_REPLICA,
-			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_REPLICA, false )
+			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_REPLICA )
 		);
 
 		$connectionManager->registerConnectionProvider(
@@ -234,9 +220,7 @@ final class Setup {
 	}
 
 	private function initMessageCallbackHandler() {
-
-		Message::registerCallbackHandler( Message::TEXT, function ( $arguments, $language ) {
-
+		Message::registerCallbackHandler( Message::TEXT, static function ( $arguments, $language ) {
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}
@@ -248,8 +232,7 @@ final class Setup {
 			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->text();
 		} );
 
-		Message::registerCallbackHandler( Message::ESCAPED, function ( $arguments, $language ) {
-
+		Message::registerCallbackHandler( Message::ESCAPED, static function ( $arguments, $language ) {
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}
@@ -261,8 +244,7 @@ final class Setup {
 			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->escaped();
 		} );
 
-		Message::registerCallbackHandler( Message::PARSE, function ( $arguments, $language ) {
-
+		Message::registerCallbackHandler( Message::PARSE, static function ( $arguments, $language ) {
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}
@@ -289,7 +271,6 @@ final class Setup {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgJobClasses
 	 */
 	private function registerJobClasses( &$vars ) {
-
 		$jobClasses = [
 
 			'smw.update' => 'SMW\MediaWiki\Jobs\UpdateJob',
@@ -334,7 +315,6 @@ final class Setup {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgGroupPermissions
 	 */
 	private function registerPermissions( &$vars ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -358,7 +338,7 @@ final class Setup {
 
 	private function registerParamDefinitions( &$vars ) {
 		$vars['wgParamDefinitions']['smwformat'] = [
-			'definition'=> '\SMW\Query\ResultFormat',
+			'definition' => '\SMW\Query\ResultFormat',
 		];
 	}
 
@@ -366,7 +346,6 @@ final class Setup {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgFooterIcons
 	 */
 	private function registerFooterIcon( &$vars, $path ) {
-
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return;
 		}

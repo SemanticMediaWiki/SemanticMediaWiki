@@ -3,21 +3,21 @@
 namespace SMW\Tests\Property\DeclarationExaminer;
 
 use ExtensionRegistry;
-use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
 use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
+use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
+class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,7 +25,7 @@ class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	private $semanticData;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -36,20 +36,19 @@ class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PredefinedPropertyExaminer::class,
 			new PredefinedPropertyExaminer( $this->declarationExaminer )
@@ -57,10 +56,9 @@ class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMessages() {
-
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -79,23 +77,21 @@ class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTypeDeclarationMismatch() {
-
 		$dataItemFactory = new DataItemFactory();
 		$uri = $dataItemFactory->newDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_num' );
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( $dataItemFactory->newDIProperty( '_TYPE' ) ) )
-			->will( $this->returnValue( true ) );
+			->with( $dataItemFactory->newDIProperty( '_TYPE' ) )
+			->willReturn( true );
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $uri ] ) );
+			->willReturn( [ $uri ] );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
-
+			->willReturn( $this->semanticData );
 
 		$instance = new PredefinedPropertyExaminer(
 			$this->declarationExaminer
@@ -112,18 +108,17 @@ class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGeoProperty_MissingMapsExtension() {
-
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 			$this->markTestSkipped( 'Skipping test because the Maps extension is installed!' );
 		}
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'hasProperty' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$dataItemFactory = new DataItemFactory();
 

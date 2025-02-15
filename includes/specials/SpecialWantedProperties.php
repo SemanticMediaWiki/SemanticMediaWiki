@@ -9,7 +9,7 @@ use SMWOutputs;
  * wanted properties
  *
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author Markus Krötzsch
@@ -42,7 +42,7 @@ class SpecialWantedProperties extends SpecialPage {
 		$out = $this->getOutput();
 
 		$out->addModuleStyles( [
-			'ext.smw.special.style'
+			'ext.smw.special.styles'
 		] );
 
 		$out->setPageTitle( $this->msg( 'wantedproperties' )->text() );
@@ -51,7 +51,7 @@ class SpecialWantedProperties extends SpecialPage {
 		$page->setContext( $this->getContext() );
 		$page->setTitle( $this->getPageTitle() );
 
-		list( $limit, $offset ) = $this->getLimitOffset();
+		[ $limit, $offset ] = $this->getLimitOffset();
 		$page->doQuery( $offset, $limit );
 
 		// Ensure locally collected output data is pushed to the output!
@@ -63,23 +63,12 @@ class SpecialWantedProperties extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/properties-concepts-types';
 	}
 
 	private function getLimitOffset() {
 		$request = $this->getRequest();
-		if ( method_exists( $request, 'getLimitOffsetForUser' ) ) {
-			// MW 1.35+
-			return $request->getLimitOffsetForUser( $this->getUser() );
-		} else {
-			return $request->getLimitOffset();
-		}
+		return $request->getLimitOffsetForUser( $this->getUser() );
 	}
 
 }

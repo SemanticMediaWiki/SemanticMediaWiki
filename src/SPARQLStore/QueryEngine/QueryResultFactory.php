@@ -9,7 +9,7 @@ use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -35,7 +35,7 @@ class QueryResultFactory {
 	 * @since  2.0
 	 *
 	 * @param Query $query QueryResults hold a reference to original query
-	 * @param boolean $hasFurtherResults
+	 * @param bool $hasFurtherResults
 	 *
 	 * @return QueryResult
 	 */
@@ -59,8 +59,7 @@ class QueryResultFactory {
 	 *
 	 * @return QueryResult
 	 */
-	public function newQueryResult( RepositoryResult $repositoryResult = null, Query $query ) {
-
+	public function newQueryResult( ?RepositoryResult $repositoryResult, Query $query ) {
 		if ( $repositoryResult === null ) {
 			return $this->newEmptyQueryResult( $query );
 		}
@@ -73,7 +72,6 @@ class QueryResultFactory {
 	}
 
 	private function makeQueryResultForCount( RepositoryResult $repositoryResult, Query $query ) {
-
 		$queryResult = new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,
@@ -92,7 +90,6 @@ class QueryResultFactory {
 	}
 
 	private function makeQueryResultForInstance( RepositoryResult $repositoryResult, Query $query ) {
-
 		$resultDataItems = [];
 
 		foreach ( $repositoryResult as $resultRow ) {
@@ -100,7 +97,7 @@ class QueryResultFactory {
 			if ( count( $resultRow ) > 0 && $resultRow[0] instanceof ExpElement ) {
 				$dataItem = Exporter::getInstance()->findDataItemForExpElement( $resultRow[0] );
 
-				if ( !is_null( $dataItem ) ) {
+				if ( $dataItem !== null ) {
 					$resultDataItems[] = $dataItem;
 				}
 			}
@@ -125,13 +122,13 @@ class QueryResultFactory {
 
 		switch ( $repositoryResult->getErrorCode() ) {
 			case RepositoryResult::ERROR_NOERROR:
-			break;
+				break;
 			case RepositoryResult::ERROR_INCOMPLETE:
 				$result->addErrors( [ wfMessage( 'smw_db_sparqlqueryincomplete' )->inContentLanguage()->text() ] );
-			break;
+				break;
 			default:
 				$result->addErrors( [ wfMessage( 'smw_db_sparqlqueryproblem' )->inContentLanguage()->text() ] );
-			break;
+				break;
 		}
 
 		return $result;

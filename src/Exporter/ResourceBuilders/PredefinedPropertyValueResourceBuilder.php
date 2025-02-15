@@ -9,7 +9,7 @@ use SMWExpData as ExpData;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -31,7 +31,6 @@ class PredefinedPropertyValueResourceBuilder extends PropertyValueResourceBuilde
 	 * {@inheritDoc}
 	 */
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-
 		$diSubject = $expData->getSubject()->getDataItem();
 
 		if ( $diSubject === null ) {

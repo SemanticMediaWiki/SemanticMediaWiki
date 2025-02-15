@@ -57,6 +57,7 @@
 	"smw_exportrdf_submit": "निर्यात करा",
 	"uriresolver": "URI रिझॉल्व्हर",
 	"properties": "गुणधर्म",
+	"smw-categories": "वर्ग",
 	"smw_properties_docu": "या विकिवर खालील गुणधर्म वापरलेले आहेत.",
 	"smw_property_template": "$2 प्रकारची $1 ($3{{PLURAL:$3|वापर}})",
 	"smw_propertylackspage": "एका पानावर सर्व गुणधर्मांची माहिती असणे आवश्यक आहे!",

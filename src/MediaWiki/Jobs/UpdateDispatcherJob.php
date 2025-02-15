@@ -2,17 +2,16 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use Hooks;
 use MediaWiki\MediaWikiServices;
-use SMW\MediaWiki\Job;
-use SMW\SerializerFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\DataTypeRegistry;
-use SMW\RequestOptions;
 use SMW\Enum;
 use SMW\Exception\DataItemDeserializationException;
+use SMW\MediaWiki\Job;
+use SMW\RequestOptions;
+use SMW\SerializerFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use Title;
 
@@ -20,7 +19,7 @@ use Title;
  * Dispatcher to find and create individual UpdateJob instances for a specific
  * subject and its linked entities.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -50,7 +49,7 @@ class UpdateDispatcherJob extends Job {
 	 *
 	 * @param Title $title
 	 * @param array $params job parameters
-	 * @param integer $id job id
+	 * @param int $id job id
 	 */
 	public function __construct( Title $title, $params = [], $id = 0 ) {
 		parent::__construct( 'smw.updateDispatcher', $title, $params, $id );
@@ -62,10 +61,9 @@ class UpdateDispatcherJob extends Job {
 	 *
 	 * @since  1.9
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function run() {
-
 		$this->initServices();
 
 		/**
@@ -113,7 +111,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function initServices() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$this->setStore( $applicationFactory->getStore() );
 
@@ -125,7 +122,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function dispatch_by_id( $id ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
 
@@ -152,7 +148,7 @@ class UpdateDispatcherJob extends Job {
 		);
 
 		foreach ( $dependencyTargetLinks as $targetLink ) {
-			list( $title, $namespace, $iw, $subobjectname ) = explode( '#', $targetLink, 4 );
+			[ $title, $namespace, $iw, $subobjectname ] = explode( '#', $targetLink, 4 );
 
 			// @see DIWikiPage::doUnserialize
 			if ( !isset( $this->jobs[( $title . '#' . $namespace . '#' . $iw . '#' )] ) ) {
@@ -162,7 +158,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function create_secondary_dispatch_run( $jobs ) {
-
 		$origin = $this->getTitle()->getPrefixedText();
 
 		foreach ( array_chunk( $jobs, self::CHUNK_SIZE, true ) as $jobList ) {
@@ -184,7 +179,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function dispatchUpdateForSubject( DIWikiPage $subject ) {
-
 		if ( $this->getParameter( self::RESTRICTED_DISPATCH_POOL ) !== true ) {
 			$this->addUpdateJobsForProperties(
 				$this->store->getProperties( $subject )
@@ -247,7 +241,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function apply_filter( $property, $subjects ) {
-
 		// If the an ID was provided it already restricted the list of references
 		// hence avoid any further work
 		if ( $this->hasParameter( '_id' ) ) {
@@ -283,7 +276,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function addUpdateJobsForSubjectsThatContainTypeError() {
-
 		$subjects = $this->store->getPropertySubjects(
 			new DIProperty( DIProperty::TYPE_ERROR ),
 			DIWikiPage::newFromTitle( $this->getTitle() )
@@ -295,7 +287,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function addUpdateJobsFromDeserializedSemanticData() {
-
 		if ( !$this->hasParameter( 'semanticData' ) ) {
 			return;
 		}
@@ -310,7 +301,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function add_job( $subjects = [] ) {
-
 		foreach ( $subjects as $subject ) {
 
 			// Not trying to get the title here as it is waste of resources
@@ -333,7 +323,6 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function push_jobs_from_list( array $subjects ) {
-
 		$check_exists = $this->getParameter( 'check_exists', false );
 
 		$parameters = [
@@ -351,7 +340,7 @@ class UpdateDispatcherJob extends Job {
 
 			try {
 				$subject = DIWikiPage::doUnserialize( $subject );
-			} catch( DataItemDeserializationException $e ) {
+			} catch ( DataItemDeserializationException $e ) {
 				continue;
 			}
 

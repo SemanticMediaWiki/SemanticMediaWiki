@@ -12,17 +12,17 @@ use SMWExpData as ExpData;
  * @covers \SMW\Exporter\ResourceBuilders\ExternalIdentifierPropertyValueResourceBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ExternalIdentifierPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class ExternalIdentifierPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->testEnvironment = new TestEnvironment();
@@ -30,13 +30,12 @@ class ExternalIdentifierPropertyValueResourceBuilderTest extends \PHPUnit_Framew
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			ExternalIdentifierPropertyValueResourceBuilder::class,
 			new ExternalIdentifierPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class ExternalIdentifierPropertyValueResourceBuilderTest extends \PHPUnit_Framew
 	}
 
 	public function testIsNotResourceBuilderForNonExternalIdentifierTypedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new ExternalIdentifierPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class ExternalIdentifierPropertyValueResourceBuilderTest extends \PHPUnit_Framew
 	}
 
 	public function testAddResourceValueForValidProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_eid' );
 

@@ -8,12 +8,12 @@ use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
+class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 
 	public function getRepositoryConnectors() {
 		// Legacy and should be removed once obsolete
@@ -28,7 +28,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	 * @see https://www.w3.org/TR/rdf-sparql-query/#ask
 	 */
 	public function testAskToQueryEndpointOnMockedHttpRequest( $httpDatabaseConnector, $expectedPostField ) {
-
 		$rawResultProvider = new FakeRawResultProvider();
 
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
@@ -38,13 +37,13 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 		$httpRequest->expects( $this->at( 8 ) )
 			->method( 'setOption' )
 			->with(
-				$this->equalTo( CURLOPT_POSTFIELDS ),
+				CURLOPT_POSTFIELDS,
 				$this->stringContains( $expectedPostField ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$httpRequest->expects( $this->once() )
 			->method( 'execute' )
-			->will( $this->returnValue( $rawResultProvider->getEmptySparqlResultXml() ) );
+			->willReturn( $rawResultProvider->getEmptySparqlResultXml() );
 
 		$instance = new $httpDatabaseConnector(
 			new RepositoryClient( 'http://foo/myDefaultGraph', 'http://localhost:9999/query' ),
@@ -68,7 +67,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	 * @see http://www.w3.org/TR/sparql11-update/#deleteInsert
 	 */
 	public function testDeleteToUpdateEndpointOnMockedHttpRequest( $httpDatabaseConnector, $expectedPostField ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -76,13 +74,13 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 		$httpRequest->expects( $this->at( 7 ) )
 			->method( 'setOption' )
 			->with(
-				$this->equalTo( CURLOPT_POSTFIELDS ),
+				CURLOPT_POSTFIELDS,
 				$this->stringContains( $expectedPostField ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$instance = new $httpDatabaseConnector(
 			new RepositoryClient(
@@ -104,14 +102,13 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	 * @see http://www.w3.org/TR/sparql11-http-rdf-update/#http-post
 	 */
 	public function testInsertViaHttpPostToDataPointOnMockedHttpRequest( $httpDatabaseConnector ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$instance = new $httpDatabaseConnector(
 			new RepositoryClient(
@@ -129,7 +126,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function httpDatabaseConnectorInstanceNameForAskProvider() {
-
 		$provider = [];
 		$encodedDefaultGraph = urlencode( 'http://foo/myDefaultGraph' );
 
@@ -146,7 +142,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 				default:
 					$expectedPostField = '&default-graph-uri=' . $encodedDefaultGraph;
 					break;
-			};
+			}
 
 			$provider[] = [ $repositoryConnector, $expectedPostField ];
 		}
@@ -155,7 +151,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function httpDatabaseConnectorInstanceNameForDeleteProvider() {
-
 		$provider = [];
 
 		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {
@@ -168,7 +163,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 				default:
 					$expectedPostField = 'update=';
 					break;
-			};
+			}
 
 			$provider[] = [ $repositoryConnector, $expectedPostField ];
 		}
@@ -177,7 +172,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function httpDatabaseConnectorInstanceNameForInsertProvider() {
-
 		$provider = [];
 
 		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {

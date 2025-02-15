@@ -4,7 +4,6 @@ namespace SMW\Maintenance;
 
 use Onoi\Cache\Cache;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
@@ -13,7 +12,7 @@ use SMW\Utils\CliMsgFormatter;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -38,7 +37,7 @@ class DuplicateEntitiesDisposer {
 	 * @param Store $store
 	 * @param Cache|null $cache
 	 */
-	public function __construct( Store $store, Cache $cache = null ) {
+	public function __construct( Store $store, ?Cache $cache = null ) {
 		$this->store = $store;
 		$this->cache = $cache;
 	}
@@ -56,7 +55,6 @@ class DuplicateEntitiesDisposer {
 	 * @param Iterator|array $duplicates
 	 */
 	public function verifyAndDispose( $duplicates ) {
-
 		if ( !$this->is_iterable( $duplicates ) ) {
 			return;
 		}
@@ -75,7 +73,6 @@ class DuplicateEntitiesDisposer {
 	}
 
 	private function doDispose( $duplicates ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 		$logs = [];
 
@@ -147,7 +144,6 @@ class DuplicateEntitiesDisposer {
 	}
 
 	private function wikipage_table( $table, $duplicates, &$log ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$log[] = "   ... $table ...";
 		$i = 0;
@@ -188,7 +184,6 @@ class DuplicateEntitiesDisposer {
 	}
 
 	private function redi_table( $table, $duplicates, &$log ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$log[] = "   ... $table ...";
 		$i = 0;
@@ -233,7 +228,6 @@ class DuplicateEntitiesDisposer {
 	}
 
 	private function id_table( $table, $duplicates, &$log ) {
-
 		$propertyTableIdReferenceDisposer = $this->store->service( 'PropertyTableIdReferenceDisposer' );
 		$propertyTableIdReferenceDisposer->setRedirectRemoval( true );
 

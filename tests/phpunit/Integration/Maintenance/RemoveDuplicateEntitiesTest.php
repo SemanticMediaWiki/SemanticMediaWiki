@@ -2,37 +2,36 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class RemoveDuplicateEntitiesTest extends DatabaseTestCase {
+class RemoveDuplicateEntitiesTest extends SMWIntegrationTestCase {
 
-	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
-		$this->runnerFactory  = TestEnvironment::getUtilityFactory()->newRunnerFactory();
+		$this->runnerFactory = TestEnvironment::getUtilityFactory()->newRunnerFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testRun() {
-
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RemoveDuplicateEntities'
+			'\SMW\Maintenance\removeDuplicateEntities'
 		);
 
 		$maintenanceRunner->setQuiet();

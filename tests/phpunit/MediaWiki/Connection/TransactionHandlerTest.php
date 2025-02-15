@@ -10,19 +10,19 @@ use Wikimedia\Rdbms\ILBFactory;
  * @covers \SMW\MediaWiki\Connection\TransactionHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
+class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $loadBalancerFactory;
 	private $transactionProfiler;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->loadBalancerFactory = $this->createMock( ILBFactory::class );
 
 		$this->transactionProfiler = $this->getMockBuilder( '\stdClass' )
@@ -32,7 +32,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TransactionHandler::class,
 			new TransactionHandler( $this->loadBalancerFactory )
@@ -40,10 +39,9 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetEmptyTransactionTicket() {
-
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( self::getHasPrimaryChangesMethod() )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( 'getEmptyTransactionTicket' );
@@ -56,10 +54,9 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetEmptyTransactionTicketOnMasterChanges() {
-
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( self::getHasPrimaryChangesMethod() )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->loadBalancerFactory->expects( $this->never() )
 			->method( 'getEmptyTransactionTicket' );
@@ -74,7 +71,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommitAndWaitForReplication() {
-
 		$this->loadBalancerFactory->expects( $this->once() )
 			->method( 'commitAndWaitForReplication' );
 
@@ -86,7 +82,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMarkSectionTransaction() {
-
 		$instance = new TransactionHandler(
 			$this->loadBalancerFactory
 		);
@@ -99,7 +94,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMarkDetachSectionTransaction() {
-
 		$instance = new TransactionHandler(
 			$this->loadBalancerFactory
 		);
@@ -126,7 +120,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMarkSectionTransactionWithAnotherActive_ThrowsException() {
-
 		$instance = new TransactionHandler(
 			$this->loadBalancerFactory
 		);
@@ -138,7 +131,6 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDetachSectionTransactionOnNonActiveSection_ThrowsException() {
-
 		$instance = new TransactionHandler(
 			$this->loadBalancerFactory
 		);
@@ -151,7 +143,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * Get the appropriate `hasMaster/PrimaryChanges` method to mock for the `ILBFactory` interface.
 	 * @return string
 	 */
-	private static function getHasPrimaryChangesMethod(): string{
+	private static function getHasPrimaryChangesMethod(): string {
 		return method_exists( ILBFactory::class, 'hasPrimaryChanges' ) ? 'hasPrimaryChanges' : 'hasMasterChanges';
 	}
 }

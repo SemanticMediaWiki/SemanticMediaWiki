@@ -2,24 +2,20 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\SQLStore\EntityStore\FieldList;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\FieldList
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class FieldListTest extends \PHPUnit_Framework_TestCase {
+class FieldListTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FieldList::class,
 			new FieldList( [] )
@@ -27,7 +23,6 @@ class FieldListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCountListByType() {
-
 		$countMaps = [
 			'_hash_0987654321' => [
 				42 => [
@@ -45,7 +40,7 @@ class FieldListTest extends \PHPUnit_Framework_TestCase {
 		$instance = new FieldList( $countMaps );
 
 		$this->assertEquals(
-			['Foo' => 1001 ],
+			[ 'Foo' => 1001 ],
 			$instance->getCountListByType( FieldList::PROPERTY_LIST )
 		);
 
@@ -59,7 +54,6 @@ class FieldListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHashList() {
-
 		$countMaps = [
 			'_hash_0987654321' => [
 				42 => [

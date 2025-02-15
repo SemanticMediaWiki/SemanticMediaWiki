@@ -9,23 +9,22 @@ use SMW\Query\QueryToken;
  * @covers \SMW\Query\QueryToken
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class QueryTokenTest extends \PHPUnit_Framework_TestCase {
+class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			QueryToken::class,
 			new QueryToken()
@@ -36,7 +35,6 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testAddFromDesciption( $description, $expected ) {
-
 		$instance = new QueryToken();
 
 		$instance->addFromDesciption( $description );
@@ -48,7 +46,6 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMulitpleAddFromDesciption() {
-
 		$instance = new QueryToken();
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
@@ -57,11 +54,11 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getComparator' )
-			->will( $this->returnValue( SMW_CMP_LIKE ) );
+			->willReturn( SMW_CMP_LIKE );
 
 		$description->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'abc Foo 123' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'abc Foo 123' ) );
 
 		$instance->addFromDesciption( $description );
 
@@ -71,7 +68,7 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( '~*123 bar 456' ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( '~*123 bar 456' ) );
 
 		$instance->addFromDesciption( $description );
 
@@ -91,7 +88,6 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider highlightProvider
 	 */
 	public function testHighlight( $description, $text, $type, $expected ) {
-
 		$instance = new QueryToken();
 
 		$instance->addFromDesciption( $description );
@@ -104,7 +100,6 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
@@ -113,11 +108,11 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getComparator' )
-			->will( $this->returnValue( SMW_CMP_LIKE ) );
+			->willReturn( SMW_CMP_LIKE );
 
 		$description->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItemFactory->newDIBlob( 'abc Foo 123' ) ) );
+			->willReturn( $dataItemFactory->newDIBlob( 'abc Foo 123' ) );
 
 		$provider[] = [
 			$description,
@@ -132,7 +127,6 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function highlightProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
@@ -141,11 +135,11 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getComparator' )
-			->will( $this->returnValue( SMW_CMP_LIKE ) );
+			->willReturn( SMW_CMP_LIKE );
 
 		$description->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItemFactory->newDIBlob( 'abc Foo 123 foobar' ) ) );
+			->willReturn( $dataItemFactory->newDIBlob( 'abc Foo 123 foobar' ) );
 
 		$provider[] = [
 			$description,
@@ -174,11 +168,11 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getComparator' )
-			->will( $this->returnValue( SMW_CMP_LIKE ) );
+			->willReturn( SMW_CMP_LIKE );
 
 		$description->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItemFactory->newDIBlob( 'integer porttitor portt' ) ) );
+			->willReturn( $dataItemFactory->newDIBlob( 'integer porttitor portt' ) );
 
 		$provider[] = [
 			$description,
@@ -200,11 +194,11 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getComparator' )
-			->will( $this->returnValue( SMW_CMP_PRIM_LIKE ) );
+			->willReturn( SMW_CMP_PRIM_LIKE );
 
 		$description->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItemFactory->newDIBlob( 'abc Foo 123 foobar' ) ) );
+			->willReturn( $dataItemFactory->newDIBlob( 'abc Foo 123 foobar' ) );
 
 		$provider[] = [
 			$description,

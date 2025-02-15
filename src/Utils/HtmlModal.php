@@ -5,7 +5,7 @@ namespace SMW\Utils;
 use Html;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -33,13 +33,12 @@ class HtmlModal {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $html
+	 * @param string $name
 	 * @param array $attributes
 	 *
 	 * @return string
 	 */
 	public static function link( $name, array $attributes = [] ) {
-
 		$attributes = self::mergeAttributes(
 			'smw-modal-link is-disabled',
 			$attributes
@@ -65,13 +64,12 @@ class HtmlModal {
 	 *
 	 * @since 3.1
 	 *
-	 * @param string $html
+	 * @param string $name
 	 * @param array $attributes
 	 *
 	 * @return string
 	 */
 	public static function element( $name, array $attributes = [] ) {
-
 		$attributes = self::mergeAttributes(
 			'smw-modal-link is-disabled',
 			$attributes
@@ -87,13 +85,13 @@ class HtmlModal {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string $title
 	 * @param string $html
 	 * @param array $attributes
 	 *
 	 * @return string
 	 */
 	public static function modal( $title = '', $html = '', array $attributes = [] ) {
-
 		$attributes = self::mergeAttributes(
 			'smw-modal',
 			$attributes
@@ -147,7 +145,6 @@ class HtmlModal {
 	}
 
 	private static function mergeAttributes( $class, $attr ) {
-
 		$attributes = [];
 
 		// A bit of attribute order

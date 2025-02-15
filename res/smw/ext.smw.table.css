@@ -29,6 +29,7 @@
 .smw-table {
 	display: table;
 	width: 100%;
+	box-sizing: border-box;
 }
 
 .smw-table-row {

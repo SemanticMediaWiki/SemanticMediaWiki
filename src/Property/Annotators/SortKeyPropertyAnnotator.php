@@ -6,7 +6,7 @@ use SMW\DIProperty;
 use SMW\PropertyAnnotator;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -30,7 +30,6 @@ class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	protected function addPropertyValues() {
-
 		$sortkey = $this->defaultSort ? $this->defaultSort : $this->getSemanticData()->getSubject()->getSortKey();
 
 		$property = $this->dataItemFactory->newDIProperty(

@@ -2,26 +2,25 @@
 
 namespace SMW\Tests\Listener\EventListener\EventListeners;
 
-use SMW\DIWikiPage;
-use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use Onoi\EventDispatcher\DispatchContext;
+use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase {
+class InvalidateResultCacheEventListenerTest extends \PHPUnit\Framework\TestCase {
 
 	private $resultCache;
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
@@ -31,12 +30,11 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			InvalidateResultCacheEventListener::class,
 			new InvalidateResultCacheEventListener( $this->resultCache )
@@ -44,7 +42,6 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testExecute() {
-
 		$context = DispatchContext::newFromArray(
 			[
 				'subject' => 'Foo',

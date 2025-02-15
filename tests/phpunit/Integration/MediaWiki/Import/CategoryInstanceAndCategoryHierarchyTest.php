@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use SMW\DIProperty;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
@@ -13,23 +13,22 @@ use Title;
  * @group SMWExtension
  * @group semantic-mediawiki-import
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
  */
-class CategoryInstanceAndCategoryHierarchyTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class CategoryInstanceAndCategoryHierarchyTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
@@ -37,7 +36,7 @@ class CategoryInstanceAndCategoryHierarchyTest extends DatabaseTestCase {
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			__DIR__ . '/'. 'Fixtures/' . 'CategoryInstanceAndCategoryHierarchyTest-Mw-1-19-7.xml'
+			__DIR__ . '/' . 'Fixtures/' . 'CategoryInstanceAndCategoryHierarchyTest-Mw-1-19-7.xml'
 		);
 
 		if ( !$importRunner->setVerbose( true )->run() ) {
@@ -46,8 +45,7 @@ class CategoryInstanceAndCategoryHierarchyTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -55,7 +53,6 @@ class CategoryInstanceAndCategoryHierarchyTest extends DatabaseTestCase {
 	}
 
 	public function testCategoryHierarchies() {
-
 		$this->importedTitles = [
 			'Category:Regression test',
 			'Category:Regression test category',

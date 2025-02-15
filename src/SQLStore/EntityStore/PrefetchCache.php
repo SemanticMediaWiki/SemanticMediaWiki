@@ -2,15 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
-use SMWDataItem as DataItem;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\RequestOptions;
-use SMW\DataTypeRegistry;
-use RuntimeException;
-use SMW\MediaWiki\LinkBatch;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @license GNU GPL v2
@@ -31,12 +26,12 @@ class PrefetchCache {
 	private $prefetchItemLookup;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $cache = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $lookupCache = [];
 
@@ -56,7 +51,7 @@ class PrefetchCache {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCached( DIProperty $property ) {
 		return isset( $this->cache[$property->getKey()] );
@@ -77,7 +72,6 @@ class PrefetchCache {
 	 * @param RequestOptions $requestOptions
 	 */
 	public static function makeCacheKey( DIProperty $property, RequestOptions $requestOptions ) {
-
 		$key = $property->getKey();
 
 		// Use the .dot notation to distingish it from other prrintouts that
@@ -107,7 +101,6 @@ class PrefetchCache {
 	 * @param RequestOptions $requestOptions
 	 */
 	public function prefetch( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
-
 		$fingerprint = '';
 		$this->store->getObjectIds()->warmUpCache( $subjects );
 
@@ -143,19 +136,22 @@ class PrefetchCache {
 	 * @param DIProperty $property
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPropertyValues( DIWikiPage $subject, DIProperty $property, RequestOptions $requestOptions ) {
-
 		$key = $this->makeCacheKey( $property, $requestOptions );
 
-		$sid = $this->store->getObjectIds()->getSMWPageID(
-			$subject->getDBkey(),
-			$subject->getNamespace(),
-			$subject->getInterwiki(),
-			$subject->getSubobjectName(),
-			true
-		);
+		// 0 is the default ID of the subject, if it already has an ID,
+		// there is no need to do a DB query for the ID.
+		$sid = $subject->getId() !== 0
+			? $subject->getId()
+			: $this->store->getObjectIds()->getSMWPageID(
+				$subject->getDBkey(),
+				$subject->getNamespace(),
+				$subject->getInterwiki(),
+				$subject->getSubobjectName(),
+				true
+			);
 
 		if ( !isset( $this->cache[$key][$sid] ) ) {
 			return [];

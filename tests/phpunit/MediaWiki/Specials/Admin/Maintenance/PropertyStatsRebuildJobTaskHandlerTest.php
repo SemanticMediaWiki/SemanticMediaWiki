@@ -9,19 +9,19 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Specials\Admin\Maintenance\PropertyStatsRebuildJobTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;
 	private $outputFormatter;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -41,13 +41,12 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyStatsRebuildJobTaskHandler::class,
 			new PropertyStatsRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter )
@@ -55,7 +54,6 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testGetHtml() {
-
 		$methods = [
 			'setName',
 			'setMethod',
@@ -68,7 +66,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -83,11 +81,10 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testHandleRequestOnNonPendingJob() {
-
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'smw.propertyStatisticsRebuild' ) )
-			->will( $this->returnValue( false ) );
+			->with( 'smw.propertyStatisticsRebuild' )
+			->willReturn( false );
 
 		$propertyStatisticsRebuildJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob' )
 			->disableOriginalConstructor()
@@ -102,7 +99,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 
 		$jobFactory->expects( $this->once() )
 			->method( 'newByType' )
-			->will( $this->returnValue( $propertyStatisticsRebuildJob ) );
+			->willReturn( $propertyStatisticsRebuildJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -121,11 +118,10 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testHandleRequestOnPendingJob() {
-
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'smw.propertyStatisticsRebuild' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw.propertyStatisticsRebuild' )
+			->willReturn( true );
 
 		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()

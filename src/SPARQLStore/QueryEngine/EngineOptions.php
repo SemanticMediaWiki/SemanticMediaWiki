@@ -5,7 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine;
 use SMW\Options;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames

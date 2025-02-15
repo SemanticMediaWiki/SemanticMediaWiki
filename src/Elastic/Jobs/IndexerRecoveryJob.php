@@ -2,20 +2,18 @@
 
 namespace SMW\Elastic\Jobs;
 
-use SMW\Elastic\Indexer\Indexer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\Elastic\ElasticStore;
-use SMW\MediaWiki\Job;
 use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\ElasticFactory;
-use SMW\SQLStore\ChangeOp\ChangeDiff;
+use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Document;
+use SMW\Elastic\Indexer\Indexer;
+use SMW\MediaWiki\Job;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HmacSerializer;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -51,12 +49,11 @@ class IndexerRecoveryJob extends Job {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string|array $key
+	 * @param $subject
 	 *
 	 * @return string
 	 */
 	public static function makeCacheKey( $subject ) {
-
 		if ( $subject instanceof Title ) {
 			$subject = DIWikiPage::newFromTitle( $subject );
 		}
@@ -70,7 +67,6 @@ class IndexerRecoveryJob extends Job {
 	 * @param Document $document
 	 */
 	public static function pushFromDocument( Document $document ) {
-
 		$cache = ApplicationFactory::getInstance()->getCache();
 		$subject = $document->getSubject();
 
@@ -91,10 +87,10 @@ class IndexerRecoveryJob extends Job {
 	/**
 	 * @since 3.2
 	 *
+	 * @param Title $title
 	 * @param array $params
 	 */
 	public static function pushFromParams( Title $title, array $params ) {
-
 		$indexerRecoveryJob = new IndexerRecoveryJob(
 			$title,
 			$params
@@ -118,7 +114,6 @@ class IndexerRecoveryJob extends Job {
 	 * @since  3.0
 	 */
 	public function run() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$store = $applicationFactory->getStore( ElasticStore::class );
@@ -166,7 +161,6 @@ class IndexerRecoveryJob extends Job {
 	}
 
 	private function requeueRetry( $config ) {
-
 		// Give up!
 		if ( $this->getParameter( 'retryCount' ) >= $config->dotGet( 'indexer.job.recovery.retries' ) ) {
 			return true;
@@ -197,7 +191,6 @@ class IndexerRecoveryJob extends Job {
 	}
 
 	private function index( $cache, $hash ) {
-
 		$key = self::makeCacheKey(
 			DIWikiPage::doUnserialize( $hash )
 		);

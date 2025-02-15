@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
-use SMW\Query\Language\SomeProperty as SomeProperty;
-use SMW\Query\Language\ThingDescription as ThingDescription;
-use SMW\Query\Language\ValueDescription as ValueDescription;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\SPARQLStore;
 use SMW\Subobject;
 use SMW\Tests\Utils\SemanticDataFactory;
@@ -20,20 +20,19 @@ use SMWQuery as Query;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framework_TestCase {
+class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	private $store = null;
 	private $queryResultValidator;
 	private $semanticDataFactory;
 	private $dataValueFactory;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = ApplicationFactory::getInstance()->getStore();
 
 		if ( !$this->store instanceof SPARQLStore ) {
@@ -57,7 +56,6 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 	}
 
 	public function testQuerySubjects_afterUpdatingSemanticData() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$this->store->doSparqlDataUpdate( $semanticData );
@@ -77,7 +75,6 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 	}
 
 	public function testQueryZeroResults_afterSubjectRemoval() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$property = new DIProperty( __METHOD__ );
@@ -102,7 +99,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 
 		$query->querymode = Query::MODE_INSTANCES;
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$this->store->getQueryResult( $query )->getCount()
 		);
@@ -111,7 +108,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 			$this->store->doSparqlDataDelete( $semanticData->getSubject() )
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$this->store->getQueryResult( $query )->getCount()
 		);
@@ -121,7 +118,6 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 	 * @see http://semantic-mediawiki.org/wiki/Help:Selecting_pages#Restricting_results_to_a_namespace
 	 */
 	public function testQuerySubjects_onNamspaceRestrictedCondition() {
-
 		$subjectInHelpNamespace = new DIWikiPage( __METHOD__, NS_HELP, '' );
 
 		$semanticData = $this->semanticDataFactory
@@ -161,7 +157,6 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 	}
 
 	public function testQuerySubobjects_afterUpdatingWithEmptyContainerAllAssociatedEntitiesGetRemovedFromGraph() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$subobject = new Subobject( $semanticData->getSubject()->getTitle() );

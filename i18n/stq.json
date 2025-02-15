@@ -1,7 +1,10 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Maartenvdbent"
+		]
 	},
+	"smw-categories": "Kategorien",
 	"smw-livepreview-loading": "Leede …",
 	"smw-listingcontinuesabbrev": "(Foutsättenge)",
 	"smw-showingresults": "Hier {{PLURAL:$1|is '''1''' Resultoat|sunt '''$1''' Resultoate}}, ounfangend mäd Nuumer '''$2'''."

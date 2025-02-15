@@ -2,24 +2,23 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\TempFile;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\TempFile;
 
 /**
  * @covers \SMW\Utils\TempFile
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TempFileTest extends \PHPUnit_Framework_TestCase {
+class TempFileTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testGenerate() {
-
 		$instance = new TempFile();
 
 		$this->assertContains(

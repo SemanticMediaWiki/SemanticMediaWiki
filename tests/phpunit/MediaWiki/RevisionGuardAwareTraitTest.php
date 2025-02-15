@@ -8,15 +8,14 @@ use SMW\MediaWiki\RevisionGuardAwareTrait;
  * @covers \SMW\MediaWiki\RevisionGuardAwareTrait
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class RevisionGuardAwareTraitTest extends \PHPUnit_Framework_TestCase {
+class RevisionGuardAwareTraitTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSetRevisionGuard() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();

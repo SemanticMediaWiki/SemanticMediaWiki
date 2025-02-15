@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Maammee",
+			"Oromoom",
 			"Tumsaa"
 		]
 	},
+	"smw-categories": "Ramaddiiwwan",
 	"browse": "Wiki abuuri",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:sekondii|$1}}"
 }

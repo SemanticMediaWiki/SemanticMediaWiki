@@ -12,7 +12,7 @@ use Title;
 /**
  * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -87,7 +87,6 @@ class Subobject {
 	 * @param array|string $error
 	 */
 	public function addError( $error ) {
-
 		if ( is_string( $error ) ) {
 			$error = [ md5( $error ) => $error ];
 		}
@@ -106,7 +105,6 @@ class Subobject {
 	 * @throws InvalidArgumentException
 	 */
 	public function setEmptyContainerForId( $identifier ) {
-
 		if ( $identifier === '' ) {
 			throw new InvalidArgumentException( 'Expected a valid (non-empty) indentifier' );
 		}
@@ -138,7 +136,6 @@ class Subobject {
 	 * @return SMWContainerSemanticData
 	 */
 	public function getSemanticData() {
-
 		if ( !( $this->semanticData instanceof SMWContainerSemanticData ) ) {
 			throw new SubSemanticDataException( 'The semantic data container is not initialized' );
 		}
@@ -176,7 +173,6 @@ class Subobject {
 	 * @throws SubSemanticDataException
 	 */
 	public function addDataValue( SMWDataValue $dataValue ) {
-
 		if ( !( $this->semanticData instanceof SMWContainerSemanticData ) ) {
 			throw new SubSemanticDataException( 'The semantic data container is not initialized' );
 		}

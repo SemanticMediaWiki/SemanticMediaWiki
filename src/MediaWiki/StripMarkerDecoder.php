@@ -6,7 +6,7 @@ use Parser;
 use StripState;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -19,7 +19,7 @@ class StripMarkerDecoder {
 	private $stripState;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isSupported = false;
 
@@ -35,7 +35,7 @@ class StripMarkerDecoder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $decoderState
+	 * @param bool $isSupported
 	 */
 	public function isSupported( $isSupported ) {
 		$this->isSupported = $isSupported;
@@ -44,7 +44,7 @@ class StripMarkerDecoder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUse() {
 		return $this->isSupported;
@@ -55,10 +55,10 @@ class StripMarkerDecoder {
 	 *
 	 * @param string $text
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasStripMarker( $text ) {
-		return strpos( $text, Parser::MARKER_SUFFIX );
+		return strpos( $text ?? '', Parser::MARKER_SUFFIX );
 	}
 
 	/**
@@ -66,10 +66,9 @@ class StripMarkerDecoder {
 	 *
 	 * @param string $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function decode( $value ) {
-
 		$hasStripMarker = false;
 
 		if ( $this->canUse() ) {
@@ -89,18 +88,16 @@ class StripMarkerDecoder {
 	 * @return text
 	 */
 	public function unstrip( $text ) {
-
 		// Escape the text case to avoid any HTML elements
 		// cause an issue during parsing
 		return str_replace(
 			[ '<', '>', ' ', '[', '{', '=', "'", ':', "\n" ],
 			[ '&lt;', '&gt;', ' ', '&#x005B;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ],
-			$this->doUnstrip( $text )
+			$this->doUnstrip( $text ) ?? ''
 		);
 	}
 
 	public function doUnstrip( $text ) {
-
 		if ( ( $value = $this->stripState->unstripNoWiki( $text ) ) !== '' && !$this->hasStripMarker( $value ) ) {
 			return $this->addNoWikiToUnstripValue( $value );
 		}

@@ -17,7 +17,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -40,7 +40,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -60,7 +60,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
@@ -100,7 +99,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function doPreliminarySubDescriptionCheck( $subDescriptions, $joinVariable, $orderByProperty ) {
-
 		$count = count( $subDescriptions );
 
 		// empty conjunction: true
@@ -126,7 +124,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function doResolveSubDescriptionsRecursively( $subDescriptions, $joinVariable ) {
-
 		// Using a stdClass as data container for simpler handling in follow-up tasks
 		// and as the class is not exposed publicly we don't need to create
 		// an extra "real" class to manage its elements
@@ -171,7 +168,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 				}
 
 				if ( ( $subConditionElements->singletonMatchElement !== null ) &&
-				     ( $singletonMatchElementName !== $matchElementName ) ) {
+					 ( $singletonMatchElementName !== $matchElementName ) ) {
 					return new FalseCondition();
 				}
 
@@ -195,7 +192,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createConditionFromSubConditionElements( $subConditionElements ) {
-
 		if ( $subConditionElements->singletonMatchElement instanceof ExpElement ) {
 			return $this->createSingletonCondition( $subConditionElements );
 		}
@@ -208,7 +204,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createSingletonCondition( $subConditionElements ) {
-
 		if ( $subConditionElements->filter !== '' ) {
 			$subConditionElements->condition .= "FILTER( $subConditionElements->filter )";
 		}
@@ -231,7 +226,6 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createWhereCondition( $subConditionElements ) {
-
 		if ( $subConditionElements->filter !== '' ) {
 			$subConditionElements->condition .= "FILTER( $subConditionElements->filter )";
 		}

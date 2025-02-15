@@ -3,13 +3,12 @@
 namespace SMW;
 
 use InvalidArgumentException;
-use RuntimeException;
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
 use SMW\Utils\DotArray;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -52,7 +51,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has( $key ) {
 		return isset( $this->options[$key] ) || array_key_exists( $key, $this->options );
@@ -64,7 +63,7 @@ class Options implements JsonUnserializable {
 	 * @param string $key
 	 * @param string $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is( $key, $value ) {
 		return $this->get( $key ) === $value;
@@ -79,7 +78,6 @@ class Options implements JsonUnserializable {
 	 * @throws InvalidArgumentException
 	 */
 	public function get( $key ) {
-
 		if ( $this->has( $key ) ) {
 			return $this->options[$key];
 		}
@@ -115,9 +113,9 @@ class Options implements JsonUnserializable {
 	 * @since 3.0
 	 *
 	 * @param string $key
-	 * @param integer $flag
+	 * @param int $flag
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFlagSet( $key, $flag ) {
 		return ( ( (int)$this->safeGet( $key, 0 ) & $flag ) == $flag );
@@ -150,7 +148,6 @@ class Options implements JsonUnserializable {
 	 * @return array
 	 */
 	public function filter( array $keys ) {
-
 		$options = [];
 
 		foreach ( $keys as $key ) {
@@ -164,7 +161,7 @@ class Options implements JsonUnserializable {
 
 	/**
 	 * Implements \JsonSerializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @return array
@@ -178,7 +175,7 @@ class Options implements JsonUnserializable {
 
 	/**
 	 * Implements JsonUnserializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @param JsonUnserializer $unserializer Unserializer

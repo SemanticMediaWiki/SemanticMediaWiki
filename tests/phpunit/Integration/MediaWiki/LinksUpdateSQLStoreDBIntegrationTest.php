@@ -2,29 +2,28 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use LinksUpdate;
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\MediaWikiServices;
 use ParserOutput;
-use SMW\Services\ServicesFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Services\ServicesFactory;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use Title;
 use UnexpectedValueException;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
  */
-class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesBeforeRun = true;
+class LinksUpdateSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $title = null;
 	private $mwHooksHandler;
@@ -33,7 +32,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	private $revisionGuard;
 	private $pageCreator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$serviceFactory = ServicesFactory::getInstance();
@@ -54,8 +53,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 		$this->pageCreator = $serviceFactory->newPageCreator();
 	}
 
-	public function tearDown() : void {
-
+	public function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 
 		if ( $this->title !== null ) {
@@ -66,7 +64,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPageCreationAndRevisionHandlingBeforeLinksUpdate() {
-
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
@@ -86,7 +83,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider propertyCountProvider
 	 */
 	public function testLinksUpdateAndVerifyStoreUpdate( $expected ) {
-
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
@@ -152,7 +148,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function fetchRevisionAndRunLinksUpdater( array $expected, $revId ) {
-
 		$parserData = $this->retrieveAndLoadData( $revId );
 
 		// Status before the update
@@ -186,7 +181,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	protected function retrieveAndLoadData( $revId = null ) {
-
 		$revision = $revId !== null
 				  ? MediaWikiServices::getInstance()->getRevisionLookup()->getRevisionById( $revId )
 				  : null;
@@ -208,7 +202,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function propertyCountProvider() {
-
 		// Property _SKEY is always present even within an empty container
 		// po = ParserOutput, before means prior LinksUpdate
 

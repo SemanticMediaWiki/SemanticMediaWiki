@@ -8,7 +8,7 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -64,7 +64,6 @@ class AllowsListValueParser implements ValueParser {
 	 * @return string|false
 	 */
 	public function parse( $userValue ) {
-
 		$this->errors = [];
 
 		if ( isset( self::$contents[$userValue] ) ) {
@@ -80,7 +79,6 @@ class AllowsListValueParser implements ValueParser {
 	}
 
 	private function parse_contents( $userValue, $contents ) {
-
 		if ( $contents === '' ) {
 			return $this->errors[] = [ 'smw-datavalue-allows-value-list-unknown', $userValue ];
 		}
@@ -93,7 +91,6 @@ class AllowsListValueParser implements ValueParser {
 	}
 
 	private function parse_string( $userValue, $contents ) {
-
 		$parts = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
 		$list = [];
 
@@ -110,7 +107,7 @@ class AllowsListValueParser implements ValueParser {
 
 			// Allow something like * Foo|Bar
 			if ( strpos( $part, '|' ) !== false ) {
-				list( $reference, $val ) = explode( '|', $part, 2 );
+				[ $reference, $val ] = explode( '|', $part, 2 );
 				$list[$reference] = $val;
 			} else {
 				$list[$part] = $part;

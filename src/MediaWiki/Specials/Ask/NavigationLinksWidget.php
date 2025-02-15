@@ -7,13 +7,12 @@ use SMW\Localizer;
 use SMW\Message;
 use SMW\Utils\HtmlModal;
 use SMW\Utils\Pager;
+use SMW\Utils\UrlArgs;
 use SMWInfolink as Infolink;
 use Title;
-use SMW\Utils\HtmlTabs;
-use SMW\Utils\UrlArgs;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -21,7 +20,7 @@ use SMW\Utils\UrlArgs;
 class NavigationLinksWidget {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $maxInlineLimit = 500;
 
@@ -43,7 +42,6 @@ class NavigationLinksWidget {
 	 * @return string
 	 */
 	public static function topLinks( Title $title, $visibleLinks = [], $isEditMode = true ) {
-
 		if ( $visibleLinks === [] ) {
 			return '';
 		}
@@ -150,13 +148,12 @@ class NavigationLinksWidget {
 	 *
 	 * @param Title $title
 	 * @param UrlArgs $urlArgs
-	 * @param integer $count
-	 * @param boolean $hasFurtherResults
+	 * @param int $count
+	 * @param bool $hasFurtherResults
 	 *
 	 * @return string
 	 */
 	public static function navigationLinks( Title $title, UrlArgs $urlArgs, $count, $hasFurtherResults = false ) {
-
 		if ( $count == 0 ) {
 			return '';
 		}
@@ -166,7 +163,7 @@ class NavigationLinksWidget {
 		$offset = (int)$urlArgs->get( 'offset' );
 
 		// Remove any contents that is cruft
-		if ( strpos( $urlArgs->get( 'p' ), 'cl=' ) !== false ) {
+		if ( strpos( $urlArgs->get( 'p' ) ?? '', 'cl=' ) !== false ) {
 			$urlArgs->set( 'p', mb_substr( $urlArgs->get( 'p' ), stripos( $urlArgs->get( 'p' ), '/' ) + 1 ) );
 		}
 
@@ -195,8 +192,7 @@ class NavigationLinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function basicLinks( $navigation = '', Infolink $infoLink = null ) {
-
+	public static function basicLinks( $navigation = '', ?Infolink $infoLink = null ) {
 		if ( $navigation === '' ) {
 			return '';
 		}

@@ -22,23 +22,22 @@ use SMWDINumber as DINumber;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\DisjunctionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class DisjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,7 +49,6 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBuildConditionFor() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Disjunction' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -70,7 +68,6 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testConjunctionCondition( $description, $orderByProperty, $sortkeys, $expectedConditionType, $expectedConditionString ) {
-
 		$resultVariable = 'result';
 
 		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -95,7 +92,6 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
@@ -254,7 +250,7 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			$description
 		);
 
@@ -293,7 +289,7 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			$description
 		);
 

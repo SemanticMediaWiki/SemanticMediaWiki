@@ -10,21 +10,20 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\DataValues\PropertyChainValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
+class PropertyChainValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\PropertyChainValue',
 			new PropertyChainValue()
@@ -32,7 +31,6 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsChained() {
-
 		$this->assertFalse(
 			PropertyChainValue::isChained( 'Foo' )
 		);
@@ -43,7 +41,6 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorOnUnchainedValue() {
-
 		$instance = new PropertyChainValue();
 
 		$instance->setUserValue( 'Foo' );
@@ -54,7 +51,6 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLastPropertyChainValue() {
-
 		$instance = new PropertyChainValue();
 
 		$instance->setUserValue( 'Foo.Bar' );
@@ -71,7 +67,6 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyChainValues() {
-
 		$instance = new PropertyChainValue();
 
 		$instance->setUserValue( 'Foo.Bar' );
@@ -83,7 +78,6 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetWikiValue() {
-
 		$instance = new PropertyChainValue();
 
 		$instance->setUserValue( 'Foo.Bar' );
@@ -95,7 +89,6 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortWikiText() {
-
 		$instance = new PropertyChainValue();
 
 		$instance->setUserValue( 'Foo.Bar' );
@@ -112,7 +105,6 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLongWikiText() {
-
 		$instance = new PropertyChainValue();
 
 		$instance->setUserValue( 'Foo.Bar' );
@@ -129,7 +121,6 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortHTMLText() {
-
 		$instance = new PropertyChainValue();
 
 		$instance->setUserValue( 'Foo.Bar' );
@@ -141,7 +132,6 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLongHTMLText() {
-
 		$instance = new PropertyChainValue();
 
 		$instance->setUserValue( 'Foo.Bar' );

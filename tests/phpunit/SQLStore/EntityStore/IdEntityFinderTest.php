@@ -6,19 +6,18 @@ use SMW\DIWikiPage;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
-use SMW\MediaWiki\Connection\Query;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\IdEntityFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
+class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $cache;
@@ -27,7 +26,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private Database $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -40,7 +39,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
 			->disableOriginalConstructor()
@@ -57,11 +56,10 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			IdEntityFinder::class,
 			new IdEntityFinder( $this->store, $this->iteratorFactory, $this->idCacheManager )
@@ -69,34 +67,33 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDataItemForNonCachedId() {
-
 		$row = new \stdClass;
 		$row->smw_id = 42;
 		$row->smw_title = 'Foo';
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
-		$row->smw_subobject ='';
-		$row->smw_sortkey ='';
-		$row->smw_sort ='';
+		$row->smw_subobject = '';
+		$row->smw_sortkey = '';
+		$row->smw_sort = '';
 		$row->smw_hash = 'x99w';
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 42 ),
+				42,
 				$this->anything() );
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'smw_id' => 42 ] ) )
-			->will( $this->returnValue( $row ) );
+				[ 'smw_id' => 42 ] )
+			->willReturn( $row );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -111,10 +108,9 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDataItemForCachedId() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
+			->willReturn( new DIWikiPage( 'Foo', NS_MAIN ) );
 
 		$this->connection->expects( $this->never() )
 			->method( 'selectRow' );
@@ -132,7 +128,6 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPredefinedPropertyItem() {
-
 		$dataItem = new DIWikiPage( '_MDAT', SMW_NS_PROPERTY );
 		$dataItem->setId( 42 );
 		$dataItem->setSortKey( 'bar' );
@@ -150,15 +145,15 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'smw_id' => 42 ] ) )
-			->will( $this->returnValue( $row ) );
+				[ 'smw_id' => 42 ] )
+			->willReturn( $row );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -173,14 +168,13 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNullForUnknownId() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -194,7 +188,6 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDataItemsFromList() {
-
 		$expected = new DIWikiPage( 'Foo', 0, '', '' );
 		$expected->setId( 42 );
 		$expected->setSortKey( '...' );
@@ -205,7 +198,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_title = 'Foo';
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
-		$row->smw_subobject ='';
+		$row->smw_subobject = '';
 		$row->smw_sortkey = '...';
 		$row->smw_sort = '...';
 		$row->smw_hash = 'x99w';
@@ -215,8 +208,8 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'smw_id' => [ 42 ] ] ) )
-			->will( $this->returnValue( [ $row ] ) );
+				[ 'smw_id' => [ 42 ] ] )
+			->willReturn( [ $row ] );
 
 		$instance = new IdEntityFinder(
 			$this->store,

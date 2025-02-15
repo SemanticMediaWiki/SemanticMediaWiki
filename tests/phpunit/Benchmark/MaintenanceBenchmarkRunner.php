@@ -8,7 +8,7 @@ use SMW\Tests\Utils\Runners\RunnerFactory;
 /**
  * @group semantic-mediawiki-benchmark
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -56,7 +56,6 @@ class MaintenanceBenchmarkRunner implements BenchmarkReporter {
 	 * @param array $case
 	 */
 	public function run( array $case ) {
-
 		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
@@ -83,7 +82,6 @@ class MaintenanceBenchmarkRunner implements BenchmarkReporter {
 	}
 
 	private function doRunMaintenance( $maintenanceRunner, array $case ) {
-
 		$memoryBefore = memory_get_peak_usage( false );
 
 		for ( $i = 0; $i < $case['repetitionCount']; $i++ ) {

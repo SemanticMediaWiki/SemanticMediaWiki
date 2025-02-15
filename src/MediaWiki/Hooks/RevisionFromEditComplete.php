@@ -4,16 +4,16 @@ namespace SMW\MediaWiki\Hooks;
 
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\EditInfo;
-use SMW\MediaWiki\PageInfoProvider;
-use SMW\ParserData;
-use SMW\Schema\Schema;
-use Title;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\PageInfoProvider;
 use SMW\OptionsAwareTrait;
+use SMW\ParserData;
 use SMW\Property\AnnotatorFactory as PropertyAnnotatorFactory;
+use SMW\Schema\Schema;
 use SMW\Schema\SchemaFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use Title;
 
 /**
  * Hook: RevisionFromEditComplete called when a revision was inserted
@@ -27,7 +27,7 @@ use SMW\Schema\SchemaFactory;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/RevisionFromEditComplete
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -77,10 +77,9 @@ class RevisionFromEditComplete implements HookListener {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( Title $title ) {
-
 		$this->editInfo->fetchEditInfo();
 
 		$parserOutput = $this->editInfo->getOutput();
@@ -102,7 +101,7 @@ class RevisionFromEditComplete implements HookListener {
 		);
 
 		$context = [
-			'context' => RevisionFromEditComplete::class,
+			'context' => self::class,
 			'title' => $title
 		];
 
@@ -121,7 +120,6 @@ class RevisionFromEditComplete implements HookListener {
 	}
 
 	private function tryCreateSchema( $title ) {
-
 		if ( $title->getNamespace() !== SMW_NS_SCHEMA ) {
 			return null;
 		}
@@ -131,15 +129,14 @@ class RevisionFromEditComplete implements HookListener {
 				$title->getDBKey(),
 				$this->pageInfoProvider->getNativeData()
 			);
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			return null;
 		}
 
 		return $schema;
 	}
 
-	private function addPredefinedPropertyAnnotation( ParserData $parserData, Schema $schema = null ) {
-
+	private function addPredefinedPropertyAnnotation( ParserData $parserData, ?Schema $schema = null ) {
 		$propertyAnnotator = $this->propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$parserData->getSemanticData()
 		);

@@ -3,13 +3,13 @@
 namespace SMW\Listener\ChangeListener;
 
 use Iterator;
-use SeekableIterator;
 use OutOfBoundsException;
 use RuntimeException;
+use SeekableIterator;
 use SMW\Iterators\DotSeekableIteratorTrait;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -32,13 +32,12 @@ class ChangeRecord implements Iterator, SeekableIterator {
 	 *
 	 * @param mixed $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function has( $key ) : bool {
-
+	public function has( $key ): bool {
 		try {
 			$this->seek( $key );
-		} catch( OutOfBoundsException $e ) {
+		} catch ( OutOfBoundsException $e ) {
 			return false;
 		}
 
@@ -54,10 +53,9 @@ class ChangeRecord implements Iterator, SeekableIterator {
 	 * @throws RuntimeException
 	 */
 	public function get( $key ) {
-
 		try {
 			$this->seek( $key );
-		} catch( OutOfBoundsException $e ) {
+		} catch ( OutOfBoundsException $e ) {
 			throw new RuntimeException( "There is no `$key` key available!" );
 		}
 

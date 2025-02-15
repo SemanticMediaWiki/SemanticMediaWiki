@@ -2,20 +2,17 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
-use Onoi\Cache\Cache;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\DIWikiPage;
 use SMW\EntityCache;
-use Html;
-use SMW\Utils\TemplateEngine;
-use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Message;
+use SMW\Store;
+use SMW\Utils\TemplateEngine;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -51,7 +48,7 @@ class ReplicationCheck {
 	private $templateEngine;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $errorTitle = '';
 
@@ -66,7 +63,7 @@ class ReplicationCheck {
 	private $severityType = self::SEVERITY_TYPE_ERROR;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL = 3600;
 
@@ -91,7 +88,6 @@ class ReplicationCheck {
 	 * @return string
 	 */
 	public static function makeCacheKey( $subject ) {
-
 		if ( $subject instanceof DIWikiPage ) {
 			$subject = $subject->getHash();
 		}
@@ -102,7 +98,7 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getReplicationFailures() {
 		return $this->entityCache->fetch( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
@@ -120,10 +116,9 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage|Title $title
+	 * @param DIWikiPage|Title $subject
 	 */
 	public function deleteReplicationTrail( $subject ) {
-
 		if ( $subject instanceof \Title ) {
 			$subject = DIWikiPage::newFromTitle( $subject );
 		}
@@ -141,7 +136,7 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $cacheTTL
+	 * @param int $cacheTTL
 	 */
 	public function setCacheTTL( $cacheTTL ) {
 		$this->cacheTTL = $cacheTTL > 0 ? $cacheTTL : 3600;
@@ -152,7 +147,7 @@ class ReplicationCheck {
 	 *
 	 * @return string
 	 */
-	public function getErrorTitle() : string {
+	public function getErrorTitle(): string {
 		return $this->errorTitle;
 	}
 
@@ -161,7 +156,7 @@ class ReplicationCheck {
 	 *
 	 * @return string
 	 */
-	public function getSeverityType() : string {
+	public function getSeverityType(): string {
 		return $this->severityType;
 	}
 
@@ -173,7 +168,6 @@ class ReplicationCheck {
 	 * @return array
 	 */
 	public function process( array $parameters ) {
-
 		if ( !isset( $parameters['subject'] ) || $parameters['subject'] === '' ) {
 			return [ 'done' => false ];
 		}
@@ -199,7 +193,6 @@ class ReplicationCheck {
 	 * @return string
 	 */
 	public function checkReplication( DIWikiPage $subject, array $options = [] ) {
-
 		$this->templateEngine = new TemplateEngine();
 		$this->templateEngine->bulkLoad(
 			[
@@ -231,7 +224,6 @@ class ReplicationCheck {
 	}
 
 	private function check( $subject, $options ) {
-
 		$error = $this->documentReplicationExaminer->check(
 			$subject,
 			[
@@ -270,7 +262,6 @@ class ReplicationCheck {
 	}
 
 	private function buildHTML( ReplicationError $error, $title_text ) {
-
 		$this->errorTitle = 'smw-es-replication-error';
 
 		if ( $error->is( ReplicationError::TYPE_EXCEPTION ) ) {
@@ -289,7 +280,6 @@ class ReplicationCheck {
 	}
 
 	private function connectionError() {
-
 		$html = '';
 
 		$this->errorTitle = 'smw-es-replication-error';
@@ -317,7 +307,6 @@ class ReplicationCheck {
 	}
 
 	private function maintenanceError() {
-
 		$html = '';
 
 		$this->errorTitle = 'smw-es-replication-error';
@@ -345,7 +334,6 @@ class ReplicationCheck {
 	}
 
 	private function exceptionError( ReplicationError $error ) {
-
 		$html = '';
 
 		if ( $error->get( 'exception_error' ) === 'BadRequest400Exception' ) {
@@ -379,7 +367,6 @@ class ReplicationCheck {
 	}
 
 	private function modificationDateDiffError( ReplicationError $error, $title_text ) {
-
 		$html = '';
 
 		$this->templateEngine->compile(
@@ -418,7 +405,6 @@ class ReplicationCheck {
 	}
 
 	private function associatedRevisionDiffError( ReplicationError $error, $title_text ) {
-
 		$html = '';
 
 		$this->severityType = self::SEVERITY_TYPE_WARNING;
@@ -460,7 +446,6 @@ class ReplicationCheck {
 	}
 
 	private function missingDocumentError( ReplicationError $error, $title_text ) {
-
 		$html = '';
 
 		$this->severityType = self::SEVERITY_TYPE_ERROR;
@@ -487,7 +472,6 @@ class ReplicationCheck {
 	}
 
 	private function fileAttachmentError( ReplicationError $error, $title_text ) {
-
 		$html = '';
 		$this->severityType = self::SEVERITY_TYPE_WARNING;
 
@@ -514,7 +498,6 @@ class ReplicationCheck {
 	}
 
 	private function wrapHTML( $content ) {
-
 		if ( $content === '' ) {
 			return '';
 		}

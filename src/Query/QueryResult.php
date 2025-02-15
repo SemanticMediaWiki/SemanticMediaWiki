@@ -3,15 +3,11 @@
 namespace SMW\Query;
 
 use SMW\DIWikiPage;
-use SMW\Query\Excerpts;
-use SMW\Query\PrintRequest;
-use SMW\Query\QueryLinker;
-use SMW\Query\Result\ItemJournal;
 use SMW\Query\Result\FieldItemFinder;
-use SMW\Query\Result\ItemFetcher;
-use SMW\Query\Result\ResultArray;
 use SMW\Query\Result\FilterMap;
-use SMW\Query\ScoreSet;
+use SMW\Query\Result\ItemFetcher;
+use SMW\Query\Result\ItemJournal;
+use SMW\Query\Result\ResultArray;
 use SMW\SerializerFactory;
 use SMW\Store;
 use SMWInfolink;
@@ -28,7 +24,7 @@ use SMWQuery as Query;
  * getResults(). This is useful for printers that disregard printouts and
  * only are interested in the actual list of pages.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author Markus Krötzsch
@@ -59,7 +55,7 @@ class QueryResult {
 	/**
 	 * Are there more results than the ones given?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $mFurtherResults;
 
@@ -81,14 +77,14 @@ class QueryResult {
 	/**
 	 * Holds a value that belongs to a count query result
 	 *
-	 * @var integer|null
+	 * @var int|null
 	 */
 	private $countValue;
 
 	/**
 	 * Indicates whether results have been retrieved from cache or not
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isFromCache = false;
 
@@ -103,7 +99,7 @@ class QueryResult {
 	private $fieldItemFinder;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $serializer_version = 2;
 
@@ -127,7 +123,7 @@ class QueryResult {
 	 * @param Query $query
 	 * @param DIWikiPage[] $results
 	 * @param Store $store
-	 * @param boolean $furtherRes
+	 * @param bool $furtherRes
 	 */
 	public function __construct( array $printRequests, Query $query, array $results, Store $store, $furtherRes = false ) {
 		$this->mResults = $results;
@@ -192,7 +188,7 @@ class QueryResult {
 	/**
 	 * @since  2.4
 	 *
-	 * @param boolean $isFromCache
+	 * @param bool $isFromCache
 	 */
 	public function setFromCache( $isFromCache ) {
 		$this->isFromCache = (bool)$isFromCache;
@@ -241,7 +237,7 @@ class QueryResult {
 	/**
 	 * @since  2.4
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFromCache() {
 		return $this->isFromCache;
@@ -288,7 +284,7 @@ class QueryResult {
 	/**
 	 * Return number of available results.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getCount() {
 		return count( $this->mResults );
@@ -326,7 +322,7 @@ class QueryResult {
 	 * Return the number of columns of result values that each row
 	 * in this result set contains.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getColumnCount() {
 		return count( $this->mPrintRequests );
@@ -355,7 +351,7 @@ class QueryResult {
 	/**
 	 * Would there be more query results that were not shown due to a limit?
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFurtherResults() {
 		return $this->mFurtherResults;
@@ -364,7 +360,7 @@ class QueryResult {
 	/**
 	 * @since  2.0
 	 *
-	 * @param integer $countValue
+	 * @param int $countValue
 	 */
 	public function setCountValue( $countValue ) {
 		$this->countValue = (int)$countValue;
@@ -373,7 +369,7 @@ class QueryResult {
 	/**
 	 * @since  2.0
 	 *
-	 * @return integer|null
+	 * @return int|null
 	 */
 	public function getCountValue() {
 		return $this->countValue;
@@ -410,7 +406,6 @@ class QueryResult {
 	 * @return SMWInfolink
 	 */
 	public function getQueryLink( $caption = false ) {
-
 		$link = QueryLinker::get( $this->mQuery );
 
 		$link->setCaption( $caption );
@@ -447,7 +442,6 @@ class QueryResult {
 	 * @return array
 	 */
 	public function serializeToArray() {
-
 		$serializerFactory = new SerializerFactory();
 		$serializer = $serializerFactory->newQueryResultSerializer();
 		$serializer->version( $this->serializer_version );
@@ -472,7 +466,6 @@ class QueryResult {
 	 * @return array
 	 */
 	public function toArray() {
-
 		$time = microtime( true );
 
 		// @note micro optimization: We call getSerializedQueryResult()
@@ -482,7 +475,7 @@ class QueryResult {
 		$serializeArray = $this->serializeToArray();
 
 		return array_merge( $serializeArray, [
-			'meta'=> [
+			'meta' => [
 				'hash'   => md5( json_encode( $serializeArray ) ),
 				'count'  => $this->getCount(),
 				'offset' => $this->mQuery->getOffset(),
@@ -501,7 +494,6 @@ class QueryResult {
 	 * @return string
 	 */
 	public function getHash( $type = null ) {
-
 		// Just iterate over available subjects to create a "quick" hash given
 		// that resolving the entire object tree is costly due to recursive
 		// processing of all data items including its printouts

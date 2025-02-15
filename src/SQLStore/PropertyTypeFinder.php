@@ -9,7 +9,7 @@ use SMW\MediaWiki\Database;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -49,10 +49,9 @@ class PropertyTypeFinder {
 	 *
 	 * @param string $type
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function countByType( $type ) {
-
 		if ( strpos( 'http://semantic-mediawiki.org/swivt/1.0#', $type ) === false ) {
 			$type = 'http://semantic-mediawiki.org/swivt/1.0#' . $type;
 		}
@@ -78,7 +77,6 @@ class PropertyTypeFinder {
 	 * @throws RuntimeException
 	 */
 	public function findTypeID( DIProperty $property ) {
-
 		try {
 			$row = $this->connection->selectRow(
 				SQLStore::ID_TABLE,
@@ -128,7 +126,7 @@ class PropertyTypeFinder {
 		}
 
 		// e.g. http://semantic-mediawiki.org/swivt/1.0#_num
-		list( $url, $fragment ) = explode( "#", $row->o_serialized );
+		[ $url, $fragment ] = explode( "#", $row->o_serialized );
 
 		return $fragment;
 	}

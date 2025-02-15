@@ -2,14 +2,15 @@
 
 namespace SMW\MediaWiki\Connection;
 
-use DatabaseBase;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Services\ServicesFactory;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -19,7 +20,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var DatabaseBase|IDatabase
+	 * @var IDatabase
 	 */
 	private $connection;
 
@@ -34,26 +35,21 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	private $groups;
 
 	/**
-	 * @var string|boolean $wiki
+	 * @var string|bool
 	 */
 	private $wiki;
 
 	/**
-	 * @var LoadBalancer
+	 * @var ILoadBalancer
 	 */
 	private $loadBalancer;
-
-	/**
-	 * @var boolean
-	 */
-	private $asConnectionRef = true;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param int $id
 	 * @param string|array $groups
-	 * @param string|boolean $wiki Wiki ID, or false for the current wiki
+	 * @param string|bool $wiki Wiki ID, or false for the current wiki
 	 */
 	public function __construct( $id, $groups = [], $wiki = false ) {
 		$this->id = $id;
@@ -64,10 +60,11 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	/**
 	 * @since 3.1
 	 *
+	 * @deprecated since 5.0
+	 *
 	 * @param boolean $asConnectionRef
 	 */
 	public function asConnectionRef( $asConnectionRef ) {
-		$this->asConnectionRef = $asConnectionRef;
 	}
 
 	/**
@@ -75,7 +72,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 *
 	 * @param loadBalancer $loadBalancer
 	 */
-	public function setLoadBalancer( \LoadBalancer $loadBalancer ) {
+	public function setLoadBalancer( ILoadBalancer $loadBalancer ) {
 		$this->loadBalancer = $loadBalancer;
 	}
 
@@ -84,11 +81,10 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 1.9
 	 *
-	 * @return DatabaseBase
+	 * @return IDatabase
 	 * @throws RuntimeException
 	 */
 	public function getConnection() {
-
 		if ( $this->connection !== null ) {
 			return $this->connection;
 		}
@@ -97,20 +93,13 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 			$this->initLoadBalancer( $this->wiki );
 		}
 
-		if ( $this->asConnectionRef ) {
-			$this->connection = $this->loadBalancer->getConnectionRef( $this->id, $this->groups, $this->wiki );
-		} else {
-			$this->connection = $this->loadBalancer->getConnection( $this->id, $this->groups, $this->wiki );
-		}
+		$this->connection = $this->loadBalancer->getConnection( $this->id, $this->groups, $this->wiki );
 
-		if (
-			$this->connection instanceof DatabaseBase ||
-			$this->connection instanceof \IDatabase ||
-			$this->connection instanceof \Wikimedia\Rdbms\IDatabase ) {
+		if ( $this->connection instanceof IDatabase ) {
 			return $this->connection;
 		}
 
-		throw new RuntimeException( 'Expected a DatabaseBase or IDatabase instance!' );
+		throw new RuntimeException( 'Expected a IDatabase instance!' );
 	}
 
 	/**
@@ -119,16 +108,12 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 * @since 1.9
 	 */
 	public function releaseConnection() {
-		if ( $this->loadBalancer !== null && $this->connection !== null ) {
-			$this->loadBalancer->reuseConnection( $this->connection );
-		}
 	}
 
 	/**
 	 * @see wfGetLB
 	 */
 	private function initLoadBalancer( $wiki = false ) {
-
 		$servicesFactory = ServicesFactory::getInstance();
 
 		if ( $wiki === false ) {

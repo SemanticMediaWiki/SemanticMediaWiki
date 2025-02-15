@@ -13,7 +13,7 @@ use RuntimeException;
  * (or traversable/array) in order to apply a mapping on the returned current element
  * during an iterative (foreach etc.) process.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -26,7 +26,7 @@ class MappingIterator extends IteratorIterator implements Countable {
 	private $callback;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $count = 1;
 
@@ -37,7 +37,6 @@ class MappingIterator extends IteratorIterator implements Countable {
 	 * @param callable $callback
 	 */
 	public function __construct( $iterable, callable $callback ) {
-
 		if ( is_array( $iterable ) ) {
 			$iterable = new ArrayIterator( $iterable );
 		}

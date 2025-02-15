@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\MessageBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
+class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +30,6 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatNumberToText() {
-
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,7 +45,6 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListToCommaSeparatedText() {
-
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -61,7 +58,7 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$context->expects( $this->once() )
 			->method( 'getLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$instance = new MessageBuilder();
 
@@ -71,7 +68,6 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrevNextToText() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -91,9 +87,7 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains( 'class="mw-nextlink"', $links[0] );
 		$this->assertContains( '>next 20<', $links[0] );
 
-		$nums= [20, 50, 100, 250, 500];
-		// On MW 1.39 and newer, the current limit selection is not a link any more.
-		$nums = version_compare( MW_VERSION, '1.39', '>=' ) ? [ 50, 100, 250, 500 ] : $nums;
+		$nums = [ 50, 100, 250, 500 ];
 		for ( $i = 1; $i < count( $links ); $i++ ) {
 			$a = $links[$i];
 			$this->assertContains( 'class="mw-numlink"', $a );
@@ -103,7 +97,6 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetForm() {
-
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -117,7 +110,6 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNullLanguageThrowsException() {
-
 		$instance = new MessageBuilder();
 
 		$this->expectException( 'RuntimeException' );

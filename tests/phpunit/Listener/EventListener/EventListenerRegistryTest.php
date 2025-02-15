@@ -11,27 +11,26 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Listener\EventListener\EventListenerRegistry
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
+class EventListenerRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $eventDispatcherFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->eventDispatcherFactory = EventDispatcherFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$eventListenerCollection = $this->getMockBuilder( '\Onoi\EventDispatcher\EventListenerCollection' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -43,7 +42,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListenerCollection() {
-
 		$eventListenerCollection = $this->getMockBuilder( '\Onoi\EventDispatcher\EventListenerCollection' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'registerCallback' ] )
@@ -61,7 +59,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanExecuteRegisteredListeners() {
-
 		$instance = new EventListenerRegistry(
 			$this->eventDispatcherFactory->newGenericEventListenerCollection()
 		);
@@ -78,7 +75,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertListenerExecuteFor( $eventName, $instance, $dispatchContext = null ) {
-
 		$executed = false;
 
 		foreach ( $instance->getCollection() as $event => $listeners ) {

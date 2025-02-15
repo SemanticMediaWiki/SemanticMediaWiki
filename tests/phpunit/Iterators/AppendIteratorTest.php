@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Iterators\AppendIterator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
+class AppendIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AppendIterator::class,
 			new AppendIterator()
@@ -30,7 +29,6 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider iterableProvider
 	 */
 	public function testCount( $iterable, $expected ) {
-
 		$instance = new AppendIterator();
 		$instance->add( $iterable );
 
@@ -41,7 +39,6 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddOnNonIterableThrowsException() {
-
 		$instance = new AppendIterator();
 
 		$this->expectException( 'RuntimeException' );
@@ -49,7 +46,6 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function iterableProvider() {
-
 		$provider[] = [
 			[
 				1, 42, 1001, 9999
@@ -58,7 +54,7 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$iterator = new AppendIterator();
-		$iterator->add( [ 0 , 1 ] );
+		$iterator->add( [ 0, 1 ] );
 
 		$provider[] = [
 			$iterator,
@@ -66,7 +62,7 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$iterator = new AppendIterator();
-		$iterator->add( [ 0 , 1 ] );
+		$iterator->add( [ 0, 1 ] );
 		$iterator->add( $iterator );
 
 		$provider[] = [

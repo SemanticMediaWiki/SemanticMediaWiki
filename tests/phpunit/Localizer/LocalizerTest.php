@@ -4,8 +4,6 @@ namespace SMW\Tests\Localizer;
 
 use DateTime;
 use IContextSource;
-use Language;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
 use SMW\Localizer\Localizer;
 
@@ -13,12 +11,12 @@ use SMW\Localizer\Localizer;
  * @covers \SMW\Localizer\Localizer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class LocalizerTest extends \PHPUnit_Framework_TestCase {
+class LocalizerTest extends \PHPUnit\Framework\TestCase {
 
 	private $language;
 	private $namespaceInfo;
@@ -27,7 +25,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	private IContextSource $context;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->language = $this->getMockBuilder( '\Language' )
@@ -42,7 +40,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		$this->context = $this->createMock( IContextSource::class );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		Localizer::clear();
 	}
 
@@ -56,7 +54,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Localizer::class,
 			$this->newLocalizer()
@@ -69,7 +66,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentLanguage() {
-
 		$instance = $this->newLocalizer();
 
 		$this->assertSame(
@@ -106,14 +102,12 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSupportedLanguageForLowerCaseLetter() {
-
 		$this->assertTrue(
 			Localizer::isKnownLanguageTag( 'en' )
 		);
 	}
 
 	public function testSupportedLanguageForUpperCaseLetter() {
-
 		$this->assertTrue(
 			Localizer::isKnownLanguageTag( 'ZH-HANS' )
 		);
@@ -127,7 +121,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanGetAnnotatedLanguageCodeOnValidMarkedValue() {
-
 		$value = 'Foo@en';
 
 		$this->assertEquals(
@@ -142,7 +135,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanGetAnnotatedLanguageCodeOnDoubledMarkedValue() {
-
 		$value = 'Foo@@en';
 
 		$this->assertEquals(
@@ -157,7 +149,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanGetAnnotatedLanguageCodeOnValueWithDash() {
-
 		$value = 'Foo@zh-Hans';
 
 		$this->assertEquals(
@@ -172,7 +163,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanNotGetAnnotatedLanguageCodeThatContainsInvalidCharacter() {
-
 		$value = 'Foo@en#bar';
 
 		$this->assertFalse(
@@ -181,7 +171,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanNotGetLanguageCodeOnNonMarkedValue() {
-
 		$value = 'Fooen';
 
 		$this->assertFalse(
@@ -195,7 +184,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanNotGetLanguageCodeOnMissingLanguageCode() {
-
 		$value = 'Foo@';
 
 		$this->assertFalse(
@@ -209,7 +197,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLanguageCodeByRule_OnTitleExpectedToPageLanguage() {
-
 		$instance = $this->newLocalizer();
 
 		$pageLanguage = $this->getMockBuilder( '\Language' )
@@ -222,7 +209,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $pageLanguage ) );
+			->willReturn( $pageLanguage );
 
 		$this->assertEquals(
 			$pageLanguage,
@@ -231,7 +218,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLanguageCodeByRule_OnNotProvidedTitlePageLanguageExpectedToReturnUserLanguage() {
-
 		$instance = $this->newLocalizer();
 
 		$this->assertEquals(
@@ -241,7 +227,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLang() {
-
 		$instance = Localizer::getInstance();
 
 		$this->assertInstanceOf(
@@ -260,7 +245,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$language->expects( $this->once() )
 			->method( 'getCode' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$this->assertInstanceOf(
 			'\SMW\Localizer\LocalLanguage\LocalLanguage',
@@ -269,8 +254,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConvertDoubleWidth() {
-
-		$this->assertEquals(
+		$this->assertSame(
 			'2000',
 			Localizer::convertDoubleWidth( '２０００' )
 		);
@@ -282,7 +266,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateTextWithNamespacePrefix() {
-
 		$this->language->expects( $this->any() )
 			->method( 'getNsText' )
 			->with( SMW_NS_PROPERTY )
@@ -297,10 +280,9 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNormalizeTitleText() {
-
 		$this->language->expects( $this->once() )
 			->method( 'ucfirst' )
-			->will( $this->returnValue( 'Fo_o' ) );
+			->willReturn( 'Fo_o' );
 
 		$instance = $this->newLocalizer();
 
@@ -311,14 +293,13 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCanonicalizedUrlByNamespace() {
-
 		$this->language->expects( $this->exactly( 3 ) )
 			->method( 'getNsText' )
-			->will( $this->returnValue( 'Spécial' ) );
+			->willReturn( 'Spécial' );
 
 		$this->namespaceInfo->expects( $this->exactly( 3 ) )
 			->method( 'getCanonicalName' )
-			->will( $this->returnValue( 'Special' ) );
+			->willReturn( 'Special' );
 
 		$instance = $this->newLocalizer();
 
@@ -339,10 +320,9 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCanonicalName() {
-
 		$this->namespaceInfo->expects( $this->once() )
 			->method( 'getCanonicalName' )
-			->will( $this->returnValue( 'Help' ) );
+			->willReturn( 'Help' );
 
 		$instance = $this->newLocalizer();
 
@@ -375,7 +355,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLocalTime() {
-
 		$dataTime = new DateTime();
 
 		$user = $this->getMockBuilder( '\User' )

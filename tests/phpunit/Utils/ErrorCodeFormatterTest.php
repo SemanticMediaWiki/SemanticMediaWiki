@@ -2,48 +2,46 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\ErrorCodeFormatter;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\ErrorCodeFormatter;
 
 /**
  * @covers \SMW\Utils\ErrorCodeFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ErrorCodeFormatterTest extends \PHPUnit_Framework_TestCase {
+class ErrorCodeFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testGetStringFromJsonErrorCode() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			ErrorCodeFormatter::getStringFromJsonErrorCode( 'Foo' )
 		);
 
 		$contents = json_decode( '{ Foo: Bar }' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ErrorCodeFormatter::getStringFromJsonErrorCode( json_last_error() )
 		);
 	}
 
 	public function testGetMessageFromJsonErrorCode() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			ErrorCodeFormatter::getMessageFromJsonErrorCode( 'Foo' )
 		);
 
 		$contents = json_decode( '{ Foo: Bar }' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ErrorCodeFormatter::getMessageFromJsonErrorCode( json_last_error() )
 		);
 	}

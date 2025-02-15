@@ -3,34 +3,33 @@
 namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\MediaWiki\Api\ApiRequestParameterFormatter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Api\ApiRequestParameterFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
+class ApiRequestParameterFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Api\ApiRequestParameterFormatter',
 			new ApiRequestParameterFormatter( [] )
@@ -38,7 +37,6 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAskArgsApiForEmptyParameter() {
-
 		$nstance = new ApiRequestParameterFormatter( [] );
 
 		$this->assertEmpty( $nstance->getAskArgsApiParameter( 'conditions' ) );
@@ -50,7 +48,6 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider requestArgsApiParametersDataProvider
 	 */
 	public function testGetAskArgsApiParameter( $parameters, $type, $expected ) {
-
 		$nstance = new ApiRequestParameterFormatter( $parameters );
 
 		$this->assertEquals(
@@ -63,32 +60,31 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider requestAskApiParametersDataProvider
 	 */
 	public function testGetAskApiParameters( $parameters, $expected ) {
-
 		$instance = new ApiRequestParameterFormatter( $parameters );
 		$result = $instance->getAskApiParameters();
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
 	}
 
 	public function requestArgsApiParametersDataProvider() {
 		return [
-			[ [ 'conditions' => [ 'Lala' ] ],         'conditions', '[[Lala]]' ],
+			[ [ 'conditions' => [ 'Lala' ] ], 'conditions', '[[Lala]]' ],
 			[ [ 'conditions' => [ 'Lala', 'Lima' ] ], 'conditions', '[[Lala]] [[Lima]]' ],
-			[ [ 'parameters' => [ 'Lila' ] ],         'parameters', [] ],
+			[ [ 'parameters' => [ 'Lila' ] ], 'parameters', [] ],
 			[ [ 'parameters' => [ 'Lila=isFunny' ] ], 'parameters', [ 'Lila' => 'isFunny' ] ],
 			[ [ 'parameters' => [ 'Lila=isFunny', 'Lula=isHappy' ] ], 'parameters', [ 'Lila' => 'isFunny', 'Lula' => 'isHappy' ] ],
-		//	array( array( 'printouts'  => array( '?Linda' ) ),         'printouts', array( $this->newPrintRequest( '?Linda' ) ) ),
+		// array( array( 'printouts'  => array( '?Linda' ) ),         'printouts', array( $this->newPrintRequest( '?Linda' ) ) ),
 		//	array( array( 'printouts'  => array( '?Luna', '?Mars' ) ), 'printouts', array( $this->newPrintRequest( '?Luna' ), $this->newPrintRequest( '?Mars' ) ) ),
 		];
 	}
 
 	public function requestAskApiParametersDataProvider() {
 		return [
-			[ [],  [] ],
-			[ [ 'query' => '[[Modification date::+]]' ],  [ '[[Modification date::+]]' ] ],
-			[ [ 'query' => '[[Modification date::+]]|?Modification date' ],  [ '[[Modification date::+]]', '?Modification date' ] ],
-			[ [ 'query' => '[[Modification date::+]]|?Modification date|sort=desc' ],  [ '[[Modification date::+]]', '?Modification date', 'sort=desc' ] ],
+			[ [], [] ],
+			[ [ 'query' => '[[Modification date::+]]' ], [ '[[Modification date::+]]' ] ],
+			[ [ 'query' => '[[Modification date::+]]|?Modification date' ], [ '[[Modification date::+]]', '?Modification date' ] ],
+			[ [ 'query' => '[[Modification date::+]]|?Modification date|sort=desc' ], [ '[[Modification date::+]]', '?Modification date', 'sort=desc' ] ],
 		];
 	}
 

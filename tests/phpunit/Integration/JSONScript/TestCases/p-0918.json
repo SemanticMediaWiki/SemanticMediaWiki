@@ -101,6 +101,9 @@
 		}
 	},
 	"meta": {
+		"skip-on": {
+			"sqlite": "Requires special \\ escape sequence on sqlite"
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

@@ -6,7 +6,7 @@ use SMW\Localizer;
 use SMW\MediaWiki\Database;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -39,7 +39,7 @@ class ArticleLookup extends Lookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @return string|integer
+	 * @return string|int
 	 */
 	public function getVersion() {
 		return 'ArticleLookup:' . self::VERSION;
@@ -53,7 +53,6 @@ class ArticleLookup extends Lookup {
 	 * @return array
 	 */
 	public function lookup( array $parameters ) {
-
 		$limit = 50;
 		$offset = 0;
 		$namespace = null;
@@ -71,7 +70,7 @@ class ArticleLookup extends Lookup {
 		}
 
 		if ( isset( $parameters['search'] ) ) {
-			list( $list, $continueOffset ) = $this->search( $limit, $offset, $parameters['search'], $namespace );
+			[ $list, $continueOffset ] = $this->search( $limit, $offset, $parameters['search'], $namespace );
 		}
 
 		// Changing this output format requires to set a new version
@@ -95,7 +94,6 @@ class ArticleLookup extends Lookup {
 	}
 
 	private function search( $limit, $offset, $search, $namespace = null ) {
-
 		$search = $this->getSearchTerm( $search, $namespace );
 
 		$escapeChar = '`';
@@ -162,7 +160,7 @@ class ArticleLookup extends Lookup {
 
 			$label = str_replace( '_', ' ', $row->page_title );
 
-			$list[$key.'#'.$row->page_namespace] = [
+			$list[$key . '#' . $row->page_namespace] = [
 				 // Only keep the ID as internal field which is
 				 // removed by the Augmentor
 				'id'    => $row->page_id,
@@ -176,9 +174,8 @@ class ArticleLookup extends Lookup {
 	}
 
 	private function getSearchTerm( $search, &$namespace = null ) {
-
 		if ( strpos( $search, ':' ) !== false ) {
-			list( $ns, $term ) = explode( ':', $search );
+			[ $ns, $term ] = explode( ':', $search );
 
 			if ( ( $namespace = Localizer::getInstance()->getNsIndex( $ns ) ) !== false ) {
 				$search = $term;

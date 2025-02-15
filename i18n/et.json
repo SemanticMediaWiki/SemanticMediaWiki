@@ -28,6 +28,7 @@
 	"smw_true_words": "tõene,t,jah,j",
 	"smw_false_words": "väär,v,ei,e",
 	"smw_nofloat": "\"$1\" pole number.",
+	"smw-categories": "Kategooriad",
 	"smw_purge": "Värskenda",
 	"smw_types_docu": "[https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes Saada olevate andmetüüpide] loend, kus igale [https://www.semantic-mediawiki.org/wiki/Help:Datatype tüübile] vastab kordumatu komplekt atribuute. Omistatud omadus pärib mõne komplekti, mis kirjeldab väärtuse talletus- ja kuvakarakteristikuid.",
 	"smw-special-types-no-such-type": "\"$1\" on tundmatu või seda pole määratud kehtivaks andmetüübiks.",

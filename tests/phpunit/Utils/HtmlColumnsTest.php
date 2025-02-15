@@ -2,32 +2,30 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\HtmlColumns;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\HtmlColumns;
 
 /**
  * @covers \SMW\Utils\HtmlColumns
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
+class HtmlColumnsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			HtmlColumns::class,
 			new HtmlColumns()
@@ -35,7 +33,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnknownTypeThrowsException() {
-
 		$instance = new HtmlColumns();
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -47,7 +44,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDefaultColumnUnorderedList() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -72,7 +68,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnUnorderedList() {
-
 		$listContinuesAbbrev = '...';
 		$instance = new HtmlColumns();
 
@@ -94,7 +89,7 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 			'<ul><li>Foo</li><li>Bar</li></ul>',
 			'<div class="smw-column-header">B</div><ul><li>Baz</li></ul></div> <!-- end column -->',
 			'<div class="smw-column" style="width:50%;" dir="ltr">',
-			'<div class="smw-column-header">B ' . $listContinuesAbbrev .'</div>',
+			'<div class="smw-column-header">B ' . $listContinuesAbbrev . '</div>',
 			'<ul start=4><li>Fom</li><li>Fin</li><li>Fum</li></ul></div> <!-- end column -->',
 			'<br style="clear: both;"/></div>'
 		];
@@ -106,7 +101,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testThreeColumnUnorderedList() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -134,7 +128,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnOrderedList() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -163,7 +156,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnOrderedListNoHeader() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -193,7 +185,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResponsiveColumnsToBeDeterminedByBrowser() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -222,7 +213,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResponsiveColumnsOnResponsiveColsThreshold() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -251,7 +241,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testItemListWithAttributes() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(
@@ -289,7 +278,6 @@ class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOListWithAttributes() {
-
 		$instance = new HtmlColumns();
 
 		$instance->addContents(

@@ -9,12 +9,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Hooks\RevisionFromEditComplete
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
+class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $testEnvironment;
@@ -23,7 +23,7 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	private $propertyAnnotatorFactory;
 	private $schemaFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -54,28 +54,27 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertyAnnotatorFactory->expects( $this->any() )
 			->method( 'newNullPropertyAnnotator' )
-			->will( $this->returnValue( $annotator ) );
+			->willReturn( $annotator );
 
 		$this->propertyAnnotatorFactory->expects( $this->any() )
 			->method( 'newPredefinedPropertyAnnotator' )
-			->will( $this->returnValue( $annotator ) );
+			->willReturn( $annotator );
 
 		$this->propertyAnnotatorFactory->expects( $this->any() )
 			->method( 'newSchemaPropertyAnnotator' )
-			->will( $this->returnValue( $annotator ) );
+			->willReturn( $annotator );
 
 		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -87,7 +86,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_NoParserOutput() {
-
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -98,7 +96,7 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->editInfo->expects( $this->once() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$this->schemaFactory->expects( $this->never() )
 			->method( 'newSchema' );
@@ -121,7 +119,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_OnSchemaNamespace() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -136,15 +133,15 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+			->willReturn( SMW_NS_SCHEMA );
 
 		$this->editInfo->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$this->schemaFactory->expects( $this->once() )
 			->method( 'newSchema' );
@@ -170,7 +167,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_OnSchemaNamespace_InvalidSchema() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -185,19 +181,19 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+			->willReturn( SMW_NS_SCHEMA );
 
 		$this->editInfo->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$this->schemaFactory->expects( $this->once() )
 			->method( 'newSchema' )
-			->will( $this->throwException( new \Exception() ) );
+			->willThrowException( new \Exception() );
 
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
@@ -220,7 +216,6 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_OnConceptNamespace() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -244,15 +239,15 @@ class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_CONCEPT ) );
+			->willReturn( SMW_NS_CONCEPT );
 
 		$this->editInfo->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$this->schemaFactory->expects( $this->never() )
 			->method( 'newSchema' );

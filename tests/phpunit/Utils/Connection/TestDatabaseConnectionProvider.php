@@ -2,14 +2,13 @@
 
 namespace SMW\Tests\Utils\Connection;
 
-use DatabaseBase;
-use SMW\Services\ServicesFactory;
 use SMW\Connection\ConnectionProvider;
+use SMW\Services\ServicesFactory;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -23,7 +22,7 @@ class TestDatabaseConnectionProvider implements ConnectionProvider {
 	 *
 	 * @param int $id
 	 */
-	public function __construct( $id = DB_MASTER ) {
+	public function __construct( $id = DB_PRIMARY ) {
 		$this->id = $id;
 	}
 
@@ -34,13 +33,7 @@ class TestDatabaseConnectionProvider implements ConnectionProvider {
 	 */
 	public function getConnection() {
 		$lb = $this->getLoadBalancer();
-
-		// MW 1.39+
-		if ( method_exists( $lb, 'getConnectionInternal' ) ) {
-			return $lb->getConnectionInternal( $this->id );
-		}
-
-		return $lb->getConnection( $this->id );
+		return $lb->getConnectionInternal( $this->id );
 	}
 
 	public function releaseConnection() {

@@ -2,11 +2,11 @@
 
 namespace SMW\Property;
 
-use SMW\Message;
 use Html;
+use SMW\Message;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -21,7 +21,6 @@ class DeclarationExaminerMsgBuilder {
 	 * @return string
 	 */
 	public function buildHTML( DeclarationExaminer $declarationExaminer ) {
-
 		$messages = $declarationExaminer->getMessages();
 		$html = '';
 
@@ -87,18 +86,19 @@ class DeclarationExaminerMsgBuilder {
 			return;
 		}
 
-		if ( $type !== 'plain' ) {
-			$class = "smw-callout smw-callout-$type";
+		$class = "plainlinks $msgKey";
+		switch ( $type ) {
+			case 'plain':
+				return Html::rawElement( 'div', [ 'class' => $class ], $msg );
+			case 'error':
+				return Html::errorBox( $msg, '', $class );
+			case 'info':
+				return Html::noticeBox( $msg, $class );
+			case 'warning':
+				return Html::warningBox( $msg, $class );
+			default:
+				return '';
 		}
-
-		return Html::rawElement(
-			'div',
-			[
-				'id' => "$msgKey",
-				'class' => "plainlinks $msgKey $class"
-			],
-			$msg
-		);
 	}
 
 	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ) {

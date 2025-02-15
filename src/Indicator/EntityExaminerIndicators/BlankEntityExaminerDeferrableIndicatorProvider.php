@@ -3,11 +3,8 @@
 namespace SMW\Indicator\EntityExaminerIndicators;
 
 use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\Message;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
-use SMW\Utils\TemplateEngine;
 use SMW\Localizer\MessageLocalizerTrait;
 
 /**
@@ -17,7 +14,7 @@ use SMW\Localizer\MessageLocalizerTrait;
  * Deferrable means that the examiner is only called after a wikipage has been
  * rendered and the check is called from within the `run-entity-examiner` API.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -27,12 +24,12 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicators = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isDeferredMode = false;
 
@@ -44,7 +41,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $type
+	 * @param bool $isDeferredMode
 	 */
 	public function setDeferredMode( bool $isDeferredMode ) {
 		$this->isDeferredMode = $isDeferredMode;
@@ -53,9 +50,9 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isDeferredMode() : bool {
+	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
 	}
 
@@ -64,9 +61,9 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 *
 	 * @param string $severityType
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isSeverityType( string $severityType ) : bool {
+	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
 	}
 
@@ -75,7 +72,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'smw-entity-examiner-deferred-void';
 	}
 
@@ -85,10 +82,9 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 * @param DIWikiPage $subject
 	 * @param array $options
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
-
 		if ( $this->isDeferredMode ) {
 			return $this->runCheck( $subject, $options );
 		}
@@ -101,7 +97,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getIndicators() {
 		return $this->indicators;
@@ -110,7 +106,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return [];
@@ -126,7 +122,6 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	}
 
 	private function runCheck( $subject, $options ) {
-
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
 		// Doing some checks here ...

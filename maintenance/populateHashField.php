@@ -4,25 +4,24 @@ namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\Installer;
 use SMW\SetupFile;
-use SMW\Setup;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\Maintenance\MaintenanceCheck;
 use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -70,10 +69,9 @@ class populateHashField extends \Maintenance {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $complete
+	 * @param bool $complete
 	 */
 	public function setComplete( $complete ) {
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -120,7 +118,6 @@ class populateHashField extends \Maintenance {
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter->reportMessage( $message );
 		}
@@ -132,9 +129,8 @@ class populateHashField extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
-			exit ( $maintenanceCheck->getMessage() );
+			exit( $maintenanceCheck->getMessage() );
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -164,7 +160,7 @@ class populateHashField extends \Maintenance {
 
 		$text = $localMessageProvider->msg( 'smw-maintenance-populatehashfield-checking-hash-field' );
 
-		$this->reportMessage("\n$text...\n" );
+		$this->reportMessage( "\n$text...\n" );
 
 		$this->populate();
 
@@ -183,7 +179,6 @@ class populateHashField extends \Maintenance {
 	 * @return Iterator
 	 */
 	public function fetchRows() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$conditions = [
@@ -220,12 +215,11 @@ class populateHashField extends \Maintenance {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Iterator $rows
+	 * @param Iterator|null $rows
 	 */
-	public function populate( \Iterator $rows = null ) {
-
+	public function populate( ?\Iterator $rows = null ) {
 		$this->cliMsgFormatter = new CliMsgFormatter();
-		$this->cliMsgFormatter->setStartTime( (int) microtime( true ) );
+		$this->cliMsgFormatter->setStartTime( (int)microtime( true ) );
 
 		if ( $rows === null ) {
 			$rows = $this->fetchRows();
@@ -284,11 +278,13 @@ class populateHashField extends \Maintenance {
 			);
 		}
 
-		$this->reportMessage( "\n"  );
+		$this->reportMessage( "\n" );
 		$this->setComplete( true );
 	}
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = populateHashField::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

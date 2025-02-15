@@ -8,7 +8,7 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -28,10 +28,9 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @param Description $description
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canInterpretDescription( Description $description ) {
-
 		foreach ( $this->interpreters as $interpreter ) {
 			if ( $interpreter->canInterpretDescription( $description ) ) {
 				return true;
@@ -48,7 +47,6 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	 * @throws InvalidArgumentException
 	 */
 	public function interpretDescription( Description $description ) {
-
 		foreach ( $this->interpreters as $interpreter ) {
 			if ( $interpreter->canInterpretDescription( $description ) ) {
 				return $interpreter->interpretDescription( $description );
@@ -63,7 +61,7 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since  2.2
 	 *
-	 * @param DescriptionInterpreter $defaultInterpreter
+	 * @param DescriptionInterpreter $interpreter
 	 */
 	public function addInterpreter( DescriptionInterpreter $interpreter ) {
 		$this->interpreters[] = $interpreter;

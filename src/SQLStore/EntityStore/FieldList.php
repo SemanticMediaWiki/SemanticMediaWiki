@@ -2,11 +2,6 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use RuntimeException;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
-
 /**
  * @private
  *
@@ -28,7 +23,7 @@ class FieldList {
 	const CATEGORY_LIST = 'list/category';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $countMaps = [];
 
@@ -48,8 +43,7 @@ class FieldList {
 	 *
 	 * @return array
 	 */
-	public function getCountListByType( string $type ) : array {
-
+	public function getCountListByType( string $type ): array {
 		$countList = [];
 
 		foreach ( $this->countMaps as $hash => $countMap ) {
@@ -70,8 +64,7 @@ class FieldList {
 	 *
 	 * @return array
 	 */
-	public function getHashList( $type = null ) : array {
-
+	public function getHashList( $type = null ): array {
 		$list = [];
 
 		foreach ( $this->countMaps as $hash => $map ) {
@@ -92,7 +85,6 @@ class FieldList {
 	}
 
 	private function matchKeyByHash( $key, $counts, &$list ) {
-
 		// It is an internal property, so we never reference it as part of a
 		// lookup!
 		if ( $key === '_SKEY' ) {
@@ -111,7 +103,6 @@ class FieldList {
 	}
 
 	private function matchKeyByCounts( $type, $key, $counts, &$list ) {
-
 		if ( $key === '_SKEY' ) {
 			return;
 		}

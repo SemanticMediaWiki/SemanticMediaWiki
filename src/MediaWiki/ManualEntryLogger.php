@@ -8,7 +8,7 @@ use Title;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -30,14 +30,14 @@ class ManualEntryLogger {
 	 *
 	 * @param LogEntry|null $logEntry
 	 */
-	public function __construct( LogEntry $logEntry = null ) {
+	public function __construct( ?LogEntry $logEntry = null ) {
 		$this->logEntry = $logEntry;
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param string $eventTypes
+	 * @param string $eventType
 	 */
 	public function registerLoggableEventType( $eventType ) {
 		$this->eventTypes[$eventType] = true;
@@ -51,10 +51,9 @@ class ManualEntryLogger {
 	 * @param string $target
 	 * @param string $comment
 	 *
-	 * @return integer|null
+	 * @return int|null
 	 */
 	public function log( $type, $performer, $target, $comment ) {
-
 		if ( !isset( $this->eventTypes[$type] ) || !$this->eventTypes[$type] ) {
 			return null;
 		}
@@ -74,7 +73,6 @@ class ManualEntryLogger {
 	}
 
 	protected function newManualLogEntryForType( $type ) {
-
 		if ( $this->logEntry !== null ) {
 			return $this->logEntry;
 		}

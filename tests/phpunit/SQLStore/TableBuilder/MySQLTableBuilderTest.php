@@ -12,19 +12,18 @@ use Wikimedia\Rdbms\IMaintainableDatabase;
  * @covers \SMW\SQLStore\TableBuilder\MySQLTableBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $connection;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->connection = $this->createMock( IMaintainableDatabase::class );
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
@@ -32,19 +31,18 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->willReturn( 'mysql' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'dbSchema' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'tablePrefix' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MySQLTableBuilder::class,
 			MySQLTableBuilder::factory( $this->connection )
@@ -52,14 +50,13 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFactoryWithWrongTypeThrowsException() {
-
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'sqlite' ) );
+			->willReturn( 'sqlite' );
 
 		$this->expectException( '\RuntimeException' );
 		MySQLTableBuilder::factory( $connection );
@@ -68,11 +65,11 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCreateNewTable() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
-			->with( $this->equalTo( 'CREATE TABLE `xyz`.foo (bar TEXT) tableoptions_foobar' ) );
+			->with( 'CREATE TABLE `xyz`.foo (bar TEXT) tableoptions_foobar' );
 
 		$instance = MySQLTableBuilder::factory( $this->connection );
 		$instance->setConfig( 'wgDBname', 'xyz' );
@@ -87,12 +84,12 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testUpdateExistingTableWithNewField() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'DESCRIBE' ) )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->at( 4 ) )
 			->method( 'query' )
@@ -110,12 +107,12 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testUpdateExistingTableWithNewFieldAndDefault() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'DESCRIBE' ) )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->at( 4 ) )
 			->method( 'query' )
@@ -134,12 +131,12 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCreateIndex() {
 		$this->connection->expects( $this->any() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->at( 5 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'SHOW INDEX' ) )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->at( 7 ) )
 			->method( 'query' )
@@ -158,7 +155,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testDropTable() {
 		$this->connection->expects( $this->once() )
 			->method( 'tableExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )

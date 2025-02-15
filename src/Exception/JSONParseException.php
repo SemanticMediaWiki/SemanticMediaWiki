@@ -2,11 +2,11 @@
 
 namespace SMW\Exception;
 
-use Seld\JsonLint\JsonParser;
 use RuntimeException;
+use Seld\JsonLint\JsonParser;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -25,7 +25,7 @@ class JSONParseException extends RuntimeException {
 	/**
 	 * @since 3.2
 	 */
-	public function getTidyMessage() : string {
+	public function getTidyMessage(): string {
 		return str_replace( "\n", '', $this->getMessage() );
 	}
 
@@ -40,7 +40,6 @@ class JSONParseException extends RuntimeException {
 	 * JSON.
 	 */
 	protected function getParseError( $json ) {
-
 		$parser = new JsonParser();
 
 		try {

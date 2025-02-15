@@ -3,24 +3,23 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\NavigationLinksWidget
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
+class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testNavigation() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,16 +30,15 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$urlArgs->expects( $this->any() )
 			->method( 'toArray' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, false )
 		);
 	}
 
 	public function testSetMaxInlineLimit() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -51,7 +49,7 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$urlArgs->expects( $this->any() )
 			->method( 'toArray' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		NavigationLinksWidget::setMaxInlineLimit( 300 );
 
@@ -64,7 +62,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNavigationLinksOnZeroCountResult() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -83,7 +80,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOffsetLimit() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -95,20 +91,19 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$urlArgs->expects( $this->at( 0 ) )
 			->method( 'get' )
-			->with(	$this->equalTo( 'limit' ) )
-			->will( $this->returnValue( 3 ) );
+			->with(	'limit' )
+			->willReturn( 3 );
 
 		$urlArgs->expects( $this->at( 1 ) )
 			->method( 'get' )
-			->with(	$this->equalTo( 'offset' ) )
-			->will( $this->returnValue( 10 ) );
+			->with(	'offset' )
+			->willReturn( 10 );
 
 		NavigationLinksWidget::setMaxInlineLimit( 300 );
 		NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, true );
 	}
 
 	public function testTopLinks() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -125,7 +120,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHiddenTopLinks() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -136,7 +130,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBasicLinks() {
-
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$stringValidator->assertThatStringContains(

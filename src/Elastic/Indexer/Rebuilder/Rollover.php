@@ -13,7 +13,7 @@ use SMW\Elastic\Exception\NoConnectionException;
  *
  * @see https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -43,7 +43,6 @@ class Rollover {
 	 * @return string
 	 */
 	public function rollover( $type, $version ) {
-
 		$index = $this->connection->getIndexName( $type );
 
 		$params = [];
@@ -88,7 +87,6 @@ class Rollover {
 	 * @throws NoConnectionException
 	 */
 	public function update( $type ) {
-
 		// Fail hard since we expect to create an index but are unable to do so!
 		if ( !$this->connection->ping() ) {
 			throw new NoConnectionException();
@@ -100,7 +98,7 @@ class Rollover {
 
 		// Shouldn't happen but just in case where the root index is
 		// used as index but not an alias
-		if ( $this->connection->indexExists("$index" ) && !$this->connection->aliasExists( "$index" ) ) {
+		if ( $this->connection->indexExists( "$index" ) && !$this->connection->aliasExists( "$index" ) ) {
 			$this->connection->deleteIndex( "$index" );
 		}
 
@@ -138,7 +136,6 @@ class Rollover {
 	 * @throws NoConnectionException
 	 */
 	public function delete( $type ) {
-
 		// Fail hard since we expect to delete an index but are unable to do so!
 		if ( !$this->connection->ping() ) {
 			throw new NoConnectionException();

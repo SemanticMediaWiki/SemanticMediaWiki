@@ -12,7 +12,7 @@ use SMWDIError as DIError;
 use SMWRequestOptions as RequestOptions;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -41,7 +41,7 @@ class PropertyUsageListLookup implements ListLookup {
 	 * @param PropertyStatisticsStore $propertyStatisticsStore
 	 * @param RequestOptions|null $requestOptions
 	 */
-	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore, RequestOptions $requestOptions = null ) {
+	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore, ?RequestOptions $requestOptions = null ) {
 		$this->store = $store;
 		$this->propertyStatisticsStore = $propertyStatisticsStore;
 		$this->requestOptions = $requestOptions;
@@ -54,7 +54,6 @@ class PropertyUsageListLookup implements ListLookup {
 	 * @throws RuntimeException
 	 */
 	public function fetchList() {
-
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
 		}
@@ -65,7 +64,7 @@ class PropertyUsageListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFromCache() {
 		return false;
@@ -74,7 +73,7 @@ class PropertyUsageListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );
@@ -90,7 +89,6 @@ class PropertyUsageListLookup implements ListLookup {
 	}
 
 	private function doQueryPropertyTable() {
-
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
 		$options = [ 'ORDER BY' => 'smw_sort' ];
 		$search_field = 'smw_sortkey';
@@ -129,7 +127,6 @@ class PropertyUsageListLookup implements ListLookup {
 	}
 
 	private function getPropertyList( $res ) {
-
 		$result = [];
 
 		foreach ( $res as $row ) {

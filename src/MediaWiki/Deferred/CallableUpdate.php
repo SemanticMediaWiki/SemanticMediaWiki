@@ -6,13 +6,12 @@ use Closure;
 use DeferrableUpdate;
 use DeferredUpdates;
 use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\Database;
 use Wikimedia\Assert\Assert;
 
 /**
  * @see MWCallableUpdate
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  */
 class CallableUpdate implements DeferrableUpdate {
@@ -35,17 +34,17 @@ class CallableUpdate implements DeferrableUpdate {
 	protected $callback;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isDeferrableUpdate = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isCommandLineMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isPending = false;
 
@@ -75,7 +74,7 @@ class CallableUpdate implements DeferrableUpdate {
 	private $stage;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $catchExceptionAndRethrow = false;
 
@@ -84,8 +83,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @param callable|null $callback
 	 */
-	public function __construct( callable $callback = null ) {
-
+	public function __construct( ?callable $callback = null ) {
 		if ( $callback === null ) {
 			$callback = [ $this, 'emptyCallback' ];
 		}
@@ -100,7 +98,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;
@@ -157,7 +155,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @since 3.1
 	 *
-	 * @param boolean $catchExceptionAndRethrow
+	 * @param bool $catchExceptionAndRethrow
 	 */
 	public function catchExceptionAndRethrow( $catchExceptionAndRethrow ) {
 		$this->catchExceptionAndRethrow = (bool)$catchExceptionAndRethrow;
@@ -183,7 +181,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string|null $queue
+	 * @param string|null $fingerprint
 	 */
 	public function setFingerprint( $fingerprint = null ) {
 		$this->fingerprint = md5( $fingerprint ?? '' );
@@ -215,7 +213,6 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @return string
 	 */
 	public function getOrigin() {
-
 		if ( is_string( $this->origin ) ) {
 			$this->origin = [ $this->origin ];
 		}
@@ -250,7 +247,6 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @since 2.4
 	 */
 	public function doUpdate() {
-
 		if ( $this->catchExceptionAndRethrow ) {
 			$this->attemptUpdate();
 		} else {
@@ -267,7 +263,6 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @since 2.5
 	 */
 	public function pushUpdate() {
-
 		if ( $this->fingerprint !== null && isset( self::$queueList[$this->fingerprint] ) ) {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Push: {origin} (fingerprint: {fingerprint} is already listed, skip)' ],
@@ -296,7 +291,6 @@ class CallableUpdate implements DeferrableUpdate {
 	}
 
 	protected function registerUpdate( $update ) {
-
 		$this->logger->info(
 			[ 'DeferrableUpdate', 'Added: {ctx}' ],
 			[ 'method' => __METHOD__, 'role' => 'developer', 'ctx' => $this->loggableContext() ]
@@ -327,7 +321,6 @@ class CallableUpdate implements DeferrableUpdate {
 	}
 
 	private function attemptUpdate() {
-
 		$e = null;
 
 		try {

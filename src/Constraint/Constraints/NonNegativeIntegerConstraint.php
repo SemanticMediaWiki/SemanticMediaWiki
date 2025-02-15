@@ -2,14 +2,14 @@
 
 namespace SMW\Constraint\Constraints;
 
+use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
-use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
-use RuntimeException;
+use SMWDataValue as DataValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -22,7 +22,7 @@ class NonNegativeIntegerConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'non_negative_integer';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 
@@ -50,7 +50,6 @@ class NonNegativeIntegerConstraint implements Constraint {
 	 * {@inheritDoc}
 	 */
 	public function checkConstraint( array $constraint, $dataValue ) {
-
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -65,7 +64,6 @@ class NonNegativeIntegerConstraint implements Constraint {
 	}
 
 	private function check( $dataValue ) {
-
 		$dataItem = $dataValue->getDataItem();
 
 		if ( $dataItem->getDIType() !== DataItem::TYPE_NUMBER ) {
@@ -81,7 +79,6 @@ class NonNegativeIntegerConstraint implements Constraint {
 	}
 
 	private function reportError( $dataValue, $number ) {
-
 		$this->hasViolation = true;
 
 		$dataValue->addError( new ConstraintError( [

@@ -1,7 +1,10 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Better"
+		]
 	},
+	"smw-categories": "Categorias",
 	"smw-livepreview-loading": "Cargandu…",
 	"smw-listingcontinuesabbrev": "acont.",
 	"smw-showingresults": "Embahu se {{PLURAL:$1|muestra '''1''' resurtau qu'esmiença|muestran hata '''$1''' resurtaus qu'esmiençan}} pol #'''$2'''."

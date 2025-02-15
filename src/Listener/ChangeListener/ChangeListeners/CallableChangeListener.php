@@ -2,12 +2,11 @@
 
 namespace SMW\Listener\ChangeListener\ChangeListeners;
 
-use SMW\Listener\ChangeListener\ChangeListener;
 use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
-use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\Listener\ChangeListener\ChangeListener;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -34,7 +33,6 @@ class CallableChangeListener implements ChangeListener {
 	 * @param callable $callback
 	 */
 	public function addListenerCallback( string $key, callable $callback ) {
-
 		if ( !isset( $this->changeListeners[$key] ) ) {
 			$this->changeListeners[$key] = [];
 		}

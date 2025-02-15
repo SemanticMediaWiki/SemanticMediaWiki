@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
@@ -11,23 +11,22 @@ use Title;
  * @group SMWExtension
  * @group semantic-mediawiki-import
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
  */
-class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 	private $pageCreator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -49,8 +48,7 @@ class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -58,7 +56,6 @@ class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testRebuildConceptCache() {
-
 		$this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',
@@ -81,9 +78,9 @@ class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 		// $this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$conceptPage = $this->createConceptPage( 'Lorem ipsum concept', '[[Category:Lorem ipsum]]' );
-	 	$this->importedTitles[] = $conceptPage;
+		$this->importedTitles[] = $conceptPage;
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildConceptCache' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildConceptCache' );
 		$maintenanceRunner->setQuiet();
 
 		$maintenanceRunner
@@ -121,7 +118,6 @@ class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 	}
 
 	protected function createConceptPage( $name, $condition ) {
-
 		$this->pageCreator
 			->createPage( Title::newFromText( $name, SMW_NS_CONCEPT ) )
 			->doEdit( "{{#concept: {$condition} }}" );

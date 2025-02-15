@@ -18,7 +18,7 @@ use SMW\Tests\Utils\Fixtures\Properties\YearProperty;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -40,7 +40,7 @@ class BerlinFactsheet {
 	 *
 	 * @param DIWikiPage|null $targetSubject
 	 */
-	public function __construct( DIWikiPage $targetSubject = null ) {
+	public function __construct( ?DIWikiPage $targetSubject = null ) {
 		$this->targetSubject = $targetSubject;
 
 		if ( $this->targetSubject === null ) {
@@ -74,7 +74,6 @@ class BerlinFactsheet {
 	 * @return SemanticData
 	 */
 	public function asEntity() {
-
 		$semanticData = new SemanticData( $this->asSubject() );
 		$semanticData->addDataValue( $this->getAreaValue() );
 		$semanticData->addDataValue( $this->getAverageHighTemperatureValue() );
@@ -97,7 +96,6 @@ class BerlinFactsheet {
 	 * @return DataValue
 	 */
 	public function getLocatedInValue() {
-
 		$locatedInProperty = new LocatedInProperty();
 
 		return $this->dataValueFactory->newDataValueByItem(
@@ -114,7 +112,6 @@ class BerlinFactsheet {
 	 * @return DataValue
 	 */
 	public function getAreaValue() {
-
 		$areaProperty = new AreaProperty();
 
 		return $this->dataValueFactory->newDataValueByProperty(
@@ -131,7 +128,6 @@ class BerlinFactsheet {
 	 * @return DataValue
 	 */
 	public function getFoundedValue() {
-
 		$foundedProperty = new FoundedProperty();
 
 		return $this->dataValueFactory->newDataValueByProperty(
@@ -148,7 +144,6 @@ class BerlinFactsheet {
 	 * @return DataValue
 	 */
 	public function getAverageHighTemperatureValue() {
-
 		$temperatureProperty = new TemperatureProperty();
 
 		return $this->dataValueFactory->newDataValueByProperty(
@@ -166,7 +161,6 @@ class BerlinFactsheet {
 	 * @return DataValue
 	 */
 	public function getPopulationValue() {
-
 		$populationProperty = new PopulationProperty();
 
 		return $this->dataValueFactory->newDataValueByProperty(
@@ -183,7 +177,6 @@ class BerlinFactsheet {
 	 * @return DataValue
 	 */
 	public function getPopulationDensityValue() {
-
 		if ( $this->targetSubject === null ) {
 			throw new RuntimeException( 'Expected a target subject' );
 		}
@@ -206,7 +199,6 @@ class BerlinFactsheet {
 	 * @return Subobject
 	 */
 	public function getDemographics() {
-
 		if ( $this->targetSubject === null ) {
 			throw new RuntimeException( 'Expected a target subject' );
 		}
@@ -233,7 +225,6 @@ class BerlinFactsheet {
 	 * @since 2.1
 	 */
 	public function purge() {
-
 		$subjects = [];
 
 		$subjects[] = $this->asSubject();

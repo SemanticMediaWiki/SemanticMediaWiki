@@ -9,16 +9,16 @@ use SMW\DataValues\ValueParsers\ImportValueParser;
  * @covers \SMW\DataValues\ValueParsers\ImportValueParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
+class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	private $mediaWikiNsContentReader;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
@@ -27,7 +27,6 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ImportValueParser::class,
 			new ImportValueParser( $this->mediaWikiNsContentReader )
@@ -35,7 +34,6 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryParseForInvalidValueFormat() {
-
 		$instance = new ImportValueParser( $this->mediaWikiNsContentReader );
 		$instance->parse( 'incorrectFormat' );
 
@@ -45,11 +43,10 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryParseForValidValueFormatErroredByNonExistingImportEntry() {
-
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->with( $this->equalTo( ImportValue::IMPORT_PREFIX . 'Foo' ) )
-			->will( $this->returnValue( false ) );
+			->with( ImportValue::IMPORT_PREFIX . 'Foo' )
+			->willReturn( false );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader
@@ -66,10 +63,9 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider invalidUriContent
 	 */
 	public function testTryParseForValidValueFormatErroredByUriMismatch( $content ) {
-
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader
@@ -86,10 +82,9 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider invalidTypeContent
 	 */
 	public function testTryParseForValidValueFormatErroredByTypeMismatch( $content, $typelist ) {
-
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader
@@ -106,10 +101,9 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider validMatchTypeContent
 	 */
 	public function testParseForValidValueToMatchType( $content, $parseValue, $expected ) {
-
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$instance = new ImportValueParser(
 			$this->mediaWikiNsContentReader
@@ -130,7 +124,6 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function invalidUriContent() {
-
 		$provider[] = [
 			''
 		];
@@ -144,7 +137,6 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function invalidTypeContent() {
-
 		// Url missing
 		$provider[] = [
 			'|[http://www.foaf-project.org/ Friend Of A Friend]\n name',
@@ -177,8 +169,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function validMatchTypeContent() {
-
-		#0
+		# 0
 		$provider[] = [
 			"http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n",
 			'Foaf:name',
@@ -191,7 +182,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			" http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n   name|Type:Text\n",
 			'Foaf:name',
@@ -204,7 +195,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2 mbox_sha1sum
+		# 2 mbox_sha1sum
 		$provider[] = [
 			" http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n   mbox_sha1sum|Type:Text\n",
 			'Foaf:mbox_sha1sum',

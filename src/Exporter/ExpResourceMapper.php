@@ -12,10 +12,9 @@ use SMW\InMemoryPoolCache;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWExporter as Exporter;
-use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -46,12 +45,12 @@ class ExpResourceMapper {
 	/**
 	 * @note Legacy setting expected to vanish with 3.0
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $bcAuxiliaryUse = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $seekImportVocabulary = true;
 
@@ -76,7 +75,7 @@ class ExpResourceMapper {
 	/**
 	 * @since 2.2
 	 *
-	 * @param boolean $bcAuxiliaryUse
+	 * @param bool $bcAuxiliaryUse
 	 */
 	public function setBCAuxiliaryUse( $bcAuxiliaryUse ) {
 		$this->bcAuxiliaryUse = (bool)$bcAuxiliaryUse;
@@ -88,7 +87,6 @@ class ExpResourceMapper {
 	 * @param DIWikiPage $subject
 	 */
 	public function invalidateCache( DIWikiPage $subject ) {
-
 		$hash = $subject->getHash();
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheById(
@@ -114,14 +112,13 @@ class ExpResourceMapper {
 	 * (see Exporter::newAuxiliaryExpElement) should be generated
 	 *
 	 * @param DIProperty $property
-	 * @param boolean $useAuxiliaryModifier
-	 * @param boolean $seekImportVocabulary
+	 * @param bool $useAuxiliaryModifier
+	 * @param bool $seekImportVocabulary
 	 *
 	 * @return ExpResource
 	 * @throws RuntimeException
 	 */
 	public function mapPropertyToResourceElement( DIProperty $property, $useAuxiliaryModifier = false, $seekImportVocabulary = true ) {
-
 		// We want the a canonical representation to ensure that resources
 		// are language independent
 		$this->seekImportVocabulary = $seekImportVocabulary;
@@ -152,12 +149,11 @@ class ExpResourceMapper {
 	 * occurring in MW titles).
 	 *
 	 * @param DIWikiPage $diWikiPage
-	 * @param boolean $useAuxiliaryModifier
+	 * @param bool $useAuxiliaryModifier
 	 *
 	 * @return ExpResource
 	 */
 	public function mapWikiPageToResourceElement( DIWikiPage $diWikiPage, $useAuxiliaryModifier = false ) {
-
 		$modifier = $useAuxiliaryModifier ? self::AUX_MARKER : '';
 
 		$hash = $diWikiPage->getHash() . $modifier . $this->seekImportVocabulary;
@@ -186,13 +182,12 @@ class ExpResourceMapper {
 	}
 
 	private function newExpNsResource( $diWikiPage, $modifier ) {
-
 		$importDataItem = $this->findImportDataItem( $diWikiPage, $modifier );
 
 		if ( $this->seekImportVocabulary && $importDataItem instanceof DataItem ) {
-			list( $localName, $namespace, $namespaceId ) = $this->defineElementsForImportDataItem( $importDataItem );
+			[ $localName, $namespace, $namespaceId ] = $this->defineElementsForImportDataItem( $importDataItem );
 		} else {
-			list( $localName, $namespace, $namespaceId ) = $this->defineElementsForDiWikiPage( $diWikiPage, $modifier );
+			[ $localName, $namespace, $namespaceId ] = $this->defineElementsForDiWikiPage( $diWikiPage, $modifier );
 		}
 
 		$resource = new ExpNsResource(
@@ -213,7 +208,6 @@ class ExpResourceMapper {
 	}
 
 	private function defineElementsForImportDataItem( DataItem $dataItem ) {
-
 		$importValue = $this->dataValueFactory->newDataValueByItem(
 			$dataItem,
 			new DIProperty( '_IMPO' )
@@ -227,7 +221,6 @@ class ExpResourceMapper {
 	}
 
 	private function defineElementsForDiWikiPage( DIWikiPage $diWikiPage, $modifier ) {
-
 		$localName = '';
 		$hasFixedNamespace = false;
 
@@ -246,9 +239,9 @@ class ExpResourceMapper {
 		}
 
 		if ( ( $localName === '' ) ||
-		     ( in_array( $localName[0], [ '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ] ) ) ||
-		     ( $hasFixedNamespace && strpos( $localName, '/' ) !== false )
-		     ) {
+			 ( in_array( $localName[0], [ '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ] ) ) ||
+			 ( $hasFixedNamespace && strpos( $localName, '/' ) !== false )
+			 ) {
 			$namespace = Exporter::getInstance()->getNamespaceUri( 'wiki' );
 			$namespaceId = 'wiki';
 			$localName = Escaper::encodePage( $diWikiPage );
@@ -274,11 +267,10 @@ class ExpResourceMapper {
 	}
 
 	private function findImportDataItem( DIWikiPage $diWikiPage, $modifier ) {
-
 		$importDataItems = null;
 
 		// Only try to find an import vocab for a matchable entity
-		if ( $this->seekImportVocabulary && $diWikiPage->getNamespace() === NS_CATEGORY || $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
+		if ( ( $this->seekImportVocabulary && $diWikiPage->getNamespace() === NS_CATEGORY ) || $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
 			$importDataItems = $this->store->getPropertyValues(
 				$diWikiPage,
 				new DIProperty( '_IMPO' )

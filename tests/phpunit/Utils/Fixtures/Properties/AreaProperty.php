@@ -7,7 +7,7 @@ use SMW\DIProperty;
 use SMW\SemanticData;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -39,12 +39,11 @@ class AreaProperty extends FixtureProperty {
 	 * @return SemanticData
 	 */
 	public function getDependencies() {
-
 		$semanticData = parent::getDependencies();
 
 		$dataValueFactory = DataValueFactory::getInstance();
 
-		foreach( $this->conversionValues as $conversionValue ) {
+		foreach ( $this->conversionValues as $conversionValue ) {
 			$semanticData->addDataValue(
 				$dataValueFactory->newDataValueByProperty(
 					new DIProperty( '_CONV' ),

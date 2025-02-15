@@ -3,7 +3,7 @@
 namespace SMW\Importer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -19,7 +19,6 @@ class ContentModeller {
 	 * @return ImportContents[]|[]
 	 */
 	public function makeContentList( $fileDir, array $fileContents ) {
-
 		$contents = [];
 
 		if ( !isset( $fileContents['import'] ) ) {
@@ -65,7 +64,6 @@ class ContentModeller {
 	}
 
 	private function newImportContents( $importContents, $fileDir, $value ) {
-
 		$importContents->setContentType( ImportContents::CONTENT_TEXT );
 
 		if ( !isset( $value['contents'] ) || $value['contents'] === '' ) {
@@ -82,7 +80,6 @@ class ContentModeller {
 	}
 
 	private function setContents( $importContents, $fileDir, $contents ) {
-
 		if ( !is_array( $contents ) || !isset( $contents['importFrom'] ) ) {
 			return $importContents->setContents( $contents );
 		}

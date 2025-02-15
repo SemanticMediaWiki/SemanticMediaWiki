@@ -8,8 +8,9 @@ use Iterator;
 use RuntimeException;
 use SeekableIterator;
 use Wikimedia\Rdbms\ResultWrapper;
+
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -22,7 +23,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	public $res;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $position;
 
@@ -32,7 +33,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	public $current;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $numRows = false;
 
@@ -42,7 +43,6 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 * @param Iterator|array $res
 	 */
 	public function __construct( $res ) {
-
 		if ( !$res instanceof Iterator && !is_array( $res ) ) {
 			throw new RuntimeException( "Expected an Iterator or array!" );
 		}

@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"PiefPafPier",
+			"Pyt",
 			"Robin van der Vliet",
 			"Robin0van0der0vliet"
 		]
@@ -28,6 +29,7 @@
 	"specialpages-group-smw_group-maintenance": "Underhâld",
 	"smw_exportrdf_submit": "Eksportearje",
 	"properties": "Eigenskippen",
+	"smw-categories": "Kategoryen",
 	"smw-special-property-searchform-options": "Opsjes",
 	"smw-special-wantedproperties-filter-label": "Filter:",
 	"smw_purge": "Fernije",

@@ -16,7 +16,7 @@ use SMW\Subobject;
  *
  * @see http://semantic-mediawiki.org/wiki/Help:Recurring_events
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -49,7 +49,6 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	 * @return string|null
 	 */
 	public function parse( ParserParameterProcessor $parameters ) {
-
 		$this->useFirstElementAsPropertyLabel( true );
 
 		$this->recurringEvents->parse(

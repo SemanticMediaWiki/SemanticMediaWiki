@@ -9,23 +9,22 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\MediaWiki\Renderer\HtmlFormRenderer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
+class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -41,7 +40,6 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMessageBuilder() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -59,7 +57,6 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetForm() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -70,19 +67,19 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$message->expects( $this->any() )
 			->method( 'title' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$message->expects( $this->any() )
 			->method( 'numParams' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$message->expects( $this->any() )
 			->method( 'rawParams' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$message->expects( $this->any() )
 			->method( 'text' )
-			->will( $this->returnValue( 'SomeText' ) );
+			->willReturn( 'SomeText' );
 
 		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
 			->disableOriginalConstructor()
@@ -90,7 +87,7 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$messageBuilder->expects( $this->any() )
 			->method( 'getMessage' )
-			->will( $this->returnValue( $message ) );
+			->willReturn( $message );
 
 		$instance = new HtmlFormRenderer( $title, $messageBuilder );
 
@@ -113,7 +110,7 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 			'input name="foo" size="333" value="Foo" id="FooId"',
 			'input name="AnotherInputFieldName" size="20" value="AnotherInputFieldValue" id="AnotherInputFieldName"',
 			'input type="submit" value="FindFoo"',
-			//'<br />&nbsp;' MW 1.27 <br/>&nbsp;
+			// '<br />&nbsp;' MW 1.27 <br/>&nbsp;
 		];
 
 		$this->stringValidator->assertThatStringContains(
@@ -123,7 +120,6 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOptionsSelecList() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -134,7 +130,7 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$message->expects( $this->any() )
 			->method( 'text' )
-			->will( $this->returnValue( 'SomeText' ) );
+			->willReturn( 'SomeText' );
 
 		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
 			->disableOriginalConstructor()
@@ -142,7 +138,7 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$messageBuilder->expects( $this->any() )
 			->method( 'getMessage' )
-			->will( $this->returnValue( $message ) );
+			->willReturn( $message );
 
 		$instance = new HtmlFormRenderer( $title, $messageBuilder );
 
@@ -154,8 +150,8 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 				'optionlistLabel',
 				'optionlistName',
 				'b',
-				[ 'f' => 'foo', 'b' =>'bar' ],
-				'optionslistId');
+				[ 'f' => 'foo', 'b' => 'bar' ],
+				'optionslistId' );
 
 		$expected = [
 			'form id="smw-form-optionsSelecListForm" name="optionsSelecListForm" method="get"',
@@ -173,7 +169,6 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckbox() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -184,7 +179,7 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$message->expects( $this->any() )
 			->method( 'text' )
-			->will( $this->returnValue( 'SomeText' ) );
+			->willReturn( 'SomeText' );
 
 		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
 			->disableOriginalConstructor()
@@ -192,7 +187,7 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 
 		$messageBuilder->expects( $this->any() )
 			->method( 'getMessage' )
-			->will( $this->returnValue( $message ) );
+			->willReturn( $message );
 
 		$instance = new HtmlFormRenderer( $title, $messageBuilder );
 

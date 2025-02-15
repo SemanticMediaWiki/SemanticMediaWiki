@@ -12,7 +12,7 @@ use WebRequest;
 /**
  * Class contains Api related request methods
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -34,11 +34,6 @@ class MwApiFactory {
 	 * @return ApiResult
 	 */
 	public function newApiResult( array $params ) {
-
-		if ( version_compare( MW_VERSION, '1.25', '<' ) ) {
-			return new ApiResult( $this->newApiMain( $params ) );
-		}
-
 		$result = new ApiResult( 5 );
 
 		$errorFormatter = new \ApiErrorFormatter_BackCompat( $result );
@@ -58,7 +53,6 @@ class MwApiFactory {
 	 * @return array
 	 */
 	public function doApiRequest( array $params ) {
-
 		$api = $this->newApiMain( $params );
 		$api->execute();
 
@@ -70,7 +64,6 @@ class MwApiFactory {
 	}
 
 	private function newRequestContext( $request = [] ) {
-
 		$context = new RequestContext();
 
 		if ( $request instanceof WebRequest ) {

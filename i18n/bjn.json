@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ezagren"
+			"Ezagren",
+			"J Subhi"
 		]
 	},
 	"version-semantic": "Éksténsi sémantik",
+	"smw-categories": "Tutumbung",
 	"smw-special-wantedproperties-filter-label": "Panyaring:",
 	"browse": "Jalajahi wiki",
 	"smw-livepreview-loading": "Ma'unggah...",

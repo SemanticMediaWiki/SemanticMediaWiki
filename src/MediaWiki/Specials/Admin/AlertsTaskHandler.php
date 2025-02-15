@@ -3,12 +3,11 @@
 namespace SMW\MediaWiki\Specials\Admin;
 
 use Html;
-use SMW\Message;
-use WebRequest;
 use SMW\Utils\HtmlTabs;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -69,7 +68,6 @@ class AlertsTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$html = '';
 		$tabs = [];
 
@@ -128,6 +126,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {}
+	public function handleRequest( WebRequest $webRequest ) {
+	}
 
 }

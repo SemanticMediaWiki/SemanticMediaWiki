@@ -11,14 +11,12 @@ use SMW\Query\Parser\TermParser;
 use SMW\Store;
 use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
-use Title;
 use WebRequest;
-use WikiPage;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -46,7 +44,7 @@ class QueryBuilder {
 	 * @param WebRequest|null $request
 	 * @param array|null $data
 	 */
-	public function __construct( WebRequest $request = null, array $data = [] ) {
+	public function __construct( ?WebRequest $request = null, array $data = [] ) {
 		$this->request = $request;
 		$this->data = $data;
 
@@ -63,7 +61,6 @@ class QueryBuilder {
 	 * @return Query|null
 	 */
 	public function getQuery( $term ) {
-
 		if ( !is_string( $term ) || trim( $term ) === '' ) {
 			return null;
 		}
@@ -88,11 +85,10 @@ class QueryBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Query $query
+	 * @param Query|null $query
 	 * @param array $searchableNamespaces
 	 */
-	public function addNamespaceCondition( Query $query = null, $searchableNamespaces = [] ) {
-
+	public function addNamespaceCondition( ?Query $query = null, $searchableNamespaces = [] ) {
 		if ( $query === null ) {
 			return;
 		}
@@ -106,7 +102,7 @@ class QueryBuilder {
 		}
 
 		$namespacesDisjunction = new Disjunction(
-			array_map( function ( $ns ) {
+			array_map( static function ( $ns ) {
 				return new NamespaceDescription( $ns );
 			}, $namespaces )
 		);
@@ -118,10 +114,9 @@ class QueryBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Query $query
+	 * @param Query|null $query
 	 */
-	public function addSort( Query $query = null ) {
-
+	public function addSort( ?Query $query = null ) {
 		if ( $query === null ) {
 			return;
 		}
@@ -143,10 +138,9 @@ class QueryBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getQueryString( Store $store, $term ) {
-
 		// Special invisible char which is set by the JS component to allow to
 		// push a forms submit through the SearchEngine without an actual "search
 		// term" to avoid being blocked on an empty request which only contains
@@ -212,10 +206,9 @@ class QueryBuilder {
 	 * @param string $form
 	 * @param array $data
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function fetchFieldValues( $form, array $data ) {
-
 		$fieldValues = [];
 
 		if ( !isset( $data['forms'] ) ) {

@@ -5,10 +5,9 @@ namespace SMW\MediaWiki\Specials\Admin;
 use Html;
 use SMW\Message;
 use WebRequest;
-use SMW\Utils\FileFetcher;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
@@ -50,7 +49,7 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return '';
 	}
 
@@ -59,8 +58,7 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
-
+	public function isTaskFor( string $action ): bool {
 		foreach ( $this->taskHandlers as $taskHandler ) {
 			if ( $taskHandler->isTaskFor( $action ) ) {
 				return true;
@@ -76,7 +74,6 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$html = $this->buildHTML();
 		$list = '';
 
@@ -95,7 +92,6 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$action = $webRequest->getText( 'action' );
 
 		foreach ( $this->taskHandlers as $taskHandler ) {
@@ -113,7 +109,6 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function buildHTML() {
-
 		$html = Html::rawElement(
 			'p',
 			[
@@ -121,7 +116,7 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 			],
 			$this->msg( 'smw-admin-supplementary-section-intro', Message::PARSE )
 		) . Html::rawElement(
-			'h3',
+			'h2',
 			[],
 			$this->msg( 'smw-admin-supplementary-section-subtitle' )
 		);

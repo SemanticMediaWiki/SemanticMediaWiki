@@ -8,7 +8,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -55,11 +55,10 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param array|null $dependencyList
 	 */
-	public function addToUpdateList( $sid, array $dependencyList = null ) {
-
+	public function addToUpdateList( $sid, ?array $dependencyList = null ) {
 		if ( $sid == 0 || $dependencyList === null || $dependencyList === [] ) {
 			return null;
 		}
@@ -92,7 +91,6 @@ class DependencyLinksTableUpdater {
 	 * @param array $deleteIdList
 	 */
 	public function deleteDependenciesFromList( array $deleteIdList ) {
-
 		$this->logger->info(
 			[ 'QueryDependency', 'Delete dependencies: {list}' ],
 			[ 'method' => __METHOD__, 'role' => 'developer', 'list' => json_encode( $deleteIdList ) ]
@@ -115,13 +113,12 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param array $dependencyList
 	 *
 	 * @return void
 	 */
 	private function updateDependencyList( $sid, array $dependencyList ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
@@ -207,7 +204,6 @@ class DependencyLinksTableUpdater {
 	 * @return int
 	 */
 	public function getId( DIWikiPage $subject, $subobjectName = '' ) {
-
 		if ( $subobjectName !== '' ) {
 			$subject = new DIWikiPage(
 				$subject->getDBkey(),
@@ -231,7 +227,6 @@ class DependencyLinksTableUpdater {
 	 * @param string $subobjectName
 	 */
 	public function createId( DIWikiPage $subject, $subobjectName = '' ) {
-
 		$id = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),

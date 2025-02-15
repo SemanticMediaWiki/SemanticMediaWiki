@@ -2,31 +2,28 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
-use SMW\DIProperty;
 use SMW\MediaWiki\Api\Browse\SubjectLookup;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\SubjectLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SubjectLookupTest extends \PHPUnit_Framework_TestCase {
+class SubjectLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SubjectLookup::class,
 			new SubjectLookup( $this->store )
@@ -34,22 +31,21 @@ class SubjectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_HTML() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new SubjectLookup(
 			$this->store
@@ -76,18 +72,17 @@ class SubjectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_JSON() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$instance = new SubjectLookup(
 			$this->store

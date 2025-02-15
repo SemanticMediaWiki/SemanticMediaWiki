@@ -3,14 +3,13 @@
 namespace SMW\SQLStore\TableBuilder\Examiner;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\TableBuilder;
+use SMW\Maintenance\updateEntityCollation;
 use SMW\SetupFile;
-use SMW\Maintenance\updateEntityCollation as UpdateEntityCollation;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -65,7 +64,6 @@ class EntityCollation {
 	 * @since 3.2
 	 */
 	public function check() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

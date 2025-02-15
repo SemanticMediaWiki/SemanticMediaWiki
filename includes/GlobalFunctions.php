@@ -1,11 +1,10 @@
 <?php
 
+use SMW\ConfigPreloader;
 use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\Highlighter;
-use SMW\NamespaceManager;
-use SMW\ProcessingErrorMsgHandler;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
-use SMW\ConfigPreloader;
+use SMW\ProcessingErrorMsgHandler;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
@@ -24,7 +23,7 @@ use SMW\ConfigPreloader;
  *
  * @return LocalLanguage
  */
-function smwfContLang() : LocalLanguage {
+function smwfContLang(): LocalLanguage {
 	return LocalLanguage::getInstance()->fetch( $GLOBALS['wgLanguageCode'] );
 }
 
@@ -59,20 +58,20 @@ function smwfNormalTitleText( $text ) {
  * Escapes text in a way that allows it to be used as XML content (e.g. as a
  * string value for some property).
  *
- * @param string $text
+ * @param string|null $text
  */
-function smwfXMLContentEncode( $text ) {
-	return str_replace( [ '&', '<', '>' ], [ '&amp;', '&lt;', '&gt;' ], Sanitizer::decodeCharReferences( $text ) );
+function smwfXMLContentEncode( ?string $text ) {
+	return str_replace( [ '&', '<', '>' ], [ '&amp;', '&lt;', '&gt;' ], Sanitizer::decodeCharReferences( $text ?? '' ) );
 }
 
 /**
  * Decodes character references and inserts Unicode characters instead, using
  * the MediaWiki Sanitizer.
  *
- * @param string $text
+ * @param string|null $text
  */
-function smwfHTMLtoUTF8( $text ) {
-	return Sanitizer::decodeCharReferences( $text );
+function smwfHTMLtoUTF8( ?string $text ) {
+	return Sanitizer::decodeCharReferences( $text ?? '' );
 }
 
 /**
@@ -88,7 +87,6 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
  * @param string $text
  */
 function smwfAbort( $text ) {
-
 	if ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) {
 		$text = strip_tags( $text );
 	}
@@ -101,14 +99,13 @@ function smwfAbort( $text ) {
  * $icon should be one of: 'warning' (default), 'info'.
  *
  * @param array $messages
- * @param string $icon Acts like an enum. Callers must ensure safety, since this value is used directly in the output.
+ * @param string $type Acts like an enum. Callers must ensure safety, since this value is used directly in the output.
  * @param string $separator
- * @param boolean $escape Should the messages be escaped or not (ie when they already are)
+ * @param bool $escape Should the messages be escaped or not (ie when they already are)
  *
  * @return string
  */
 function smwfEncodeMessages( array $messages, $type = 'warning', $separator = ' <!--br-->', $escape = true ) {
-
 	$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
 	if ( $messages === [] ) {
@@ -211,7 +208,7 @@ function smwfGetLinker() {
  * available as early on. Moreover, jobs and special pages are registered.
  *
  * @param mixed $namespace
- * @param boolean $complete
+ * @param bool $complete
  *
  * @return ConfigPreloader
  *

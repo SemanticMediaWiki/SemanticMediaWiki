@@ -8,7 +8,7 @@ use SMWDIBlob as DIBlob;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -35,8 +35,7 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 	 * ProfileAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
-
-		list( $sort, $order ) = $this->doSerializeSortKeys( $this->query );
+		[ $sort, $order ] = $this->doSerializeSortKeys( $this->query );
 
 		$options = [
 			'limit'  => $this->query->getLimit(),
@@ -53,7 +52,6 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 	}
 
 	private function doSerializeSortKeys( $query ) {
-
 		$sort = [];
 		$order = [];
 

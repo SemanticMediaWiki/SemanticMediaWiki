@@ -9,15 +9,14 @@ use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
  * @covers \SMW\MediaWiki\Renderer\HtmlTemplateRenderer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
  */
-class HtmlTemplateRendererTest extends \PHPUnit_Framework_TestCase {
+class HtmlTemplateRendererTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$wikitextTemplateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -33,7 +32,6 @@ class HtmlTemplateRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRenderTemplate() {
-
 		$parser = $this->getMockBuilder( '\Parser' )
 			->disableOriginalConstructor()
 			->getMock();

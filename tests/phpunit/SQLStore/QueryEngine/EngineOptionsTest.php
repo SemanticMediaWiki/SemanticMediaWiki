@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\QueryEngine\EngineOptions
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
+class EngineOptionsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\EngineOptions',
 			new EngineOptions()
@@ -27,22 +26,20 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInitialState() {
-
 		$instance = new EngineOptions();
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->get( 'smwgIgnoreQueryErrors' )
 		);
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->get( 'smwgQSortFeatures' )
 		);
 	}
 
 	public function testAddOption() {
-
 		$instance = new EngineOptions();
 
 		$this->assertFalse(
@@ -58,7 +55,6 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnregisteredKeyThrowsException() {
-
 		$instance = new EngineOptions();
 
 		$this->expectException( 'InvalidArgumentException' );

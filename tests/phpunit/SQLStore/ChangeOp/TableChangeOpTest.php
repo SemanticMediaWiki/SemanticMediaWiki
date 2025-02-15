@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\ChangeOp\TableChangeOp
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
+class TableChangeOpTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableChangeOp::class,
 			new TableChangeOp( 'foo', [] )
@@ -27,7 +26,6 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmptyOps() {
-
 		$diff = [];
 
 		$instance = new TableChangeOp(
@@ -52,14 +50,13 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 			$instance->getFixedPropertyValueBy( 'key' )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getFieldChangeOps( 'insert' )
 		);
 	}
 
 	public function testFixedPropertyOps() {
-
 		$diff = [
 		'property' =>
 			[
@@ -111,7 +108,6 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFieldChangeOpsNoType() {
-
 		$diff = [
 		'property' =>
 			[
@@ -170,7 +166,6 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFieldChangeOps_WithNoOperation() {
-
 		$diff = [
 			[
 				's_id' => 462,
@@ -201,7 +196,6 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToArray() {
-
 		$diff = [
 			[
 				's_id' => 462,
@@ -221,7 +215,7 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertSame(
-			['foo' => $diff ],
+			[ 'foo' => $diff ],
 			$instance->toArray()
 		);
 	}

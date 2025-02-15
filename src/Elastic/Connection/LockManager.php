@@ -5,7 +5,7 @@ namespace SMW\Elastic\Connection;
 use Onoi\Cache\Cache;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -37,7 +37,6 @@ class LockManager {
 	 * @since 3.1
 	 */
 	public function hasMaintenanceLock() {
-
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			self::TYPE_MAINTENANCE
@@ -50,7 +49,6 @@ class LockManager {
 	 * @since 3.1
 	 */
 	public function setMaintenanceLock() {
-
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			self::TYPE_MAINTENANCE
@@ -66,7 +64,6 @@ class LockManager {
 	 * @param string $version
 	 */
 	public function setLock( $type, $version ) {
-
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[ 'lock', $type ]
@@ -80,10 +77,9 @@ class LockManager {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLock( $type ) {
-
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[ 'lock', $type ]
@@ -100,7 +96,6 @@ class LockManager {
 	 * @return mixed
 	 */
 	public function getLock( $type ) {
-
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[ 'lock', $type ]
@@ -115,7 +110,6 @@ class LockManager {
 	 * @param string $type
 	 */
 	public function releaseLock( $type ) {
-
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[ 'lock', $type ]

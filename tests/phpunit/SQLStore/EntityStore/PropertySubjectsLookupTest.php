@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
-use SMW\Options;
 use SMW\SQLStore\EntityStore\PropertySubjectsLookup;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
@@ -11,15 +10,14 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @covers \SMW\SQLStore\EntityStore\PropertySubjectsLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
+class PropertySubjectsLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +29,6 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupForNonFixedPropertyTable() {
-
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
@@ -40,7 +37,7 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->atLeastOnce() )
 			->method( 'getWhereConds' )
-			->will( $this->returnValue( [ 'o_id' => 42 ] ) );
+			->willReturn( [ 'o_id' => 42 ] );
 
 		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -48,7 +45,7 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTableDef->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
 			->disableOriginalConstructor()
@@ -60,11 +57,11 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'readQuery' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -73,19 +70,19 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSQLOptions' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSQLConditions' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$instance = new PropertySubjectsLookup(
 			$store
@@ -95,7 +92,6 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupForFixedPropertyTable() {
-
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 
 		$resultWrapper = new FakeResultWrapper( [] );
@@ -106,7 +102,7 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->atLeastOnce() )
 			->method( 'getWhereConds' )
-			->will( $this->returnValue( [ 'o_id' => 42 ] ) );
+			->willReturn( [ 'o_id' => 42 ] );
 
 		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -114,7 +110,7 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTableDef->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
 			->disableOriginalConstructor()
@@ -126,11 +122,11 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'readQuery' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -139,11 +135,11 @@ class PropertySubjectsLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$instance = new PropertySubjectsLookup(
 			$store

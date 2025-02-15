@@ -3,24 +3,22 @@
 namespace SMW;
 
 use RuntimeException;
-use SMW\Exception\ClassNotFoundException;
+use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintCheckRunner;
 use SMW\Constraint\ConstraintRegistry;
-use SMW\Constraint\ConstraintErrorFinder;
-use SMW\Constraint\Constraint;
-use SMW\Constraint\Constraints\NullConstraint;
-use SMW\Constraint\ConstraintSchemaCompiler;
-use SMW\Constraint\Constraints\NamespaceConstraint;
-use SMW\Constraint\Constraints\UniqueValueConstraint;
-use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
-use SMW\Constraint\Constraints\MustExistsConstraint;
-use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
+use SMW\Constraint\Constraints\MustExistsConstraint;
+use SMW\Constraint\Constraints\NamespaceConstraint;
+use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
+use SMW\Constraint\Constraints\NullConstraint;
 use SMW\Constraint\Constraints\ShapeConstraint;
-use SMW\Options;
+use SMW\Constraint\Constraints\SingleValueConstraint;
+use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\Constraint\ConstraintSchemaCompiler;
+use SMW\Exception\ClassNotFoundException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -33,7 +31,6 @@ class ConstraintFactory {
 	 * @return ConstraintRegistry
 	 */
 	public function newConstraintRegistry() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$constraintRegistry = new ConstraintRegistry(
@@ -65,7 +62,6 @@ class ConstraintFactory {
 	 * @throws RuntimeException
 	 */
 	public function newConstraintByClass( $class ) {
-
 		if ( !class_exists( $class ) ) {
 			throw new ClassNotFoundException( $class );
 		}
@@ -140,7 +136,6 @@ class ConstraintFactory {
 	 * @return UniqueValueConstraint
 	 */
 	public function newUniqueValueConstraint() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$uniqueValueConstraint = new UniqueValueConstraint(
@@ -195,7 +190,6 @@ class ConstraintFactory {
 	 * @return ConstraintSchemaCompiler
 	 */
 	public function newConstraintSchemaCompiler( Store $store ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$schemaFactory = $applicationFactory->singleton( 'SchemaFactory' );
 

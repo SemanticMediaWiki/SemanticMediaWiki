@@ -5,7 +5,7 @@ namespace SMW\Property\Annotators;
 use SMW\PropertyAnnotator;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $defaultSort;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $canCreateAnnotation = true;
 
@@ -45,14 +45,13 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $canCreateAnnotation
+	 * @param bool $canCreateAnnotation
 	 */
 	public function canCreateAnnotation( $canCreateAnnotation ) {
 		$this->canCreateAnnotation = (bool)$canCreateAnnotation;
 	}
 
 	protected function addPropertyValues() {
-
 		if ( !$this->canCreateAnnotation || !$this->displayTitle || $this->displayTitle === '' ) {
 			return;
 		}

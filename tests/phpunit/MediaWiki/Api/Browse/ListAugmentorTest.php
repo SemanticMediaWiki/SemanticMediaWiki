@@ -8,15 +8,14 @@ use SMW\MediaWiki\Api\Browse\ListAugmentor;
  * @covers \SMW\MediaWiki\Api\Browse\ListAugmentor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
+class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -28,7 +27,6 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAugmentOnDescription() {
-
 		$res = [
 			'query' => [
 				'Foo' => [
@@ -73,13 +71,12 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 		$instance->augment( $res, $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 
 	public function testAugmentOnPrefLabel() {
-
 		$res = [
 			'query' => [
 				'Foo' => [
@@ -124,13 +121,12 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 		$instance->augment( $res, $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 
 	public function testAugmentOnUsageCount() {
-
 		$res = [
 			'query' => [
 				'Foo' => [
@@ -169,7 +165,7 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( $row ) );
+			->willReturn( $row );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -177,7 +173,7 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new ListAugmentor(
 			$store
@@ -186,8 +182,8 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 		$instance->augment( $res, $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 

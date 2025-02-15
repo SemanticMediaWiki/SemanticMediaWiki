@@ -1,9 +1,9 @@
 <?php
 
-use SMW\Query\PrintRequest;
-use SMW\Localizer\Localizer;
-use SMW\StoreFactory;
 use SMW\DataValueFactory;
+use SMW\Localizer\Localizer;
+use SMW\Query\PrintRequest;
+use SMW\StoreFactory;
 
 /**
  * Helper class to generate HTML lists of wiki pages, with support for paged
@@ -58,13 +58,12 @@ class SMWPageLister {
 	 * @return string
 	 */
 	public function getNavigationLinks( Title $title, $query = [] ) {
-
 		$limitText = Localizer::getInstance()->getUserLanguage()->formatNum( $this->mLimit );
 
 		$resultCount = count( $this->mDiWikiPages );
 		$beyondLimit = ( $resultCount > $this->mLimit );
 
-		if ( !is_null( $this->mUntil ) && $this->mUntil !== '' ) {
+		if ( $this->mUntil !== null && $this->mUntil !== '' ) {
 			if ( $beyondLimit ) {
 				$first = StoreFactory::getStore()->getWikiPageSortKey( $this->mDiWikiPages[1] );
 			} else {
@@ -72,7 +71,7 @@ class SMWPageLister {
 			}
 
 			$last = $this->mUntil;
-		} elseif ( $beyondLimit || ( !is_null( $this->mFrom ) && $this->mFrom !== '' ) ) {
+		} elseif ( $beyondLimit || ( $this->mFrom !== null && $this->mFrom !== '' ) ) {
 			$first = $this->mFrom;
 
 			if ( $beyondLimit ) {
@@ -190,7 +189,7 @@ class SMWPageLister {
 			}
 		}
 
-		if ( count ( $this->mDiWikiPages ) > $cutoff ) {
+		if ( count( $this->mDiWikiPages ) > $cutoff ) {
 			return self::getColumnList( $start, $end, $this->mDiWikiPages, $this->mDiProperty );
 		} elseif ( count( $this->mDiWikiPages ) > 0 ) {
 			return self::getShortList( $start, $end, $this->mDiWikiPages, $this->mDiProperty );
@@ -211,13 +210,12 @@ class SMWPageLister {
 	 * @return string
 	 */
 	public static function getColumnList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
-
 		if ( $diWikiPages instanceof \Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
 
 		// Divide list into three equal chunks.
-		$chunk = (int) ( ( $end - $start + 1 ) / 3 );
+		$chunk = (int)( ( $end - $start + 1 ) / 3 );
 
 		// Get and display header.
 		$r = '<table width="100%"><tr valign="top">';
@@ -294,7 +292,6 @@ class SMWPageLister {
 	 * @return string
 	 */
 	public static function getShortList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
-
 		if ( $diWikiPages instanceof \Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
@@ -310,7 +307,7 @@ class SMWPageLister {
 		$startChar = self::getFirstChar( $diWikiPages[$start] );
 
 		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
-		     '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</li>';
+			 '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</li>';
 
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {

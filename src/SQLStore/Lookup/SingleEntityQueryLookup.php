@@ -3,15 +3,11 @@
 namespace SMW\SQLStore\Lookup;
 
 use MediaWiki\MediaWikiServices;
-use SMW\Store;
-use SMW\QueryEngine;
-use SMWQuery as Query;
-use SMW\Query\QueryResult;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Query\Language\ValueDescription;
-use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
-use SMW\DIWikiPage;
-use RuntimeException;
+use SMW\Query\QueryResult;
+use SMW\QueryEngine;
+use SMW\Store;
+use SMWQuery as Query;
 
 /**
  * `#show` will only make a request to one particular entity therefore instead of
@@ -19,7 +15,7 @@ use RuntimeException;
  * `QueryResult` hereby by behave as any other `QueryEngine` implementation but
  * without the query footprint.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -48,7 +44,6 @@ class SingleEntityQueryLookup implements QueryEngine {
 	 * @return QueryResult
 	 */
 	public function getQueryResult( Query $query ) {
-
 		$description = $query->getDescription();
 		$results = [];
 		$furtherResults = false;
@@ -59,7 +54,7 @@ class SingleEntityQueryLookup implements QueryEngine {
 		if ( !$description instanceof ValueDescription ) {
 			$results = [];
 			$furtherResults = false;
-		} else if ( $query->getLimit() == 0 ) {
+		} elseif ( $query->getLimit() == 0 ) {
 			$results = [];
 			$furtherResults = true;
 		} else {

@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"EileenSanda"
+			"EileenSanda",
+			"Spacebirdy"
 		]
 	},
+	"smw-categories": "Bólkar",
 	"browse": "Leita í wikiini",
 	"smw-livepreview-loading": "Innlesur...",
 	"smw-listingcontinuesabbrev": "frh.",

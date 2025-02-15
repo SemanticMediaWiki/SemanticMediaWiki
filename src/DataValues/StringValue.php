@@ -10,7 +10,7 @@ use SMWDIBlob as DIBlob;
 /**
  * Implements a string/text based datavalue suitable for defining text properties.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Nikolas Iwan
@@ -44,7 +44,6 @@ class StringValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	public function getShortWikiText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -58,7 +57,6 @@ class StringValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	public function getShortHTMLText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -72,7 +70,6 @@ class StringValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	public function getLongWikiText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -87,7 +84,6 @@ class StringValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	public function getLongHTMLText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -101,7 +97,6 @@ class StringValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	public function getWikiValue() {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -115,7 +110,6 @@ class StringValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	public function getInfolinks() {
-
 		if ( $this->m_typeid != '_cod' ) {
 			return parent::getInfolinks();
 		}
@@ -126,10 +120,9 @@ class StringValue extends DataValue {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLength() {
-
 		if ( !$this->isValid() ) {
 			return 0;
 		}
@@ -143,7 +136,6 @@ class StringValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	protected function parseUserValue( $value ) {
-
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}
@@ -157,7 +149,6 @@ class StringValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-
 		if ( !$dataItem instanceof DIBlob ) {
 			return false;
 		}
@@ -174,7 +165,6 @@ class StringValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	protected function getServiceLinkParams() {
-
 		if ( !$this->isValid() ) {
 			return false;
 		}

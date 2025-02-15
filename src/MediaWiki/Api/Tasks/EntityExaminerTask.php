@@ -2,15 +2,14 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\Store;
 use SMW\DIWikiPage;
+use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminerAware;
-use SMW\Services\ServicesFactory;
-use SMW\Indicator\EntityExaminerIndicatorsFactory;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -60,8 +59,7 @@ class EntityExaminerTask extends Task implements PermissionExaminerAware {
 	 *
 	 * @return array
 	 */
-	public function process( array $parameters ) : array {
-
+	public function process( array $parameters ): array {
 		if ( $parameters['subject'] === '' ) {
 			return [ 'done' => false ];
 		}
@@ -99,7 +97,6 @@ class EntityExaminerTask extends Task implements PermissionExaminerAware {
 	}
 
 	private function newEntityExaminerDeferrableCompositeIndicatorProvider() {
-
 		$entityExaminerDeferrableCompositeIndicatorProvider = $this->entityExaminerIndicatorsFactory->newEntityExaminerDeferrableCompositeIndicatorProvider(
 			$this->store
 		);
@@ -118,7 +115,6 @@ class EntityExaminerTask extends Task implements PermissionExaminerAware {
 	}
 
 	private function newEntityExaminerIndicatorProvider() {
-
 		$entityExaminerDeferrableCompositeIndicatorProvider = $this->newEntityExaminerDeferrableCompositeIndicatorProvider();
 
 		$entityExaminerCompositeIndicatorProvider = $this->entityExaminerIndicatorsFactory->newEntityExaminerCompositeIndicatorProvider(

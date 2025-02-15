@@ -7,8 +7,8 @@ use ParamProcessor\ProcessingResult;
 use Parser;
 use ParserHooks\HookDefinition;
 use ParserHooks\HookHandler;
-use SMWOutputs;
 use SMW\Highlighter;
+use SMWOutputs;
 
 /**
  * Class that provides the {{#info}} parser function
@@ -50,13 +50,13 @@ class InfoParserFunction implements HookHandler {
 		// If the message contains another highlighter (caused by recursive
 		// parsing etc.) remove the tags to allow to show the text without making
 		// the JS go berserk due to having more than one `smw-highlighter`
-		if ( strpos( $message, 'smw-highlighter' ) !== '' ) {
+		if ( strpos( $message ?? '', 'smw-highlighter' ) !== '' ) {
 			$message = preg_replace_callback(
 					"/" . "<span class=\"smw-highlighter\"(.*)?>(.*)?<\/span>" . "/m",
-					function( $matches ) {
+					static function ( $matches ) {
 						return strip_tags( $matches[0] );
 					},
-					$message
+					$message ?? ''
 			);
 		}
 
@@ -77,7 +77,7 @@ class InfoParserFunction implements HookHandler {
 
 		$result = $highlighter->getHtml();
 
-		if ( !is_null( $parser->getTitle() ) && $parser->getTitle()->isSpecialPage() ) {
+		if ( $parser->getTitle() !== null && $parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
 			SMWOutputs::commitToOutputPage( $wgOut );
 		} else {

@@ -8,24 +8,22 @@ use SMW\Elastic\Indexer\Attachment\FileHandler;
  * @covers \SMW\Elastic\Indexer\Attachment\FileHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class FileHandlerTest extends \PHPUnit_Framework_TestCase {
+class FileHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $fileRepoFinder;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->fileRepoFinder = $this->getMockBuilder( '\SMW\MediaWiki\FileRepoFinder' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FileHandler::class,
 			new FileHandler( $this->fileRepoFinder )
@@ -33,7 +31,6 @@ class FileHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFileByTitle() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -49,15 +46,13 @@ class FileHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBase64FromURI() {
-
 		$url = 'http://example.org/Foo.txt';
 
 		$instance = new FileHandler(
 			$this->fileRepoFinder
 		);
 
-		$instance->setReadCallback( function( $read_url ) use( $url ) {
-
+		$instance->setReadCallback( static function ( $read_url ) use( $url ) {
 			if ( $read_url !== $url ) {
 				throw new \RuntimeException( "Invalid read URL!" );
 			}
@@ -72,7 +67,6 @@ class FileHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormat() {
-
 		$instance = new FileHandler(
 			$this->fileRepoFinder
 		);
@@ -84,7 +78,6 @@ class FileHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormat_base64() {
-
 		$instance = new FileHandler(
 			$this->fileRepoFinder
 		);

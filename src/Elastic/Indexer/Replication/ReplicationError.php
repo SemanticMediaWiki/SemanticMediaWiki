@@ -5,7 +5,7 @@ namespace SMW\Elastic\Indexer\Replication;
 use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -71,9 +71,9 @@ class ReplicationError {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function is( $type ) : bool {
+	public function is( $type ): bool {
 		return $this->type === $type;
 	}
 
@@ -86,7 +86,6 @@ class ReplicationError {
 	 * @throws InvalidArgumentException
 	 */
 	public function get( $key ) {
-
 		if ( !isset( $this->data[$key] ) ) {
 			throw new InvalidArgumentException( "Key: `$key` is unknown!" );
 		}
@@ -99,7 +98,7 @@ class ReplicationError {
 	 *
 	 * @return string
 	 */
-	public function getType() : string {
+	public function getType(): string {
 		return $this->type;
 	}
 
@@ -108,7 +107,7 @@ class ReplicationError {
 	 *
 	 * @return mixed
 	 */
-	public function getData() : array {
+	public function getData(): array {
 		return $this->data;
 	}
 

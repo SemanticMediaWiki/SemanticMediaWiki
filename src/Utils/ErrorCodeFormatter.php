@@ -5,7 +5,7 @@ namespace SMW\Utils;
 /**
  * Convenience method to retrieved stringified error codes.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -26,12 +26,11 @@ class ErrorCodeFormatter {
 	 * @see http://php.net/manual/en/function.json-decode.php
 	 * @since 2.5
 	 *
-	 * @param integer $errorCode
+	 * @param int $errorCode
 	 *
 	 * @return string
 	 */
 	public static function getStringFromJsonErrorCode( $errorCode ) {
-
 		if ( self::$constants === [] ) {
 			self::$constants = get_defined_constants( true );
 		}
@@ -50,12 +49,11 @@ class ErrorCodeFormatter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $errorCode
+	 * @param int $errorCode
 	 *
 	 * @return string
 	 */
 	public static function getMessageFromJsonErrorCode( $errorCode ) {
-
 		$errorMessages = [
 			JSON_ERROR_STATE_MISMATCH => 'Underflow or the modes mismatch, malformed JSON',
 			JSON_ERROR_CTRL_CHAR => 'Unexpected control character found, possibly incorrectly encoded',

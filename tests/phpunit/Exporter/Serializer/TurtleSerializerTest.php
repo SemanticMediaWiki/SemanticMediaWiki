@@ -2,29 +2,26 @@
 
 namespace SMW\Tests\Exporter\Serializer;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Tests\PHPUnitCompat;
 use SMWExpData as ExpData;
-use SMW\Exporter\Element\ExpNsResource;
-use SMW\Exporter\Element\ExpLiteral;
 
 /**
  * @covers \SMW\Exporter\Serializer\TurtleSerializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class TurtleSerializerTest extends \PHPUnit_Framework_TestCase {
+class TurtleSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testFlushContent_Empty() {
-
 		$instance = new TurtleSerializer();
 		$instance->startSerialization();
 		$instance->finishSerialization();
@@ -36,7 +33,6 @@ class TurtleSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFlushContent_SingleElement() {
-
 		$expData = new ExpData(
 			new ExpNsResource( 'Foobar', 'Bar', 'ns:Mo', null )
 		);

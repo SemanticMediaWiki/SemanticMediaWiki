@@ -12,23 +12,22 @@ use Traversable;
  * @see Guzzle::AppendIterator
  * @see https://bugs.php.net/bug.php?id=49104
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  */
 class AppendIterator extends \AppendIterator implements Countable {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $count = 0;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param Traversable|array $iterator
+	 * @param Traversable|array $iterable
 	 */
 	public function add( $iterable ) {
-
 		if ( is_array( $iterable ) ) {
 			$iterable = new ArrayIterator( $iterable );
 		}
@@ -56,7 +55,6 @@ class AppendIterator extends \AppendIterator implements Countable {
 	 * {@inheritDoc}
 	 */
 	public function append( Iterator $iterable ): void {
-
 		if ( $iterable instanceof Countable ) {
 			$this->count += $iterable->count();
 		}

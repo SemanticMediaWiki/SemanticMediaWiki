@@ -2,16 +2,16 @@
 
 namespace SMW\MediaWiki\Search;
 
-use SMW\DIWikiPage;
-use SMW\Utils\CharExaminer;
 use SearchSuggestion;
 use SearchSuggestionSet;
+use SMW\DIWikiPage;
 use SMW\Query\QueryResult;
+use SMW\Utils\CharExaminer;
 
 /**
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author  Stephan Gambke
@@ -66,7 +66,6 @@ class SearchResultSet extends \SearchResultSet {
 	 * @return SearchResult
 	 */
 	public function next() {
-
 		$page = current( $this->pages );
 		$searchResult = false;
 
@@ -92,7 +91,6 @@ class SearchResultSet extends \SearchResultSet {
 	 * @return SearchSuggestionSet
 	 */
 	public function newSearchSuggestionSet() {
-
 		$suggestions = [];
 		$filter = [];
 
@@ -126,7 +124,6 @@ class SearchResultSet extends \SearchResultSet {
 	 * @since 3.0
 	 */
 	public function extractResults() {
-
 		// #3204
 		// https://github.com/wikimedia/mediawiki/commit/720fdfa7901cbba93b5695ed5f00f982272ced27
 		//
@@ -185,7 +182,6 @@ class SearchResultSet extends \SearchResultSet {
 	 * @return string[]
 	 */
 	public function termMatches() {
-
 		if ( ( $tokens = $this->getTokens() ) !== [] ) {
 			return $tokens;
 		}
@@ -199,7 +195,6 @@ class SearchResultSet extends \SearchResultSet {
 	}
 
 	private function getTokens() {
-
 		$tokens = [];
 
 		if ( $this->queryToken === null ) {

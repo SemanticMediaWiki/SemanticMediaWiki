@@ -3,6 +3,7 @@
 		"authors": [
 			"Gunnernett",
 			"Harald Khan",
+			"Jon Harald Søby",
 			"Neuraxıs",
 			"Njardarlogar",
 			"Ranveig"
@@ -81,6 +82,7 @@
 	"smw_exportrdf_submit": "Eksport",
 	"uriresolver": "URI-løysar",
 	"properties": "Eigenskapar",
+	"smw-categories": "Kategoriar",
 	"smw_properties_docu": "Følgjande eigenskapar er nytta på wikien.",
 	"smw_property_template": "$1 av typen $2 ($3)",
 	"smw_propertylackspage": "Alle eigenskapar burde vore skildra av ei sida.",

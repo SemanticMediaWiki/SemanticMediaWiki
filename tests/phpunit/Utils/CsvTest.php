@@ -8,18 +8,17 @@ use SMW\Utils\Csv;
  * @covers \SMW\Utils\Csv
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class CsvTest extends \PHPUnit_Framework_TestCase {
+class CsvTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider rowsProvider
 	 */
 	public function testConcatenate( $rows, $sep, $expected ) {
-
 		$instance = new Csv();
 
 		$this->assertEquals(
@@ -32,7 +31,6 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider makeProvider
 	 */
 	public function testMake( $header, $rows, $sep, $show, $expected ) {
-
 		$instance = new Csv( $show );
 
 		$this->assertEquals(
@@ -42,7 +40,6 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWithBOM() {
-
 		$header = [];
 		$rows = [
 			[ 'Foo', '1', '2', '3' ]
@@ -59,7 +56,6 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function rowsProvider() {
-
 		// No change
 		yield [
 			[
@@ -150,7 +146,6 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function makeProvider() {
-
 		// Without header
 		yield [
 			[],

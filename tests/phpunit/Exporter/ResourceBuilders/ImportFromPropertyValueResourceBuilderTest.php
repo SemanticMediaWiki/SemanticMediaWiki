@@ -12,17 +12,17 @@ use SMWExpData as ExpData;
  * @covers \SMW\Exporter\ResourceBuilders\ImportFromPropertyValueResourceBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ImportFromPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class ImportFromPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->testEnvironment = new TestEnvironment();
@@ -30,13 +30,12 @@ class ImportFromPropertyValueResourceBuilderTest extends \PHPUnit_Framework_Test
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			ImportFromPropertyValueResourceBuilder::class,
 			new ImportFromPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class ImportFromPropertyValueResourceBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function testIsNotResourceBuilderForNonImpoProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new ImportFromPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class ImportFromPropertyValueResourceBuilderTest extends \PHPUnit_Framework_Test
 	}
 
 	public function testAddResourceValueForImpoProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_IMPO' );
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 

@@ -3,24 +3,25 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Hooks;
-use User;
-use Xml;
-use SMW\Utils\Logo;
-use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\GroupPermissions;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile as FacetedSearchProfile;
 use SMW\OptionsAwareTrait;
-use SMW\Schema\Compartment;
-use SMW\MediaWiki\Specials\FacetedSearch\Profile;
+use SMW\Schema\Exception\SchemaTypeNotFoundException;
+use SMW\Schema\SchemaFactory;
+use SMW\Utils\Logo;
+use User;
 
 /**
  * Hook: GetPreferences adds user preference
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetPreferences
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -35,6 +36,11 @@ class GetPreferences implements HookListener {
 	 * Option to enable textinput suggester
 	 */
 	const ENABLE_ENTITY_SUGGESTER = 'smw-prefs-general-options-suggester-textinput';
+
+	/**
+	 * User specific default profile preference
+	 */
+	const FACETEDSEARCH_PROFILE_PREFERENCE = 'smw-prefs-factedsearch-profile';
 
 	/**
 	 * Option to enable jobqueue watchlist
@@ -62,12 +68,18 @@ class GetPreferences implements HookListener {
 	private $permissionExaminer;
 
 	/**
+	 * @var SchemaFactory
+	 */
+	private $schemaFactory;
+
+	/**
 	 * @since 3.2
 	 *
 	 * @param PermissionExaminer $permissionExaminer
 	 */
-	public function __construct( PermissionExaminer $permissionExaminer ) {
+	public function __construct( PermissionExaminer $permissionExaminer, SchemaFactory $schemaFactory ) {
 		$this->permissionExaminer = $permissionExaminer;
+		$this->schemaFactory = $schemaFactory;
 	}
 
 	/**
@@ -79,12 +91,11 @@ class GetPreferences implements HookListener {
 	 * @return true
 	 */
 	public function process( User $user, array &$preferences ) {
-
 		$otherPreferences = [];
 		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );
 		$this->permissionExaminer->setUser( $user );
 
-		$html = $this->makeImage( Logo::get( '100x90' ) );
+		$html = $this->makeImage( Logo::get( 'small' ) );
 		$html .= wfMessage( 'smw-prefs-intro-text' )->parseAsBlock();
 
 		// Intro text
@@ -149,13 +160,49 @@ class GetPreferences implements HookListener {
 			'section' => 'smw/ask-options',
 		];
 
+		$preferences[self::FACETEDSEARCH_PROFILE_PREFERENCE] = [
+			'type' => 'select',
+			'section' => 'smw/ask-options',
+			'label-message' => 'smw-prefs-factedsearch-profile',
+			'options' => $this->getProfileList(),
+			'default' => $this->getOption( 'smw-prefs-factedsearch-profile', 'default' ),
+		];
+
 		$preferences += $otherPreferences;
 
 		return true;
 	}
 
 	private function makeImage( $logo ) {
-		return "<img style='float:right;margin-top: 10px;margin-left:20px;' src='{$logo}' height='63' width='70'>";
+		return "<img style='float:right;margin-top:10px;margin-left:20px;height:auto;width:70px;' src='{$logo}'>";
+	}
+
+	private function getProfileList(): array {
+		$facetedSearchProfile = new FacetedSearchProfile(
+			$this->schemaFactory
+		);
+
+		try {
+			$profileList = $facetedSearchProfile->getProfileList();
+		} catch ( DefaultProfileNotFoundException | SchemaTypeNotFoundException $e ) {
+			$profileList = [];
+		}
+
+		foreach ( $profileList as $name => $val ) {
+			$label = $this->msg( $val );
+
+			// Message contains itself, meaning label is unknown!
+			if ( strpos( $label, $val ) !== false ) {
+				$label = $name;
+			}
+
+			$profileList[$name] = $label;
+		}
+
+		$profileList = array_flip( $profileList );
+		ksort( $profileList );
+
+		return $profileList;
 	}
 
 }

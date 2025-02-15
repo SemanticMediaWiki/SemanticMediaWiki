@@ -5,7 +5,7 @@ namespace SMW\MediaWiki;
 use MWNamespace;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
@@ -29,12 +29,11 @@ class NamespaceInfo {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 *
 	 * @return string
 	 */
 	public function getCanonicalName( $index ) {
-
 		if ( $this->nsInfo === null ) {
 			return MWNamespace::getCanonicalName( $index );
 		}
@@ -45,10 +44,9 @@ class NamespaceInfo {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getValidNamespaces() {
-
 		if ( $this->nsInfo === null ) {
 			return MWNamespace::getValidNamespaces();
 		}
@@ -64,7 +62,6 @@ class NamespaceInfo {
 	 * @return int
 	 */
 	public function getSubject( $index ) {
-
 		if ( $this->nsInfo === null ) {
 			return MWNamespace::getSubject( $index );
 		}

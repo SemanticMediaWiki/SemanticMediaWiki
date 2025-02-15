@@ -2,10 +2,11 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWikiIntegrationTestCase;
 use RuntimeException;
 use SMW\DIWikiPage;
-use SMW\Services\ServicesFactory;
 use SMW\SerializerFactory;
+use SMW\Services\ServicesFactory;
 use SMW\Store;
 use SMW\Tests\Utils\PageReader;
 use SMW\Tests\Utils\UtilityFactory;
@@ -16,14 +17,15 @@ use User;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
  */
-class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var Store
@@ -61,7 +63,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $serializerFactory;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 
@@ -84,7 +86,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @since 2.2
 	 *
-	 * @param boolean $debugMode
+	 * @param bool $debugMode
 	 */
 	public function setDebugMode( $debugMode ) {
 		$this->debug = $debugMode;
@@ -96,7 +98,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param array $case
 	 */
 	public function process( array $case ) {
-
 		if ( !isset( $case['subject'] ) ) {
 			return;
 		}
@@ -115,7 +116,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertSemanticDataForCase( $case ) {
-
 		// Allows for data to be re-read from the DB instead of being fetched
 		// from the store-id-cache
 		if ( isset( $case['store']['clear-cache'] ) && $case['store']['clear-cache'] ) {
@@ -159,7 +159,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertTextFromParserOutputForCase( $case ) {
-
 		if ( !isset( $case['assert-output'] ) ) {
 			return;
 		}
@@ -198,7 +197,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		}
 
 		// Strip HTML comments
-		$output = preg_replace('/<!--(.*)-->/Uis', '', $output );
+		$output = preg_replace( '/<!--(.*)-->/Uis', '', $output );
 
 		if ( isset( $case['assert-output']['to-contain'] ) ) {
 			$contains = $case['assert-output']['to-contain'];
@@ -227,7 +226,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertTextFromParsedMsgForCase( $case ) {
-
 		if ( !isset( $case['assert-msgoutput'] ) ) {
 			return;
 		}
@@ -256,7 +254,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function getSubjectFrom( $case, $checkExists = true ) {
-
 		$subject = DIWikiPage::newFromText(
 			$case['subject'],
 			isset( $case['namespace'] ) ? constant( $case['namespace'] ) : NS_MAIN

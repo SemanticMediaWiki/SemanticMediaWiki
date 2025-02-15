@@ -9,15 +9,14 @@ use SMW\StringCondition;
  * @covers \SMW\RequestOptions
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
+class RequestOptionsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RequestOptions::class,
 			new RequestOptions()
@@ -25,7 +24,6 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddStringCondition() {
-
 		$instance = new RequestOptions();
 		$instance->addStringCondition( 'Foo', StringCondition::STRCOND_PRE );
 
@@ -47,7 +45,6 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEddExtraCondition() {
-
 		$instance = new RequestOptions();
 		$instance->addExtraCondition( 'Foo' );
 		$instance->addExtraCondition( [ 'Bar' => 'Foobar' ] );
@@ -70,7 +67,6 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider numberProvider
 	 */
 	public function testLimit( $limit, $expected ) {
-
 		$instance = new RequestOptions();
 		$instance->setLimit( $limit );
 
@@ -91,7 +87,6 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider numberProvider
 	 */
 	public function testOffset( $offset, $expected ) {
-
 		$instance = new RequestOptions();
 		$instance->setOffset( $offset );
 
@@ -109,7 +104,6 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function numberProvider() {
-
 		$provider[] = [
 			42,
 			42

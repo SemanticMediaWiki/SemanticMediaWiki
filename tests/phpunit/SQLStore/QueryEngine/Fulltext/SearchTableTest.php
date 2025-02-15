@@ -10,18 +10,17 @@ use SMWDataItem as DataItem;
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTable
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SearchTableTest extends \PHPUnit_Framework_TestCase {
+class SearchTableTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -30,7 +29,6 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTable',
 			new SearchTable( $this->store )
@@ -38,7 +36,6 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsEnabled() {
-
 		$instance = new SearchTable(
 			$this->store
 		);
@@ -51,13 +48,12 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyExemptionList() {
-
 		$instance = new SearchTable(
 			$this->store
 		);
 
 		$instance->setPropertyExemptionList(
-			[ '_TEXT','fo oo' ]
+			[ '_TEXT', 'fo oo' ]
 		);
 
 		$this->assertEquals(
@@ -67,7 +63,6 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsExemptedProperty() {
-
 		$instance = new SearchTable(
 			$this->store
 		);
@@ -95,7 +90,6 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsValidType() {
-
 		$instance = new SearchTable(
 			$this->store
 		);
@@ -114,7 +108,6 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasMinTokenLength() {
-
 		$instance = new SearchTable(
 			$this->store
 		);

@@ -11,16 +11,16 @@ use Title;
  * @covers \SMW\MediaWiki\Specials\SpecialAsk
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SpecialAskTest extends \PHPUnit_Framework_TestCase {
+class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -32,13 +32,12 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\SpecialAsk',
 			new SpecialAsk()
@@ -46,7 +45,6 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecuteWithValidUser() {
-
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();

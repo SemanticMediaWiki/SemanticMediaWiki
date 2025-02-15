@@ -9,26 +9,24 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Elastic\Indexer\Rebuilder\Rollover
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class RolloverTest extends \PHPUnit_Framework_TestCase {
+class RolloverTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $connection;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Rollover::class,
 			new Rollover( $this->connection )
@@ -55,7 +53,7 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new Rollover(
 			$this->connection
@@ -67,14 +65,14 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 	public function testDelete() {
 		$this->connection->expects( $this->exactly( 3 ) )
 			->method( 'indexExists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->exactly( 3 ) )
 			->method( 'deleteIndex' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new Rollover(
 			$this->connection
@@ -84,10 +82,9 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate_OnNoConnectionThrowsException() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new Rollover(
 			$this->connection
@@ -98,10 +95,9 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete_OnNoConnectionThrowsException() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new Rollover(
 			$this->connection

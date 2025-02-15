@@ -2,33 +2,32 @@
 
 namespace SMW\Tests\Query\DescriptionBuilders;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
  */
-class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
+class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemFactory = ApplicationFactory::getInstance()->getDataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SomeValueDescriptionBuilder::class,
 			new SomeValueDescriptionBuilder()
@@ -36,7 +35,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsBuilderForDataValue() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -52,7 +50,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $decription ) {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
@@ -62,19 +59,19 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ) );
+				false );
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue($this->dataItemFactory->newDITime( 1, '1970' ) ) );
+			->willReturn( $this->dataItemFactory->newDITime( 1, '1970' ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 
 		$instance = new SomeValueDescriptionBuilder();
 
@@ -88,7 +85,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider likeNotLikeProvider
 	 */
 	public function testnNewDescriptionForLikeNotLike( $value ) {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'setUserValue' ] )
@@ -98,7 +94,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ) );
+				false );
 
 		$instance = new SomeValueDescriptionBuilder();
 
@@ -106,7 +102,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidDataValueRetunsThingDescription() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid' ] )
@@ -114,7 +109,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SomeValueDescriptionBuilder();
 
@@ -125,7 +120,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonStringThrowsException() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -137,7 +131,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWikiPageValueOnNonMainNamespace() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
@@ -147,19 +140,19 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ) );
+				false );
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( '~Foo', NS_HELP ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( '~Foo', NS_HELP ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 
 		$instance = new SomeValueDescriptionBuilder();
 
@@ -170,7 +163,6 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		$provider[] = [
 			'Foo',
 			'\SMW\Query\Language\ValueDescription'
@@ -179,9 +171,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 		return $provider;
 	}
 
-
 	public function likeNotLikeProvider() {
-
 		$provider[] = [
 			'~Foo'
 		];

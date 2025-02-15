@@ -4,12 +4,12 @@ namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Enum;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\MediaWiki\Job;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**
@@ -25,7 +25,7 @@ use Title;
  * formatting in-page values based on a datatype thathas since been changed), whereas
  * the Factbox and query/browsing interfaces might already show the updated records.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Daniel M. Herzig
@@ -73,10 +73,9 @@ class UpdateJob extends Job {
 	/**
 	 * @see Job::run
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function run() {
-
 		// #2199 ("Invalid or virtual namespace -1 given")
 		if ( $this->getTitle()->isSpecialPage() ) {
 			return true;
@@ -102,7 +101,6 @@ class UpdateJob extends Job {
 	}
 
 	private function matchesLastModified( $title ) {
-
 		if ( !$this->getParameter( 'shallowUpdate' ) ) {
 			return false;
 		}
@@ -126,7 +124,6 @@ class UpdateJob extends Job {
 	}
 
 	private function doUpdate() {
-
 		// ChangePropagationJob
 		if ( $this->hasParameter( self::CHANGE_PROP ) ) {
 			return $this->change_propagation( $this->getParameter( self::CHANGE_PROP ) );
@@ -140,7 +137,6 @@ class UpdateJob extends Job {
 	}
 
 	private function change_propagation( $dataItem ) {
-
 		$this->setParameter( 'updateType', 'ChangePropagation' );
 		$subject = DIWikiPage::doUnserialize( $dataItem );
 
@@ -165,7 +161,6 @@ class UpdateJob extends Job {
 	}
 
 	private function set_data( $semanticData ) {
-
 		$this->setParameter( 'updateType', 'SemanticData' );
 
 		$semanticData = $this->applicationFactory->newSerializerFactory()->newSemanticDataDeserializer()->deserialize(
@@ -192,7 +187,6 @@ class UpdateJob extends Job {
 	}
 
 	private function parse_content() {
-
 		$this->setParameter( 'updateType', 'ContentParse' );
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );
@@ -219,7 +213,6 @@ class UpdateJob extends Job {
 	}
 
 	private function updateStore( $parserData ) {
-
 		$this->applicationFactory->getMediaWikiLogger()->info(
 			[
 				'Job',
@@ -312,7 +305,6 @@ class UpdateJob extends Job {
 	 * has been added using the storage-engine.
 	 */
 	private function getLastModifiedTimestamp( DIWikiPage $wikiPage ) {
-
 		$dataItems = $this->applicationFactory->getStore()->getPropertyValues(
 			$wikiPage,
 			new DIProperty( '_MDAT' )

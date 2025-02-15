@@ -11,10 +11,11 @@ use SMWDIBlob as DIBlob;
  *
  * @see https://en.wikipedia.org/wiki/IETF_language_tag
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
+ * @reviewer thomas-topway-it
  */
 class LanguageCodeValue extends StringValue {
 
@@ -24,19 +25,24 @@ class LanguageCodeValue extends StringValue {
 	const TYPE_ID = '__lcode';
 
 	/**
+	 * nonstandardLanguageCodeMapping
+	 */
+	private $nonstandardLanguageCodeMapping;
+
+	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
 		parent::__construct( self::TYPE_ID );
+		$this->nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
 	}
 
 	/**
 	 * @see DataValue::parseUserValue
 	 *
-	 * @param string $value
+	 * @param string $userValue
 	 */
 	protected function parseUserValue( $userValue ) {
-
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $userValue );
 
 		if ( $languageCode === '' ) {
@@ -47,17 +53,19 @@ class LanguageCodeValue extends StringValue {
 			return;
 		}
 
-		// Checks whether the language tag is valid in MediaWiki for when
-		// it is not executed in a query context
-		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Localizer::isKnownLanguageTag( $languageCode ) ) {
+		// ensure non-standard language codes are mapped to
+		// their canonical form (e.g. de-x-formal to de-formal)
+		$mappedLanguageCode = array_search( $languageCode, $this->nonstandardLanguageCodeMapping ) ?: $languageCode;
+
+		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Localizer::isKnownLanguageTag( $mappedLanguageCode ) ) {
 			$this->addErrorMsg( [
 				'smw-datavalue-languagecode-invalid',
-				$languageCode
+				$mappedLanguageCode
 			] );
 			return;
 		}
 
-		$this->m_dataitem = new DIBlob( $languageCode );
+		$this->m_dataitem = new DIBlob( $mappedLanguageCode );
 	}
 
 }

@@ -3,6 +3,7 @@
 		"authors": [
 			"GrigorGB",
 			"Kareyac",
+			"Teak",
 			"Xelgen",
 			"Սերգեյ Սաֆարյան"
 		]
@@ -15,6 +16,7 @@
 	"validator-type-class-SMWParamSource": "տեքստ",
 	"smw-propertylist-redirect-header": "Հոմանիշներ",
 	"properties": "Կարգավորումներ",
+	"smw-categories": "Կատեգորիաներ",
 	"smw-special-property-searchform-options": "Ընտրանքներ",
 	"smw-special-wantedproperties-filter-none": "Ոչ մեկը",
 	"smw_purge": "Թարմացնել",
@@ -25,7 +27,7 @@
 	"smw-ask-empty": "Դատարկ",
 	"browse": "Կատեգորիաներ",
 	"smw_browse_go": "Անցնել",
-	"smw_pp_from": "Էջից",
+	"smw_pp_from": "Էջից՝",
 	"smw_result_prev": "Նախորդ",
 	"smw_result_next": "Հաջորդ",
 	"smw-admin-permissionswarn": "Եթե գործողությունը ընթանում է  SQL սխալներով, հավանաբար տվյալ մասնակիցը չունի բավարար թույլտվություն տվյալների բազայի համար։ Ստուգեք Ձեր LocalSettings.php էջը։\nԱյլապես մասնակցին տվեք հավելյալ թույլտվություն՝ ստեղծելու և ջնջելու աղյուսակներ, ժամանակավորապես  LocalSettings.php էջում մուտք գործել տվյալների բազայի հիմք կամ օգտագործել սպասարկման <code>setupStore.php</code> սկրիպտ, որը կարող է օգտագորրծել ադմինիստրատորի իրավունքներ.",
@@ -36,11 +38,15 @@
 	"smw-ui-tooltip-title-warning": "Զգուշացում",
 	"smw-ui-tooltip-title-error": "Սխալ",
 	"smw-livepreview-loading": "Բեռնվում է…",
+	"smw-data-lookup": "Տվյալների բեռնում...",
 	"smw-format-datatable-loadingrecords": "Բեռնվում է...",
 	"smw-format-datatable-search": "Որոնել.",
 	"smw-format-datatable-last": "Վերջին",
 	"smw-help": "Օգնություն",
-	"smw-loading": "Բեռնում ...",
+	"smw-processing": "Մշակվում է...",
+	"smw-loading": "Բեռնում...",
+	"smw-preparing": "Պատրաստվում է...",
+	"smw-facetedsearch-intro-tab-search": "Որոնել",
 	"smw-listingcontinuesabbrev": "շարունակելի",
 	"smw-showingresults": "Ստորև բերված է մինչև {{PLURAL:$1|'''1''' արդյունք|'''$1''' արդյունք}}՝ սկսած №&nbsp;<strong>$2</strong>-ից։"
 }

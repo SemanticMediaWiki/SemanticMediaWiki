@@ -11,10 +11,10 @@ use SMWDataItem;
  * @group SMWExtension
  * @group SMWDataItems
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class DataItemTest extends DatabaseTestCase {
+abstract class DataItemTest extends SMWIntegrationTestCase {
 
 	/**
 	 * Returns the name of the \SMW\DataItem deriving class this test tests.
@@ -23,14 +23,14 @@ abstract class DataItemTest extends DatabaseTestCase {
 	 *
 	 * @return string
 	 */
-	public abstract function getClass();
+	abstract public function getClass();
 
 	/**
 	 * @since 1.8
 	 *
 	 * @return array
 	 */
-	public abstract function constructorProvider();
+	abstract public function constructorProvider();
 
 	/**
 	 * Creates and returns a new instance of the data item.
@@ -55,7 +55,7 @@ abstract class DataItemTest extends DatabaseTestCase {
 		$phpFails = [ $this, 'newInstance' ];
 
 		return array_map(
-			function( array $args ) use ( $phpFails ) {
+			static function ( array $args ) use ( $phpFails ) {
 				return [ call_user_func_array( $phpFails, $args ) ];
 			},
 			$this->constructorProvider()

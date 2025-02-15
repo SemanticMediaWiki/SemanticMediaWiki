@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SPARQLStore\HttpResponseErrorMapper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
+class HttpResponseErrorMapperTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -34,28 +33,26 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider curlErrorCodeThatNotThrowsExceptionProvider
 	 */
 	public function testResponseToHttpRequestThatNotThrowsException( $curlErrorCode ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( $curlErrorCode ) );
+			->willReturn( $curlErrorCode );
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 		$instance->mapErrorResponse( 'Foo', 'Bar' );
 	}
 
 	public function testResponseToHttpRequestForInvalidErrorCodeThrowsException() {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 99999 ) );
+			->willReturn( 99999 );
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 
@@ -67,7 +64,6 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider httpCodeThatThrowsExceptionProvider
 	 */
 	public function testResponseToHttpRequesForHttpErrorThatThrowsException( $httpErrorCode ) {
-
 		// PHP doesn't know CURLE_HTTP_RETURNED_ERROR therefore using 22
 		// http://curl.haxx.se/libcurl/c/libcurl-errors.html
 
@@ -77,12 +73,12 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 22 ) );
+			->willReturn( 22 );
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastTransferInfo' )
-			->with( $this->equalTo( CURLINFO_HTTP_CODE ) )
-			->will( $this->returnValue( $httpErrorCode ) );
+			->with( CURLINFO_HTTP_CODE )
+			->willReturn( $httpErrorCode );
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 
@@ -91,26 +87,24 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResponseToHttpRequesForHttpErrorThatNotThrowsException() {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 22 ) );
+			->willReturn( 22 );
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastTransferInfo' )
-			->with( $this->equalTo( CURLINFO_HTTP_CODE ) )
-			->will( $this->returnValue( 404 ) );
+			->with( CURLINFO_HTTP_CODE )
+			->willReturn( 404 );
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 		$instance->mapErrorResponse( 'Foo', 'Bar' );
 	}
 
 	public function curlErrorCodeThatNotThrowsExceptionProvider() {
-
 		$provider = [
 			[ CURLE_GOT_NOTHING ],
 			[ CURLE_COULDNT_CONNECT ]
@@ -120,7 +114,6 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function httpCodeThatThrowsExceptionProvider() {
-
 		$provider = [
 			[ 400 ],
 			[ 500 ]

@@ -9,7 +9,7 @@ use Onoi\Tesa\Tokenizer\Tokenizer;
 use Onoi\Tesa\Transliterator;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -27,7 +27,7 @@ class TextSanitizer {
 	private $languageDetection = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $minTokenSize = 3;
 
@@ -46,7 +46,6 @@ class TextSanitizer {
 	 * @return array
 	 */
 	public function getVersions() {
-
 		$languageDetector = '(Disabled)';
 
 		if ( isset( $this->languageDetection['TextCatLanguageDetector'] ) ) {
@@ -73,7 +72,7 @@ class TextSanitizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $minTokenSize
+	 * @param int $minTokenSize
 	 */
 	public function setMinTokenSize( $minTokenSize ) {
 		$this->minTokenSize = $minTokenSize;
@@ -83,7 +82,7 @@ class TextSanitizer {
 	 * @since 2.5
 	 *
 	 * @param string $text
-	 * @param boolean $isSearchTerm
+	 * @param bool $isSearchTerm
 	 *
 	 * @return string
 	 */
@@ -144,12 +143,11 @@ class TextSanitizer {
 			$text
 		);
 
-		//var_dump( $language, $text, (microtime( true ) - $start ) );
+		// var_dump( $language, $text, (microtime( true ) - $start ) );
 		return $text;
 	}
 
 	private function predictLanguage( $text ) {
-
 		if ( $this->languageDetection === [] ) {
 			return null;
 		}

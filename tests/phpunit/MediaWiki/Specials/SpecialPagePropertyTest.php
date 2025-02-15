@@ -10,17 +10,17 @@ use Title;
  * @covers \SMW\MediaWiki\Specials\SpecialPageProperty
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
+class SpecialPagePropertyTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -32,19 +32,18 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\SpecialPageProperty',
 			new SpecialPageProperty()
@@ -55,7 +54,6 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryParameterProvider
 	 */
 	public function testQueryParameter( $query, $expected ) {
-
 		$instance = new SpecialPageProperty();
 
 		$instance->getContext()->setTitle(
@@ -71,7 +69,6 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRequestParameter() {
-
 		$request = [
 			'type' => 'Has subobject',
 			'from' => 'Bar'
@@ -100,8 +97,7 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryParameterProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			'Has page::Has prop',
 			[ 'type=Has+prop', 'from=Has+page' ]

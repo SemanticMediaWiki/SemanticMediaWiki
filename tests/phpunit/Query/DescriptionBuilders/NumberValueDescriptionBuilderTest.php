@@ -8,15 +8,14 @@ use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
  * @covers \SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
+class NumberValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NumberValueDescriptionBuilder::class,
 			new NumberValueDescriptionBuilder()
@@ -24,7 +23,6 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsBuilderForNumberValue() {
-
 		$dataValue = $this->getMockBuilder( '\SMWNumberValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -40,22 +38,21 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $decription ) {
-
 		$numberValue = $this->getMockBuilder( '\SMWNumberValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$numberValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$numberValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( new \SMWDINumber( 42 ) ) );
+			->willReturn( new \SMWDINumber( 42 ) );
 
 		$numberValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( new \SMW\DIProperty( 'Foo' ) ) );
+			->willReturn( new \SMW\DIProperty( 'Foo' ) );
 
 		$instance = new NumberValueDescriptionBuilder();
 
@@ -66,14 +63,13 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidNumberValueReturnsThingDescription() {
-
 		$numberValue = $this->getMockBuilder( '\SMWNumberValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$numberValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new NumberValueDescriptionBuilder();
 
@@ -84,7 +80,6 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		$provider[] = [
 			'42',
 			'\SMW\Query\Language\ValueDescription'

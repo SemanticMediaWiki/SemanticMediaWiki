@@ -3,13 +3,12 @@
 namespace SMW\MediaWiki\Content;
 
 use Html;
-use SMW\Utils\HtmlTabs;
-use SMW\Utils\HtmlDivTable;
-use SMW\Utils\Html\SummaryTable;
 use SMW\Message;
+use SMW\Utils\Html\SummaryTable;
+use SMW\Utils\HtmlTabs;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -29,7 +28,6 @@ class HtmlBuilder {
 	}
 
 	private function schema_head( $params ) {
-
 		$list = [];
 		$text = '';
 		$type_description = '';
@@ -116,7 +114,6 @@ class HtmlBuilder {
 	}
 
 	private function schema_summary( $params ) {
-
 		$html = '';
 		$rows = '';
 		$parameters = [];
@@ -176,7 +173,6 @@ class HtmlBuilder {
 
 		$html = $summaryTable->buildHTML();
 
-
 		if ( isset( $params['error_params'] ) && $params['error_params'] !== [] ) {
 			$parameters = [];
 			$attributes = [];
@@ -215,7 +211,6 @@ class HtmlBuilder {
 	}
 
 	private function schema_body( $params ) {
-
 		$class = '';
 		$placeholder = '';
 
@@ -285,7 +280,6 @@ class HtmlBuilder {
 	}
 
 	private function schema_error( $params ) {
-
 		$html = Html::rawElement(
 			'span',
 			[
@@ -302,7 +296,6 @@ class HtmlBuilder {
 	}
 
 	private function schema_footer( $params ) {
-
 		$html = Html::rawElement(
 			'div',
 			[
@@ -351,13 +344,7 @@ class HtmlBuilder {
 	}
 
 	private function schema_unknown_type( $params ) {
-		return Html::rawElement(
-			'p',
-			[
-				'class' => 'smw-callout smw-callout-error plainlinks'
-			],
-			$params['msg']
-		);
+		return Html::errorBox( $params['msg'] );
 	}
 
 	private function schema_help_link( $params ) {

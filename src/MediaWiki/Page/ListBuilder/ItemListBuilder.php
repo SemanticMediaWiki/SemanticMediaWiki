@@ -2,16 +2,15 @@
 
 namespace SMW\MediaWiki\Page\ListBuilder;
 
-use Html;
 use SMW\DIProperty;
+use SMW\MediaWiki\Page\ListBuilder as ColsListBuilder;
+use SMW\Message;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
-use SMW\Message;
-use SMW\MediaWiki\Page\ListBuilder as ColsListBuilder;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -29,12 +28,12 @@ class ItemListBuilder {
 	private $languageCode = 'en';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRTL = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $listLimit = 0;
 
@@ -44,17 +43,17 @@ class ItemListBuilder {
 	private $listHeader = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isUserDefined = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $checkProperty = true;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $itemCount = 0;
 
@@ -79,7 +78,7 @@ class ItemListBuilder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function isRTL( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;
@@ -88,7 +87,7 @@ class ItemListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isUserDefined
+	 * @param bool $isUserDefined
 	 */
 	public function isUserDefined( $isUserDefined ) {
 		$this->isUserDefined = $isUserDefined;
@@ -97,7 +96,7 @@ class ItemListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $listLimit
+	 * @param int $listLimit
 	 */
 	public function setListLimit( $listLimit ) {
 		$this->listLimit = $listLimit;
@@ -115,7 +114,7 @@ class ItemListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $checkProperty
+	 * @param bool $checkProperty
 	 */
 	public function checkProperty( $checkProperty ) {
 		$this->checkProperty = $checkProperty;
@@ -124,7 +123,7 @@ class ItemListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getItemCount() {
 		return $this->itemCount;
@@ -140,7 +139,6 @@ class ItemListBuilder {
 	 * @return string
 	 */
 	public function buildHTML( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ) {
-
 		$subjectList = $this->store->getPropertySubjects(
 			$property,
 			$dataItem,
@@ -191,7 +189,7 @@ class ItemListBuilder {
 	}
 
 	private function getLastItemFormatter( $property, $dataItem ) {
-		return function() use ( $property, $dataItem ) {
+		return function () use ( $property, $dataItem ) {
 			return \Html::element(
 				'a',
 				[

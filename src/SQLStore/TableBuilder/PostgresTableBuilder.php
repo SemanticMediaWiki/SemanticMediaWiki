@@ -2,12 +2,13 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
-use SMW\SQLStore\SQLStore;
 use SMW\MediaWiki\Connection\Sequence;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -23,7 +24,6 @@ class PostgresTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	public function getStandardFieldType( $fieldType ) {
-
 		// serial is a 4 bytes autoincrementing integer (1 to 2147483647)
 
 		$fieldTypes = [
@@ -69,8 +69,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $attributes = null ) {
-
+	protected function doCreateTable( $tableName, ?array $attributes = null ) {
 		$tableName = $this->connection->tableName( $tableName );
 
 		$fieldSql = [];
@@ -82,7 +81,7 @@ class PostgresTableBuilder extends TableBuilder {
 
 		$sql = 'CREATE TABLE ' . $tableName . ' (' . implode( ',', $fieldSql ) . ') ';
 
-		$this->connection->query( $sql, __METHOD__ );
+		$this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
 	/** Update */
@@ -92,8 +91,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $attributes = null ) {
-
+	protected function doUpdateTable( $tableName, ?array $attributes = null ) {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -122,7 +120,6 @@ class PostgresTableBuilder extends TableBuilder {
 	}
 
 	private function getCurrentFields( $tableName ) {
-
 		$tableName = str_replace( '"', '', $tableName );
 		// Use the data dictionary in postgresql to get an output comparable to DESCRIBE.
 /*
@@ -136,12 +133,12 @@ SELECT
 		case when a.attnotnull THEN 'NO'::text else 'YES'::text END as "Null", a.attnum
 	FROM pg_catalog.pg_attribute a
 	WHERE a.attrelid = (
-	    SELECT c.oid
-	    FROM pg_catalog.pg_class c
-	    LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-	    WHERE c.relname ~ '^($tableName)$'
-	    AND pg_catalog.pg_table_is_visible(c.oid)
-	    LIMIT 1
+		SELECT c.oid
+		FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+		WHERE c.relname ~ '^($tableName)$'
+		AND pg_catalog.pg_table_is_visible(c.oid)
+		LIMIT 1
 	 ) AND a.attnum > 0 AND NOT a.attisdropped
 	 ORDER BY a.attnum
 EOT;
@@ -162,7 +159,7 @@ EOT;
 			. " LIMIT 1) AND a.attnum > 0 AND NOT a.attisdropped"
 			. " ORDER BY a.attnum";
 
-		$res = $this->connection->query( $sql, __METHOD__ );
+		$res = $this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
 		$currentFields = [];
 
 		foreach ( $res as $row ) {
@@ -186,7 +183,6 @@ EOT;
 	}
 
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
-
 		$fieldType = $this->getStandardFieldType( $fieldType );
 		$keypos = strpos( $fieldType, ' PRIMARY KEY' );
 
@@ -212,7 +208,7 @@ EOT;
 			$current_enums = '';
 
 			// https://stackoverflow.com/questions/1616123/sql-query-to-get-all-values-a-enum-can-have/1616161
-			$res = $this->connection->query( "SELECT enum_range(NULL::$enum_type)", __METHOD__ );
+			$res = $this->connection->query( "SELECT enum_range(NULL::$enum_type)", __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
 
 			foreach ( $res as $row ) {
 				if ( isset( $row->enum_range ) ) {
@@ -249,12 +245,12 @@ EOT;
 
 			if ( $typeold != $fieldType ) {
 				$sql = "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $fieldName . "\" TYPE " . $fieldType . " USING \"$fieldName\"::$fieldType";
-				$this->connection->query( $sql, __METHOD__ );
+				$this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 			}
 
 			if ( $notnullposold != $notnullposnew ) {
 				$sql = "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $fieldName . "\" " . ( $notnullposnew > 0 ? 'SET' : 'DROP' ) . " NOT NULL";
-				$this->connection->query( $sql, __METHOD__ );
+				$this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 			}
 
 			$this->reportMessage( "done.\n" );
@@ -264,30 +260,28 @@ EOT;
 	}
 
 	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
-
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		// https://www.postgresql.org/docs/9.1/datatype-enum.html
 		if ( strpos( $fieldType, 'ENUM' ) !== false ) {
 			$enum_type = "{$fieldName}_t";
 			$this->reportMessage( "   ... dropping type $enum_type ... \n" );
-			$this->connection->query( "DROP TYPE IF EXISTS $enum_type CASCADE", __METHOD__ );
+			$this->connection->query( "DROP TYPE IF EXISTS $enum_type CASCADE", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 			$this->reportMessage( "   ... creating type $enum_type ... \n" );
-			$this->connection->query( "CREATE TYPE $enum_type AS $fieldType", __METHOD__ );
+			$this->connection->query( "CREATE TYPE $enum_type AS $fieldType", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 			$fieldType = $enum_type;
 		}
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
-		$this->connection->query( "ALTER TABLE $tableName ADD \"" . $fieldName . "\" $fieldType $default", __METHOD__ );
+		$this->connection->query( "ALTER TABLE $tableName ADD \"" . $fieldName . "\" $fieldType $default", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
 	private function doDropField( $tableName, $fieldName ) {
-
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
-		$this->connection->query( 'ALTER TABLE ' . $tableName . ' DROP COLUMN "' . $fieldName . '"', __METHOD__ );
+		$this->connection->query( 'ALTER TABLE ' . $tableName . ' DROP COLUMN "' . $fieldName . '"', __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
@@ -298,8 +292,7 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
-
+	protected function doCreateIndices( $tableName, ?array $indexOptions = null ) {
 		$indices = $indexOptions['indices'];
 		$ix = [];
 
@@ -331,7 +324,6 @@ EOT;
 	}
 
 	private function doDropObsoleteIndices( $tableName, array &$indices ) {
-
 		$tableName = $this->connection->tableName( $tableName, 'raw' );
 		$currentIndices = $this->getIndexInfo( $tableName );
 
@@ -352,7 +344,6 @@ EOT;
 	}
 
 	private function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
-
 		if ( $indexType === 'FULLTEXT' ) {
 			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
 		}
@@ -368,7 +359,7 @@ EOT;
 		}
 
 		if ( $this->connection->indexInfo( $tableName, $indexName ) === false ) {
-			$this->connection->query( "CREATE $indexType $indexName ON $tableName ($columns)", __METHOD__ );
+			$this->connection->query( "CREATE $indexType $indexName ON $tableName ($columns)", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		}
 
 		$this->reportMessage( "done.\n" );
@@ -381,7 +372,6 @@ EOT;
 	}
 
 	private function getIndexInfo( $tableName ) {
-
 		$indices = [];
 
 		$sql = "SELECT  i.relname AS indexname,"
@@ -396,7 +386,7 @@ EOT;
 			. " AND c.relname = '" . $tableName . "'"
 			. " AND NOT pg_get_indexdef(i.oid) ~ '^CREATE UNIQUE INDEX'";
 
-		$res = $this->connection->query( $sql, __METHOD__ );
+		$res = $this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
 
 		if ( !$res ) {
 			return [];
@@ -411,7 +401,7 @@ EOT;
 
 	private function doDropIndex( $tableName, $indexName, $columns ) {
 		$this->reportMessage( "   ... removing index $columns ..." );
-		$this->connection->query( 'DROP INDEX IF EXISTS ' . $indexName, __METHOD__ );
+		$this->connection->query( 'DROP INDEX IF EXISTS ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
@@ -427,7 +417,7 @@ EOT;
 		// Error: 2BP01 ERROR:  cannot drop table smw_object_ids because other objects depend on it
 		// DETAIL:  default for table sunittest_smw_object_ids column smw_id depends on sequence smw_object_ids_smw_id_seq
 		// HINT:  Use DROP ... CASCADE to drop the dependent objects too.
-		$this->connection->query( 'DROP TABLE IF EXISTS ' . $this->connection->tableName( $tableName ) . ' CASCADE', __METHOD__ );
+		$this->connection->query( 'DROP TABLE IF EXISTS ' . $this->connection->tableName( $tableName ) . ' CASCADE', __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 	}
 
 	/**
@@ -436,7 +426,6 @@ EOT;
 	 * {@inheritDoc}
 	 */
 	protected function doOptimize( $tableName ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -450,7 +439,7 @@ EOT;
 		);
 
 		// https://www.postgresql.org/docs/9.0/static/sql-analyze.html
-		$this->connection->query( "ANALYZE $tableName", __METHOD__ );
+		$this->connection->query( "ANALYZE $tableName", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 
 		$this->reportMessage(
 			$cliMsgFormatter->positionCol( ", VACUUM]" )
@@ -459,7 +448,7 @@ EOT;
 		// https://www.postgresql.org/docs/9.5/sql-vacuum.html
 		// "... VACUUM reclaims storage occupied by dead tuples ... ANALYZE Updates
 		// statistics used by the planner to determine the most efficient ..."
-		$this->connection->query( "VACUUM (ANALYZE) $tableName", __METHOD__ );
+		$this->connection->query( "VACUUM (ANALYZE) $tableName", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 
 		$this->reportMessage( "\n" );
 	}
@@ -476,7 +465,6 @@ EOT;
 	}
 
 	private function doCheckOnPostCreation() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$sequence = new Sequence( $this->connection );

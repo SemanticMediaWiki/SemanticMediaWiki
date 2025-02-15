@@ -10,7 +10,7 @@ use SMWDIBoolean as DIBoolean;
 /**
  * This class implements Store access to Boolean data items.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -41,18 +41,18 @@ class DIBooleanHandler extends DataItemHandler {
 
 	public function getTableIndexes() {
 		return [
-			//  smw.entityIdDisposer causes denial of service on job queue (#4950)
+			// smw.entityIdDisposer causes denial of service on job queue (#4950)
 			'p_id'
 		];
 	}
-	
+
 	/**
 	 * @since 1.8
 	 *
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		//PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
+		// PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
 		if ( $this->isDbType( 'postgres' ) ) {
 			$value = $dataItem->getBoolean() ? 't' : 'f';
 		} else {
@@ -70,8 +70,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-
-		//PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
+		// PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
 		if ( $this->isDbType( 'postgres' ) ) {
 			$value = $dataItem->getBoolean() ? 't' : 'f';
 		} else {
@@ -107,8 +106,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-
-		//PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
+		// PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
 		if ( $this->isDbType( 'postgres' ) ) {
 			$value = ( $dbkeys == 't' );
 		} else {

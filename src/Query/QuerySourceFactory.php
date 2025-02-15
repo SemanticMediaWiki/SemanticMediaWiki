@@ -6,12 +6,11 @@ use RuntimeException;
 use SMW\QueryEngine;
 use SMW\Store;
 use SMW\StoreAware;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -62,7 +61,6 @@ class QuerySourceFactory {
 	 * @throws RuntimeException
 	 */
 	public function get( $source = null ) {
-
 		$params = [];
 
 		if ( $source !== '' && isset( $this->querySources[$source] ) ) {
@@ -106,7 +104,6 @@ class QuerySourceFactory {
 	 * @return string
 	 */
 	public function toString( $source = null ) {
-
 		if ( $source === 'sql_store' ) {
 			return 'SMWSQLStore';
 		}

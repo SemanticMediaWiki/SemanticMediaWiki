@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Listener\EventListener\EventHandler;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -14,21 +14,19 @@ use SMW\Tests\Utils\UtilityFactory;
  * @group mediawiki-database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class DumpRdfMaintenanceTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class DumpRdfMaintenanceTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -53,7 +51,7 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		ApplicationFactory::getInstance()->clear();
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
@@ -63,7 +61,6 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testMaintenanceRdfOutput() {
-
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->importedTitles = [
@@ -85,7 +82,7 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\DumpRdf' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\dumpRDF' );
 		$maintenanceRunner->setQuiet();
 
 		$this->doExportForDefaultOptions( $maintenanceRunner );
@@ -93,9 +90,8 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 	}
 
 	private function doExportForDefaultOptions( $maintenanceRunner ) {
-
 		$expectedOutputContent = [
-		//	'<rdf:type rdf:resource="&wiki;Category-3ALorem_ipsum"/>',
+		// '<rdf:type rdf:resource="&wiki;Category-3ALorem_ipsum"/>',
 			'<rdfs:label>Lorem ipsum</rdfs:label>',
 			'<rdfs:label>Has annotation uri</rdfs:label>',
 			'<rdfs:label>Has boolean</rdfs:label>',
@@ -118,7 +114,6 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 	}
 
 	private function doExportForPageOption( $maintenanceRunner ) {
-
 		$expectedOutputContent = [
 			'<rdfs:label>Lorem ipsum</rdfs:label>',
 			'<swivt:masterPage rdf:resource="&wiki;Lorem_ipsum"/>',

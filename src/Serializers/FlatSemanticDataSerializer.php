@@ -6,7 +6,7 @@ namespace SMW\Serializers;
  * Only returns the head of the subobject without serializing associated
  * dataItems.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -19,7 +19,6 @@ class FlatSemanticDataSerializer extends SemanticDataSerializer {
 	 * @return array
 	 */
 	protected function doSerializeSubSemanticData( $subSemanticData ) {
-
 		$subobjects = [];
 
 		foreach ( $subSemanticData as $semanticData ) {

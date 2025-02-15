@@ -11,7 +11,7 @@ use SMWInfolink as Infolink;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -41,7 +41,6 @@ class KeywordValue extends StringValue {
 	 * @param string $value
 	 */
 	protected function parseUserValue( $value ) {
-
 		// For the normal blob field setup multi-byte requires more space and
 		// since we use the o_hash field to store the normalized content and
 		// as match field, ensure to have enough space to actually store
@@ -70,7 +69,6 @@ class KeywordValue extends StringValue {
 	 * @see DataValue::getDataItem
 	 */
 	public function getDataItem() {
-
 		if ( $this->isValid() && $this->getOption( 'is.search' ) ) {
 			return new DIBlob( DIBlob::normalize( $this->m_dataitem->getString() ) );
 		}
@@ -81,10 +79,9 @@ class KeywordValue extends StringValue {
 	/**
 	 * @see DataValue::getShortWikiText
 	 *
-	 * @param string $value
+	 * @param string|null $linker
 	 */
 	public function getShortWikiText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -114,7 +111,6 @@ class KeywordValue extends StringValue {
 	 * @see StringValue::getShortHTMLText
 	 */
 	public function getShortHTMLText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -160,7 +156,6 @@ class KeywordValue extends StringValue {
 	 * @return DataItem
 	 */
 	public function getUri() {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -183,7 +178,6 @@ class KeywordValue extends StringValue {
 	}
 
 	private function makeUri( $value, $outputformat, $linker = null ) {
-
 		if ( $this->uri !== null ) {
 			return $this->uri;
 		}
@@ -230,7 +224,6 @@ class KeywordValue extends StringValue {
 	}
 
 	private function getFormatLink( $dataItem, $value ) {
-
 		$infolink = '';
 
 		$data = json_decode(
@@ -253,7 +246,7 @@ class KeywordValue extends StringValue {
 		if ( $link_to === 'SPECIAL_ASK' ) {
 			$infolink = Infolink::newInternalLink( $this->m_caption, ':Special:Ask', false, [] );
 			$infolink->setParameter( "[[$label::$value]]", false );
-			$infolink->setCompactLink( $this->getOption( KeywordValue::OPT_COMPACT_INFOLINKS, false ) );
+			$infolink->setCompactLink( $this->getOption( self::OPT_COMPACT_INFOLINKS, false ) );
 
 			foreach ( $data['rule']['parameters'] as $key => $value ) {
 
@@ -272,7 +265,7 @@ class KeywordValue extends StringValue {
 
 		} elseif ( $link_to === 'SPECIAL_SEARCH_BY_PROPERTY' ) {
 			$infolink = Infolink::newInternalLink( $this->m_caption, ':Special:SearchByProperty', false, [] );
-			$infolink->setCompactLink( $this->getOption( KeywordValue::OPT_COMPACT_INFOLINKS, false ) );
+			$infolink->setCompactLink( $this->getOption( self::OPT_COMPACT_INFOLINKS, false ) );
 			$infolink->setParameter( ":$label" );
 			$infolink->setParameter( $value );
 		}

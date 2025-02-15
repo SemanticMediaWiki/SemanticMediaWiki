@@ -8,15 +8,14 @@ use SMW\StringCondition;
  * @covers \SMW\StringCondition
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class StringConditionTest extends \PHPUnit_Framework_TestCase {
+class StringConditionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new StringCondition( 'Foo', StringCondition::STRCOND_PRE, true );
 
 		$this->assertInstanceOf(

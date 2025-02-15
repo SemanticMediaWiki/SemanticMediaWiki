@@ -9,7 +9,7 @@ use SMWDataValue as DataValue;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -33,13 +33,13 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 	/**
 	 * @since 2.3
 	 *
+	 * @param DataValue $dataValue
 	 * @param string $value
 	 *
 	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
 	public function newDescription( DataValue $dataValue, $value ) {
-
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'Value needs to be a string' );
 		}
@@ -84,7 +84,6 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 	}
 
 	private function makeDescription( $comparator, $property, $dataItem, $description ) {
-
 		$value = $dataItem->getDBKey();
 
 		// Normalize a possible earlier encoded string part in order for the

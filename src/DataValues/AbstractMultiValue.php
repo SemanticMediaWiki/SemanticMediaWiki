@@ -2,15 +2,15 @@
 
 namespace SMW\DataValues;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWPropertyListValue as PropertyListValue;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -63,7 +63,6 @@ abstract class AbstractMultiValue extends DataValue {
 	 * @return DataItem[]|null
 	 */
 	public function getDataItems() {
-
 		if ( !$this->isValid() ) {
 			return [];
 		}
@@ -88,12 +87,11 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string|integer $index
+	 * @param string|int $index
 	 *
 	 * @return DataItem[]|null
 	 */
 	public function getDataItemByIndex( $index ) {
-
 		if ( is_numeric( $index ) ) {
 			$pos = $index - 1;
 			$dataItems = $this->getDataItems();
@@ -114,12 +112,11 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string|integer $index
+	 * @param string|int $index
 	 *
 	 * @return DIProperty|null
 	 */
 	public function getPropertyDataItemByIndex( $index ) {
-
 		$properties = $this->getPropertyDataItems();
 
 		if ( is_numeric( $index ) ) {
@@ -146,8 +143,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @return DIProperty[]|[]
 	 */
-	protected function getFieldProperties( DIProperty $property = null ) {
-
+	protected function getFieldProperties( ?DIProperty $property = null ) {
 		if ( $property === null || $property->getDiWikiPage() === null ) {
 			return [];
 		}

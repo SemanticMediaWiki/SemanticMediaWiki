@@ -2,27 +2,27 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Jobs\RefreshJob;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\RefreshJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class RefreshJobTest extends \PHPUnit_Framework_TestCase {
+class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 
-	/** @var integer */
+	/** @var int */
 	protected $controlRefreshDataIndex;
 
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -34,14 +34,13 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -63,7 +62,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parameterDataProvider
 	 */
 	public function testRunJobOnMockStore( $parameters, $expected ) {
-
 		$title = Title::newFromText( __METHOD__ );
 
 		$expectedToRun = $expected['spos'] === null ? $this->once() : $this->once();
@@ -74,7 +72,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 		$rebuilder->expects( $this->any() )
 			->method( 'rebuild' )
-			->will( $this->returnValue( $parameters['spos'] ) );
+			->willReturn( $parameters['spos'] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->setMethods( [ 'refreshData' ] )
@@ -82,7 +80,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $expectedToRun )
 			->method( 'refreshData' )
-			->will( $this->returnValue( $rebuilder ) );
+			->willReturn( $rebuilder );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
@@ -102,7 +100,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function parameterDataProvider() {
-
 		$provider = [];
 
 		// #0 Empty
@@ -158,7 +155,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return $provider;
-
 	}
 
 	/**
@@ -166,7 +162,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @since  1.9
 	 *
-	 * @param integer $index
+	 * @param int &$index
 	 */
 	public function refreshDataCallback( &$index ) {
 		$this->controlRefreshDataIndex = $index;

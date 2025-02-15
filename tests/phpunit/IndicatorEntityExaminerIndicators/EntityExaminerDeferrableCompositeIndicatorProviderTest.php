@@ -2,28 +2,28 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
-use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
+use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
+class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $permissionExaminer;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
@@ -33,13 +33,12 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 		$this->testEnvironment = new TestEnvironment();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$indicatorProviders = [];
 
 		$this->assertInstanceOf(
@@ -64,77 +63,71 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 	}
 
 	public function testIsDeferredMode() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->isDeferredMode()
 		);
 	}
 
 	public function testGetName() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getName()
 		);
 	}
 
 	public function testGetIndicators() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getIndicators()
 		);
 	}
 
 	public function testGetModules() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getModules()
 		);
 	}
 
 	public function testGetInlineStyle() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerDeferrableCompositeIndicatorProvider(
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getInlineStyle()
 		);
 	}
 
 	public function testHasIndicator() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$deferrableIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider' )
@@ -146,15 +139,15 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'hasIndicator' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getModules' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$indicatorProviders = [
 			$deferrableIndicatorProvider
@@ -164,14 +157,13 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
 
 	public function testHasIndicator_DeferredMode() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$deferrableIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider' )
@@ -183,19 +175,19 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'hasIndicator' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getModules' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$deferrableIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$deferrableIndicatorProvider->expects( $this->once() )
 			->method( 'getIndicators' )
-			->will( $this->returnValue( [ 'content' => '' ] ) );
+			->willReturn( [ 'content' => '' ] );
 
 		$indicatorProviders = [
 			$deferrableIndicatorProvider
@@ -207,19 +199,18 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 
 		$instance->setDeferredMode( true );
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
 
 	public function testNoIndicatorOnFailedPermission() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$indicatorProviders = [
 			$this->newPermissionAwareIndicatorProvider()
@@ -235,8 +226,8 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 
 		$instance->setDeferredMode( true );
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
@@ -247,11 +238,11 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 			public function setDeferredMode( bool $deferredMode ) {
 			}
 
-			public function isDeferredMode() : bool {
+			public function isDeferredMode(): bool {
 				return true;
 			}
 
-			public function getName() : string {
+			public function getName(): string {
 				return '';
 			}
 
@@ -259,7 +250,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 				return '';
 			}
 
-			public function hasIndicator( \SMW\DIWikiPage $subject, array $options) {
+			public function hasIndicator( \SMW\DIWikiPage $subject, array $options ) {
 				return false;
 			}
 
@@ -271,7 +262,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends \PHPUnit_Fr
 				return [];
 			}
 
-			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ) : bool {
+			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ): bool {
 				return $permissionExaminer->hasPermissionOf( 'Foo' );
 			}
 		};

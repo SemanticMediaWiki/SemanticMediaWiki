@@ -3,23 +3,23 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Exception\RedirectTargetUnresolvableException;
+use SMW\Exception\JSONParseException;
 use SMW\Exception\ParameterNotFoundException;
+use SMW\Exception\RedirectTargetUnresolvableException;
 use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
 use SMW\MediaWiki\Api\Browse\ArticleLookup;
-use SMW\MediaWiki\Api\Browse\SubjectLookup;
 use SMW\MediaWiki\Api\Browse\CachingLookup;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
 use SMW\MediaWiki\Api\Browse\ListLookup;
-use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Api\Browse\PSubjectLookup;
-use SMW\Exception\JSONParseException;
+use SMW\MediaWiki\Api\Browse\PValueLookup;
+use SMW\MediaWiki\Api\Browse\SubjectLookup;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Module to support selected browse activties including:
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -30,7 +30,6 @@ class Browse extends ApiBase {
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
-
 		$params = $this->extractRequestParams();
 
 		$parameters = json_decode( $params['params'], true );
@@ -39,12 +38,7 @@ class Browse extends ApiBase {
 		if ( json_last_error() !== JSON_ERROR_NONE || !is_array( $parameters ) ) {
 			$error = new JSONParseException( $params['params'] );
 
-			// 1.29+
-			if ( method_exists( $this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-api-invalid-parameters', 'JSON: ' . $error->getMessage() ] );
-			} else {
-				$this->dieUsage( 'JSON: ' . $error->getMessage(), 'smw-api-invalid-parameters' );
-			}
+			$this->dieWithError( [ 'smw-api-invalid-parameters', 'JSON: ' . $error->getMessage() ] );
 		}
 
 		if ( $params['browse'] === 'category' ) {
@@ -96,7 +90,6 @@ class Browse extends ApiBase {
 	}
 
 	private function callListLookup( $ns, $parameters ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -140,7 +133,6 @@ class Browse extends ApiBase {
 	}
 
 	private function callPValueLookup( $parameters ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -181,7 +173,6 @@ class Browse extends ApiBase {
 	}
 
 	private function callPSubjectLookup( $parameters ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -222,7 +213,6 @@ class Browse extends ApiBase {
 	}
 
 	private function callPageLookup( $parameters ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cacheUsage = $applicationFactory->getSettings()->get(
@@ -259,7 +249,6 @@ class Browse extends ApiBase {
 	}
 
 	private function callSubjectLookup( $parameters ) {
-
 		$subjectLookup = new SubjectLookup(
 			ApplicationFactory::getInstance()->getStore()
 		);
@@ -267,19 +256,9 @@ class Browse extends ApiBase {
 		try {
 			$res = $subjectLookup->lookup( $parameters );
 		} catch ( RedirectTargetUnresolvableException $e ) {
-			// 1.29+
-			if ( method_exists( $this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
-			} else {
-				$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable' );
-			}
+			$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
 		} catch ( ParameterNotFoundException $e ) {
-			// 1.29+
-			if ( method_exists( $this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-parameter-missing', $e->getName() ] );
-			} else {
-				$this->dieUsage( $e->getName(), 'smw-parameter-missing' );
-			}
+			$this->dieWithError( [ 'smw-parameter-missing', $e->getName() ] );
 		}
 
 		return $res;

@@ -35,11 +35,10 @@ class SMWErrorValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
-	 * @return boolean
+	 * @param $dataItem SMWDataItem
+	 * @return bool
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_ERROR ) {
 			$this->addError( $dataItem->getErrors() );
 			$this->m_caption = $this->getErrorText();
@@ -66,7 +65,6 @@ class SMWErrorValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-
 		if ( $this->m_dataitem !== null ) {
 			return $this->m_dataitem->getString();
 		}

@@ -5,20 +5,17 @@ namespace SMW\Elastic\Indexer\Attachment;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Indexer\Bulk;
+use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\QueryEngine\FieldMapper;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMWContainerSemanticData as ContainerSemanticData;
-use Title;
-use File;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -76,7 +73,6 @@ class FileAttachment {
 	 * @param DIWikiPage $dataItem
 	 */
 	public function createAttachment( DIWikiPage $dataItem ) {
-
 		$time = -microtime( true );
 
 		if ( $dataItem->getId() == 0 ) {
@@ -166,8 +162,7 @@ class FileAttachment {
 			$attachmentAnnotator->getContainer()
 		);
 
-		$callableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function() use( $semanticData, $attachmentAnnotator ) {
-
+		$callableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function () use( $semanticData, $attachmentAnnotator ) {
 			// Update the SQLStore with the annotated information which will NOT
 			// trigger another ES index update BUT ...
 			$this->store->updateData( $semanticData );
@@ -202,7 +197,6 @@ class FileAttachment {
 	 * @param AttachmentAnnotator $attachmentAnnotator
 	 */
 	public function indexAttachmentInfo( AttachmentAnnotator $attachmentAnnotator ) {
-
 		$data = [];
 		$time = -microtime( true );
 
@@ -269,7 +263,6 @@ class FileAttachment {
 	}
 
 	private function upsertDoc( $baseDocId, $subject, $property ) {
-
 		$params = [
 			'_index' => $this->indexer->getIndexName( ElasticClient::TYPE_DATA )
 		];
@@ -300,7 +293,6 @@ class FileAttachment {
 	}
 
 	private function newContainerSemanticData( $dataItem, $doc ) {
-
 		$subobjectName = '_FILE' . $doc['_source']['file_sha1'];
 
 		$subject = new DIWikiPage(

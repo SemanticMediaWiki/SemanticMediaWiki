@@ -10,15 +10,14 @@ use SMWURIValue as UriValue;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class UriValueTest extends \PHPUnit_Framework_TestCase {
+class UriValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMWURIValue',
 			new UriValue( '_uri' )
@@ -29,7 +28,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider uriProvider
 	 */
 	public function testUriOutputFormatting( $uri, $caption, $linker, $expected ) {
-
 		$instance = new UriValue( '_uri' );
 		$instance->setUserValue( $uri, $caption );
 
@@ -44,7 +42,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider uriProvider
 	 */
 	public function testAnuOutputFormatting( $uri, $caption, $linker, $expected ) {
-
 		$instance = new UriValue( '_anu' );
 		$instance->setUserValue( $uri, $caption );
 
@@ -59,7 +56,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider telProvider
 	 */
 	public function testTelOutputFormatting( $uri, $caption, $linker, $expected ) {
-
 		$instance = new UriValue( '_tel' );
 		$instance->setUserValue( $uri, $caption );
 
@@ -74,7 +70,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider emaProvider
 	 */
 	public function testEmaOutputFormatting( $uri, $caption, $linker, $expected ) {
-
 		$instance = new UriValue( '_ema' );
 		$instance->setUserValue( $uri, $caption );
 
@@ -86,7 +81,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertOutputFormatting( $instance, $linker, $expected ) {
-
 		$this->assertEquals(
 			$expected['wikiValue'],
 			$instance->getWikiValue(),
@@ -119,7 +113,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function uriProvider() {
-
 		$linker = smwfGetLinker();
 		$noFollowAttribute = ' rel="nofollow"';
 
@@ -163,7 +156,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			'http://example.org/aaa/bbb#ccc',
 			'Foo',
@@ -177,7 +170,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			'http://example.org/aaa%2Fbbb#ccc',
 			false,
@@ -204,7 +197,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			'http://example.org/aaa%2Fbbb#ccc',
 			false,
@@ -231,7 +224,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#8 UTF-8 encoded string
+		# 8 UTF-8 encoded string
 		$provider[] = [
 			'http://example.org/ようこそ--23-7B-7D',
 			false,
@@ -245,7 +238,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#9
+		# 9
 		$provider[] = [
 			'http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D',
 			false,
@@ -326,7 +319,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#15
+		# 15
 		$provider[] = [
 			'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
 			false,
@@ -357,7 +350,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function telProvider() {
-
 		$provider[] = [
 			'+1-201-555-0123',
 			false,
@@ -375,7 +367,6 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function emaProvider() {
-
 		$provider[] = [
 			'foo@example.org',
 			false,

@@ -5,7 +5,7 @@ namespace SMW\Exception;
 use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -18,7 +18,6 @@ class ConfigPreloadFileNotReadableException extends RuntimeException {
 	 * @param string $file
 	 */
 	public function __construct( string $file ) {
-
 		$profile = pathinfo( $file, PATHINFO_BASENAME );
 
 		parent::__construct(

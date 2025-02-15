@@ -2,16 +2,16 @@
 
 namespace SMW\Exporter;
 
-use SMW\Exporter\Serializer\Serializer;
-use SMW\Exporter\Serializer\RDFXMLSerializer;
-use SMW\Exporter\Serializer\TurtleSerializer;
+use InvalidArgumentException;
 use SMW\Exporter\Controller\Queue;
+use SMW\Exporter\Serializer\RDFXMLSerializer;
+use SMW\Exporter\Serializer\Serializer;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMWExportController as ExportController;
 use SMWExporter as Exporter;
-use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class ExporterFactory {
 	 *
 	 * @return Exporter
 	 */
-	public function getExporter() : Exporter {
+	public function getExporter(): Exporter {
 		return Exporter::getInstance();
 	}
 
@@ -34,8 +34,7 @@ class ExporterFactory {
 	 *
 	 * @return ExportController
 	 */
-	public function newExportController( Serializer $serializer ) : ExportController {
-
+	public function newExportController( Serializer $serializer ): ExportController {
 		$exportController = new ExportController(
 			$serializer,
 			new Queue(),
@@ -53,17 +52,14 @@ class ExporterFactory {
 	 * @return Serializer
 	 * @throws InvalidArgumentException
 	 */
-	public function newSerializerByType( string $type ) : Serializer {
-
+	public function newSerializerByType( string $type ): Serializer {
 		switch ( $type ) {
 			case 'application/x-turtle':
 			case 'turtle':
 				return $this->newTurtleSerializer();
-				break;
 			case 'application/rdf+xml':
 			case 'rdfxml':
 				return $this->newRDFXMLSerializer();
-				break;
 		}
 
 		throw new InvalidArgumentException( "$type is not matchable to a registered serializer!" );
@@ -74,7 +70,7 @@ class ExporterFactory {
 	 *
 	 * @return RDFXMLSerializer
 	 */
-	public function newRDFXMLSerializer() : RDFXMLSerializer {
+	public function newRDFXMLSerializer(): RDFXMLSerializer {
 		return new RDFXMLSerializer();
 	}
 
@@ -83,7 +79,7 @@ class ExporterFactory {
 	 *
 	 * @return TurtleSerializer
 	 */
-	public function newTurtleSerializer() : TurtleSerializer {
+	public function newTurtleSerializer(): TurtleSerializer {
 		return new TurtleSerializer();
 	}
 
@@ -94,7 +90,7 @@ class ExporterFactory {
 	 *
 	 * @return ExpDataFactory
 	 */
-	public function newExpDataFactory( Exporter $exporter ) : ExpDataFactory {
+	public function newExpDataFactory( Exporter $exporter ): ExpDataFactory {
 		return new ExpDataFactory( $exporter );
 	}
 

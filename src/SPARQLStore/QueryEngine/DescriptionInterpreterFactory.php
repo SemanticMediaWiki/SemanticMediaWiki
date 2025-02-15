@@ -13,7 +13,7 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ThingDescriptionInterpre
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -28,7 +28,6 @@ class DescriptionInterpreterFactory {
 	 * @return DispatchingDescriptionInterpreter
 	 */
 	public function newDispatchingDescriptionInterpreter( ConditionBuilder $conditionBuilder ) {
-
 		$dispatchingDescriptionInterpreter = new DispatchingDescriptionInterpreter();
 
 		$dispatchingDescriptionInterpreter->addDefaultInterpreter(

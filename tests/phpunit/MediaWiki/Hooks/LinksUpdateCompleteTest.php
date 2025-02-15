@@ -2,31 +2,29 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use LinksUpdate;
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use ParserOutput;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\Tests\TestEnvironment;
 use Title;
-use TitleValue;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\LinksUpdateComplete
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
+class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $namespaceExaminer;
 	private $spyLogger;
 	private $revisionGuard;
 
-
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -38,7 +36,7 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'isSkippableUpdate' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
@@ -55,19 +53,18 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			LinksUpdateComplete::class,
 			new LinksUpdateComplete( $this->namespaceExaminer )
@@ -75,34 +72,33 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 11001 ) );
+			->willReturn( 11001 );
 
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 9999 ) );
+			->willReturn( 9999 );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$title->expects( $this->any() )
 			->method( 'getPrefixedText' )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$parserOutput = new ParserOutput();
 		$parserOutput->setTitleText( $title->getPrefixedText() );
@@ -113,11 +109,11 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -126,7 +122,7 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'clearData' );
@@ -151,7 +147,6 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoExtraParsingForNotEnabledNamespace() {
-
 		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
 			[ NS_HELP => false ]
@@ -172,17 +167,15 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'ParserData', $parserData );
 
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
-			->disableOriginalConstructor()
-			->getMock();
+		$linksUpdate = $this->createMock( LinksUpdate::class );
 
 		$linksUpdate->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$linksUpdate->expects( $this->atLeastOnce() )
 			->method( 'getParserOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$instance = new LinksUpdateComplete(
 			$this->namespaceExaminer
@@ -198,7 +191,6 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTemplateUpdate() {
-
 		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
 			[ NS_HELP => false ]
@@ -223,17 +215,15 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'ParserData', $parserData );
 
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
-			->disableOriginalConstructor()
-			->getMock();
+		$linksUpdate = $this->createMock( LinksUpdate::class );
 
 		$linksUpdate->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$linksUpdate->expects( $this->atLeastOnce() )
 			->method( 'getParserOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$linksUpdate->expects( $this->any() )
 			->method( 'isRecursive' )
@@ -255,10 +245,7 @@ class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsNotReady_DoNothing() {
-
-		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
-			->disableOriginalConstructor()
-			->getMock();
+		$linksUpdate = $this->createMock( LinksUpdate::class );
 
 		$linksUpdate->expects( $this->never() )
 			->method( 'getTitle' );

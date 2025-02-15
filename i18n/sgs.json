@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Hugo.arg"
+			"Hugo.arg",
+			"Zordsdavini"
 		]
 	},
+	"smw-categories": "Kateguorėjės",
 	"smw_purge": "Atšvėižintė",
 	"browse": "Poslapiu apveiza",
 	"smw-livepreview-loading": "Kraunama īr…",

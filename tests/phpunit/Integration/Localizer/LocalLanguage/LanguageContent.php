@@ -7,14 +7,14 @@ use SMW\Localizer\LocalLanguage\LocalLanguage;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class LanguageContent extends \PHPUnit_Framework_TestCase {
+class LanguageContent extends \PHPUnit\Framework\TestCase {
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		LocalLanguage::clear();
 		parent::tearDown();
 	}
@@ -23,7 +23,6 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider canonicalPropertyAliasesProvider
 	 */
 	public function testGetCanonicalPropertyAliases( $languageCode, $canonicalMatch, $aliasMatch, $expected ) {
-
 		$lang = LocalLanguage::getInstance()->fetch(
 			$languageCode
 		);
@@ -40,7 +39,6 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider canonicalPropertyAliasesProvider
 	 */
 	public function testGetPropertyAliases( $languageCode, $canonicalMatch, $aliasMatch, $expected ) {
-
 		$lang = LocalLanguage::getInstance()->fetch(
 			$languageCode
 		);
@@ -57,7 +55,6 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider canonicalPropertyLabelsProvider
 	 */
 	public function testGetCanonicalPropertyLabels( $languageCode, $aliasMatch, $expected ) {
-
 		$lang = LocalLanguage::getInstance()->fetch(
 			$languageCode
 		);
@@ -71,7 +68,6 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function canonicalPropertyAliasesProvider() {
-
 		$provider[] = [
 			'fr',
 			'Query size',
@@ -83,7 +79,6 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function canonicalPropertyLabelsProvider() {
-
 		$provider[] = [
 			'fr',
 			'Boolean',

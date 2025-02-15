@@ -8,18 +8,17 @@ use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
  * @covers \SMW\Listener\ChangeListener\CallableChangeListenerTrait
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class CallableChangeListenerTraitTest extends \PHPUnit_Framework_TestCase {
+class CallableChangeListenerTraitTest extends \PHPUnit\Framework\TestCase {
 
 	private $changeKey;
 	private $changeRecord;
 
 	public function testCanTrigger() {
-
 		$instance = $this->newCallableChangeListenerClass(
 			[ 'foo' => [ [ $this, 'runChange' ] ] ]
 		);
@@ -30,7 +29,6 @@ class CallableChangeListenerTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTrigger() {
-
 		$logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
 			->disableOriginalConstructor()
 			->getMock();

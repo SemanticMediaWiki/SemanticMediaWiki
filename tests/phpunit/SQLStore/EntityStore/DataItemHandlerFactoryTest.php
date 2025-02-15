@@ -3,24 +3,23 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
-use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlerFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
  */
-class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
+class DataItemHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -35,7 +34,6 @@ class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemTypeProvider
 	 */
 	public function testGetHandlerByType( $type, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -52,7 +50,6 @@ class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider invalidTypeProvider
 	 */
 	public function testGetHandlerByInvalidTypeThrowsException( $type ) {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -64,7 +61,6 @@ class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataItemTypeProvider() {
-
 		$provider[] = [
 			DataItem::TYPE_NUMBER,
 			'\SMW\SQLStore\EntityStore\DataItemHandlers\DINumberHandler'
@@ -109,7 +105,6 @@ class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function invalidTypeProvider() {
-
 		$provider[] = [
 			DataItem::TYPE_PROPERTY,
 		];

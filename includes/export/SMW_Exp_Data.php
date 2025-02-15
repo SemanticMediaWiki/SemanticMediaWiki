@@ -10,8 +10,6 @@ use SMW\Exporter\Element;
  * @ingroup SMW
  */
 
-
-
 /**
  * SMWExpData is a data container for export-ready semantic content. It is
  * organised as a tree-shaped data structure with one root subject and zero
@@ -78,7 +76,6 @@ class SMWExpData implements Element {
 	 * @return string
 	 */
 	public function getHash() {
-
 		if ( $this->hash !== null ) {
 			return $this->hash;
 		}
@@ -110,7 +107,6 @@ class SMWExpData implements Element {
 	 * @return SMWExpData
 	 */
 	public static function makeCollection( array $elements ) {
-
 		if ( count( $elements ) == 0 ) {
 			return new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'nil' ) );
 		}
@@ -153,7 +149,6 @@ class SMWExpData implements Element {
 	 * @param Element $child
 	 */
 	public function addPropertyObjectValue( SMWExpNsResource $property, Element $child ) {
-
 		$this->hash = null;
 
 		if ( !array_key_exists( $property->getUri(), $this->m_edges ) ) {
@@ -181,7 +176,6 @@ class SMWExpData implements Element {
 	 * @return array of SMWExpElement
 	 */
 	public function getValues( SMWExpResource $property ) {
-
 		if ( array_key_exists( $property->getUri(), $this->m_children ) ) {
 			return $this->m_children[$property->getUri()];
 		}
@@ -245,15 +239,15 @@ class SMWExpData implements Element {
 		$rdfnilUri   = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'nil' )->getUri();
 		// first check if we are basically an RDF List:
 		if ( ( $this->m_subject->isBlankNode() ) &&
-		     ( count( $this->m_children ) == 3 ) &&
-		     ( array_key_exists( $rdftypeUri, $this->m_children ) ) &&
-		     ( count( $this->m_children[$rdftypeUri] ) == 1 ) &&
-		     ( array_key_exists( $rdffirstUri, $this->m_children ) ) &&
-		     ( count( $this->m_children[$rdffirstUri] ) == 1 ) &&
-		     !( end( $this->m_children[$rdffirstUri] ) instanceof SMWExpLiteral ) &&
-		     // (parseType collection in RDF not possible with literals :-/)
-		     ( array_key_exists( $rdfrestUri, $this->m_children ) ) &&
-		     ( count( $this->m_children[$rdfrestUri] ) == 1 ) ) {
+			 ( count( $this->m_children ) == 3 ) &&
+			 ( array_key_exists( $rdftypeUri, $this->m_children ) ) &&
+			 ( count( $this->m_children[$rdftypeUri] ) == 1 ) &&
+			 ( array_key_exists( $rdffirstUri, $this->m_children ) ) &&
+			 ( count( $this->m_children[$rdffirstUri] ) == 1 ) &&
+			 !( end( $this->m_children[$rdffirstUri] ) instanceof SMWExpLiteral ) &&
+			 // (parseType collection in RDF not possible with literals :-/)
+			 ( array_key_exists( $rdfrestUri, $this->m_children ) ) &&
+			 ( count( $this->m_children[$rdfrestUri] ) == 1 ) ) {
 			$typedata = end( $this->m_children[$rdftypeUri] );
 			$rdflistUri = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'List' )->getUri();
 			if ( $typedata->getSubject()->getUri() == $rdflistUri ) {
@@ -268,7 +262,7 @@ class SMWExpData implements Element {
 						return $restlist;
 					}
 				} elseif ( ( $rest instanceof SMWExpResource ) &&
-				           ( $rest->getUri() == $rdfnilUri ) )  {
+						   ( $rest->getUri() == $rdfnilUri ) ) {
 					return [ $first ];
 				} else {
 					return false;
@@ -289,7 +283,7 @@ class SMWExpData implements Element {
 	 *
 	 * @return array of array of SMWExpElement
 	 */
-	public function getTripleList( Element $subject = null ) {
+	public function getTripleList( ?Element $subject = null ) {
 		global $smwgBnodeCount;
 		if ( !isset( $smwgBnodeCount ) ) {
 			$smwgBnodeCount = 0;
@@ -310,7 +304,7 @@ class SMWExpData implements Element {
 				}
 
 				if ( ( $childSubject instanceof SMWExpResource ) &&
-				     ( $childSubject->isBlankNode() ) ) { // bnode, rename ID to avoid unifying bnodes of different contexts
+					 ( $childSubject->isBlankNode() ) ) { // bnode, rename ID to avoid unifying bnodes of different contexts
 					// TODO: should we really rename bnodes of the form "_id" here?
 					$childSubject = new SMWExpResource( '_' . $smwgBnodeCount++, $childSubject->getDataItem() );
 				}

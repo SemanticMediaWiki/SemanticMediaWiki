@@ -5,24 +5,23 @@ namespace SMW\Tests\Exporter\Element;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
-use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Exporter\Element\ExpNsResource
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
+class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Exporter\Element\ExpNsResource',
 			new ExpNsResource( '', '', '', null )
@@ -39,7 +38,6 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constructorProvider
 	 */
 	public function testAccessToMethods( $localName, $namespace, $namespaceId, $dataItem ) {
-
 		$instance = new ExpNsResource(
 			$localName,
 			$namespace,
@@ -82,7 +80,6 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constructorProvider
 	 */
 	public function testSerializiation( $localName, $namespace, $namespaceId, $dataItem, $expected ) {
-
 		$instance = new ExpNsResource(
 			$localName,
 			$namespace,
@@ -105,7 +102,6 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider invalidConstructorProvider
 	 */
 	public function testInvalidConstructorThrowsException( $localName, $namespace, $namespaceId, $dataItem ) {
-
 		$this->expectException( 'InvalidArgumentException' );
 
 		$instance = new ExpNsResource(
@@ -120,7 +116,6 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider serializationMissingElementProvider
 	 */
 	public function testDeserializiationForMissingElementThrowsException( $serialization ) {
-
 		$this->expectException( 'RuntimeException' );
 
 		ExpElement::newFromSerialization(
@@ -129,8 +124,7 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function constructorProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			'', '', '', null,
 			[
@@ -140,7 +134,7 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'Foo', '', '', null,
 			[
@@ -150,7 +144,7 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'Foo', 'Bar', '', null,
 			[
@@ -160,7 +154,7 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			'Foo', 'Bar', 'Fum', null,
 			[
@@ -170,7 +164,7 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			'Foo', 'Bar', 'Fum', new DIWikiPage( 'Foo', NS_MAIN ),
 			[
@@ -187,18 +181,17 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function invalidConstructorProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			[], '', '', null
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'', [], '', null
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'', '', [], null
 		];
@@ -207,27 +200,26 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function serializationMissingElementProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			[]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE
 			]
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			[
 				'type' => 'BogusType'
 			]
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
@@ -235,7 +227,7 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
@@ -244,7 +236,7 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,

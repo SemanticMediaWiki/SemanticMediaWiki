@@ -10,7 +10,7 @@ use SMW\Localizer;
  * characterises the given namespace (or at least that is how one could map
  * this to OWL etc.).
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -18,12 +18,12 @@ use SMW\Localizer;
 class NamespaceDescription extends Description {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $namespace;
 
 	/**
-	 * @param integer $namespace
+	 * @param int $namespace
 	 */
 	public function __construct( $namespace ) {
 		$this->namespace = $namespace;
@@ -42,14 +42,13 @@ class NamespaceDescription extends Description {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getNamespace() {
 		return $this->namespace;
 	}
 
 	public function getQueryString( $asValue = false ) {
-
 		$localizedNamespaceText = Localizer::getInstance()->getNsText( $this->namespace );
 
 		$prefix = $this->namespace == NS_CATEGORY ? ':' : '';

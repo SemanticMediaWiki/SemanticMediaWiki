@@ -3,12 +3,11 @@
 namespace SMW\SQLStore\Lookup;
 
 use SMW\SQLStore\SQLStore;
-use SMWQuery as Query;
 use SMWDataItem as DataItem;
-use Onoi\Cache\Cache;
+use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -48,7 +47,6 @@ class TableStatisticsLookup {
 	}
 
 	private function loadFromDB( $connection ) {
-
 		$start_time = -microtime( true );
 		$duplicates = $this->store->getObjectIds()->findDuplicates();
 
@@ -116,7 +114,7 @@ class TableStatisticsLookup {
 		$blob_field_null_row_count = $this->blob_field_null_row_count( $connection, $blobTable );
 		$unique_hash_field_terms_in_percent = 0;
 
-		list( $hash_field_multi_occurrence_total_count, $hash_field_single_occurrence_total_count ) = $this->hash_field_count(
+		[ $hash_field_multi_occurrence_total_count, $hash_field_single_occurrence_total_count ] = $this->hash_field_count(
 			$connection,
 			$blobTable
 		);
@@ -243,7 +241,6 @@ class TableStatisticsLookup {
 
 		$rows_group_by_namespace = [];
 
-
 		foreach ( $res as $row ) {
 			$rows_group_by_namespace[$row->smw_namespace] = (int)$row->count;
 		}
@@ -285,7 +282,6 @@ class TableStatisticsLookup {
 	}
 
 	private function active_query_links_count( $connection ) {
-
 		$row = $connection->selectRow(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			'COUNT(*) as count',
@@ -305,7 +301,6 @@ class TableStatisticsLookup {
 	}
 
 	private function invalid_query_links_count( $connection ) {
-
 		$row = $connection->selectRow(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			'COUNT(*) as count',
@@ -325,7 +320,6 @@ class TableStatisticsLookup {
 	}
 
 	private function unassigned_query_links_count( $connection ) {
-
 		$row = $connection->selectRow(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			'COUNT(*) as count',
@@ -365,7 +359,6 @@ class TableStatisticsLookup {
 	}
 
 	private function hash_field_count( $connection, $blobTable ) {
-
 		$hash_field_multi_occurrence_total_count = 0;
 		$hash_field_single_occurrence_total_count = 0;
 

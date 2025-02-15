@@ -9,7 +9,7 @@ use SMWQueryResult as QueryResult;
  * Result printer to print results in UNIX-style DSV (deliminter separated value)
  * format.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -44,7 +44,6 @@ class DsvResultPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	public function getFileName( QueryResult $queryResult ) {
-
 		if ( $this->params['filename'] === '' ) {
 			return 'result.dsv';
 		}
@@ -92,7 +91,6 @@ class DsvResultPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $queryResult, $outputMode ) {
-
 		if ( $outputMode !== SMW_OUTPUT_FILE ) {
 			return $this->getDsvLink( $queryResult, $outputMode );
 		}
@@ -101,7 +99,6 @@ class DsvResultPrinter extends FileExportPrinter {
 	}
 
 	private function getDsvLink( QueryResult $queryResult, $outputMode ) {
-
 		// Can be viewed as HTML if requested, no more parsing needed
 		$this->isHTML = ( $outputMode == SMW_OUTPUT_HTML );
 

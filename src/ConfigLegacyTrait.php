@@ -2,8 +2,6 @@
 
 namespace SMW;
 
-use SMW\Exception\SettingNotFoundException;
-
 /**
  * @private
  *
@@ -13,7 +11,7 @@ use SMW\Exception\SettingNotFoundException;
  * Information will be used in DeprecationNoticeTaskHandler to detect and output
  * deprecation notices.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -34,7 +32,6 @@ trait ConfigLegacyTrait {
 	 * with the new mapping to this section.
 	 */
 	private static function setLegacyMappings( &$configuration ) {
-
 		if ( isset( $GLOBALS['smwgAdminRefreshStore'] ) && $GLOBALS['smwgAdminRefreshStore'] === false ) {
 			$configuration['smwgAdminFeatures'] = $configuration['smwgAdminFeatures'] & ~SMW_ADM_REFRESH;
 		}
@@ -224,7 +221,6 @@ trait ConfigLegacyTrait {
 	 * section.
 	 */
 	private static function fillDeprecationNotices() {
-
 		$jobQueueWatchlist = [];
 
 		// FIXME Remove with 3.1

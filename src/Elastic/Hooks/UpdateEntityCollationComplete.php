@@ -3,12 +3,12 @@
 namespace SMW\Elastic\Hooks;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\Store;
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
+use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class UpdateEntityCollationComplete {
 	private $store;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $countDown = 5;
 
@@ -39,7 +39,7 @@ class UpdateEntityCollationComplete {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $countDown
+	 * @param int $countDown
 	 */
 	public function setCountDown( $countDown ) {
 		$this->countDown = $countDown;
@@ -51,7 +51,6 @@ class UpdateEntityCollationComplete {
 	 * @param Rebuilder $rebuilder
 	 */
 	public function runUpdate( Rebuilder $rebuilder ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -110,7 +109,7 @@ class UpdateEntityCollationComplete {
 
 		$rebuilder->prepare();
 
-		list( $res, $last ) = $rebuilder->select(
+		[ $res, $last ] = $rebuilder->select(
 			$this->store,
 			$conditions
 		);
@@ -127,7 +126,6 @@ class UpdateEntityCollationComplete {
 	}
 
 	private function rebuild( $rebuilder, $res, $last ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$rebuilder->set( 'skip-fileindex', true );

@@ -1,0 +1,40 @@
+{{!
+  Special:Browse template
+
+  Required data:
+  - subject: string - encoded JSON for ajax loading
+  - options: string - encoded JSON for ajax loading
+  - html-output: string - Raw HTML that does not belong to any elements below
+  - html-noscript: string - HTML of the noscript message box
+  - data-factbox: object - Factbox data (see Factbox.mustache)
+  - data-form: object - SMW browse search form
+    - form-action: string
+	- input-value: string
+	- input-placeholder: string
+	- button-value: string
+	- form-title: string
+}}
+<div
+	class="smw-browse"
+	{{#subject}}data-mw-smw-browse-subject="{{.}}"{{/subject}}
+	{{#options}}data-mw-smw-browse-options="{{.}}"{{/options}}
+>
+	{{#html-output}}{{{.}}}{{/html-output}}
+	{{#html-noscript}}<noscript>{{{.}}}</noscript>{{/html-noscript}}
+	<div class="smw-browse-content">
+		{{#data-factbox}}{{>Factbox}}{{/data-factbox}}
+		{{#data-form}}
+		<form class="smw-browse-search" name="smwbrowse" action="{{form-action}}" method="get" role="search">
+			<input
+				name="article"
+				id="smw-page-input"
+				class="smw-browse-search-input smw-page-input autocomplete-arrow mw-ui-input"
+				value="{{input-value}}"
+				placeholder="{{input-placeholder}}"
+				autocomplete="off">
+			<input type="submit" class="smw-browse-search-button mw-ui-button" value="{{button-value}}">
+			<input type="hidden" name="title" value="{{form-title}}">
+		</form>
+		{{/data-form}}
+	</div>
+</div>

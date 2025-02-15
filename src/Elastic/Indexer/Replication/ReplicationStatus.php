@@ -2,15 +2,14 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
+use RuntimeException;
+use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMWDITime as DITime;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -32,7 +31,7 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 *
-	 * @param ElasticClient $elasticClient
+	 * @param ElasticClient $connection
 	 */
 	public function __construct( ElasticClient $connection ) {
 		$this->connection = $connection;
@@ -48,7 +47,6 @@ class ReplicationStatus {
 	 * @throws RuntimeException
 	 */
 	public function get( $key, ...$args ) {
-
 		if ( $key === 'associated_revision' ) {
 			$key = 'getAssociatedRev';
 		}
@@ -63,12 +61,11 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function exists( $id ) {
-
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,
@@ -82,10 +79,9 @@ class ReplicationStatus {
 	 *
 	 * @param string $id
 	 *
-	 * @return []
+	 * @return
 	 */
 	private function modification_date_associated_revision( $id ) {
-
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,
@@ -121,11 +117,10 @@ class ReplicationStatus {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean|DITime
+	 * @return bool|DITime
 	 * @throws RuntimeException
 	 */
 	public function getModificationDate( $id ) {
-
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,
@@ -156,12 +151,11 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getAssociatedRev( $id ) {
-
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,
@@ -184,7 +178,6 @@ class ReplicationStatus {
 	 * @since 3.0
 	 */
 	private function refresh_interval() {
-
 		$refresh_interval = null;
 
 		$settings = $this->connection->getSettings(
@@ -206,7 +199,6 @@ class ReplicationStatus {
 	 * @since 3.0
 	 */
 	private function last_update() {
-
 		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
 		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
 
@@ -224,7 +216,7 @@ class ReplicationStatus {
 			'body'  => $body
 		];
 
-		list( $res, $errors ) = $this->connection->search( $params );
+		[ $res, $errors ] = $this->connection->search( $params );
 		$time = null;
 
 		foreach ( $res as $result ) {

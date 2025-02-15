@@ -9,18 +9,18 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Indicator\EntityExaminerIndicatorsFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
+class EntityExaminerIndicatorsFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $entityCache;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -41,13 +41,12 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstructEntityExaminerIndicatorProvider() {
-
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
@@ -62,7 +61,6 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructAssociatedRevisionMismatchEntityExaminerIndicatorProvider() {
-
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
@@ -72,7 +70,6 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConstraintErrorEntityExaminerIndicatorProvider() {
-
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
@@ -82,7 +79,6 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructEntityExaminerDeferrableCompositeIndicatorProvider() {
-
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
@@ -102,7 +98,6 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructEntityExaminerCompositeIndicatorProvider() {
-
 		$instance = new EntityExaminerIndicatorsFactory();
 		$indicatorProviders = [];
 
@@ -118,12 +113,11 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConfirmAllCanConstructMethodsWereCalled() {
-
 		// Available class methods to be tested
 		$classMethods = get_class_methods( EntityExaminerIndicatorsFactory::class );
 
 		// Match all "testCanConstruct" to define the expected set of methods
-		$testMethods = preg_grep('/^testCanConstruct/', get_class_methods( $this ) );
+		$testMethods = preg_grep( '/^testCanConstruct/', get_class_methods( $this ) );
 
 		$testMethods = array_flip(
 			str_replace( 'testCanConstruct', 'new', $testMethods )

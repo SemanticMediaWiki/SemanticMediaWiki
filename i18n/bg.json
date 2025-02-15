@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"DCLXVI",
+			"Kareyac",
 			"StanProg",
 			"Ted Masters",
 			"Vlad5250",
@@ -42,6 +43,7 @@
 	"smw_exportrdf_lastdate": "Без изнасяне на страници, които не са променяни от посоченото време.",
 	"smw_exportrdf_submit": "Изнасяне",
 	"properties": "Свойства",
+	"smw-categories": "Категории",
 	"smw_property_template": "$1 от типа $2 ($3 {{PLURAL:$3|употреба|употреби}})",
 	"smw-special-property-searchform-options": "Настройки",
 	"smw-special-wantedproperties-filter-label": "Филтър:",
@@ -165,6 +167,7 @@
 	"smw-format-datatable-next": "Следваща",
 	"smw-help": "Помощ",
 	"smw-jsonview-search-label": "Търсене:",
+	"smw-facetedsearch-intro-tab-search": "Търсене",
 	"smw-listingcontinuesabbrev": "продълж.",
 	"smw-showingresults": "Показване на до {{PLURAL:$1|<strong>1</strong> резултат|<strong>$1</strong> резултата}}, като се започва от номер <strong>$2</strong>."
 }

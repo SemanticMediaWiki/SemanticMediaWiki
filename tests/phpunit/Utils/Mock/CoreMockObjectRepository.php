@@ -31,12 +31,12 @@ use SMWResultArray;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements MockObjectRepository {
+class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements MockObjectRepository {
 
 	/** @var MockObjectBuilder */
 	protected $builder;
@@ -56,7 +56,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return SemanticData
 	 */
 	public function SemanticData() {
-
 		$semanticData = $this->getMockBuilder( 'SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -80,7 +79,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return CacheableResultCollector
 	 */
 	public function CacheableResultCollector() {
-
 		// CacheableResultCollector is an abstract class therefore necessary methods
 		// are declared by default while other methods are only mocked if needed
 		// because setMethods overrides the original signature
@@ -96,15 +94,15 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 
 		$collector->expects( $this->any() )
 			->method( 'runCollector' )
-			->will( $this->returnValue( $this->builder->setValue( 'runCollector' ) ) );
+			->willReturn( $this->builder->setValue( 'runCollector' ) );
 
 		$collector->expects( $this->any() )
 			->method( 'cacheSetup' )
-			->will( $this->returnValue( $this->builder->setValue( 'cacheSetup' ) ) );
+			->willReturn( $this->builder->setValue( 'cacheSetup' ) );
 
 		$collector->expects( $this->any() )
 			->method( 'getResults' )
-			->will( $this->returnValue( $this->builder->setValue( 'getResults' ) ) );
+			->willReturn( $this->builder->setValue( 'getResults' ) );
 
 		return $collector;
 	}
@@ -115,7 +113,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return DependencyObject
 	 */
 	public function DependencyObject() {
-
 		$methods = $this->builder->getInvokedMethods();
 
 		$dependencyObject = $this->getMockBuilder( 'SMW\DependencyObject' )
@@ -139,7 +136,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return DependencyContainer
 	 */
 	public function FakeDependencyContainer() {
-
 		$methods = $this->builder->getInvokedMethods();
 
 		$dependencyObject = $this->getMockBuilder( 'SMW\NullDependencyContainer' )
@@ -163,7 +159,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return ParserData
 	 */
 	public function ParserData() {
-
 		$methods = $this->builder->getInvokedMethods();
 
 		$parserData = $this->getMockBuilder( 'SMW\ParserData' )
@@ -187,18 +182,17 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return Factbox
 	 */
 	public function Factbox() {
-
 		$factbox = $this->getMockBuilder( '\SMW\Factbox\Factbox' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$factbox->expects( $this->any() )
 			->method( 'isVisible' )
-			->will( $this->returnValue( $this->builder->setValue( 'isVisible' ) ) );
+			->willReturn( $this->builder->setValue( 'isVisible' ) );
 
 		$factbox->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValue( $this->builder->setValue( 'getContent' ) ) );
+			->willReturn( $this->builder->setValue( 'getContent' ) );
 
 		return $factbox;
 	}
@@ -209,7 +203,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return SMWQuery
 	 */
 	public function Query() {
-
 		$query = $this->getMockBuilder( 'SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -223,22 +216,21 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return ContentParser
 	 */
 	public function ContentParser() {
-
 		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$contentParser->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $this->builder->setValue( 'getOutput', $this->builder->newObject( 'ParserOutput' ) ) ) );
+			->willReturn( $this->builder->setValue( 'getOutput', $this->builder->newObject( 'ParserOutput' ) ) );
 
 		$contentParser->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( $this->builder->setValue( 'getErrors', [] ) ) );
+			->willReturn( $this->builder->setValue( 'getErrors', [] ) );
 
 		$contentParser->expects( $this->any() )
 			->method( 'getRevision' )
-			->will( $this->returnValue( $this->builder->setValue( 'getRevision', null ) ) );
+			->willReturn( $this->builder->setValue( 'getRevision', null ) );
 
 		return $contentParser;
 	}
@@ -250,7 +242,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @throws OutOfBoundsException
 	 */
 	public function DataValue() {
-
 		if ( !$this->builder->hasValue( 'DataValueType' ) ) {
 			throw new OutOfBoundsException( 'DataValueType is missing' );
 		}
@@ -280,21 +271,20 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return SMWQueryResult
 	 */
 	public function QueryResult() {
-
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( $this->builder->setValue( 'getErrors', [] ) ) );
+			->willReturn( $this->builder->setValue( 'getErrors', [] ) );
 
 		// Word of caution, onConsecutiveCalls is used in order to ensure
 		// that a while() loop is not trapped in an infinite loop and returns
 		// a false at the end
 		$queryResult->expects( $this->any() )
 			->method( 'getNext' )
-			->will( $this->onConsecutiveCalls( $this->builder->setValue( 'getNext' ), false ) );
+			->willReturnOnConsecutiveCalls( $this->builder->setValue( 'getNext' ), false );
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
@@ -313,34 +303,33 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return DIWikiPage
 	 */
 	public function DIWikiPage() {
-
 		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$diWikiPage->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTitle' ) ) );
+			->willReturn( $this->builder->setValue( 'getTitle' ) );
 
 		$diWikiPage->expects( $this->any() )
 			->method( 'getDBkey' )
-			->will( $this->returnValue( $this->builder->setValue( 'getDBkey', $this->builder->newRandomString( 10, 'DIWikiPage-auto-dbkey' ) ) ) );
+			->willReturn( $this->builder->setValue( 'getDBkey', $this->builder->newRandomString( 10, 'DIWikiPage-auto-dbkey' ) ) );
 
 		$diWikiPage->expects( $this->any() )
 			->method( 'getPrefixedText' )
-			->will( $this->returnValue( $this->builder->setValue( 'getPrefixedText', $this->builder->newRandomString( 10, 'DIWikiPage-auto-prefixedText' ) ) ) );
+			->willReturn( $this->builder->setValue( 'getPrefixedText', $this->builder->newRandomString( 10, 'DIWikiPage-auto-prefixedText' ) ) );
 
 		$diWikiPage->expects( $this->any() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( SMWDataItem::TYPE_WIKIPAGE ) );
+			->willReturn( SMWDataItem::TYPE_WIKIPAGE );
 
 		$diWikiPage->expects( $this->any() )
 			->method( 'findPropertyTypeID' )
-			->will( $this->returnValue( $this->builder->setValue( 'findPropertyTypeID', '_wpg' ) ) );
+			->willReturn( $this->builder->setValue( 'findPropertyTypeID', '_wpg' ) );
 
 		$diWikiPage->expects( $this->any() )
 			->method( 'getSubobjectName' )
-			->will( $this->returnValue( $this->builder->setValue( 'getSubobjectName', '' ) ) );
+			->willReturn( $this->builder->setValue( 'getSubobjectName', '' ) );
 
 		return $diWikiPage;
 	}
@@ -351,22 +340,21 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return DIProperty
 	 */
 	public function DIProperty() {
-
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$property->expects( $this->any() )
 			->method( 'findPropertyTypeID' )
-			->will( $this->returnValue( $this->builder->setValue( 'findPropertyTypeID', '_wpg' ) ) );
+			->willReturn( $this->builder->setValue( 'findPropertyTypeID', '_wpg' ) );
 
 		$property->expects( $this->any() )
 			->method( 'getKey' )
-			->will( $this->returnValue( $this->builder->setValue( 'getKey', '_wpg' ) ) );
+			->willReturn( $this->builder->setValue( 'getKey', '_wpg' ) );
 
 		$property->expects( $this->any() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( SMWDataItem::TYPE_PROPERTY ) );
+			->willReturn( SMWDataItem::TYPE_PROPERTY );
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
@@ -389,7 +377,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return Store
 	 */
 	public function Store() {
-
 		// SMW\Store is an abstract class, use setMethods to implement
 		// required abstract methods
 		$requiredAbstractMethods = [
@@ -430,7 +417,7 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 
 		$idTable->expects( $this->any() )
 			->method( 'getIdTable' )
-			->will( $this->returnValue( 'smw_id_table_test' ) );
+			->willReturn( 'smw_id_table_test' );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -439,7 +426,7 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
@@ -451,7 +438,7 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 
 		$store->expects( $this->any() )
 			->method( 'getStatisticsTable' )
-			->will( $this->returnValue( 'smw_statistics_table_test' ) );
+			->willReturn( 'smw_statistics_table_test' );
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
@@ -470,7 +457,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return TableDefinition
 	 */
 	public function SQLStoreTableDefinition() {
-
 		$tableDefinition = $this->getMockBuilder( 'SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -492,14 +478,13 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return SMWDIError
 	 */
 	public function DIError() {
-
 		$errors = $this->getMockBuilder( 'SMWDIError' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$errors->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( $this->builder->setValue( 'getErrors' ) ) );
+			->willReturn( $this->builder->setValue( 'getErrors' ) );
 
 		return $errors;
 	}
@@ -510,7 +495,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return SMWDataItem
 	 */
 	public function DataItem() {
-
 		$requiredMethods = [
 			'getNumber',
 			'getDIType',
@@ -543,34 +527,33 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return PrintRequest
 	 */
 	public function PrintRequest() {
-
 		$printRequest = $this->getMockBuilder( 'SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$printRequest->expects( $this->any() )
 			->method( 'getText' )
-			->will( $this->returnValue( $this->builder->setValue( 'getText', $this->builder->newRandomString( 10, 'Auto-printRequest' ) ) ) );
+			->willReturn( $this->builder->setValue( 'getText', $this->builder->newRandomString( 10, 'Auto-printRequest' ) ) );
 
 		$printRequest->expects( $this->any() )
 			->method( 'getLabel' )
-			->will( $this->returnValue( $this->builder->setValue( 'getLabel' ) ) );
+			->willReturn( $this->builder->setValue( 'getLabel' ) );
 
 		$printRequest->expects( $this->any() )
 			->method( 'getMode' )
-			->will( $this->returnValue( $this->builder->setValue( 'getMode', PrintRequest::PRINT_THIS ) ) );
+			->willReturn( $this->builder->setValue( 'getMode', PrintRequest::PRINT_THIS ) );
 
 		$printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTypeID' ) ) );
+			->willReturn( $this->builder->setValue( 'getTypeID' ) );
 
 		$printRequest->expects( $this->any() )
 			->method( 'getOutputFormat' )
-			->will( $this->returnValue( $this->builder->setValue( 'getOutputFormat' ) ) );
+			->willReturn( $this->builder->setValue( 'getOutputFormat' ) );
 
 		$printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->will( $this->returnValue( $this->builder->setValue( 'getParameter', 'center' ) ) );
+			->willReturn( $this->builder->setValue( 'getParameter', 'center' ) );
 
 		return $printRequest;
 	}
@@ -581,26 +564,25 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return SMWResultArray
 	 */
 	public function ResultArray() {
-
 		$resultArray = $this->getMockBuilder( 'SMWResultArray' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$resultArray->expects( $this->any() )
 			->method( 'getPrintRequest' )
-			->will( $this->returnValue( $this->builder->setValue( 'getPrintRequest' ) ) );
+			->willReturn( $this->builder->setValue( 'getPrintRequest' ) );
 
 		$resultArray->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValue( $this->builder->setValue( 'getContent' ) ) );
+			->willReturn( $this->builder->setValue( 'getContent' ) );
 
 		$resultArray->expects( $this->any() )
 			->method( 'getNextDataValue' )
-			->will( $this->onConsecutiveCalls( $this->builder->setValue( 'getNextDataValue' ), false ) );
+			->willReturnOnConsecutiveCalls( $this->builder->setValue( 'getNextDataValue' ), false );
 
 		$resultArray->expects( $this->any() )
 			->method( 'getNextDataItem' )
-			->will( $this->onConsecutiveCalls( $this->builder->setValue( 'getNextDataItem' ), false ) );
+			->willReturnOnConsecutiveCalls( $this->builder->setValue( 'getNextDataItem' ), false );
 
 		return $resultArray;
 	}
@@ -611,7 +593,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return Description
 	 */
 	public function QueryDescription() {
-
 		$requiredAbstractMethods = [
 			'getQueryString',
 			'isSingleton'
@@ -640,7 +621,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 * @return PageInfoProvider
 	 */
 	public function PageInfoProvider() {
-
 		$methods = $this->builder->getInvokedMethods();
 
 		$adapter = $this->getMockBuilder( 'SMW\PageInfoProvider' )

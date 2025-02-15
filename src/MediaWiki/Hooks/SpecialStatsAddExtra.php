@@ -2,18 +2,17 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\DataTypeRegistry;
-use SMW\Store;
-use SMW\Message;
 use SMW\MediaWiki\HookListener;
+use SMW\Message;
 use SMW\OptionsAwareTrait;
+use SMW\Store;
 
 /**
  * Add extra statistic at the end of Special:Statistics
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -39,7 +38,7 @@ class SpecialStatsAddExtra implements HookListener {
 	private $language;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $dataTypeLabels = [];
 
@@ -96,7 +95,6 @@ class SpecialStatsAddExtra implements HookListener {
 	 * @return true
 	 */
 	public function process( array &$extraStats ) {
-
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED', false ) ) {
 			return true;
 		}
@@ -107,7 +105,6 @@ class SpecialStatsAddExtra implements HookListener {
 	}
 
 	private function copyStatistics( &$extraStats ) {
-
 		$statistics = $this->store->getStatistics();
 		$statistics['DATATYPECOUNT'] = count( $this->dataTypeLabels );
 
@@ -157,7 +154,6 @@ class SpecialStatsAddExtra implements HookListener {
 	}
 
 	private function addFormats( $key, $statistics ) {
-
 		$i = 0;
 		$formats = [];
 
@@ -180,7 +176,6 @@ class SpecialStatsAddExtra implements HookListener {
 	}
 
 	private function msg( $args ) {
-
 		if ( $this->getOption( 'plain.msg_key', false ) ) {
 			return is_array( $args ) ? implode( '.', $args ) : $args;
 		}

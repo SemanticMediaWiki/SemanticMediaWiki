@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"Kilavagora",
 			"Narazeni",
 			"Silovan"
 		]
 	},
+	"smw-categories": "კატეგორიეფი",
 	"browse": "ვიკიშ ძირაფა",
 	"smw-limitreport-intext-parsertime-value": "$1 მერქა",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 მერქა",

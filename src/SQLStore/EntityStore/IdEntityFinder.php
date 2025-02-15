@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
 use SMW\DIWikiPage;
 use SMW\IteratorFactory;
 use SMW\RequestOptions;
@@ -10,7 +9,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -53,8 +52,7 @@ class IdEntityFinder {
 	 *
 	 * @return DIWikiPage[]
 	 */
-	public function getDataItemsFromList( array $idList, RequestOptions $requestOptions = null ) {
-
+	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ) {
 		if ( $idList === [] ) {
 			return [];
 		}
@@ -91,7 +89,6 @@ class IdEntityFinder {
 	 * @return DIWikiPage
 	 */
 	public function newFromRow( $row ) {
-
 		$dataItem = new DIWikiPage(
 			$row->smw_title,
 			$row->smw_namespace,
@@ -128,12 +125,11 @@ class IdEntityFinder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return DIWikiPage|null
 	 */
 	public function getDataItemById( $id ) {
-
 		if ( ( $dataItem = $this->get( (int)$id ) ) !== false ) {
 			return $dataItem;
 		}
@@ -142,7 +138,6 @@ class IdEntityFinder {
 	}
 
 	private function get( $id ) {
-
 		$cache = $this->idCacheManager->get( 'entity.lookup' );
 
 		if ( ( $dataItem = $cache->fetch( $id ) ) !== false ) {
@@ -165,7 +160,6 @@ class IdEntityFinder {
 	}
 
 	private function fetchFromTable( $conditions, $selectRow = false ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$fields = [

@@ -2,22 +2,21 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\ResultLimiter;
 use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\ResultLimiter;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\ResultLimiter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
  */
-class ResultLimiterTest extends \PHPUnit_Framework_TestCase {
+class ResultLimiterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ResultLimiter::class,
 			new ResultLimiter()
@@ -25,7 +24,6 @@ class ResultLimiterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCalcAndSkip() {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->exclude_limit = true;
 		$requestOptions->setLimit( 2 );
@@ -52,7 +50,6 @@ class ResultLimiterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoSkip() {
-
 		$requestOptions = new RequestOptions();
 
 		$instance = new ResultLimiter();

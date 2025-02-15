@@ -2,21 +2,19 @@
 
 namespace SMW\Tests\Importer;
 
-use SMW\Importer\ContentModeller;
 use SMW\Importer\JsonImportContentsFileDirReader;
-use SMW\Utils\FileFetcher;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Importer\JsonImportContentsFileDirReader
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
+class JsonImportContentsFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -24,7 +22,7 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	private $fileFetcher;
 	private $file;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->contentModeller = $this->getMockBuilder( '\SMW\Importer\ContentModeller' )
@@ -41,7 +39,6 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JsonImportContentsFileDirReader::class,
 			new JsonImportContentsFileDirReader( $this->contentModeller, $this->fileFetcher, $this->file )
@@ -49,23 +46,22 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesGetContentList() {
-
 		$importContents = $this->getMockBuilder( '\SMW\Importer\ImportContents' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->contentModeller->expects( $this->atLeastOnce() )
 			->method( 'makeContentList' )
-			->will( $this->returnValue( $importContents ) );
+			->willReturn( $importContents );
 
 		$this->fileFetcher->expects( $this->atLeastOnce() )
 			->method( 'findByExtension' )
-			->will( $this->returnValue( [ 'FooFile' => [] ] ) );
+			->willReturn( [ 'FooFile' => [] ] );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'read' )
 			->with( $this->stringContains( 'FooFile' ) )
-			->will( $this->returnValue( json_encode( [ 'Foo' ] ) ) );
+			->willReturn( json_encode( [ 'Foo' ] ) );
 
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
@@ -91,19 +87,18 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentList_WithError() {
-
 		$importContents = $this->getMockBuilder( '\SMW\Importer\ImportContents' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->fileFetcher->expects( $this->atLeastOnce() )
 			->method( 'findByExtension' )
-			->will( $this->returnValue( [ 'FooFile' => [] ] ) );
+			->willReturn( [ 'FooFile' => [] ] );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'read' )
 			->with( $this->stringContains( 'FooFile' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,

@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bennylin",
 			"Meursault2004",
 			"NoiX180",
 			"Pras",
@@ -47,6 +48,7 @@
 	"smw_exportrdf_lastdate": "Aja ngèkspor kaca-kaca sing ora diowahi wiwit sawijining wektu tartamtu.",
 	"uriresolver": "URI Resolver",
 	"properties": "Sifat-sifat",
+	"smw-categories": "Katégori",
 	"smw_properties_docu": "Sifat-sifat ing ngisori iki dienggo ing wiki iki.",
 	"smw_property_template": "$1 saka jenis $2 ($3)",
 	"smw_propertylackspage": "Kabèh sifat kudu didèskripsi déning sawijining kaca!",

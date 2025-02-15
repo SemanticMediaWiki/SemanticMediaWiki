@@ -2,25 +2,26 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Skin;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
+use SMW\OptionsAwareTrait;
 use SMWInfolink as Infolink;
-use Skin;
 use SpecialPage;
 use Title;
-use SMW\OptionsAwareTrait;
+
 /**
  * Called at the end of Skin::buildSidebar().
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SidebarBeforeOutput
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @author StarHeartHunt
  */
 class SidebarBeforeOutput implements HookListener {
 
-    use OptionsAwareTrait;
+	use OptionsAwareTrait;
 
 	/**
 	 * @var NamespaceExaminer
@@ -40,10 +41,9 @@ class SidebarBeforeOutput implements HookListener {
 	 * @param $skin
 	 * @param &$sidebar
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( $skin, &$sidebar ) {
-
 		$title = $skin->getTitle();
 
 		if ( $this->canProcess( $title, $skin ) ) {
@@ -66,7 +66,6 @@ class SidebarBeforeOutput implements HookListener {
 	}
 
 	private function performUpdate( Title $title, Skin $skin, &$sidebar ) {
-
 		$link = Infolink::encodeParameters(
 			[
 				$title->getPrefixedDBkey()
@@ -74,9 +73,10 @@ class SidebarBeforeOutput implements HookListener {
 			true
 		);
 
-		$sidebar["TOOLBOX"][] = [
+		$sidebar["TOOLBOX"]['smwbrowselink'] = [
 			'text' => $skin->msg( 'smw_browselink' )->text(),
 			'href' => SpecialPage::getTitleFor( 'Browse', ':' . $link )->getLocalUrl(),
+			'icon' => 'database',
 			'id'   => 't-smwbrowselink',
 			'rel'  => 'search'
 		];

@@ -8,7 +8,7 @@ use SMW\Utils\StatsFormatter;
  * A multipurpose non-persistent static pool cache to keep selected items for
  * the duration of a request cacheable.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -60,7 +60,6 @@ class InMemoryPoolCache {
 	 * @return InMemoryPoolCache
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 			self::$instance = new self( ApplicationFactory::getInstance()->newCacheFactory() );
 		}
@@ -116,12 +115,11 @@ class InMemoryPoolCache {
 	 * @since 2.5
 	 *
 	 * @param string $poolCacheId
-	 * @param integer $cacheSize
+	 * @param int $cacheSize
 	 *
 	 * @return Cache
 	 */
 	public function getPoolCacheById( $poolCacheId, $cacheSize = 500 ) {
-
 		if ( !isset( $this->poolCacheList[$poolCacheId] ) ) {
 			$this->poolCacheList[$poolCacheId] = $this->cacheFactory->newFixedInMemoryCache( $cacheSize );
 		}
@@ -130,7 +128,6 @@ class InMemoryPoolCache {
 	}
 
 	private function computeStats() {
-
 		ksort( $this->poolCacheList );
 		$stats = [];
 

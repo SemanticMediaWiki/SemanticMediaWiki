@@ -11,20 +11,19 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
  */
-class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
+class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 	private $requestOptions;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -35,11 +34,10 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->requestOptions->expects( $this->any() )
 			->method( 'getExtraConditions' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 	}
 
 	public function testCanConstruct() {
-
 		$defaultPropertyType = '_foo';
 
 		$this->assertInstanceOf(
@@ -49,7 +47,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testListLookupInterfaceMethodAccess() {
-
 		$defaultPropertyType = '_foo';
 
 		$instance = new UndeclaredPropertyListLookup(
@@ -58,8 +55,8 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->requestOptions
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTimestamp()
 		);
 
@@ -74,7 +71,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNullRequestOptionsThrowsException() {
-
 		$defaultPropertyType = '_foo';
 
 		$instance = new UndeclaredPropertyListLookup(
@@ -87,7 +83,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidTableIdThrowsException() {
-
 		$defaultPropertyType = '_foo';
 
 		$instance = new UndeclaredPropertyListLookup(
@@ -101,7 +96,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupIdentifierChangedByRequestOptions() {
-
 		$defaultPropertyType = '_foo';
 		$requestOptions = new RequestOptions();
 
@@ -120,7 +114,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$requestOptions
 		);
 
-
 		$this->assertNotSame(
 			$lookupIdentifier,
 			$instance->getHash()
@@ -128,7 +121,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForValidProperty() {
-
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
 		$row->count = 42;
@@ -143,20 +135,20 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->once() )
 			->method( 'findTypeTableId' )
-			->with( $this->equalTo( '_foo' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->with( '_foo' )
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$defaultPropertyType = '_foo';
 
@@ -168,8 +160,8 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 
@@ -185,7 +177,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForInvalidProperty() {
-
 		$row = new \stdClass;
 		$row->smw_title = '-Foo';
 		$row->count = 42;
@@ -200,20 +191,20 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->once() )
 			->method( 'findTypeTableId' )
-			->with( $this->equalTo( '_foo' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->with( '_foo' )
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$defaultPropertyType = '_foo';
 
@@ -225,8 +216,8 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 
@@ -237,14 +228,13 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForFixedPropertyTable() {
-
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$tableDefinition->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -255,12 +245,12 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'findTypeTableId' )
-			->with( $this->equalTo( '_foo' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->with( '_foo' )
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$defaultPropertyType = '_foo';
 
@@ -272,8 +262,8 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 

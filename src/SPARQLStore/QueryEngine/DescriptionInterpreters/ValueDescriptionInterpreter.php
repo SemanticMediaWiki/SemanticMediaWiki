@@ -18,7 +18,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -41,7 +41,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -61,7 +61,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 		$asNoCase = $this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_NOCASE );
@@ -70,25 +69,34 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$property = $description->getProperty();
 
 		switch ( $description->getComparator() ) {
-			case SMW_CMP_EQ:   $comparator = '=';
-			break;
-			case SMW_CMP_LESS: $comparator = '<';
-			break;
-			case SMW_CMP_GRTR: $comparator = '>';
-			break;
-			case SMW_CMP_LEQ:  $comparator = '<=';
-			break;
-			case SMW_CMP_GEQ:  $comparator = '>=';
-			break;
-			case SMW_CMP_NEQ:  $comparator = '!=';
-			break;
-			case SMW_CMP_PRIM_LIKE;
-			case SMW_CMP_LIKE: $comparator = 'regex';
-			break;
-			case SMW_CMP_PRIM_NLKE;
-			case SMW_CMP_NLKE: $comparator = '!regex';
-			break;
-			default: $comparator = ''; // unkown, unsupported
+			case SMW_CMP_EQ:
+				$comparator = '=';
+				break;
+			case SMW_CMP_LESS:
+				$comparator = '<';
+				break;
+			case SMW_CMP_GRTR:
+				$comparator = '>';
+				break;
+			case SMW_CMP_LEQ:
+				$comparator = '<=';
+				break;
+			case SMW_CMP_GEQ:
+				$comparator = '>=';
+				break;
+			case SMW_CMP_NEQ:
+				$comparator = '!=';
+				break;
+			case SMW_CMP_PRIM_LIKE:
+			case SMW_CMP_LIKE:
+				$comparator = 'regex';
+				break;
+			case SMW_CMP_PRIM_NLKE:
+			case SMW_CMP_NLKE:
+				$comparator = '!regex';
+				break;
+			default:
+				$comparator = ''; // unkown, unsupported
 		}
 
 		if ( $comparator === '' ) {
@@ -112,7 +120,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createConditionForEqualityComparator( $dataItem, $property, $joinVariable, $orderByProperty ) {
-
 		$expElement = $this->exporter->newAuxiliaryExpElement( $dataItem );
 
 		if ( $expElement === null ) {
@@ -157,7 +164,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createConditionForRegexComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
-
 		if ( !$dataItem instanceof DIBlob && !$dataItem instanceof DIWikiPage && !$dataItem instanceof DIUri ) {
 			return $this->conditionBuilder->newTrueCondition( $joinVariable, $orderByProperty );
 		}
@@ -202,7 +208,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createFilterConditionForAnyOtherComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
-
 		$result = new FilterCondition( '', [] );
 
 		$this->conditionBuilder->addOrderByData(
@@ -217,7 +222,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			$expElement = $this->exporter->newExpElement( new DIBlob( $dataItem->getSortKey() ) );
 		} else {
 			$expElement = $this->exporter->newAuxiliaryExpElement( $dataItem );
-			if ( is_null( $expElement ) ) {
+			if ( $expElement === null ) {
 				$expElement = $this->exporter->newExpElement( $dataItem );
 			}
 		}
@@ -237,7 +242,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createFilterConditionToMatchRegexPattern( $dataItem, &$joinVariable, $comparator, $pattern ) {
-
 		$flag = $this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_NOCASE ) ? 'i' : 's';
 
 		if ( $dataItem instanceof DIBlob ) {
@@ -257,7 +261,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 		$filterVariable = $this->conditionBuilder->getNextVariable();
 
-		$condition->condition = "?$joinVariable " . $skeyExpElement->getQName(). " ?$filterVariable .\n";
+		$condition->condition = "?$joinVariable " . $skeyExpElement->getQName() . " ?$filterVariable .\n";
 		$condition->matchElement = "?$joinVariable";
 
 		$filterCondition = new FilterCondition( "$comparator( ?$filterVariable, \"$pattern\", \"$flag\")", [] );
@@ -268,7 +272,6 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function lcase( $dataItem, &$orderByVariable, &$valueName ) {
-
 		$isValidDataItem = $dataItem instanceof DIBlob || $dataItem instanceof DIUri || $dataItem instanceof DIWikiPage;
 
 		// https://stackoverflow.com/questions/10660030/how-to-write-sparql-query-that-efficiently-matches-string-literals-while-ignorin

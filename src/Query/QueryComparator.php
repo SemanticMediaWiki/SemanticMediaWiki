@@ -3,7 +3,7 @@
 namespace SMW\Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.5.3
  *
  * @author mwjames
@@ -30,7 +30,7 @@ class QueryComparator {
 	 * @since 2.3
 	 *
 	 * @param string $comparatorList
-	 * @param boolean $strictComparators
+	 * @param bool $strictComparators
 	 */
 	public function __construct( $comparatorList, $strictComparators ) {
 		$this->comparators = $this->getEnabledComparators( $comparatorList, $strictComparators );
@@ -42,7 +42,6 @@ class QueryComparator {
 	 * @return self
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 			self::$instance = new self(
 				$GLOBALS['smwgQComparators'],
@@ -79,12 +78,11 @@ class QueryComparator {
 	 * @since 1.5.3
 	 *
 	 * @param string $string
-	 * @param integer $defaultComparator Item of the SMW_CMP_ enum
+	 * @param int $defaultComparator Item of the SMW_CMP_ enum
 	 *
-	 * @return integer Item of the SMW_CMP_ enum
+	 * @return int Item of the SMW_CMP_ enum
 	 */
 	public function getComparatorFromString( $string, $defaultComparator = SMW_CMP_EQ ) {
-
 		if ( $string === '' ) {
 			return SMW_CMP_EQ;
 		}
@@ -96,9 +94,9 @@ class QueryComparator {
 	 * @since 2.5
 	 *
 	 * @param string $value
-	 * @param integer $comparator
+	 * @param int $comparator
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function containsComparator( $value, $comparator = SMW_CMP_EQ ) {
 		return $this->extractComparatorFromString( $value ) === $comparator;
@@ -110,16 +108,15 @@ class QueryComparator {
 	 *
 	 * @since 2.4
 	 *
-	 * @param $value
+	 * @param &$value
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function extractComparatorFromString( &$value ) {
-
 		$comparator = SMW_CMP_EQ;
 
 		foreach ( $this->getComparatorStrings() as $string ) {
-			if ( strpos( $value, $string ) === 0 ) {
+			if ( strpos( $value ?? '', $string ) === 0 ) {
 				$comparator = $this->getComparatorFromString( substr( $value, 0, strlen( $string ) ) );
 				$value = substr( $value, strlen( $string ) );
 				break;
@@ -139,7 +136,6 @@ class QueryComparator {
 	 * @return string
 	 */
 	public function getStringForComparator( $comparator ) {
-
 		if ( $this->reverseCache === [] ) {
 			$this->reverseCache = array_flip( $this->comparators );
 		}
@@ -154,7 +150,6 @@ class QueryComparator {
 	}
 
 	private function getEnabledComparators( $comparatorList, $strictComparators ) {
-
 		// Note: Comparators that contain other comparators at the beginning of
 		// the string need to be at beginning of the array.
 		$comparators = [

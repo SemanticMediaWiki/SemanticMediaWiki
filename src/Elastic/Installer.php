@@ -2,16 +2,16 @@
 
 namespace SMW\Elastic;
 
-use SMW\Elastic\Indexer\Rebuilder\Rollover;
-use SMW\Elastic\Connection\Client as ElasticClient;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Indexer\Rebuilder\Rollover;
 use SMW\SetupFile;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -40,7 +40,7 @@ class Installer {
 	 *
 	 * @return SetupFile
 	 */
-	public function newSetupFile() : SetupFile {
+	public function newSetupFile(): SetupFile {
 		return new SetupFile();
 	}
 
@@ -49,7 +49,7 @@ class Installer {
 	 *
 	 * @return array
 	 */
-	public function setup() : array {
+	public function setup(): array {
 		return [
 			$this->rollover->update( ElasticClient::TYPE_DATA ),
 			$this->rollover->update( ElasticClient::TYPE_LOOKUP )
@@ -61,7 +61,7 @@ class Installer {
 	 *
 	 * @return array
 	 */
-	public function drop() : array {
+	public function drop(): array {
 		return [
 			$this->rollover->delete( ElasticClient::TYPE_DATA ),
 			$this->rollover->delete( ElasticClient::TYPE_LOOKUP )
@@ -76,7 +76,7 @@ class Installer {
 	 *
 	 * @return string
 	 */
-	public function rollover( $type, $version ) : string {
+	public function rollover( $type, $version ): string {
 		return $this->rollover->rollover( $type, $version );
 	}
 

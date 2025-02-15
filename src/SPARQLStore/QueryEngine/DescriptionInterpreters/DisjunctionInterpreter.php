@@ -17,7 +17,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -40,7 +40,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -60,7 +60,6 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
@@ -107,7 +106,6 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function doPreliminarySubDescriptionCheck( $subDescriptions, $joinVariable, $orderByProperty ) {
-
 		$count = count( $subDescriptions );
 
 		// empty Disjunction: true
@@ -131,7 +129,6 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function doResolveSubDescriptionsRecursively( $subDescriptions, $joinVariable, $orderByProperty ) {
-
 		// Using a stdClass as data container for simpler handling in follow-up tasks
 		// and as the class is not exposed publicly we don't need to create
 		// an extra "real" class to manage its elements
@@ -162,7 +159,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 			} elseif ( $subCondition instanceof WhereCondition ) {
 				$hasSafeSubconditions = $hasSafeSubconditions || $subCondition->isSafe();
 				$subConditionElements->unionCondition .= ( $subConditionElements->unionCondition ? ' UNION ' : '' ) .
-				                   "{\n" . $subCondition->condition . "}";
+								   "{\n" . $subCondition->condition . "}";
 			} elseif ( $subCondition instanceof FilterCondition ) {
 				$subConditionElements->filter .= ( $subConditionElements->filter ? ' || ' : '' ) . $subCondition->filter;
 			} elseif ( $subCondition instanceof SingletonCondition ) {
@@ -184,7 +181,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 					$subConditionElements->filter .= ( $subConditionElements->filter ? ' || ' : '' ) . "?$joinVariable = $matchElementName";
 				} else {
 					$subConditionElements->unionCondition .= ( $subConditionElements->unionCondition ? ' UNION ' : '' ) .
-				                   "{\n" . $subCondition->condition . " FILTER( ?$joinVariable = $matchElementName ) }";
+								   "{\n" . $subCondition->condition . " FILTER( ?$joinVariable = $matchElementName ) }";
 				}
 
 				// Relates to wikipage [[Foo::~*a*||~*A*]] in value regex disjunction
@@ -213,7 +210,6 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createConditionFromSubConditionElements( $subConditionElements, $joinVariable ) {
-
 		if ( $subConditionElements->unionCondition === '' ) {
 			return $this->createFilterCondition( $subConditionElements );
 		}

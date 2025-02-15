@@ -9,15 +9,14 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Specials\Ask\QueryInputWidget
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class QueryInputWidgetTest extends \PHPUnit_Framework_TestCase {
+class QueryInputWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	public function testInput() {
-
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$stringValidator->assertThatStringContains(

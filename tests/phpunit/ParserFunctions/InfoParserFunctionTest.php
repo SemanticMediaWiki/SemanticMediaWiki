@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\ParserFunctions\InfoParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since  2.4
  *
  * @author mwjames
  */
-class InfoParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class InfoParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\ParserFunctions\InfoParserFunction',
 			new InfoParserFunction()
@@ -27,7 +26,6 @@ class InfoParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandle() {
-
 		$instance = new InfoParserFunction();
 
 		$parser = $this->getMockBuilder( '\Parser' )
@@ -44,14 +42,14 @@ class InfoParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$processingResult->expects( $this->any() )
 			->method( 'getParameters' )
-			->will( $this->returnValue( [
+			->willReturn( [
 				'message'  => $processedParam,
 				'max-width'  => $processedParam,
 				'theme'  => $processedParam,
-				'icon'     => $processedParam ] ) );
+				'icon'     => $processedParam ] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->handle( $parser, $processingResult )
 		);
 	}

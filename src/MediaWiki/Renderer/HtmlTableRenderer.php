@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Renderer;
 use Html;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -66,7 +66,7 @@ class HtmlTableRenderer {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $htmlContext
+	 * @param bool $htmlContext
 	 */
 	public function __construct( $htmlContext = false ) {
 		$this->htmlContext = $htmlContext;
@@ -75,7 +75,7 @@ class HtmlTableRenderer {
 	/**
 	 * @since 2.1
 	 *
-	 * @param boolean $htmlContext
+	 * @param bool $htmlContext
 	 */
 	public function setHtmlContext( $htmlContext ) {
 		$this->htmlContext = $htmlContext;
@@ -85,7 +85,7 @@ class HtmlTableRenderer {
 	/**
 	 * @since 1.9
 	 *
-	 * @param boolean $transpose
+	 * @param bool $transpose
 	 *
 	 * @return TableBuilder
 	 */
@@ -189,7 +189,6 @@ class HtmlTableRenderer {
 	 * @return string
 	 */
 	public function getHtml( $attributes = [] ) {
-
 		$table = $this->transpose ? $this->buildTransposedTable() : $this->buildStandardTable();
 
 		if ( $this->transpose ) {
@@ -224,7 +223,6 @@ class HtmlTableRenderer {
 	}
 
 	private function doConcatenatedRows() {
-
 		if ( $this->htmlContext ) {
 			return Html::rawElement( 'tbody', [], implode( '', $this->tableRows ) );
 		}
@@ -290,7 +288,6 @@ class HtmlTableRenderer {
 	}
 
 	private function getTransposedCell( $index, $row ) {
-
 		if ( isset( $row['cells'][$index] ) ) {
 			return $row['cells'][$index];
 		}

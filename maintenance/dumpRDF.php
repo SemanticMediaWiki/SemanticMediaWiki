@@ -2,20 +2,20 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
 use SMW\Exporter\ExporterFactory;
 use SMW\Utils\CliMsgFormatter;
-use SMW\Maintenance\MaintenanceCheck;
-use Onoi\MessageReporter\MessageReporter;
-use Onoi\MessageReporter\CallbackMessageReporter;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Usage:
@@ -30,7 +30,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * --individuals      Export only pages that are no categories, properties, or types
  * --namespace <namespacelist>
  *                    Export only namespaces included in <namespacelist>
- *                    Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE|NS_CATEGORY|SMW_NS_CONCEPT|SMW_NS_PROPERTY|SMW_NS_RULE|SMW_NS_SCHEMA" with | being used as separator.
+ *                    Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE|NS_CATEGORY|SMW_NS_CONCEPT|SMW_NS_PROPERTY|SMW_NS_SCHEMA" with | being used as separator.
  *                    Uses constant namespace names.
  * --page <pagelist>  Export only pages included in the <pagelist> with | being used as a separator.
  *                    Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.
@@ -41,7 +41,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *                    https://en.wikipedia.org. This is sometimes necessary because
  *                    server name detection may fail in command line scripts.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -72,11 +72,10 @@ class dumpRDF extends \Maintenance {
 		$this->addOption( 'properties', 'Export only properties', false );
 		$this->addOption( 'individuals', 'Export only individuals', false );
 
-        $this->addOption('namespace','Export only namespaced included in the <namespacelist> with | being used as a separator. ' .
-            'Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE"',false,true);
+		$this->addOption( 'namespace', 'Export only namespaced included in the <namespacelist> with | being used as a separator. ' .
+			'Example: --namespace "NS_MAIN|NS_CUSTOMNAMESPACE"', false, true );
 
-
-        $this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .
+		$this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .
 								'Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.', false, true );
 
 		$this->addOption( 'server', '<server> The protocol and server name to as base URLs, e.g. http://en.wikipedia.org. ' .
@@ -100,7 +99,6 @@ class dumpRDF extends \Maintenance {
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter !== null ) {
 			return $this->messageReporter->reportMessage( $message );
 		}
@@ -114,9 +112,8 @@ class dumpRDF extends \Maintenance {
 	 * @since 2.0
 	 */
 	public function execute() {
-
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
-			exit ( $maintenanceCheck->getMessage() );
+			exit( $maintenanceCheck->getMessage() );
 		}
 
 		$cliMsgFormatter = new CliMsgFormatter();
@@ -141,9 +138,9 @@ class dumpRDF extends \Maintenance {
 			$cliMsgFormatter->section( 'Export task(s)' )
 		);
 
-		if (  $this->hasOption( 'file' ) ) {
+		if ( $this->hasOption( 'file' ) ) {
 			$this->reportMessage(
-				$cliMsgFormatter->twoCols( 'File',  $this->getOption( 'file' )  )
+				$cliMsgFormatter->twoCols( 'File', $this->getOption( 'file' ) )
 			);
 		}
 
@@ -153,7 +150,6 @@ class dumpRDF extends \Maintenance {
 	}
 
 	private function runExport() {
-
 		$delay = 0;
 		$pages = [];
 		$restrictNamespaceTo = false;
@@ -165,7 +161,7 @@ class dumpRDF extends \Maintenance {
 		$delayeach = ( $delay === 0 ) ? 0 : 1;
 
 		if ( $this->hasOption( 'e' ) ) {
-			$delayeach = intval( $this->getOption( 'e' )  );
+			$delayeach = intval( $this->getOption( 'e' ) );
 		}
 
 		if ( $this->hasOption( 'categories' ) ) {
@@ -177,21 +173,20 @@ class dumpRDF extends \Maintenance {
 		} elseif ( $this->hasOption( 'properties' ) ) {
 			$restrictNamespaceTo = SMW_NS_PROPERTY;
 		} elseif ( $this->hasOption( 'individuals' ) ) {
-			$restrictNamespaceTo = - 1;
+			$restrictNamespaceTo = -1;
 		}
 
 		if ( $this->hasOption( 'page' ) ) {
 			$pages = explode( '|', $this->getOption( 'page' ) );
 		}
 
-        if ( $this->hasOption( 'namespace' ) ) {
-            $restrictNamespaceTo = array_map('constant', explode( '|', $this->getOption( 'namespace' ) ) );
-        }
-
-        if ( $this->hasOption( 'server' ) ) {
-			$GLOBALS['wgServer'] = $this->getOption( 'server' );
+		if ( $this->hasOption( 'namespace' ) ) {
+			$restrictNamespaceTo = array_map( 'constant', explode( '|', $this->getOption( 'namespace' ) ) );
 		}
 
+		if ( $this->hasOption( 'server' ) ) {
+			$GLOBALS['wgServer'] = $this->getOption( 'server' );
+		}
 
 		$exporterFactory = new ExporterFactory();
 
@@ -223,5 +218,7 @@ class dumpRDF extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = dumpRDF::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

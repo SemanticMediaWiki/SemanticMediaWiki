@@ -11,12 +11,12 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\QueryComparator;
 use SMW\Site;
 use SMWDataValue as DataValue;
-use SMW\Query\QueryComparator;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -35,7 +35,7 @@ class DescriptionProcessor {
 	private $descriptionFactory;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $queryFeatures;
 
@@ -45,7 +45,7 @@ class DescriptionProcessor {
 	private $contextPage;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $selfReference = false;
 
@@ -57,7 +57,7 @@ class DescriptionProcessor {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $queryFeatures
+	 * @param int $queryFeatures
 	 */
 	public function __construct( $queryFeatures = false ) {
 		$this->queryFeatures = $queryFeatures === false ? $GLOBALS['smwgQFeatures'] : $queryFeatures;
@@ -70,7 +70,7 @@ class DescriptionProcessor {
 	 *
 	 * @param DIWikiPage|null $contextPage
 	 */
-	public function setContextPage( DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?DIWikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 
@@ -94,7 +94,7 @@ class DescriptionProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function containsSelfReference() {
 		return $this->selfReference;
@@ -106,7 +106,6 @@ class DescriptionProcessor {
 	 * @param array|string $error
 	 */
 	public function addError( $error ) {
-
 		if ( !is_array( $error ) ) {
 			$error = (array)$error;
 		}
@@ -134,7 +133,6 @@ class DescriptionProcessor {
 	 * @return Description|null
 	 */
 	public function newDescriptionForPropertyObjectValue( DIProperty $property, $chunk ) {
-
 		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property );
 		$dataValue->setContextPage( $this->contextPage );
 
@@ -157,7 +155,6 @@ class DescriptionProcessor {
 	 * @return Description|null
 	 */
 	public function newDescriptionForWikiPageValueChunk( $chunk ) {
-
 		// Only create a simple WpgValue to initiate the query description target
 		// operation. If the chunk contains something like "≤Issue/1220" then the
 		// WpgValue would return with an error as it cannot parse ≤ as/ legal
@@ -205,7 +202,7 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function asOr( Description $currentDescription = null, Description $newDescription = null ) {
+	public function asOr( ?Description $currentDescription = null, ?Description $newDescription = null ) {
 		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_DISJUNCTION_QUERY );
 	}
 
@@ -217,7 +214,7 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function asAnd( Description $currentDescription = null, Description $newDescription = null ) {
+	public function asAnd( ?Description $currentDescription = null, ?Description $newDescription = null ) {
 		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_CONJUNCTION_QUERY );
 	}
 
@@ -233,8 +230,7 @@ class DescriptionProcessor {
 	 * The return value is the expected combined description. The object $currentDescription will
 	 * also be changed (if it was non-NULL).
 	 */
-	private function newCompoundDescription( Description $currentDescription = null, Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ) {
-
+	private function newCompoundDescription( ?Description $currentDescription = null, ?Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ) {
 		$notallowedmessage = 'smw_noqueryfeature';
 
 		if ( $newDescription instanceof SomeProperty ) {
@@ -268,9 +264,8 @@ class DescriptionProcessor {
 	}
 
 	private function newCompoundDescriptionByType( $compoundType, $currentDescription, $newDescription ) {
-
 		if ( ( ( $compoundType & SMW_CONJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Conjunction ) ) ||
-		     ( ( $compoundType & SMW_DISJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Disjunction ) ) ) { // use existing container
+			 ( ( $compoundType & SMW_DISJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Disjunction ) ) ) { // use existing container
 			$currentDescription->addDescription( $newDescription );
 			return $currentDescription;
 		} elseif ( ( $compoundType & SMW_CONJUNCTION_QUERY ) != 0 ) { // make new conjunction
@@ -281,7 +276,6 @@ class DescriptionProcessor {
 	}
 
 	private function newConjunction( $currentDescription, $newDescription ) {
-
 		if ( $this->queryFeatures & SMW_CONJUNCTION_QUERY ) {
 			return $this->descriptionFactory->newConjunction( [ $currentDescription, $newDescription ] );
 		}
@@ -292,7 +286,6 @@ class DescriptionProcessor {
 	}
 
 	private function newDisjunction( $currentDescription, $newDescription ) {
-
 		if ( $this->queryFeatures & SMW_DISJUNCTION_QUERY ) {
 			return $this->descriptionFactory->newDisjunction( [ $currentDescription, $newDescription ] );
 		}

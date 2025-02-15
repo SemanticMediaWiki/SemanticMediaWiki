@@ -13,10 +13,10 @@ use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\Message;
 use SMW\Options;
+use SMW\ProcessingError;
 use SMW\Query\QueryComparator;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Utils\CharArmor;
-use SMW\ProcessingError;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided
@@ -151,7 +151,7 @@ abstract class SMWDataValue {
 	/**
 	 * Boolean indicating if there where any errors.
 	 * Should be modified accordingly when modifying $mErrors.
-	 * @var boolean
+	 * @var bool
 	 */
 	private $mHasErrors = false;
 
@@ -186,7 +186,7 @@ abstract class SMWDataValue {
 	private $descriptionBuilderRegistry;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $callables = [];
 
@@ -218,7 +218,6 @@ abstract class SMWDataValue {
 	 * @param mixed $caption
 	 */
 	public function setUserValue( $value, $caption = false ) {
-
 		$this->m_dataitem = null;
 		$this->mErrors = []; // clear errors
 		$this->mHasErrors = false;
@@ -260,8 +259,8 @@ abstract class SMWDataValue {
 	 * in spite of it being of the right basic type. False is only returned
 	 * if the data item is fundamentally incompatible with the data value.
 	 *
-	 * @param $dataitem SMWDataItem
-	 * @return boolean
+	 * @param $dataItem SMWDataItem
+	 * @return bool
 	 */
 	public function setDataItem( SMWDataItem $dataItem ) {
 		$this->m_dataitem = null;
@@ -312,7 +311,7 @@ abstract class SMWDataValue {
 	 *
 	 * @param SMWDIWikiPage|null $contextPage
 	 */
-	public function setContextPage( SMWDIWikiPage $contextPage = null ) {
+	public function setContextPage( ?SMWDIWikiPage $contextPage = null ) {
 		$this->m_contextPage = $contextPage;
 
 		$this->setOption(
@@ -402,7 +401,6 @@ abstract class SMWDataValue {
 	 * @param array|string|ProcessingError $error
 	 */
 	public function addError( $error ) {
-
 		if ( $error instanceof ProcessingError ) {
 			$hash = $error->getHash();
 			$type = $error->getType();
@@ -432,10 +430,9 @@ abstract class SMWDataValue {
 	 * @since 2.4
 	 *
 	 * @param array|string|ProcessingError $error
-	 * @param integer|null $type
+	 * @param int|null $type
 	 */
 	public function addErrorMsg( $error, $type = Message::TEXT ) {
-
 		if ( $error instanceof ProcessingError ) {
 			$hash = $error->getHash();
 			$type = $error->getType();
@@ -481,7 +478,6 @@ abstract class SMWDataValue {
 	 * @return array
 	 */
 	public function getErrorsByType( $type = null ) {
-
 		if ( $type === null ) {
 			return $this->errorsByType;
 		}
@@ -527,7 +523,6 @@ abstract class SMWDataValue {
 	 * @throws InvalidArgumentException
 	 */
 	public function getQueryDescription( $value ) {
-
 		$descriptionBuilderRegistry = $this->dataValueServiceFactory->getDescriptionBuilderRegistry();
 		$descriptionBuilder = $descriptionBuilderRegistry->getDescriptionBuilder( $this );
 
@@ -550,7 +545,7 @@ abstract class SMWDataValue {
 	 * DataValue is expected to register a DescriptionBuilder with
 	 * DVDescriptionDeserializerRegistry.
 	 */
-	static public function prepareValue( &$value, &$comparator ) {
+	public static function prepareValue( &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 	}
 
@@ -569,7 +564,6 @@ abstract class SMWDataValue {
 	 * @return SMWDataItem|SMWDIError
 	 */
 	public function getDataItem() {
-
 		if ( $this->isValid() ) {
 			return $this->m_dataitem;
 		}
@@ -696,13 +690,12 @@ abstract class SMWDataValue {
 	 * Return text serialisation of info links. Ensures more uniform layout
 	 * throughout wiki (Factbox, Property pages, ...).
 	 *
-	 * @param integer $outputFormat Element of the SMW_OUTPUT_ enum
+	 * @param int $outputFormat Element of the SMW_OUTPUT_ enum
 	 * @param Linker|null|bool $linker
 	 *
 	 * @return string
 	 */
 	public function getInfolinkText( $outputFormat, $linker = null ) {
-
 		if ( $this->getOption( self::OPT_DISABLE_INFOLINKS ) === true ) {
 			return '';
 		}
@@ -729,7 +722,6 @@ abstract class SMWDataValue {
 	 * but is always an array.
 	 */
 	public function getInfolinks() {
-
 		if ( $this->infoLinksProvider === null ) {
 			$this->infoLinksProvider = $this->dataValueServiceFactory->newInfoLinksProvider( $this );
 		}
@@ -757,7 +749,7 @@ abstract class SMWDataValue {
 	 * Convenience method that checks if the value that is used to sort
 	 * data of this type is numeric. This only works if the value is set.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isNumeric() {
 		if ( isset( $this->m_dataitem ) ) {
@@ -771,7 +763,7 @@ abstract class SMWDataValue {
 	 * Return true if a value was defined and understood by the given type,
 	 * and false if parsing errors occurred or no value was given.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid() {
 		return !$this->mHasErrors && isset( $this->m_dataitem );
@@ -787,7 +779,7 @@ abstract class SMWDataValue {
 	 *
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUse() {
 		return true;
@@ -796,7 +788,7 @@ abstract class SMWDataValue {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRestricted() {
 		return false;
@@ -811,7 +803,6 @@ abstract class SMWDataValue {
 	 * @throws RuntimeException
 	 */
 	public function addCallable( $key, callable $callable ) {
-
 		if ( isset( $this->callables[$key] ) ) {
 			throw new RuntimeException( "`$key` is alread in use, please clear the callable first!" );
 		}
@@ -826,7 +817,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return bool
 	 */
-	public function hasCallable( $key ) : bool {
+	public function hasCallable( $key ): bool {
 		return isset( $this->callables[$key] );
 	}
 
@@ -838,8 +829,7 @@ abstract class SMWDataValue {
 	 * @return callable
 	 * @throws RuntimeException
 	 */
-	public function getCallable( $key ) : callable {
-
+	public function getCallable( $key ): callable {
 		if ( !isset( $this->callables[$key] ) ) {
 			throw new RuntimeException( "`$key` as callable is unknown or not registered!" );
 		}
@@ -861,8 +851,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return Options|null $options
 	 */
-	public function copyOptions( Options $options = null ) {
-
+	public function copyOptions( ?Options $options = null ) {
 		if ( $options === null ) {
 			return;
 		}
@@ -875,11 +864,12 @@ abstract class SMWDataValue {
 	/**
 	 * @since 2.4
 	 *
-	 * @return string $key
-	 * @param mxied $value
+	 * @param string $key
+	 * @param mixed $value
+	 *
+	 * @return void
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -895,7 +885,6 @@ abstract class SMWDataValue {
 	 * @return mixed|false
 	 */
 	public function getOption( $key, $default = false ) {
-
 		if ( $this->options !== null && $this->options->has( $key ) ) {
 			return $this->options->get( $key );
 		}
@@ -906,12 +895,11 @@ abstract class SMWDataValue {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeature( $feature ) {
-
 		if ( $this->options !== null ) {
 			return $this->options->isFlagSet( 'smwgDVFeatures', (int)$feature );
 		}
@@ -960,7 +948,7 @@ abstract class SMWDataValue {
 	 *
 	 * @param SMWDataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	abstract protected function loadDataItem( SMWDataItem $dataItem );
 
@@ -984,7 +972,6 @@ abstract class SMWDataValue {
 	 * @since 3.1
 	 */
 	public function checkConstraints() {
-
 		if ( $this->dataValueServiceFactory === null ) {
 			return;
 		}

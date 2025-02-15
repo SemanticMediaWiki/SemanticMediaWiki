@@ -10,18 +10,18 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Maintenance\ExceptionFileLogger
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
+class ExceptionFileLoggerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $file;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->file = $this->getMockBuilder( '\SMW\Utils\File' )
@@ -30,7 +30,6 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExceptionFileLogger::class,
 			new ExceptionFileLogger()
@@ -38,26 +37,24 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetter() {
-
 		$instance = new ExceptionFileLogger();
 
 		$instance->setOptions( new Options( [
 			'exception-log' => __DIR__
 		] ) );
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->getExceptionFile()
 		);
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->getExceptionCount()
 		);
 	}
 
 	public function testDoWriteExceptionLog() {
-
 		$this->file->expects( $this->once() )
 			->method( 'write' );
 
@@ -68,7 +65,7 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 			new \Exception( 'Bar' )
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->getExceptionCount()
 		);

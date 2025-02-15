@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Query\Processor\DefaultParamDefinition
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class DefaultParamDefinitionTest extends \PHPUnit_Framework_TestCase {
+class DefaultParamDefinitionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DefaultParamDefinition::class,
 			new DefaultParamDefinition()
@@ -27,7 +26,6 @@ class DefaultParamDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildParamDefinitions() {
-
 		$vars = [
 			'smwgResultFormats' => [],
 			'smwgResultAliases' => [],
@@ -36,16 +34,15 @@ class DefaultParamDefinitionTest extends \PHPUnit_Framework_TestCase {
 			'smwgQUpperbound' => 100
 		];
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			DefaultParamDefinition::buildParamDefinitions( $vars )
 		);
 	}
 
 	public function testGetParamDefinitions() {
+		$this->assertIsArray(
 
-		$this->assertInternalType(
-			'array',
 			DefaultParamDefinition::getParamDefinitions()
 		);
 	}

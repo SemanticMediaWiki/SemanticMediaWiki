@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class IncomingSemanticDataValidator extends \PHPUnit_Framework_Assert {
+class IncomingSemanticDataValidator extends \PHPUnit\Framework\Assert {
 
 	use PHPUnitCompat;
 
@@ -40,7 +40,6 @@ class IncomingSemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $message
 	 */
 	public function assertThatIncomingDataAreSet( array $incomingSemanticData, DIWikiPage $subject, $message ) {
-
 		if ( !isset( $incomingSemanticData['propertyKeys'] ) ) {
 			return;
 		}
@@ -62,7 +61,6 @@ class IncomingSemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function doAssertPropertiesAndValues( $incomingSemanticData, $incomingProperties, $subject, $message ) {
-
 		$incomingPropertyValues = [];
 
 		foreach ( $incomingProperties as $property ) {

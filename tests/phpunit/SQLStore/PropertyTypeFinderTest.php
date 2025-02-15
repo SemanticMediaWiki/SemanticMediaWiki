@@ -8,16 +8,16 @@ use SMW\SQLStore\PropertyTypeFinder;
  * @covers \SMW\SQLStore\PropertyTypeFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class PropertyTypeFinderTest extends \PHPUnit_Framework_TestCase {
+class PropertyTypeFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -26,7 +26,6 @@ class PropertyTypeFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyTypeFinder::class,
 			new PropertyTypeFinder( $this->connection )
@@ -34,17 +33,16 @@ class PropertyTypeFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCountByType() {
-
 		$row = new \stdClass;
 		$row->count = 42;
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
-				$this->equalTo( 'smw_fpt_type' ),
+				'smw_fpt_type',
 				$this->anything(),
-				$this->equalTo( [ 'o_serialized' => 'http://semantic-mediawiki.org/swivt/1.0#_txt' ] ) )
-			->will( $this->returnValue( $row ) );
+				[ 'o_serialized' => 'http://semantic-mediawiki.org/swivt/1.0#_txt' ] )
+			->willReturn( $row );
 
 		$instance = new PropertyTypeFinder(
 			$this->connection

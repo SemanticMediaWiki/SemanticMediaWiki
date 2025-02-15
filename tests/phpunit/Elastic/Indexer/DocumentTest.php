@@ -2,24 +2,21 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
-use SMW\Elastic\Indexer\Document;
 use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
-use SMW\Tests\TestEnvironment;
+use SMW\Elastic\Indexer\Document;
 
 /**
  * @covers \SMW\Elastic\Indexer\Document
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class DocumentTest extends \PHPUnit_Framework_TestCase {
+class DocumentTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Document::class,
 			new Document( 42 )
@@ -27,7 +24,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetId() {
-
 		$instance = new Document( 42, [] );
 
 		$this->assertEquals(
@@ -37,7 +33,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSubject() {
-
 		$instance = new Document( 42, [ 'subject' => [ 'serialization' => 'Foo#0##' ] ] );
 
 		$this->assertEquals(
@@ -47,7 +42,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPriorityDeleteList() {
-
 		$instance = new Document( 42, [] );
 		$instance->setPriorityDeleteList( [ 1001, 1002 ] );
 
@@ -58,7 +52,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsType_Default() {
-
 		$instance = new Document( 42, [] );
 
 		$this->assertTrue(
@@ -67,7 +60,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetField() {
-
 		$instance = new Document( 42, [] );
 		$instance->setField( 'foo_field', 'bar_value' );
 
@@ -78,7 +70,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSubDocument() {
-
 		$subDocument = new Document( 1001 );
 
 		$instance = new Document( 42 );
@@ -104,7 +95,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTextBody() {
-
 		$instance = new Document( 42 );
 		$instance->setTextBody( 'some text' );
 
@@ -115,7 +105,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJsonSerialize() {
-
 		$instance = new Document( 42, [ 'subject' => [ 'serialization' => 'Foo#0##' ] ] );
 
 		$this->assertEquals(
@@ -125,7 +114,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddSubDocument_ToArray() {
-
 		$expected = [
 			'id'   => 42,
 			'type' => 'type/insert',

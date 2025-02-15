@@ -10,7 +10,7 @@ use SMWQueryResult;
 /**
  * Print query results in lists.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @author Markus Krötzsch
  */
@@ -74,7 +74,6 @@ class ListResultPrinter extends ResultPrinter {
 	 * @return ListResultBuilder
 	 */
 	private function getBuilder( SMWQueryResult $queryResult ) {
-
 		$builder = new ListResultBuilder( $queryResult, $this->mLinker, $GLOBALS['smwgPlainList'] );
 
 		$builder->set( $this->params );
@@ -99,19 +98,17 @@ class ListResultPrinter extends ResultPrinter {
 		return $this->params['template'] !== '' || $this->params['introtemplate'] !== '' || $this->params['outrotemplate'] !== '';
 	}
 
-
 	/**
 	 * Get text for further results link. Used only during getResultText().
 	 *
 	 * @since 1.9
 	 *
 	 * @param SMWQueryResult $res
-	 * @param integer $outputMode
+	 * @param int $outputMode
 	 *
 	 * @return string
 	 */
 	private function getFurtherResultsText( SMWQueryResult $res, $outputMode ) {
-
 		if ( $this->linkFurtherResults( $res ) ) {
 
 			$link = $this->getFurtherResultsLink( $res, $outputMode );
@@ -125,7 +122,7 @@ class ListResultPrinter extends ResultPrinter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function supportsRecursiveAnnotation() {
 		return true;
@@ -142,7 +139,6 @@ class ListResultPrinter extends ResultPrinter {
 	 * @throws \Exception
 	 */
 	public function getParamDefinitions( array $definitions ) {
-
 		$listFormatDefinitions = [
 
 			'propsep' => [

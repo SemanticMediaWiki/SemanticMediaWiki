@@ -7,7 +7,7 @@ use SMW\Query\PrintRequestFactory;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -34,7 +34,7 @@ class ParamListProcessor {
 	 *
 	 * @param PrintRequestFactory|null $printRequestFactory
 	 */
-	public function __construct( PrintRequestFactory $printRequestFactory = null ) {
+	public function __construct( ?PrintRequestFactory $printRequestFactory = null ) {
 		$this->printRequestFactory = $printRequestFactory;
 
 		if ( $this->printRequestFactory === null ) {
@@ -51,7 +51,6 @@ class ParamListProcessor {
 	 * @return array
 	 */
 	public function format( array $paramList, $type ) {
-
 		if ( $type === self::FORMAT_LEGACY ) {
 			return $this->legacy_format( $paramList );
 		}
@@ -63,12 +62,11 @@ class ParamListProcessor {
 	 * @since 3.0
 	 *
 	 * @param array $parameters
-	 * @param boolean $showMode
+	 * @param bool $showMode
 	 *
 	 * @return array
 	 */
 	public function preprocess( array $parameters, $showMode = false ) {
-
 		$previousPrintout = null;
 
 		$serialization = [
@@ -89,6 +87,9 @@ class ParamListProcessor {
 			}
 
 			$param = $this->encodeEq( $param );
+			if ( $param === null ) {
+				continue;
+			}
 
 			// #1258 (named_args -> named args)
 			// accept 'name' => 'value' just as '' => 'name=value':
@@ -133,7 +134,6 @@ class ParamListProcessor {
 	}
 
 	private function legacy_format( array $paramList ) {
-
 		$printouts = [];
 
 		foreach ( $paramList['printouts'] as $k => $request ) {
@@ -189,15 +189,14 @@ class ParamListProcessor {
 		// request that contains `-3D` string
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
-			function( array $matches ) {
+			static function ( array $matches ) {
 				return str_replace( [ '=' ], [ '0x003D' ], $matches[0] );
 			},
-			$param
+			$param ?? ''
 		);
 	}
 
 	private function addPrintRequest( $name, $param, &$previousPrintout, array &$serialization ) {
-
 		$param = substr( $param, 1 );
 
 		// Currently we don't filter any duplicates hence the additional
@@ -212,7 +211,6 @@ class ParamListProcessor {
 	}
 
 	private function addThisPrintRequest( $name, $param, &$previousPrintout, array &$serialization ) {
-
 		$param = substr( $param, 1 );
 
 		$parts = explode( '=', $param, 2 );
@@ -221,7 +219,6 @@ class ParamListProcessor {
 	}
 
 	private function addPrintRequestParameter( $name, $param, $previousPrintout, array &$serialization ) {
-
 		if ( $previousPrintout === null ) {
 			return;
 		}
@@ -245,7 +242,6 @@ class ParamListProcessor {
 	}
 
 	private function addOtherParameters( $name, $param, array &$serialization, $showMode ) {
-
 		// #1645
 		$parts = $showMode && $name == 0 ? $param : explode( '=', $param, 2 );
 

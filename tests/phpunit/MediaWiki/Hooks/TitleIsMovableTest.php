@@ -9,15 +9,14 @@ use Title;
  * @covers \SMW\MediaWiki\Hooks\TitleIsMovable
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class TitleIsMovableTest extends \PHPUnit_Framework_TestCase {
+class TitleIsMovableTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -29,7 +28,6 @@ class TitleIsMovableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPredefinedPropertyPageIsNotMovable() {
-
 		$title = Title::newFromText( 'Modification date', SMW_NS_PROPERTY );
 		$isMovable = true;
 
@@ -45,7 +43,6 @@ class TitleIsMovableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUserdefinedPropertyPageIsMovable() {
-
 		$title = Title::newFromText( 'Foo', SMW_NS_PROPERTY );
 		$isMovable = true;
 
@@ -61,7 +58,6 @@ class TitleIsMovableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonPropertyPageIsAlwaysMovable() {
-
 		$title = Title::newFromText( 'Foo', NS_MAIN );
 		$isMovable = true;
 
@@ -77,7 +73,6 @@ class TitleIsMovableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRulePageIsAlwaysNotMovable() {
-
 		$title = Title::newFromText( 'Foo', SMW_NS_SCHEMA );
 		$isMovable = true;
 

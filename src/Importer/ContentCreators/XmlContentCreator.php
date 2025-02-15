@@ -9,7 +9,7 @@ use SMW\Services\ImporterServiceFactory;
 use SMW\Utils\CliMsgFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -71,7 +71,6 @@ class XmlContentCreator implements ContentCreator {
 	 * @param ImportContents $importContents
 	 */
 	public function create( ImportContents $importContents ) {
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$this->action = 'DONE';
 
@@ -124,7 +123,6 @@ class XmlContentCreator implements ContentCreator {
 	 * @param array $pageInfo
 	 */
 	public function reportPage( $title, $foreignTitle, $revisionCount, $successCount, $pageInfo ) {
-
 		// Invalid or non-importable title
 		if ( $title === null ) {
 			return;
@@ -143,7 +141,6 @@ class XmlContentCreator implements ContentCreator {
 	}
 
 	private function reportAction() {
-
 		if ( $this->action === '' ) {
 			return;
 		}

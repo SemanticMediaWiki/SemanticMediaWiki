@@ -2,21 +2,21 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
-use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerIndicatorProvider;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
+use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerIndicatorProvider;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerIndicatorProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
+class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -26,7 +26,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	private $entityCache;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -42,7 +42,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnValue( $this->errorLookup ) );
+			->willReturn( $this->errorLookup );
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
@@ -54,16 +54,15 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerIndicatorProvider',
 			new ConstraintErrorEntityExaminerIndicatorProvider( $this->store, $this->entityCache )
@@ -76,59 +75,54 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testGetName() {
-
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getName()
 		);
 	}
 
 	public function testGetIndicators() {
-
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getIndicators()
 		);
 	}
 
 	public function testGetModules() {
-
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getModules()
 		);
 	}
 
 	public function testGetInlineStyle() {
-
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getInlineStyle()
 		);
 	}
 
 	public function testHasIndicator_DisabledCheck() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
@@ -146,10 +140,9 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testHasIndicator_FromErrorLookup() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' );
@@ -159,7 +152,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 
 		$this->errorLookup->expects( $this->once() )
 			->method( 'buildArray' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -172,17 +165,16 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
 
 	public function testHasIndicator_FromErrorLookup_NoErrors() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' );
@@ -192,7 +184,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 
 		$this->errorLookup->expects( $this->once() )
 			->method( 'buildArray' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -217,10 +209,9 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 	}
 
 	public function testHasIndicator_FromCache() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$this->errorLookup->expects( $this->never() )
 			->method( 'buildArray' );
@@ -236,8 +227,8 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit_Framew
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}

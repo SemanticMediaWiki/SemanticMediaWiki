@@ -13,18 +13,18 @@ use SMWExpData as ExpData;
  * @covers \SMW\Exporter\ResourceBuilders\PropertyDescriptionValueResourceBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PropertyDescriptionValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class PropertyDescriptionValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -33,13 +33,12 @@ class PropertyDescriptionValueResourceBuilderTest extends \PHPUnit_Framework_Tes
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			PropertyDescriptionValueResourceBuilder::class,
 			new PropertyDescriptionValueResourceBuilder()
@@ -47,7 +46,6 @@ class PropertyDescriptionValueResourceBuilderTest extends \PHPUnit_Framework_Tes
 	}
 
 	public function testIsNotResourceBuilderForPropertyDescription() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new PropertyDescriptionValueResourceBuilder();
@@ -58,7 +56,6 @@ class PropertyDescriptionValueResourceBuilderTest extends \PHPUnit_Framework_Tes
 	}
 
 	public function testAddResourceValueForPropertyDescription() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_PDESC' );
 
 		$monolingualTextValue = $this->dataValueFactory->newDataValueByProperty(

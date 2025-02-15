@@ -7,7 +7,7 @@ use SMW\SemanticData;
 use SMWDIBlob as DIBlob;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -28,7 +28,6 @@ class PopulationDensityProperty extends FixtureProperty {
 	 * @return SemanticData
 	 */
 	public function getDependencies() {
-
 		$semanticData = parent::getDependencies();
 
 		$populationProperty = new PopulationProperty();

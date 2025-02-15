@@ -10,7 +10,7 @@ use SMWQueryProcessor;
  *
  * @ingroup Api
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -22,13 +22,12 @@ class Ask extends Query {
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
-
 		$params = $this->extractRequestParams();
 
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
 		$outputFormat = 'json';
 
-		list( $queryString, $parameters, $printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $parameterFormatter->getAskApiParameters(), false );
+		[ $queryString, $parameters, $printouts ] = SMWQueryProcessor::getComponentsFromFunctionParams( $parameterFormatter->getAskApiParameters(), false );
 
 		$queryResult = $this->getQueryResult( $this->getQuery(
 			$queryString,

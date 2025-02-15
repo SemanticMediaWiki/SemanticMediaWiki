@@ -2,21 +2,22 @@
 
 namespace SMW\Tests\Integration\Query\ResultPrinters;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ResultPrinterIntegrationTest extends DatabaseTestCase {
+class ResultPrinterIntegrationTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 
@@ -26,7 +27,7 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 	private $stringBuilder;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -36,7 +37,7 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->subjects );
 		parent::tearDown();
 	}
@@ -46,12 +47,11 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 	 * @query {{#ask: [[Modification date::+]]|limit=0|searchlabel= }}
 	 */
 	public function testLimitNullWithEmptySearchlabel() {
-
 		foreach ( [ 'Foo', 'Bar', 'テスト' ] as $title ) {
 
 			$this->pageCreator
 				->createPage( Title::newFromText( $title ) )
-				->doEdit( '[[Category:LimitNullForEmptySearchlabel]]');
+				->doEdit( '[[Category:LimitNullForEmptySearchlabel]]' );
 
 			$this->subjects[] = $this->pageCreator->getPage();
 		}
@@ -82,12 +82,11 @@ class ResultPrinterIntegrationTest extends DatabaseTestCase {
 	 * @query {{#ask: [[Modification date::+]]|limit=0|searchlabel=do something }}
 	 */
 	public function testLimitNullWithDescriptiveSearchlabel() {
-
 		foreach ( [ 'Foo', 'Bar', 'テスト' ] as $title ) {
 
 			$this->pageCreator
 				->createPage( Title::newFromText( $title ) )
-				->doEdit( '[[Category:LimitNullForNotEmptySearchlabel]]');
+				->doEdit( '[[Category:LimitNullForNotEmptySearchlabel]]' );
 
 			$this->subjects[] = $this->pageCreator->getPage();
 		}

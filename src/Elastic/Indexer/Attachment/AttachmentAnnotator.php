@@ -10,7 +10,7 @@ use SMWDIContainer as DIContainer;
 use SMWDITime as DITime;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class AttachmentAnnotator implements PropertyAnnotator {
 	private $containerSemanticData;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $doc = [];
 
@@ -73,7 +73,6 @@ class AttachmentAnnotator implements PropertyAnnotator {
 	 * @return PropertyAnnotator
 	 */
 	public function addAnnotation() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		// @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/using-ingest-attachment.html

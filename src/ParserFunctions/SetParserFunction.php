@@ -2,15 +2,14 @@
 
 namespace SMW\ParserFunctions;
 
-use Parser;
 use SMW\DataValueFactory;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\MediaWiki\StripMarkerDecoder;
 use SMW\MessageFormatter;
-use SMW\ParserData;
-use SMW\SemanticData;
-use SMW\ParserParameterProcessor;
 use SMW\Parser\AnnotationProcessor;
+use SMW\ParserData;
+use SMW\ParserParameterProcessor;
+use SMW\SemanticData;
 
 /**
  * Class that provides the {{#set}} parser function
@@ -18,7 +17,7 @@ use SMW\Parser\AnnotationProcessor;
  * @see http://semantic-mediawiki.org/wiki/Help:Properties_and_types#Silent_annotations_using_.23set
  * @see http://www.semantic-mediawiki.org/wiki/Help:Setting_values
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author Markus Krötzsch
@@ -86,7 +85,6 @@ class SetParserFunction {
 	 * @return string|null
 	 */
 	public function parse( ParserParameterProcessor $parameters ) {
-
 		$count = 0;
 		$template = '';
 		$subject = $this->parserData->getSemanticData()->getSubject();
@@ -149,7 +147,6 @@ class SetParserFunction {
 	}
 
 	private function addFieldsToTemplate( $template, $dataValue, $property, $value, $isLastElement, &$count ) {
-
 		if ( $template === '' || !$dataValue->isValid() ) {
 			return '';
 		}

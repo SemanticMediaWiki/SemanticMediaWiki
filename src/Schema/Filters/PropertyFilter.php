@@ -2,17 +2,15 @@
 
 namespace SMW\Schema\Filters;
 
-use SMW\Schema\SchemaList;
-use SMW\Schema\SchemaFilter;
+use RuntimeException;
+use SMW\DIProperty;
 use SMW\Schema\ChainableFilter;
-use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Compartment;
 use SMW\Schema\Rule;
-use SMW\DIProperty;
-use RuntimeException;
+use SMW\Schema\SchemaFilter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -22,7 +20,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 	use FilterTrait;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $properties = [];
 
@@ -45,12 +43,11 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'property';
 	}
 
 	private function match( Compartment $compartment ) {
-
 		if ( $this->isLoaded === false ) {
 			$this->loadProperties();
 		}
@@ -77,7 +74,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			/**
 			 * `oneOf` matches against only one property
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"property": { "oneOf": [ "Foo", "Bar" ] }
@@ -85,15 +82,15 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = $this->matchOneOf( (array)$conditions['oneOf'] );
 		} elseif ( isset( $conditions['anyOf'] ) ) {
 			/**
 			 * `anyOf` matches against any (one or more) property
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"property": { "anyOf": [ "Foo", "Bar" ] }
@@ -101,15 +98,15 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = $this->matchAnyOf( (array)$conditions['anyOf'] );
 		} elseif ( isset( $conditions['allOf'] ) ) {
 			/**
 			 * `allOf` matches against all properties
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"property": { "allOf": [ "Foo", "Bar" ] }
@@ -117,8 +114,8 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = $this->matchAllOf( (array)$conditions['allOf'] );
 		} elseif ( isset( $conditions['not'] ) ) {
@@ -126,7 +123,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 * `not` on multiple properties means if "any of" them is validated then
 			 * the condition is fullfilled.
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"property": { "not": [ "Foo", "Bar" ] }
@@ -134,8 +131,8 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = !$this->matchAnyOf( (array)$conditions['not'] );
 			unset( $conditions['not'] );
@@ -147,7 +144,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 
 		if ( $matchedCondition && isset( $conditions['not'] ) ) {
 			/**
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"property": { "not": [ "Foobar" ], "oneOf": [ "Foo", "Bar" ] }
@@ -155,8 +152,8 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = !$this->matchAnyOf( (array)$conditions['not'] );
 
@@ -172,7 +169,6 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 	}
 
 	private function loadProperties() {
-
 		// Allow properties to be lazy loaded when for example those are
 		// fetched from the DB
 		if ( is_callable( $this->properties ) ) {
@@ -199,8 +195,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		$this->isLoaded = true;
 	}
 
-	private function matchOneOf( array $properties ) : bool {
-
+	private function matchOneOf( array $properties ): bool {
 		$count = 0;
 
 		foreach ( $properties as $prop ) {
@@ -216,8 +211,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		return $count == 1;
 	}
 
-	private function matchAllOf( array $properties ) : bool {
-
+	private function matchAllOf( array $properties ): bool {
 		$count = count( $properties );
 
 		foreach ( $properties as $prop ) {
@@ -233,8 +227,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		return $count == 0;
 	}
 
-	private function matchAnyOf( array $properties ) : bool {
-
+	private function matchAnyOf( array $properties ): bool {
 		foreach ( $properties as $prop ) {
 			$prop = DIProperty::newFromUserLabel( $prop );
 

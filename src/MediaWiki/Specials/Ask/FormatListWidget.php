@@ -8,7 +8,7 @@ use SMWQueryProcessor as QueryProcessor;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -38,7 +38,6 @@ class FormatListWidget {
 	 * @return string
 	 */
 	public static function selectList( Title $title, array $params ) {
-
 		$result = '';
 
 		// Default
@@ -81,7 +80,6 @@ class FormatListWidget {
 	}
 
 	private static function formatList( $url, $selectedFormat, &$default, $defaultName, $defaultLocalizedName ) {
-
 		$formatList = Html::rawElement(
 			'option',
 			[
@@ -108,8 +106,8 @@ class FormatListWidget {
 			}
 		}
 
-		usort( $formats, function( $x, $y ) {
-			return strcasecmp( $x['name'] , $y['name'] );
+		usort( $formats, static function ( $x, $y ) {
+			return strcasecmp( $x['name'], $y['name'] );
 		} );
 
 		$default = $defaultName;

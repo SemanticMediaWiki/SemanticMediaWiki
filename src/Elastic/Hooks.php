@@ -2,15 +2,14 @@
 
 namespace SMW\Elastic;
 
+use SMW\Elastic\Connection\DummyClient;
+use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\Connection\DummyClient;
-use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -23,7 +22,7 @@ class Hooks {
 	private $elasticFactory;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $handlers = [];
 
@@ -39,9 +38,9 @@ class Hooks {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
-	public function getHandlers() : array {
+	public function getHandlers(): array {
 		return [
 			'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders' => [ $this, 'onRegisterEntityExaminerDeferrableIndicatorProviders' ],
 			'SMW::Admin::RegisterTaskHandlers' => [ $this, 'onRegisterTaskHandlers' ],
@@ -53,7 +52,6 @@ class Hooks {
 	 * @since 3.0
 	 */
 	public function onRegisterTaskHandlers( TaskHandlerRegistry $taskHandlerRegistry, Store $store, $outputFormatter, $user ) {
-
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||
 			$connection instanceof DummyClient ) {
@@ -77,7 +75,6 @@ class Hooks {
 	 * @since 3.2
 	 */
 	public function onRegisterEntityExaminerDeferrableIndicatorProviders( Store $store, &$indicatorProviders ) {
-
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||
 			$connection instanceof DummyClient ) {

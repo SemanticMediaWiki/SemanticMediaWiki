@@ -16,7 +16,7 @@ use SMW\Query\QueryToken;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -103,7 +103,7 @@ class LegacyParser implements Parser {
 	private $contextPage;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $selfReference = false;
 
@@ -128,7 +128,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @param DIWikiPage|null $contextPage
 	 */
-	public function setContextPage( DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?DIWikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 
@@ -159,7 +159,6 @@ class LegacyParser implements Parser {
 	 * @param string|null $languageCode
 	 */
 	public function setDefaultPrefix( $languageCode = null ) {
-
 		$localizer = Localizer::getInstance();
 
 		if ( $languageCode === null ) {
@@ -196,10 +195,9 @@ class LegacyParser implements Parser {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function containsSelfReference() {
-
 		if ( $this->selfReference ) {
 			return true;
 		}
@@ -231,7 +229,6 @@ class LegacyParser implements Parser {
 	 * {@inheritDoc}
 	 */
 	public function createCondition( $property, $value ) {
-
 		if ( $property instanceof DIProperty ) {
 			$property = $property->getLabel();
 		}
@@ -249,7 +246,6 @@ class LegacyParser implements Parser {
 	 * @return Description
 	 */
 	public function getQueryDescription( $queryString ) {
-
 		if ( $queryString === '' ) {
 			$this->descriptionProcessor->addErrorWithMsgKey(
 				'smw-query-condition-empty'
@@ -309,7 +305,6 @@ class LegacyParser implements Parser {
 	 * @return Description|null
 	 */
 	private function getSubqueryDescription( &$setNS ) {
-
 		$conjunction = null;      // used for the current inner conjunction
 		$disjuncts = [];     // (disjunctive) array of subquery conjunctions
 
@@ -325,20 +320,20 @@ class LegacyParser implements Parser {
 				case '[[': // start new link block
 					$ld = $this->getLinkDescription( $setsubNS );
 
-					if ( !is_null( $ld ) ) {
+					if ( $ld !== null ) {
 						$conjunction = $this->descriptionProcessor->asAnd( $conjunction, $ld );
 					}
-				break;
+					break;
 				case 'AND':
 				case '<q>': // enter new subquery, currently irrelevant but possible
 					$this->pushDelimiter( '</q>' );
 					$conjunction = $this->descriptionProcessor->asAnd( $conjunction, $this->getSubqueryDescription( $setsubNS ) );
-				break;
+					break;
 				case 'OR':
 				case '||':
 				case '':
 				case '</q>': // finish disjunction and maybe subquery
-					if ( !is_null( $this->defaultNamespace ) ) { // possibly add namespace restrictions
+					if ( $this->defaultNamespace !== null ) { // possibly add namespace restrictions
 						if ( $hasNamespaces && !$mustSetNS ) {
 							// add NS restrictions to all earlier conjunctions (all of which did not have them yet)
 							$mustSetNS = true; // enforce NS restrictions from now on
@@ -371,9 +366,9 @@ class LegacyParser implements Parser {
 					} elseif ( $chunk === '' ) {
 						$continue = false;
 					}
-				break;
+					break;
 				case '+': // "... AND true" (ignore)
-				break;
+					break;
 				default: // error: unexpected $chunk
 					$this->descriptionProcessor->addErrorWithMsgKey( 'smw_unexpectedpart', $chunk );
 					// return null; // Try to go on, it can only get better ...
@@ -392,7 +387,7 @@ class LegacyParser implements Parser {
 			$result = null;
 
 			foreach ( $disjuncts as $d ) {
-				if ( is_null( $d ) ) {
+				if ( $d === null ) {
 					$this->descriptionProcessor->addErrorWithMsgKey( 'smw_emptysubquery' );
 					$setNS = false;
 					return null;
@@ -453,7 +448,6 @@ class LegacyParser implements Parser {
 	 * suitable description.
 	 */
 	private function getClassDescription( &$setNS, $category = true ) {
-
 		// No subqueries allowed here, inline disjunction allowed, wildcards allowed
 		$description = null;
 		$continue = true;
@@ -524,7 +518,6 @@ class LegacyParser implements Parser {
 	 * string.
 	 */
 	private function getPropertyDescription( $propertyName, &$setNS ) {
-
 		// Consume separator ":=" or "::"
 		$this->readChunk();
 		$dataValueFactory = DataValueFactory::getInstance();
@@ -589,16 +582,16 @@ class LegacyParser implements Parser {
 					$desc->isNegation = true;
 					$innerdesc = $this->descriptionProcessor->asOr( $innerdesc, $desc );
 					$chunk = $this->readChunk();
-				break;
+					break;
 				// wildcard, add namespaces for page-type properties
 				case '+':
-					if ( !is_null( $this->defaultNamespace ) && ( $this->isPagePropertyType( $typeid ) || $inverse ) ) {
+					if ( $this->defaultNamespace !== null && ( $this->isPagePropertyType( $typeid ) || $inverse ) ) {
 						$innerdesc = $this->descriptionProcessor->asOr( $innerdesc, $this->defaultNamespace );
 					} else {
 						$innerdesc = $this->descriptionProcessor->asOr( $innerdesc, $this->descriptionFactory->newThingDescription() );
 					}
 					$chunk = $this->readChunk();
-				break;
+					break;
 				 // subquery, set default namespaces
 				case '<q>':
 					if ( $this->isPagePropertyType( $typeid ) || $inverse ) {
@@ -610,7 +603,7 @@ class LegacyParser implements Parser {
 						$innerdesc = $this->descriptionProcessor->asOr( $innerdesc, $this->descriptionFactory->newThingDescription() );
 					}
 					$chunk = $this->readChunk();
-				break;
+					break;
 				// normal object value
 				default:
 					// read value(s), possibly with inner [[...]]
@@ -623,19 +616,19 @@ class LegacyParser implements Parser {
 						switch ( $chunk ) {
 							case '[[': // open new [[ ]]
 								$open++;
-							break;
+								break;
 							case ']]': // close [[ ]]
 								$open--;
-							break;
+								break;
 							case '|':
 							case '||': // terminates only outermost [[ ]]
 								if ( $open == 1 ) {
 									$open = 0;
 								}
-							break;
+								break;
 							case '': ///TODO: report error; this is not good right now
 								$continue2 = false;
-							break;
+								break;
 						}
 						if ( $open != 0 ) {
 							$value .= $chunk;
@@ -686,7 +679,6 @@ class LegacyParser implements Parser {
 	 * passed as a parameter.
 	 */
 	private function getArticleDescription( $firstChunk, &$setNS ) {
-
 		$chunk = $firstChunk;
 		$description = null;
 
@@ -746,10 +738,9 @@ class LegacyParser implements Parser {
 	}
 
 	private function finishLinkDescription( $chunk, $hasNamespaces, $description, &$setNS ) {
-
-		if ( is_null( $description ) ) { // no useful information or concrete error found
+		if ( $description === null ) { // no useful information or concrete error found
 			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_unexpectedpart', $chunk ); // was smw_badqueryatom
-		} elseif ( !$hasNamespaces && $setNS && !is_null( $this->defaultNamespace ) ) {
+		} elseif ( !$hasNamespaces && $setNS && $this->defaultNamespace !== null ) {
 			$description = $this->descriptionProcessor->asAnd( $description, $this->defaultNamespace );
 			$hasNamespaces = true;
 		}
@@ -764,7 +755,7 @@ class LegacyParser implements Parser {
 
 			// Set an individual hierarchy depth
 			if ( strpos( $chunk, '+depth=' ) !== false ) {
-				list( $k, $depth ) = explode( '=', $chunk, 2 );
+				[ $k, $depth ] = explode( '=', $chunk, 2 );
 
 				if ( $description instanceof ClassDescription || $description instanceof SomeProperty || $description instanceof Disjunction ) {
 					$description->setHierarchyDepth( $depth );
@@ -836,7 +827,6 @@ class LegacyParser implements Parser {
 	}
 
 	private function hasClassPrefix( $chunk ) {
-
 		$prefix = [
 			$this->categoryPrefix,
 			$this->conceptPrefix,
@@ -848,7 +838,6 @@ class LegacyParser implements Parser {
 	}
 
 	private function isClass( $chunk ) {
-
 		$chunk = $this->normalizeTitleText( $chunk );
 
 		if (
@@ -860,7 +849,7 @@ class LegacyParser implements Parser {
 		return false;
 	}
 
-	private function normalizeTitleText( string $text ) : string {
+	private function normalizeTitleText( string $text ): string {
 		return Localizer::getInstance()->normalizeTitleText( $text );
 	}
 

@@ -23,7 +23,6 @@ class SMWPropertyListValue extends SMWDataValue {
 	protected $m_diProperties;
 
 	protected function parseUserValue( $value ) {
-
 		$this->m_diProperties = [];
 		$stringValue = '';
 		$localizer = Localizer::getInstance();
@@ -68,12 +67,11 @@ class SMWPropertyListValue extends SMWDataValue {
 	/**
 	 * @see SMWDataValue::loadDataItem()
 	 *
-	 * @param $dataitem SMWDataItem
+	 * @param $dataItem SMWDataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-
 		if ( !$dataItem instanceof SMWDIBlob ) {
 			return false;
 		}
@@ -103,7 +101,7 @@ class SMWPropertyListValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		return ( $this->m_caption !== false ) ?  $this->m_caption : $this->makeOutputText( 2, $linked );
+		return ( $this->m_caption !== false ) ? $this->m_caption : $this->makeOutputText( 2, $linked );
 	}
 
 	public function getShortHTMLText( $linker = null ) {
@@ -147,15 +145,15 @@ class SMWPropertyListValue extends SMWDataValue {
 	protected function makeValueOutputText( $type, $propertyValue, $linker ) {
 		switch ( $type ) {
 			case 0:
-			return $propertyValue->getShortWikiText( $linker );
+				return $propertyValue->getShortWikiText( $linker );
 			case 1:
-			return $propertyValue->getShortHTMLText( $linker );
+				return $propertyValue->getShortHTMLText( $linker );
 			case 2:
-			return $propertyValue->getLongWikiText( $linker );
+				return $propertyValue->getLongWikiText( $linker );
 			case 3:
-			return $propertyValue->getLongHTMLText( $linker );
+				return $propertyValue->getLongHTMLText( $linker );
 			case 4:
-			return $propertyValue->getWikiValue();
+				return $propertyValue->getWikiValue();
 		}
 	}
 }

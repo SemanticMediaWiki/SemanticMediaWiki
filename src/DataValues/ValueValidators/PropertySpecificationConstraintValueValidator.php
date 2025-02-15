@@ -7,7 +7,7 @@ use SMWDataValue as DataValue;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -15,7 +15,7 @@ use SMWDataValue as DataValue;
 class PropertySpecificationConstraintValueValidator implements ConstraintValueValidator {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 
@@ -39,7 +39,6 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 	 * {@inheritDoc}
 	 */
 	public function validate( $dataValue ) {
-
 		$this->hasConstraintViolation = false;
 
 		if (
@@ -56,7 +55,6 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 	}
 
 	private function doValidateCodifiedPreferredPropertyLabelConstraints( $dataValue ) {
-
 		// Annotated but not enabled
 		if ( !$dataValue->isEnabledFeature( SMW_DV_PPLB ) ) {
 			return $dataValue->addErrorMsg(
@@ -84,7 +82,6 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 	}
 
 	private function isKnownByLabelAndLanguage( $value, $dbkey ) {
-
 		$lang = isset( $value['_LCODE'] ) ? $value['_LCODE'] : false;
 
 		if ( !isset( self::$inMemoryLabelToLanguageTracer[$dbkey] ) ) {

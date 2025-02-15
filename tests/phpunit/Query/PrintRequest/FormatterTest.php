@@ -11,18 +11,17 @@ use SMW\Query\PrintRequest\Formatter;
  * @covers SMW\Query\PrintRequest\Formatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class FormatterTest extends \PHPUnit_Framework_TestCase {
+class FormatterTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider printRequestProvider
 	 */
 	public function testFormat( $printRequest, $linker, $outputType, $expected ) {
-
 		$this->assertSame(
 			$expected,
 			Formatter::format( $printRequest, $linker, $outputType )
@@ -30,7 +29,6 @@ class FormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function printRequestProvider() {
-
 		$provider['print-cats-wiki'] = [
 			new PrintRequest( PrintRequest::PRINT_CATS, 'Foo' ),
 			null,

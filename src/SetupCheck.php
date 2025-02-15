@@ -2,17 +2,17 @@
 
 namespace SMW;
 
-use SMW\Utils\TemplateEngine;
-use SMW\Utils\Logo;
-use SMW\Localizer\LocalMessageProvider;
+use RuntimeException;
 use SMW\Exception\FileNotReadableException;
 use SMW\Exception\JSONFileParseException;
-use RuntimeException;
+use SMW\Localizer\LocalMessageProvider;
+use SMW\Utils\Logo;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -72,7 +72,7 @@ class SetupCheck {
 	const MAINTENANCE_MODE = 'MAINTENANCE_MODE';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $options = [];
 
@@ -92,7 +92,7 @@ class SetupCheck {
 	private $localMessageProvider;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $definitions = [];
 
@@ -107,7 +107,7 @@ class SetupCheck {
 	private $fallbackLanguageCode = 'en';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $sentHeader = true;
 
@@ -129,10 +129,10 @@ class SetupCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param array $vars
+	 * @param array $options
 	 * @param SetupFile|null $setupFile
 	 */
-	public function __construct( array $options, SetupFile $setupFile = null ) {
+	public function __construct( array $options, ?SetupFile $setupFile = null ) {
 		$this->options = $options;
 		$this->setupFile = $setupFile;
 		$this->templateEngine = new TemplateEngine();
@@ -151,8 +151,7 @@ class SetupCheck {
 	 * @return array
 	 * @throws RuntimeException
 	 */
-	public static function readFromFile( string $file ) : array {
-
+	public static function readFromFile( string $file ): array {
 		if ( !is_readable( $file ) ) {
 			throw new FileNotReadableException( $file );
 		}
@@ -176,8 +175,7 @@ class SetupCheck {
 	 *
 	 * @return SetupCheck
 	 */
-	public static function newFromDefaults( SetupFile $setupFile = null ) {
-
+	public static function newFromDefaults( ?SetupFile $setupFile = null ) {
 		if ( !defined( 'SMW_VERSION' ) ) {
 			$version = self::readFromFile( $GLOBALS['smwgIP'] . 'extension.json' )['version'];
 		} else {
@@ -206,7 +204,7 @@ class SetupCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCli() {
 		return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg';
@@ -242,19 +240,18 @@ class SetupCheck {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isError( string $error ) : bool {
+	public function isError( string $error ): bool {
 		return $this->errorType === $error;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasError() {
-
 		$this->errorType = '';
 
 		if ( $this->setupFile->inMaintenanceMode() ) {
@@ -282,12 +279,11 @@ class SetupCheck {
 	 *
 	 * @since 3.1
 	 *
-	 * @param boolean $isCli
+	 * @param bool $isCli
 	 *
 	 * @return string
 	 */
 	public function getError( $isCli = false ) {
-
 		$error = [
 			'title' => '',
 			'content' => ''
@@ -357,10 +353,9 @@ class SetupCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isCli
+	 * @param bool $isCli
 	 */
 	public function showErrorAndAbort( $isCli = false ) {
-
 		echo $this->getError( $isCli );
 
 		if ( ob_get_level() ) {
@@ -379,7 +374,6 @@ class SetupCheck {
 	}
 
 	private function createErrorContent( $type ) {
-
 		$indicator_title = 'Error';
 		$template = $this->definitions['error_types'][$type];
 		$content = '';
@@ -440,7 +434,6 @@ class SetupCheck {
 	}
 
 	private function createContent( $value, $type ) {
-
 		if ( $value['text'] === 'ERROR_TEXT' ) {
 			$text = str_replace( "\n", '<br>', $this->errorMessage );
 		} elseif ( $value['text'] === 'ERROR_TEXT_MULTIPLE' ) {
@@ -490,7 +483,6 @@ class SetupCheck {
 	}
 
 	private function createProgressIndicator( $value ) {
-
 		$maintenanceMode = (array)$this->setupFile->getMaintenanceMode();
 		$content = '';
 
@@ -517,7 +509,6 @@ class SetupCheck {
 	}
 
 	private function createCopy( $value, $default = 'n/a' ) {
-
 		if ( is_string( $value ) && $this->localMessageProvider->has( $value ) ) {
 			return $this->localMessageProvider->msg( $value );
 		}
@@ -526,7 +517,6 @@ class SetupCheck {
 	}
 
 	private function buildHTML( array $error ) {
-
 		$args = [
 			'logo' => Logo::get( 'small' ),
 			'title' => $error['title'] ?? '',
@@ -546,13 +536,13 @@ class SetupCheck {
 		// Minify CSS rules, we keep them readable in the template to allow for
 		// better adaption
 		// @see http://manas.tungare.name/software/css-compression-in-php/
-		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", function( $matches ) {
+		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", static function ( $matches ) {
 				// Remove space after colons
 				$style = str_replace( ': ', ':', $matches[0] );
 
 				// Remove whitespace
-				return str_replace( [ "\r\n", "\r", "\n", "\t", '  ', '    ', '    '], '', $style );
-			},
+				return str_replace( [ "\r\n", "\r", "\n", "\t", '  ', '    ', '    ' ], '', $style );
+		},
 			$html
 		);
 

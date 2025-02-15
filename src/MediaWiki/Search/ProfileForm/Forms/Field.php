@@ -5,12 +5,11 @@ namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 use Html;
 use SMW\Highlighter;
 use SMW\Message;
-use Title;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -26,7 +25,6 @@ class Field {
 	 * @return string
 	 */
 	public function create( $type, $attributes = [] ) {
-
 		$attributes['class'] = "smw-$type" . ( isset( $attributes['class'] ) ? ' ' . $attributes['class'] : '' );
 
 		if ( isset( $attributes['tooltip'] ) ) {
@@ -53,7 +51,6 @@ class Field {
 	 * @return string
 	 */
 	public function tooltip( $attributes = [] ) {
-
 		$highlighter = Highlighter::factory( Highlighter::TYPE_NOTE );
 		$msg = '';
 
@@ -82,7 +79,6 @@ class Field {
 	 * @return string
 	 */
 	public function select( $attributes = [] ) {
-
 		$list = [];
 		$html = [];
 		$selected = false;
@@ -166,7 +162,6 @@ class Field {
 	 * @return string
 	 */
 	public function input( $attributes = [] ) {
-
 		$class = isset( $attributes['class'] ) ? $attributes['class'] : '';
 		$type = 'text';
 		$tooltip = '';

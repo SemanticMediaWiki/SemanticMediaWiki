@@ -10,7 +10,7 @@ use Title;
 /**
  * @group semantic-mediawiki-benchmark
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -43,7 +43,7 @@ class PageContentCopyBenchmarkRunner {
 	private $benchmarkReport = [];
 
 	/**
-	 * @var integer|count
+	 * @var int|count
 	 */
 	private $copyCount = null;
 
@@ -74,7 +74,7 @@ class PageContentCopyBenchmarkRunner {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|null $copyCount
+	 * @param int|null $copyCount
 	 */
 	public function setCopyCount( $copyCount = null ) {
 		$this->copyCount = $copyCount;
@@ -86,7 +86,6 @@ class PageContentCopyBenchmarkRunner {
 	 * @param array $case
 	 */
 	public function run( array $case ) {
-
 		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 		$start = microtime( true );
@@ -137,7 +136,6 @@ class PageContentCopyBenchmarkRunner {
 	}
 
 	private function doCopy( $copyFrom, array $case ) {
-
 		$copyText = $this->pageReader->getContentAsText( $copyFrom );
 		$copyName = 'BenchmarkCopy-' . $copyFrom->getText();
 

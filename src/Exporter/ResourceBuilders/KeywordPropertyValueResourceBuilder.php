@@ -12,7 +12,7 @@ use SMWExpData as ExpData;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -34,7 +34,6 @@ class KeywordPropertyValueResourceBuilder extends PropertyValueResourceBuilder {
 	 * {@inheritDoc}
 	 */
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-
 		$dataItem = new DIBlob(
 			DIBlob::normalize( $dataItem->getString() )
 		);

@@ -11,17 +11,17 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Property\Annotators\DisplayTitlePropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$testEnvironment = new TestEnvironment();
@@ -31,7 +31,6 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,7 +49,6 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider displayTitleProvider
 	 */
 	public function testAddAnnotationForDisplayTitle( $title, $displayTitle, $defaultSort, array $expected ) {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			$title
 		);
@@ -70,7 +68,6 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotationForWhenPropertyNamespaceIsUsed() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			new DIWikiPage( 'Foo', SMW_NS_PROPERTY )
 		);
@@ -95,7 +92,6 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoAnnotationWhenDisabled() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			DIWikiPage::newFromText( 'Foo' )
 		);
@@ -118,10 +114,9 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function displayTitleProvider() {
-
 		$provider = [];
 
-		#0 with title entry
+		# 0 with title entry
 		$provider[] = [
 			'Foo',
 			'Lala',
@@ -133,7 +128,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 Empty
+		# 1 Empty
 		$provider[] = [
 			'Bar',
 			'',
@@ -145,7 +140,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2 Empty
+		# 2 Empty
 		$provider[] = [
 			'Bar',
 			false,
@@ -157,7 +152,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 Strip tags
+		# 3 Strip tags
 		$provider[] = [
 			'Bar',
 			'<span style="position: absolute; clip: rect(1px 1px 1px 1px); clip: rect(1px, 1px, 1px, 1px);">FOO</span>',
@@ -169,8 +164,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-
-		#4 Strip tags
+		# 4 Strip tags
 		$provider[] = [
 			'Foo',
 			"A 'quote' is <b>bold</b>",
@@ -182,7 +176,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#5 with different sortkey
+		# 5 with different sortkey
 		$provider[] = [
 			'Foo',
 			'Lala',
@@ -194,7 +188,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#6 unencoded Html entity
+		# 6 unencoded Html entity
 		$provider[] = [
 			'Foo',
 			'ABC & DEF',
@@ -206,7 +200,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#7 decoded/encoded Html entity
+		# 7 decoded/encoded Html entity
 		$provider[] = [
 			'Foo',
 			'ABC &amp; DEF',
@@ -218,7 +212,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#8 decoded/encoded ' (&#39;) entity
+		# 8 decoded/encoded ' (&#39;) entity
 		$provider[] = [
 			'Foo',
 			'ABC &#39; DEF',

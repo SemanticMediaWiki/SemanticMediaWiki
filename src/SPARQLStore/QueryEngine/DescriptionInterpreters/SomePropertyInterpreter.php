@@ -18,7 +18,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -41,7 +41,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -61,13 +61,12 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
 		$property = $description->getProperty();
 
-		list( $innerOrderByProperty, $innerCondition, $innerJoinVariable ) = $this->doResolveInnerConditionRecursively(
+		[ $innerOrderByProperty, $innerCondition, $innerJoinVariable ] = $this->doResolveInnerConditionRecursively(
 			$property,
 			$description->getDescription()
 		);
@@ -84,7 +83,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$namespaces
 		);
 
-		list ( $subjectName, $objectName, $nonInverseProperty ) = $this->doExchangeForWhenInversePropertyIsUsed(
+		[ $subjectName, $objectName, $nonInverseProperty ] = $this->doExchangeForWhenInversePropertyIsUsed(
 			$property,
 			$objectName,
 			$joinVariable
@@ -130,7 +129,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	}
 
 	private function doResolveInnerConditionRecursively( DIProperty $property, Description $description ) {
-
 		$innerOrderByProperty = null;
 
 		// Find out if we should order by the values of this property
@@ -152,7 +150,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	}
 
 	private function findObjectNameFromInnerCondition( $innerCondition, $innerJoinVariable, &$namespaces ) {
-
 		if ( !$innerCondition instanceof SingletonCondition ) {
 			return '?' . $innerJoinVariable;
 		}
@@ -173,7 +170,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	}
 
 	private function findMostSuitablePropertyRepresentation( DIProperty $property, DIProperty $nonInverseProperty, &$namespaces ) {
-
 		$redirectByVariable = $this->conditionBuilder->tryToFindRedirectVariableForDataItem(
 			$nonInverseProperty->getDiWikiPage()
 		);
@@ -203,7 +199,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	}
 
 	private function doExchangeForWhenInversePropertyIsUsed( DIProperty $property, $objectName, $joinVariable ) {
-
 		$subjectName = '?' . $joinVariable;
 		$nonInverseProperty = $property;
 
@@ -219,7 +214,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	}
 
 	private function concatenateToConditionString( $subjectName, $propertyName, $objectName, $innerCondition ) {
-
 		$condition = "$subjectName $propertyName $objectName .\n";
 
 		$innerConditionString = $innerCondition->getCondition() . $innerCondition->getWeakConditionString();
@@ -242,7 +236,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * @see http://www.w3.org/TR/sparql11-query/#propertypath-arbitrary-length
 	 */
 	private function tryToAddPropertyPathForSaturatedHierarchy( &$condition, DIProperty $property, &$propertyName, $depth ) {
-
 		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBP ) || !$property->isUserDefined() || ( $depth !== null && $depth < 1 ) ) {
 			return null;
 		}

@@ -2,22 +2,22 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
-use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
-use SMW\Tests\TestEnvironment;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
+class TaskHandlerRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -26,7 +26,7 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $outputFormatter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -47,7 +47,6 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TaskHandlerRegistry::class,
 			new TaskHandlerRegistry( $this->store, $this->outputFormatter )
@@ -55,7 +54,6 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterTaskHandlers() {
-
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onRegisterTaskHandlers' );
 
@@ -76,24 +74,23 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->registerTaskHandlers( [ $taskHandler ] , $user );
+		$instance->registerTaskHandlers( [ $taskHandler ], $user );
 
 		// Can only be used once per instance
-		$instance->registerTaskHandlers( [ $taskHandler ] , $user );
+		$instance->registerTaskHandlers( [ $taskHandler ], $user );
 	}
 
 	/**
 	 * @dataProvider sectionTypeProvider
 	 */
 	public function testRegisterTaskHandler( $section ) {
-
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$taskHandler->expects( $this->once() )
 			->method( 'getSection' )
-			->will( $this->returnValue( $section ) );
+			->willReturn( $section );
 
 		$instance = new TaskHandlerRegistry(
 			$this->store,
@@ -109,7 +106,6 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterTaskHandler_Actionable() {
-
 		$taskHandler = $this->newActionableTask();
 
 		$instance = new TaskHandlerRegistry(
@@ -126,7 +122,6 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function sectionTypeProvider() {
-
 		yield [
 			TaskHandler::SECTION_MAINTENANCE
 		];
@@ -151,11 +146,11 @@ class TaskHandlerRegistryTest extends \PHPUnit_Framework_TestCase {
 				return '';
 			}
 
-			public function getTask() : string {
+			public function getTask(): string {
 				return 'Foo';
 			}
 
-			public function isTaskFor( string $action ) : bool {
+			public function isTaskFor( string $action ): bool {
 				return '';
 			}
 

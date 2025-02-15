@@ -9,18 +9,18 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Api\Tasks\TableStatisticsTask
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
+class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $cache;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -35,13 +35,12 @@ class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new TableStatisticsTask( $this->store, $this->cache );
 
 		$this->assertInstanceOf(
@@ -51,15 +50,14 @@ class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$tableStatisticsLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\TableStatisticsLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'service' )
-			->with( $this->equalTo( 'TableStatisticsLookup' ) )
-			->will( $this->returnValue( $tableStatisticsLookup ) );
+			->with( 'TableStatisticsLookup' )
+			->willReturn( $tableStatisticsLookup );
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -67,7 +65,7 @@ class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' );

@@ -6,25 +6,24 @@ use SMW\Deserializers\ExpDataDeserializer;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Serializers\ExpDataSerializer;
+use SMW\Tests\PHPUnitCompat;
 use SMWDIBlob as DIBlob;
 use SMWExpData as ExpData;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\ExpDataDeserializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
+class ExpDataDeserializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstructor() {
-
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\ExpDataDeserializer',
 			new ExpDataDeserializer()
@@ -32,7 +31,6 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSerializerObjectThrowsException() {
-
 		$instance = new ExpDataDeserializer();
 
 		$this->expectException( 'OutOfBoundsException' );
@@ -40,7 +38,6 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVersionMismatchThrowsException() {
-
 		$instance = new ExpDataDeserializer();
 
 		$this->expectException( 'OutOfBoundsException' );
@@ -51,7 +48,6 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider expDataProvider
 	 */
 	public function testDeserialize( $seralization, $expected ) {
-
 		$instance = new ExpDataDeserializer();
 
 		$this->assertEquals(
@@ -64,7 +60,6 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider expDataProvider
 	 */
 	public function testDeserializeToCompareHash( $seralization, $expected ) {
-
 		$instance = new ExpDataDeserializer();
 
 		$this->assertEquals(
@@ -74,10 +69,9 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function expDataProvider() {
-
 		$serializier = new ExpDataSerializer();
 
-		#0
+		# 0
 		$expData = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )
 		);
@@ -87,7 +81,7 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 			$expData
 		];
 
-		#1
+		# 1
 		$expData = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )
 		);
@@ -102,7 +96,7 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 			$expData
 		];
 
-		#2 Nested
+		# 2 Nested
 		$expData = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )
 		);
@@ -122,7 +116,7 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 			$expData
 		];
 
-		#2 Nested level 2+3
+		# 2 Nested level 2+3
 
 		$expDataLevel2 = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', new DIBlob( 'SomeOtherText' ) )

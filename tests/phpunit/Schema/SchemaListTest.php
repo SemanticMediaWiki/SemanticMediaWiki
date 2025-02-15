@@ -2,26 +2,24 @@
 
 namespace SMW\Tests\Schema;
 
-use SMW\DIWikiPage;
-use SMW\Schema\SchemaList;
 use SMW\Schema\SchemaDefinition;
+use SMW\Schema\SchemaList;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\SchemaList
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class SchemaListTest extends \PHPUnit_Framework_TestCase {
+class SchemaListTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SchemaList::class,
 			new SchemaList( [] )
@@ -29,7 +27,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGeList() {
-
 		$instance = new SchemaList( [] );
 
 		$this->assertEquals(
@@ -39,27 +36,24 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJsonSerialize() {
-
 		$instance = new SchemaList( [] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->jsonSerialize()
 		);
 	}
 
 	public function testGetFingerprint() {
-
 		$instance = new SchemaList( [] );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getFingerprint()
 		);
 	}
 
 	public function testAdd() {
-
 		$schemaDefinition = new SchemaDefinition(
 			'Bar',
 			[ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ]
@@ -87,7 +81,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMergedList() {
-
 		$data[] = new SchemaDefinition(
 			'Foo',
 			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
@@ -111,7 +104,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToArray() {
-
 		$data[] = new SchemaDefinition(
 			'Foo',
 			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
@@ -140,7 +132,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_Empty() {
-
 		$data[] = new SchemaDefinition(
 			'Foo',
 			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
@@ -153,14 +144,12 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 			$instance->get( 'NotAvailableKey' )
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->get( 'NotAvailableKey', null )
+		$this->assertNull(
+						$instance->get( 'NotAvailableKey', null )
 		);
 	}
 
 	public function testNewCompartmentIteratorByKey() {
-
 		$data[] = new SchemaDefinition(
 			'Foo',
 			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
@@ -186,7 +175,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewCompartmentIteratorByKey_NoValidKey() {
-
 		$data[] = new SchemaDefinition(
 			'Foo',
 			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
@@ -207,7 +195,6 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewCompartmentIteratorByKey_Empty() {
-
 		$instance = new SchemaList( [] );
 		$compartmentIterator = $instance->newCompartmentIteratorByKey( 'Foo' );
 

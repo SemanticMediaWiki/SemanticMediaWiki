@@ -9,23 +9,22 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\MediaWiki\Renderer\HtmlTableRenderer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
  */
-class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
+class HtmlTableRendererTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Renderer\HtmlTableRenderer',
 			new HtmlTableRenderer()
@@ -33,7 +32,6 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddHeaderItem() {
-
 		$instance = new HtmlTableRenderer();
 		$instance->addHeaderItem( 'span', 'lala' );
 
@@ -44,7 +42,6 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddTableHeader() {
-
 		$instance = new HtmlTableRenderer();
 		$instance->addHeader( 'lala' );
 
@@ -63,7 +60,6 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddTableRow() {
-
 		$instance = new HtmlTableRenderer();
 
 		$instance
@@ -91,7 +87,6 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStandardTable() {
-
 		$instance = new HtmlTableRenderer();
 
 		$instance
@@ -129,7 +124,6 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTransposedTable() {
-
 		$instance = new HtmlTableRenderer();
 
 		// We need a dedicated header definition to support a table transpose
@@ -163,7 +157,6 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmptyTable() {
-
 		$instance = new HtmlTableRenderer();
 
 		$instance

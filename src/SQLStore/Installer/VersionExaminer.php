@@ -3,15 +3,15 @@
 namespace SMW\SQLStore\Installer;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use RuntimeException;
 use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
-use SMW\Setup;
-use RuntimeException;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -36,11 +36,7 @@ class VersionExaminer {
 	 * @param IDatabase $connection
 	 */
 	public function __construct( $connection ) {
-
-		if (
-			!$connection instanceof \Wikimedia\Rdbms\IDatabase &&
-			!$connection instanceof \IDatabase &&
-			!$connection instanceof \DatabaseBase ) {
+		if ( !$connection instanceof IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
 
@@ -64,8 +60,7 @@ class VersionExaminer {
 	 * @return array
 	 * @throws RuntimeException
 	 */
-	public function defineDatabaseRequirements( array $minRequirements ) : array {
-
+	public function defineDatabaseRequirements( array $minRequirements ): array {
 		$type = $this->connection->getType();
 
 		if ( !isset( $minRequirements[$type] ) ) {
@@ -88,8 +83,7 @@ class VersionExaminer {
 	 *
 	 * @return bool
 	 */
-	public function meetsVersionMinRequirement( array $minRequirements ) : bool {
-
+	public function meetsVersionMinRequirement( array $minRequirements ): bool {
 		$this->messageReporter->reportMessage( "\nChecking version requirement ..." );
 		$this->messageReporter->reportMessage( "\n   ... done.\n" );
 
@@ -109,7 +103,6 @@ class VersionExaminer {
 	}
 
 	private function throwFalseAndNotice( $requirements = [] ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

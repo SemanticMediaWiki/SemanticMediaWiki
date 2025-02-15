@@ -7,6 +7,7 @@ use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionManager;
+use SMW\Services\Exception\ServiceNotFoundException;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\Timer;
@@ -15,7 +16,6 @@ use SMWQuery;
 use SMWQueryResult;
 use SMWRequestOptions;
 use SMWSemanticData;
-use SMW\Services\Exception\ServiceNotFoundException;
 use Title;
 
 /**
@@ -66,25 +66,25 @@ abstract class Store implements QueryEngine {
 	 * @param DIWikiPage $subject
 	 * @param string[]|bool $filter
 	 */
-	public abstract function getSemanticData( DIWikiPage $subject, $filter = false );
+	abstract public function getSemanticData( DIWikiPage $subject, $filter = false );
 
 	/**
 	 * @see EntityLookup::getPropertyValues
 	 *
 	 * @param $subject mixed SMWDIWikiPage or null
 	 * @param $property DIProperty
-	 * @param $requestoptions SMWRequestOptions
+	 * @param null $requestoptions SMWRequestOptions
 	 *
 	 * @return array of DataItem
 	 */
-	public abstract function getPropertyValues( $subject, DIProperty $property, $requestoptions = null );
+	abstract public function getPropertyValues( $subject, DIProperty $property, $requestoptions = null );
 
 	/**
 	 * @see EntityLookup::getPropertySubjects
 	 *
 	 * @return DIWikiPage[]
 	 */
-	public abstract function getPropertySubjects( DIProperty $property, $value, $requestoptions = null );
+	abstract public function getPropertySubjects( DIProperty $property, $value, $requestoptions = null );
 
 	/**
 	 * Get an array of all subjects that have some value for the given
@@ -92,7 +92,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @return DIWikiPage[]
 	 */
-	public abstract function getAllPropertySubjects( DIProperty $property, $requestoptions = null );
+	abstract public function getAllPropertySubjects( DIProperty $property, $requestoptions = null );
 
 	/**
 	 * @see EntityLookup::getProperties
@@ -102,7 +102,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @return DataItem
 	 */
-	public abstract function getProperties( DIWikiPage $subject, $requestOptions = null );
+	abstract public function getProperties( DIWikiPage $subject, $requestOptions = null );
 
 	/**
 	 * @see EntityLookup::getInProperties
@@ -112,7 +112,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @return DataItem[]|[]
 	 */
-	public abstract function getInProperties( DataItem $object, $requestoptions = null );
+	abstract public function getInProperties( DataItem $object, $requestOptions = null );
 
 	/**
 	 * Convenience method to find the sortkey of an SMWDIWikiPage. The
@@ -125,7 +125,6 @@ abstract class Store implements QueryEngine {
 	 * @return string sortkey
 	 */
 	public function getWikiPageSortKey( DIWikiPage $dataItem ) {
-
 		$dataItems = $this->getPropertyValues( $dataItem, new DIProperty( '_SKEY' ) );
 
 		if ( is_array( $dataItems ) && count( $dataItems ) > 0 ) {
@@ -145,7 +144,6 @@ abstract class Store implements QueryEngine {
 	 * @return DataItem
 	 */
 	public function getRedirectTarget( DataItem $dataItem ) {
-
 		$type = $dataItem->getDIType();
 
 		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
@@ -201,7 +199,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param Title $subject
 	 */
-	public abstract function deleteSubject( Title $subject );
+	abstract public function deleteSubject( Title $subject );
 
 	/**
 	 * Update the semantic data stored for some individual. The data is
@@ -210,7 +208,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param SemanticData $data
 	 */
-	protected abstract function doDataUpdate( SemanticData $data );
+	abstract protected function doDataUpdate( SemanticData $data );
 
 	/**
 	 * Update the semantic data stored for some individual. The data is
@@ -220,7 +218,6 @@ abstract class Store implements QueryEngine {
 	 * @param SemanticData $semanticData
 	 */
 	public function updateData( SemanticData $semanticData ) {
-
 		Timer::start( __METHOD__ );
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -284,7 +281,7 @@ abstract class Store implements QueryEngine {
 	 * redirect, if any, is given by $redirid. If no new page was created,
 	 * $redirid will be 0.
 	 */
-	public abstract function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 );
+	abstract public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 );
 
 ///// Query answering /////
 
@@ -302,7 +299,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @return SMWQueryResult
 	 */
-	public abstract function getQueryResult( SMWQuery $query );
+	abstract public function getQueryResult( SMWQuery $query );
 
 	/**
 	 * @note Change the signature to abstract for the 3.* branch
@@ -330,11 +327,11 @@ abstract class Store implements QueryEngine {
 	 * results requested (otherwise callers might assume that there are no
 	 * further results to ask for).
 	 *
-	 * @param SMWRequestOptions $requestoptions
+	 * @param SMWRequestOptions|null $requestoptions
 	 *
 	 * @return ListLookup
 	 */
-	public abstract function getPropertiesSpecial( $requestoptions = null );
+	abstract public function getPropertiesSpecial( $requestoptions = null );
 
 	/**
 	 * Return all properties that have been declared in the wiki but that
@@ -348,11 +345,11 @@ abstract class Store implements QueryEngine {
 	 * results requested (otherwise callers might assume that there are no
 	 * further results to ask for).
 	 *
-	 * @param SMWRequestOptions $requestoptions
+	 * @param SMWRequestOptions|null $requestoptions
 	 *
 	 * @return array of DIProperty|SMWDIError
 	 */
-	public abstract function getUnusedPropertiesSpecial( $requestoptions = null );
+	abstract public function getUnusedPropertiesSpecial( $requestoptions = null );
 
 	/**
 	 * Return all properties that are used on some page but that do not
@@ -360,11 +357,11 @@ abstract class Store implements QueryEngine {
 	 * accessing the set of all existing pages can extend this list to all
 	 * properties that are used but do not have a type assigned to them.
 	 *
-	 * @param SMWRequestOptions $requestoptions
+	 * @param SMWRequestOptions|null $requestoptions
 	 *
 	 * @return array of array( DIProperty, int )
 	 */
-	public abstract function getWantedPropertiesSpecial( $requestoptions = null );
+	abstract public function getWantedPropertiesSpecial( $requestoptions = null );
 
 	/**
 	 * Return statistical information as an associative array with the
@@ -380,7 +377,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @return array
 	 */
-	public abstract function getStatistics();
+	abstract public function getStatistics();
 
 	/**
 	 * Store administration
@@ -419,19 +416,19 @@ abstract class Store implements QueryEngine {
 	 * context, but should preferably be plain text, possibly with some
 	 * linebreaks and weak markup.
 	 *
-	 * @param boolean $verbose
+	 * @param bool $verbose
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 */
-	public abstract function setup( $verbose = true );
+	abstract public function setup( $verbose = true );
 
 	/**
 	 * Drop (delete) all storage structures created by setup(). This will
 	 * delete all semantic data and possibly leave the wiki uninitialised.
 	 *
-	 * @param boolean $verbose
+	 * @param bool $verbose
 	 */
-	public abstract function drop( $verbose = true );
+	abstract public function drop( $verbose = true );
 
 	/**
 	 * Refresh some objects in the store, addressed by numerical ids. The
@@ -453,12 +450,12 @@ abstract class Store implements QueryEngine {
 	 * processed later using MediaWiki jobs, instead of doing all updates
 	 * immediately. The default is TRUE.
 	 *
-	 * @param $index integer
+	 * @param &$index integer
 	 * @param $count integer
 	 * @param $namespaces mixed array or false
 	 * @param $usejobs boolean
 	 */
-	public abstract function refreshData( &$index, $count, $namespaces = false, $usejobs = true ): Rebuilder;
+	abstract public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ): Rebuilder;
 
 	/**
 	 * Setup the store.
@@ -468,10 +465,9 @@ abstract class Store implements QueryEngine {
 	 * @param bool $verbose
 	 * @param Options|null $options
 	 *
-	 * @return boolean Success indicator
+	 * @return bool Success indicator
 	 */
 	public static function setupStore( $verbose = true, $options = null ) {
-
 		$store = StoreFactory::getStore();
 
 		// See notes in ExtensionSchemaUpdates
@@ -496,7 +492,6 @@ abstract class Store implements QueryEngine {
 	 * @return Options
 	 */
 	public function getOptions() {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -511,7 +506,6 @@ abstract class Store implements QueryEngine {
 	 * @param mixed $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -528,7 +522,6 @@ abstract class Store implements QueryEngine {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -540,7 +533,6 @@ abstract class Store implements QueryEngine {
 	 * @since 2.0
 	 */
 	public function clear() {
-
 		if ( $this->connectionManager !== null ) {
 			$this->connectionManager->releaseConnections();
 		}
@@ -574,7 +566,6 @@ abstract class Store implements QueryEngine {
 	 * @return mixed
 	 */
 	public function getConnection( $type ) {
-
 		if ( $this->connectionManager === null ) {
 			$this->connectionManager = ApplicationFactory::getInstance()->getConnectionManager();
 		}

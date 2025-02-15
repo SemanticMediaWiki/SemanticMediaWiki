@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -21,7 +21,7 @@ class CircularReferenceGuard {
 	private $namespace = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $maxRecursionDepth = 1;
 
@@ -37,7 +37,7 @@ class CircularReferenceGuard {
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer $maxRecursionDepth
+	 * @param int $maxRecursionDepth
 	 */
 	public function setMaxRecursionDepth( $maxRecursionDepth ) {
 		$this->maxRecursionDepth = (int)$maxRecursionDepth;
@@ -49,7 +49,6 @@ class CircularReferenceGuard {
 	 * @param string $hash
 	 */
 	public function mark( $hash ) {
-
 		if ( !isset( self::$circularRefGuard[$this->namespace][$hash] ) ) {
 			self::$circularRefGuard[$this->namespace][$hash] = 0;
 		}
@@ -63,7 +62,6 @@ class CircularReferenceGuard {
 	 * @param string $hash
 	 */
 	public function unmark( $hash ) {
-
 		if ( isset( self::$circularRefGuard[$this->namespace][$hash] ) && self::$circularRefGuard[$this->namespace][$hash] > 0 ) {
 			return self::$circularRefGuard[$this->namespace][$hash]--;
 		}
@@ -76,7 +74,7 @@ class CircularReferenceGuard {
 	 *
 	 * @param string $hash
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCircular( $hash ) {
 		return $this->get( $hash ) > $this->maxRecursionDepth;
@@ -87,10 +85,9 @@ class CircularReferenceGuard {
 	 *
 	 * @param string $hash
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function get( $hash ) {
-
 		if ( isset( self::$circularRefGuard[$this->namespace][$hash] ) ) {
 			return self::$circularRefGuard[$this->namespace][$hash];
 		}

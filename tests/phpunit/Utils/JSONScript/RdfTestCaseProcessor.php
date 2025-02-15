@@ -2,18 +2,20 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWikiIntegrationTestCase;
 use SMW\Exporter\ExporterFactory;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
  */
-class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class RdfTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @var Store
@@ -31,7 +33,7 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $runnerFactory;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $debug = false;
 
@@ -53,7 +55,6 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function process( array $case ) {
-
 		// Allows for data to be re-read from the DB instead of being fetched
 		// from the store-id-cache
 		if ( isset( $case['store']['clear-cache'] ) && $case['store']['clear-cache'] ) {
@@ -70,8 +71,7 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertDumpRdfOutputForCase( $case ) {
-
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\DumpRdf' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\dumpRDF' );
 		$maintenanceRunner->setQuiet();
 
 		$maintenanceRunner->setOptions( $case['dumpRDF']['parameters'] );
@@ -84,7 +84,6 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertExportControllerOutputForCase( $case ) {
-
 		$exporterFactory = new ExporterFactory();
 
 		if ( isset( $case['exportcontroller']['syntax'] ) && $case['exportcontroller']['syntax'] === 'turtle' ) {
@@ -116,7 +115,6 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertOutputForCase( $case, $output ) {
-
 		if ( $this->debug ) {
 			print_r( $output );
 		}

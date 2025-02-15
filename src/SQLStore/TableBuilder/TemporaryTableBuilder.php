@@ -3,9 +3,10 @@
 namespace SMW\SQLStore\TableBuilder;
 
 use SMW\MediaWiki\Database;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -19,7 +20,7 @@ class TemporaryTableBuilder {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $autoCommitFlag = false;
 
@@ -36,7 +37,7 @@ class TemporaryTableBuilder {
 	 * @see $smwgQTemporaryTablesWithAutoCommit
 	 * @since 2.5
 	 *
-	 * @param boolean $autoCommitFlag
+	 * @param bool $autoCommitFlag
 	 */
 	public function setAutoCommitFlag( $autoCommitFlag ) {
 		$this->autoCommitFlag = (bool)$autoCommitFlag;
@@ -48,7 +49,6 @@ class TemporaryTableBuilder {
 	 * @param string $tableName
 	 */
 	public function create( $tableName ) {
-
 		if ( $this->autoCommitFlag ) {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
@@ -56,7 +56,7 @@ class TemporaryTableBuilder {
 		$this->connection->query(
 			$this->getSQLCodeFor( $tableName ),
 			__METHOD__,
-			false
+			ISQLPlatform::QUERY_CHANGE_SCHEMA
 		);
 	}
 
@@ -66,7 +66,6 @@ class TemporaryTableBuilder {
 	 * @param string $tableName
 	 */
 	public function drop( $tableName ) {
-
 		if ( $this->autoCommitFlag ) {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
@@ -74,7 +73,7 @@ class TemporaryTableBuilder {
 		$this->connection->query(
 			"DROP TEMPORARY TABLE " . $tableName,
 			__METHOD__,
-			false
+			ISQLPlatform::QUERY_CHANGE_SCHEMA
 		);
 	}
 
@@ -111,7 +110,7 @@ class TemporaryTableBuilder {
 		}
 
 		// MySQL_ just a temporary table, use INSERT IGNORE later
-		return "CREATE TEMPORARY TABLE " . $tableName . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
+		return "CREATE TEMPORARY TABLE IF NOT EXISTS " . $tableName . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
 	}
 
 }

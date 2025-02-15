@@ -3,12 +3,12 @@
 namespace SMW\SQLStore\TableBuilder\Examiner;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\Maintenance\populateHashField;
 use SMW\SQLStore\SQLStore;
-use SMW\Maintenance\populateHashField as PopulateHashField;
 use SMW\Utils\CliMsgFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -33,7 +33,7 @@ class HashField {
 	 * @param SQLStore $store
 	 * @param PopulateHashField|null $populateHashField
 	 */
-	public function __construct( SQLStore $store, PopulateHashField $populateHashField = null ) {
+	public function __construct( SQLStore $store, ?PopulateHashField $populateHashField = null ) {
 		$this->store = $store;
 		$this->populateHashField = $populateHashField;
 	}
@@ -41,7 +41,7 @@ class HashField {
 	/**
 	 * @since 3.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function threshold() {
 		return PopulateHashField::COUNT_SCRIPT_EXECUTION_THRESHOLD;
@@ -53,7 +53,6 @@ class HashField {
 	 * @param array $opts
 	 */
 	public function check( array $opts = [] ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage( "Checking smw_hash field consistency ...\n" );

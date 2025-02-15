@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -11,12 +11,12 @@ namespace SMW\Utils;
 class Url {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $info = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $flag = [];
 
@@ -36,8 +36,7 @@ class Url {
 	 *
 	 * @return string
 	 */
-	public function path( string $path = '' ) : string {
-
+	public function path( string $path = '' ): string {
 		if ( $path === '' ) {
 			return $this->get( PHP_URL_SCHEME, PHP_URL_HOST, PHP_URL_PORT, PHP_URL_USER, PHP_URL_PASS, PHP_URL_PATH );
 		}
@@ -52,7 +51,7 @@ class Url {
 	 *
 	 * @return string
 	 */
-	public function get( ...$args ) : string {
+	public function get( ...$args ): string {
 		// PHP_URL_* aren't bit fields !!!!!
 		$this->flag = $args;
 
@@ -104,7 +103,7 @@ class Url {
 		return $text;
 	}
 
-	private function is( $flag ) : bool {
+	private function is( $flag ): bool {
 		return in_array( $flag, $this->flag );
 	}
 

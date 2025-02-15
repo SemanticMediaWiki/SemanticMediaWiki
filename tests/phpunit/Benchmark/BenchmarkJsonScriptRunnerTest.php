@@ -3,14 +3,14 @@
 namespace SMW\Tests\Benchmark;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 use SMW\Tests\JSONScriptTestCaseRunner;
+use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 
 /**
  * @group semantic-mediawiki-benchmark
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -57,7 +57,7 @@ class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 	 */
 	protected $deletePagesOnTearDown = true;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -137,7 +137,6 @@ class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
 	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
-
 		$this->pageImportBenchmarkRunner->setTestCaseLocation(
 			$this->getTestCaseLocation()
 		);
@@ -170,42 +169,42 @@ class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 	private function doRunImportBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'import' ) as $case ) {
 			$this->pageImportBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->pageImportBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->pageImportBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 
 	private function doRunContentCopyBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'contentCopy' ) as $case ) {
 			$this->pageContentCopyBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->pageContentCopyBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->pageContentCopyBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 
 	private function doRunEditCopyBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'editCopy' ) as $case ) {
 			$this->pageEditCopyBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->pageEditCopyBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->pageEditCopyBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 
 	private function doRunJobQueueBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'job' ) as $case ) {
 			$this->jobQueueBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->jobQueueBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->jobQueueBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 
 	private function doRunMaintenanceBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'maintenance' ) as $case ) {
 			$this->maintenanceBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->maintenanceBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->maintenanceBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 
 	private function doRunQueryBenchmarks( $jsonTestCaseFileHandler ) {
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'query' ) as $case ) {
 			$this->queryBenchmarkRunner->run( $case );
-			$this->benchmarkReports[md5(json_encode( $case ) )] = $this->queryBenchmarkRunner->getBenchmarkReport();
+			$this->benchmarkReports[md5( json_encode( $case ) )] = $this->queryBenchmarkRunner->getBenchmarkReport();
 		}
 	}
 

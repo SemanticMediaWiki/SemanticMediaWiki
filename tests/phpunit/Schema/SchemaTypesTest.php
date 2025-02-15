@@ -10,19 +10,19 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Schema\SchemaTypes
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
+class SchemaTypesTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $hookDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -32,13 +32,12 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new SchemaTypes();
 
 		$this->assertInstanceof(
@@ -53,7 +52,6 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterSchemaTypes() {
-
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onRegisterSchemaTypes' );
 
@@ -64,7 +62,6 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterSchemaType() {
-
 		$instance = new SchemaTypes();
 
 		$instance->registerSchemaType( 'Foo', [] );
@@ -75,7 +72,6 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetRegisteredTypes() {
-
 		$instance = new SchemaTypes();
 
 		$instance->registerSchemaType( 'Foo', [] );
@@ -88,7 +84,6 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetRegisteredTypesByGroup() {
-
 		$instance = new SchemaTypes();
 
 		$instance->registerSchemaType( 'Foo', [ 'group' => 'foo_bar' ] );
@@ -101,7 +96,6 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new SchemaTypes();
 
 		$this->assertEquals(
@@ -118,7 +112,6 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWithDir() {
-
 		$instance = new SchemaTypes( __DIR__ );
 
 		$this->assertEquals(
@@ -128,11 +121,10 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJsonSerialize() {
-
 		$instance = new SchemaTypes();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->jsonSerialize()
 		);
 	}
@@ -141,7 +133,6 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider defaultTypeProvider
 	 */
 	public function testRegisterDefaultTypes( $type ) {
-
 		$instance = new SchemaTypes( __DIR__ );
 		$instance->setHookDispatcher( $this->hookDispatcher );
 
@@ -153,7 +144,6 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterKnownSchemaType_ThrowsException() {
-
 		$instance = new SchemaTypes();
 
 		$instance->registerSchemaType( 'Foo', [] );
@@ -163,7 +153,6 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function defaultTypeProvider() {
-
 		yield [
 			'LINK_FORMAT_SCHEMA'
 		];

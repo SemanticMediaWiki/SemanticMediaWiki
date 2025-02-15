@@ -12,7 +12,7 @@ use SMW\Options;
 use SMWInfolink as Infolink;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -49,12 +49,11 @@ class PageBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $count
+	 * @param int $count
 	 *
 	 * @return string
 	 */
 	public function buildForm( $count = 0 ) {
-
 		$html = Html::rawElement(
 			'p',
 			[
@@ -82,12 +81,11 @@ class PageBuilder {
 	 * @return string
 	 */
 	public function buildHtml( array $results ) {
-
 		if ( count( $results ) == 0 ) {
 			return Message::get( 'smw_result_noresults', Message::TEXT, Message::USER_LANGUAGE );
 		}
 
-		$limit = $this->options->get( 'limit' );
+		$limit = (int)$this->options->get( 'limit' );
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		$propertyValue = $dataValueFactory->newPropertyValueByLabel(
@@ -140,7 +138,6 @@ class PageBuilder {
 	}
 
 	private function createForm( $count ) {
-
 		// Precaution to avoid any inline breakage caused by a div element
 		// within a paragraph (e.g Highlighter content)
 		// $resultMessage = str_replace( 'div', 'span', $resultMessage );
@@ -150,8 +147,8 @@ class PageBuilder {
 			->withFieldset()
 			->addParagraph( Message::get( 'smw_pp_docu', Message::TEXT, Message::USER_LANGUAGE ) )
 			->addPaging(
-				$this->options->safeGet( 'limit', 20 ),
-				$this->options->safeGet( 'offset', 0 ),
+				(int)$this->options->safeGet( 'limit', 20 ),
+				(int)$this->options->safeGet( 'offset', 0 ),
 				$count )
 			->addHorizontalRule()
 			->openElement( 'div', [ 'class' => 'smw-special-pageproperty-input' ] )

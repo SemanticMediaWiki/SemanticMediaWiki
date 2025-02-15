@@ -9,23 +9,22 @@ use SMW\Utils\HtmlTable;
  * @covers \SMW\Utils\HtmlTable
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class HtmlTableTest extends \PHPUnit_Framework_TestCase {
+class HtmlTableTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 	}
 
 	public function testStandardTable_Cell_Row() {
-
 		$instance = new HtmlTable();
 
 		$instance->cell( 'Foo', [ 'rel' => 'some' ] );
@@ -38,10 +37,9 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStandardTable_Header_Cell_Row() {
-
 		$instance = new HtmlTable();
 
-		$instance->header( 'Foo ');
+		$instance->header( 'Foo ' );
 		$instance->cell( 'Bar' );
 		$instance->row();
 
@@ -52,7 +50,6 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStandardTable_Header_Cell_Row_IsHtml() {
-
 		$instance = new HtmlTable();
 
 		$instance->header( 'Foo' );
@@ -66,7 +63,6 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTransposedTable_Cell_Row() {
-
 		$instance = new HtmlTable();
 
 		// We need a dedicated header definition to support a table transpose
@@ -91,7 +87,6 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTransposedTable_Cell_Row_IsHtml() {
-
 		$instance = new HtmlTable();
 
 		// We need a dedicated header definition to support a table transpose

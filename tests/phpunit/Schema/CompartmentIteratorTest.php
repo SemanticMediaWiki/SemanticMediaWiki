@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Schema\CompartmentIterator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
+class CompartmentIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CompartmentIterator::class,
 			new CompartmentIterator( [] )
@@ -27,7 +26,6 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCountAndSeek() {
-
 		$data = [
 			[ 'Foo' => [ 'Foobar' ] ],
 			[ 'Bar' => [] ],
@@ -50,7 +48,6 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCountAndSeek_Associative() {
-
 		$data = [
 			'test_1' => [ 'Foo' => [ 'Foobar' ] ],
 			'test_2' => [ 'Bar' => [] ]
@@ -73,7 +70,6 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCountAndSeek_Associative_WhereValueIsNotAnArray() {
-
 		$data = [
 			'test_2' => 'Bar'
 		];
@@ -95,7 +91,6 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSeekOnInvalidPositionThrowsException() {
-
 		$instance = new CompartmentIterator();
 
 		$this->expectException( '\OutOfBoundsException' );
@@ -103,7 +98,6 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSeekOnInvalidPosition_Associative_ThrowsException() {
-
 		$data = [
 			'test_1' => [ 'Foo' => [ 'Foobar' ] ],
 			'test_2' => [ 'Bar' => [] ]
@@ -118,7 +112,6 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIterate() {
-
 		$data = [
 			[ 'Foo' => [ 'Foobar' ] ],
 			[ 'Bar' => [] ],
@@ -137,7 +130,6 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHas() {
-
 		$data = [
 			[ 'Foo_1' => [ 'Foo2' ] ],
 			[ 'Foo' => [ 'Foobar' => [] ] ],
@@ -167,7 +159,6 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIterate_Associatve() {
-
 		$data = [
 			'test_1' => [ 'Foo' => [ 'Foobar' ] ],
 			'test_2' => [ 'Bar' => [] ]
@@ -186,7 +177,6 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIterate_Associatve_RuleType() {
-
 		$data = [
 			'test_1' => [ 'Foo' => [ 'Foobar' ] ],
 			'test_2' => [ 'Bar' => [] ]
@@ -206,7 +196,6 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFind() {
-
 		$data = [
 			'test_1' => [ 'Foo' => [ 'Foobar' ] ],
 			'test_2' => [ 'Bar' => [] ]
@@ -238,7 +227,6 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFind_Match_Key() {
-
 		$data = [
 			'test_1' => [ 'Foo' => [ 'Foobar' ] ],
 			'test_2' => [ 'Bar' => [] ]

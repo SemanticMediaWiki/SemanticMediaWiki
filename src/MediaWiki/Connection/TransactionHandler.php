@@ -8,7 +8,7 @@ use Wikimedia\Rdbms\TransactionProfiler;
 use Wikimedia\ScopedCallback;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -26,7 +26,7 @@ class TransactionHandler {
 	private $sectionTransaction;
 
 	/**
-	 * @var boolean|null
+	 * @var bool|null
 	 */
 	private $mutedTransactionProfiler;
 
@@ -60,19 +60,11 @@ class TransactionHandler {
 	 * @since 3.1
 	 */
 	public function muteTransactionProfiler(): ?ScopedCallback {
-
 		if ( $this->transactionProfiler === null ) {
 			return null;
 		}
 
-		if ( method_exists( $this->transactionProfiler, 'silenceForScope' ) ) {
-			return $this->transactionProfiler->silenceForScope();
-		} else {
-			$this->transactionProfiler->setSilenced( true );
-			return new ScopedCallback( function () {
-				$this->transactionProfiler->setSilenced( false );
-			} );
-		}
+		return $this->transactionProfiler->silenceForScope();
 	}
 
 	/**
@@ -80,7 +72,7 @@ class TransactionHandler {
 	 *
 	 * @param string $fname
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inSectionTransaction( $fname = __METHOD__ ) {
 		return $this->sectionTransaction === $fname;
@@ -89,7 +81,7 @@ class TransactionHandler {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasActiveSectionTransaction() {
 		return $this->sectionTransaction !== null;
@@ -114,7 +106,6 @@ class TransactionHandler {
 	 * @throws RuntimeException
 	 */
 	public function markSectionTransaction( $fname = __METHOD__ ) {
-
 		if ( $this->sectionTransaction !== null ) {
 			throw new RuntimeException(
 				"Trying to begin a new section transaction while {$this->sectionTransaction} is still active!"
@@ -130,7 +121,6 @@ class TransactionHandler {
 	 * @param string $fname
 	 */
 	public function detachSectionTransaction( $fname = __METHOD__ ) {
-
 		if ( $this->sectionTransaction !== $fname ) {
 			throw new RuntimeException(
 				"Trying to end an invalid section transaction (registered: {$this->sectionTransaction}, requested: {$fname})"
@@ -150,7 +140,6 @@ class TransactionHandler {
 	 * @return mixed A value to pass to commitAndWaitForReplication
 	 */
 	public function getEmptyTransactionTicket( $fname = __METHOD__ ) {
-
 		$ticket = null;
 
 		// @see LBFactory::getEmptyTransactionTicket
@@ -178,8 +167,7 @@ class TransactionHandler {
 	 * @param array $opts Options to waitForReplication
 	 */
 	public function commitAndWaitForReplication( $fname, $ticket, array $opts = [] ) {
-
-		if ( !is_int( $ticket ) || !method_exists( $this->loadBalancerFactory, 'commitAndWaitForReplication' ) ) {
+		if ( !is_int( $ticket ) ) {
 			return;
 		}
 
@@ -187,11 +175,6 @@ class TransactionHandler {
 	}
 
 	private function primaryDbHasChanges(): bool {
-		if ( method_exists( $this->loadBalancerFactory, 'hasPrimaryChanges' ) ) {
-			return $this->loadBalancerFactory->hasPrimaryChanges();
-		} else {
-			return $this->loadBalancerFactory->hasMasterChanges();
-		}
+		return $this->loadBalancerFactory->hasPrimaryChanges();
 	}
-
 }

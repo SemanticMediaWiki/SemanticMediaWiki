@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\User\UserIdentity;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\NamespaceExaminer;
-use SMW\MediaWiki\HookListener;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**
@@ -17,7 +17,7 @@ use Title;
  * Act on events that happen outside of the normal parser process to ensure that
  * changes to pre-defined properties related to a user status can be invoked.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -58,12 +58,11 @@ class UserChange implements HookListener {
 	 * @param UserIdentity|string|null $user
 	 */
 	public function process( $user ) {
-
 		if ( !$this->namespaceExaminer->isSemanticEnabled( NS_USER ) ) {
 			return false;
 		}
 
-		// getTargetUserIdentity returns null if it is not user(eg. CIDR) 
+		// getTargetUserIdentity returns null if it is not user(eg. CIDR)
 		// https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5263
 		if ( $user === null ) {
 			return false;

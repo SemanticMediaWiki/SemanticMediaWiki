@@ -9,17 +9,17 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Api\Tasks\InsertJobTask
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
+class InsertJobTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $jobFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -29,13 +29,12 @@ class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new InsertJobTask( $this->jobFactory );
 
 		$this->assertInstanceOf(
@@ -45,7 +44,6 @@ class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -56,16 +54,16 @@ class InsertJobTaskTest extends \PHPUnit_Framework_TestCase {
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newByType' )
 			->with(
-				$this->equalTo( 'Foobar' ),
+				'Foobar',
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( $nullJob ) );
+			->willReturn( $nullJob );
 
 		$instance = new InsertJobTask(
 			$this->jobFactory
 		);
 
-		$instance->process( [ 'subject' => 'Foo#0##', 'job' => 'Foobar' ]);
+		$instance->process( [ 'subject' => 'Foo#0##', 'job' => 'Foobar' ] );
 	}
 
 }

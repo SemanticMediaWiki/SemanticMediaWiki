@@ -9,27 +9,26 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\SQLStore\QueryEngine\OrderCondition
  * @group semantic-mediawiki
+ * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class OrderConditionTest extends \PHPUnit_Framework_TestCase {
+class OrderConditionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $conditionBuilder;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			OrderCondition::class,
 			new OrderCondition( $this->conditionBuilder )
@@ -37,7 +36,6 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testApplyWithoutSortKey() {
-
 		$this->conditionBuilder->expects( $this->once() )
 			->method( 'getQuerySegmentList' );
 
@@ -46,7 +44,6 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testApplyWithInvalidSortKeyThrowsException() {
-
 		$querySegment = new QuerySegment();
 
 		$this->conditionBuilder->expects( $this->never() )
@@ -54,7 +51,7 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'findQuerySegment' )
-			->will( $this->returnValue( $querySegment ) );
+			->willReturn( $querySegment );
 
 		$instance = new OrderCondition();
 
@@ -73,7 +70,6 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sortKeyProvider
 	 */
 	public function testApplyWithSortKey( $sortKeys ) {
-
 		$querySegment = new QuerySegment();
 
 		$this->conditionBuilder->expects( $this->once() )
@@ -81,7 +77,7 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'findQuerySegment' )
-			->will( $this->returnValue( $querySegment ) );
+			->willReturn( $querySegment );
 
 		$instance = new OrderCondition();
 
@@ -92,7 +88,6 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function sortKeyProvider() {
-
 		$provider[] = [
 			[
 				'' => 'ASC'

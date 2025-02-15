@@ -5,15 +5,14 @@ namespace SMW\SQLStore\QueryEngine;
 use InvalidArgumentException;
 use OutOfBoundsException;
 use SMW\Message;
-use SMW\Query\Language\Conjuncton;
 use SMW\Query\Language\Description;
-use SMW\Store;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Utils\CircularReferenceGuard;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -38,7 +37,7 @@ class ConditionBuilder {
 	private $dispatchingDescriptionInterpreter;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isFilterDuplicates = true;
 
@@ -64,7 +63,7 @@ class ConditionBuilder {
 	private $errors = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $lastQuerySegmentId = -1;
 
@@ -92,7 +91,7 @@ class ConditionBuilder {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isFilterDuplicates
+	 * @param bool $isFilterDuplicates
 	 */
 	public function isFilterDuplicates( $isFilterDuplicates ) {
 		$this->isFilterDuplicates = (bool)$isFilterDuplicates;
@@ -129,7 +128,6 @@ class ConditionBuilder {
 	 * @throws OutOfBoundsException
 	 */
 	public function findQuerySegment( $id ) {
-
 		if ( !is_int( $id ) ) {
 			throw new InvalidArgumentException( '$id needs to be an integer' );
 		}
@@ -162,7 +160,7 @@ class ConditionBuilder {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLastQuerySegmentId() {
 		return $this->lastQuerySegmentId;
@@ -191,10 +189,9 @@ class ConditionBuilder {
 	 *
 	 * @param Query $query
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function buildCondition( Query $query ) {
-
 		$this->sortKeys = $query->sortkeys;
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 
@@ -259,10 +256,9 @@ class ConditionBuilder {
 	 *
 	 * @param Description $description
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function buildFromDescription( Description $description ) {
-
 		$fingerprint = $description->getFingerprint();
 
 		// Get membership of descriptions that are resolved recursively
@@ -279,7 +275,7 @@ class ConditionBuilder {
 		);
 
 		$querySegment->fingerprint = $fingerprint;
-		//$querySegment->membership = $description->getMembership();
+		// $querySegment->membership = $description->getMembership();
 		//$querySegment->queryString = $description->getQueryString();
 
 		$this->lastQuerySegmentId = $this->registerQuerySegment(
@@ -316,7 +312,6 @@ class ConditionBuilder {
 	}
 
 	private function findDuplicates( $fingerprint ) {
-
 		if ( $this->errors !== [] || $this->isFilterDuplicates === false ) {
 			return false;
 		}

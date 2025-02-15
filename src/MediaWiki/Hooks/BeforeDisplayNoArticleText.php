@@ -10,7 +10,7 @@ use SMW\MediaWiki\HookListener;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforeDisplayNoArticleText
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -34,10 +34,9 @@ class BeforeDisplayNoArticleText implements HookListener {
 	/**
 	 * @since 2.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process() {
-
 		// Avoid having "noarticletext" info being generated for predefined
 		// properties as we are going to display an introductory text
 		if ( $this->article->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {

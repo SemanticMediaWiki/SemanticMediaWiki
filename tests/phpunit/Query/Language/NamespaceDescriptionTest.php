@@ -10,15 +10,14 @@ use SMW\Query\Language\ThingDescription;
  * @covers \SMW\Query\Language\NamespaceDescription
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class NamespaceDescriptionTest extends \PHPUnit_Framework_TestCase {
+class NamespaceDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$namespace = NS_MAIN;
 
 		$this->assertInstanceOf(
@@ -34,7 +33,6 @@ class NamespaceDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCommonMethods() {
-
 		$namespace = NS_MAIN;
 
 		$instance = new NamespaceDescription( $namespace );
@@ -44,16 +42,15 @@ class NamespaceDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( "[[:+]]", $instance->getQueryString() );
 		$this->assertEquals( " <q>[[:+]]</q> ", $instance->getQueryString( true ) );
 
-		$this->assertEquals( false, $instance->isSingleton() );
+		$this->assertFalse( $instance->isSingleton() );
 		$this->assertEquals( [], $instance->getPrintRequests() );
 
-		$this->assertEquals( 1, $instance->getSize() );
-		$this->assertEquals( 0, $instance->getDepth() );
+		$this->assertSame( 1, $instance->getSize() );
+		$this->assertSame( 0, $instance->getDepth() );
 		$this->assertEquals( 8, $instance->getQueryFeatures() );
 	}
 
 	public function testGetQueryStringForCategoryNamespace() {
-
 		$namespace = NS_CATEGORY;
 
 		$ns = Localizer::getInstance()->getNsText( $namespace );
@@ -71,7 +68,6 @@ class NamespaceDescriptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrune() {
-
 		$instance = new NamespaceDescription( NS_MAIN );
 
 		$maxsize  = 1;

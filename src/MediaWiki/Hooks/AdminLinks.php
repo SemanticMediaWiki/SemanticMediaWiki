@@ -2,14 +2,14 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use ALTree;
-use ALSection;
 use ALItem;
 use ALRow;
+use ALSection;
+use ALTree;
 use SMW\MediaWiki\HookListener;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -24,7 +24,6 @@ class AdminLinks implements HookListener {
 	 * @return true
 	 */
 	public function process( ALTree $admin_links_tree ) {
-
 		// @codeCoverageIgnoreStart
 		$data_structure_section = new ALSection( wfMessage( 'smw_adminlinks_datastructure' )->text() );
 

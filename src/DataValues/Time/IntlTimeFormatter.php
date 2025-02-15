@@ -7,7 +7,7 @@ use SMW\Localizer;
 use SMWDITime as DITime;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -29,7 +29,7 @@ class IntlTimeFormatter {
 	private $language;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasLocalTimeCorrection = false;
 
@@ -39,7 +39,7 @@ class IntlTimeFormatter {
 	 * @param DITime $dataItem
 	 * @param Language|null $language
 	 */
-	public function __construct( DITime $dataItem, Language $language = null ) {
+	public function __construct( DITime $dataItem, ?Language $language = null ) {
 		$this->dataItem = $dataItem;
 		$this->language = $language;
 
@@ -51,7 +51,7 @@ class IntlTimeFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLocalTimeCorrection() {
 		return $this->hasLocalTimeCorrection;
@@ -60,12 +60,11 @@ class IntlTimeFormatter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $formatFlag
+	 * @param int $formatFlag
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ) {
-
 		$dateTime = $this->dataItem->asDateTime();
 		$timezone = '';
 
@@ -121,10 +120,9 @@ class IntlTimeFormatter {
 	 *
 	 * @param string $format
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function format( $format ) {
-
 		$dateTime = $this->dataItem->asDateTime();
 
 		if ( !$dateTime ) {
@@ -144,10 +142,9 @@ class IntlTimeFormatter {
 	 *
 	 * @param string $format
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function containsValidDateFormatRule( $format ) {
-
 		foreach ( str_split( $format ) as $value ) {
 			if ( in_array( $value, [ 'd', 'D', 'j', 'l', 'N', 'w', 'W', 'F', 'M', 'm', 'n', 't', 'L', 'o', 'Y', 'y', "c", 'r' ] ) ) {
 				return true;
@@ -168,7 +165,6 @@ class IntlTimeFormatter {
 	 * - A	Uppercase Ante meridiem and Post meridiem
 	 */
 	private function formatWithLocalizedTextReplacement( $dateTime, $format ) {
-
 		$output = $dateTime->format( $format );
 
 		// (n) DateTime => 1 through 12

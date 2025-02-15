@@ -5,7 +5,7 @@ namespace SMW\Utils;
 use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class HtmlColumns {
 	const PLAIN_LIST = 'list/plain';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $columns = 1;
 
@@ -38,17 +38,17 @@ class HtmlColumns {
 	private $itemAttributes = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numRows = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $count = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $columnStyle = 0;
 
@@ -78,17 +78,17 @@ class HtmlColumns {
 	private $columnClass = 'smw-column';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRTL = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isResponsiveCols = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $responsiveColsThreshold = 10;
 
@@ -104,7 +104,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $columnListClass
+	 * @param string $columnClass
 	 */
 	public function setColumnClass( $columnClass ) {
 		$this->columnClass = htmlspecialchars( $columnClass );
@@ -113,7 +113,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function isRTL( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;
@@ -122,7 +122,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isResponsiveCols
+	 * @param bool $isResponsiveCols
 	 */
 	public function setResponsiveCols( $isResponsiveCols = true ) {
 		$this->isResponsiveCols = (bool)$isResponsiveCols;
@@ -131,7 +131,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $responsiveColsThreshold
+	 * @param int $responsiveColsThreshold
 	 */
 	public function setResponsiveColsThreshold( $responsiveColsThreshold ) {
 		$this->responsiveColsThreshold = (int)$responsiveColsThreshold;
@@ -140,7 +140,7 @@ class HtmlColumns {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $columns
+	 * @param int $columns
 	 */
 	public function setColumns( $columns ) {
 		$this->columns = $columns;
@@ -153,7 +153,6 @@ class HtmlColumns {
 	 * @param string $olType
 	 */
 	public function setListType( $listType, $olType = '' ) {
-
 		if ( in_array( $listType, [ 'ul', 'ol' ] ) ) {
 			$this->listType = $listType;
 		}
@@ -204,7 +203,6 @@ class HtmlColumns {
 	 * @param string $type
 	 */
 	public function setContents( array $cnts, $type = self::PLAIN_LIST ) {
-
 		if ( $type === self::PLAIN_LIST ) {
 			$contents[''] = [];
 
@@ -228,7 +226,6 @@ class HtmlColumns {
 	 * @return string
 	 */
 	public function getHtml() {
-
 		$result = '';
 		$usedColumnCloser = false;
 		$this->numRows = 0;
@@ -288,7 +285,6 @@ class HtmlColumns {
 	}
 
 	private function makeList( $key, $items, $rowsPerColumn, $columns, &$usedColumnCloser ) {
-
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';
@@ -349,7 +345,6 @@ class HtmlColumns {
 	}
 
 	private function element( $type, $attributes, $content ) {
-
 		$attr = '';
 		$attributes = (array)$attributes;
 

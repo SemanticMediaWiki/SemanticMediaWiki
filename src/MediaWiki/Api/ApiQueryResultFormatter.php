@@ -11,7 +11,7 @@ use SMWQueryResult;
  *
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -19,17 +19,17 @@ use SMWQueryResult;
 class ApiQueryResultFormatter {
 
 	/**
-	 * @var Integer|boolean
+	 * @var int|bool
 	 */
 	protected $continueOffset = false;
 
 	/**
-	 * @var String
+	 * @var string
 	 */
 	protected $type;
 
 	/**
-	 * @var Boolean
+	 * @var bool
 	 */
 	protected $isRawMode = false;
 
@@ -58,7 +58,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $isRawMode
+	 * @param bool $isRawMode
 	 */
 	public function setIsRawMode( $isRawMode ) {
 		$this->isRawMode = $isRawMode;
@@ -69,7 +69,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getContinueOffset() {
 		return $this->continueOffset;
@@ -103,7 +103,6 @@ class ApiQueryResultFormatter {
 	 * @since 1.9
 	 */
 	public function doFormat() {
-
 		if ( $this->queryResult->getErrors() !== [] ) {
 			$this->result = $this->formatErrors(
 				ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $this->queryResult->getErrors() )
@@ -127,7 +126,6 @@ class ApiQueryResultFormatter {
 	 * @return array
 	 */
 	protected function formatResults( array $queryResult ) {
-
 		$this->type = 'query';
 		$results    = [];
 
@@ -184,7 +182,6 @@ class ApiQueryResultFormatter {
 	 * @return array
 	 */
 	protected function formatErrors( array $errors ): array {
-
 		$this->type      = 'error';
 		$result['query'] = $errors;
 
@@ -204,10 +201,9 @@ class ApiQueryResultFormatter {
 	 * @since 1.9
 	 *
 	 * @param array &$arr
-	 * @param string $tag
+	 * @param string|null $tag
 	 */
 	public function setIndexedTagName( &$arr, $tag = null ) {
-
 		if ( !$this->isRawMode ) {
 			return;
 		}

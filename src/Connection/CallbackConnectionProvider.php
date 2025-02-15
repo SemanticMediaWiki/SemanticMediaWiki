@@ -3,7 +3,7 @@
 namespace SMW\Connection;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -35,7 +35,6 @@ class CallbackConnectionProvider implements ConnectionProvider {
 	 * @return mixed
 	 */
 	public function getConnection() {
-
 		if ( $this->connection === null ) {
 			$this->connection = call_user_func( $this->callback );
 		}

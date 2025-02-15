@@ -3,30 +3,29 @@
 namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
-use SMW\Tests\PHPUnitCompat;
 use SMW\DataItemFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Constraint\Constraints\NonNegativeIntegerConstraint
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
+class NonNegativeIntegerConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NonNegativeIntegerConstraint::class,
 			new NonNegativeIntegerConstraint()
@@ -34,7 +33,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new NonNegativeIntegerConstraint();
 
 		$this->assertEquals(
@@ -44,7 +42,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new NonNegativeIntegerConstraint();
 
 		$this->assertFalse(
@@ -53,7 +50,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_non_negative_integer() {
-
 		$constraint = [
 			'non_negative_integer' => true
 		];
@@ -67,17 +63,17 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDINumber( -1 ) ) );
+			->willReturn( $this->dataItemFactory->newDINumber( -1 ) );
 
 		$instance = new NonNegativeIntegerConstraint();
 
@@ -89,7 +85,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_non_negative_integer_ThrowsException() {
-
 		$constraint = [
 			'non_negative_integer' => true
 		];
@@ -101,7 +96,6 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

@@ -3,26 +3,26 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\IdBorder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class IdBorderTest extends \PHPUnit_Framework_TestCase {
+class IdBorderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
@@ -32,7 +32,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			IdBorder::class,
 			new IdBorder( $this->store )
@@ -40,7 +39,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckBorder_HasBorder() {
-
 		$row = [
 			'smw_id' => 100
 		];
@@ -51,11 +49,11 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( [ (object)$row ] ) );
+			->willReturn( [ (object)$row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new IdBorder(
 			$this->store
@@ -77,7 +75,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckBorder_HasMultipleBorders() {
-
 		$rows = [
 			(object)[ 'smw_id' => 100 ],
 			(object)[ 'smw_id' => 9999 ]
@@ -89,17 +86,17 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $rows ) );
+			->willReturn( $rows );
 
 		$connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'smw_id' => 9999 ] ) );
+				[ 'smw_id' => 9999 ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new IdBorder(
 			$this->store
@@ -121,7 +118,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckBorder_NoBorder() {
-
 		$rows = [];
 
 		$expected = [
@@ -143,21 +139,21 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $rows ) );
+			->willReturn( $rows );
 
 		$connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $expected ) );
+				$expected );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new IdBorder(
 			$this->store
@@ -189,7 +185,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMissingUpperboundThrowsException() {
-
 		$instance = new IdBorder(
 			$this->store
 		);
@@ -199,7 +194,6 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMissingLegacyboundThrowsException() {
-
 		$instance = new IdBorder(
 			$this->store
 		);

@@ -9,7 +9,7 @@ use SMWRequestOptions as RequestOptions;
 use SMWStringCondition as StringCondition;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author Markus Krötzsch
@@ -29,7 +29,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @return array
 	 */
-	public static function getSQLOptions( RequestOptions $requestOptions = null, $valueCol = '' ) {
+	public static function getSQLOptions( ?RequestOptions $requestOptions = null, $valueCol = '' ) {
 		$sqlConds = [];
 
 		if ( $requestOptions === null ) {
@@ -80,11 +80,11 @@ class RequestOptionsProcessor {
 	 * @param RequestOptions|null $requestOptions
 	 * @param string $valueCol name of SQL column to which conditions apply
 	 * @param string $labelCol name of SQL column to which string conditions apply, if any
-	 * @param boolean $addAnd indicate whether the string should begin with " AND " if non-empty
+	 * @param bool $addAnd indicate whether the string should begin with " AND " if non-empty
 	 *
 	 * @return string
 	 */
-	public static function getSQLConditions( Store $store, RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
+	public static function getSQLConditions( Store $store, ?RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
 		$sqlConds = '';
 
 		if ( $requestOptions === null ) {
@@ -114,23 +114,23 @@ class RequestOptionsProcessor {
 				switch ( $strcond->condition ) {
 					case StringCondition::COND_PRE:
 						$string .= '%';
-					break;
+						break;
 					case StringCondition::COND_POST:
 						$string = '%' . $string;
-					break;
+						break;
 					case StringCondition::COND_MID:
 						$string = '%' . $string . '%';
-					break;
+						break;
 					case StringCondition::COND_EQ:
 						$string = $strcond->string;
 						$condition = '=';
-					break;
+						break;
 				}
 
 				$conditionOperator = $strcond->isOr ? ' OR ' : ' AND ';
 
 				if ( $strcond->isNot ) {
-					$sqlConds = " ($sqlConds) AND ($labelCol NOT $condition ". $connection->addQuotes( $string ) . ") ";
+					$sqlConds = " ($sqlConds) AND ($labelCol NOT $condition " . $connection->addQuotes( $string ) . ") ";
 				} else {
 					$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? $conditionOperator : '' ) . "$labelCol $condition " . $connection->addQuotes( $string );
 				}
@@ -165,12 +165,11 @@ class RequestOptionsProcessor {
 	 *
 	 * @param Store $store
 	 * @param array $data array of SMWDataItem objects
-	 * @param SMWRequestOptions|null $requestoptions
+	 * @param SMWRequestOptions|null $requestOptions
 	 *
 	 * @return SMWDataItem[]
 	 */
-	public static function applyRequestOptions( Store $store, array $data, RequestOptions $requestOptions = null ) {
-
+	public static function applyRequestOptions( Store $store, array $data, ?RequestOptions $requestOptions = null ) {
 		if ( $data === [] || $requestOptions === null ) {
 			return $data;
 		}
@@ -185,7 +184,7 @@ class RequestOptionsProcessor {
 
 		foreach ( $data as $item ) {
 
-			list( $label, $value ) = self::getSortKeyForItem( $store, $item );
+			[ $label, $value ] = self::getSortKeyForItem( $store, $item );
 
 			$keepDataValue = self::applyBoundaryConditions( $requestOptions, $value, $isNumeric );
 			$keepDataValue = self::applyStringConditions( $requestOptions, $label, $keepDataValue );
@@ -204,7 +203,6 @@ class RequestOptionsProcessor {
 	}
 
 	private static function applyStringConditions( $requestOptions, $label, $keepDataValue ) {
-
 		foreach ( $requestOptions->getStringConditions() as $strcond ) { // apply string conditions
 			switch ( $strcond->condition ) {
 				case StringCondition::STRCOND_PRE:
@@ -250,7 +248,6 @@ class RequestOptionsProcessor {
 	}
 
 	private static function getSortKeyForItem( $store, $item ) {
-
 		if ( $item instanceof DIWikiPage ) {
 			$label = $store->getWikiPageSortKey( $item );
 			$value = $label;
@@ -263,7 +260,6 @@ class RequestOptionsProcessor {
 	}
 
 	private static function applySortRestriction( $requestOptions, &$result, $sortres, $isNumeric ) {
-
 		if ( !$requestOptions->sort ) {
 			return null;
 		}
@@ -291,7 +287,6 @@ class RequestOptionsProcessor {
 	}
 
 	private static function applyLimitRestriction( $requestOptions, &$result ) {
-
 		// In case of a `conditionConstraint` the restriction is set forth by the
 		// SELECT statement.
 		if ( isset( $requestOptions->conditionConstraint ) ) {

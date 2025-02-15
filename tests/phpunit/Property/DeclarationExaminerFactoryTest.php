@@ -3,22 +3,19 @@
 namespace SMW\Tests\Property;
 
 use SMW\Property\DeclarationExaminerFactory;
-use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminerFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class DeclarationExaminerFactoryTest extends \PHPUnit_Framework_TestCase {
+class DeclarationExaminerFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DeclarationExaminerFactory::class,
 			new DeclarationExaminerFactory()
@@ -26,7 +23,6 @@ class DeclarationExaminerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDeclarationExaminerMsgBuilder() {
-
 		$instance = new DeclarationExaminerFactory();
 
 		$this->assertInstanceOf(
@@ -36,7 +32,6 @@ class DeclarationExaminerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDeclarationExaminer() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

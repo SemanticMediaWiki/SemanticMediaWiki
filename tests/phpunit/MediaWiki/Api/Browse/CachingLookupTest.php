@@ -8,15 +8,14 @@ use SMW\MediaWiki\Api\Browse\CachingLookup;
  * @covers \SMW\MediaWiki\Api\Browse\CachingLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class CachingLookupTest extends \PHPUnit_Framework_TestCase {
+class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,7 +31,6 @@ class CachingLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupWithoutCache() {
-
 		$cacheTTL = 42;
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -41,14 +39,14 @@ class CachingLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'save' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( $cacheTTL ) );
+				$cacheTTL );
 
 		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
 			->disableOriginalConstructor()
@@ -57,7 +55,7 @@ class CachingLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$lookup->expects( $this->atLeastOnce() )
 			->method( 'lookup' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new CachingLookup(
 			$cache,
@@ -72,14 +70,13 @@ class CachingLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupWithCache() {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$cache->expects( $this->never() )
 			->method( 'save' );
@@ -103,7 +100,6 @@ class CachingLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookupWithCacheBeingDisabled() {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -121,7 +117,7 @@ class CachingLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$lookup->expects( $this->atLeastOnce() )
 			->method( 'lookup' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new CachingLookup(
 			$cache,

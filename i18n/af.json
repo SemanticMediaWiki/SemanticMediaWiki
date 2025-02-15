@@ -4,7 +4,8 @@
 			"Arnobarnard",
 			"Biggs ZA",
 			"Joris Darlington Quarshie",
-			"Naudefj"
+			"Naudefj",
+			"Rooiratel"
 		]
 	},
 	"smw_finallistconjunct": ", en",
@@ -19,12 +20,14 @@
 	"smw_nodatetime": "Die datum \"$1\" kon nie verwerk word nie.",
 	"smw_emptysubquery": "'n Sub-navraag het geen geldige kondisie.",
 	"smw_exportrdf_submit": "Eksporteer",
+	"smw-categories": "Kategorieë",
 	"smw_propertyhardlyused": "Hierdie eienskap word skaars gebruik in hierdie wiki!",
 	"smw-special-wantedproperties-filter-none": "Geen",
 	"smw-unusedproperty-template": "$1 van tipe $2",
 	"smw-wantedproperty-template": "$1 ($2 gebruike)",
 	"smw_purge": "Verfris",
 	"types": "Tipes",
+	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Navraag|Navrae}}",
 	"smw_ask_sortby": "Sorteer volgens kolom (optioneel)",
 	"smw_ask_ascorder": "Toenemend",
 	"smw_ask_descorder": "Afnemend",

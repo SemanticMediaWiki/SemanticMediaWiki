@@ -8,15 +8,14 @@ use SMW\Encoder;
  * @covers \SMW\Encoder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class EncoderTest extends \PHPUnit_Framework_TestCase {
+class EncoderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\Encoder',
 			new Encoder()
@@ -24,7 +23,6 @@ class EncoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEscape() {
-
 		$this->assertEquals(
 			'-3C-5B-23-26-25!~`+=-7C-2D-5F-5D-3E',
 			Encoder::escape( '<[#&%!~`+=|-_]>' )
@@ -32,7 +30,6 @@ class EncoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnescape() {
-
 		$this->assertEquals(
 			'<[#&%!~`+=|-_]>',
 			Encoder::unescape( '-3C-5B-23-26-25!~`+=-7C-2D-5F-5D-3E' )
@@ -40,7 +37,6 @@ class EncoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEncode() {
-
 		$this->assertEquals(
 			'%3C%5B%23%26%25%21~%60%2B%3D%7C-_%5D%3E',
 			Encoder::encode( '<[#&%!~`+=|-_]>' )
@@ -51,7 +47,6 @@ class EncoderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stringProvider
 	 */
 	public function testDecode( $input, $output ) {
-
 		$this->assertEquals(
 			$output,
 			Encoder::decode( $input )
@@ -75,7 +70,6 @@ class EncoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function stringProvider() {
-
 		$provider = [];
 
 		$provider[] = [ ' ', '' ];

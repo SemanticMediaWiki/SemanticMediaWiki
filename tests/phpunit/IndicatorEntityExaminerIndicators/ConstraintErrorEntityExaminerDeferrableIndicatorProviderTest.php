@@ -2,21 +2,21 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
-use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
+use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
+class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -26,7 +26,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 	private $entityCache;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -42,7 +42,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnValue( $this->errorLookup ) );
+			->willReturn( $this->errorLookup );
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
@@ -54,16 +54,15 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider',
 			new ConstraintErrorEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache )
@@ -81,7 +80,6 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 	}
 
 	public function testHasIndicator_NoDeferredMode() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new ConstraintErrorEntityExaminerDeferrableIndicatorProvider(
@@ -99,8 +97,8 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 			$instance->isDeferredMode()
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 
@@ -111,10 +109,9 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 	}
 
 	public function testHasIndicator_FromErrorLookup() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'save' );
@@ -124,7 +121,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 
 		$this->errorLookup->expects( $this->once() )
 			->method( 'buildArray' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -139,17 +136,16 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
 
 	public function testHasIndicator_FromCache() {
-
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$this->errorLookup->expects( $this->never() )
 			->method( 'buildArray' );
@@ -167,8 +163,8 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 			$this->messageLocalizer
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}

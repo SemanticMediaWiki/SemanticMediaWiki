@@ -3,30 +3,26 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\TypesValue;
-use SMW\DataValues\ValueParsers\TypesValueParser;
 
 /**
  * @covers \SMW\DataValues\TypesValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TypesValueTest extends \PHPUnit_Framework_TestCase {
+class TypesValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TypesValue::class,
 			new TypesValue()
 		);
-
 	}
 
 	public function testNewFromTypeId() {
-
 		$this->assertInstanceOf(
 			TypesValue::class,
 			TypesValue::newFromTypeId( '_dat' )
@@ -37,7 +33,6 @@ class TypesValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeLabelProvider
 	 */
 	public function testNewFromTypeId_GetWikiValue( $type, $label ) {
-
 		$this->assertEquals(
 			$label,
 			TypesValue::newFromTypeId( $type )->getWikiValue()
@@ -48,7 +43,6 @@ class TypesValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeUriProvider
 	 */
 	public function testGetTypeUriFromTypeId( $type, $url ) {
-
 		$this->assertEquals(
 			$url,
 			TypesValue::getTypeUriFromTypeId( $type )->getUri()
@@ -59,7 +53,6 @@ class TypesValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider userWikiValueProvider
 	 */
 	public function testSetUserValue_GetWikiValue( $value, $expected ) {
-
 		$instance = new TypesValue();
 		$instance->setUserValue( $value );
 
@@ -70,7 +63,6 @@ class TypesValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function typeLabelProvider() {
-
 		yield [
 			'_dat',
 			'Date'
@@ -88,7 +80,6 @@ class TypesValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function typeUriProvider() {
-
 		yield [
 			'_dat',
 			'http://semantic-mediawiki.org/swivt/1.0#_dat'
@@ -106,7 +97,6 @@ class TypesValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function userWikiValueProvider() {
-
 		yield [
 			'_dat',
 			'Date'
@@ -121,7 +111,6 @@ class TypesValueTest extends \PHPUnit_Framework_TestCase {
 			'Foo',
 			'Foo'
 		];
-
 	}
 
 }

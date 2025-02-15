@@ -5,6 +5,7 @@
 			"Mirzali"
 		]
 	},
+	"smw-categories": "Kategoriyi",
 	"smw-admin-supplementary-elastic-status-replication-monitoring": "Şêrkerdışê jêdekerdışi (aktif): $1",
 	"smw-es-replication-error": "Problemê jêdekerdışi",
 	"smw-es-replication-error-divergent-date": "*$1 (Cıcêrayışo elastik)\n*$2 (Mığazaya SQLi)",

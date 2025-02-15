@@ -9,15 +9,14 @@ use SMW\Tests\Utils\Mock\MockTitle;
  * @covers \SMW\MediaWiki\PageInfoProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
+class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$wikipage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -29,7 +28,6 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWikiPage_TYPE_MODIFICATION_DATE() {
-
 		$instance = $this->constructPageInfoProviderInstance(
 			[
 				'wikiPage' => [ 'getTimestamp' => 1272508903 ],
@@ -42,14 +40,13 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWikiPage_TYPE_CREATION_DATE() {
-
 		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$revision->expects( $this->any() )
-			->method(  'getTimestamp' )
-			->will( $this->returnValue( 1272508903 ) );
+			->method( 'getTimestamp' )
+			->willReturn( 1272508903 );
 
 		$title = MockTitle::buildMock( 'Lula' );
 
@@ -67,7 +64,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$revisionLookup->expects( $this->any() )
 			->method( 'getFirstRevision' )
-			->will( $this->returnValue( $revision ) );
+			->willReturn( $revision );
 
 		$instance->setRevisionLookup(
 			$revisionLookup
@@ -80,7 +77,6 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parentIdProvider
 	 */
 	public function testWikiPage_TYPE_NEW_PAGE_ForRevision( $parentId, $expected ) {
-
 		$instance = $this->constructPageInfoProviderInstance(
 			[
 				'wikiPage' => [],
@@ -96,27 +92,26 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parentIdProvider
 	 */
 	public function testWikiPage_TYPE_NEW_PAGE( $parentId, $expected ) {
-
 		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$revision->expects( $this->any() )
-			->method(  'getParentId' )
-			->will( $this->returnValue( $parentId ) );
+			->method( 'getParentId' )
+			->willReturn( $parentId );
 
 		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$revisionGuard->expects( $this->any() )
-			->method(  'newRevisionFromPage' )
-			->will( $this->returnValue( $revision ) );
+			->method( 'newRevisionFromPage' )
+			->willReturn( $revision );
 
 		$instance = $this->constructPageInfoProviderInstance(
 			[
 				'wikiPage' => [ 'getRevisionRecord' => $revision ],
-				'revision' => [ ],
+				'revision' => [],
 				'user'     => [],
 			]
 		);
@@ -129,10 +124,9 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parentIdProvider() {
-
 		$provider = [
 			[ 90001, false ],
-			[ 0 , true ],
+			[ 0, true ],
 			[ null, false ]
 		];
 
@@ -140,12 +134,11 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWikiPage_TYPE_LAST_EDITOR() {
-
 		$userPage = MockTitle::buildMock( 'Lula' );
 
 		$userPage->expects( $this->any() )
-			->method(  'getNamespace' )
-			->will( $this->returnValue( NS_USER ) );
+			->method( 'getNamespace' )
+			->willReturn( NS_USER );
 
 		$instance = $this->constructPageInfoProviderInstance(
 			[
@@ -159,15 +152,14 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function constructPageInfoProviderInstance( array $parameters ) {
-
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		foreach ( $parameters['wikiPage'] as $method => $returnValue ) {
 			$wikiPage->expects( $this->any() )
-				->method(  $method  )
-				->will( $this->returnValue( $returnValue ) );
+				->method( $method )
+				->willReturn( $returnValue );
 		}
 
 		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
@@ -176,8 +168,8 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $parameters['revision'] as $method => $returnValue ) {
 			$revision->expects( $this->any() )
-				->method(  $method  )
-				->will( $this->returnValue( $returnValue ) );
+				->method( $method )
+				->willReturn( $returnValue );
 		}
 
 		$user = $this->getMockBuilder( '\User' )
@@ -186,8 +178,8 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $parameters['user'] as $method => $returnValue ) {
 			$user->expects( $this->any() )
-				->method(  $method  )
-				->will( $this->returnValue( $returnValue ) );
+				->method( $method )
+				->willReturn( $returnValue );
 		}
 
 		$pageInfoProvider = new PageInfoProvider(
@@ -203,7 +195,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 			$revisionLookup->expects( $this->any() )
 				->method( 'getFirstRevision' )
-				->will( $this->returnValue( $revision ) );
+				->willReturn( $revision );
 
 			$pageInfoProvider->setRevisionLookup(
 				$revisionLookup
@@ -217,7 +209,6 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider uploadStatusWikiFilePageDataProvider
 	 */
 	public function testWikiFilePage_TYPE_NEW_PAGE( $uploadStatus, $expected ) {
-
 		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -236,7 +227,6 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider mediaTypeWikiFilePageDataProvider
 	 */
 	public function testWikiFilePage_MEDIA_TYPE( $file, $expected ) {
-
 		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isFilePage', 'getFile' ] )
@@ -244,11 +234,11 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$wikiFilePage->expects( $this->any() )
 			->method( 'isFilePage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$wikiFilePage->expects( $this->any() )
 			->method( 'getFile' )
-			->will( $this->returnValue( $file ) );
+			->willReturn( $file );
 
 		$instance = new PageInfoProvider( $wikiFilePage );
 
@@ -259,7 +249,6 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider mimeTypeWikiFilePageDataProvider
 	 */
 	public function testWikiFilePage_MIME_TYPE( $file, $expected ) {
-
 		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isFilePage', 'getFile' ] )
@@ -267,11 +256,11 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$wikiFilePage->expects( $this->any() )
 			->method( 'isFilePage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$wikiFilePage->expects( $this->any() )
 			->method( 'getFile' )
-			->will( $this->returnValue( $file ) );
+			->willReturn( $file );
 
 		$instance = new PageInfoProvider( $wikiFilePage );
 
@@ -279,36 +268,33 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWikiPage_MEDIA_TYPE() {
-
 		$wikiFilePage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new PageInfoProvider( $wikiFilePage );
 
-		$this->assertEquals( null, $instance->getMediaType() );
+		$this->assertNull( $instance->getMediaType() );
 	}
 
 	public function testWikiPage_MIME_TYPE() {
-
 		$wikiFilePage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new PageInfoProvider( $wikiFilePage );
 
-		$this->assertEquals( null, $instance->getMimeType() );
+		$this->assertNull( $instance->getMimeType() );
 	}
 
 	public function testWikiPage_NativeData() {
-
 		$content = $this->getMockBuilder( '\Content' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$content->expects( $this->any() )
 			->method( 'getNativeData' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -316,7 +302,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$wikiPage->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValue( $content ) );
+			->willReturn( $content );
 
 		$instance = new PageInfoProvider( $wikiPage );
 
@@ -327,43 +313,40 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWikiPage_NativeData_Null() {
-
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$instance = new PageInfoProvider( $wikiPage );
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->getNativeData()
 		);
 	}
 
 	public function uploadStatusWikiFilePageDataProvider() {
-
 		$provider = [
 			[ null, false ],
 			[ false, true ],
-			[ true , false ]
+			[ true, false ]
 		];
 
 		return $provider;
 	}
 
 	public function mediaTypeWikiFilePageDataProvider() {
-
 		$fileWithMedia = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$fileWithMedia->expects( $this->any() )
 			->method( 'getMediaType' )
-			->will( $this->returnValue( 'FooMedia' ) );
+			->willReturn( 'FooMedia' );
 
 		$fileNullMedia = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
@@ -371,7 +354,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$fileNullMedia->expects( $this->any() )
 			->method( 'getMediaType' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$provider[] = [ $fileWithMedia, 'FooMedia' ];
 		$provider[] = [ $fileNullMedia, null ];
@@ -380,14 +363,13 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function mimeTypeWikiFilePageDataProvider() {
-
 		$fileWithMime = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$fileWithMime->expects( $this->any() )
 			->method( 'getMimeType' )
-			->will( $this->returnValue( 'FooMime' ) );
+			->willReturn( 'FooMime' );
 
 		$fileNullMime = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
@@ -395,7 +377,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$fileNullMime->expects( $this->any() )
 			->method( 'getMediaType' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$provider[] = [ $fileWithMime, 'FooMime' ];
 		$provider[] = [ $fileNullMime, null ];

@@ -22,12 +22,12 @@ use SMW\Options;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
+class MockObjectBuilder extends \PHPUnit\Framework\TestCase {
 
 	/** @var ObjectDictionary */
 	protected $configuration;
@@ -40,8 +40,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @param MockObjectRepository|null $repository
 	 */
-	public function __construct( MockObjectRepository $repository = null ) {
-
+	public function __construct( ?MockObjectRepository $repository = null ) {
 		if ( $repository === null ) {
 			$repository = new CoreMockObjectRepository();
 		}
@@ -69,7 +68,6 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @return mixed
 	 */
 	public function newObject( $objectName, $objectArguments = [] ) {
-
 		if ( !is_string( $objectName ) ) {
 			throw new InvalidArgumentException( "Object name is not a string" );
 		}
@@ -107,7 +105,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 *
 	 * @param $length
-	 * @param $prefix identify a specific random string during testing
+	 * @param null $prefix identify a specific random string during testing
 	 *
 	 * @return string
 	 */
@@ -122,7 +120,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @param $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasValue( $key ) {
 		return $this->configuration->has( $key );
@@ -134,7 +132,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 *
 	 * @param $key
-	 * @param $default
+	 * @param null $default
 	 *
 	 * @return mixed|null
 	 */
@@ -148,7 +146,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 *
 	 * @param $key
-	 * @param $default
+	 * @param null $default
 	 *
 	 * @return mixed|null
 	 */
@@ -164,7 +162,6 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @return MockObjectRepository|null
 	 */
 	protected function findRepositoryForObject( $objectName ) {
-
 		foreach ( $this->repository as $repository ) {
 			if ( method_exists( $repository, $objectName ) ) {
 				return $repository;
@@ -180,7 +177,6 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @param $config
 	 */
 	protected function setupConfiguration( $config ) {
-
 		$configuration = new Options( $config );
 
 		if ( $this->configuration instanceof Options ) {

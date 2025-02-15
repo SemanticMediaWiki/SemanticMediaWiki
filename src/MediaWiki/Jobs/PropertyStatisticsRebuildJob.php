@@ -7,7 +7,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -31,7 +31,6 @@ class PropertyStatisticsRebuildJob extends Job {
 	 * @since  2.5
 	 */
 	public function run() {
-
 		if ( $this->waitOnCommandLineMode() ) {
 			return true;
 		}
@@ -48,7 +47,6 @@ class PropertyStatisticsRebuildJob extends Job {
 	}
 
 	public function rebuild() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 

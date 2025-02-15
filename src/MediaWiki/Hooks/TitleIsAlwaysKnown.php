@@ -3,15 +3,15 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\DIProperty;
-use Title;
 use SMW\MediaWiki\HookListener;
+use Title;
 
 /**
  * Allows overriding default behaviour for determining if a page exists
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsAlwaysKnown
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -42,10 +42,9 @@ class TitleIsAlwaysKnown implements HookListener {
 	/**
 	 * @since 2.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process() {
-
 		// Two possible ways of going forward:
 		//
 		// The FIRST seen here is to use the hook to override the known status

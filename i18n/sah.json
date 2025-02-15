@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bert Jickty",
 			"HalanTul",
 			"Ай-Куо"
 		]
 	},
+	"smw-categories": "Категориялар",
 	"smw_purge": "Саҥарт",
 	"smw-ask-search": "Бул",
 	"browse": "Биикини көрүү",

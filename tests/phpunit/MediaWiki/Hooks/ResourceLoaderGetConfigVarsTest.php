@@ -8,24 +8,22 @@ use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
  * @covers \SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
+class ResourceLoaderGetConfigVarsTest extends \PHPUnit\Framework\TestCase {
 
 	private $namespaceInfo;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ResourceLoaderGetConfigVars::class,
 			new ResourceLoaderGetConfigVars( $this->namespaceInfo )
@@ -33,7 +31,6 @@ class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$vars = [];
 
 		$instance = new ResourceLoaderGetConfigVars(

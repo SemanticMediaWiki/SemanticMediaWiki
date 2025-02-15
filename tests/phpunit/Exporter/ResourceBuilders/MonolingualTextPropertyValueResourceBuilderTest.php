@@ -13,18 +13,18 @@ use SMWExpData as ExpData;
  * @covers \SMW\Exporter\ResourceBuilders\MonolingualTextPropertyValueResourceBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class MonolingualTextPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class MonolingualTextPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -33,13 +33,12 @@ class MonolingualTextPropertyValueResourceBuilderTest extends \PHPUnit_Framework
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			MonolingualTextPropertyValueResourceBuilder::class,
 			new MonolingualTextPropertyValueResourceBuilder()
@@ -47,7 +46,6 @@ class MonolingualTextPropertyValueResourceBuilderTest extends \PHPUnit_Framework
 	}
 
 	public function testIsNotResourceBuilderForNonExternalIdentifierTypedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new MonolingualTextPropertyValueResourceBuilder();
@@ -58,7 +56,6 @@ class MonolingualTextPropertyValueResourceBuilderTest extends \PHPUnit_Framework
 	}
 
 	public function testAddResourceValueForValidProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_mlt_rec' );
 

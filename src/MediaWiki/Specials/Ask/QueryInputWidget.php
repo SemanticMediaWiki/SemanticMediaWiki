@@ -2,12 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use Html;
 use SMW\Message;
 use SMW\Utils\HtmlDivTable;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -23,7 +22,6 @@ class QueryInputWidget {
 	 * @return string
 	 */
 	public static function table( $queryString, $printoutString ) {
-
 		$table = HtmlDivTable::open( [ 'style' => "width: 100%;" ] );
 
 		$table .= HtmlDivTable::row(
@@ -40,7 +38,7 @@ class QueryInputWidget {
 			) . HtmlDivTable::cell(
 				"<fieldset><legend>" . Message::get( 'smw_ask_printhead', Message::TEXT, Message::USER_LANGUAGE ) . "</legend>" .
 				'<textarea id="smw-property-input" class="smw-ask-query-printout" name="po" rows="6" placeholder="...">' .
-				htmlspecialchars( $printoutString ) . '</textarea></fieldset>',
+				htmlspecialchars( $printoutString ?? '' ) . '</textarea></fieldset>',
 				[ 'class' => 'smw-ask-printhead slowfade' ]
 			)
 		);

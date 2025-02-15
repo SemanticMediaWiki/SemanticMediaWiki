@@ -5,24 +5,23 @@ namespace SMW\Tests\Exporter\Element;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
-use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Exporter\Element\ExpLiteral
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
+class ExpLiteralTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Exporter\Element\ExpLiteral',
 			new ExpLiteral( '', '', '', null )
@@ -39,7 +38,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constructorProvider
 	 */
 	public function testAccessToMethods( $lexicalForm, $datatype, $lang, $dataItem ) {
-
 		$instance = new ExpLiteral(
 			$lexicalForm,
 			$datatype,
@@ -72,7 +70,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constructorProvider
 	 */
 	public function testSerializiation( $lexicalForm, $datatype, $lang, $dataItem, $expected ) {
-
 		$instance = new ExpLiteral(
 			$lexicalForm,
 			$datatype,
@@ -95,7 +92,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider invalidConstructorProvider
 	 */
 	public function testInvalidConstructorThrowsException( $lexicalForm, $datatype, $lang, $dataItem ) {
-
 		$this->expectException( 'InvalidArgumentException' );
 
 		$instance = new ExpLiteral(
@@ -110,7 +106,6 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider serializationMissingElementProvider
 	 */
 	public function testDeserializiationForMissingElementThrowsException( $serialization ) {
-
 		$this->expectException( 'RuntimeException' );
 
 		ExpElement::newFromSerialization(
@@ -119,8 +114,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function constructorProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			'', '', '', null,
 			[
@@ -132,7 +126,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'Foo', '', '', null,
 			[
@@ -144,7 +138,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'Foo', 'bar', '', null,
 			[
@@ -156,7 +150,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			'Foo', 'bar', '', new DIWikiPage( 'Foo', NS_MAIN ),
 			[
@@ -171,7 +165,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			'Foo', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString', 'en', new DIWikiPage( 'Foo', NS_MAIN ),
 			[
@@ -190,18 +184,17 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function invalidConstructorProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			[], '', '', null
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'', [], '', null
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'', '', [], null
 		];
@@ -210,27 +203,26 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function serializationMissingElementProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			[]
 		];
 
-		#1 Missing dataitem
+		# 1 Missing dataitem
 		$provider[] = [
 			[
 				'type' => ExpLiteral::TYPE_LITERAL
 			]
 		];
 
-		#2 Bogus type
+		# 2 Bogus type
 		$provider[] = [
 			[
 				'type' => 'BogusType'
 			]
 		];
 
-		#3 Missing uri
+		# 3 Missing uri
 		$provider[] = [
 			[
 				'type' => ExpLiteral::TYPE_LITERAL,
@@ -238,7 +230,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4 Missing lexical
+		# 4 Missing lexical
 		$provider[] = [
 			[
 				'type' => ExpLiteral::TYPE_LITERAL,
@@ -247,7 +239,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4 Missing datatype
+		# 4 Missing datatype
 		$provider[] = [
 			[
 				'type' => ExpLiteral::TYPE_LITERAL,
@@ -256,7 +248,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#5 Missing lang
+		# 5 Missing lang
 		$provider[] = [
 			[
 				'type' => ExpLiteral::TYPE_LITERAL,

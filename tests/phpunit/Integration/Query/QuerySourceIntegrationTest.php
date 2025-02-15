@@ -2,27 +2,27 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 use SMWQueryProcessor;
 
 /**
  * @group semantic-mediawiki
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9.2
  *
  * @author mwjames
  */
-class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
+class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -43,24 +43,23 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testQueryProcessorWithDefaultSource() {
-
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$rawParams = [
 			'[[Modification date::+]]',
@@ -69,25 +68,24 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'source=default'
 		];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$this->makeQueryResultFromRawParameters( $rawParams )
 		);
 	}
 
 	public function testQueryProcessorWithValidSource() {
-
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$rawParams = [
 			'[[Modification date::+]]',
@@ -96,25 +94,24 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'source=foo'
 		];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$this->makeQueryResultFromRawParameters( $rawParams )
 		);
 	}
 
 	public function testQueryProcessorWithInvalidSourceSwitchesToDefault() {
-
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$rawParams = [
 			'[[Modification date::+]]',
@@ -123,25 +120,24 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'source=bar'
 		];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$this->makeQueryResultFromRawParameters( $rawParams )
 		);
 	}
 
 	public function testQuerySourceOnCount() {
-
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getCountValue' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$rawParams = [
 			'[[Modification date::+]]',
@@ -150,14 +146,13 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'source=foo'
 		];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$this->makeQueryResultFromRawParameters( $rawParams )
 		);
 	}
 
 	public function testQueryProcessorWithInvalidSource() {
-
 		$rawParams = [
 			'[[Modification date::+]]',
 			'?Modification date',
@@ -170,8 +165,7 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function makeQueryResultFromRawParameters( $rawParams ) {
-
-		list( $query, $params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $params ] = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
 			SMWQueryProcessor::INLINE_QUERY,

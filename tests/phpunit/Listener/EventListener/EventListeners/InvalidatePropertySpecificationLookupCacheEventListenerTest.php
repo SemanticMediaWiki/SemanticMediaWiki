@@ -2,26 +2,26 @@
 
 namespace SMW\Tests\Listener\EventListener\EventListeners;
 
+use Onoi\EventDispatcher\DispatchContext;
 use SMW\DIWikiPage;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
-use Onoi\EventDispatcher\DispatchContext;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUnit_Framework_TestCase {
+class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUnit\Framework\TestCase {
 
 	private $specificationLookup;
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
@@ -31,12 +31,11 @@ class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUn
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			InvalidatePropertySpecificationLookupCacheEventListener::class,
 			new InvalidatePropertySpecificationLookupCacheEventListener( $this->specificationLookup )
@@ -44,7 +43,6 @@ class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUn
 	}
 
 	public function testExecute_OnSubject() {
-
 		$context = DispatchContext::newFromArray(
 			[
 				'subject' => DIWikiPage::newFromText( __METHOD__ ),

@@ -3,7 +3,7 @@
 namespace SMW\Schema;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -16,21 +16,21 @@ interface SchemaFilter {
 	 * For example, in case `NamespaceFilter` is marked with to be not required
 	 * then both rule sets will be for inspection.
 	 *
-	 *```
+	 * ```
 	 * {
 	 *	"if": {
 	 *		"category": { "anyOf": [ "Foo", "Bar" ] }
 	 *	}
-	 *}
-	 *```
-	 *```
+	 * }
+	 * ```
+	 * ```
 	 * {
 	 *	"if": {
 	 *		"namespace": "NS_MAIN",
 	 *		"category": { "anyOf": [ "Foo", "Bar" ] }
 	 *	}
-	 *}
-	 *```
+	 * }
+	 * ```
 	 */
 	const FILTER_CONDITION_NOT_REQUIRED = 'filter/condition/not_required';
 
@@ -39,14 +39,14 @@ interface SchemaFilter {
 	 *
 	 * @return bool
 	 */
-	public function hasMatches() : bool;
+	public function hasMatches(): bool;
 
 	/**
 	 * @since 3.2
 	 *
 	 * @return iterable
 	 */
-	public function getMatches() : iterable;
+	public function getMatches(): iterable;
 
 	/**
 	 * @since 3.2

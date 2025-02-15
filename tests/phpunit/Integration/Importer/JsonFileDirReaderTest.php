@@ -4,19 +4,19 @@ namespace SMW\Tests\Integration\Importer;
 
 use SMW\Importer\ContentModeller;
 use SMW\Importer\JsonImportContentsFileDirReader;
-use SMW\Utils\FileFetcher;
-use SMW\Utils\File;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\File;
+use SMW\Utils\FileFetcher;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
+class JsonFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -24,7 +24,7 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	private $fileFetcher;
 	private $file;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->contentModeller = new ContentModeller();
@@ -33,7 +33,6 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JsonImportContentsFileDirReader::class,
 			new JsonImportContentsFileDirReader( $this->contentModeller, $this->fileFetcher, $this->file )
@@ -41,12 +40,11 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentList() {
-
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
 			$this->fileFetcher,
 			$this->file,
-			[ SMW_PHPUNIT_DIR . '/Fixtures/Importer/Others/ValidTextContent' ]
+			[ \SMW_PHPUNIT_DIR . '/Fixtures/Importer/Others/ValidTextContent' ]
 		);
 
 		$contents = $instance->getContentList();
@@ -67,12 +65,11 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentListOnFalseImportFormat() {
-
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
 			$this->fileFetcher,
 			$this->file,
-			[ SMW_PHPUNIT_DIR . '/Fixtures/Importer/Others/NoImportFormat' ]
+			[ \SMW_PHPUNIT_DIR . '/Fixtures/Importer/Others/NoImportFormat' ]
 		);
 
 		$this->assertEmpty(
@@ -81,12 +78,11 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentListOnMissingSections() {
-
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
 			$this->fileFetcher,
 			$this->file,
-			[ SMW_PHPUNIT_DIR . '/Fixtures/Importer/Others/MissingSections' ]
+			[ \SMW_PHPUNIT_DIR . '/Fixtures/Importer/Others/MissingSections' ]
 		);
 
 		$contents = $instance->getContentList();
@@ -98,12 +94,11 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentListWithInvalidPath() {
-
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
 			$this->fileFetcher,
 			$this->file,
-			[ SMW_PHPUNIT_DIR . '/Fixtures/Importer/Others/InvalidPath' ]
+			[ \SMW_PHPUNIT_DIR . '/Fixtures/Importer/Others/InvalidPath' ]
 		);
 
 		$this->assertEmpty(
@@ -112,12 +107,11 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContentListOnInvalidJson_Error() {
-
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
 			$this->fileFetcher,
 			$this->file,
-			[ SMW_PHPUNIT_DIR . '/Fixtures/Importer/Others/InvalidJsonContent' ]
+			[ \SMW_PHPUNIT_DIR . '/Fixtures/Importer/Others/InvalidJsonContent' ]
 		);
 
 		$instance->getContentList();

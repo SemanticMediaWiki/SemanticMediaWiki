@@ -9,15 +9,14 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Specials\Ask\FormatListWidget
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class FormatListWidgetTest extends \PHPUnit_Framework_TestCase {
+class FormatListWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	public function testEmptyParameters() {
-
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -34,7 +33,6 @@ class FormatListWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetResultFormats() {
-
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$title = $this->getMockBuilder( '\Title' )

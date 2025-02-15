@@ -7,7 +7,7 @@ use SMW\DIWikiPage;
 use SMW\Utils\HmacSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -60,7 +60,7 @@ class ChangeDiff {
 	private $changeList = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $associatedRev = 0;
 
@@ -85,7 +85,7 @@ class ChangeDiff {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $associatedRev
+	 * @param int $associatedRev
 	 */
 	public function setAssociatedRev( $associatedRev ) {
 		$this->associatedRev = $associatedRev;
@@ -94,7 +94,7 @@ class ChangeDiff {
 	/**
 	 * @since 3.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getAssociatedRev() {
 		return $this->associatedRev;
@@ -130,7 +130,7 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getTextItems() {
 		return $this->textItems;
@@ -139,12 +139,11 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $op
+	 * @param bool $op
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPropertyList( $op = false ) {
-
 		if ( $op === true || $op === 'flip' ) {
 			$list = [];
 
@@ -210,7 +209,6 @@ class ChangeDiff {
 	 * @return string
 	 */
 	public function toJson( $prettify = false ) {
-
 		$changes = [];
 
 		foreach ( $this->tableChangeOps as $tableChangeOp ) {
@@ -246,7 +244,6 @@ class ChangeDiff {
 	 * @param Cache $cache
 	 */
 	public function save( Cache $cache ) {
-
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			$this->subject->getHash()
@@ -263,7 +260,6 @@ class ChangeDiff {
 	 * @param DIWikiPage $subject
 	 */
 	public static function fetch( Cache $cache, DIWikiPage $subject ) {
-
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			$subject->getHash()

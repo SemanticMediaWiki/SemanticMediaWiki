@@ -3,24 +3,23 @@
 namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
-use Title;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
+class ConceptQuerySegmentBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $conditionBuilder;
 	private $querySegmentListProcessor;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
@@ -37,7 +36,6 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder',
 			new ConceptQuerySegmentBuilder( $this->conditionBuilder, $this->querySegmentListProcessor )
@@ -45,14 +43,13 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQuerySegmentFromOnNull() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->queryParser->expects( $this->any() )
 			->method( 'getQueryDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new ConceptQuerySegmentBuilder(
 			$this->conditionBuilder,

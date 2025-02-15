@@ -3,14 +3,13 @@
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
 use Html;
-use SMW\Store;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Message;
 use SMW\SQLStore\SQLStore;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -43,7 +42,6 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$count = $this->fetchCount();
 
 		if ( $count < self::MAXCOUNT_THRESHOLD ) {
@@ -54,7 +52,6 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 	}
 
 	private function fetchCount() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -70,7 +67,6 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 	}
 
 	private function buildHTML( $count ) {
-
 		$html = Html::rawElement(
 			'fieldset',
 			[

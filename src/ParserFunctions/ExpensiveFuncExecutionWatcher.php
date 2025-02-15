@@ -8,7 +8,7 @@ use SMWQuery as Query;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -26,12 +26,12 @@ class ExpensiveFuncExecutionWatcher {
 	private $parserData;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $expensiveThreshold = 10;
 
 	/**
-	 * @var integer|boolean
+	 * @var int|bool
 	 */
 	private $expensiveExecutionLimit = false;
 
@@ -47,7 +47,7 @@ class ExpensiveFuncExecutionWatcher {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $expensiveThreshold
+	 * @param int $expensiveThreshold
 	 */
 	public function setExpensiveThreshold( $expensiveThreshold ) {
 		$this->expensiveThreshold = $expensiveThreshold;
@@ -56,7 +56,7 @@ class ExpensiveFuncExecutionWatcher {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer|boolean $expensiveExecutionLimit
+	 * @param int|bool $expensiveExecutionLimit
 	 */
 	public function setExpensiveExecutionLimit( $expensiveExecutionLimit ) {
 		$this->expensiveExecutionLimit = $expensiveExecutionLimit;
@@ -67,10 +67,9 @@ class ExpensiveFuncExecutionWatcher {
 	 *
 	 * @param Query $query
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasReachedExpensiveLimit( Query $query ) {
-
 		if ( $this->expensiveExecutionLimit === false ) {
 			return false;
 		}
@@ -91,10 +90,9 @@ class ExpensiveFuncExecutionWatcher {
 	 *
 	 * @param Query $query
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function incrementExpensiveCount( Query $query ) {
-
 		if ( $this->expensiveExecutionLimit === false || $query->getLimit() == 0 || $query->getOption( Query::PROC_QUERY_TIME ) < $this->expensiveThreshold ) {
 			return;
 		}

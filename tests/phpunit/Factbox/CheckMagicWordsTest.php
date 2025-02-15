@@ -8,15 +8,14 @@ use SMW\Factbox\CheckMagicWords;
  * @covers \SMW\Factbox\CheckMagicWords
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class CheckMagicWordsTest extends \PHPUnit_Framework_TestCase {
+class CheckMagicWordsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CheckMagicWords::class,
 			new CheckMagicWords( [] )
@@ -27,14 +26,13 @@ class CheckMagicWordsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider magicWordsProvider
 	 */
 	public function testGetMagicWords( $magicWords, $options, $expected ) {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$parserOutput->expects( $this->any() )
 			->method( 'getExtensionData' )
-			->will( $this->returnValue( $magicWords ) );
+			->willReturn( $magicWords );
 
 		$instance = new CheckMagicWords(
 			$options
@@ -47,7 +45,6 @@ class CheckMagicWordsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function magicWordsProvider() {
-
 		yield [
 			[ 'SMW_SHOWFACTBOX' ],
 			[],

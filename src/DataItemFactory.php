@@ -8,14 +8,14 @@ use SMWDIBoolean as DIBoolean;
 use SMWDIContainer as DIContainer;
 use SMWDIError as DIError;
 use SMWDINumber as DINumber;
+use SMWDITime as DITime;
 use SMWDIUri as DIUri;
-use SMWDITime  as DITime;
 use Title;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -37,7 +37,7 @@ class DataItemFactory {
 	 * @since 2.4
 	 *
 	 * @param string $key
-	 * @param boolean $inverse
+	 * @param bool $inverse
 	 *
 	 * @return DIProperty
 	 */
@@ -49,14 +49,13 @@ class DataItemFactory {
 	 * @since 2.4
 	 *
 	 * @param string|Title $title
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobjectName
 	 *
 	 * @return DIWikiPage
 	 */
 	public function newDIWikiPage( $title, $namespace = NS_MAIN, $interwiki = '', $subobjectName = '' ) {
-
 		if ( $title instanceof Title ) {
 			return DIWikiPage::newFromTitle( $title );
 		}
@@ -89,7 +88,7 @@ class DataItemFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $number
+	 * @param int $number
 	 *
 	 * @return DINumber
 	 */
@@ -111,7 +110,7 @@ class DataItemFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param boolean $boolean
+	 * @param bool $boolean
 	 *
 	 * @return DIBoolean
 	 */
@@ -124,9 +123,9 @@ class DataItemFactory {
 	 *
 	 * @param string $concept
 	 * @param string $docu
-	 * @param integer $queryfeatures
-	 * @param integer $size
-	 * @param integer $depth
+	 * @param int $queryfeatures
+	 * @param int $size
+	 * @param int $depth
 	 *
 	 * @return DIConcept
 	 */
@@ -151,14 +150,14 @@ class DataItemFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $calendarmodel
-	 * @param integer $year
-	 * @param integer|false $month
-	 * @param integer|false $day
-	 * @param integer|false $hour
-	 * @param integer|false $minute
-	 * @param integer|false $second
-	 * @param integer|false $timezone
+	 * @param int $calendarmodel
+	 * @param int $year
+	 * @param int|false $month
+	 * @param int|false $day
+	 * @param int|false $hour
+	 * @param int|false $minute
+	 * @param int|false $second
+	 * @param int|false $timezone
 	 *
 	 * @return DITime
 	 */

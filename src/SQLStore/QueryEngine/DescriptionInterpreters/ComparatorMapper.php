@@ -7,7 +7,7 @@ use SMW\Query\Language\ValueDescription;
 use SMWDIUri as DIUri;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -24,7 +24,6 @@ class ComparatorMapper {
 	 * @throws RuntimeException
 	 */
 	public function mapComparator( ValueDescription $description, &$value ) {
-
 		$comparatorMap = [
 			SMW_CMP_EQ   => '=',
 			SMW_CMP_LESS => '<',

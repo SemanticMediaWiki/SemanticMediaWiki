@@ -29,6 +29,7 @@ $specialPageAliases['en'] = [
 	'URIResolver' => [ 'URIResolver' ],
 	'UnusedProperties' => [ 'UnusedProperties' ],
 	'WantedProperties' => [ 'WantedProperties' ],
+	'FacetedSearch' => [ 'FacetedSearch' ],
 ];
 
 /** Afrikaans (Afrikaans) */
@@ -153,6 +154,7 @@ $specialPageAliases['de'] = [
 	'ProcessingErrorList' => [ 'Liste_der_Verarbeitungsfehler' ],
 	'PropertyLabelSimilarity' => [ 'Ähnliche_Attributbezeichnungen' ],
 	'MissingRedirectAnnotations' => [ 'Fehlende_Weiterleitungsannotationen' ],
+	'FacetedSearch' => [ 'Facettierte_Suche', 'Facettensuche' ],
 	'Types' => [ 'Datentypen' ],
 	'URIResolver' => [ 'URI-Auflöser' ],
 	'UnusedProperties' => [ 'Verwaiste_Attribute' ],
@@ -584,6 +586,7 @@ $specialPageAliases['nl'] = [
 	'Types' => [ 'Typen' ],
 	'UnusedProperties' => [ 'OngebruikteEigenschappen' ],
 	'WantedProperties' => [ 'GewensteEigenschappen' ],
+	'FacetedSearch' => [ 'GefacetteerdZoeken' ]
 ];
 
 /** Occitan (occitan) */

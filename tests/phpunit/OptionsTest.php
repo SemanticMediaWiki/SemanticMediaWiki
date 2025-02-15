@@ -8,17 +8,16 @@ use SMW\Options;
  * @covers \SMW\Options
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.3
  *
  * @author mwjames
  */
-class OptionsTest extends \PHPUnit_Framework_TestCase {
+class OptionsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Options',
 			new Options()
@@ -26,7 +25,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddOption() {
-
 		$instance = new Options();
 
 		$this->assertFalse(
@@ -42,7 +40,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToArray() {
-
 		$instance = new Options(
 			[ 'Foo' => 42 ]
 		);
@@ -54,7 +51,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnregisteredKeyThrowsException() {
-
 		$instance = new Options();
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -62,7 +58,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSafeGetOnUnregisteredKey() {
-
 		$instance = new Options();
 
 		$this->assertEquals(
@@ -72,7 +67,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilter() {
-
 		$instance = new Options();
 		$instance->set( 'Foo', '123' );
 		$instance->set( 'Bar', '456' );
@@ -89,7 +83,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dotProvider
 	 */
 	public function testDotGet( $options, $key, $expected ) {
-
 		$instance = new Options( $options );
 
 		$this->assertEquals(
@@ -102,7 +95,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider isFlagSetProvider
 	 */
 	public function testIsFlagSet( $value, $flag, $expected ) {
-
 		$instance = new Options();
 		$instance->set( 'Foo', $value );
 
@@ -113,7 +105,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function isSetProvider() {
-
 		yield [
 			100,
 			100,
@@ -158,7 +149,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function isFlagSetProvider() {
-
 		yield [
 			( ( 4 | 8 ) | 16 ),
 			16,
@@ -191,7 +181,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dotProvider() {
-
 		$options = [
 			'Foo' => [
 				'Bar' => [ 'Foobar' => 42 ],

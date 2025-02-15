@@ -3,27 +3,22 @@
 namespace SMW\Tests\Elastic\Indexer;
 
 use SMW\Elastic\Indexer\TextSanitizer;
-use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\Indexer\TextSanitizer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
-
+class TextSanitizerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider textLinksProvider
 	 */
 	public function testRemoveLinks( $text, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			TextSanitizer::removeLinks( $text )
@@ -31,7 +26,6 @@ class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textLinksProvider() {
-
 		yield [
 			'',
 			''

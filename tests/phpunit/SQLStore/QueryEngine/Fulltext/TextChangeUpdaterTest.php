@@ -11,12 +11,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
+class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $connection;
@@ -26,8 +26,7 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $logger;
 	private $testEnvironment;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -53,7 +52,6 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TextChangeUpdater::class,
 			new TextChangeUpdater( $this->connection, $this->cache, $this->searchTableUpdater )
@@ -61,10 +59,9 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushUpdatesOnNullChange() {
-
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
 			->disableOriginalConstructor()
@@ -76,7 +73,7 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$changeOp->expects( $this->once() )
 			->method( 'getChangedEntityIdSummaryList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$changeOp->expects( $this->never() )
 			->method( 'getSubject' );
@@ -97,7 +94,6 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushUpdates() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
 		$searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
@@ -106,15 +102,15 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$searchTable->expects( $this->atLeastOnce() )
 			->method( 'getDataItemById' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_PROPERTY ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_PROPERTY ) );
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'getSearchTable' )
-			->will( $this->returnValue( $searchTable ) );
+			->willReturn( $searchTable );
 
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
@@ -122,11 +118,11 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$changeOp->expects( $this->once() )
 			->method( 'getChangedEntityIdSummaryList' )
-			->will( $this->returnValue( [ '42' ] ) );
+			->willReturn( [ '42' ] );
 
 		$changeOp->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
 		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
@@ -136,8 +132,8 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'newFulltextSearchTableUpdateJob' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'slot:id' => 'Foo#0##' ] ) )
-			->will( $this->returnValue( $nullJob ) );
+				[ 'slot:id' => 'Foo#0##' ] )
+			->willReturn( $nullJob );
 
 		$instance = new TextChangeUpdater(
 			$this->connection,
@@ -155,10 +151,9 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushUpdatesDirectlyWhenExecutedFromCommandLine() {
-
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
 			->disableOriginalConstructor()
@@ -166,11 +161,11 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$changeDiff->expects( $this->once() )
 			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$changeDiff->expects( $this->once() )
 			->method( 'getTextItems' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
@@ -178,7 +173,7 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$changeOp->expects( $this->once() )
 			->method( 'newChangeDiff' )
-			->will( $this->returnValue( $changeDiff ) );
+			->willReturn( $changeDiff );
 
 		$changeOp->expects( $this->never() )
 			->method( 'getSubject' );
@@ -201,10 +196,9 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNullUpdate() {
-
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
@@ -212,7 +206,7 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$changeOp->expects( $this->once() )
 			->method( 'newChangeDiff' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$changeOp->expects( $this->never() )
 			->method( 'getSubject' );

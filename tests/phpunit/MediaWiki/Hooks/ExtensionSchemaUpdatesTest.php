@@ -8,18 +8,17 @@ use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
  * @covers \SMW\MediaWiki\Hooks\ExtensionSchemaUpdates
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ExtensionSchemaUpdatesTest extends \PHPUnit_Framework_TestCase {
+class ExtensionSchemaUpdatesTest extends \PHPUnit\Framework\TestCase {
 
 	private $databaseUpdater;
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$databaseUpdater = $this->getMockBuilder( '\DatabaseUpdater' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -30,7 +29,6 @@ class ExtensionSchemaUpdatesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExtensionSchemaUpdates::class,
 			new ExtensionSchemaUpdates( $this->databaseUpdater )
@@ -38,7 +36,6 @@ class ExtensionSchemaUpdatesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$this->databaseUpdater = $this->getMockBuilder( '\DatabaseUpdater' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'addExtensionUpdate' ] )
@@ -52,7 +49,6 @@ class ExtensionSchemaUpdatesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddMaintenanceUpdateParams() {
-
 		$params = [];
 
 		ExtensionSchemaUpdates::addMaintenanceUpdateParams(

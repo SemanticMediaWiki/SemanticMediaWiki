@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -13,20 +13,20 @@ class Csv {
 	const DEFAULT_SEP = ',';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $show = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $bom = false;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $show
-	 * @param boolean $bom
+	 * @param bool $show
+	 * @param bool $bom
 	 */
 	public function __construct( $show = false, $bom = false ) {
 		$this->show = $show;
@@ -43,7 +43,6 @@ class Csv {
 	 * @return string
 	 */
 	public function toString( array $header, array $rows, $sep = self::DEFAULT_SEP ) {
-
 		$handle = fopen( 'php://temp', 'r+' );
 
 		// fputcsv(): delimiter must be a single character
@@ -85,7 +84,6 @@ class Csv {
 	 * @return array
 	 */
 	public function merge( $rows, $sep = ',' ) {
-
 		$map = [];
 		$order = [];
 

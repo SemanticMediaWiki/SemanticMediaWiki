@@ -12,7 +12,7 @@ use SMWExpLiteral as ExpLiteral;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -20,7 +20,7 @@ use SMWExpLiteral as ExpLiteral;
 class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBuilder {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $enabledCollationField = false;
 
@@ -33,11 +33,10 @@ class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBu
 		return $property->getKey() === '_SKEY';
 	}
 
-
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $enabledCollationField
+	 * @param bool $enabledCollationField
 	 */
 	public function enabledCollationField( $enabledCollationField ) {
 		$this->enabledCollationField = (bool)$enabledCollationField;
@@ -49,7 +48,6 @@ class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBu
 	 * {@inheritDoc}
 	 */
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-
 		if ( !$dataItem instanceof DIBlob ) {
 			$dataItem = new DIBlob( $dataItem->getSortKey() );
 		}

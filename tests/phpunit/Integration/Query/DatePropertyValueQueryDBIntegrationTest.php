@@ -7,8 +7,8 @@ use SMW\DIProperty;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMW\Query\PrintRequest as PrintRequest;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Query\PrintRequest;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWExporter as Exporter;
 use SMWPropertyValue as PropertyValue;
@@ -22,14 +22,15 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class DatePropertyValueQueryDBIntegrationTest extends DatabaseTestCase {
+class DatePropertyValueQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
@@ -37,7 +38,7 @@ class DatePropertyValueQueryDBIntegrationTest extends DatabaseTestCase {
 	private $queryResultValidator;
 	private $fixturesProvider;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -52,8 +53,7 @@ class DatePropertyValueQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 
 		$fixturesCleaner
@@ -64,7 +64,6 @@ class DatePropertyValueQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUserDefinedDateProperty() {
-
 		$property = new DIProperty( 'SomeDateProperty' );
 		$property->setPropertyTypeId( '_dat' );
 
@@ -120,7 +119,6 @@ class DatePropertyValueQueryDBIntegrationTest extends DatabaseTestCase {
 	 * #576
 	 */
 	public function testSortableDateQuery() {
-
 		$this->getStore()->updateData(
 			$this->fixturesProvider->getFactsheet( 'Berlin' )->asEntity()
 		);

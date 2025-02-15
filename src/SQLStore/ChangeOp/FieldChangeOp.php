@@ -5,7 +5,7 @@ namespace SMW\SQLStore\ChangeOp;
 use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -48,7 +48,7 @@ class FieldChangeOp {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has( $key ) {
 		return isset( $this->changeOp[$key] ) || array_key_exists( $key, $this->changeOp );
@@ -63,7 +63,6 @@ class FieldChangeOp {
 	 * @throws InvalidArgumentException
 	 */
 	public function get( $key ) {
-
 		if ( $this->has( $key ) ) {
 			return $this->changeOp[$key];
 		}
@@ -88,4 +87,3 @@ class FieldChangeOp {
 	}
 
 }
-

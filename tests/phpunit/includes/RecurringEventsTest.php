@@ -9,15 +9,14 @@ use SMW\RecurringEvents;
  * @covers \SMW\RecurringEvents
  * @group semantic-mediawiki
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
+class RecurringEventsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RecurringEvents::class,
 			new RecurringEvents()
@@ -30,7 +29,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetErrors( array $params, array $expected ) {
-
 		$parameters = new ParserParameterFormatter( $params );
 
 		$instance = new RecurringEvents();
@@ -47,7 +45,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetProperty( array $params, array $expected ) {
-
 		$parameters = new ParserParameterFormatter( $params );
 
 		$instance = new RecurringEvents();
@@ -65,7 +62,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetParameters( array $params, array $expected ) {
-
 		$parameters = new ParserParameterFormatter( $params );
 
 		$instance = new RecurringEvents();
@@ -83,7 +79,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetDates( array $params, array $expected ) {
-
 		$parameters = new ParserParameterFormatter( $params );
 
 		$instance = new RecurringEvents();
@@ -124,7 +119,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.
 	 */
 	public function testMassInsert( array $params, array $expected ) {
-
 		$parameters = new ParserParameterFormatter( $params );
 
 		$instance = new RecurringEvents();
@@ -152,11 +146,10 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
-		$this->assertEquals(
-			null,
-			$instance->getJulianDay( $dataValue )
+		$this->assertNull(
+						$instance->getJulianDay( $dataValue )
 		);
 	}
 
@@ -164,7 +157,6 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function getParametersDataProvider() {
-
 		// {{#set_recurring_event:property=Has birthday
 		// |start=01 Feb 1970
 		// |has title= Birthday

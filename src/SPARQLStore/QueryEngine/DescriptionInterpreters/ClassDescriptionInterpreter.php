@@ -13,7 +13,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -36,7 +36,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -56,11 +56,10 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
-		list( $condition, $namespaces ) = $this->mapCategoriesToConditionElements(
+		[ $condition, $namespaces ] = $this->mapCategoriesToConditionElements(
 			$description->getCategories(),
 			$description->getHierarchyDepth(),
 			$joinVariable
@@ -84,7 +83,6 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function mapCategoriesToConditionElements( array $categories, $depth, $joinVariable ) {
-
 		$condition = '';
 		$namespaces = [];
 		$instExpElement = $this->exporter->getSpecialPropertyResource( '_INST' );
@@ -116,7 +114,6 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function tryToAddClassHierarchyPattern( $category, $depth, &$categoryExpName ) {
-
 		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBC ) || ( $depth !== null && $depth < 1 ) ) {
 			return '';
 		}

@@ -3,14 +3,13 @@
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
 use Html;
-use SMW\Store;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Message;
 use SMW\SQLStore\SQLStore;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -51,7 +50,6 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$count = $this->fetchCount();
 
 		if ( $count == 0 ) {
@@ -62,7 +60,6 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 	}
 
 	private function fetchCount() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -78,7 +75,6 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 	}
 
 	private function buildHTML( $count ) {
-
 		$html = Html::rawElement(
 			'fieldset',
 			[

@@ -2,14 +2,14 @@
 
 namespace SMW\Utils;
 
-use RuntimeException;
-use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
-use RegexIterator;
+use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
+use RegexIterator;
+use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -55,7 +55,6 @@ class FileFetcher {
 	 * @param string $sort
 	 */
 	public function sort( $sort ) {
-
 		$sort = strtolower( $sort );
 
 		if ( in_array( $sort, [ 'asc', 'desc' ] ) ) {
@@ -91,7 +90,6 @@ class FileFetcher {
 	 * @return Iterator
 	 */
 	public function findByExtension( $extension ) {
-
 		if ( !is_dir( $this->dir ) ) {
 			throw new RuntimeException( "Unable to access {$this->dir}!" );
 		}

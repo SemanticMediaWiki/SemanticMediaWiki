@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -38,7 +38,6 @@ class ListAugmentor {
 	 * @return array
 	 */
 	public function augment( array &$res, array $parameters ) {
-
 		if ( !isset( $res['query'] ) && $res['query'] === [] ) {
 			return;
 		}
@@ -79,7 +78,6 @@ class ListAugmentor {
 	}
 
 	private function addUsageCount( &$res ) {
-
 		$list = $res['query'];
 
 		$db = $this->store->getConnection( 'mw.db' );
@@ -104,7 +102,6 @@ class ListAugmentor {
 	}
 
 	private function addPreferredPropertyLabel( &$res, array $languageCodes ) {
-
 		$list = $res['query'];
 
 		foreach ( $list as $key => $value ) {
@@ -124,7 +121,6 @@ class ListAugmentor {
 	}
 
 	private function addPropertyDescription( &$res, array $languageCodes ) {
-
 		$list = $res['query'];
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 

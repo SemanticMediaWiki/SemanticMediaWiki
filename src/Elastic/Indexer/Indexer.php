@@ -2,29 +2,23 @@
 
 namespace SMW\Elastic\Indexer;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
-use SMW\Services\ServicesContainer;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\SQLStore\ChangeOp\ChangeDiff;
-use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
-use SMW\Store;
-use SMW\Utils\CharArmor;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\MediaWiki\Collator;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
+use SMW\Store;
 use SMW\Utils\Timer;
-use SMWDIBlob as DIBlob;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -61,12 +55,12 @@ class Indexer {
 	private $origin = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRebuild = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $versions = [];
 
@@ -84,7 +78,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param [] $versions
+	 * @param $versions
 	 */
 	public function setVersions( array $versions ) {
 		$this->versions = $versions;
@@ -102,7 +96,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $type
+	 * @param DIWikiPage $dataItem
 	 *
 	 * @return string
 	 */
@@ -113,7 +107,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAccessible() {
 		return $this->canReplicate();
@@ -122,7 +116,7 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isRebuild
+	 * @param bool $isRebuild
 	 */
 	public function isRebuild( $isRebuild = true ) {
 		$this->isRebuild = $isRebuild;
@@ -145,7 +139,6 @@ class Indexer {
 	 * @return string
 	 */
 	public function getIndexName( $type ) {
-
 		$index = $this->store->getConnection( 'elastic' )->getIndexName( $type );
 
 		// If the rebuilder has set a specific version, use it to avoid writing to
@@ -163,7 +156,6 @@ class Indexer {
 	 * @param array $idList
 	 */
 	public function delete( array $idList, $isConcept = false ) {
-
 		if ( $idList === [] ) {
 			return;
 		}
@@ -223,7 +215,6 @@ class Indexer {
 	 * @param array $data
 	 */
 	public function create( DIWikiPage $dataItem, array $data = [] ) {
-
 		$title = $dataItem->getTitle();
 
 		if ( !$this->canReplicate() ) {
@@ -268,12 +259,11 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|Title|integer $id
+	 * @param DIWikiPage|Title|int $id
 	 *
 	 * @return string
 	 */
 	public function fetchNativeData( $id ) {
-
 		if ( $id instanceof DIWikiPage ) {
 			$id = $id->getTitle();
 		}
@@ -304,13 +294,12 @@ class Indexer {
 	 * @param string $type
 	 */
 	public function indexDocument( Document $document, $type = self::REQUIRE_SAFE_REPLICATION ) {
-
 		Timer::start( __METHOD__ );
 
 		$subject = $document->getSubject();
 
 		if ( $type === self::REQUIRE_SAFE_REPLICATION && !$this->canReplicate() ) {
-			return IndexerRecoveryJob::pushFromDocument( $document ) ;
+			return IndexerRecoveryJob::pushFromDocument( $document );
 		}
 
 		$params = [
@@ -324,7 +313,7 @@ class Indexer {
 		$this->bulk->execute();
 
 		$this->logger->info(
-			[	'Indexer',
+			[ 'Indexer',
 				'Data index completed ({subject}, {id})',
 				'procTime (in sec): {procTime}',
 				'Response: {response}'
@@ -342,7 +331,6 @@ class Indexer {
 	}
 
 	private function canReplicate() {
-
 		$connection = $this->store->getConnection( 'elastic' );
 
 		// Make sure a node is available and is not locked by the rebuilder
@@ -354,7 +342,6 @@ class Indexer {
 	}
 
 	private function makeSubject( DIWikiPage $subject ) {
-
 		$title = $subject->getDBKey();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $title[0] !== '_' ) {

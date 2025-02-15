@@ -2,14 +2,13 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\Store;
-use SMW\Enum;
 use SMW\DIWikiPage;
+use SMW\Enum;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -33,12 +32,11 @@ class UpdateTask extends Task {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Title $title
+	 * @param array $parameters
 	 *
 	 * @return array
 	 */
 	public function process( array $parameters ) {
-
 		if ( !isset( $parameters['subject'] ) || $parameters['subject'] === '' ) {
 			return [ 'done' => false ];
 		}

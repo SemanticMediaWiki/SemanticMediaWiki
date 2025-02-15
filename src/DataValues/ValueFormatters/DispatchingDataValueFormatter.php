@@ -8,7 +8,7 @@ use SMWDataValue as DataValue;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -57,7 +57,6 @@ class DispatchingDataValueFormatter {
 	 * @throws RuntimeException
 	 */
 	public function getDataValueFormatterFor( DataValue $dataValue ) {
-
 		foreach ( $this->dataValueFormatters as $dataValueFormatter ) {
 			if ( $dataValueFormatter->isFormatterFor( $dataValue ) ) {
 				$dataValueFormatter->setDataValue( $dataValue );

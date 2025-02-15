@@ -8,7 +8,7 @@ use ApiBase;
  * API module to query SMW by providing a query specified as
  * a list of conditions, printouts and parameters.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -19,7 +19,6 @@ class AskArgs extends Query {
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
-
 		$params = $this->extractRequestParams();
 
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );

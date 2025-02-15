@@ -3,7 +3,6 @@
 namespace SMW\SPARQLStore;
 
 use Onoi\Cache\Cache;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
@@ -15,7 +14,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -49,12 +48,12 @@ class TurtleTriplesBuilder {
 	private $prefixes = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasTriplesForUpdate = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $triplesChunkSize = 80;
 
@@ -69,7 +68,7 @@ class TurtleTriplesBuilder {
 	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
 	 * @param Cache|null $cache
 	 */
-	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, Cache $cache = null ) {
+	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, ?Cache $cache = null ) {
 		$this->repositoryRedirectLookup = $repositoryRedirectLookup;
 		$this->cache = $cache;
 	}
@@ -77,7 +76,7 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $chunkSize
+	 * @param int $triplesChunkSize
 	 */
 	public function setTriplesChunkSize( $triplesChunkSize ) {
 		$this->triplesChunkSize = (int)$triplesChunkSize;
@@ -89,7 +88,6 @@ class TurtleTriplesBuilder {
 	 * @param SemanticData $semanticData
 	 */
 	public function doBuildTriplesFrom( SemanticData $semanticData ) {
-
 		$this->hasTriplesForUpdate = false;
 		$this->triples = '';
 		$this->prefixes = [];
@@ -100,7 +98,7 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasTriples() {
 		return $this->hasTriplesForUpdate;
@@ -125,7 +123,6 @@ class TurtleTriplesBuilder {
 	 * @return array
 	 */
 	public function getChunkedTriples() {
-
 		$chunkedTriples = [];
 
 		if ( $this->triples === null ) {
@@ -164,7 +161,6 @@ class TurtleTriplesBuilder {
 	}
 
 	private function doSerialize( SemanticData $semanticData ) {
-
 		$expDataArray = $this->prepareUpdateExpData( $semanticData );
 
 		if ( count( $expDataArray ) > 0 ) {
@@ -203,7 +199,6 @@ class TurtleTriplesBuilder {
 	 * @return array of SMWExpData
 	 */
 	private function prepareUpdateExpData( SemanticData $semanticData ) {
-
 		$result = [];
 
 		$expData = Exporter::getInstance()->makeExportData( $semanticData );
@@ -225,12 +220,11 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param Element $expElement object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 *
 	 * @return ExpElement
 	 */
 	private function expandUpdateExpElement( Element $expElement, array &$auxiliaryExpData ) {
-
 		if ( $expElement instanceof ExpResource ) {
 			return $this->expandUpdateExpResource( $expElement, $auxiliaryExpData );
 		}
@@ -254,12 +248,11 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param ExpResource $expResource object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 *
 	 * @return ExpElement
 	 */
 	private function expandUpdateExpResource( ExpResource $expResource, array &$auxiliaryExpData ) {
-
 		$exists = true;
 
 		if ( $expResource instanceof ExpNsResource ) {
@@ -294,13 +287,12 @@ class TurtleTriplesBuilder {
 	 * @since 1.6
 	 *
 	 * @param ExpData $expData object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
 	 *
 	 * @return ExpData
 	 */
 	private function expandUpdateExpData( ExpData $expData, array &$auxiliaryExpData, $expandSubject ) {
-
 		$subjectExpResource = $expData->getSubject();
 
 		if ( $expandSubject ) {

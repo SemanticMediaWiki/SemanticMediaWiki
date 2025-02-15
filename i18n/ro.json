@@ -12,6 +12,7 @@
 			"McDutchie",
 			"Minisarm",
 			"NGC 54",
+			"Paloi Sciurala",
 			"Stelistcristi",
 			"WebSourceContentRO"
 		]
@@ -58,6 +59,7 @@
 	"smw_exportrdf_submit": "Export",
 	"uriresolver": "Rezolvator URI",
 	"properties": "Proprietăți",
+	"smw-categories": "Categorii",
 	"smw_properties_docu": "Următoarele proprietăți sunt folosite în wiki.",
 	"smw_property_template": "$1 de tipul $2 ($3 {{PLURAL:$3|utilizare|utilizări|de utilizări}})",
 	"smw_propertylackstype": "Nici un tip nu a fost specificat pentru această proprietate (presupunem deocamdată tipul $1).",

@@ -2,12 +2,12 @@
 
 namespace SMW;
 
-use SMW\Localizer\LocalLanguage\LocalLanguage;
-use SMW\Exception\SiteLanguageChangeException;
 use SMW\Exception\NamespaceIndexChangeException;
+use SMW\Exception\SiteLanguageChangeException;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -41,7 +41,7 @@ class NamespaceManager {
 	 *
 	 * @param LocalLanguage|null $LocalLanguage
 	 */
-	public function __construct( LocalLanguage $LocalLanguage = null ) {
+	public function __construct( ?LocalLanguage $LocalLanguage = null ) {
 		$this->localLanguage = $LocalLanguage;
 
 		if ( $this->localLanguage === null ) {
@@ -53,7 +53,6 @@ class NamespaceManager {
 	 * @since 1.9
 	 */
 	public function init( array $vars ): array {
-
 		if ( !$this->isDefinedConstant( 'SMW_NS_PROPERTY' ) ) {
 			$vars = $this->initCustomNamespace( $vars )['newVars'];
 		}
@@ -88,7 +87,6 @@ class NamespaceManager {
 	 * @param array &$namespaces
 	 */
 	public static function initCanonicalNamespaces( array &$namespaces ) {
-
 		$instance_newVars = self::initCustomNamespace( $GLOBALS );
 		Globals::replace( $instance_newVars['newVars'] );
 		$canonicalNames = $instance_newVars['instance']->getCanonicalNames();
@@ -115,16 +113,13 @@ class NamespaceManager {
 	 * @return array
 	 */
 	public static function getCanonicalNames() {
-
 		$canonicalNames = [
 			SMW_NS_PROPERTY      => 'Property',
 			SMW_NS_PROPERTY_TALK => 'Property_talk',
 			SMW_NS_CONCEPT       => 'Concept',
 			SMW_NS_CONCEPT_TALK  => 'Concept_talk',
 			SMW_NS_SCHEMA        => 'smw/schema',
-			SMW_NS_SCHEMA_TALK   => 'smw/schema_talk',
-			SMW_NS_RULE          => 'Rule',
-			SMW_NS_RULE_TALK     => 'Rule_talk'
+			SMW_NS_SCHEMA_TALK   => 'smw/schema_talk'
 		];
 
 		return $canonicalNames;
@@ -138,7 +133,6 @@ class NamespaceManager {
 	 * @return array
 	 */
 	public static function buildNamespaceIndex( $offset ) {
-
 		// 100 and 101 used to be occupied by SMW's now obsolete namespaces
 		// "Relation" and "Relation_Talk"
 
@@ -148,7 +142,7 @@ class NamespaceManager {
 		$namespaceIndex = [
 			'SMW_NS_PROPERTY'      => $offset + 2,
 			'SMW_NS_PROPERTY_TALK' => $offset + 3,
-			//'SF_NS_FORM'           => $offset + 6,
+			// 'SF_NS_FORM'           => $offset + 6,
 			//'SF_NS_FORM_TALK'      => $offset + 7,
 			'SMW_NS_CONCEPT'       => $offset + 8,
 			'SMW_NS_CONCEPT_TALK'  => $offset + 9,
@@ -159,9 +153,6 @@ class NamespaceManager {
 
 			'SMW_NS_SCHEMA'        => $offset + 12,
 			'SMW_NS_SCHEMA_TALK'   => $offset + 13,
-
-			'SMW_NS_RULE'          => $offset + 14,
-			'SMW_NS_RULE_TALK'     => $offset + 15,
 		];
 
 		return $namespaceIndex;
@@ -170,8 +161,7 @@ class NamespaceManager {
 	/**
 	 * @since 1.9
 	 */
-	public static function initCustomNamespace( array $vars, LocalLanguage $localLanguage = null ): array {
-
+	public static function initCustomNamespace( array $vars, ?LocalLanguage $localLanguage = null ): array {
 		$instance = new self( $localLanguage );
 
 		$vars['smwgNamespaceIndex'] = $instance->getNamespaceIndex( $vars );
@@ -215,7 +205,6 @@ class NamespaceManager {
 	}
 
 	private function getNamespaceIndex( $vars ) {
-
 		if ( !isset( $vars['smwgNamespaceIndex'] ) ) {
 			return self::$initNamespaceIndex = self::DEFAULT_NAMESPACEINDEX;
 		} elseif ( self::$initNamespaceIndex === null ) {
@@ -228,7 +217,6 @@ class NamespaceManager {
 	}
 
 	private function getLanguageCode( $vars ) {
-
 		if ( self::$initLanguageCode === '' ) {
 			return self::$initLanguageCode = $vars['wgLanguageCode'];
 		} elseif ( self::$initLanguageCode !== '' && self::$initLanguageCode === $vars['wgLanguageCode'] ) {
@@ -246,7 +234,6 @@ class NamespaceManager {
 	}
 
 	private function addNamespaceSettings( &$vars ) {
-
 		/**
 		 * Default settings for the SMW specific NS which can only
 		 * be defined after SMW_NS_PROPERTY is declared
@@ -271,7 +258,6 @@ class NamespaceManager {
 	}
 
 	private function addExtraNamespaceSettings( &$vars ) {
-
 		/**
 		 * Indicating which namespaces allow sub-pages
 		 *

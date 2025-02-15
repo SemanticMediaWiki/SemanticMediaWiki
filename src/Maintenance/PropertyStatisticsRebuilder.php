@@ -5,14 +5,14 @@ namespace SMW\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\SQLStore\PropertyStatisticsStore;
-use SMW\Store;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 
 /**
  * Simple class for rebuilding property usage statistics.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -60,7 +60,6 @@ class PropertyStatisticsRebuilder {
 	 * @since 1.9
 	 */
 	public function rebuild() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -142,7 +141,6 @@ class PropertyStatisticsRebuilder {
 	}
 
 	private function getCountFormRow( $row ) {
-
 		$usageCount = 0;
 		$nullCount = 0;
 
@@ -153,7 +151,7 @@ class PropertyStatisticsRebuilder {
 				continue;
 			}
 
-			list( $uCount, $nCount ) = $this->getPropertyTableRowCount(
+			[ $uCount, $nCount ] = $this->getPropertyTableRowCount(
 				$propertyTable,
 				$row->smw_id
 			);
@@ -166,7 +164,6 @@ class PropertyStatisticsRebuilder {
 	}
 
 	private function getPropertyTableRowCount( $propertyTable, $pid ) {
-
 		$condition = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 

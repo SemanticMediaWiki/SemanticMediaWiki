@@ -2,26 +2,24 @@
 
 namespace SMW\Tests;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Setup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SetupTest extends \PHPUnit_Framework_TestCase {
+class SetupTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $defaultConfig;
 	private $hookDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
@@ -34,11 +32,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
@@ -58,20 +56,20 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'wgLang'            => $language,
 			'IP'                => 'Foo',
 			'smwgConfigFileDir' => '',
-			'smwgUpgradeKey' => ''
+			'smwgUpgradeKey' => '',
+			'smwgIgnoreUpgradeKeyCheck' => true
 		];
 
 		$this->testEnvironment = new TestEnvironment( $this->defaultConfig );
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Setup::class,
 			new Setup()
@@ -79,7 +77,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterExtensionCheck() {
-
 		$vars = [
 			'smwgIgnoreExtensionRegistrationCheck' => true
 		];
@@ -104,7 +101,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResourceModules() {
-
 		$config = $this->defaultConfig;
 
 		$instance = new Setup();
@@ -121,7 +117,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHookRunOnSetupAfterInitializationComplete() {
-
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onSetupAfterInitializationComplete' );
 
@@ -144,7 +139,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterDefaultRightsUserGroupPermissions() {
-
 		$config = $this->defaultConfig;
 
 		$instance = new Setup();
@@ -173,7 +167,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoResetOfAlreadyRegisteredGroupPermissions() {
-
 		// Avoid re-setting permissions, refs #1137
 		$localConfig['wgGroupPermissions']['sysop']['smw-admin'] = false;
 		$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin'] = false;
@@ -198,11 +191,9 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse(
 			$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
-
 	}
 
 	public function testRegisterParamDefinitions() {
-
 		$config = $this->defaultConfig;
 
 		$config['wgParamDefinitions']['smwformat'] = '';
@@ -225,7 +216,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterFooterIcon() {
-
 		$config = $this->defaultConfig;
 
 		$config['wgFooterIcons']['poweredby'] = [];
@@ -247,7 +237,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function jobClassesDataProvider() {
-
 		$jobs = [
 
 			'smw.update',
@@ -282,7 +271,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertArrayEntryExists( $target, $entry, $config, $type = 'class' ) {
-
 		$config = $config + $this->defaultConfig;
 
 		$this->assertEmpty(
@@ -314,7 +302,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	private function buildDataProvider( $id, $definitions, $default ) {
-
 		$provider = [];
 
 		foreach ( $definitions as $definition ) {

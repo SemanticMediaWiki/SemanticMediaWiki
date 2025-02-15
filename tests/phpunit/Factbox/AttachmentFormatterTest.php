@@ -9,18 +9,18 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Factbox\AttachmentFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
+class AttachmentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -29,7 +29,6 @@ class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AttachmentFormatter::class,
 			new AttachmentFormatter( $this->store )
@@ -37,27 +36,25 @@ class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_OnEmptyAttachments() {
-
 		$instance = new AttachmentFormatter(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHTML( [] )
 		);
 	}
 
 	public function testBuildHTML_OnAttachments() {
-
 		$item = \SMW\DIWikiPage::newFromText( 'Foo', NS_FILE );
 
 		$instance = new AttachmentFormatter(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHTML( [ $item ] )
 		);
 	}

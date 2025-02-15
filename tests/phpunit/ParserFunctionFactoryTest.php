@@ -3,24 +3,28 @@
 namespace SMW\Tests;
 
 use SMW\ParserFunctionFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctionFactory
  * @group smenatic-mediawiki
+ * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
+class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
+	private $testEnvironment;
+
+	private $parserData;
+
 	private $parserFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -34,13 +38,12 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$parser = $this->getMockBuilder( '\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -60,7 +63,6 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parserFunctionProvider
 	 */
 	public function testParserFunctionInstance( $instance, $method ) {
-
 		$parser = $this->parserFactory->create( __METHOD__ );
 
 		$parserFunctionFactory = new ParserFunctionFactory( $parser );
@@ -75,7 +77,6 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parserFunctionDefinitionProvider
 	 */
 	public function testParserFunctionDefinition( $method, $expected ) {
-
 		$parser = $this->parserFactory->create( __METHOD__ );
 
 		$parserFunctionFactory = new ParserFunctionFactory( $parser );
@@ -95,18 +96,17 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 			$definition[1]
 		);
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$definition[2]
 		);
 	}
 
 	public function testAskParserFunctionWithParserOption() {
-
 		$this->parserData->expects( $this->at( 0 ) )
 			->method( 'setOption' )
 			->with(
-				$this->equalTo( \SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE ),
+				\SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE,
 				$this->anything() );
 
 		$parser = $this->parserFactory->create( __METHOD__ );
@@ -122,7 +122,6 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parserFunctionProvider() {
-
 		$provider[] = [
 			'\SMW\ParserFunctions\RecurringEventsParserFunction',
 			'getRecurringEventsParser'
@@ -172,7 +171,6 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parserFunctionDefinitionProvider() {
-
 		$provider[] = [
 			'getAskParserFunctionDefinition',
 			'ask'

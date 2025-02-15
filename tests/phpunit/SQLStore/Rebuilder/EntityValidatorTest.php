@@ -3,25 +3,24 @@
 namespace SMW\Tests\SQLStore\Rebuilder;
 
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Rebuilder\EntityValidator;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\Rebuilder\EntityValidator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
+class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private NamespaceExaminer $namespaceExaminer;
-	protected function setUp() : void {
+
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment(
@@ -43,7 +42,7 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -52,22 +51,21 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -79,14 +77,13 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsDetachedSubobject() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$row = (object)[
 			'smw_subobject' => 'foo',
@@ -108,14 +105,13 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasLatestRevID() {
-
 		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$revisionGuard->expects( $this->once() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -123,7 +119,7 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$row = (object)[
 			'smw_subobject' => 'foo',
@@ -150,7 +146,6 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsDetachedQueryRef() {
-
 		$row = (object)[
 			'smw_subobject' => '_QUERY-Foo',
 			'smw_proptable_hash' => null
@@ -174,7 +169,6 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyRetiredListProvider
 	 */
 	public function testIsRetiredProperty( $row, $list, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -195,7 +189,6 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function propertyRetiredListProvider() {
-
 		yield [
 			(object)[ 'smw_namespace' => SMW_NS_PROPERTY, 'smw_title' => 'Test_SD_Some' ],
 			[ '_SD_' ],

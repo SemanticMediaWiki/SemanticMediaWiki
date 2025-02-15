@@ -11,7 +11,7 @@ use SMWDINumber as DINumber;
 /**
  * This class implements Store access to Number data items.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -64,7 +64,6 @@ class DINumberHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getIndexHint( $key ) {
-
 		// Store::getPropertySubjects has seen to choose the wrong index
 
 		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
@@ -139,7 +138,6 @@ class DINumberHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-
 		if ( is_string( $dbkeys ) ) {
 			return DINumber::doUnserialize( $dbkeys );
 		}

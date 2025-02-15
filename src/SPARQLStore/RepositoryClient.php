@@ -8,7 +8,7 @@ use SMW\Utils\Flag;
  * Provides information about the client and how to communicate with
  * its services
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -86,7 +86,7 @@ class RepositoryClient {
 	 *
 	 * @param int $key
 	 */
-	public function isFlagSet( int $key ) : bool {
+	public function isFlagSet( int $key ): bool {
 		return $this->featureSet !== null && $this->featureSet->is( $key );
 	}
 

@@ -11,7 +11,7 @@ use SMWDIBlob as DIBlob;
 /**
  * This class implements Store access to blob (string) data items.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -64,7 +64,6 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getIndexHint( $key ) {
-
 		// Store::getPropertySubjects has seen to choose the wrong index
 
 		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
@@ -99,7 +98,6 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-
 		$isKeyword = $dataItem->getOption( 'is.keyword' );
 		$text = $dataItem->getString();
 
@@ -114,7 +112,6 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-
 		$isKeyword = $dataItem->getOption( 'is.keyword' );
 
 		$text = htmlspecialchars_decode( trim( $dataItem->getString() ), ENT_QUOTES );
@@ -158,7 +155,6 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-
 		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 2 ) {
 			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 		}
@@ -186,7 +182,6 @@ class DIBlobHandler extends DataItemHandler {
 	 * @return string
 	 */
 	private function makeHash( $string ) {
-
 		$length = $this->getMaxLength();
 
 		if ( mb_strlen( $string ) <= $length ) {
@@ -221,7 +216,6 @@ class DIBlobHandler extends DataItemHandler {
 	 * @since 3.0
 	 */
 	private function getMaxLength() {
-
 		$length = 72;
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_LONG ) ) {
@@ -232,7 +226,6 @@ class DIBlobHandler extends DataItemHandler {
 	}
 
 	private function getCharFieldType() {
-
 		// http://sqlite.1065341.n5.nabble.com/Leading-zeros-disappear-td60515.html
 		// @Test:[p-0430]
 		if ( $this->isDbType( 'sqlite' ) ) {

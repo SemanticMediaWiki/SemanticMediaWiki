@@ -4,22 +4,20 @@ namespace SMW\SQLStore;
 
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Enum;
+use SMW\Parameters;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Status;
 use SMWDIBlob as DIBlob;
-use SMW\Parameters;
-use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\Enum;
 use Title;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Markus Krötzsch
@@ -96,7 +94,6 @@ class SQLStoreUpdater {
 	 * @param Title $title
 	 */
 	public function deleteSubject( Title $title ) {
-
 		// @deprecated since 2.1, use 'SMW::SQLStore::BeforeDeleteSubjectComplete'
 		$this->hookContainer->run( 'SMWSQLStore3::deleteSubjectBefore', [ $this->store, $title ] );
 
@@ -154,7 +151,6 @@ class SQLStoreUpdater {
 	}
 
 	private function doDelete( $id, $subject, $subobjectListFinder, &$extensionList ) {
-
 		$this->semanticDataLookup->invalidateCache( $id );
 
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
@@ -191,10 +187,9 @@ class SQLStoreUpdater {
 	 *
 	 * @since 1.8
 	 *
-	 * @param SemanticData $data
+	 * @param SemanticData $semanticData
 	 */
 	public function doDataUpdate( SemanticData $semanticData ) {
-
 		// Deprecated since 3.1, use SMW::SQLStore::BeforeDataUpdateComplete
 		$this->hookContainer->run( 'SMWSQLStore3::updateDataBefore', [ $this->store, $semanticData ] );
 
@@ -366,7 +361,7 @@ class SQLStoreUpdater {
 		}
 
 		// Take care of all remaining property table data
-		list( $insertRows, $deleteRows, $newHashes ) = $this->propertyTableRowDiffer->computeTableRowDiff(
+		[ $insertRows, $deleteRows, $newHashes ] = $this->propertyTableRowDiffer->computeTableRowDiff(
 			$sid,
 			$data
 		);
@@ -403,7 +398,6 @@ class SQLStoreUpdater {
 	}
 
 	private function makeSortKey( $subject, $data ) {
-
 		// Don't mind the delete process
 		if ( $data->getOption( SemanticData::PROC_DELETE ) ) {
 			return '';
@@ -445,7 +439,6 @@ class SQLStoreUpdater {
 	}
 
 	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
-
 		$options = [
 			'page_id' => $pageId,
 			'redirect_id' => $redirectId

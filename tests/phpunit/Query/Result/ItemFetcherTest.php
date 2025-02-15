@@ -9,18 +9,18 @@ use SMW\Query\Result\ItemFetcher;
  * @covers SMW\Query\Result\ItemFetcher
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
+class ItemFetcherTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $store;
 	private $requestOptions;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -35,7 +35,6 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ItemFetcher::class,
 			new ItemFetcher( $this->store )
@@ -43,7 +42,6 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHighlightTokens() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 
 		$instance = new ItemFetcher(
@@ -57,14 +55,13 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHighlightTokens_Blob() {
-
 		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryToken->expects( $this->any() )
 			->method( 'highlight' )
-			->will( $this->returnValue( '<b>Foo</b>' ) );
+			->willReturn( '<b>Foo</b>' );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -72,11 +69,11 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '_txt' ) );
+			->willReturn( '_txt' );
 
 		$printRequest->expects( $this->any() )
 			->method( 'getOutputFormat' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$dataItem = $this->dataItemFactory->newDIBlob( 'Foo' );
 
@@ -99,7 +96,6 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchFromLegacy() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
 
@@ -110,9 +106,9 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $dataItem ),
-				$this->equalTo( $property ) )
-			->will( $this->returnValue( $expected ) );
+				$dataItem,
+				$property )
+			->willReturn( $expected );
 
 		$instance = new ItemFetcher(
 			$this->store
@@ -127,7 +123,6 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchFromPrefetchCache() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
 
@@ -142,14 +137,14 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 		$prefetchCache->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $dataItem ),
-				$this->equalTo( $property ) )
-			->will( $this->returnValue( $expected ) );
+				$dataItem,
+				$property )
+			->willReturn( $expected );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'service' )
-			->with( $this->equalTo( 'PrefetchCache' ) )
-			->will( $this->returnValue( $prefetchCache ) );
+			->with( 'PrefetchCache' )
+			->willReturn( $prefetchCache );
 
 		$instance = new ItemFetcher(
 			$this->store

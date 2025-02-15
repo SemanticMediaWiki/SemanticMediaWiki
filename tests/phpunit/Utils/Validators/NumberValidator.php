@@ -5,18 +5,18 @@ namespace SMW\Tests\Utils\Validators;
 use SMW\Query\QueryComparator;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
  */
-class NumberValidator extends \PHPUnit_Framework_Assert {
+class NumberValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|string $expected
-	 * @param integer|string $actual
+	 * @param int|string $expected
+	 * @param int|string $actual
 	 */
 	public function assertThatNumberComparesTo( $expected, $actual, $message = '' ) {
 		return $this->doAssertWith( $expected, $actual, $message );
@@ -25,7 +25,7 @@ class NumberValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|string $expected
+	 * @param int|string $expected
 	 * @param array $actual
 	 */
 	public function assertThatCountComparesTo( $expected, array $actual, $message = '' ) {
@@ -33,7 +33,6 @@ class NumberValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function doAssertWith( $expected, $actual, $message ) {
-
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $expected );
 
 		$expected = (int)$expected;

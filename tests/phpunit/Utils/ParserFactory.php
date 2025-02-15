@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use Parser;
 use ParserOptions;
 use SMW\DIWikiPage;
 use SMW\Tests\Utils\Mock\MockSuperUser;
@@ -14,13 +13,12 @@ use User;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  */
 class ParserFactory {
 
-	public static function create( $title, User $user = null ) {
-
+	public static function create( $title, ?User $user = null ) {
 		if ( is_string( $title ) ) {
 			$title = Title::newFromText( $title );
 		}
@@ -32,8 +30,7 @@ class ParserFactory {
 		return self::newFromTitle( $title, $user );
 	}
 
-	public static function newFromTitle( Title $title, User $user = null ) {
-
+	public static function newFromTitle( Title $title, ?User $user = null ) {
 		if ( $user === null ) {
 			$user = new MockSuperUser();
 		}

@@ -4,14 +4,14 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
 use Sanitizer;
+use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMWDataValue;
 use SMWResultArray;
-use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 
 /**
  * Class ValueTextsBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -23,7 +23,7 @@ class ValueTextsBuilder {
 	private $linker;
 	private $prefixParameterProcessor;
 
-	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {		
+	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {
 		$this->prefixParameterProcessor = $prefixParameterProcessor;
 	}
 
@@ -34,11 +34,9 @@ class ValueTextsBuilder {
 	 * @return string
 	 */
 	public function getValuesText( SMWResultArray $field, $column = 0 ) {
-
 		$valueTexts = $this->getValueTexts( $field, $column );
 
-		return join( $this->get( 'valuesep' ), $valueTexts );
-
+		return implode( $this->get( 'valuesep' ), $valueTexts );
 	}
 
 	/**
@@ -48,7 +46,6 @@ class ValueTextsBuilder {
 	 * @return string[]
 	 */
 	private function getValueTexts( SMWResultArray $field, $column ) {
-
 		$valueTexts = [];
 
 		$field->reset();
@@ -88,7 +85,6 @@ class ValueTextsBuilder {
 	 * @return \Linker|null
 	 */
 	private function getLinkerForColumn( $columnNumber ) {
-
 		if ( ( $columnNumber === 0 && $this->get( 'link-first' ) ) ||
 			( $columnNumber > 0 && $this->get( 'link-others' ) ) ) {
 			return $this->getLinker();
@@ -117,7 +113,6 @@ class ValueTextsBuilder {
 	 * @return string
 	 */
 	private function sanitizeValueText( $text ) {
-
 		if ( $this->isSimpleList() ) {
 			return $text;
 		}

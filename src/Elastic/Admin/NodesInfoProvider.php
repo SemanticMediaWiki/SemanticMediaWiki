@@ -3,11 +3,11 @@
 namespace SMW\Elastic\Admin;
 
 use Html;
-use WebRequest;
 use SMW\Utils\JsonView;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -29,7 +29,6 @@ class NodesInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-nodes-title' ),
 			[ 'action' => $this->getTask() ]
@@ -53,7 +52,6 @@ class NodesInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle( 'Elasticsearch nodes' );
 
 		$this->outputFormatter->addParentLink(
@@ -65,7 +63,6 @@ class NodesInfoProvider extends InfoProviderHandler {
 	}
 
 	private function outputInfo() {
-
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
 		$nodes = $connection->stats( 'nodes' );

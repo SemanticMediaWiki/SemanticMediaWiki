@@ -12,18 +12,18 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Property\Annotators\SchemaPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SchemaPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class SchemaPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$testEnvironment = new TestEnvironment();
@@ -33,7 +33,6 @@ class SchemaPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,7 +49,6 @@ class SchemaPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotation() {
-
 		$def = [
 			SchemaDefinition::SCHEMA_TYPE => 'bar',
 			SchemaDefinition::SCHEMA_DESCRIPTION => '...',

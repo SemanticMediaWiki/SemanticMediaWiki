@@ -3,21 +3,21 @@
 namespace SMW\MediaWiki\Api;
 
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Api\Tasks\Task;
-use SMW\MediaWiki\Api\Tasks\UpdateTask;
+use RuntimeException;
+use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\MediaWiki\Api\Tasks\CheckQueryTask;
 use SMW\MediaWiki\Api\Tasks\DuplicateLookupTask;
+use SMW\MediaWiki\Api\Tasks\EntityExaminerTask;
 use SMW\MediaWiki\Api\Tasks\InsertJobTask;
 use SMW\MediaWiki\Api\Tasks\JobListTask;
 use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
-use SMW\MediaWiki\Api\Tasks\EntityExaminerTask;
-use SMW\Indicator\EntityExaminerIndicatorsFactory;
-use RuntimeException;
+use SMW\MediaWiki\Api\Tasks\Task;
+use SMW\MediaWiki\Api\Tasks\UpdateTask;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -25,17 +25,16 @@ use User;
 class TaskFactory {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $services;
 
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getAllowedTypes() {
-
 		if ( self::$services === null ) {
 			MediaWikiServices::getInstance()
 				->getHookContainer()
@@ -79,33 +78,25 @@ class TaskFactory {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function newByType( $type, User $user = null ) {
-
+	public function newByType( $type, ?User $user = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$service = null;
 
 		switch ( $type ) {
 			case 'update':
 				return new UpdateTask( $applicationFactory->newJobFactory() );
-				break;
 			case 'check-query':
 				return new CheckQueryTask( $applicationFactory->getStore() );
-				break;
 			case 'run-entity-examiner':
 				return $this->newEntityExaminerTask( $user );
-				break;
 			case 'duplicate-lookup':
 				return $this->newDuplicateLookupTask();
-				break;
 			case 'table-statistics':
 				return $this->newTableStatisticsTask();
-				break;
 			case 'insert-job':
 				return new InsertJobTask( $applicationFactory->newJobFactory() );
-				break;
 			case 'run-joblist':
 				return new JobListTask( $applicationFactory->getJobQueue() );
-				break;
 		}
 
 		if ( is_array( self::$services ) && isset( self::$services[$type] ) && is_callable( self::$services[$type] ) ) {
@@ -125,7 +116,6 @@ class TaskFactory {
 	 * @return DuplicateLookupTask
 	 */
 	public function newDuplicateLookupTask() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$duplicateLookupTask = new DuplicateLookupTask(
@@ -146,7 +136,6 @@ class TaskFactory {
 	 * @return TableStatisticsTask
 	 */
 	public function newTableStatisticsTask() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$tableStatisticsTask = new TableStatisticsTask(
@@ -166,8 +155,7 @@ class TaskFactory {
 	 *
 	 * @return EntityExaminerTask
 	 */
-	public function newEntityExaminerTask( User $user = null ) : EntityExaminerTask {
-
+	public function newEntityExaminerTask( ?User $user = null ): EntityExaminerTask {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityExaminerTask = new EntityExaminerTask(

@@ -11,7 +11,7 @@ use SMWPropertyValue as PropertyValue;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -36,19 +36,19 @@ class QueryCreator implements QueryContext {
 
 	/**
 	 * @see smwgQDefaultLimit
-	 * @var integer
+	 * @var int
 	 */
 	private $defaultLimit = 0;
 
 	/**
 	 * @see smwgQFeatures
-	 * @var integer
+	 * @var int
 	 */
 	private $queryFeatures = 0;
 
 	/**
 	 * @see smwgQConceptFeatures
-	 * @var integer
+	 * @var int
 	 */
 	private $conceptFeatures = 0;
 
@@ -57,7 +57,7 @@ class QueryCreator implements QueryContext {
 	 *
 	 * @param QueryFactory $queryFactory
 	 * @param array|null $defaultNamespaces
-	 * @param integer $defaultLimit
+	 * @param int $defaultLimit
 	 */
 	public function __construct( QueryFactory $queryFactory, $defaultNamespaces = null, $defaultLimit = 50 ) {
 		$this->queryFactory = $queryFactory;
@@ -68,7 +68,7 @@ class QueryCreator implements QueryContext {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $queryFeatures
+	 * @param int $queryFeatures
 	 */
 	public function setQFeatures( $queryFeatures ) {
 		$this->queryFeatures = $queryFeatures;
@@ -77,7 +77,7 @@ class QueryCreator implements QueryContext {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $conceptFeatures
+	 * @param int $conceptFeatures
 	 */
 	public function setQConceptFeatures( $conceptFeatures ) {
 		$this->conceptFeatures = $conceptFeatures;
@@ -97,7 +97,6 @@ class QueryCreator implements QueryContext {
 	 * @return Query
 	 */
 	public function create( $queryString, array $params = [] ) {
-
 		$this->params = $params;
 		$context = $this->getParam( 'context', self::INLINE_QUERY );
 
@@ -180,7 +179,6 @@ class QueryCreator implements QueryContext {
 	 * @return array ( keys => array(), errors => array() )
 	 */
 	private function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ) {
-
 		$sortKeys = [];
 		$sortErros = [];
 

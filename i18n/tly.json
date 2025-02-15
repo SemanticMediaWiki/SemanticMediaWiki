@@ -1,7 +1,6 @@
 {
 	"@metadata": {
 		"authors": [
-			"Amire80",
 			"Patriot Kor",
 			"Patriot Kur",
 			"Гусейн"
@@ -12,6 +11,7 @@
 	"smw_printername_template": "Šablon",
 	"smw_printername_category": "Kategorijə",
 	"smw_exportrdf_submit": "İxroc",
+	"smw-categories": "Kategorijon",
 	"smw_purge": "Тожә кардеј",
 	"browse": "Səhifon dijə karde",
 	"smw-admin-supplementary-elastic-version-info": "Versiya",

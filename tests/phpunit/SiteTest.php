@@ -3,97 +3,98 @@
 namespace SMW\Tests;
 
 use SMW\Site;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Site
  * @group semantic-mediawiki
+ * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
  */
-class SiteTest extends \PHPUnit_Framework_TestCase {
+class SiteTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
-	public function testIsReadOnly() {
+	protected function setUp(): void {
+		parent::setUp();
 
-		$this->assertInternalType(
-			'boolean',
+		// Mocking global job classes
+		$GLOBALS['wgJobClasses'] = [
+			'smw.indexer' => 'SMWIndexerJob',
+			'smw.updater' => 'SMWUpdaterJob',
+			// Add more mock job classes as necessary for your tests
+		];
+	}
+
+	public function testIsReadOnly() {
+		$this->assertIsBool(
+
 			Site::isReadOnly()
 		);
 	}
 
 	public function testIsReady() {
+		$this->assertIsBool(
 
-		$this->assertInternalType(
-			'boolean',
 			Site::isReady()
 		);
 	}
 
 	public function testName() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			Site::name()
 		);
 	}
 
 	public function testWikiurl() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			Site::wikiurl()
 		);
 	}
 
 	public function testLanguageCode() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			Site::languageCode()
 		);
 	}
 
 	public function testIsCommandLineMode() {
+		$this->assertIsBool(
 
-		$this->assertInternalType(
-			'boolean',
 			Site::isCommandLineMode()
 		);
 	}
 
 	public function testIsCapitalLinks() {
+		$this->assertIsBool(
 
-		$this->assertInternalType(
-			'boolean',
 			Site::isCapitalLinks()
 		);
 	}
 
 	public function testGetCacheExpireTime() {
+		$this->assertIsInt(
 
-		$this->assertInternalType(
-			'integer',
 			Site::getCacheExpireTime( 'parser' )
 		);
 	}
 
 	public function testStats() {
+		$this->assertIsArray(
 
-		$this->assertInternalType(
-			'array',
 			Site::stats()
 		);
 	}
 
 	public function testGetJobClasses() {
+		$this->assertIsArray(
 
-		$this->assertInternalType(
-			'array',
 			Site::getJobClasses()
 		);
 

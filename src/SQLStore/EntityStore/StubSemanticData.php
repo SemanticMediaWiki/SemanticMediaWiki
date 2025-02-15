@@ -16,7 +16,7 @@ use SMWSemanticData as SemanticData;
  * This class provides a subclass of SemanticData that can store prefetched values
  * from the SQL store, and unstub this data on demand when it is accessed.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Markus Krötzs
@@ -55,7 +55,7 @@ class StubSemanticData extends SemanticData {
 	/**
 	 * Whether SubSemanticData have been requested and added
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $subSemanticDataInit = false;
 
@@ -64,7 +64,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @param DIWikiPage $subject to which this data refers
 	 * @param SQLStore $store (the parent store)
-	 * @param boolean $noDuplicates stating if duplicate data should be avoided
+	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
 	public function __construct( DIWikiPage $subject, SQLStore $store, $noDuplicates = true ) {
 		$this->store = $store;
@@ -74,9 +74,9 @@ class StubSemanticData extends SemanticData {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isStub() : bool {
+	public function isStub(): bool {
 		return true;
 	}
 
@@ -127,8 +127,8 @@ class StubSemanticData extends SemanticData {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $sid
-	 * @param [] $sequenceMap
+	 * @param int $sid
+	 * @param $sequenceMap
 	 */
 	public function setSequenceMap( $sid, $sequenceMap ) {
 		$this->sequenceMap = is_array( $sequenceMap ) ? $sequenceMap : [];
@@ -137,8 +137,8 @@ class StubSemanticData extends SemanticData {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $sid
-	 * @param [] $countMap
+	 * @param int $sid
+	 * @param $countMap
 	 */
 	public function setCountMap( $sid, $countMap ) {
 		$this->countMap = is_array( $countMap ) ? $countMap : [];
@@ -162,7 +162,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty( DIProperty $property ) {
 		$this->unstubProperties();
@@ -179,7 +179,6 @@ class StubSemanticData extends SemanticData {
 	 * @return array of DataItem
 	 */
 	public function getPropertyValues( DIProperty $property ) {
-
 		// we never have any data for inverses
 		if ( $property->isInverse() ) {
 			return [];
@@ -201,7 +200,6 @@ class StubSemanticData extends SemanticData {
 	 * @since 2.0
 	 */
 	public function getSubSemanticData() {
-
 		if ( $this->subSemanticDataInit ) {
 			return parent::getSubSemanticData();
 		}
@@ -234,7 +232,6 @@ class StubSemanticData extends SemanticData {
 	 * @since 2.0
 	 */
 	public function hasSubSemanticData( $subobjectName = null ) {
-
 		if ( !$this->subSemanticDataInit ) {
 			$this->getSubSemanticData();
 		}
@@ -248,7 +245,6 @@ class StubSemanticData extends SemanticData {
 	 * @since 2.5
 	 */
 	public function findSubSemanticData( $subobjectName ) {
-
 		if ( !$this->subSemanticDataInit ) {
 			$this->getSubSemanticData();
 		}
@@ -283,7 +279,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasVisibleProperties() {
 		$this->unstubProperties();
@@ -296,7 +292,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasVisibleSpecialProperties() {
 		$this->unstubProperties();
@@ -356,14 +352,14 @@ class StubSemanticData extends SemanticData {
 	 * @since 1.8
 	 *
 	 * @param string $propertyKey
-	 * @param SMWDIProperty $diProperty if available
+	 * @param SMWDIProperty|null $diProperty if available
 	 *
 	 * @throws DataItemException if property key is not valid
 	 * 	and $diProperty is null
 	 */
 	protected function unstubProperty( $propertyKey, $diProperty = null ) {
 		if ( !array_key_exists( $propertyKey, $this->mProperties ) ) {
-			if ( is_null( $diProperty ) ) {
+			if ( $diProperty === null ) {
 				$diProperty = new DIProperty( $propertyKey, false );
 			}
 
@@ -385,7 +381,6 @@ class StubSemanticData extends SemanticData {
 	}
 
 	private function unstubPropertyValues( DIProperty $property ) {
-
 		// Not catching exception here; the
 		$this->unstubProperty( $property->getKey(), $property );
 		$propertyTypeId = $property->findPropertyTypeID();

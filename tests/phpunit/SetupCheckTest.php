@@ -2,26 +2,25 @@
 
 namespace SMW\Tests;
 
-use SMW\SetupCheck;
-use SMW\Tests\PHPUnitCompat;
 use ReflectionClass;
+use SMW\SetupCheck;
 
 /**
  * @covers \SMW\SetupCheck
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class SetupCheckTest extends \PHPUnit_Framework_TestCase {
+class SetupCheckTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $setupFile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
@@ -30,7 +29,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SetupCheck::class,
 			new SetupCheck( [] )
@@ -43,31 +41,28 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasError() {
-
 		$this->setupFile->expects( $this->any() )
 			->method( 'inMaintenanceMode' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new SetupCheck( [], $this->setupFile );
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->hasError()
 		);
 	}
 
 	public function testIsCli() {
-
 		$instance = new SetupCheck( [], $this->setupFile );
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isCli()
 		);
 	}
 
 	public function testReadFromFile_ThrowsException() {
-
 		$instance = new SetupCheck( [], $this->setupFile );
 
 		$this->expectException( '\SMW\Exception\FileNotReadableException' );
@@ -75,7 +70,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReadFromFile_InvalidJSON_ThrowsException() {
-
 		$instance = new SetupCheck( [], $this->setupFile );
 
 		$this->expectException( '\RuntimeException' );
@@ -83,7 +77,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsError() {
-
 		$instance = SetupCheck::newFromDefaults(
 			$this->setupFile
 		);
@@ -98,7 +91,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnknownErrorType_ThrowsException() {
-
 		$instance = SetupCheck::newFromDefaults(
 			$this->setupFile
 		);
@@ -113,10 +105,9 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorTypeProvider
 	 */
 	public function testGetError_CliOutput( $errorType ) {
-
 		$this->setupFile->expects( $this->any() )
 			->method( 'getMaintenanceMode' )
-			->will( $this->returnValue( [ 'Foo' => 'bar' ] ) );
+			->willReturn( [ 'Foo' => 'bar' ] );
 
 		$instance = new SetupCheck(
 			[
@@ -132,8 +123,8 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 			$errorType
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getError( true )
 		);
 	}
@@ -142,10 +133,9 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorTypeProvider
 	 */
 	public function testGetError_NoCliHTMLOutput( $errorType ) {
-
 		$this->setupFile->expects( $this->any() )
 			->method( 'getMaintenanceMode' )
-			->will( $this->returnValue( [ 'Foo' => 'bar' ] ) );
+			->willReturn( [ 'Foo' => 'bar' ] );
 
 		$instance = new SetupCheck(
 			[
@@ -170,7 +160,6 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function errorTypeProvider() {
-
 		$reflectionClass = new ReflectionClass(
 			SetupCheck::class
 		);

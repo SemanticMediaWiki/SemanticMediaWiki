@@ -2,13 +2,13 @@
 
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Class TemplateRendererFactory
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -41,20 +41,18 @@ class TemplateRendererFactory {
 	 * @return WikitextTemplateRenderer
 	 */
 	public function getTemplateRenderer() {
-
 		if ( $this->templateRenderer === null ) {
 			$this->templateRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newWikitextTemplateRenderer();
 			$this->addCommonTemplateFields( $this->templateRenderer );
 		}
 
-		return clone( $this->templateRenderer );
+		return clone $this->templateRenderer;
 	}
 
 	/**
 	 * @param WikitextTemplateRenderer $templateRenderer
 	 */
 	private function addCommonTemplateFields( WikitextTemplateRenderer $templateRenderer ) {
-
 		if ( $this->userparam !== '' ) {
 
 			$templateRenderer->addField(
@@ -83,7 +81,7 @@ class TemplateRendererFactory {
 		$templateRenderer->addField(
 			'#rowcount',
 			$this->getRowCount()
-		//$query->getCount()  // FIXME: Re-activate if another query takes too long.
+		// $query->getCount()  // FIXME: Re-activate if another query takes too long.
 		);
 	}
 
@@ -98,7 +96,6 @@ class TemplateRendererFactory {
 	 * @return int
 	 */
 	private function getRowCount() {
-
 		if ( $this->numberOfPages === null ) {
 
 			$queryResult = $this->getQueryResult();

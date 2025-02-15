@@ -8,24 +8,22 @@ use SMW\MediaWiki\Search\ProfileForm\FormsFactory;
  * @covers \SMW\MediaWiki\Search\ProfileForm\FormsFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class FormsFactoryTest extends \PHPUnit_Framework_TestCase {
+class FormsFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $webRequest;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FormsFactory::class,
 			new FormsFactory()
@@ -33,7 +31,6 @@ class FormsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructOpenForm() {
-
 		$instance = new FormsFactory();
 
 		$this->assertInstanceOf(
@@ -43,7 +40,6 @@ class FormsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructCustomForm() {
-
 		$instance = new FormsFactory();
 
 		$this->assertInstanceOf(
@@ -53,7 +49,6 @@ class FormsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSortForm() {
-
 		$instance = new FormsFactory();
 
 		$this->assertInstanceOf(
@@ -63,7 +58,6 @@ class FormsFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructNamespaceForm() {
-
 		$instance = new FormsFactory();
 
 		$this->assertInstanceOf(

@@ -2,27 +2,26 @@
 
 namespace SMW\Tests\Schema\Filters;
 
-use SMW\Schema\Filters\PropertyFilter;
 use SMW\Schema\Compartment;
-use SMW\Schema\Rule;
 use SMW\Schema\CompartmentIterator;
+use SMW\Schema\Filters\PropertyFilter;
+use SMW\Schema\Rule;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\Filters\PropertyFilter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
+class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyFilter::class,
 			new PropertyFilter()
@@ -30,7 +29,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetName() {
-
 		$instance = new PropertyFilter();
 
 		$this->assertEquals(
@@ -40,28 +38,26 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIfCondition() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.property' ) );
+			->with(	'if.property' );
 
 		$instance = new PropertyFilter();
 		$instance->filter( $compartment );
 	}
 
 	public function testNoCondition_FilterNotRequired() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.property' ) );
+			->with(	'if.property' );
 
 		$instance = new PropertyFilter();
 		$instance->addOption( PropertyFilter::FILTER_CONDITION_NOT_REQUIRED, true );
@@ -75,12 +71,11 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilterOnCallbackWhileFailingReturnFormat_ThrowsException() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function() {
+		$callback = static function () {
 			return null;
 		};
 
@@ -94,7 +89,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyFilterProvider
 	 */
 	public function testHasMatches_Compartment( $properties, $compartment, $expected ) {
-
 		$instance = new PropertyFilter(
 			$properties
 		);
@@ -113,8 +107,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyFilterProvider
 	 */
 	public function testHasMatches_Callback_Compartment( $properties, $compartment, $expected ) {
-
-		$callback = function() use ( $properties ) {
+		$callback = static function () use ( $properties ) {
 			return $properties;
 		};
 
@@ -136,7 +129,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyFilterProvider
 	 */
 	public function testHasMatches_Rule( $properties, $compartment, $expected, $score ) {
-
 		$instance = new PropertyFilter(
 			$properties
 		);
@@ -162,7 +154,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyFilterProvider
 	 */
 	public function testHasMatches_CompartmentIterator( $properties, $compartment, $expected ) {
-
 		$instance = new PropertyFilter(
 			$properties
 		);
@@ -178,7 +169,6 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function propertyFilterProvider() {
-
 		yield 'oneOf.1: single one_of' => [
 			[ 'NotFoo', 'Bar' ],
 			[

@@ -8,18 +8,17 @@ use SMW\ParserParameterProcessor;
  * @covers \SMW\ParserParameterProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
+class ParserParameterProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider parametersDataProvider
 	 */
 	public function testCanConstruct( array $parameters ) {
-
 		$this->assertInstanceOf(
 			'SMW\ParserParameterProcessor',
 			new ParserParameterProcessor( $parameters )
@@ -30,7 +29,6 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersDataProvider
 	 */
 	public function testGetRaw( array $parameters ) {
-
 		$instance = new ParserParameterProcessor( $parameters );
 
 		$this->assertEquals(
@@ -40,7 +38,6 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetParameters() {
-
 		$instance = new ParserParameterProcessor();
 
 		$parameters = [
@@ -56,7 +53,6 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAndRemoveParameter() {
-
 		$instance = new ParserParameterProcessor();
 
 		$instance->addParameter(
@@ -76,7 +72,6 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetParameter() {
-
 		$instance = new ParserParameterProcessor();
 
 		$instance->setParameter(
@@ -98,7 +93,6 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSort() {
-
 		$a = [
 			'Has test 3=One,Two,Three',
 			'+sep',
@@ -136,7 +130,6 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersDataProvider
 	 */
 	public function testToArray( array $parameters, array $expected ) {
-
 		$instance = new ParserParameterProcessor( $parameters );
 
 		$this->assertEquals(
@@ -149,7 +142,6 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider firstParameterDataProvider
 	 */
 	public function testGetFirst( array $parameters, array $expected ) {
-
 		$instance = new ParserParameterProcessor( $parameters );
 
 		$this->assertEquals(
@@ -159,7 +151,6 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersDataProvider() {
-
 		// {{#...:
 		// |Has test 1=One
 		// }}
@@ -250,7 +241,7 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 				'+sep='
 			],
 			[
-				'Has test 6' => [ '1', '2', '3'],
+				'Has test 6' => [ '1', '2', '3' ],
 				'Has test 7' => [ '7' ],
 				'Has test 8' => [ '9', '10', '11' ]
 			]
@@ -376,12 +367,11 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function firstParameterDataProvider() {
-
 		// {{#subobject:
 		// |Has test 1=One
 		// }}
 		$provider[] = [
-			[ '', 'Has test 1=One'],
+			[ '', 'Has test 1=One' ],
 			[ 'identifier' => null ]
 		];
 
@@ -390,7 +380,7 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 		// |Has test 2=Three;Four|+sep=;
 		// }}
 		$provider[] = [
-			[ 'Foo' , 'Has test 2=Two', 'Has test 2=Three;Four', '+sep=;' ],
+			[ 'Foo', 'Has test 2=Two', 'Has test 2=Three;Four', '+sep=;' ],
 			[ 'identifier' => 'Foo' ]
 		];
 

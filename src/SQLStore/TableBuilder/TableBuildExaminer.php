@@ -4,18 +4,11 @@ namespace SMW\SQLStore\TableBuilder;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\NullMessageReporter;
-use SMW\DIProperty;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\MediaWiki\Collator;
 use SMW\PropertyRegistry;
 use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\Installer;
 use SMW\SQLStore\TableBuilder as ITableBuilder;
-use SMW\SQLStore\TableBuilder\Examiner\HashField;
-use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
-use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
-use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
 use SMWSql3SmwIds;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @private
@@ -23,7 +16,7 @@ use SMWSql3SmwIds;
  * Allows to execute SQLStore or table specific examination tasks that are
  * expected to be part of the installation or removal routine.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -65,10 +58,9 @@ class TableBuildExaminer {
 	 *
 	 * @return string
 	 */
-	public function getDatabaseInfo() : string {
-
+	public function getDatabaseInfo(): string {
 		$connection = $this->store->getConnection(
-			DB_MASTER
+			DB_PRIMARY
 		);
 
 		return $connection->getType() . ' (' . $connection->getServerInfo() . ')';
@@ -80,7 +72,6 @@ class TableBuildExaminer {
 	 * @param array $propertyList
 	 */
 	public function setPredefinedPropertyList( array $propertyList ) {
-
 		$fixedPropertyList = SMWSql3SmwIds::$special_ids;
 		$predefinedPropertyList = [];
 
@@ -103,7 +94,6 @@ class TableBuildExaminer {
 	 * @param TableBuilder $tableBuilder
 	 */
 	public function checkOnPostCreation( ITableBuilder $tableBuilder ) {
-
 		$fixedProperties = $this->tableBuildExaminerFactory->newFixedProperties(
 			$this->store
 		);
@@ -177,8 +167,7 @@ class TableBuildExaminer {
 	 * @param TableBuilder $tableBuilder
 	 */
 	public function checkOnPostDestruction( ITableBuilder $tableBuilder ) {
-
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// Find orphaned tables that have not been removed but were produced and
 		// handled by SMW
@@ -196,8 +185,7 @@ class TableBuildExaminer {
 	}
 
 	private function checkSortField( $log ) {
-
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		$tableName = $connection->tableName( SQLStore::ID_TABLE );
 		$this->messageReporter->reportMessage( "Checking smw_sortkey, smw_sort fields ...\n" );
@@ -209,7 +197,7 @@ class TableBuildExaminer {
 
 			$this->messageReporter->reportMessage( "   Table " . SQLStore::ID_TABLE . " ...\n" );
 			$this->messageReporter->reportMessage( "   ... copying $copyField to $emptyField ... " );
-			$connection->query( "UPDATE $tableName SET $emptyField = $copyField", __METHOD__ );
+			$connection->query( "UPDATE $tableName SET $emptyField = $copyField", __METHOD__, ISQLPlatform::QUERY_CHANGE_ROWS );
 			$this->messageReporter->reportMessage( "done.\n" );
 		}
 

@@ -4,18 +4,18 @@ namespace SMW\SQLStore\TableBuilder;
 
 use SMW\Services\ServicesFactory;
 use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\TableBuilder\Examiner\HashField;
-use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
-use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
-use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
-use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
 use SMW\SQLStore\TableBuilder\Examiner\CountMapField;
 use SMW\SQLStore\TableBuilder\Examiner\EntityCollation;
+use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
+use SMW\SQLStore\TableBuilder\Examiner\HashField;
+use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
+use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
+use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -29,8 +29,7 @@ class TableBuildExaminerFactory {
 	 *
 	 * @return EntityCollation
 	 */
-	public function newEntityCollation( SQLStore $store ) : EntityCollation {
-
+	public function newEntityCollation( SQLStore $store ): EntityCollation {
 		$servicesFactory = ServicesFactory::getInstance();
 
 		$entityCollation = new EntityCollation(
@@ -55,8 +54,7 @@ class TableBuildExaminerFactory {
 	 *
 	 * @return CountMapField
 	 */
-	public function newCountMapField( SQLStore $store ) : CountMapField {
-
+	public function newCountMapField( SQLStore $store ): CountMapField {
 		$countMapField = new CountMapField(
 			$store
 		);

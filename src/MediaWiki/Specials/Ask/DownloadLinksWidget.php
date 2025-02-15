@@ -7,7 +7,7 @@ use SMW\Message;
 use SMWInfolink as Infolink;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -21,8 +21,7 @@ class DownloadLinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function downloadLinks( Infolink $infolink = null ) {
-
+	public static function downloadLinks( ?Infolink $infolink = null ) {
 		if ( $infolink === null ) {
 			return '';
 		}

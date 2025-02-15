@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
 use SMW\MediaWiki\Specials\Admin\Supplement\CacheStatisticsListTaskHandler;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Supplement\CacheStatisticsListTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class CacheStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class CacheStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -23,7 +23,7 @@ class CacheStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $outputFormatter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -38,18 +38,17 @@ class CacheStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->outputFormatter->expects( $this->any() )
 			->method( 'encodeAsJson' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CacheStatisticsListTaskHandler::class,
 			new CacheStatisticsListTaskHandler( $this->outputFormatter )
@@ -57,30 +56,27 @@ class CacheStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new CacheStatisticsListTaskHandler(
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
 
 	public function testIsTaskFor() {
-
 		$instance = new CacheStatisticsListTaskHandler(
 			$this->outputFormatter
 		);
 
 		$this->assertTrue(
-			$instance->isTaskFor( 'stats/cache')
+			$instance->isTaskFor( 'stats/cache' )
 		);
 	}
 
 	public function testHandleRequest() {
-
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
 
@@ -94,6 +90,5 @@ class CacheStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->handleRequest( $webRequest );
 	}
-
 
 }

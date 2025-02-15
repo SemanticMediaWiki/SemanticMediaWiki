@@ -2,16 +2,15 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMW\Query\PrintRequest;
 use SMW\DIProperty;
-use SMWExporter as Exporter;
-use SMWQueryResult as QueryResult;
 use SMW\Exporter\ExporterFactory;
+use SMW\Query\PrintRequest;
+use SMWQueryResult as QueryResult;
 
 /**
  * Printer class for generating RDF output
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -35,7 +34,6 @@ class RdfResultPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	public function getMimeType( QueryResult $queryResult ) {
-
 		if ( ( $this->params['syntax'] ?? '' ) === 'turtle' ) {
 			return 'application/x-turtle';
 		}
@@ -84,7 +82,6 @@ class RdfResultPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
-
 		if ( $outputMode !== SMW_OUTPUT_FILE ) {
 			return $this->getRdfLink( $res, $outputMode );
 		}
@@ -93,7 +90,6 @@ class RdfResultPrinter extends FileExportPrinter {
 	}
 
 	private function getRdfLink( QueryResult $res, $outputMode ) {
-
 		// Can be viewed as HTML if requested, no more parsing needed
 		$this->isHTML = $outputMode == SMW_OUTPUT_HTML;
 
@@ -106,7 +102,6 @@ class RdfResultPrinter extends FileExportPrinter {
 	}
 
 	private function makeExport( QueryResult $res, $outputMode ) {
-
 		$exporterFactory = new ExporterFactory();
 		$exporter = $exporterFactory->getExporter();
 
@@ -134,7 +129,6 @@ class RdfResultPrinter extends FileExportPrinter {
 	}
 
 	private function makeExportData( $exporter, $row ) {
-
 		$subject = reset( $row )->getResultSubject();
 		$expData = $exporter->makeExportDataForSubject( $subject );
 
@@ -145,16 +139,16 @@ class RdfResultPrinter extends FileExportPrinter {
 			switch ( $printRequest->getMode() ) {
 				case PrintRequest::PRINT_PROP:
 					$property = $printRequest->getData()->getDataItem();
-				break;
+					break;
 				case PrintRequest::PRINT_CATS:
 					$property = new DIProperty( '_TYPE' );
-				break;
+					break;
 				case PrintRequest::PRINT_CCAT:
 					// not serialised right now
-				break;
+					break;
 				case PrintRequest::PRINT_THIS:
 					// ignored here (object is always included in export)
-				break;
+					break;
 			}
 
 			if ( $property !== null ) {

@@ -4,19 +4,19 @@ namespace SMW\MediaWiki\Hooks;
 
 use Html;
 use OutputPage;
-use SMW\MediaWiki\Search\ExtendedSearchEngine;
+use SMW\Localizer\MessageLocalizerTrait;
+use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Message;
+use SMW\OptionsAwareTrait;
 use SMW\Utils\HtmlModal;
 use SpecialSearch;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
-use SMW\Localizer\MessageLocalizerTrait;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchResultsPrepend
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -46,7 +46,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 	 *
 	 * @param PreferenceExaminer $preferenceExaminer
 	 * @param SpecialSearch $specialSearch
-	 * @param OutputPage &$outputPage
+	 * @param OutputPage $outputPage
 	 */
 	public function __construct( PreferenceExaminer $preferenceExaminer, SpecialSearch $specialSearch, OutputPage $outputPage ) {
 		$this->preferenceExaminer = $preferenceExaminer;
@@ -59,10 +59,9 @@ class SpecialSearchResultsPrepend implements HookListener {
 	 *
 	 * @param string $term
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( $term ) {
-
 		if ( !$this->specialSearch->getSearchEngine() instanceof ExtendedSearchEngine ) {
 			return true;
 		}
@@ -106,7 +105,6 @@ class SpecialSearchResultsPrepend implements HookListener {
 	}
 
 	private function search_sheet() {
-
 		$text = $this->element( 'smw-search-help-intro' );
 		$text .= $this->section( 'smw-search-input' );
 

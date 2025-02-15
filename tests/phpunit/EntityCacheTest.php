@@ -2,34 +2,31 @@
 
 namespace SMW\Tests;
 
-use SMW\EntityCache;
 use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
+use SMW\EntityCache;
 
 /**
  * @covers \SMW\EntityCache
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class EntityCacheTest extends \PHPUnit_Framework_TestCase {
+class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $cache;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EntityCache::class,
 			new EntityCache( $this->cache )
@@ -37,7 +34,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeCacheKey() {
-
 		$instance = new EntityCache(
 			$this->cache
 		);
@@ -66,7 +62,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeCacheKey_SubNamespace() {
-
 		$instance = new EntityCache(
 			$this->cache
 		);
@@ -85,10 +80,9 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testContains() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'contains' )
-			->with( $this->equalTo( 'Foo' ) );
+			->with( 'Foo' );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -98,11 +92,10 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetch() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( 'bar' ) );
+			->with( 'Foo' )
+			->willReturn( 'bar' );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -112,12 +105,11 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSave() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 'Foo' ),
-				$this->equalTo( 'bar' ) );
+				'Foo',
+				'bar' );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -127,10 +119,9 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'delete' )
-			->with( $this->equalTo( 'Foo' ) );
+			->with( 'Foo' );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -140,11 +131,10 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSub() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar' ] ) );
+			->with( 'Foo' )
+			->willReturn( [ md5( 'bar' ) => 'Foobar' ] );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -157,17 +147,16 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesSaveSub() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar' ] ) );
+			->with( 'Foo' )
+			->willReturn( [ md5( 'bar' ) => 'Foobar' ] );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 'Foo' ),
-				$this->equalTo( [ md5( 'bar' ) => '123' ] ) );
+				'Foo',
+				[ md5( 'bar' ) => '123' ] );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -177,12 +166,11 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesOverrideSub() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 'Foo' ),
-				$this->equalTo( [ md5( 'bar' ) => '123' ] ) );
+				'Foo',
+				[ md5( 'bar' ) => '123' ] );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -192,17 +180,16 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesDeleteSub() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar', md5( 'foobar' ) => '123' ] ) );
+			->with( 'Foo' )
+			->willReturn( [ md5( 'bar' ) => 'Foobar', md5( 'foobar' ) => '123' ] );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 'Foo' ),
-				$this->equalTo( [ md5( 'foobar' ) => '123' ] ) );
+				'Foo',
+				[ md5( 'foobar' ) => '123' ] );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -212,7 +199,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAssociate() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$expected = [
@@ -223,13 +209,13 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar' ] ) );
+			->willReturn( [ md5( 'bar' ) => 'Foobar' ] );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
 				$this->stringContains( 'smw:entity:44ab375ee7ebac04b8e4471a70180dc5' ),
-				$this->equalTo( $expected ) );
+				$expected );
 
 		$instance = new EntityCache(
 			$this->cache
@@ -239,7 +225,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAssociate_NoValidSubject() {
-
 		$this->cache->expects( $this->never() )
 			->method( 'fetch' );
 
@@ -251,12 +236,11 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidate() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar', '__assoc' => [ 'Foo' => true ] ] ) );
+			->willReturn( [ md5( 'bar' ) => 'Foobar', '__assoc' => [ 'Foo' => true ] ] );
 
 		$this->cache->expects( $this->at( 1 ) )
 			->method( 'delete' )
@@ -274,7 +258,6 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidate_NoValidSubject() {
-
 		$this->cache->expects( $this->never() )
 			->method( 'fetch' );
 

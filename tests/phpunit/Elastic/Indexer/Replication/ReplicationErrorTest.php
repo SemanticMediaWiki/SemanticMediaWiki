@@ -4,23 +4,21 @@ namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Tests\PHPUnitCompat;
-use SMWDITime as DITime;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\ReplicationError
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
+class ReplicationErrorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ReplicationError::class,
 			new ReplicationError( ReplicationError::TYPE_EXCEPTION )
@@ -28,7 +26,6 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$instance = new ReplicationError(
 			ReplicationError::TYPE_EXCEPTION,
 			[ 'foo' => 'bar' ]
@@ -41,7 +38,6 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_OnUnknownKeyThrowsException() {
-
 		$instance = new ReplicationError(
 			ReplicationError::TYPE_EXCEPTION
 		);
@@ -51,19 +47,17 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsType() {
-
 		$instance = new ReplicationError(
 			ReplicationError::TYPE_EXCEPTION
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->is( ReplicationError::TYPE_EXCEPTION )
 		);
 	}
 
 	public function testGetData() {
-
 		$data = [
 			'Foo' => 'Bar'
 		];
@@ -80,7 +74,6 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new ReplicationError(
 			ReplicationError::TYPE_EXCEPTION
 		);

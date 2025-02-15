@@ -2,16 +2,15 @@
 
 namespace SMW\Exporter;
 
+use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpResource;
+use SMW\Site;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;
-use SMW\Exporter\Element\ExpResource;
-use SMW\Exporter\Element\ExpLiteral;
-use SMW\Exporter\Element\ExpNsResource;
-use SMW\Site;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -37,8 +36,7 @@ class ExpDataFactory {
 	 *
 	 * @return ExpData
 	 */
-	public function newSiteExpData() : ExpData {
-
+	public function newSiteExpData(): ExpData {
 		// assemble export data:
 		$expData = new ExpData( new ExpResource( '&wiki;#wiki' ) );
 
@@ -96,8 +94,7 @@ class ExpDataFactory {
 	 *
 	 * @return ExpData
 	 */
-	public function newDefinedExpData() : ExpData {
-
+	public function newDefinedExpData(): ExpData {
 		// link to list of existing pages:
 		// check whether we have title as a first parameter or in URL
 		if ( strpos( $this->exporter->expandURI( '&wikiurl;' ), '?' ) === false ) {
@@ -128,8 +125,7 @@ class ExpDataFactory {
 	 *
 	 * @return ExpData
 	 */
-	public function newOntologyExpData( string $ontologyuri ) : ExpData {
-
+	public function newOntologyExpData( string $ontologyuri ): ExpData {
 		$expData = new ExpData(
 			new ExpResource( $ontologyuri )
 		);
@@ -145,6 +141,5 @@ class ExpDataFactory {
 
 		return $expData;
 	}
-
 
 }

@@ -4,12 +4,12 @@ namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
 use SMW\Message;
-use SMWInfolink as Infolink;
 use SMW\Utils\UrlArgs;
+use SMWInfolink as Infolink;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -31,7 +31,6 @@ class LinksWidget {
 	 * @return string
 	 */
 	public static function fieldset( $html = '' ) {
-
 		$html = '<p></p>' . $html;
 
 		return Html::rawElement(
@@ -48,17 +47,16 @@ class LinksWidget {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isEmpty
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
 	public static function embeddedCodeLink( $isEmpty = false ) {
-
 		if ( $isEmpty ) {
 			return '';
 		}
 
-		//show|hide inline embed code
+		// show|hide inline embed code
 		$embedShow = "document.getElementById('inlinequeryembed').style.display='block';" .
 			"document.getElementById('embed_hide').style.display='inline';" .
 			"document.getElementById('embed_show').style.display='none';" .
@@ -163,7 +161,6 @@ class LinksWidget {
 	 * @return string
 	 */
 	public static function embeddedCodeBlock( $code, $raw = false ) {
-
 		$code = Html::element(
 			'pre',
 			[
@@ -197,55 +194,56 @@ class LinksWidget {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isEmpty
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
 	public static function resultSubmitLink( $isEmpty = false ) {
-
 		if ( !$isEmpty ) {
 			return '';
 		}
 
-		return  Html::rawElement(
-			'div',
+		return Html::noticeBox(
+				// Since message boxes can be rendered differently in different MW version,
+				// insert a div wrapper so JS can target that
+				Html::rawElement( 'div', [ 'class' => 'smw-message-content' ] ),
+				'smw-ask-change-info smw-message--hidden'
+			) .
+			Html::rawElement(
+				'div',
 				[
-					'id' => 'ask-change-info'
-				]
-			) . Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-ask-button-submit'
-			], Html::element(
-				'input',
-				[
-					'id' => 'search-action',
-					'type'  => 'submit',
-					'value' => wfMessage( 'smw_ask_submit' )->escaped()
-				]
-			) . Html::element(
-				'input',
-				[
-					'type'  => 'hidden',
-					'name'  => 'eq',
-					'value' => 'yes'
-				]
-			)
-		);
+					'class' => 'smw-ask-button-submit'
+				],
+				Html::element(
+					'input',
+					[
+						'id' => 'search-action',
+						'type'  => 'submit',
+						'value' => wfMessage( 'smw_ask_submit' )->escaped()
+					]
+				) .
+				Html::element(
+					'input',
+					[
+						'type'  => 'hidden',
+						'name'  => 'eq',
+						'value' => 'yes'
+					]
+				)
+			);
 	}
 
 	/**
 	 * @since 2.5
 	 *
 	 * @param Title $title
-	 * @param string $urlTail
-	 * @param boolean $hideForm
-	 * @param boolean $isEmpty
+	 * @param UrlArgs $urlArgs
+	 * @param bool $hideForm
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
 	public static function showHideLink( Title $title, UrlArgs $urlArgs, $hideForm = false, $isEmpty = false ) {
-
 		if ( $isEmpty || $hideForm === false ) {
 			return '';
 		}
@@ -270,13 +268,12 @@ class LinksWidget {
 	 * @since 3.0
 	 *
 	 * @param Title $title
-	 * @param string $urlTail
-	 * @param boolean $isEmpty
+	 * @param UrlArgs $urlArgs
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
 	public static function debugLink( Title $title, UrlArgs $urlArgs, $isEmpty = false, $raw = false ) {
-
 		if ( $isEmpty ) {
 			return '';
 		}
@@ -316,13 +313,12 @@ class LinksWidget {
 	 * @since 3.0
 	 *
 	 * @param Title $title
-	 * @param string $urlTail
-	 * @param boolean $isFromCache
+	 * @param UrlArgs $urlArgs
+	 * @param bool $isFromCache
 	 *
 	 * @return string
 	 */
 	public static function noQCacheLink( Title $title, UrlArgs $urlArgs, $isFromCache = false ) {
-
 		if ( $isFromCache === false ) {
 			return '';
 		}
@@ -358,8 +354,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function clipboardLink( Infolink $infolink = null ) {
-
+	public static function clipboardLink( ?Infolink $infolink = null ) {
 		if ( $infolink === null ) {
 			return '';
 		}
@@ -379,7 +374,7 @@ class LinksWidget {
 					'data-onoi-clipboard-field' => 'value',
 					'class' => 'clipboard smw-icon-bookmark',
 					'value' => $infolink->getURL(),
-					'title' =>  wfMessage( 'smw-clipboard-copy-link' )->text()
+					'title' => wfMessage( 'smw-clipboard-copy-link' )->text()
 				]
 			)
 		);

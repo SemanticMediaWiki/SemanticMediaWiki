@@ -3,15 +3,14 @@
 namespace SMW\MediaWiki\Search;
 
 use Content;
-use DatabaseBase;
-use Title;
 use SearchEngine;
+use Title;
 
 /**
  * Facade to the MediaWiki `SearchEngine` which doesn't allow any factory
  * or callable to construct an instance.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author  Stephan Gambke
@@ -33,7 +32,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * @since 3.1
 	 */
-	public function __construct( DatabaseBase $connection = null ) {
+	public function __construct( $connection = null ) {
 		// It is common practice to avoid construction work in the constructor
 		// but we are unable to define a factory or callable and this is the only
 		// place to create an instance.
@@ -63,9 +62,9 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @since 2.1
 	 *
-	 * @param null|SearchEngine $fallbackSearch
+	 * @param null|SearchEngine $fallbackSearchEngine
 	 */
-	public function setFallbackSearchEngine( SearchEngine $fallbackSearchEngine = null ) {
+	public function setFallbackSearchEngine( ?SearchEngine $fallbackSearchEngine = null ) {
 		$this->fallbackSearchEngine = $fallbackSearchEngine;
 	}
 
@@ -93,7 +92,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	 * {@inheritDoc}
 	 */
 	public function searchTitle( $term ) {
-
 		$this->extendedSearch->setNamespaces(
 			$this->namespaces
 		);
@@ -107,7 +105,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	 * {@inheritDoc}
 	 */
 	public function searchText( $term ) {
-
 		$this->extendedSearch->setNamespaces(
 			$this->namespaces
 		);
@@ -138,7 +135,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTextFromContent( Title $t, Content $c = null ) {
+	public function getTextFromContent( Title $t, ?Content $c = null ) {
 		return $this->fallbackSearchEngine->getTextFromContent( $t, $c );
 	}
 
@@ -191,12 +188,11 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @see SearchEngine::getFeatureData
 	 *
-	 * @param String $feature
+	 * @param string $feature
 	 *
 	 * @return array|null
 	 */
 	public function getFeatureData( $feature ) {
-
 		if ( array_key_exists( $feature, $this->features ) ) {
 			return $this->features[$feature];
 		}
@@ -266,7 +262,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	 * {@inheritDoc}
 	 */
 	public function completionSearchWithVariants( $search ) {
-
 		// #4342
 		//
 		// This method runs before `SearchEngine::completionSearchBackend`.
@@ -291,7 +286,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	 * {@inheritDoc}
 	 */
 	protected function completionSearchBackend( $search ) {
-
 		$this->extendedSearch->setNamespaces(
 			$this->namespaces
 		);
@@ -302,7 +296,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getErrors() {
 		return $this->extendedSearch->getErrors();
@@ -341,7 +335,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getShowSuggestion() {
 		return $this->showSuggestion;

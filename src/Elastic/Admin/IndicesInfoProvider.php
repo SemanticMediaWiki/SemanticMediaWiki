@@ -4,12 +4,12 @@ namespace SMW\Elastic\Admin;
 
 use Html;
 use SMW\Message;
-use WebRequest;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -31,7 +31,6 @@ class IndicesInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-indices-title' ),
 			[ 'action' => $this->getTask() ]
@@ -55,7 +54,6 @@ class IndicesInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle( 'Elasticsearch indices' );
 
 		$this->outputFormatter->addParentLink(
@@ -67,7 +65,6 @@ class IndicesInfoProvider extends InfoProviderHandler {
 	}
 
 	private function outputInfo() {
-
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
 		$html = Html::rawElement(

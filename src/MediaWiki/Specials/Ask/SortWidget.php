@@ -8,7 +8,7 @@ use SMW\Message;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -16,19 +16,19 @@ use SMW\Message;
 class SortWidget {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $sortingSupport = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $randSortingSupport = false;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $sortingSupport
+	 * @param bool $sortingSupport
 	 */
 	public static function setSortingSupport( $sortingSupport ) {
 		self::$sortingSupport = (bool)$sortingSupport;
@@ -37,7 +37,7 @@ class SortWidget {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $randSortingSupport
+	 * @param bool $randSortingSupport
 	 */
 	public static function setRandSortingSupport( $randSortingSupport ) {
 		self::$randSortingSupport = (bool)$randSortingSupport;
@@ -51,7 +51,6 @@ class SortWidget {
 	 * @return string
 	 */
 	public static function sortSection( array $params ) {
-
 		if ( self::$sortingSupport === false ) {
 			return '';
 		}
@@ -92,7 +91,6 @@ class SortWidget {
 	}
 
 	private static function sortingOptions( array $sorts, array $orders ) {
-
 		$result = '';
 
 		foreach ( $orders as $i => $order ) {

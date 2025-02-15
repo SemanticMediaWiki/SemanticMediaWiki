@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Chrisportelli",
+			"Giangian15",
 			"Leli Forte",
 			"Roderick Mallia",
 			"ToniSant",
@@ -9,6 +10,7 @@
 		]
 	},
 	"smw_exportrdf_submit": "Esporta",
+	"smw-categories": "Kategoriji",
 	"smw_purge": "Aġġorna",
 	"browse": "Esplora l-wiki",
 	"smw_browse_go": "Mur",

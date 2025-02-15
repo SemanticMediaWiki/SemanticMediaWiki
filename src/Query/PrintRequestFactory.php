@@ -5,10 +5,9 @@ namespace SMW\Query;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMWPropertyValue as PropertyValue;
-use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -23,7 +22,6 @@ class PrintRequestFactory {
 	 * @return PrintRequest
 	 */
 	public function newFromProperty( DIProperty $property ) {
-
 		$propertyValue = DataValueFactory::getInstance()->newDataValueByType( PropertyValue::TYPE_ID );
 		$propertyValue->setDataItem( $property );
 
@@ -42,8 +40,8 @@ class PrintRequestFactory {
 	 * @since 2.4
 	 *
 	 * @param string $text
-	 * @param boolean $showMode = false
-	 * @param boolean $asCanonicalLabel = false
+	 * @param bool $showMode = false
+	 * @param bool $asCanonicalLabel = false
 	 *
 	 * @return PrintRequest|null
 	 */
