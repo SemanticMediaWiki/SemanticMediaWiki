@@ -9,7 +9,6 @@ use OutputPage;
 use RequestContext;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use SpecialPage;
 
 /**
  * @group semantic-mediawiki
