@@ -125,6 +125,3 @@ class MaintenanceRunner {
 	}
 
 }
-
-// FIXME SemanticGlossary usage
-class_alias( 'SMW\Tests\Utils\Runners\MaintenanceRunner', 'SMW\Tests\Util\MaintenanceRunner' );
