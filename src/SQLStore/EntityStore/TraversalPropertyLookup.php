@@ -4,12 +4,10 @@ namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
 use SMW\DIContainer;
-use SMW\MediaWiki\Connection\OptionsBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition as PropertyTableDef;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
-use Wikimedia\Rdbms\Subquery;
 
 /**
  * @license GNU GPL v2
@@ -42,6 +40,7 @@ class TraversalPropertyLookup {
 	 */
 	public function fetchFromTable( PropertyTableDef $propertyTableDef, DataItem $dataItem, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
+		$builder = $connection->newSelectQueryBuilder( 'read' );
 
 		if ( $dataItem instanceof DIContainer ) {
 			throw new RuntimeException( "DIContainer: " . $dataItem->getSerialization() );
@@ -58,7 +57,6 @@ class TraversalPropertyLookup {
 
 		if ( !$propertyTableDef->isFixedPropertyTable() ) {
 
-			$cond = $this->getWhereConds( $dataItem );
 			$conditions = '';
 
 			// No sorting
@@ -73,46 +71,39 @@ class TraversalPropertyLookup {
 			// from the inner join
 			$options['GROUP BY'] = 'p_id';
 
-			$opt = OptionsBuilder::toString( $options );
+			$subquery = $builder->newSubquery()
+				->select( 'p_id' )
+				->from( $propertyTableDef->getName() );
+			$this->buildWhereConds( $subquery, $dataItem );
+			$connection->applySqlOptions( $subquery, $options );
 
-			$cond = ( $cond !== '' ? ' WHERE ' : '' ) . $cond;
+			// Use subquery to match all possible IDs, no ORDER BY or DISTINCT to avoid filesort
+			$builder->from( SQLStore::ID_TABLE )
+				->join( $subquery, "t1", "t1.p_id=smw_id" );
 
-			// Use a subquery to match all possible IDs, no ORDER BY or DISTINCT to avoid
-			// a filesort
-			$from = [
-				SQLStore::ID_TABLE,
-				't1' => new Subquery( 'SELECT p_id FROM ' . $connection->tableName( $propertyTableDef->getName() ) . " $cond $opt" ),
-			];
-			$join = [ 't1' => [ 'INNER JOIN', 't1.p_id=smw_id' ] ];
-
-			$conditions .= ( $conditions ? ' AND ' : ' ' ) .
-				" smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) .
-				" AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
+			$builder->where( "smw_iw != " . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) )
+				->where( "smw_iw != " . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ) );
 
 			$conditions .= $this->store->getSQLConditions( $subOptions, 'smw_sortkey', 'smw_sortkey', $conditions !== '' );
+			$options = $this->store->getSQLOptions( $subOptions, '' );
 
-			$options = $this->store->getSQLOptions( $subOptions, '' ) + [ 'DISTINCT' ];
+			if ( $conditions ) {
+				$builder->where( $conditions );
+			}
+			if ( !empty( $options ) ) {
+				$connection->applySqlOptions( $builder, $options );
+			}
+			$builder->select( 'smw_title,smw_sortkey,smw_iw' )->distinct();
 
-			$result = $connection->select(
-				$from,
-				[ 'smw_title', 'smw_sortkey', 'smw_iw' ],
-				$conditions,
-				__METHOD__,
-				$options,
-				$join
-			);
+			$result = $builder->caller( __METHOD__ )->fetchResultSet();
 
 		} else {
-			$where = $this->getWhereConds( $dataItem );
-			$fields = $propertyTableDef->usesIdSubject() ? 's_id' : '*';
+			$this->buildWhereConds( $builder, $dataItem );
+			$builder->from( $propertyTableDef->getName(), "t1" )
+				->select( $propertyTableDef->usesIdSubject() ? 's_id' : '*' )
+				->limit( 1 );
 
-			$result = $connection->select(
-				[ 't1' => $propertyTableDef->getName() ],
-				$fields,
-				$where,
-				__METHOD__,
-				[ 'LIMIT' => 1 ]
-			);
+			$result = $builder->caller( __METHOD__ )->fetchResultSet();
 
 			if ( $result->numRows() > 0 ) {
 				$res = new \stdClass;
@@ -124,18 +115,13 @@ class TraversalPropertyLookup {
 		return $result;
 	}
 
-	private function getWhereConds( $dataItem ) {
-		$where = '';
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		if ( $dataItem !== null ) {
-			$dataItemHandler = $this->store->getDataItemHandlerForDIType( $dataItem->getDIType() );
-			foreach ( $dataItemHandler->getWhereConds( $dataItem ) as $fieldname => $value ) {
-				$where .= ( $where ? ' AND ' : '' ) . "$fieldname=" . $connection->addQuotes( $value );
-			}
+	private function buildWhereConds( $builder, $dataItem ) {
+		if ( $dataItem == null ) {
+			return;
 		}
 
-		return $where;
+		$dataItemHandler = $this->store->getDataItemHandlerForDIType( $dataItem->getDIType() );
+		$builder->where( $dataItemHandler->getWhereConds( $dataItem ) );
 	}
 
 }

@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Connection;
 
 use Exception;
+use InvalidArgumentException;
 use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
@@ -817,4 +818,50 @@ class Database {
 
 		return $text;
 	}
+
+	/**
+	 * Create and return a new SelectQueryBuilder from the read or write connection.
+	 *
+	 * @since 5.0
+	 *
+	 * @param string $mode 'read', 'write', or other db config id
+	 */
+	public function newSelectQueryBuilder( string $mode ): \Wikimedia\Rdbms\SelectQueryBuilder {
+		$conn = $this->connRef->getConnection( $mode );
+		return $conn->newSelectQueryBuilder();
+	}
+
+	/**
+	 * Apply SQLOptions to a SelectQueryBuilder.
+	 * Supported options: LIMIT, OFFSET, GROUP BY, ORDER BY, DISTINCT
+	 *
+	 * @since 5.0
+	 */
+	public function applySqlOptions( \Wikimedia\Rdbms\SelectQueryBuilder $builder, array $sql_options ): \Wikimedia\Rdbms\SelectQueryBuilder {
+		if ( isset( $sql_options['LIMIT'] ) ) {
+			$limit = (int)$sql_options['LIMIT'];
+			if ( $limit < 0 ) {
+				throw new InvalidArgumentException( sprintf( 'LIMIT must be non-negative, got: %d', $limit ) );
+			}
+			$builder->limit( $limit );
+		}
+		if ( isset( $sql_options['OFFSET'] ) ) {
+			$offset = (int)$sql_options['OFFSET'];
+			if ( $offset < 0 ) {
+				throw new InvalidArgumentException( sprintf( 'OFFSET must be non-negative, got: %d', $offset ) );
+			}
+			$builder->offset( $offset );
+		}
+		if ( isset( $sql_options['GROUP BY'] ) && trim( $sql_options['GROUP BY'] ) !== '' ) {
+			$builder->groupBy( $sql_options[ 'GROUP BY' ] );
+		}
+		if ( isset( $sql_options['ORDER BY'] ) && trim( $sql_options['ORDER BY'] ) !== '' ) {
+			$builder->orderBy( $sql_options[ 'ORDER BY' ] );
+		}
+		if ( isset( $sql_options[ 'DISTINCT' ] ) ) {
+			$builder->distinct();
+		}
+		return $builder;
+	}
+
 }
