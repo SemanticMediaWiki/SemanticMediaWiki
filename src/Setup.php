@@ -4,6 +4,7 @@ namespace SMW;
 
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Hooks;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Logo;
 
 /**
