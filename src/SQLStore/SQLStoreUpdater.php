@@ -87,7 +87,7 @@ class SQLStoreUpdater {
 	}
 
 	/**
-	 * @see SMWStore::deleteSubject
+	 * @see \SMW\Store::deleteSubject
 	 *
 	 * @since 1.8
 	 *
@@ -183,7 +183,7 @@ class SQLStoreUpdater {
 	}
 
 	/**
-	 * @see SMWStore::doDataUpdate
+	 * @see \SMW\Store::doDataUpdate
 	 *
 	 * @since 1.8
 	 *

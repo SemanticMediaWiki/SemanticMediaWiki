@@ -71,7 +71,6 @@ class StoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testSmwfGetStore() {
 		$store = smwfGetStore();
 
-		$this->assertInstanceOf( 'SMWStore', $store );
 		$this->assertInstanceOf( 'SMW\Store', $store );
 	}
 

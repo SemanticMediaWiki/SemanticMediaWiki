@@ -52,7 +52,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$baseStore = $this->getMockBuilder( '\SMWStore' )
+		$baseStore = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -79,7 +79,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			$expResource->getNamespaceId() => $expResource->getNamespace()
 		];
 
-		$baseStore = $this->getMockBuilder( '\SMWStore' )
+		$baseStore = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -88,7 +88,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->with( $title )
 			->willReturn( true );
 
-		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
+		$sparqlDatabase = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -134,7 +134,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
+		$sparqlDatabase = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
 			->disableOriginalConstructor()
 			->getMock();
 

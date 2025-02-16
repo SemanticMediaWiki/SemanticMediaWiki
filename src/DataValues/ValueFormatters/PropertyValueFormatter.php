@@ -7,7 +7,7 @@ use SMW\DataValues\PropertyValue;
 use SMW\Highlighter;
 use SMW\Localizer;
 use SMW\Message;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 
@@ -20,16 +20,16 @@ use SMWDataValue as DataValue;
 class PropertyValueFormatter extends DataValueFormatter {
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( SpecificationLookup $propertySpecificationLookup ) {
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
 

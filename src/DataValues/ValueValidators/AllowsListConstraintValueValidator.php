@@ -4,7 +4,7 @@ namespace SMW\DataValues\ValueValidators;
 
 use SMW\DataValues\ValueParsers\AllowsListValueParser;
 use SMW\Message;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
@@ -26,7 +26,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	private $allowsListValueParser;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -44,9 +44,9 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	 * @since 2.4
 	 *
 	 * @param AllowsListValueParser $allowsListValueParser
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( AllowsListValueParser $allowsListValueParser, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( AllowsListValueParser $allowsListValueParser, SpecificationLookup $propertySpecificationLookup ) {
 		$this->allowsListValueParser = $allowsListValueParser;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}

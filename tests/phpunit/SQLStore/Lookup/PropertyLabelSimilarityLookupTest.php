@@ -49,7 +49,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getStatistics' )
 			->willReturn( [ 'TOTALPROPS' => 42 ] );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,7 +80,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -118,7 +118,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 

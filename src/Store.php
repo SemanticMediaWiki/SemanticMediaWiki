@@ -8,6 +8,7 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionManager;
 use SMW\Services\Exception\ServiceNotFoundException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\Timer;

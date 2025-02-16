@@ -94,7 +94,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
-			'SMWSql3SmwIds',
+			'SMW\SQLStore\EntityStore\EntityIdManager',
 			$instance->newEntityIdManager()
 		);
 

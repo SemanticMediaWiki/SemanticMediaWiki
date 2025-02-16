@@ -111,7 +111,7 @@ class ResultArray {
 	}
 
 	/**
-	 * Get the SMWStore object that this result is based on.
+	 * Get the \SMW\Store object that this result is based on.
 	 *
 	 * @return Store
 	 */

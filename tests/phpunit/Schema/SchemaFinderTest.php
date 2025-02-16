@@ -28,7 +28,7 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 

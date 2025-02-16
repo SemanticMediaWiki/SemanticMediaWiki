@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Content;
 
 use Html;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Utils\Html\SummaryTable;
 use SMW\Utils\HtmlTabs;
 

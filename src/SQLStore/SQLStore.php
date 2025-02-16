@@ -19,7 +19,6 @@ use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWQuery as Query;
-use SMWSql3SmwIds;
 use SMWWikiPageValue;
 use Title;
 
@@ -158,7 +157,7 @@ class SQLStore extends Store {
 	 * Object to access the SMW IDs table.
 	 *
 	 * @since 1.8
-	 * @var SMWSql3SmwIds
+	 * @var \SMW\SQLStore\EntityStore\EntityIdManager
 	 */
 	public $smwIds;
 
@@ -604,7 +603,7 @@ class SQLStore extends Store {
 	 *
 	 * @since 1.9
 	 *
-	 * @return SMWSql3SmwIds
+	 * @return \SMW\SQLStore\EntityStore\EntityIdManager
 	 */
 	public function getObjectIds() {
 		return $this->smwIds;

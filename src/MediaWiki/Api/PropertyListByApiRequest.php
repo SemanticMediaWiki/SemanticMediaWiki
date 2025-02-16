@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Api;
 
 use SMW\DIProperty;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
@@ -23,7 +23,7 @@ class PropertyListByApiRequest {
 	private $store;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -71,9 +71,9 @@ class PropertyListByApiRequest {
 	 * @since 2.4
 	 *
 	 * @param Store $store
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( Store $store, SpecificationLookup $propertySpecificationLookup ) {
 		$this->store = $store;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}

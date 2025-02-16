@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Hooks;
 use SMW\Services\ServicesFactory as ApplicationFactory;

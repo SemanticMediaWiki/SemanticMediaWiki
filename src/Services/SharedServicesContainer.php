@@ -21,7 +21,7 @@ use SMW\HierarchyLookup;
 use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\InMemoryPoolCache;
 use SMW\IteratorFactory;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\Deferred\CallableUpdate;
@@ -44,9 +44,9 @@ use SMW\Parser\LinksProcessor;
 use SMW\ParserData;
 use SMW\PostProcHandler;
 use SMW\Property\AnnotatorFactory;
+use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
 use SMW\PropertyRestrictionExaminer;
-use SMW\PropertySpecificationLookup;
 use SMW\Protection\EditProtectionUpdater;
 use SMW\Protection\ProtectionValidator;
 use SMW\Query\Cache\CacheStats;
@@ -675,14 +675,14 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var PropertySpecificationLookup
+		 * @var SpecificationLookup
 		 */
 		$containerBuilder->registerCallback( 'PropertySpecificationLookup', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
+			$containerBuilder->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\Property\SpecificationLookup' );
 
 			$contentLanguage = Localizer::getInstance()->getContentLanguage();
 
-			$propertySpecificationLookup = new PropertySpecificationLookup(
+			$propertySpecificationLookup = new SpecificationLookup(
 				$containerBuilder->singleton( 'Store', null ),
 				$containerBuilder->singleton( 'EntityCache' )
 			);

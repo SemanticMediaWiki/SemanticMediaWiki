@@ -759,7 +759,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	/**
 	 * Find the sortkey for this object.
 	 *
-	 * @deprecated Use SMWStore::getWikiPageSortKey(). Will vanish before SMW 1.7
+	 * @deprecated Use \SMW\Store::getWikiPageSortKey(). Will vanish before SMW 1.7
 	 *
 	 * @return string sortkey
 	 */

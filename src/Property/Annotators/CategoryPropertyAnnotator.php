@@ -7,7 +7,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Parser\AnnotationProcessor;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -57,10 +57,10 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 1.9
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 * @param array $categories
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, array $categories ) {
+	public function __construct( Annotator $propertyAnnotator, array $categories ) {
 		parent::__construct( $propertyAnnotator );
 		$this->categories = $categories;
 	}
