@@ -381,7 +381,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 		$instance->commitWithTransactionTicket();
 
 		// #3765
-		$instance->cancelOnRollback( \SMW\MediaWiki\Database::TRIGGER_ROLLBACK );
+		$instance->cancelOnRollback( \SMW\MediaWiki\Connection\Database::TRIGGER_ROLLBACK );
 
 		$instance->pushUpdate();
 

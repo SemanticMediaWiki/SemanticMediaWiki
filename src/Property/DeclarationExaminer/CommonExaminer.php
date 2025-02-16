@@ -4,7 +4,7 @@ namespace SMW\Property\DeclarationExaminer;
 
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\SemanticData;
 use SMW\Store;
 

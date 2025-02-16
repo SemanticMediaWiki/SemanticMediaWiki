@@ -8,7 +8,7 @@ use SMW\Localizer;
 use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserFunctions\SubobjectParserFunction;
-use SMW\ParserParameterFormatter;
+use SMW\ParserParameterProcessor;
 use SMW\Subobject;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\UtilityFactory;
@@ -63,7 +63,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
-		$result   = $instance->parse( new ParserParameterFormatter( $parameters ) );
+		$result   = $instance->parse( new ParserParameterProcessor( $parameters ) );
 
 		$this->assertIsString(
 
@@ -78,7 +78,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
-		$instance->parse( new ParserParameterFormatter( $parameters ) );
+		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
 		$this->assertContains(
 			$expected['identifier'],
@@ -97,7 +97,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$instance = $this->acquireInstance( $subobject, $parserOutput );
 		$instance->useFirstElementAsPropertyLabel( $isEnabled );
 
-		$instance->parse( new ParserParameterFormatter( $parameters ) );
+		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
 		// If it is enabled only check for the first character {0} that should
 		// contain '_' as the rest is going to be an unknown hash value
@@ -146,7 +146,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
-		$instance->parse( new ParserParameterFormatter( $parameters ) );
+		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
 		// Expected to be stable for PHP as well
 		$this->assertEquals(
@@ -170,7 +170,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$instance->parse(
-			new ParserParameterFormatter( $parameters )
+			new ParserParameterProcessor( $parameters )
 		);
 
 		$this->assertEquals(
@@ -194,7 +194,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$instance->parse(
-			new ParserParameterFormatter( $parameters )
+			new ParserParameterProcessor( $parameters )
 		);
 
 		$this->assertEquals(
@@ -218,7 +218,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$instance->parse(
-			new ParserParameterFormatter( $parameters )
+			new ParserParameterProcessor( $parameters )
 		);
 
 		// Expected to be stable for PHP as well
@@ -251,13 +251,13 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$instance->isCapitalLinks( true );
 
 		$instance->parse(
-			new ParserParameterFormatter( $parametersOne )
+			new ParserParameterProcessor( $parametersOne )
 		);
 
 		$id = $subobject->getSubobjectId();
 
 		$instance->parse(
-			new ParserParameterFormatter( $parametersTwo )
+			new ParserParameterProcessor( $parametersTwo )
 		);
 
 		$this->assertEquals(
@@ -280,7 +280,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
-		$instance->parse( new ParserParameterFormatter( $parameters ) );
+		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
 		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
 		$subobject->getSubobjectId();
@@ -298,7 +298,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			$parserOutput
 		);
 
-		$instance->parse( new ParserParameterFormatter( $parameters ) );
+		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
 		$parserData = new ParserData(
 			$title,

@@ -166,7 +166,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDefaultDataItemTables' )
 			->willReturn( [] );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

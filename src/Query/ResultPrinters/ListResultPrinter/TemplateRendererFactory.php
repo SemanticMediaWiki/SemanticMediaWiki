@@ -86,7 +86,7 @@ class TemplateRendererFactory {
 	}
 
 	/**
-	 * @return \SMWQueryResult
+	 * @return \SMW\Query\QueryResult
 	 */
 	private function getQueryResult() {
 		return $this->queryResult;

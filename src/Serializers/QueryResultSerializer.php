@@ -6,9 +6,9 @@ use OutOfBoundsException;
 use Serializers\DispatchableSerializer;
 use SMW\DataValueFactory;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
+use SMW\Query\Result\ResultArray;
 use SMWDataItem as DataItem;
-use SMWQueryResult as QueryResult;
-use SMWResultArray;
 use Title;
 
 /**
@@ -200,7 +200,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			$result = [ 'printouts' => [] ];
 
 			foreach ( $queryResult->getPrintRequests() as $printRequest ) {
-				$resultArray = SMWResultArray::factory( $diWikiPage, $printRequest, $queryResult );
+				$resultArray = ResultArray::factory( $diWikiPage, $printRequest, $queryResult );
 
 				if ( $printRequest->getMode() === PrintRequest::PRINT_THIS ) {
 					$dataItems = $resultArray->getContent();

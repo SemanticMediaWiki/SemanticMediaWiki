@@ -27,12 +27,6 @@ class ConceptDescriptionTest extends \PHPUnit\Framework\TestCase {
 			'SMW\Query\Language\ConceptDescription',
 			new ConceptDescription( $concept )
 		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\ConceptDescription',
-			new \SMWConceptDescription( $concept )
-		);
 	}
 
 	public function testCommonMethods() {

@@ -9,6 +9,7 @@ use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Parser\LinksProcessor;
 use SMW\ParserData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use Title;
 
@@ -109,7 +110,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 			new ParserOutput()
 		);
 
-		$magicWordsFinder = \SMW\ApplicationFactory::getInstance()->create( 'MagicWordsFinder', $parserData->getOutput() );
+		$magicWordsFinder = ApplicationFactory::getInstance()->create( 'MagicWordsFinder', $parserData->getOutput() );
 
 		$instance = new InTextAnnotationParser(
 			$parserData,

@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Search;
 
 use SearchEngine;
+use SMW\Query\QueryResult;
 use SMW\Store;
 use SMWQuery;
-use SMWQueryResult as QueryResult;
 
 /**
  * Search engine that will try to find wiki pages by interpreting the search

@@ -33,12 +33,6 @@ class SomePropertyTest extends \PHPUnit\Framework\TestCase {
 			'SMW\Query\Language\SomeProperty',
 			new SomeProperty( $property, $description )
 		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\SomeProperty',
-			new \SMWSomeProperty( $property, $description )
-		);
 	}
 
 	/**

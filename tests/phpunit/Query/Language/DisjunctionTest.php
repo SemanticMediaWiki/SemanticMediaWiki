@@ -27,12 +27,6 @@ class DisjunctionTest extends \PHPUnit\Framework\TestCase {
 			'SMW\Query\Language\Disjunction',
 			new Disjunction()
 		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\Disjunction',
-			new \SMWDisjunction()
-		);
 	}
 
 	/**

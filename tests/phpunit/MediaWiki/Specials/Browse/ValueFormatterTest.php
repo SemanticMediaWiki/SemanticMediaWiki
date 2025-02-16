@@ -70,7 +70,7 @@ class ValueFormatterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLongHTMLText' )
 			->willReturn( 'Foo' );
 
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,7 +81,7 @@ class ValueFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetPropertyLabel() {
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 

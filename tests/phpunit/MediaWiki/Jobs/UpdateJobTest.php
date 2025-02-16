@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Jobs;
 use MediaWiki\DAO\WikiAwareEntity;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMWDIBlob as DIBlob;
 use Title;
@@ -60,7 +61,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
 
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
-		$this->semanticDataSerializer = \SMW\ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
+		$this->semanticDataSerializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
 	}
 
 	protected function tearDown(): void {
@@ -76,13 +77,6 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf(
 			'SMW\MediaWiki\Jobs\UpdateJob',
 			new UpdateJob( $title )
-		);
-
-		// FIXME Delete SMWUpdateJob assertion after all
-		// references to SMWUpdateJob have been removed
-		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\UpdateJob',
-			new \SMWUpdateJob( $title )
 		);
 	}
 

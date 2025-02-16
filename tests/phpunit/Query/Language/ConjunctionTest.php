@@ -25,12 +25,6 @@ class ConjunctionTest extends \PHPUnit\Framework\TestCase {
 			'SMW\Query\Language\Conjunction',
 			new Conjunction()
 		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\Conjunction',
-			new \SMWConjunction()
-		);
 	}
 
 	/**

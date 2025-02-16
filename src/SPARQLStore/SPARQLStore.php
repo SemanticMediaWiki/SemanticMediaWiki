@@ -5,6 +5,8 @@ namespace SMW\SPARQLStore;
 use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Options;
 use SMW\SemanticData;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
@@ -12,10 +14,8 @@ use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMWDataItem as DataItem;
-use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 use SMWQuery as Query;
-use SMWTurtleSerializer as TurtleSerializer;
 use Title;
 
 /**

@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Query;
 
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\Query\PrintRequest;
-use SMWPropertyValue as PropertyValue;
 
 /**
  * @covers SMW\Query\PrintRequest

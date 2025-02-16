@@ -3,10 +3,10 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use SMW\Exporter\Element\ExpElement;
+use SMW\Query\QueryResult;
 use SMW\Store;
 use SMWExporter as Exporter;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
  * @license GPL-2.0-or-later
