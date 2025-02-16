@@ -5,7 +5,7 @@ namespace SMW\Utils;
 use Html;
 use SMW\Highlighter;
 use SMW\Localizer\Localizer;
-use SMW\Message;
+use SMW\Localizer\Message;
 use Title;
 
 /**

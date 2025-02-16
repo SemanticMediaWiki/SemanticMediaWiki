@@ -54,7 +54,7 @@ class ConceptCacheTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDeleteConceptCache() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

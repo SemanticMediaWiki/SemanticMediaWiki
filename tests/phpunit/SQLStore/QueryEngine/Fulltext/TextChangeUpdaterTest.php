@@ -32,7 +32,7 @@ class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->logger = TestEnvironment::newSpyLogger();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

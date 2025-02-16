@@ -35,7 +35,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 		$connection = $instance->getConnection();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Database',
+			'\SMW\MediaWiki\Connection\Database',
 			$connection
 		);
 
@@ -73,7 +73,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 		$connection = $instance->getConnection();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Database',
+			'\SMW\MediaWiki\Connection\Database',
 			$connection
 		);
 
@@ -91,7 +91,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetConnectionOnCallback() {
-		$db = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$db = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

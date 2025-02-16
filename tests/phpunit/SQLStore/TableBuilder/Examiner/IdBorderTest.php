@@ -43,7 +43,7 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 			'smw_id' => 100
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,7 +80,7 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 			(object)[ 'smw_id' => 9999 ]
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -133,7 +133,7 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'moveSMWPageID' ] )
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

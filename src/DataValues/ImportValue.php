@@ -2,8 +2,8 @@
 
 namespace SMW\DataValues;
 
+use SMW\Localizer\Message;
 use SMW\MediaWiki\MediaWikiNsContentReader;
-use SMW\Message;
 use SMW\Services\ServicesFactory;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;

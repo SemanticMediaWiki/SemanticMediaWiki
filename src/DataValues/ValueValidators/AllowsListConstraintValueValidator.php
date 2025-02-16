@@ -3,7 +3,7 @@
 namespace SMW\DataValues\ValueValidators;
 
 use SMW\DataValues\ValueParsers\AllowsListValueParser;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;

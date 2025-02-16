@@ -57,7 +57,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTableFields' )
 			->willReturn( [] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

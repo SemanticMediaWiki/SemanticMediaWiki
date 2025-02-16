@@ -75,7 +75,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 			->method( 'makeSMWPageID' )
 			->willReturn( 1001 );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -147,7 +147,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 			->method( 'makeSMWPageID' )
 			->willReturn( 1001 );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 

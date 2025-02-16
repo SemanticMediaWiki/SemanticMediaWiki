@@ -3,7 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use ParamProcessor\ParamDefinition;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\ResultPrinters\ListResultPrinter\ListResultBuilder;
 use SMWQueryResult;
 

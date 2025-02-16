@@ -38,7 +38,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindAtLeastOneActiveReferenceById() {
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,7 +46,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFields' )
 			->willReturn( [ 'o_id' => 42 ] );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -76,7 +76,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tableDefinition = $connection = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $connection = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,7 +84,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'usesIdSubject' )
 			->willReturn( true );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -112,7 +112,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasResidualPropertyTableReference() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -139,7 +139,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasResidualReferenceFor() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -166,7 +166,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSearchAllTablesToFindAtLeastOneReferenceById() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

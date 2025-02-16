@@ -6,7 +6,7 @@ use RuntimeException;
 use SMW\DataValues\PropertyValue;
 use SMW\Highlighter;
 use SMW\Localizer\Localizer;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;

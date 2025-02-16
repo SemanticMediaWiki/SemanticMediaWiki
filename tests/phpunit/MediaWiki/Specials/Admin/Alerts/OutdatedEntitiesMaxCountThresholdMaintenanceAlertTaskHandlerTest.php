@@ -36,7 +36,7 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandlerTest extends \
 	}
 
 	public function testGetHtml() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

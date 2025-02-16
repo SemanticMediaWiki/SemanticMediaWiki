@@ -55,7 +55,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getId' )
 			->willReturnOnConsecutiveCalls( 1001 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -152,7 +152,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'makeSMWPageID' )
 			->willReturn( 1001 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

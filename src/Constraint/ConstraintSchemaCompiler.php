@@ -3,7 +3,7 @@
 namespace SMW\Constraint;
 
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
 

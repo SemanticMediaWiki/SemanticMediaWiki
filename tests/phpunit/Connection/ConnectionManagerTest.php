@@ -37,7 +37,7 @@ class ConnectionManagerTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Database',
+			'\SMW\MediaWiki\Connection\Database',
 			$connection
 		);
 

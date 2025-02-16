@@ -15,7 +15,7 @@ use SMW\ParserData;
 use SMW\Query\Language\Description;
 use SMW\Query\PrintRequest;
 use SMW\SemanticData;
-use SMW\SQLStore\TableDefinition;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\Store;
 use SMW\Store\CacheableResultCollector;
 use SMWDataItem;
@@ -457,7 +457,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	 * @return TableDefinition
 	 */
 	public function SQLStoreTableDefinition() {
-		$tableDefinition = $this->getMockBuilder( 'SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 

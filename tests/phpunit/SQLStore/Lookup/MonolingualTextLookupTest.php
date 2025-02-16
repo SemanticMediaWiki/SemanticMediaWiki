@@ -53,7 +53,7 @@ class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,7 +158,7 @@ class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', '_bar' );
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 

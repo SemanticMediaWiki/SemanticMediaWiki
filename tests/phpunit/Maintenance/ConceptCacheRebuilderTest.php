@@ -164,7 +164,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = 0;
 		$row->page_title = 1;
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

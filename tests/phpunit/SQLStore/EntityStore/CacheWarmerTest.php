@@ -63,7 +63,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -135,7 +135,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -172,7 +172,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 		$this->idCacheManager->expects( $this->never() )
 			->method( 'setCache' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

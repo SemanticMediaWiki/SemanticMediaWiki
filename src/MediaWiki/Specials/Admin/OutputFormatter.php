@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Specials\Admin;
 use FormatJson;
 use Html;
 use OutputPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 
 /**
  * @license GPL-2.0-or-later

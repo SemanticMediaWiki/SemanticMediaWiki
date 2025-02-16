@@ -209,7 +209,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 		$idTable->expects( $this->once() )
 			->method( 'getDataItemPoolHashListFor' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -275,7 +275,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 		$idTable->expects( $this->once() )
 			->method( 'getDataItemPoolHashListFor' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -346,7 +346,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -635,7 +635,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getHash' )
 			->willReturn( 'Foo' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -815,7 +815,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -190,7 +190,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		$store->setConnectionManager( new ConnectionManager() );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Database',
+			'\SMW\MediaWiki\Connection\Database',
 			$store->getConnection( 'mw.db' )
 		);
 	}

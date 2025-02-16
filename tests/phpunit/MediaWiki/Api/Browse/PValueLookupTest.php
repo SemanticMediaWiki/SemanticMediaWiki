@@ -46,7 +46,7 @@ class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -130,7 +130,7 @@ class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -196,7 +196,7 @@ class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->o_hash = 'Test';
 		$row->smw_id = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

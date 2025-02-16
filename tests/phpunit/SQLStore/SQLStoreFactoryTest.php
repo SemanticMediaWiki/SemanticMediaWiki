@@ -242,7 +242,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyStatisticsStore() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -297,7 +297,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructSequenceMapFinder() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -451,7 +451,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyTableIdReferenceDisposer() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -468,7 +468,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyTableHashes() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -525,7 +525,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyTypeFinder() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -569,7 +569,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyTableUpdater() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -586,7 +586,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyTableInfoFetcher() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -639,7 +639,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructEntityIdFinder() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -660,7 +660,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructRedirectUpdater() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -713,7 +713,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructAuxiliaryFields() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -592,7 +592,7 @@ class SQLStore extends Store {
 	/**
 	 * PropertyTableInfoFetcher::getPropertyTableDefinitions
 	 *
-	 * @return TableDefinition[]
+	 * @return \SMW\SQLStore\PropertyTableDefinition[]
 	 */
 	public function getPropertyTables() {
 		return $this->getPropertyTableInfoFetcher()->getPropertyTableDefinitions();

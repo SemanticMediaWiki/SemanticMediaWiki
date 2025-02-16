@@ -40,7 +40,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -142,7 +142,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->cat_title = 'Foo';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -186,7 +186,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = SMW_NS_PROPERTY;
 		$row->page_title = 'Bar';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

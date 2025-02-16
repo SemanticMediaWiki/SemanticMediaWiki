@@ -28,7 +28,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -241,7 +241,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 			return call_user_func( $callback );
 		};
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -277,7 +277,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCommitWithTransactionTicketOnDeferrableUpdate() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -313,7 +313,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCommitWithTransactionTicketOnNonDeferrableUpdate() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -349,7 +349,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCancelOnRollback() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -43,7 +43,7 @@ class TouchedFieldTest extends \PHPUnit\Framework\TestCase {
 			'count' => 42
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

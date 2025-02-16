@@ -69,7 +69,7 @@ class SQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		foreach ( $this->store->getPropertyTables() as $tid => $propTable ) {
 			$this->assertInstanceOf(
-				'\SMW\SQLStore\TableDefinition',
+				'\SMW\SQLStore\PropertyTableDefinition',
 				$propTable
 			);
 		}

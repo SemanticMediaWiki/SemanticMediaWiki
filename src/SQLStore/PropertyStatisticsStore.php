@@ -3,7 +3,7 @@
 namespace SMW\SQLStore;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
 
 /**

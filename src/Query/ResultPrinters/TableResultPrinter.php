@@ -4,7 +4,7 @@ namespace SMW\Query\ResultPrinters;
 
 use Html;
 use SMW\DIWikiPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryStringifier;
 use SMW\Utils\HtmlTable;

@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use SMW\Localizer\Message;
 use SMW\MediaWiki\HookListener;
-use SMW\Message;
 use SMW\OptionsAwareTrait;
 use SMW\Store;
 

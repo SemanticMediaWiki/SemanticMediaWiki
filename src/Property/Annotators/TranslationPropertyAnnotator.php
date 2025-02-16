@@ -2,6 +2,7 @@
 
 namespace SMW\Property\Annotators;
 
+use SMW\Property\Annotator;
 use Title;
 
 /**
@@ -25,10 +26,10 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 3.0
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 * @param array|null $translation
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, $translation ) {
+	public function __construct( Annotator $propertyAnnotator, $translation ) {
 		parent::__construct( $propertyAnnotator );
 		$this->translation = $translation;
 	}

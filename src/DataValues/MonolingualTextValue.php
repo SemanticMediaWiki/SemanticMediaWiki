@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues;
 
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
@@ -9,7 +10,6 @@ use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;

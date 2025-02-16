@@ -8,7 +8,7 @@ use SMW\DataValues\PropertyChainValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HierarchyLookup;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;

@@ -26,7 +26,7 @@ class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 	private $iteratorMockBuilder;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -53,7 +53,7 @@ class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRebuildWithoutUpdate() {
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -78,7 +78,7 @@ class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNeverRebuildOnOptimization() {
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -121,7 +121,7 @@ class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( $resultWrapper );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 

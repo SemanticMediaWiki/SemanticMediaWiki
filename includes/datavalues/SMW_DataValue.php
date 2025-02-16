@@ -12,7 +12,7 @@ use SMW\DataValues\InfoLinksProvider;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Options;
 use SMW\ProcessingError;
 use SMW\Query\QueryComparator;

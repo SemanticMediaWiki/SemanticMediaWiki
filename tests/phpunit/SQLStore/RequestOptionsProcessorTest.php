@@ -66,7 +66,7 @@ class RequestOptionsProcessorTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider requestOptionsToSqlConditionsProvider
 	 */
 	public function testGetSQLConditions( $requestOptions, $valueCol, $labelCol, $expected ) {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

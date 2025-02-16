@@ -4,11 +4,11 @@ namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 
 use Html;
 use SMW\DIWikiPage;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use WebRequest;
 

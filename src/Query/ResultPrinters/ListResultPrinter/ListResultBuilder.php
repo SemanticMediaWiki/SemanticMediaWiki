@@ -3,7 +3,7 @@
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMWQueryResult;
 

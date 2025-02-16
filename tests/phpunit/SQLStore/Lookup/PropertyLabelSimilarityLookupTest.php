@@ -68,7 +68,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -106,7 +106,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 		$row2 = new \stdClass;
 		$row2->smw_title = 'Foobar';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

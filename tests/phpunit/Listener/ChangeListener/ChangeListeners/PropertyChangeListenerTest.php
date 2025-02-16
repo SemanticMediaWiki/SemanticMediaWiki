@@ -118,7 +118,7 @@ class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRunChangeListeners() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

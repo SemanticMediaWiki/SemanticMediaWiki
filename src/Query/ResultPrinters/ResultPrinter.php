@@ -6,7 +6,7 @@ use Linker;
 use ParamProcessor\Param;
 use ParamProcessor\ParamDefinition;
 use Sanitizer;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinter as IResultPrinter;

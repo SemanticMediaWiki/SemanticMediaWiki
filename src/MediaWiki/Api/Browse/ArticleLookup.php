@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Api\Browse;
 
 use SMW\Localizer\Localizer;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 
 /**
  * @license GPL-2.0-or-later

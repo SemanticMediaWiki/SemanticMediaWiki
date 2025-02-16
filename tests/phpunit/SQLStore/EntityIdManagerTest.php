@@ -318,7 +318,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetDataItemById() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -396,7 +396,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->smw_id = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -501,7 +501,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newIdEntityFinder' )
 			->willReturn( $this->idEntityFinder );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

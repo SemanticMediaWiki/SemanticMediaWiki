@@ -7,7 +7,7 @@ use MediaWiki\MediaWikiServices;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;

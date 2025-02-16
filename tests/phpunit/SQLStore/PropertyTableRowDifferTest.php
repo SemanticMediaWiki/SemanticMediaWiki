@@ -108,7 +108,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testChangeOpWithUnknownFixedProperty() {
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -180,7 +180,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( (object)$row );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 

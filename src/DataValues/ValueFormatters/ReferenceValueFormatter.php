@@ -7,7 +7,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\ExternalIdentifierValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DIWikiPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMWDataValue as DataValue;
 use SMWDITime as DITime;
 use SMWDIUri as DIUri;

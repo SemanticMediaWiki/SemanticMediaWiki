@@ -159,7 +159,7 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->usage_count = 1111;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

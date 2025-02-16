@@ -79,7 +79,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 				->willReturn( $client );
 
 		} else {
-			$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 				->disableOriginalConstructor()
 				->getMock();
 
@@ -211,7 +211,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			]
 		);
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

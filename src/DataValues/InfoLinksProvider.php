@@ -4,7 +4,7 @@ namespace SMW\DataValues;
 
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Property\SpecificationLookup;
 use SMWDataItem as DataItem;
