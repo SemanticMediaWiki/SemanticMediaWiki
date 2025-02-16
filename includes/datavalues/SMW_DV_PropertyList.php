@@ -1,6 +1,6 @@
 <?php
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 
 /**
  * @ingroup SMWDataValues

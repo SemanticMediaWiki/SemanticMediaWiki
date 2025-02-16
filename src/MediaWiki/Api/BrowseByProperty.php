@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\NamespaceUriFinder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 

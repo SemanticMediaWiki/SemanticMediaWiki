@@ -5,7 +5,7 @@ namespace SMW\Exporter;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpResource;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use Title;

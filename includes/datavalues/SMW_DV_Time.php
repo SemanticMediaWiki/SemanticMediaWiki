@@ -2,7 +2,7 @@
 
 use SMW\DataValues\Time\Components;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMWDITime as DITime;
 
 /**

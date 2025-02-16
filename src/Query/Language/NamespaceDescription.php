@@ -2,7 +2,7 @@
 
 namespace SMW\Query\Language;
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 
 /**
  * Description of all pages within a given wiki namespace, given by a numerical

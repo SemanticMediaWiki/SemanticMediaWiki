@@ -8,7 +8,7 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DisplayTitleFinder;
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Message;
 use SMW\ParserData;
 use SMW\SemanticData;

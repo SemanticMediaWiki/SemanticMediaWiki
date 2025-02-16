@@ -5,7 +5,7 @@ namespace SMW\DataValues\ValueFormatters;
 use RuntimeException;
 use SMW\DataValues\PropertyValue;
 use SMW\Highlighter;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;

@@ -1,8 +1,8 @@
 <?php
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Pipetrick;
-use SMW\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Image;
 

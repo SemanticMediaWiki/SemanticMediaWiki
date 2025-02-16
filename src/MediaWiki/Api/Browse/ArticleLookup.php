@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Database;
 
 /**

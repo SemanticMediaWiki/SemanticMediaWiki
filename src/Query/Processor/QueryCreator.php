@@ -3,7 +3,7 @@
 namespace SMW\Query\Processor;
 
 use SMW\DataValueFactory;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\QueryContext;
 use SMW\QueryFactory;
 use SMWPropertyValue as PropertyValue;

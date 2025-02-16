@@ -3,7 +3,7 @@
 namespace SMW\DataValues;
 
 use SMW\DIProperty;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;

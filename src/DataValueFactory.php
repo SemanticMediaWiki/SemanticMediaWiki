@@ -4,7 +4,9 @@ namespace SMW;
 
 use RuntimeException;
 use SMW\DataValues\PropertyValue;
+use SMW\Localizer\Localizer;
 use SMW\Services\DataValueServiceFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIError;

@@ -2,7 +2,6 @@
 
 namespace SMW\Property\Annotators;
 
-use SMW\PropertyAnnotator;
 use Title;
 
 /**

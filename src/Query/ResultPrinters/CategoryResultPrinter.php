@@ -2,7 +2,7 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\Services\ServicesFactory as ApplicationFactory;

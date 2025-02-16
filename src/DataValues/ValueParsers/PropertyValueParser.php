@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues\ValueParsers;
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 
 /**
  * @private

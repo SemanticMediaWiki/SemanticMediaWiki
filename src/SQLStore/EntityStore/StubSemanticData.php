@@ -6,11 +6,11 @@ use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exception\DataItemException;
+use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\SQLStore;
 use SMW\StoreFactory;
 use SMWDataItem as DataItem;
-use SMWSemanticData as SemanticData;
 
 /**
  * This class provides a subclass of SemanticData that can store prefetched values

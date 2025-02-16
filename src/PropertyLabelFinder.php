@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\Services\ServicesFactory as ApplicationFactory;
+
 /**
  * @license GPL-2.0-or-later
  * @since 2.2

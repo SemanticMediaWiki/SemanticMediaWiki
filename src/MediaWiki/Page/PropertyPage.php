@@ -7,7 +7,7 @@ use ParserOptions;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Page\ListBuilder\ItemListBuilder;
 use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
 use SMW\Message;
