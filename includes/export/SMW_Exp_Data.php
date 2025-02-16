@@ -1,6 +1,8 @@
 <?php
 
 use SMW\Exporter\Element;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
 
 /**
  * SMWExpData is a class representing semantic data that is ready for easy
@@ -30,7 +32,7 @@ class SMWExpData implements Element {
 
 	/**
 	 * The subject of the data that we store.
-	 * @var SMWExpResource
+	 * @var ExpResource
 	 */
 	protected $m_subject;
 
@@ -42,8 +44,8 @@ class SMWExpData implements Element {
 	protected $m_children = [];
 
 	/**
-	 * Array mapping property URIs to arrays their SMWExpResource
-	 * @var array of SMWExpResource
+	 * Array mapping property URIs to arrays their ExpResource
+	 * @var array of ExpResource
 	 */
 	protected $m_edges = [];
 
@@ -53,10 +55,10 @@ class SMWExpData implements Element {
 	private $hash = null;
 
 	/**
-	 * Constructor. $subject is the SMWExpResource for the
+	 * Constructor. $subject is the ExpResource for the
 	 * subject about which this SMWExpData is.
 	 */
-	public function __construct( SMWExpResource $subject ) {
+	public function __construct( ExpResource $subject ) {
 		$this->dataItem = $subject->getDataItem();
 		$this->m_subject = $subject;
 	}
@@ -111,7 +113,7 @@ class SMWExpData implements Element {
 			return new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'nil' ) );
 		}
 
-		$result = new SMWExpData( new SMWExpResource( '' ) ); // bnode
+		$result = new SMWExpData( new ExpResource( '' ) ); // bnode
 
 		$result->addPropertyObjectValue(
 			SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ),
@@ -134,7 +136,7 @@ class SMWExpData implements Element {
 	/**
 	 * Return subject to which the stored semantic annotation refer to.
 	 *
-	 * @return SMWExpResource
+	 * @return ExpResource
 	 */
 	public function getSubject() {
 		return $this->m_subject;
@@ -145,10 +147,10 @@ class SMWExpData implements Element {
 	 * duplicate elimination as this is usually done in SMWSemanticData
 	 * already (which is typically used to generate this object).
 	 *
-	 * @param SMWExpNsResource $property
+	 * @param ExpNsResource $property
 	 * @param Element $child
 	 */
-	public function addPropertyObjectValue( SMWExpNsResource $property, Element $child ) {
+	public function addPropertyObjectValue( ExpNsResource $property, Element $child ) {
 		$this->hash = null;
 
 		if ( !array_key_exists( $property->getUri(), $this->m_edges ) ) {
@@ -160,10 +162,10 @@ class SMWExpData implements Element {
 	}
 
 	/**
-	 * Return the list of SMWExpResource objects for all properties for
+	 * Return the list of ExpResource objects for all properties for
 	 * which some values have been given.
 	 *
-	 * @return array of SMWExpResource
+	 * @return array of ExpResource
 	 */
 	public function getProperties() {
 		return $this->m_edges;
@@ -175,7 +177,7 @@ class SMWExpData implements Element {
 	 *
 	 * @return array of SMWExpElement
 	 */
-	public function getValues( SMWExpResource $property ) {
+	public function getValues( ExpResource $property ) {
 		if ( array_key_exists( $property->getUri(), $this->m_children ) ) {
 			return $this->m_children[$property->getUri()];
 		}
@@ -204,7 +206,7 @@ class SMWExpData implements Element {
 	 * is returned.
 	 *
 	 * @note Under all normal conditions, the result will be an
-	 * SMWExpResource.
+	 * ExpResource.
 	 *
 	 * @return SMWExpElement
 	 */
@@ -261,7 +263,7 @@ class SMWExpData implements Element {
 						array_unshift( $restlist, $first );
 						return $restlist;
 					}
-				} elseif ( ( $rest instanceof SMWExpResource ) &&
+				} elseif ( ( $rest instanceof ExpResource ) &&
 						   ( $rest->getUri() == $rdfnilUri ) ) {
 					return [ $first ];
 				} else {
@@ -303,10 +305,10 @@ class SMWExpData implements Element {
 					$childSubject = $childElement;
 				}
 
-				if ( ( $childSubject instanceof SMWExpResource ) &&
+				if ( ( $childSubject instanceof ExpResource ) &&
 					 ( $childSubject->isBlankNode() ) ) { // bnode, rename ID to avoid unifying bnodes of different contexts
 					// TODO: should we really rename bnodes of the form "_id" here?
-					$childSubject = new SMWExpResource( '_' . $smwgBnodeCount++, $childSubject->getDataItem() );
+					$childSubject = new ExpResource( '_' . $smwgBnodeCount++, $childSubject->getDataItem() );
 				}
 
 				$result[] = [ $subject, $edge, $childSubject ];

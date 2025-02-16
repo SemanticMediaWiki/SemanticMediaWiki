@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\Localizer\Localizer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**

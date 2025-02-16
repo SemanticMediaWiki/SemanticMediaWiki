@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Localizer\Localizer;
+namespace SMW\Localizer;
 
 /**
  * @license GPL-2.0-or-later

@@ -2,14 +2,14 @@
 
 namespace SMW\Tests;
 
+use SMW\DIConcept;
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpResource;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
-use SMWDIConcept as DIConcept;
 use SMWDINumber as DINumber;
 use SMWExporter as Exporter;
-use SMWExpResource as ExpResource;
 
 /**
  * @covers \SMWExporter
@@ -38,7 +38,7 @@ class SMWExporterTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWExpNsResource',
+			'\SMW\Exporter\Element\ExpNsResource',
 			$expData->getSubject()
 		);
 	}

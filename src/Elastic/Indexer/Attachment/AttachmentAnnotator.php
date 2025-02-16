@@ -3,9 +3,9 @@
 namespace SMW\Elastic\Indexer\Attachment;
 
 use SMW\DataItemFactory;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIProperty;
 use SMW\Property\Annotator;
-use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 use SMWDITime as DITime;
 

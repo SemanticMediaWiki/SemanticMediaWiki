@@ -2,7 +2,8 @@
 
 namespace SMW;
 
-use SMWContainerSemanticData as ContainerSemanticData;
+use SMW\DataModel\ContainerSemanticData;
+use SMW\Localizer\Message;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWDIContainer as DIContainer;

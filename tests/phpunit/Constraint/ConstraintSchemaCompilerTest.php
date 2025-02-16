@@ -3,7 +3,7 @@
 namespace SMW\Tests\Constraint;
 
 use SMW\Constraint\ConstraintSchemaCompiler;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMWDIBlob as DIBlob;
 
 /**

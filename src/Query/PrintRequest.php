@@ -4,12 +4,12 @@ namespace SMW\Query;
 
 use InvalidArgumentException;
 use SMW\DataValues\PropertyChainValue;
+use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest\Deserializer;
 use SMW\Query\PrintRequest\Formatter;
 use SMW\Query\PrintRequest\Serializer;
 use SMWDataValue;
-use SMWPropertyValue as PropertyValue;
 use Title;
 
 /**
