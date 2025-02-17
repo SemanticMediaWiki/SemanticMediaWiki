@@ -70,13 +70,13 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 
 			->will(
-				$this->returnCallback( static function() {
-   					$args = func_get_args();
-    				switch ( $args[2] ) {
-    					case 'de': return 'de-desc';
-    					case 'de-formal': return 'de-formal-desc';
-    					case 'en': return 'en-desc';
-    				}
+				$this->returnCallback( static function () {
+					$args = func_get_args();
+					switch ( $args[2] ) {
+						case 'de': return 'de-desc';
+						case 'de-formal': return 'de-formal-desc';
+						case 'en': return 'en-desc';
+					}
 				} )
 			 );
 
@@ -93,7 +93,6 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 			[ 'de-desc', 'de' ],
 			$languageFalldownAndInverse->tryout()
 		);
-		
 
 		$languageCode = 'de';
 		$languageFalldownAndInverse = new LanguageFalldownAndInverse( $this->monolingualTextLookup, $subject, $property, $languageCode );
@@ -114,7 +113,6 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 			[ null, $GLOBALS['wgLanguageCode'] ],
 			$languageFalldownAndInverse->tryout()
 		);
-
 	}
 
 	public function testGetSpecification() {
