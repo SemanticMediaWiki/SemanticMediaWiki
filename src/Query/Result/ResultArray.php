@@ -121,7 +121,7 @@ class ResultArray {
 
 	/**
 	 * Returns the DIWikiPage object to which this ResultArray refers.
-	 * If you only care for those objects, consider using SMWQueryResult::getResults()
+	 * If you only care for those objects, consider using \SMW\Query\QueryResult::getResults()
 	 * directly.
 	 *
 	 * @return DIWikiPage
