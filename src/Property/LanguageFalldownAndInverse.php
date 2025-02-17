@@ -3,7 +3,7 @@
  * @license GNU GPL v2+
  *
  * @author thomas-topway-it for KM-A
- * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5342 
+ * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5342
  */
 namespace SMW\Property;
 
@@ -389,7 +389,7 @@ class LanguageFalldownAndInverse {
 			$languageCode
 		);
 	}
-		
+
 	/**
 	 * @return DataValue|null
 	 */
