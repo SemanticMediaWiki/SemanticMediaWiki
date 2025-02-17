@@ -486,7 +486,7 @@ class DIProperty extends SMWDataItem {
 	 * Note that this function only gives access to the registry data that
 	 * DIProperty stores, but does not do further parsing of user input.
 	 *
-	 * To process wiki input, SMWPropertyValue should be used.
+	 * To process wiki input, PropertyValue should be used.
 	 *
 	 * @since 1.6
 	 *

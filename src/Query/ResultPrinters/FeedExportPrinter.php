@@ -279,7 +279,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		/**
 		 * Loop over all properties within a row
 		 *
-		 * @var \SMWResultArray $field
+		 * @var \SMW\Query\Result\ResultArray $field
 		 * @var \SMWDataValue $object
 		 */
 		foreach ( $row as $field ) {

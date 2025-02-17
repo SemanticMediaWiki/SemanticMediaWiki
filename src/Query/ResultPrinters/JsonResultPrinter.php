@@ -150,7 +150,7 @@ class JsonResultPrinter extends FileExportPrinter {
 			$item = [];
 			$subject = '';
 
-			foreach ( $row as /* SMWResultArray */ $field ) {
+			foreach ( $row as /* ResultArray */ $field ) {
 				$label = $field->getPrintRequest()->getLabel();
 
 				if ( $label === '' ) {

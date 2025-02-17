@@ -214,7 +214,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param SMWResultArray[] $subject
+	 * @param ResultArray[] $subject
 	 * @param int $outputMode
 	 * @param string[] $columnClasses
 	 *
@@ -239,7 +239,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param SMWResultArray $resultArray
+	 * @param \ $resultArray
 	 * @param int $outputMode
 	 * @param string $columnClass
 	 *

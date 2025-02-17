@@ -9,6 +9,7 @@ use SMW\Exporter\Escaper;
 use SMW\Exporter\ExpDataFactory;
 use SMW\Exporter\Serializer\Serializer;
 use SMW\Query\PrintRequest;
+use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
@@ -138,10 +139,10 @@ class SMWExportController {
 	 * depth of -1 encodes "infinite" depth, i.e. a complete recursive
 	 * serialisation without limit.
 	 *
-	 * @param SMWDIWikiPage $diWikiPage specifying the page to be exported
+	 * @param DIWikiPage $diWikiPage specifying the page to be exported
 	 * @param int $recursiondepth specifying the depth of recursion
 	 */
-	protected function serializePage( SMWDIWikiPage $diWikiPage, $recursiondepth = 1 ) {
+	protected function serializePage( DIWikiPage $diWikiPage, $recursiondepth = 1 ) {
 		if ( $this->queue->isDone( $diWikiPage, $recursiondepth ) ) {
 			return; // do not export twice
 		}
@@ -242,7 +243,7 @@ class SMWExportController {
 						if ( !$this->queue->isDone( $inSub, $subrecdepth ) ) {
 							$semdata = $this->getSemanticData( $inSub, true );
 
-							if ( !$semdata instanceof SMWSemanticData ) {
+							if ( !$semdata instanceof SemanticData ) {
 								continue;
 							}
 
@@ -254,7 +255,7 @@ class SMWExportController {
 				}
 
 				if ( NS_CATEGORY === $diWikiPage->getNamespace() ) { // also print elements of categories
-					$options = new SMWRequestOptions();
+					$options = new RequestOptions();
 					$options->limit = 100; // Categories can be large, always use limit
 					$instances = \SMW\StoreFactory::getStore()->getPropertySubjects( new SMW\DIProperty( '_INST' ), $diWikiPage, $options );
 					$pinst = new SMW\DIProperty( '_INST' );
@@ -263,7 +264,7 @@ class SMWExportController {
 						if ( $this->queue->isNotDone( $instance ) ) {
 							$semdata = $this->getSemanticData( $instance, true );
 
-							if ( !$semdata instanceof SMWSemanticData ) {
+							if ( !$semdata instanceof SemanticData ) {
 								continue;
 							}
 
@@ -318,7 +319,7 @@ class SMWExportController {
 	 * and we do not want to modify the store's result which may be used for
 	 * caching purposes elsewhere.
 	 */
-	protected function getSemanticData( SMWDIWikiPage $diWikiPage, $core_props_only ) {
+	protected function getSemanticData( DIWikiPage $diWikiPage, $core_props_only ) {
 		// Issue 619
 		// Resolve the redirect target and return a container with information
 		// about the redirect
@@ -348,7 +349,7 @@ class SMWExportController {
 
 		$semdata = \SMW\StoreFactory::getStore()->getSemanticData( $diWikiPage, $core_props_only ? [ '__spu', '__typ', '__imp' ] : false ); // advise store to retrieve only core things
 		if ( $core_props_only ) { // be sure to filter all non-relevant things that may still be present in the retrieved
-			$result = new SMWSemanticData( $diWikiPage );
+			$result = new SemanticData( $diWikiPage );
 			foreach ( [ '_URI', '_TYPE', '_IMPO' ] as $propid ) {
 				$prop = new SMW\DIProperty( $propid );
 				$values = $semdata->getPropertyValues( $prop );
@@ -420,7 +421,7 @@ class SMWExportController {
 				}
 			}
 
-			$diPage = SMWDIWikiPage::newFromTitle( $title );
+			$diPage = DIWikiPage::newFromTitle( $title );
 			$this->queue->add( $diPage, ( $recursion == 1 ? -1 : 1 ) );
 		}
 
@@ -524,7 +525,7 @@ class SMWExportController {
 			}
 			$a_count += 1; // DEBUG
 
-			$diPage = SMWDIWikiPage::newFromTitle( $title );
+			$diPage = DIWikiPage::newFromTitle( $title );
 			$this->queue->add( $diPage, 1 );
 
 			while ( $this->queue->count() > 0 ) {
@@ -594,7 +595,7 @@ class SMWExportController {
 		foreach ( $res as $row ) {
 			$foundpages = true;
 			try {
-				$diPage = new SMWDIWikiPage( $row->page_title, $row->page_namespace, '' );
+				$diPage = new DIWikiPage( $row->page_title, $row->page_namespace, '' );
 				$this->serializePage( $diPage, 0 );
 				$this->flush();
 				$linkCache->clear();

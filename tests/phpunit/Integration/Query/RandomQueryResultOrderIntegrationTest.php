@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DataValues\PropertyValue;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\PrintRequest;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
 
 /**

@@ -150,7 +150,7 @@ class CsvFileExportPrinter extends FileExportPrinter {
 		while ( $row = $res->getNext() ) {
 			$row_items = [];
 
-			foreach ( $row as /* SMWResultArray */ $field ) {
+			foreach ( $row as /* ResultArray */ $field ) {
 				$growing = [];
 
 				while ( ( $object = $field->getNextDataValue() ) !== false ) {

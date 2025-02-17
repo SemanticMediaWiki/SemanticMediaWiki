@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**

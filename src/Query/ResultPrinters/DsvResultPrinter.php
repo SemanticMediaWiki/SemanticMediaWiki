@@ -139,7 +139,7 @@ class DsvResultPrinter extends FileExportPrinter {
 
 			/**
 			 * Loop over their fields (properties).
-			 * @var SMWResultArray $field
+			 * @var \SMW\Query\Result\ResultArray $field
 			 */
 			foreach ( $row as $field ) {
 				$itemSegments = [];
