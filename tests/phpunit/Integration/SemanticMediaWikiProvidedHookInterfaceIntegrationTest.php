@@ -4,6 +4,7 @@ namespace SMW\Tests\Integration;
 
 use RuntimeException;
 use SMW\DIWikiPage;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 
@@ -171,7 +172,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 	 * @dataProvider storeClassProvider
 	 */
 	public function testRegisteredStoreAfterQueryResultLookupComplete( $storeClass ) {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -188,8 +189,8 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->willReturn( $queryResult );
 
 		$this->mwHooksHandler->register( 'SMW::Store::AfterQueryResultLookupComplete', static function ( $store, &$queryResult ) {
-			if ( !$queryResult instanceof \SMWQueryResult ) {
-				throw new RuntimeException( 'Expected a SMWQueryResult instance' );
+			if ( !$queryResult instanceof QueryResult ) {
+				throw new RuntimeException( 'Expected a QueryResult instance' );
 			}
 
 			return true;
@@ -290,7 +291,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 	public function testRegisteredSQLStoreBeforeChangeTitleComplete() {
 		// To make this work with SPARQLStore, need to inject the basestore
-		$storeClass = '\SMWSQLStore3';
+		$storeClass = '\SMW\SQLStore\SQLStore';
 
 		$title = \Title::newFromText( __METHOD__ );
 
@@ -359,7 +360,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 	public function testRegisteredSQLStoreBeforeDeleteSubjectComplete() {
 		// To make this work with SPARQLStore, need to inject the basestore
-		$storeClass = '\SMWSQLStore3';
+		$storeClass = '\SMW\SQLStore\SQLStore';
 
 		$title = \Title::newFromText( __METHOD__ );
 
@@ -397,7 +398,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 	public function testRegisteredSQLStoreAfterDeleteSubjectComplete() {
 		// To make this work with SPARQLStore, need to inject the basestore
-		$storeClass = '\SMWSQLStore3';
+		$storeClass = '\SMW\SQLStore\SQLStore';
 
 		$title = \Title::newFromText( __METHOD__ );
 
@@ -565,7 +566,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 	}
 
 	public function storeClassProvider() {
-		$provider[] = [ '\SMWSQLStore3' ];
+		$provider[] = [ '\SMW\SQLStore\SQLStore' ];
 		$provider[] = [ '\SMW\SPARQLStore\SPARQLStore' ];
 
 		return $provider;

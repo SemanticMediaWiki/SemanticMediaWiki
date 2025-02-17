@@ -3,7 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use Sanitizer;
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 
 /**
  * Result printer to print results in UNIX-style DSV (deliminter separated value)

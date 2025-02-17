@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\ConceptCache;
+use SMW\SQLStore\SQLStore;
 use Title;
 
 /**
@@ -26,7 +27,7 @@ class ConceptCacheTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -44,7 +45,7 @@ class ConceptCacheTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( [] );
 
 		$instance = new ConceptCache(
-			new \SMWSQLStore3(),
+			new SQLStore(),
 			$this->conceptQuerySegmentBuilder
 		);
 
@@ -73,7 +74,7 @@ class ConceptCacheTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$store = new \SMWSQLStore3();
+		$store = new SQLStore();
 		$store->setConnectionManager( $connectionManager );
 
 		$instance = new ConceptCache(

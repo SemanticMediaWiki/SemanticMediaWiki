@@ -37,7 +37,7 @@ class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider subjectProvider
 	 */
 	public function testFetchFromTable( $subject, $languageCode, $expected ) {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -65,7 +65,7 @@ class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPropertyID' )
 			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -141,7 +141,7 @@ class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 			'lcode' => 'en'
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -166,7 +166,7 @@ class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -6,12 +6,12 @@ use Html;
 use SMW\DIWikiPage;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
 use SMW\Query\QueryStringifier;
+use SMW\Query\Result\ResultArray;
 use SMW\Utils\HtmlTable;
 use SMWDataValue;
 use SMWDIBlob as DIBlob;
-use SMWQueryResult as QueryResult;
-use SMWResultArray as ResultArray;
 
 /**
  * Print query results in tables

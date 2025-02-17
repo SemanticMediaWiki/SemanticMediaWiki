@@ -66,7 +66,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 		$getQueryResult->setAccessible( true );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$getQueryResult->invoke( $instance, $query )
 		);
 	}
@@ -84,7 +84,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 			'meta' => [ 'count' => 5, 'offset' => 5 ]
 		];
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

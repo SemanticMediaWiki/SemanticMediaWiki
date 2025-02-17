@@ -38,7 +38,7 @@ class SMWExpData implements Element {
 
 	/**
 	 * Array mapping property URIs to arrays their values, given as
-	 * SMWExpElement objects.
+	 * SMW\Exporter\Element\ExpElement objects.
 	 * @var array of array of SMWElement
 	 */
 	protected $m_children = [];
@@ -103,9 +103,9 @@ class SMWExpData implements Element {
 	}
 
 	/**
-	 * Turn an array of SMWExpElements into an RDF collection.
+	 * Turn an array of SMW\Exporter\Element\ExpElement into an RDF collection.
 	 *
-	 * @param $elements array of SMWExpElement
+	 * @param $elements array of SMW\Exporter\Element\ExpElement
 	 * @return SMWExpData
 	 */
 	public static function makeCollection( array $elements ) {
@@ -172,10 +172,10 @@ class SMWExpData implements Element {
 	}
 
 	/**
-	 * Return the list of SMWExpElement values associated to some property
+	 * Return the list of SMW\Exporter\Element\ExpElement values associated to some property
 	 * (element).
 	 *
-	 * @return array of SMWExpElement
+	 * @return array of SMW\Exporter\Element\ExpElement
 	 */
 	public function getValues( ExpResource $property ) {
 		if ( array_key_exists( $property->getUri(), $this->m_children ) ) {
@@ -201,14 +201,14 @@ class SMWExpData implements Element {
 	/**
 	 * This function finds the main type (class) element of the subject
 	 * based on the current property assignments. It returns this type
-	 * element (SMWExpElement) and removes the according type assignement
+	 * element (SMW\Exporter\Element\ExpElement) and removes the according type assignement
 	 * from the data. If no type is assigned, the element for rdf:Resource
 	 * is returned.
 	 *
 	 * @note Under all normal conditions, the result will be an
 	 * ExpResource.
 	 *
-	 * @return SMWExpElement
+	 * @return SMW\Exporter\Element\ExpElement
 	 */
 	public function extractMainType() {
 		$pe = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' );
@@ -226,13 +226,13 @@ class SMWExpData implements Element {
 
 	/**
 	 * Check if this element encodes an RDF list, and if yes return an
-	 * array of SMWExpElements corresponding to the collection elements in
+	 * array of SMW\Exporter\Element\ExpElement corresponding to the collection elements in
 	 * the specified order. Otherwise return false.
 	 * The method only returns lists that can be encoded using
 	 * parseType="Collection" in RDF/XML, i.e. only lists of non-literal
 	 * resources.
 	 *
-	 * @return mixed array of SMWExpElement (but not SMWExpLiteral) or false
+	 * @return mixed array of SMW\Exporter\Element\ExpElement (but not SMWExpLiteral) or false
 	 */
 	public function getCollection() {
 		$rdftypeUri  = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' )->getUri();
@@ -281,9 +281,9 @@ class SMWExpData implements Element {
 
 	/**
 	 * Return an array of ternary arrays (subject predicate object) of
-	 * SMWExpElements that represents the flattened version of this data.
+	 * SMW\Exporter\Element\ExpElement that represents the flattened version of this data.
 	 *
-	 * @return array of array of SMWExpElement
+	 * @return array of array of SMW\Exporter\Element\ExpElement
 	 */
 	public function getTripleList( ?Element $subject = null ) {
 		global $smwgBnodeCount;

@@ -125,7 +125,7 @@ class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getMessage' )
 			->willReturn( $message );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

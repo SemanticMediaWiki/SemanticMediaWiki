@@ -4,7 +4,7 @@ namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use SMW\DIProperty;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserFunctions\SubobjectParserFunction;

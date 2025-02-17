@@ -15,7 +15,7 @@ use SMWDIBlob as DIBlob;
 use Title;
 
 /**
- * Class Handling all the write and update methods for SMWSQLStore3.
+ * Class Handling all the write and update methods for SQLStore.
  *
  * @license GPL-2.0-or-later
  * @since 1.8
@@ -31,7 +31,7 @@ class SQLStoreUpdater {
 	 * The store used by this store writer.
 	 *
 	 * @since 1.8
-	 * @var SMWSQLStore3
+	 * @var \SMW\SQLStore\SQLStore
 	 */
 	private $store;
 

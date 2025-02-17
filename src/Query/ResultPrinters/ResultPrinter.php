@@ -8,12 +8,12 @@ use ParamProcessor\ParamDefinition;
 use Sanitizer;
 use SMW\Localizer\Message;
 use SMW\Parser\RecursiveTextProcessor;
+use SMW\Query\QueryResult;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinter as IResultPrinter;
 use SMWInfolink;
 use SMWOutputs as ResourceManager;
 use SMWQuery;
-use SMWQueryResult as QueryResult;
 
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements

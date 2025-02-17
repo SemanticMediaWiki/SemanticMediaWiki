@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query\Language;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;

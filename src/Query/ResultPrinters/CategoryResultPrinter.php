@@ -5,10 +5,10 @@ namespace SMW\Query\ResultPrinters;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlColumns;
 use SMWDataItem as DataItem;
-use SMWQueryResult as QueryResult;
 
 /**
  * Print query results in alphabetic groups displayed in columns, a la the

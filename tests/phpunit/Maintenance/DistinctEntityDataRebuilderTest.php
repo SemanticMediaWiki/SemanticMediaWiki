@@ -98,7 +98,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( Title::newFromText( __METHOD__ ) );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -155,7 +155,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -199,7 +199,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 

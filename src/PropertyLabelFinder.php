@@ -3,6 +3,7 @@
 namespace SMW;
 
 use SMW\Localizer\Localizer;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -191,7 +192,7 @@ class PropertyLabelFinder {
 			$query
 		);
 
-		if ( !$queryResult instanceof \SMWQueryResult ) {
+		if ( !$queryResult instanceof QueryResult ) {
 			return $propertyList;
 		}
 

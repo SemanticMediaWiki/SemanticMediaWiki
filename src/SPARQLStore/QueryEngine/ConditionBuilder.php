@@ -7,6 +7,9 @@ use SMW\DataTypeRegistry;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpElement;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\HierarchyLookup;
 use SMW\Localizer\Message;
 use SMW\Query\DescriptionFactory;
@@ -16,10 +19,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 use SMW\Utils\CircularReferenceGuard;
 use SMWDataItem as DataItem;
-use SMWExpElement as ExpElement;
-use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * Build an internal representation for a SPARQL condition from individual query

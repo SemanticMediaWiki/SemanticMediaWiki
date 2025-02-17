@@ -72,10 +72,10 @@ class SMWExporterTest extends \PHPUnit\Framework\TestCase {
 
 	public function dataItemExpElementProvider() {
 		// #0 (bug 56643)
-		$provider[] = [ new DINumber( 9001 ), 'SMWExpElement' ];
+		$provider[] = [ new DINumber( 9001 ), '\SMW\Exporter\Element\ExpElement' ];
 
-		$provider[] = [ new DIBlob( 'foo' ), 'SMWExpElement' ];
-		$provider[] = [ new DIBoolean( true ), 'SMWExpElement' ];
+		$provider[] = [ new DIBlob( 'foo' ), '\SMW\Exporter\Element\ExpElement' ];
+		$provider[] = [ new DIBoolean( true ), '\SMW\Exporter\Element\ExpElement' ];
 
 		$provider[] = [ new DIConcept( 'Foo', '', '', '', '' ), 'SMWExpData' ];
 

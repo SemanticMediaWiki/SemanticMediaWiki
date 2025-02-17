@@ -1,5 +1,6 @@
 <?php
 
+use SMW\DIProperty;
 use SMW\Localizer\Localizer;
 
 /**
@@ -18,7 +19,7 @@ use SMW\Localizer\Localizer;
 class SMWPropertyListValue extends SMWDataValue {
 	/**
 	 * List of properte data items that are stored.
-	 * @var array of SMWDIProperty
+	 * @var array of DIProperty
 	 */
 	protected $m_diProperties;
 
@@ -89,7 +90,7 @@ class SMWPropertyListValue extends SMWDataValue {
 				$this->addErrorMsg( [ 'smw-datavalue-propertylist-invalid-property-key', $dataItem->getString(), $propertyKey ] );
 			}
 
-			if ( $property instanceof SMWDIProperty ) {
+			if ( $property instanceof DIProperty ) {
 				 // Find a possible redirect
 				$this->m_diProperties[] = $property->getRedirectTarget();
 			}

@@ -4,6 +4,7 @@ use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\Controller\Queue;
+use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Escaper;
 use SMW\Exporter\ExpDataFactory;
 use SMW\Exporter\Serializer\Serializer;
@@ -609,10 +610,10 @@ class SMWExportController {
 				$nexturl = SMWExporter::getInstance()->expandURI( '&export;&amp;offset=' ) . ( $offset + $limit );
 			}
 
-			$expData = new SMWExpData( new SMWExpResource( $nexturl ) );
+			$expData = new SMWExpData( new ExpResource( $nexturl ) );
 			$ed = new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'Thing' ) );
 			$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ), $ed );
-			$ed = new SMWExpData( new SMWExpResource( $nexturl ) );
+			$ed = new SMWExpData( new ExpResource( $nexturl ) );
 			$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
 			$this->serializer->serializeExpData( $expData );
 		}

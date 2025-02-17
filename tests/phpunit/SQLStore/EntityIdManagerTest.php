@@ -206,7 +206,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( $selectRow );
 
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -239,7 +239,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( $selectRow );
 
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -287,7 +287,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'insertId' )
 			->willReturn( 9999 );
 
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -400,7 +400,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 

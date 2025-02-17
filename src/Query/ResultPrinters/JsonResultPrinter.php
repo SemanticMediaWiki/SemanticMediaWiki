@@ -2,7 +2,7 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 
 /**
  * Print links to JSON files representing query results.

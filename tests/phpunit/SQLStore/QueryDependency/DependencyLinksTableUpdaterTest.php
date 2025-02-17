@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\QueryDependency;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -62,7 +63,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
-				\SMWSQLStore3::QUERY_LINKS_TABLE,
+				SQLStore::QUERY_LINKS_TABLE,
 				[ 's_id' => 42 ] );
 
 		$insert[] = [
@@ -73,7 +74,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
-				\SMWSQLStore3::QUERY_LINKS_TABLE,
+				SQLStore::QUERY_LINKS_TABLE,
 				$insert );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
@@ -159,7 +160,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
-				\SMWSQLStore3::QUERY_LINKS_TABLE,
+				SQLStore::QUERY_LINKS_TABLE,
 				[ 's_id' => 42 ] );
 
 		$insert[] = [
@@ -170,7 +171,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
-				\SMWSQLStore3::QUERY_LINKS_TABLE,
+				SQLStore::QUERY_LINKS_TABLE,
 				$insert );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )

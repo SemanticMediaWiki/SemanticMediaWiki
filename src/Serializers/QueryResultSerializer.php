@@ -12,7 +12,7 @@ use SMWDataItem as DataItem;
 use Title;
 
 /**
- * Class for serializing SMWDataItem and SMWQueryResult objects to a context
+ * Class for serializing SMWDataItem and QueryResult objects to a context
  * independent object consisting of arrays and associative arrays, which can
  * be fed directly to json_encode, the MediaWiki API, and similar serializers.
  *
@@ -171,7 +171,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	}
 
 	/**
-	 * Get the serialization for a SMWQueryResult object.
+	 * Get the serialization for a QueryResult object.
 	 *
 	 * @since 1.7
 	 *

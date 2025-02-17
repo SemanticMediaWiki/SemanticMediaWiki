@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\SQLStore;
 
+use SMW\RequestOptions;
 use SMW\SQLStore\RequestOptionsProcessor;
-use SMWRequestOptions as RequestOptions;
-use SMWStringCondition as StringCondition;
+use SMW\StringCondition;
 
 /**
  * @covers \SMW\SQLStore\RequestOptionsProcessor

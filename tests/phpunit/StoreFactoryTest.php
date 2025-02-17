@@ -44,12 +44,12 @@ class StoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDifferentStoreIdInstanceInvocation() {
-		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMWSQLStore3' ) );
-		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMWSparqlStore' ) );
+		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMW\SQLStore\SQLStore' ) );
+		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMW\SPARQLStore\SPARQLStore' ) );
 
 		$this->assertNotSame(
-			StoreFactory::getStore( '\SMWSQLStore3' ),
-			StoreFactory::getStore( '\SMWSparqlStore' )
+			StoreFactory::getStore( '\SMW\SQLStore\SQLStore' ),
+			StoreFactory::getStore( '\SMW\SPARQLStore\SPARQLStore' )
 		);
 	}
 

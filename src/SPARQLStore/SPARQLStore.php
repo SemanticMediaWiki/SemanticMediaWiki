@@ -46,7 +46,7 @@ class SPARQLStore extends Store {
 	 * @since 1.8
 	 * @var string
 	 */
-	public static $baseStoreClass = 'SMWSQLStore3';
+	public static $baseStoreClass = '\SMW\SQLStore\SQLStore';
 
 	/**
 	 * Underlying store to use for basic read operations.
@@ -490,7 +490,7 @@ class SPARQLStore extends Store {
 		$repositoryClient = $respositoryConnetion->getRepositoryClient();
 
 		if ( $type === 'store' ) {
-			return [ 'SMWSPARQLStore', $repositoryClient->getName() ];
+			return [ 'SPARQLStore', $repositoryClient->getName() ];
 		}
 
 		$connection = $this->getConnection( 'mw.db' );
@@ -500,7 +500,7 @@ class SPARQLStore extends Store {
 		}
 
 		return [
-			'SMWSPARQLStore' => $connection->getInfo() + [ $repositoryClient->getName() => $respositoryConnetion->getVersion() ]
+			'SPARQLStore' => $connection->getInfo() + [ $repositoryClient->getName() => $respositoryConnetion->getVersion() ]
 		];
 	}
 

@@ -3,10 +3,10 @@
 namespace SMW\Tests\Query\PrintRequest;
 
 use SMW\DataValues\PropertyChainValue;
-use SMW\Localizer;
+use SMW\DataValues\PropertyValue;
+use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequest\Deserializer;
-use SMWPropertyValue as PropertyValue;
 
 /**
  * @covers SMW\Query\PrintRequest\Deserializer

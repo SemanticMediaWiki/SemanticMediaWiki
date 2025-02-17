@@ -3,8 +3,8 @@
 namespace SMW\Query\ResultPrinters;
 
 use Sanitizer;
+use SMW\Query\QueryResult;
 use SMW\Utils\Csv;
-use SMWQueryResult as QueryResult;
 
 /**
  * CSV export support

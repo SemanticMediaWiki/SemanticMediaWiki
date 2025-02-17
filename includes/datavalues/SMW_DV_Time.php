@@ -172,7 +172,7 @@ class SMWTimeValue extends SMWDataValue {
 		if ( $this->isYear( $value ) ) {
 			try {
 				$this->m_dataitem = new DITime( $this->getCalendarModel( null, $value, null, null ), $value );
-			} catch ( SMWDataItemException $e ) {
+			} catch ( SMW\Exception\DataItemException $e ) {
 				$this->addErrorMsg( [ 'smw-datavalue-time-invalid', $value, $e->getMessage() ] );
 			}
 		} elseif ( $this->isTimestamp( $value ) ) {
@@ -301,7 +301,7 @@ class SMWTimeValue extends SMWDataValue {
 					$jd += self::MJD_EPOCH;
 				}
 				$this->m_dataitem = DITime::newFromJD( $jd, DITime::CM_GREGORIAN, DITime::PREC_YMDT, $components->get( 'timezone' ) );
-			} catch ( SMWDataItemException $e ) {
+			} catch ( SMW\Exception\DataItemException $e ) {
 				$this->addErrorMsg( [ 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ] );
 			}
 		} else {
@@ -356,7 +356,7 @@ class SMWTimeValue extends SMWDataValue {
 
 		try {
 			$this->m_dataitem = new DITime( $calmod, $date['y'], $date['m'], $date['d'], $hours, $minutes, $seconds . '.' . $microseconds, $timezone );
-		} catch ( SMWDataItemException $e ) {
+		} catch ( SMW\Exception\DataItemException $e ) {
 			$this->addErrorMsg( [ 'smw-datavalue-time-invalid', $this->m_wikivalue, $e->getMessage() ] );
 			return false;
 		}
@@ -374,7 +374,7 @@ class SMWTimeValue extends SMWDataValue {
 			$newjd = $this->m_dataitem->getJD() - $timeoffset / 24;
 			try {
 				$this->m_dataitem = DITime::newFromJD( $newjd, $calmod, $this->m_dataitem->getPrecision(), $timezone );
-			} catch ( SMWDataItemException $e ) {
+			} catch ( SMW\Exception\DataItemException $e ) {
 				$this->addErrorMsg( [ 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ] );
 				return false;
 			}

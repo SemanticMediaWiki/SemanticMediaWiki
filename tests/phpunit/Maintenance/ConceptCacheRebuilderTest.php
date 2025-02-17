@@ -172,7 +172,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -3,6 +3,7 @@
 namespace SMW\Tests\Exporter;
 
 use SMW\DataItemFactory;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\Exporter\ElementFactory;
 use SMW\Tests\PHPUnitCompat;
 
@@ -84,7 +85,7 @@ class ElementFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		# 5
 		$provider[] = [
-			$dataItemFactory->newDIContainer( new \SMWContainerSemanticData( $dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) )
+			$dataItemFactory->newDIContainer( new ContainerSemanticData( $dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) )
 		];
 
 		# 6

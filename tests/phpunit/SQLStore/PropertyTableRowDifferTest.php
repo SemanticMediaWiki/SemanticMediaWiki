@@ -168,7 +168,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 			'smw_proptable_hash' => null
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

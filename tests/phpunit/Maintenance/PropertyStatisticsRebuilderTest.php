@@ -74,7 +74,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturnOnConsecutiveCalls( $uRow, $nRow );
 
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 

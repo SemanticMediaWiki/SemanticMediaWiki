@@ -3,6 +3,9 @@
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpElement;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
@@ -12,10 +15,7 @@ use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
-use SMWExpElement as ExpElement;
-use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * @license GPL-2.0-or-later

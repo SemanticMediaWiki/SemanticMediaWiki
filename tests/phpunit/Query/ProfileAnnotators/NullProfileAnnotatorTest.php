@@ -53,7 +53,7 @@ class NullProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWContainerSemanticData',
+			'\SMW\DataModel\ContainerSemanticData',
 			$instance->getSemanticData()
 		);
 

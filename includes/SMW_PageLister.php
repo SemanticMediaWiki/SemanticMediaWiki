@@ -34,7 +34,7 @@ class SMWPageLister {
 	 * Constructor
 	 *
 	 * @param $diWikiPages array of SMWDIWikiPage
-	 * @param $diProperty mixed SMWDIProperty that the wikipages are values of, or null
+	 * @param $diProperty mixed \SMW\DIProperty that the wikipages are values of, or null
 	 * @param $limit integer maximal amount of items to display
 	 * @param $from string if the results were selected starting from this string
 	 * @param $until string if the results were selected reaching until this string
@@ -206,7 +206,7 @@ class SMWPageLister {
 	 * @param $start integer
 	 * @param $end integer
 	 * @param $diWikiPages array of SMWDIWikiPage
-	 * @param $diProperty SMWDIProperty that the wikipages are values of, or null
+	 * @param $diProperty \SMW\DIProperty that the wikipages are values of, or null
 	 *
 	 * @return string
 	 */
@@ -288,7 +288,7 @@ class SMWPageLister {
 	 * @param $start integer
 	 * @param $end integer
 	 * @param $diWikiPages array of SMWDataItem
-	 * @param $diProperty SMWDIProperty that the wikipages are values of, or null
+	 * @param $diProperty \SMW\DIProperty that the wikipages are values of, or null
 	 *
 	 * @return string
 	 */

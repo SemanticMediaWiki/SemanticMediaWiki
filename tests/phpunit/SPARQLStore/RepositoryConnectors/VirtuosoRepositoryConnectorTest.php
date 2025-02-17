@@ -17,7 +17,6 @@ class VirtuosoRepositoryConnectorTest extends ElementaryRepositoryConnectorTest 
 
 	public function getRepositoryConnectors() {
 		return [
-			'SMWSparqlDatabaseVirtuoso',
 			VirtuosoRepositoryConnector::class
 		];
 	}

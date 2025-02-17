@@ -6,11 +6,11 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
 use SMW\Query\QueryToken;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDataValue;
-use SMWQueryResult as QueryResult;
 
 /**
  * Container for the contents of a single result field of a query result,

@@ -4,6 +4,7 @@ namespace SMW;
 
 use SMW\DataModel\ContainerSemanticData;
 use SMW\Localizer\Message;
+use SMW\Property\RestrictionExaminer;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWDIContainer as DIContainer;
@@ -41,7 +42,7 @@ class ProcessingErrorMsgHandler {
 	 * @return DIProperty|null
 	 */
 	public static function grepPropertyFromRestrictionErrorMsg( $message ) {
-		return PropertyRestrictionExaminer::grepPropertyFromRestrictionErrorMsg( $message );
+		return RestrictionExaminer::grepPropertyFromRestrictionErrorMsg( $message );
 	}
 
 	/**

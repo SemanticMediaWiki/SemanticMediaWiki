@@ -69,7 +69,7 @@ class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructDIContainer() {
-		$containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
+		$containerSemanticData = $this->getMockBuilder( '\SMW\DataModel\ContainerSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 

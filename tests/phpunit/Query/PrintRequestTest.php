@@ -18,7 +18,7 @@ use SMW\Query\PrintRequest;
 class PrintRequestTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructPropertyPrintRequest() {
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
