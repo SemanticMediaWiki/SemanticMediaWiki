@@ -3,8 +3,8 @@
 namespace SMW\Tests\Property;
 
 use SMW\DataItemFactory;
-use SMW\Property\SpecificationLookup;
 use SMW\Property\LanguageFalldownAndInverse;
+use SMW\Property\SpecificationLookup;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWDataItem as DataItem;
