@@ -73,12 +73,16 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 				$this->returnCallback( static function () {
 					$args = func_get_args();
 					switch ( $args[2] ) {
-						case 'de': return 'de-desc';
-						case 'de-formal': return 'de-formal-desc';
-						case 'en': return 'en-desc';
+						case 'de':
+							return 'de-desc';
+						case 'de-formal':
+							return 'de-formal-desc';
+						case 'en':
+							return 'en-desc';
 					}
-				} )
-			 );
+				}
+			)
+		);
 
 		$instance = new SpecificationLookup(
 			$this->store,
