@@ -2,11 +2,9 @@
 
 namespace SMW\Property;
 
-use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\Property\LanguageFalldownAndInverse;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
 use SMW\Message;
