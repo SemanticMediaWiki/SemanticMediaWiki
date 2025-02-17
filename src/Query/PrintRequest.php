@@ -220,6 +220,10 @@ class PrintRequest {
 		return $this->m_outputformat;
 	}
 
+	public function setOutputFormat( $format ) {
+		$this->m_outputformat = $format;
+	}
+
 	/**
 	 * If this print request refers to some property, return the type id of this property.
 	 * Otherwise return '_wpg' since all other types of print request return wiki pages.

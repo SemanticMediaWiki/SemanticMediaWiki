@@ -126,11 +126,10 @@ class Deserializer {
 
 		// label found, use this instead of default
 		if ( count( $parts ) > 1 ) {
-			$label = trim( $parts[1] );
+				$label = trim( $parts[1] );
 		}
 
 		if ( $printmode === PrintRequest::PRINT_THIS ) {
-
 			// Cover the case of `?#Test=#-`
 			if ( strrpos( $label, '#' ) !== false ) {
 				[ $label, $outputFormat ] = explode( '#', $label );
@@ -188,5 +187,4 @@ class Deserializer {
 
 		return [ $parts, $outputFormat, Localizer::getInstance()->normalizeTitleText( $printRequestLabel ) ];
 	}
-
 }
