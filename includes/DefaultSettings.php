@@ -247,7 +247,7 @@ return ( static function () {
 		#
 		# In case `$smwgSparqlRepositoryConnector` is maintained with 'custom',
 		# the `$smwgSparqlCustomConnector` is expected to contain a custom class
-		# implementing the ncessary interface (see `GenericRepositoryConnector`).
+		# implementing the necessary interface (see `GenericRepositoryConnector`).
 		#
 		# `$smwgSparqlCustomConnector` is only used for the definition of a custom
 		# connector.
@@ -263,7 +263,7 @@ return ( static function () {
 		#
 		# In case `$smwgSparqlRepositoryConnector` is maintained with 'custom',
 		# the `$smwgSparqlCustomConnector` is expected to contain a custom class
-		# implementing the ncessary interface (see `GenericRepositoryConnector`).
+		# implementing the necessary interface (see `GenericRepositoryConnector`).
 		#
 		# `$smwgSparqlCustomConnector` is only used for the definition of a custom
 		# connector.
