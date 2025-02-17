@@ -118,11 +118,7 @@ class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 		global $wgOut, $wgRequest;
 
 		foreach ( $params as $key => $value ) {
-			if ( method_exists( $wgRequest, 'unsetVal' ) ) {
-				$wgRequest->unsetVal( $key );
-			} else {
-				$wgRequest->setVal( $key, null );
-			}
+			$wgRequest->unsetVal( $key );
 		}
 		foreach ( $this->oldRequestValues as $key => $value ) {
 			$wgRequest->setVal( $key, $value );
